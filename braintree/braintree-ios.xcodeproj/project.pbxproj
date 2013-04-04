@@ -1,0 +1,1479 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9C014A451706450100A58C39 /* BraintreeResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6E1170639440080631F /* BraintreeResources.bundle */; };
+		9C014A491706565400A58C39 /* VenmoTouchResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C014A481706565400A58C39 /* VenmoTouchResources.bundle */; };
+		9C014A4A1706565400A58C39 /* VenmoTouchResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C014A481706565400A58C39 /* VenmoTouchResources.bundle */; };
+		9C014A4B1706565400A58C39 /* VenmoTouchResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C014A481706565400A58C39 /* VenmoTouchResources.bundle */; };
+		9C103CB01704F59B00B70304 /* BTEncryptionTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C103CAE1704F59B00B70304 /* BTEncryptionTests-Info.plist */; };
+		9C103CB11704F59B00B70304 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C103CAF1704F59B00B70304 /* InfoPlist.strings */; };
+		9C2865B21704F995000C411C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB5825A1704EC0000448E5C /* Foundation.framework */; };
+		9C2865C01704F995000C411C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB582691704EC0000448E5C /* SenTestingKit.framework */; };
+		9C2865C21704F995000C411C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB5825A1704EC0000448E5C /* Foundation.framework */; };
+		9C2865C51704F995000C411C /* libBTPayment.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2865B11704F995000C411C /* libBTPayment.a */; };
+		9C2865CB1704F995000C411C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C2865C91704F995000C411C /* InfoPlist.strings */; };
+		9C2865CE1704F995000C411C /* BTPaymentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865CD1704F995000C411C /* BTPaymentTests.m */; };
+		9C2865E31704FA5F000C411C /* BTPaymentActivityOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865D71704FA5F000C411C /* BTPaymentActivityOverlayView.m */; };
+		9C2865E41704FA5F000C411C /* BTPaymentActivityOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865D71704FA5F000C411C /* BTPaymentActivityOverlayView.m */; };
+		9C2865E51704FA5F000C411C /* BTPaymentCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865D91704FA5F000C411C /* BTPaymentCardType.m */; };
+		9C2865E61704FA5F000C411C /* BTPaymentCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865D91704FA5F000C411C /* BTPaymentCardType.m */; };
+		9C2865E71704FA5F000C411C /* BTPaymentCardUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DB1704FA5F000C411C /* BTPaymentCardUtils.m */; };
+		9C2865E81704FA5F000C411C /* BTPaymentCardUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DB1704FA5F000C411C /* BTPaymentCardUtils.m */; };
+		9C2865E91704FA5F000C411C /* BTPaymentFormTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DE1704FA5F000C411C /* BTPaymentFormTextField.m */; };
+		9C2865EA1704FA5F000C411C /* BTPaymentFormTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DE1704FA5F000C411C /* BTPaymentFormTextField.m */; };
+		9C2865EB1704FA5F000C411C /* BTPaymentFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865E01704FA5F000C411C /* BTPaymentFormView.m */; };
+		9C2865EC1704FA5F000C411C /* BTPaymentFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865E01704FA5F000C411C /* BTPaymentFormView.m */; };
+		9C2865ED1704FA5F000C411C /* BTPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865E21704FA5F000C411C /* BTPaymentViewController.m */; };
+		9C2865EE1704FA5F000C411C /* BTPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865E21704FA5F000C411C /* BTPaymentViewController.m */; };
+		9C2866351704FC70000C411C /* VenmoTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2866341704FC70000C411C /* VenmoTouch.framework */; };
+		9C28663617053043000C411C /* VenmoTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2866341704FC70000C411C /* VenmoTouch.framework */; };
+		9C28663817053135000C411C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28663717053135000C411C /* QuartzCore.framework */; };
+		9C28663B17053162000C411C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28663A17053162000C411C /* UIKit.framework */; };
+		9C28663D170531E5000C411C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28663A17053162000C411C /* UIKit.framework */; };
+		9C28663E17053219000C411C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2865FC1704FBDF000C411C /* CoreGraphics.framework */; };
+		9C28663F1705322F000C411C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2865FC1704FBDF000C411C /* CoreGraphics.framework */; };
+		9C2866401705362B000C411C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28663717053135000C411C /* QuartzCore.framework */; };
+		9C28664617053C33000C411C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28663A17053162000C411C /* UIKit.framework */; };
+		9C28664717053C33000C411C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB5825A1704EC0000448E5C /* Foundation.framework */; };
+		9C28664817053C33000C411C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2865FC1704FBDF000C411C /* CoreGraphics.framework */; };
+		9C28664E17053C33000C411C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C28664C17053C33000C411C /* InfoPlist.strings */; };
+		9C28665017053C33000C411C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28664F17053C33000C411C /* main.m */; };
+		9C28665417053C33000C411C /* SCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28665317053C33000C411C /* SCAppDelegate.m */; };
+		9C28665617053C33000C411C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28665517053C33000C411C /* Default.png */; };
+		9C28665817053C33000C411C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28665717053C33000C411C /* Default@2x.png */; };
+		9C28665A17053C33000C411C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C28665917053C33000C411C /* Default-568h@2x.png */; };
+		9C28665D17053C33000C411C /* SCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28665C17053C33000C411C /* SCViewController.m */; };
+		9C28666017053C33000C411C /* SCViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C28665E17053C33000C411C /* SCViewController_iPhone.xib */; };
+		9C28666317053C33000C411C /* SCViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C28666117053C33000C411C /* SCViewController_iPad.xib */; };
+		9C28666A17053C34000C411C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB582691704EC0000448E5C /* SenTestingKit.framework */; };
+		9C28666B17053C34000C411C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28663A17053162000C411C /* UIKit.framework */; };
+		9C28666C17053C34000C411C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB5825A1704EC0000448E5C /* Foundation.framework */; };
+		9C28667E17053C4C000C411C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28663717053135000C411C /* QuartzCore.framework */; };
+		9C28667F17053C4C000C411C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB583E61704F45D00448E5C /* Security.framework */; };
+		9C28668117053C50000C411C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C28663717053135000C411C /* QuartzCore.framework */; };
+		9C28668217053C50000C411C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB583E61704F45D00448E5C /* Security.framework */; };
+		9C28668317053C50000C411C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2865FC1704FBDF000C411C /* CoreGraphics.framework */; };
+		9C28668417053CB1000C411C /* VenmoTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2866341704FC70000C411C /* VenmoTouch.framework */; };
+		9C28668517053DC2000C411C /* VenmoTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2866341704FC70000C411C /* VenmoTouch.framework */; };
+		9C28668A17054C46000C411C /* SampleCheckoutTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C28668917054C46000C411C /* SampleCheckoutTests.m */; };
+		9C28669417054CA8000C411C /* SampleCheckoutTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C28669317054CA8000C411C /* SampleCheckoutTests-Info.plist */; };
+		9C28669817054CBE000C411C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C28669617054CBE000C411C /* InfoPlist.strings */; };
+		9C28669917055DE9000C411C /* BTPaymentActivityOverlayView.h in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865D61704FA5F000C411C /* BTPaymentActivityOverlayView.h */; };
+		9C28669A17055DE9000C411C /* BTPaymentActivityOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865D71704FA5F000C411C /* BTPaymentActivityOverlayView.m */; };
+		9C28669B17055DE9000C411C /* BTPaymentCardType.h in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865D81704FA5F000C411C /* BTPaymentCardType.h */; };
+		9C28669C17055DE9000C411C /* BTPaymentCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865D91704FA5F000C411C /* BTPaymentCardType.m */; };
+		9C28669D17055DE9000C411C /* BTPaymentCardUtils.h in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DA1704FA5F000C411C /* BTPaymentCardUtils.h */; };
+		9C28669E17055DE9000C411C /* BTPaymentCardUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DB1704FA5F000C411C /* BTPaymentCardUtils.m */; };
+		9C2866A017055DE9000C411C /* BTPaymentFormTextField.h in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DD1704FA5F000C411C /* BTPaymentFormTextField.h */; };
+		9C2866A117055DE9000C411C /* BTPaymentFormTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DE1704FA5F000C411C /* BTPaymentFormTextField.m */; };
+		9C2866A217055DE9000C411C /* BTPaymentFormView.h in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865DF1704FA5F000C411C /* BTPaymentFormView.h */; };
+		9C2866A317055DE9000C411C /* BTPaymentFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865E01704FA5F000C411C /* BTPaymentFormView.m */; };
+		9C2866A417055DE9000C411C /* BTPaymentViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865E11704FA5F000C411C /* BTPaymentViewController.h */; };
+		9C2866A517055DE9000C411C /* BTPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865E21704FA5F000C411C /* BTPaymentViewController.m */; };
+		9C2866A617055DE9000C411C /* BTPayment-Prefix.pch in Sources */ = {isa = PBXBuildFile; fileRef = 9C2865B51704F995000C411C /* BTPayment-Prefix.pch */; };
+		9CB3D6E3170639440080631F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB3D6E2170639440080631F /* CoreFoundation.framework */; };
+		9CB3D6E9170639440080631F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6E7170639440080631F /* InfoPlist.strings */; };
+		9CB3D7001706398D0080631F /* BTAmex.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6EE1706398D0080631F /* BTAmex.png */; };
+		9CB3D7011706398D0080631F /* BTAmex@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6EF1706398D0080631F /* BTAmex@2x.png */; };
+		9CB3D7021706398D0080631F /* BTAmexCVV.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F01706398D0080631F /* BTAmexCVV.png */; };
+		9CB3D7031706398D0080631F /* BTAmexCVV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F11706398D0080631F /* BTAmexCVV@2x.png */; };
+		9CB3D7041706398D0080631F /* BTCVV.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F21706398D0080631F /* BTCVV.png */; };
+		9CB3D7051706398D0080631F /* BTCVV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F31706398D0080631F /* BTCVV@2x.png */; };
+		9CB3D7061706398D0080631F /* BTDinersClub.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F41706398D0080631F /* BTDinersClub.png */; };
+		9CB3D7071706398D0080631F /* BTDinersClub@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F51706398D0080631F /* BTDinersClub@2x.png */; };
+		9CB3D7081706398D0080631F /* BTDiscover.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F61706398D0080631F /* BTDiscover.png */; };
+		9CB3D7091706398D0080631F /* BTDiscover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F71706398D0080631F /* BTDiscover@2x.png */; };
+		9CB3D70A1706398D0080631F /* BTGenericCard.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F81706398D0080631F /* BTGenericCard.png */; };
+		9CB3D70B1706398D0080631F /* BTGenericCard@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6F91706398D0080631F /* BTGenericCard@2X.png */; };
+		9CB3D70C1706398D0080631F /* BTJCB.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6FA1706398D0080631F /* BTJCB.png */; };
+		9CB3D70D1706398D0080631F /* BTJCB@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6FB1706398D0080631F /* BTJCB@2x.png */; };
+		9CB3D70E1706398D0080631F /* BTMastercard.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6FC1706398D0080631F /* BTMastercard.png */; };
+		9CB3D70F1706398D0080631F /* BTMastercard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6FD1706398D0080631F /* BTMastercard@2x.png */; };
+		9CB3D7101706398D0080631F /* BTVisa.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6FE1706398D0080631F /* BTVisa.png */; };
+		9CB3D7111706398D0080631F /* BTVisa@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6FF1706398D0080631F /* BTVisa@2x.png */; };
+		9CB582871704EC2700448E5C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB5825A1704EC0000448E5C /* Foundation.framework */; };
+		9CB582951704EC2700448E5C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB582691704EC0000448E5C /* SenTestingKit.framework */; };
+		9CB582971704EC2700448E5C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB5825A1704EC0000448E5C /* Foundation.framework */; };
+		9CB5829A1704EC2700448E5C /* libBTEncryption.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB582861704EC2700448E5C /* libBTEncryption.a */; };
+		9CB583741704F0E800448E5C /* BTAES.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583651704F0E800448E5C /* BTAES.m */; };
+		9CB583751704F0E800448E5C /* BTAES.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583651704F0E800448E5C /* BTAES.m */; };
+		9CB583781704F0E800448E5C /* BTEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583681704F0E800448E5C /* BTEncryption.m */; };
+		9CB583791704F0E800448E5C /* BTEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583681704F0E800448E5C /* BTEncryption.m */; };
+		9CB5837C1704F0E800448E5C /* BTRandom.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836B1704F0E800448E5C /* BTRandom.m */; };
+		9CB5837D1704F0E800448E5C /* BTRandom.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836B1704F0E800448E5C /* BTRandom.m */; };
+		9CB583801704F0E800448E5C /* BTRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836D1704F0E800448E5C /* BTRSA.m */; };
+		9CB583811704F0E800448E5C /* BTRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836D1704F0E800448E5C /* BTRSA.m */; };
+		9CB583841704F0E800448E5C /* BTSecKeyWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836F1704F0E800448E5C /* BTSecKeyWrapper.m */; };
+		9CB583851704F0E800448E5C /* BTSecKeyWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836F1704F0E800448E5C /* BTSecKeyWrapper.m */; };
+		9CB583881704F0E800448E5C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583711704F0E800448E5C /* NSData+Base64.m */; };
+		9CB583891704F0E800448E5C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583711704F0E800448E5C /* NSData+Base64.m */; };
+		9CB583991704F10200448E5C /* BTAESTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5838B1704F10200448E5C /* BTAESTest.m */; };
+		9CB5839B1704F10200448E5C /* BTDecrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5838D1704F10200448E5C /* BTDecrypt.m */; };
+		9CB5839D1704F10200448E5C /* BTEncryptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5838F1704F10200448E5C /* BTEncryptionTest.m */; };
+		9CB5839F1704F10200448E5C /* BTRandomTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583911704F10200448E5C /* BTRandomTest.m */; };
+		9CB583A11704F10200448E5C /* BTRSAKeysTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583931704F10200448E5C /* BTRSAKeysTest.m */; };
+		9CB583A31704F10200448E5C /* BTRSATest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583951704F10200448E5C /* BTRSATest.m */; };
+		9CB583A51704F10200448E5C /* NSDataBase64Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583971704F10200448E5C /* NSDataBase64Test.m */; };
+		9CB583E71704F45D00448E5C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB583E61704F45D00448E5C /* Security.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9C014A3D17063E5C00A58C39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB5824F1704EC0000448E5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9CB3D6E0170639440080631F;
+			remoteInfo = BraintreeResources;
+		};
+		9C014A3F17063ED200A58C39 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB5824F1704EC0000448E5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C2865B01704F995000C411C;
+			remoteInfo = BTPaymentForm;
+		};
+		9C2865C31704F995000C411C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB5824F1704EC0000448E5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C2865B01704F995000C411C;
+			remoteInfo = BTPaymentForm;
+		};
+		9C28666D17053C34000C411C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB5824F1704EC0000448E5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C28664417053C33000C411C;
+			remoteInfo = SampleCheckout;
+		};
+		9CB3D71217063AA90080631F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB5824F1704EC0000448E5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9CB3D6E0170639440080631F;
+			remoteInfo = BraintreeResources;
+		};
+		9CB582981704EC2700448E5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB5824F1704EC0000448E5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9CB582851704EC2700448E5C;
+			remoteInfo = BTEncryption;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9C2865AF1704F995000C411C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB582841704EC2700448E5C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9C014A481706565400A58C39 /* VenmoTouchResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = VenmoTouchResources.bundle; path = "../venmo-touch/VenmoTouchResources.bundle"; sourceTree = "<group>"; };
+		9C103CAE1704F59B00B70304 /* BTEncryptionTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "BTEncryptionTests-Info.plist"; path = "BTEncryptionTests/BTEncryptionTests-Info.plist"; sourceTree = SOURCE_ROOT; };
+		9C103CAF1704F59B00B70304 /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = BTEncryptionTests/InfoPlist.strings; sourceTree = SOURCE_ROOT; };
+		9C2865B11704F995000C411C /* libBTPayment.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBTPayment.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C2865B51704F995000C411C /* BTPayment-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTPayment-Prefix.pch"; sourceTree = "<group>"; };
+		9C2865BF1704F995000C411C /* BTPaymentTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BTPaymentTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C2865C81704F995000C411C /* BTPaymentTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BTPaymentTests-Info.plist"; sourceTree = "<group>"; };
+		9C2865CA1704F995000C411C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9C2865CC1704F995000C411C /* BTPaymentTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentTests.h; sourceTree = "<group>"; };
+		9C2865CD1704F995000C411C /* BTPaymentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentTests.m; sourceTree = "<group>"; };
+		9C2865D61704FA5F000C411C /* BTPaymentActivityOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentActivityOverlayView.h; sourceTree = "<group>"; };
+		9C2865D71704FA5F000C411C /* BTPaymentActivityOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentActivityOverlayView.m; sourceTree = "<group>"; };
+		9C2865D81704FA5F000C411C /* BTPaymentCardType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentCardType.h; sourceTree = "<group>"; };
+		9C2865D91704FA5F000C411C /* BTPaymentCardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentCardType.m; sourceTree = "<group>"; };
+		9C2865DA1704FA5F000C411C /* BTPaymentCardUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentCardUtils.h; sourceTree = "<group>"; };
+		9C2865DB1704FA5F000C411C /* BTPaymentCardUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentCardUtils.m; sourceTree = "<group>"; };
+		9C2865DD1704FA5F000C411C /* BTPaymentFormTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentFormTextField.h; sourceTree = "<group>"; };
+		9C2865DE1704FA5F000C411C /* BTPaymentFormTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentFormTextField.m; sourceTree = "<group>"; };
+		9C2865DF1704FA5F000C411C /* BTPaymentFormView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentFormView.h; sourceTree = "<group>"; };
+		9C2865E01704FA5F000C411C /* BTPaymentFormView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentFormView.m; sourceTree = "<group>"; };
+		9C2865E11704FA5F000C411C /* BTPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentViewController.h; sourceTree = "<group>"; };
+		9C2865E21704FA5F000C411C /* BTPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentViewController.m; sourceTree = "<group>"; };
+		9C2865FC1704FBDF000C411C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9C2866341704FC70000C411C /* VenmoTouch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VenmoTouch.framework; path = "../venmo-touch/VenmoTouch.framework"; sourceTree = "<group>"; };
+		9C28663717053135000C411C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		9C28663A17053162000C411C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9C28664517053C33000C411C /* SampleCheckout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleCheckout.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C28664B17053C33000C411C /* SampleCheckout-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SampleCheckout-Info.plist"; sourceTree = "<group>"; };
+		9C28664D17053C33000C411C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9C28664F17053C33000C411C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9C28665117053C33000C411C /* SampleCheckout-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleCheckout-Prefix.pch"; sourceTree = "<group>"; };
+		9C28665217053C33000C411C /* SCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCAppDelegate.h; sourceTree = "<group>"; };
+		9C28665317053C33000C411C /* SCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCAppDelegate.m; sourceTree = "<group>"; };
+		9C28665517053C33000C411C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		9C28665717053C33000C411C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		9C28665917053C33000C411C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		9C28665B17053C33000C411C /* SCViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCViewController.h; sourceTree = "<group>"; };
+		9C28665C17053C33000C411C /* SCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCViewController.m; sourceTree = "<group>"; };
+		9C28665F17053C33000C411C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SCViewController_iPhone.xib; sourceTree = "<group>"; };
+		9C28666217053C33000C411C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SCViewController_iPad.xib; sourceTree = "<group>"; };
+		9C28666917053C34000C411C /* SampleCheckoutTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleCheckoutTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C28668817054C46000C411C /* SampleCheckoutTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleCheckoutTests.h; sourceTree = "<group>"; };
+		9C28668917054C46000C411C /* SampleCheckoutTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SampleCheckoutTests.m; sourceTree = "<group>"; };
+		9C28669317054CA8000C411C /* SampleCheckoutTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "SampleCheckoutTests-Info.plist"; sourceTree = "<group>"; };
+		9C28669717054CBE000C411C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
+		9CB3D6E1170639440080631F /* BraintreeResources.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BraintreeResources.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CB3D6E2170639440080631F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		9CB3D6E6170639440080631F /* BraintreeResources-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BraintreeResources-Info.plist"; sourceTree = "<group>"; };
+		9CB3D6E8170639440080631F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9CB3D6EA170639440080631F /* BraintreeResources-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BraintreeResources-Prefix.pch"; sourceTree = "<group>"; };
+		9CB3D6EE1706398D0080631F /* BTAmex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTAmex.png; sourceTree = "<group>"; };
+		9CB3D6EF1706398D0080631F /* BTAmex@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTAmex@2x.png"; sourceTree = "<group>"; };
+		9CB3D6F01706398D0080631F /* BTAmexCVV.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTAmexCVV.png; sourceTree = "<group>"; };
+		9CB3D6F11706398D0080631F /* BTAmexCVV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTAmexCVV@2x.png"; sourceTree = "<group>"; };
+		9CB3D6F21706398D0080631F /* BTCVV.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTCVV.png; sourceTree = "<group>"; };
+		9CB3D6F31706398D0080631F /* BTCVV@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTCVV@2x.png"; sourceTree = "<group>"; };
+		9CB3D6F41706398D0080631F /* BTDinersClub.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTDinersClub.png; sourceTree = "<group>"; };
+		9CB3D6F51706398D0080631F /* BTDinersClub@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTDinersClub@2x.png"; sourceTree = "<group>"; };
+		9CB3D6F61706398D0080631F /* BTDiscover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTDiscover.png; sourceTree = "<group>"; };
+		9CB3D6F71706398D0080631F /* BTDiscover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTDiscover@2x.png"; sourceTree = "<group>"; };
+		9CB3D6F81706398D0080631F /* BTGenericCard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTGenericCard.png; sourceTree = "<group>"; };
+		9CB3D6F91706398D0080631F /* BTGenericCard@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTGenericCard@2X.png"; sourceTree = "<group>"; };
+		9CB3D6FA1706398D0080631F /* BTJCB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTJCB.png; sourceTree = "<group>"; };
+		9CB3D6FB1706398D0080631F /* BTJCB@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTJCB@2x.png"; sourceTree = "<group>"; };
+		9CB3D6FC1706398D0080631F /* BTMastercard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTMastercard.png; sourceTree = "<group>"; };
+		9CB3D6FD1706398D0080631F /* BTMastercard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTMastercard@2x.png"; sourceTree = "<group>"; };
+		9CB3D6FE1706398D0080631F /* BTVisa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BTVisa.png; sourceTree = "<group>"; };
+		9CB3D6FF1706398D0080631F /* BTVisa@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BTVisa@2x.png"; sourceTree = "<group>"; };
+		9CB5825A1704EC0000448E5C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9CB582691704EC0000448E5C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		9CB582861704EC2700448E5C /* libBTEncryption.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBTEncryption.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CB582941704EC2700448E5C /* BTEncryptionTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BTEncryptionTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CB583641704F0E800448E5C /* BTAES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAES.h; sourceTree = "<group>"; };
+		9CB583651704F0E800448E5C /* BTAES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAES.m; sourceTree = "<group>"; };
+		9CB583661704F0E800448E5C /* BTEncryption-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTEncryption-Prefix.pch"; sourceTree = "<group>"; };
+		9CB583671704F0E800448E5C /* BTEncryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEncryption.h; sourceTree = "<group>"; };
+		9CB583681704F0E800448E5C /* BTEncryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEncryption.m; sourceTree = "<group>"; };
+		9CB583691704F0E800448E5C /* BTEncyption-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTEncyption-Prefix.pch"; sourceTree = "<group>"; };
+		9CB5836A1704F0E800448E5C /* BTRandom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTRandom.h; sourceTree = "<group>"; };
+		9CB5836B1704F0E800448E5C /* BTRandom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTRandom.m; sourceTree = "<group>"; };
+		9CB5836C1704F0E800448E5C /* BTRSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTRSA.h; sourceTree = "<group>"; };
+		9CB5836D1704F0E800448E5C /* BTRSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTRSA.m; sourceTree = "<group>"; };
+		9CB5836E1704F0E800448E5C /* BTSecKeyWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSecKeyWrapper.h; sourceTree = "<group>"; };
+		9CB5836F1704F0E800448E5C /* BTSecKeyWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSecKeyWrapper.m; sourceTree = "<group>"; };
+		9CB583701704F0E800448E5C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		9CB583711704F0E800448E5C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		9CB5838A1704F10200448E5C /* BTAESTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAESTest.h; sourceTree = "<group>"; };
+		9CB5838B1704F10200448E5C /* BTAESTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAESTest.m; sourceTree = "<group>"; };
+		9CB5838C1704F10200448E5C /* BTDecrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDecrypt.h; sourceTree = "<group>"; };
+		9CB5838D1704F10200448E5C /* BTDecrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDecrypt.m; sourceTree = "<group>"; };
+		9CB5838E1704F10200448E5C /* BTEncryptionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTEncryptionTest.h; sourceTree = "<group>"; };
+		9CB5838F1704F10200448E5C /* BTEncryptionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTEncryptionTest.m; sourceTree = "<group>"; };
+		9CB583901704F10200448E5C /* BTRandomTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTRandomTest.h; sourceTree = "<group>"; };
+		9CB583911704F10200448E5C /* BTRandomTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTRandomTest.m; sourceTree = "<group>"; };
+		9CB583921704F10200448E5C /* BTRSAKeysTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTRSAKeysTest.h; sourceTree = "<group>"; };
+		9CB583931704F10200448E5C /* BTRSAKeysTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTRSAKeysTest.m; sourceTree = "<group>"; };
+		9CB583941704F10200448E5C /* BTRSATest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTRSATest.h; sourceTree = "<group>"; };
+		9CB583951704F10200448E5C /* BTRSATest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTRSATest.m; sourceTree = "<group>"; };
+		9CB583961704F10200448E5C /* NSDataBase64Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataBase64Test.h; sourceTree = "<group>"; };
+		9CB583971704F10200448E5C /* NSDataBase64Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataBase64Test.m; sourceTree = "<group>"; };
+		9CB583E61704F45D00448E5C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9C2865AE1704F995000C411C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C28663E17053219000C411C /* CoreGraphics.framework in Frameworks */,
+				9C28663B17053162000C411C /* UIKit.framework in Frameworks */,
+				9C28663817053135000C411C /* QuartzCore.framework in Frameworks */,
+				9C2865B21704F995000C411C /* Foundation.framework in Frameworks */,
+				9C28663617053043000C411C /* VenmoTouch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C2865BB1704F995000C411C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C2866401705362B000C411C /* QuartzCore.framework in Frameworks */,
+				9C28663F1705322F000C411C /* CoreGraphics.framework in Frameworks */,
+				9C28663D170531E5000C411C /* UIKit.framework in Frameworks */,
+				9C2865C01704F995000C411C /* SenTestingKit.framework in Frameworks */,
+				9C2865C21704F995000C411C /* Foundation.framework in Frameworks */,
+				9C2865C51704F995000C411C /* libBTPayment.a in Frameworks */,
+				9C2866351704FC70000C411C /* VenmoTouch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C28664217053C33000C411C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C28668517053DC2000C411C /* VenmoTouch.framework in Frameworks */,
+				9C28664617053C33000C411C /* UIKit.framework in Frameworks */,
+				9C28667E17053C4C000C411C /* QuartzCore.framework in Frameworks */,
+				9C28667F17053C4C000C411C /* Security.framework in Frameworks */,
+				9C28664717053C33000C411C /* Foundation.framework in Frameworks */,
+				9C28664817053C33000C411C /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C28666517053C34000C411C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C28666B17053C34000C411C /* UIKit.framework in Frameworks */,
+				9C28668417053CB1000C411C /* VenmoTouch.framework in Frameworks */,
+				9C28668117053C50000C411C /* QuartzCore.framework in Frameworks */,
+				9C28668217053C50000C411C /* Security.framework in Frameworks */,
+				9C28666C17053C34000C411C /* Foundation.framework in Frameworks */,
+				9C28666A17053C34000C411C /* SenTestingKit.framework in Frameworks */,
+				9C28668317053C50000C411C /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB3D6DE170639440080631F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CB3D6E3170639440080631F /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB582831704EC2700448E5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CB582871704EC2700448E5C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB582901704EC2700448E5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CB583E71704F45D00448E5C /* Security.framework in Frameworks */,
+				9CB582951704EC2700448E5C /* SenTestingKit.framework in Frameworks */,
+				9CB582971704EC2700448E5C /* Foundation.framework in Frameworks */,
+				9CB5829A1704EC2700448E5C /* libBTEncryption.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9C2865B31704F995000C411C /* BTPayment */ = {
+			isa = PBXGroup;
+			children = (
+				9C2865D61704FA5F000C411C /* BTPaymentActivityOverlayView.h */,
+				9C2865D71704FA5F000C411C /* BTPaymentActivityOverlayView.m */,
+				9C2865D81704FA5F000C411C /* BTPaymentCardType.h */,
+				9C2865D91704FA5F000C411C /* BTPaymentCardType.m */,
+				9C2865DA1704FA5F000C411C /* BTPaymentCardUtils.h */,
+				9C2865DB1704FA5F000C411C /* BTPaymentCardUtils.m */,
+				9C2865DD1704FA5F000C411C /* BTPaymentFormTextField.h */,
+				9C2865DE1704FA5F000C411C /* BTPaymentFormTextField.m */,
+				9C2865DF1704FA5F000C411C /* BTPaymentFormView.h */,
+				9C2865E01704FA5F000C411C /* BTPaymentFormView.m */,
+				9C2865E11704FA5F000C411C /* BTPaymentViewController.h */,
+				9C2865E21704FA5F000C411C /* BTPaymentViewController.m */,
+				9C2865B41704F995000C411C /* Supporting Files */,
+			);
+			path = BTPayment;
+			sourceTree = "<group>";
+		};
+		9C2865B41704F995000C411C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C2865B51704F995000C411C /* BTPayment-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9C2865C61704F995000C411C /* BTPaymentTests */ = {
+			isa = PBXGroup;
+			children = (
+				9C2865CC1704F995000C411C /* BTPaymentTests.h */,
+				9C2865CD1704F995000C411C /* BTPaymentTests.m */,
+				9C2865C71704F995000C411C /* Supporting Files */,
+			);
+			path = BTPaymentTests;
+			sourceTree = "<group>";
+		};
+		9C2865C71704F995000C411C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C2865C81704F995000C411C /* BTPaymentTests-Info.plist */,
+				9C2865C91704F995000C411C /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9C2865D51704F9D0000C411C /* braintree */ = {
+			isa = PBXGroup;
+			children = (
+				9CB582881704EC2700448E5C /* BTEncryption */,
+				9CB5829B1704EC2700448E5C /* BTEncryptionTests */,
+				9C2865B31704F995000C411C /* BTPayment */,
+				9C2865C61704F995000C411C /* BTPaymentTests */,
+			);
+			name = braintree;
+			sourceTree = "<group>";
+		};
+		9C2865EF1704FA74000C411C /* venmo-touch */ = {
+			isa = PBXGroup;
+			children = (
+				9C014A481706565400A58C39 /* VenmoTouchResources.bundle */,
+				9C2866341704FC70000C411C /* VenmoTouch.framework */,
+			);
+			name = "venmo-touch";
+			sourceTree = "<group>";
+		};
+		9C28664917053C33000C411C /* SampleCheckout */ = {
+			isa = PBXGroup;
+			children = (
+				9C28665217053C33000C411C /* SCAppDelegate.h */,
+				9C28665317053C33000C411C /* SCAppDelegate.m */,
+				9C28665B17053C33000C411C /* SCViewController.h */,
+				9C28665C17053C33000C411C /* SCViewController.m */,
+				9C28665E17053C33000C411C /* SCViewController_iPhone.xib */,
+				9C28666117053C33000C411C /* SCViewController_iPad.xib */,
+				9C28664A17053C33000C411C /* Supporting Files */,
+			);
+			path = SampleCheckout;
+			sourceTree = "<group>";
+		};
+		9C28664A17053C33000C411C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C28664B17053C33000C411C /* SampleCheckout-Info.plist */,
+				9C28664C17053C33000C411C /* InfoPlist.strings */,
+				9C28664F17053C33000C411C /* main.m */,
+				9C28665117053C33000C411C /* SampleCheckout-Prefix.pch */,
+				9C28665517053C33000C411C /* Default.png */,
+				9C28665717053C33000C411C /* Default@2x.png */,
+				9C28665917053C33000C411C /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9C28666F17053C34000C411C /* SampleCheckoutTests */ = {
+			isa = PBXGroup;
+			children = (
+				9C28668817054C46000C411C /* SampleCheckoutTests.h */,
+				9C28668917054C46000C411C /* SampleCheckoutTests.m */,
+				9C28667017053C34000C411C /* Supporting Files */,
+			);
+			path = SampleCheckoutTests;
+			sourceTree = "<group>";
+		};
+		9C28667017053C34000C411C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C28669517054CBE000C411C /* en.lproj */,
+				9C28669317054CA8000C411C /* SampleCheckoutTests-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9C28669517054CBE000C411C /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				9C28669617054CBE000C411C /* InfoPlist.strings */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		9CB3D6E4170639440080631F /* BraintreeResources */ = {
+			isa = PBXGroup;
+			children = (
+				9CB3D6EE1706398D0080631F /* BTAmex.png */,
+				9CB3D6EF1706398D0080631F /* BTAmex@2x.png */,
+				9CB3D6F01706398D0080631F /* BTAmexCVV.png */,
+				9CB3D6F11706398D0080631F /* BTAmexCVV@2x.png */,
+				9CB3D6F21706398D0080631F /* BTCVV.png */,
+				9CB3D6F31706398D0080631F /* BTCVV@2x.png */,
+				9CB3D6F41706398D0080631F /* BTDinersClub.png */,
+				9CB3D6F51706398D0080631F /* BTDinersClub@2x.png */,
+				9CB3D6F61706398D0080631F /* BTDiscover.png */,
+				9CB3D6F71706398D0080631F /* BTDiscover@2x.png */,
+				9CB3D6F81706398D0080631F /* BTGenericCard.png */,
+				9CB3D6F91706398D0080631F /* BTGenericCard@2X.png */,
+				9CB3D6FA1706398D0080631F /* BTJCB.png */,
+				9CB3D6FB1706398D0080631F /* BTJCB@2x.png */,
+				9CB3D6FC1706398D0080631F /* BTMastercard.png */,
+				9CB3D6FD1706398D0080631F /* BTMastercard@2x.png */,
+				9CB3D6FE1706398D0080631F /* BTVisa.png */,
+				9CB3D6FF1706398D0080631F /* BTVisa@2x.png */,
+				9CB3D6E5170639440080631F /* Supporting Files */,
+			);
+			path = BraintreeResources;
+			sourceTree = "<group>";
+		};
+		9CB3D6E5170639440080631F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9CB3D6E6170639440080631F /* BraintreeResources-Info.plist */,
+				9CB3D6E7170639440080631F /* InfoPlist.strings */,
+				9CB3D6EA170639440080631F /* BraintreeResources-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9CB5824E1704EC0000448E5C = {
+			isa = PBXGroup;
+			children = (
+				9C2865EF1704FA74000C411C /* venmo-touch */,
+				9C2865D51704F9D0000C411C /* braintree */,
+				9C28664917053C33000C411C /* SampleCheckout */,
+				9C28666F17053C34000C411C /* SampleCheckoutTests */,
+				9CB3D6E4170639440080631F /* BraintreeResources */,
+				9CB582591704EC0000448E5C /* Frameworks */,
+				9CB582581704EC0000448E5C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9CB582581704EC0000448E5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9CB582861704EC2700448E5C /* libBTEncryption.a */,
+				9CB582941704EC2700448E5C /* BTEncryptionTests.octest */,
+				9C2865B11704F995000C411C /* libBTPayment.a */,
+				9C2865BF1704F995000C411C /* BTPaymentTests.octest */,
+				9C28664517053C33000C411C /* SampleCheckout.app */,
+				9C28666917053C34000C411C /* SampleCheckoutTests.octest */,
+				9CB3D6E1170639440080631F /* BraintreeResources.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9CB582591704EC0000448E5C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9C28663A17053162000C411C /* UIKit.framework */,
+				9C28663717053135000C411C /* QuartzCore.framework */,
+				9CB583E61704F45D00448E5C /* Security.framework */,
+				9CB5825A1704EC0000448E5C /* Foundation.framework */,
+				9CB582691704EC0000448E5C /* SenTestingKit.framework */,
+				9C2865FC1704FBDF000C411C /* CoreGraphics.framework */,
+				9CB3D6E2170639440080631F /* CoreFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9CB5825D1704EC0000448E5C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9C103CAE1704F59B00B70304 /* BTEncryptionTests-Info.plist */,
+				9C103CAF1704F59B00B70304 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			path = "../braintree-ios";
+			sourceTree = "<group>";
+		};
+		9CB582881704EC2700448E5C /* BTEncryption */ = {
+			isa = PBXGroup;
+			children = (
+				9CB583641704F0E800448E5C /* BTAES.h */,
+				9CB583651704F0E800448E5C /* BTAES.m */,
+				9CB583671704F0E800448E5C /* BTEncryption.h */,
+				9CB583681704F0E800448E5C /* BTEncryption.m */,
+				9CB583691704F0E800448E5C /* BTEncyption-Prefix.pch */,
+				9CB5836A1704F0E800448E5C /* BTRandom.h */,
+				9CB5836B1704F0E800448E5C /* BTRandom.m */,
+				9CB5836C1704F0E800448E5C /* BTRSA.h */,
+				9CB5836D1704F0E800448E5C /* BTRSA.m */,
+				9CB5836E1704F0E800448E5C /* BTSecKeyWrapper.h */,
+				9CB5836F1704F0E800448E5C /* BTSecKeyWrapper.m */,
+				9CB583701704F0E800448E5C /* NSData+Base64.h */,
+				9CB583711704F0E800448E5C /* NSData+Base64.m */,
+				9CB582891704EC2700448E5C /* Supporting Files */,
+			);
+			path = BTEncryption;
+			sourceTree = "<group>";
+		};
+		9CB582891704EC2700448E5C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9CB583661704F0E800448E5C /* BTEncryption-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9CB5829B1704EC2700448E5C /* BTEncryptionTests */ = {
+			isa = PBXGroup;
+			children = (
+				9CB5838A1704F10200448E5C /* BTAESTest.h */,
+				9CB5838B1704F10200448E5C /* BTAESTest.m */,
+				9CB5838C1704F10200448E5C /* BTDecrypt.h */,
+				9CB5838D1704F10200448E5C /* BTDecrypt.m */,
+				9CB5838E1704F10200448E5C /* BTEncryptionTest.h */,
+				9CB5838F1704F10200448E5C /* BTEncryptionTest.m */,
+				9CB583901704F10200448E5C /* BTRandomTest.h */,
+				9CB583911704F10200448E5C /* BTRandomTest.m */,
+				9CB583921704F10200448E5C /* BTRSAKeysTest.h */,
+				9CB583931704F10200448E5C /* BTRSAKeysTest.m */,
+				9CB583941704F10200448E5C /* BTRSATest.h */,
+				9CB583951704F10200448E5C /* BTRSATest.m */,
+				9CB583961704F10200448E5C /* NSDataBase64Test.h */,
+				9CB583971704F10200448E5C /* NSDataBase64Test.m */,
+				9CB5825D1704EC0000448E5C /* Supporting Files */,
+			);
+			path = BTEncryptionTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9C2865B01704F995000C411C /* BTPayment */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C2865D31704F995000C411C /* Build configuration list for PBXNativeTarget "BTPayment" */;
+			buildPhases = (
+				9C2865AD1704F995000C411C /* Sources */,
+				9C2865AE1704F995000C411C /* Frameworks */,
+				9C014A441706413300A58C39 /* Include BraintreeResources.bundle */,
+				9C2865AF1704F995000C411C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9C014A3E17063E5C00A58C39 /* PBXTargetDependency */,
+			);
+			name = BTPayment;
+			productName = BTPaymentForm;
+			productReference = 9C2865B11704F995000C411C /* libBTPayment.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		9C2865BE1704F995000C411C /* BTPaymentTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C2865D41704F995000C411C /* Build configuration list for PBXNativeTarget "BTPaymentTests" */;
+			buildPhases = (
+				9C2865BA1704F995000C411C /* Sources */,
+				9C2865BB1704F995000C411C /* Frameworks */,
+				9C2865BC1704F995000C411C /* Resources */,
+				9C2865BD1704F995000C411C /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9C2865C41704F995000C411C /* PBXTargetDependency */,
+			);
+			name = BTPaymentTests;
+			productName = BTPaymentFormTests;
+			productReference = 9C2865BF1704F995000C411C /* BTPaymentTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		9C28664417053C33000C411C /* SampleCheckout */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C28667817053C34000C411C /* Build configuration list for PBXNativeTarget "SampleCheckout" */;
+			buildPhases = (
+				9C28664117053C33000C411C /* Sources */,
+				9C28664217053C33000C411C /* Frameworks */,
+				9C28664317053C33000C411C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9C014A4017063ED200A58C39 /* PBXTargetDependency */,
+				9CB3D71317063AA90080631F /* PBXTargetDependency */,
+			);
+			name = SampleCheckout;
+			productName = SampleCheckout;
+			productReference = 9C28664517053C33000C411C /* SampleCheckout.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9C28666817053C34000C411C /* SampleCheckoutTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C28667B17053C34000C411C /* Build configuration list for PBXNativeTarget "SampleCheckoutTests" */;
+			buildPhases = (
+				9C28666417053C34000C411C /* Sources */,
+				9C28666517053C34000C411C /* Frameworks */,
+				9C28666617053C34000C411C /* Resources */,
+				9C28666717053C34000C411C /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9C28666E17053C34000C411C /* PBXTargetDependency */,
+			);
+			name = SampleCheckoutTests;
+			productName = SampleCheckoutTests;
+			productReference = 9C28666917053C34000C411C /* SampleCheckoutTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		9CB3D6E0170639440080631F /* BraintreeResources */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CB3D6ED170639440080631F /* Build configuration list for PBXNativeTarget "BraintreeResources" */;
+			buildPhases = (
+				9CB3D6DD170639440080631F /* Sources */,
+				9CB3D6DE170639440080631F /* Frameworks */,
+				9CB3D6DF170639440080631F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BraintreeResources;
+			productName = BraintreeResources;
+			productReference = 9CB3D6E1170639440080631F /* BraintreeResources.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+		9CB582851704EC2700448E5C /* BTEncryption */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CB582A41704EC2700448E5C /* Build configuration list for PBXNativeTarget "BTEncryption" */;
+			buildPhases = (
+				9CB582821704EC2700448E5C /* Sources */,
+				9CB582831704EC2700448E5C /* Frameworks */,
+				9CB582841704EC2700448E5C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BTEncryption;
+			productName = BTEncryption;
+			productReference = 9CB582861704EC2700448E5C /* libBTEncryption.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		9CB582931704EC2700448E5C /* BTEncryptionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CB582A71704EC2700448E5C /* Build configuration list for PBXNativeTarget "BTEncryptionTests" */;
+			buildPhases = (
+				9CB5828F1704EC2700448E5C /* Sources */,
+				9CB582901704EC2700448E5C /* Frameworks */,
+				9CB582911704EC2700448E5C /* Resources */,
+				9CB582921704EC2700448E5C /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9CB582991704EC2700448E5C /* PBXTargetDependency */,
+			);
+			name = BTEncryptionTests;
+			productName = BTEncryptionTests;
+			productReference = 9CB582941704EC2700448E5C /* BTEncryptionTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9CB5824F1704EC0000448E5C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Braintree;
+			};
+			buildConfigurationList = 9CB582521704EC0000448E5C /* Build configuration list for PBXProject "braintree-ios" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9CB5824E1704EC0000448E5C;
+			productRefGroup = 9CB582581704EC0000448E5C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9CB582851704EC2700448E5C /* BTEncryption */,
+				9CB582931704EC2700448E5C /* BTEncryptionTests */,
+				9C2865B01704F995000C411C /* BTPayment */,
+				9C2865BE1704F995000C411C /* BTPaymentTests */,
+				9C28664417053C33000C411C /* SampleCheckout */,
+				9C28666817053C34000C411C /* SampleCheckoutTests */,
+				9CB3D6E0170639440080631F /* BraintreeResources */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9C2865BC1704F995000C411C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C2865CB1704F995000C411C /* InfoPlist.strings in Resources */,
+				9C014A491706565400A58C39 /* VenmoTouchResources.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C28664317053C33000C411C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C014A451706450100A58C39 /* BraintreeResources.bundle in Resources */,
+				9C28664E17053C33000C411C /* InfoPlist.strings in Resources */,
+				9C28665617053C33000C411C /* Default.png in Resources */,
+				9C28665817053C33000C411C /* Default@2x.png in Resources */,
+				9C28665A17053C33000C411C /* Default-568h@2x.png in Resources */,
+				9C28666017053C33000C411C /* SCViewController_iPhone.xib in Resources */,
+				9C28666317053C33000C411C /* SCViewController_iPad.xib in Resources */,
+				9C014A4A1706565400A58C39 /* VenmoTouchResources.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C28666617053C34000C411C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C28669417054CA8000C411C /* SampleCheckoutTests-Info.plist in Resources */,
+				9C28669817054CBE000C411C /* InfoPlist.strings in Resources */,
+				9C014A4B1706565400A58C39 /* VenmoTouchResources.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB3D6DF170639440080631F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CB3D6E9170639440080631F /* InfoPlist.strings in Resources */,
+				9CB3D7001706398D0080631F /* BTAmex.png in Resources */,
+				9CB3D7011706398D0080631F /* BTAmex@2x.png in Resources */,
+				9CB3D7021706398D0080631F /* BTAmexCVV.png in Resources */,
+				9CB3D7031706398D0080631F /* BTAmexCVV@2x.png in Resources */,
+				9CB3D7041706398D0080631F /* BTCVV.png in Resources */,
+				9CB3D7051706398D0080631F /* BTCVV@2x.png in Resources */,
+				9CB3D7061706398D0080631F /* BTDinersClub.png in Resources */,
+				9CB3D7071706398D0080631F /* BTDinersClub@2x.png in Resources */,
+				9CB3D7081706398D0080631F /* BTDiscover.png in Resources */,
+				9CB3D7091706398D0080631F /* BTDiscover@2x.png in Resources */,
+				9CB3D70A1706398D0080631F /* BTGenericCard.png in Resources */,
+				9CB3D70B1706398D0080631F /* BTGenericCard@2X.png in Resources */,
+				9CB3D70C1706398D0080631F /* BTJCB.png in Resources */,
+				9CB3D70D1706398D0080631F /* BTJCB@2x.png in Resources */,
+				9CB3D70E1706398D0080631F /* BTMastercard.png in Resources */,
+				9CB3D70F1706398D0080631F /* BTMastercard@2x.png in Resources */,
+				9CB3D7101706398D0080631F /* BTVisa.png in Resources */,
+				9CB3D7111706398D0080631F /* BTVisa@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB582911704EC2700448E5C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C103CB01704F59B00B70304 /* BTEncryptionTests-Info.plist in Resources */,
+				9C103CB11704F59B00B70304 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9C014A441706413300A58C39 /* Include BraintreeResources.bundle */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Include BraintreeResources.bundle";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\n# Copy BraintreeResources.bundle from its Products directory to the target's build directory\nSRC=\"$BUILD_DIR/$CONFIGURATION/BraintreeResources.bundle\"\nDEST_DIR=\"$BUILD_DIR/$CONFIGURATION$EFFECTIVE_PLATFORM_NAME/\"\ncp -R \"${SRC}\" \"${DEST_DIR}\"\n";
+		};
+		9C2865BD1704F995000C411C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		9C28666717053C34000C411C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		9CB582921704EC2700448E5C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9C2865AD1704F995000C411C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C2865E31704FA5F000C411C /* BTPaymentActivityOverlayView.m in Sources */,
+				9C2865E51704FA5F000C411C /* BTPaymentCardType.m in Sources */,
+				9C2865E71704FA5F000C411C /* BTPaymentCardUtils.m in Sources */,
+				9C2865E91704FA5F000C411C /* BTPaymentFormTextField.m in Sources */,
+				9C2865EB1704FA5F000C411C /* BTPaymentFormView.m in Sources */,
+				9C2865ED1704FA5F000C411C /* BTPaymentViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C2865BA1704F995000C411C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C2865CE1704F995000C411C /* BTPaymentTests.m in Sources */,
+				9C2865E41704FA5F000C411C /* BTPaymentActivityOverlayView.m in Sources */,
+				9C2865E61704FA5F000C411C /* BTPaymentCardType.m in Sources */,
+				9C2865E81704FA5F000C411C /* BTPaymentCardUtils.m in Sources */,
+				9C2865EA1704FA5F000C411C /* BTPaymentFormTextField.m in Sources */,
+				9C2865EC1704FA5F000C411C /* BTPaymentFormView.m in Sources */,
+				9C2865EE1704FA5F000C411C /* BTPaymentViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C28664117053C33000C411C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C28669917055DE9000C411C /* BTPaymentActivityOverlayView.h in Sources */,
+				9C28669A17055DE9000C411C /* BTPaymentActivityOverlayView.m in Sources */,
+				9C28669B17055DE9000C411C /* BTPaymentCardType.h in Sources */,
+				9C28669C17055DE9000C411C /* BTPaymentCardType.m in Sources */,
+				9C28669D17055DE9000C411C /* BTPaymentCardUtils.h in Sources */,
+				9C28669E17055DE9000C411C /* BTPaymentCardUtils.m in Sources */,
+				9C2866A017055DE9000C411C /* BTPaymentFormTextField.h in Sources */,
+				9C2866A117055DE9000C411C /* BTPaymentFormTextField.m in Sources */,
+				9C2866A217055DE9000C411C /* BTPaymentFormView.h in Sources */,
+				9C2866A317055DE9000C411C /* BTPaymentFormView.m in Sources */,
+				9C2866A417055DE9000C411C /* BTPaymentViewController.h in Sources */,
+				9C2866A517055DE9000C411C /* BTPaymentViewController.m in Sources */,
+				9C2866A617055DE9000C411C /* BTPayment-Prefix.pch in Sources */,
+				9C28665017053C33000C411C /* main.m in Sources */,
+				9C28665417053C33000C411C /* SCAppDelegate.m in Sources */,
+				9C28665D17053C33000C411C /* SCViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C28666417053C34000C411C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C28668A17054C46000C411C /* SampleCheckoutTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB3D6DD170639440080631F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB582821704EC2700448E5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CB583741704F0E800448E5C /* BTAES.m in Sources */,
+				9CB583781704F0E800448E5C /* BTEncryption.m in Sources */,
+				9CB5837C1704F0E800448E5C /* BTRandom.m in Sources */,
+				9CB583801704F0E800448E5C /* BTRSA.m in Sources */,
+				9CB583841704F0E800448E5C /* BTSecKeyWrapper.m in Sources */,
+				9CB583881704F0E800448E5C /* NSData+Base64.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CB5828F1704EC2700448E5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CB583751704F0E800448E5C /* BTAES.m in Sources */,
+				9CB583791704F0E800448E5C /* BTEncryption.m in Sources */,
+				9CB5837D1704F0E800448E5C /* BTRandom.m in Sources */,
+				9CB583811704F0E800448E5C /* BTRSA.m in Sources */,
+				9CB583851704F0E800448E5C /* BTSecKeyWrapper.m in Sources */,
+				9CB583891704F0E800448E5C /* NSData+Base64.m in Sources */,
+				9CB583991704F10200448E5C /* BTAESTest.m in Sources */,
+				9CB5839B1704F10200448E5C /* BTDecrypt.m in Sources */,
+				9CB5839D1704F10200448E5C /* BTEncryptionTest.m in Sources */,
+				9CB5839F1704F10200448E5C /* BTRandomTest.m in Sources */,
+				9CB583A11704F10200448E5C /* BTRSAKeysTest.m in Sources */,
+				9CB583A31704F10200448E5C /* BTRSATest.m in Sources */,
+				9CB583A51704F10200448E5C /* NSDataBase64Test.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9C014A3E17063E5C00A58C39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9CB3D6E0170639440080631F /* BraintreeResources */;
+			targetProxy = 9C014A3D17063E5C00A58C39 /* PBXContainerItemProxy */;
+		};
+		9C014A4017063ED200A58C39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9C2865B01704F995000C411C /* BTPayment */;
+			targetProxy = 9C014A3F17063ED200A58C39 /* PBXContainerItemProxy */;
+		};
+		9C2865C41704F995000C411C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9C2865B01704F995000C411C /* BTPayment */;
+			targetProxy = 9C2865C31704F995000C411C /* PBXContainerItemProxy */;
+		};
+		9C28666E17053C34000C411C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9C28664417053C33000C411C /* SampleCheckout */;
+			targetProxy = 9C28666D17053C34000C411C /* PBXContainerItemProxy */;
+		};
+		9CB3D71317063AA90080631F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9CB3D6E0170639440080631F /* BraintreeResources */;
+			targetProxy = 9CB3D71217063AA90080631F /* PBXContainerItemProxy */;
+		};
+		9CB582991704EC2700448E5C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9CB582851704EC2700448E5C /* BTEncryption */;
+			targetProxy = 9CB582981704EC2700448E5C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9C2865C91704F995000C411C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C2865CA1704F995000C411C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9C28664C17053C33000C411C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C28664D17053C33000C411C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9C28665E17053C33000C411C /* SCViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C28665F17053C33000C411C /* en */,
+			);
+			name = SCViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		9C28666117053C33000C411C /* SCViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C28666217053C33000C411C /* en */,
+			);
+			name = SCViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+		9C28669617054CBE000C411C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C28669717054CBE000C411C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9CB3D6E7170639440080631F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9CB3D6E8170639440080631F /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9C2865CF1704F995000C411C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/BTPayment.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../venmo-touch\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BTPayment/BTPayment-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		9C2865D01704F995000C411C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/BTPayment.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../venmo-touch\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BTPayment/BTPayment-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		9C2865D11704F995000C411C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SRCROOT)/../venmo-touch\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BTPayment/BTPayment-Prefix.pch";
+				INFOPLIST_FILE = "BTPaymentTests/BTPaymentTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		9C2865D21704F995000C411C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SRCROOT)/../venmo-touch\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BTPayment/BTPayment-Prefix.pch";
+				INFOPLIST_FILE = "BTPaymentTests/BTPaymentTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		9C28667917053C34000C411C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/../venmo-touch\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SampleCheckout/SampleCheckout-Prefix.pch";
+				INFOPLIST_FILE = "SampleCheckout/SampleCheckout-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9C28667A17053C34000C411C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+					"\"$(SRCROOT)/../venmo-touch\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SampleCheckout/SampleCheckout-Prefix.pch";
+				INFOPLIST_FILE = "SampleCheckout/SampleCheckout-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		9C28667C17053C34000C411C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SampleCheckout.app/SampleCheckout";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SRCROOT)/../venmo-touch\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SampleCheckout/SampleCheckout-Prefix.pch";
+				INFOPLIST_FILE = "SampleCheckoutTests/SampleCheckoutTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		9C28667D17053C34000C411C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SampleCheckout.app/SampleCheckout";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"\"$(SRCROOT)/../venmo-touch\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SampleCheckout/SampleCheckout-Prefix.pch";
+				INFOPLIST_FILE = "SampleCheckoutTests/SampleCheckoutTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		9CB3D6EB170639440080631F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BraintreeResources/BraintreeResources-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "BraintreeResources/BraintreeResources-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		9CB3D6EC170639440080631F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COMBINE_HIDPI_IMAGES = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BraintreeResources/BraintreeResources-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "BraintreeResources/BraintreeResources-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		9CB5827A1704EC0000448E5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		9CB5827B1704EC0000448E5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9CB582A51704EC2700448E5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/BTEncryption.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BTEncryption/BTEncryption-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		9CB582A61704EC2700448E5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/BTEncryption.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BTEncryption/BTEncryption-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		9CB582A81704EC2700448E5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BTEncryption/BTEncryption-Prefix.pch";
+				INFOPLIST_FILE = "BTEncryptionTests/BTEncryptionTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		9CB582A91704EC2700448E5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BTEncryption/BTEncryption-Prefix.pch";
+				INFOPLIST_FILE = "BTEncryptionTests/BTEncryptionTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9C2865D31704F995000C411C /* Build configuration list for PBXNativeTarget "BTPayment" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C2865CF1704F995000C411C /* Debug */,
+				9C2865D01704F995000C411C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C2865D41704F995000C411C /* Build configuration list for PBXNativeTarget "BTPaymentTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C2865D11704F995000C411C /* Debug */,
+				9C2865D21704F995000C411C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C28667817053C34000C411C /* Build configuration list for PBXNativeTarget "SampleCheckout" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C28667917053C34000C411C /* Debug */,
+				9C28667A17053C34000C411C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9C28667B17053C34000C411C /* Build configuration list for PBXNativeTarget "SampleCheckoutTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C28667C17053C34000C411C /* Debug */,
+				9C28667D17053C34000C411C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9CB3D6ED170639440080631F /* Build configuration list for PBXNativeTarget "BraintreeResources" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CB3D6EB170639440080631F /* Debug */,
+				9CB3D6EC170639440080631F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9CB582521704EC0000448E5C /* Build configuration list for PBXProject "braintree-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CB5827A1704EC0000448E5C /* Debug */,
+				9CB5827B1704EC0000448E5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9CB582A41704EC2700448E5C /* Build configuration list for PBXNativeTarget "BTEncryption" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CB582A51704EC2700448E5C /* Debug */,
+				9CB582A61704EC2700448E5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9CB582A71704EC2700448E5C /* Build configuration list for PBXNativeTarget "BTEncryptionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CB582A81704EC2700448E5C /* Debug */,
+				9CB582A91704EC2700448E5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9CB5824F1704EC0000448E5C /* Project object */;
+}
