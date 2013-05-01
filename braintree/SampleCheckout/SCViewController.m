@@ -119,6 +119,12 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
                            completionHandler:^(NSURLResponse *response, NSData *body, NSError *requestError)
      {
          NSError *err = nil;
+         if (!response && requestError) {
+             NSLog(@"requestError: %@", requestError);
+             [self.paymentViewController showErrorWithTitle:@"Error" message:@"Unable to reach the network."];
+             return;
+         }
+
          NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:body options:kNilOptions error:&err];
          NSLog(@"saveCardToServer: paymentInfo: %@ response: %@, error: %@", paymentInfo, responseDictionary, requestError);
          

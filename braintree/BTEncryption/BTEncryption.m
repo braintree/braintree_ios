@@ -9,7 +9,7 @@
 @synthesize publicKey;
 @synthesize applicationTag;
 
-NSString * const VERSION = @"2.0.0";
+NSString * const VERSION = @"2.0.1";
 
 - (id)init {
   self = [super init];

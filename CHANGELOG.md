@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Add to CocoaPods
+
 ## 2.0.0
 
 * Adds support for Venmo Touch.
