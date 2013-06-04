@@ -226,9 +226,11 @@ replacementString:(NSString *)string {
     // Check for errors in the potential new card number
     if ((!newCardType && newCardNumberRaw.length > 4) ||
         (newCardType && [newCardType.validCardLengths containsObject:[NSNumber numberWithInteger:newCardNumberRaw.length]] &&
-         ![BTPaymentCardUtils isValidNumber:newCardNumberRaw])) {
+         ![BTPaymentCardUtils isValidNumber:newCardNumberRaw] &&
+         newCardNumberRaw.length >= [newCardType.maxCardLength integerValue])) {
         // Card number has no type && greater than 4 digits
         // OR card number has type and is greater than or equal to expected card length, but is invalid
+
         cardNumberTextField.textColor = [UIColor redColor];
         [self shakeView:scrollView completion:nil];
         return NO;
@@ -376,15 +378,12 @@ replacementString:(NSString *)string {
     BTPaymentCardType *newCardType = [BTPaymentCardUtils cardTypeForNumber:cardNumber];
     NSString *newCardImageName;
 
-    if (newCardType) {
-        newCardImageName = (isBackImage ? newCardType.backImageName : newCardType.frontImageName);
-        if (!newCardImageName) {
-            // If back image wasn't specified on the card, show the default back image
-            newCardImageName = @"BTCVV";
-        }
+    if (isBackImage) {
+        // If back image wasn't specified on the card, show the default back image
+        newCardImageName = (newCardType.backImageName ? newCardType.backImageName : @"BTCVV");
     } else {
-        // No card type, show the default card type
-        newCardImageName = @"BTGenericCard";
+        // If front image wasn't specified on the card, show the default back image
+        newCardImageName = (newCardType.frontImageName ? newCardType.frontImageName : @"BTGenericCard");
     }
 
     if (!flips) {

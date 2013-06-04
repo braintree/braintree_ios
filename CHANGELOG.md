@@ -1,3 +1,10 @@
+## 2.0.2
+
+* Fixes bug where some users could not enter Maestro or Union Pay cards of variable length
+* Fixes crash where non-ARC users could see a crash when using BTPaymentCardUtils
+* Resolves UI discrepancy where some cards could be displayed on the same session after the user logs out
+* Smooths modal entry and dismissal transitions
+
 ## 2.0.1
 
 * Add to CocoaPods

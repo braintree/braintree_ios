@@ -110,7 +110,7 @@ static NSArray *allCardTypes;
         unionPay.prettyFormatSpaceIndices = [NSArray arrayWithArray:defaultSpaceIndices];
 
         // somewhat arbitrary order by most common credit card
-        allCardTypes = [NSArray arrayWithObjects:visa, mastercard, discover, amex, dinersClub,
+        allCardTypes = [[NSArray alloc] initWithObjects:visa, mastercard, discover, amex, dinersClub,
                         jcb, laser, maestro, unionPay, nil];
 	}
 }
@@ -121,7 +121,7 @@ static NSArray *allCardTypes;
 
 + (NSString *)formatNumberForViewing:(NSString *)number {
     // TODO: strip the number of white spaces
-    number = [number stringByReplacingOccurrencesOfString:@" " withString:@""];
+    number = [self formatNumberForComputing:number];
     BTPaymentCardType *cardType = [self cardTypeForNumber:number];
     if (cardType) {
         for (NSNumber *spaceIndex in cardType.prettyFormatSpaceIndices) {
