@@ -17,8 +17,10 @@
  * You must use [client checkboxView] to alloc and init a VTCheckboxView.
  * Do NOT create a VTCheckboxView with [[VTCheckboxView alloc] init]
  *
- * The default size of a VTCheckboxView is 300 width x 66 height. The height can not be changed,
- * but the width can be set to any value greater than or equal to 280.
+ * The default size of a VTCheckboxView is 300 width x 50 height (English language). Based on
+ * the language however, it can be 66 or 82 pixels in height. It is best to use the height of the
+ * checkbox dynamically, using `checkboView.frame.size.height`, after it is created. The height can
+ * not be changed, but the width can be set to any value greater than or equal to 280.
  */
 
 

@@ -1,3 +1,8 @@
+## 2.0.3
+
+* Centers modals to fit different screen sizes.
+* Sets VTCheckbox height dynamically based on locale. (default English height is 46px)
+
 ## 2.0.2
 
 * Fixes bug where some users could not enter Maestro or Union Pay cards of variable length

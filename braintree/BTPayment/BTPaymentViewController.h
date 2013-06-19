@@ -61,7 +61,7 @@
 @property (strong, nonatomic) id<BTPaymentViewControllerDelegate>delegate;
 @property (strong, nonatomic) BTPaymentFormView *paymentFormView;
 @property (strong, nonatomic) VTCardView *cardView;
-@property (strong, nonatomic) VTCheckboxView *checkboxCardView;
+@property (strong, nonatomic) VTCheckboxView *checkboxView;
 
 // Reads/Sets the corner radius of the payment form view, submit button, and (optionally) VTCardView.
 @property (nonatomic) CGFloat cornerRadius; //default is 4
