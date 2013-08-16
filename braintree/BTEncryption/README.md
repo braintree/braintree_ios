@@ -2,9 +2,9 @@
 
 This library is for use with [Braintree's payment gateway](http://braintreepayments.com/) in concert with one of [the supported client libraries](http://braintreepayments.com/docs).  It encrypts sensitive payment information using the public key of an asymmetric key pair.
 
-## Add `braintree-ios` to your Xcode Project
+## Add `braintree_ios` to your Xcode Project
 
-See the README steps at https://github.com/braintree/braintree-ios/ for instructions on how to add the `braintree-ios` SDK, which includes `BTEncryption`, to your Xcode project.
+See the README steps at https://github.com/braintree/braintree_ios/ for instructions on how to add the `braintree_ios` SDK, which includes `BTEncryption`, to your Xcode project.
 
 ## Configuration
 

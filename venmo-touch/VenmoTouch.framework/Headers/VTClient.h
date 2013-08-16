@@ -1,5 +1,5 @@
 /*
- * Venmo SDK - Version 2.0.3
+ * Venmo SDK - Version 2.1.0
  *
  ******************************
  ******************************
@@ -21,10 +21,14 @@
  * To test Venmo Touch in your sandbox environment, init your VTClient and pass in
  * VTEnvironmentSandbox as your testing environment.
  *
- * To init a VTClient, you will have to pass in your Braintree credentials: your merchantID and
- * client-side encryption key.
+ * To init a VTClient, you will have to pass in your Braintree credentials: your merchantID,
+ * verified customer email (if available), and client-side encryption key.
  *  1. Sandbox credentials can be found here: https://sandbox.braintreegateway.com/login
  *  2. Production credentials are found here: https://www.braintreegateway.com/login
+ *
+ * Setting the verified customer email address can improve the chances that the user has a
+ * card available on Venmo Touch. If the verified customer email address is not available
+ * at VTClient's initialization, use "setCustomerEmail" once it becomes available.
  *
  * While testing in the sandbox environment, please use your sandbox
  * credentials. Similarly, create your VTClient and pass in VTEnvironmentSandbox as your
@@ -50,12 +54,12 @@
  * Adding a card to Braintree
  ******************************
  *
- * After a user manually enters card information to your app, it is the app's job to encrypt the card (described below)
- * information and send it to the merchant's servers. Then, the merchant server will send the
- * encrypted card information to Braintree for a payment token. There is one additional parameter
- * that is required to send to the Braintree servers, the parameter is called "venmo_sdk_session".
- * It is the app's job to get the "venmo_sdk_session" parameter and send it to the the merchant
- * servers alongside the encrypted credit card data.
+ * After a user manually enters card information to your app, it is the app's job to encrypt the
+ * card (described below) information and send it to the merchant's servers. Then, the merchant
+ * server will send the encrypted card information to Braintree for a payment token. There is
+ * one additional parameter that is required to send to the Braintree servers, the parameter is
+ * called "venmo_sdk_session". It is the app's job to get the "venmo_sdk_session" parameter and
+ * send it to the the merchant servers alongside the encrypted credit card data.
  *
  * The app can get the "venmo_sdk_session" string in two different ways:
  *
@@ -64,7 +68,7 @@
  *    an additional parameter.
  *
  * 2. "[client encryptedCardDataAndVenmoSDKSessionWithCardDictionary:cardInformationDictionary]"
- *    will accept a read-only NSDictionary of your unencrypted card values and encrypt them using 
+ *    will accept a read-only NSDictionary of your unencrypted card values and encrypt them using
  *    your Braintree key. Then, it will add the "venmo_sdk_session" data as an additional item
  *    in the parameters. Finally, it will return a new NSDictionary with the encrypted card
  *    data and the additional "venmo_sdk_session" parameter.
@@ -79,42 +83,44 @@
 // client's paymentMethodOptionStatus will be PaymentMethodOptionStatusLoading. If the client's
 // paymentMethodOptionStatus is PaymentMethodOptionStatusYes, you should create and display
 // a VTCardView. If the request for payment methods failed, you can call `refresh`.
-typedef enum {
+typedef NS_ENUM(NSInteger, VTPaymentMethodOptionStatus) {
     VTPaymentMethodOptionStatusLoading,
     VTPaymentMethodOptionStatusFailed,
     VTPaymentMethodOptionStatusNo,
     VTPaymentMethodOptionStatusYes,
-} VTPaymentMethodOptionStatus;
+};
 
 // When initializing the VTClient, you can set the environment to production or sandbox for testing.
 // Sandbox testing is used in conjunction with the open-sourced VenmoSDKTestApp.
-typedef enum {
+typedef NS_ENUM(NSInteger, VTEnvironment) {
     VTEnvironmentProduction,
     VTEnvironmentSandbox,
-} VTEnvironment;
+};
 
 // Before your app is enabled with Venmo Touch, you should check the VTLiveStatus status.
 // If this returns VTLiveStatusNo, you should not show any touch views. If VTLiveStatus is equal to
 // VTLiveStatusLoading, the request to download that status is nil.
-typedef enum {
+typedef NS_ENUM(NSInteger, VTLiveStatus) {
     VTLiveStatusNo,
     VTLiveStatusYes,
     VTLiveStatusLoading,
-} VTLiveStatus;
+};
 
 @protocol VTClientDelegate;
 
 @interface VTClient : NSObject
 
-@property (nonatomic, retain, readonly) NSString *merchantID;
-@property (nonatomic, retain, readonly) NSString *braintreeClientSideEncryptionKey;
-@property (nonatomic, retain, readonly) NSString *versionNumber;
-@property (strong, nonatomic) id<VTClientDelegate>delegate;
+@property (nonatomic, copy, readonly) NSString *merchantID;
+@property (nonatomic, copy, readonly) NSString *braintreeClientSideEncryptionKey;
+@property (nonatomic, copy, readonly) NSString *versionNumber;
+@property (nonatomic, copy) NSString *customerEmail;
+@property (weak, nonatomic) id<VTClientDelegate>delegate;
+
 
 // A convenience method that begins your VTClient work. To refer to the underlying vtClient object,
 // use [VTClient sharedClient] below.
-+ (void)startWithMerchantID:(NSString *)merchantID braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey;
-+ (void)startWithMerchantID:(NSString *)merchantID braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey environment:(VTEnvironment)VTEnvironment;
++ (void)startWithMerchantID:(NSString *)merchantID customerEmail:(NSString *)customerEmail braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey;
++ (void)startWithMerchantID:(NSString *)merchantID customerEmail:(NSString *)customerEmail braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey environment:(VTEnvironment)VTEnvironment;
 
 // A convenience method that returns a singleton of the VTClient that was created by one of
 // the custom "initWithMechantID..." functions below.
@@ -125,7 +131,7 @@ typedef enum {
 // sandbox environment, use "initWithMerchantID:braintreeClientSideEncryptionKey:environment:" below.
 //
 // Your production merchantID and braintreeCSEKey are here: https://www.braintreegateway.com/login
-- (id)initWithMerchantID:(NSString *)merchantID braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey;
+- (id)initWithMerchantID:(NSString *)merchantID customerEmail:(NSString *)customerEmail braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey;
 
 // Inits a VTClient object where you can specify the VTEnvironment. Setting the environment
 // to VTEnvironmentSandbox will allow you to test in your Braintree gateway sandbox
@@ -133,7 +139,7 @@ typedef enum {
 //
 // Your production merchantID and braintreeCSEKey are here: https://www.braintreegateway.com/login
 // Sandbox merchantID and braintreeCSEKey are here: https://sandbox.braintreegateway.com/login
-- (id)initWithMerchantID:(NSString *)merchantID braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey environment:(VTEnvironment)VTEnvironment;
+- (id)initWithMerchantID:(NSString *)merchantID customerEmail:(NSString *)customerEmail braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey environment:(VTEnvironment)VTEnvironment;
 
 // Returns the status of a user's payment methods as defined by PaymentMethodOptionStatus.
 - (VTPaymentMethodOptionStatus)paymentMethodOptionStatus;
@@ -165,7 +171,7 @@ typedef enum {
 // methods for that user. This will be useful, for example, if the the device has no service
 // and did not successfully download cards previously
 // (will be denoted by [client liveStatus] == VTLiveStatusLoading).
-// 
+//
 // If your app is displaying any VTCardViews, they should be removed from the screen and
 // references to it should be set to nil. You do not have to edit or delete existing
 // VTCheckboxView's from the app.
@@ -186,6 +192,12 @@ typedef enum {
 @protocol VTClientDelegate <NSObject>
 
 @optional
+// This method fires when the client receives a call to "refresh". VTClient performs a network
+// call to check if payment methods (e.g. cards) are on file for this user.
+// When a VTClient is first initialized, this function will also be called. This method may
+// be useful in order to update your UI to prepare for client:didReceivePaymentMethodOptionStatus:.
+- (void)clientWillReceivePaymentMethodOptionStatus:(VTClient *)client;
+
 // This method is triggered when the check for cards finishes loading. Once it returns, the client's
 // paymentMethodOptionStatus will be set to PaymentMethodOptionStatusNo or
 // PaymentMethodOptionStatusYes. You may want to implement this method if you're credit card

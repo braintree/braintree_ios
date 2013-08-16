@@ -17,7 +17,7 @@
  * You must use [client cardView] to alloc and init a VTCardView.
  * Do NOT create a VTCardView with [[VTCardView alloc] init]
  *
- * The default size of a VTCardView is 300 width x 74 height. The height can not be changed,
+ * The default size of a VTCardView is 300 width x 74 height. The height cannot be changed,
  * but the width can be set to any value greater than or equal to 280.
  */
 

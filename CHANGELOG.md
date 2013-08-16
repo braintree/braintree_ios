@@ -1,3 +1,10 @@
+## 2.1.0
+
+* Library is renamed to "braintree_ios".
+* iOS 7 Support
+* New framework requirement: Please add AdSupport.framework, CoreTelephony.framework and CoreText.framework to "Link Binary with Libraries" under "Build Phases".
+* New VTClient initializers that include "customerEmail" parameter, please see VTClient.h
+
 ## 2.0.3
 
 * Centers modals to fit different screen sizes.

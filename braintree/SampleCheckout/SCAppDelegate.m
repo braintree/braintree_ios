@@ -63,12 +63,14 @@
         NSLog(@"sandbox environment, merchant_id %@", BT_SANDBOX_MERCHANT_ID);
         [VTClient
          startWithMerchantID:BT_SANDBOX_MERCHANT_ID
+         customerEmail:nil
          braintreeClientSideEncryptionKey:BT_SANDBOX_CLIENT_SIDE_ENCRYPTION_KEY
          environment:VTEnvironmentSandbox];
     } else {
         NSLog(@"production environment, merchant_id %@", BT_PRODUCTION_MERCHANT_ID);
         [VTClient
          startWithMerchantID:BT_PRODUCTION_MERCHANT_ID
+         customerEmail:nil
          braintreeClientSideEncryptionKey:BT_PRODUCTION_CLIENT_SIDE_ENCRYPTION_KEY
          environment:VTEnvironmentSandbox];
     }

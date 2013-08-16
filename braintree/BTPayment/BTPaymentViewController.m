@@ -1,12 +1,10 @@
 #import "BTPaymentViewController.h"
 #import "BTPaymentFormView.h"
 #import "BTPaymentActivityOverlayView.h"
+#import "BTPaymentSectionHeaderView.h"
+#import "BTDefines.h"
 
 #import <QuartzCore/QuartzCore.h>
-
-#define BT_DEFAULT_CORNER_RADIUS 4
-#define BT_APP_COLOR             [UIColor clearColor]
-#define BT_APP_TEXT_COLOR        [UIColor colorWithWhite:85/255.0f alpha:1]
 
 #define VTCARDVIEW_TAG 9
 
@@ -14,11 +12,11 @@
 #define CELL_BACKGROUND_VIEW_SHADOW_TAG 11
 #define CELL_BORDER_COLOR               [[UIColor colorWithWhite:207/255.0f alpha:1] CGColor]
 
+#define SUBMIT_BUTTON_TOP_PADDING       10
 #define SUBMIT_BUTTON_NORMAL_TITLE_COLOR   [UIColor colorWithWhite:130/255.0f alpha:1]
 #define SUBMIT_BUTTON_DISABLED_TITLE_COLOR [UIColor colorWithWhite:207/255.0f alpha:1]
 
-#define SUBMIT_BUTTON_BORDER_DISABLED_COLOR           [UIColor colorWithWhite:194/255.0f alpha:1]
-#define SUBMIT_BUTTON_BORDER_ENABLED_COLOR            [UIColor colorWithWhite:163/255.0f alpha:1]
+#define SUBMIT_BUTTON_BORDER_COLOR           [UIColor colorWithWhite:194/255.0f alpha:1]
 
 #define SUBMIT_BUTTON_DOWN_PRESS_GRADIENT_END_COLOR   [UIColor colorWithWhite:234/255.0f alpha:1]
 #define SUBMIT_BUTTON_DISABLED_GRADIENT_START_COLOR   [UIColor colorWithWhite:245/255.0f alpha:1]
@@ -28,7 +26,8 @@
 #define SUBMIT_BUTTON_DOWN_PRESS_GRADIENT_START_COLOR [UIColor colorWithWhite:221/255.0f alpha:1]
 #define SUBMIT_BUTTON_DOWN_PRESS_GRADIENT_END_COLOR   [UIColor colorWithWhite:234/255.0f alpha:1]
 
-#define SUBMIT_BUTTON_GRADIENT_FRAME CGRectMake(0, 0, _submitButton.frame.size.width, _submitButton.frame.size.height)
+#define SUBMIT_BUTTON_HEIGHT 40
+#define SUBMIT_BUTTON_GRADIENT_FRAME CGRectMake(0, 0, 568, SUBMIT_BUTTON_HEIGHT)
 
 @interface BTPaymentViewController ()
 
@@ -43,6 +42,9 @@
 @property (strong, nonatomic) UIView *disabledButtonGradientView;
 @property (strong, nonatomic) UIView *normalButtonGradientView;
 @property (strong, nonatomic) UIView *pressedButtonGradientView;
+
+@property (nonatomic, strong) BTPaymentSectionHeaderView *paymentFormHeaderView;
+@property (nonatomic, strong) BTPaymentSectionHeaderView *cardViewHeaderView;
 
 @end
 
@@ -72,7 +74,7 @@
 #pragma mark - UIViewController
 
 - (void)viewDidUnload {
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self]; // keyboard notifications
     [super viewDidUnload];
 }
 
@@ -80,17 +82,25 @@
     [super viewDidLoad];
     self.tableView.backgroundView = nil;
     if (!_cornerRadius) _cornerRadius = BT_DEFAULT_CORNER_RADIUS;
-    if (!_viewBackgroundColor) _viewBackgroundColor = [UIColor colorWithWhite:238/255.0f alpha:1];
+    if (!_viewBackgroundColor) _viewBackgroundColor = BT_DEFAULT_BACKGROUND_COLOR;
     [self setViewBackgroundColor:_viewBackgroundColor]; // Changes the display.
 
-    if (_venmoTouchEnabled) {
-        Class class = NSClassFromString(@"VTClient");
-        if (class) {
-            _client = [class sharedClient];
-            _client.delegate = self;
+    Class class = NSClassFromString(@"VTClient");
+    if (class) {
+        _client = [class sharedClient];
 
-            if (_client.paymentMethodOptionStatus == VTPaymentMethodOptionStatusYes) {
-                _hasPaymentMethods = YES;
+        if (_venmoTouchEnabled) {
+            if (!_client) {
+                NSLog(@"Venmo Touch is enabled but VTClient has not yet been initialized. Please refer to VTClient.h to initialize it before displaying this BTPaymentViewController, or disable Venmo Touch when creating this BTPaymentViewController.");
+            } else {
+                _client.delegate = self;
+
+                if (_client.paymentMethodOptionStatus == VTPaymentMethodOptionStatusYes) {
+                    _hasPaymentMethods = YES;
+                }
+
+                // Register for keyboard notifications to autoscroll on BTPaymentFormView focus.
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:self.view.window];
             }
         }
     }
@@ -102,31 +112,27 @@
     _paymentFormView.backgroundColor = [UIColor clearColor];
 
     // Create the checkbox view, if requested.
-    if (_venmoTouchEnabled && _client) {
+    if ([self showsVTCheckbox]) {
         // Set up the VTCheckboxView view
         _checkboxView = [_client checkboxView];
         [_checkboxView setOrigin:CGPointMake(-1, 0)]; // -1 for left-side alignment
         [_checkboxView setBackgroundColor:[UIColor clearColor]];
         [_checkboxView setTextColor:[UIColor grayColor]];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideVTCardViewSection) name:UIApplicationWillResignActiveNotification object:nil];
     }
 
     _submitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _submitButton.frame = CGRectMake(0, 0, 0, 40);
+    _submitButton.frame = CGRectMake(0, 0, 0, SUBMIT_BUTTON_HEIGHT);
     _submitButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [_submitButton addSubview:self.normalButtonGradientView];
     [_submitButton bringSubviewToFront:_submitButton.titleLabel];
     _submitButton.layer.cornerRadius = _cornerRadius;
     _submitButton.layer.borderWidth  = 1;
-    _submitButton.layer.borderColor  = [SUBMIT_BUTTON_BORDER_DISABLED_COLOR CGColor];
+    _submitButton.layer.borderColor  = [SUBMIT_BUTTON_BORDER_COLOR CGColor];
     _submitButton.clipsToBounds = YES;
     _submitButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
     [_submitButton setTitle:@"Submit New Card" forState:UIControlStateNormal];
-    [_submitButton setTitleColor:SUBMIT_BUTTON_NORMAL_TITLE_COLOR
-                       forState:UIControlStateNormal];
-    [_submitButton setTitleColor:SUBMIT_BUTTON_DISABLED_TITLE_COLOR
-                       forState:UIControlStateDisabled];
+    [_submitButton setTitleColor:SUBMIT_BUTTON_NORMAL_TITLE_COLOR forState:UIControlStateNormal];
+    [_submitButton setTitleColor:SUBMIT_BUTTON_DISABLED_TITLE_COLOR forState:UIControlStateDisabled];
     [_submitButton addTarget:self action:@selector(submitCardInfo:)
            forControlEvents:UIControlEventTouchUpInside];
 
@@ -157,6 +163,15 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification {
+    // If Use Card button is showing, auto-scroll to bottom cell.
+    if ([self numberOfSectionsInTableView:self.tableView] == 2) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:([self.tableView numberOfRowsInSection:1]-1)
+                                                    inSection:1];
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
 }
 
 #pragma mark - UIScrollView
@@ -197,7 +212,7 @@
     [_submitButton bringSubviewToFront:_submitButton.titleLabel];
 }
 
-#pragma mark - BTPaymentViewController private methods
+#pragma mark - BTPaymentViewController public methods
 
 - (void)prepareForDismissal {
     [_paymentActivityOverlayView dismissAnimated:YES];
@@ -211,6 +226,10 @@
 
 #pragma mark - BTPaymentViewController private methods
 
+- (BOOL)showsVTCheckbox {
+    return (self.venmoTouchEnabled && self.client && self.client.liveStatus != VTLiveStatusNo);
+}
+
 - (void)submitCardInfo:(UIButton *)button {
     if ([_delegate respondsToSelector:@selector(paymentViewController:didSubmitCardWithInfo:andCardInfoEncrypted:)]) {
         if (!_paymentActivityOverlayView) {
@@ -221,8 +240,10 @@
         // Get card info dictionary from the payment form.
         NSDictionary *cardInfo = [_paymentFormView cardEntry];
         NSDictionary *cardInfoEncrypted;
-        if (_client && _venmoTouchEnabled) {
-            // If Venmo Touch, encrypt card info with Braintree's CSE key
+        if (_venmoTouchEnabled && !_client) {
+            NSLog(@"Venmo Touch is enabled but VTClient has not yet been initialized, so the encrypted card information can not be returned to you. Please refer to VTClient.h to initialize it before displaying this BTPaymentViewController, or disable Venmo Touch when creating this BTPaymentViewController.");
+        } else if ([_client braintreeClientSideEncryptionKey]) {
+            // If VTClient has a client side encryption key, return encrypted card info.
             cardInfoEncrypted = [_client encryptedCardDataAndVenmoSDKSessionWithCardDictionary:cardInfo];
         }
 
@@ -250,7 +271,8 @@
 
 - (void)hideVTCardViewSection {
     if ([self.tableView numberOfSections] == 2) {
-        _hasPaymentMethods = NO;
+        self.hasPaymentMethods = NO;
+        self.cardView = nil;
         [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0]
                       withRowAnimation:UITableViewRowAnimationAutomatic];
         [self performSelector:@selector(reloadTitle) withObject:nil afterDelay:.3];
@@ -272,14 +294,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_hasPaymentMethods && indexPath.section == 0) {
         // VTCardView
-        return 74;
+        return 74 - 6; //-6 to get nice-sized padding between VTCardView and "Submit New Card" button
     } else if (indexPath.row == 0) {
         // BTPaymentFormView
         return 40;
     } else if (indexPath.row == 1) {
         // VTCheckbox (if available) and Submit button
-        CGFloat height = ((_venmoTouchEnabled && _client ? _checkboxView.frame.size.height : 0)
-                          + _submitButton.frame.size.height);
+        CGFloat height = ([self showsVTCheckbox] ? _checkboxView.frame.size.height : SUBMIT_BUTTON_TOP_PADDING)
+                          + _submitButton.frame.size.height;
         return height;
     }
 
@@ -287,7 +309,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40;
+    return (section == 0 ? 40 : 30);
 }
 
 #pragma mark - UITableViewDataSource
@@ -309,57 +331,48 @@
 // Don't use "tableView:titleForHeaderInSection:" because titles don't auto-update when
 // number of sections update.
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [[UIView alloc] initWithFrame:
-                    CGRectMake(0, 0, 320, 40)];
-    view.backgroundColor = BT_APP_COLOR;
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 280, 20)];
-    titleLabel.backgroundColor = BT_APP_COLOR;
-    titleLabel.textColor = BT_APP_TEXT_COLOR;
-    titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    titleLabel.shadowOffset = CGSizeMake(0, 1);
-    [view addSubview:titleLabel];
-    
-    if (_hasPaymentMethods && section == 0) {
-        titleLabel.text = @"Use a Saved Card";
+    if (section == 0 && _hasPaymentMethods) {
+        // Section for the Use Card button.
+        return self.cardViewHeaderView;
     } else {
-        titleLabel.text = (_hasPaymentMethods ? @"Or, Add a New Card" : @"Add a New Card");
+        // Section that displays the payment form view. Must change the section title accordingly.
+        [self.paymentFormHeaderView setIsTopSectionHeader:!_hasPaymentMethods];
+        [self.paymentFormHeaderView setTitleText:(_hasPaymentMethods ? @"Or, Add a New Card" : @"Add a New Card")];
+        return self.paymentFormHeaderView;
     }
-    
-    return view;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    static NSString *UseCardCell         = @"UseCardCell";
-    static NSString *PaymentFormViewCell = @"PaymentFormViewCell";
-    static NSString *PaymentFormViewFooterCell = @"PaymentFormViewFooterCell";
+    static NSString *UseCardCellIdentifier               = @"UseCardCell";
+    static NSString *PaymentFormViewCellIdentifier       = @"PaymentFormViewCell";
+    static NSString *PaymentFormViewFooterCellIdentifier = @"PaymentFormViewFooterCell";
 
     NSString *currentCellIdentifier;
     if (_hasPaymentMethods && indexPath.section == 0) {
-        currentCellIdentifier = UseCardCell;
+        currentCellIdentifier = UseCardCellIdentifier;
     } else if (indexPath.row == 0) {
-        currentCellIdentifier = PaymentFormViewCell;
+        currentCellIdentifier = PaymentFormViewCellIdentifier;
     } else {
-        currentCellIdentifier = PaymentFormViewFooterCell;
+        currentCellIdentifier = PaymentFormViewFooterCellIdentifier;
     }
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UseCardCell];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UseCardCellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:currentCellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        if ([currentCellIdentifier isEqualToString:PaymentFormViewCell]) {
+        if ([currentCellIdentifier isEqualToString:PaymentFormViewCellIdentifier]) {
             [self setUpPaymentFormViewForCell:cell];
-        }
-
-        if ([currentCellIdentifier isEqualToString:UseCardCell]) {
-            [self setUpCardViewForCell:cell];
         }
     }
     
+    if ([currentCellIdentifier isEqualToString:UseCardCellIdentifier]) {
+        [self setUpCardViewForCell:cell];
+    }
+
     return cell;
 }
 
@@ -402,7 +415,8 @@
         [_checkboxView setWidth:contentViewWidth];
         [cell.contentView addSubview:_checkboxView];
 
-        _submitButton.frame = CGRectMake(0, _checkboxView.frame.size.height, contentViewWidth, 40);
+        _submitButton.frame = CGRectMake(0, ([self showsVTCheckbox] ? _checkboxView.frame.size.height :SUBMIT_BUTTON_TOP_PADDING),
+                                         contentViewWidth, SUBMIT_BUTTON_HEIGHT);
         [cell.contentView addSubview:_submitButton];
     }
 }
@@ -429,7 +443,7 @@
     if (_cardView && cell && ![cell.contentView viewWithTag:VTCARDVIEW_TAG]) {
         [_cardView setOrigin:CGPointMake(0, 0)];
         [_cardView setBackgroundColor:[UIColor clearColor]];
-        [_cardView setWidth:cell.frame.size.width];
+        [_cardView setWidth:cell.contentView.frame.size.width];
         [cell.contentView addSubview:_cardView];
     }
 }
@@ -444,7 +458,12 @@
 
 - (void)paymentFormView:(BTPaymentFormView *)paymentFormView didModifyCardInformationWithValidity:(BOOL)isValid {
     _submitButton.enabled = isValid;
-    _submitButton.layer.borderColor  = (isValid ? [SUBMIT_BUTTON_BORDER_ENABLED_COLOR CGColor] : [SUBMIT_BUTTON_BORDER_DISABLED_COLOR CGColor]);
+    _submitButton.layer.borderColor = [SUBMIT_BUTTON_BORDER_COLOR CGColor];
+    if (isValid) {
+        [self swapSubmitButtonGradientViewTo:self.normalButtonGradientView from:self.disabledButtonGradientView];
+    } else {
+        [self swapSubmitButtonGradientViewTo:self.disabledButtonGradientView from:self.normalButtonGradientView];
+    }
 }
 
 #pragma mark - VTClientDelegate
@@ -479,8 +498,15 @@
     }
 }
 
+- (void)clientWillReceivePaymentMethodOptionStatus:(VTClient *)client {
+    [self hideVTCardViewSection];
+}
+
 - (void)clientDidLogout:(VTClient *)client {
     [self hideVTCardViewSection];
+    
+    // Hack to solve https://app.asana.com/0/1793436647059/7290336768294.
+    [self.tableView reloadData];
 }
 
 #pragma mark - UI Customization
@@ -510,6 +536,8 @@
 - (void)setViewBackgroundColor:(UIColor *)color {
     _viewBackgroundColor =
     self.tableView.backgroundColor = color;
+    self.paymentFormHeaderView.backgroundColor = color;
+    self.cardViewHeaderView.backgroundColor = color;
 }
 
 - (void)setVtCardViewBackgroundColor:(UIColor *)vtCardViewBackgroundColor {
@@ -525,6 +553,25 @@
 - (void)setVtCardViewInfoButtonFont:(UIFont *)vtCardViewInfoButtonFont {
     _vtCardViewInfoButtonFont =
     _cardView.infoButtonFont = vtCardViewInfoButtonFont;
+}
+
+#pragma mark - Section Headers
+
+- (UIView *)paymentFormHeaderView {
+    if (!_paymentFormHeaderView) {
+        _paymentFormHeaderView = [[BTPaymentSectionHeaderView alloc] initWithFrame:
+                                  CGRectMake(0, 0, 320, BT_PAYMENT_SECTION_HEADER_VIEW_HEIGHT)];
+    }
+    return _paymentFormHeaderView;
+}
+
+- (UIView *)cardViewHeaderView {
+    if (!_cardViewHeaderView) {
+        _cardViewHeaderView = [[BTPaymentSectionHeaderView alloc] initWithFrame:
+                               CGRectMake(0, 0, 320, BT_PAYMENT_SECTION_HEADER_VIEW_HEIGHT)];
+        [self.cardViewHeaderView setTitleText:@"Use a Saved Card"];
+    }
+    return _cardViewHeaderView;
 }
 
 #pragma mark - UIButton Gradients
