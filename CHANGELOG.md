@@ -1,3 +1,8 @@
+## 2.1.1
+
+* Rename VTClient method, "+ (VTClient *)sharedClient;" to "+ (VTClient *)sharedVTClient;" to avoid Apple's newly-introduced static analysis flag.
+* Fix namespacing compilation error with TTTAttributedLabel.
+
 ## 2.1.0
 
 * Library is renamed to "braintree_ios".

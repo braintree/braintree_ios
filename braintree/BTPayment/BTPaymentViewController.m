@@ -87,7 +87,7 @@
 
     Class class = NSClassFromString(@"VTClient");
     if (class) {
-        _client = [class sharedClient];
+        _client = [class sharedVTClient];
 
         if (_venmoTouchEnabled) {
             if (!_client) {

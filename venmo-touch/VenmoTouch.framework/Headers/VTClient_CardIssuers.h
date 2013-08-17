@@ -1,5 +1,5 @@
 /*
- * Venmo SDK - Version 2.1.0
+ * Venmo SDK - Version 2.1.1
  *
  ******************************
  ******************************
@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, VTCardOnFileStatus) {
 //
 // Example usage:
 //    // After the client is initialized...
-//    [[VTClient sharedClient]
+//    [[VTClient sharedVTClient]
 //     isCardOnFileAsyncWithBin:@"4"
 //     lastFour:@"1111"
 //     expirationMonth:@"12"

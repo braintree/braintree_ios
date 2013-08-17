@@ -1,5 +1,5 @@
 /*
- * Venmo SDK - Version 2.1.0
+ * Venmo SDK - Version 2.1.1
  *
  ******************************
  ******************************
@@ -14,7 +14,7 @@
  *
  * Please create a single instance of a VTClient within your app to manage all payment method
  * interactions. Once a client has been created using one of the custom "initWithMechantID..."
- * methods (shown below), you may use "[VTClient sharedClient]" to return a singleton of the
+ * methods (shown below), you may use "[VTClient sharedVTClient]" to return a singleton of the
  * client object.
  *
  * The Braintree sandbox gateway environment allows for testing without using real payment details.
@@ -118,13 +118,13 @@ typedef NS_ENUM(NSInteger, VTLiveStatus) {
 
 
 // A convenience method that begins your VTClient work. To refer to the underlying vtClient object,
-// use [VTClient sharedClient] below.
+// use [VTClient sharedVTClient] below.
 + (void)startWithMerchantID:(NSString *)merchantID customerEmail:(NSString *)customerEmail braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey;
 + (void)startWithMerchantID:(NSString *)merchantID customerEmail:(NSString *)customerEmail braintreeClientSideEncryptionKey:(NSString *)braintreeCSEKey environment:(VTEnvironment)VTEnvironment;
 
 // A convenience method that returns a singleton of the VTClient that was created by one of
 // the custom "initWithMechantID..." functions below.
-+ (VTClient *)sharedClient;
++ (VTClient *)sharedVTClient;
 
 // Inits a VTClient object.
 // Default Venmo SDK environment is VTEnvironmentProduction. To test Venmo Touch in your Braintree
