@@ -1,3 +1,7 @@
+## 2.1.2
+
+* Add approvedPaymentMethodWithCodeAndCard helper method. This is similar to approvedPaymentMethodWithCode, but returns an object that contains additional information about the card referenced by the payment method code. 
+
 ## 2.1.1
 
 * Rename VTClient method, "+ (VTClient *)sharedClient;" to "+ (VTClient *)sharedVTClient;" to avoid Apple's newly-introduced static analysis flag.

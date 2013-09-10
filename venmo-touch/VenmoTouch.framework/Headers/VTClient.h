@@ -1,5 +1,5 @@
 /*
- * Venmo SDK - Version 2.1.1
+ * Venmo SDK - Version 2.1.2
  *
  ******************************
  ******************************
@@ -78,6 +78,7 @@
 #import <Foundation/Foundation.h>
 #import "VTCheckboxView.h"
 #import "VTCardView.h"
+#import "VTPaymentMethodCode.h"
 
 // Specifies if the user has a payment method on file. If a request is still loading, the
 // client's paymentMethodOptionStatus will be PaymentMethodOptionStatusLoading. If the client's
@@ -114,7 +115,7 @@ typedef NS_ENUM(NSInteger, VTLiveStatus) {
 @property (nonatomic, copy, readonly) NSString *braintreeClientSideEncryptionKey;
 @property (nonatomic, copy, readonly) NSString *versionNumber;
 @property (nonatomic, copy) NSString *customerEmail;
-@property (weak, nonatomic) id<VTClientDelegate>delegate;
+@property (nonatomic, weak) id<VTClientDelegate>delegate;
 
 
 // A convenience method that begins your VTClient work. To refer to the underlying vtClient object,
@@ -215,6 +216,10 @@ typedef NS_ENUM(NSInteger, VTLiveStatus) {
 // method will fire. The paymentMethodCode return value can be used to make payments
 // through the Braintree gateway.
 - (void)client:(VTClient *)client approvedPaymentMethodWithCode:(NSString *)paymentMethodCode;
+
+// Similar to approvedPaymentMethodWithCode, this returns an object that contains additional information about the
+// card referenced by the payment method code.
+- (void)client:(VTClient *)client approvedPaymentMethodWithCodeAndCard:(VTPaymentMethodCode *)paymentMethodCode;
 
 // If a user logs out, all sessions are deleted and you should remove any VTCardViews.
 - (void)clientDidLogout:(VTClient *)client;

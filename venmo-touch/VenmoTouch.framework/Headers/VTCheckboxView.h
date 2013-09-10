@@ -31,7 +31,7 @@
 // Sets the color of labels and button titles.
 // The color of the "How it works" & "Terms of Service" links can't be
 // changed right now right now.
-@property (strong, nonatomic) UIColor *textColor; // default is nil (text draws black)
+@property (nonatomic, strong) UIColor *textColor; // default is nil (text draws black)
 
 // Set the VTCheckboxView's background color using the default setBackgroundColor method on UIView.
 

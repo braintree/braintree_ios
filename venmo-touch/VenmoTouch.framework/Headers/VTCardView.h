@@ -32,9 +32,9 @@
 @property (nonatomic, assign) CGFloat cornerRadius;
 
 // UI customization on the "Use Card" button
-@property (strong, nonatomic) UIColor *useCardButtonBackgroundColor;
-@property (strong, nonatomic) UIFont  *useCardButtonTitleFont; // default is [UIFont boldSystemFontOfSize:16]
-@property (strong, nonatomic) UIFont  *infoButtonFont;         // default is [UIFont boldSystemFontOfSize:11]
+@property (nonatomic, strong) UIColor *useCardButtonBackgroundColor;
+@property (nonatomic, strong) UIFont  *useCardButtonTitleFont; // default is [UIFont boldSystemFontOfSize:16]
+@property (nonatomic, strong) UIFont  *infoButtonFont;         // default is [UIFont boldSystemFontOfSize:11]
 
 // Convenience methods
 - (void)setWidth:(CGFloat)newWidth; // Width must be >= 280
