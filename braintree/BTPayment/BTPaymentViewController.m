@@ -178,7 +178,7 @@
 
 // Hide keyboard when the user scrolls
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    UITextField *firstResponder;
+    UITextField *firstResponder = nil;
     if ([_paymentFormView.cardNumberTextField isFirstResponder]) firstResponder = _paymentFormView.cardNumberTextField;
     else if ([_paymentFormView.monthYearTextField isFirstResponder]) firstResponder = _paymentFormView.monthYearTextField;
     else if ([_paymentFormView.cvvTextField isFirstResponder]) firstResponder = _paymentFormView.cvvTextField;
