@@ -49,7 +49,7 @@
 @property (strong, nonatomic) BTPaymentFormTextField *monthYearTextField;
 @property (strong, nonatomic) BTPaymentFormTextField *cvvTextField;
 @property (strong, nonatomic) BTPaymentFormTextField *zipTextField;
-@property (strong, nonatomic) id<BTPaymentFormViewDelegate>delegate;
+@property (weak, nonatomic) id<BTPaymentFormViewDelegate>delegate;
 
 // Initializes a new BTPaymentFormView with default size 300px X 40px
 + (BTPaymentFormView *)paymentFormView;
