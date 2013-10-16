@@ -1,3 +1,7 @@
+## 2.2.1
+
+* Update podspec.
+
 ## 2.2.0
 
 * Redesigns Venmo Touch for iOS 7 look and feel.
