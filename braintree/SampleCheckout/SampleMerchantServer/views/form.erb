@@ -1,0 +1,37 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <h1>Braintree Credit Card Transaction Form</h1>
+    <div>
+      <form action="/card/add" method="POST" id="braintree-payment-form">
+        <p>
+          <label>Card Number</label>
+          <input type="text" size="20" autocomplete="off" data-encrypted-name="card_number" value="4111111111111111" />
+        </p>
+        <p>
+          <label>CVV</label>
+          <input type="text" size="4" autocomplete="off" data-encrypted-name="cvv" value="123" />
+        </p>
+        <p>
+          <label>Expiration (MM/YYYY)</label>
+          <input type="text" size="2" data-encrypted-name="expiration_month" value="11" /> / <input type="text" size="4" data-encrypted-name="expiration_year" value="16" />
+        </p>
+        <p>
+          <label>Zip</label>
+          <input type="text" size="5" data-encrypted-name="zipcode" value="60606" />
+        </p>
+        <p>
+          <vt:checkbox name="venmo_sdk_session" merchant_id="<%= Braintree::Configuration.merchant_id %>"/>
+        </p>
+        <input type="submit" id="submit" />
+      </form>
+    </div>
+    <script type="text/javascript" src="https://js.braintreegateway.com/v1/braintree.js"></script>
+    <script type="text/javascript" src="http://localhost:8000/web/js/web/ghetto_checkbox.js"></script>
+    <script type="text/javascript">
+      var braintree = Braintree.create("<%= CSE_KEY %>");
+      braintree.onSubmitEncryptForm('braintree-payment-form');
+    </script>
+  </body>
+</html>

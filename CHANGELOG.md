@@ -1,3 +1,8 @@
+## 2.2.0
+
+* Redesigns Venmo Touch for iOS 7 look and feel.
+* Addresses numerous Github issues.
+
 ## 2.1.2
 
 * Add approvedPaymentMethodWithCodeAndCard helper method. This is similar to approvedPaymentMethodWithCode, but returns an object that contains additional information about the card referenced by the payment method code. 

@@ -12,7 +12,7 @@
 
 @interface BTPaymentFormTextField : UITextField
 
-@property (strong, nonatomic) UIColor *defaultTextColor;
+@property (nonatomic, strong) UIColor *defaultTextColor;
 
 - (id)initWithFrame:(CGRect)frame delegate:(id)delegate;
 - (void)resetTextColor;

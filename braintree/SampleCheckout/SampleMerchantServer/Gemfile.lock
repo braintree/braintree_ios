@@ -1,0 +1,30 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    braintree (2.25.0)
+      builder (>= 2.0.0)
+    builder (3.2.2)
+    daemons (1.1.9)
+    eventmachine (1.0.1)
+    json (1.7.5)
+    rack (1.4.1)
+    rack-protection (1.2.0)
+      rack
+    sinatra (1.3.3)
+      rack (~> 1.3, >= 1.3.6)
+      rack-protection (~> 1.2)
+      tilt (~> 1.3, >= 1.3.3)
+    thin (1.5.0)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+    tilt (1.3.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  braintree
+  json (= 1.7.5)
+  sinatra (= 1.3.3)
+  thin (= 1.5.0)

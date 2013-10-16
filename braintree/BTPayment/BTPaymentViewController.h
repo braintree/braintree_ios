@@ -58,22 +58,23 @@
 
 @interface BTPaymentViewController : UITableViewController <BTPaymentFormViewDelegate, VTClientDelegate>
 
-@property (strong, nonatomic) id<BTPaymentViewControllerDelegate>delegate;
-@property (strong, nonatomic) BTPaymentFormView *paymentFormView;
-@property (strong, nonatomic) VTCardView *cardView;
-@property (strong, nonatomic) VTCheckboxView *checkboxView;
+@property (nonatomic, weak) id<BTPaymentViewControllerDelegate>delegate;
+@property (nonatomic, strong) BTPaymentFormView *paymentFormView;
+@property (nonatomic, strong) VTCardView *cardView;
+@property (nonatomic, strong) VTCheckboxView *checkboxView;
+@property (nonatomic) BOOL UKSupportEnabled;
 
 // Reads/Sets the corner radius of the payment form view, submit button, and (optionally) VTCardView.
-@property (nonatomic) CGFloat cornerRadius; //default is 4
+@property (nonatomic, assign) CGFloat cornerRadius; //default is 4
 
-@property (strong, nonatomic) UIColor *viewBackgroundColor; // default is [UIColor colorWithWhite:85/255.0f alpha:1]
+@property (nonatomic, strong) UIColor *viewBackgroundColor; // default is [UIColor colorWithWhite:85/255.0f alpha:1]
 
 @property (nonatomic, assign) BOOL requestsZipInManualCardEntry; // default is YES
 
 // UI customization of the Venmo Touch VTCardView
-@property (strong, nonatomic) UIColor *vtCardViewBackgroundColor;
-@property (strong, nonatomic) UIFont  *vtCardViewTitleFont;      // default is [UIFont boldSystemFontOfSize:16]
-@property (strong, nonatomic) UIFont  *vtCardViewInfoButtonFont; // default is [UIFont boldSystemFontOfSize:11]
+@property (nonatomic, strong) UIColor *vtCardViewBackgroundColor;
+@property (nonatomic, strong) UIFont  *vtCardViewTitleFont;      // default is [UIFont boldSystemFontOfSize:16]
+@property (nonatomic, strong) UIFont  *vtCardViewInfoButtonFont; // default is [UIFont boldSystemFontOfSize:11]
 
 // Initializes a new BTPaymentViewController
 + (id)paymentViewControllerWithVenmoTouchEnabled:(BOOL)hasVenmoTouchEnabled;

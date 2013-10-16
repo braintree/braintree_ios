@@ -12,7 +12,7 @@
 @interface SCViewController : UIViewController <BTPaymentViewControllerDelegate>
 // Conform to the BTPaymentViewControllerDelegate protocol
 
-@property (strong, nonatomic) BTPaymentViewController *paymentViewController;
+@property (nonatomic, strong) BTPaymentViewController *paymentViewController;
 // Create a property to reference the BTPaymentViewController we dsiplay
 
 @end

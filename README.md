@@ -17,6 +17,12 @@ pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git'
 
 For a quick-start tutorial, visit <a href="https://www.braintreepayments.com/docs/ios/guide/quickstart">our documentation site</a>.
 
+## Sample Application
+
+Included in this repository is a sample checkout application at `braintree/SampleCheckout`, which you may run against a sample merchant provided by Braintree on Heroku, or against a local server (code also provided in this repository).
+
+Checkout `braintree/SampleCheckout/README.md` for more details on running the sample application.
+
 ## Components
 
 * [Venmo Touch](https://www.braintreepayments.com/docs/ios/venmo_touch/overview), a one-tap purchasing network enabling your users to make in-app purchases without typing in their credit card details. 

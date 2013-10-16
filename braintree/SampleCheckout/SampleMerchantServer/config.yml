@@ -1,0 +1,6 @@
+development:
+  braintree_environment: "sandbox"
+  merchant_id: "YOUR MERCHANT ID"
+  public_key: "YOUR PUBLIC KEY"
+  private_key: "YOUR PRIVATE KEY"
+  cse_key: "YOUR CSE KEY"

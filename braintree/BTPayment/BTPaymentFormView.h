@@ -45,11 +45,13 @@
 
 @property (nonatomic, assign) BOOL requestsZip; // default is YES
 
-@property (strong, nonatomic) BTPaymentFormTextField *cardNumberTextField;
-@property (strong, nonatomic) BTPaymentFormTextField *monthYearTextField;
-@property (strong, nonatomic) BTPaymentFormTextField *cvvTextField;
-@property (strong, nonatomic) BTPaymentFormTextField *zipTextField;
-@property (strong, nonatomic) id<BTPaymentFormViewDelegate>delegate;
+@property (nonatomic, strong) BTPaymentFormTextField *cardNumberTextField;
+@property (nonatomic, strong) BTPaymentFormTextField *monthYearTextField;
+@property (nonatomic, strong) BTPaymentFormTextField *cvvTextField;
+@property (nonatomic, strong) BTPaymentFormTextField *zipTextField;
+@property (nonatomic, weak) id<BTPaymentFormViewDelegate>delegate;
+
+@property (nonatomic) BOOL UKSupportEnabled;
 
 // Initializes a new BTPaymentFormView with default size 300px X 40px
 + (BTPaymentFormView *)paymentFormView;

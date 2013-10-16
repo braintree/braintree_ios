@@ -1,0 +1,5 @@
+source 'http://rubygems.org'
+gem 'sinatra', '1.3.3'
+gem 'braintree'
+gem 'json', '1.7.5'
+gem 'thin', '1.5.0'

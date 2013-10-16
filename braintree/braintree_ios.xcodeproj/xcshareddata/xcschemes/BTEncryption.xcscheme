@@ -17,7 +17,21 @@
                BlueprintIdentifier = "9CB582851704EC2700448E5C"
                BuildableName = "libBTEncryption.a"
                BlueprintName = "BTEncryption"
-               ReferencedContainer = "container:braintree-ios (public).xcodeproj">
+               ReferencedContainer = "container:braintree_ios.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9CB582931704EC2700448E5C"
+               BuildableName = "BTEncryptionTests.octest"
+               BlueprintName = "BTEncryptionTests"
+               ReferencedContainer = "container:braintree_ios.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +49,7 @@
                BlueprintIdentifier = "9CB582931704EC2700448E5C"
                BuildableName = "BTEncryptionTests.octest"
                BlueprintName = "BTEncryptionTests"
-               ReferencedContainer = "container:braintree-ios (public).xcodeproj">
+               ReferencedContainer = "container:braintree_ios.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

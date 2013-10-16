@@ -11,7 +11,7 @@ typedef NS_ENUM(NSInteger, VTCardType) {
     VTCardTypeSolo,
     VTCardTypeSwitch,
     VTCardTypeUKMaestro,
-    VTCardTypeUknown
+    VTCardTypeUnknown
 };
 
 @interface VTPaymentMethodCode : NSObject

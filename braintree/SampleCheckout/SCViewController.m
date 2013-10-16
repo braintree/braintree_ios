@@ -25,7 +25,11 @@
 
 // Add a PayButton that will present a BTPaymentViewController when tapped
 - (void)addPayButton {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 70000
     UIButton *payButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+#else
+    UIButton *payButton = [UIButton buttonWithType:UIButtonTypeSystem];
+#endif
     [payButton setTitle:@"Pay" forState:UIControlStateNormal];
     [payButton setEnabled:YES];
     [payButton setUserInteractionEnabled:YES];
@@ -79,7 +83,7 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
     // Create a dictionary of POST data of the format
     // {"payment_method_code": "[encrypted payment_method_code data from Venmo Touch client]"}
     NSMutableDictionary *paymentInfo = [NSMutableDictionary dictionaryWithObject:paymentMethodCode
-                                                                          forKey:@"venmo_sdk_payment_method_code"];
+                                                                          forKey:@"payment_method_code"];
     [self savePaymentInfoToServer:paymentInfo]; // send card through your server to Braintree Gateway
 }
 
@@ -91,8 +95,8 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
 //    1. the braintree_ios Server Side Integration tutorial [https://touch.venmo.com/server-integration-tutorial/]
 //    2. and the sample-checkout-heroku Github project [link]
 
-//#define SAMPLE_CHECKOUT_BASE_URL @"http://sample-checkout.herokuapp.com"
-#define SAMPLE_CHECKOUT_BASE_URL @"http://localhost:5000"
+#define SAMPLE_CHECKOUT_BASE_URL @"http://venmo-sdk-sample-two.herokuapp.com"
+//#define SAMPLE_CHECKOUT_BASE_URL @"http://localhost:4567"
 
 // Pass payment info (eg card data) from the client to your server (and then to the Braintree Gateway).
 // If card data is valid and added to your Vault, display a success message, and dismiss the BTPaymentViewController.
@@ -102,7 +106,13 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
 // * AVS verification does not pass
 // * The card number was a valid Luhn number, but nonexistent or no longer valid
 - (void) savePaymentInfoToServer:(NSDictionary *)paymentInfo {
-    NSURL *url = [NSURL URLWithString: [NSString stringWithFormat:@"%@/card", SAMPLE_CHECKOUT_BASE_URL]];
+    
+    NSURL *url;
+    if ([paymentInfo objectForKey:@"payment_method_code"]) {
+        url = [NSURL URLWithString: [NSString stringWithFormat:@"%@/card/payment_method_code", SAMPLE_CHECKOUT_BASE_URL]];
+    } else {
+        url = [NSURL URLWithString: [NSString stringWithFormat:@"%@/card/add", SAMPLE_CHECKOUT_BASE_URL]];
+    }
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
     // You need a customer id in order to save a card to the Braintree vault.
@@ -136,7 +146,7 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
              [self dismissViewControllerAnimated:YES completion:^(void) {
                  [[[UIAlertView alloc] initWithTitle:@"Success" message:@"Saved your card!" delegate:nil
                                    cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
-                 
+                 [[VTClient sharedVTClient] refresh];
              }];
              
          } else { // The card did not save correctly, so show the error from server with convenenience method `showErrorWithTitle`

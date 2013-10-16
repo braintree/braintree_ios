@@ -3,11 +3,14 @@
 
 #define BT_GENERIC_NUMBER_SCROLL_OFFSET 300
 #define BT_AMEX_NUMBER_SCROLL_OFFSET 271
+#define BT_REGEX_POSTCODE_UK @"(GIR[ ]?0AA)|((([A-Z-[QVX]][0-9][0-9]?)|(([A-Z-[QVX]][A-Z-[IJZ]][0-9][0-9]?)|(([A-Z-[QVX]][0-9][A-HJKSTUW])|([A-Z-[QVX]][A-Z-[IJZ]][0-9][ABEHMNPRVWXY]))))[ ]?[0-9][A-Z-[CIKMOV]]{2})"
+
+#define BT_REGEX_ZIP_USA @"^[0-9][0-9][0-9][0-9][0-9]$"
 
 @interface BTPaymentFormView()
-@property (strong, nonatomic) UIImageView *cardImageView;
-@property (copy, nonatomic) NSString *cardImageName;
-@property (strong, nonatomic) UIScrollView *scrollView;
+@property (nonatomic, strong) UIImageView *cardImageView;
+@property (nonatomic, copy) NSString *cardImageName;
+@property (nonatomic, strong) UIScrollView *scrollView;
 @end
 
 static NSInteger thisMonth;
@@ -59,37 +62,62 @@ static NSInteger thisYear;
 
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
+        _UKSupportEnabled = NO;
+        
         // images are 28 x 19
         cardImageName = @"BTGenericCard";
         cardImageView = [[UIImageView alloc] initWithImage:[BTPaymentFormView imageWithName:cardImageName]];
         cardImageView.frame = CGRectMake(10, 10, 28, 19);
         [self addSubview:cardImageView];
-
+        
         scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(48, 5, 258, 30)];
         scrollView.contentSize     = CGSizeMake(500, 30);
         scrollView.scrollEnabled   = NO;
         [self addSubview:scrollView];
-
-        cardNumberTextField = [[BTPaymentFormTextField alloc] initWithFrame:CGRectMake(0, 0, 240, 30) delegate:self];
+        
+        cardNumberTextField = [[BTPaymentFormTextField alloc] initWithFrame:CGRectMake(5, 0, 240, 30) delegate:self];
         cardNumberTextField.placeholder = @"1234  5678  9012  3456";
+        cardNumberTextField.accessibilityLabel = @"Credit Card Number";
         [scrollView addSubview:cardNumberTextField];
-
-        monthYearTextField = [[BTPaymentFormTextField alloc] initWithFrame:CGRectMake(110, 5, 60, 30) delegate:self];
+        
+        monthYearTextField = [[BTPaymentFormTextField alloc] initWithFrame:CGRectMake(105, 5, 60, 30) delegate:self];
         monthYearTextField.placeholder = @"MM/YY";
+        monthYearTextField.accessibilityLabel = @"Credit Card Expiration Date";
         [self addSubview:monthYearTextField];
-
-        cvvTextField = [[BTPaymentFormTextField alloc] initWithFrame:CGRectMake(179, 5, 45, 30) delegate:self];
+        
+        cvvTextField = [[BTPaymentFormTextField alloc] initWithFrame:CGRectMake(169, 5, 45, 30) delegate:self];
         cvvTextField.placeholder = @"CVV";
+        cvvTextField.accessibilityLabel = @"Credit Card CVV";
         [self addSubview:cvvTextField];
-
+        
         _requestsZip = YES;
-        zipTextField = [[BTPaymentFormTextField alloc] initWithFrame:CGRectMake(230, 5, 60, 30) delegate:self];
+        zipTextField = [[BTPaymentFormTextField alloc] initWithFrame:CGRectMake(215, 5, 80, 30) delegate:self];
+        
+        [self setupZipKeyboard];
+        
+        zipTextField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+        zipTextField.minimumFontSize = 10;
+        zipTextField.adjustsFontSizeToFitWidth = YES;
+        
         zipTextField.placeholder = @"ZIP";
+        zipTextField.accessibilityLabel = @"Credit Card Zip";
         [self addSubview:zipTextField];
 
         [self setSecondaryTextFieldsHidden:YES];
     }
     return self;
+}
+
+- (void)setupZipKeyboard {
+    BOOL isUKLocale = [[[NSLocale currentLocale] localeIdentifier] isEqualToString:@"en_GB"];
+    if (isUKLocale && self.UKSupportEnabled) {
+        zipTextField.keyboardType = UIKeyboardTypeNamePhonePad;
+    } else if (self.UKSupportEnabled) {
+        // Maybe here - default to a number-first keyboard?
+        zipTextField.keyboardType = UIKeyboardTypeNamePhonePad;
+    } else {
+        zipTextField.keyboardType = UIKeyboardTypeNumberPad;
+    }
 }
 
 #pragma mark - BTPaymentFormView
@@ -102,12 +130,32 @@ static NSInteger thisYear;
         monthYearTextField.text.length == 5 &&
         cvvTextField.text.length == [cardType.cvvLength integerValue]) {
         // If zip is requested, ensure it's of length 5.
-        if ((_requestsZip && zipTextField.text.length == 5)
-            || !_requestsZip) {
+        if ([self validateZipCode:zipTextField.text])
             return YES;
-        }
     }
 
+    return NO;
+}
+
+- (BOOL)validateZipCode:(NSString *)zip {
+    NSRegularExpression *zipRegex =
+    [NSRegularExpression regularExpressionWithPattern:BT_REGEX_ZIP_USA
+                                              options:NSRegularExpressionCaseInsensitive
+                                                error:nil];
+    
+    NSRegularExpression *postCodeRegex =
+    [NSRegularExpression regularExpressionWithPattern:BT_REGEX_POSTCODE_UK
+                                              options:NSRegularExpressionCaseInsensitive
+                                                error:nil];
+    
+    if ([zipRegex numberOfMatchesInString:zip options:0 range:NSMakeRange(0, [zip length])] == 1) {
+        return YES;
+    }
+    
+    if (self.UKSupportEnabled && [postCodeRegex numberOfMatchesInString:zip options:0 range:NSMakeRange(0, [zip length])] == 1) {
+        return YES;
+    }
+    
     return NO;
 }
 
@@ -165,6 +213,7 @@ replacementString:(NSString *)string {
     } else if (textField == cvvTextField) {
         performTextViewChange = [self cvvTextFieldShouldChangeCharactersInRange:range replacementString:string];
     } else if (textField == zipTextField) {
+        string = [string uppercaseString];
         performTextViewChange = [self zipTextFieldShouldChangeCharactersInRange:range replacementString:string];
     }
 
@@ -349,11 +398,32 @@ replacementString:(NSString *)string {
 - (BOOL)zipTextFieldShouldChangeCharactersInRange:(NSRange)range
                                 replacementString:(NSString *)string {
     NSString *text = zipTextField.text;
-
-    if (text.length + string.length > 5 || string.length > 1 || [self stringHasNonDigits:string]) {
+    
+    BOOL hasNonDigits = [self stringHasNonDigits:text];
+    NSInteger newTotalLength = text.length + string.length;
+    
+    if (string.length > 1)
         return NO;
+    
+    
+    if (self.UKSupportEnabled && (hasNonDigits || text.length == 0)) {
+        if (newTotalLength > 8)
+            return NO;
+        
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 "] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        return [string isEqualToString:filtered];
+        
+    } else {
+        if (newTotalLength > 5)
+            return NO;
+        
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"1234567890 "] invertedSet];
+        NSString *filtered = [[string componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        return [string isEqualToString:filtered];
+        
     }
-
+    
     return YES;
 }
 
@@ -451,6 +521,11 @@ replacementString:(NSString *)string {
     newFrame.origin.x = origin.x;
     newFrame.origin.y = origin.y;
     self.frame = newFrame;
+}
+
+- (void)setUKSupportEnabled:(BOOL)UKSupportEnabled {
+    _UKSupportEnabled = UKSupportEnabled;
+    [self setupZipKeyboard];
 }
 
 @end

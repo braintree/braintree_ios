@@ -1,5 +1,5 @@
 /*
- * Venmo SDK - Version 2.1.2
+ * Venmo SDK - Version 2.2.0
  *
  ******************************
  ******************************
@@ -96,7 +96,10 @@ typedef NS_ENUM(NSInteger, VTPaymentMethodOptionStatus) {
 typedef NS_ENUM(NSInteger, VTEnvironment) {
     VTEnvironmentProduction,
     VTEnvironmentSandbox,
+    VTEnvironmentQA,
+    VTEnvironmentDevelopment
 };
+
 
 // Before your app is enabled with Venmo Touch, you should check the VTLiveStatus status.
 // If this returns VTLiveStatusNo, you should not show any touch views. If VTLiveStatus is equal to
