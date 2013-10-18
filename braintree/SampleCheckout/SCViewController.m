@@ -180,9 +180,10 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
     return [data dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-// This method is adapted from from Dave DeLong's example at
-// http://stackoverflow.com/questions/3423545/objective-c-iphone-percent-encode-a-string ,
-// and protected by http://creativecommons.org/licenses/by-sa/3.0/
+// This, from CSKit, is free for use:
+// https://github.com/codenauts/CNSKit/blob/master/Classes/Categories/NSString%2BCNSStringAdditions.m
+// NSString *encoded = (NSString *) CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, NULL, CFSTR(":/?#[]@!$&’()*+,;='"), kCFStringEncodingUTF8);
+
 - (NSString *) URLEncodedStringFromString: (NSString *)string {
     NSMutableString * output = [NSMutableString string];
     const unsigned char * source = (const unsigned char *)[string UTF8String];
@@ -202,8 +203,6 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
     }
     return output;
 }
-
-//#################################################
 
 
 @end

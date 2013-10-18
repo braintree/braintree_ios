@@ -1,5 +1,5 @@
 /*
- * Venmo SDK - Version 2.2.0
+ * Venmo SDK - Version 2.2.2
  *
  ******************************
  ******************************
@@ -34,7 +34,8 @@
  * credentials. Similarly, create your VTClient and pass in VTEnvironmentSandbox as your
  * testing environment.
  *
- * When you're ready to move to production, init your
+ * When you're ready to move to production, ensure that your VTClient is being initialized
+ * with your production merchant account credentials and VTEnvironmentProduction.
  *
  * When users manually enter a new payment method, please create and add a VTCheckboxView
  * near the form.

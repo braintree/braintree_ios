@@ -1,3 +1,7 @@
+## 2.2.2
+
+* Fix bug where payment form would fail when hiding zip code request (thanks [leogiertz](https://github.com/leogiertz)).
+
 ## 2.2.1
 
 * Update podspec.

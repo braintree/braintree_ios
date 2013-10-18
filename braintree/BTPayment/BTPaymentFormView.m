@@ -129,9 +129,14 @@ static NSInteger thisYear;
         [BTPaymentCardUtils isValidNumber:cardNumberTextField.text] &&
         monthYearTextField.text.length == 5 &&
         cvvTextField.text.length == [cardType.cvvLength integerValue]) {
-        // If zip is requested, ensure it's of length 5.
-        if ([self validateZipCode:zipTextField.text])
+
+        if (!self.requestsZip) {
+            // If no zip, the card entry is valid.
             return YES;
+        } else if ([self validateZipCode:zipTextField.text]) {
+            // If zip is requested, ensure it passes proper regexes.
+            return YES;
+        }
     }
 
     return NO;
@@ -471,22 +476,20 @@ replacementString:(NSString *)string {
     cardImageName = newCardImageName;
 }
 
-// Animates a view left/right to achieve a "shaking" effect.
-// Credit: http://stackoverflow.com/a/5960827/931746
-- (void)shakeView:(UIView *)viewToShake completion:(void (^)(BOOL finished))completion {
+- (void)shakeView:(UIView *)viewForAnimation completion:(void (^)(BOOL finished))completion {
     CGFloat t = 3.0;
-    CGAffineTransform translateRight  = CGAffineTransformTranslate(CGAffineTransformIdentity, t, 0.0);
-    CGAffineTransform translateLeft = CGAffineTransformTranslate(CGAffineTransformIdentity, -t, 0.0);
+    CGAffineTransform shakeMoveRight  = CGAffineTransformTranslate(CGAffineTransformIdentity, t, 0.0);
+    CGAffineTransform shakeMoveLeft = CGAffineTransformTranslate(CGAffineTransformIdentity, -t, 0.0);
 
-    viewToShake.transform = translateLeft;
+    viewForAnimation.transform = shakeMoveLeft;
 
     [UIView animateWithDuration:0.07 delay:0.0 options:UIViewAnimationOptionAutoreverse|UIViewAnimationOptionRepeat animations:^{
         [UIView setAnimationRepeatCount:2.0];
-        viewToShake.transform = translateRight;
+        viewForAnimation.transform = shakeMoveRight;
     } completion:^(BOOL finished) {
         if (finished) {
             [UIView animateWithDuration:0.05 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                viewToShake.transform = CGAffineTransformIdentity;
+                viewForAnimation.transform = CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
                 if (completion) {
                     completion(finished);
