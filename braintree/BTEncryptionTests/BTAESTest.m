@@ -7,24 +7,23 @@
 @implementation BTAESTest
 
 -(void) testAESEncryptionWithKeyAndIv {
-  NSData   * ivData          = [NSData dataWithBase64EncodedString:@"AAAAAQAAAAIAAAADAAAABA=="];
-  NSString * key             = @"iz5DQzn/XpwXvZ7wY3OGQRVBZTFeVMrEIUljWrIr2Pg=";
+  NSData * ivData = [NSData dataWithBase64EncodedString:@"AAAAAQAAAAIAAAADAAAABA=="];
+  NSData * key = [NSData dataWithBase64EncodedString:@"iz5DQzn/XpwXvZ7wY3OGQRVBZTFeVMrEIUljWrIr2Pg="];
 
-  NSData   * plainData       = [@"test data" dataUsingEncoding:NSUTF8StringEncoding];
-  NSString * encryptedString = [BTAES encrypt: plainData withKey: key Iv: ivData];
-  NSData   * encryptedData   = [NSData dataWithBase64EncodedString:encryptedString];
+  NSData * plainData = [@"test data" dataUsingEncoding:NSUTF8StringEncoding];
+  NSData * encryptedData = [BTAES encrypt: plainData withKey: key Iv: ivData];
 
-  STAssertEqualObjects(encryptedString, @"AAAAAQAAAAIAAAADAAAABJcSo857BMv+cJtJfpF5Pak=", @"matches pre-generated AC");
-  STAssertEqualObjects([BTDecrypt decryptAES: encryptedData withKey: key], plainData, @"round trip success");
+  STAssertEqualObjects([encryptedData base64Encoding], @"AAAAAQAAAAIAAAADAAAABJcSo857BMv+cJtJfpF5Pak=", @"matches pre-generated AC");
+  STAssertEqualObjects([BTDecrypt decryptAES: encryptedData withKey:key], plainData, @"round trip success");
 }
 
 -(void) testBTCryptoAES256WithoutIv {
-  NSString * key = @"iz5DQzn/XpwXvZ7wY3OGQRVBZTFeVMrEIUljWrIr2Pg=";
+  NSData * key = [NSData dataWithBase64EncodedString:@"iz5DQzn/XpwXvZ7wY3OGQRVBZTFeVMrEIUljWrIr2Pg="];
 
-  NSData   * plainData       = [@"test data" dataUsingEncoding: NSUTF8StringEncoding];
-  NSString * encryptedString = [BTAES encrypt: plainData withKey: key];
+  NSData * plainData = [@"test data" dataUsingEncoding: NSUTF8StringEncoding];
+  NSData * encryptedString = [BTAES encrypt:plainData withKey:key];
 
-  STAssertTrue([encryptedString length] == 44, @"matches expected length");
+  STAssertTrue([encryptedString length] == 32, @"matches expected length");
 }
 
 @end

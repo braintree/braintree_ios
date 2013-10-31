@@ -9,7 +9,7 @@
 - (id) initWithKey: (NSString*) key;
 - (id) initWithKeyRef: (SecKeyRef) key;
 
-- (NSData*) encrypt:(NSString*) data;
+- (NSData*) encrypt:(NSData*) data;
 - (SecKeyRef) getKeychainPublicKeyRef;
 
 @property(nonatomic, retain) NSString * publicKey;

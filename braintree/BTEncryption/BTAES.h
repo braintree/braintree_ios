@@ -2,7 +2,7 @@
 
 @interface BTAES : NSObject
 
-+ (NSString*) encrypt:(NSData*) data withKey:(NSString*) key;
-+ (NSString*) encrypt:(NSData*) data withKey:(NSString*) key Iv:(NSData*) iv;
++ (NSData*) encrypt:(NSData*) data withKey:(NSData*) key;
++ (NSData*) encrypt:(NSData*) data withKey:(NSData*) key Iv:(NSData*) iv;
 
 @end

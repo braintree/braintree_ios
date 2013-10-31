@@ -38,8 +38,9 @@
     NSArray * aesInfo = [[encryptedString stringByReplacingOccurrencesOfString: [crypto tokenWithVersion] withString:@""]
                          componentsSeparatedByString:@"$"];
 
-    NSString * aesKey = [BTDecrypt decryptWithKey:[BTDecrypt getPrivateKeyRef: privateKey]
-                                             Data: [NSData dataWithBase64EncodedString:[aesInfo objectAtIndex:1]]];
+    NSData * encryptedAesKey = [NSData dataWithBase64EncodedString:[aesInfo objectAtIndex:1]];
+    NSData * encodedAesKey = [BTDecrypt decryptData:encryptedAesKey withKey:[BTDecrypt getPrivateKeyRef:privateKey]];
+    NSData * aesKey = [NSData dataWithBase64EncodedString:[NSString stringWithUTF8String:[encodedAesKey bytes]]];
     NSData * decryptedData = [BTDecrypt decryptAES: [NSData dataWithBase64EncodedString:[aesInfo objectAtIndex:2]]
                                            withKey:aesKey];
 

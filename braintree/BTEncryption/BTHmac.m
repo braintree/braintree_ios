@@ -4,16 +4,11 @@
 
 @implementation BTHmac
 
-+(NSString*) sign:(NSString*) data withKey:(NSString*) key {
-    const char *cKey = [key cStringUsingEncoding:NSUTF8StringEncoding];
-    const char *cData = [data cStringUsingEncoding:NSUTF8StringEncoding];
++(NSData*) sign:(NSData*) data withKey:(NSData*) key {
     unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    CCHmac(kCCHmacAlgSHA256, [key bytes], [key length], [data bytes], [data length], cHMAC);
 
-    NSData *hash = [NSData dataWithBytes:cHMAC length:sizeof(cHMAC)];
-
-    NSString * encoded = [hash base64Encoding];
-    return encoded;
+    return [NSData dataWithBytes:cHMAC length:sizeof(cHMAC)];
 }
 
 @end

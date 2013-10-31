@@ -40,8 +40,8 @@
     return [wrapper addPeerPublicKey:applicationTag keyBits: publicKeyData];
 }
 
--(NSData*) encrypt:(NSString*) data {
-    uint8_t* plainText = (uint8_t *)[[data dataUsingEncoding:NSUTF8StringEncoding] bytes];
+-(NSData*) encrypt:(NSData*) data {
+    uint8_t* plainText = (uint8_t *) [data bytes];
 
     SecKeyRef keyRef = [self getKeychainPublicKeyRef];
 

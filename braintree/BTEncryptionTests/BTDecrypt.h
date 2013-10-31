@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 
 @interface BTDecrypt : NSObject
-+ (NSData*)decryptAES:(NSData*) data withKey:(NSString*)key;
++ (NSData*) decryptAES:(NSData*) data withKey:(NSData*)key;
 + (SecKeyRef) getPrivateKeyRef:(NSString*) privateKey;
-+ (NSString *) decryptWithKey:(SecKeyRef)privateKey Data:(NSData*)encryptedData;
++ (NSData*) decryptData:(NSData*)encryptedData withKey:(SecKeyRef)privateKey;
 
 @end

@@ -5,9 +5,7 @@
 
 @implementation BTDecrypt
 
-+ (NSData*)decryptAES:(NSData*) data withKey:(NSString*)key {
-  NSData * decodedKey = [NSData dataWithBase64EncodedString: key];
-
++ (NSData*)decryptAES:(NSData*) data withKey:(NSData*)key {
   NSUInteger ivSize = 4*sizeof(uint32_t);
   NSData * iv = [NSData dataWithBytes:[data bytes] length:ivSize];
 
@@ -21,7 +19,7 @@
   size_t numBytesDecrypted = 0;
 
   CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
-                                        [decodedKey bytes], kCCKeySizeAES256,
+                                        [key bytes], kCCKeySizeAES256,
                                         [iv bytes],
                                         [encryptedData bytes], dataLength,
                                         outputBuffer, outputBufferSize,
@@ -66,7 +64,7 @@
   return privateKeyRef;
 }
 
-+(NSString *) decryptWithKey:(SecKeyRef)privateKey Data:(NSData*)encryptedData {
++ (NSData*) decryptData:(NSData*)encryptedData withKey:(SecKeyRef)privateKey {
   size_t plainTextLen = [encryptedData length];
   uint8_t * plainText = malloc(sizeof(uint8_t)*plainTextLen);
   memset(plainText, 0, plainTextLen);
@@ -78,9 +76,9 @@
                 plainText,
                 &plainTextLen
                 );
-  NSString * plainStr = [[NSString alloc] initWithBytes:plainText length:plainTextLen encoding:NSUTF8StringEncoding];
+  NSData * data = [NSData dataWithBytes:plainText length:plainTextLen];
   free(plainText);
-  return plainStr;
+  return data;
 }
 
 @end

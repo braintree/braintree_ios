@@ -2,6 +2,6 @@
 
 @interface BTHmac : NSObject
 
-+ (NSString*)sign:(NSString*)data withKey:(NSString*)key;
++ (NSData*)sign:(NSData*)data withKey:(NSData*)key;
 
 @end

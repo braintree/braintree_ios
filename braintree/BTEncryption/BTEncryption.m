@@ -10,7 +10,7 @@
 @synthesize publicKey;
 @synthesize applicationTag;
 
-NSString * const VERSION = @"2.2.2";
+NSString * const VERSION = @"2.2.3";
 
 -(id)init {
     self = [super init];
@@ -34,15 +34,24 @@ NSString * const VERSION = @"2.2.2";
 }
 
 -(NSString*) encryptData: (NSData*) data {
-    NSString * encryptionKey = [[BTRandom randomWordsAsData:8] base64Encoding];
-    NSString * signingKey = [[BTRandom randomWordsAsData:8] base64Encoding];
-    NSString * combinedKey = [NSString stringWithFormat:@"%@%@", encryptionKey, signingKey];
-    BTRSA * rsa = [[BTRSA alloc] initWithKey:publicKey];
-    NSString * encryptedKey = [[rsa encrypt: combinedKey] base64Encoding];
-    NSString * encryptedData = [BTAES encrypt:data withKey:encryptionKey];
-    NSString * signedData = [BTHmac sign:encryptedData withKey:signingKey];
+    NSData * encryptionKey = [BTRandom randomWordsAsData:8];
+    NSData * signingKey = [BTRandom randomWordsAsData:8];
 
-    return [NSString stringWithFormat:@"%@$%@$%@$%@", [self tokenWithVersion], encryptedKey, encryptedData, signedData];
+    NSMutableData * combinedKey = [NSMutableData alloc];
+    [combinedKey appendData:encryptionKey];
+    [combinedKey appendData:signingKey];
+
+    NSData * encodedCombinedKey = [[combinedKey base64Encoding] dataUsingEncoding:NSUTF8StringEncoding];
+    BTRSA * rsa = [[BTRSA alloc] initWithKey:publicKey];
+    NSData * encryptedKeys = [rsa encrypt: encodedCombinedKey];
+    NSData * encryptedData = [BTAES encrypt:data withKey:encryptionKey];
+    NSData * signature = [BTHmac sign:encryptedData withKey:signingKey];
+
+    return [NSString stringWithFormat:@"%@$%@$%@$%@",
+            [self tokenWithVersion],
+            [encryptedKeys base64Encoding],
+            [encryptedData base64Encoding],
+            [signature base64Encoding]];
 }
 
 @end

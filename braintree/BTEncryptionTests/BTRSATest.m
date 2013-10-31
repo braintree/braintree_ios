@@ -11,13 +11,13 @@
 }
 
 - (void) testRoundTripWithExistingKey {
-  NSString * plainText = @"test data";
+  NSData *plainText = [@"test data" dataUsingEncoding:NSUTF8StringEncoding];
   BTRSA * rsa   = [[BTRSA alloc] initWithKey:publicKey];
-  NSData * encryptedData = [rsa encrypt: plainText];
+  NSData * encryptedData = [rsa encrypt:plainText];
 
-  NSString * plainStr = [BTDecrypt decryptWithKey:(SecKeyRef)[BTDecrypt getPrivateKeyRef:privateKey] Data:encryptedData];
+  NSData * result = [BTDecrypt decryptData:encryptedData withKey:(SecKeyRef)[BTDecrypt getPrivateKeyRef:privateKey]];
 
-  STAssertEqualObjects(plainStr, @"test data", @"success!");
+  STAssertEqualObjects([NSString stringWithUTF8String:[result bytes]], @"test data", @"success!");
 }
 
 @end

@@ -5,18 +5,16 @@
 
 @implementation BTAES
 
-+(NSString*) encrypt:(NSData*) data withKey:(NSString*) key {
++(NSData*) encrypt:(NSData*) data withKey:(NSData*) key {
   uint8_t * words = [BTRandom randomWords: 4];
   NSData * ivData = [[NSData alloc] initWithBytes:words length: sizeof(words)];
   return [self encrypt:data withKey:key Iv:ivData];
 }
 
-+(NSString*) encrypt:(NSData *) data withKey:(NSString *) key Iv:(NSData *) iv {
-  NSData* decodedKey = [NSData dataWithBase64EncodedString:key];
-
++(NSData*) encrypt:(NSData *) data withKey:(NSData *) key Iv:(NSData *) iv {
   char keyPtr[kCCKeySizeAES256 + 1];
   bzero( keyPtr, sizeof( keyPtr ) );
-  [decodedKey getBytes:keyPtr];
+  [key getBytes:keyPtr];
 
   size_t ivSize = 4*sizeof(uint32_t);
   char ivBuffer[ivSize + 1];
@@ -38,12 +36,11 @@
                                         [data bytes], dataLength,
                                         buffer + ivSize, bufferSize,
                                         &numBytesEncrypted);
-  if( cryptStatus == kCCSuccess ){
-    NSData * encodedData = [NSData dataWithBytesNoCopy:buffer length:(numBytesEncrypted + ivSize)];
-    return [encodedData base64Encoding];
+  if(cryptStatus == kCCSuccess){
+    return [NSData dataWithBytesNoCopy:buffer length:(numBytesEncrypted + ivSize)];
   }
 
-  free( buffer );
+  free(buffer);
   return nil;
 }
 
