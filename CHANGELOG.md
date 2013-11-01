@@ -1,3 +1,7 @@
+## 2.2.4
+
+* Hotfix: Fix minor bug introduced in v2.2.3.
+
 ## 2.2.3
 
 * Fix bug with client-side encryption changes.

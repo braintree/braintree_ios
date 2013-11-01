@@ -10,7 +10,7 @@
 @synthesize publicKey;
 @synthesize applicationTag;
 
-NSString * const VERSION = @"2.2.3";
+NSString * const VERSION = @"2.2.4";
 
 -(id)init {
     self = [super init];
@@ -37,7 +37,7 @@ NSString * const VERSION = @"2.2.3";
     NSData * encryptionKey = [BTRandom randomWordsAsData:8];
     NSData * signingKey = [BTRandom randomWordsAsData:8];
 
-    NSMutableData * combinedKey = [NSMutableData alloc];
+    NSMutableData * combinedKey = [[NSMutableData alloc] init];
     [combinedKey appendData:encryptionKey];
     [combinedKey appendData:signingKey];
 
