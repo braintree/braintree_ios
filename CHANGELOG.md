@@ -1,3 +1,7 @@
+## 2.2.5
+
+* Bugfix in Venmo Touch server communication protocols.
+
 ## 2.2.4
 
 * Hotfix: Fix minor bug introduced in v2.2.3.

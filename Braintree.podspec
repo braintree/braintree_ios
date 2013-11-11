@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name                = 'Braintree'
   s.summary             = 'The Braintree API helps businesses accept payments online.'
-  s.version             = '2.2.4'
+  s.version             = '2.2.5'
   s.license             = 'LICENSES'
   s.author              = { 'Braintree' => 'code@getbraintree.com' }
   s.homepage            = 'https://braintreepayments.com/'
-  s.source              = { :git => 'https://github.com/braintree/braintree_ios.git', :tag => '2.2.4' }
+  s.source              = { :git => 'https://github.com/braintree/braintree_ios.git', :tag => s.version.to_s }
   s.platform            = :ios, '5.0'
   s.requires_arc        = true
 
