@@ -25,7 +25,7 @@
 
 // Add a PayButton that will present a BTPaymentViewController when tapped
 - (void)addPayButton {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < 70000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
     UIButton *payButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 #else
     UIButton *payButton = [UIButton buttonWithType:UIButtonTypeSystem];
