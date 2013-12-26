@@ -40,7 +40,7 @@
 
     return [wrapper addPeerPublicKey:applicationTag keyBits: publicKeyData];
 #elif
-	    CFDataRef cfdata = CFDataCreate(NULL, [pk bytes], [pk length]);
+	    CFDataRef cfdata = CFDataCreate(NULL, [publicKeyData bytes], [publicKeyData length]);
 	    SecItemImportExportKeyParameters params;
 	    CFArrayRef temparray = nil;
 	    OSStatus oserr = 0;
