@@ -479,7 +479,7 @@
 
 - (void)client:(VTClient *)client didReceivePaymentMethodOptionStatus:(VTPaymentMethodOptionStatus)paymentMethodOptionStatus {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    NSLog(@"loading finished: %i", paymentMethodOptionStatus);
+    NSLog(@"loading finished: %li", (long)paymentMethodOptionStatus);
     if (paymentMethodOptionStatus == VTPaymentMethodOptionStatusYes) {
         // Force tableview to reloadData, which renders VTCardView
         NSLog(@"payment method on file");
@@ -491,7 +491,7 @@
 }
 
 - (void)client:(VTClient *)client didFinishLoadingLiveStatus:(VTLiveStatus)liveStatus {
-    NSLog(@"didFinishLoadingLiveStatus: %i", liveStatus);
+    NSLog(@"didFinishLoadingLiveStatus: %li", (long)liveStatus);
 }
 
 - (void)client:(VTClient *)client approvedPaymentMethodWithCode:(NSString *)paymentMethodCode {
