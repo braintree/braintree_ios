@@ -40,7 +40,8 @@
 
     NSData * encryptedAesKey = [NSData dataWithBase64EncodedString:[aesInfo objectAtIndex:1]];
     NSData * encodedAesKey = [BTDecrypt decryptData:encryptedAesKey withKey:[BTDecrypt getPrivateKeyRef:privateKey]];
-    NSData * aesKey = [NSData dataWithBase64EncodedString:[NSString stringWithUTF8String:[encodedAesKey bytes]]];
+    NSString *encodedAesKeyString = [[NSString alloc] initWithBytes:encodedAesKey.bytes length:encodedAesKey.length encoding:NSUTF8StringEncoding];
+    NSData * aesKey = [NSData dataWithBase64EncodedString:encodedAesKeyString];
     NSData * decryptedData = [BTDecrypt decryptAES: [NSData dataWithBase64EncodedString:[aesInfo objectAtIndex:2]]
                                            withKey:aesKey];
 

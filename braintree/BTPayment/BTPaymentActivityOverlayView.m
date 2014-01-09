@@ -60,7 +60,7 @@ static BTPaymentActivityOverlayView *sharedOverlayView = nil;
         titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
         titleLabel.tag = 2;
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_6_0
         titleLabel.textAlignment = NSTextAlignmentCenter;
 #else
         titleLabel.textAlignment = UITextAlignmentCenter;

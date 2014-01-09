@@ -25,7 +25,7 @@
 
 // Add a PayButton that will present a BTPaymentViewController when tapped
 - (void)addPayButton {
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < 70000
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
     UIButton *payButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 #else
     UIButton *payButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -187,7 +187,7 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
 - (NSString *) URLEncodedStringFromString: (NSString *)string {
     NSMutableString * output = [NSMutableString string];
     const unsigned char * source = (const unsigned char *)[string UTF8String];
-    int sourceLen = strlen((const char *)source);
+    size_t sourceLen = strlen((const char *)source);
     for (int i = 0; i < sourceLen; ++i) {
         const unsigned char thisChar = source[i];
         if (thisChar == ' '){

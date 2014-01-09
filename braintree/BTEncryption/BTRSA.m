@@ -54,7 +54,7 @@
     OSStatus result = SecKeyEncrypt(keyRef, kCCOptionPKCS7Padding, plainText, [data length], cipherTextBuf, &cipherTextSize);
 
     if(result != noErr)
-        NSLog(@"Secure Key Encryption Failed With Error: %ld", result);
+        NSLog(@"Secure Key Encryption Failed With Error: %ld", (long)result);
 
     NSData *cipherText = [[NSData alloc] initWithBytes: cipherTextBuf length:cipherTextSize];
     free(cipherTextBuf);

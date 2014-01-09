@@ -53,13 +53,13 @@
   [peerKeyAttr setObject:(__bridge id)kCFBooleanTrue           forKey:(__bridge id)kSecReturnRef];
 
   OSStatus result = SecItemAdd((__bridge CFDictionaryRef)peerKeyAttr, (CFTypeRef*)&privateKeyRef);
-  NSAssert(result == errSecSuccess, @"keychain item add failure: %ld", result);
+  NSAssert(result == errSecSuccess, @"keychain item add failure: %ld", (long)result);
 
   [peerKeyAttr removeObjectForKey:(__bridge id)kSecValueData];
 
   result = SecItemCopyMatching((__bridge CFDictionaryRef) peerKeyAttr, (CFTypeRef *)&privateKeyRef);
 
-  NSAssert(privateKeyRef != NULL && result == errSecSuccess, @"keychain data lookup failure: %ld", result);
+  NSAssert(privateKeyRef != NULL && result == errSecSuccess, @"keychain data lookup failure: %ld", (long)result);
 
   return privateKeyRef;
 }

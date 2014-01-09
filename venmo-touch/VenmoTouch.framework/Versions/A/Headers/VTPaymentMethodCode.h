@@ -22,3 +22,4 @@ typedef NS_ENUM(NSInteger, VTCardType) {
 - (id)initWithCode:(NSString *)code withCardType:(NSString *)cardType;
 
 @end
+

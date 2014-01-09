@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                = 'Braintree'
   s.summary             = 'The Braintree API helps businesses accept payments online.'
-  s.version             = '2.2.5'
+  s.version             = '2.2.6'
   s.license             = 'LICENSES'
   s.author              = { 'Braintree' => 'code@getbraintree.com' }
   s.homepage            = 'https://braintreepayments.com/'

@@ -41,12 +41,12 @@
 
 	sanityCheck = SecItemAdd((__bridge CFDictionaryRef) peerPublicKeyAttr, (CFTypeRef *)&peerKeyRef);
 
-	LOGGING_FACILITY1( sanityCheck == noErr, @"Problem adding the public key, OSStatus == %ld.", sanityCheck );
+	LOGGING_FACILITY1( sanityCheck == noErr, @"Problem adding the public key, OSStatus == %ld.", (long)sanityCheck );
 
   [peerPublicKeyAttr removeObjectForKey:(__bridge id)kSecValueData];
   sanityCheck = SecItemCopyMatching((__bridge CFDictionaryRef) peerPublicKeyAttr, (CFTypeRef *)&peerKeyRef);
 
-	LOGGING_FACILITY1( sanityCheck == noErr && peerKeyRef != NULL, @"Problem acquiring reference to the public key, OSStatus == %ld.", sanityCheck );
+	LOGGING_FACILITY1( sanityCheck == noErr && peerKeyRef != NULL, @"Problem acquiring reference to the public key, OSStatus == %ld.", (long)sanityCheck );
 
 	return peerKeyRef;
 }
@@ -65,7 +65,7 @@
 
 	sanityCheck = SecItemDelete((__bridge CFDictionaryRef) peerPublicKeyAttr);
 
-	LOGGING_FACILITY1( sanityCheck == noErr || sanityCheck == errSecItemNotFound, @"Problem deleting the peer public key from keychain, OSStatus == %ld.", sanityCheck );
+	LOGGING_FACILITY1( sanityCheck == noErr || sanityCheck == errSecItemNotFound, @"Problem deleting the peer public key from keychain, OSStatus == %ld.", (long)sanityCheck );
 }
 
 @end

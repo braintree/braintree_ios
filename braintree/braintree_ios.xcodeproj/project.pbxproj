@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16DE17C41877C88A001990D5 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583711704F0E800448E5C /* NSData+Base64.m */; };
 		9910565517DE5F4C000EF710 /* BTHmac.m in Sources */ = {isa = PBXBuildFile; fileRef = 9910565417DE5F4C000EF710 /* BTHmac.m */; };
 		9910565817DE5FE2000EF710 /* BTHmacTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9910565717DE5FE2000EF710 /* BTHmacTest.m */; };
 		9C014A451706450100A58C39 /* BraintreeResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9CB3D6E1170639440080631F /* BraintreeResources.bundle */; };
 		9C014A491706565400A58C39 /* VenmoTouchResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C014A481706565400A58C39 /* VenmoTouchResources.bundle */; };
 		9C014A4A1706565400A58C39 /* VenmoTouchResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C014A481706565400A58C39 /* VenmoTouchResources.bundle */; };
 		9C014A4B1706565400A58C39 /* VenmoTouchResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C014A481706565400A58C39 /* VenmoTouchResources.bundle */; };
-		9C103CB01704F59B00B70304 /* BTEncryptionTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C103CAE1704F59B00B70304 /* BTEncryptionTests-Info.plist */; };
 		9C103CB11704F59B00B70304 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C103CAF1704F59B00B70304 /* InfoPlist.strings */; };
 		9C2865B21704F995000C411C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB5825A1704EC0000448E5C /* Foundation.framework */; };
 		9C2865C01704F995000C411C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB582691704EC0000448E5C /* SenTestingKit.framework */; };
@@ -108,17 +108,11 @@
 		9CB582971704EC2700448E5C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB5825A1704EC0000448E5C /* Foundation.framework */; };
 		9CB5829A1704EC2700448E5C /* libBTEncryption.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB582861704EC2700448E5C /* libBTEncryption.a */; };
 		9CB583741704F0E800448E5C /* BTAES.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583651704F0E800448E5C /* BTAES.m */; };
-		9CB583751704F0E800448E5C /* BTAES.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583651704F0E800448E5C /* BTAES.m */; };
 		9CB583781704F0E800448E5C /* BTEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583681704F0E800448E5C /* BTEncryption.m */; };
-		9CB583791704F0E800448E5C /* BTEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583681704F0E800448E5C /* BTEncryption.m */; };
 		9CB5837C1704F0E800448E5C /* BTRandom.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836B1704F0E800448E5C /* BTRandom.m */; };
-		9CB5837D1704F0E800448E5C /* BTRandom.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836B1704F0E800448E5C /* BTRandom.m */; };
 		9CB583801704F0E800448E5C /* BTRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836D1704F0E800448E5C /* BTRSA.m */; };
-		9CB583811704F0E800448E5C /* BTRSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836D1704F0E800448E5C /* BTRSA.m */; };
 		9CB583841704F0E800448E5C /* BTSecKeyWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836F1704F0E800448E5C /* BTSecKeyWrapper.m */; };
-		9CB583851704F0E800448E5C /* BTSecKeyWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5836F1704F0E800448E5C /* BTSecKeyWrapper.m */; };
 		9CB583881704F0E800448E5C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583711704F0E800448E5C /* NSData+Base64.m */; };
-		9CB583891704F0E800448E5C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB583711704F0E800448E5C /* NSData+Base64.m */; };
 		9CB583991704F10200448E5C /* BTAESTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5838B1704F10200448E5C /* BTAESTest.m */; };
 		9CB5839B1704F10200448E5C /* BTDecrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5838D1704F10200448E5C /* BTDecrypt.m */; };
 		9CB5839D1704F10200448E5C /* BTEncryptionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CB5838F1704F10200448E5C /* BTEncryptionTest.m */; };
@@ -913,7 +907,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C103CB01704F59B00B70304 /* BTEncryptionTests-Info.plist in Resources */,
 				9C103CB11704F59B00B70304 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1048,12 +1041,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CB583751704F0E800448E5C /* BTAES.m in Sources */,
-				9CB583791704F0E800448E5C /* BTEncryption.m in Sources */,
-				9CB5837D1704F0E800448E5C /* BTRandom.m in Sources */,
-				9CB583811704F0E800448E5C /* BTRSA.m in Sources */,
-				9CB583851704F0E800448E5C /* BTSecKeyWrapper.m in Sources */,
-				9CB583891704F0E800448E5C /* NSData+Base64.m in Sources */,
 				9CB583991704F10200448E5C /* BTAESTest.m in Sources */,
 				9CB5839B1704F10200448E5C /* BTDecrypt.m in Sources */,
 				9CB5839D1704F10200448E5C /* BTEncryptionTest.m in Sources */,
@@ -1062,6 +1049,7 @@
 				9CB583A31704F10200448E5C /* BTRSATest.m in Sources */,
 				9CB583A51704F10200448E5C /* NSDataBase64Test.m in Sources */,
 				9910565817DE5FE2000EF710 /* BTHmacTest.m in Sources */,
+				16DE17C41877C88A001990D5 /* NSData+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1334,6 +1322,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1354,11 +1343,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv7 armv7s i386";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -1366,6 +1355,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1379,12 +1369,12 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s i386";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
