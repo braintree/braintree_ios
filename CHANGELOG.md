@@ -1,3 +1,13 @@
+## 2.2.7
+
+* Hotfix: Fix broken 2.2.6 release.
+* updates to Venmo Touch
+* 64-bit support
+
+## 2.2.6
+
+* Deprecated. Do not use.
+
 ## 2.2.5
 
 * Bugfix in Venmo Touch server communication protocols.
