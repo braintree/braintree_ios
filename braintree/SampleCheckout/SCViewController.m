@@ -92,8 +92,8 @@ didAuthorizeCardWithPaymentMethodCode:(NSString *)paymentMethodCode {
 // The following example code demonstrates how to pass encrypted card data from the app to your
 // server (your server will then have to send it to the Braintree Gateway). For a fully working
 // example of how to proxy data through your server to the Braintree Gateway, see:
-//    1. the braintree_ios Server Side Integration tutorial [https://touch.venmo.com/server-integration-tutorial/]
-//    2. and the sample-checkout-heroku Github project [link]
+//    1. the braintree_ios Server Side Integration tutorial [https://touch.venmo.com/server-side-changes/]
+//    2. and the sample-checkout-heroku Github project [https://github.com/venmo/sample-checkout-heroku]
 
 #define SAMPLE_CHECKOUT_BASE_URL @"http://venmo-sdk-sample-two.herokuapp.com"
 //#define SAMPLE_CHECKOUT_BASE_URL @"http://localhost:4567"
