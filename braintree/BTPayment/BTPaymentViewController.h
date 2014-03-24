@@ -53,6 +53,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <VenmoTouch/VenmoTouch.h>
 #import "BTPaymentFormView.h"
+#import "BTPaymentSectionHeaderView.h"
 
 @protocol BTPaymentViewControllerDelegate;
 
@@ -63,6 +64,13 @@
 @property (nonatomic, strong) VTCardView *cardView;
 @property (nonatomic, strong) VTCheckboxView *checkboxView;
 @property (nonatomic) BOOL UKSupportEnabled;
+@property (nonatomic, strong) BTPaymentSectionHeaderView *paymentFormHeaderView;
+
+@property (nonatomic, retain) NSString *stringAddACard;
+@property (nonatomic, retain) NSString *stringOrAddACard;
+@property (nonatomic, retain) NSString *productTitle;
+@property (nonatomic, retain) NSString *productDescription;
+@property (nonatomic, retain) NSString *submitButtonTitleText;
 
 // Reads/Sets the corner radius of the payment form view, submit button, and (optionally) VTCardView.
 @property (nonatomic, assign) CGFloat cornerRadius; //default is 4

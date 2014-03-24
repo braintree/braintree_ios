@@ -28,7 +28,7 @@
 #define SUBMIT_BUTTON_DOWN_PRESS_GRADIENT_START_COLOR [UIColor colorWithWhite:221/255.0f alpha:1]
 #define SUBMIT_BUTTON_DOWN_PRESS_GRADIENT_END_COLOR   [UIColor colorWithWhite:234/255.0f alpha:1]
 
-#define SUBMIT_BUTTON_HEIGHT 40
+#define SUBMIT_BUTTON_HEIGHT 45
 #define SUBMIT_BUTTON_GRADIENT_FRAME CGRectMake(0, 0, 568, SUBMIT_BUTTON_HEIGHT)
 
 @interface BTPaymentViewController ()
@@ -38,14 +38,13 @@
 
 @property (nonatomic, strong) VTClient *client;
 @property (nonatomic, strong) BTPaymentActivityOverlayView *paymentActivityOverlayView;
-@property (nonatomic, strong) UIButton *submitButton;
 
 @property (nonatomic, strong) UIView *cellBackgroundView; // for iOS 5/6 visuals
 @property (nonatomic, strong) UIView *disabledButtonGradientView;
 @property (nonatomic, strong) UIView *normalButtonGradientView;
 @property (nonatomic, strong) UIView *pressedButtonGradientView;
+@property (nonatomic, strong) UIButton *submitButton;
 
-@property (nonatomic, strong) BTPaymentSectionHeaderView *paymentFormHeaderView;
 @property (nonatomic, strong) BTPaymentSectionHeaderView *cardViewHeaderView;
 
 @end
@@ -66,11 +65,11 @@
     if (!self) {
         return nil;
     }
-
+    
     self.title = @"Payment";
     self.venmoTouchEnabled = hasVenmoTouchEnabled;
     self.requestsZipInManualCardEntry = YES;
-
+    
     return self;
 }
 
@@ -83,26 +82,31 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if (self.submitButtonTitleText == nil) {
+        self.submitButtonTitleText = @"Buy";
+    }
+    
     self.tableView.backgroundView = nil;
+    self.tableView.delaysContentTouches = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (!self.cornerRadius) self.cornerRadius = BT_DEFAULT_CORNER_RADIUS;
     if (!self.viewBackgroundColor) self.viewBackgroundColor = BT_DEFAULT_BACKGROUND_COLOR;
     [self setViewBackgroundColor:self.viewBackgroundColor]; // Changes the display.
-
+    
     Class class = NSClassFromString(@"VTClient");
     if (class) {
         self.client = [class sharedVTClient];
-
+        
         if (self.venmoTouchEnabled) {
             if (!self.client) {
                 NSLog(@"Venmo Touch is enabled but VTClient has not yet been initialized. Please refer to VTClient.h to initialize it before displaying this BTPaymentViewController, or disable Venmo Touch when creating this BTPaymentViewController.");
             } else {
                 self.client.delegate = self;
-
+                
                 if (self.client.paymentMethodOptionStatus == VTPaymentMethodOptionStatusYes) {
                     self.hasPaymentMethods = YES;
                 }
-
+                
                 // Register for keyboard notifications to autoscroll on BTPaymentFormView focus.
                 [[NSNotificationCenter defaultCenter] addObserver:self
                                                          selector:@selector(keyboardDidShow:)
@@ -111,14 +115,14 @@
             }
         }
     }
-
+    
     // Create the payment form
     self.paymentFormView = [BTPaymentFormView paymentFormView];
     self.paymentFormView.delegate = self;
     self.paymentFormView.requestsZip = self.requestsZipInManualCardEntry;
     self.paymentFormView.backgroundColor = [UIColor clearColor];
     self.paymentFormView.UKSupportEnabled = self.UKSupportEnabled;
-
+    
     // Create the checkbox view, if requested.
     if ([self showsVTCheckbox]) {
         // Set up the VTCheckboxView view
@@ -126,7 +130,7 @@
         [self.checkboxView setBackgroundColor:[UIColor clearColor]];
         [self.checkboxView setTextColor:[UIColor grayColor]];
     }
-
+    
     [self setupSubmitButton];
 }
 
@@ -134,7 +138,7 @@
     // If we know the user will have no option of seeing a VTCardView, then give firstResponder
     // to the BTPaymentFormView.
     if ((self.venmoTouchEnabled && self.client &&
-        self.client.paymentMethodOptionStatus == VTPaymentMethodOptionStatusNo)
+         self.client.paymentMethodOptionStatus == VTPaymentMethodOptionStatusNo)
         || !self.venmoTouchEnabled
         || !self.client) {
         [self.paymentFormView.cardNumberTextField becomeFirstResponder];
@@ -159,27 +163,38 @@
 #pragma mark - Submit button
 
 - (void)setupSubmitButton {
-    self.submitButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    self.submitButton.frame = CGRectMake(0, 0, 0, SUBMIT_BUTTON_HEIGHT);
+    
+    //    [submitPaymentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    //    [submitPaymentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+    //    [submitPaymentButton setTitle:@"Buy" forState:UIControlStateNormal];
+    
+    //    self.brainTreePaymentController.submitButtonNormalImage = [UIImage imageWithColor:kColorSSECyan];
+    //    self.brainTreePaymentController.submitButtonHighlightedImage = [UIImage imageWithColor:kColorSSEDarkCyan];
+    //    self.brainTreePaymentController.submitButtonDisabledImage = [UIImage imageWithColor:kColorBasicLightGray];
+    
+    self.submitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.submitButton.frame = CGRectMake(0, 0, 120, SUBMIT_BUTTON_HEIGHT);
     self.submitButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.submitButton.clipsToBounds = YES;
-    self.submitButton.layer.cornerRadius = self.cornerRadius;
-    self.submitButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    self.submitButton.layer.cornerRadius = 2.0f;
+    self.submitButton.titleLabel.font = [UIFont systemFontOfSize:16];
     self.submitButton.accessibilityLabel = @"Submit New Card";
-    self.submitButton.backgroundColor = [UIColor whiteColor];
-    [self.submitButton setTitle:@"Submit New Card" forState:UIControlStateNormal];
-    [self.submitButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [self.submitButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+    [self.submitButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.309804F green:0.635294F blue:0.752941F alpha:1.0F]] forState:UIControlStateNormal];
+    [self.submitButton setBackgroundImage:[self imageWithColor:[UIColor colorWithRed:0.254902F green:0.517647F blue:0.615686F alpha:1.0F]] forState:UIControlStateHighlighted];
+    [self.submitButton setBackgroundImage:[self imageWithColor:[UIColor lightGrayColor]] forState:UIControlStateDisabled];
+    [self.submitButton setTitle:self.submitButtonTitleText forState:UIControlStateNormal];
+    [self.submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
     [self.submitButton addTarget:self action:@selector(submitCardInfo:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     if (!BT_IS_IOS7_OR_GREATER) {
         [self.submitButton addSubview:self.normalButtonGradientView];
         [self.submitButton bringSubviewToFront:self.submitButton.titleLabel];
-        self.submitButton.layer.cornerRadius = self.cornerRadius;
+        self.submitButton.layer.cornerRadius = 2.0f;
         self.submitButton.layer.borderWidth  = 1;
         self.submitButton.layer.borderColor  = [SUBMIT_BUTTON_BORDER_COLOR CGColor];
-        [self.submitButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-
+        [self.submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+        
         [self.submitButton addTarget:self action:@selector(submitButtonTouchUpInside)
                     forControlEvents:UIControlEventTouchUpInside];
         [self.submitButton addTarget:self action:@selector(submitButtonTouchDown)
@@ -188,13 +203,13 @@
                     forControlEvents:UIControlEventTouchDragExit];
         [self.submitButton addTarget:self action:@selector(submitButtonTouchDragEnter)
                     forControlEvents:UIControlEventTouchDragEnter];
-
-        UIView *topShadow = [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.submitButton.frame.size.width, 1)];
-        topShadow.backgroundColor = [UIColor colorWithWhite:1 alpha:.1];
-        topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [self.submitButton addSubview:topShadow];
+        
+        //        UIView *topShadow = [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.submitButton.frame.size.width, 1)];
+        //        topShadow.backgroundColor = [UIColor colorWithWhite:1 alpha:.1];
+        //        topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        //        [self.submitButton addSubview:topShadow];
     }
-
+    
     self.submitButton.enabled = NO;
 }
 
@@ -258,7 +273,7 @@
             self.paymentActivityOverlayView = [BTPaymentActivityOverlayView sharedOverlayView];
         }
         [self.paymentActivityOverlayView show];
-
+        
         // Get card info dictionary from the payment form.
         NSDictionary *cardInfo = [self.paymentFormView cardEntry];
         NSDictionary *cardInfoEncrypted;
@@ -268,7 +283,7 @@
             // If VTClient has a client side encryption key, return encrypted card info.
             cardInfoEncrypted = [self.client encryptedCardDataAndVenmoSDKSessionWithCardDictionary:cardInfo];
         }
-
+        
         [self.delegate paymentViewController:self didSubmitCardWithInfo:cardInfo andCardInfoEncrypted:cardInfoEncrypted];
     }
 }
@@ -282,10 +297,10 @@
         [self.tableView reloadData];
     } else {
         self.hasPaymentMethods = YES;
-
+        
         [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0]
                       withRowAnimation:UITableViewRowAnimationAutomatic];
-
+        
         [self performSelector:@selector(reloadTitle) withObject:nil afterDelay:.3];
     }
 }
@@ -316,10 +331,12 @@
     } else if (indexPath.row == 1) {
         // VTCheckbox (if available) and Submit button
         CGFloat height = ([self showsVTCheckbox] ? self.checkboxView.frame.size.height : SUBMIT_BUTTON_TOP_PADDING)
-                          + self.submitButton.frame.size.height;
+        + self.submitButton.frame.size.height;
         return height;
+    } else if  (indexPath.row == 2) {
+        return 250;
     }
-
+    
     return 0;
 }
 
@@ -343,7 +360,7 @@
         return 1;
     } else {
         // BTPaymentFormView & VTCheckboxView + submit button
-        return 2;
+        return 3;
     }
 }
 
@@ -356,27 +373,30 @@
     } else {
         // Section that displays the payment form view. Must change the section title accordingly.
         [self.paymentFormHeaderView setIsTopSectionHeader:!self.hasPaymentMethods];
-        [self.paymentFormHeaderView setTitleText:(self.hasPaymentMethods ? @"Or, Add a New Card" : @"Add a New Card")];
+        [self.paymentFormHeaderView setTitleText:(self.hasPaymentMethods ? self.stringOrAddACard : self.stringAddACard)];
         return self.paymentFormHeaderView;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
     static NSString *UseCardCellIdentifier               = @"UseCardCell";
     static NSString *PaymentFormViewCellIdentifier       = @"PaymentFormViewCell";
     static NSString *PaymentFormViewFooterCellIdentifier = @"PaymentFormViewFooterCell";
-
+    static NSString *productTypeDescription              = @"SSEproductTypeDescription";
+    
     NSString *currentCellIdentifier;
     if (self.hasPaymentMethods && indexPath.section == 0) {
         currentCellIdentifier = UseCardCellIdentifier;
     } else if (indexPath.row == 0) {
         currentCellIdentifier = PaymentFormViewCellIdentifier;
+    } else if (indexPath.row == 2) {
+        currentCellIdentifier = productTypeDescription;
     } else {
         currentCellIdentifier = PaymentFormViewFooterCellIdentifier;
     }
-
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:UseCardCellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
@@ -388,16 +408,37 @@
         [self setUpCardViewForCell:cell];
     } else if ([currentCellIdentifier isEqualToString:PaymentFormViewCellIdentifier]) {
         [self setUpPaymentFormViewForCell:cell];
+    } else if ([currentCellIdentifier isEqualToString:productTypeDescription]) {
+        cell.backgroundColor = [UIColor clearColor];
+        UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, CGRectGetWidth(cell.frame) - 20.0f, 250.0f)];
+        backgroundView.backgroundColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:0.25f];
+        backgroundView.clipsToBounds = YES;
+        UILabel * labelProductDescriptionTitle = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 2.0f, CGRectGetWidth(cell.frame) - 20.0f, 45.f)];
+        labelProductDescriptionTitle.numberOfLines = 2;
+        labelProductDescriptionTitle.lineBreakMode = NSLineBreakByWordWrapping;
+        labelProductDescriptionTitle.font = [UIFont boldSystemFontOfSize:18.0f];
+        labelProductDescriptionTitle.textColor = [UIColor colorWithRed:0.470588F green:0.486275F blue:0.505882F alpha:1.0F];
+        labelProductDescriptionTitle.text = self.productTitle;
+        [backgroundView addSubview:labelProductDescriptionTitle];
+        
+        UILabel *labelProductDescriptionDetails = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, CGRectGetMaxY(labelProductDescriptionTitle.frame) - 40.0f, CGRectGetWidth(cell.frame) - 40.0f, 250.0f)];
+        labelProductDescriptionDetails.numberOfLines = 8;
+        labelProductDescriptionTitle.lineBreakMode = NSLineBreakByWordWrapping;
+        labelProductDescriptionDetails.font = [UIFont systemFontOfSize:14.0f];
+        labelProductDescriptionDetails.textColor = [UIColor colorWithRed:0.470588F green:0.486275F blue:0.505882F alpha:1.0F];
+        labelProductDescriptionDetails.text = self.productDescription;
+        [backgroundView addSubview:labelProductDescriptionDetails];
+        [cell addSubview:backgroundView];
+        cell.userInteractionEnabled = NO;
     } else {
         cell.backgroundColor = [UIColor clearColor];
     }
-
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundView = nil;
-
+    
     if (self.hasPaymentMethods && indexPath.section == 0) {
         // Venmo Touch row || checkbox + submit button row
         cell.backgroundColor = [UIColor clearColor];
@@ -407,28 +448,31 @@
             // Customize the cell background view if < iOS 7
             self.cellBackgroundView.frame = cell.frame;
             cell.backgroundView = self.cellBackgroundView;
-
+            
             [self adjustCellBackgroundViewShadowWidth];
         } else {
             cell.backgroundColor = [UIColor whiteColor];
         }
     }
-    else {
+    else if (indexPath.row == 1) {
         CGFloat contentViewWidth = cell.contentView.frame.size.width;
-
+        
         [self.checkboxView setWidth:contentViewWidth - 20];
         [self.checkboxView setOrigin:CGPointMake(CELL_SIDE_PADDING, 0)];
         [cell.contentView addSubview:self.checkboxView];
         cell.backgroundColor = [UIColor clearColor];
-
+        
         CGRect submitButtonFrame = CGRectZero;
         submitButtonFrame.origin.x = CELL_SIDE_PADDING;
         submitButtonFrame.origin.y = ([self showsVTCheckbox] ? self.checkboxView.frame.size.height : SUBMIT_BUTTON_TOP_PADDING);
         submitButtonFrame.size.width = contentViewWidth - CELL_SIDE_PADDING*2;
         submitButtonFrame.size.height = SUBMIT_BUTTON_HEIGHT;
-
+        
         self.submitButton.frame = submitButtonFrame;
         [cell.contentView addSubview:self.submitButton];
+    }
+    else if (indexPath.row == 2) {
+        NSLog(@"fuck");
     }
 }
 
@@ -444,7 +488,7 @@
     if (!self.cardView) {
         self.cardView = [self.client cardView];
         self.cardView.tag = VTCARDVIEW_TAG;
-
+        
         // Set styling defaults if they were set before cardView was initialized
         if (self.cornerRadius)              self.cardView.cornerRadius     = self.cornerRadius;
         if (self.vtCardViewBackgroundColor) self.vtCardViewBackgroundColor = self.vtCardViewBackgroundColor;
@@ -472,7 +516,7 @@
 
 - (void)paymentFormView:(BTPaymentFormView *)paymentFormView didModifyCardInformationWithValidity:(BOOL)isValid {
     self.submitButton.enabled = isValid;
-    self.submitButton.layer.borderColor = [SUBMIT_BUTTON_BORDER_COLOR CGColor];
+    //    self.submitButton.layer.borderColor = [SUBMIT_BUTTON_BORDER_COLOR CGColor];
 }
 
 #pragma mark - VTClientDelegate
@@ -502,7 +546,7 @@
             self.paymentActivityOverlayView = [BTPaymentActivityOverlayView sharedOverlayView];
             [self.paymentActivityOverlayView show];
         }
-
+        
         [self.delegate paymentViewController:self didAuthorizeCardWithPaymentMethodCode:paymentMethodCode];
     }
 }
@@ -530,10 +574,10 @@
         // This is a hack.
         cornerRadius = 1;
     }
-
+    
     _cornerRadius = cornerRadius;
     self.cardView.cornerRadius = cornerRadius;
-    self.submitButton.layer.cornerRadius = cornerRadius;
+    //    self.submitButton.layer.cornerRadius = cornerRadius;
 }
 
 - (void)setViewBackgroundColor:(UIColor *)color {
@@ -639,7 +683,7 @@
         _cellBackgroundView.layer.shadowColor   = [[UIColor whiteColor] CGColor];
         _cellBackgroundView.layer.shadowOffset  = CGSizeMake(0, 1);
         _cellBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-
+        
         UIView *topShadowView = [[UIView alloc] initWithFrame:CGRectMake(3, 1, _cellBackgroundView.frame.size.width, 1)];
         topShadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         topShadowView.backgroundColor = [UIColor colorWithWhite:0 alpha:.1];
@@ -647,6 +691,20 @@
         [_cellBackgroundView addSubview:topShadowView];
     }
     return _cellBackgroundView;
+}
+
+- (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 @end
