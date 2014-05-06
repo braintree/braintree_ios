@@ -1,3 +1,7 @@
+## 2.3.0
+
+* Ensure compliance with Apple's new IDFA policies.
+
 ## 2.2.8
 
 * Fixes link to documentation

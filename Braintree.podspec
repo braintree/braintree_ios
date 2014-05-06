@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                = 'Braintree'
   s.summary             = 'The Braintree API helps businesses accept payments online.'
-  s.version             = '2.2.8'
+  s.version             = '2.3.0'
   s.license             = 'LICENSES'
   s.author              = { 'Braintree' => 'code@getbraintree.com' }
   s.homepage            = 'https://braintreepayments.com/'
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   s.source_files        = 'venmo-touch/VenmoTouch.framework/Headers/*.h', 'braintree/BTEncryption/*.{h,m}', 'braintree/BTPayment/*.{h,m}'
   s.preserve_paths      = 'venmo-touch/VenmoTouch.framework/*'
-  s.frameworks          = 'Foundation', 'UIKit', 'QuartzCore', 'CoreGraphics', 'Security', 'VenmoTouch', 'CoreTelephony', 'AdSupport', 'CoreText'
+  s.frameworks          = 'Foundation', 'UIKit', 'QuartzCore', 'CoreGraphics', 'Security', 'VenmoTouch', 'CoreTelephony', 'CoreText'
   s.xcconfig            = { 'FRAMEWORK_SEARCH_PATHS' => '"$(PODS_ROOT)/Braintree/venmo-touch"' }
   s.public_header_files = 'venmo-touch/VenmoTouch.framework/Headers/*.h', 'braintree/BTEncryption/*.h', 'braintree/BTPayment/*.h'
 

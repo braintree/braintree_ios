@@ -38,6 +38,16 @@
                ReferencedContainer = "container:braintree-ios (public).xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9C28666817053C34000C411C"
+               BuildableName = "SampleCheckoutTests.octest"
+               BlueprintName = "SampleCheckoutTests"
+               ReferencedContainer = "container:braintree_ios.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
