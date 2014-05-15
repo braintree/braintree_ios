@@ -53,6 +53,10 @@
 
 @property (nonatomic) BOOL UKSupportEnabled;
 
+// Allows for changing scroll offsets if using different font
+@property (nonatomic, assign) CGFloat scrollOffsetGeneric;
+@property (nonatomic, assign) CGFloat scrollOffsetAmex;
+
 // Initializes a new BTPaymentFormView with default size 300px X 40px
 + (BTPaymentFormView *)paymentFormView;
 

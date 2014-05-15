@@ -1,8 +1,6 @@
 #import "BTPaymentFormView.h"
 #import "BTPaymentCardUtils.h"
 
-#define BT_GENERIC_NUMBER_SCROLL_OFFSET 300
-#define BT_AMEX_NUMBER_SCROLL_OFFSET 271
 #define BT_REGEX_POSTCODE_UK @"(GIR[ ]?0AA)|((([A-Z-[QVX]][0-9][0-9]?)|(([A-Z-[QVX]][A-Z-[IJZ]][0-9][0-9]?)|(([A-Z-[QVX]][0-9][A-HJKSTUW])|([A-Z-[QVX]][A-Z-[IJZ]][0-9][ABEHMNPRVWXY]))))[ ]?[0-9][A-Z-[CIKMOV]]{2})"
 
 #define BT_REGEX_ZIP_USA @"^[0-9][0-9][0-9][0-9][0-9]$"
@@ -63,6 +61,9 @@ static NSInteger thisYear;
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
         _UKSupportEnabled = NO;
+
+        _scrollOffsetAmex = 271.0f;
+        _scrollOffsetGeneric = 300.0f;
         
         // images are 28 x 19
         cardImageName = @"BTGenericCard";
@@ -299,7 +300,7 @@ replacementString:(NSString *)string {
     if ([BTPaymentCardUtils isValidNumber:newCardNumberFormatted]) {
         // If card # is valid, give focus to MM/YY text field
         [scrollView scrollRectToVisible:
-         CGRectMake((newCardType.brand == BTCardBrandAMEX ?BT_AMEX_NUMBER_SCROLL_OFFSET : BT_GENERIC_NUMBER_SCROLL_OFFSET), 0, 100, 30)
+         CGRectMake((newCardType.brand == BTCardBrandAMEX ? self.scrollOffsetAmex : self.scrollOffsetGeneric), 0, 100, 30)
                                animated:YES];
         [monthYearTextField becomeFirstResponder];
         [self setSecondaryTextFieldsHidden:NO];
