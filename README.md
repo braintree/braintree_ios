@@ -1,4 +1,4 @@
-# Braintree iOS SDK
+# Braintree iOS/OS X SDK
 
 The iOS SDK provides developers with a collection of easy-to-use APIs for adding native payments to their iOS application. It has three components:
 
@@ -30,6 +30,7 @@ Checkout `braintree/SampleCheckout/README.md` for more details on running the sa
 * [Encryption](https://www.braintreepayments.com/docs/ios/encryption/overview): Client-side encryption allowing you to encrypt credit card data before sending it to your servers and on to the Braintree gateway, making PCI compliance a breeze.
 
 These components are designed to work together, but can be used independently of each other. For example, you could use Venmo Touch and client-side encryption without using the prebuilt payment form.
+On OS X, you need to implement a custom payment form and follow the [Encryption](https://www.braintreepayments.com/docs/ios/encryption/overview) guidelines.
 
 ## Documentation
 
