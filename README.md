@@ -2,9 +2,9 @@
 
 Braintree-iOS is a CocoaPod that provides easy and flexible Braintree payments in your iOS app.
 
-### Beta Release!
+### Release Candidate!
 
-This is the v3 **Beta** of the Braintree iOS SDK. Documentation and code are not final, and some bugs and issues remain. Public headers may change before 3.0.
+This is the v3 **Release Candidate** of the Braintree iOS SDK. Documentation and code are not final, and some bugs and issues remain. Public headers may change before 3.0.
 
 Please watch the [CHANGELOG.md](CHANGELOG.md) for changes, stay up to date with the latest pre-release, and don't hestitate to [contact us](#feedback) with any questions or feedback.
 
