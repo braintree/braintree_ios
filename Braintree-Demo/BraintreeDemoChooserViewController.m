@@ -1,0 +1,173 @@
+#import "BraintreeDemoChooserViewController.h"
+
+#import <Braintree/Braintree.h>
+
+#import "BraintreeDemoBraintreeInitializationDemoViewController.h"
+#import "BraintreeDemoPayPalButtonDemoViewController.h"
+#import "BraintreeDemoTokenizationDemoViewController.h"
+#import "BraintreeDemoTransactionService.h"
+
+@interface BraintreeDemoChooserViewController ()
+
+#pragma mark Status Cells
+@property (nonatomic, weak) IBOutlet UITableViewCell *braintreeStatusCell;
+@property (nonatomic, weak) IBOutlet UITableViewCell *braintreePaymentMethodNonceCell;
+@property (nonatomic, weak) IBOutlet UITableViewCell *braintreeTransactionCell;
+
+#pragma mark Initialization Cells
+
+@property (nonatomic, weak) IBOutlet UITableViewCell *initializeBraintreeCell;
+
+#pragma mark Drop-In Use Case Cells
+
+@property (nonatomic, weak) IBOutlet UITableViewCell *dropInPaymentViewControllerCell;
+@property (nonatomic, weak) IBOutlet UITableViewCell *customPayPalCell;
+
+#pragma mark Custom Use Case Cells
+
+@property (nonatomic, weak) IBOutlet UITableViewCell *tokenizationCell;
+
+#pragma mark Braintree Operation Cells
+
+@property (nonatomic, weak) IBOutlet UITableViewCell *makeATransactionCell;
+
+#pragma mark Meta Cells
+
+@property (nonatomic, weak) IBOutlet UITableViewCell *libraryVersionCell;
+
+#pragma mark Payment Data
+
+@property (nonatomic, strong) Braintree *braintree;
+@property (nonatomic, copy) NSString *nonce;
+@property (nonatomic, copy) NSString *lastTransactionId;
+
+@end
+
+@implementation BraintreeDemoChooserViewController
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.tableView reloadData];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    UIViewController *demoViewController;
+
+    if (selectedCell == self.initializeBraintreeCell) {
+        // Initialize Braintree
+        demoViewController = [[BraintreeDemoBraintreeInitializationDemoViewController alloc] initWithCompletion:^(Braintree *braintree, NSError *error){
+            self.braintree = braintree;
+            self.nonce = nil;
+            self.lastTransactionId = nil;
+            if (error) {
+                NSLog(@"Error initializing Braintree: %@", error);
+            }
+        }];
+    } else if (selectedCell == self.dropInPaymentViewControllerCell) {
+        // Drop-In (vanilla, no customization)
+        demoViewController = [self configuredDropInViewControllerWithCompletion:^(NSString *nonce, NSError *error) {
+            [self.navigationController popViewControllerAnimated:YES];
+            if (error) {
+                [self displayError:error forTask:@"Drop-In"];
+            } else {
+                self.nonce = nonce;
+                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                      atScrollPosition:UITableViewScrollPositionTop
+                                              animated:YES];
+            }
+        }];
+    } else if (selectedCell == self.customPayPalCell) {
+        // Custom usage of PayPal Button
+        demoViewController = [[BraintreeDemoPayPalButtonDemoViewController alloc] initWithBraintree:self.braintree];
+    } else if (selectedCell == self.tokenizationCell) {
+        // Custom card Tokenization
+        demoViewController = [[BraintreeDemoTokenizationDemoViewController alloc] initWithBraintree:self.braintree completion:^(BraintreeDemoTokenizationDemoViewController *viewController, NSString *nonce) {
+            self.nonce = nonce;
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+    } else if (selectedCell == self.makeATransactionCell) {
+        [[BraintreeDemoTransactionService sharedService]
+         makeTransactionWithPaymentMethodNonce:self.nonce
+         completion:^(NSString *transactionId, NSError *error){
+             if (error) {
+                 [self displayError:error forTask:@"Creating Transation"];
+             } else {
+                 self.lastTransactionId = transactionId;
+                 NSLog(@"Created transaction: %@", transactionId);
+                 [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                       atScrollPosition:UITableViewScrollPositionTop
+                                               animated:YES];
+             }
+         }];
+    }
+
+    if (demoViewController) {
+        [self.navigationController pushViewController:demoViewController
+                                             animated:YES];
+    }
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (cell == self.braintreeStatusCell) {
+        cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.braintree != nil);
+        cell.detailTextLabel.text = self.braintree ? [self.braintree description] : @"(nil)";
+    } else if (cell == self.braintreePaymentMethodNonceCell) {
+        cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil);
+        cell.detailTextLabel.text = self.nonce ?: @"(nil)";
+    } else if (cell == self.braintreeTransactionCell) {
+        cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.lastTransactionId != nil);
+        cell.detailTextLabel.text = self.lastTransactionId ?: @"(nil)";
+    } else if (cell == self.makeATransactionCell) {
+        cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil);
+    } else if (cell == self.libraryVersionCell) {
+        cell.textLabel.text = [NSString stringWithFormat:@"pod \"Braintree\", \"%@\"", [Braintree libraryVersion]];
+    } else {
+        if (!self.braintree && cell != self.initializeBraintreeCell) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.userInteractionEnabled = NO;
+            cell.textLabel.enabled = NO;
+            cell.detailTextLabel.enabled = NO;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.userInteractionEnabled = YES;
+            cell.textLabel.enabled = YES;
+            cell.detailTextLabel.enabled = YES;
+        }
+    }
+}
+
+- (BTDropInViewController *)configuredDropInViewControllerWithCompletion:(void (^)(NSString *, NSError *))completionBlock {
+    BTDropInViewController *dropInViewController = [self.braintree dropInViewControllerWithCompletion:completionBlock];
+
+    dropInViewController.title = @"Subscribe";
+    dropInViewController.summaryTitle = @"App Fancy Magazine";
+    dropInViewController.summaryDescription = @"53 Week Subscription";
+    dropInViewController.displayAmount = @"$19";
+    dropInViewController.callToActionText = @"$19 - Subscribe Now";
+    dropInViewController.shouldHideCallToAction = NO;
+
+    return dropInViewController;
+}
+
+- (void)setNonce:(NSString *)nonce {
+    _nonce = nonce;
+    self.lastTransactionId = nil;
+    [self.tableView reloadData];
+}
+- (void)setLastTransactionId:(NSString *)lastTransactionId {
+    _lastTransactionId = lastTransactionId;
+    [self.tableView reloadData];
+}
+
+- (void)displayError:(NSError *)error forTask:(NSString *)task {
+    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Error %@", task]
+                                message:[error localizedDescription]
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
+    NSLog(@"Failed %@: %@", task, error);
+}
+
+@end

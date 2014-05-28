@@ -1,0 +1,34 @@
+#import "BraintreeDemoCreditCardEntryViewController.h"
+
+@interface BraintreeDemoCreditCardEntryViewController ()<BTUICardFormViewDelegate>
+@property (weak, nonatomic) IBOutlet UITextView *successOutputTextView;
+
+@end
+
+@implementation BraintreeDemoCreditCardEntryViewController
+
+- (void)cardFormViewDidChange:(BTUICardFormView *)cardFormView {
+    if (cardFormView.valid) {
+        self.successOutputTextView.text = [NSString stringWithFormat:
+                                           @"😍 YOU DID IT \n"
+                                            "Number:     %@\n"
+                                            "Expiration: %@/%@\n"
+                                            "CVV:        %@\n"
+                                            "Postal:     %@",
+                                           cardFormView.number,
+                                           cardFormView.expirationMonth,
+                                           cardFormView.expirationYear,
+                                           cardFormView.cvv,
+                                           cardFormView.postalCode];
+    } else {
+        self.successOutputTextView.text = @"INVALID 🐴";
+    }
+}
+- (IBAction)toggleCVV:(id)sender {
+    self.cardFormView.optionalFields = self.cardFormView.optionalFields ^ BTUICardFormOptionalFieldsCvv;
+}
+- (IBAction)togglePostalCode:(id)sender {
+    self.cardFormView.optionalFields = self.cardFormView.optionalFields ^ BTUICardFormOptionalFieldsPostalCode;
+}
+
+@end

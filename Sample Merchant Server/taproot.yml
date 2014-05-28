@@ -1,0 +1,16 @@
+BraintreeAccounts:
+  qa_altpay:
+    environment: qa
+    merchant_id: altpay_merchant
+    public_key: altpay_merchant_public_key
+    private_key: altpay_merchant_private_key
+  altpay_merchant:
+    environment: development
+    merchant_id: altpay_merchant
+    public_key: altpay_merchant_public_key
+    private_key: altpay_merchant_private_key
+  integration_merchant:
+    environment: development
+    merchant_id: integration_merchant_id
+    public_key: integration_public_key
+    private_key: integration_private_key

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="5k7-KM-Pxu">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="0Nn-Ww-ePj">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="5k7-KM-Pxu" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="5Bc-cJ-imh">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="5e3-nL-119" kind="relationship" relationship="rootViewController" id="nS1-gi-oIM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYp-ql-xW3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-419" y="6"/>
+        </scene>
+        <!--Braintree Pay Pal Demo View Controller - BTPayPal Demo-->
+        <scene sceneID="K2Z-zx-HiO">
+            <objects>
+                <viewController id="5e3-nL-119" customClass="BraintreePayPalDemoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DxJ-vT-ZtZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="AWw-tF-xbS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kbl-vB-YXa">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="06n-uN-TeL" customClass="BTPayPalControl">
+                                <rect key="frame" x="12" y="22" width="296" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.83080267137096775" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="750" constant="45" id="EsC-Pa-fnV"/>
+                                </constraints>
+                            </view>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="JqV-bG-8UE">
+                                <rect key="frame" x="18" y="454" width="284" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="heightSliderValueDidChange:" destination="5e3-nL-119" eventType="valueChanged" id="ybu-D0-roO"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Custom Presentation Delegate" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="313-1r-mJT">
+                                <rect key="frame" x="20" y="422" width="223" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="y4a-fq-SDI">
+                                <rect key="frame" x="251" y="415" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="toggledShouldUseCustomPresentationDelegate:" destination="5e3-nL-119" eventType="valueChanged" id="kWa-RQ-Q0M"/>
+                                </connections>
+                            </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yMF-B7-JUk">
+                                <rect key="frame" x="73" y="81" width="174" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Change payment method">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetPayPalControl:" destination="5e3-nL-119" eventType="touchUpInside" id="LkM-zk-pFI"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="06n-uN-TeL" firstAttribute="top" secondItem="DxJ-vT-ZtZ" secondAttribute="bottom" constant="22" id="6RN-Qc-s3x"/>
+                            <constraint firstItem="AWw-tF-xbS" firstAttribute="top" secondItem="JqV-bG-8UE" secondAttribute="bottom" constant="20" id="Hub-YU-QKK"/>
+                            <constraint firstAttribute="centerX" secondItem="yMF-B7-JUk" secondAttribute="centerX" id="Mrv-Bg-zGg"/>
+                            <constraint firstItem="06n-uN-TeL" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="12" id="PJO-xB-vv3"/>
+                            <constraint firstItem="313-1r-mJT" firstAttribute="centerY" secondItem="y4a-fq-SDI" secondAttribute="centerY" id="WfJ-wD-RmN"/>
+                            <constraint firstItem="y4a-fq-SDI" firstAttribute="leading" secondItem="313-1r-mJT" secondAttribute="trailing" constant="8" id="XJD-8C-LBl"/>
+                            <constraint firstItem="JqV-bG-8UE" firstAttribute="top" secondItem="y4a-fq-SDI" secondAttribute="bottom" constant="8" id="YHQ-9X-29p"/>
+                            <constraint firstItem="JqV-bG-8UE" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="20" id="YXs-Ho-lTi"/>
+                            <constraint firstItem="yMF-B7-JUk" firstAttribute="top" secondItem="06n-uN-TeL" secondAttribute="bottom" constant="14" id="eS5-j6-4eE"/>
+                            <constraint firstAttribute="trailing" secondItem="JqV-bG-8UE" secondAttribute="trailing" constant="20" id="fwg-oJ-v7u"/>
+                            <constraint firstItem="313-1r-mJT" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="20" id="hCO-bE-Hqb"/>
+                            <constraint firstAttribute="trailing" secondItem="06n-uN-TeL" secondAttribute="trailing" constant="12" id="iy4-zh-oot"/>
+                            <constraint firstAttribute="trailing" secondItem="y4a-fq-SDI" secondAttribute="trailing" constant="20" id="mQv-75-fVX"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="BTPayPal Demo" id="FiQ-Lc-2bX"/>
+                    <connections>
+                        <outlet property="payPalControl" destination="06n-uN-TeL" id="ChV-xu-HP4"/>
+                        <outlet property="payPalControlHeightConstraint" destination="EsC-Pa-fnV" id="tMm-cC-sTv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vy3-fU-VuK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="234" y="6"/>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
