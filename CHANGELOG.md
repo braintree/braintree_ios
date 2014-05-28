@@ -1,8 +1,8 @@
 # Braintree iOS SDK Release Notes
 
-## 3.0.0-pre-*
+## 3.0.0-rc1
 
-* Initial preview release of the 3.0.0 version of the iOS SDK.
+* First release candidate of the 3.0.0 version of the iOS SDK.
 * Known issues:
     * Pre-release public APIs
     * SSL pinning not yet added
