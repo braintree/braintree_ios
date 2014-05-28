@@ -143,8 +143,8 @@ namespace :appledoc do
 end
 
 namespace :docs do
-  task :generate => 'appledoc:check' do
   desc "Generate apple docs as html"
+  task :generate => 'appledoc:check' do
     command = apple_doc_command << " --no-create-docset --keep-intermediate-files --create-html #{apple_doc_files}"
     run(command)
     puts "Generated HTML documentationa at appledocs/html"
