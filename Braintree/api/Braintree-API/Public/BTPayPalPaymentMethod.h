@@ -4,8 +4,8 @@
 /// a particular Braintree customer.
 ///
 /// @see BTPaymentMethod
-/// @see BTMutablePayPalAccount
-@interface BTPayPalAccount : BTPaymentMethod
+/// @see BTMutablePayPalPaymentMethod
+@interface BTPayPalPaymentMethod : BTPaymentMethod
 
 /// Email address associated with the PayPal Account.
 @property (nonatomic, readonly, copy) NSString *email;

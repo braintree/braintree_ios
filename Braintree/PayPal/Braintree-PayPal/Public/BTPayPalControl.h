@@ -2,6 +2,8 @@
 
 #import "Braintree-API.h"
 
+typedef void (^BTPayPalPaymentMethodCompletionBlock)(BTPaymentMethod *paymentMethod, NSError *error);
+
 @protocol BTPayPalControlDelegate;
 @protocol BTPayPalControlViewControllerPresenterDelegate;
 
@@ -17,12 +19,8 @@
 /// A delegate that is notified as the PayPal consent flow triggered by this control changes state.
 @property (nonatomic, weak) id<BTPayPalControlDelegate> delegate;
 
-/// As an alternative to `delegate`, you may additionally specify a block for state change
-/// notifications if a block-based interface is more convenient in your use case.
-///
-/// @param paymentMethodCompletionBlock A block to be invoked upon completion
-- (void)setPaymentMethodCompletionBlock:(void (^)(BTPaymentMethod *paymentMethod, NSError *error))paymentMethodCompletionBlock;
-
+/// As an alternative to `delegate`, you may additionally specify a block for completion.
+@property (nonatomic, copy) BTPayPalPaymentMethodCompletionBlock completionBlock;
 
 /// An optional delegate that is notified when the `BTPayPalControl` is requesting presentation of
 /// a view controller that will manage PayPal authentication flow.
@@ -32,9 +30,6 @@
 ///
 /// @see Braintree-API-iOS
 @property (nonatomic, strong) BTClient *client;
-
-/// Clear the currently logged-in user, if any.
-- (void)clear;
 
 @end
 
@@ -49,12 +44,20 @@
 ///
 ///  @param control The requesting `BTPayPalControl`
 ///  @param nonce   The nonce representing proof of an authorized payment method
-- (void)payPalControl:(BTPayPalControl *)control didCreatePayPalAccount:(BTPaymentMethod *)paymentMethod;
+- (void)payPalControl:(BTPayPalControl *)control didCreatePayPalPaymentMethod:(BTPaymentMethod *)paymentMethod;
 
-/// This message is sent when the payment method is no longer available
+/// This message is sent when the payment method could not be created.
 ///
 ///  @param control The requesting `BTPayPalControl`
 - (void)payPalControl:(BTPayPalControl *)control didFailWithError:(NSError *)error;
+
+@optional
+
+/// This message is sent when the user has authorized PayPal, and the payment method
+/// is about to be created.
+///
+///  @param control The requesting `BTPayPalControl`
+- (void)payPalControlWillCreatePayPalPaymentMethod:(BTPayPalControl *)control;
 
 @end
 

@@ -60,28 +60,16 @@
                                     <action selector="toggledShouldUseCustomPresentationDelegate:" destination="5e3-nL-119" eventType="valueChanged" id="kWa-RQ-Q0M"/>
                                 </connections>
                             </switch>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yMF-B7-JUk">
-                                <rect key="frame" x="73" y="81" width="174" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Change payment method">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="resetPayPalControl:" destination="5e3-nL-119" eventType="touchUpInside" id="LkM-zk-pFI"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="06n-uN-TeL" firstAttribute="top" secondItem="DxJ-vT-ZtZ" secondAttribute="bottom" constant="22" id="6RN-Qc-s3x"/>
                             <constraint firstItem="AWw-tF-xbS" firstAttribute="top" secondItem="JqV-bG-8UE" secondAttribute="bottom" constant="20" id="Hub-YU-QKK"/>
-                            <constraint firstAttribute="centerX" secondItem="yMF-B7-JUk" secondAttribute="centerX" id="Mrv-Bg-zGg"/>
                             <constraint firstItem="06n-uN-TeL" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="12" id="PJO-xB-vv3"/>
                             <constraint firstItem="313-1r-mJT" firstAttribute="centerY" secondItem="y4a-fq-SDI" secondAttribute="centerY" id="WfJ-wD-RmN"/>
                             <constraint firstItem="y4a-fq-SDI" firstAttribute="leading" secondItem="313-1r-mJT" secondAttribute="trailing" constant="8" id="XJD-8C-LBl"/>
                             <constraint firstItem="JqV-bG-8UE" firstAttribute="top" secondItem="y4a-fq-SDI" secondAttribute="bottom" constant="8" id="YHQ-9X-29p"/>
                             <constraint firstItem="JqV-bG-8UE" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="20" id="YXs-Ho-lTi"/>
-                            <constraint firstItem="yMF-B7-JUk" firstAttribute="top" secondItem="06n-uN-TeL" secondAttribute="bottom" constant="14" id="eS5-j6-4eE"/>
                             <constraint firstAttribute="trailing" secondItem="JqV-bG-8UE" secondAttribute="trailing" constant="20" id="fwg-oJ-v7u"/>
                             <constraint firstItem="313-1r-mJT" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="20" id="hCO-bE-Hqb"/>
                             <constraint firstAttribute="trailing" secondItem="06n-uN-TeL" secondAttribute="trailing" constant="12" id="iy4-zh-oot"/>

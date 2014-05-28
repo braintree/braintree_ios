@@ -115,8 +115,8 @@ Here's an example of saving a card:
 [braintree saveCardWithNumber:@"4111111111111111"
               expirationMonth:@"12"
                expirationYear:@"2018"
-                      success:^(BTCard *card) {
-                          NSLog(@"%@", card); // <BTCard: number:4111 expirationMonth:12 expirationYear:2014 type:VISA nonce:1234>
+                      success:^(BTCardPaymentMethod *card) {
+                          NSLog(@"%@", card); // <BTCardPaymentMethod: number:4111 expirationMonth:12 expirationYear:2014 type:VISA nonce:1234>
                        }
                       failure:^(NSError *error){
                           NSLog(@"%@", error.domain); // BTCustomerInputErrorDomain

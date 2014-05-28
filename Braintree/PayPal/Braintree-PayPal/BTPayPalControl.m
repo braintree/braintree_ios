@@ -9,10 +9,7 @@
 
 @interface BTPayPalControl () <BTPayPalViewControllerDelegate, BTPayPalControlViewControllerPresenterDelegate>
 
-@property (nonatomic, copy) void (^paymentMethodCompletionBlock)(BTPaymentMethod *paymentMethod, NSError *error);
-
-@property (nonatomic, strong) BTUIPaymentMethodView *loggedInView;
-@property (nonatomic, strong) BTPayPalControlContentView *loggedOutView;
+@property (nonatomic, strong) BTPayPalControlContentView *contentView;
 
 @property (nonatomic, strong) BTPayPalViewController *braintreePayPalViewController;
 @end
@@ -58,48 +55,23 @@
     [self setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
 
     // Create PayPal Control Content View (Logged out PayPal button)
-    self.loggedOutView = [[BTPayPalControlContentView alloc] initWithFrame:self.bounds];
-    [self.loggedOutView setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    // Create BTPaymentMethodView (Logged In view)
-    self.loggedInView = [[BTUIPaymentMethodView alloc] init];
-    self.loggedInView.type = BTUIPaymentMethodTypePayPal;
-    [self.loggedInView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.contentView = [[BTPayPalControlContentView alloc] initWithFrame:self.bounds];
+    [self.contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     // Add subviews
-    [self addSubview:self.loggedOutView];
-    [self addSubview:self.loggedInView];
+    [self addSubview:self.contentView];
 
     // Listen for taps
     [self addTarget:self action:@selector(didReceiveTouch) forControlEvents:UIControlEventTouchUpInside];
 
-
-    //The Control is Logged out on setup
-    [self updateViewsForLoggedOutState];
-
     // Constrain content to be flush
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[paymentMethodView]|" options:0 metrics:nil views:@{@"paymentMethodView": self.loggedInView}]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[paymentMethodView]|" options:0 metrics:nil views:@{@"paymentMethodView": self.loggedInView}]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[loggedOutView]|" options:0 metrics:nil views:@{@"loggedOutView": self.loggedOutView}]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[loggedOutView]|" options:0 metrics:nil views:@{@"loggedOutView": self.loggedOutView}]];
-}
-
-- (void)updateViewsForLoggedInState {
-    self.loggedInView.processing = NO;
-    self.userInteractionEnabled = NO;
-    self.loggedInView.alpha = 1.0f;
-    self.loggedOutView.alpha = 0.0f;
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:nil views:@{@"contentView": self.contentView}]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentView]|" options:0 metrics:nil views:@{@"contentView": self.contentView}]];
 }
 
 - (void)updateViewsForLoggedOutState {
     self.userInteractionEnabled = YES;
-    self.loggedInView.alpha = 0.0f;
-    self.loggedOutView.alpha = 1.0f;
-}
-
-- (void)updateViewsForProcessingState {
-    [self updateViewsForLoggedInState];
-    self.loggedInView.processing = YES;
+    self.contentView.alpha = 1.0f;
 }
 
 - (void)didReceiveTouch {
@@ -129,13 +101,13 @@
 
 #pragma mark State Change Messages
 
-- (void)informDelegateDidCreatePayPalAccount:(BTPayPalAccount *)payPalAccount {
-    if ([self.delegate respondsToSelector:@selector(payPalControl:didCreatePayPalAccount:)]) {
-        [self.delegate payPalControl:self didCreatePayPalAccount:payPalAccount];
+- (void)informDelegateDidCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
+    if ([self.delegate respondsToSelector:@selector(payPalControl:didCreatePayPalPaymentMethod:)]) {
+        [self.delegate payPalControl:self didCreatePayPalPaymentMethod:payPalPaymentMethod];
     }
 
-    if (self.paymentMethodCompletionBlock) {
-        self.paymentMethodCompletionBlock(payPalAccount, nil);
+    if (self.completionBlock) {
+        self.completionBlock(payPalPaymentMethod, nil);
     }
 }
 - (void)informDelegateDidFailWithError:(NSError *)error {
@@ -143,8 +115,8 @@
         [self.delegate payPalControl:self didFailWithError:error];
     }
 
-    if (self.paymentMethodCompletionBlock) {
-        self.paymentMethodCompletionBlock(nil, error);
+    if (self.completionBlock) {
+        self.completionBlock(nil, error);
     }
 }
 
@@ -152,29 +124,29 @@
 
 - (void)setHighlighted:(BOOL)highlighted {
     [super setHighlighted:highlighted];
-    [self.loggedOutView setHighlighted:highlighted];
+    [self.contentView setHighlighted:highlighted];
 }
 
 
 #pragma mark - BTPayPalViewControllerDelegate implementation
 
-- (void)payPalViewControllerWillCreatePayPalAccount:(BTPayPalViewController *)viewController {
-    [self updateViewsForProcessingState];
+- (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController {
     if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsDismissalOfViewController:)]) {
         [self.presentationDelegate payPalControl:self requestsDismissalOfViewController:viewController];
     }
+    if ([self.delegate respondsToSelector:@selector(payPalControlWillCreatePayPalPaymentMethod:)]) {
+        [self.delegate payPalControlWillCreatePayPalPaymentMethod:self];
+    }
 }
 
-- (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalAccount:(BTPayPalAccount *)payPalAccount {
-    [self.loggedInView setDetailDescription:payPalAccount.email];
-    [self updateViewsForLoggedInState];
+- (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
+    self.userInteractionEnabled = YES;
     self.braintreePayPalViewController = nil;
-
-    [self informDelegateDidCreatePayPalAccount:payPalAccount];
-
+    [self informDelegateDidCreatePayPalPaymentMethod:payPalPaymentMethod];
 }
 
 - (void)payPalViewController:(BTPayPalViewController *)viewController didFailWithError:(NSError *)error {
+    self.userInteractionEnabled = YES;
     NSLog(@"PayPal view controller failed with error: %@", error);
     self.braintreePayPalViewController = nil;
     if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsDismissalOfViewController:)]) {
@@ -185,7 +157,7 @@
 }
 
 - (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
-    [self updateViewsForLoggedOutState];
+    self.userInteractionEnabled = YES;
     self.braintreePayPalViewController = nil;
     if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsDismissalOfViewController:)]) {
         [self.presentationDelegate payPalControl:self requestsDismissalOfViewController:viewController];

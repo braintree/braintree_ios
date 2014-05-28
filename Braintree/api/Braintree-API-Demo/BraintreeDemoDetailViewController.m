@@ -64,9 +64,9 @@ NSString * BraintreeDemoDetailViewControllerResultPropertyPrototypeCell = @"Resu
             return 1;
             break;
         case BraintreeDemoDetailViewControllerSectionIndexResult:
-            if ([self.result isKindOfClass:[BTCard class]]) {
+            if ([self.result isKindOfClass:[BTCardPaymentMethod class]]) {
                 return 5;
-            } else if ([self.result isKindOfClass:[BTPayPalAccount class]]) {
+            } else if ([self.result isKindOfClass:[BTPayPalPaymentMethod class]]) {
                 return 3;
             } else if ([self.result isKindOfClass:[NSString class]]) {
                 return 1;
@@ -98,9 +98,9 @@ NSString * BraintreeDemoDetailViewControllerResultPropertyPrototypeCell = @"Resu
     switch (indexPath.section) {
         case BraintreeDemoDetailViewControllerSectionIndexResult:
             cell = [tableView dequeueReusableCellWithIdentifier:BraintreeDemoDetailViewControllerResultPropertyPrototypeCell];
-            if ([self.result isKindOfClass:[BTCard class]]) {
+            if ([self.result isKindOfClass:[BTCardPaymentMethod class]]) {
                 {
-                    BTCard *card = self.result;
+                    BTCardPaymentMethod *card = self.result;
                     switch (indexPath.row) {
                         case 0:
                             cell.textLabel.text = @"nonce";
@@ -126,9 +126,9 @@ NSString * BraintreeDemoDetailViewControllerResultPropertyPrototypeCell = @"Resu
                             break;
                     }
                 }
-            } else if ([self.result isKindOfClass:[BTPayPalAccount class]]) {
+            } else if ([self.result isKindOfClass:[BTPayPalPaymentMethod class]]) {
                 {
-                    BTPayPalAccount *card = self.result;
+                    BTPayPalPaymentMethod *card = self.result;
                     switch (indexPath.row) {
                         case 0:
                             cell.textLabel.text = @"nonce";

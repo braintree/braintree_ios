@@ -3,7 +3,7 @@
 /// A payment method returned by the Client API that represents a payment method associated with
 /// a particular Braintree customer.
 ///
-/// See also: BTCard and BTPayPalAccount.
+/// See also: BTCardPaymentMethod and BTPayPalPaymentMethod.
 @interface BTPaymentMethod : NSObject
 
 /// Unique token that, if unlocked, may be used to create payments

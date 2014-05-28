@@ -82,19 +82,19 @@
     }
 
     BTPaymentMethod *paymentMethod = [self.paymentMethods objectAtIndex:indexPath.row];
-    if ([paymentMethod isKindOfClass:[BTPayPalAccount class]]) {
-        BTPayPalAccount *payPalAccount = (BTPayPalAccount *)paymentMethod;
+    if ([paymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
+        BTPayPalPaymentMethod *payPalPaymentMethod = (BTPayPalPaymentMethod *)paymentMethod;
         NSString *typeString = @"PayPal";
-        NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, (payPalAccount.description ?: @"")]];
+        NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, (payPalPaymentMethod.description ?: @"")]];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
-        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [payPalAccount.description length])];
+        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [payPalPaymentMethod.description length])];
         cell.textLabel.attributedText = typeWithDescription;
 
         BTUIPayPalMonogramColorView *ppMonogram = [[BTUIPayPalMonogramColorView alloc] init];
         UIImage *icon = [ppMonogram imageOfSize:CGSizeMake(42, 23)];
         cell.imageView.image = icon;
-    } else if([paymentMethod isKindOfClass:[BTCard class]]) {
-        BTCard *card = (BTCard *)paymentMethod;
+    } else if([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
+        BTCardPaymentMethod *card = (BTCardPaymentMethod *)paymentMethod;
         NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", card.typeString, card.description]];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [card.typeString length])];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([card.typeString length], [card.description length])];

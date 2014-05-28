@@ -1,6 +1,6 @@
-#import "BTCard.h"
+#import "BTCardPaymentMethod.h"
 
-@interface BTCard ()
+@interface BTCardPaymentMethod ()
 
 @property (nonatomic, readwrite, assign) BTCardType type;
 @property (nonatomic, readwrite, copy) NSString *typeString;

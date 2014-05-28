@@ -1,6 +1,6 @@
-#import "BTCard_Mutable.h"
+#import "BTCardPaymentMethod_Mutable.h"
 
-@implementation BTCard
+@implementation BTCardPaymentMethod
 
 - (NSString *)typeString {
     switch(self.type) {

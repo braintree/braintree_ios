@@ -48,7 +48,7 @@ The library is broken up into a number of layers, ranging from front-facing API 
 
 ### Domain Resources
 
-* `BTPaymentMethod`, `BTCard` and friends - Type safe representations of Braintree resources.
+* `BTPaymentMethod`, `BTCardPaymentMethod` and friends - Type safe representations of Braintree resources.
 
 ### Service
 

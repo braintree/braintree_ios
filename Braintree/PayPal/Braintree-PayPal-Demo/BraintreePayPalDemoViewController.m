@@ -35,10 +35,6 @@
     [self.view layoutIfNeeded];
 }
 
-- (IBAction)resetPayPalControl:(id)sender {
-    [self.payPalControl clear];
-}
-
 - (IBAction)toggledShouldUseCustomPresentationDelegate:(UISwitch *)sender {
     self.payPalControl.presentationDelegate = (sender.on ? self : nil);
 }
@@ -58,7 +54,7 @@
 
 #pragma mark - BTPayPalControlDelegate implementation
 
-- (void)payPalControl:(BTPayPalControl *)control didCreatePayPalAccount:(NSString *)paymentMethod {
+- (void)payPalControl:(BTPayPalControl *)control didCreatePayPalPaymentMethod:(NSString *)paymentMethod {
     NSLog(@"payPalControl:%@ addedPaymentMethod:%@", control, paymentMethod);
 }
 

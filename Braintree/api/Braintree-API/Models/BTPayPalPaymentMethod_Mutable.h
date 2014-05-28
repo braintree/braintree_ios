@@ -1,6 +1,6 @@
-#import "BTPayPalAccount.h"
+#import "BTPayPalPaymentMethod.h"
 #import "BTPaymentMethod_Mutable.h"
 
-@interface BTPayPalAccount ()
+@interface BTPayPalPaymentMethod ()
 @property (nonatomic, readwrite, copy) NSString *email;
 @end

@@ -1,6 +1,6 @@
 #import "BTOfflineClientBackend.h"
-#import "BTMutableCard.h"
-#import "BTMutablePayPalAccount.h"
+#import "BTMutableCardPaymentMethod.h"
+#import "BTMutablePayPalPaymentMethod.h"
 
 SpecBegin(BTOfflineClientBackend)
 
@@ -34,7 +34,7 @@ describe(@"add payment method", ^{
     it(@"adds a card to the list", ^{
         BTOfflineClientBackend *offlineClientBackend = [BTOfflineClientBackend new];
 
-        BTMutableCard *card = [BTMutableCard new];
+        BTMutableCardPaymentMethod *card = [BTMutableCardPaymentMethod new];
         [card setNonce:@"a nonce"];
         [card setTypeString:@"Visa"];
 
@@ -46,15 +46,15 @@ describe(@"add payment method", ^{
 
     it(@"adds a PayPal account to the list", ^{
         BTOfflineClientBackend *offlineClientBackend = [BTOfflineClientBackend new];
-        BTMutablePayPalAccount *payPalAccount = [BTMutablePayPalAccount new];
-        [payPalAccount setNonce:@"1234"];
-        [payPalAccount setEmail:@"email@example.com"];
+        BTMutablePayPalPaymentMethod *payPalPaymentMethod = [BTMutablePayPalPaymentMethod new];
+        [payPalPaymentMethod setNonce:@"1234"];
+        [payPalPaymentMethod setEmail:@"email@example.com"];
 
-        [offlineClientBackend addPaymentMethod:payPalAccount];
+        [offlineClientBackend addPaymentMethod:payPalPaymentMethod];
 
         expect([[[offlineClientBackend allPaymentMethods] firstObject] nonce]).to.equal(@"1234");
         expect([[[offlineClientBackend allPaymentMethods] firstObject] email]).to.equal(@"email@example.com");
-        expect([[offlineClientBackend allPaymentMethods] firstObject]).to.equal(payPalAccount);
+        expect([[offlineClientBackend allPaymentMethods] firstObject]).to.equal(payPalPaymentMethod);
     });
 
     it(@"has no persistence from instance to instance", ^{

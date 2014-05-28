@@ -1,4 +1,4 @@
-#import "BTCard.h"
+#import "BTCardPaymentMethod.h"
 #import "BTUIPaymentMethodType.h"
 
 @interface BTDropInUtil : NSObject

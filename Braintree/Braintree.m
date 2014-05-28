@@ -39,7 +39,7 @@
                                 cvv:nil
                          postalCode:nil
                            validate:NO
-                            success:^(BTCard *card) {
+                            success:^(BTCardPaymentMethod *card) {
                                 if (completionBlock) {
                                     completionBlock(card.nonce, nil);
                                 }
@@ -67,9 +67,9 @@
     }
     BTPayPalControl *control = [self payPalControl];
     control.client = self.client;
-    [control setPaymentMethodCompletionBlock:^(BTPaymentMethod *paymentMethod, NSError *error) {
+    control.completionBlock = ^(BTPaymentMethod *paymentMethod, NSError *error) {
         completionBlock(paymentMethod ? paymentMethod.nonce : nil, error ?: nil);
-    }];
+    };
 
     return control;
 }

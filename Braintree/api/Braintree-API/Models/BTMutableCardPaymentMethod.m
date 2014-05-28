@@ -1,6 +1,6 @@
-#import "BTMutableCard.h"
+#import "BTMutableCardPaymentMethod.h"
 
-@implementation BTMutableCard
+@implementation BTMutableCardPaymentMethod
 
 - (instancetype)init {
     self = [super init];

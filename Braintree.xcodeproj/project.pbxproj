@@ -192,31 +192,31 @@
 		1613815D1923074000C3B5BE /* BTDropInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInViewController.h; sourceTree = "<group>"; };
 		1613815E1923074000C3B5BE /* BTDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInViewController.m; sourceTree = "<group>"; };
 		1621741F192D85EB008DC35D /* Braintree-API.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-API.h"; sourceTree = "<group>"; };
-		16217420192D85EB008DC35D /* BTCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCard.h; sourceTree = "<group>"; };
+		16217420192D85EB008DC35D /* BTCardPaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardPaymentMethod.h; sourceTree = "<group>"; };
 		16217421192D85EB008DC35D /* BTClient+Offline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+Offline.h"; sourceTree = "<group>"; };
 		16217422192D85EB008DC35D /* BTClient+Testing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+Testing.h"; sourceTree = "<group>"; };
 		16217423192D85EB008DC35D /* BTClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClient.h; sourceTree = "<group>"; };
 		16217424192D85EB008DC35D /* BTClientToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTClientToken.h; sourceTree = "<group>"; };
 		16217425192D85EB008DC35D /* BTErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTErrors.h; sourceTree = "<group>"; };
 		16217426192D85EB008DC35D /* BTPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentMethod.h; sourceTree = "<group>"; };
-		16217427192D85EB008DC35D /* BTPayPalAccount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAccount.h; sourceTree = "<group>"; };
+		16217427192D85EB008DC35D /* BTPayPalPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalPaymentMethod.h; sourceTree = "<group>"; };
 		16217429192D85EB008DC35D /* BTClient+Offline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTClient+Offline.m"; sourceTree = "<group>"; };
 		1621742A192D85EB008DC35D /* BTClient+Testing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTClient+Testing.m"; sourceTree = "<group>"; };
 		1621742B192D85EB008DC35D /* BTClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTClient.m; sourceTree = "<group>"; };
 		1621742C192D85EB008DC35D /* BTClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTClient_Internal.h; sourceTree = "<group>"; };
 		1621742D192D85EB008DC35D /* BTClientToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientToken.m; sourceTree = "<group>"; };
-		1621742F192D85EB008DC35D /* BTPayPalAccount_Mutable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTPayPalAccount_Mutable.h; path = Models/BTPayPalAccount_Mutable.h; sourceTree = "<group>"; };
-		16217430192D85EB008DC35D /* BTCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTCard.m; path = Models/BTCard.m; sourceTree = "<group>"; };
-		16217431192D85EB008DC35D /* BTCard_Mutable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTCard_Mutable.h; path = Models/BTCard_Mutable.h; sourceTree = "<group>"; };
-		16217432192D85EB008DC35D /* BTMutableCard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTMutableCard.h; path = Models/BTMutableCard.h; sourceTree = "<group>"; };
-		16217433192D85EB008DC35D /* BTMutableCard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTMutableCard.m; path = Models/BTMutableCard.m; sourceTree = "<group>"; };
+		1621742F192D85EB008DC35D /* BTPayPalPaymentMethod_Mutable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTPayPalPaymentMethod_Mutable.h; path = Models/BTPayPalPaymentMethod_Mutable.h; sourceTree = "<group>"; };
+		16217430192D85EB008DC35D /* BTCardPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTCardPaymentMethod.m; path = Models/BTCardPaymentMethod.m; sourceTree = "<group>"; };
+		16217431192D85EB008DC35D /* BTCardPaymentMethod_Mutable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTCardPaymentMethod_Mutable.h; path = Models/BTCardPaymentMethod_Mutable.h; sourceTree = "<group>"; };
+		16217432192D85EB008DC35D /* BTMutableCardPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTMutableCardPaymentMethod.h; path = Models/BTMutableCardPaymentMethod.h; sourceTree = "<group>"; };
+		16217433192D85EB008DC35D /* BTMutableCardPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTMutableCardPaymentMethod.m; path = Models/BTMutableCardPaymentMethod.m; sourceTree = "<group>"; };
 		16217434192D85EB008DC35D /* BTMutablePaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTMutablePaymentMethod.h; path = Models/BTMutablePaymentMethod.h; sourceTree = "<group>"; };
 		16217435192D85EB008DC35D /* BTMutablePaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTMutablePaymentMethod.m; path = Models/BTMutablePaymentMethod.m; sourceTree = "<group>"; };
 		16217436192D85EB008DC35D /* BTPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTPaymentMethod.m; path = Models/BTPaymentMethod.m; sourceTree = "<group>"; };
 		16217437192D85EB008DC35D /* BTPaymentMethod_Mutable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTPaymentMethod_Mutable.h; path = Models/BTPaymentMethod_Mutable.h; sourceTree = "<group>"; };
-		16217438192D85EB008DC35D /* BTPayPalAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTPayPalAccount.m; path = Models/BTPayPalAccount.m; sourceTree = "<group>"; };
-		16217439192D85EB008DC35D /* BTMutablePayPalAccount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTMutablePayPalAccount.h; path = Models/BTMutablePayPalAccount.h; sourceTree = "<group>"; };
-		1621743A192D85EB008DC35D /* BTMutablePayPalAccount.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTMutablePayPalAccount.m; path = Models/BTMutablePayPalAccount.m; sourceTree = "<group>"; };
+		16217438192D85EB008DC35D /* BTPayPalPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTPayPalPaymentMethod.m; path = Models/BTPayPalPaymentMethod.m; sourceTree = "<group>"; };
+		16217439192D85EB008DC35D /* BTMutablePayPalPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTMutablePayPalPaymentMethod.h; path = Models/BTMutablePayPalPaymentMethod.h; sourceTree = "<group>"; };
+		1621743A192D85EB008DC35D /* BTMutablePayPalPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTMutablePayPalPaymentMethod.m; path = Models/BTMutablePayPalPaymentMethod.m; sourceTree = "<group>"; };
 		1621743C192D85EB008DC35D /* BTHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTHTTP.h; path = Networking/BTHTTP.h; sourceTree = "<group>"; };
 		1621743D192D85EB008DC35D /* BTHTTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = BTHTTP.m; path = Networking/BTHTTP.m; sourceTree = "<group>"; };
 		1621743E192D85EB008DC35D /* BTHTTPResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTHTTPResponse.h; path = Networking/BTHTTPResponse.h; sourceTree = "<group>"; };
@@ -710,14 +710,14 @@
 			isa = PBXGroup;
 			children = (
 				1621741F192D85EB008DC35D /* Braintree-API.h */,
-				16217420192D85EB008DC35D /* BTCard.h */,
+				16217420192D85EB008DC35D /* BTCardPaymentMethod.h */,
 				16217421192D85EB008DC35D /* BTClient+Offline.h */,
 				16217422192D85EB008DC35D /* BTClient+Testing.h */,
 				16217423192D85EB008DC35D /* BTClient.h */,
 				16217424192D85EB008DC35D /* BTClientToken.h */,
 				16217425192D85EB008DC35D /* BTErrors.h */,
 				16217426192D85EB008DC35D /* BTPaymentMethod.h */,
-				16217427192D85EB008DC35D /* BTPayPalAccount.h */,
+				16217427192D85EB008DC35D /* BTPayPalPaymentMethod.h */,
 			);
 			name = "@Public API";
 			path = Public;
@@ -738,18 +738,18 @@
 		1621743B192D85EB008DC35D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1621742F192D85EB008DC35D /* BTPayPalAccount_Mutable.h */,
-				16217430192D85EB008DC35D /* BTCard.m */,
-				16217431192D85EB008DC35D /* BTCard_Mutable.h */,
-				16217432192D85EB008DC35D /* BTMutableCard.h */,
-				16217433192D85EB008DC35D /* BTMutableCard.m */,
+				1621742F192D85EB008DC35D /* BTPayPalPaymentMethod_Mutable.h */,
+				16217430192D85EB008DC35D /* BTCardPaymentMethod.m */,
+				16217431192D85EB008DC35D /* BTCardPaymentMethod_Mutable.h */,
+				16217432192D85EB008DC35D /* BTMutableCardPaymentMethod.h */,
+				16217433192D85EB008DC35D /* BTMutableCardPaymentMethod.m */,
 				16217434192D85EB008DC35D /* BTMutablePaymentMethod.h */,
 				16217435192D85EB008DC35D /* BTMutablePaymentMethod.m */,
 				16217436192D85EB008DC35D /* BTPaymentMethod.m */,
 				16217437192D85EB008DC35D /* BTPaymentMethod_Mutable.h */,
-				16217438192D85EB008DC35D /* BTPayPalAccount.m */,
-				16217439192D85EB008DC35D /* BTMutablePayPalAccount.h */,
-				1621743A192D85EB008DC35D /* BTMutablePayPalAccount.m */,
+				16217438192D85EB008DC35D /* BTPayPalPaymentMethod.m */,
+				16217439192D85EB008DC35D /* BTMutablePayPalPaymentMethod.h */,
+				1621743A192D85EB008DC35D /* BTMutablePayPalPaymentMethod.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";

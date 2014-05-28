@@ -97,12 +97,12 @@
     return operation;
 }
 
-- (BraintreeDemoClientOperation *)savePayPalAccountOperation {
+- (BraintreeDemoClientOperation *)savePayPalPaymentMethodOperation {
     BraintreeDemoClientOperation *operation = [BraintreeDemoClientOperation new];
     operation.name = @"Save PayPal Account";
     operation.block = ^(void (^callback)(id result, NSError *error)) {
-        [self.client savePaypalPaymentMethodWithAuthCode:@"authCode" success:^(BTPayPalAccount *paypalAccount) {
-            callback(paypalAccount, nil);
+        [self.client savePaypalPaymentMethodWithAuthCode:@"authCode" success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+            callback(paypalPaymentMethod, nil);
         } failure:^(NSError *error) {
             callback(nil, error);
         }];

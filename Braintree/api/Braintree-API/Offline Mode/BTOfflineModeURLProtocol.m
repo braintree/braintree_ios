@@ -1,7 +1,7 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTOfflineClientBackend.h"
-#import "BTMutableCard.h"
-#import "BTMutablePayPalAccount.h"
+#import "BTMutableCardPaymentMethod.h"
+#import "BTMutablePayPalPaymentMethod.h"
 #import <objc/runtime.h>
 
 NSString *const BTOfflineModeClientApiBaseURL = @"braintree-api-offline-http://client-api";
@@ -62,7 +62,7 @@ static BTOfflineClientBackend *backend;
         NSString *number = requestObject[@"credit_card[number]"];
         NSString *lastTwo = [number substringFromIndex:([number length] - 2)];
 
-        BTMutableCard *card = [BTMutableCard new];
+        BTMutableCardPaymentMethod *card = [BTMutableCardPaymentMethod new];
         card.lastTwo = lastTwo;
         card.typeString = [self cardTypeStringForNumber:number];
 
@@ -89,11 +89,11 @@ static BTOfflineClientBackend *backend;
             responseData = nil;
         }
     } else if ([request.HTTPMethod isEqualToString:@"POST"] && [request.URL.path isEqualToString:@"/v1/payment_methods/paypal_accounts"]) {
-        BTMutablePayPalAccount *payPalAccount = [BTMutablePayPalAccount new];
-        payPalAccount.email = @"fake.paypal.customer@example.com";
+        BTMutablePayPalPaymentMethod *payPalPaymentMethod = [BTMutablePayPalPaymentMethod new];
+        payPalPaymentMethod.email = @"fake.paypal.customer@example.com";
 
-        if (payPalAccount) {
-            [[[self class] backend] addPaymentMethod:payPalAccount];
+        if (payPalPaymentMethod) {
+            [[[self class] backend] addPaymentMethod:payPalPaymentMethod];
             response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
                                                    statusCode:201
                                                   HTTPVersion:BTOfflineModeHTTPVersionString
@@ -101,7 +101,7 @@ static BTOfflineClientBackend *backend;
 
             responseData = ({
                 NSError *error;
-                NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"paypalAccounts": @[ [self responseDictionaryForPaymentMethod:payPalAccount] ] }
+                NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"paypalPaymentMethods": @[ [self responseDictionaryForPaymentMethod:payPalPaymentMethod] ] }
                                                                options:0
                                                                  error:&error];
                 NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
@@ -153,16 +153,16 @@ static BTOfflineClientBackend *backend;
 #pragma mark Response Generation
 
 - (NSDictionary *)responseDictionaryForPaymentMethod:(BTPaymentMethod *)paymentMethod {
-    if ([paymentMethod isKindOfClass:[BTCard class]]) {
-        return [self responseDictionaryForCard:(BTCard *)paymentMethod];
-    } else if ([paymentMethod isKindOfClass:[BTPayPalAccount class]]) {
-        return [self responseDictionaryForPayPalAccount];
+    if ([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
+        return [self responseDictionaryForCard:(BTCardPaymentMethod *)paymentMethod];
+    } else if ([paymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
+        return [self responseDictionaryForPayPalPaymentMethod];
     } else {
         return nil;
     }
 }
 
-- (NSDictionary *)responseDictionaryForCard:(BTCard *)card {
+- (NSDictionary *)responseDictionaryForCard:(BTCardPaymentMethod *)card {
     return @{
              @"nonce": [self generateNonce],
              @"details": @{
@@ -175,12 +175,12 @@ static BTOfflineClientBackend *backend;
              };
 }
 
-- (NSDictionary *)responseDictionaryForPayPalAccount {
+- (NSDictionary *)responseDictionaryForPayPalPaymentMethod {
     return @{
              @"nonce": [self generateNonce],
              @"isLocked": @0,
              @"details": @{ @"email": @"email@example.com" },
-             @"type": @"PayPalAccount"
+             @"type": @"PayPalPaymentMethod"
              };
 }
 

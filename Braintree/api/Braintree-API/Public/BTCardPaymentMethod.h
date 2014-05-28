@@ -21,8 +21,8 @@ typedef NS_ENUM(NSInteger, BTCardType) {
 /// A payment method returned by the Client API that represents a Card associated with
 /// a particular Braintree customer.
 ///
-/// See also: BTPaymentMethod and BTMutableCard.
-@interface BTCard : BTPaymentMethod
+/// See also: BTPaymentMethod and BTMutableCardPaymentMethod.
+@interface BTCardPaymentMethod : BTPaymentMethod
 
 /// Type of card
 @property (nonatomic, readonly, assign) BTCardType type;

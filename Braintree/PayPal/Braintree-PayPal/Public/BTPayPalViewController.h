@@ -42,14 +42,14 @@
 /// success (i.e. nonce) or error (i.e. failure to create a nonce) occurs.
 ///
 /// @param viewController The `BTPayPalViewController` that will create the nonce.
-- (void)payPalViewControllerWillCreatePayPalAccount:(BTPayPalViewController *)viewController;
+- (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController;
 
 /// The PayPal View Controller will send this message when the PayPal consent flow is complete and a payment method
 /// has been created. You can send its nonce value to your server for creating a transaction, subscription, etc.
 ///
 /// @param viewController The `BTPayPalViewController` that did create the nonce
 /// @param PayPal account payment method that contains a nonce
-- (void)payPalViewController:(BTPayPalViewController *)viewController didCreatePayPalAccount:(BTPayPalAccount *)payPalAccount;
+- (void)payPalViewController:(BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod;
 
 /// The PayPal View Controller will send this message when a nonce could not be created.
 ///

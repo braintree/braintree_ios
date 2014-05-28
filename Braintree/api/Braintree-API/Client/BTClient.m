@@ -3,8 +3,8 @@
 #import "BTClientToken.h"
 #import "BTLogger.h"
 #import "BTMutablePaymentMethod.h"
-#import "BTMutablePayPalAccount.h"
-#import "BTMutableCard.h"
+#import "BTMutablePayPalPaymentMethod.h"
+#import "BTMutableCardPaymentMethod.h"
 #import "BTHTTP.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
@@ -106,7 +106,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self.http POST:@"v1/payment_methods/credit_cards" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             NSDictionary *creditCardResponse = response.object[@"creditCards"][0];
-            BTCard *paymentMethod = [[self class] cardFromAPIResponseDictionary:creditCardResponse];
+            BTCardPaymentMethod *paymentMethod = [[self class] cardFromAPIResponseDictionary:creditCardResponse];
 
             if (successBlock) {
                 successBlock(paymentMethod);
@@ -139,9 +139,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self.http POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSDictionary *paypalAccountResponse = response.object[@"paypalAccounts"][0];
-                BTPayPalAccount *payPalAccount = [[self class] payPalAccountFromAPIResponseDictionary:paypalAccountResponse];
-                successBlock(payPalAccount);
+                NSDictionary *paypalPaymentMethodResponse = response.object[@"paypalPaymentMethods"][0];
+                BTPayPalPaymentMethod *payPalPaymentMethod = [[self class] payPalPaymentMethodFromAPIResponseDictionary:paypalPaymentMethodResponse];
+                successBlock(payPalPaymentMethod);
             }
         } else {
             if (failureBlock) {
@@ -156,27 +156,27 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 + (BTPaymentMethod *)paymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
     if ([response[@"type"] isEqual:@"CreditCard"]) {
         return [self cardFromAPIResponseDictionary:response];
-    } else if ([response[@"type"] isEqual:@"PayPalAccount"]) {
-        return [self payPalAccountFromAPIResponseDictionary:response];
+    } else if ([response[@"type"] isEqual:@"PayPalPaymentMethod"]) {
+        return [self payPalPaymentMethodFromAPIResponseDictionary:response];
     } else {
         return nil;
     }
 }
 
-+ (BTPayPalAccount *)payPalAccountFromAPIResponseDictionary:(NSDictionary *)response {
-    BTMutablePayPalAccount *payPalAccount;
++ (BTPayPalPaymentMethod *)payPalPaymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
+    BTMutablePayPalPaymentMethod *payPalPaymentMethod;
     if ([response respondsToSelector:@selector(objectForKeyedSubscript:)]) {
-        payPalAccount             = [BTMutablePayPalAccount new];
-        payPalAccount.nonce       = response[@"nonce"];
-        payPalAccount.locked      = [response[@"isLocked"] boolValue];
-        payPalAccount.email       = response[@"details"][@"email"];
-        payPalAccount.description = response[@"description"];
+        payPalPaymentMethod             = [BTMutablePayPalPaymentMethod new];
+        payPalPaymentMethod.nonce       = response[@"nonce"];
+        payPalPaymentMethod.locked      = [response[@"isLocked"] boolValue];
+        payPalPaymentMethod.email       = response[@"details"][@"email"];
+        payPalPaymentMethod.description = response[@"description"];
     }
-    return payPalAccount;
+    return payPalPaymentMethod;
 }
 
-+ (BTCard *)cardFromAPIResponseDictionary:(NSDictionary *)responseObject {
-    BTMutableCard *card = [[BTMutableCard alloc] init];
++ (BTCardPaymentMethod *)cardFromAPIResponseDictionary:(NSDictionary *)responseObject {
+    BTMutableCardPaymentMethod *card = [[BTMutableCardPaymentMethod alloc] init];
 
     card.description        = responseObject[@"description"];
     card.typeString         = responseObject[@"details"][@"cardType"];

@@ -68,13 +68,13 @@
             [self.delegate payPalViewController:self didFailWithError:error];
         }
     } else {
-        if ([self.delegate respondsToSelector:@selector(payPalViewControllerWillCreatePayPalAccount:)]) {
-            [self.delegate payPalViewControllerWillCreatePayPalAccount:self];
+        if ([self.delegate respondsToSelector:@selector(payPalViewControllerWillCreatePayPalPaymentMethod:)]) {
+            [self.delegate payPalViewControllerWillCreatePayPalPaymentMethod:self];
         }
 
-        [self.client savePaypalPaymentMethodWithAuthCode:authCode success:^(BTPayPalAccount *paypalAccount) {
-            if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalAccount:)]) {
-                [self.delegate payPalViewController:self didCreatePayPalAccount:paypalAccount];
+        [self.client savePaypalPaymentMethodWithAuthCode:authCode success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+            if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalPaymentMethod:)]) {
+                [self.delegate payPalViewController:self didCreatePayPalPaymentMethod:paypalPaymentMethod];
             }
         } failure:^(NSError *error) {
             [self.delegate payPalViewController:self didFailWithError:error];

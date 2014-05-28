@@ -88,7 +88,7 @@ describe(@"save card", ^{
                                        cvv:nil
                                 postalCode:nil
                                   validate:YES
-                                   success:^(BTCard *card) {
+                                   success:^(BTCardPaymentMethod *card) {
                                        expect(card.isLocked).to.beFalsy();
                                        expect(card.type).to.equal(BTCardTypeMasterCard);
                                        expect(card.lastTwo).to.equal(@"44");
@@ -184,7 +184,7 @@ describe(@"save card", ^{
                                                 cvv:@"100"
                                          postalCode:@"15213"
                                            validate:YES
-                                            success:^(BTCard *card) {
+                                            success:^(BTCardPaymentMethod *card) {
                                                 expect(card.nonce).to.beANonce();
                                                 expect(card.isLocked).to.beFalsy();
                                                 done();
@@ -352,9 +352,9 @@ describe(@"clients with PayPal activated", ^{
     });
 
     it(@"can save a PayPal payment method based on an auth code", ^AsyncBlock{
-        [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode" success:^(BTPayPalAccount *payPalAccount){
-            expect(payPalAccount.nonce).to.beANonce();
-            expect(payPalAccount.email).notTo.beNil();
+        [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode" success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
+            expect(payPalPaymentMethod.nonce).to.beANonce();
+            expect(payPalPaymentMethod.email).notTo.beNil();
             done();
         } failure:nil];
     });

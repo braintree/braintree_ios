@@ -211,7 +211,7 @@
                                         cvv:cardForm.cvv
                                  postalCode:cardForm.postalCode
                                    validate:YES
-                                    success:^(BTCard *card) {
+                                    success:^(BTCardPaymentMethod *card) {
                                         [self informDelegateDidAddPaymentMethod:card];
                                     }
                                     failure:^(NSError *error) {
@@ -267,7 +267,7 @@
 
 #pragma mark PayPal Control Delegate methods
 
-- (void)payPalControl:(__unused BTPayPalControl *)control didCreatePayPalAccount:(__unused BTPaymentMethod *)paymentMethod {
+- (void)payPalControl:(__unused BTPayPalControl *)control didCreatePayPalPaymentMethod:(__unused BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
@@ -364,10 +364,10 @@
     } else {
         self.dropInContentView.state = BTDropInContentViewStatePaymentMethodsOnFile;
         BTPaymentMethod *defaultPaymentMethod = [self selectedPaymentMethod];
-        if ([defaultPaymentMethod isKindOfClass:[BTCard class]]) {
-            BTUIPaymentMethodType uiPaymentMethodType = [BTDropInUtil uiForCardType:((BTCard *)defaultPaymentMethod).type];
+        if ([defaultPaymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
+            BTUIPaymentMethodType uiPaymentMethodType = [BTDropInUtil uiForCardType:((BTCardPaymentMethod *)defaultPaymentMethod).type];
             self.dropInContentView.selectedPaymentMethodView.type =  uiPaymentMethodType;
-        } else if ([defaultPaymentMethod isKindOfClass:[BTPayPalAccount class]]) {
+        } else if ([defaultPaymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
             self.dropInContentView.selectedPaymentMethodView.type = BTUIPaymentMethodTypePayPal;
         } else {
             self.dropInContentView.selectedPaymentMethodView.type = BTUIPaymentMethodTypeUnknown;

@@ -1,27 +1,27 @@
-#import "BTMutablePayPalAccount.h"
+#import "BTMutablePayPalPaymentMethod.h"
 
-SpecBegin(BTMutablePayPalAccount)
+SpecBegin(BTMutablePayPalPaymentMethod)
 
 describe(@"setNonce", ^{
     it(@"stores a PayPal account nonce", ^{
-        BTMutablePayPalAccount *payPalAccount = [BTMutablePayPalAccount new];
-        payPalAccount.nonce = @"a-nonce";
-        expect(payPalAccount.nonce).to.equal(@"a-nonce");
+        BTMutablePayPalPaymentMethod *payPalPaymentMethod = [BTMutablePayPalPaymentMethod new];
+        payPalPaymentMethod.nonce = @"a-nonce";
+        expect(payPalPaymentMethod.nonce).to.equal(@"a-nonce");
     });
 });
 
 
 describe(@"debug descripton", ^{
     it(@"returns a useful representation of the account", ^{
-        BTMutablePayPalAccount *payPalAccount = [[BTMutablePayPalAccount alloc] init];
-        payPalAccount.description = @"A PayPal account";
-        payPalAccount.nonce = [[NSUUID UUID] UUIDString];
-        payPalAccount.email = @"user@example.com";
+        BTMutablePayPalPaymentMethod *payPalPaymentMethod = [[BTMutablePayPalPaymentMethod alloc] init];
+        payPalPaymentMethod.description = @"A PayPal account";
+        payPalPaymentMethod.nonce = [[NSUUID UUID] UUIDString];
+        payPalPaymentMethod.email = @"user@example.com";
 
 
-        expect([payPalAccount debugDescription]).to.contain(payPalAccount.nonce);
-        expect([payPalAccount debugDescription]).to.contain(payPalAccount.email);
-        expect([payPalAccount debugDescription]).to.contain(payPalAccount.description);
+        expect([payPalPaymentMethod debugDescription]).to.contain(payPalPaymentMethod.nonce);
+        expect([payPalPaymentMethod debugDescription]).to.contain(payPalPaymentMethod.email);
+        expect([payPalPaymentMethod debugDescription]).to.contain(payPalPaymentMethod.description);
     });
 });
 

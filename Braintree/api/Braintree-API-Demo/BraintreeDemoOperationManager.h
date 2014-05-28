@@ -10,6 +10,6 @@
 - (BraintreeDemoClientOperation *)fetchPaymentMethodsOperation;
 - (BraintreeDemoClientOperation *)saveCardOperation;
 - (BraintreeDemoClientOperation *)saveInvalidCardOperation;
-- (BraintreeDemoClientOperation *)savePayPalAccountOperation;
+- (BraintreeDemoClientOperation *)savePayPalPaymentMethodOperation;
 
 @end

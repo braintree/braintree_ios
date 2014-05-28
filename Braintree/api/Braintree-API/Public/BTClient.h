@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-#import "BTCard.h"
-#import "BTPayPalAccount.h"
+#import "BTCardPaymentMethod.h"
+#import "BTPayPalPaymentMethod.h"
 #import "BTErrors.h"
 
 #pragma mark Types
@@ -9,11 +9,11 @@
 /// Block type that takes an `NSArray` of `BTPaymentMethod`s
 typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray *paymentMethods);
 
-/// Block type that takes a `BTCard`
-typedef void (^BTClientCardSuccessBlock)(BTCard *card);
+/// Block type that takes a `BTCardPaymentMethod`
+typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 
 /// Success Block type for the Save Paypal call
-typedef void (^BTClientPaypalSuccessBlock)(BTPayPalAccount *paypalAccount);
+typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentMethod);
 
 /// Block type for handling `BTClient` errors
 typedef void (^BTClientFailureBlock)(NSError *error);
