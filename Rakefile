@@ -250,7 +250,7 @@ namespace :distribute do
   task :hockeyapp do
     destination = File.expand_path("~/Desktop/Braintree-Demo-#{%x{git describe}.strip}")
     run! "ipa distribute:hockeyapp --token '#{File.read(".hockeyapp").strip}' --file '#{destination}/Braintree-Demo.ipa' --dsym '#{destination}/Braintree-Demo.app.dSYM.zip' --notes ''"
-    say "Uplaoded Braintree-Demo (#{current_version}) to HockeyApp!"
+    say "Uploaded Braintree-Demo (#{current_version}) to HockeyApp!"
   end
 end
 
