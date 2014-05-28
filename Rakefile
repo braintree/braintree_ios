@@ -10,15 +10,15 @@ desc "Run default set of tasks"
 task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit]
 
 desc "Run internal release process"
-task :release => %w[release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_tag release:push_pod_internally]
+task :release => %w[release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_tag release:push_private_pod]
 
 desc "Distribute app, in its current state, to HockeyApp"
 task :distribute => %w[distribute:build distribute:hockeyapp]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
-INTERNAL_PODS_REPO = "venmo"
-INTERNAL_PODS_REPO_URL = "git@github.braintreeps.com:venmo/CocoaPods.git"
+INTERNAL_PODS_REPO = "braintree_public"
+INTERNAL_PODS_REPO_URL = "git@github.com:braintree/CocoaPods.git"
 DEMO_PLIST = "Braintree-Demo/Braintree-Demo-Info.plist"
 
 class << self
@@ -233,7 +233,7 @@ namespace :release do
   end
 
   desc  "Pod push."
-  task :push_pod_internally do
+  task :push_private_pod do
     run! "pod repo add #{INTERNAL_PODS_REPO} #{INTERNAL_PODS_REPO_URL}" unless Dir.exist?(File.expand_path("~/.cocoapods/repos/#{INTERNAL_PODS_REPO}"))
 
     run! "pod repo push #{INTERNAL_PODS_REPO}"
