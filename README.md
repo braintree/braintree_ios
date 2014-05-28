@@ -149,9 +149,9 @@ The individual components may be of interest for advanced integrations and are e
 ## Get Help
 
 * [Read the headers](https://github.com/braintree/braintree_ios_preview/blob/master/Braintree/Braintree.h)
-* [Read the docs](#link-pending)
+* [Read the docs](https://github.com/braintree/client-sdk-docs)
 * Find a bug? [Open an issue](https://github.com/braintree/braintree_ios_preview/issues/new)
-* Want to contribute? [Check out contributing guidelines](#link-pending) and [submit a pull request](https://github.com/braintree/braintree_ios_preview/compare/).
+* Want to contribute? [Check out contributing guidelines](CONTRIBUTING.md) and [submit a pull request](https://github.com/braintree/braintree_ios_preview/compare/).
 
 
 ## Meta
