@@ -247,8 +247,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)dropInSelectPaymentMethodTableViewController:(__unused BTDropInSelectPaymentMethodTableViewController *)viewController didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    self.paymentMethods = @[paymentMethod];
+- (void)dropInSelectPaymentMethodTableViewController:(__unused BTDropInSelectPaymentMethodTableViewController *)viewController
+                              didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
+    [newPaymentMethods insertObject:paymentMethod atIndex:0];
+    self.paymentMethods = newPaymentMethods;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
