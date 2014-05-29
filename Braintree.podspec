@@ -49,7 +49,6 @@ Pod::Spec.new do |s|
   s.subspec 'UI' do |s|
     s.source_files  = 'Braintree/UI/Braintree-Payments-UI/**/*.{h,m}'
     s.public_header_files = 'Braintree/UI/Braintree-Payments-UI/**/*.h'
-    s.resource_bundles =  { 'Braintree-UI' => 'Braintree/UI/Braintree-Payments-UI/**/*.xib' }
     s.compiler_flags = "-Wall -Wextra"
     s.frameworks = 'UIKit'
   end
