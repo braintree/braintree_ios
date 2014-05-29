@@ -12,7 +12,7 @@ Please watch the [CHANGELOG.md](CHANGELOG.md) for changes, stay up to date with 
 
 Braintree is available through [CocoaPods](http://cocoapods.org).
 
-Our preview pods are available form a dedicated Braintree CocoaPods specification repository. To use it, run:
+Our preview pods are available from a dedicated Braintree CocoaPods specification repository. To use it, run:
 
 ```
 pod repo add https://github.com/braintree/CocoaPods.git
