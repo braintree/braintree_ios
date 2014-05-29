@@ -26,10 +26,10 @@ pod 'Braintree' # You can also specify a particular version here
 
 Then run `pod install`.
 
-Need instant gratification? Try out the library in a demo app first:
+Need instant gratification? Try out the library in a demo app first by enter this command in your shell:
 
 ```
-pod try braintree-ios
+pod try Braintree
 ```
 
 If you've never used CocoaPods before, [this website](http://guides.cocoapods.org/using/getting-started.html) does a great job explaining what it is and how it works. We believe that dependency management will make iOS developers more productive and are curious about your feedback. (It is possible to pull in our code manually, but that is not recommended at this time.)
