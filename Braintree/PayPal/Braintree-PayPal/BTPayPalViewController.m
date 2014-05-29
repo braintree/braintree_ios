@@ -67,19 +67,19 @@
             NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTUnknownError userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow failed to generate an auth code" }];
             [self.delegate payPalViewController:self didFailWithError:error];
         }
-    }
-
-    if ([self.delegate respondsToSelector:@selector(payPalViewControllerWillCreatePayPalAccount:)]) {
-        [self.delegate payPalViewControllerWillCreatePayPalAccount:self];
-    }
-
-    [self.client savePaypalPaymentMethodWithAuthCode:authCode success:^(BTPayPalAccount *paypalAccount) {
-        if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalAccount:)]) {
-            [self.delegate payPalViewController:self didCreatePayPalAccount:paypalAccount];
+    } else {
+        if ([self.delegate respondsToSelector:@selector(payPalViewControllerWillCreatePayPalAccount:)]) {
+            [self.delegate payPalViewControllerWillCreatePayPalAccount:self];
         }
-    } failure:^(NSError *error) {
-        [self.delegate payPalViewController:self didFailWithError:error];
-    }];
+
+        [self.client savePaypalPaymentMethodWithAuthCode:authCode success:^(BTPayPalAccount *paypalAccount) {
+            if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalAccount:)]) {
+                [self.delegate payPalViewController:self didCreatePayPalAccount:paypalAccount];
+            }
+        } failure:^(NSError *error) {
+            [self.delegate payPalViewController:self didFailWithError:error];
+        }];
+    }
 }
 
 @end
