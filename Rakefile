@@ -9,17 +9,21 @@ task :default => ['sanity_checks', 'spec']
 desc "Run default set of tasks"
 task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit]
 
-desc "Run internal release process"
-task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_tag release:push_private_pod]
+desc "Run internal release process, pushing to internal GitHub Enterprise only"
+task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
+
+desc "Publish code and pod to public github.com"
+task :publish => %w[publish:push, publish:push_pod]
 
 desc "Distribute app, in its current state, to HockeyApp"
 task :distribute => %w[distribute:build distribute:hockeyapp]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
-INTERNAL_PODS_REPO = "braintree_public"
-INTERNAL_PODS_REPO_URL = "git@github.com:braintree/CocoaPods.git"
 DEMO_PLIST = "Braintree-Demo/Braintree-Demo-Info.plist"
+PUBLIC_REMOTE_NAME = "public"
+PUBLIC_PODS_REPO = "braintree_public"
+PUBLIC_PODS_REPO_URL = "git@github.com:braintree/CocoaPods.git"
 
 class << self
   def run cmd
@@ -179,6 +183,7 @@ namespace :release do
   desc "Print out pre-release checklist"
   task :assumptions do
     say "Release Assumptions"
+    say "* [ ] You have pulled and reconciled origin (internal GitHub Enterprise) vs public (github.com)."
     say "* [ ] You are on the branch and commit you want to release."
     say "* [ ] You have already merged hotfixes and pulled changes."
     say "* [ ] Tests are passing, manual verifications complete."
@@ -227,17 +232,27 @@ namespace :release do
     run! "git tag #{current_version} -a -m 'Release #{current_version}'"
   end
 
-  desc  "Push tag."
-  task :push_tag do
+  desc  "Push tag to ghe."
+  task :push_private do
     run! "git push origin HEAD #{current_version}"
   end
 
-  desc  "Pod push."
-  task :push_private_pod do
-    run! "pod repo add #{INTERNAL_PODS_REPO} #{INTERNAL_PODS_REPO_URL}" unless Dir.exist?(File.expand_path("~/.cocoapods/repos/#{INTERNAL_PODS_REPO}"))
+end
 
-    run! "pod repo push #{INTERNAL_PODS_REPO}"
+namespace :publish do
+
+  desc  "Push tag to github.com"
+  task :push do
+    run! "git push #{PUBLIC_REMOTE_NAME} HEAD #{current_version}"
   end
+
+  desc  "Pod push."
+  task :push_pod do
+    run! "pod repo add #{PUBLIC_PODS_REPO} #{PUBLIC_PODS_REPO_URL}" unless Dir.exist?(File.expand_path("~/.cocoapods/repos/#{PUBLIC_PODS_REPO}"))
+
+    run! "pod repo push #{PUBLIC_PODS_REPO}"
+  end
+
 end
 
 namespace :distribute do
