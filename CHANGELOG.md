@@ -4,8 +4,7 @@
 
 * :rotating_light: Breaking API Changes :rotating_light:
     * Reduce BTPayPalControl API
-    * Rename `BTCardPaymentMethod` to `BTCardPaymentMethod`
-    * Rename `BTPayPalPaymentMethod` to `BTPayPalPaymentMethod`
+    * Rename a number of classes, methods, and files, e.g. `BTCard` -> `BTCardPaymentMethod`.
 
 ## 3.0.0-rc1
 
