@@ -1,5 +1,6 @@
 require 'tempfile'
 require 'fileutils'
+require 'shellwords'
 require 'bundler'
 Bundler.require
 HighLine.color_scheme = HighLine::SampleColorScheme.new
@@ -38,6 +39,10 @@ class << self
 
   def current_version
     File.read(PODSPEC)[SEMVER]
+  end
+
+  def current_version_with_sha
+    %x{git describe}.strip
   end
 end
 
@@ -107,7 +112,7 @@ def apple_doc_command
   %W[/usr/local/bin/appledoc
       -o appledocs
       --project-name Braintree
-      --project-version '#{%x{git describe}.strip}'
+      --project-version '#{current_version_with_sha}'
       --project-company Braintree
       --docset-bundle-id '%COMPANYID'
       --docset-bundle-name Braintree
@@ -257,15 +262,16 @@ end
 
 namespace :distribute do
   task :build do
-    destination = File.expand_path("~/Desktop/Braintree-Demo-#{%x{git describe}.strip}")
+    destination = File.expand_path("~/Desktop/Braintree-Demo-#{current_version_with_sha}")
     run! "ipa build --scheme Braintree-Demo --destination '#{destination}' --embed EverybodyVenmo.mobileprovision --identity 'iPhone Distribution: Venmo Inc.'"
     say "Archived Braintree-Demo (#{current_version}) to: #{destination}"
   end
 
   task :hockeyapp do
-    destination = File.expand_path("~/Desktop/Braintree-Demo-#{%x{git describe}.strip}")
-    run! "ipa distribute:hockeyapp --token '#{File.read(".hockeyapp").strip}' --file '#{destination}/Braintree-Demo.ipa' --dsym '#{destination}/Braintree-Demo.app.dSYM.zip' --notes ''"
-    say "Uploaded Braintree-Demo (#{current_version}) to HockeyApp!"
+    destination = File.expand_path("~/Desktop/Braintree-Demo-#{current_version_with_sha}")
+    changes = File.read("CHANGELOG.md")[/(## 3.0.0-rc2.*)^##/m, 1].strip
+    run! "ipa distribute:hockeyapp --token '#{File.read(".hockeyapp").strip}' --file '#{destination}/Braintree-Demo.ipa' --dsym '#{destination}/Braintree-Demo.app.dSYM.zip' --markdown --notes #{Shellwords.shellescape("changes\n\n#{current_version_with_sha}")}"
+    say "Uploaded Braintree-Demo (#{current_version_with_sha}) to HockeyApp!"
   end
 end
 
