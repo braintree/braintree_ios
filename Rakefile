@@ -10,7 +10,7 @@ desc "Run default set of tasks"
 task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit]
 
 desc "Run internal release process"
-task :release => %w[release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_tag release:push_private_pod]
+task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_tag release:push_private_pod]
 
 desc "Distribute app, in its current state, to HockeyApp"
 task :distribute => %w[distribute:build distribute:hockeyapp]
