@@ -420,8 +420,8 @@
 		16968212192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCreditCardEntryViewController.m; sourceTree = "<group>"; };
 		16968213192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BraintreeDemoCreditCardEntryViewController.xib; sourceTree = "<group>"; };
 		29C0E04B87974F7C80D7C5B8 /* Pods-Braintree-API-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-API-Demo.xcconfig"; path = "Pods/Pods-Braintree-API-Demo.xcconfig"; sourceTree = "<group>"; };
-		2DBDD71D192BEB1300D8AA56 /* BTDropInSelectPaymentMethodTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInSelectPaymentMethodTableViewController.h; sourceTree = "<group>"; };
-		2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInSelectPaymentMethodTableViewController.m; sourceTree = "<group>"; };
+		2DBDD71D192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInSelectPaymentMethodViewController.h; sourceTree = "<group>"; };
+		2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInSelectPaymentMethodViewController.m; sourceTree = "<group>"; };
 		2DBDD71F192BFFB800D8AA56 /* BTDropInUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInUtil.h; sourceTree = "<group>"; };
 		2DBDD720192BFFB800D8AA56 /* BTDropInUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInUtil.m; sourceTree = "<group>"; };
 		3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Specs.xcconfig"; path = "Pods/Pods-Braintree-Specs.xcconfig"; sourceTree = "<group>"; };
@@ -1245,8 +1245,8 @@
 				1613815E1923074000C3B5BE /* BTDropInViewController.m */,
 				A7529C76192AB6BA00B2E1B2 /* BTDropInContentView.h */,
 				A7529C77192AB6BA00B2E1B2 /* BTDropInContentView.m */,
-				2DBDD71D192BEB1300D8AA56 /* BTDropInSelectPaymentMethodTableViewController.h */,
-				2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodTableViewController.m */,
+				2DBDD71D192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.h */,
+				2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.m */,
 				2DBDD71F192BFFB800D8AA56 /* BTDropInUtil.h */,
 				2DBDD720192BFFB800D8AA56 /* BTDropInUtil.m */,
 			);

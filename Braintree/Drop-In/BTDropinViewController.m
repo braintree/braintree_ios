@@ -1,13 +1,13 @@
 #import "BTDropInViewController.h"
 #import "BTDropInContentView.h"
 #import "BTDropInUtil.h"
-#import "BTDropInSelectPaymentMethodTableViewController.h"
+#import "BTDropInSelectPaymentMethodViewController.h"
 #import "BTUICardFormView.h"
 #import "BTUIScrollView.h"
 #import "Braintree-API.h"
 #import "BTClient+BTPayPal.h"
 
-@interface BTDropInViewController () < BTDropInSelectPaymentMethodTableViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalControlViewControllerPresenterDelegate, BTPayPalControlDelegate>
+@interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalControlViewControllerPresenterDelegate, BTPayPalControlDelegate>
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
 @property (nonatomic, strong) NSArray *paymentMethods;
@@ -185,7 +185,7 @@
 #pragma mark - Handlers
 
 - (void)tappedChangePaymentMethod {
-    BTDropInSelectPaymentMethodTableViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodTableViewController alloc] init];
+    BTDropInSelectPaymentMethodViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodViewController alloc] init];
     selectPaymentMethod.theme = self.theme;
     selectPaymentMethod.paymentMethods = self.paymentMethods;
     selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentMethodIndex;
@@ -238,16 +238,16 @@
 
 #pragma mark Drop In Select Payment Method Table View Controller Delegate methods
 
-- (void)dropInSelectPaymentMethodTableViewController:(__unused BTDropInSelectPaymentMethodTableViewController *)viewController didSelectPaymentMethodAtIndex:(NSUInteger)index {
+- (void)dropInSelectPaymentMethodViewController:(__unused BTDropInSelectPaymentMethodViewController *)viewController didSelectPaymentMethodAtIndex:(NSUInteger)index {
     self.selectedPaymentMethodIndex = index;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)dropInSelectPaymentMethodTableViewControllerDidCancel:(__unused BTDropInSelectPaymentMethodTableViewController *)viewController {
+- (void)dropInSelectPaymentMethodViewControllerDidCancel:(__unused BTDropInSelectPaymentMethodViewController *)viewController {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)dropInSelectPaymentMethodTableViewController:(__unused BTDropInSelectPaymentMethodTableViewController *)viewController
+- (void)dropInSelectPaymentMethodViewController:(__unused BTDropInSelectPaymentMethodViewController *)viewController
                               didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];

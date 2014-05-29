@@ -1,15 +1,15 @@
-#import "BTDropInSelectPaymentMethodTableViewController.h"
+#import "BTDropInSelectPaymentMethodViewController.h"
 #import "BTDropInUtil.h"
 #import "BTUIPayPalMonogramColorView.h"
 #import "BTUIViewUtil.h"
 #import "BTUI.h"
 #import "BTDropinViewController.h"
 
-@interface BTDropInSelectPaymentMethodTableViewController () <BTDropInViewControllerDelegate>
+@interface BTDropInSelectPaymentMethodViewController () <BTDropInViewControllerDelegate>
 
 @end
 
-@implementation BTDropInSelectPaymentMethodTableViewController
+@implementation BTDropInSelectPaymentMethodViewController
 
 - (instancetype)init {
     return [self initWithStyle:UITableViewStyleGrouped];
@@ -40,7 +40,7 @@
 #pragma mark -
 
 - (void)didCancel {
-    [self.delegate dropInSelectPaymentMethodTableViewControllerDidCancel:self];
+    [self.delegate dropInSelectPaymentMethodViewControllerDidCancel:self];
 }
 
 - (void)didTapAdd {
@@ -54,7 +54,7 @@
 #pragma mark - BTDropInViewController delegate
 
 - (void)dropInViewController:(__unused BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
-    [self.delegate dropInSelectPaymentMethodTableViewController:self didCreatePaymentMethod:paymentMethod];
+    [self.delegate dropInSelectPaymentMethodViewController:self didCreatePaymentMethod:paymentMethod];
 }
 
 - (void)dropInViewController:(__unused BTDropInViewController *)viewController didFailWithError:(__unused NSError *)error {
@@ -119,7 +119,7 @@
 - (void)tableView:(__unused UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedPaymentMethodIndex = indexPath.row;
     [self.tableView reloadData];
-    [self.delegate dropInSelectPaymentMethodTableViewController:self didSelectPaymentMethodAtIndex:indexPath.row];
+    [self.delegate dropInSelectPaymentMethodViewController:self didSelectPaymentMethodAtIndex:indexPath.row];
 }
 
 @end
