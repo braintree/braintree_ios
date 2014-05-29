@@ -13,7 +13,7 @@ desc "Run internal release process, pushing to internal GitHub Enterprise only"
 task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
 
 desc "Publish code and pod to public github.com"
-task :publish => %w[publish:push, publish:push_pod]
+task :publish => %w[publish:push publish:push_pod]
 
 desc "Distribute app, in its current state, to HockeyApp"
 task :distribute => %w[distribute:build distribute:hockeyapp]
