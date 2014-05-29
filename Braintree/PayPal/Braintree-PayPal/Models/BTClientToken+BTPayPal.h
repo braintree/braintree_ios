@@ -1,4 +1,4 @@
-#import <BTClientToken.h>
+#import "BTClientToken.h"
 
 @class PayPalConfiguration;
 

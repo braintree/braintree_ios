@@ -2,10 +2,10 @@
 #import "BTDropInContentView.h"
 #import "BTDropInUtil.h"
 #import "BTDropInSelectPaymentMethodTableViewController.h"
-#import <Braintree/BTUICardFormView.h>
-#import <Braintree/BTUIScrollView.h>
-#import <Braintree/Braintree-API.h>
-#import <Braintree/BTClient+BTPayPal.h>
+#import "BTUICardFormView.h"
+#import "BTUIScrollView.h"
+#import "Braintree-API.h"
+#import "BTClient+BTPayPal.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodTableViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalControlViewControllerPresenterDelegate, BTPayPalControlDelegate>
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;

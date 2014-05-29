@@ -1,4 +1,4 @@
-#import <Braintree/BTUICardExpirationValidator.h>
+#import "BTUICardExpirationValidator.h"
 
 SpecBegin(BTUICardExpirationValidator)
 

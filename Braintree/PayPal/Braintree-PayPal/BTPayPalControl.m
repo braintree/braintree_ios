@@ -5,7 +5,7 @@
 
 #import "BTPayPalControlContentView.h"
 
-#import <Braintree/BTLogger.h>
+#import "BTLogger.h"
 
 @interface BTPayPalControl () <BTPayPalViewControllerDelegate, BTPayPalControlViewControllerPresenterDelegate>
 

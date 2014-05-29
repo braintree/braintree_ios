@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#import <Braintree/Braintree-API.h>
+#import "Braintree-API.h"
 
 typedef void (^BraintreeDemoClientOperationDidCompleteBlock)(id, NSError *);
 

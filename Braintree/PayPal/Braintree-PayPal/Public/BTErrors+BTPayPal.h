@@ -1,4 +1,4 @@
-#import <BTErrors.h>
+#import "BTErrors.h"
 
 /// Braintree+PayPal NSError Domain
 extern NSString *const BTBraintreePayPalErrorDomain;

@@ -1,5 +1,5 @@
 #import "BraintreePayPalDemoViewController.h"
-#import <Braintree/BTClient+BTPayPal.h>
+#import "BTClient+BTPayPal.h"
 
 @interface BraintreePayPalDemoViewController () <UITextFieldDelegate>
 

@@ -2,8 +2,8 @@
 
 #import "BTUI.h"
 
-#import <Braintree/BTUICVVFrontVectorArtView.h>
-#import <Braintree/BTUICVVBackVectorArtView.h>
+#import "BTUICVVFrontVectorArtView.h"
+#import "BTUICVVBackVectorArtView.h"
 
 @interface BTUICardHint ()
 @property (nonatomic, strong) UIView *hintVectorArtView;

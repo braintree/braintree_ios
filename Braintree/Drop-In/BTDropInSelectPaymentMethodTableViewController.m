@@ -1,8 +1,8 @@
 #import "BTDropInSelectPaymentMethodTableViewController.h"
 #import "BTDropInUtil.h"
-#import <Braintree/BTUIPayPalMonogramColorView.h>
-#import <Braintree/BTUIViewUtil.h>
-#import <Braintree/BTUI.h>
+#import "BTUIPayPalMonogramColorView.h"
+#import "BTUIViewUtil.h"
+#import "BTUI.h"
 #import "BTDropinViewController.h"
 
 @interface BTDropInSelectPaymentMethodTableViewController () <BTDropInViewControllerDelegate>

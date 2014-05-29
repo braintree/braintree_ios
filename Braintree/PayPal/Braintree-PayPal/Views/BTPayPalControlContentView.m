@@ -2,7 +2,7 @@
 #import "BTUIPayPalMonogramColorView.h"
 #import "BTPayPalHorizontalSignatureWhiteView.h"
 
-#import <BTUI.h>
+#import "BTUI.h"
 
 @implementation BTPayPalControlContentView
 

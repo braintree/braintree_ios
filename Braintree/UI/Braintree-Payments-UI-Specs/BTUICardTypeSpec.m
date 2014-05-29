@@ -1,4 +1,4 @@
-#import <Braintree/BTUICardType.h>
+#import "BTUICardType.h"
 #import "EXPMatchers+haveKerning.h"
 
 SpecBegin(BTUICardType)

@@ -1,9 +1,10 @@
 #import "Braintree_Internal.h"
 
-#import <Braintree/BTClient.h>
-#import <Braintree/BTClient+BTPayPal.h>
-#import <Braintree/BTPayPalControl.h>
 #import <AFNetworking/AFNetworking.h>
+
+#import "BTClient.h"
+#import "BTClient+BTPayPal.h"
+#import "BTPayPalControl.h"
 
 #import "BTDropInViewController.h"
 

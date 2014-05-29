@@ -2,9 +2,9 @@
 #import "BTClientToken+BTPayPal.h"
 #import "BTErrors+BTPayPal.h"
 
-#import "PayPalMobile.h"
-#import <BTClient_Internal.h>
-#import <BTClient+Offline.h>
+#import <PayPalMobile.h>
+#import "BTClient_Internal.h"
+#import "BTClient+Offline.h"
 
 NSString *BTClientPayPalMobileEnvironmentName = @"Braintree-PayPal-iOS";
 NSString *const BTClientPayPalMobileDysonURL = @"https://www.paypalobjects.com/webstatic/risk/dyson_config_v2_sandbox.json";

@@ -1,6 +1,6 @@
 #import "BraintreeDemoOperationManager.h"
-#import <Braintree/Braintree-API.h>
-#import <Braintree/BTClient+Offline.h>
+#import "Braintree-API.h"
+#import "BTClient+Offline.h"
 
 @interface BraintreeDemoOperationManager ()
 @property (nonatomic, strong) BTClient *client;

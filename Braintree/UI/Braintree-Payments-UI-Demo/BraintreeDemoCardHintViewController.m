@@ -1,6 +1,6 @@
 #import "BraintreeDemoCardHintViewController.h"
 
-#import <Braintree/BTUICardHint.h>
+#import "BTUICardHint.h"
 
 @interface BraintreeDemoCardHintViewController ()
 @property (weak, nonatomic) IBOutlet BTUICardHint *cardHintView;

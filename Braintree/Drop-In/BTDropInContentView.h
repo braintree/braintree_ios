@@ -1,7 +1,7 @@
 #import "BTUIThemedView.h"
 
-#import <Braintree-Payments-UI.h>
-#import <Braintree-PayPal.h>
+#import "Braintree-Payments-UI.h"
+#import "Braintree-PayPal.h"
 
 typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
     BTDropInContentViewStateForm = 0,

@@ -1,5 +1,5 @@
 #import "BraintreeDemoPaymentsUIComponentsViewController.h"
-#import <Braintree/BTUIPaymentMethodView.h>
+#import "BTUIPaymentMethodView.h"
 
 @interface BraintreeDemoPaymentsUIComponentsViewController ()
 @property (nonatomic, weak) IBOutlet BTUIPaymentMethodView *cardPaymentMethodView;

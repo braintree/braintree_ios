@@ -1,4 +1,4 @@
-#import <Braintree/BTUI.h>
+#import "BTUI.h"
 
 SpecBegin(BTUI)
 
