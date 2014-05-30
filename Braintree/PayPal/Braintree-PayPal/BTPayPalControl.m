@@ -50,9 +50,9 @@
 
     self.payPalHorizontalSignatureView = [[BTPayPalHorizontalSignatureWhiteView alloc] init];
     [self.payPalHorizontalSignatureView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.payPalHorizontalSignatureView.userInteractionEnabled = NO;
 
     [self addSubview:self.payPalHorizontalSignatureView];
-
 
     self.backgroundColor = [[BTUI braintreeTheme] payPalButtonBlue];
     self.layer.borderColor = [UIColor clearColor].CGColor;
