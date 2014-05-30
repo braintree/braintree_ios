@@ -30,11 +30,6 @@
     [self.view layoutIfNeeded];
 }
 
-- (IBAction)widthSliderValueDidChange:(UISlider *)slider {
-    self.payPalControlWidthConstraint.constant = slider.value * 280.0f;
-    [self.view layoutIfNeeded];
-}
-
 - (IBAction)toggledShouldUseCustomPresentationDelegate:(UISwitch *)sender {
     self.payPalControl.presentationDelegate = (sender.on ? self : nil);
 }
