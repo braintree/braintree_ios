@@ -461,15 +461,15 @@
     BTPaymentMethod *paymentMethod = [self selectedPaymentMethod];
     BOOL valid = paymentMethod != nil || (!self.dropInContentView.cardForm.hidden && self.dropInContentView.cardForm.valid);
 
-    if (!valid) {
-        self.dropInContentView.ctaControl.alpha = 0.5f;
-        self.dropInContentView.ctaControl.userInteractionEnabled = NO;
-        [self.navigationItem.rightBarButtonItem setEnabled:NO];
-    } else {
-        self.dropInContentView.ctaControl.alpha = 1.0f;
-        self.dropInContentView.ctaControl.userInteractionEnabled = YES;
-        [self.navigationItem.rightBarButtonItem setEnabled:YES];
-    }
+    [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
+        if (!valid) {
+            self.dropInContentView.ctaControl.enabled = NO;
+            [self.navigationItem.rightBarButtonItem setEnabled:NO];
+        } else {
+            self.dropInContentView.ctaControl.enabled = YES;
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        }
+    }];
 }
 
 - (BTUICardFormOptionalFields) optionalFieldsFromClientToken{

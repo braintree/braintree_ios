@@ -154,6 +154,16 @@
              NSForegroundColorAttributeName: self.textFieldPlaceholderColor};
 }
 
+#pragma mark Transitions
+
+- (CGFloat)quickTransitionDuration {
+    return 0.1f;
+}
+
+- (CGFloat)transitionDuration {
+    return 0.2f;
+}
+
 #pragma mark Icons
 
 - (BTUIVectorArtView *)vectorArtViewForPaymentMethodType:(BTUIPaymentMethodType)type {

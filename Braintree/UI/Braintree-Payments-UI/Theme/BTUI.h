@@ -62,6 +62,11 @@
 - (CGFloat)formattedEntryKerning;
 - (CGFloat)horizontalMargin;
 
+#pragma mark Transitions
+
+- (CGFloat)quickTransitionDuration;
+- (CGFloat)transitionDuration;
+
 #pragma mark Icons
 
 - (BTUIVectorArtView *)vectorArtViewForPaymentMethodType:(BTUIPaymentMethodType)type;
