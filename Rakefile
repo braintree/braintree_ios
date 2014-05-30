@@ -5,7 +5,7 @@ require 'bundler'
 Bundler.require
 HighLine.color_scheme = HighLine::SampleColorScheme.new
 
-task :default => ['sanity_checks', 'spec']
+task :default => %w[sanity_checks spec]
 
 desc "Run default set of tasks"
 task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit]
@@ -93,18 +93,48 @@ namespace :spec do
   end
 
   desc 'Run all spec targets'
-  task :all => %w[sanity_checks  spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:api:integration paypal:integration paypal:acceptance]
+  task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:api:integration paypal:integration paypal:acceptance]
 end
 
+namespace :demo do
+  def build_demo! target
+    run! XCTool::Builder.new('Braintree.xcworkspace', target).build.as_cmd
+  end
+
+  task :build do
+    build_demo! 'Braintree-Demo'
+  end
+
+  namespace :api do
+    task :build do
+      build_demo! 'Braintree-API-Demo'
+    end
+  end
+
+  namespace :ui do
+    task :build do
+      build_demo! 'Braintree-Payments-UI-Demo'
+    end
+  end
+
+  namespace :paypal do
+    task :build do
+      build_demo! 'Braintree-PayPal-Demo'
+    end
+  end
+end
 
 desc 'Run all sanity checks'
-task :sanity_checks => ['sanity_checks:pending_specs']
+task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_all_demos]
 
 namespace :sanity_checks do
   desc 'Check for pending tests'
   task :pending_specs do
     run "ack 'fit\\(|fdescribe\\(' Braintree-Specs Braintree" and fail "Please do not commit pending specs."
   end
+
+  desc 'Verify that all demoa apps Build successfully'
+  task :build_all_demos => %w[demo:build demo:api:build demo:ui:build demo:paypal:build]
 end
 
 
