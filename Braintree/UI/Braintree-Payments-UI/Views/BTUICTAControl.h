@@ -11,4 +11,6 @@
 /// The call to action verb, such as "Subscribe" or "Buy". Must be non-nil.
 @property (nonatomic, copy) NSString *callToAction;
 
+- (void)showLoadingState:(BOOL)loadingState;
+
 @end

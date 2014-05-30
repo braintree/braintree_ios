@@ -3,6 +3,7 @@
 
 @interface BTUICTAControl()
 @property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation BTUICTAControl
@@ -36,8 +37,25 @@
     self.label.textAlignment = NSTextAlignmentCenter;
 
     [self addSubview:self.label];
+    
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.activityIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.activityIndicator];
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f]];
 
     [self updateText];
+}
+
+- (void)showLoadingState: (__unused BOOL)loadingState{
+    if (loadingState) {
+        self.label.hidden = YES;
+        [self.activityIndicator startAnimating];
+    } else {
+        self.label.hidden = NO;
+        [self.activityIndicator stopAnimating];
+    }
 }
 
 - (void)updateConstraints {

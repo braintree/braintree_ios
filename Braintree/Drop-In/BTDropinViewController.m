@@ -219,6 +219,7 @@
 }
 
 - (void)tappedSubmitForm {
+    [self.dropInContentView.ctaControl showLoadingState:YES];
     BTPaymentMethod *paymentMethod = [self selectedPaymentMethod];
     if (paymentMethod != nil) {
         [self informDelegateWillComplete];
@@ -234,9 +235,11 @@
                                  postalCode:cardForm.postalCode
                                    validate:YES
                                     success:^(BTCardPaymentMethod *card) {
+                                        [self.dropInContentView.ctaControl showLoadingState:NO];
                                         [self informDelegateDidAddPaymentMethod:card];
                                     }
                                     failure:^(NSError *error) {
+                                        [self.dropInContentView.ctaControl showLoadingState:NO];
                                         [self informDelegateDidFailWithError:error];
                                     }];
         } else {
@@ -246,6 +249,7 @@
                                        delegate:nil
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil] show];
+            [self.dropInContentView.ctaControl showLoadingState:NO];
         }
     }
 }
