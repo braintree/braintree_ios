@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.0.0-rc3
+
+* Fix crash when adding PayPal an additional payment method.
+
 ## 3.0.0-rc2
 
 * :rotating_light: Breaking API Changes :rotating_light:
