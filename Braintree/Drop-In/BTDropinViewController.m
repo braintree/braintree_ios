@@ -70,6 +70,7 @@
     [self.dropInContentView.changeSelectedPaymentMethodButton addTarget:self
                                                                  action:@selector(tappedChangePaymentMethod)
                                                        forControlEvents:UIControlEventTouchUpInside];
+
     [self.dropInContentView.ctaControl addTarget:self
                                           action:@selector(tappedSubmitForm)
                                 forControlEvents:UIControlEventTouchUpInside];
@@ -385,6 +386,11 @@
     } else {
         self.selectedPaymentMethodIndex = 0;
         self.dropInContentView.state = BTDropInContentViewStatePaymentMethodsOnFile;
+        if (self.paymentMethods.count > 1) {
+            [self.dropInContentView.changeSelectedPaymentMethodButton setTitle:@"Change payment method" forState:UIControlStateNormal];
+        } else {
+            [self.dropInContentView.changeSelectedPaymentMethodButton setTitle:@"Add new payment method" forState:UIControlStateNormal];
+        }
     }
     [self updateValidity];
 }
