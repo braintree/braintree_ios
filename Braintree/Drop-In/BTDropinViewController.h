@@ -79,12 +79,6 @@
 /// The text to display in the primary call-to-action button. For example: "$19 - Purchase" or "Subscribe Now".
 @property (nonatomic, copy) NSString *callToActionText;
 
-/// Whether or not to display payment methods on file. If false, Drop-In will always
-/// display the new payment method form.
-///
-/// Defaults to `YES`.
-@property (nonatomic, assign) BOOL shouldDisplayPaymentMethodsOnFile;
-
 /// Whether to hide the call to action control.
 ///
 /// When true, a submit button will be added as a bar button item (which

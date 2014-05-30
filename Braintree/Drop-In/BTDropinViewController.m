@@ -1,17 +1,29 @@
 #import "BTDropInViewController.h"
 #import "BTDropInContentView.h"
-#import "BTDropInUtil.h"
 #import "BTDropInSelectPaymentMethodViewController.h"
 #import "BTUICardFormView.h"
 #import "BTUIScrollView.h"
+#import "BTDropInUtil.h"
 #import "Braintree-API.h"
 #import "BTClient+BTPayPal.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalControlViewControllerPresenterDelegate, BTPayPalControlDelegate, BTDropInViewControllerDelegate>
+
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
 @property (nonatomic, strong) NSArray *paymentMethods;
 @property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;
+
+/// If YES, fetch and display payment methods on file, summary view, CTA control.
+/// If NO, do not fetch payment methods, and just show UI to add a new method.
+///
+/// Defaults to `YES`.
+@property (nonatomic, assign) BOOL fullForm;
+
+/// Strong reference to an additional BTPayPalControl. Reference is needed so
+/// activity can continue after dismissal
+@property (nonatomic, strong) BTPayPalControl *addPaymentMethodPayPalControl;
+
 @end
 
 @implementation BTDropInViewController
@@ -27,7 +39,7 @@
         self.dropInContentView.payPalControl.delegate = self;
         self.dropInContentView.hidePayPal =  !self.client.btPayPal_isPayPalEnabled;
         self.selectedPaymentMethodIndex = NSNotFound;
-        self.shouldDisplayPaymentMethodsOnFile = YES;
+        self.fullForm = YES;
         _callToActionText = @"Pay";
     }
     return self;
@@ -120,7 +132,7 @@
                                                                             metrics:nil
                                                                               views:@{@"dropInContentView": self.dropInContentView}]];
 
-    if (self.shouldDisplayPaymentMethodsOnFile) {
+    if (self.fullForm) {
         [self fetchPaymentMethods];
     }
 
@@ -250,10 +262,6 @@
 
 #pragma mark Drop In Select Payment Method Table View Controller Delegate methods
 
-- (void)selectPaymentMethodViewControllerDidCancel:(__unused BTDropInSelectPaymentMethodViewController *)viewController {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)selectPaymentMethodViewController:(BTDropInSelectPaymentMethodViewController *)viewController
             didSelectPaymentMethodAtIndex:(NSUInteger)index {
     self.selectedPaymentMethodIndex = index;
@@ -280,28 +288,54 @@
 
 #pragma mark PayPal Control Presentation Delegate methods
 
-- (void)payPalControl:(__unused BTPayPalControl *)control requestsPresentationOfViewController:(UIViewController *)viewController {
-    [self presentViewController:viewController animated:YES completion:nil];
+- (void)payPalControl:(BTPayPalControl *)control requestsPresentationOfViewController:(UIViewController *)viewController {
+    if (control != self.dropInContentView.payPalControl) {
+        [self.presentedViewController presentViewController:viewController animated:YES completion:nil];
+    } else {
+        [self presentViewController:viewController animated:YES completion:nil];
+    }
 }
 
 - (void)payPalControl:(__unused BTPayPalControl *)control requestsDismissalOfViewController:(UIViewController *)viewController {
-    [viewController dismissViewControllerAnimated:YES completion:nil];
+    if (control != self.dropInContentView.payPalControl) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [viewController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark PayPal Control Delegate methods
 
-- (void)payPalControlWillCreatePayPalPaymentMethod:(__unused BTPayPalControl *)control {
+- (void)payPalControlWillCreatePayPalPaymentMethod:(BTPayPalControl *)control {
     self.dropInContentView.state = BTDropInContentViewStateActivity;
+    if (control == self.dropInContentView.payPalControl) {
+        if (!self.fullForm) {
+            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+    } else {
+        // retain this secondary BTPayPalControl
+        self.addPaymentMethodPayPalControl = control;
+    }
 }
 
-- (void)payPalControl:(__unused BTPayPalControl *)control didCreatePayPalPaymentMethod:(__unused BTPaymentMethod *)paymentMethod {
+- (void)payPalControl:(BTPayPalControl *)control didCreatePayPalPaymentMethod:(__unused BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
+
+    // Release the PayPal control
+    if (self.dropInContentView.payPalControl == control) {
+        self.addPaymentMethodPayPalControl = nil;
+    }
 }
 
-- (void)payPalControl:(__unused BTPayPalControl *)control didFailWithError:(__unused NSError *)error {
+- (void)payPalControl:(BTPayPalControl *)control didFailWithError:(__unused NSError *)error {
     [self informDelegateDidFailWithError:error];
+
+    // Release the PayPal control
+    if (self.addPaymentMethodPayPalControl == control) {
+        self.addPaymentMethodPayPalControl = nil;
+    }
 }
 
 #pragma mark Delegate Notifications
@@ -452,9 +486,11 @@
 
 - (BTDropInViewController *)addPaymentMethodDropInViewController {
     BTDropInViewController *addPaymentMethodViewController = [[BTDropInViewController alloc] initWithClient:self.client];
-    addPaymentMethodViewController.shouldDisplayPaymentMethodsOnFile = NO;
+    addPaymentMethodViewController.fullForm = NO;
     addPaymentMethodViewController.shouldHideCallToAction = YES;
     addPaymentMethodViewController.delegate = self;
+    addPaymentMethodViewController.dropInContentView.payPalControl.delegate = self;
+    addPaymentMethodViewController.dropInContentView.payPalControl.presentationDelegate = self;
     return addPaymentMethodViewController;
 }
 
