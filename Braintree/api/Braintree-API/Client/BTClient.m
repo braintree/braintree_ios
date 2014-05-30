@@ -61,8 +61,13 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                 NSArray *responsePaymentMethods = response.object[@"paymentMethods"];
 
                 NSMutableArray *paymentMethods = [NSMutableArray array];
-                for (NSDictionary *paymentMethod in responsePaymentMethods) {
-                    [paymentMethods addObject:[[self class] paymentMethodFromAPIResponseDictionary:paymentMethod]];
+                for (NSDictionary *paymentMethodDictionary in responsePaymentMethods) {
+                    BTPaymentMethod *paymentMethod = [[self class] paymentMethodFromAPIResponseDictionary:paymentMethodDictionary];
+                    if (paymentMethod == nil) {
+                        NSLog(@"Unable to create payment method from %@", paymentMethodDictionary);
+                    } else {
+                        [paymentMethods addObject:paymentMethod];
+                    }
                 }
 
                 successBlock(paymentMethods);
@@ -156,7 +161,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 + (BTPaymentMethod *)paymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
     if ([response[@"type"] isEqual:@"CreditCard"]) {
         return [self cardFromAPIResponseDictionary:response];
-    } else if ([response[@"type"] isEqual:@"PayPalPaymentMethod"]) {
+    } else if ([response[@"type"] isEqual:@"PayPalAccount"]) {
         return [self payPalPaymentMethodFromAPIResponseDictionary:response];
     } else {
         return nil;

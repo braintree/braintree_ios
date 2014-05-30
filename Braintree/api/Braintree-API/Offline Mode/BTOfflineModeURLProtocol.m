@@ -180,7 +180,7 @@ static BTOfflineClientBackend *backend;
              @"nonce": [self generateNonce],
              @"isLocked": @0,
              @"details": @{ @"email": @"email@example.com" },
-             @"type": @"PayPalPaymentMethod"
+             @"type": @"PayPalAccount"
              };
 }
 
