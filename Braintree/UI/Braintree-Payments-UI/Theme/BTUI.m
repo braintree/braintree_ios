@@ -1,4 +1,5 @@
 #import "BTUI.h"
+#import "BTUIUtil.h"
 
 #import "BTUIMasterCardVectorArtView.h"
 #import "BTUIJCBVectorArtView.h"
@@ -26,7 +27,7 @@
 }
 
 - (UIColor *)viewBackgroundColor {
-    return [self colorWithBytesR:251 G:251 B:251];
+    return [BTUIUtil uiColorFromHex:@"f3f4f6" alpha:1.0f];
 }
 
 - (UIColor *)callToActionColor {
