@@ -101,7 +101,7 @@ static BTOfflineClientBackend *backend;
 
             responseData = ({
                 NSError *error;
-                NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"paypalPaymentMethods": @[ [self responseDictionaryForPaymentMethod:payPalPaymentMethod] ] }
+                NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"paypalAccounts": @[ [self responseDictionaryForPaymentMethod:payPalPaymentMethod] ] }
                                                                options:0
                                                                  error:&error];
                 NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
