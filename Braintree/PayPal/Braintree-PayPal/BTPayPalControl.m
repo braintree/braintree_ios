@@ -172,79 +172,73 @@
 #pragma mark Auto Layout Constraints
 
 - (NSArray *)defaultConstraints {
-    return @[
-             // Signature centerY
-             [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
-                                          attribute:NSLayoutAttributeCenterY
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:self
-                                          attribute:NSLayoutAttributeCenterY
-                                         multiplier:1.0f
-                                           constant:0],
+    CGFloat BTPayPalControlHorizontalSignatureWidth = 95.0f;
+    CGFloat BTPayPalControlHorizontalSignatureHeight = 23.0f;
+    CGFloat BTPayPalControlMinHeight = 40.0f;
+    CGFloat BTPayPalControlMaxHeight = 60.0f;
+    CGFloat BTPayPalControlMinWidth = 240.0f;
 
-             // Signature centerX
-             [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
-                                          attribute:NSLayoutAttributeCenterX
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:self
-                                          attribute:NSLayoutAttributeCenterX
-                                         multiplier:1.0f
-                                           constant:0],
+    NSDictionary *metrics = @{ @"minHeight": @(BTPayPalControlMinHeight),
+                               @"maxHeight": @(BTPayPalControlMaxHeight),
+                               @"required": @(UILayoutPriorityRequired),
+                               @"minWidth": @(BTPayPalControlMinWidth) };
+    NSDictionary *views = @{ @"self": self,
+                             @"payPalHorizontalSignatureView": self.payPalHorizontalSignatureView };
 
-             // Signature width
-             [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
-                                          attribute:NSLayoutAttributeWidth
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:nil
-                                          attribute:NSLayoutAttributeNotAnAttribute
-                                         multiplier:1.0f
-                                           constant:95],
 
-             // Signature height
-             [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
-                                          attribute:NSLayoutAttributeHeight
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:nil
-                                          attribute:NSLayoutAttributeNotAnAttribute
-                                         multiplier:1.0f
-                                           constant:23],
+    NSMutableArray *constraints = [NSMutableArray arrayWithCapacity:6];
+    // Signature centerY
+    [constraints addObject:
+     [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+                                  attribute:NSLayoutAttributeCenterY
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeCenterY
+                                 multiplier:1.0f
+                                   constant:0.0f]];
 
-             ({
-                 // Minimum height
-                 NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self
-                                                                               attribute:NSLayoutAttributeHeight
-                                                                               relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                                  toItem:nil
-                                                                               attribute:NSLayoutAttributeNotAnAttribute
-                                                                              multiplier:1.0f
-                                                                                constant:40.0f];
-                 constraint.priority = UILayoutPriorityRequired;
-                 constraint;
-             }),
-             ({
-                 // Maximum height
-                 NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self
-                                                                               attribute:NSLayoutAttributeHeight
-                                                                               relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                                  toItem:nil
-                                                                               attribute:NSLayoutAttributeNotAnAttribute
-                                                                              multiplier:1.0f
-                                                                                constant:60.0f];
-                 constraint.priority = UILayoutPriorityRequired;
-                 constraint;
-             }),
-             ({
-                 // Minimum width
-                 NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self
-                                                                               attribute:NSLayoutAttributeWidth
-                                                                               relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                                                  toItem:nil
-                                                                               attribute:NSLayoutAttributeNotAnAttribute
-                                                                              multiplier:1.0f
-                                                                                constant:260.0f];
-                 constraint.priority = UILayoutPriorityRequired;
-                 constraint;
-             })];
+    // Signature centerX
+    [constraints addObject:
+     [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+                                  attribute:NSLayoutAttributeCenterX
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:self
+                                  attribute:NSLayoutAttributeCenterX
+                                 multiplier:1.0f
+                                   constant:0.0f]];
+
+    // Signature width
+    [constraints addObject:
+     [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+                                  attribute:NSLayoutAttributeWidth
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:BTPayPalControlHorizontalSignatureWidth]];
+
+    // Signature height
+    [constraints addObject:
+     [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+                                  attribute:NSLayoutAttributeHeight
+                                  relatedBy:NSLayoutRelationEqual
+                                     toItem:nil
+                                  attribute:NSLayoutAttributeNotAnAttribute
+                                 multiplier:1.0f
+                                   constant:BTPayPalControlHorizontalSignatureHeight]];
+
+    [constraints addObjectsFromArray:
+     [NSLayoutConstraint constraintsWithVisualFormat:@"V:[self(>=minHeight@required,<=maxHeight@required)]"
+                                             options:0
+                                             metrics:metrics
+                                               views:views]];
+
+    [constraints addObjectsFromArray:
+     [NSLayoutConstraint constraintsWithVisualFormat:@"H:[self(>=260@required)]"
+                                             options:0
+                                             metrics:metrics
+                                               views:views]];
+    return constraints;
 }
 
 @end
