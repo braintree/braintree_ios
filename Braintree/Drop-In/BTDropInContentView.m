@@ -50,7 +50,7 @@
         // Add Constraints & Subviews
 
         // Full-Width Views
-        for (UIView *view in @[self.summaryView, self.ctaControl, self.cardForm]) {
+        for (UIView *view in @[self.payPalControl, self.summaryView, self.ctaControl, self.cardForm]) {
             [self addSubview:view];
             view.translatesAutoresizingMaskIntoConstraints = NO;
             [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
@@ -60,7 +60,7 @@
         }
 
         // Not quite full-width views
-        for (UIView *view in @[self.cardFormSectionHeader, self.payPalControl, self.selectedPaymentMethodView, self.changeSelectedPaymentMethodButton]) {
+        for (UIView *view in @[self.cardFormSectionHeader, self.selectedPaymentMethodView, self.changeSelectedPaymentMethodButton]) {
             [self addSubview:view];
             view.translatesAutoresizingMaskIntoConstraints = NO;
             [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[view]-(horizontalMargin)-|"
@@ -246,7 +246,7 @@
         if (self.hidePayPal){
             return [NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
         } else {
-            return [NSString stringWithFormat:@"V:|%@-(15)-[payPalControl(==45)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
+            return [NSString stringWithFormat:@"V:|%@[payPalControl(==52)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
         }
 
     } else {

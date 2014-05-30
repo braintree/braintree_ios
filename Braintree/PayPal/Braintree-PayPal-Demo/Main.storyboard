@@ -32,7 +32,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="06n-uN-TeL" customClass="BTPayPalControl">
-                                <rect key="frame" x="12" y="22" width="296" height="45"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.83080267137096775" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -65,14 +65,14 @@
                         <constraints>
                             <constraint firstItem="06n-uN-TeL" firstAttribute="top" secondItem="DxJ-vT-ZtZ" secondAttribute="bottom" constant="22" id="6RN-Qc-s3x"/>
                             <constraint firstItem="AWw-tF-xbS" firstAttribute="top" secondItem="JqV-bG-8UE" secondAttribute="bottom" constant="20" id="Hub-YU-QKK"/>
-                            <constraint firstItem="06n-uN-TeL" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="12" id="PJO-xB-vv3"/>
+                            <constraint firstItem="06n-uN-TeL" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" id="PJO-xB-vv3"/>
                             <constraint firstItem="313-1r-mJT" firstAttribute="centerY" secondItem="y4a-fq-SDI" secondAttribute="centerY" id="WfJ-wD-RmN"/>
                             <constraint firstItem="y4a-fq-SDI" firstAttribute="leading" secondItem="313-1r-mJT" secondAttribute="trailing" constant="8" id="XJD-8C-LBl"/>
                             <constraint firstItem="JqV-bG-8UE" firstAttribute="top" secondItem="y4a-fq-SDI" secondAttribute="bottom" constant="8" id="YHQ-9X-29p"/>
                             <constraint firstItem="JqV-bG-8UE" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="20" id="YXs-Ho-lTi"/>
                             <constraint firstAttribute="trailing" secondItem="JqV-bG-8UE" secondAttribute="trailing" constant="20" id="fwg-oJ-v7u"/>
                             <constraint firstItem="313-1r-mJT" firstAttribute="leading" secondItem="kbl-vB-YXa" secondAttribute="leading" constant="20" id="hCO-bE-Hqb"/>
-                            <constraint firstAttribute="trailing" secondItem="06n-uN-TeL" secondAttribute="trailing" constant="12" id="iy4-zh-oot"/>
+                            <constraint firstAttribute="trailing" secondItem="06n-uN-TeL" secondAttribute="trailing" id="iy4-zh-oot"/>
                             <constraint firstAttribute="trailing" secondItem="y4a-fq-SDI" secondAttribute="trailing" constant="20" id="mQv-75-fVX"/>
                         </constraints>
                     </view>
