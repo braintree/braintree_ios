@@ -139,7 +139,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self.http POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSDictionary *paypalPaymentMethodResponse = response.object[@"paypalPaymentMethods"][0];
+                NSDictionary *paypalPaymentMethodResponse = response.object[@"paypalAccounts"][0];
                 BTPayPalPaymentMethod *payPalPaymentMethod = [[self class] payPalPaymentMethodFromAPIResponseDictionary:paypalPaymentMethodResponse];
                 successBlock(payPalPaymentMethod);
             }
