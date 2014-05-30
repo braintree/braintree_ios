@@ -60,16 +60,16 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 
     self.typeLabel = [[UILabel alloc] init];
     [self.typeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    self.typeLabel.font = [[BTUI braintreeTheme] controlTitleFont];
-    [self.typeLabel setTextColor:[[BTUI braintreeTheme] titleColor]];
+    self.typeLabel.font = [self.theme controlTitleFont];
+    [self.typeLabel setTextColor:[self.theme titleColor]];
     [self.typeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.typeLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     self.detailDescriptionLabel = [[UILabel alloc] init];
     [self.detailDescriptionLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.detailDescriptionLabel.lineBreakMode = NSLineBreakByTruncatingMiddle; // TODO - use attributed string for line break
-    self.detailDescriptionLabel.font = [[BTUI braintreeTheme] controlDetailFont];
-    [self.detailDescriptionLabel setTextColor:[[BTUI braintreeTheme] detailColor]];
+    self.detailDescriptionLabel.font = [self.theme controlDetailFont];
+    [self.detailDescriptionLabel setTextColor:[self.theme detailColor]];
 
     // Activity Indicators
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -158,12 +158,12 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
             self.detailDescriptionLabel.text = self.detailDescription;
 
             [self.iconView removeFromSuperview];
-            self.iconView = [[BTUI braintreeTheme] vectorArtViewForPaymentMethodType:self.type];
+            self.iconView = [self.theme vectorArtViewForPaymentMethodType:self.type];
             [self.iconView setTranslatesAutoresizingMaskIntoConstraints:NO];
             [self addSubview:self.iconView];
 
             self.backgroundColor = [UIColor whiteColor];
-            self.layer.borderColor = [[BTUI braintreeTheme] borderColor].CGColor;
+            self.layer.borderColor = [self.theme borderColor].CGColor;
             self.iconView.alpha = 1.0f;
             self.typeLabel.alpha = 1.0f;
             self.detailDescriptionLabel.alpha = 1.0f;
@@ -172,7 +172,7 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
             break;
         case BTPaymentMethodViewStateProcessing:
             self.backgroundColor = [UIColor whiteColor];
-            self.layer.borderColor = [[BTUI braintreeTheme] borderColor].CGColor;
+            self.layer.borderColor = [self.theme borderColor].CGColor;
             self.iconView.alpha = 0.0f;
             self.typeLabel.alpha = 0.0f;
             self.detailDescriptionLabel.alpha = 0.0f;
