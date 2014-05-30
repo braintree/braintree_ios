@@ -133,6 +133,7 @@
                                                                               views:@{@"dropInContentView": self.dropInContentView}]];
 
     if (self.fullForm) {
+        self.dropInContentView.state = BTDropInContentViewStateActivity;
         [self fetchPaymentMethods];
     }
 
@@ -278,11 +279,15 @@
 
 #pragma mark BTDropInViewControllerDelegate implementation
 
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
+- (void)dropInViewControllerWillComplete:(BTDropInViewController *)viewController {
+    [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+    self.dropInContentView.state = BTDropInContentViewStateActivity;
+}
+
+- (void)dropInViewController:(__unused BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
-    [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)dropInViewController:(__unused BTDropInViewController *)viewController didFailWithError:(__unused NSError *)error {
@@ -405,7 +410,6 @@
 
 - (void)fetchPaymentMethods {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    self.dropInContentView.state = BTDropInContentViewStateActivity;
     [self.client fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         self.paymentMethods = paymentMethods;
@@ -420,15 +424,10 @@
 
     if ([self.paymentMethods count] == 0) {
         self.selectedPaymentMethodIndex = NSNotFound;
-        self.dropInContentView.state = BTDropInContentViewStateForm;
+        [self.dropInContentView setState:BTDropInContentViewStateForm animate:YES];
     } else {
         self.selectedPaymentMethodIndex = 0;
-        self.dropInContentView.state = BTDropInContentViewStatePaymentMethodsOnFile;
-        if (self.paymentMethods.count > 1) {
-            [self.dropInContentView.changeSelectedPaymentMethodButton setTitle:@"Change payment method" forState:UIControlStateNormal];
-        } else {
-            [self.dropInContentView.changeSelectedPaymentMethodButton setTitle:@"Add new payment method" forState:UIControlStateNormal];
-        }
+        [self.dropInContentView setState:BTDropInContentViewStatePaymentMethodsOnFile animate:YES];
     }
     [self updateValidity];
 }
@@ -436,9 +435,7 @@
 - (void)setSelectedPaymentMethodIndex:(NSInteger)selectedPaymentMethodIndex {
     _selectedPaymentMethodIndex = selectedPaymentMethodIndex;
     if (selectedPaymentMethodIndex == NSNotFound) {
-        self.dropInContentView.state = BTDropInContentViewStateForm;
     } else {
-        self.dropInContentView.state = BTDropInContentViewStatePaymentMethodsOnFile;
         BTPaymentMethod *defaultPaymentMethod = [self selectedPaymentMethod];
         if ([defaultPaymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
             BTUIPaymentMethodType uiPaymentMethodType = [BTDropInUtil uiForCardType:((BTCardPaymentMethod *)defaultPaymentMethod).type];

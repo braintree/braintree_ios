@@ -121,6 +121,58 @@
     [self updateLayout];
 }
 
+- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate {
+    if (!animate) {
+        [self setState:newState];
+    } else {
+        BTDropInContentViewStateType oldState = self.state;
+        CGFloat duration = 0.2f;
+        if (oldState == BTDropInContentViewStateActivity) {
+            if (newState == BTDropInContentViewStateForm) {
+                [UIView animateWithDuration:duration animations:^{
+                    self.activityView.alpha = 0.0f;
+                } completion:^(__unused BOOL finished) {
+                    [self setState:newState];
+                    self.payPalControl.alpha = 0.0f;
+                    self.cardForm.alpha = 0.0f;
+                    self.cardFormSectionHeader.alpha = 0.0f;
+                    self.ctaControl.alpha = 0.0f;
+                    [self setNeedsUpdateConstraints];
+                    [self layoutIfNeeded];
+                    [UIView animateWithDuration:duration animations:^{
+                        self.payPalControl.alpha = 1.0f;
+                        self.cardForm.alpha = 1.0f;
+                        self.cardFormSectionHeader.alpha = 1.0f;
+                        self.ctaControl.alpha = 1.0f;
+                    }];
+                }];
+                return;
+            }
+
+            if (newState == BTDropInContentViewStatePaymentMethodsOnFile) {
+                self.activityView.alpha = 1.0f;
+                [UIView animateWithDuration:duration animations:^{
+                    self.activityView.alpha = 0.0f;
+                } completion:^(__unused BOOL finished) {
+                    [self setState:newState];
+                    self.selectedPaymentMethodView.alpha = 0.0f;
+                    self.changeSelectedPaymentMethodButton.alpha = 0.0f;
+                    self.ctaControl.alpha = 0.0f;
+                    [self setNeedsUpdateConstraints];
+                    [self layoutIfNeeded];
+                    [UIView animateWithDuration:duration animations:^{
+                        self.selectedPaymentMethodView.alpha = 1.0f;
+                        self.changeSelectedPaymentMethodButton.alpha = 1.0f;
+                        self.ctaControl.alpha = 1.0f;
+                    }];
+                }];
+                return;
+            }
+        }
+        [self setState:newState];
+    }
+}
+
 - (void) setHidePayPal:(BOOL)payPalControlHidden{
     _hidePayPal = payPalControlHidden;
     self.payPalControl.hidden = payPalControlHidden;
@@ -137,20 +189,23 @@
     self.cardForm.hidden = YES;
     self.selectedPaymentMethodView.hidden = YES;
     self.changeSelectedPaymentMethodButton.hidden = YES;
-    self.ctaControl.hidden = NO || self.hideCTA;
+    self.ctaControl.hidden = YES;
 
     switch (self.state) {
         case BTDropInContentViewStateForm:
+            self.ctaControl.hidden = self.hideCTA;
             self.payPalControl.hidden = self.hidePayPal ;
             self.cardFormSectionHeader.hidden = NO;
             self.cardForm.hidden = NO;
             break;
         case BTDropInContentViewStatePaymentMethodsOnFile:
+            self.ctaControl.hidden = self.hideCTA;
             self.selectedPaymentMethodView.hidden = NO;
             self.changeSelectedPaymentMethodButton.hidden = NO;
             break;
         case BTDropInContentViewStateActivity:
             self.activityView.hidden = NO;
+            self.activityView.alpha = 1.0f;
             [self.activityView startAnimating];
             break;
         default:
@@ -180,7 +235,7 @@
     NSString *ctaControlVisualFormat = self.ctaControl.hidden ? @"" : @"[ctaControl(==50)]";
 
     if (self.state == BTDropInContentViewStateActivity) {
-        return [NSString stringWithFormat:@"V:|%@-(30)-[activityView]-(30)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
+        return [NSString stringWithFormat:@"V:|%@-(40)-[activityView]-(40)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
 
     } else if (self.state != BTDropInContentViewStatePaymentMethodsOnFile) {
         if (self.hidePayPal){
