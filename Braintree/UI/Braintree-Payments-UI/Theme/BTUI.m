@@ -34,6 +34,14 @@
     return [self colorWithBytesR:7 G:158 B:222];
 }
 
+- (UIColor *)callToActionColorHighlighted {
+    return [UIColor colorWithRed:0.375 green:0.635 blue:0.984 alpha:1.000];
+}
+
+- (UIColor *)disabledButtonColor {
+    return [BTUIUtil uiColorFromHex:@"#BCBFC4" alpha:1.0f];
+}
+
 - (UIColor *)titleColor {
     return [self colorWithBytesR:46 G:51 B:58];
 }

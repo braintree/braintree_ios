@@ -19,6 +19,9 @@
 
 - (UIColor *)viewBackgroundColor;
 - (UIColor *)callToActionColor;
+- (UIColor *)callToActionColorHighlighted;
+- (UIColor *)disabledButtonColor;
+
 - (UIColor *)titleColor;
 - (UIColor *)detailColor;
 - (UIColor *)borderColor;
