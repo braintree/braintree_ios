@@ -5,7 +5,7 @@
 #import "BTUI.h"
 #import "BTDropinViewController.h"
 
-@interface BTDropInSelectPaymentMethodViewController () <BTDropInViewControllerDelegate>
+@interface BTDropInSelectPaymentMethodViewController ()
 
 @end
 
@@ -27,9 +27,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(didCancel)];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -39,26 +36,8 @@
 
 #pragma mark -
 
-- (void)didCancel {
-    [self.delegate dropInSelectPaymentMethodViewControllerDidCancel:self];
-}
-
 - (void)didTapAdd {
-    BTDropInViewController *dropInViewController = [[BTDropInViewController alloc] initWithClient:self.client];
-    dropInViewController.shouldDisplayPaymentMethodsOnFile = NO;
-    dropInViewController.shouldHideCallToAction = YES;
-    dropInViewController.delegate = self;
-    [self.navigationController pushViewController:dropInViewController animated:YES];
-}
-
-#pragma mark - BTDropInViewController delegate
-
-- (void)dropInViewController:(__unused BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
-    [self.delegate dropInSelectPaymentMethodViewController:self didCreatePaymentMethod:paymentMethod];
-}
-
-- (void)dropInViewController:(__unused BTDropInViewController *)viewController didFailWithError:(__unused NSError *)error {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.delegate selectPaymentMethodViewControllerDidRequestNew:self];
 }
 
 #pragma mark - Table view data source
@@ -119,7 +98,7 @@
 - (void)tableView:(__unused UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedPaymentMethodIndex = indexPath.row;
     [self.tableView reloadData];
-    [self.delegate dropInSelectPaymentMethodViewController:self didSelectPaymentMethodAtIndex:indexPath.row];
+    [self.delegate selectPaymentMethodViewController:self didSelectPaymentMethodAtIndex:indexPath.row];
 }
 
 @end
