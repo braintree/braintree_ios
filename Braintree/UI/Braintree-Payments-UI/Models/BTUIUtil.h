@@ -8,5 +8,6 @@
 
 + (NSString *)stripNonExpiry:(NSString *)input;
 
++ (UIColor *)uiColorFromHex:(NSString *)hex alpha:(CGFloat)alpha;
 
 @end

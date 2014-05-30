@@ -5,17 +5,13 @@
 
 @property (weak, nonatomic) IBOutlet BTPayPalControl *payPalControl;
 
-@property (weak, nonatomic) IBOutlet UIProgressView *progressBar;
-
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *payPalControlWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *payPalControlHeightConstraint;
 
 @end
 
 @implementation BraintreePayPalDemoViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setTranslatesAutoresizingMaskIntoConstraints:YES];
     [self.payPalControl setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -27,11 +23,6 @@
 
 - (IBAction)heightSliderValueDidChange:(UISlider *)slider {
     self.payPalControlHeightConstraint.constant = slider.value * 100.0f;
-    [self.view layoutIfNeeded];
-}
-
-- (IBAction)widthSliderValueDidChange:(UISlider *)slider {
-    self.payPalControlWidthConstraint.constant = slider.value * 280.0f;
     [self.view layoutIfNeeded];
 }
 
@@ -48,7 +39,6 @@
 }
 
 - (void)payPalControl:(BTPayPalControl *)control requestsDismissalOfViewController:(UIViewController *)viewController {
-    [self.progressBar setProgress:0.0f animated:NO];
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

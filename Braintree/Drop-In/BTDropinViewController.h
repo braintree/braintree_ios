@@ -102,7 +102,7 @@
 /// A protocol for BTDropInViewController completion notifications.
 @protocol BTDropInViewControllerDelegate <NSObject>
 
-/// Informs the delegate when the user has successfully chosen a payment method.
+/// Informs the delegate when the user has successfully provided a payment method.
 ///
 /// @param viewController The Drop In view controller informing its delegate of success
 /// @param paymentMethod The selected (and possibly newly created) payment method.
@@ -114,5 +114,12 @@
 ///  @param viewController The Drop In view controller informing its delegate of failure.
 ///  @param error An error that describes the failure.
 - (void)dropInViewController:(BTDropInViewController *)viewController didFailWithError:(NSError *)error;
+
+@optional
+
+/// Informs the delegate when the user has entered or selected payment information.
+///
+/// @param viewController The Drop In view controller informing its delegate
+- (void)dropInViewControllerWillComplete:(BTDropInViewController *)viewController;
 
 @end
