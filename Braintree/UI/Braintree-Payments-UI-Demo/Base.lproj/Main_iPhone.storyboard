@@ -55,7 +55,7 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wkk-Kj-bLk" customClass="BTUIPaymentMethodView">
-                                <rect key="frame" x="20" y="85" width="280" height="53"/>
+                                <rect key="frame" x="0.0" y="85" width="320" height="53"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
@@ -97,12 +97,12 @@
                         <constraints>
                             <constraint firstItem="66N-zH-HjJ" firstAttribute="top" secondItem="eDC-xT-Any" secondAttribute="bottom" constant="8" symbolic="YES" id="1vh-VW-Zfj"/>
                             <constraint firstItem="5Oz-AB-8gW" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" id="7BH-rd-NLM"/>
-                            <constraint firstAttribute="trailing" secondItem="Wkk-Kj-bLk" secondAttribute="trailing" constant="20" symbolic="YES" id="C0A-hi-55E"/>
+                            <constraint firstAttribute="trailing" secondItem="Wkk-Kj-bLk" secondAttribute="trailing" id="C0A-hi-55E"/>
                             <constraint firstAttribute="centerX" secondItem="eDC-xT-Any" secondAttribute="centerX" constant="-6.5" id="DBd-8C-ch7"/>
                             <constraint firstItem="66N-zH-HjJ" firstAttribute="centerY" secondItem="4LD-74-01Q" secondAttribute="centerY" constant="-5" id="DKm-rt-v4g"/>
                             <constraint firstItem="Tsd-3s-x7Y" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" id="EcI-A6-Ilx"/>
                             <constraint firstItem="Wkk-Kj-bLk" firstAttribute="top" secondItem="5Oz-AB-8gW" secondAttribute="bottom" constant="20" id="LHZ-kF-tup"/>
-                            <constraint firstItem="Wkk-Kj-bLk" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" constant="20" symbolic="YES" id="QYM-Nc-UEF"/>
+                            <constraint firstItem="Wkk-Kj-bLk" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" id="QYM-Nc-UEF"/>
                             <constraint firstItem="5Oz-AB-8gW" firstAttribute="top" secondItem="ips-gP-4mH" secondAttribute="bottom" id="Rz3-2T-CDG"/>
                             <constraint firstItem="j6K-5l-LED" firstAttribute="top" secondItem="Tsd-3s-x7Y" secondAttribute="bottom" id="TS8-40-Ssi"/>
                             <constraint firstAttribute="trailing" secondItem="5Oz-AB-8gW" secondAttribute="trailing" id="eMI-Kn-dvo"/>

@@ -50,7 +50,7 @@
         // Add Constraints & Subviews
 
         // Full-Width Views
-        for (UIView *view in @[self.payPalControl, self.summaryView, self.ctaControl, self.cardForm]) {
+        for (UIView *view in @[self.payPalControl, self.selectedPaymentMethodView, self.summaryView, self.ctaControl, self.cardForm]) {
             [self addSubview:view];
             view.translatesAutoresizingMaskIntoConstraints = NO;
             [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
@@ -60,7 +60,7 @@
         }
 
         // Not quite full-width views
-        for (UIView *view in @[self.cardFormSectionHeader, self.selectedPaymentMethodView, self.changeSelectedPaymentMethodButton]) {
+        for (UIView *view in @[self.cardFormSectionHeader, self.changeSelectedPaymentMethodButton]) {
             [self addSubview:view];
             view.translatesAutoresizingMaskIntoConstraints = NO;
             [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[view]-(horizontalMargin)-|"
