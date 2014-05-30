@@ -2,17 +2,12 @@
 
 #import "BTUIPaymentMethodView.h"
 #import "BTPayPalViewController.h"
-
 #import "BTPayPalHorizontalSignatureWhiteView.h"
-
 #import "BTUI.h"
-
 #import "BTLogger.h"
 
 @interface BTPayPalControl () <BTPayPalViewControllerDelegate, BTPayPalControlViewControllerPresenterDelegate>
-
 @property (nonatomic, strong) BTPayPalHorizontalSignatureWhiteView *payPalHorizontalSignatureView;
-
 @property (nonatomic, strong) BTPayPalViewController *braintreePayPalViewController;
 @end
 
@@ -86,9 +81,7 @@
         self.userInteractionEnabled = NO;
         self.braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
         self.braintreePayPalViewController.delegate = self;
-        if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsPresentationOfViewController:)]) {
-            [self.presentationDelegate payPalControl:self requestsPresentationOfViewController:self.braintreePayPalViewController];
-        }
+        [self requestPresentationOfViewController:self.braintreePayPalViewController];
     }
 }
 
@@ -117,6 +110,26 @@
     }
 }
 
+- (void)informDelegateWillCreatePayPalPaymentMethod {
+    if ([self.delegate respondsToSelector:@selector(payPalControlWillCreatePayPalPaymentMethod:)]) {
+        [self.delegate payPalControlWillCreatePayPalPaymentMethod:self];
+    }
+}
+
+#pragma mark Presentation Delegate Messages
+
+- (void)requestDismissalOfViewController:(UIViewController *)viewController {
+    if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsDismissalOfViewController:)]) {
+        [self.presentationDelegate payPalControl:self requestsDismissalOfViewController:viewController];
+    }
+}
+
+- (void)requestPresentationOfViewController:(UIViewController *)viewController {
+    if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsPresentationOfViewController:)]) {
+        [self.presentationDelegate payPalControl:self requestsPresentationOfViewController:viewController];
+    }
+}
+
 #pragma mark - UIControl methods
 
 - (void)setHighlighted:(BOOL)highlighted {
@@ -129,12 +142,8 @@
 #pragma mark - BTPayPalViewControllerDelegate implementation
 
 - (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController {
-    if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsDismissalOfViewController:)]) {
-        [self.presentationDelegate payPalControl:self requestsDismissalOfViewController:viewController];
-    }
-    if ([self.delegate respondsToSelector:@selector(payPalControlWillCreatePayPalPaymentMethod:)]) {
-        [self.delegate payPalControlWillCreatePayPalPaymentMethod:self];
-    }
+    [self requestDismissalOfViewController:viewController];
+    [self informDelegateWillCreatePayPalPaymentMethod];
 }
 
 - (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
@@ -147,22 +156,17 @@
     self.userInteractionEnabled = YES;
     NSLog(@"PayPal view controller failed with error: %@", error);
     self.braintreePayPalViewController = nil;
-    if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsDismissalOfViewController:)]) {
-        [self.presentationDelegate payPalControl:self requestsDismissalOfViewController:viewController];
-    }
-
+    [self requestDismissalOfViewController:viewController];
     [self informDelegateDidFailWithError:error];
 }
 
 - (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
     self.userInteractionEnabled = YES;
     self.braintreePayPalViewController = nil;
-    if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsDismissalOfViewController:)]) {
-        [self.presentationDelegate payPalControl:self requestsDismissalOfViewController:viewController];
-    }
+    [self requestDismissalOfViewController:viewController];
 }
 
-#pragma mark BTPayPalControlViewControllerPresenterDelegate default implementation
+#pragma mark - BTPayPalControlViewControllerPresenterDelegate default implementation
 
 - (void)payPalControl:(__unused BTPayPalControl *)control requestsPresentationOfViewController:(UIViewController *)viewController {
     [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
@@ -175,7 +179,9 @@
 #pragma mark Auto Layout Constraints
 
 - (NSArray *)defaultConstraints {
-    return @[[NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+    return @[
+             // Signature centerY
+             [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
                                           attribute:NSLayoutAttributeCenterY
                                           relatedBy:NSLayoutRelationEqual
                                              toItem:self
@@ -183,6 +189,7 @@
                                          multiplier:1.0f
                                            constant:0],
 
+             // Signature centerX
              [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
                                           attribute:NSLayoutAttributeCenterX
                                           relatedBy:NSLayoutRelationEqual
@@ -191,6 +198,7 @@
                                          multiplier:1.0f
                                            constant:0],
 
+             // Signature width
              [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
                                           attribute:NSLayoutAttributeWidth
                                           relatedBy:NSLayoutRelationEqual
@@ -199,6 +207,7 @@
                                          multiplier:1.0f
                                            constant:95],
 
+             // Signature height
              [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
                                           attribute:NSLayoutAttributeHeight
                                           relatedBy:NSLayoutRelationEqual
@@ -244,6 +253,5 @@
                  constraint;
              })];
 }
-
 
 @end
