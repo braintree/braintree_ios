@@ -32,6 +32,6 @@ typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
 
 
 ///  Whether the PayPal control is hidden
-@property (nonatomic, assign) BOOL payPalControlHidden;
+@property (nonatomic, assign) BOOL hidePayPal;
 
 @end

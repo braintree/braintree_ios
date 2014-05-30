@@ -106,9 +106,28 @@
     [super updateConstraints];
 
 }
+- (void)setHideSummary:(BOOL)hideSummary {
+    _hideSummary = hideSummary;
+    [self updateLayout];
+}
+
+- (void)setHideCTA:(BOOL)hideCTA {
+    _hideCTA = hideCTA;
+    [self updateLayout];
+}
 
 - (void)setState:(BTDropInContentViewStateType)state {
     _state = state;
+    [self updateLayout];
+}
+
+- (void) setHidePayPal:(BOOL)payPalControlHidden{
+    _hidePayPal = payPalControlHidden;
+    self.payPalControl.hidden = payPalControlHidden;
+    [self updateLayout];
+}
+
+- (void)updateLayout {
 
     // Reset all to hidden, just for clarity
     self.activityView.hidden = YES;
@@ -120,9 +139,9 @@
     self.changeSelectedPaymentMethodButton.hidden = YES;
     self.ctaControl.hidden = NO || self.hideCTA;
 
-    switch (state) {
+    switch (self.state) {
         case BTDropInContentViewStateForm:
-            self.payPalControl.hidden = self.payPalControlHidden ;
+            self.payPalControl.hidden = self.hidePayPal ;
             self.cardFormSectionHeader.hidden = NO;
             self.cardForm.hidden = NO;
             break;
@@ -140,11 +159,6 @@
     [self setNeedsUpdateConstraints];
 }
 
-
-- (void) setPayPalControlHidden:(BOOL)payPalControlHidden{
-    _payPalControlHidden = payPalControlHidden;
-    self.payPalControl.hidden = payPalControlHidden;
-}
 
 #pragma mark Tap Gesture Delegate
 
@@ -169,7 +183,7 @@
         return [NSString stringWithFormat:@"V:|%@-(30)-[activityView]-(30)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
 
     } else if (self.state != BTDropInContentViewStatePaymentMethodsOnFile) {
-        if (self.payPalControlHidden){
+        if (self.hidePayPal){
             return [NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
         } else {
             return [NSString stringWithFormat:@"V:|%@-(15)-[payPalControl(==45)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];

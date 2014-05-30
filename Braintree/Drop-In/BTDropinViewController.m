@@ -7,7 +7,7 @@
 #import "Braintree-API.h"
 #import "BTClient+BTPayPal.h"
 
-@interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalControlViewControllerPresenterDelegate, BTPayPalControlDelegate>
+@interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalControlViewControllerPresenterDelegate, BTPayPalControlDelegate, BTDropInViewControllerDelegate>
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
 @property (nonatomic, strong) NSArray *paymentMethods;
@@ -25,7 +25,7 @@
         self.dropInContentView.payPalControl.client = self.client;
         self.dropInContentView.payPalControl.presentationDelegate = self;
         self.dropInContentView.payPalControl.delegate = self;
-        self.dropInContentView.payPalControlHidden =  !self.client.btPayPal_isPayPalEnabled;
+        self.dropInContentView.hidePayPal =  !self.client.btPayPal_isPayPalEnabled;
         self.selectedPaymentMethodIndex = NSNotFound;
         self.shouldDisplayPaymentMethodsOnFile = YES;
         _callToActionText = @"Pay";
@@ -185,26 +185,35 @@
 #pragma mark - Handlers
 
 - (void)tappedChangePaymentMethod {
-    BTDropInSelectPaymentMethodViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodViewController alloc] init];
-    selectPaymentMethod.theme = self.theme;
-    selectPaymentMethod.paymentMethods = self.paymentMethods;
-    selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentMethodIndex;
-    selectPaymentMethod.delegate = self;
-    selectPaymentMethod.client = self.client;
+    UIViewController *rootViewController;
+    if (self.paymentMethods.count == 1) {
+        rootViewController = [self addPaymentMethodDropInViewController];
+    } else {
+        BTDropInSelectPaymentMethodViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodViewController alloc] init];
+        selectPaymentMethod.theme = self.theme;
+        selectPaymentMethod.paymentMethods = self.paymentMethods;
+        selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentMethodIndex;
+        selectPaymentMethod.delegate = self;
+        selectPaymentMethod.client = self.client;
+        rootViewController = selectPaymentMethod;
+    }
+    rootViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                                        target:self
+                                                                                                        action:@selector(didCancelChangePaymentMethod)];
 
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectPaymentMethod];
-
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)tappedSubmitForm {
-
     BTPaymentMethod *paymentMethod = [self selectedPaymentMethod];
     if (paymentMethod != nil) {
+        [self informDelegateWillComplete];
         [self informDelegateDidAddPaymentMethod:paymentMethod];
     } else if (!self.dropInContentView.cardForm.hidden) {
         BTUICardFormView *cardForm = self.dropInContentView.cardForm;
         if (cardForm.valid) {
+            [self informDelegateWillComplete];
             [self.client saveCardWithNumber:cardForm.number
                             expirationMonth:cardForm.expirationMonth
                              expirationYear:cardForm.expirationYear
@@ -218,16 +227,18 @@
                                         [self informDelegateDidFailWithError:error];
                                     }];
         } else {
+            // Should never happen
             [[[UIAlertView alloc] initWithTitle:@"Invalid form"
                                         message:@"The card form is invalid"
                                        delegate:nil
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil] show];
         }
-    } else {
-        [self informDelegateDidAddPaymentMethod:[self selectedPaymentMethod]];
-
     }
+}
+
+- (void)didCancelChangePaymentMethod {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark Card Form Delegate methods
@@ -238,21 +249,32 @@
 
 #pragma mark Drop In Select Payment Method Table View Controller Delegate methods
 
-- (void)selectPaymentMethodViewController:(__unused BTDropInSelectPaymentMethodViewController *)viewController didSelectPaymentMethodAtIndex:(NSUInteger)index {
-    self.selectedPaymentMethodIndex = index;
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)selectPaymentMethodViewControllerDidCancel:(__unused BTDropInSelectPaymentMethodViewController *)viewController {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)selectPaymentMethodViewController:(__unused BTDropInSelectPaymentMethodViewController *)viewController
-                              didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+- (void)selectPaymentMethodViewController:(BTDropInSelectPaymentMethodViewController *)viewController
+            didSelectPaymentMethodAtIndex:(NSUInteger)index {
+    self.selectedPaymentMethodIndex = index;
+    [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)selectPaymentMethodViewControllerDidRequestNew:(BTDropInSelectPaymentMethodViewController *)viewController {
+    [viewController.navigationController pushViewController:[self addPaymentMethodDropInViewController] animated:YES];
+}
+
+#pragma mark BTDropInViewControllerDelegate implementation
+
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)dropInViewController:(__unused BTDropInViewController *)viewController didFailWithError:(__unused NSError *)error {
+    // TODO - Check error and show UI accordingly.
+    [[[UIAlertView alloc] initWithTitle:@"Error adding payment method" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil] show];
 }
 
 #pragma mark PayPal Control Presentation Delegate methods
@@ -267,6 +289,10 @@
 
 #pragma mark PayPal Control Delegate methods
 
+- (void)payPalControlWillCreatePayPalPaymentMethod:(__unused BTPayPalControl *)control {
+    self.dropInContentView.state = BTDropInContentViewStateActivity;
+}
+
 - (void)payPalControl:(__unused BTPayPalControl *)control didCreatePayPalPaymentMethod:(__unused BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
@@ -278,6 +304,12 @@
 }
 
 #pragma mark Delegate Notifications
+
+- (void)informDelegateWillComplete {
+    if ([self.delegate respondsToSelector:@selector(dropInViewControllerWillComplete:)]) {
+        [self.delegate dropInViewControllerWillComplete:self];
+    }
+}
 
 - (void)informDelegateDidAddPaymentMethod:(BTPaymentMethod *)paymentMethod {
     if ([self.delegate respondsToSelector:@selector(dropInViewController:didSucceedWithPaymentMethod:)]) {
@@ -408,6 +440,16 @@
     } else {
         return BTUICardFormOptionalFieldsNone;
     }
+}
+
+#pragma mark - Helpers
+
+- (BTDropInViewController *)addPaymentMethodDropInViewController {
+    BTDropInViewController *addPaymentMethodViewController = [[BTDropInViewController alloc] initWithClient:self.client];
+    addPaymentMethodViewController.shouldDisplayPaymentMethodsOnFile = NO;
+    addPaymentMethodViewController.shouldHideCallToAction = YES;
+    addPaymentMethodViewController.delegate = self;
+    return addPaymentMethodViewController;
 }
 
 @end
