@@ -238,16 +238,16 @@
 
 #pragma mark Drop In Select Payment Method Table View Controller Delegate methods
 
-- (void)dropInSelectPaymentMethodViewController:(__unused BTDropInSelectPaymentMethodViewController *)viewController didSelectPaymentMethodAtIndex:(NSUInteger)index {
+- (void)selectPaymentMethodViewController:(__unused BTDropInSelectPaymentMethodViewController *)viewController didSelectPaymentMethodAtIndex:(NSUInteger)index {
     self.selectedPaymentMethodIndex = index;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)dropInSelectPaymentMethodViewControllerDidCancel:(__unused BTDropInSelectPaymentMethodViewController *)viewController {
+- (void)selectPaymentMethodViewControllerDidCancel:(__unused BTDropInSelectPaymentMethodViewController *)viewController {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)dropInSelectPaymentMethodViewController:(__unused BTDropInSelectPaymentMethodViewController *)viewController
+- (void)selectPaymentMethodViewController:(__unused BTDropInSelectPaymentMethodViewController *)viewController
                               didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];

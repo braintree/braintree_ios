@@ -20,12 +20,12 @@
 
 @protocol BTDropInSelectPaymentMethodViewControllerDelegate
 
-- (void)dropInSelectPaymentMethodViewController:(BTDropInSelectPaymentMethodViewController *)viewController
+- (void)selectPaymentMethodViewController:(BTDropInSelectPaymentMethodViewController *)viewController
                        didSelectPaymentMethodAtIndex:(NSUInteger)index;
 
-- (void)dropInSelectPaymentMethodViewController:(BTDropInSelectPaymentMethodViewController *)viewController
+- (void)selectPaymentMethodViewController:(BTDropInSelectPaymentMethodViewController *)viewController
                        didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod;
 
-- (void)dropInSelectPaymentMethodViewControllerDidCancel:(BTDropInSelectPaymentMethodViewController *)viewController;
+- (void)selectPaymentMethodViewControllerDidCancel:(BTDropInSelectPaymentMethodViewController *)viewController;
 
 @end

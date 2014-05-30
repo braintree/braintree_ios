@@ -40,7 +40,7 @@
 #pragma mark -
 
 - (void)didCancel {
-    [self.delegate dropInSelectPaymentMethodViewControllerDidCancel:self];
+    [self.delegate selectPaymentMethodViewControllerDidCancel:self];
 }
 
 - (void)didTapAdd {
@@ -54,7 +54,7 @@
 #pragma mark - BTDropInViewController delegate
 
 - (void)dropInViewController:(__unused BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
-    [self.delegate dropInSelectPaymentMethodViewController:self didCreatePaymentMethod:paymentMethod];
+    [self.delegate selectPaymentMethodViewController:self didCreatePaymentMethod:paymentMethod];
 }
 
 - (void)dropInViewController:(__unused BTDropInViewController *)viewController didFailWithError:(__unused NSError *)error {
@@ -119,7 +119,7 @@
 - (void)tableView:(__unused UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.selectedPaymentMethodIndex = indexPath.row;
     [self.tableView reloadData];
-    [self.delegate dropInSelectPaymentMethodViewController:self didSelectPaymentMethodAtIndex:indexPath.row];
+    [self.delegate selectPaymentMethodViewController:self didSelectPaymentMethodAtIndex:indexPath.row];
 }
 
 @end
