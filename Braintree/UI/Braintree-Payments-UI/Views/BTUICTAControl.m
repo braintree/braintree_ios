@@ -27,7 +27,7 @@
 #pragma mark View Lifecycle
 
 - (void)setupView {
-    self.backgroundColor = [[BTUI braintreeTheme] callToActionColor];
+    self.theme = [BTUI braintreeTheme];
 
     self.label = [[UILabel alloc] init];
     [self.label setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -94,12 +94,24 @@
     [super updateConstraints];
 }
 
+- (void)setTheme:(BTUI *)theme {
+    _theme = theme;
+    self.backgroundColor = theme.callToActionColor;
+}
+
 #pragma mark Highlight Presentation
 
 - (void)setHighlighted:(BOOL)highlighted {
     [super setHighlighted:highlighted];
-    [self setBackgroundColor:highlighted ? [UIColor colorWithRed:0.375 green:0.635 blue:0.984 alpha:1.000] : [[BTUI braintreeTheme] callToActionColor]];
+    [self setBackgroundColor:highlighted ? [UIColor colorWithRed:0.375 green:0.635 blue:0.984 alpha:1.000] : self.theme.callToActionColor];
 }
+
+- (void)setEnabled:(BOOL)enabled {
+    [super setEnabled:enabled];
+    [self setBackgroundColor:enabled ? self.theme.callToActionColor : self.theme.disabledButtonColor];
+}
+
+
 #pragma mark Public Parameters
 
 - (void)setAmount:(NSString *)amount {
