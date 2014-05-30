@@ -44,9 +44,6 @@
     self.opaque = NO;
     self.backgroundColor = [UIColor clearColor];
 
-    [self setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [self setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-
     // Create PayPal Control Content View (Logged out PayPal button)
     self.layer.cornerRadius = 5.0f;
     self.layer.borderWidth = 0.5f;
