@@ -30,7 +30,7 @@
 }
 
 - (UIColor *)callToActionColor {
-    return [UIColor colorWithRed:0.000 green:0.478 blue:1.000 alpha:1.000];
+    return [self colorWithBytesR:7 G:158 B:222];
 }
 
 - (UIColor *)titleColor {
