@@ -133,7 +133,7 @@ namespace :sanity_checks do
     run "ack 'fit\\(|fdescribe\\(' Braintree-Specs Braintree" and fail "Please do not commit pending specs."
   end
 
-  desc 'Verify that all demoa apps Build successfully'
+  desc 'Verify that all demo apps Build successfully'
   task :build_all_demos => %w[demo:build demo:api:build demo:ui:build demo:paypal:build]
 end
 
