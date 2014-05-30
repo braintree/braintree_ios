@@ -3,13 +3,15 @@
 #import "BTUIPaymentMethodView.h"
 #import "BTPayPalViewController.h"
 
-#import "BTPayPalControlContentView.h"
+#import "BTPayPalHorizontalSignatureWhiteView.h"
+
+#import "BTUI.h"
 
 #import "BTLogger.h"
 
 @interface BTPayPalControl () <BTPayPalViewControllerDelegate, BTPayPalControlViewControllerPresenterDelegate>
 
-@property (nonatomic, strong) BTPayPalControlContentView *contentView;
+@property (nonatomic, strong) BTPayPalHorizontalSignatureWhiteView *payPalHorizontalSignatureView;
 
 @property (nonatomic, strong) BTPayPalViewController *braintreePayPalViewController;
 @end
@@ -55,23 +57,22 @@
     [self setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
 
     // Create PayPal Control Content View (Logged out PayPal button)
-    self.contentView = [[BTPayPalControlContentView alloc] initWithFrame:self.bounds];
-    [self.contentView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.layer.cornerRadius = 5.0f;
+    self.layer.borderWidth = 0.5f;
 
-    // Add subviews
-    [self addSubview:self.contentView];
+    self.payPalHorizontalSignatureView = [[BTPayPalHorizontalSignatureWhiteView alloc] init];
+    [self.payPalHorizontalSignatureView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self addSubview:self.payPalHorizontalSignatureView];
+
+
+    self.backgroundColor = [[BTUI braintreeTheme] payPalButtonBlue];
+    self.layer.borderColor = [UIColor clearColor].CGColor;
+
+    [self addConstraints:[self defaultConstraints]];
 
     // Listen for taps
     [self addTarget:self action:@selector(didReceiveTouch) forControlEvents:UIControlEventTouchUpInside];
-
-    // Constrain content to be flush
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contentView]|" options:0 metrics:nil views:@{@"contentView": self.contentView}]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentView]|" options:0 metrics:nil views:@{@"contentView": self.contentView}]];
-}
-
-- (void)updateViewsForLoggedOutState {
-    self.userInteractionEnabled = YES;
-    self.contentView.alpha = 1.0f;
 }
 
 - (void)didReceiveTouch {
@@ -93,10 +94,6 @@
 
 - (id<BTPayPalControlViewControllerPresenterDelegate>)presentationDelegate {
     return _presentationDelegate ?: self;
-}
-
-- (void)clear {
-    [self updateViewsForLoggedOutState];
 }
 
 #pragma mark State Change Messages
@@ -123,8 +120,9 @@
 #pragma mark - UIControl methods
 
 - (void)setHighlighted:(BOOL)highlighted {
-    [super setHighlighted:highlighted];
-    [self.contentView setHighlighted:highlighted];
+    [UIView animateWithDuration:0.08f animations:^{
+        self.backgroundColor = highlighted ? [[BTUI braintreeTheme]  payPalButtonActiveBlue] : [[BTUI braintreeTheme]  payPalButtonBlue];
+    }];
 }
 
 
@@ -173,5 +171,79 @@
 - (void)payPalControl:(__unused BTPayPalControl *)control requestsDismissalOfViewController:(UIViewController *)viewController {
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark Auto Layout Constraints
+
+- (NSArray *)defaultConstraints {
+    return @[[NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+                                          attribute:NSLayoutAttributeCenterY
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:self
+                                          attribute:NSLayoutAttributeCenterY
+                                         multiplier:1.0f
+                                           constant:0],
+
+             [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+                                          attribute:NSLayoutAttributeCenterX
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:self
+                                          attribute:NSLayoutAttributeCenterX
+                                         multiplier:1.0f
+                                           constant:0],
+
+             [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+                                          attribute:NSLayoutAttributeWidth
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:nil
+                                          attribute:NSLayoutAttributeNotAnAttribute
+                                         multiplier:1.0f
+                                           constant:95],
+
+             [NSLayoutConstraint constraintWithItem:self.payPalHorizontalSignatureView
+                                          attribute:NSLayoutAttributeHeight
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:nil
+                                          attribute:NSLayoutAttributeNotAnAttribute
+                                         multiplier:1.0f
+                                           constant:23],
+
+             ({
+                 // Minimum height
+                 NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self
+                                                                               attribute:NSLayoutAttributeHeight
+                                                                               relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                  toItem:nil
+                                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                                              multiplier:1.0f
+                                                                                constant:40.0f];
+                 constraint.priority = UILayoutPriorityRequired;
+                 constraint;
+             }),
+             ({
+                 // Maximum height
+                 NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self
+                                                                               attribute:NSLayoutAttributeHeight
+                                                                               relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                                  toItem:nil
+                                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                                              multiplier:1.0f
+                                                                                constant:60.0f];
+                 constraint.priority = UILayoutPriorityRequired;
+                 constraint;
+             }),
+             ({
+                 // Minimum width
+                 NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self
+                                                                               attribute:NSLayoutAttributeWidth
+                                                                               relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                                  toItem:nil
+                                                                               attribute:NSLayoutAttributeNotAnAttribute
+                                                                              multiplier:1.0f
+                                                                                constant:260.0f];
+                 constraint.priority = UILayoutPriorityRequired;
+                 constraint;
+             })];
+}
+
 
 @end
