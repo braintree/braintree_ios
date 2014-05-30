@@ -37,10 +37,6 @@
     return self;
 }
 
-+ (BOOL)requiresConstraintBasedLayout {
-    return YES;
-}
-
 - (void)setupViews {
     self.accessibilityLabel = NSLocalizedString(@"Pay with PayPal", @"BTPayPalControl accessibility label");
     self.userInteractionEnabled = YES;
