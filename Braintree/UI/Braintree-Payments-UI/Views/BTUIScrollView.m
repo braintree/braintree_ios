@@ -10,8 +10,12 @@
 - (void)scrollRectToVisible:(CGRect)rect animated:(BOOL)animated
 {
     if (self.scrollRectToVisibleDelegate != nil) {
-        [self.scrollRectToVisibleDelegate  scrollView:self requestsScrollRectToVisible:rect animated:animated];
+        [self.scrollRectToVisibleDelegate scrollView:self requestsScrollRectToVisible:rect animated:animated];
     }
+}
+
+- (BOOL)touchesShouldCancelInContentView:(__unused UIView *)view {
+    return YES;
 }
 
 @end

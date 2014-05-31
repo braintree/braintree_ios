@@ -57,7 +57,7 @@
     self.scrollView.scrollsToTop = YES;
     self.scrollView.alwaysBounceVertical = YES;
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.scrollView.delaysContentTouches = YES;
+    self.scrollView.delaysContentTouches = NO;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
