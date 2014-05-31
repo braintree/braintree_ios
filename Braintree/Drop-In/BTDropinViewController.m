@@ -204,6 +204,7 @@
         rootViewController = [self addPaymentMethodDropInViewController];
     } else {
         BTDropInSelectPaymentMethodViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodViewController alloc] init];
+        selectPaymentMethod.title = @"Payment Method";
         selectPaymentMethod.theme = self.theme;
         selectPaymentMethod.paymentMethods = self.paymentMethods;
         selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentMethodIndex;
@@ -482,6 +483,7 @@
 
 - (BTDropInViewController *)addPaymentMethodDropInViewController {
     BTDropInViewController *addPaymentMethodViewController = [[BTDropInViewController alloc] initWithClient:self.client];
+    addPaymentMethodViewController.title = @"Add Payment Method";
     addPaymentMethodViewController.fullForm = NO;
     addPaymentMethodViewController.shouldHideCallToAction = YES;
     addPaymentMethodViewController.delegate = self;
