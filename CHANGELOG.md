@@ -2,7 +2,11 @@
 
 ## 3.0.0-rc3
 
-* Fix crash when adding PayPal an additional payment method.
+* Fix crashes when adding PayPal an additional payment method, when displaying PayPal as a payment method, and in offline mode
+* Add `dropInViewControllerWillComplete` delegate method.
+* Add transitions, activity indicators, and streamline some parts of UI.
+# Simplify implementation of `BTPayPalControl`.
+* :rotating_light: Remove `BTDropinViewController shouldDisplayPaymentMethodsOnFile` property.
 
 ## 3.0.0-rc2
 
