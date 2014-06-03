@@ -24,7 +24,7 @@
 - (void)fieldContentDidChange {
     _postalCode = [self.textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     [super fieldContentDidChange];
-    [self.delegate cardPostalCodeDidChange:self];
+    [self.delegate formFieldDidChange:self];
 }
 - (BOOL)entryComplete {
     return NO;

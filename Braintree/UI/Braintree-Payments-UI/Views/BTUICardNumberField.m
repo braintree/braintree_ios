@@ -52,7 +52,7 @@
     [self updateAppearance];
     [self setNeedsDisplay];
 
-    [self.delegate cardNumberFieldDidChange:self];
+    [self.delegate formFieldDidChange:self];
 }
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {

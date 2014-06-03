@@ -5,7 +5,7 @@
 #import "BTUICardPostalCodeField.h"
 #import "BTUI.h"
 
-@interface BTUICardFormView ()<BTUICardNumberFieldDelegate,BTUICardExpiryFieldDelegate,BTUICardCvvFieldDelegate,BTUICardPostalCodeFieldDelegate>
+@interface BTUICardFormView ()<BTUIFormFieldDelegate>
 
 @property (nonatomic, strong) BTUICardNumberField *numberField;
 @property (nonatomic, strong) BTUICardExpiryField *expiryField;
@@ -166,30 +166,30 @@
     return YES;
 }
 
+- (NSString *)number {
+    return self.numberField.number;
+}
+
+- (NSString *)expirationMonth {
+    return self.expiryField.expirationMonth;
+}
+
+- (NSString *)expirationYear {
+    return self.expiryField.expirationYear;
+}
+
+- (NSString *)cvv {
+    return self.cvvField.cvv;
+}
+
+- (NSString *)postalCode {
+    return self.postalCodeField.postalCode;
+}
+
 #pragma mark - Field delegate implementations
 
-- (void)cardNumberFieldDidChange:(BTUICardNumberField *)field {
-   _number = field.number;
-    self.cvvField.cardType = field.cardType;
-    [self advanceToNextInvalidFieldFrom:field];
-    [self.delegate cardFormViewDidChange:self];
-}
-
-- (void)cardExpiryDidChange:(BTUICardExpiryField *)field {
-    _expirationYear = field.expirationYear;
-    _expirationMonth = field.expirationMonth;
-    [self advanceToNextInvalidFieldFrom:field];
-    [self.delegate cardFormViewDidChange:self];
-}
-
-- (void)cardCvvDidChange:(BTUICardCvvField *)field {
-    _cvv = field.cvv;
-    [self advanceToNextInvalidFieldFrom:field];
-    [self.delegate cardFormViewDidChange:self];
-}
-
-- (void)cardPostalCodeDidChange:(BTUICardPostalCodeField *)field {
-    _postalCode = field.postalCode;
+- (void)formFieldDidChange:(BTUIFormField *)field {
+    self.cvvField.cardType = self.numberField.cardType;
     [self advanceToNextInvalidFieldFrom:field];
     [self.delegate cardFormViewDidChange:self];
 }

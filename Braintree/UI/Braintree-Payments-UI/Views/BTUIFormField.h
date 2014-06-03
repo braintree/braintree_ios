@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "BTUIThemedView.h"
 
+@protocol BTUIFormFieldDelegate;
+
 /// A form field is a UI component for entering a text value
 ///
 /// This is the parent class of all card form fields,
@@ -13,6 +15,7 @@
 - (void)updateAppearance;
 - (void)becomeFirstResponder;
 
+@property (nonatomic, weak) id<BTUIFormFieldDelegate> delegate;
 @property (nonatomic, assign, readonly) BOOL valid;
 @property (nonatomic, assign, readonly) BOOL entryComplete;
 @property (nonatomic, assign) BOOL displayAsValid;
@@ -20,3 +23,9 @@
 
 @end
 
+
+@protocol BTUIFormFieldDelegate <NSObject>
+
+- (void)formFieldDidChange:(BTUIFormField *)formField;
+
+@end

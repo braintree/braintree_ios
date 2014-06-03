@@ -45,7 +45,7 @@
 
     self.displayAsValid = self.textField.text.length != 5 || self.valid;
 
-    [self.delegate cardExpiryDidChange:self];
+    [self.delegate formFieldDidChange:self];
 }
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {

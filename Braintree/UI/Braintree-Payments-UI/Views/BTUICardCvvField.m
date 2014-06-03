@@ -53,7 +53,7 @@
     _cvv = [BTUIUtil stripNonDigits:self.textField.text];
     self.displayAsValid = self.textField.text.length == 0 || self.valid;
     [super fieldContentDidChange];
-    [self.delegate cardCvvDidChange:self];
+    [self.delegate formFieldDidChange:self];
 }
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
