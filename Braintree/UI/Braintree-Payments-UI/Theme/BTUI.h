@@ -66,6 +66,7 @@
 
 - (CGFloat)quickTransitionDuration;
 - (CGFloat)transitionDuration;
+- (CGFloat)minimumVisibilityTime;
 
 #pragma mark Icons
 

@@ -164,6 +164,10 @@
     return 0.2f;
 }
 
+- (CGFloat)minimumVisibilityTime {
+    return 0.5f;
+}
+
 #pragma mark Icons
 
 - (BTUIVectorArtView *)vectorArtViewForPaymentMethodType:(BTUIPaymentMethodType)type {
