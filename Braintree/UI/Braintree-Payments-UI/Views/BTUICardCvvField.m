@@ -3,6 +3,7 @@
 #import "BTUICardHint.h"
 #import "BTUIUtil.h"
 
+#define kMinimumCvvLength 3
 #define kMaximumCvvLength 4
 
 @interface BTUICardCvvField ()<UITextFieldDelegate>
@@ -29,14 +30,26 @@
 
 - (void)setCardType:(BTUICardType *)cardType {
     _cardType = cardType;
-    self.displayAsValid = self.textField.text.length == 0 || self.valid;
+    self.displayAsValid = [self.textField isFirstResponder] || self.textField.text.length == 0 || self.valid;
     [self updateAppearance];
 }
 
 - (BOOL)valid {
-    BOOL noCardTypeOKLength = (self.cardType == nil && self.textField.text.length == kMaximumCvvLength);
+    BOOL noCardTypeOKLength = (self.cardType == nil && self.cvv.length <= kMaximumCvvLength && self.cvv.length >= kMinimumCvvLength);
     BOOL validLengthForCardType = (self.cardType != nil && self.cvv.length == self.cardType.validCvvLength);
     return noCardTypeOKLength || validLengthForCardType;
+}
+
+
+- (BOOL)entryComplete {
+    NSUInteger index = [self.textField offsetFromPosition:self.textField.beginningOfDocument toPosition:self.textField.selectedTextRange.start];
+    BOOL cursorAtEnd = (index == self.textField.text.length);
+
+    if (self.cardType == nil) {
+        return cursorAtEnd && self.cvv.length == kMaximumCvvLength;
+    } else {
+        return self.valid;
+    }
 }
 
 - (BOOL)textField:(__unused UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -51,13 +64,12 @@
 
 - (void)fieldContentDidChange {
     _cvv = [BTUIUtil stripNonDigits:self.textField.text];
-    self.displayAsValid = self.textField.text.length == 0 || self.valid;
     [super fieldContentDidChange];
     [self.delegate formFieldDidChange:self];
 }
 
-- (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
-    self.displayAsValid = self.textField.text.length == 0 || self.valid;
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [super textFieldDidBeginEditing:textField];
     [(BTUICardHint *)self.accessoryView highlight:YES];
 }
 
