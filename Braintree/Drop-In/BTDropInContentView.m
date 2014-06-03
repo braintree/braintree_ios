@@ -15,6 +15,7 @@
 
         self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         self.activityView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.activityView.hidden = YES;
         [self addSubview:self.activityView];
         [self addConstraint:[NSLayoutConstraint constraintWithItem:self.activityView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f]];
 
@@ -193,12 +194,16 @@
 
     switch (self.state) {
         case BTDropInContentViewStateForm:
+            self.activityView.hidden = YES;
+            [self.activityView stopAnimating];
             self.ctaControl.hidden = self.hideCTA;
             self.payPalControl.hidden = self.hidePayPal ;
             self.cardFormSectionHeader.hidden = NO;
             self.cardForm.hidden = NO;
             break;
         case BTDropInContentViewStatePaymentMethodsOnFile:
+            self.activityView.hidden = YES;
+            [self.activityView stopAnimating];
             self.ctaControl.hidden = self.hideCTA;
             self.selectedPaymentMethodView.hidden = NO;
             self.changeSelectedPaymentMethodButton.hidden = NO;

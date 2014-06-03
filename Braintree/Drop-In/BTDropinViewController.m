@@ -11,8 +11,11 @@
 
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
-@property (nonatomic, strong) NSArray *paymentMethods;
 @property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;
+
+/// Whether current visible.
+@property (nonatomic, assign) BOOL visible;
+@property (nonatomic, assign) NSTimeInterval visibleStartTime;
 
 /// If YES, fetch and display payment methods on file, summary view, CTA control.
 /// If NO, do not fetch payment methods, and just show UI to add a new method.
@@ -39,6 +42,7 @@
         self.dropInContentView.payPalControl.delegate = self;
         self.dropInContentView.hidePayPal =  !self.client.btPayPal_isPayPalEnabled;
         self.selectedPaymentMethodIndex = NSNotFound;
+        self.dropInContentView.state = BTDropInContentViewStateActivity;
         self.fullForm = YES;
         _callToActionText = @"Pay";
     }
@@ -132,12 +136,22 @@
                                                                             metrics:nil
                                                                               views:@{@"dropInContentView": self.dropInContentView}]];
 
-    if (self.fullForm) {
-        self.dropInContentView.state = BTDropInContentViewStateActivity;
-        [self fetchPaymentMethods];
+    if (!self.fullForm) {
+        self.dropInContentView.state = BTDropInContentViewStateForm;
     }
 
     [self updateValidity];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.visible = YES;
+    self.visibleStartTime = [NSDate timeIntervalSinceReferenceDate];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    self.visible = NO;
 }
 
 #pragma mark - BTUIScrollViewScrollRectToVisibleDelegate implementation
@@ -377,6 +391,14 @@
 
 #pragma mark User Supplied Parameters
 
+- (void)setFullForm:(BOOL)fullForm {
+    _fullForm = fullForm;
+    if (!self.fullForm) {
+        self.dropInContentView.state = BTDropInContentViewStateForm;
+        
+    }
+}
+
 - (void)setShouldHideCallToAction:(BOOL)shouldHideCallToAction {
     _shouldHideCallToAction = shouldHideCallToAction;
     self.dropInContentView.hideCTA = shouldHideCallToAction;
@@ -409,34 +431,36 @@
 
 #pragma mark Data
 
-- (void)fetchPaymentMethods {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [self.client fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        self.paymentMethods = paymentMethods;
-    } failure:^(NSError *error) {
-        [self informDelegateDidFailWithError:error];
-        self.dropInContentView.state = BTDropInContentViewStateForm;
-    }];
-}
-
 - (void)setPaymentMethods:(NSArray *)paymentMethods {
     _paymentMethods = paymentMethods;
+    BTDropInContentViewStateType newState;
 
     if ([self.paymentMethods count] == 0) {
         self.selectedPaymentMethodIndex = NSNotFound;
-        [self.dropInContentView setState:BTDropInContentViewStateForm animate:YES];
+        newState = BTDropInContentViewStateForm;
     } else {
         self.selectedPaymentMethodIndex = 0;
-        [self.dropInContentView setState:BTDropInContentViewStatePaymentMethodsOnFile animate:YES];
+        newState = BTDropInContentViewStatePaymentMethodsOnFile;
     }
+    if (self.visible) {
+        NSTimeInterval elapsed = [NSDate timeIntervalSinceReferenceDate] - self.visibleStartTime;
+        if (elapsed < self.theme.minimumVisibilityTime) {
+            NSTimeInterval delay = self.theme.minimumVisibilityTime - elapsed;
+
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.dropInContentView setState:newState animate:YES];
+                [self updateValidity];
+            });
+            return;
+        }
+    }
+    [self.dropInContentView setState:newState animate:self.visible];
     [self updateValidity];
 }
 
 - (void)setSelectedPaymentMethodIndex:(NSInteger)selectedPaymentMethodIndex {
     _selectedPaymentMethodIndex = selectedPaymentMethodIndex;
-    if (selectedPaymentMethodIndex == NSNotFound) {
-    } else {
+    if (selectedPaymentMethodIndex != NSNotFound) {
         BTPaymentMethod *defaultPaymentMethod = [self selectedPaymentMethod];
         if ([defaultPaymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
             BTUIPaymentMethodType uiPaymentMethodType = [BTDropInUtil uiForCardType:((BTCardPaymentMethod *)defaultPaymentMethod).type];

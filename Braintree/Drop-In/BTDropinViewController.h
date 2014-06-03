@@ -39,6 +39,9 @@
 /// @see BTClient
 @property (nonatomic, strong) BTClient *client;
 
+/// The array of `BTPaymentMethod *` values
+@property (nonatomic, strong) NSArray *paymentMethods;
+
 #pragma mark State Change Notifications
 
 /// The delgate that, if set, is notified of success or failure.
