@@ -188,11 +188,11 @@
 }
 
 - (NSString *)cvv {
-    return self.cvvField.cvv;
+    return self.optionalFields & BTUICardFormOptionalFieldsCvv ? self.cvvField.cvv : nil;
 }
 
 - (NSString *)postalCode {
-    return self.postalCodeField.postalCode;
+    return self.optionalFields & BTUICardFormOptionalFieldsPostalCode ? self.postalCodeField.postalCode : nil;
 }
 
 #pragma mark - Field delegate implementations
