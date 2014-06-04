@@ -12,17 +12,17 @@
 #pragma mark - Private initializers
 
 - (instancetype)initWithBrand:(NSString *)brand
-                      pattern:(NSString *)pattern
+                     prefixes:(NSArray *)prefixes
 {
     return [self initWithBrand:brand
-                       pattern:pattern
+                      prefixes:prefixes
             validNumberLengths:kDefaultValidNumberLengths
                 validCvvLength:kDefaultCvvLength
                   formatSpaces:kDefaultFormatSpaceIndices];
 }
 
 - (instancetype)initWithBrand:(NSString *)brand
-                      pattern:(NSString *)pattern
+                     prefixes:(NSArray *)prefixes
            validNumberLengths:(NSIndexSet *)validLengths
                validCvvLength:(NSUInteger)cvvLength
                  formatSpaces:(NSArray *)formatSpaces
@@ -31,7 +31,8 @@
     if (self != nil) {
         _brand = brand;
         NSError *error;
-        _validNumberRegex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
+
+        _validNumberPrefixes = prefixes;
         if (error != nil) {
             NSLog(@"Braintree-Payments-UI: %@", error);
         }
@@ -52,13 +53,44 @@
 }
 
 + (instancetype)cardTypeForNumber:(NSString *)number {
-    number = [BTUIUtil stripNonDigits:number];
+    if (number.length == 0) {
+        return nil;
+    }
     for (BTUICardType *cardType in [[self class] allCards]) {
-        if ([cardType.validNumberRegex numberOfMatchesInString:number options:0 range:NSMakeRange(0, number.length)] == 1) {
-            return cardType;
+        for (NSString *prefix in cardType.validNumberPrefixes) {
+            if (number.length >= prefix.length) {
+                NSUInteger compareLength = MIN(prefix.length, number.length);
+                NSString *sizedNumber = [number substringToIndex:compareLength];
+                if ([sizedNumber isEqualToString:prefix]) {
+                    return cardType;
+                }
+            }
         }
     }
     return nil;
+}
+
+// Since each card type has a list of acceptable card prefixes, we
+// can determine which card types may match a given number
++ (NSArray *)possibleCardTypesForNumber:(NSString *)number {
+    number = [BTUIUtil stripNonDigits:number];
+    if (number.length == 0) {
+        return [[self class] allCards];
+    }
+    NSMutableSet *possibleCardTypes = [NSMutableSet set];
+    for (BTUICardType *cardType in [[self class] allCards]) {
+        for (NSString *prefix in cardType.validNumberPrefixes) {
+            NSUInteger compareLength = MIN(prefix.length, number.length);
+
+            NSString *sizedPrefix = [prefix substringToIndex:compareLength];
+            NSString *sizedNumber = [number substringToIndex:compareLength];
+            if ([sizedNumber isEqualToString:sizedPrefix]) {
+                [possibleCardTypes addObject:cardType];
+                break;
+            }
+        }
+    }
+    return [possibleCardTypes allObjects];
 }
 
 #pragma mark - Instance methods
@@ -94,31 +126,32 @@
 
     dispatch_once(&p, ^{
 
-        BTUICardType *visa = [[BTUICardType alloc] initWithBrand:BTUICardBrandVisa pattern:@"^4"];
-        BTUICardType *mastercard = [[BTUICardType alloc] initWithBrand:BTUICardBrandMasterCard pattern:@"^5[1-5]"];
-        BTUICardType *discover = [[BTUICardType alloc] initWithBrand:BTUICardBrandDiscover pattern:@"^(6011|65|64[4-9]|622)"];
-        BTUICardType *jcb = [[BTUICardType alloc] initWithBrand:BTUICardBrandJCB pattern:@"^35"];
+        BTUICardType *visa = [[BTUICardType alloc] initWithBrand:BTUICardBrandVisa prefixes:@[@"4"]];
+        BTUICardType *mastercard = [[BTUICardType alloc] initWithBrand:BTUICardBrandMasterCard
+                                                              prefixes:@[@"51", @"52", @"53", @"54", @"55"]];
+        BTUICardType *discover = [[BTUICardType alloc] initWithBrand:BTUICardBrandDiscover prefixes:@[@"6011", @"65", @"644", @"645", @"646", @"647", @"648", @"649", @"622"]];
+        BTUICardType *jcb = [[BTUICardType alloc] initWithBrand:BTUICardBrandJCB prefixes:@[@"35"]];
 
         BTUICardType *amex = [[BTUICardType alloc] initWithBrand:BTUICardBrandAMEX
-                                                         pattern:@"^3[47]"
+                                                        prefixes:@[@"34", @"37"]
                                               validNumberLengths:[NSIndexSet indexSetWithIndex:15]
                                                   validCvvLength:4
                                                     formatSpaces:@[@4, @10]];
 
         BTUICardType *dinersClub = [[BTUICardType alloc] initWithBrand:BTUICardBrandDinersClub
-                                                               pattern:@"^(36|38|30[0-5])"
+                                                              prefixes:@[@"36", @"38", @"300", @"301", @"302", @"303", @"304", @"305"]
                                                     validNumberLengths:[NSIndexSet indexSetWithIndex:14]
                                                         validCvvLength:3
                                                           formatSpaces:nil];
 
         BTUICardType *maestro = [[BTUICardType alloc] initWithBrand:BTUICardBrandMaestro
-                                                            pattern:@"^(5018|5020|5038|6304|6759|676[1-3])"
+                                                           prefixes:@[@"5018", @"5020", @"5038", @"6304", @"6759", @"6761", @"6762", @"6763"]
                                                  validNumberLengths:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(12, 8)]
                                                      validCvvLength:3
                                                        formatSpaces:nil];
 
         BTUICardType *unionPay = [[BTUICardType alloc] initWithBrand:BTUICardBrandUnionPay
-                                                             pattern:@"^62"
+                                                            prefixes:@[@"62"]
                                                   validNumberLengths:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(16, 4)]
                                                       validCvvLength:3
                                                         formatSpaces:nil];

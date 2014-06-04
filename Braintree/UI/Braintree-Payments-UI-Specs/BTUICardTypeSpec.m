@@ -11,6 +11,46 @@ describe(@"BTUICardType", ^{
         expect(t1).to.equal(t2);
     });
 
+    describe(@"possible card types for number", ^{
+
+        it(@"should recognize all cards with empty string", ^{
+            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@""];
+            expect(possibleCardTypes.count).to.equal(9);
+        });
+
+        it(@"should recognize no cards starting with 1", ^{
+            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"1"];
+            expect(possibleCardTypes.count).to.equal(0);
+        });
+
+        it(@"should recognize AmEx and Diners Club and JCB cards with 3", ^{
+            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"3"];
+            expect(possibleCardTypes.count).to.equal(3);
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUICardBrandDinersClub]);
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUICardBrandAMEX]);
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUICardBrandJCB]);
+        });
+
+        it(@"should recognize MasterCard and Maestro with a 5", ^{
+            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"5"];
+            expect(possibleCardTypes.count).to.equal(2);
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUICardBrandMasterCard]);
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUICardBrandMaestro]);
+        });
+
+        it(@"should recognize the start of a Visa", ^{
+            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"4"];
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUICardBrandVisa]);
+            expect(possibleCardTypes.count).to.equal(1);
+        });
+
+        it(@"should recognize a whole Visa", ^{
+            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"4111111111111111"];
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUICardBrandVisa]);
+            expect(possibleCardTypes.count).to.equal(1);
+        });
+    });
+
     describe(@"card number recognition", ^{
 
         it(@"should recognize a valid, formatted Visa", ^{

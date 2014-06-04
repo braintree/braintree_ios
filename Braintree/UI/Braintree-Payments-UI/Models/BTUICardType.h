@@ -18,6 +18,9 @@ static NSString * const BTUICardBrandUnionPay = @"UnionPay";
 /// Obtain the `BTCardType` for the given number, or nil if none is found
 + (instancetype)cardTypeForNumber:(NSString *)number;
 
+/// Return all possible card types for a number
++ (NSArray *)possibleCardTypesForNumber:(NSString *)number;
+
 /// Check if a number is valid
 - (BOOL)validNumber:(NSString *)number;
 
@@ -35,7 +38,7 @@ static NSString * const BTUICardBrandUnionPay = @"UnionPay";
 + (NSUInteger)maxNumberLength;
 
 @property (nonatomic, copy, readonly) NSString *brand;
-@property (nonatomic, strong, readonly) NSRegularExpression *validNumberRegex;
+@property (nonatomic, strong, readonly) NSArray *validNumberPrefixes;
 @property (nonatomic, strong, readonly) NSIndexSet  *validNumberLengths;
 @property (nonatomic, assign, readonly) NSUInteger validCvvLength;
 
