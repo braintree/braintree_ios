@@ -93,8 +93,8 @@
     _postalCodeField = [[BTUICardPostalCodeField alloc] init];
     self.postalCodeField.translatesAutoresizingMaskIntoConstraints = NO;
     self.postalCodeField.delegate = self;
-    self.postalCodeField.nonDigitsSupported = NO;
     [self addSubview:self.postalCodeField];
+    [self setAlphaNumericPostalCode:YES];
 
     self.vibrate = YES;
     self.optionalFields = BTUICardFormOptionalFieldsAll;
