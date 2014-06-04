@@ -11,9 +11,7 @@
 		0871DCD7B0214218A97833CA /* libPods-Braintree-API-Integration-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */; };
 		13F93A00696C4DD29D4A3327 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */; };
 		1607FE3B192D96BE0099D504 /* DESIGN.md in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE37192D96BE0099D504 /* DESIGN.md */; };
-		1607FE3C192D96BE0099D504 /* DESIGN.md in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE37192D96BE0099D504 /* DESIGN.md */; };
 		1607FE3E192D96BE0099D504 /* TLDR.md in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE38192D96BE0099D504 /* TLDR.md */; };
-		1607FE3F192D96BE0099D504 /* TLDR.md in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE38192D96BE0099D504 /* TLDR.md */; };
 		1607FE49192D974C0099D504 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		1607FE4A192D974C0099D504 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		1607FE4B192D974C0099D504 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
@@ -84,7 +82,6 @@
 		1621759E192D94FB008DC35D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1621758C192D94FB008DC35D /* InfoPlist.strings */; };
 		162175A7192D9505008DC35D /* BTClientIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1621759F192D9505008DC35D /* BTClientIntegrationSpec.m */; };
 		162175A8192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 162175A0192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m */; };
-		162175A9192D9505008DC35D /* braintree-api-integration-specs-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 162175A1192D9505008DC35D /* braintree-api-integration-specs-Info.plist */; };
 		162175AA192D9505008DC35D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 162175A4192D9505008DC35D /* InfoPlist.strings */; };
 		16968115192D98EA00120846 /* BTUICardTypeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810C192D98EA00120846 /* BTUICardTypeSpec.m */; };
 		16968116192D98EA00120846 /* BTUISpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810D192D98EA00120846 /* BTUISpec.m */; };
@@ -137,6 +134,8 @@
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A75DA3781921399C00D997A2 /* BraintreeSpec.m */; };
+		A79AC9A6193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */; };
+		A79ACA4A193FB3340095D7F1 /* good_root_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = A79ACA49193FB3340095D7F1 /* good_root_cert.der */; };
 		B0625DEDD37946988C5379F6 /* libPods-Braintree-API-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */; };
 		B81AA72C71C34DF0A3FA4779 /* libPods-Braintree-PayPal-Acceptance-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */; };
 		D574F60B94CB4F2AA8395FE1 /* libPods-Braintree-Payments-UI-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */; };
@@ -218,10 +217,6 @@
 		16217438192D85EB008DC35D /* BTPayPalPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTPayPalPaymentMethod.m; path = Models/BTPayPalPaymentMethod.m; sourceTree = "<group>"; };
 		16217439192D85EB008DC35D /* BTMutablePayPalPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTMutablePayPalPaymentMethod.h; path = Models/BTMutablePayPalPaymentMethod.h; sourceTree = "<group>"; };
 		1621743A192D85EB008DC35D /* BTMutablePayPalPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTMutablePayPalPaymentMethod.m; path = Models/BTMutablePayPalPaymentMethod.m; sourceTree = "<group>"; };
-		1621743C192D85EB008DC35D /* BTHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTHTTP.h; path = Networking/BTHTTP.h; sourceTree = "<group>"; };
-		1621743D192D85EB008DC35D /* BTHTTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = BTHTTP.m; path = Networking/BTHTTP.m; sourceTree = "<group>"; };
-		1621743E192D85EB008DC35D /* BTHTTPResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTHTTPResponse.h; path = Networking/BTHTTPResponse.h; sourceTree = "<group>"; };
-		1621743F192D85EB008DC35D /* BTHTTPResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTHTTPResponse.m; path = Networking/BTHTTPResponse.m; sourceTree = "<group>"; };
 		16217441192D85EB008DC35D /* BTOfflineClientBackend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTOfflineClientBackend.h; sourceTree = "<group>"; };
 		16217442192D85EB008DC35D /* BTOfflineClientBackend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTOfflineClientBackend.m; sourceTree = "<group>"; };
 		16217443192D85EB008DC35D /* BTOfflineModeURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTOfflineModeURLProtocol.h; sourceTree = "<group>"; };
@@ -448,6 +443,16 @@
 		A75DA36C1921394200D997A2 /* Braintree-Specs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Braintree-Specs-Info.plist"; sourceTree = "<group>"; };
 		A75DA3781921399C00D997A2 /* BraintreeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeSpec.m; sourceTree = "<group>"; };
 		A75DA37A19213AB000D997A2 /* Braintree-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Specs-Prefix.pch"; sourceTree = "<group>"; };
+		A76F2621193D415E009DD562 /* BTRootCertificatePinningSecurityPolicy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTRootCertificatePinningSecurityPolicy.h; sourceTree = "<group>"; };
+		A76F2622193D415E009DD562 /* BTRootCertificatePinningSecurityPolicy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTRootCertificatePinningSecurityPolicy.m; sourceTree = "<group>"; };
+		A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSSLPinningSpec.m; sourceTree = "<group>"; };
+		A79ACA33193FB27E0095D7F1 /* BTHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTP.h; sourceTree = "<group>"; };
+		A79ACA34193FB27E0095D7F1 /* BTHTTP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTHTTP.m; sourceTree = "<group>"; };
+		A79ACA36193FB27E0095D7F1 /* BTAPIPinnedCertificates.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAPIPinnedCertificates.m; sourceTree = "<group>"; };
+		A79ACA47193FB27E0095D7F1 /* BTHTTPResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTPResponse.h; sourceTree = "<group>"; };
+		A79ACA48193FB27E0095D7F1 /* BTHTTPResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTHTTPResponse.m; sourceTree = "<group>"; };
+		A79ACA49193FB3340095D7F1 /* good_root_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = good_root_cert.der; path = SSL/good_root_cert.der; sourceTree = "<group>"; };
+		A79ACA4B193FBEDE0095D7F1 /* BTAPIPinnedCertificates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIPinnedCertificates.h; sourceTree = "<group>"; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Specs.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -732,6 +737,8 @@
 				1621742B192D85EB008DC35D /* BTClient.m */,
 				1621742C192D85EB008DC35D /* BTClient_Internal.h */,
 				1621742D192D85EB008DC35D /* BTClientToken.m */,
+				A76F2621193D415E009DD562 /* BTRootCertificatePinningSecurityPolicy.h */,
+				A76F2622193D415E009DD562 /* BTRootCertificatePinningSecurityPolicy.m */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -758,12 +765,13 @@
 		16217440192D85EB008DC35D /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				1621743C192D85EB008DC35D /* BTHTTP.h */,
-				1621743D192D85EB008DC35D /* BTHTTP.m */,
-				1621743E192D85EB008DC35D /* BTHTTPResponse.h */,
-				1621743F192D85EB008DC35D /* BTHTTPResponse.m */,
+				A79ACA33193FB27E0095D7F1 /* BTHTTP.h */,
+				A79ACA34193FB27E0095D7F1 /* BTHTTP.m */,
+				A79ACA47193FB27E0095D7F1 /* BTHTTPResponse.h */,
+				A79ACA48193FB27E0095D7F1 /* BTHTTPResponse.m */,
+				A79ACA35193FB27E0095D7F1 /* Certificates */,
 			);
-			name = Networking;
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		16217445192D85EB008DC35D /* Offline Mode */ = {
@@ -1102,6 +1110,8 @@
 		162175A6192D9505008DC35D /* Braintree-API-Integration-Specs */ = {
 			isa = PBXGroup;
 			children = (
+				A79ACA49193FB3340095D7F1 /* good_root_cert.der */,
+				A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */,
 				1621759F192D9505008DC35D /* BTClientIntegrationSpec.m */,
 				162175A0192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m */,
 				162175A5192D9505008DC35D /* Supporting Files */,
@@ -1351,6 +1361,15 @@
 				A75DA36C1921394200D997A2 /* Braintree-Specs-Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A79ACA35193FB27E0095D7F1 /* Certificates */ = {
+			isa = PBXGroup;
+			children = (
+				A79ACA36193FB27E0095D7F1 /* BTAPIPinnedCertificates.m */,
+				A79ACA4B193FBEDE0095D7F1 /* BTAPIPinnedCertificates.h */,
+			);
+			path = Certificates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1673,9 +1692,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1607FE3F192D96BE0099D504 /* TLDR.md in Resources */,
-				1607FE3C192D96BE0099D504 /* DESIGN.md in Resources */,
-				162175A9192D9505008DC35D /* braintree-api-integration-specs-Info.plist in Resources */,
+				A79ACA4A193FB3340095D7F1 /* good_root_cert.der in Resources */,
 				162175AA192D9505008DC35D /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2135,6 +2152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				162175A8192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m in Sources */,
+				A79AC9A6193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m in Sources */,
 				16102A2B192DBB2C002C1B2B /* EXPMatchers+BTMatches.m in Sources */,
 				162175A7192D9505008DC35D /* BTClientIntegrationSpec.m in Sources */,
 				16102A25192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m in Sources */,

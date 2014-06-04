@@ -27,6 +27,8 @@ NS_ENUM(NSInteger, BTErrorCode) {
     BTServerErrorGatewayUnavailable,
     /// A server-side error occured due to a network problem. See the underlying error for more details and retry your request.
     BTServerErrorNetworkUnavailable,
+    /// An SSL error occured.
+    BTServerErrorSSL,
     /// A error occured interpreting the server's response. Please retry your request.
     BTServerErrorUnexpectedError,
 };

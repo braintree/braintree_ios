@@ -62,9 +62,22 @@ namespace :spec do
       run_test_target! 'Braintree-API-Specs'
     end
 
+    def with_https_server &block
+      begin
+        pid = Process.spawn('ruby ./Braintree/api/Braintree-API-Integration-Specs/SSL/https_server.rb')
+        puts "Started server (#{pid})"
+        yield
+        puts "Killing server (#{pid})"
+      ensure
+        Process.kill("INT", pid)
+      end
+    end
+
     desc 'Run api integration tests'
     task :integration do
-      run_test_target! 'Braintree-API-Integration-Specs'
+      with_https_server do
+        run_test_target! 'Braintree-API-Integration-Specs'
+      end
     end
   end
 
@@ -304,5 +317,10 @@ namespace :distribute do
     run! "ipa distribute:hockeyapp --token '#{File.read(".hockeyapp").strip}' --file '#{destination}/Braintree-Demo.ipa' --dsym '#{destination}/Braintree-Demo.app.dSYM.zip' --markdown --notes #{Shellwords.shellescape("#{changes}\n\n#{current_version_with_sha}")}"
     say "Uploaded Braintree-Demo (#{current_version_with_sha}) to HockeyApp!"
   end
+end
+
+desc "Generate code for pinned certificates. (Copies *.crt -> BTAPIPinnedCertificates.{h,m})"
+task :generate_pinned_certificates_code do
+  run! "cd #{File.join(File.dirname(__FILE__), "Braintree/api/Braintree-API/Networking/Certificates")} && ./codify_certificates.sh"
 end
 
