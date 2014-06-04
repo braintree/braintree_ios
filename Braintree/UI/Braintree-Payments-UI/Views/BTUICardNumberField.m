@@ -48,7 +48,7 @@
         [self updateCardHint:oldCardType];
     }
 
-    self.displayAsValid = _number.length <= 1 || (_cardType != nil && (_number.length != self.cardType.maxNumberLength || self.valid));
+    self.displayAsValid = [self isPotentiallyValid];// || (_cardType != nil && (_number.length != self.cardType.maxNumberLength || self.valid));
     [self updateAppearance];
     [self setNeedsDisplay];
 
@@ -56,7 +56,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
-    self.displayAsValid = _number.length == 0 || ([self isValidCardType] && [self completedCardNumberValid]);
+    self.displayAsValid = [self isPotentiallyValid];
     [self updateAppearance];
 }
 
@@ -73,6 +73,10 @@
 
 - (BOOL)completedCardNumberValid {
     return self.cardType != nil && (self.cardType.maxNumberLength < _number.length || self.valid);
+}
+
+- (BOOL)isPotentiallyValid {
+    return [BTUICardType possibleCardTypesForNumber:self.number].count > 0;
 }
 
 - (void)updateCardHint:(BTUICardType *)oldCardType {
