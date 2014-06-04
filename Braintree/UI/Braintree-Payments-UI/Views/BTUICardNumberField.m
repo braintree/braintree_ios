@@ -48,7 +48,7 @@
         [self updateCardHint:oldCardType];
     }
 
-    self.displayAsValid = [self isPotentiallyValid];// || (_cardType != nil && (_number.length != self.cardType.maxNumberLength || self.valid));
+    self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
     [self updateAppearance];
     [self setNeedsDisplay];
 
@@ -77,6 +77,10 @@
 
 - (BOOL)isPotentiallyValid {
     return [BTUICardType possibleCardTypesForNumber:self.number].count > 0;
+}
+
+- (BOOL)isValidLength {
+    return self.cardType != nil && [self.cardType completeNumber:_number];
 }
 
 - (void)updateCardHint:(BTUICardType *)oldCardType {
