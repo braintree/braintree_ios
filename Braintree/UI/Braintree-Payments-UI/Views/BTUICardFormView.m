@@ -194,6 +194,10 @@
     [self.delegate cardFormViewDidChange:self];
 }
 
+- (void)formFieldDidDeleteWhileEmpty:(BTUIFormField *)formField {
+    [self switchToPreviousField:formField];
+}
+
 #pragma mark - Auto-advancing
 
 - (void)advanceToNextInvalidFieldFrom:(BTUIFormField *)field {
@@ -210,5 +214,19 @@
         }
     }
 }
+
+- (void)switchToPreviousField:(BTUIFormField *)field {
+    NSUInteger fieldIndex = [self.fields indexOfObject:field];
+    if (fieldIndex == 0) {
+        return;
+    }
+    NSInteger previousIndex = (fieldIndex - 1);
+    if (previousIndex < 0) {
+        return;
+    }
+    BTUIFormField *previousField = self.fields[previousIndex];
+    [previousField becomeFirstResponder];
+}
+
 
 @end

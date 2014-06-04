@@ -26,6 +26,7 @@
     [super fieldContentDidChange];
     [self.delegate formFieldDidChange:self];
 }
+
 - (BOOL)entryComplete {
     return NO;
 }

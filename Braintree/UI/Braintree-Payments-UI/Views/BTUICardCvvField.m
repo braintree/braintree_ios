@@ -64,12 +64,10 @@
 
 - (void)fieldContentDidChange {
     _cvv = [BTUIUtil stripNonDigits:self.textField.text];
-    [super fieldContentDidChange];
     [self.delegate formFieldDidChange:self];
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [super textFieldDidBeginEditing:textField];
+- (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
     [(BTUICardHint *)self.accessoryView highlight:YES];
 }
 

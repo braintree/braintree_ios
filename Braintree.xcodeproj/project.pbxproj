@@ -423,6 +423,8 @@
 		2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInSelectPaymentMethodViewController.m; sourceTree = "<group>"; };
 		2DBDD71F192BFFB800D8AA56 /* BTDropInUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInUtil.h; sourceTree = "<group>"; };
 		2DBDD720192BFFB800D8AA56 /* BTDropInUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInUtil.m; sourceTree = "<group>"; };
+		2DC3791A193FB53C00BD2BB9 /* BTUITextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUITextField.h; sourceTree = "<group>"; };
+		2DC3791B193FB53C00BD2BB9 /* BTUITextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUITextField.m; sourceTree = "<group>"; };
 		3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Specs.xcconfig"; path = "Pods/Pods-Braintree-Specs.xcconfig"; sourceTree = "<group>"; };
 		450771C9BADB4C4893CAA26E /* Pods-Braintree-Payments-UI-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-UI-Demo.xcconfig"; path = "Pods/Pods-Braintree-Payments-UI-Demo.xcconfig"; sourceTree = "<group>"; };
 		49D0108CF663453B80F1BEA8 /* Pods-Braintree-Payments-UI-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-UI-Specs.xcconfig"; path = "Pods/Pods-Braintree-Payments-UI-Specs.xcconfig"; sourceTree = "<group>"; };
@@ -941,6 +943,8 @@
 				162174D1192D8746008DC35D /* PayPal Vector Art */,
 				162174D2192D8746008DC35D /* BTUIScrollView.h */,
 				162174D3192D8746008DC35D /* BTUIScrollView.m */,
+				2DC3791A193FB53C00BD2BB9 /* BTUITextField.h */,
+				2DC3791B193FB53C00BD2BB9 /* BTUITextField.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";

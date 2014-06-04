@@ -1,7 +1,14 @@
 #import "BTUIFormField_Protected.h"
 #import "BTUIViewUtil.h"
+#import "BTUITextField.h"
 
 #import <QuartzCore/QuartzCore.h>
+
+@interface BTUIFormField ()
+
+@property (nonatomic, copy) NSString *previousTextFieldText;
+
+@end
 
 @implementation BTUIFormField
 
@@ -10,11 +17,22 @@
     if (self) {
         self.displayAsValid = YES;
         // Create textField
-        _textField = [UITextField new];
+        BTUITextField *textField = [BTUITextField new];
+        textField.deleteBackwardBlock = ^(NSString *before, __unused BTUITextField *field){
+            _backspace = YES;
+            if (before.length == 0) {
+                [self.delegate formFieldDidDeleteWhileEmpty:self];
+            }
+        };
+        textField.insertTextBlock = ^(__unused NSString *newText, __unused BTUITextField *field) {
+            _backspace = NO;
+        };
+        _textField = textField;
         self.textField.translatesAutoresizingMaskIntoConstraints = NO;
         self.textField.borderStyle = UITextBorderStyleNone;
         self.textField.backgroundColor = [UIColor clearColor];
         [self.textField addTarget:self action:@selector(fieldContentDidChange) forControlEvents:UIControlEventEditingChanged];
+
         self.textField.delegate = self;
         [self addSubview:self.textField];
 
@@ -145,16 +163,31 @@
     [super updateConstraints];
 }
 
+- (void)didDeleteBackward {
+    NSLog(@"didDeleteBackward: %@ %@", self.previousTextFieldText, self.textField.text);
+    if (self.previousTextFieldText.length == 0 && self.textField.text.length == 0) {
+        NSLog(@"Empty delete: %@", self.textField.text);
+        [self.delegate formFieldDidDeleteWhileEmpty:self];
+    }
+}
+
+#pragma mark - Delegate methods and handlers
+
 - (void)fieldContentDidChange {
-    self.displayAsValid = YES;
+    // To be implemented by subclass
+}
+
+- (BOOL)textField:(__unused UITextField *)textField shouldChangeCharactersInRange:(__unused NSRange)range replacementString:(__unused NSString *)newText {
+    // To be implemented by subclass
+    return YES;
 }
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
-    self.displayAsValid = YES;
+    // To be implemented by subclass
 }
 
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {
-    self.displayAsValid = self.valid || self.textField.text.length == 0;
+    // To be implemented by subclass
 }
 
 

@@ -20,6 +20,7 @@
 @property (nonatomic, assign, readonly) BOOL entryComplete;
 @property (nonatomic, assign) BOOL displayAsValid;
 @property (nonatomic, assign) BOOL bottomBorder;
+@property (nonatomic, assign, readonly) BOOL backspace;
 
 @end
 
@@ -27,5 +28,6 @@
 @protocol BTUIFormFieldDelegate <NSObject>
 
 - (void)formFieldDidChange:(BTUIFormField *)formField;
+- (void)formFieldDidDeleteWhileEmpty:(BTUIFormField *)formField;
 
 @end

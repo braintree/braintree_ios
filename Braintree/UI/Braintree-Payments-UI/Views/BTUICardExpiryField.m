@@ -4,7 +4,6 @@
 #import "BTUICardExpirationValidator.h"
 
 @interface BTUICardExpiryField () <UITextFieldDelegate>
-@property (nonatomic, assign) BOOL backspace;
 @end
 
 @implementation BTUICardExpiryField
@@ -52,19 +51,13 @@
     self.displayAsValid = YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    [super textFieldDidEndEditing:textField];
-    self.backspace = NO;
+- (void)textFieldDidEndEditing:(__unused UITextField *)textField {
+    self.displayAsValid = self.valid;
 }
 
 #pragma mark -
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newText {
-    self.backspace = NO;
-    if(range.location < textField.text.length && newText.length == 0) {
-        self.backspace = YES;
-        return YES;
-    }
 
     NSString *numericNewText = [BTUIUtil stripNonDigits:newText];
     if (![numericNewText isEqualToString:newText]) {
