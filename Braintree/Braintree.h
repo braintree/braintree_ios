@@ -11,33 +11,36 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
 /// The `Braintree` class is the front door to the Braintree SDK for iOS. It contains
 /// everything you need to easily start accepting payments in your mobile app.
 ///
-/// You can choose: Drop-In or tokenization.
+/// You can choose: Drop-In or Custom.
 ///
 /// With Drop-In, you can rely us to provide a fast, easy-to-use UI, which your users will
 /// interact with in order to provide payment details. The result, from the programmer's
 /// perspective, is a nonce. Send this nonce to your server to perform a variety of payment 
-/// operations, such as creating a sale
+/// operations, such as creating a sale.
 ///
-/// With tokenization, you have more control of your UI, but errors will be handled on the
+/// With custom, you have control of your UI, but errors will be handled on the
 /// server-side via multiple server-side calls to Braintree. Like Drop-In, the end result is
-/// a nonce, which may transmit to your servers.
+/// a nonce, which you may transmit to your servers.
 ///
-/// For advanced integrations, see Braintree-API.h, Braintree-PayPal.h and Braintree-Payments-UI.h.
+/// For advanced integrations, you should use BTClient, BTPayPalControl, BTDropInViewController, etc. directly.
 @interface Braintree : NSObject
 
 /// Returns an instance of `Braintree`, the public interface of Braintree-iOS.
 ///
 /// @param clientToken value that is generated on your sever using a Braintree server-side
-/// client library that contains all necessary configuration to setup the client SDKs. It also
-/// authenticates the application to communicate directly to Braintree.
+///  client library that contains all necessary configuration to setup the client SDKs. It also
+///  authenticates the application to communicate directly to Braintree.
+///
+/// @see BTClient+Offline.h for offline client tokens that make it easy to test out the SDK without a
+///  server-side integration.
 ///
 /// @note You should generate a new client token before each checkout to ensure it has not expired.
 ///
 /// @return An instance of the Braintree Library to perform payment operations.
 + (Braintree *)braintreeWithClientToken:(NSString *)clientToken;
 
-#pragma mark Drop In - PayPal
 
+#pragma mark Drop In
 
 /// Creates and returns a payment flow for accepting credit card and PayPal-based payments.
 ///
@@ -49,6 +52,9 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
 /// @return A Drop-In view controller to be presented in your app's payment flow.
 - (BTDropInViewController *)dropInViewControllerWithCompletion:(BraintreeNonceCompletionBlock)completionBlock;
 
+
+#pragma mark Custom
+
 /// Creates and returns a PayPal control that can be added to the UI. When tapped, this control will initiate the PayPal authorization flow.
 ///
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce (upon user agreement and success) or an error (failure).
@@ -56,13 +62,12 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
 /// @return A PayPal control (button) to be added as a subview in your UI.
 - (BTPayPalControl *)payPalControlWithCompletion:(BraintreeNonceCompletionBlock)completionBlock;
 
-#pragma mark Tokenization
 
 /// Creates and returns a nonce for the given credit card details.
 ///
 /// @note The credit card details provided are not validated until a
-/// Braintree operation, such as `Transaction.Create` is performed on
-/// your server.
+///  Braintree operation, such as `Transaction.Create` is performed on
+///  your server.
 ///
 /// @param cardNumber      Card number to tokenize
 /// @param expirationMonth Card's expiration month
@@ -72,6 +77,14 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
                     completion:(BraintreeNonceCompletionBlock)completionBlock;
+
+
+#pragma mark Advanced Integrations
+
+/// A pre-configured BTClient based on your client token.
+///
+/// You can use this client when setting BTPayPalControl or BTDropInViewController's client.
+@property (nonatomic, readonly) BTClient *client;
 
 
 #pragma mark - Library Metadata
