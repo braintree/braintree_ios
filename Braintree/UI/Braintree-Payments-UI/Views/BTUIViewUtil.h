@@ -8,6 +8,6 @@
 
 + (BTUIPaymentMethodType)paymentMethodTypeForCardType:(BTUICardType *)cardType;
 
-+ (void)vibrateFeedback;
++ (void)vibrate;
 
 @end

@@ -16,6 +16,7 @@
 - (void)becomeFirstResponder;
 
 @property (nonatomic, weak) id<BTUIFormFieldDelegate> delegate;
+@property (nonatomic, assign) BOOL vibrateOnInvalidInput;
 @property (nonatomic, assign, readonly) BOOL valid;
 @property (nonatomic, assign, readonly) BOOL entryComplete;
 @property (nonatomic, assign) BOOL displayAsValid;

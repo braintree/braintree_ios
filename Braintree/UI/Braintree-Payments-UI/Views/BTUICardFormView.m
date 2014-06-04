@@ -96,8 +96,8 @@
     self.postalCodeField.nonDigitsSupported = NO;
     [self addSubview:self.postalCodeField];
 
+    self.vibrate = YES;
     self.optionalFields = BTUICardFormOptionalFieldsAll;
-
 
     for (UIView *v in self.fields) {
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:@{} views:@{@"v": v}]];
@@ -165,6 +165,15 @@
     }
     return YES;
 }
+
+- (void)setVibrate:(BOOL)vibrate {
+    _vibrate = vibrate;
+    for (BTUIFormField *f in self.fields) {
+        f.vibrateOnInvalidInput = vibrate;
+    }
+}
+
+#pragma mark - Value getters
 
 - (NSString *)number {
     return self.numberField.number;

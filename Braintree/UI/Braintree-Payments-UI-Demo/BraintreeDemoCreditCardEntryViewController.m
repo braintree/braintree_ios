@@ -30,5 +30,8 @@
 - (IBAction)togglePostalCode:(id)sender {
     self.cardFormView.optionalFields = self.cardFormView.optionalFields ^ BTUICardFormOptionalFieldsPostalCode;
 }
+- (IBAction)toggleVibrate:(UISwitch *)sender {
+    self.cardFormView.vibrate = sender.on;
+}
 
 @end

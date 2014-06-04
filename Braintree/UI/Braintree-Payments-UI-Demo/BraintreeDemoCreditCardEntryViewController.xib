@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13A4023" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -25,42 +25,50 @@
                     </connections>
                 </view>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ssp-nb-1hs">
-                    <rect key="frame" x="20" y="166" width="280" height="80"/>
+                    <rect key="frame" x="20" y="166" width="145" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="80" id="Fqy-iU-na6"/>
+                        <constraint firstAttribute="width" constant="145" id="L0n-KS-l0M"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="10"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uhq-46-uCm">
-                    <rect key="frame" x="20" y="268" width="51" height="31"/>
+                    <rect key="frame" x="173" y="166" width="51" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <connections>
                         <action selector="toggleCVV:" destination="-1" eventType="valueChanged" id="yYo-K8-Lef"/>
                     </connections>
                 </switch>
                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mG0-zR-vbU">
-                    <rect key="frame" x="77" y="268" width="51" height="31"/>
+                    <rect key="frame" x="230" y="166" width="51" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <connections>
                         <action selector="togglePostalCode:" destination="-1" eventType="valueChanged" id="blM-dY-y5y"/>
                     </connections>
                 </switch>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9V1-DW-068">
+                    <rect key="frame" x="173" y="205" width="51" height="31"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <connections>
+                        <action selector="toggleVibrate:" destination="-1" eventType="valueChanged" id="3ga-t3-ccI"/>
+                    </connections>
+                </switch>
             </subviews>
             <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="ssp-nb-1hs" secondAttribute="trailing" constant="20" id="0NT-A2-u9r"/>
                 <constraint firstAttribute="trailing" secondItem="wrR-Pd-byr" secondAttribute="trailing" id="1qW-Xs-9l1"/>
                 <constraint firstItem="ssp-nb-1hs" firstAttribute="top" secondItem="wrR-Pd-byr" secondAttribute="bottom" constant="20" id="1sj-13-rhE"/>
-                <constraint firstItem="ssp-nb-1hs" firstAttribute="centerX" secondItem="wrR-Pd-byr" secondAttribute="centerX" id="9O1-3m-M7F"/>
+                <constraint firstItem="9V1-DW-068" firstAttribute="leading" secondItem="ssp-nb-1hs" secondAttribute="trailing" constant="8" id="6kN-LW-fdh"/>
+                <constraint firstItem="9V1-DW-068" firstAttribute="top" secondItem="Uhq-46-uCm" secondAttribute="bottom" constant="8" id="AZL-CP-Z0s"/>
                 <constraint firstItem="ssp-nb-1hs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" symbolic="YES" id="Djy-2o-xau"/>
+                <constraint firstItem="Uhq-46-uCm" firstAttribute="leading" secondItem="ssp-nb-1hs" secondAttribute="trailing" constant="8" id="GQN-PM-D3Z"/>
                 <constraint firstItem="wrR-Pd-byr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="46" id="IFc-mT-MGP"/>
+                <constraint firstItem="ssp-nb-1hs" firstAttribute="top" secondItem="Uhq-46-uCm" secondAttribute="top" id="UUE-dI-4JA"/>
                 <constraint firstItem="Uhq-46-uCm" firstAttribute="top" secondItem="mG0-zR-vbU" secondAttribute="top" id="VCH-Bk-gFr"/>
                 <constraint firstItem="wrR-Pd-byr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="c3c-gp-vkh"/>
-                <constraint firstItem="Uhq-46-uCm" firstAttribute="leading" secondItem="ssp-nb-1hs" secondAttribute="leading" id="cRP-Uf-OsH"/>
-                <constraint firstItem="Uhq-46-uCm" firstAttribute="top" secondItem="ssp-nb-1hs" secondAttribute="bottom" constant="22" id="dy9-Pf-rkt"/>
                 <constraint firstItem="mG0-zR-vbU" firstAttribute="leading" secondItem="Uhq-46-uCm" secondAttribute="trailing" constant="8" symbolic="YES" id="fj7-4T-RjX"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

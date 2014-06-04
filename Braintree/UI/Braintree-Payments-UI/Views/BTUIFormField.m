@@ -49,8 +49,8 @@
 }
 
 - (void)setDisplayAsValid:(BOOL)displayAsValid {
-    if (_displayAsValid && !displayAsValid) {
-        [BTUIViewUtil vibrateFeedback];
+    if (self.vibrateOnInvalidInput && self.textField.isFirstResponder && _displayAsValid && !displayAsValid) {
+        [BTUIViewUtil vibrate];
     }
 
     _displayAsValid = displayAsValid;

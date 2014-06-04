@@ -20,8 +20,23 @@ typedef NS_OPTIONS(NSUInteger, BTUICardFormOptionalFields) {
 @property (nonatomic, copy, readonly) NSString *expirationYear;
 @property (nonatomic, copy, readonly) NSString *postalCode;
 
+/// Configure whether to support complete alphanumeric postal codes.
+///
+/// If NO, allows only digit entry.
+///
+/// Defaults to YES
 @property (nonatomic, assign) BOOL alphaNumericPostalCode;
+
+/// Which fields should be included.
+///
+/// Defaults to BTUICardFormOptionalFieldsAll
 @property (nonatomic, assign) BTUICardFormOptionalFields optionalFields;
+
+/// Whether to provide feedback to the user via vibration
+///
+/// Defaults ot YES
+@property (nonatomic, assign) BOOL vibrate;
+
 
 @end
 
