@@ -4,7 +4,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface BTUIFormField ()
+@interface BTUIFormField ()<BTUITextFieldEditDelegate>
 
 @property (nonatomic, copy) NSString *previousTextFieldText;
 
@@ -18,15 +18,7 @@
         self.displayAsValid = YES;
         // Create textField
         BTUITextField *textField = [BTUITextField new];
-        textField.deleteBackwardBlock = ^(NSString *before, __unused BTUITextField *field){
-            _backspace = YES;
-            if (before.length == 0) {
-                [self.delegate formFieldDidDeleteWhileEmpty:self];
-            }
-        };
-        textField.insertTextBlock = ^(__unused NSString *newText, __unused BTUITextField *field) {
-            _backspace = NO;
-        };
+        textField.editDelegate = self;
         _textField = textField;
         self.textField.translatesAutoresizingMaskIntoConstraints = NO;
         self.textField.borderStyle = UITextBorderStyleNone;
@@ -173,6 +165,22 @@
         NSLog(@"Empty delete: %@", self.textField.text);
         [self.delegate formFieldDidDeleteWhileEmpty:self];
     }
+}
+
+#pragma mark - BTUITextFieldEditDelegate methods
+
+- (void)textFieldWillDeleteBackward:(__unused BTUITextField *)textField {
+    _backspace = YES;
+}
+
+- (void)textFieldDidDeleteBackward:(__unused BTUITextField *)textField originalText:(NSString *)originalText {
+    if (originalText.length == 0) {
+        [self.delegate formFieldDidDeleteWhileEmpty:self];
+    }
+}
+
+- (void)textField:(__unused BTUITextField *)textField willInsertText:(__unused NSString *)text {
+    _backspace = NO;
 }
 
 #pragma mark - Delegate methods and handlers
