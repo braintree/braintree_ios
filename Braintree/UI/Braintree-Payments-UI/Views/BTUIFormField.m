@@ -49,6 +49,10 @@
 }
 
 - (void)setDisplayAsValid:(BOOL)displayAsValid {
+    if (_displayAsValid && !displayAsValid) {
+        [BTUIViewUtil vibrateFeedback];
+    }
+
     _displayAsValid = displayAsValid;
     [self updateAppearance];
     [self setNeedsDisplay];

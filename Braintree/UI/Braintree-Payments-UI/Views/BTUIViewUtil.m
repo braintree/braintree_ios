@@ -1,4 +1,5 @@
 #import "BTUIViewUtil.h"
+@import AudioToolbox;
 
 @implementation BTUIViewUtil
 
@@ -25,6 +26,10 @@
     } else {
         return BTUIPaymentMethodTypeUnknown;
     }
+}
+
++ (void)vibrateFeedback {
+    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
 }
 
 @end
