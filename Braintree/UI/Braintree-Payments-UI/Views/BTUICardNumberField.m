@@ -57,7 +57,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
-    self.displayAsValid = [self isPotentiallyValid];
+    self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
     [self updateAppearance];
 }
 
