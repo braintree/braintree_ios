@@ -52,7 +52,7 @@
 }
 
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {
-    self.displayAsValid = self.valid;
+    self.displayAsValid = self.textField.text.length == 0 || self.valid;
 }
 
 #pragma mark -

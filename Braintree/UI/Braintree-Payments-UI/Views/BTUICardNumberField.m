@@ -49,6 +49,7 @@
     }
 
     self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
+
     [self updateAppearance];
     [self setNeedsDisplay];
 

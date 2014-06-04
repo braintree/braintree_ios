@@ -63,11 +63,13 @@
 #pragma mark - Handlers
 
 - (void)fieldContentDidChange {
+    self.displayAsValid = YES;
     _cvv = [BTUIUtil stripNonDigits:self.textField.text];
     [self.delegate formFieldDidChange:self];
 }
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
+    self.displayAsValid = YES;
     [(BTUICardHint *)self.accessoryView highlight:YES];
 }
 
