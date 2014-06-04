@@ -15,9 +15,15 @@
     } else {
         dateComponents.month = newMonth;
     }
-    NSComparisonResult result = [date compare:dateComponents.date];
-    return result == NSOrderedAscending;
+    BOOL expired = [date compare:dateComponents.date] != NSOrderedAscending;
+    if (expired) {
+        return NO;
+    }
 
+    NSDate *farFuture = [date dateByAddingTimeInterval:3600 * 24 * 365.25 * kBTUICardExpirationValidatorFarFutureYears]; // roughly years in the future
+    BOOL tooFarInTheFuture = [farFuture compare:dateComponents.date] != NSOrderedDescending;
+
+    return !tooFarInTheFuture;
 }
 
 
