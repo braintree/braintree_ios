@@ -2,12 +2,14 @@
 #import "BTUIFormField_Protected.h"
 #import "BTUICardHint.h"
 #import "BTUIUtil.h"
+#import "BTUIViewUtil.h"
 
 #define kMinimumCvvLength 3
 #define kMaximumCvvLength 4
 
 @interface BTUICardCvvField ()<UITextFieldDelegate>
 @property (nonatomic, readonly) NSUInteger validLength;
+@property (nonatomic, strong) BTUICardHint *hint;
 @end
 
 @implementation BTUICardCvvField
@@ -19,9 +21,9 @@
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.textField.delegate = self;
 
-        BTUICardHint *hint = [BTUICardHint new];
-        hint.displayMode = BTCardHintDisplayModeCVVHint;
-        self.accessoryView = hint;
+        self.hint = [BTUICardHint new];
+        self.hint.displayMode = BTCardHintDisplayModeCVVHint;
+        self.accessoryView = self.hint;
         self.accessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:self.accessoryView];
     }
@@ -31,6 +33,7 @@
 - (void)setCardType:(BTUICardType *)cardType {
     _cardType = cardType;
     self.displayAsValid = [self.textField isFirstResponder] || self.textField.text.length == 0 || self.valid;
+    [self.hint setCardType:[BTUIViewUtil paymentMethodTypeForCardType:cardType] animated:YES];
     [self updateAppearance];
 }
 
@@ -70,12 +73,12 @@
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
     self.displayAsValid = YES;
-    [(BTUICardHint *)self.accessoryView highlight:YES];
+    [self.hint highlight:YES];
 }
 
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {
     self.displayAsValid = self.textField.text.length == 0 || self.valid;
-    [(BTUICardHint *)self.accessoryView highlight:NO];
+    [self.hint highlight:NO];
 }
 
 

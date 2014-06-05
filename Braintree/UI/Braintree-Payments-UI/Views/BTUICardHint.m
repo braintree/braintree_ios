@@ -112,6 +112,9 @@
 }
 
 - (void)setCardType:(BTUIPaymentMethodType)cardType animated:(BOOL)animated {
+    if (cardType == self.cardType) {
+        return;
+    }
     if (animated) {
         [UIView transitionWithView:self
                           duration:0.2f
