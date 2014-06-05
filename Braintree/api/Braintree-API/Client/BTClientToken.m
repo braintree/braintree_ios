@@ -73,8 +73,15 @@ NSString *const BTClientTokenKeyChallenges = @"challenges";
 
 - (NSDictionary *)decodeClientToken:(NSString *)rawClientTokenString error:(NSError * __autoreleasing *)error {
     NSError *JSONError;
-    NSDictionary *rawClientToken = [self parseJSONString:rawClientTokenString error:&JSONError];
+    NSData *base64DecodedClientToken = [[NSData alloc] initWithBase64EncodedString:rawClientTokenString
+                                                                           options:0];
 
+    NSDictionary *rawClientToken;
+    if (base64DecodedClientToken) {
+        rawClientToken = [NSJSONSerialization JSONObjectWithData:base64DecodedClientToken options:0 error:&JSONError];
+    } else {
+        rawClientToken = [self parseJSONString:rawClientTokenString error:&JSONError];
+    }
 
     if (!rawClientToken) {
         if (error) {

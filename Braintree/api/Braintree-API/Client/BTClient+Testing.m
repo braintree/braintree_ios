@@ -14,6 +14,7 @@ NSString *BTClientTestConfigurationKeySharedCustomerIdentifierType = @"sharedCus
 NSString *BTClientTestConfigurationKeyBaseUrl = @"baseUrl";
 NSString *BTClientTestConfigurationKeyPayPalClientId = @"paypalClientId";
 NSString *BTClientTestConfigurationKeyRevoked = @"authorizationFingerprintRevoked";
+NSString *BTClientTestConfigurationKeyClientTokenVersion = @"tokenVersion";
 
 NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 

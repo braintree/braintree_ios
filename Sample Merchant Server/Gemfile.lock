@@ -49,10 +49,10 @@ GEM
       term-ansicolor (~> 1.3.0)
     term-ansicolor (1.3.0)
       tins (~> 1.0)
-    thread_safe (0.3.3)
+    thread_safe (0.3.4)
     tilt (1.4.1)
     tins (1.3.0)
-    tzinfo (1.1.0)
+    tzinfo (1.2.1)
       thread_safe (~> 0.1)
 
 PLATFORMS
