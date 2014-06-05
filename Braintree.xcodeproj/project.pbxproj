@@ -137,6 +137,7 @@
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A75DA3781921399C00D997A2 /* BraintreeSpec.m */; };
+		A79ACA4D1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */; };
 		B0625DEDD37946988C5379F6 /* libPods-Braintree-API-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */; };
 		B81AA72C71C34DF0A3FA4779 /* libPods-Braintree-PayPal-Acceptance-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */; };
 		D574F60B94CB4F2AA8395FE1 /* libPods-Braintree-Payments-UI-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */; };
@@ -448,6 +449,9 @@
 		A75DA36C1921394200D997A2 /* Braintree-Specs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Braintree-Specs-Info.plist"; sourceTree = "<group>"; };
 		A75DA3781921399C00D997A2 /* BraintreeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeSpec.m; sourceTree = "<group>"; };
 		A75DA37A19213AB000D997A2 /* Braintree-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Specs-Prefix.pch"; sourceTree = "<group>"; };
+		A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormatterSpec.m; sourceTree = "<group>"; };
+		A79ACA4E1940D9920095D7F1 /* BTUICardExpiryFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUICardExpiryFormat.h; sourceTree = "<group>"; };
+		A79ACA4F1940D9920095D7F1 /* BTUICardExpiryFormat.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormat.m; sourceTree = "<group>"; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Specs.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -945,6 +949,8 @@
 				162174D3192D8746008DC35D /* BTUIScrollView.m */,
 				2DC3791A193FB53C00BD2BB9 /* BTUITextField.h */,
 				2DC3791B193FB53C00BD2BB9 /* BTUITextField.m */,
+				A79ACA4E1940D9920095D7F1 /* BTUICardExpiryFormat.h */,
+				A79ACA4F1940D9920095D7F1 /* BTUICardExpiryFormat.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1128,6 +1134,7 @@
 				16968112192D98EA00120846 /* EXPMatchers+haveKerning.m */,
 				16968110192D98EA00120846 /* Supporting Files */,
 				2D542EE31938EA9900DB4002 /* BTUIUtilSpec.m */,
+				A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */,
 			);
 			path = "Braintree-Payments-UI-Specs";
 			sourceTree = "<group>";
@@ -2089,6 +2096,7 @@
 				16968118192D98EA00120846 /* EXPMatchers+haveKerning.m in Sources */,
 				16968119192D98EA00120846 /* BTUICardExpirationValidatorSpec.m in Sources */,
 				2D542EE41938EA9900DB4002 /* BTUIUtilSpec.m in Sources */,
+				A79ACA4D1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m in Sources */,
 				16968116192D98EA00120846 /* BTUISpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
