@@ -20,6 +20,7 @@
                     <rect key="frame" x="0.0" y="46" width="320" height="100"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.1960784314" green="0.67404863910000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="VBX-5V-Joj"/>
                     </connections>
