@@ -60,7 +60,7 @@ describe(@"formattedValue", ^{
             expect(formattedCursorLocation).to.equal(0);
         });
 
-        fit(@"prepends 0 and appends / if one digit >1 is entered", ^{
+        it(@"prepends 0 and appends / if one digit >1 is entered", ^{
             format.value = @"2";
             format.cursorLocation = 1;
             NSString *formattedValue;

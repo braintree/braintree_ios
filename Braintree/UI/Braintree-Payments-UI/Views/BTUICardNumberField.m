@@ -44,7 +44,7 @@
         self.textField.selectedTextRange = r;
     }
     if (self.cardType != oldCardType) {
-        [self updateCardHint:oldCardType];
+        [self updateCardHint];
     }
 
     self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
@@ -83,7 +83,7 @@
     return self.cardType != nil && [self.cardType completeNumber:_number];
 }
 
-- (void)updateCardHint:(BTUICardType *)oldCardType {
+- (void)updateCardHint {
     BTUIPaymentMethodType paymentMethodType = [BTUIViewUtil paymentMethodTypeForCardType:self.cardType];
     BTUICardHint *hint =(BTUICardHint *)self.accessoryView;
     [hint setCardType:paymentMethodType animated:YES];
