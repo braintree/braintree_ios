@@ -1,4 +1,5 @@
 #import "BTClientToken.h"
+ 
 
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
@@ -15,6 +16,8 @@ NSString *BTClientTestConfigurationKeyBaseUrl = @"baseUrl";
 NSString *BTClientTestConfigurationKeyPayPalClientId = @"paypalClientId";
 NSString *BTClientTestConfigurationKeyRevoked = @"authorizationFingerprintRevoked";
 NSString *BTClientTestConfigurationKeyClientTokenVersion = @"tokenVersion";
+NSString *BTClientTestConfigurationKeyAnalytics = @"analytics";
+NSString *BTClientTestConfigurationKeyBatchSize = @"batchSize";
 
 NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 

@@ -15,6 +15,9 @@ typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 /// Success Block type for the Save Paypal call
 typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentMethod);
 
+/// Success Block type for batched analytics
+typedef void (^BTClientAnalyticsSuccessBlock)(NSArray *analyticsEvents);
+
 /// Block type for handling `BTClient` errors
 typedef void (^BTClientFailureBlock)(NSError *error);
 
@@ -75,6 +78,14 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock;
+
+
+/// "Fire and forget analytics" - transmits an analytics event to the Braintree analytics service
+///
+///  @param eventKind The analytics event name
+- (void)postAnalyticsEvent:(NSString *)eventKind
+                   success:(BTClientAnalyticsSuccessBlock)successBlock
+                   failure:(BTClientFailureBlock)failureBlock;
 
 #pragma mark - Library Metadata
 

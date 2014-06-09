@@ -119,35 +119,61 @@ describe(@"initialization from raw JSON", ^{
             expect([error localizedFailureReason]).to.contain(@"Authorization fingerprint");
         });
     });
+
+    describe(@"analytics batch size", ^{
+        it(@"returns Disabled when the batch size is omitted", ^{
+            NSString *clientTokenRawJSON = [BTTestClientTokenFactory token];
+            BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
+            expect(clientToken.analyticsBatchSize).to.equal(BTClientTokenAnalyticsBatchSizeDisabled);
+        });
+
+        it(@"returns Disabled when the batch size is zero", ^{
+            NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithAnalyticsBatchSize:0];
+            BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
+
+            expect(clientToken.analyticsBatchSize).to.equal(BTClientTokenAnalyticsBatchSizeDisabled);
+        });
+
+        it(@"returns the batch size when batch size is included in the client token", ^{
+            NSUInteger batchSize = 5;
+            NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithAnalyticsBatchSize:batchSize];
+            BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
+
+            expect(clientToken.analyticsBatchSize).to.equal(batchSize);
+        });
+    });
 });
 
 describe(@"initialization from a raw claims set", ^{
     it(@"creates a client token based on a dictionary of configuration parameters", ^{
         BTClientToken *clientToken = [[BTClientToken alloc] initWithClaims:@{ BTClientTokenKeyAuthorizationFingerprint: @"AUTH_FINGERPRINT",
-                                                                                    BTClientTokenKeyAuthorizationURL:@"AUTH_URL",
-                                                                                    BTClientTokenKeyClientApiURL: @"CLIENT_API_URL" }
-                                                                           error:nil];
+                                                                              BTClientTokenKeyAuthorizationURL:@"AUTH_URL",
+                                                                              BTClientTokenKeyClientApiURL: @"CLIENT_API_URL",
+                                                                              BTClientTokenKeyAnalytics: @{ BTClientTokenKeyBatchSize: @5 }
+                                                                              }
+                                                                     error:nil];
 
         expect(clientToken.authorizationFingerprint).to.equal(@"AUTH_FINGERPRINT");
         expect(clientToken.authorizationURL).to.equal([NSURL URLWithString:@"AUTH_URL"]);
         expect(clientToken.clientApiURL).to.equal([NSURL URLWithString:@"CLIENT_API_URL"]);
+        expect(clientToken.analyticsBatchSize).to.equal(5);
     });
 
     it(@"accepts user-defined configuration parameters", ^{
         BTClientToken *clientToken = [[BTClientToken alloc] initWithClaims:@{ BTClientTokenKeyAuthorizationFingerprint: @"AUTH_FINGERPRINT",
-                                                                                    BTClientTokenKeyAuthorizationURL:@"AUTH_URL",
-                                                                                    BTClientTokenKeyClientApiURL:@"CLIENT_API_URL",
-                                                                                    @"custom_key": @"custom_value" }
-                                                                           error:nil];
+                                                                              BTClientTokenKeyAuthorizationURL:@"AUTH_URL",
+                                                                              BTClientTokenKeyClientApiURL:@"CLIENT_API_URL",
+                                                                              @"custom_key": @"custom_value" }
+                                                                     error:nil];
         expect(clientToken.claims[@"custom_key"]).to.equal(@"custom_value");
     });
 
     it(@"rejects non-string authorizaion url parameters", ^{
         NSError *error;
         BTClientToken *clientToken = [[BTClientToken alloc] initWithClaims:@{ BTClientTokenKeyAuthorizationFingerprint: @"AUTH_FINGERPRINT",
-                                                                                    BTClientTokenKeyAuthorizationURL:[OCMockObject mockForClass:[NSObject class]],
-                                                                                    BTClientTokenKeyClientApiURL: @"CLIENT_API_URL" }
-                                                                           error:&error];
+                                                                              BTClientTokenKeyAuthorizationURL:[OCMockObject mockForClass:[NSObject class]],
+                                                                              BTClientTokenKeyClientApiURL: @"CLIENT_API_URL" }
+                                                                     error:&error];
         expect(clientToken).to.beNil();
         expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
         expect(error.code).to.equal(BTMerchantIntegrationErrorInvalidClientToken);
@@ -157,9 +183,9 @@ describe(@"initialization from a raw claims set", ^{
     it(@"rejects non-string client api url parameters", ^{
         NSError *error;
         BTClientToken *clientToken = [[BTClientToken alloc] initWithClaims:@{ BTClientTokenKeyAuthorizationFingerprint: @"AUTH_FINGERPRINT",
-                                                                                    BTClientTokenKeyAuthorizationURL:@"AUTH_URL",
-                                                                                    BTClientTokenKeyClientApiURL: [OCMockObject mockForClass:[NSObject class]] }
-                                                                           error:&error];
+                                                                              BTClientTokenKeyAuthorizationURL:@"AUTH_URL",
+                                                                              BTClientTokenKeyClientApiURL: [OCMockObject mockForClass:[NSObject class]] }
+                                                                     error:&error];
         expect(clientToken).to.beNil();
         expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
         expect(error.code).to.equal(BTMerchantIntegrationErrorInvalidClientToken);

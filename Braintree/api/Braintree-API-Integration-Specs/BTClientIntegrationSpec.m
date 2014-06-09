@@ -16,7 +16,9 @@ beforeEach(^AsyncBlock{
                                             BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
                                             BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
                                             BTClientTestConfigurationKeyCustomer:@YES,
-                                            BTClientTestConfigurationKeyBaseUrl:@"http://example.com/"
+                                            BTClientTestConfigurationKeyBaseUrl:@"http://example.com/",
+                                            BTClientTestConfigurationKeyAnalytics:@{ BTClientTestConfigurationKeyBatchSize: @1 },
+                                            BTClientTestConfigurationKeyClientTokenVersion: @2
                                             } completion:^(BTClient *client) {
                                                 testClient = client;
                                                 done();
@@ -412,8 +414,93 @@ describe(@"a client initialized with a revoked authorization fingerprint", ^{
                               validate:YES
                                success:nil
                                failure:nil];
-        
+
         wait_for_potential_async_exceptions(done);
+    });
+});
+
+describe(@"post analytics event", ^{
+    describe(@"batch size 1", ^{
+        it(@"sends events immediately", ^AsyncBlock{
+            [BTClient testClientWithConfiguration:@{
+                                                    BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                    BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                    BTClientTestConfigurationKeyCustomer:@YES,
+                                                    BTClientTestConfigurationKeyBaseUrl:@"http://example.com/",
+                                                    BTClientTestConfigurationKeyAnalytics:@{ BTClientTestConfigurationKeyBatchSize: @1 },
+                                                    BTClientTestConfigurationKeyClientTokenVersion: @2
+                                                    } completion:^(BTClient *client) {
+                                                        testClient = client;
+                                                        NSString *event = @"hello world! 🐴";
+                                                        [testClient postAnalyticsEvent:event
+                                                                               success:^(NSArray *analyticsEvents) {
+                                                                                   expect(analyticsEvents).to.contain(event);
+                                                                                   done();
+                                                                               }
+                                                                               failure:nil];
+                                                    }];
+        });
+    });
+
+    describe(@"batch size 0", ^{
+        it(@"is successful but does not send the event", ^AsyncBlock{
+            [BTClient testClientWithConfiguration:@{
+                                                    BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                    BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                    BTClientTestConfigurationKeyCustomer:@YES,
+                                                    BTClientTestConfigurationKeyBaseUrl:@"http://example.com/",
+                                                    BTClientTestConfigurationKeyAnalytics:@{ BTClientTestConfigurationKeyBatchSize: @0 },
+                                                    BTClientTestConfigurationKeyClientTokenVersion: @2
+                                                    } completion:^(BTClient *client) {
+                                                        NSString *event = @"hello world! 🐴";
+                                                        [client postAnalyticsEvent:event
+                                                                           success:^(NSArray *analyticsEvents) {
+                                                                               expect(analyticsEvents).to.haveCountOf(0);
+                                                                               done();
+                                                                           }
+                                                                           failure:nil];
+                                                    }];
+        });
+    });
+
+    describe(@"batch size > 1", ^{
+        it(@"sends multiple events in a single batch", ^AsyncBlock{
+            [BTClient testClientWithConfiguration:@{
+                                                    BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                    BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                    BTClientTestConfigurationKeyCustomer:@YES,
+                                                    BTClientTestConfigurationKeyBaseUrl:@"http://example.com/",
+                                                    BTClientTestConfigurationKeyAnalytics:@{ BTClientTestConfigurationKeyBatchSize: @2 },
+                                                    BTClientTestConfigurationKeyClientTokenVersion: @2
+                                                    } completion:^(BTClient *client) {
+                                                        NSString *event1 = @"first";
+                                                        NSString *event2 = @"second";
+                                                        [client postAnalyticsEvent:event1 success:nil failure:nil];
+                                                        [client postAnalyticsEvent:event2
+                                                                           success:^(NSArray *analyticsEvents) {
+                                                                               expect(analyticsEvents).to.haveCountOf(2);
+                                                                               done();
+                                                                           }
+                                                                           failure:nil];
+                                                    }];
+        });
+    });
+
+    describe(@"batch size unspecified", ^{
+        it(@"never sends events", ^AsyncBlock{
+            [BTClient testClientWithConfiguration:@{
+                                                    BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                    BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                    BTClientTestConfigurationKeyCustomer:@YES,
+                                                    BTClientTestConfigurationKeyBaseUrl:@"http://example.com/",
+                                                    BTClientTestConfigurationKeyClientTokenVersion: @1
+                                                    } completion:^(BTClient *client) {
+                                                        [client postAnalyticsEvent:@"event" success:^(NSArray *analyticsEvents) {
+                                                            expect(analyticsEvents).to.haveCountOf(0);
+                                                            done();
+                                                        } failure:nil];
+                                                    }];
+        });
     });
 });
 

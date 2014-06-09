@@ -3,6 +3,7 @@
 @interface BTTestClientTokenFactory : NSObject
 
 + (NSString *)token;
++ (NSString *)tokenWithAnalyticsBatchSize:(NSUInteger)batchSize;
 + (NSString *)base64EncodedToken;
 + (NSString *)tokenWithPayPalClientId;
 + (NSString *)invalidToken;

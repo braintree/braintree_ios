@@ -9,6 +9,8 @@ extern NSString *BTClientTestConfigurationKeySharedCustomerIdentifierType;
 extern NSString *BTClientTestConfigurationKeyBaseUrl;
 extern NSString *BTClientTestConfigurationKeyRevoked;
 extern NSString *BTClientTestConfigurationKeyClientTokenVersion;
+extern NSString *BTClientTestConfigurationKeyAnalytics;
+extern NSString *BTClientTestConfigurationKeyBatchSize;
 
 /// Block type that takes an `NSDictionary` that will contain `nonce` info.
 typedef void (^BTClientNonceInfoSuccessBlock)(NSDictionary *nonceInfo);

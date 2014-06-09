@@ -4,6 +4,9 @@ NSString *const BTClientTokenKeyAuthorizationFingerprint = @"authorizationFinger
 NSString *const BTClientTokenKeyAuthorizationURL = @"authUrl";
 NSString *const BTClientTokenKeyClientApiURL = @"clientApiUrl";
 NSString *const BTClientTokenKeyChallenges = @"challenges";
+NSString *const BTClientTokenKeyAnalytics = @"analytics";
+NSString *const BTClientTokenKeyBatchSize = @"batchSize";
+const NSUInteger BTClientTokenAnalyticsBatchSizeDisabled = NSUIntegerMax;
 
 
 @interface BTClientToken ()
@@ -59,6 +62,16 @@ NSString *const BTClientTokenKeyChallenges = @"challenges";
 
 - (NSSet *)challenges {
     return [NSSet setWithArray:self.claims[BTClientTokenKeyChallenges]];
+}
+
+- (NSUInteger)analyticsBatchSize {
+    NSUInteger batchSize = BTClientTokenAnalyticsBatchSizeDisabled;
+    NSDictionary *analytics = self.claims[BTClientTokenKeyAnalytics];
+    if ([analytics respondsToSelector:@selector(objectForKeyedSubscript:)]) {
+        batchSize = [analytics[BTClientTokenKeyBatchSize] unsignedIntegerValue];
+    }
+
+    return batchSize > 0 ? batchSize : BTClientTokenAnalyticsBatchSizeDisabled;
 }
 
 #pragma mark JSON Parsing

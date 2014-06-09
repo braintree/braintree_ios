@@ -5,6 +5,10 @@
 extern NSString *const BTClientTokenKeyAuthorizationFingerprint;
 extern NSString *const BTClientTokenKeyAuthorizationURL;
 extern NSString *const BTClientTokenKeyClientApiURL;
+extern NSString *const BTClientTokenKeyAnalytics;
+extern NSString *const BTClientTokenKeyBatchSize;
+
+extern const NSUInteger BTClientTokenAnalyticsBatchSizeDisabled;
 
 @interface BTClientToken : NSObject
 
@@ -12,6 +16,7 @@ extern NSString *const BTClientTokenKeyClientApiURL;
 @property (nonatomic, readonly, strong) NSURL *authorizationURL;
 @property (nonatomic, readonly, strong) NSURL *clientApiURL;
 @property (nonatomic, readonly, strong) NSSet *challenges;
+@property (nonatomic, readonly, assign) NSUInteger analyticsBatchSize;
 
 // Configuration attributes parsed from the client token (equivalent to [JWT claims](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html)).
 @property (nonatomic, readonly, strong) NSDictionary *claims;

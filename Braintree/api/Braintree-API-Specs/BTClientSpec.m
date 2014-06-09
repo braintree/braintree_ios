@@ -56,6 +56,29 @@ describe(@"BTClient", ^{
     });
 });
 
+describe(@"analytics batching", ^{
+    it(@"never sends events when batch size is 0", ^AsyncBlock{
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{BTClientTokenKeyAnalytics: @{BTClientTokenKeyBatchSize: @0} }]];
+        [client postAnalyticsEvent:@"First"
+                           success:^(NSArray *analyticsEvents){
+                               expect(analyticsEvents).to.haveCountOf(0);
+                               [client postAnalyticsEvent:@"Second"
+                                                  success:^(NSArray *analyticsEvents){
+                                                      expect(analyticsEvents).to.haveCountOf(0);
+                                                      [client postAnalyticsEvent:@"Third"
+                                                                         success:^(NSArray *analyticsEvents){
+                                                                             expect(analyticsEvents).to.haveCountOf(0);
+                                                                             done();
+                                                                         }
+                                                                         failure:nil];
+                                                  }
+                                                  failure:nil];
+                           }
+                           failure:nil];
+    });
+
+});
+
 describe(@"offline clients", ^{
     __block BTClient *offlineClient;
 
@@ -191,34 +214,47 @@ describe(@"offline clients", ^{
                                            } failure:nil];
                                        } failure:nil];
             });
-            
+
             it(@"returns the list of payment methods", ^{
                 expect(paymentMethods).to.haveCountOf(2);
                 expect([paymentMethods[0] nonce]).to.beANonce();
                 expect([paymentMethods[1] nonce]).to.beANonce();
             });
-            
+
             it(@"includes saved cards", ^{
                 expect(paymentMethods[1]).to.beKindOf([BTCardPaymentMethod class]);
                 expect([paymentMethods[1] lastTwo]).to.equal(@"11");
             });
-            
+
             it(@"includes saved PayPal accounts", ^{
                 expect(paymentMethods[0]).to.beKindOf([BTPayPalPaymentMethod class]);
                 expect([paymentMethods[0] email]).to.endWith(@"@example.com");
             });
-            
-            
+
             it(@"assigns distinct nonces for each payment method", ^{
                 expect([paymentMethods[0] nonce]).notTo.equal([paymentMethods[1] nonce]);
             });
         });
-        
+
         it(@"accepts a nil success block", ^AsyncBlock{
             [offlineClient fetchPaymentMethodsWithSuccess:nil failure:nil];
-            
+
             wait_for_potential_async_exceptions(done);
         });
+    });
+});
+
+describe(@"post analytics event", ^{
+    it(@"sends analytics events successfully", ^AsyncBlock{
+        NSString *event = @"First";
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyAnalytics: @{ BTClientTokenKeyBatchSize: @1 } }]];
+        [client postAnalyticsEvent:event
+                           success:^(NSArray *analyticsEvents){
+                               expect(analyticsEvents).to.haveCountOf(1);
+                               expect(analyticsEvents).to.contain(event);
+                               done();
+                           }
+                           failure:nil];
     });
 });
 
