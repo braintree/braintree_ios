@@ -246,7 +246,7 @@
         if (self.hidePayPal){
             return [NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
         } else {
-            return [NSString stringWithFormat:@"V:|%@[payPalControl(==52)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
+            return [NSString stringWithFormat:@"V:|%@[payPalControl(==40)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
         }
 
     } else {
