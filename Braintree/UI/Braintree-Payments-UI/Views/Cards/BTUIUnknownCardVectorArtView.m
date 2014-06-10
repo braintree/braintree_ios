@@ -7,7 +7,7 @@
 
     //// Color Declarations
     UIColor* color2 = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.099];
-    UIColor* color1 = self.highlightColor ?: [UIColor colorWithRed: 0.124 green: 0.132 blue: 0.138 alpha: 1];
+    UIColor* color1 = self.highlightColor ?: color2;
 
     //// Page-1
     {
