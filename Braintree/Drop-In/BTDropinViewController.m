@@ -53,7 +53,6 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
     self.view.backgroundColor = self.theme.viewBackgroundColor;
-    self.view.tintColor = self.theme.defaultTintColor;
 
     // Configure Subviews
     self.scrollView = [[BTUIScrollView alloc] init];
