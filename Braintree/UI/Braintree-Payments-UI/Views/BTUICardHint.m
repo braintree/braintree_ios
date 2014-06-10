@@ -101,6 +101,7 @@
     self.hintVectorArtView = cardVectorArtView;
     [self.hintVectorArtView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self addSubview:self.hintVectorArtView];
+    [self setHighlighted:self.highlighted];
 
     [self setNeedsUpdateConstraints];
     [self setNeedsLayout];

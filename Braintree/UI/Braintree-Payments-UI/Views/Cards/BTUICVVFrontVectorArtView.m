@@ -3,6 +3,9 @@
 @implementation BTUICVVFrontVectorArtView
 
 - (void)drawArt {
+
+
+
     //// Color Declarations
     UIColor* color1 = [UIColor colorWithRed: 0.765 green: 0.77 blue: 0.756 alpha: 1];
     UIColor* color2 = self.highlightColor ?: [UIColor colorWithRed: 0.124 green: 0.132 blue: 0.138 alpha: 1];

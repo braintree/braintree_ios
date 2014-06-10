@@ -24,6 +24,8 @@
         self.textField.borderStyle = UITextBorderStyleNone;
         self.textField.backgroundColor = [UIColor clearColor];
         [self.textField addTarget:self action:@selector(fieldContentDidChange) forControlEvents:UIControlEventEditingChanged];
+        [self.textField addTarget:self action:@selector(editingDidBegin) forControlEvents:UIControlEventEditingDidBegin];
+        [self.textField addTarget:self action:@selector(editingDidEnd) forControlEvents:UIControlEventEditingDidEnd];
 
         self.textField.delegate = self;
         [self addSubview:self.textField];
@@ -95,7 +97,6 @@
 #pragma mark - Drawing
 
 - (void)updateAppearance {
-
     UIColor *textColor;
     if (!self.displayAsValid){
         textColor = self.theme.errorForegroundColor;
@@ -167,9 +168,7 @@
 }
 
 - (void)didDeleteBackward {
-    NSLog(@"didDeleteBackward: %@ %@", self.previousTextFieldText, self.textField.text);
     if (self.previousTextFieldText.length == 0 && self.textField.text.length == 0) {
-        NSLog(@"Empty delete: %@", self.textField.text);
         [self.delegate formFieldDidDeleteWhileEmpty:self];
     }
 }
@@ -190,11 +189,35 @@
     _backspace = NO;
 }
 
+- (void)setAccessoryHighlighted:(BOOL)highlight {
+    if (self.accessoryView) {
+        if ([self.accessoryView respondsToSelector:@selector(setHighlighted:animated:)]) {
+            SEL selector = @selector(setHighlighted:animated:);
+            BOOL animated = YES;
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[self.accessoryView methodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:self.accessoryView];
+            [invocation setArgument:&highlight atIndex:2];
+            [invocation setArgument:&animated atIndex:3];
+            [invocation invoke];
+        }
+    }
+}
+
 #pragma mark - Delegate methods and handlers
 
 - (void)fieldContentDidChange {
     // To be implemented by subclass
 }
+
+- (void)editingDidBegin {
+    [self setAccessoryHighlighted:YES];
+}
+
+- (void)editingDidEnd {
+    [self setAccessoryHighlighted:NO];
+}
+
 
 - (BOOL)textField:(__unused UITextField *)textField shouldChangeCharactersInRange:(__unused NSRange)range replacementString:(__unused NSString *)newText {
     // To be implemented by subclass
