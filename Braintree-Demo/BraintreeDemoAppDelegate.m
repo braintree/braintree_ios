@@ -8,6 +8,8 @@
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
+    self.window.tintColor = [UIColor redColor];
+
     return YES;
 }
 
