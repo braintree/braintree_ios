@@ -1,5 +1,6 @@
 #import "BTUI.h"
 #import "BTUIUtil.h"
+#import "UIColor+BTUI.h"
 
 #import "BTUIMasterCardVectorArtView.h"
 #import "BTUIJCBVectorArtView.h"
@@ -23,7 +24,7 @@
 }
 
 - (UIColor *)idealGray {
-    return [self colorWithBytesR:128 G:128 B:128];
+    return [UIColor bt_colorWithBytesR:128 G:128 B:128];
 }
 
 - (UIColor *)viewBackgroundColor {
@@ -31,7 +32,7 @@
 }
 
 - (UIColor *)callToActionColor {
-    return [self colorWithBytesR:7 G:158 B:222];
+    return [UIColor bt_colorWithBytesR:7 G:158 B:222];
 }
 
 - (UIColor *)callToActionColorHighlighted {
@@ -43,19 +44,19 @@
 }
 
 - (UIColor *)titleColor {
-    return [self colorWithBytesR:46 G:51 B:58];
+    return [UIColor bt_colorWithBytesR:46 G:51 B:58];
 }
 
 - (UIColor *)detailColor {
-    return [self colorWithBytesR:98 G:102 B:105];
+    return [UIColor bt_colorWithBytesR:98 G:102 B:105];
 }
 
 - (UIColor *)borderColor {
-    return [self colorWithBytesR:216 G:216 B:216];
+    return [UIColor bt_colorWithBytesR:216 G:216 B:216];
 }
 
 - (UIColor *)textFieldTextColor {
-    return [self colorWithBytesR:26 G:26 B:26];
+    return [UIColor bt_colorWithBytesR:26 G:26 B:26];
 }
 
 - (UIColor *)textFieldPlaceholderColor {
@@ -66,40 +67,36 @@
     return [self idealGray];
 }
 
-- (UIColor *)highlightColor {
+- (UIColor *)defaultTintColor {
     return [self payPalButtonBlue];
 }
 
 - (UIColor *)cardHintBorderColor {
-    return [self colorWithBytesR:0 G:0 B:0 A:20];
+    return [UIColor bt_colorWithBytesR:0 G:0 B:0 A:20];
 }
 
 - (UIColor *)errorBackgroundColor {
-    return [self colorWithBytesR:250 G:229 B:232];
+    return [UIColor bt_colorWithBytesR:250 G:229 B:232];
 }
 
 - (UIColor *)errorForegroundColor {
-    return [self colorWithBytesR:208 G:2 B:27];
+    return [UIColor bt_colorWithBytesR:208 G:2 B:27];
 }
 
 #pragma mark PayPal Colors
 
 - (UIColor *)payPalButtonBlue {
-    return [self colorWithBytesR:1 G:156 B:222];
+    return [UIColor bt_colorWithBytesR:1 G:156 B:222];
 }
 
 - (UIColor *)payPalButtonActiveBlue {
-    return [self colorWithBytesR:12 G:141 B:196];
+    return [UIColor bt_colorWithBytesR:12 G:141 B:196];
 }
 
-#pragma mark Utilities
+#pragma mark Adjustments
 
-- (UIColor *)colorWithBytesR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b A:(NSInteger)a {
-    return [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a/255.0f];
-}
-
-- (UIColor *)colorWithBytesR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b {
-    return [self colorWithBytesR:r G:g B:b A:255.0f];
+- (CGFloat) highlightedBrightnessAdjustment {
+    return 0.6;
 }
 
 #pragma mark - Appearance

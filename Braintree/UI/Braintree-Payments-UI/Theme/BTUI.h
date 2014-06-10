@@ -17,6 +17,9 @@
 
 #pragma mark - Colors
 
+// Tint color if none is set. Defaults to nil.
+- (UIColor *)defaultTintColor;
+
 - (UIColor *)viewBackgroundColor;
 - (UIColor *)callToActionColor;
 - (UIColor *)callToActionColorHighlighted;
@@ -31,11 +34,14 @@
 
 - (UIColor *)sectionHeaderTextColor;
 
-- (UIColor *)highlightColor;
 - (UIColor *)cardHintBorderColor;
 
 - (UIColor *)errorBackgroundColor;
 - (UIColor *)errorForegroundColor;
+
+#pragma mark Adjustments
+
+- (CGFloat) highlightedBrightnessAdjustment;
 
 #pragma mark PayPal Colors
 
@@ -67,6 +73,8 @@
 - (CGFloat)quickTransitionDuration;
 - (CGFloat)transitionDuration;
 - (CGFloat)minimumVisibilityTime;
+
+
 
 #pragma mark Icons
 
