@@ -305,8 +305,6 @@
 		162174CB192D8746008DC35D /* BTUIVisaVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIVisaVectorArtView.m; sourceTree = "<group>"; };
 		162174CC192D8746008DC35D /* BTUIAmExVectorArtView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIAmExVectorArtView.h; sourceTree = "<group>"; };
 		162174CD192D8746008DC35D /* BTUIAmExVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIAmExVectorArtView.m; sourceTree = "<group>"; };
-		162174CF192D8746008DC35D /* BTUIPayPalMonogramColorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalMonogramColorView.h; sourceTree = "<group>"; };
-		162174D0192D8746008DC35D /* BTUIPayPalMonogramColorView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalMonogramColorView.m; sourceTree = "<group>"; };
 		162174D2192D8746008DC35D /* BTUIScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIScrollView.h; sourceTree = "<group>"; };
 		162174D3192D8746008DC35D /* BTUIScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIScrollView.m; sourceTree = "<group>"; };
 		162174D5192D8746008DC35D /* BTUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUI.h; sourceTree = "<group>"; };
@@ -421,6 +419,8 @@
 		29C0E04B87974F7C80D7C5B8 /* Pods-Braintree-API-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-API-Demo.xcconfig"; path = "Pods/Pods-Braintree-API-Demo.xcconfig"; sourceTree = "<group>"; };
 		2D085DD919463C9200293215 /* UIColor+BTUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+BTUI.h"; sourceTree = "<group>"; };
 		2D085DDA19463C9200293215 /* UIColor+BTUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BTUI.m"; sourceTree = "<group>"; };
+		2D085DDD1947BF1000293215 /* BTUIPayPalMonogramCardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalMonogramCardView.h; sourceTree = "<group>"; };
+		2D085DDE1947BF1000293215 /* BTUIPayPalMonogramCardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalMonogramCardView.m; sourceTree = "<group>"; };
 		2D542EE31938EA9900DB4002 /* BTUIUtilSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIUtilSpec.m; sourceTree = "<group>"; };
 		2DBDD71D192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInSelectPaymentMethodViewController.h; sourceTree = "<group>"; };
 		2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInSelectPaymentMethodViewController.m; sourceTree = "<group>"; };
@@ -900,19 +900,11 @@
 				162174CB192D8746008DC35D /* BTUIVisaVectorArtView.m */,
 				162174CC192D8746008DC35D /* BTUIAmExVectorArtView.h */,
 				162174CD192D8746008DC35D /* BTUIAmExVectorArtView.m */,
+				2D085DDD1947BF1000293215 /* BTUIPayPalMonogramCardView.h */,
+				2D085DDE1947BF1000293215 /* BTUIPayPalMonogramCardView.m */,
 			);
 			name = "Payment Method Type Vector Art";
 			path = Cards;
-			sourceTree = "<group>";
-		};
-		162174D1192D8746008DC35D /* PayPal Vector Art */ = {
-			isa = PBXGroup;
-			children = (
-				162174CF192D8746008DC35D /* BTUIPayPalMonogramColorView.h */,
-				162174D0192D8746008DC35D /* BTUIPayPalMonogramColorView.m */,
-			);
-			name = "PayPal Vector Art";
-			path = PayPal;
 			sourceTree = "<group>";
 		};
 		162174D4192D8746008DC35D /* Views */ = {
@@ -946,7 +938,6 @@
 				162174B6192D8746008DC35D /* BTUIViewUtil.h */,
 				162174B7192D8746008DC35D /* BTUIViewUtil.m */,
 				162174CE192D8746008DC35D /* Payment Method Type Vector Art */,
-				162174D1192D8746008DC35D /* PayPal Vector Art */,
 				162174D2192D8746008DC35D /* BTUIScrollView.h */,
 				162174D3192D8746008DC35D /* BTUIScrollView.m */,
 				2DC3791A193FB53C00BD2BB9 /* BTUITextField.h */,

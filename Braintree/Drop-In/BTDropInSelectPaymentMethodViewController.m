@@ -1,6 +1,5 @@
 #import "BTDropInSelectPaymentMethodViewController.h"
 #import "BTDropInUtil.h"
-#import "BTUIPayPalMonogramColorView.h"
 #import "BTUIViewUtil.h"
 #import "BTUI.h"
 #import "BTDropinViewController.h"
@@ -69,9 +68,12 @@
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [payPalPaymentMethod.description length])];
         cell.textLabel.attributedText = typeWithDescription;
 
-        BTUIPayPalMonogramColorView *ppMonogram = [[BTUIPayPalMonogramColorView alloc] init];
-        UIImage *icon = [ppMonogram imageOfSize:CGSizeMake(42, 23)];
+
+        BTUIVectorArtView *iconArt = [[BTUI braintreeTheme] vectorArtViewForPaymentMethodType:BTUIPaymentMethodTypePayPal];
+        UIImage *icon = [iconArt imageOfSize:CGSizeMake(42, 23)];
+        cell.imageView.contentMode = UIViewContentModeCenter;
         cell.imageView.image = icon;
+
     } else if([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
         BTCardPaymentMethod *card = (BTCardPaymentMethod *)paymentMethod;
         NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", card.typeString, card.description]];

@@ -8,9 +8,9 @@
 #import "BTUIVisaVectorArtView.h"
 #import "BTUIDiscoverVectorArtView.h"
 #import "BTUIUnknownCardVectorArtView.h"
-#import "BTUIPayPalMonogramColorView.h"
 #import "BTUIDinersClubVectorArtView.h"
 #import "BTUIAmExVectorArtView.h"
+#import "BTUIPayPalMonogramCardView.h"
 
 @implementation BTUI
 
@@ -69,7 +69,6 @@
 
 - (UIColor *)defaultTintColor {
     return [self palBlue];
-//    return [UIColor bt_colorFromHex:@"#009900" alpha:1.0f];
 }
 
 - (UIColor *)cardHintBorderColor {
@@ -183,7 +182,7 @@
         case BTUIPaymentMethodTypeMasterCard:
             return [BTUIMasterCardVectorArtView new];
         case BTUIPaymentMethodTypePayPal:
-            return [BTUIPayPalMonogramColorView new];
+            return [BTUIPayPalMonogramCardView new];
         case BTUIPaymentMethodTypeDinersClub:
             return [BTUIDinersClubVectorArtView new];
         case BTUIPaymentMethodTypeJCB:
