@@ -42,7 +42,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tsd-3s-x7Y" customClass="BTUICTAControl">
                                 <rect key="frame" x="0.0" y="395" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.95425907259999998" green="0.12569303809999999" blue="0.12569303809999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.27709173387096775" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="oXa-kD-ks4"/>
                                 </constraints>
@@ -92,16 +93,34 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enabled CTA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EMj-D0-0dH">
+                                <rect key="frame" x="20" y="228" width="99" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xi1-hb-1JK">
+                                <rect key="frame" x="251" y="223" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="toggledCTAEnabled:" destination="9xs-I4-YHF" eventType="valueChanged" id="Nj1-bi-KPX"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" red="0.98431378602981567" green="0.98431378602981567" blue="0.98431378602981567" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstItem="66N-zH-HjJ" firstAttribute="top" secondItem="eDC-xT-Any" secondAttribute="bottom" constant="8" symbolic="YES" id="1vh-VW-Zfj"/>
                             <constraint firstItem="5Oz-AB-8gW" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" id="7BH-rd-NLM"/>
+                            <constraint firstAttribute="trailing" secondItem="xi1-hb-1JK" secondAttribute="trailing" constant="20" id="8uE-Bd-rsv"/>
                             <constraint firstAttribute="trailing" secondItem="Wkk-Kj-bLk" secondAttribute="trailing" id="C0A-hi-55E"/>
                             <constraint firstAttribute="centerX" secondItem="eDC-xT-Any" secondAttribute="centerX" constant="-6.5" id="DBd-8C-ch7"/>
                             <constraint firstItem="66N-zH-HjJ" firstAttribute="centerY" secondItem="4LD-74-01Q" secondAttribute="centerY" constant="-5" id="DKm-rt-v4g"/>
+                            <constraint firstItem="66N-zH-HjJ" firstAttribute="leading" secondItem="EMj-D0-0dH" secondAttribute="leading" id="DVe-Ld-O0w"/>
                             <constraint firstItem="Tsd-3s-x7Y" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" id="EcI-A6-Ilx"/>
+                            <constraint firstItem="xi1-hb-1JK" firstAttribute="top" secondItem="4LD-74-01Q" secondAttribute="bottom" constant="8" id="KXh-1Y-EuT"/>
                             <constraint firstItem="Wkk-Kj-bLk" firstAttribute="top" secondItem="5Oz-AB-8gW" secondAttribute="bottom" constant="20" id="LHZ-kF-tup"/>
+                            <constraint firstItem="EMj-D0-0dH" firstAttribute="centerY" secondItem="xi1-hb-1JK" secondAttribute="centerY" id="LIB-n6-a40"/>
                             <constraint firstItem="Wkk-Kj-bLk" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" id="QYM-Nc-UEF"/>
                             <constraint firstItem="5Oz-AB-8gW" firstAttribute="top" secondItem="ips-gP-4mH" secondAttribute="bottom" id="Rz3-2T-CDG"/>
                             <constraint firstItem="j6K-5l-LED" firstAttribute="top" secondItem="Tsd-3s-x7Y" secondAttribute="bottom" id="TS8-40-Ssi"/>
@@ -115,6 +134,7 @@
                     <navigationItem key="navigationItem" title="Braintree Payments UI" id="ZLS-nX-uc0"/>
                     <connections>
                         <outlet property="cardPaymentMethodView" destination="Wkk-Kj-bLk" id="99L-tD-5Gz"/>
+                        <outlet property="ctaControl" destination="Tsd-3s-x7Y" id="6qA-uZ-JVt"/>
                         <outlet property="processingSwitch" destination="4LD-74-01Q" id="DOx-Ip-emj"/>
                     </connections>
                 </viewController>
