@@ -28,7 +28,7 @@
 }
 
 - (UIColor *)viewBackgroundColor {
-    return [BTUIUtil uiColorFromHex:@"f3f4f6" alpha:1.0f];
+    return [UIColor bt_colorFromHex:@"f3f4f6" alpha:1.0f];
 }
 
 - (UIColor *)callToActionColor {
@@ -40,7 +40,7 @@
 }
 
 - (UIColor *)disabledButtonColor {
-    return [BTUIUtil uiColorFromHex:@"#BCBFC4" alpha:1.0f];
+    return [UIColor bt_colorFromHex:@"#BCBFC4" alpha:1.0f];
 }
 
 - (UIColor *)titleColor {
@@ -68,7 +68,8 @@
 }
 
 - (UIColor *)defaultTintColor {
-    return [self payPalButtonBlue];
+    return [self palBlue];
+//    return [UIColor bt_colorFromHex:@"#009900" alpha:1.0f];
 }
 
 - (UIColor *)cardHintBorderColor {
@@ -85,12 +86,20 @@
 
 #pragma mark PayPal Colors
 
-- (UIColor *)payPalButtonBlue {
+- (UIColor *)payBlue {
+    return [UIColor bt_colorWithBytesR:12 G:141 B:196];
+}
+
+- (UIColor *)palBlue {
     return [UIColor bt_colorWithBytesR:1 G:156 B:222];
 }
 
+- (UIColor *)payPalButtonBlue {
+    return [self palBlue];
+}
+
 - (UIColor *)payPalButtonActiveBlue {
-    return [UIColor bt_colorWithBytesR:12 G:141 B:196];
+    return [self payBlue];
 }
 
 #pragma mark Adjustments
