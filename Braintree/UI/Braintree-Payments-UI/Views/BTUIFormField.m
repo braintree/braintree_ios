@@ -40,6 +40,11 @@
     return self;
 }
 
+- (void)setAccessoryView:(UIView *)accessoryView {
+    _accessoryView = accessoryView;
+    self.accessoryView.userInteractionEnabled = NO;
+}
+
 - (void)setDisplayAsValid:(BOOL)displayAsValid {
     if (self.vibrateOnInvalidInput && self.textField.isFirstResponder && _displayAsValid && !displayAsValid) {
         [BTUIViewUtil vibrate];
@@ -150,8 +155,10 @@
 
     if (self.accessoryView != nil) {
         views[@"accessoryView"] = self.accessoryView;
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[accessoryView(28)]" options:0 metrics:metrics views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.accessoryView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.textField attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView(==43.5)]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[accessoryView(==27.5)]" options:0 metrics:metrics views:views]];
     } else {
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
     }
