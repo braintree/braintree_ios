@@ -23,6 +23,9 @@ typedef NS_ENUM(NSInteger, BTCardHintDisplayMode) {
 /// Whether it is highlighted with the tint color
 @property (nonatomic, assign) BOOL highlighted;
 
+/// Set highlight with animation
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+
 /// Update the current cardType with an optional visual animation
 /// @see cardType
 - (void)setCardType:(BTUIPaymentMethodType)cardType animated:(BOOL)animated;

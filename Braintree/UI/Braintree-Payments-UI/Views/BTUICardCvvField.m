@@ -73,12 +73,12 @@
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
     self.displayAsValid = YES;
-    self.hint.highlighted = YES;
+    [self.hint setHighlighted:YES animated:YES];
 }
 
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {
     self.displayAsValid = self.textField.text.length == 0 || self.valid;
-    self.hint.highlighted = NO;
+    [self.hint setHighlighted:NO animated:YES];
 }
 
 
