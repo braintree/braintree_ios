@@ -29,7 +29,7 @@
 }
 
 - (void)setupView {
-    self.layer.borderColor = [[BTUI braintreeTheme] cardHintBorderColor].CGColor;
+    self.layer.borderColor = self.theme.cardHintBorderColor.CGColor;
     self.layer.borderWidth = 1.0f;
     self.layer.cornerRadius = 2.0f;
 

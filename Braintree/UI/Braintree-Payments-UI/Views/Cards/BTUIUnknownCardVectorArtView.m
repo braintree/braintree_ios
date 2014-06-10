@@ -3,16 +3,6 @@
 
 @implementation BTUIUnknownCardVectorArtView
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        self.layer.borderColor = [[BTUI braintreeTheme] borderColor].CGColor;
-        self.layer.borderWidth = 1.0f;
-        self.layer.cornerRadius = 2.0f;
-    }
-    return self;
-}
-
 - (void)drawArt {
 
     //// Color Declarations
