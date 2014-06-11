@@ -1,20 +1,20 @@
-#import "BTUIUtil.h"
+#import "UIColor+BTUI.h"
 
-SpecBegin(BTUIUtil)
+SpecBegin(BTUI_UIColor)
 
-describe(@"BTUIUtil", ^{
-    describe(@"uiColorFromHex", ^{
+describe(@"UIColor+BTUI", ^{
+    describe(@"bt_colorFromHex", ^{
         it(@"converts simple valid strings", ^{
-            UIColor *red = [BTUIUtil uiColorFromHex:@"#ff0000" alpha:1.0f];
+            UIColor *red = [UIColor bt_colorFromHex:@"#ff0000" alpha:1.0f];
             expect(red).to.equal([UIColor redColor]);
-            UIColor *green = [BTUIUtil uiColorFromHex:@"#00ff00" alpha:1.0f];
+            UIColor *green = [UIColor bt_colorFromHex:@"#00ff00" alpha:1.0f];
             expect(green).to.equal([UIColor greenColor]);
-            UIColor *blue = [BTUIUtil uiColorFromHex:@"#0000ff" alpha:1.0f];
+            UIColor *blue = [UIColor bt_colorFromHex:@"#0000ff" alpha:1.0f];
             expect(blue).to.equal([UIColor blueColor]);
         });
 
         it(@"converts mixed color strings", ^{
-            UIColor *c = [BTUIUtil uiColorFromHex:@"#ffffff" alpha:1.0f];
+            UIColor *c = [UIColor bt_colorFromHex:@"#ffffff" alpha:1.0f];
             expect(CGColorGetNumberOfComponents(c.CGColor)).to.equal(4);
             CGFloat r, g, b, a;
             [c getRed:&r green:&g blue:&b alpha:&a];
@@ -26,7 +26,7 @@ describe(@"BTUIUtil", ^{
         });
 
         it(@"can take an alpha value", ^{
-            UIColor *blueClear = [BTUIUtil uiColorFromHex:@"#0000ff" alpha:0.0f];
+            UIColor *blueClear = [UIColor bt_colorFromHex:@"#0000ff" alpha:0.0f];
             expect(blueClear).notTo.equal([UIColor blueColor]);
             expect(CGColorGetNumberOfComponents(blueClear.CGColor)).to.equal(4);
             CGFloat r, g, b, a;
@@ -39,10 +39,10 @@ describe(@"BTUIUtil", ^{
 
         it(@"doesn't choke on invalid strings", ^{
             UIColor *c;
-            c = [BTUIUtil uiColorFromHex:@"#nnn" alpha:1.0f];
+            c = [UIColor bt_colorFromHex:@"#nnn" alpha:1.0f];
             expect(c).to.equal([UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:1.0f]);
 
-            c = [BTUIUtil uiColorFromHex:@"#im un ur hex and i am not real" alpha:1.0f];
+            c = [UIColor bt_colorFromHex:@"#im un ur hex and i am not real" alpha:1.0f];
             expect(c).to.equal([UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:1.0f]);
         });
     });
