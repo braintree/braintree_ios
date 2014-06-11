@@ -388,7 +388,9 @@
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
-    self.paymentMethodCompletionBlock(nil, error);
+    if (self.paymentMethodCompletionBlock != nil) {
+        self.paymentMethodCompletionBlock(nil, error);
+    }
     if ([self.delegate respondsToSelector:@selector(dropInViewController:didFailWithError:)]) {
         [self.delegate dropInViewController:self
                            didFailWithError:error];
