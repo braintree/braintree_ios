@@ -170,7 +170,12 @@
 
     CGRect desiredVisibleTopRect = [self.scrollView convertRect:self.dropInContentView.cardFormSectionHeader.frame fromView:self.dropInContentView];
     desiredVisibleTopRect.origin.y -= 7;
-    CGRect desiredVisibleBottomRect = [self.scrollView convertRect:self.dropInContentView.ctaControl.frame fromView:self.dropInContentView];
+    CGRect desiredVisibleBottomRect;
+    if (self.dropInContentView.ctaControl.hidden) {
+        desiredVisibleBottomRect = desiredVisibleTopRect;
+    } else {
+        desiredVisibleBottomRect = [self.scrollView convertRect:self.dropInContentView.ctaControl.frame fromView:self.dropInContentView];
+    }
 
     CGFloat visibleAreaHeight = self.scrollView.frame.size.height - self.scrollView.contentInset.bottom - self.scrollView.contentInset.top;
 
@@ -180,9 +185,10 @@
     }
 
     CGRect weightedTopRect = CGRectUnion(targetRect, desiredVisibleTopRect);
+
     if (weightedTopRect.size.height <= visibleAreaHeight) {
         targetRect = weightedTopRect;
-        targetRect.size.height = visibleAreaHeight;
+        targetRect.size.height = MIN(visibleAreaHeight, CGRectGetMaxY(weightedBottomRect) - CGRectGetMinY(targetRect));
     }
 
     [scrollView defaultScrollRectToVisible:targetRect animated:animated];
