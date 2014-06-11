@@ -147,7 +147,21 @@
     [super viewWillAppear:animated];
     self.visible = YES;
     self.visibleStartTime = [NSDate timeIntervalSinceReferenceDate];
+
+    // Ensure dropInContentView is visible. See viewWillDisappear below
+    self.dropInContentView.alpha = 1.0f;
 }
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    // Quickly fade out the content view to prevent a jarring effect
+    // as keyboard dimisses.
+    [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
+        self.dropInContentView.alpha = 0.0f;
+    }];
+}
+
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
