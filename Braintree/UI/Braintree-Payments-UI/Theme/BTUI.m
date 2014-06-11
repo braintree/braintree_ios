@@ -128,7 +128,7 @@
 #pragma mark - Type
 
 - (UIFont *)controlFont {
-    return [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f];
+    return [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f];
 }
 
 - (UIFont *)controlTitleFont {
