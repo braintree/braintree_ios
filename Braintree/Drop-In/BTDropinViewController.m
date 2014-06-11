@@ -65,16 +65,12 @@
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidHide:)
-                                                 name:UIKeyboardDidHideNotification
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification
                                                object:nil];
 
     self.dropInContentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -210,18 +206,15 @@
 
 #pragma mark - Keyboard behavior
 
-- (void)keyboardDidHide:(__unused NSNotification *)inputViewNotification {
-    [self updateScrollViewInsets:inputViewNotification];
+- (void)keyboardWillHide:(__unused NSNotification *)inputViewNotification {
+    UIEdgeInsets ei = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+    [UIView animateWithDuration:self.theme.transitionDuration animations:^{
+        self.scrollView.scrollIndicatorInsets = ei;
+        self.scrollView.contentInset = ei;
+    }];
 }
 
 - (void)keyboardWillShow:(__unused NSNotification *)inputViewNotification {
-    [self updateScrollViewInsets:inputViewNotification];
-}
-
-- (void)keyboardDidShow:(__unused NSNotification *)inputViewNotification {
-}
-
-- (void)updateScrollViewInsets:(NSNotification *)inputViewNotification {
     CGRect inputViewFrame = [[[inputViewNotification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect inputViewFrameInView = [self.view convertRect:inputViewFrame fromView:nil];
     CGRect intersection = CGRectIntersection(self.scrollView.frame, inputViewFrameInView);
