@@ -268,13 +268,13 @@
 
     } else if (self.state != BTDropInContentViewStatePaymentMethodsOnFile) {
         if (!self.ctaControl.hidden) {
-            ctaControlVisualFormat = [NSString stringWithFormat:@"%@-(>=0)-", ctaControlVisualFormat];
+            ctaControlVisualFormat = [NSString stringWithFormat:@"-(15)-%@-(>=0)-", ctaControlVisualFormat];
         }
         if (self.hidePayPal){
-            return @[[NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
+            return @[[NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
         } else {
             summaryViewVisualFormat = [NSString stringWithFormat:@"%@-(35)-", summaryViewVisualFormat];
-            return @[[NSString stringWithFormat:@"V:|%@[payPalControl(==40)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
+            return @[[NSString stringWithFormat:@"V:|%@[payPalControl(==40)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
         }
 
     } else {
