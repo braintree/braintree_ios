@@ -114,6 +114,20 @@ static BTOfflineClientBackend *backend;
                                                  headerFields:@{}];
             responseData = nil;
         }
+    } else if ([request.HTTPMethod isEqualToString:@"POST"] && [request.URL.path isEqualToString:@"/v1/analytics"]) {
+        response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
+                                               statusCode:201
+                                              HTTPVersion:BTOfflineModeHTTPVersionString
+                                             headerFields:@{ @"Content-Type": @"application/json" }];
+
+        responseData = ({
+            NSError *error;
+            NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"message": @"created", @"amount": @2 }
+                                                           options:0
+                                                             error:&error];
+            NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
+            data;
+        });
     } else {
         response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
                                                statusCode:501
