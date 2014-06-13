@@ -110,4 +110,18 @@
     return operation;
 }
 
+- (BraintreeDemoClientOperation *)postAnalyticsEventOperation {
+    BraintreeDemoClientOperation *operation = [BraintreeDemoClientOperation new];
+    operation.name = @"Post Analytics Event";
+    operation.block = ^(void (^callback)(id result, NSError *error)) {
+        [self.client postAnalyticsEvent:@"Test Event"
+                                success:^(NSArray *analyticsEvents) {
+                                    callback(analyticsEvents, nil);
+                                } failure:^(NSError *error) {
+                                    callback(nil, error);
+                                }];
+    };
+    return operation;
+}
+
 @end

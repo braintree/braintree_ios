@@ -11,5 +11,6 @@
 - (BraintreeDemoClientOperation *)saveCardOperation;
 - (BraintreeDemoClientOperation *)saveInvalidCardOperation;
 - (BraintreeDemoClientOperation *)savePayPalPaymentMethodOperation;
+- (BraintreeDemoClientOperation *)postAnalyticsEventOperation;
 
 @end

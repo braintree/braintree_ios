@@ -26,7 +26,8 @@
                  [self.operationManager fetchPaymentMethodsOperation],
                  [self.operationManager saveCardOperation],
                  [self.operationManager saveInvalidCardOperation],
-                 [self.operationManager savePayPalPaymentMethodOperation]
+                 [self.operationManager savePayPalPaymentMethodOperation],
+                 [self.operationManager postAnalyticsEventOperation]
                  ];
 }
 
