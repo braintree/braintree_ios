@@ -1,5 +1,16 @@
 # Braintree iOS SDK Release Notes
 
+## 3.0.0-rc5
+
+* :rotating_light: Rename `BTPayPalControl` -> `BTPayPalButton`.
+* Security - Enforce SSL Pinning against a set of vendored SSL certificates
+* Drop-In
+  * Improve visual customizability and respect tint color
+  * UI and Layout improvements
+  * Detailing and polish
+
+Thanks for the feedback so far. Keep it coming!
+
 ## 3.0.0-rc4
 
 * UX/UI improvements in card form and Drop In
