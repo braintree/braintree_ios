@@ -22,7 +22,7 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
 /// server-side via multiple server-side calls to Braintree. Like Drop-In, the end result is
 /// a nonce, which you may transmit to your servers.
 ///
-/// For advanced integrations, you should use BTClient, BTPayPalControl, BTDropInViewController, etc. directly.
+/// For advanced integrations, you should use BTClient, BTPayPalButton, BTDropInViewController, etc. directly.
 @interface Braintree : NSObject
 
 /// Returns an instance of `Braintree`, the public interface of Braintree-iOS.
@@ -55,12 +55,12 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
 
 #pragma mark Custom
 
-/// Creates and returns a PayPal control that can be added to the UI. When tapped, this control will initiate the PayPal authorization flow.
+/// Creates and returns a PayPal button that can be added to the UI. When tapped, this button will initiate the PayPal authorization flow.
 ///
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce (upon user agreement and success) or an error (failure).
 ///
-/// @return A PayPal control (button) to be added as a subview in your UI.
-- (BTPayPalControl *)payPalControlWithCompletion:(BraintreeNonceCompletionBlock)completionBlock;
+/// @return A PayPal button to be added as a subview in your UI.
+- (BTPayPalButton *)payPalButtonWithCompletion:(BraintreeNonceCompletionBlock)completionBlock;
 
 
 /// Creates and returns a nonce for the given credit card details.
@@ -83,7 +83,7 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
 
 /// A pre-configured BTClient based on your client token.
 ///
-/// You can use this client when setting BTPayPalControl or BTDropInViewController's client.
+/// You can use this client when setting BTPayPalButton or BTDropInViewController's client.
 @property (nonatomic, readonly) BTClient *client;
 
 

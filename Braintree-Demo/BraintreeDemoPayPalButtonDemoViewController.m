@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad {
     // Construct PayPal Button
-    UIView *payPalButton = [self.braintree payPalControlWithCompletion:^(NSString *nonce, NSError *error) {
+    UIView *payPalButton = [self.braintree payPalButtonWithCompletion:^(NSString *nonce, NSError *error) {
         NSLog(@"%@", nonce);
     }];
     [payPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];

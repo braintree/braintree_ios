@@ -4,7 +4,7 @@
 
 #import "BTClient.h"
 #import "BTClient+BTPayPal.h"
-#import "BTPayPalControl.h"
+#import "BTPayPalButton.h"
 
 #import "BTDropInViewController.h"
 
@@ -72,23 +72,23 @@
 
 #pragma mark Custom: PayPal
 
-- (BTPayPalControl *)payPalControlWithCompletion:(BraintreeNonceCompletionBlock)completionBlock {
+- (BTPayPalButton *)payPalButtonWithCompletion:(BraintreeNonceCompletionBlock)completionBlock {
     if (!self.client.btPayPal_isPayPalEnabled){
         return nil;
     }
-    BTPayPalControl *control = [self payPalControl];
-    control.client = self.client;
-    control.completionBlock = ^(BTPaymentMethod *paymentMethod, NSError *error) {
+    BTPayPalButton *button = [self payPalButton];
+    button.client = self.client;
+    button.completionBlock = ^(BTPaymentMethod *paymentMethod, NSError *error) {
         completionBlock(paymentMethod ? paymentMethod.nonce : nil, error ?: nil);
     };
 
-    return control;
+    return button;
 }
 
 #pragma mark -
 
-- (BTPayPalControl *)payPalControl {
-    return _payPalControl ?: [[BTPayPalControl alloc] init];
+- (BTPayPalButton *)payPalButton {
+    return _payPalButton ?: [[BTPayPalButton alloc] init];
 }
 
 #pragma mark Library

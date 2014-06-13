@@ -115,7 +115,7 @@ In the completion block, send the resulting `nonce` to your server for use.
 
 #### Accept PayPal
 
-To add a PayPal button to your payment options, create a `BTPayPalControl` and add it to your view.
+To add a PayPal button to your payment options, create a `BTPayPalButton` and add it to your view.
 
 ```
 // YourViewController.m
@@ -123,17 +123,17 @@ To add a PayPal button to your payment options, create a `BTPayPalControl` and a
 
 - (void)viewDidLoad {
   Braintree *braintree = [Braintree braintreeWithClientToken:CLIENT_TOKEN_FROM_SERVER];
-  BTPayPalControl *payPalControl = [braintree payPalControlWithCompletion:^(NSString *nonce, NSError *error){
+  BTPayPalButton *payPalButton = [braintree payPalButtonWithCompletion:^(NSString *nonce, NSError *error){
     // Communicate the nonce to your server
   }];
-  [payPalControl setFrame:CGRectMake(0,0,60,120)];
-  [self.view addSubview:payPalControl];
+  [payPalButton setFrame:CGRectMake(0,0,60,120)];
+  [self.view addSubview:payPalButton];
 }
 ```
 
 When tapped, this `UIControl` will start the PayPal login flow within your application and asynchronously create a payment nonce. Implement the completion block to send the resulting `nonce` value to your server for use.
 
-You may use `BTPayPalControl` (or even a `BTPayPalViewController`) directly if you prefer, but this implementation is more complex. This may be especially useful for developers who use XIBs and Storyboards. The header files contain in-depth documentation.
+You may use `BTPayPalButton` (or even a `BTPayPalViewController`) directly if you prefer, but this implementation is more complex. This may be especially useful for developers who use XIBs and Storyboards. The header files contain in-depth documentation.
 
 
 ## Architecture
@@ -143,7 +143,7 @@ There are several components that comprise this SDK:
 * `Braintree` is the top-level entry point to the SDK. You are here.
 * [Braintree-Drop-In](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/Drop-In) composes API with Credit Card and PayPal UI to create a "three liner" payment form. (See also BTDropInViewControler.h)
 * [Braintree-Payments-UI](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/UI) is a set of reusable UI componenets related to payments.
-* [Braintree-PayPal](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/PayPal) provides a PayPal button and view controller. (See also BTPayPalControl.)
+* [Braintree-PayPal](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/PayPal) provides a PayPal button and view controller. (See also BTPayPalButton.)
 * [Braintree-API](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/api) provides the networking and communications layer; it depends on AFNetworking. (See also BTClient.)
 
 The individual components may be of interest for advanced integrations and are each available as subspecs.

@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "BTPayPalControl.h"
+#import "BTPayPalButton.h"
 
-@interface BraintreePayPalDemoViewController : UIViewController<BTPayPalControlDelegate, BTPayPalControlViewControllerPresenterDelegate>
+@interface BraintreePayPalDemoViewController : UIViewController <BTPayPalButtonDelegate, BTPayPalButtonViewControllerPresenterDelegate>
 
 @end

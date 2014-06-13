@@ -14,7 +14,7 @@ typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
 
 @property (nonatomic, strong) BTUISummaryView *summaryView;
 @property (nonatomic, strong) BTUICTAControl *ctaControl;
-@property (nonatomic, strong) BTPayPalControl *payPalControl;
+@property (nonatomic, strong) BTPayPalButton *payPalButton;
 @property (nonatomic, strong) UILabel *cardFormSectionHeader;
 @property (nonatomic, strong) BTUICardFormView *cardForm;
 

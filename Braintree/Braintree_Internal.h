@@ -1,7 +1,7 @@
 #import "Braintree.h"
-#import "BTPayPalControl.h"
+#import "BTPayPalButton.h"
 
 // Private header for increasing testability.
 @interface Braintree ()
-@property (nonatomic, strong) BTPayPalControl *payPalControl;
+@property (nonatomic, strong) BTPayPalButton *payPalButton;
 @end

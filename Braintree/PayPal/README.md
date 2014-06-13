@@ -6,16 +6,16 @@ iOS UI classes for adding PayPal as a Braintree payment option.
 
 This project provides two primary classes:
 
-1. `BTPayPalControl` is a `UIControl` that you can use to offer PayPal as a payment option to your user. It can be used by adding it to your view hierarchy and setting delegate methods.
+1. `BTPayPalButton` is a `UIControl` that you can use to offer PayPal as a payment option to your user. It can be used by adding it to your view hierarchy and setting delegate methods.
 2. `BTPayPalViewController` is a `UIViewController` that provides the PayPal authentication UX and – on successful auth – a resulting transactable payment method.
 
 This library depends on `Braintree/API`, which provides `BTClient`, used as an initialization parameter for both of the above.
 
-Out of the box, `BTPayPalControl` is automatically configured to present a `BTPayPalViewController`
-when the user taps it. This means that you are not required to override the `BTPayPalControl`'s delegate.
+Out of the box, `BTPayPalButton` is automatically configured to present a `BTPayPalViewController`
+when the user taps it. This means that you are not required to override the `BTPayPalButton`'s delegate.
 
 **Please note**: If the default behavior is not compatible with your views, you can implement a
- custom `BTPayPalControlViewControllerPresenterDelegate`.
+ custom `BTPayPalButtonViewControllerPresenterDelegate`.
 
 ## Installation
 
@@ -29,42 +29,42 @@ CocoaPods automatically vendors the PayPal Mobile SDK, `libPayPalMobile.a`, whic
 
 ## Integration
 
-A straightforward integration approach is to just add a `BTPayPalControl` instance in your view hierarchy, then implement its `BTPayPalControlDelegate` to receive results. Rough example:
+A straightforward integration approach is to just add a `BTPayPalButton` instance in your view hierarchy, then implement its `BTPayPalButtonDelegate` to receive results. Rough example:
 
-1. Create an instance of `BTPayPalControl` either in your xib or storyboard or initialized in code and added as a subview, e.g.
+1. Create an instance of `BTPayPalButton` either in your xib or storyboard or initialized in code and added as a subview, e.g.
 
 ```
 - (void)viewDidLoad {
-  self.payPalControl = [[BTPayPalControl alloc] init];
-  [self.view addSubview:self.payPalControl];
+  self.payPalButton = [[BTPayPalButton alloc] init];
+  [self.view addSubview:self.payPalButton];
 }
 ```
 
-2. Set the `client` and `delegate` properties of your `BTPayPalControl` instance, e.g.
+2. Set the `client` and `delegate` properties of your `BTPayPalButton` instance, e.g.
 
 ```
-self.payPalControl.client = [[BTClient alloc] initWithClientToken:MY_CLIENT_TOKEN];
-self.payPalControl.delegate = self;
+self.payPalButton.client = [[BTClient alloc] initWithClientToken:MY_CLIENT_TOKEN];
+self.payPalButton.delegate = self;
 ```
 
-3. Implement the required `BTPayPalControlDelegate` protocol methods:
+3. Implement the required `BTPayPalButtonDelegate` protocol methods:
 
 ```
-- (void)payPalControl:(BTPayPalControl *)control addedPaymentMethod:(NSString *)paymentMethod {
+- (void)payPalButton:(BTPayPalButton *)button addedPaymentMethod:(NSString *)paymentMethod {
   NSLog(@"Payment method %@ obtained and is ready for use", paymentMethod);
   // Send paymentMethod to your server for use...
 }
 
-- (void)payPalControlRemovedPaymentMethod:(BTPayPalControl *)control {
+- (void)payPalButtonRemovedPaymentMethod:(BTPayPalButton *)button {
   NSLog(@"Payment method was removed");
 }
 ```
 
-4. Optional: `BTPayPalControl` handles presentation of a `BTPayPalViewController` out of the box, but you can change the presentation by implementing
-an additional optional `BTPayPalControlViewControllerPresenterDelegate` method and setting the `presentationDelegate` property:
+4. Optional: `BTPayPalButton` handles presentation of a `BTPayPalViewController` out of the box, but you can change the presentation by implementing
+an additional optional `BTPayPalButtonViewControllerPresenterDelegate` method and setting the `presentationDelegate` property:
 
 ```
-- (void)payPalControl:(BTPayPalControl *)control requestsPresentationOfViewController:(UIViewController *)viewController {
+- (void)payPalButton:(BTPayPalButton *)button requestsPresentationOfViewController:(UIViewController *)viewController {
   // Use your own presentation code here, e.g.
   [self.navigationController pushViewController:viewController];
 }

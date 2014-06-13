@@ -7,7 +7,7 @@
 /// A View Controller that encapsulates the PayPal user authentication and consent flows
 /// in order to obtain a Braintree payment method nonce.
 ///
-/// In the simple case, you should use BTPayPalControl, which will initialize and manage its own
+/// In the simple case, you should use BTPayPalButton, which will initialize and manage its own
 /// BTPayPalViewController instance. This class is only necessary if you want to implement
 /// your own button to trigger the Braintree PayPal flow.
 @interface BTPayPalViewController : UIViewController

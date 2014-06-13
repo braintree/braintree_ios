@@ -1,4 +1,4 @@
-#import "BTPayPalControl.h"
+#import "BTPayPalButton.h"
 
 #import "BTUIPaymentMethodView.h"
 #import "BTPayPalViewController.h"
@@ -6,12 +6,12 @@
 #import "BTUI.h"
 #import "BTLogger.h"
 
-@interface BTPayPalControl () <BTPayPalViewControllerDelegate, BTPayPalControlViewControllerPresenterDelegate>
+@interface BTPayPalButton () <BTPayPalViewControllerDelegate, BTPayPalButtonViewControllerPresenterDelegate>
 @property (nonatomic, strong) BTPayPalHorizontalSignatureWhiteView *payPalHorizontalSignatureView;
 @property (nonatomic, strong) BTPayPalViewController *braintreePayPalViewController;
 @end
 
-@implementation BTPayPalControl
+@implementation BTPayPalButton
 
 - (instancetype)init {
     self = [super init];
@@ -38,13 +38,12 @@
 }
 
 - (void)setupViews {
-    self.accessibilityLabel = NSLocalizedString(@"Pay with PayPal", @"BTPayPalControl accessibility label");
+    self.accessibilityLabel = NSLocalizedString(@"Pay with PayPal", @"BTPayPalButton accessibility label");
     self.userInteractionEnabled = YES;
     self.clipsToBounds = YES;
     self.opaque = NO;
     self.backgroundColor = [UIColor clearColor];
 
-    // Create PayPal Control Content View (Logged out PayPal button)
     self.layer.borderWidth = 0.5f;
 
     self.payPalHorizontalSignatureView = [[BTPayPalHorizontalSignatureWhiteView alloc] init];
@@ -58,13 +57,12 @@
 
     [self addConstraints:[self defaultConstraints]];
 
-    // Listen for taps
     [self addTarget:self action:@selector(didReceiveTouch) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveTouch {
     if (self.client == nil) {
-        [[BTLogger sharedLogger] log:@"BTPayPalControl tapped without a client. You must assign a BTClient to the the BTPayPalControl before it requests presents presentation of the PayPal view controller."];
+        [[BTLogger sharedLogger] log:@"BTPayPalButton tapped without a client. You must assign a BTClient to the the BTPayPalButton before it requests presents presentation of the PayPal view controller."];
         return;
     }
 
@@ -77,15 +75,15 @@
     }
 }
 
-- (id<BTPayPalControlViewControllerPresenterDelegate>)presentationDelegate {
+- (id<BTPayPalButtonViewControllerPresenterDelegate>)presentationDelegate {
     return _presentationDelegate ?: self;
 }
 
 #pragma mark State Change Messages
 
 - (void)informDelegateDidCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
-    if ([self.delegate respondsToSelector:@selector(payPalControl:didCreatePayPalPaymentMethod:)]) {
-        [self.delegate payPalControl:self didCreatePayPalPaymentMethod:payPalPaymentMethod];
+    if ([self.delegate respondsToSelector:@selector(payPalButton:didCreatePayPalPaymentMethod:)]) {
+        [self.delegate payPalButton:self didCreatePayPalPaymentMethod:payPalPaymentMethod];
     }
 
     if (self.completionBlock) {
@@ -93,8 +91,8 @@
     }
 }
 - (void)informDelegateDidFailWithError:(NSError *)error {
-    if ([self.delegate respondsToSelector:@selector(payPalControl:didFailWithError:)]) {
-        [self.delegate payPalControl:self didFailWithError:error];
+    if ([self.delegate respondsToSelector:@selector(payPalButton:didFailWithError:)]) {
+        [self.delegate payPalButton:self didFailWithError:error];
     }
 
     if (self.completionBlock) {
@@ -103,22 +101,22 @@
 }
 
 - (void)informDelegateWillCreatePayPalPaymentMethod {
-    if ([self.delegate respondsToSelector:@selector(payPalControlWillCreatePayPalPaymentMethod:)]) {
-        [self.delegate payPalControlWillCreatePayPalPaymentMethod:self];
+    if ([self.delegate respondsToSelector:@selector(payPalButtonWillCreatePayPalPaymentMethod:)]) {
+        [self.delegate payPalButtonWillCreatePayPalPaymentMethod:self];
     }
 }
 
 #pragma mark Presentation Delegate Messages
 
 - (void)requestDismissalOfViewController:(UIViewController *)viewController {
-    if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsDismissalOfViewController:)]) {
-        [self.presentationDelegate payPalControl:self requestsDismissalOfViewController:viewController];
+    if ([self.presentationDelegate respondsToSelector:@selector(payPalButton:requestsDismissalOfViewController:)]) {
+        [self.presentationDelegate payPalButton:self requestsDismissalOfViewController:viewController];
     }
 }
 
 - (void)requestPresentationOfViewController:(UIViewController *)viewController {
-    if ([self.presentationDelegate respondsToSelector:@selector(payPalControl:requestsPresentationOfViewController:)]) {
-        [self.presentationDelegate payPalControl:self requestsPresentationOfViewController:viewController];
+    if ([self.presentationDelegate respondsToSelector:@selector(payPalButton:requestsPresentationOfViewController:)]) {
+        [self.presentationDelegate payPalButton:self requestsPresentationOfViewController:viewController];
     }
 }
 
@@ -158,29 +156,29 @@
     [self requestDismissalOfViewController:viewController];
 }
 
-#pragma mark - BTPayPalControlViewControllerPresenterDelegate default implementation
+#pragma mark - BTPayPalButtonViewControllerPresenterDelegate default implementation
 
-- (void)payPalControl:(__unused BTPayPalControl *)control requestsPresentationOfViewController:(UIViewController *)viewController {
+- (void)payPalButton:(__unused BTPayPalButton *)button requestsPresentationOfViewController:(UIViewController *)viewController {
     [self.window.rootViewController presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)payPalControl:(__unused BTPayPalControl *)control requestsDismissalOfViewController:(UIViewController *)viewController {
+- (void)payPalButton:(__unused BTPayPalButton *)button requestsDismissalOfViewController:(UIViewController *)viewController {
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark Auto Layout Constraints
 
 - (NSArray *)defaultConstraints {
-    CGFloat BTPayPalControlHorizontalSignatureWidth = 95.0f;
-    CGFloat BTPayPalControlHorizontalSignatureHeight = 23.0f;
-    CGFloat BTPayPalControlMinHeight = 40.0f;
-    CGFloat BTPayPalControlMaxHeight = 60.0f;
-    CGFloat BTPayPalControlMinWidth = 240.0f;
+    CGFloat BTPayPalButtonHorizontalSignatureWidth = 95.0f;
+    CGFloat BTPayPalButtonHorizontalSignatureHeight = 23.0f;
+    CGFloat BTPayPalButtonMinHeight = 40.0f;
+    CGFloat BTPayPalButtonMaxHeight = 60.0f;
+    CGFloat BTPayPalButtonMinWidth = 240.0f;
 
-    NSDictionary *metrics = @{ @"minHeight": @(BTPayPalControlMinHeight),
-                               @"maxHeight": @(BTPayPalControlMaxHeight),
+    NSDictionary *metrics = @{ @"minHeight": @(BTPayPalButtonMinHeight),
+                               @"maxHeight": @(BTPayPalButtonMaxHeight),
                                @"required": @(UILayoutPriorityRequired),
-                               @"minWidth": @(BTPayPalControlMinWidth) };
+                               @"minWidth": @(BTPayPalButtonMinWidth) };
     NSDictionary *views = @{ @"self": self,
                              @"payPalHorizontalSignatureView": self.payPalHorizontalSignatureView };
 
@@ -214,7 +212,7 @@
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:BTPayPalControlHorizontalSignatureWidth]];
+                                   constant:BTPayPalButtonHorizontalSignatureWidth]];
 
     // Signature height
     [constraints addObject:
@@ -224,7 +222,7 @@
                                      toItem:nil
                                   attribute:NSLayoutAttributeNotAnAttribute
                                  multiplier:1.0f
-                                   constant:BTPayPalControlHorizontalSignatureHeight]];
+                                   constant:BTPayPalButtonHorizontalSignatureHeight]];
 
     [constraints addObjectsFromArray:
      [NSLayoutConstraint constraintsWithVisualFormat:@"V:[self(>=minHeight@required,<=maxHeight@required)]"

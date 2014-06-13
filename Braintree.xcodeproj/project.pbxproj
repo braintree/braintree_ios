@@ -228,9 +228,9 @@
 		1621747A192D8688008DC35D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
 		1621747B192D8725008DC35D /* Braintree-PayPal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-PayPal.h"; sourceTree = "<group>"; };
 		1621747C192D8725008DC35D /* BTErrors+BTPayPal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTErrors+BTPayPal.h"; sourceTree = "<group>"; };
-		1621747D192D8725008DC35D /* BTPayPalControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalControl.h; sourceTree = "<group>"; };
+		1621747D192D8725008DC35D /* BTPayPalButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalButton.h; sourceTree = "<group>"; };
 		1621747E192D8725008DC35D /* BTPayPalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController.h; sourceTree = "<group>"; };
-		16217480192D8725008DC35D /* BTPayPalControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalControl.m; sourceTree = "<group>"; };
+		16217480192D8725008DC35D /* BTPayPalButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalButton.m; sourceTree = "<group>"; };
 		16217481192D8725008DC35D /* BTPayPalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalViewController.m; sourceTree = "<group>"; };
 		16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController_Internal.h; sourceTree = "<group>"; };
 		16217483192D8725008DC35D /* BTPayPalViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController_Internal.h; sourceTree = "<group>"; };
@@ -819,7 +819,7 @@
 			children = (
 				1621747B192D8725008DC35D /* Braintree-PayPal.h */,
 				1621747C192D8725008DC35D /* BTErrors+BTPayPal.h */,
-				1621747D192D8725008DC35D /* BTPayPalControl.h */,
+				1621747D192D8725008DC35D /* BTPayPalButton.h */,
 				1621747E192D8725008DC35D /* BTPayPalViewController.h */,
 			);
 			name = "@Public";
@@ -858,7 +858,7 @@
 			isa = PBXGroup;
 			children = (
 				1621747F192D8725008DC35D /* @Public */,
-				16217480192D8725008DC35D /* BTPayPalControl.m */,
+				16217480192D8725008DC35D /* BTPayPalButton.m */,
 				16217481192D8725008DC35D /* BTPayPalViewController.m */,
 				16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */,
 				16217483192D8725008DC35D /* BTPayPalViewController_Internal.h */,

@@ -27,13 +27,13 @@ Thanks for the feedback so far. Keep it coming!
 * Fix crashes when adding PayPal an additional payment method, when displaying PayPal as a payment method, and in offline mode
 * Add `dropInViewControllerWillComplete` delegate method.
 * Add transitions, activity indicators, and streamline some parts of UI.
-* Simplify implementation of `BTPayPalControl`.
+* Simplify implementation of `BTPayPalButton`.
 * :rotating_light: Remove `BTDropinViewController shouldDisplayPaymentMethodsOnFile` property.
 
 ## 3.0.0-rc2
 
 * :rotating_light: Breaking API Changes :rotating_light:
-    * Reduce BTPayPalControl API
+    * Reduce BTPayPalButton API
     * Rename a number of classes, methods, and files, e.g. `BTCard` -> `BTCardPaymentMethod`.
 
 ## 3.0.0-rc1

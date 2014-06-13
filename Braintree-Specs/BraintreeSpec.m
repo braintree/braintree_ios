@@ -2,7 +2,7 @@
 #import "Braintree_Internal.h"
 
 #import <Braintree/BTClient+Offline.h>
-#import <Braintree/BTPayPalControl.h>
+#import <Braintree/BTPayPalButton.h>
 #import <Braintree/BTClientToken+BTPayPal.h>
 
 SpecBegin(Braintree)
@@ -55,7 +55,7 @@ describe(@"dropInViewControllerWithCustomization:completion: Drop-In factory met
     });
 });
 
-describe(@"paypalControlWithCompletion:", ^{
+describe(@"payPalButtonWithCompletion:", ^{
     __block Braintree *braintreeWithPayPalEnabled;
     
     describe(@"with PayPal enabled", ^{
@@ -64,14 +64,14 @@ describe(@"paypalControlWithCompletion:", ^{
             braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken];
             
         });
-        it(@"should return a PayPalControl", ^{
-            UIControl *control = [braintreeWithPayPalEnabled payPalControlWithCompletion:nil];
-            expect(control).to.beKindOf([BTPayPalControl class]);
+        it(@"should return a payPalButton", ^{
+            UIControl *control = [braintreeWithPayPalEnabled payPalButtonWithCompletion:nil];
+            expect(control).to.beKindOf([BTPayPalButton class]);
         });
     });
     describe(@"with PayPal disabled", ^{
-        it(@"should not return a PayPalControl", ^{
-            UIControl *control = [braintree payPalControlWithCompletion:nil];
+        it(@"should not return a payPalButton", ^{
+            UIControl *control = [braintree payPalButtonWithCompletion:nil];
             expect(control).to.beNil;
         });
     });
