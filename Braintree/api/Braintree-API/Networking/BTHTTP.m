@@ -4,6 +4,8 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "BTClient.h"
+#import "BTRootCertificatePinningSecurityPolicy.h"
+#import "BTAPIPinnedCertificates.h"
 
 @interface BTHTTP ()
 @property (nonatomic, strong) AFHTTPRequestOperationManager *afnetworkingManager;
@@ -17,6 +19,10 @@
     self = [self init];
     if (self) {
         self.afnetworkingManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:URL];
+        self.afnetworkingManager.securityPolicy = [BTRootCertificatePinningSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+        self.afnetworkingManager.securityPolicy.validatesCertificateChain = NO;
+        self.afnetworkingManager.securityPolicy.validatesDomainName = YES;
+        self.pinnedCertificates = [BTAPIPinnedCertificates trustedCertificates];
 
         [self.defaultHeaders enumerateKeysAndObjectsUsingBlock:^(id key, id obj, __unused BOOL *stop) {
             [self.afnetworkingManager.requestSerializer setValue:obj forHTTPHeaderField:key];
@@ -129,9 +135,15 @@
                                    userInfo:@{NSUnderlyingErrorKey: error}];
         default:
             if ([error.domain isEqualToString:NSURLErrorDomain]) {
-                return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                           code:BTServerErrorNetworkUnavailable
-                                       userInfo:@{NSUnderlyingErrorKey: error}];
+                if (error.code == NSURLErrorUserCancelledAuthentication) {
+                    return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                               code:BTServerErrorSSL
+                                           userInfo:@{NSUnderlyingErrorKey: error}];
+                } else {
+                    return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                               code:BTServerErrorNetworkUnavailable
+                                           userInfo:@{NSUnderlyingErrorKey: error}];
+                }
             } else if ([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSPropertyListReadCorruptError) {
                 return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                            code:BTServerErrorUnexpectedError
@@ -213,6 +225,11 @@
     return [NSString stringWithFormat:@"%@-%@",
             [locale objectForKey:NSLocaleLanguageCode],
             [locale objectForKey:NSLocaleCountryCode]];
+}
+
+- (void)setPinnedCertificates:(NSArray *)pinnedCertificates {
+    _pinnedCertificates = pinnedCertificates;
+    [self.afnetworkingManager.securityPolicy setPinnedCertificates:pinnedCertificates];
 }
 
 @end

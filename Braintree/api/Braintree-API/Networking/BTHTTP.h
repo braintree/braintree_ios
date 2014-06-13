@@ -9,6 +9,8 @@ typedef void (^BTHTTPCompletionBlock)(BTHTTPResponse *response, NSError *error);
 
 @interface BTHTTP : NSObject
 
+@property (nonatomic, strong) NSArray *pinnedCertificates;
+
 - (instancetype)initWithBaseURL:(NSURL *)URL;
 
 - (void)GET:(NSString *)url completion:(BTHTTPCompletionBlock)completionBlock;
