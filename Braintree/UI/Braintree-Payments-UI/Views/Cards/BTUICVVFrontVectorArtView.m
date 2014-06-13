@@ -3,10 +3,13 @@
 @implementation BTUICVVFrontVectorArtView
 
 - (void)drawArt {
+
+
     //// Color Declarations
     UIColor* color1 = [UIColor colorWithRed: 0.765 green: 0.77 blue: 0.756 alpha: 1];
-    UIColor* color2 = self.highlightColor ?: [UIColor colorWithRed: 0.124 green: 0.132 blue: 0.138 alpha: 1];
-    UIColor* color3 = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
+    UIColor* color3 = self.highlightColor ?: color1;
+    UIColor* color2 = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.105];
+    UIColor* color4 = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
 
     //// Page-1
     {
@@ -277,60 +280,62 @@
 
                     //// Rectangle Drawing
                     UIBezierPath* rectanglePath = [UIBezierPath bezierPathWithRect: CGRectMake(26, 43, 14, 2)];
-                    [color1 setFill];
+                    [color2 setFill];
                     [rectanglePath fill];
 
 
                     //// Rectangle 2 Drawing
                     UIBezierPath* rectangle2Path = [UIBezierPath bezierPathWithRect: CGRectMake(6, 47, 34, 2)];
-                    [color1 setFill];
+                    [color2 setFill];
                     [rectangle2Path fill];
 
 
                     //// Rounded Rectangle Drawing
                     UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(56, 5, 26, 18) cornerRadius: 9];
-                    [color2 setFill];
+                    [color3 setFill];
                     [roundedRectanglePath fill];
 
 
                     //// Rectangle 3 Drawing
                     UIBezierPath* rectangle3Path = [UIBezierPath bezierPathWithRect: CGRectMake(62, 11, 2, 6)];
-                    [color3 setFill];
+                    [color4 setFill];
                     [rectangle3Path fill];
 
 
                     //// Rectangle 4 Drawing
                     UIBezierPath* rectangle4Path = [UIBezierPath bezierPathWithRect: CGRectMake(66, 11, 2, 6)];
-                    [color3 setFill];
+                    [color4 setFill];
                     [rectangle4Path fill];
 
 
                     //// Rectangle 5 Drawing
                     UIBezierPath* rectangle5Path = [UIBezierPath bezierPathWithRect: CGRectMake(70, 11, 2, 6)];
-                    [color3 setFill];
+                    [color4 setFill];
                     [rectangle5Path fill];
 
 
                     //// Rectangle 6 Drawing
                     UIBezierPath* rectangle6Path = [UIBezierPath bezierPathWithRect: CGRectMake(74, 11, 2, 6)];
-                    [color3 setFill];
+                    [color4 setFill];
                     [rectangle6Path fill];
                 }
 
 
                 //// Rounded Rectangle 2 Drawing
                 UIBezierPath* roundedRectangle2Path = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(6, 7, 14, 14) cornerRadius: 0.75];
-                [color1 setFill];
+                [color2 setFill];
                 [roundedRectangle2Path fill];
 
 
                 //// Rounded Rectangle 3 Drawing
                 UIBezierPath* roundedRectangle3Path = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(72, 41, 8, 8) cornerRadius: 0.75];
-                [color1 setFill];
+                [color2 setFill];
                 [roundedRectangle3Path fill];
             }
         }
     }
+
+
 }
 
 @end

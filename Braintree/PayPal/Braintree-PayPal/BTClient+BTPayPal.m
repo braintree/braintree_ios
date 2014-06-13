@@ -6,7 +6,7 @@
 #import "BTClient_Internal.h"
 #import "BTClient+Offline.h"
 
-NSString *BTClientPayPalMobileEnvironmentName = @"Braintree-PayPal-iOS";
+NSString *BTClientPayPalMobileEnvironmentName = @"Braintree";
 NSString *const BTClientPayPalMobileDysonURL = @"https://www.paypalobjects.com/webstatic/risk/dyson_config_v2_sandbox.json";
 NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be initialized. Perhaps client token did not contain a valid PayPal configuration.";
 

@@ -4,7 +4,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface BTUIFormField ()
+@interface BTUIFormField ()<BTUITextFieldEditDelegate>
 
 @property (nonatomic, copy) NSString *previousTextFieldText;
 
@@ -18,20 +18,14 @@
         self.displayAsValid = YES;
         // Create textField
         BTUITextField *textField = [BTUITextField new];
-        textField.deleteBackwardBlock = ^(NSString *before, __unused BTUITextField *field){
-            _backspace = YES;
-            if (before.length == 0) {
-                [self.delegate formFieldDidDeleteWhileEmpty:self];
-            }
-        };
-        textField.insertTextBlock = ^(__unused NSString *newText, __unused BTUITextField *field) {
-            _backspace = NO;
-        };
+        textField.editDelegate = self;
         _textField = textField;
         self.textField.translatesAutoresizingMaskIntoConstraints = NO;
         self.textField.borderStyle = UITextBorderStyleNone;
         self.textField.backgroundColor = [UIColor clearColor];
         [self.textField addTarget:self action:@selector(fieldContentDidChange) forControlEvents:UIControlEventEditingChanged];
+        [self.textField addTarget:self action:@selector(editingDidBegin) forControlEvents:UIControlEventEditingDidBegin];
+        [self.textField addTarget:self action:@selector(editingDidEnd) forControlEvents:UIControlEventEditingDidEnd];
 
         self.textField.delegate = self;
         [self addSubview:self.textField];
@@ -48,9 +42,14 @@
     return self;
 }
 
+- (void)setAccessoryView:(UIView *)accessoryView {
+    _accessoryView = accessoryView;
+    self.accessoryView.userInteractionEnabled = NO;
+}
+
 - (void)setDisplayAsValid:(BOOL)displayAsValid {
-    if (_displayAsValid && !displayAsValid) {
-        [BTUIViewUtil vibrateFeedback];
+    if (self.vibrateOnInvalidInput && self.textField.isFirstResponder && _displayAsValid && !displayAsValid) {
+        [BTUIViewUtil vibrate];
     }
 
     _displayAsValid = displayAsValid;
@@ -98,7 +97,6 @@
 #pragma mark - Drawing
 
 - (void)updateAppearance {
-
     UIColor *textColor;
     if (!self.displayAsValid){
         textColor = self.theme.errorForegroundColor;
@@ -158,8 +156,10 @@
 
     if (self.accessoryView != nil) {
         views[@"accessoryView"] = self.accessoryView;
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[accessoryView(28)]" options:0 metrics:metrics views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.accessoryView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.textField attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView(==43.5)]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[accessoryView(==27.5)]" options:0 metrics:metrics views:views]];
     } else {
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
     }
@@ -168,10 +168,39 @@
 }
 
 - (void)didDeleteBackward {
-    NSLog(@"didDeleteBackward: %@ %@", self.previousTextFieldText, self.textField.text);
     if (self.previousTextFieldText.length == 0 && self.textField.text.length == 0) {
-        NSLog(@"Empty delete: %@", self.textField.text);
         [self.delegate formFieldDidDeleteWhileEmpty:self];
+    }
+}
+
+#pragma mark - BTUITextFieldEditDelegate methods
+
+- (void)textFieldWillDeleteBackward:(__unused BTUITextField *)textField {
+    _backspace = YES;
+}
+
+- (void)textFieldDidDeleteBackward:(__unused BTUITextField *)textField originalText:(NSString *)originalText {
+    if (originalText.length == 0) {
+        [self.delegate formFieldDidDeleteWhileEmpty:self];
+    }
+}
+
+- (void)textField:(__unused BTUITextField *)textField willInsertText:(__unused NSString *)text {
+    _backspace = NO;
+}
+
+- (void)setAccessoryHighlighted:(BOOL)highlight {
+    if (self.accessoryView) {
+        if ([self.accessoryView respondsToSelector:@selector(setHighlighted:animated:)]) {
+            SEL selector = @selector(setHighlighted:animated:);
+            BOOL animated = YES;
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[self.accessoryView methodSignatureForSelector:selector]];
+            [invocation setSelector:selector];
+            [invocation setTarget:self.accessoryView];
+            [invocation setArgument:&highlight atIndex:2];
+            [invocation setArgument:&animated atIndex:3];
+            [invocation invoke];
+        }
     }
 }
 
@@ -180,6 +209,15 @@
 - (void)fieldContentDidChange {
     // To be implemented by subclass
 }
+
+- (void)editingDidBegin {
+    [self setAccessoryHighlighted:YES];
+}
+
+- (void)editingDidEnd {
+    [self setAccessoryHighlighted:NO];
+}
+
 
 - (BOOL)textField:(__unused UITextField *)textField shouldChangeCharactersInRange:(__unused NSRange)range replacementString:(__unused NSString *)newText {
     // To be implemented by subclass

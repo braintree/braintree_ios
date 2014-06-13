@@ -28,7 +28,7 @@
     }
 }
 
-+ (void)vibrateFeedback {
++ (void)vibrate {
     AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
 }
 

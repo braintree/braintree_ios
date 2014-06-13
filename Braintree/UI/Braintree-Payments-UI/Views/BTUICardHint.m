@@ -29,7 +29,7 @@
 }
 
 - (void)setupView {
-    self.layer.borderColor = [[BTUI braintreeTheme] cardHintBorderColor].CGColor;
+    self.layer.borderColor = self.theme.cardHintBorderColor.CGColor;
     self.layer.borderWidth = 1.0f;
     self.layer.cornerRadius = 2.0f;
 
@@ -101,6 +101,7 @@
     self.hintVectorArtView = cardVectorArtView;
     [self.hintVectorArtView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self addSubview:self.hintVectorArtView];
+    [self setHighlighted:self.highlighted];
 
     [self setNeedsUpdateConstraints];
     [self setNeedsLayout];
@@ -112,6 +113,9 @@
 }
 
 - (void)setCardType:(BTUIPaymentMethodType)cardType animated:(BOOL)animated {
+    if (cardType == self.cardType) {
+        return;
+    }
     if (animated) {
         [UIView transitionWithView:self
                           duration:0.2f
@@ -142,20 +146,40 @@
     }
 }
 
-- (void)highlight:(BOOL)highlight {
-    if ([self.hintVectorArtView respondsToSelector:@selector(setHighlightColor:)]) {
-        UIColor *c = highlight ? [BTUI braintreeTheme].highlightColor : nil;
+#pragma mark - Highlighting
 
+- (void)setHighlighted:(BOOL)highlighted {
+    [self setHighlighted:highlighted animated:NO];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    _highlighted = highlighted;
+    UIColor *c = highlighted ? self.tintColor : nil;
+    [self setHighlightColor:c animated:animated];
+}
+
+- (void)setHighlightColor:(UIColor *)color animated:(BOOL)animated {
+    if (![self.hintVectorArtView respondsToSelector:@selector(setHighlightColor:)]) {
+        return;
+    }
+    if (animated) {
         [UIView transitionWithView:self.hintVectorArtView
-                          duration:0.3f
+                          duration:self.theme.quickTransitionDuration
                            options:UIViewAnimationOptionTransitionCrossDissolve
                         animations:^{
-                            [self.hintVectorArtView performSelector:@selector(setHighlightColor:) withObject:c];
+                            [self.hintVectorArtView performSelector:@selector(setHighlightColor:) withObject:color];
                             [self.hintVectorArtView setNeedsDisplay];
                         }
-         completion:nil
+                        completion:nil
          ];
+    } else {
+        [self.hintVectorArtView performSelector:@selector(setHighlightColor:) withObject:color];
+        [self.hintVectorArtView setNeedsDisplay];
     }
+}
+
+- (void)tintColorDidChange {
+    [self setHighlighted:self.highlighted animated:YES];
 }
 
 @end

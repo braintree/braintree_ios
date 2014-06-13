@@ -43,15 +43,4 @@
                                    withTemplate:@""];
 }
 
-+ (UIColor *)uiColorFromHex:(NSString *)hex alpha:(CGFloat)alpha{
-    uint value = 0;
-    NSScanner *scanner = [NSScanner scannerWithString:hex];
-    [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"#"]];
-    [scanner scanHexInt:&value];
-    return [UIColor colorWithRed:((value >> 16) & 255) / 255.0f
-                           green:((value >> 8) & 255) / 255.0f
-                            blue:(value & 255) / 255.0f
-                           alpha:alpha];
-}
-
 @end

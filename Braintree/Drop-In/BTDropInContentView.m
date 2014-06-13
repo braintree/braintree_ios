@@ -3,6 +3,7 @@
 @interface BTDropInContentView ()<UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSArray *verticalLayoutConstraints;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
+@property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 @end
 
 @implementation BTDropInContentView
@@ -39,6 +40,7 @@
         self.cardFormSectionHeader = [[UILabel alloc] init];
 
         self.cardForm = [[BTUICardFormView alloc] init];
+        [self.cardForm setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
         self.selectedPaymentMethodView = [[BTUIPaymentMethodView alloc] init];
 
@@ -50,7 +52,7 @@
         // Add Constraints & Subviews
 
         // Full-Width Views
-        for (UIView *view in @[self.summaryView, self.ctaControl, self.cardForm]) {
+        for (UIView *view in @[self.payPalControl, self.selectedPaymentMethodView, self.summaryView, self.ctaControl, self.cardForm]) {
             [self addSubview:view];
             view.translatesAutoresizingMaskIntoConstraints = NO;
             [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
@@ -60,7 +62,7 @@
         }
 
         // Not quite full-width views
-        for (UIView *view in @[self.cardFormSectionHeader, self.payPalControl, self.selectedPaymentMethodView, self.changeSelectedPaymentMethodButton]) {
+        for (UIView *view in @[self.cardFormSectionHeader, self.changeSelectedPaymentMethodButton]) {
             [self addSubview:view];
             view.translatesAutoresizingMaskIntoConstraints = NO;
             [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[view]-(horizontalMargin)-|"
@@ -68,6 +70,7 @@
                                                                          metrics:@{@"horizontalMargin": @(self.theme.horizontalMargin)}
                                                                            views:@{@"view": view}]];
         }
+
 
         self.state = BTDropInContentViewStateForm;
 
@@ -97,13 +100,34 @@
                                    @"changeSelectedPaymentMethodButton": self.changeSelectedPaymentMethodButton
                                    };
 
-    self.verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat:self.evaluateVisualFormat
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:viewBindings];
+    NSMutableArray *newConstraints = [NSMutableArray array];
+    for (NSString *visualFormat in [self evaluateVisualFormat]) {
+        [newConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:visualFormat
+                                                                                    options:0
+                                                                                    metrics:nil
+                                                                                      views:viewBindings]];
+    }
 
+    if(self.heightConstraint != nil) {
+        [self.superview removeConstraint:self.heightConstraint];
+    }
 
-    [self addConstraints:self.verticalLayoutConstraints];
+    if (self.state != BTDropInContentViewStateForm) {
+
+        self.heightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                             attribute:NSLayoutAttributeHeight
+                                                             relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                                toItem:self.superview
+                                                             attribute:NSLayoutAttributeHeight
+                                                            multiplier:1.0f
+                                                              constant:0];
+        [self.superview addConstraint:self.heightConstraint];
+    }
+    [self.superview setNeedsLayout];
+
+    [self addConstraints:newConstraints];
+    self.verticalLayoutConstraints = newConstraints;
+
     [super updateConstraints];
 
 }
@@ -235,22 +259,31 @@
     [self.cardForm endEditing:YES];
 }
 
-- (NSString*) evaluateVisualFormat{
+- (NSArray*) evaluateVisualFormat{
     NSString *summaryViewVisualFormat = self.summaryView.hidden ? @"" : @"[summaryView(==60)]";
     NSString *ctaControlVisualFormat = self.ctaControl.hidden ? @"" : @"[ctaControl(==50)]";
 
     if (self.state == BTDropInContentViewStateActivity) {
-        return [NSString stringWithFormat:@"V:|%@-(40)-[activityView]-(40)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
+        return @[[NSString stringWithFormat:@"V:|%@-(40)-[activityView]-(>=40)-%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
 
     } else if (self.state != BTDropInContentViewStatePaymentMethodsOnFile) {
+        if (!self.ctaControl.hidden) {
+            ctaControlVisualFormat = [NSString stringWithFormat:@"-(15)-%@-(>=0)-", ctaControlVisualFormat];
+        }
         if (self.hidePayPal){
-            return [NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
+            return @[[NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
         } else {
-            return [NSString stringWithFormat:@"V:|%@-(15)-[payPalControl(==45)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
+            summaryViewVisualFormat = [NSString stringWithFormat:@"%@-(35)-", summaryViewVisualFormat];
+            return @[[NSString stringWithFormat:@"V:|%@[payPalControl(==40)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
         }
 
     } else {
-        return [NSString stringWithFormat:@"V:|%@-(15)-[selectedPaymentMethodView(==45)]-(15)-[changeSelectedPaymentMethodButton]-(15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
+        NSString *primaryLayout = [NSString stringWithFormat:@"V:|%@-(15)-[selectedPaymentMethodView(==45)]-(15)-[changeSelectedPaymentMethodButton]-(>=15)-%@|", summaryViewVisualFormat, ctaControlVisualFormat];
+        NSMutableArray *visualLayouts = [NSMutableArray arrayWithObject:primaryLayout];
+        if (!self.ctaControl.hidden) {
+            [visualLayouts addObject:@"V:[ctaControl]|"];
+        }
+        return visualLayouts;
     }
 }
 

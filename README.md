@@ -15,7 +15,7 @@ Braintree is available through [CocoaPods](http://cocoapods.org).
 Our preview pods are available from a dedicated Braintree CocoaPods specification repository. To use it, run:
 
 ```
-pod repo add https://github.com/braintree/CocoaPods.git
+pod repo add braintree https://github.com/braintree/CocoaPods.git
 ```
 
 To add the library to your project, simply add it to your project's `Podfile`:
@@ -41,13 +41,23 @@ If you've never used CocoaPods before, [this website](http://guides.cocoapods.or
 Regardless of the integration method, you'll need to obtain a client token from your Braintree server-side integration. It might look something like this:
 
 ```
+
+#import "MyViewController.h"
+#import <AFNetworking/AFNetworking.h>
+#import <Braintree/Braintree.h>
+
+// ...
+
 AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 [manager GET:@"https://your-server/client_token.json"
   parameters:@{ @"your-server-authentication": @"token", @"your-customer-session": @"session"}
      success:^(AFHTTPRequestOperation *operation, id responseObject) {
        // Setup braintree with responseObject[@"client_token"]
+       // self.braintree = [Braintree braintreeWithClientToken:responseObject[@"client_token"]];
      }
-     failure:nil];
+     failure:^{
+       // Handle failure communicating with your server
+     }];
 ```
 
 You should obtain a new client token often, at least as often as your app restarts. For the best experience, you should kick off this network operation before it would block a user interaction.

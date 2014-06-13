@@ -93,11 +93,11 @@
     _postalCodeField = [[BTUICardPostalCodeField alloc] init];
     self.postalCodeField.translatesAutoresizingMaskIntoConstraints = NO;
     self.postalCodeField.delegate = self;
-    self.postalCodeField.nonDigitsSupported = NO;
     [self addSubview:self.postalCodeField];
+    [self setAlphaNumericPostalCode:YES];
 
+    self.vibrate = YES;
     self.optionalFields = BTUICardFormOptionalFieldsAll;
-
 
     for (UIView *v in self.fields) {
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:@{} views:@{@"v": v}]];
@@ -166,6 +166,15 @@
     return YES;
 }
 
+- (void)setVibrate:(BOOL)vibrate {
+    _vibrate = vibrate;
+    for (BTUIFormField *f in self.fields) {
+        f.vibrateOnInvalidInput = vibrate;
+    }
+}
+
+#pragma mark - Value getters
+
 - (NSString *)number {
     return self.numberField.number;
 }
@@ -179,11 +188,11 @@
 }
 
 - (NSString *)cvv {
-    return self.cvvField.cvv;
+    return self.optionalFields & BTUICardFormOptionalFieldsCvv ? self.cvvField.cvv : nil;
 }
 
 - (NSString *)postalCode {
-    return self.postalCodeField.postalCode;
+    return self.optionalFields & BTUICardFormOptionalFieldsPostalCode ? self.postalCodeField.postalCode : nil;
 }
 
 #pragma mark - Field delegate implementations

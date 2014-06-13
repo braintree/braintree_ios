@@ -65,16 +65,12 @@
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidHide:)
-                                                 name:UIKeyboardDidHideNotification
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidShow:)
-                                                 name:UIKeyboardDidShowNotification
                                                object:nil];
 
     self.dropInContentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -147,7 +143,21 @@
     [super viewWillAppear:animated];
     self.visible = YES;
     self.visibleStartTime = [NSDate timeIntervalSinceReferenceDate];
+
+    // Ensure dropInContentView is visible. See viewWillDisappear below
+    self.dropInContentView.alpha = 1.0f;
 }
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    // Quickly fade out the content view to prevent a jarring effect
+    // as keyboard dimisses.
+    [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
+        self.dropInContentView.alpha = 0.0f;
+    }];
+}
+
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -170,7 +180,12 @@
 
     CGRect desiredVisibleTopRect = [self.scrollView convertRect:self.dropInContentView.cardFormSectionHeader.frame fromView:self.dropInContentView];
     desiredVisibleTopRect.origin.y -= 7;
-    CGRect desiredVisibleBottomRect = [self.scrollView convertRect:self.dropInContentView.ctaControl.frame fromView:self.dropInContentView];
+    CGRect desiredVisibleBottomRect;
+    if (self.dropInContentView.ctaControl.hidden) {
+        desiredVisibleBottomRect = desiredVisibleTopRect;
+    } else {
+        desiredVisibleBottomRect = [self.scrollView convertRect:self.dropInContentView.ctaControl.frame fromView:self.dropInContentView];
+    }
 
     CGFloat visibleAreaHeight = self.scrollView.frame.size.height - self.scrollView.contentInset.bottom - self.scrollView.contentInset.top;
 
@@ -180,9 +195,10 @@
     }
 
     CGRect weightedTopRect = CGRectUnion(targetRect, desiredVisibleTopRect);
+
     if (weightedTopRect.size.height <= visibleAreaHeight) {
         targetRect = weightedTopRect;
-        targetRect.size.height = visibleAreaHeight;
+        targetRect.size.height = MIN(visibleAreaHeight, CGRectGetMaxY(weightedBottomRect) - CGRectGetMinY(targetRect));
     }
 
     [scrollView defaultScrollRectToVisible:targetRect animated:animated];
@@ -190,18 +206,15 @@
 
 #pragma mark - Keyboard behavior
 
-- (void)keyboardDidHide:(__unused NSNotification *)inputViewNotification {
-    [self updateScrollViewInsets:inputViewNotification];
+- (void)keyboardWillHide:(__unused NSNotification *)inputViewNotification {
+    UIEdgeInsets ei = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+    [UIView animateWithDuration:self.theme.transitionDuration animations:^{
+        self.scrollView.scrollIndicatorInsets = ei;
+        self.scrollView.contentInset = ei;
+    }];
 }
 
 - (void)keyboardWillShow:(__unused NSNotification *)inputViewNotification {
-    [self updateScrollViewInsets:inputViewNotification];
-}
-
-- (void)keyboardDidShow:(__unused NSNotification *)inputViewNotification {
-}
-
-- (void)updateScrollViewInsets:(NSNotification *)inputViewNotification {
     CGRect inputViewFrame = [[[inputViewNotification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect inputViewFrameInView = [self.view convertRect:inputViewFrame fromView:nil];
     CGRect intersection = CGRectIntersection(self.scrollView.frame, inputViewFrameInView);
@@ -382,7 +395,9 @@
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
-    self.paymentMethodCompletionBlock(nil, error);
+    if (self.paymentMethodCompletionBlock != nil) {
+        self.paymentMethodCompletionBlock(nil, error);
+    }
     if ([self.delegate respondsToSelector:@selector(dropInViewController:didFailWithError:)]) {
         [self.delegate dropInViewController:self
                            didFailWithError:error];

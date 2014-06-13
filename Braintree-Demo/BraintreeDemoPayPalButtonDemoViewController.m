@@ -29,7 +29,7 @@
     // Setup Auto Layout constraints
     NSDictionary *views = NSDictionaryOfVariableBindings(payPalButton);
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[payPalButton]-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[payPalButton]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];

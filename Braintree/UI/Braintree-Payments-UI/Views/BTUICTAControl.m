@@ -1,5 +1,6 @@
 #import "BTUICTAControl.h"
 #import "BTUI.h"
+#import "UIColor+BTUI.h"
 
 @interface BTUICTAControl()
 @property (nonatomic, strong) UILabel *label;
@@ -28,6 +29,7 @@
 
 - (void)setupView {
     self.theme = [BTUI braintreeTheme];
+    self.backgroundColor = self.tintColor;
 
     self.label = [[UILabel alloc] init];
     [self.label setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -94,21 +96,22 @@
     [super updateConstraints];
 }
 
-- (void)setTheme:(BTUI *)theme {
-    _theme = theme;
-    self.backgroundColor = theme.callToActionColor;
-}
-
 #pragma mark Highlight Presentation
 
 - (void)setHighlighted:(BOOL)highlighted {
     [super setHighlighted:highlighted];
-    [self setBackgroundColor:highlighted ? [UIColor colorWithRed:0.375 green:0.635 blue:0.984 alpha:1.000] : self.theme.callToActionColor];
+    UIColor *newColor = highlighted ? [self.tintColor bt_adjustedBrightness:self.theme.highlightedBrightnessAdjustment] : self.tintColor;
+    [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
+        [self setBackgroundColor:newColor];
+    }];
 }
 
 - (void)setEnabled:(BOOL)enabled {
     [super setEnabled:enabled];
-    [self setBackgroundColor:enabled ? self.theme.callToActionColor : self.theme.disabledButtonColor];
+    UIColor *newColor = enabled ? self.tintColor  : self.theme.disabledButtonColor;
+    [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
+        [self setBackgroundColor:newColor];
+    }];
 }
 
 
@@ -132,6 +135,13 @@
     } else {
         self.label.text = [NSString stringWithFormat:@"%@", self.callToAction];
     }
+}
+
+#pragma mark - Theme
+
+- (void)tintColorDidChange {
+    self.highlighted = self.highlighted;
+    self.enabled = self.enabled;
 }
 
 @end

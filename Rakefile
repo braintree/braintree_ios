@@ -236,7 +236,7 @@ namespace :release do
     say "* [ ] You have already merged hotfixes and pulled changes."
     say "* [ ] You have already reviewed the diff between the current release and the last tag, noting breaking changes in the semver and CHANGELOG."
     say "* [ ] Tests are passing, manual verifications complete."
-    exit(1) unless ask "Ready to release? "
+    abort(1) unless ask "Ready to release? "
   end
 
   desc "Check that working directoy is clean"

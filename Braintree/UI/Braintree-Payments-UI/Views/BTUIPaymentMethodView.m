@@ -17,6 +17,9 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 @property (nonatomic, strong) UILabel *detailDescriptionLabel;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
+@property (nonatomic, strong) UIView *topBorder;
+@property (nonatomic, strong) UIView *bottomBorder;
+
 @property (nonatomic, strong) NSArray *centeredLogoConstraints;
 @property (nonatomic, strong) NSArray *logoEmailConstraints;
 
@@ -52,8 +55,6 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 - (void)setupViews {
 
     self.clipsToBounds = YES;
-    self.layer.cornerRadius = 5.0f;
-    self.layer.borderWidth = 0.5f;
 
     self.iconView = [BTUIUnknownCardVectorArtView new];
     [self.iconView setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -76,10 +77,20 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     self.activityIndicatorView.hidden = YES;
     [self.activityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
+    self.topBorder = [[UIView alloc] init];
+    self.topBorder.backgroundColor = [self.theme borderColor];
+    self.topBorder.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.bottomBorder = [[UIView alloc] init];
+    self.bottomBorder.backgroundColor = [self.theme borderColor];
+    self.bottomBorder.translatesAutoresizingMaskIntoConstraints = NO;
+
     [self addSubview:self.iconView];
     [self addSubview:self.typeLabel];
     [self addSubview:self.detailDescriptionLabel];
     [self addSubview:self.activityIndicatorView];
+    [self addSubview:self.topBorder];
+    [self addSubview:self.bottomBorder];
 
     // Setup initial state
     self.contentState = BTPaymentMethodViewStateNormal;
@@ -91,17 +102,18 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 - (void)updateConstraints {
     [self removeConstraints:self.constraints];
 
-    NSDictionary *views = @{ @"methodTypeView": self.typeLabel,
+    NSDictionary *views = @{ @"topBorder": self.topBorder,
+                             @"bottomBorder": self.bottomBorder,
+                             @"methodTypeView": self.typeLabel,
                              @"emailView": self.detailDescriptionLabel,
                              @"activityIndicatorView": self.activityIndicatorView,
-                             @"iconView": self.iconView};
-    NSDictionary *metrics = @{@"logoWidth": @30,
-                              @"pad": @12,
-                              @"sp": @5,
-                              @"activityIndicatorViewSize": @60,
-                              @"iconViewHeight": @21
-                              };
-
+                             @"iconView": self.iconView };
+    NSDictionary *metrics = @{ @"logoWidth": @30,
+                               @"pad": @12,
+                               @"sp": @5,
+                               @"activityIndicatorViewSize": @60,
+                               @"iconViewHeight": @21,
+                               @"borderWidth": @(self.theme.borderWidth  * 1) };
 
     NSLayoutConstraint *constraint;
 
@@ -127,6 +139,13 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[activityIndicatorView(==activityIndicatorViewSize)]" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[activityIndicatorView(==activityIndicatorViewSize)]" options:0 metrics:metrics views:views]];
 
+    // Full Width Borders
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[topBorder]|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[topBorder(==borderWidth)]" options:0 metrics:metrics views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomBorder]|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bottomBorder(==borderWidth)]|" options:0 metrics:metrics views:views]];
+
     // Icon & type
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[iconView(==iconViewHeight)]"
                                                                  options:0
@@ -141,7 +160,7 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
                                                                  options:NSLayoutFormatAlignAllBaseline
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[emailView]-pad-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[emailView]-(pad)-|"
                                                                  options:NSLayoutFormatAlignAllBaseline
                                                                  metrics:metrics
                                                                    views:views]];

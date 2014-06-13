@@ -2,6 +2,7 @@
 #import "BTUIFormField_Protected.h"
 #import "BTUIUtil.h"
 #import "BTUICardExpirationValidator.h"
+#import "BTUICardExpiryFormat.m"
 
 @interface BTUICardExpiryField () <UITextFieldDelegate>
 @end
@@ -34,7 +35,23 @@
     _expirationMonth = nil;
     _expirationYear = nil;
 
-    [self format];
+    NSString *formattedValue;
+    NSUInteger formattedCursorLocation;
+
+    BTUICardExpiryFormat *format = [[BTUICardExpiryFormat alloc] init];
+    format.value = self.textField.text;
+    format.cursorLocation = [self.textField offsetFromPosition:self.textField.beginningOfDocument toPosition:self.textField.selectedTextRange.start];
+    format.backspace = self.backspace;
+    [format formattedValue:&formattedValue cursorLocation:&formattedCursorLocation];
+
+
+    NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:formattedValue attributes:self.theme.textFieldTextAttributes];
+    [self kernExpiration:result];
+    self.textField.attributedText = result;
+
+    UITextPosition *newPosition = [self.textField positionFromPosition:self.textField.beginningOfDocument offset:formattedCursorLocation];
+    UITextRange *newRange = [self.textField textRangeFromPosition:newPosition toPosition:newPosition];
+    self.textField.selectedTextRange = newRange;
 
     NSArray *expirationComponents = [self.textField.text componentsSeparatedByString:@"/"];
     if(expirationComponents.count == 2 && self.textField.text.length == 5) {
@@ -54,8 +71,6 @@
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {
     self.displayAsValid = self.textField.text.length == 0 || self.valid;
 }
-
-#pragma mark -
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newText {
 
@@ -88,7 +103,7 @@
 #pragma mark Helper
 
 - (void)format {
-    NSMutableString *s = [NSMutableString stringWithString:[BTUIUtil stripNonExpiry:self.textField.text]];
+    NSMutableString *s = [NSMutableString stringWithString:[BTUIUtil stripNonDigits:self.textField.text]];
 
     if (s.length == 0) {
         self.textField.attributedText = [[NSAttributedString alloc] initWithString:s];
@@ -103,14 +118,12 @@
         if (s.length == 2) {
             [s deleteCharactersInRange:NSMakeRange(1, 1)];
         }
-    } else {
-        if (s.length > 2 && [s characterAtIndex:2] != '/' ) {
-            [s insertString:@"/" atIndex:2];
-        } else if (s.length == 2) {
-            [s appendString:@"/"];
-        } else {
-            
-        }
+    }
+
+    if (s.length > 2 && [s characterAtIndex:2] != '/' ) {
+        [s insertString:@"/" atIndex:2];
+    } else if (s.length == 2) {
+        [s appendString:@"/"];
     }
 
     NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:s attributes:self.theme.textFieldTextAttributes];

@@ -341,8 +341,8 @@ describe(@"get nonce", ^{
 describe(@"clients with PayPal activated", ^{
     __block BTClient *testClient;
     beforeEach(^AsyncBlock{
-        [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: @"altpay_merchant",
-                                                 BTClientTestConfigurationKeyPublicKey: @"altpay_merchant_public_key",
+        [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
+                                                 BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
                                                  BTClientTestConfigurationKeyCustomer: @YES,
                                                  BTClientTestConfigurationKeyBaseUrl: @"http://example.com/" }
                                    completion:^(BTClient *client) {

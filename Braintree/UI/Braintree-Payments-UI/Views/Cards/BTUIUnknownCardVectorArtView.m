@@ -3,20 +3,11 @@
 
 @implementation BTUIUnknownCardVectorArtView
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        self.layer.borderColor = [[BTUI braintreeTheme] borderColor].CGColor;
-        self.layer.borderWidth = 1.0f;
-        self.layer.cornerRadius = 2.0f;
-    }
-    return self;
-}
-
 - (void)drawArt {
+
     //// Color Declarations
-    UIColor* color2 = [UIColor colorWithRed: 0.765 green: 0.77 blue: 0.756 alpha: 1];
-    UIColor* color1 = [UIColor colorWithRed: 0.124 green: 0.132 blue: 0.138 alpha: 1];
+    UIColor* color2 = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.099];
+    UIColor* color1 = self.highlightColor ?: color2;
 
     //// Page-1
     {
@@ -302,8 +293,8 @@
                 UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(6, 6, 14, 14) cornerRadius: 0.75];
                 [color2 setFill];
                 [roundedRectanglePath fill];
-                
-                
+
+
                 //// Rounded Rectangle 2 Drawing
                 UIBezierPath* roundedRectangle2Path = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(72, 40, 8, 8) cornerRadius: 0.75];
                 [color2 setFill];

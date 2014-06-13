@@ -30,13 +30,10 @@
 
     // Create subviews
     self.slugLabel = [[UILabel alloc] init];
-    self.slugLabel.font = [[BTUI braintreeTheme] controlTitleFont];
-
     self.summaryLabel = [[UILabel alloc] init];
-    self.summaryLabel.font = [[BTUI braintreeTheme] controlFont];
-
     self.amountLabel = [[UILabel alloc] init];
-    self.amountLabel.font = [[BTUI braintreeTheme] controlTitleFont];
+
+    [self setTheme:self.theme];
 
     // Configure subviews
     [self.slugLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -50,6 +47,13 @@
 
     // Set content
     [self updateText];
+}
+
+- (void)setTheme:(BTUI *)theme {
+    [super setTheme:theme];
+    self.slugLabel.font = self.theme.controlTitleFont;
+    self.summaryLabel.font = self.theme.controlFont;
+    self.amountLabel.font = self.theme.controlTitleFont;
 }
 
 - (void)updateConstraints {

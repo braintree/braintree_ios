@@ -1,5 +1,6 @@
 #import "BTUI.h"
 #import "BTUIUtil.h"
+#import "UIColor+BTUI.h"
 
 #import "BTUIMasterCardVectorArtView.h"
 #import "BTUIJCBVectorArtView.h"
@@ -7,9 +8,9 @@
 #import "BTUIVisaVectorArtView.h"
 #import "BTUIDiscoverVectorArtView.h"
 #import "BTUIUnknownCardVectorArtView.h"
-#import "BTUIPayPalMonogramColorView.h"
 #import "BTUIDinersClubVectorArtView.h"
 #import "BTUIAmExVectorArtView.h"
+#import "BTUIPayPalMonogramCardView.h"
 
 @implementation BTUI
 
@@ -23,15 +24,15 @@
 }
 
 - (UIColor *)idealGray {
-    return [self colorWithBytesR:128 G:128 B:128];
+    return [UIColor bt_colorWithBytesR:128 G:128 B:128];
 }
 
 - (UIColor *)viewBackgroundColor {
-    return [BTUIUtil uiColorFromHex:@"f3f4f6" alpha:1.0f];
+    return [UIColor bt_colorFromHex:@"f3f4f6" alpha:1.0f];
 }
 
 - (UIColor *)callToActionColor {
-    return [self colorWithBytesR:7 G:158 B:222];
+    return [UIColor bt_colorWithBytesR:7 G:158 B:222];
 }
 
 - (UIColor *)callToActionColorHighlighted {
@@ -39,23 +40,23 @@
 }
 
 - (UIColor *)disabledButtonColor {
-    return [BTUIUtil uiColorFromHex:@"#BCBFC4" alpha:1.0f];
+    return [UIColor bt_colorFromHex:@"#BCBFC4" alpha:1.0f];
 }
 
 - (UIColor *)titleColor {
-    return [self colorWithBytesR:46 G:51 B:58];
+    return [UIColor bt_colorWithBytesR:46 G:51 B:58];
 }
 
 - (UIColor *)detailColor {
-    return [self colorWithBytesR:98 G:102 B:105];
+    return [UIColor bt_colorWithBytesR:98 G:102 B:105];
 }
 
 - (UIColor *)borderColor {
-    return [self colorWithBytesR:216 G:216 B:216];
+    return [UIColor bt_colorWithBytesR:216 G:216 B:216];
 }
 
 - (UIColor *)textFieldTextColor {
-    return [self colorWithBytesR:26 G:26 B:26];
+    return [UIColor bt_colorWithBytesR:26 G:26 B:26];
 }
 
 - (UIColor *)textFieldPlaceholderColor {
@@ -66,40 +67,44 @@
     return [self idealGray];
 }
 
-- (UIColor *)highlightColor {
-    return [self payPalButtonBlue];
+- (UIColor *)defaultTintColor {
+    return [self palBlue];
 }
 
 - (UIColor *)cardHintBorderColor {
-    return [self colorWithBytesR:0 G:0 B:0 A:20];
+    return [UIColor bt_colorWithBytesR:0 G:0 B:0 A:20];
 }
 
 - (UIColor *)errorBackgroundColor {
-    return [self colorWithBytesR:250 G:229 B:232];
+    return [UIColor bt_colorWithBytesR:250 G:229 B:232];
 }
 
 - (UIColor *)errorForegroundColor {
-    return [self colorWithBytesR:208 G:2 B:27];
+    return [UIColor bt_colorWithBytesR:208 G:2 B:27];
 }
 
 #pragma mark PayPal Colors
 
+- (UIColor *)payBlue {
+    return [UIColor bt_colorWithBytesR:12 G:141 B:196];
+}
+
+- (UIColor *)palBlue {
+    return [UIColor bt_colorWithBytesR:1 G:156 B:222];
+}
+
 - (UIColor *)payPalButtonBlue {
-    return [self colorWithBytesR:1 G:156 B:222];
+    return [self palBlue];
 }
 
 - (UIColor *)payPalButtonActiveBlue {
-    return [self colorWithBytesR:12 G:141 B:196];
+    return [self payBlue];
 }
 
-#pragma mark Utilities
+#pragma mark Adjustments
 
-- (UIColor *)colorWithBytesR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b A:(NSInteger)a {
-    return [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a/255.0f];
-}
-
-- (UIColor *)colorWithBytesR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b {
-    return [self colorWithBytesR:r G:g B:b A:255.0f];
+- (CGFloat) highlightedBrightnessAdjustment {
+    return 0.6;
 }
 
 #pragma mark - Appearance
@@ -123,7 +128,7 @@
 #pragma mark - Type
 
 - (UIFont *)controlFont {
-    return [UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f];
+    return [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f];
 }
 
 - (UIFont *)controlTitleFont {
@@ -177,7 +182,7 @@
         case BTUIPaymentMethodTypeMasterCard:
             return [BTUIMasterCardVectorArtView new];
         case BTUIPaymentMethodTypePayPal:
-            return [BTUIPayPalMonogramColorView new];
+            return [BTUIPayPalMonogramCardView new];
         case BTUIPaymentMethodTypeDinersClub:
             return [BTUIDinersClubVectorArtView new];
         case BTUIPaymentMethodTypeJCB:

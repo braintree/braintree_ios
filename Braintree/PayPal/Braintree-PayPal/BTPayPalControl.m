@@ -45,7 +45,6 @@
     self.backgroundColor = [UIColor clearColor];
 
     // Create PayPal Control Content View (Logged out PayPal button)
-    self.layer.cornerRadius = 5.0f;
     self.layer.borderWidth = 0.5f;
 
     self.payPalHorizontalSignatureView = [[BTPayPalHorizontalSignatureWhiteView alloc] init];

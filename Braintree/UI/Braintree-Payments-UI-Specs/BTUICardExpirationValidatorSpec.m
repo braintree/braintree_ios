@@ -57,6 +57,19 @@ describe(@"BTUICardExpirationValidator", ^{
                 expect(monthYearValid).to.beTruthy();
             });
         });
+
+        describe(@"Date is far in the future", ^{
+
+            it(@"should return true when the month year are before but near the far future date", ^{
+                BOOL monthYearValid = [BTUICardExpirationValidator month:4 year:14 + kBTUICardExpirationValidatorFarFutureYears validForDate:today];
+                expect(monthYearValid).to.beTruthy();
+            });
+
+            it(@"should return false when the month year are not before the far future date", ^{
+                BOOL monthYearValid = [BTUICardExpirationValidator month:5 year:14 + kBTUICardExpirationValidatorFarFutureYears validForDate:today];
+                expect(monthYearValid).to.beFalsy();
+            });
+        });
     });
 
 });

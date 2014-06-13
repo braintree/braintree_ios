@@ -7,18 +7,26 @@
 @implementation BTUITextField
 
 - (void)deleteBackward {
-    NSString *textBeforeDelete = self.text;
+    if (self.delegate && [self.editDelegate respondsToSelector:@selector(textFieldWillDeleteBackward:)]) {
+        [self.editDelegate textFieldWillDeleteBackward:self];
+    }
+    NSString *originalText = self.text;
     [super deleteBackward];
-    if (self.deleteBackwardBlock != nil) {
-        self.deleteBackwardBlock(textBeforeDelete, self);
+
+    if (self.delegate && [self.editDelegate respondsToSelector:@selector(textFieldDidDeleteBackward:originalText:)]) {
+        [self.editDelegate textFieldDidDeleteBackward:self originalText:originalText];
     }
 }
 
 - (void)insertText:(NSString *)text {
-    NSString *textBeforeInsert = self.text;
+    if (self.delegate && [self.editDelegate respondsToSelector:@selector(textField:willInsertText:)]) {
+        [self.editDelegate textField:self willInsertText:text];
+    }
+
     [super insertText:text];
-    if (self.insertTextBlock != nil) {
-        self.insertTextBlock(textBeforeInsert, self);
+
+    if (self.delegate && [self.editDelegate respondsToSelector:@selector(textField:didInsertText:)]) {
+        [self.editDelegate textField:self didInsertText:text];
     }
 }
 

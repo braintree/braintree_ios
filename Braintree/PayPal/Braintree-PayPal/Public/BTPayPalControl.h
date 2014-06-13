@@ -10,7 +10,7 @@ typedef void (^BTPayPalPaymentMethodCompletionBlock)(BTPaymentMethod *paymentMet
 #pragma mark -
 
 /// A UIControl subclass for initiating a PayPal auth flow, and displaying the state of the user's PayPal auth. This view
-/// is appropriate for adding to your checkout form as a button.
+/// is appropriate for adding to your checkout form as a *full-width* button.
 ///
 /// By default, tapping on this control will result in a `BTPayPalViewController` being presented by a heuristically
 /// determined ViewController. If you need to customize this behavior, you can specify your own `BTPayPalControlViewControllerPresenterDelegate`.

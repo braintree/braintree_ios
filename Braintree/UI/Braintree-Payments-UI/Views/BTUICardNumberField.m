@@ -14,9 +14,8 @@
         _number = @"";
 
         BTUICardHint *hint = [BTUICardHint new];
-        [hint setCardType:BTUIPaymentMethodTypeAMEX];
+        [hint setCardType:BTUIPaymentMethodTypeUnknown];
         self.accessoryView = hint;
-        self.accessoryView.alpha = 0.0f;
         self.accessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:self.accessoryView];
     }
@@ -45,7 +44,7 @@
         self.textField.selectedTextRange = r;
     }
     if (self.cardType != oldCardType) {
-        [self updateCardHint:oldCardType];
+        [self updateCardHint];
     }
 
     self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
@@ -57,7 +56,7 @@
 }
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
-    self.displayAsValid = [self isPotentiallyValid];
+    self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
     [self updateAppearance];
 }
 
@@ -84,24 +83,10 @@
     return self.cardType != nil && [self.cardType completeNumber:_number];
 }
 
-- (void)updateCardHint:(BTUICardType *)oldCardType {
+- (void)updateCardHint {
     BTUIPaymentMethodType paymentMethodType = [BTUIViewUtil paymentMethodTypeForCardType:self.cardType];
     BTUICardHint *hint =(BTUICardHint *)self.accessoryView;
-    if (oldCardType == nil) {
-        self.accessoryView.alpha = 0.0f;
-        self.accessoryView.transform = CGAffineTransformMakeScale(0.1, 0.1);
-        [hint setCardType:paymentMethodType animated:NO];
-        [UIView animateWithDuration:0.5f delay:0 usingSpringWithDamping:0.6f initialSpringVelocity:0.3f options:0 animations:^{
-            self.accessoryView.alpha = 1.0f;
-            self.accessoryView.transform = CGAffineTransformMakeScale(1.0, 1.0);
-        } completion:nil];
-    } else if(self.cardType == nil) {
-        [UIView animateWithDuration:0.5f delay:0 usingSpringWithDamping:0.6f initialSpringVelocity:0.3f options:0 animations:^{
-            self.accessoryView.alpha = 0.0f;
-        } completion:nil];
-    } else {
-        [hint setCardType:paymentMethodType animated:YES];
-    }
+    [hint setCardType:paymentMethodType animated:YES];
 }
 
 

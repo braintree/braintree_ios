@@ -4,6 +4,18 @@
 
 SpecBegin(BTClientToken)
 
+describe(@"initialization from Base 64 encoded JSON", ^{
+    it(@"decodes the client token", ^{
+        NSString *clientTokenEncodedJSON = [BTTestClientTokenFactory base64EncodedToken];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenEncodedJSON error:NULL];
+        expect(clientToken).to.beKindOf([BTClientToken class]);
+
+        expect(clientToken.authorizationURL).to.equal([NSURL URLWithString:@"https://auth.example.com:1234"]);
+        expect(clientToken.clientApiURL).to.equal([NSURL URLWithString:@"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api"]);
+        expect(clientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key");
+    });
+});
+
 describe(@"initialization from raw JSON", ^{
     it(@"parses configuration from a client token that includes customer id", ^{
         NSString *clientTokenRawJSON = [BTTestClientTokenFactory token];
