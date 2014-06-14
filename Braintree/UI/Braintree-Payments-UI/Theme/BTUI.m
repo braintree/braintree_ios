@@ -67,6 +67,10 @@
     return [self idealGray];
 }
 
+- (UIColor *)textFieldFloatLabelTextColor {
+    return [self sectionHeaderTextColor];
+}
+
 - (UIColor *)defaultTintColor {
     return [self palBlue];
 }
@@ -103,7 +107,7 @@
 
 #pragma mark Adjustments
 
-- (CGFloat) highlightedBrightnessAdjustment {
+- (CGFloat)highlightedBrightnessAdjustment {
     return 0.6;
 }
 
@@ -141,6 +145,10 @@
 
 - (UIFont *)textFieldFont {
     return [UIFont fontWithName:@"HelveticaNeue" size:17.0f];
+}
+
+- (UIFont *)textFieldFloatLabelFont {
+    return [UIFont fontWithName:@"HelveticaNeue" size:12.0f];
 }
 
 - (UIFont *)sectionHeaderFont {

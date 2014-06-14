@@ -6,6 +6,7 @@
 
 @interface BTUIFormField ()<BTUITextFieldEditDelegate>
 
+@property (nonatomic, strong) UILabel *floatLabel;
 @property (nonatomic, copy) NSString *previousTextFieldText;
 
 @end
@@ -16,7 +17,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.displayAsValid = YES;
-        // Create textField
         BTUITextField *textField = [BTUITextField new];
         textField.editDelegate = self;
         _textField = textField;
@@ -28,7 +28,15 @@
         [self.textField addTarget:self action:@selector(editingDidEnd) forControlEvents:UIControlEventEditingDidEnd];
 
         self.textField.delegate = self;
+
+        self.floatLabel = [[UILabel alloc] init];
+        [self.floatLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        self.floatLabel.font = self.theme.textFieldFloatLabelFont;
+        self.floatLabel.textColor = self.theme.textFieldFloatLabelTextColor;
+        self.floatLabel.alpha = 0.0f;
+
         [self addSubview:self.textField];
+        [self addSubview:self.floatLabel];
 
         [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         self.opaque = NO;
@@ -90,6 +98,7 @@
 }
 
 - (void)setThemedPlaceholder:(NSString *)placeholder {
+    self.floatLabel.text = placeholder;
     self.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder
                                                                            attributes:self.theme.textFieldPlaceholderAttributes];
 }
@@ -144,15 +153,16 @@
 
 - (CGSize)intrinsicContentSize {
     // TODO - determine height prorammatically from text size
-    return CGSizeMake(UIViewNoIntrinsicMetric, 48);
+    return CGSizeMake(UIViewNoIntrinsicMetric, 50);
 }
 
 - (void)updateConstraints {
     // Set up textField constraints
     NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin])};
-    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{@"textField": self.textField}];
+    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{@"textField": self.textField, @"floatLabel": self.floatLabel}];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(1)-[textField]|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[floatLabel]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(6)-[floatLabel]-(2)-[textField]" options:0 metrics:metrics views:views]];
 
     if (self.accessoryView != nil) {
         views[@"accessoryView"] = self.accessoryView;
@@ -175,6 +185,14 @@
 
 #pragma mark - BTUITextFieldEditDelegate methods
 
+- (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
+    self.floatLabel.textColor = self.tintColor;
+}
+
+- (void)textFieldDidEndEditing:(__unused UITextField *)textField {
+    self.floatLabel.textColor = self.theme.textFieldFloatLabelTextColor;
+}
+
 - (void)textFieldWillDeleteBackward:(__unused BTUITextField *)textField {
     _backspace = YES;
 }
@@ -183,9 +201,29 @@
     if (originalText.length == 0) {
         [self.delegate formFieldDidDeleteWhileEmpty:self];
     }
+
+    if (textField.text.length == 0) {
+       [UIView animateWithDuration:0.2f
+                             delay:0.0f
+                           options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState
+                        animations:^{
+                            self.floatLabel.alpha = 0.0f;
+                        }
+                        completion:nil];
+    }
 }
 
 - (void)textField:(__unused BTUITextField *)textField willInsertText:(__unused NSString *)text {
+    if (textField.text.length == 0 && text.length > 0) {
+        [UIView animateWithDuration:0.2f
+                             delay:0.0f
+                           options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             self.floatLabel.alpha = 1.0f;
+                         }
+                         completion:nil];
+    }
+
     _backspace = NO;
 }
 
@@ -223,15 +261,6 @@
     // To be implemented by subclass
     return YES;
 }
-
-- (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
-    // To be implemented by subclass
-}
-
-- (void)textFieldDidEndEditing:(__unused UITextField *)textField {
-    // To be implemented by subclass
-}
-
 
 @end
 

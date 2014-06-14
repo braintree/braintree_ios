@@ -2,7 +2,7 @@
 #import "BTUIFormField_Protected.h"
 #import "BTUIUtil.h"
 #import "BTUICardExpirationValidator.h"
-#import "BTUICardExpiryFormat.m"
+#import "BTUICardExpiryFormat.h"
 
 @interface BTUICardExpiryField () <UITextFieldDelegate>
 @end
@@ -64,11 +64,13 @@
     [self.delegate formFieldDidChange:self];
 }
 
-- (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [super textFieldDidBeginEditing:textField];
     self.displayAsValid = YES;
 }
 
-- (void)textFieldDidEndEditing:(__unused UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [super textFieldDidEndEditing:textField];
     self.displayAsValid = self.textField.text.length == 0 || self.valid;
 }
 

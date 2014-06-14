@@ -10,7 +10,7 @@
 /// relaying of events
 ///
 /// @see BTUIFormField()
-@interface BTUIFormField : BTUIThemedView<UITextFieldDelegate>
+@interface BTUIFormField : BTUIThemedView <UITextFieldDelegate>
 
 - (void)updateAppearance;
 - (void)becomeFirstResponder;

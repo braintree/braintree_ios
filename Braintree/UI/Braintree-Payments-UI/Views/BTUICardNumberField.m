@@ -55,12 +55,14 @@
     [self.delegate formFieldDidChange:self];
 }
 
-- (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [super textFieldDidBeginEditing:textField];
     self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
     [self updateAppearance];
 }
 
-- (void)textFieldDidEndEditing:(__unused UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [super textFieldDidEndEditing:textField];
     self.displayAsValid = _number.length == 0 || (_cardType != nil && [_cardType validNumber:_number]);
     [self updateAppearance];
 }

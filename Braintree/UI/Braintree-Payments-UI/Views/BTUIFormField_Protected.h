@@ -5,6 +5,7 @@
 @interface BTUIFormField () 
 
 @property (nonatomic, strong, readonly) UITextField *textField;
+
 @property (nonatomic, strong) UIView *accessoryView;
 
 /// Override in your subclass to implement behavior

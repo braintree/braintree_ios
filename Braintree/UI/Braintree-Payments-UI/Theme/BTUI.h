@@ -33,6 +33,7 @@
 - (UIColor *)textFieldPlaceholderColor;
 
 - (UIColor *)sectionHeaderTextColor;
+- (UIColor *)textFieldFloatLabelTextColor;
 
 - (UIColor *)cardHintBorderColor;
 
@@ -54,6 +55,7 @@
 - (UIFont *)controlTitleFont;
 - (UIFont *)controlDetailFont;
 - (UIFont *)textFieldFont;
+- (UIFont *)textFieldFloatLabelFont;
 - (UIFont *)sectionHeaderFont;
 
 #pragma mark Attributes
