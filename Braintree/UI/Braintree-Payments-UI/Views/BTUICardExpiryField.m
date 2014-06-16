@@ -15,7 +15,7 @@
         NSMutableAttributedString *placeholder = [[NSMutableAttributedString alloc] initWithString:@"MM/YY"
                                                                                         attributes:self.theme.textFieldPlaceholderAttributes];
         [self kernExpiration:placeholder];
-        self.textField.attributedPlaceholder = placeholder;
+        [self setThemedAttributedPlaceholder:placeholder];
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.textField.delegate = self;
     }
@@ -136,12 +136,14 @@
 - (void)kernExpiration:(NSMutableAttributedString *)input {
     [input removeAttribute:NSKernAttributeName range:NSMakeRange(0, input.length)];
 
+    [input beginEditing];
     if (input.length > 2) {
         [input addAttribute:NSKernAttributeName value:@(self.theme.formattedEntryKerning/2) range:NSMakeRange(1, 1)];
         if (input.length > 3) {
             [input addAttribute:NSKernAttributeName value:@(self.theme.formattedEntryKerning/2) range:NSMakeRange(2, 1)];
         }
     }
+    [input endEditing];
 }
 
 

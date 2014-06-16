@@ -1,12 +1,13 @@
 #import "BTUIFormField_Protected.h"
 #import "BTUIViewUtil.h"
 #import "BTUITextField.h"
+#import "BTUIFloatLabel.h"
 
 #import <QuartzCore/QuartzCore.h>
 
 @interface BTUIFormField ()<BTUITextFieldEditDelegate>
 
-@property (nonatomic, strong) UILabel *floatLabel;
+@property (nonatomic, strong) BTUIFloatLabel *floatLabel;
 @property (nonatomic, copy) NSString *previousTextFieldText;
 
 @end
@@ -23,20 +24,26 @@
         self.textField.translatesAutoresizingMaskIntoConstraints = NO;
         self.textField.borderStyle = UITextBorderStyleNone;
         self.textField.backgroundColor = [UIColor clearColor];
+        self.textField.opaque = NO;
+        self.textField.adjustsFontSizeToFitWidth = YES;
+
+        self.floatLabel = [[BTUIFloatLabel alloc] init];
+        self.floatLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.floatLabel hideWithAnimation:NO];
+
+        self.accessoryView = [[UIView alloc] init];
+        self.accessoryView.backgroundColor = [UIColor clearColor];
+        self.accessoryView.hidden = YES;
+
         [self.textField addTarget:self action:@selector(fieldContentDidChange) forControlEvents:UIControlEventEditingChanged];
         [self.textField addTarget:self action:@selector(editingDidBegin) forControlEvents:UIControlEventEditingDidBegin];
         [self.textField addTarget:self action:@selector(editingDidEnd) forControlEvents:UIControlEventEditingDidEnd];
 
         self.textField.delegate = self;
 
-        self.floatLabel = [[UILabel alloc] init];
-        [self.floatLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-        self.floatLabel.font = self.theme.textFieldFloatLabelFont;
-        self.floatLabel.textColor = self.theme.textFieldFloatLabelTextColor;
-        self.floatLabel.alpha = 0.0f;
-
         [self addSubview:self.textField];
         [self addSubview:self.floatLabel];
+        [self addSubview:self.accessoryView];
 
         [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         self.opaque = NO;
@@ -53,6 +60,7 @@
 - (void)setAccessoryView:(UIView *)accessoryView {
     _accessoryView = accessoryView;
     self.accessoryView.userInteractionEnabled = NO;
+    self.accessoryView.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 - (void)setDisplayAsValid:(BOOL)displayAsValid {
@@ -95,12 +103,30 @@
     NSMutableDictionary *d = [NSMutableDictionary dictionaryWithDictionary:self.theme.textFieldTextAttributes];
     d[NSKernAttributeName] = @0;
     self.textField.defaultTextAttributes = self.theme.textFieldTextAttributes;
+    self.floatLabel.theme = theme;
 }
 
 - (void)setThemedPlaceholder:(NSString *)placeholder {
-    self.floatLabel.text = placeholder;
+    self.floatLabel.label.text = placeholder;
     self.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder
                                                                            attributes:self.theme.textFieldPlaceholderAttributes];
+}
+
+- (void)setThemedAttributedPlaceholder:(NSAttributedString *)placeholder {
+    NSMutableAttributedString *mutableFloatLabel = [[NSMutableAttributedString alloc] initWithAttributedString:placeholder];
+    [mutableFloatLabel beginEditing];
+    [mutableFloatLabel removeAttribute:NSForegroundColorAttributeName range:NSMakeRange(0, [mutableFloatLabel length])];
+    [mutableFloatLabel removeAttribute:NSBackgroundColorAttributeName range:NSMakeRange(0, [mutableFloatLabel length])];
+    [mutableFloatLabel removeAttribute:NSFontAttributeName range:NSMakeRange(0, [mutableFloatLabel length])];
+    [mutableFloatLabel endEditing];
+    self.floatLabel.label.attributedText = mutableFloatLabel;
+
+    NSMutableAttributedString *mutablePlaceholder = [[NSMutableAttributedString alloc] initWithAttributedString:placeholder];
+    [mutablePlaceholder beginEditing];
+    [mutablePlaceholder addAttributes:self.theme.textFieldPlaceholderAttributes range:NSMakeRange(0, [mutablePlaceholder length])];
+    [mutablePlaceholder endEditing];
+
+    self.textField.attributedPlaceholder = mutablePlaceholder;
 }
 
 #pragma mark - Drawing
@@ -151,29 +177,34 @@
     }
 }
 
-- (CGSize)intrinsicContentSize {
-    // TODO - determine height prorammatically from text size
-    return CGSizeMake(UIViewNoIntrinsicMetric, 50);
-}
-
 - (void)updateConstraints {
-    // Set up textField constraints
-    NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin])};
-    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{@"textField": self.textField, @"floatLabel": self.floatLabel}];
+    NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin]),
+                              @"accessoryViewHeight": @27.5};
+    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{ @"textField": self.textField,
+                                                                                  @"floatLabel": self.floatLabel }];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[floatLabel]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(6)-[floatLabel]-(2)-[textField]" options:0 metrics:metrics views:views]];
+    views[@"accessoryView"] = self.accessoryView;
+    // Pin accessory view to right with constant width
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
+    
+    
+    // Horizontally Pin Float Label and accessory view
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[floatLabel]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
+    
+    // Horizontally Pin text field and accessory view
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
+    
+    // Vertically center Accessory View
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[accessoryView(==accessoryViewHeight)]" options:0 metrics:metrics views:views]];
 
-    if (self.accessoryView != nil) {
-        views[@"accessoryView"] = self.accessoryView;
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.accessoryView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.textField attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView(==43.5)]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[accessoryView(==27.5)]" options:0 metrics:metrics views:views]];
-    } else {
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
-    }
-
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(7)-[floatLabel(==15)]-(1)-[textField(==20)]-(11)-|" options:0 metrics:metrics views:views]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.accessoryView
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1.0f
+                                                      constant:0]];
     [super updateConstraints];
 }
 
@@ -186,11 +217,11 @@
 #pragma mark - BTUITextFieldEditDelegate methods
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
-    self.floatLabel.textColor = self.tintColor;
+    self.floatLabel.label.textColor = self.tintColor;
 }
 
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {
-    self.floatLabel.textColor = self.theme.textFieldFloatLabelTextColor;
+    self.floatLabel.label.textColor = self.theme.textFieldFloatLabelTextColor;
 }
 
 - (void)textFieldWillDeleteBackward:(__unused BTUITextField *)textField {
@@ -203,25 +234,13 @@
     }
 
     if (textField.text.length == 0) {
-       [UIView animateWithDuration:0.2f
-                             delay:0.0f
-                           options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState
-                        animations:^{
-                            self.floatLabel.alpha = 0.0f;
-                        }
-                        completion:nil];
+        [self.floatLabel hideWithAnimation:YES];
     }
 }
 
 - (void)textField:(__unused BTUITextField *)textField willInsertText:(__unused NSString *)text {
     if (textField.text.length == 0 && text.length > 0) {
-        [UIView animateWithDuration:0.2f
-                             delay:0.0f
-                           options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             self.floatLabel.alpha = 1.0f;
-                         }
-                         completion:nil];
+        [self.floatLabel showWithAnimation:YES];
     }
 
     _backspace = NO;

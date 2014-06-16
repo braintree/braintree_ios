@@ -14,6 +14,7 @@
 
 /// Sets placeholder text with the appropriate theme style
 - (void)setThemedPlaceholder:(NSString *)placeholder;
+- (void)setThemedAttributedPlaceholder:(NSAttributedString *)placeholder;
 
 @end
 

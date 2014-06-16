@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8YX-ce-x5E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8YX-ce-x5E">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -112,7 +112,6 @@
                         <constraints>
                             <constraint firstItem="66N-zH-HjJ" firstAttribute="top" secondItem="eDC-xT-Any" secondAttribute="bottom" constant="8" symbolic="YES" id="1vh-VW-Zfj"/>
                             <constraint firstItem="5Oz-AB-8gW" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" id="7BH-rd-NLM"/>
-                            <constraint firstAttribute="trailing" secondItem="xi1-hb-1JK" secondAttribute="trailing" constant="20" id="8uE-Bd-rsv"/>
                             <constraint firstAttribute="trailing" secondItem="Wkk-Kj-bLk" secondAttribute="trailing" id="C0A-hi-55E"/>
                             <constraint firstAttribute="centerX" secondItem="eDC-xT-Any" secondAttribute="centerX" constant="-6.5" id="DBd-8C-ch7"/>
                             <constraint firstItem="66N-zH-HjJ" firstAttribute="centerY" secondItem="4LD-74-01Q" secondAttribute="centerY" constant="-5" id="DKm-rt-v4g"/>
@@ -128,6 +127,7 @@
                             <constraint firstAttribute="trailing" secondItem="Tsd-3s-x7Y" secondAttribute="trailing" id="hlk-ec-C6d"/>
                             <constraint firstItem="eDC-xT-Any" firstAttribute="top" secondItem="Wkk-Kj-bLk" secondAttribute="bottom" constant="8" symbolic="YES" id="tEH-5e-Mvn"/>
                             <constraint firstAttribute="trailing" secondItem="4LD-74-01Q" secondAttribute="trailing" constant="20" symbolic="YES" id="wZe-UX-U8q"/>
+                            <constraint firstItem="4LD-74-01Q" firstAttribute="trailing" secondItem="xi1-hb-1JK" secondAttribute="trailing" id="wio-Hj-rR2"/>
                             <constraint firstItem="66N-zH-HjJ" firstAttribute="leading" secondItem="VpI-PT-Cqh" secondAttribute="leading" constant="20" symbolic="YES" id="xlD-KN-Qzp"/>
                         </constraints>
                     </view>

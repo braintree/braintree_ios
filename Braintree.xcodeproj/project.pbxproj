@@ -354,6 +354,8 @@
 		162175A1192D9505008DC35D /* braintree-api-integration-specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "braintree-api-integration-specs-Info.plist"; sourceTree = "<group>"; };
 		162175A2192D9505008DC35D /* braintree-api-integration-specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "braintree-api-integration-specs-Prefix.pch"; sourceTree = "<group>"; };
 		162175A3192D9505008DC35D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		162998CA194FAFC400534798 /* BTUIFloatLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIFloatLabel.h; sourceTree = "<group>"; };
+		162998CB194FAFC400534798 /* BTUIFloatLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIFloatLabel.m; sourceTree = "<group>"; };
 		1696810C192D98EA00120846 /* BTUICardTypeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardTypeSpec.m; sourceTree = "<group>"; };
 		1696810D192D98EA00120846 /* BTUISpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUISpec.m; sourceTree = "<group>"; };
 		1696810E192D98EA00120846 /* Braintree-Payments-UI-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Payments-UI-Specs-Info.plist"; sourceTree = "<group>"; };
@@ -1294,6 +1296,8 @@
 				162174B3192D8746008DC35D /* BTUIThemedView.m */,
 				162174B4192D8746008DC35D /* BTUIVectorArtView.h */,
 				162174B5192D8746008DC35D /* BTUIVectorArtView.m */,
+				162998CA194FAFC400534798 /* BTUIFloatLabel.h */,
+				162998CB194FAFC400534798 /* BTUIFloatLabel.m */,
 			);
 			name = "Custom Views";
 			sourceTree = "<group>";
