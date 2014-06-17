@@ -45,6 +45,8 @@
         [self addSubview:self.floatLabel];
         [self addSubview:self.accessoryView];
 
+        [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedField)]];
+
         [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         self.opaque = NO;
 
@@ -279,6 +281,10 @@
 - (BOOL)textField:(__unused UITextField *)textField shouldChangeCharactersInRange:(__unused NSRange)range replacementString:(__unused NSString *)newText {
     // To be implemented by subclass
     return YES;
+}
+
+- (void)tappedField {
+    [self.textField becomeFirstResponder];
 }
 
 @end
