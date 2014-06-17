@@ -181,11 +181,11 @@
 
 - (void)updateConstraints {
     NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin]),
-                              @"accessoryViewHeight": @27.5};
-    NSMutableDictionary *views = [NSMutableDictionary dictionaryWithDictionary:@{ @"textField": self.textField,
-                                                                                  @"floatLabel": self.floatLabel }];
+                              @"accessoryViewHeight": @27.5 };
+    NSDictionary *views = @{ @"textField": self.textField,
+                             @"floatLabel": self.floatLabel,
+                             @"accessoryView": self.accessoryView };
 
-    views[@"accessoryView"] = self.accessoryView;
     // Pin accessory view to right with constant width
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
     
