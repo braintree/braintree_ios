@@ -233,7 +233,6 @@
 		16217480192D8725008DC35D /* BTPayPalButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalButton.m; sourceTree = "<group>"; };
 		16217481192D8725008DC35D /* BTPayPalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalViewController.m; sourceTree = "<group>"; };
 		16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController_Internal.h; sourceTree = "<group>"; };
-		16217483192D8725008DC35D /* BTPayPalViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController_Internal.h; sourceTree = "<group>"; };
 		16217484192D8725008DC35D /* BTClient+BTPayPal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+BTPayPal.h"; sourceTree = "<group>"; };
 		16217485192D8725008DC35D /* BTClient+BTPayPal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTPayPal.m"; sourceTree = "<group>"; };
 		16217486192D8725008DC35D /* BTClientToken+BTPayPal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BTClientToken+BTPayPal.h"; path = "Models/BTClientToken+BTPayPal.h"; sourceTree = "<group>"; };
@@ -863,7 +862,6 @@
 				16217480192D8725008DC35D /* BTPayPalButton.m */,
 				16217481192D8725008DC35D /* BTPayPalViewController.m */,
 				16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */,
-				16217483192D8725008DC35D /* BTPayPalViewController_Internal.h */,
 				16217488192D8725008DC35D /* Models */,
 				1621748E192D8725008DC35D /* Views */,
 				16217490192D8725008DC35D /* Supporting Files */,
@@ -915,8 +913,7 @@
 				2D085DDD1947BF1000293215 /* BTUIPayPalMonogramCardView.h */,
 				2D085DDE1947BF1000293215 /* BTUIPayPalMonogramCardView.m */,
 			);
-			name = "Vector Art";
-			path = Cards;
+			path = "Vector Art";
 			sourceTree = "<group>";
 		};
 		162174D4192D8746008DC35D /* Views */ = {
@@ -1249,7 +1246,7 @@
 				162174A1192D8746008DC35D /* BTUICardFormView.h */,
 				162174A2192D8746008DC35D /* BTUICardFormView.m */,
 			);
-			name = Forms;
+			path = Forms;
 			sourceTree = "<group>";
 		};
 		16BAFCAB194BB7D50047E96B /* Form Fields */ = {
@@ -1262,7 +1259,7 @@
 				162174A7192D8746008DC35D /* BTUICardPostalCodeField.h */,
 				162174A8192D8746008DC35D /* BTUICardPostalCodeField.m */,
 			);
-			name = "Form Fields";
+			path = "Form Fields";
 			sourceTree = "<group>";
 		};
 		16BAFCAC194BB7E30047E96B /* Payments Components */ = {
@@ -1279,7 +1276,7 @@
 				162174B0192D8746008DC35D /* BTUISummaryView.h */,
 				162174B1192D8746008DC35D /* BTUISummaryView.m */,
 			);
-			name = "Payments Components";
+			path = "Payments Components";
 			sourceTree = "<group>";
 		};
 		16BAFCAD194BB8280047E96B /* Custom Views */ = {
@@ -1299,7 +1296,7 @@
 				162998CA194FAFC400534798 /* BTUIFloatLabel.h */,
 				162998CB194FAFC400534798 /* BTUIFloatLabel.m */,
 			);
-			name = "Custom Views";
+			path = "Custom Views";
 			sourceTree = "<group>";
 		};
 		A75DA343192138F000D997A2 = {
