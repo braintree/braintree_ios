@@ -33,7 +33,6 @@ Pod::Spec.new do |s|
   s.subspec 'api' do |s|
     s.source_files  = "Braintree/api/Braintree-API/**/*.{h,m}"
     s.public_header_files = "Braintree/api/Braintree-API/Public/*.h"
-    s.dependency 'AFNetworking', '~> 2.2'
   end
 
   s.subspec 'PayPal' do |s|

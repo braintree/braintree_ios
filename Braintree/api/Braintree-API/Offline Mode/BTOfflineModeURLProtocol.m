@@ -5,6 +5,7 @@
 #import <objc/runtime.h>
 
 NSString *const BTOfflineModeClientApiBaseURL = @"braintree-api-offline-http://client-api";
+NSString *const BTOfflineModeClientApiAuthURL = @"braintree-api-offline-http://auth";
 NSString *const BTOfflineModeHTTPVersionString = @"HTTP/1.1";
 
 void *backend_associated_object_key = &backend_associated_object_key;
@@ -57,9 +58,10 @@ static BTOfflineClientBackend *backend;
             data;
         });
     } else if ([request.HTTPMethod isEqualToString:@"POST"] && [request.URL.path isEqualToString:@"/v1/payment_methods/credit_cards"]) {
-        NSDictionary *requestObject = [self queryDictionaryFromString:[[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]];
 
-        NSString *number = requestObject[@"credit_card[number]"];
+        NSDictionary *requestObject = [self queryDictionaryFromRequest:request];
+
+        NSString *number = requestObject[@"credit_card"][@"number"];
         NSString *lastTwo = [number substringFromIndex:([number length] - 2)];
 
         BTMutableCardPaymentMethod *card = [BTMutableCardPaymentMethod new];
@@ -150,18 +152,42 @@ static BTOfflineClientBackend *backend;
 
 #pragma mark Request Parsing
 
-- (NSDictionary *)queryDictionaryFromString:(NSString *)queryString {
-    NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    NSArray *parameters = [queryString componentsSeparatedByString:@"&"];
-    for (NSString *parameter in parameters) {
-        NSArray *parts = [parameter componentsSeparatedByString:@"="];
-        NSString *key = [[parts objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        if ([parts count] > 1) {
-            id value = [[parts objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            [result setObject:value forKey:key];
+- (NSDictionary *)queryDictionaryFromRequest:(NSURLRequest *)request {
+
+    NSData *bodyData;
+    if (request.HTTPBodyStream) {
+        NSInputStream *inputStream = request.HTTPBodyStream;
+        [inputStream open];
+        NSMutableData *mutableBodyData = [NSMutableData data];
+
+        while ([inputStream hasBytesAvailable]) {
+            uint8_t buffer[128];
+            NSUInteger bytesRead = [inputStream read:buffer maxLength:128];
+            [mutableBodyData appendBytes:buffer length:bytesRead];
         }
+        [inputStream close];
+        bodyData = [mutableBodyData copy];
+    } else {
+        bodyData = request.HTTPBody;
     }
-    return result;
+    NSString *contentType = request.allHTTPHeaderFields[@"Content-Type"];
+    if ([contentType rangeOfString:@"application/json"].location != NSNotFound) {
+        NSDictionary *result = [NSJSONSerialization JSONObjectWithData:bodyData options:kNilOptions error:nil];
+        return result;
+    } else {
+        NSString *queryString = [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+        NSMutableDictionary *result = [NSMutableDictionary dictionary];
+        NSArray *parameters = [queryString componentsSeparatedByString:@"&"];
+        for (NSString *parameter in parameters) {
+            NSArray *parts = [parameter componentsSeparatedByString:@"="];
+            NSString *key = [[parts objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if ([parts count] > 1) {
+                id value = [[parts objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                [result setObject:value forKey:key];
+            }
+        }
+        return result;
+    }
 }
 
 #pragma mark Response Generation

@@ -44,15 +44,19 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 
     [self.http GET:path parameters:[self defaultRequestParameters] completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
-            successBlock(response.object[@"nonce"]);
-        } else {
-            NSError *returnedError;
-            if (response.statusCode == 404) {
-                returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                    code:BTMerchantIntegrationErrorNonceNotFound
-                                                userInfo:@{NSUnderlyingErrorKey: error.userInfo[NSUnderlyingErrorKey]}];
+            if (successBlock != nil) {
+                successBlock(response.object[@"nonce"]);
             }
-            failureBlock(returnedError);
+        } else {
+            NSError *returnedError = error;
+            if (error.domain == BTBraintreeAPIErrorDomain && error.code == BTMerchantIntegrationErrorNotFound) {
+                returnedError = [NSError errorWithDomain:error.domain
+                                                    code:BTMerchantIntegrationErrorNonceNotFound
+                                                userInfo:@{NSUnderlyingErrorKey: error}];
+            }
+            if (failureBlock != nil) {
+                failureBlock(returnedError);
+            }
         }
     }];
 }

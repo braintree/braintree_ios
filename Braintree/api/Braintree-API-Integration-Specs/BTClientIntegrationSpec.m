@@ -379,7 +379,7 @@ describe(@"a client initialized with a revoked authorization fingerprint", ^{
     it(@"invokes the failure block for list payment methods", ^AsyncBlock{
         [testClient fetchPaymentMethodsWithSuccess:nil failure:^(NSError *error) {
             expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-            expect(error.code).to.equal(BTMerchantIntegrationErrorUnknown);
+            expect(error.code).to.equal(BTMerchantIntegrationErrorUnauthorized);
             done();
         }];
     });
@@ -400,7 +400,7 @@ describe(@"a client initialized with a revoked authorization fingerprint", ^{
                                success:nil
                                failure:^(NSError *error) {
                                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                                   expect(error.code).to.equal(BTMerchantIntegrationErrorUnknown);
+                                   expect(error.code).to.equal(BTMerchantIntegrationErrorUnauthorized);
                                    done();
                                }];
     });

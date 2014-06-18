@@ -1,9 +1,12 @@
-#import "AFSecurityPolicy.h"
 #import "BTHTTP.h"
 
-SpecBegin(BTHTTP)
+SpecBegin(BTHTTPSSLPinning)
+
 
 describe(@"SSL Pinning", ^{
+#ifdef SKIP_SSL_PINNING_SPECS
+    pending(@"specs only pass when run in Xcode");
+#else
     it(@"trusts pinned root certificates", ^AsyncBlock{
         NSURL *url = [NSURL URLWithString:@"https://localhost:9443"];
         BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url];
@@ -15,6 +18,7 @@ describe(@"SSL Pinning", ^{
             done();
         }];
     });
+#endif
 
     it(@"rejects an untrusted (unpinned) root certificates from otherwise legitimate hosts", ^AsyncBlock{
         NSURL *url = [NSURL URLWithString:@"https://localhost:9444"];
@@ -28,7 +32,7 @@ describe(@"SSL Pinning", ^{
             expect(error.code).to.equal(BTServerErrorSSL);
 
             expect([error.userInfo[NSUnderlyingErrorKey] domain]).to.equal(NSURLErrorDomain);
-            expect([error.userInfo[NSUnderlyingErrorKey] code]).to.equal(NSURLErrorUserCancelledAuthentication);
+            expect([error.userInfo[NSUnderlyingErrorKey] code]).to.equal(NSURLErrorServerCertificateUntrusted);
 
             done();
         }];
@@ -52,7 +56,7 @@ describe(@"SSL Pinning", ^{
                 NSURL *url   = [NSURL URLWithString:@"https://api.braintreegateway.com"];
                 BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url];
 
-                [http GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
+                [http GET:@"/heartbeat" completion:^(BTHTTPResponse *response, NSError *error) {
                     expect(response.isSuccess).to.beTruthy();
                     expect(error).to.beNil();
                     done();
@@ -63,7 +67,7 @@ describe(@"SSL Pinning", ^{
                 NSURL *url   = [NSURL URLWithString:@"https://api.sandbox.braintreegateway.com"];
                 BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url];
 
-                [http GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
+                [http GET:@"/heartbeat" completion:^(BTHTTPResponse *response, NSError *error) {
                     expect(response.isSuccess).to.beTruthy();
                     expect(error).to.beNil();
                     done();

@@ -17,6 +17,10 @@ NS_ENUM(NSInteger, BTErrorCode) {
     BTCustomerInputErrorInvalid,
     /// An error occured due to a general problem with SDK integration.
     BTMerchantIntegrationErrorUnknown,
+    /// An error occured due to an authorization problem with SDK integration.
+    BTMerchantIntegrationErrorUnauthorized,
+    /// An error occured due to a remove resource not found.
+    BTMerchantIntegrationErrorNotFound,
     /// An error occured due to a problem with the client token value.
     BTMerchantIntegrationErrorInvalidClientToken,
     /// The specified nonce was not found when querying information about it.

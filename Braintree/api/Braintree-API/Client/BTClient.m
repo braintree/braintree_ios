@@ -6,6 +6,7 @@
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTMutableCardPaymentMethod.h"
 #import "BTHTTP.h"
+#import "BTOfflineModeURLProtocol.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -29,7 +30,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     if (self) {
         NSError *error;
         self.clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenString error:&error];
-
         if (!self.clientToken) {
             NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
             [[BTLogger sharedLogger] log:reason];
@@ -42,6 +42,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         }
 
         self.http = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
+        [self.http setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         self.analyticsEventQueue = [NSMutableArray array];
     }
     return self;
@@ -125,11 +126,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             }
         } else {
             NSError *returnedError = error;
-            if (response.statusCode == 422) {
-                returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                    code:BTCustomerInputErrorInvalid
-                                                userInfo:@{BTCustomerInputBraintreeValidationErrorsKey: response.object,
-                                                           NSUnderlyingErrorKey: error.userInfo[NSUnderlyingErrorKey]}];
+            if (error.domain == BTBraintreeAPIErrorDomain && error.code == BTCustomerInputErrorInvalid) {
+                returnedError = [NSError errorWithDomain:error.domain
+                                                    code:error.code
+                                                userInfo:@{BTCustomerInputBraintreeValidationErrorsKey: response.object}];
             }
             if (failureBlock) {
                 failureBlock(returnedError);

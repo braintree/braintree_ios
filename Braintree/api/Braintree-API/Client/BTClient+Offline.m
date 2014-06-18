@@ -6,11 +6,10 @@
 @implementation BTClient (Offline)
 
 + (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)configuration {
-
     NSMutableDictionary *clientTokenDataDictionary =
     [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
                                                      BTClientTokenKeyClientApiURL: BTOfflineModeClientApiBaseURL,
-                                                     BTClientTokenKeyAuthorizationURL: @"braintree-api-offline-http://auth",
+                                                     BTClientTokenKeyAuthorizationURL: BTOfflineModeClientApiAuthURL,
                                                      BTClientTokenKeyAnalytics: @{BTClientTokenKeyBatchSize: @1}
                                                      }];
 
@@ -24,11 +23,6 @@
 
     [BTOfflineModeURLProtocol setBackend:[BTOfflineClientBackend new]];
 
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [NSURLProtocol registerClass:[BTOfflineModeURLProtocol class]];
-    });
-    
     return clientToken;
 }
 
