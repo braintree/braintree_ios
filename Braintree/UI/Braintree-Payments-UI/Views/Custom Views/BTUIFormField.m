@@ -181,7 +181,7 @@
 
 - (void)updateConstraints {
     NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin]),
-                              @"accessoryViewHeight": @27.5 };
+                              @"accessoryViewWidth": @44 };
     NSDictionary *views = @{ @"textField": self.textField,
                              @"floatLabel": self.floatLabel,
                              @"accessoryView": self.accessoryView };
@@ -196,8 +196,7 @@
     // Horizontally Pin text field and accessory view
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
     
-    // Vertically center Accessory View
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[accessoryView(==accessoryViewHeight)]" options:0 metrics:metrics views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView(==accessoryViewWidth)]" options:0 metrics:metrics views:views]];
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(7)-[floatLabel(==15)]-(1)-[textField(==20)]-(11)-|" options:0 metrics:metrics views:views]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.accessoryView
