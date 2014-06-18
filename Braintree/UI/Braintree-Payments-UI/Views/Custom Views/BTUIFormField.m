@@ -216,14 +216,27 @@
     }
 }
 
+
+- (void)updateFloatLabelTextColor {
+    if ([self.textField isFirstResponder]) {
+        self.floatLabel.label.textColor = self.tintColor;
+    } else {
+        self.floatLabel.label.textColor = self.theme.textFieldFloatLabelTextColor;
+    }
+}
+
+- (void)tintColorDidChange {
+    [self updateFloatLabelTextColor];
+}
+
 #pragma mark - BTUITextFieldEditDelegate methods
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
-    self.floatLabel.label.textColor = self.tintColor;
+    [self updateFloatLabelTextColor];
 }
 
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {
-    self.floatLabel.label.textColor = self.theme.textFieldFloatLabelTextColor;
+    [self updateFloatLabelTextColor];
 }
 
 - (void)textFieldWillDeleteBackward:(__unused BTUITextField *)textField {
