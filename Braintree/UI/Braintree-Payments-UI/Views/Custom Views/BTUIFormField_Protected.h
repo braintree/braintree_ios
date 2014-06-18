@@ -5,6 +5,7 @@
 @interface BTUIFormField () 
 
 @property (nonatomic, strong, readonly) UITextField *textField;
+
 @property (nonatomic, strong) UIView *accessoryView;
 
 /// Override in your subclass to implement behavior
@@ -13,6 +14,7 @@
 
 /// Sets placeholder text with the appropriate theme style
 - (void)setThemedPlaceholder:(NSString *)placeholder;
+- (void)setThemedAttributedPlaceholder:(NSAttributedString *)placeholder;
 
 @end
 

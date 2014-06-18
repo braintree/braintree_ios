@@ -71,12 +71,14 @@
     [self.delegate formFieldDidChange:self];
 }
 
-- (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [super textFieldDidBeginEditing:textField];
     self.displayAsValid = YES;
     [self.hint setHighlighted:YES animated:YES];
 }
 
-- (void)textFieldDidEndEditing:(__unused UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [super textFieldDidEndEditing:textField];
     self.displayAsValid = self.textField.text.length == 0 || self.valid;
     [self.hint setHighlighted:NO animated:YES];
 }

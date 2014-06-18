@@ -234,7 +234,6 @@
 		16217480192D8725008DC35D /* BTPayPalButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalButton.m; sourceTree = "<group>"; };
 		16217481192D8725008DC35D /* BTPayPalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalViewController.m; sourceTree = "<group>"; };
 		16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController_Internal.h; sourceTree = "<group>"; };
-		16217483192D8725008DC35D /* BTPayPalViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController_Internal.h; sourceTree = "<group>"; };
 		16217484192D8725008DC35D /* BTClient+BTPayPal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+BTPayPal.h"; sourceTree = "<group>"; };
 		16217485192D8725008DC35D /* BTClient+BTPayPal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTPayPal.m"; sourceTree = "<group>"; };
 		16217486192D8725008DC35D /* BTClientToken+BTPayPal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BTClientToken+BTPayPal.h"; path = "Models/BTClientToken+BTPayPal.h"; sourceTree = "<group>"; };
@@ -355,6 +354,8 @@
 		162175A1192D9505008DC35D /* braintree-api-integration-specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "braintree-api-integration-specs-Info.plist"; sourceTree = "<group>"; };
 		162175A2192D9505008DC35D /* braintree-api-integration-specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "braintree-api-integration-specs-Prefix.pch"; sourceTree = "<group>"; };
 		162175A3192D9505008DC35D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		162998CA194FAFC400534798 /* BTUIFloatLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIFloatLabel.h; sourceTree = "<group>"; };
+		162998CB194FAFC400534798 /* BTUIFloatLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIFloatLabel.m; sourceTree = "<group>"; };
 		1696810C192D98EA00120846 /* BTUICardTypeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardTypeSpec.m; sourceTree = "<group>"; };
 		1696810D192D98EA00120846 /* BTUISpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUISpec.m; sourceTree = "<group>"; };
 		1696810E192D98EA00120846 /* Braintree-Payments-UI-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Payments-UI-Specs-Info.plist"; sourceTree = "<group>"; };
@@ -412,6 +413,8 @@
 		16968211192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCreditCardEntryViewController.h; sourceTree = "<group>"; };
 		16968212192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCreditCardEntryViewController.m; sourceTree = "<group>"; };
 		16968213192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BraintreeDemoCreditCardEntryViewController.xib; sourceTree = "<group>"; };
+		16BAFCAE194BB89E0047E96B /* BTUICardExpiryFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormat.m; sourceTree = "<group>"; };
+		16BAFCAF194BB89E0047E96B /* BTUICardExpiryFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUICardExpiryFormat.h; sourceTree = "<group>"; };
 		29C0E04B87974F7C80D7C5B8 /* Pods-Braintree-API-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-API-Demo.xcconfig"; path = "Pods/Pods-Braintree-API-Demo.xcconfig"; sourceTree = "<group>"; };
 		2D085DD919463C9200293215 /* UIColor+BTUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+BTUI.h"; sourceTree = "<group>"; };
 		2D085DDA19463C9200293215 /* UIColor+BTUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BTUI.m"; sourceTree = "<group>"; };
@@ -457,8 +460,6 @@
 		A79ACA49193FB3340095D7F1 /* good_root_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = good_root_cert.der; path = SSL/good_root_cert.der; sourceTree = "<group>"; };
 		A79ACA4B193FBEDE0095D7F1 /* BTAPIPinnedCertificates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIPinnedCertificates.h; sourceTree = "<group>"; };
 		A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormatterSpec.m; sourceTree = "<group>"; };
-		A79ACA4E1940D9920095D7F1 /* BTUICardExpiryFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUICardExpiryFormat.h; sourceTree = "<group>"; };
-		A79ACA4F1940D9920095D7F1 /* BTUICardExpiryFormat.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormat.m; sourceTree = "<group>"; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Specs.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -859,7 +860,6 @@
 				16217480192D8725008DC35D /* BTPayPalButton.m */,
 				16217481192D8725008DC35D /* BTPayPalViewController.m */,
 				16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */,
-				16217483192D8725008DC35D /* BTPayPalViewController_Internal.h */,
 				16217488192D8725008DC35D /* Models */,
 				1621748E192D8725008DC35D /* Views */,
 				16217490192D8725008DC35D /* Supporting Files */,
@@ -871,6 +871,8 @@
 		1621749A192D8746008DC35D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				16BAFCAE194BB89E0047E96B /* BTUICardExpiryFormat.m */,
+				16BAFCAF194BB89E0047E96B /* BTUICardExpiryFormat.h */,
 				16217494192D8746008DC35D /* BTUICardType.h */,
 				16217495192D8746008DC35D /* BTUICardType.m */,
 				16217496192D8746008DC35D /* BTUIUtil.h */,
@@ -881,7 +883,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		162174CE192D8746008DC35D /* Payment Method Type Vector Art */ = {
+		162174CE192D8746008DC35D /* Vector Art */ = {
 			isa = PBXGroup;
 			children = (
 				162174B8192D8746008DC35D /* BTUICardVectorArtView.h */,
@@ -909,47 +911,19 @@
 				2D085DDD1947BF1000293215 /* BTUIPayPalMonogramCardView.h */,
 				2D085DDE1947BF1000293215 /* BTUIPayPalMonogramCardView.m */,
 			);
-			name = "Payment Method Type Vector Art";
-			path = Cards;
+			path = "Vector Art";
 			sourceTree = "<group>";
 		};
 		162174D4192D8746008DC35D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1621749D192D8746008DC35D /* BTUICardCvvField.h */,
-				1621749E192D8746008DC35D /* BTUICardCvvField.m */,
-				1621749F192D8746008DC35D /* BTUICardExpiryField.h */,
-				162174A0192D8746008DC35D /* BTUICardExpiryField.m */,
-				162174A1192D8746008DC35D /* BTUICardFormView.h */,
-				162174A2192D8746008DC35D /* BTUICardFormView.m */,
-				162174A3192D8746008DC35D /* BTUICardHint.h */,
-				162174A4192D8746008DC35D /* BTUICardHint.m */,
-				162174A5192D8746008DC35D /* BTUICardNumberField.h */,
-				162174A6192D8746008DC35D /* BTUICardNumberField.m */,
-				162174A7192D8746008DC35D /* BTUICardPostalCodeField.h */,
-				162174A8192D8746008DC35D /* BTUICardPostalCodeField.m */,
-				162174A9192D8746008DC35D /* BTUICTAControl.h */,
-				162174AA192D8746008DC35D /* BTUICTAControl.m */,
-				162174AB192D8746008DC35D /* BTUIFormField.h */,
-				162174AC192D8746008DC35D /* BTUIFormField.m */,
-				162174AD192D8746008DC35D /* BTUIFormField_Protected.h */,
-				162174AE192D8746008DC35D /* BTUIPaymentMethodView.h */,
-				162174AF192D8746008DC35D /* BTUIPaymentMethodView.m */,
-				162174B0192D8746008DC35D /* BTUISummaryView.h */,
-				162174B1192D8746008DC35D /* BTUISummaryView.m */,
-				162174B2192D8746008DC35D /* BTUIThemedView.h */,
-				162174B3192D8746008DC35D /* BTUIThemedView.m */,
-				162174B4192D8746008DC35D /* BTUIVectorArtView.h */,
-				162174B5192D8746008DC35D /* BTUIVectorArtView.m */,
 				162174B6192D8746008DC35D /* BTUIViewUtil.h */,
 				162174B7192D8746008DC35D /* BTUIViewUtil.m */,
-				162174CE192D8746008DC35D /* Payment Method Type Vector Art */,
-				162174D2192D8746008DC35D /* BTUIScrollView.h */,
-				162174D3192D8746008DC35D /* BTUIScrollView.m */,
-				2DC3791A193FB53C00BD2BB9 /* BTUITextField.h */,
-				2DC3791B193FB53C00BD2BB9 /* BTUITextField.m */,
-				A79ACA4E1940D9920095D7F1 /* BTUICardExpiryFormat.h */,
-				A79ACA4F1940D9920095D7F1 /* BTUICardExpiryFormat.m */,
+				16BAFCAD194BB8280047E96B /* Custom Views */,
+				16BAFCAB194BB7D50047E96B /* Form Fields */,
+				16BAFCAA194BB7CC0047E96B /* Forms */,
+				16BAFCAC194BB7E30047E96B /* Payments Components */,
+				162174CE192D8746008DC35D /* Vector Art */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1263,6 +1237,65 @@
 				2DBDD720192BFFB800D8AA56 /* BTDropInUtil.m */,
 			);
 			path = "Drop-In";
+			sourceTree = "<group>";
+		};
+		16BAFCAA194BB7CC0047E96B /* Forms */ = {
+			isa = PBXGroup;
+			children = (
+				162174A1192D8746008DC35D /* BTUICardFormView.h */,
+				162174A2192D8746008DC35D /* BTUICardFormView.m */,
+			);
+			path = Forms;
+			sourceTree = "<group>";
+		};
+		16BAFCAB194BB7D50047E96B /* Form Fields */ = {
+			isa = PBXGroup;
+			children = (
+				1621749D192D8746008DC35D /* BTUICardCvvField.h */,
+				1621749E192D8746008DC35D /* BTUICardCvvField.m */,
+				1621749F192D8746008DC35D /* BTUICardExpiryField.h */,
+				162174A0192D8746008DC35D /* BTUICardExpiryField.m */,
+				162174A7192D8746008DC35D /* BTUICardPostalCodeField.h */,
+				162174A8192D8746008DC35D /* BTUICardPostalCodeField.m */,
+			);
+			path = "Form Fields";
+			sourceTree = "<group>";
+		};
+		16BAFCAC194BB7E30047E96B /* Payments Components */ = {
+			isa = PBXGroup;
+			children = (
+				162174A3192D8746008DC35D /* BTUICardHint.h */,
+				162174A4192D8746008DC35D /* BTUICardHint.m */,
+				162174A5192D8746008DC35D /* BTUICardNumberField.h */,
+				162174A6192D8746008DC35D /* BTUICardNumberField.m */,
+				162174A9192D8746008DC35D /* BTUICTAControl.h */,
+				162174AA192D8746008DC35D /* BTUICTAControl.m */,
+				162174AE192D8746008DC35D /* BTUIPaymentMethodView.h */,
+				162174AF192D8746008DC35D /* BTUIPaymentMethodView.m */,
+				162174B0192D8746008DC35D /* BTUISummaryView.h */,
+				162174B1192D8746008DC35D /* BTUISummaryView.m */,
+			);
+			path = "Payments Components";
+			sourceTree = "<group>";
+		};
+		16BAFCAD194BB8280047E96B /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				162174AB192D8746008DC35D /* BTUIFormField.h */,
+				162174AC192D8746008DC35D /* BTUIFormField.m */,
+				162174AD192D8746008DC35D /* BTUIFormField_Protected.h */,
+				162174D2192D8746008DC35D /* BTUIScrollView.h */,
+				162174D3192D8746008DC35D /* BTUIScrollView.m */,
+				2DC3791A193FB53C00BD2BB9 /* BTUITextField.h */,
+				2DC3791B193FB53C00BD2BB9 /* BTUITextField.m */,
+				162174B2192D8746008DC35D /* BTUIThemedView.h */,
+				162174B3192D8746008DC35D /* BTUIThemedView.m */,
+				162174B4192D8746008DC35D /* BTUIVectorArtView.h */,
+				162174B5192D8746008DC35D /* BTUIVectorArtView.m */,
+				162998CA194FAFC400534798 /* BTUIFloatLabel.h */,
+				162998CB194FAFC400534798 /* BTUIFloatLabel.m */,
+			);
+			path = "Custom Views";
 			sourceTree = "<group>";
 		};
 		A75DA343192138F000D997A2 = {

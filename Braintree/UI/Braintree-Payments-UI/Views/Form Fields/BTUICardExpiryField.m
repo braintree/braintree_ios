@@ -2,7 +2,7 @@
 #import "BTUIFormField_Protected.h"
 #import "BTUIUtil.h"
 #import "BTUICardExpirationValidator.h"
-#import "BTUICardExpiryFormat.m"
+#import "BTUICardExpiryFormat.h"
 
 @interface BTUICardExpiryField () <UITextFieldDelegate>
 @end
@@ -15,7 +15,7 @@
         NSMutableAttributedString *placeholder = [[NSMutableAttributedString alloc] initWithString:@"MM/YY"
                                                                                         attributes:self.theme.textFieldPlaceholderAttributes];
         [self kernExpiration:placeholder];
-        self.textField.attributedPlaceholder = placeholder;
+        [self setThemedAttributedPlaceholder:placeholder];
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.textField.delegate = self;
     }
@@ -64,11 +64,13 @@
     [self.delegate formFieldDidChange:self];
 }
 
-- (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [super textFieldDidBeginEditing:textField];
     self.displayAsValid = YES;
 }
 
-- (void)textFieldDidEndEditing:(__unused UITextField *)textField {
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [super textFieldDidEndEditing:textField];
     self.displayAsValid = self.textField.text.length == 0 || self.valid;
 }
 
@@ -134,12 +136,14 @@
 - (void)kernExpiration:(NSMutableAttributedString *)input {
     [input removeAttribute:NSKernAttributeName range:NSMakeRange(0, input.length)];
 
+    [input beginEditing];
     if (input.length > 2) {
         [input addAttribute:NSKernAttributeName value:@(self.theme.formattedEntryKerning/2) range:NSMakeRange(1, 1)];
         if (input.length > 3) {
             [input addAttribute:NSKernAttributeName value:@(self.theme.formattedEntryKerning/2) range:NSMakeRange(2, 1)];
         }
     }
+    [input endEditing];
 }
 
 
