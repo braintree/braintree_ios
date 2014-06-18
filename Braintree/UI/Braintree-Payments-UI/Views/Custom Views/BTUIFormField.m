@@ -44,6 +44,7 @@
         [self addSubview:self.textField];
         [self addSubview:self.floatLabel];
         [self addSubview:self.accessoryView];
+        [self setupConstraints];
 
         [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedField)]];
 
@@ -179,7 +180,7 @@
     }
 }
 
-- (void)updateConstraints {
+- (void)setupConstraints {
     NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin]),
                               @"accessoryViewWidth": @44 };
     NSDictionary *views = @{ @"textField": self.textField,
@@ -206,7 +207,6 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0]];
-    [super updateConstraints];
 }
 
 - (void)didDeleteBackward {
