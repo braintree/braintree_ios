@@ -58,12 +58,6 @@
     [super updateConstraints];
 }
 
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    CGPoint center = self.label.center;
-    self.label.center = CGPointMake(center.x, center.y);
-}
-
 - (void)showWithAnimation:(BOOL)shouldAnimate {
     void (^animations)(void) = ^{
         self.label.alpha = 1.0f;
