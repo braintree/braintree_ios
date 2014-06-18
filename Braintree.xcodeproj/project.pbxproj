@@ -1257,6 +1257,8 @@
 				162174A0192D8746008DC35D /* BTUICardExpiryField.m */,
 				162174A7192D8746008DC35D /* BTUICardPostalCodeField.h */,
 				162174A8192D8746008DC35D /* BTUICardPostalCodeField.m */,
+				162174A5192D8746008DC35D /* BTUICardNumberField.h */,
+				162174A6192D8746008DC35D /* BTUICardNumberField.m */,
 			);
 			path = "Form Fields";
 			sourceTree = "<group>";
@@ -1266,8 +1268,6 @@
 			children = (
 				162174A3192D8746008DC35D /* BTUICardHint.h */,
 				162174A4192D8746008DC35D /* BTUICardHint.m */,
-				162174A5192D8746008DC35D /* BTUICardNumberField.h */,
-				162174A6192D8746008DC35D /* BTUICardNumberField.m */,
 				162174A9192D8746008DC35D /* BTUICTAControl.h */,
 				162174AA192D8746008DC35D /* BTUICTAControl.m */,
 				162174AE192D8746008DC35D /* BTUIPaymentMethodView.h */,
