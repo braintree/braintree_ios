@@ -53,7 +53,7 @@ The library is broken up into a number of layers, ranging from front-facing API 
 ### Service
 
 * `BTHTTP` - HTTP in Objective C (Totally agnostic to CAPI.)
-  * Encapsulate AFNetworking
+  * Relies on NSURLSession
   * SSL certificate pinning
 
 ## Error handling.

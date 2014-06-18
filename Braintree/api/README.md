@@ -33,8 +33,6 @@ Use [CocoaPods](http://cocoapods.org/) to add `Braintree-API` to your project. I
 pod "Braintree/API"
 ```
 
-Note that `Braintree-API` depends on on `AFNetworking`, which is pulled in automatically with Cocoapods.
-
 If you've never used CocoaPods before, [this website](http://guides.cocoapods.org/using/getting-started.html) does a great job explaining what it is and how it works. We believe that dependency management will make iOS developers more productive and are curious about your feedback. (It is possible to pull in our code manually, but that is not recommended at this time.)
 
 

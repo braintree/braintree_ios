@@ -144,7 +144,7 @@ There are several components that comprise this SDK:
 * [Braintree-Drop-In](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/Drop-In) composes API with Credit Card and PayPal UI to create a "three liner" payment form. (See also BTDropInViewControler.h)
 * [Braintree-Payments-UI](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/UI) is a set of reusable UI componenets related to payments.
 * [Braintree-PayPal](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/PayPal) provides a PayPal button and view controller. (See also BTPayPalButton.)
-* [Braintree-API](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/api) provides the networking and communications layer; it depends on AFNetworking. (See also BTClient.)
+* [Braintree-API](https://github.com/braintree/braintree_ios_preview/tree/master/Braintree/api) provides the networking and communications layer. (See also BTClient.)
 
 The individual components may be of interest for advanced integrations and are each available as subspecs.
 
