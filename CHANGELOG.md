@@ -2,12 +2,16 @@
 
 ## 3.0.0-rc5
 
+* :rotating_light: Remove dependency on AFNetworking!
 * :rotating_light: Rename `BTPayPalControl` -> `BTPayPalButton`.
 * Security - Enforce SSL Pinning against a set of vendored SSL certificates
 * Drop-In
   * Improve visual customizability and respect tint color
   * UI and Layout improvements
   * Detailing and polish
+* UI
+  * Float labels on credit card form fields
+  * Vibration upon critical validation errors :vibration_mode:
 
 Thanks for the feedback so far. Keep it coming!
 
