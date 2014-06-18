@@ -97,19 +97,20 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                    success:(BTClientCardSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
 
-    NSMutableDictionary *requestParameters = [@{ @"credit_card": @{
-                                                         @"number": creditCardNumber,
-                                                         @"expiration_month": expirationMonth,
-                                                         @"expiration_year": expirationYear,
-                                                         @"options": @{
-                                                                 @"validate": @(shouldValidate)
-                                                                 }
-                                                         },
+    NSMutableDictionary *creditCardParams = [@{ @"number": creditCardNumber,
+                                               @"expiration_month": expirationMonth,
+                                               @"expiration_year": expirationYear,
+                                               @"options": @{
+                                                       @"validate": @(shouldValidate)
+                                                       }
+                                                } mutableCopy];
+    
+    NSMutableDictionary *requestParameters = [@{ @"credit_card": creditCardParams,
                                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint }
                                               mutableCopy];
 
     if (cvv) {
-        requestParameters[@"cvv"] = cvv;
+        requestParameters[@"credit_card"][@"cvv"] = cvv;
     }
 
     if (postalCode) {
