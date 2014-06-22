@@ -314,7 +314,7 @@ namespace :distribute do
   task :hockeyapp do
     destination = File.expand_path("~/Desktop/Braintree-Demo-#{current_version_with_sha}")
     changes = File.read("CHANGELOG.md")[/(## #{current_version}.*?)^## /m, 1].strip
-    run! "ipa distribute:hockeyapp --token '#{File.read(".hockeyapp").strip}' --file '#{destination}/Braintree-Demo.ipa' --dsym '#{destination}/Braintree-Demo.app.dSYM.zip' --markdown --notes #{Shellwords.shellescape("#{changes}\n\n#{current_version_with_sha}")}"
+    run! "ipa distribute:hockeyapp --token '#{File.read(".hockeyapp").strip}' --identifier '7134982f3df6419a0eb52b16e7d6d175' --file '#{destination}/Braintree-Demo.ipa' --dsym '#{destination}/Braintree-Demo.app.dSYM.zip' --markdown --notes #{Shellwords.shellescape("#{changes}\n\n#{current_version_with_sha}")}"
     say "Uploaded Braintree-Demo (#{current_version_with_sha}) to HockeyApp!"
   end
 end
