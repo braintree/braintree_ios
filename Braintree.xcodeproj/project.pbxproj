@@ -131,6 +131,7 @@
 		66D0902C25AD47F2B9BB463C /* libPods-Braintree-API-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA18037F59BA4BC296136D1C /* libPods-Braintree-API-Demo.a */; };
 		705C08DBE078409499618CC7 /* libPods-Braintree-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */; };
 		8307670773DF4AC381C3FE80 /* libPods-Braintree-PayPal-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 133578558B4E45ECA2C2D586 /* libPods-Braintree-PayPal-Specs.a */; };
+		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
 		A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
@@ -440,6 +441,9 @@
 		99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0D18A73520462F8D2FB1CD /* libPods-Braintree-API-Public-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Public-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7021B071921631C0090CE8F /* Braintree_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree_Internal.h; sourceTree = "<group>"; };
+		A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorStateSpec.m; sourceTree = "<group>"; };
+		A74E2E711953690A004DFF73 /* BTDropInErrorState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorState.h; sourceTree = "<group>"; };
+		A74E2E721953690A004DFF73 /* BTDropInErrorState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorState.m; sourceTree = "<group>"; };
 		A7529C76192AB6BA00B2E1B2 /* BTDropInContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInContentView.h; sourceTree = "<group>"; };
 		A7529C77192AB6BA00B2E1B2 /* BTDropInContentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInContentView.m; sourceTree = "<group>"; };
 		A75DA34B1921392E00D997A2 /* Braintree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree.h; sourceTree = "<group>"; };
@@ -1235,6 +1239,8 @@
 				2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.m */,
 				2DBDD71F192BFFB800D8AA56 /* BTDropInUtil.h */,
 				2DBDD720192BFFB800D8AA56 /* BTDropInUtil.m */,
+				A74E2E711953690A004DFF73 /* BTDropInErrorState.h */,
+				A74E2E721953690A004DFF73 /* BTDropInErrorState.m */,
 			);
 			path = "Drop-In";
 			sourceTree = "<group>";
@@ -1327,8 +1333,8 @@
 			children = (
 				A75DA34B1921392E00D997A2 /* Braintree.h */,
 				A75DA34C1921392E00D997A2 /* Braintree.m */,
-				A7021B071921631C0090CE8F /* Braintree_Internal.h */,
 				1621741C192D8560008DC35D /* API */,
+				A7021B071921631C0090CE8F /* Braintree_Internal.h */,
 				1697BEFC192300130051F2AE /* Drop-In */,
 				1621741E192D857A008DC35D /* PayPal */,
 				1621741D192D8567008DC35D /* UI */,
@@ -1384,6 +1390,7 @@
 				161029FA192DB613002C1B2B /* BraintreeVersionSpec.m */,
 				160D08A11926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m */,
 				A75DA36B1921394200D997A2 /* Supporting Files */,
+				A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */,
 			);
 			path = "Braintree-Specs";
 			sourceTree = "<group>";
@@ -2245,6 +2252,7 @@
 			files = (
 				161029FB192DB613002C1B2B /* BraintreeVersionSpec.m in Sources */,
 				A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */,
+				A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */,
 				160D08A21926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

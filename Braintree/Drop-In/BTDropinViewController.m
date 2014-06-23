@@ -6,6 +6,7 @@
 #import "BTDropInUtil.h"
 #import "Braintree-API.h"
 #import "BTClient+BTPayPal.h"
+#import "BTDropInErrorState.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalButtonViewControllerPresenterDelegate, BTPayPalButtonDelegate, BTDropInViewControllerDelegate>
 
@@ -269,7 +270,12 @@
                                     }
                                     failure:^(NSError *error) {
                                         [self.dropInContentView.ctaControl showLoadingState:NO];
-                                        [self informDelegateDidFailWithError:error];
+
+                                        if ([error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
+                                            [self informUserDidFailWithError:error];
+                                        } else {
+                                            [self informDelegateDidFailWithError:error];
+                                        }
                                     }];
         } else {
             // Should never happen
@@ -285,6 +291,18 @@
 
 - (void)didCancelChangePaymentMethod {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark Error UI
+
+- (void)informUserDidFailWithError:(__unused NSError *)error {
+    BTDropInErrorState *state = [[BTDropInErrorState alloc] initWithError:error];
+
+    [self.dropInContentView.cardForm showTopLevelError:state.errorTitle];
+    for (NSNumber *fieldNumber in state.highlightedFields) {
+        BTUICardFormField field = [fieldNumber unsignedIntegerValue];
+        [self.dropInContentView.cardForm showErrorForField:field];
+    }
 }
 
 #pragma mark Card Form Delegate methods
@@ -395,6 +413,7 @@
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
+
     if (self.paymentMethodCompletionBlock != nil) {
         self.paymentMethodCompletionBlock(nil, error);
     }

@@ -1,10 +1,18 @@
 #import "BTUIThemedView.h"
+#import "BTDropInErrorState.h"
 
 typedef NS_OPTIONS(NSUInteger, BTUICardFormOptionalFields) {
     BTUICardFormOptionalFieldsNone       = 0,
     BTUICardFormOptionalFieldsCvv        = 1 << 0,
     BTUICardFormOptionalFieldsPostalCode = 1 << 1,
     BTUICardFormOptionalFieldsAll        = BTUICardFormOptionalFieldsCvv | BTUICardFormOptionalFieldsPostalCode
+};
+
+typedef NS_ENUM(NSUInteger, BTUICardFormField) {
+    BTUICardFormFieldNumber = 0,
+    BTUICardFormFieldExpiration,
+    BTUICardFormFieldCvv,
+    BTUICardFormFieldPostalCode
 };
 
 @protocol BTUICardFormViewDelegate;
@@ -20,6 +28,17 @@ typedef NS_OPTIONS(NSUInteger, BTUICardFormOptionalFields) {
 @property (nonatomic, copy, readonly) NSString *expirationYear;
 @property (nonatomic, copy, readonly) NSString *postalCode;
 
+/// Immediately present a top level error message to the user.
+///
+/// @param field Field to mark invalid.
+- (void)showTopLevelError:(NSString *)message;
+
+/// Immediately present a field-level error to the user.
+///
+/// @note We do not support field-level error descriptions. This method highlights the field to indicate invalidity.
+/// @param field The invalid field
+- (void)showErrorForField:(BTUICardFormField)field;
+
 /// Configure whether to support complete alphanumeric postal codes.
 ///
 /// If NO, allows only digit entry.
@@ -34,7 +53,7 @@ typedef NS_OPTIONS(NSUInteger, BTUICardFormOptionalFields) {
 
 /// Whether to provide feedback to the user via vibration
 ///
-/// Defaults ot YES
+/// Defaults to YES
 @property (nonatomic, assign) BOOL vibrate;
 
 

@@ -41,6 +41,31 @@
 
 #pragma mark - Getters/setters
 
+- (void)showErrorForField:(__unused BTUICardFormField)field {
+    switch (field) {
+        case BTUICardFormFieldNumber:
+            self.numberField.displayAsValid = NO;
+            break;
+        case BTUICardFormFieldExpiration:
+            self.expiryField.displayAsValid = NO;
+            break;
+        case BTUICardFormFieldCvv:
+            self.cvvField.displayAsValid = NO;
+            break;
+        case BTUICardFormFieldPostalCode:
+            self.postalCodeField.displayAsValid = NO;
+            break;
+    }
+}
+
+- (void)showTopLevelError:(NSString *)message {
+    [[[UIAlertView alloc] initWithTitle:message
+                               message:nil
+                              delegate:nil
+                     cancelButtonTitle:@"OK"
+                     otherButtonTitles:nil] show];
+}
+
 - (void)setAlphaNumericPostalCode:(BOOL)alphaNumericPostalCode {
     _alphaNumericPostalCode = alphaNumericPostalCode;
     self.postalCodeField.nonDigitsSupported = alphaNumericPostalCode;
@@ -123,12 +148,12 @@
     for (UIView *view in self.fields){
         if(view != self.numberField){
             [newContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[v]-(-1)-[v2]"
-                                                                         options:0
-                                                                         metrics:0
-                                                                           views:@{@"v": viewAbove, @"v2": view }]];
+                                                                                       options:0
+                                                                                       metrics:0
+                                                                                         views:@{@"v": viewAbove, @"v2": view }]];
             viewAbove = view;
         }
-        
+
     }
     self.dynamicConstraints = newContraints;
     [self addConstraints:self.dynamicConstraints];
