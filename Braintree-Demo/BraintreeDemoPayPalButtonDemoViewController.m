@@ -19,7 +19,13 @@
 - (void)viewDidLoad {
     // Construct PayPal Button
     UIView *payPalButton = [self.braintree payPalButtonWithCompletion:^(NSString *nonce, NSError *error) {
-        NSLog(@"%@", nonce);
+        if (error != nil) {
+            [[[UIAlertView alloc] initWithTitle:@"Failed to tokenize Auth Code"
+                                        message:[error localizedDescription]
+                                       delegate:nil
+                              cancelButtonTitle:@"Ok"
+                              otherButtonTitles:nil] show];
+        }
     }];
     [payPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 

@@ -27,7 +27,7 @@
 
 /// Strong reference to an additional BTPayPalButton. Reference is needed so
 /// activity can continue after dismissal
-@property (nonatomic, strong) BTPayPalButton *addPaymentMethodpayPalButton;
+@property (nonatomic, strong) BTPayPalButton *retainedPayPalButton;
 
 @end
 
@@ -377,34 +377,36 @@
 
 - (void)payPalButtonWillCreatePayPalPaymentMethod:(BTPayPalButton *)button {
     self.dropInContentView.state = BTDropInContentViewStateActivity;
-    if (button == self.dropInContentView.payPalButton) {
-        if (!self.fullForm) {
-            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        }
-    } else {
-        // retain this secondary BTPayPalButton
-        self.addPaymentMethodpayPalButton = button;
-    }
+
+    // Assign button to retainedPayPalButton to increment its reference count
+    // This is a bit of duct-tape to make sure that the network activity and subsequent async
+    // delegate method invoked by BTPayPalViewController is still executed even after
+    // dismissal of the UI and release of encapsulating View Controller.
+    // Reference count is decremented in subsequent delegate method calls. See below.
+    self.retainedPayPalButton = button;
 }
 
-- (void)payPalButton:(BTPayPalButton *)button didCreatePayPalPaymentMethod:(__unused BTPaymentMethod *)paymentMethod {
+- (void)payPalButton:( __unused BTPayPalButton *)button didCreatePayPalPaymentMethod:(__unused BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
 
-    // Release the PayPal button
-    if (self.dropInContentView.payPalButton == button) {
-        self.addPaymentMethodpayPalButton = nil;
-    }
+    // Allow retained PayPal button to release, which will only happen if it isn't "ours"
+    self.retainedPayPalButton = nil;
 }
 
-- (void)payPalButton:(BTPayPalButton *)button didFailWithError:(__unused NSError *)error {
-    [self informDelegateDidFailWithError:error];
+- (void)payPalButton:(__unused BTPayPalButton *)button didFailWithError:(NSError *)error {
 
-    // Release the PayPal button
-    if (self.addPaymentMethodpayPalButton == button) {
-        self.addPaymentMethodpayPalButton = nil;
-    }
+    // Use the paymentMethods setter to update state
+    [self setPaymentMethods:_paymentMethods];
+
+    // Allow retained PayPal button to release, which will only happen if it isn't "ours"
+    self.retainedPayPalButton = nil;
+    [[[UIAlertView alloc] initWithTitle:@"PayPal Error"
+                                message:error.description
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
 }
 
 #pragma mark Delegate Notifications
