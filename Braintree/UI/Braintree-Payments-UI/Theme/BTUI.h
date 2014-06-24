@@ -82,4 +82,8 @@
 
 - (BTUIVectorArtView *)vectorArtViewForPaymentMethodType:(BTUIPaymentMethodType)type;
 
+#pragma mark Utilities
+
++ (UIActivityIndicatorViewStyle)activityIndicatorViewStyleForBarTintColor:(UIColor *)color;
+
 @end

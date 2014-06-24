@@ -13,6 +13,7 @@
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
 @property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;
+@property (nonatomic, strong) UIBarButtonItem *submitBarButtonItem;
 
 /// Whether current visible.
 @property (nonatomic, assign) BOOL visible;
@@ -249,7 +250,8 @@
 }
 
 - (void)tappedSubmitForm {
-    [self.dropInContentView.ctaControl showLoadingState:YES];
+    [self showLoadingState:YES];
+
     BTPaymentMethod *paymentMethod = [self selectedPaymentMethod];
     if (paymentMethod != nil) {
         [self informDelegateWillComplete];
@@ -265,11 +267,11 @@
                                  postalCode:cardForm.postalCode
                                    validate:YES
                                     success:^(BTCardPaymentMethod *card) {
-                                        [self.dropInContentView.ctaControl showLoadingState:NO];
+                                        [self showLoadingState:NO];
                                         [self informDelegateDidAddPaymentMethod:card];
                                     }
                                     failure:^(NSError *error) {
-                                        [self.dropInContentView.ctaControl showLoadingState:NO];
+                                        [self showLoadingState:NO];
 
                                         if ([error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
                                             [self informUserDidFailWithError:error];
@@ -284,13 +286,27 @@
                                        delegate:nil
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil] show];
-            [self.dropInContentView.ctaControl showLoadingState:NO];
+            [self showLoadingState:NO];
         }
     }
 }
 
 - (void)didCancelChangePaymentMethod {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark Progress UI
+
+- (void)showLoadingState:(BOOL)loadingState {
+    [self.dropInContentView.ctaControl showLoadingState:loadingState];
+    self.submitBarButtonItem.enabled = !loadingState;
+    if (self.submitBarButtonItem != nil) {
+        [BTUI activityIndicatorViewStyleForBarTintColor:self.navigationController.navigationBar.barTintColor];
+        UIActivityIndicatorView *submitInProgressActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        [submitInProgressActivityIndicator startAnimating];
+        UIBarButtonItem *submitInProgressActivityIndicatorBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:submitInProgressActivityIndicator];
+        [self.navigationItem setRightBarButtonItem:(loadingState ? submitInProgressActivityIndicatorBarButtonItem : self.submitBarButtonItem) animated:YES];
+    }
 }
 
 #pragma mark Error UI
@@ -325,20 +341,18 @@
 
 #pragma mark BTDropInViewControllerDelegate implementation
 
-- (void)dropInViewControllerWillComplete:(BTDropInViewController *)viewController {
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
-    self.dropInContentView.state = BTDropInContentViewStateActivity;
-}
 
-- (void)dropInViewController:(__unused BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
 }
 
-- (void)dropInViewController:(__unused BTDropInViewController *)viewController didFailWithError:(__unused NSError *)error {
-    // TODO - Check error and show UI accordingly.
-    [[[UIAlertView alloc] initWithTitle:@"Error adding payment method" message:nil delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil] show];
+- (void)dropInViewController:(BTDropInViewController *)viewController didFailWithError:(__unused NSError *)error {
+    [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+
+    [[[UIAlertView alloc] initWithTitle:@"Error adding payment method" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 #pragma mark PayPal Button Presentation Delegate methods
@@ -436,9 +450,12 @@
 - (void)setShouldHideCallToAction:(BOOL)shouldHideCallToAction {
     _shouldHideCallToAction = shouldHideCallToAction;
     self.dropInContentView.hideCTA = shouldHideCallToAction;
-    self.navigationItem.rightBarButtonItem = shouldHideCallToAction ? [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+
+    self.submitBarButtonItem = shouldHideCallToAction ? [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                                                                     target:self
                                                                                                                     action:@selector(tappedSubmitForm)] : nil;
+    self.submitBarButtonItem.style = UIBarButtonItemStyleDone;
+    self.navigationItem.rightBarButtonItem = self.submitBarButtonItem;
 }
 
 - (void)setSummaryTitle:(NSString *)summaryTitle {

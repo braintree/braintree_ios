@@ -212,6 +212,15 @@
     }
 }
 
+#pragma mark Utilties
+
++ (UIActivityIndicatorViewStyle)activityIndicatorViewStyleForBarTintColor:(UIColor *)color {
+    CGFloat r, g, b;
+    [color getRed:&r green:&g blue:&b alpha:NULL];
+    CGFloat perceivedBrightnessBasedOnWeightedDistanceIn3DRGBSpace = sqrtf(r * r * .241 + g * g * .691 + b * b * .068);
+
+    return perceivedBrightnessBasedOnWeightedDistanceIn3DRGBSpace > 0.5 ? UIActivityIndicatorViewStyleGray : UIActivityIndicatorViewStyleWhite;
+}
 
 @end
 

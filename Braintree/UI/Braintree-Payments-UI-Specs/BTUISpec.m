@@ -9,4 +9,14 @@ describe(@"BTUI", ^{
     });
 });
 
+describe(@"activity indicator style", ^{
+    it(@"returns white for a dark background", ^{
+        expect([BTUI activityIndicatorViewStyleForBarTintColor:[UIColor blackColor]]).to.equal(UIActivityIndicatorViewStyleWhite);
+    });
+
+    it(@"returns gray for a light background", ^{
+        expect([BTUI activityIndicatorViewStyleForBarTintColor:[UIColor whiteColor]]).to.equal(UIActivityIndicatorViewStyleGray);
+    });
+});
+
 SpecEnd
