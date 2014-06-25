@@ -120,26 +120,33 @@ describe(@"initialization from raw JSON", ^{
         });
     });
 
-    describe(@"analytics batch size", ^{
-        it(@"returns Disabled when the batch size is omitted", ^{
+    describe(@"analytics enabled", ^{
+        it(@"returns true when a valid analytics URL is included in the client token", ^{
+            NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithAnalyticsUrl:@"http://analytics.example.com"];
+            BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
+            expect(clientToken.isAnalyticsEnabled).to.beTruthy();
+        });
+
+        it(@"returns false otherwise", ^{
             NSString *clientTokenRawJSON = [BTTestClientTokenFactory token];
             BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
-            expect(clientToken.analyticsBatchSize).to.equal(BTClientTokenAnalyticsBatchSizeDisabled);
+            expect(clientToken.isAnalyticsEnabled).to.beFalsy();
+        });
+    });
+
+    describe(@"analytics base url", ^{
+        it(@"returns nil when the url is omitted", ^{
+            NSString *clientTokenRawJSON = [BTTestClientTokenFactory token];
+            BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
+            expect(clientToken.analyticsURL).to.beNil();
         });
 
-        it(@"returns Disabled when the batch size is zero", ^{
-            NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithAnalyticsBatchSize:0];
+        it(@"returns a parsed URL when the analytics url is included", ^{
+            NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
+            NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithAnalyticsUrl:analyticsUrl];
             BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
 
-            expect(clientToken.analyticsBatchSize).to.equal(BTClientTokenAnalyticsBatchSizeDisabled);
-        });
-
-        it(@"returns the batch size when batch size is included in the client token", ^{
-            NSUInteger batchSize = 5;
-            NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithAnalyticsBatchSize:batchSize];
-            BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
-
-            expect(clientToken.analyticsBatchSize).to.equal(batchSize);
+            expect(clientToken.analyticsURL).to.equal([NSURL URLWithString:analyticsUrl]);
         });
     });
 });
@@ -149,14 +156,15 @@ describe(@"initialization from a raw claims set", ^{
         BTClientToken *clientToken = [[BTClientToken alloc] initWithClaims:@{ BTClientTokenKeyAuthorizationFingerprint: @"AUTH_FINGERPRINT",
                                                                               BTClientTokenKeyAuthorizationURL:@"AUTH_URL",
                                                                               BTClientTokenKeyClientApiURL: @"CLIENT_API_URL",
-                                                                              BTClientTokenKeyAnalytics: @{ BTClientTokenKeyBatchSize: @5 }
+                                                                              BTClientTokenKeyAnalytics: @{ BTClientTokenKeyURL: @"ANALYTICS_URL" }
                                                                               }
                                                                      error:nil];
 
         expect(clientToken.authorizationFingerprint).to.equal(@"AUTH_FINGERPRINT");
         expect(clientToken.authorizationURL).to.equal([NSURL URLWithString:@"AUTH_URL"]);
         expect(clientToken.clientApiURL).to.equal([NSURL URLWithString:@"CLIENT_API_URL"]);
-        expect(clientToken.analyticsBatchSize).to.equal(5);
+        expect(clientToken.analyticsURL).to.equal([NSURL URLWithString:@"ANALYTICS_URL"]);
+        expect(clientToken.analyticsEnabled).to.beTruthy();
     });
 
     it(@"accepts user-defined configuration parameters", ^{

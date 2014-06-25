@@ -5,9 +5,7 @@ NSString *const BTClientTokenKeyAuthorizationURL = @"authUrl";
 NSString *const BTClientTokenKeyClientApiURL = @"clientApiUrl";
 NSString *const BTClientTokenKeyChallenges = @"challenges";
 NSString *const BTClientTokenKeyAnalytics = @"analytics";
-NSString *const BTClientTokenKeyBatchSize = @"batchSize";
-const NSUInteger BTClientTokenAnalyticsBatchSizeDisabled = NSUIntegerMax;
-
+NSString *const BTClientTokenKeyURL = @"url";
 
 @interface BTClientToken ()
 
@@ -64,14 +62,12 @@ const NSUInteger BTClientTokenAnalyticsBatchSizeDisabled = NSUIntegerMax;
     return [NSSet setWithArray:self.claims[BTClientTokenKeyChallenges]];
 }
 
-- (NSUInteger)analyticsBatchSize {
-    NSUInteger batchSize = BTClientTokenAnalyticsBatchSizeDisabled;
-    NSDictionary *analytics = self.claims[BTClientTokenKeyAnalytics];
-    if ([analytics respondsToSelector:@selector(objectForKeyedSubscript:)]) {
-        batchSize = [analytics[BTClientTokenKeyBatchSize] unsignedIntegerValue];
-    }
+- (BOOL)isAnalyticsEnabled {
+    return [self.claims[BTClientTokenKeyAnalytics] isKindOfClass:[NSDictionary class]] && [self.claims[BTClientTokenKeyAnalytics][BTClientTokenKeyURL] isKindOfClass:[NSString class]];
+}
 
-    return batchSize > 0 ? batchSize : BTClientTokenAnalyticsBatchSizeDisabled;
+- (NSURL *)analyticsURL {
+    return [NSURL URLWithString:self.claims[BTClientTokenKeyAnalytics][BTClientTokenKeyURL]];
 }
 
 #pragma mark JSON Parsing
@@ -172,7 +168,7 @@ const NSUInteger BTClientTokenAnalyticsBatchSizeDisabled = NSUIntegerMax;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<BTClientToken: authorizationFingerprint:%@ authorizationURL:%@, clientApiURL:%@>", self.authorizationFingerprint, self.authorizationURL, self.clientApiURL];
+    return [NSString stringWithFormat:@"<BTClientToken: authorizationFingerprint:%@ authorizationURL:%@, clientApiURL:%@, analyticsURL:%@>", self.authorizationFingerprint, self.authorizationURL, self.clientApiURL, self.analyticsURL];
 }
 
 @end

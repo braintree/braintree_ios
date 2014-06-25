@@ -11,8 +11,7 @@ describe(@"initForTestingWithConfiguration:", ^{
            BTClientTestConfigurationKeySharedCustomerIdentifier: @"testing",
            BTClientTestConfigurationKeySharedCustomerIdentifierType: @"testing",
            BTClientTestConfigurationKeyClientTokenVersion: @2,
-           BTClientTestConfigurationKeyBaseUrl: @"http://example.com/",
-           BTClientTestConfigurationKeyAnalytics: @{BTClientTestConfigurationKeyBatchSize: @5}
+           BTClientTestConfigurationKeyAnalytics: @{ BTClientTestConfigurationKeyURL: @"http://analytics.example.com" }
            } completion:^(BTClient *client) {
                expect(client).to.beKindOf([BTClient class]);
                expect(client.challenges).to.equal([NSSet setWithArray:@[@"cvv", @"postal_code"]]);
@@ -28,7 +27,6 @@ describe(@"initForTestingWithConfiguration:", ^{
            BTClientTestConfigurationKeySharedCustomerIdentifier: @"testing",
            BTClientTestConfigurationKeySharedCustomerIdentifierType: @"testing",
            BTClientTestConfigurationKeyClientTokenVersion: @1,
-           BTClientTestConfigurationKeyBaseUrl: @"http://example.com/",
            } completion:^(BTClient *client) {
                expect(client).to.beKindOf([BTClient class]);
                expect(client.challenges).to.equal([NSSet setWithArray:@[@"cvv", @"postal_code"]]);

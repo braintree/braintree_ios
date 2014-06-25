@@ -11,12 +11,6 @@
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
-@interface BTClient ()
-
-@property (nonatomic, strong) NSMutableArray *analyticsEventQueue;
-
-@end
-
 @implementation BTClient
 
 - (instancetype)initWithClientToken:(NSString *)clientTokenString {
@@ -41,9 +35,12 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             return nil;
         }
 
-        self.http = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
-        [self.http setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-        self.analyticsEventQueue = [NSMutableArray array];
+        self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
+        [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+
+        if (self.clientToken.analyticsEnabled) {
+            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.analyticsURL];
+        }
     }
     return self;
 }
@@ -63,7 +60,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                  };
 
-    [self.http GET:@"v1/payment_methods" parameters:parameters completion:^(BTHTTPResponse *response, NSError *error) {
+    [self.clientApiHttp GET:@"v1/payment_methods" parameters:parameters completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             if (successBlock) {
                 NSArray *responsePaymentMethods = response.object[@"paymentMethods"];
@@ -98,13 +95,13 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                    failure:(BTClientFailureBlock)failureBlock {
 
     NSMutableDictionary *creditCardParams = [@{ @"number": creditCardNumber,
-                                               @"expiration_month": expirationMonth,
-                                               @"expiration_year": expirationYear,
-                                               @"options": @{
-                                                       @"validate": @(shouldValidate)
-                                                       }
+                                                @"expiration_month": expirationMonth,
+                                                @"expiration_year": expirationYear,
+                                                @"options": @{
+                                                        @"validate": @(shouldValidate)
+                                                        }
                                                 } mutableCopy];
-    
+
     NSMutableDictionary *requestParameters = [@{ @"credit_card": creditCardParams,
                                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint }
                                               mutableCopy];
@@ -117,7 +114,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         requestParameters[@"billing_address"] = @{ @"postal_code": postalCode };
     }
 
-    [self.http POST:@"v1/payment_methods/credit_cards" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error) {
+    [self.clientApiHttp POST:@"v1/payment_methods/credit_cards" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             NSDictionary *creditCardResponse = response.object[@"creditCards"][0];
             BTCardPaymentMethod *paymentMethod = [[self class] cardFromAPIResponseDictionary:creditCardResponse];
@@ -149,7 +146,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                         @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                         };
 
-    [self.http POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
+    [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
                 NSDictionary *paypalPaymentMethodResponse = response.object[@"paypalAccounts"][0];
@@ -168,24 +165,16 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                    success:(BTClientAnalyticsSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
 
-    [self enqueueAnalyticsEvent:eventKind];
-
-    if ([self shouldTransmitAnalyticsEventQueue]) {
-        NSMutableArray *events = [NSMutableArray array];
-        NSMutableArray *eventKinds = [NSMutableArray array];
-        for (NSString *eventKind in [self dequeueAllAnalyticsEvents]) {
-            [eventKinds addObject:eventKind];
-            [events addObject:@{ @"kind": eventKind }];
-        }
-        NSDictionary *requestParameters = @{ @"analytics": events,
+    if (self.clientToken.analyticsEnabled) {
+        NSDictionary *requestParameters = @{ @"analytics": @[@{ @"kind": eventKind }],
                                              @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
 
-        [self.http POST:@"v1/analytics"
+        [self.analyticsHttp POST:@"/"
              parameters:requestParameters
              completion:^(BTHTTPResponse *response, NSError *error) {
                  if (response.isSuccess) {
                      if (successBlock) {
-                         successBlock(eventKinds);
+                         successBlock();
                      }
                  } else {
                      if (failureBlock) {
@@ -195,7 +184,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
              }];
     } else {
         if (successBlock) {
-            successBlock(@[]);
+            successBlock();
         }
     }
 }
@@ -237,28 +226,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     return card;
 }
 
-#pragma mark - Analytics Helpers
-
-- (void)enqueueAnalyticsEvent:(id)analyticsEvent {
-    if (self.clientToken.analyticsBatchSize != BTClientTokenAnalyticsBatchSizeDisabled) {
-        [self.analyticsEventQueue addObject:analyticsEvent];
-    }
-}
-
-- (BOOL)shouldTransmitAnalyticsEventQueue {
-    return self.analyticsEventQueue.count >= [self.clientToken analyticsBatchSize];
-}
-
-- (NSArray *)dequeueAllAnalyticsEvents {
-    NSArray *analyticsEvents = [self.analyticsEventQueue copy];
-    [self.analyticsEventQueue removeAllObjects];
-    return analyticsEvents;
-}
-
 #pragma mark - Debug
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<BTClient:%p http:%@>", self, self.http];
+    return [NSString stringWithFormat:@"<BTClient:%p clientApiHttp:%@, analyticsHttp:%@>", self, self.clientApiHttp, self.analyticsHttp];
 }
 
 #pragma mark - Library Version

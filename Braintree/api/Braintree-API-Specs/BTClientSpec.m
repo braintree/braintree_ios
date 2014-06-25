@@ -56,27 +56,30 @@ describe(@"BTClient", ^{
     });
 });
 
-describe(@"analytics batching", ^{
-    it(@"never sends events when batch size is 0", ^AsyncBlock{
-        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{BTClientTokenKeyAnalytics: @{BTClientTokenKeyBatchSize: @0} }]];
-        [client postAnalyticsEvent:@"First"
-                           success:^(NSArray *analyticsEvents){
-                               expect(analyticsEvents).to.haveCountOf(0);
-                               [client postAnalyticsEvent:@"Second"
-                                                  success:^(NSArray *analyticsEvents){
-                                                      expect(analyticsEvents).to.haveCountOf(0);
-                                                      [client postAnalyticsEvent:@"Third"
-                                                                         success:^(NSArray *analyticsEvents){
-                                                                             expect(analyticsEvents).to.haveCountOf(0);
-                                                                             done();
-                                                                         }
-                                                                         failure:nil];
-                                                  }
-                                                  failure:nil];
-                           }
-                           failure:nil];
+describe(@"post analytics event", ^{
+    it(@"sends events to the specified URL", ^{
+        NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
+        BTClient *client = [[BTClient alloc]
+                            initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyAnalytics:@{
+                                                                                                                    BTClientTokenKeyURL:analyticsUrl } }]];
+        OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
+        [[mockHttp expect] POST:@"/" parameters:[OCMArg any] completion:[OCMArg any]];
+        client.analyticsHttp = (id)mockHttp;
+
+        [client postAnalyticsEvent:@"An Event" success:nil failure:nil];
+        [mockHttp verify];
     });
 
+    it(@"does not send the event if the analytics url is nil", ^{
+        BTClient *client = [[BTClient alloc]
+                            initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:nil]];
+        OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
+        [[mockHttp reject] POST:[OCMArg any] parameters:[OCMArg any] completion:[OCMArg any]];
+        client.analyticsHttp = (id)mockHttp;
+
+        [client postAnalyticsEvent:@"An Event" success:nil failure:nil];
+        [mockHttp verify];
+    });
 });
 
 describe(@"offline clients", ^{
@@ -230,31 +233,17 @@ describe(@"offline clients", ^{
                 expect(paymentMethods[0]).to.beKindOf([BTPayPalPaymentMethod class]);
                 expect([paymentMethods[0] email]).to.endWith(@"@example.com");
             });
-
+            
             it(@"assigns distinct nonces for each payment method", ^{
                 expect([paymentMethods[0] nonce]).notTo.equal([paymentMethods[1] nonce]);
             });
         });
-
+        
         it(@"accepts a nil success block", ^AsyncBlock{
             [offlineClient fetchPaymentMethodsWithSuccess:nil failure:nil];
-
+            
             wait_for_potential_async_exceptions(done);
         });
-    });
-});
-
-describe(@"post analytics event", ^{
-    it(@"sends analytics events successfully", ^AsyncBlock{
-        NSString *event = @"First";
-        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyAnalytics: @{ BTClientTokenKeyBatchSize: @1 } }]];
-        [client postAnalyticsEvent:event
-                           success:^(NSArray *analyticsEvents){
-                               expect(analyticsEvents).to.haveCountOf(1);
-                               expect(analyticsEvents).to.contain(event);
-                               done();
-                           }
-                           failure:nil];
     });
 });
 

@@ -9,9 +9,7 @@
     NSMutableDictionary *clientTokenDataDictionary =
     [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
                                                      BTClientTokenKeyClientApiURL: BTOfflineModeClientApiBaseURL,
-                                                     BTClientTokenKeyAuthorizationURL: BTOfflineModeClientApiAuthURL,
-                                                     BTClientTokenKeyAnalytics: @{BTClientTokenKeyBatchSize: @1}
-                                                     }];
+                                                     BTClientTokenKeyAuthorizationURL: BTOfflineModeClientApiAuthURL }];
 
     [clientTokenDataDictionary addEntriesFromDictionary:configuration];
 

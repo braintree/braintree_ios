@@ -1,23 +1,20 @@
 #import "BTClientToken.h"
- 
-
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 
 
 #import "BTHTTP.h"
 
-NSString *BTClientTestConfigurationKeyMerchantIdentifier = @"merchantId";
+NSString *BTClientTestConfigurationKeyMerchantIdentifier = @"merchant_id";
 NSString *BTClientTestConfigurationKeyPublicKey = @"publicKey";
 NSString *BTClientTestConfigurationKeyCustomer = @"customer";
 NSString *BTClientTestConfigurationKeySharedCustomerIdentifier = @"sharedCustomerIdentifier";
 NSString *BTClientTestConfigurationKeySharedCustomerIdentifierType = @"sharedCustomerIdentifierType";
-NSString *BTClientTestConfigurationKeyBaseUrl = @"baseUrl";
 NSString *BTClientTestConfigurationKeyPayPalClientId = @"paypalClientId";
 NSString *BTClientTestConfigurationKeyRevoked = @"authorizationFingerprintRevoked";
 NSString *BTClientTestConfigurationKeyClientTokenVersion = @"tokenVersion";
 NSString *BTClientTestConfigurationKeyAnalytics = @"analytics";
-NSString *BTClientTestConfigurationKeyBatchSize = @"batchSize";
+NSString *BTClientTestConfigurationKeyURL = @"url";
 
 NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 
@@ -28,7 +25,27 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 
     BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:[[self class] testClientApiURLForMerchant:configurationDictionary[BTClientTestConfigurationKeyMerchantIdentifier]]];
 
-    [http POST:@"testing/client_token" parameters:configurationDictionary completion:^(BTHTTPResponse *response, __unused NSError *error) {
+    NSMutableDictionary *overrides = [NSMutableDictionary dictionaryWithDictionary:configurationDictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSArray *topLevelParams = @[ BTClientTestConfigurationKeyMerchantIdentifier,
+                                 BTClientTestConfigurationKeyPublicKey,
+                                 BTClientTestConfigurationKeyCustomer,
+                                 BTClientTestConfigurationKeyClientTokenVersion,
+                                 BTClientTestConfigurationKeyRevoked,
+                                 BTClientTestConfigurationKeySharedCustomerIdentifierType,
+                                 BTClientTestConfigurationKeySharedCustomerIdentifier ];
+
+    for (NSString *topLevelParam in topLevelParams) {
+        if (configurationDictionary[topLevelParam]) {
+            parameters[topLevelParam] = configurationDictionary[topLevelParam];
+        }
+        [overrides removeObjectForKey:topLevelParam];
+    }
+    parameters[@"overrides"] = overrides;
+
+    [http POST:@"testing/client_token"
+    parameters:parameters
+    completion:^(BTHTTPResponse *response, NSError *error) {
         NSAssert(error == nil, @"testing/client_token failed or responded with an error: %@", error);
         NSString *clientTokenString = response.object[@"clientToken"];
 
@@ -42,7 +59,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 
     NSString *path = [NSString stringWithFormat:@"nonces/%@", [nonce stringByAddingPercentEncodingWithAllowedCharacters:nonceParamCharacterSet]];
 
-    [self.http GET:path parameters:[self defaultRequestParameters] completion:^(BTHTTPResponse *response, NSError *error) {
+    [self.clientApiHttp GET:path parameters:[self defaultRequestParameters] completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             if (successBlock != nil) {
                 successBlock(response.object[@"nonce"]);

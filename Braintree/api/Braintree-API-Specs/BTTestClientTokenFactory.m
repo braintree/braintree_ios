@@ -6,8 +6,8 @@
     return @"{\"authorizationFingerprint\":\"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key\",\"clientApiUrl\":\"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api\",\"authUrl\":\"https://auth.example.com:1234\"}";
 }
 
-+ (NSString *)tokenWithAnalyticsBatchSize:(NSUInteger)batchSize {
-    return [[[NSString stringWithFormat:@"{\"authorizationFingerprint\":\"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key\",\"clientApiUrl\":\"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api\",\"authUrl\":\"https://auth.example.com:1234\", \"analytics\": {\"batchSize\": %ld }}", (long)batchSize] dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
++ (NSString *)tokenWithAnalyticsUrl:(NSString *)analyticsUrl {
+    return [[[NSString stringWithFormat:@"{\"authorizationFingerprint\":\"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key\",\"clientApiUrl\":\"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api\",\"authUrl\":\"https://auth.example.com:1234\", \"analytics\": {\"url\": \"%@\" }}", analyticsUrl] dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
 
 }
 
