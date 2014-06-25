@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="5k7-KM-Pxu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="5k7-KM-Pxu">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -78,8 +78,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="BTPayPal Demo" id="FiQ-Lc-2bX"/>
                     <connections>
-                        <outlet property="payPalControl" destination="06n-uN-TeL" id="ChV-xu-HP4"/>
-                        <outlet property="payPalControlHeightConstraint" destination="EsC-Pa-fnV" id="tMm-cC-sTv"/>
+                        <outlet property="payPalButton" destination="06n-uN-TeL" id="xkV-wQ-mwb"/>
+                        <outlet property="payPalButtonHeightConstraint" destination="EsC-Pa-fnV" id="pY0-as-zGP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vy3-fU-VuK" userLabel="First Responder" sceneMemberID="firstResponder"/>
