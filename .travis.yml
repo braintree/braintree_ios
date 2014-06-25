@@ -7,3 +7,4 @@ xcode_scheme:
   - Braintree-Specs
 xcode_sdk: iphonesimulator7.1
 rvm: 2.1.1
+script: rvm list
