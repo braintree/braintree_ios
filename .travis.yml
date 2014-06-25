@@ -1,0 +1,8 @@
+language: objective-c
+xcode_workspace: Braintree.xcworkspace
+xcode_scheme:
+  - Braintree-API-Specs
+  - Braintree-Payments-UI-Specs
+  - Braintree-PayPal-Specs
+  - Braintree-Specs
+xcode_sdk: iphonesimulator7.1
