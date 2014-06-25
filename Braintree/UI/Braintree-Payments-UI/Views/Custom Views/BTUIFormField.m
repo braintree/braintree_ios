@@ -9,6 +9,7 @@
 
 @property (nonatomic, strong) BTUIFloatLabel *floatLabel;
 @property (nonatomic, copy) NSString *previousTextFieldText;
+@property (nonatomic, strong) NSMutableArray *layoutConstraints;
 
 @end
 
@@ -44,7 +45,6 @@
         [self addSubview:self.textField];
         [self addSubview:self.floatLabel];
         [self addSubview:self.accessoryView];
-        [self setupConstraints];
 
         [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedField)]];
 
@@ -180,33 +180,46 @@
     }
 }
 
-- (void)setupConstraints {
+- (void)updateConstraints {
     NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin]),
                               @"accessoryViewWidth": @44 };
     NSDictionary *views = @{ @"textField": self.textField,
                              @"floatLabel": self.floatLabel,
                              @"accessoryView": self.accessoryView };
 
-    // Pin accessory view to right with constant width
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView]-(horizontalMargin)-|" options:NSLayoutFormatAlignAllCenterY metrics:metrics views:views]];
-    
-    
-    // Horizontally Pin Float Label and accessory view
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[floatLabel]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
-    
-    // Horizontally Pin text field and accessory view
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
-    
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView(==accessoryViewWidth)]" options:0 metrics:metrics views:views]];
+    if (self.layoutConstraints != nil) {
+        [self removeConstraints:self.layoutConstraints];
+    }
+    self.layoutConstraints = [NSMutableArray array];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(7)-[floatLabel(==15)]-(1)-[textField(==20)]-(11)-|" options:0 metrics:metrics views:views]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.accessoryView
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeCenterY
-                                                    multiplier:1.0f
-                                                      constant:0]];
+    // Pin accessory view to right with constant width
+
+    [self.layoutConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView]-(horizontalMargin)-|"
+                                                                              options:NSLayoutFormatAlignAllCenterY
+                                                                              metrics:metrics
+                                                                                views:views]];
+
+
+    // Horizontally Pin Float Label and accessory view
+    [self.layoutConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[floatLabel]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
+
+    // Horizontally Pin text field and accessory view
+    [self.layoutConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[textField]-(horizontalMargin)-[accessoryView]-(horizontalMargin)-|" options:0 metrics:metrics views:views]];
+
+    [self.layoutConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView(==accessoryViewWidth)]" options:0 metrics:metrics views:views]];
+
+    [self.layoutConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(7)-[floatLabel(==15)]-(1)-[textField(==20)]-(11)-|" options:0 metrics:metrics views:views]];
+    [self.layoutConstraints addObject:[NSLayoutConstraint constraintWithItem:self.accessoryView
+                                                                   attribute:NSLayoutAttributeCenterY
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:self
+                                                                   attribute:NSLayoutAttributeCenterY
+                                                                  multiplier:1.0f
+                                                                    constant:0]];
+    NSArray *contraintsToAdd = [self.layoutConstraints copy];
+    [self addConstraints:contraintsToAdd];
+    [super updateConstraints];
+
 }
 
 - (void)didDeleteBackward {
