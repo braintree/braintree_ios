@@ -6,4 +6,4 @@ xcode_scheme:
   - Braintree-PayPal-Specs
   - Braintree-Specs
 xcode_sdk: iphonesimulator7.1
-rvm: 2.0.0
+rvm: 2.1.1
