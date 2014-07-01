@@ -142,7 +142,13 @@
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
 
     NSString *responseContentType = [httpResponse MIMEType];
-    if ([responseContentType isEqualToString:@"application/json"]) {
+
+    if (data.length == 0) {
+        // Accept empty responses
+        BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:httpResponse.statusCode responseObject:nil];
+        NSError *returnedError = [self defaultDomainErrorForStatusCode:httpResponse.statusCode error:error];
+        [self callCompletionBlock:completionBlock response:btHTTPResponse error:returnedError];
+    } else if ([responseContentType isEqualToString:@"application/json"]) {
         // Attempt to parse json, and return an error if parsing fails
         NSError *jsonParseError;
         NSDictionary *responseObject = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParseError];
@@ -157,11 +163,7 @@
         BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:httpResponse.statusCode responseObject:responseObject];
         NSError *returnedError = [self defaultDomainErrorForStatusCode:httpResponse.statusCode error:error];
         [self callCompletionBlock:completionBlock response:btHTTPResponse error:returnedError];
-    } else if (responseContentType == nil && data.length == 0) {
-        // Accept empty responses
-        BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:httpResponse.statusCode responseObject:nil];
-        NSError *returnedError = [self defaultDomainErrorForStatusCode:httpResponse.statusCode error:error];
-        [self callCompletionBlock:completionBlock response:btHTTPResponse error:returnedError];
+
     } else {
         // Return error for unsupported response type
         NSError *returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain

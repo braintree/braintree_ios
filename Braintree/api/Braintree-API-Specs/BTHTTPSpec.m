@@ -448,7 +448,7 @@ describe(@"interpreting responses", ^{
             }];
         });
 
-        xit(@"accepts empty responses", ^AsyncBlock{
+        it(@"accepts empty responses", ^AsyncBlock{
             id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
