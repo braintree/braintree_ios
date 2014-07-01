@@ -278,25 +278,8 @@
     }
 
     - (NSString *)userAgentString {
-        // braintree-api-ios/1.0.0 iOS/4.3.2 iPhone2,1
-        NSString *userInterfaceIdiom;
-        switch ([[UIDevice currentDevice] userInterfaceIdiom]) {
-            case UIUserInterfaceIdiomPhone:
-                userInterfaceIdiom = @"iPhone";
-                break;
-            case UIUserInterfaceIdiomPad:
-                userInterfaceIdiom = @"iPad";
-                break;
-            default:
-                userInterfaceIdiom = @"unknown";
-        }
-
-        return [NSString stringWithFormat:@"braintree-api-ios/%@ %@/%@ %@/%@",
-                [BTClient libraryVersion],
-                userInterfaceIdiom,
-                [[UIDevice currentDevice] systemVersion],
-                [self platformString],
-                [self architectureString]];
+        return [NSString stringWithFormat:@"Braintree/iOS/%@",
+                [BTClient libraryVersion]];
     }
 
     - (NSString *)platformString {

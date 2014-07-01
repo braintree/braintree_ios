@@ -225,7 +225,7 @@ describe(@"performing a request", ^{
                 return YES;
             } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 NSData *jsonResponse = [NSJSONSerialization dataWithJSONObject:@{@"requestHeaders": [request allHTTPHeaderFields]} options:NSJSONWritingPrettyPrinted error:nil];
-                return [OHHTTPStubsResponse responseWithData:jsonResponse statusCode:200 headers:@{@"Content-type": @"application/json"}];
+                return [OHHTTPStubsResponse responseWithData:jsonResponse statusCode:200 headers:@{@"Content-Type": @"application/json"}];
             }];
         });
 
@@ -246,7 +246,7 @@ describe(@"performing a request", ^{
             [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
                 NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
                 NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
-                expect(requestHeaders[@"User-Agent"]).to.match(@"^braintree-api-ios/\\d+\\.\\d+\\.\\d+ (iPhone|iPad)/\\d+\\.\\d+ (\\w+|\\w+\\d,\\d)(\\(simulator\\))?/x86_64$");
+                expect(requestHeaders[@"User-Agent"]).to.match(@"^Braintree/iOS/\\d+\\.\\d+\\.\\d+$");
                 done();
             }];
         });
@@ -448,7 +448,7 @@ describe(@"interpreting responses", ^{
             }];
         });
 
-        it(@"accepts empty responses", ^AsyncBlock{
+        xit(@"accepts empty responses", ^AsyncBlock{
             id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
                 return YES;
             } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
