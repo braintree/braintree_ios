@@ -277,11 +277,23 @@ describe(@"performing a request", ^{
 
         describe(@"in GET requests", ^{
             it(@"transmits the parameters as URL encoded query parameters", ^AsyncBlock{
-                NSString *encodedParameters = @"numericParameter=42&falseBooleanParameter=0&dictionaryParameter%5BdictionaryKey%5D=dictionaryValue&trueBooleanParameter=1&stringParameter=value&crazyStringParameter%5B%5D=crazy%2520and%26value&arrayParameter%5B%5D=arrayItem1&arrayParameter%5B%5D=arrayItem2";
+                NSArray *expectedQueryParameters = @[ @"numericParameter=42",
+                                                @"falseBooleanParameter=0",
+                                                @"dictionaryParameter%5BdictionaryKey%5D=dictionaryValue",
+                                                @"trueBooleanParameter=1",
+                                                @"stringParameter=value",
+                                                @"crazyStringParameter%5B%5D=crazy%2520and%26value",
+                                                @"arrayParameter%5B%5D=arrayItem1",
+                                                @"arrayParameter%5B%5D=arrayItem2" ];
 
                 [http GET:@"200.json" parameters:parameterDictionary completion:^(BTHTTPResponse *response, NSError *error) {
                     NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                    expect(httpRequest.URL.query).to.equal(encodedParameters);
+                    NSArray *actualQueryComponents = [httpRequest.URL.query componentsSeparatedByString:@"&"];
+
+                    for(NSString *expectedComponent in expectedQueryParameters){
+                        expect(actualQueryComponents).to.contain(expectedComponent);
+                    }
+
                     done();
                 }];
             });
@@ -289,15 +301,24 @@ describe(@"performing a request", ^{
 
         describe(@"in non-GET requests", ^{
             it(@"transmits the parameters as JSON", ^AsyncBlock{
-                NSString *encodedParameters = @"{\n  \"numericParameter\" : 42,\n  \"falseBooleanParameter\" : false,\n  \"dictionaryParameter\" : {\n    \"dictionaryKey\" : \"dictionaryValue\"\n  },\n  \"trueBooleanParameter\" : true,\n  \"stringParameter\" : \"value\",\n  \"crazyStringParameter[]\" : \"crazy%20and&value\",\n  \"arrayParameter\" : [\n    \"arrayItem1\",\n    \"arrayItem2\"\n  ]\n}";
+                NSDictionary *expectedParameters = @{ @"numericParameter": @42,
+                                                 @"falseBooleanParameter": @NO,
+                                                 @"dictionaryParameter": @{
+                                                         @"dictionaryKey": @"dictionaryValue"
+                                                          },
+                                                 @"trueBooleanParameter": @YES,
+                                                  @"stringParameter": @"value",
+                                                 @"crazyStringParameter[]": @"crazy%20and&value", @"arrayParameter": @[ @"arrayItem1", @"arrayItem2" ] };
 
                 [http POST:@"200.json" parameters:parameterDictionary completion:^(BTHTTPResponse *response, NSError *error) {
                     NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
                     NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponse:response];
 
                     expect([httpRequest valueForHTTPHeaderField:@"Content-type"]).to.equal(@"application/json; charset=utf-8");
-                    expect(httpRequestBody).to.equal(encodedParameters);
-
+                    NSDictionary *actualParameters = [NSJSONSerialization JSONObjectWithData:[httpRequestBody dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                     options:0
+                                                                                       error:NULL];
+                    expect(actualParameters).to.equal(expectedParameters);
                     done();
                 }];
             });
