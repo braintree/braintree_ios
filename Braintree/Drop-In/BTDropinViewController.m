@@ -7,6 +7,7 @@
 #import "Braintree-API.h"
 #import "BTClient+BTPayPal.h"
 #import "BTDropInErrorState.h"
+#import "BTDropInErrorAlert.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalButtonViewControllerPresenterDelegate, BTPayPalButtonDelegate, BTDropInViewControllerDelegate>
 
@@ -28,6 +29,10 @@
 /// Strong reference to an additional BTPayPalButton. Reference is needed so
 /// activity can continue after dismissal
 @property (nonatomic, strong) BTPayPalButton *retainedPayPalButton;
+
+///  Strong reference to the BTDropInErrorAlert. Reference is needed to
+/// handle user input from UIAlertView.
+@property (nonatomic, strong) BTDropInErrorAlert *fetchPaymentMethodsErrorAlert;
 
 @end
 
@@ -554,6 +559,27 @@
     } else {
         return BTUICardFormOptionalFieldsNone;
     }
+}
+
+- (void) fetchPaymentMethods{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
+    [self.client fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        self.paymentMethods = paymentMethods;
+    } failure:^(NSError *error) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        self.fetchPaymentMethodsErrorAlert = [[BTDropInErrorAlert alloc] initWithError:error
+             cancel:^(NSError *error){
+                 [self informDelegateDidFailWithError:error];
+             }
+              retry:^{
+                  [self fetchPaymentMethods];
+              }
+        ];
+        [self.fetchPaymentMethodsErrorAlert show];
+    }];
+
 }
 
 #pragma mark - Helpers

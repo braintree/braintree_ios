@@ -44,7 +44,7 @@
 
 #pragma mark State Change Notifications
 
-/// The delgate that, if set, is notified of success or failure.
+/// The delegate that, if set, is notified of success or failure.
 @property (nonatomic, weak) id<BTDropInViewControllerDelegate> delegate;
 
 /// Functionally equivalent to the `BTDropInViewControllerDelegate` above, you may also register a
@@ -92,6 +92,13 @@
 /// @see callToAction
 /// @see callToActionAmount
 @property (nonatomic, assign) BOOL shouldHideCallToAction;
+
+/// Fetches the customer's saved payment methods and populates Drop In with them.
+///
+/// @note For the best user experience, you should call this method as early as
+///       possible (after initializing BTDropInViewController, before presenting it)
+///       in order to avoid a loading spinner.
+- (void)fetchPaymentMethods;
 
 
 @end

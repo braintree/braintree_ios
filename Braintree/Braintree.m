@@ -54,17 +54,7 @@
     dropInViewController.paymentMethodCompletionBlock = ^(BTPaymentMethod *paymentMethod, __unused NSError *error){
         completionBlock(paymentMethod.nonce, nil);
     };
-
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [self.client fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        dropInViewController.paymentMethods = paymentMethods;
-    } failure:^(NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        NSLog(@"Error fetching payment methods: %@", error);
-        dropInViewController.paymentMethods = @[];
-    }];
-
+    [dropInViewController fetchPaymentMethods];
     return dropInViewController;
 }
 
