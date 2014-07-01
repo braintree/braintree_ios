@@ -47,19 +47,19 @@ class << self
 end
 
 namespace :spec do
-  def run_test_target! target
-    run! XCTool::Builder.new('Braintree.xcworkspace', target).test.as_cmd
+  def run_test_scheme! scheme
+    run! XCTool::Builder.new('Braintree.xcworkspace', scheme).test.as_cmd
   end
 
   desc 'Run unit tests'
   task :unit do
-    run_test_target! 'Braintree-Specs'
+    run_test_scheme! 'Braintree-Specs'
   end
 
   namespace :api do
     desc 'Run api unit tests'
     task :unit do
-      run_test_target! 'Braintree-API-Specs'
+      run_test_scheme! 'Braintree-API-Specs'
     end
 
     def with_https_server &block
@@ -84,34 +84,34 @@ namespace :spec do
   namespace :paypal do
     desc 'Run PayPal unit tests'
     task :unit do
-      run_test_target! 'Braintree-PayPal-Specs'
+      run_test_scheme! 'Braintree-PayPal-Specs'
     end
 
     desc 'Run PayPal integration tests'
     task :integration do
-      run_test_target! 'Braintree-PayPal-Integration-Specs'
+      run_test_scheme! 'Braintree-PayPal-Integration-Specs'
     end
 
     desc 'Run PayPal ui acceptance tests'
     task :acceptance do
-      run_test_target! 'Braintree-PayPal-Acceptance-Specs'
+      run_test_scheme! 'Braintree-PayPal-Acceptance-Specs'
     end
   end
 
   namespace :ui do
     desc 'Run UI unit tests'
     task :unit do
-      run_test_target! 'Braintree-Payments-UI-Specs'
+      run_test_scheme! 'Braintree-Payments-UI-Specs'
     end
   end
 
-  desc 'Run all spec targets'
+  desc 'Run all spec schemes'
   task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:api:integration paypal:integration paypal:acceptance]
 end
 
 namespace :demo do
-  def build_demo! target
-    run! XCTool::Builder.new('Braintree.xcworkspace', target).build.as_cmd
+  def build_demo! scheme
+    run! XCTool::Builder.new('Braintree.xcworkspace', scheme).build.as_cmd
   end
 
   task :build do
