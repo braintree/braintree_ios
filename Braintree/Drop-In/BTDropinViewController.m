@@ -562,13 +562,14 @@
 }
 
 - (void) fetchPaymentMethods{
+    BOOL networkActivityIndicatorState = [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
     [self.client fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
         self.paymentMethods = paymentMethods;
     } failure:^(NSError *error) {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
         self.fetchPaymentMethodsErrorAlert = [[BTDropInErrorAlert alloc] initWithError:error
              cancel:^(NSError *error){
                  [self informDelegateDidFailWithError:error];
