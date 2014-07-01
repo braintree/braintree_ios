@@ -8,7 +8,7 @@ HighLine.color_scheme = HighLine::SampleColorScheme.new
 task :default => %w[sanity_checks spec]
 
 desc "Run default set of tasks"
-task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit]
+task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:data:unit]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
 task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
@@ -78,6 +78,13 @@ namespace :spec do
       with_https_server do
         run! XCTool::Builder.new('Braintree.xcworkspace', 'Braintree-API-Integration-Specs').with_build_setting('GCC_PREPROCESSOR_DEFINITIONS', 'SKIP_SSL_PINNING_SPECS=1').test.as_cmd
       end
+    end
+  end
+
+  namespace :data do
+    desc 'Run Data unit tests'
+    task :unit do
+      run_test_scheme! 'Braintree-Data-Specs'
     end
   end
 

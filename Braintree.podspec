@@ -33,6 +33,7 @@ Pod::Spec.new do |s|
   s.subspec 'api' do |s|
     s.source_files  = "Braintree/api/Braintree-API/**/*.{h,m}"
     s.public_header_files = "Braintree/api/Braintree-API/Public/*.h"
+    s.dependency 'Braintree/Data'
   end
 
   s.subspec 'PayPal' do |s|
@@ -50,5 +51,11 @@ Pod::Spec.new do |s|
     s.public_header_files = 'Braintree/UI/Braintree-Payments-UI/**/*.h'
     s.compiler_flags = "-Wall -Wextra"
     s.frameworks = 'UIKit'
+  end
+
+  s.subspec 'Data' do |s|
+    s.source_files = "Braintree/Data/Braintree-Data/**/*.{h,m}"
+    s.vendored_library = "Braintree/Data/Braintree-Data/libDeviceCollectorLibrary.a"
+    s.frameworks = "UIKit", "SystemConfiguration"
   end
 end

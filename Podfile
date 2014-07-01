@@ -78,3 +78,9 @@ target 'Braintree-Payments-UI-Specs' do
 
   pods_for_specs
 end
+
+# Data #
+target 'Braintree-Data-Specs' do
+  pods_for_specs
+  pod 'Braintree/Data', :path => '.'
+end

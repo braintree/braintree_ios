@@ -16,16 +16,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1607FE5D192D97570099D504"
-               BuildableName = "Braintree-PayPal-Integration-Specs.xctest"
-               BlueprintName = "Braintree-PayPal-Integration-Specs"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "A72B37FC19633826009AD2F5"
                BuildableName = "Braintree-Data-Specs.xctest"
                BlueprintName = "Braintree-Data-Specs"
