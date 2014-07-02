@@ -24,7 +24,7 @@
 
 
 - (void)show{
-    [[[UIAlertView alloc] initWithTitle:@"Connection Error"
+    [[[UIAlertView alloc] initWithTitle:self.title
                                 message:nil
                                delegate:self
                       cancelButtonTitle:@"Cancel"
@@ -37,6 +37,10 @@
     } else if (buttonIndex == 1 && self.retryBlock) {
         self.retryBlock();
     }
+}
+
+- (NSString *)title{
+    return _title ?: @"Connection Error";
 }
 
 @end

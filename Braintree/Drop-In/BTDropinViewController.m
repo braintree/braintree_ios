@@ -30,9 +30,11 @@
 /// activity can continue after dismissal
 @property (nonatomic, strong) BTPayPalButton *retainedPayPalButton;
 
-///  Strong reference to the BTDropInErrorAlert. Reference is needed to
+/// Strong reference to the BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
 @property (nonatomic, strong) BTDropInErrorAlert *fetchPaymentMethodsErrorAlert;
+
+@property (nonatomic, strong) BTDropInErrorAlert *savePayPalAccountErrorAlert;
 
 @end
 
@@ -400,18 +402,22 @@
     self.retainedPayPalButton = nil;
 }
 
-- (void)payPalButton:(__unused BTPayPalButton *)button didFailWithError:(NSError *)error {
-
-    // Use the paymentMethods setter to update state
-    [self setPaymentMethods:_paymentMethods];
-
+- (void)payPalButton:(BTPayPalButton *)button didFailWithError:(NSError *)error {
     // Allow retained PayPal button to release, which will only happen if it isn't "ours"
     self.retainedPayPalButton = nil;
-    [[[UIAlertView alloc] initWithTitle:@"PayPal Error"
-                                message:error.description
-                               delegate:nil
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
+
+    self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithError:error
+                                                                          cancel:^(__unused NSError *error) {
+                                                                              // Use the paymentMethods setter to update state
+                                                                              [self setPaymentMethods:_paymentMethods];
+                                                                              self.savePayPalAccountErrorAlert = nil;
+                                                                          } retry:^{
+                                                                              [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+                                                                              [self setPaymentMethods:_paymentMethods];
+                                                                              self.savePayPalAccountErrorAlert = nil;
+                                                                          }];
+    self.savePayPalAccountErrorAlert.title = @"PayPal Error";
+    [self.savePayPalAccountErrorAlert show];
 }
 
 #pragma mark Delegate Notifications
@@ -571,16 +577,17 @@
     } failure:^(NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
         self.fetchPaymentMethodsErrorAlert = [[BTDropInErrorAlert alloc] initWithError:error
-             cancel:^(NSError *error){
-                 [self informDelegateDidFailWithError:error];
-             }
-              retry:^{
-                  [self fetchPaymentMethods];
-              }
-        ];
+                                                                                cancel:^(NSError *error){
+                                                                                    [self informDelegateDidFailWithError:error];
+                                                                                    self.fetchPaymentMethodsErrorAlert = nil;
+                                                                                }
+                                                                                 retry:^{
+                                                                                     [self fetchPaymentMethods];
+                                                                                     self.fetchPaymentMethodsErrorAlert = nil;
+                                                                                 }
+                                              ];
         [self.fetchPaymentMethodsErrorAlert show];
     }];
-
 }
 
 #pragma mark - Helpers
