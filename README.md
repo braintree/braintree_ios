@@ -26,13 +26,20 @@ pod 'Braintree' # You can also specify a particular version here
 
 Then run `pod install`.
 
+If you've never used CocoaPods before, [this website](http://guides.cocoapods.org/using/getting-started.html) does a great job explaining what it is and how it works. We believe that dependency management will make iOS developers more productive and are curious about your feedback. (It is possible to pull in our code manually, but that is not recommended at this time.)
+
+## Demo
+
 Need instant gratification? Try out the library in a demo app first by enter this command in your shell:
 
 ```
 pod try Braintree
 ```
 
-If you've never used CocoaPods before, [this website](http://guides.cocoapods.org/using/getting-started.html) does a great job explaining what it is and how it works. We believe that dependency management will make iOS developers more productive and are curious about your feedback. (It is possible to pull in our code manually, but that is not recommended at this time.)
+`Braintree.xcworkspace` includes a demo app called `Braintree Demo` that presents a number of integration options. In order to run this demo, you will need to run a server that integrates with a Braintree client library and responds to `/client_token` with a valid client token.
+
+We include a sample merchant server in this repository. Please see [Sample Merchant Server/README](Sample Merchant Server/README.md] for further instructions on running a sample server.
+
 
 ## Usage
 
