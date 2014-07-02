@@ -8,8 +8,7 @@
 + (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)configuration {
     NSMutableDictionary *clientTokenDataDictionary =
     [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
-                                                     BTClientTokenKeyClientApiURL: BTOfflineModeClientApiBaseURL,
-                                                     BTClientTokenKeyAuthorizationURL: BTOfflineModeClientApiAuthURL }];
+                                                     BTClientTokenKeyClientApiURL: BTOfflineModeClientApiBaseURL }];
 
     [clientTokenDataDictionary addEntriesFromDictionary:configuration];
 

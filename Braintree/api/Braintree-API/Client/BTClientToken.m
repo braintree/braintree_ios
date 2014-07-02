@@ -1,7 +1,6 @@
 #import "BTClientToken.h"
 
 NSString *const BTClientTokenKeyAuthorizationFingerprint = @"authorizationFingerprint";
-NSString *const BTClientTokenKeyAuthorizationURL = @"authUrl";
 NSString *const BTClientTokenKeyClientApiURL = @"clientApiUrl";
 NSString *const BTClientTokenKeyChallenges = @"challenges";
 NSString *const BTClientTokenKeyAnalytics = @"analytics";
@@ -10,7 +9,6 @@ NSString *const BTClientTokenKeyURL = @"url";
 @interface BTClientToken ()
 
 @property (nonatomic, readwrite, copy) NSString *authorizationFingerprint;
-@property (nonatomic, readwrite, strong) NSURL *authorizationURL;
 @property (nonatomic, readwrite, strong) NSURL *clientApiURL;
 @property (nonatomic, readwrite, strong) NSDictionary *claims;
 
@@ -41,14 +39,12 @@ NSString *const BTClientTokenKeyURL = @"url";
     if (self) {
         self.authorizationFingerprint = [self parseAuthorizationFingerprint:claims[BTClientTokenKeyAuthorizationFingerprint]
                                                                       error:error];
-        self.authorizationURL = [self parseAuthorizationURL:([claims[BTClientTokenKeyAuthorizationURL] isKindOfClass:[NSString class]] ? claims[BTClientTokenKeyAuthorizationURL] : nil)
-                                                      error:error];
         self.clientApiURL = [self parseClientApiURL:([claims[BTClientTokenKeyClientApiURL] isKindOfClass:[NSString class]] ? claims[BTClientTokenKeyClientApiURL]: nil)
                                               error:error];
 
         self.claims = claims;
 
-        if (!self.authorizationFingerprint || !self.authorizationURL || !self.clientApiURL) {
+        if (!self.authorizationFingerprint || !self.clientApiURL) {
             if (error && !*error) {
                 *error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain code:BTMerchantIntegrationErrorInvalidClientToken userInfo:nil];
             }
@@ -168,7 +164,7 @@ NSString *const BTClientTokenKeyURL = @"url";
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<BTClientToken: authorizationFingerprint:%@ authorizationURL:%@, clientApiURL:%@, analyticsURL:%@>", self.authorizationFingerprint, self.authorizationURL, self.clientApiURL, self.analyticsURL];
+    return [NSString stringWithFormat:@"<BTClientToken: authorizationFingerprint:%@ clientApiURL:%@, analyticsURL:%@>", self.authorizationFingerprint, self.clientApiURL, self.analyticsURL];
 }
 
 @end

@@ -3,7 +3,6 @@
 @class BTOfflineClientBackend;
 
 extern NSString *const BTOfflineModeClientApiBaseURL;
-extern NSString *const BTOfflineModeClientApiAuthURL;
 
 @interface BTOfflineModeURLProtocol : NSURLProtocol
 

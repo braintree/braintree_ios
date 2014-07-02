@@ -21,7 +21,6 @@ beforeEach(^AsyncBlock{
 
      NSDictionary *baseClaims = @{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
                                                            BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                                           BTClientTokenKeyAuthorizationURL: @"http://auth.example.com/",
                                                            BTClientTokenKeyPayPalEnabled: @YES,
                                                            BTClientTokenPayPalNamespace: paypalClaims};
 
@@ -49,8 +48,7 @@ describe(@"btPayPal_environment", ^{
 describe(@"btPayPal_isPayPalEnabled", ^{
     beforeEach(^{
         NSDictionary *baseClaims = @{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                      BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                      BTClientTokenKeyAuthorizationURL: @"http://auth.example.com/",
+                                      BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",.
                                       BTClientTokenKeyPayPalEnabled: @NO};
 
         clientTokenPayPalDisabled = [[BTClientToken alloc] initWithClaims:baseClaims

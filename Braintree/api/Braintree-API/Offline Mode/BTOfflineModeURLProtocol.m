@@ -5,7 +5,6 @@
 #import <objc/runtime.h>
 
 NSString *const BTOfflineModeClientApiBaseURL = @"braintree-api-offline-http://client-api";
-NSString *const BTOfflineModeClientApiAuthURL = @"braintree-api-offline-http://auth";
 NSString *const BTOfflineModeHTTPVersionString = @"HTTP/1.1";
 
 void *backend_associated_object_key = &backend_associated_object_key;

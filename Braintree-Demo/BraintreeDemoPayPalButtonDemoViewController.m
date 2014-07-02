@@ -29,41 +29,44 @@
             NSLog(@"Got a nonce! %@", nonce);
         }
     }];
-    [payPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    // Add PayPal button as subview
-    [self.view addSubview:payPalButton];
+    if (payPalButton) {
+        [payPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    // Setup Auto Layout constraints
-    NSDictionary *views = NSDictionaryOfVariableBindings(payPalButton);
+        // Add PayPal button as subview
+        [self.view addSubview:payPalButton];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[payPalButton]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
+        // Setup Auto Layout constraints
+        NSDictionary *views = NSDictionaryOfVariableBindings(payPalButton);
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:payPalButton
-                                                          attribute:NSLayoutAttributeCenterX
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterX
-                                                         multiplier:1
-                                                           constant:0]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[payPalButton]|"
+                                                                          options:0
+                                                                          metrics:nil
+                                                                            views:views]];
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:payPalButton
-                                                          attribute:NSLayoutAttributeCenterY
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterY
-                                                         multiplier:1
-                                                           constant:0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:payPalButton
+                                                              attribute:NSLayoutAttributeCenterX
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeCenterX
+                                                             multiplier:1
+                                                               constant:0]];
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:payPalButton
-                                                          attribute:NSLayoutAttributeHeight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:nil attribute:NSLayoutAttributeNotAnAttribute
-                                                         multiplier:1
-                                                           constant:60]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:payPalButton
+                                                              attribute:NSLayoutAttributeCenterY
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeCenterY
+                                                             multiplier:1
+                                                               constant:0]];
+
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:payPalButton
+                                                              attribute:NSLayoutAttributeHeight
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:nil attribute:NSLayoutAttributeNotAnAttribute
+                                                             multiplier:1
+                                                               constant:60]];
+    }
 }
 
 @end

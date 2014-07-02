@@ -28,7 +28,6 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
 
         NSDictionary *baseClaims = @{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
                                       BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                      BTClientTokenKeyAuthorizationURL: @"http://auth.example.com/",
                                       BTClientTokenKeyPayPalEnabled: @YES,
                                       BTClientTokenPayPalNamespace: [paypalClaims mutableCopy]};
 
