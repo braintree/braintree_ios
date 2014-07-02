@@ -111,7 +111,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }
 
     if (postalCode) {
-        requestParameters[@"billing_address"] = @{ @"postal_code": postalCode };
+        requestParameters[@"credit_card"][@"billing_address"] = @{ @"postal_code": postalCode };
     }
 
     [self.clientApiHttp POST:@"v1/payment_methods/credit_cards" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error) {

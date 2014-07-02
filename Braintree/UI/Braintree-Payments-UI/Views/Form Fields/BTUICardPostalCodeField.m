@@ -23,12 +23,19 @@
 
 - (void)fieldContentDidChange {
     _postalCode = [self.textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.displayAsValid = YES;
     [super fieldContentDidChange];
     [self.delegate formFieldDidChange:self];
 }
 
-- (BOOL)entryComplete {
-    return NO;
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.displayAsValid = YES;
+    [super textFieldDidBeginEditing:textField];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    self.displayAsValid = YES;
+    [super textFieldDidEndEditing:textField];
 }
 
 @end

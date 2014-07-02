@@ -36,15 +36,20 @@
         }
     }
 
-    for (NSDictionary *creditCardFieldError in creditCardFieldErrors){
+    for (NSDictionary *creditCardFieldError in creditCardFieldErrors) {
         NSString *field = creditCardFieldError[@"field"];
         if([field isEqualToString:@"cvv"]){
             [fieldsToHighlight addObject:@(BTUICardFormFieldCvv)];
-        } else if ([field isEqualToString:@"postalCode"]){
-            [fieldsToHighlight addObject:@(BTUICardFormFieldPostalCode)];
-        } else if ([field isEqualToString:@"number"]){
+        } else if ([field isEqualToString:@"billingAddress"]) {
+            for (NSDictionary *billingAddressFieldError in creditCardFieldError[@"fieldErrors"]) {
+                NSString *billingAddressField = billingAddressFieldError[@"field"];
+                if ([billingAddressField isEqualToString:@"postalCode"]) {
+                    [fieldsToHighlight addObject:@(BTUICardFormFieldPostalCode)];
+                }
+            }
+        } else if ([field isEqualToString:@"number"]) {
             [fieldsToHighlight addObject:@(BTUICardFormFieldNumber)];
-        } else if ([field isEqualToString:@"expirationDate"] || [field isEqualToString:@"expirationMonth"] || [field isEqualToString:@"expirationYear"]){
+        } else if ([field isEqualToString:@"expirationDate"] || [field isEqualToString:@"expirationMonth"] || [field isEqualToString:@"expirationYear"]) {
             [fieldsToHighlight addObject:@(BTUICardFormFieldExpiration)];
         }
     }

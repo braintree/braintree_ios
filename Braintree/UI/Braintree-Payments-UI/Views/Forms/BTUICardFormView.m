@@ -223,7 +223,9 @@
 #pragma mark - Field delegate implementations
 
 - (void)formFieldDidChange:(BTUIFormField *)field {
-    self.cvvField.cardType = self.numberField.cardType;
+    if (field == self.numberField) {
+        self.cvvField.cardType = self.numberField.cardType;
+    }
     [self advanceToNextInvalidFieldFrom:field];
     [self.delegate cardFormViewDidChange:self];
 }
