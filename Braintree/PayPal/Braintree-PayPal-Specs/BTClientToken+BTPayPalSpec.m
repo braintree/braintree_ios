@@ -48,7 +48,7 @@ describe(@"btPayPal_environment", ^{
 describe(@"btPayPal_isPayPalEnabled", ^{
     beforeEach(^{
         NSDictionary *baseClaims = @{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                      BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",.
+                                      BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
                                       BTClientTokenKeyPayPalEnabled: @NO};
 
         clientTokenPayPalDisabled = [[BTClientToken alloc] initWithClaims:baseClaims
