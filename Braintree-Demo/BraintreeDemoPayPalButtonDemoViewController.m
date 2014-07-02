@@ -25,6 +25,8 @@
                                        delegate:nil
                               cancelButtonTitle:@"Ok"
                               otherButtonTitles:nil] show];
+        } else {
+            NSLog(@"Got a nonce! %@", nonce);
         }
     }];
     [payPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];

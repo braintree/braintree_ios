@@ -45,7 +45,7 @@
 
 @implementation BraintreeDemoChooserViewController
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(__unused BOOL)animated {
     [self.tableView reloadData];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithWhite:42/255.0f alpha:1.0f]; // 2a2a2a
     [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
@@ -84,7 +84,7 @@
         demoViewController = [[BraintreeDemoPayPalButtonDemoViewController alloc] initWithBraintree:self.braintree];
     } else if (selectedCell == self.tokenizationCell) {
         // Custom card Tokenization
-        demoViewController = [[BraintreeDemoTokenizationDemoViewController alloc] initWithBraintree:self.braintree completion:^(BraintreeDemoTokenizationDemoViewController *viewController, NSString *nonce) {
+        demoViewController = [[BraintreeDemoTokenizationDemoViewController alloc] initWithBraintree:self.braintree completion:^(__unused BraintreeDemoTokenizationDemoViewController *viewController, NSString *nonce) {
             self.nonce = nonce;
             [self.navigationController popViewControllerAnimated:YES];
         }];
@@ -112,7 +112,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(__unused UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(__unused NSIndexPath *)indexPath {
     if (cell == self.braintreeStatusCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.braintree != nil);
         cell.detailTextLabel.text = self.braintree ? [self.braintree description] : @"(nil)";

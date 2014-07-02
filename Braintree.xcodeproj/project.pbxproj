@@ -2888,6 +2888,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -2900,6 +2901,31 @@
 					"$(PROJECT_DIR)/Braintree/Data/Braintree-Data",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Braintree\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Expecta\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/HockeySDK\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/KIF\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OCHamcrest\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OCMock\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Specta\"",
+					"-Wall",
+					"-Wextra",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2935,6 +2961,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -2945,6 +2972,31 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Braintree/Data/Braintree-Data",
+				);
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Braintree\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Expecta\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/HockeySDK\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/KIF\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OCHamcrest\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OCMock\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Specta\"",
+					"-Wall",
+					"-Wextra",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

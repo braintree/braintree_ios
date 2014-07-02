@@ -28,10 +28,10 @@
     NSString *customerId = [[NSUUID UUID] UUIDString];
     [self.sessionManager GET:@"/client_token"
                   parameters:@{@"customer_id": customerId}
-                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     success:^(AFHTTPRequestOperation *operation, __unused id responseObject) {
                          completionBlock(operation.responseString, nil);
                      }
-                     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
                          completionBlock(nil, error);
                      }];
 }
@@ -39,10 +39,10 @@
 - (void)makeTransactionWithPaymentMethodNonce:(NSString *)paymentMethodNonce completion:(void (^)(NSString *transactionId, NSError *error))completionBlock {
     [self.sessionManager POST:@"/nonce/transaction"
                    parameters:@{@"payment_method_nonce": paymentMethodNonce}
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      success:^(__unused AFHTTPRequestOperation *operation, __unused id responseObject) {
                           completionBlock(responseObject[@"message"], nil);
                       }
-                      failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      failure:^(__unused AFHTTPRequestOperation *operation, __unused NSError *error) {
                           completionBlock(nil, error);
                       }];
 }

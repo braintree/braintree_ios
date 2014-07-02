@@ -70,8 +70,8 @@
 
 #pragma mark Table View Overrides
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return @" Custom Card Form";
+- (NSString *)tableView:(__unused UITableView *)tableView titleForHeaderInSection:(__unused NSInteger)section {
+    return @"Custom Card Form";
 }
 
 @end
