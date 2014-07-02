@@ -7,20 +7,20 @@
 /// DeviceCollectorSDK's public interface.
 @implementation DeviceCollectorSDK
 
-- (DeviceCollectorSDK *)initWithDebugOn:(bool)debugLogging {
+- (DeviceCollectorSDK *)initWithDebugOn:(__unused BOOL)debugLogging {
     return nil;
 }
 
-- (void)setCollectorUrl:(NSString *)url {
+- (void)setCollectorUrl:(__unused NSString *)url {
 }
 
-- (void)setMerchantId:(NSString *)merc {
+- (void)setMerchantId:(__unused NSString *)merc {
 }
 
-- (void)collect:(NSString *)sessionId {
+- (void)collect:(__unused NSString *)sessionId {
 }
 
-- (void)setDelegate:(id<DeviceCollectorSDKDelegate>)delegate {
+- (void)setDelegate:(__unused id<DeviceCollectorSDKDelegate>)delegate {
 }
 
 

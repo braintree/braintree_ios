@@ -28,14 +28,6 @@
 		1607FE8C192D97FF0099D504 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		1607FE8D192D97FF0099D504 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		160D08A21926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 160D08A11926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m */; };
-		161029EB192DAFC3002C1B2B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 161029E8192DAFC3002C1B2B /* README.md */; };
-		161029EC192DAFC3002C1B2B /* DEVELOPMENT.md in Resources */ = {isa = PBXBuildFile; fileRef = 161029E9192DAFC3002C1B2B /* DEVELOPMENT.md */; };
-		161029ED192DAFC3002C1B2B /* Braintree.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 161029EA192DAFC3002C1B2B /* Braintree.podspec */; };
-		161029F3192DAFD4002C1B2B /* Rakefile in Resources */ = {isa = PBXBuildFile; fileRef = 161029EE192DAFD4002C1B2B /* Rakefile */; };
-		161029F4192DAFD4002C1B2B /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 161029EF192DAFD4002C1B2B /* Podfile */; };
-		161029F5192DAFD4002C1B2B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 161029F0192DAFD4002C1B2B /* LICENSE */; };
-		161029F6192DAFD4002C1B2B /* Gemfile in Resources */ = {isa = PBXBuildFile; fileRef = 161029F1192DAFD4002C1B2B /* Gemfile */; };
-		161029F7192DAFD4002C1B2B /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 161029F2192DAFD4002C1B2B /* CHANGELOG.md */; };
 		161029FB192DB613002C1B2B /* BraintreeVersionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 161029FA192DB613002C1B2B /* BraintreeVersionSpec.m */; };
 		16102A24192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
 		16102A25192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
@@ -137,7 +129,6 @@
 		A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A72B381719633AB0009AD2F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A72B3815196339C7009AD2F5 /* InfoPlist.strings */; };
 		A72B38191963590E009AD2F5 /* BraintreeDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */; };
-		A72B381C19635D13009AD2F5 /* DeviceCollectorSDK.64bit-shim.m in Sources */ = {isa = PBXBuildFile; fileRef = A72B381B19635CAD009AD2F5 /* DeviceCollectorSDK.64bit-shim.m */; };
 		A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
@@ -160,6 +151,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1696811D192D997900120846;
 			remoteInfo = "Braintree-PayPal-Demo";
+		};
+		A744BEFB1963801E00B61C23 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 162174DE192D9220008DC35D;
+			remoteInfo = "Braintree-Demo";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -464,6 +462,9 @@
 		A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDataSpec.m; sourceTree = "<group>"; };
 		A72B3816196339C7009AD2F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A72B381B19635CAD009AD2F5 /* DeviceCollectorSDK.64bit-shim.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DeviceCollectorSDK.64bit-shim.m"; sourceTree = "<group>"; };
+		A72B381D196367BF009AD2F5 /* BTData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTData.h; sourceTree = "<group>"; };
+		A72B381E196367BF009AD2F5 /* BTData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTData.m; sourceTree = "<group>"; };
+		A744BEFD1963805900B61C23 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		A74E2E711953690A004DFF73 /* BTDropInErrorState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorState.h; sourceTree = "<group>"; };
 		A74E2E721953690A004DFF73 /* BTDropInErrorState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorState.m; sourceTree = "<group>"; };
 		A7529C76192AB6BA00B2E1B2 /* BTDropInContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInContentView.h; sourceTree = "<group>"; };
@@ -1364,6 +1365,7 @@
 			children = (
 				A72B380E196339C7009AD2F5 /* Braintree-Data */,
 				A72B3811196339C7009AD2F5 /* Braintree-Data-Specs */,
+				A744BEFD1963805900B61C23 /* README.md */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1374,6 +1376,8 @@
 				A72B380F196339C7009AD2F5 /* DeviceCollectorSDK.h */,
 				A72B3810196339C7009AD2F5 /* libDeviceCollectorLibrary.a */,
 				A72B381B19635CAD009AD2F5 /* DeviceCollectorSDK.64bit-shim.m */,
+				A72B381D196367BF009AD2F5 /* BTData.h */,
+				A72B381E196367BF009AD2F5 /* BTData.m */,
 			);
 			path = "Braintree-Data";
 			sourceTree = "<group>";
@@ -1710,6 +1714,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A744BEFC1963801E00B61C23 /* PBXTargetDependency */,
 			);
 			name = "Braintree-Data-Specs";
 			productName = "Braintree-Data-Specs";
@@ -1767,6 +1772,9 @@
 					};
 					16968189192D9A5000120846 = {
 						DevelopmentTeam = QK3APTBF2M;
+					};
+					A72B37FC19633826009AD2F5 = {
+						TestTargetID = 162174DE192D9220008DC35D;
 					};
 					A75DA3601921394200D997A2 = {
 						TestTargetID = 162174DE192D9220008DC35D;
@@ -1829,20 +1837,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				161029EC192DAFC3002C1B2B /* DEVELOPMENT.md in Resources */,
 				16217534192D922F008DC35D /* Main_iPad.storyboard in Resources */,
 				16217530192D922F008DC35D /* BraintreeDemoPayPalButtonDemoViewController.xib in Resources */,
 				16217535192D922F008DC35D /* Main_iPhone.storyboard in Resources */,
-				161029EB192DAFC3002C1B2B /* README.md in Resources */,
-				161029F7192DAFD4002C1B2B /* CHANGELOG.md in Resources */,
-				161029F6192DAFD4002C1B2B /* Gemfile in Resources */,
-				161029F3192DAFD4002C1B2B /* Rakefile in Resources */,
-				161029F5192DAFD4002C1B2B /* LICENSE in Resources */,
 				16217533192D922F008DC35D /* Images.xcassets in Resources */,
 				1621752E192D922F008DC35D /* BraintreeDemoBraintreeInitializationDemoViewController.xib in Resources */,
-				161029ED192DAFC3002C1B2B /* Braintree.podspec in Resources */,
 				16217532192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.xib in Resources */,
-				161029F4192DAFD4002C1B2B /* Podfile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2417,7 +2417,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A72B38191963590E009AD2F5 /* BraintreeDataSpec.m in Sources */,
-				A72B381C19635D13009AD2F5 /* DeviceCollectorSDK.64bit-shim.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2439,6 +2438,11 @@
 			isa = PBXTargetDependency;
 			target = 1696811D192D997900120846 /* Braintree-PayPal-Demo */;
 			targetProxy = 16968177192D9A3200120846 /* PBXContainerItemProxy */;
+		};
+		A744BEFC1963801E00B61C23 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
+			targetProxy = A744BEFB1963801E00B61C23 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2891,6 +2895,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Braintree/Data/Braintree-Data",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -2934,6 +2942,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Braintree/Data/Braintree-Data",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3515,6 +3527,7 @@
 			baseConfigurationReference = 0E3027E149854D1899379B01 /* Pods-Braintree-Data-Specs.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3554,6 +3567,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -3563,6 +3577,7 @@
 			baseConfigurationReference = 0E3027E149854D1899379B01 /* Pods-Braintree-Data-Specs.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3595,6 +3610,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = xctest;
 			};
