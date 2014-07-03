@@ -66,8 +66,9 @@
     }
     BTPayPalButton *button = [self payPalButton];
     button.client = self.client;
-    button.completionBlock = ^(BTPaymentMethod *paymentMethod, NSError *error) {
-        completionBlock(paymentMethod ? paymentMethod.nonce : nil, error ?: nil);
+    button.completionBlock = ^(BTPayPalPaymentMethod *paypalAccount, NSError *error) {
+        NSLog(@"%@", paypalAccount);
+        completionBlock(paypalAccount ? paypalAccount.nonce : nil, error ?: nil);
     };
 
     return button;

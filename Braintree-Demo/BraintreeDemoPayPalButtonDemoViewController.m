@@ -2,8 +2,11 @@
 
 #import <Braintree/Braintree.h>
 
-@interface BraintreeDemoPayPalButtonDemoViewController ()
+@interface BraintreeDemoPayPalButtonDemoViewController () <BTPayPalButtonDelegate>
 @property (nonatomic, strong) Braintree *braintree;
+
+@property (nonatomic, weak) IBOutlet UILabel *emailLabel;
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation BraintreeDemoPayPalButtonDemoViewController
@@ -17,8 +20,7 @@
 }
 
 - (void)viewDidLoad {
-    // Construct PayPal Button
-    UIView *payPalButton = [self.braintree payPalButtonWithCompletion:^(NSString *nonce, NSError *error) {
+    BTPayPalButton *payPalButton = [self.braintree payPalButtonWithCompletion:^(NSString *nonce, NSError *error) {
         if (error != nil) {
             [[[UIAlertView alloc] initWithTitle:@"Failed to tokenize Auth Code"
                                         message:[error localizedDescription]
@@ -31,6 +33,7 @@
     }];
 
     if (payPalButton) {
+        payPalButton.delegate = self;
         [payPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
         // Add PayPal button as subview
@@ -67,6 +70,23 @@
                                                              multiplier:1
                                                                constant:60]];
     }
+}
+
+#pragma mark PayPal Button Delegate Methods
+
+- (void)payPalButtonWillCreatePayPalPaymentMethod:(__unused BTPayPalButton *)button {
+    [self.activityIndicator startAnimating];
+    self.emailLabel.text = nil;
+}
+
+- (void)payPalButton:(__unused BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
+    [self.activityIndicator stopAnimating];
+    self.emailLabel.text = paymentMethod.email;
+}
+
+- (void)payPalButton:(__unused BTPayPalButton *)button didFailWithError:(__unused NSError *)error {
+    [self.activityIndicator stopAnimating];
+    self.emailLabel.text = @"An error occurred";
 }
 
 @end

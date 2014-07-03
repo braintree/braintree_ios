@@ -2,7 +2,7 @@
 
 #import "Braintree-API.h"
 
-typedef void (^BTPayPalPaymentMethodCompletionBlock)(BTPaymentMethod *paymentMethod, NSError *error);
+typedef void (^BTPayPalPaymentMethodCompletionBlock)(BTPayPalPaymentMethod *paymentMethod, NSError *error);
 
 @protocol BTPayPalButtonDelegate;
 @protocol BTPayPalButtonViewControllerPresenterDelegate;
@@ -44,7 +44,7 @@ typedef void (^BTPayPalPaymentMethodCompletionBlock)(BTPaymentMethod *paymentMet
 ///
 /// @param button The requesting `BTPayPalButton`
 ///  @param nonce   The nonce representing proof of an authorized payment method
-- (void)payPalButton:(BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPaymentMethod *)paymentMethod;
+- (void)payPalButton:(BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod;
 
 /// This message is sent when the payment method could not be created.
 ///
