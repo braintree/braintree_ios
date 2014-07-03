@@ -2,11 +2,13 @@
 
 Braintree-iOS is a CocoaPod that provides easy and flexible Braintree payments in your iOS app.
 
-### Release Candidate!
+## Documentation
 
-This is the v3 **Release Candidate** of the Braintree iOS SDK. Documentation and code are not final, and some bugs and issues remain. Public headers may change before 3.0.
+Start with [**'Hello, Client!'**](https://developers.braintreepayments.com/ios/start/hello-client) which introduces the Braintree iOS Client SDK and covers basic setup, initialization and usage.
 
-Please watch the [CHANGELOG.md](CHANGELOG.md) for changes, stay up to date with the latest pre-release, and don't hestitate to [contact us](#feedback) with any questions or feedback.
+[**Braintree iOS Client SDK Documentation**](https://developers.braintreepayments.com/ios/sdk/client) covers setup and integration options, including custom PayPal and credit card tokenization.
+
+[**cocoadocs.org/docsets/Braintree**](http://cocoadocs.org/docsets/Braintree) hosts the complete, up-to-date API documentation generated straight from the header files.
 
 ## Installation
 
@@ -41,107 +43,22 @@ pod try Braintree
 We include a sample merchant server in this repository. Please see [Sample Merchant Server/README](Sample Merchant Server/README.md] for further instructions on running a sample server.
 
 
-## Usage
+## Example Usage
 
-### Obtain a Client Token
-
-Regardless of the integration method, you'll need to obtain a client token from your Braintree server-side integration. It might look something like this:
-
-```
-
-#import "MyViewController.h"
-#import <AFNetworking/AFNetworking.h>
-#import <Braintree/Braintree.h>
-
-// ...
-
-AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-[manager GET:@"https://your-server/client_token.json"
-  parameters:@{ @"your-server-authentication": @"token", @"your-customer-session": @"session"}
-     success:^(AFHTTPRequestOperation *operation, id responseObject) {
-       // Setup braintree with responseObject[@"client_token"]
-       // self.braintree = [Braintree braintreeWithClientToken:responseObject[@"client_token"]];
-     }
-     failure:^{
-       // Handle failure communicating with your server
-     }];
-```
-
-You should obtain a new client token often, at least as often as your app restarts. For the best experience, you should kick off this network operation before it would block a user interaction.
-
-### Drop-In
-
-This is the easy way to accept card and PayPal payments in your app.
-
-Simply present the Drop-In view controller:
+The easy way to accept card and PayPal payments in your app is to present the Drop-In view controller:
 
 ```
 #import <Braintree/Braintree.h>
 // YourViewController.m
 
 - (void)tappedMyPayButton {
-  // Note: a client token is required for authentication
   Braintree *braintree = [Braintree braintreeWithClientToken:CLIENT_TOKEN_FROM_SERVER];
   BTDropInViewController *dropIn = [braintree dropInViewControllerWithDelegate:self];
-  // TODO: Customize your Drop In View Controller. See BTDropInViewController.h.
   [self presentViewController:dropIn
                      animated:YES
                    completion:nil];
 }
-
-// TODO: Communicate the payment method nonce to your server in the BTDropInViewControllerDelegate method implementations
 ```
-
-Take a look at `BTDropInViewController.h` for more information about customizing the Drop In. If you use Storyboard, it may be easier to use `BTDropInViewController` directly.
-
-### Custom
-
-You may need more flexibility than the Drop In offers. For instance, you may want to use your own card entry UI, or you only want to add a PayPal button to your existing payment options.
-
-#### Save a Card
-
-To use Braintree card payment processing with your own UI, simply call `tokenizeCardWithNumber:expirationMonth:expirationYear:completion:` with the user's card details.
-
-```
-// YourPaymentsHelper.m
-#import <Braintree/Braintree.h>
-
-- (void)tokenizeCard {
-  Braintree *braintree = [Braintree braintreeWithClientToken:CLIENT_TOKEN_FROM_SERVER];
-  [braintree tokenizeCardWithNumber:@"4111111111111111"
-                    expirationMonth:@"12"
-                     expirationYear:@"2018"
-                         completion:^(NSString *nonce, NSError *error){
-                            // TODO: Communicate the nonce to your server
-                         }];
-}
-```
-
-In the completion block, send the resulting `nonce` to your server for use.
-
-
-#### Accept PayPal
-
-To add a PayPal button to your payment options, create a `BTPayPalButton` and add it to your view.
-
-```
-// YourViewController.m
-#import <Braintree/Braintree.h>
-
-- (void)viewDidLoad {
-  Braintree *braintree = [Braintree braintreeWithClientToken:CLIENT_TOKEN_FROM_SERVER];
-  BTPayPalButton *payPalButton = [braintree payPalButtonWithCompletion:^(NSString *nonce, NSError *error){
-    // Communicate the nonce to your server
-  }];
-  [payPalButton setFrame:CGRectMake(0,0,60,120)];
-  [self.view addSubview:payPalButton];
-}
-```
-
-When tapped, this `UIControl` will start the PayPal login flow within your application and asynchronously create a payment nonce. Implement the completion block to send the resulting `nonce` value to your server for use.
-
-You may use `BTPayPalButton` (or even a `BTPayPalViewController`) directly if you prefer, but this implementation is more complex. This may be especially useful for developers who use XIBs and Storyboards. The header files contain in-depth documentation.
-
 
 ## Architecture
 
