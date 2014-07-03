@@ -1,5 +1,22 @@
 # Braintree iOS SDK Release Notes
 
+## 3.0.0-rc6
+
+* Bug fixes:
+  * Fix issue with incorrect nesting of credit-card params in API requests, which caused
+    incorrect behavior while validating credit cards in custom and Drop-In.
+  * Bugfixes and improvements to demo app
+  * Fix crasher in demo app when PayPal is not enabled
+  * Demo App now points to a publicly accessible merchant server
+
+* Enhancements:
+  * Drop-In now supports server-side validation, including CVV/AVS verification failure
+  * Drop-In's customer-facing error handling is now consistent and allows for retry
+  * Increased robustness of API layer
+
+* Features:
+  * :new: `BTData` - Advanced fraud solution based on Kount SDK
+
 ## 3.0.0-rc5
 
 * :rotating_light: Remove dependency on AFNetworking!
