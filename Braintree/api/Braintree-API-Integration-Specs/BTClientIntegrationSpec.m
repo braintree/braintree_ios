@@ -26,12 +26,45 @@ beforeEach(^AsyncBlock{
 describe(@"challenges", ^{
     it(@"returns a set of Gateway specified challenge questions for the merchant", ^AsyncBlock{
         [BTClient testClientWithConfiguration:@{
+                                                BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                BTClientTestConfigurationKeyCustomer:@YES }
+                                   completion:^(BTClient *client) {
+                                       expect(client.challenges).to.haveCountOf(0);
+                                       done();
+                                   }];
+    });
+    it(@"returns a set of Gateway specified challenge questions for the merchant", ^AsyncBlock{
+        [BTClient testClientWithConfiguration:@{
+                                                BTClientTestConfigurationKeyMerchantIdentifier:@"client_api_cvv_verification_merchant_id",
+                                                BTClientTestConfigurationKeyPublicKey:@"client_api_cvv_verification_public_key",
+                                                BTClientTestConfigurationKeyCustomer:@YES }
+                                   completion:^(BTClient *client) {
+                                       expect(client.challenges).to.haveCountOf(1);
+                                       expect(client.challenges).to.contain(@"cvv");
+                                       done();
+                                   }];
+    });
+    it(@"returns a set of Gateway specified challenge questions for the merchant", ^AsyncBlock{
+        [BTClient testClientWithConfiguration:@{
                                                 BTClientTestConfigurationKeyMerchantIdentifier:@"client_api_postal_code_verification_merchant_id",
                                                 BTClientTestConfigurationKeyPublicKey:@"client_api_postal_code_verification_public_key",
                                                 BTClientTestConfigurationKeyCustomer:@YES }
                                    completion:^(BTClient *client) {
-                                       expect(client.challenges).to.contain(@"cvv");
+                                       expect(client.challenges).to.haveCountOf(1);
                                        expect(client.challenges).to.contain(@"postal_code");
+                                       done();
+                                   }];
+    });
+    it(@"returns a set of Gateway specified challenge questions for the merchant", ^AsyncBlock{
+        [BTClient testClientWithConfiguration:@{
+                                                BTClientTestConfigurationKeyMerchantIdentifier:@"client_api_cvv_and_postal_code_verification_merchant_id",
+                                                BTClientTestConfigurationKeyPublicKey:@"client_api_cvv_and_postal_code_verification_public_key",
+                                                BTClientTestConfigurationKeyCustomer:@YES }
+                                   completion:^(BTClient *client) {
+                                       expect(client.challenges).to.haveCountOf(2);
+                                       expect(client.challenges).to.contain(@"postal_code");
+                                       expect(client.challenges).to.contain(@"cvv");
                                        done();
                                    }];
     });
@@ -164,12 +197,12 @@ describe(@"save card", ^{
                                    } failure:nil];
         });
 
-        describe(@"for a merchant with cvv+postal code verification enabled", ^{
+        describe(@"for a merchant with payment method verification enabled", ^{
             __block BTClient *cvvAndZipClient;
             beforeEach(^AsyncBlock{
                 [BTClient testClientWithConfiguration:@{
-                                                        BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_postal_code_verification_merchant_id",
-                                                        BTClientTestConfigurationKeyPublicKey: @"client_api_postal_code_verification_public_key",
+                                                        BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_cvv_and_postal_code_verification_merchant_id",
+                                                        BTClientTestConfigurationKeyPublicKey: @"client_api_cvv_and_postal_code_verification_public_key",
                                                         BTClientTestConfigurationKeyCustomer: @YES }
                                            completion:^(BTClient *client) {
                                                cvvAndZipClient = client;
@@ -191,40 +224,14 @@ describe(@"save card", ^{
                                             } failure:nil];
             });
 
-            pending(@"fails to save a card when the challenges are missing", ^AsyncBlock{
-                [cvvAndZipClient saveCardWithNumber:@"4111111111111111"
-                                    expirationMonth:@"12"
-                                     expirationYear:@"38"
-                                                cvv:nil
-                                         postalCode:nil
-                                           validate:YES
-                                            success:nil
-                                            failure:^(NSError *error) {
-                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.equal(@{});
-                                                done();
-                                            }];
-            });
+            it(@"fails to save a card when a cvv response is incorrect", ^AsyncBlock{
+                [BTClient testClientWithConfiguration:@{
+                                                        BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_cvv_verification_merchant_id",
+                                                        BTClientTestConfigurationKeyPublicKey: @"client_api_cvv_verification_public_key",
+                                                        BTClientTestConfigurationKeyCustomer: @YES }
+                                           completion:^(BTClient *cvvClient) {
 
-            pending(@"fails to save a card when a challenge is missing", ^AsyncBlock{
-                [cvvAndZipClient saveCardWithNumber:@"4111111111111111"
-                                    expirationMonth:@"12"
-                                     expirationYear:@"38"
-                                                cvv:@"100"
-                                         postalCode:nil
-                                           validate:YES
-                                            success:nil
-                                            failure:^(NSError *error) {
-                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.equal(@{});
-                                                done();
-                                            }];
-            });
-
-            pending(@"fails to save a card when a challenge response is incorrect", ^AsyncBlock{
-                [cvvAndZipClient saveCardWithNumber:@"4111111111111111"
+                [cvvClient saveCardWithNumber:@"4111111111111111"
                                     expirationMonth:@"12"
                                      expirationYear:@"38"
                                                 cvv:@"200"
@@ -234,7 +241,51 @@ describe(@"save card", ^{
                                             failure:^(NSError *error) {
                                                 expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                 expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.equal(@{});
+                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"]).to.haveCountOf(1);
+                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"][0][@"field"]).to.equal(@"cvv");
+                                                done();
+                                            }];
+                                           }];
+            });
+
+            it(@"fails to save a card when a postal code response is incorrect", ^AsyncBlock{
+                [BTClient testClientWithConfiguration:@{
+                                                        BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_postal_code_verification_merchant_id",
+                                                        BTClientTestConfigurationKeyPublicKey: @"client_api_postal_code_verification_public_key",
+                                                        BTClientTestConfigurationKeyCustomer: @YES }
+                                           completion:^(BTClient *zipClient) {
+                [zipClient saveCardWithNumber:@"4111111111111111"
+                                    expirationMonth:@"12"
+                                     expirationYear:@"38"
+                                                cvv:@"100"
+                                         postalCode:@"20000"
+                                           validate:YES
+                                      success:nil
+                                            failure:^(NSError *error) {
+                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
+                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"]).to.haveCountOf(1);
+                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"][0][@"fieldErrors"][0][@"field"]).to.equal(@"postalCode");
+
+                                                done();
+                                            }];
+                                                                                           }];
+            });
+
+            it(@"fails to save a card when cvv and postal code responses are both incorrect", ^AsyncBlock{
+                [cvvAndZipClient saveCardWithNumber:@"4111111111111111"
+                                    expirationMonth:@"12"
+                                     expirationYear:@"38"
+                                                cvv:@"200"
+                                         postalCode:@"20000"
+                                           validate:YES
+                                            success:nil
+                                            failure:^(NSError *error) {
+                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
+                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"]).to.haveCountOf(2);
+                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"][0][@"field"]).to.equal(@"cvv");
+                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"][1][@"fieldErrors"][0][@"field"]).to.equal(@"postalCode");
                                                 done();
                                             }];
             });

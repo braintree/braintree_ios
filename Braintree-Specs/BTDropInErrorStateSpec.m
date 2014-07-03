@@ -51,8 +51,10 @@ describe(@"highlighted fields", ^{
                                                        @"fieldErrors": @[
                                                                @{ @"field": @"cvv",
                                                                   @"message": @"CVV is required" },
-                                                               @{ @"field": @"postalCode",
-                                                                  @"message": @"Postal Code is required" },
+                                                               @{ @"field": @"billingAddress",
+                                                                  @"fieldErrors": @[@{ @"field": @"postalCode",
+                                                                                       @"message": @"Postal Code is required" }],
+                                                                  },
                                                                @{ @"field": @"number",
                                                                   @"message": @"Number is required" },
                                                                @{ @"field": @"expirationDate",

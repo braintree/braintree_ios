@@ -14,7 +14,7 @@ describe(@"initForTestingWithConfiguration:", ^{
            BTClientTestConfigurationKeyAnalytics: @{ BTClientTestConfigurationKeyURL: @"http://analytics.example.com" }
            } completion:^(BTClient *client) {
                expect(client).to.beKindOf([BTClient class]);
-               expect(client.challenges).to.equal([NSSet setWithArray:@[@"cvv", @"postal_code"]]);
+               expect(client.challenges).to.equal([NSSet setWithArray:@[]]);
                done();
            }];
     });
@@ -29,7 +29,7 @@ describe(@"initForTestingWithConfiguration:", ^{
            BTClientTestConfigurationKeyClientTokenVersion: @1,
            } completion:^(BTClient *client) {
                expect(client).to.beKindOf([BTClient class]);
-               expect(client.challenges).to.equal([NSSet setWithArray:@[@"cvv", @"postal_code"]]);
+               expect(client.challenges).to.equal([NSSet setWithArray:@[]]);
                done();
            }];
     });
