@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "162174DE192D9220008DC35D"
-               BuildableName = "Braintree-Demo.app"
-               BlueprintName = "Braintree-Demo"
+               BlueprintIdentifier = "160199EE1964E14400010A56"
+               BuildableName = "Braintree-Data-Demo.app"
+               BlueprintName = "Braintree-Data-Demo"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,33 +28,13 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A72B37FC19633826009AD2F5"
-               BuildableName = "Braintree-Data-Specs.xctest"
-               BlueprintName = "Braintree-Data-Specs"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "16019A0A1964E14400010A56"
-               BuildableName = "Braintree-Data-DemoTests.xctest"
-               BlueprintName = "Braintree-Data-DemoTests"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "162174DE192D9220008DC35D"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
+            BlueprintIdentifier = "160199EE1964E14400010A56"
+            BuildableName = "Braintree-Data-Demo.app"
+            BlueprintName = "Braintree-Data-Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -71,9 +51,9 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "162174DE192D9220008DC35D"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
+            BlueprintIdentifier = "160199EE1964E14400010A56"
+            BuildableName = "Braintree-Data-Demo.app"
+            BlueprintName = "Braintree-Data-Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -89,9 +69,9 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "162174DE192D9220008DC35D"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
+            BlueprintIdentifier = "160199EE1964E14400010A56"
+            BuildableName = "Braintree-Data-Demo.app"
+            BlueprintName = "Braintree-Data-Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

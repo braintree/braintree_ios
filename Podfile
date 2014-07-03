@@ -84,3 +84,7 @@ target 'Braintree-Data-Specs' do
   pods_for_specs
   pod 'Braintree/Data', :path => '.'
 end
+
+target 'Braintree-Data-Demo' do
+  pod 'Braintree/Data', :path => '.'
+end

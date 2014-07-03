@@ -32,6 +32,16 @@
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "16019A0A1964E14400010A56"
+               BuildableName = "Braintree-Data-DemoTests.xctest"
+               BlueprintName = "Braintree-Data-DemoTests"
+               ReferencedContainer = "container:Braintree.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
