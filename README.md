@@ -82,14 +82,14 @@ Simply present the Drop-In view controller:
 - (void)tappedMyPayButton {
   // Note: a client token is required for authentication
   Braintree *braintree = [Braintree braintreeWithClientToken:CLIENT_TOKEN_FROM_SERVER];
-  BTDropInViewController *dropIn = [braintree dropInViewControllerWithCompletion:^(NSString *nonce, NSError *error){
-    // TODO: Communicate the payment method nonce to your server.
-  }];
+  BTDropInViewController *dropIn = [braintree dropInViewControllerWithDelegate:self];
   // TODO: Customize your Drop In View Controller. See BTDropInViewController.h.
   [self presentViewController:dropIn
                      animated:YES
                    completion:nil];
 }
+
+// TODO: Communicate the payment method nonce to your server in the BTDropInViewControllerDelegate method implementations
 ```
 
 Take a look at `BTDropInViewController.h` for more information about customizing the Drop In. If you use Storyboard, it may be easier to use `BTDropInViewController` directly.
