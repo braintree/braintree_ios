@@ -2,8 +2,8 @@
 
 ## Development Merchant Server
 
-The included demo app utilizes a test merchant server hosted on heroku (`[http://taprooted.herokuapp.com](http://taprooted.herokuapp.com)`). It
-produces client tokens that point to Braintree's QA Environment.
+The included demo app utilizes a test merchant server hosted on heroku (`[https://braintree-sample-merchant.herokuapp.com](https://braintree-sample-merchant.herokuapp.com)`). It
+produces client tokens that point to Braintree's Sandbox Environment.
 
 This merchant server is also provided as a gem called
 [taproot](https://github.com/benmills/taproot/). If you'd like, you can run
