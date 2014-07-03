@@ -26,8 +26,8 @@
 
 SpecBegin(BraintreeData)
 
-describe(@"DeviceCollectorSDK", ^{
-    it(@"should initialize on non 64-bit architectures", ^{
+describe(@"Kount DeviceCollectorSDK", ^{
+    it(@"should initialize successfully", ^{
         DeviceCollectorSDK *deviceKollector = [[DeviceCollectorSDK alloc] initWithDebugOn:NO];
 
         expect(deviceKollector).to.beKindOf([DeviceCollectorSDK class]);
@@ -54,7 +54,7 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
     });
 
     sharedExamplesFor(@"a successful data collector", ^(NSDictionary *testData) {
-        it([NSString stringWithFormat:@"successfully starts and completes in %d environment", [testData[@"environment"] intValue]], ^{
+        it([NSString stringWithFormat:@"successfully starts and completes in %@ environment", testData[@"environmentName"]], ^{
             BTDataEnvironment env = [testData[@"environment"] integerValue];
 
             TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
@@ -66,10 +66,10 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
         });
     });
 
-    itBehavesLike(@"a successful data collector", @{@"environment": @(BTDataEnvironmentQA)});
-    itBehavesLike(@"a successful data collector", @{@"environment": @(BTDataEnvironmentSandbox)});
-    itBehavesLike(@"a successful data collector", @{@"environment": @(BTDataEnvironmentProduction)});
-    itBehavesLike(@"a no-op data collector@", @{@"environment": @(BTDataEnvironmentDevelopment)});
+    itBehavesLike(@"a successful data collector", @{@"environmentName": @"QA", @"environment": @(BTDataEnvironmentQA)});
+    itBehavesLike(@"a successful data collector", @{@"environmentName": @"Sandbox", @"environment": @(BTDataEnvironmentSandbox)});
+    itBehavesLike(@"a successful data collector", @{@"environmentName": @"Production", @"environment": @(BTDataEnvironmentProduction)});
+    itBehavesLike(@"a no-op data collector@", @{@"environmentName": @"Development", @"environment": @(BTDataEnvironmentDevelopment)});
 });
 
 SpecEnd
