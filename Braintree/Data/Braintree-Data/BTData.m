@@ -38,6 +38,14 @@ static NSString *BTDataSharedMerchantId = @"600000";
     self = [super init];
     if (self) {
         self.kount = [[DeviceCollectorSDK alloc] initWithDebugOn:debugLogging];
+
+        NSArray *skipList;
+        if ([CLLocationManager locationServicesEnabled]) {
+            skipList = @[DC_COLLECTOR_DEVICE_ID, DC_COLLECTOR_GEO_LOCATION];
+        } else {
+            skipList = @[DC_COLLECTOR_DEVICE_ID];
+        }
+        [self.kount setSkipList:skipList];
     }
     return self;
 }

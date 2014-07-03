@@ -461,7 +461,6 @@
 		A72B3813196339C7009AD2F5 /* Braintree-Data-Specs-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-Data-Specs-Prefix.pch"; sourceTree = "<group>"; };
 		A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDataSpec.m; sourceTree = "<group>"; };
 		A72B3816196339C7009AD2F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A72B381B19635CAD009AD2F5 /* DeviceCollectorSDK.64bit-shim.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "DeviceCollectorSDK.64bit-shim.m"; sourceTree = "<group>"; };
 		A72B381D196367BF009AD2F5 /* BTData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTData.h; sourceTree = "<group>"; };
 		A72B381E196367BF009AD2F5 /* BTData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTData.m; sourceTree = "<group>"; };
 		A744BEFD1963805900B61C23 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
@@ -1375,7 +1374,6 @@
 			children = (
 				A72B380F196339C7009AD2F5 /* DeviceCollectorSDK.h */,
 				A72B3810196339C7009AD2F5 /* libDeviceCollectorLibrary.a */,
-				A72B381B19635CAD009AD2F5 /* DeviceCollectorSDK.64bit-shim.m */,
 				A72B381D196367BF009AD2F5 /* BTData.h */,
 				A72B381E196367BF009AD2F5 /* BTData.m */,
 			);

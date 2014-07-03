@@ -27,30 +27,11 @@
 SpecBegin(BraintreeData)
 
 describe(@"DeviceCollectorSDK", ^{
-
-#ifdef __LP64__
-    it(@"fails to initialize on 64-bit architectures", ^{
-        DeviceCollectorSDK *deviceKollector = [[DeviceCollectorSDK alloc] initWithDebugOn:NO];
-
-        expect(deviceKollector).to.beNil();
-
-    });
-
-    it(@"NOOPs all method calls on 64-bit architectures", ^{
-        DeviceCollectorSDK *deviceKollector = [[DeviceCollectorSDK alloc] initWithDebugOn:NO];
-        expect(^{
-            [deviceKollector collect:@"FooBar"];
-        }).notTo.raiseAny();
-    });
-#endif
-
-#ifndef __LP64__
     it(@"should initialize on non 64-bit architectures", ^{
         DeviceCollectorSDK *deviceKollector = [[DeviceCollectorSDK alloc] initWithDebugOn:NO];
 
         expect(deviceKollector).to.beKindOf([DeviceCollectorSDK class]);
     });
-#endif
 });
 
 describe(@"defaultDataForEnvironment:delegate:", ^{
@@ -73,19 +54,7 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
     });
 
     sharedExamplesFor(@"a successful data collector", ^(NSDictionary *testData) {
-#ifdef __LP64__
-        it([NSString stringWithFormat:@"does nothing in %d environments (on 64-bit architectures)", [testData[@"environment"] intValue]], ^{
-            BTDataEnvironment env = [testData[@"environment"] integerValue];
-
-            TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
-            BTData *data = [BTData defaultDataForEnvironment:env delegate:delegate];
-            [data collect];
-            [array addObject:data];
-            expect(delegate.didStart).to.beFalsy();
-            expect(delegate.didComplete).will.beFalsy();
-        });
-#else
-        it([NSString stringWithFormat:@"successfully starts and completes in %d environment (on 32-bit architectures)", [testData[@"environment"] intValue]], ^{
+        it([NSString stringWithFormat:@"successfully starts and completes in %d environment", [testData[@"environment"] intValue]], ^{
             BTDataEnvironment env = [testData[@"environment"] integerValue];
 
             TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
@@ -95,7 +64,6 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
             expect(delegate.didStart).to.beTruthy();
             expect(delegate.didComplete).will.beTruthy();
         });
-#endif
     });
 
     itBehavesLike(@"a successful data collector", @{@"environment": @(BTDataEnvironmentQA)});
