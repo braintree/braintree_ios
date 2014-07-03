@@ -20,17 +20,7 @@
 }
 
 - (void)viewDidLoad {
-    BTPayPalButton *payPalButton = [self.braintree payPalButtonWithCompletion:^(NSString *nonce, NSError *error) {
-        if (error != nil) {
-            [[[UIAlertView alloc] initWithTitle:@"Failed to tokenize Auth Code"
-                                        message:[error localizedDescription]
-                                       delegate:nil
-                              cancelButtonTitle:@"Ok"
-                              otherButtonTitles:nil] show];
-        } else {
-            NSLog(@"Got a nonce! %@", nonce);
-        }
-    }];
+    BTPayPalButton *payPalButton = [self.braintree payPalButtonWithDelegate:self];
 
     if (payPalButton) {
         payPalButton.delegate = self;
@@ -82,11 +72,17 @@
 - (void)payPalButton:(__unused BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
     [self.activityIndicator stopAnimating];
     self.emailLabel.text = paymentMethod.email;
+    NSLog(@"Got a nonce! %@", paymentMethod.nonce);
 }
 
-- (void)payPalButton:(__unused BTPayPalButton *)button didFailWithError:(__unused NSError *)error {
+- (void)payPalButton:(__unused BTPayPalButton *)button didFailWithError:(NSError *)error {
     [self.activityIndicator stopAnimating];
     self.emailLabel.text = @"An error occurred";
+    [[[UIAlertView alloc] initWithTitle:@"Failed to tokenize PayPal Auth Code"
+                                message:[error localizedDescription]
+                               delegate:nil
+                      cancelButtonTitle:@"Ok"
+                      otherButtonTitles:nil] show];
 }
 
 @end

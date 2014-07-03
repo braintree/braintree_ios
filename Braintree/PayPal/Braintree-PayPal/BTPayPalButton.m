@@ -85,18 +85,10 @@
     if ([self.delegate respondsToSelector:@selector(payPalButton:didCreatePayPalPaymentMethod:)]) {
         [self.delegate payPalButton:self didCreatePayPalPaymentMethod:payPalPaymentMethod];
     }
-
-    if (self.completionBlock) {
-        self.completionBlock(payPalPaymentMethod, nil);
-    }
 }
 - (void)informDelegateDidFailWithError:(NSError *)error {
     if ([self.delegate respondsToSelector:@selector(payPalButton:didFailWithError:)]) {
         [self.delegate payPalButton:self didFailWithError:error];
-    }
-
-    if (self.completionBlock) {
-        self.completionBlock(nil, error);
     }
 }
 

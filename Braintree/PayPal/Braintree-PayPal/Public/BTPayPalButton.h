@@ -2,8 +2,6 @@
 
 #import "Braintree-API.h"
 
-typedef void (^BTPayPalPaymentMethodCompletionBlock)(BTPayPalPaymentMethod *paymentMethod, NSError *error);
-
 @protocol BTPayPalButtonDelegate;
 @protocol BTPayPalButtonViewControllerPresenterDelegate;
 
@@ -18,9 +16,6 @@ typedef void (^BTPayPalPaymentMethodCompletionBlock)(BTPayPalPaymentMethod *paym
 
 /// A delegate that is notified as the PayPal consent flow triggered by this button changes state.
 @property (nonatomic, weak) id<BTPayPalButtonDelegate> delegate;
-
-/// As an alternative to `delegate`, you may additionally specify a block for completion.
-@property (nonatomic, copy) BTPayPalPaymentMethodCompletionBlock completionBlock;
 
 /// An optional delegate that is notified when the `BTPayPalButton` is requesting presentation of
 /// a view controller that will manage PayPal authentication flow.

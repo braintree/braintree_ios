@@ -49,27 +49,22 @@
 
 #pragma mark Drop-In
 
-- (BTDropInViewController *)dropInViewControllerWithCompletion:(BraintreeNonceCompletionBlock)completionBlock {
+- (BTDropInViewController *)dropInViewControllerWithDelegate:(id<BTDropInViewControllerDelegate>)delegate {
     BTDropInViewController *dropInViewController = [[BTDropInViewController alloc] initWithClient:self.client];
-    dropInViewController.paymentMethodCompletionBlock = ^(BTPaymentMethod *paymentMethod, __unused NSError *error){
-        completionBlock(paymentMethod.nonce, nil);
-    };
+    dropInViewController.delegate = delegate;
     [dropInViewController fetchPaymentMethods];
     return dropInViewController;
 }
 
 #pragma mark Custom: PayPal
 
-- (BTPayPalButton *)payPalButtonWithCompletion:(BraintreeNonceCompletionBlock)completionBlock {
+- (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate {
     if (!self.client.btPayPal_isPayPalEnabled){
         return nil;
     }
     BTPayPalButton *button = [self payPalButton];
     button.client = self.client;
-    button.completionBlock = ^(BTPayPalPaymentMethod *paypalAccount, NSError *error) {
-        NSLog(@"%@", paypalAccount);
-        completionBlock(paypalAccount ? paypalAccount.nonce : nil, error ?: nil);
-    };
+    button.delegate = delegate;
 
     return button;
 }

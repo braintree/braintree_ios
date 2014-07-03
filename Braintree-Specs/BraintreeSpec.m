@@ -41,15 +41,15 @@ describe(@"tokenizeCardWithNumber:expirationMonth:expirationYear:completion:", ^
 
 describe(@"dropInViewControllerWithCustomization:completion: Drop-In factory method", ^{
     it(@"constructs a Drop-In view controller", ^{
-        UIViewController *dropIn = [braintree dropInViewControllerWithCompletion:nil];
+        UIViewController *dropIn = [braintree dropInViewControllerWithDelegate:nil];
 
         expect(dropIn).to.beKindOf([UIViewController class]);
         expect([dropIn view]).to.beKindOf([UIView class]);
     });
 
     it(@"returns a new instance each time", ^{
-        UIViewController *dropIn1 = [braintree dropInViewControllerWithCompletion:nil];
-        UIViewController *dropIn2 = [braintree dropInViewControllerWithCompletion:nil];
+        UIViewController *dropIn1 = [braintree dropInViewControllerWithDelegate:nil];
+        UIViewController *dropIn2 = [braintree dropInViewControllerWithDelegate:nil];
 
         expect(dropIn1).notTo.beIdenticalTo(dropIn2);
     });
@@ -65,17 +65,16 @@ describe(@"payPalButtonWithCompletion:", ^{
             
         });
         it(@"should return a payPalButton", ^{
-            UIControl *control = [braintreeWithPayPalEnabled payPalButtonWithCompletion:nil];
+            UIControl *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil];
             expect(control).to.beKindOf([BTPayPalButton class]);
         });
     });
     describe(@"with PayPal disabled", ^{
         it(@"should not return a payPalButton", ^{
-            UIControl *control = [braintree payPalButtonWithCompletion:nil];
+            UIControl *control = [braintree payPalButtonWithDelegate:nil];
             expect(control).to.beNil;
         });
     });
-
 });
 
 describe(@"libraryVersion", ^{

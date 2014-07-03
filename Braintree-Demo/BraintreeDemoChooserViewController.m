@@ -7,7 +7,7 @@
 #import "BraintreeDemoTokenizationDemoViewController.h"
 #import "BraintreeDemoTransactionService.h"
 
-@interface BraintreeDemoChooserViewController ()
+@interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate>
 
 #pragma mark Status Cells
 @property (nonatomic, weak) IBOutlet UITableViewCell *braintreeStatusCell;
@@ -68,17 +68,7 @@
         }];
     } else if (selectedCell == self.dropInPaymentViewControllerCell) {
         // Drop-In (vanilla, no customization)
-        demoViewController = [self configuredDropInViewControllerWithCompletion:^(NSString *nonce, NSError *error) {
-            [self.navigationController popViewControllerAnimated:YES];
-            if (error) {
-                [self displayError:error forTask:@"Drop-In"];
-            } else {
-                self.nonce = nonce;
-                [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                                      atScrollPosition:UITableViewScrollPositionTop
-                                              animated:YES];
-            }
-        }];
+        demoViewController = [self configuredDropInViewController];
     } else if (selectedCell == self.customPayPalCell) {
         // Custom usage of PayPal Button
         demoViewController = [[BraintreeDemoPayPalButtonDemoViewController alloc] initWithBraintree:self.braintree];
@@ -141,8 +131,8 @@
     }
 }
 
-- (BTDropInViewController *)configuredDropInViewControllerWithCompletion:(void (^)(NSString *, NSError *))completionBlock {
-    BTDropInViewController *dropInViewController = [self.braintree dropInViewControllerWithCompletion:completionBlock];
+- (BTDropInViewController *)configuredDropInViewController {
+    BTDropInViewController *dropInViewController = [self.braintree dropInViewControllerWithDelegate:self];
 
     dropInViewController.title = @"Subscribe";
     dropInViewController.summaryTitle = @"App Fancy Magazine";
@@ -171,6 +161,22 @@
                       cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];
     NSLog(@"Failed %@: %@", task, error);
+}
+
+
+#pragma mark Drop In View Controller Delegate
+
+- (void)dropInViewController:(__unused BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
+    self.nonce = paymentMethod.nonce;
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                          atScrollPosition:UITableViewScrollPositionTop
+                                  animated:YES];
+}
+
+- (void)dropInViewController:(__unused BTDropInViewController *)viewController didFailWithError:(NSError *)error {
+    [self.navigationController popViewControllerAnimated:YES];
+    [self displayError:error forTask:@"Drop-In"];
 }
 
 @end

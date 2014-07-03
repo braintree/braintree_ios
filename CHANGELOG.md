@@ -1,5 +1,14 @@
 # Braintree iOS SDK Release Notes
 
+## 3.0.0-rc7
+
+* Breaking Change
+  * Based on feedback from our beta developers, we have removed the block-based interfaces from 
+    Braintree and BTPayPalButton.
+    * If you were previously relying on the completion block for receiving a payment method nonce,
+      you should replace that code with a delegate method implementation which reads the nonce from
+      the BTPaymentMethod object it receives.
+
 ## 3.0.0-rc6
 
 * Bug fixes:

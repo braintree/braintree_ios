@@ -44,8 +44,8 @@
 
 #pragma mark - BTPayPalButtonDelegate implementation
 
-- (void)payPalButton:(BTPayPalButton *)button didCreatePayPalPaymentMethod:(NSString *)paymentMethod {
-    NSLog(@"payPalButton:%@ addedPaymentMethod:%@", button, paymentMethod);
+- (void)payPalButton:(BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
+    NSLog(@"payPalButton:%@ addedPaymentMethod:(email:%@ nonce:%@)", button, paymentMethod.email, paymentMethod.nonce);
 }
 
 - (void)payPalButton:(BTPayPalButton *)button didFailWithError:(NSError *)error {

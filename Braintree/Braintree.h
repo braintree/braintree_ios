@@ -47,20 +47,20 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
 /// Present this view controller in your app to prompt your user for payment info, and you will
 /// receive a payment method nonce.
 ///
-/// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce or an error.
+/// @param delegate Delegate that is notified of success with a payment method containing a payment method nonce or an error.
 ///
 /// @return A Drop-In view controller to be presented in your app's payment flow.
-- (BTDropInViewController *)dropInViewControllerWithCompletion:(BraintreeNonceCompletionBlock)completionBlock;
+- (BTDropInViewController *)dropInViewControllerWithDelegate:(id<BTDropInViewControllerDelegate>)delegate;
 
 
 #pragma mark Custom
 
 /// Creates and returns a PayPal button that can be added to the UI. When tapped, this button will initiate the PayPal authorization flow.
 ///
-/// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce (upon user agreement and success) or an error (failure).
+/// @param delegate Delegate that is notified of completion, receiving either a payment method with a nonce (upon user agreement and success) or an error (upon failure).
 ///
 /// @return A PayPal button to be added as a subview in your UI.
-- (BTPayPalButton *)payPalButtonWithCompletion:(BraintreeNonceCompletionBlock)completionBlock;
+- (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate;
 
 
 /// Creates and returns a nonce for the given credit card details.
