@@ -8,7 +8,7 @@ HighLine.color_scheme = HighLine::SampleColorScheme.new
 task :default => %w[sanity_checks spec]
 
 desc "Run default set of tasks"
-task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:data:unit]
+task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
 task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
@@ -81,11 +81,9 @@ namespace :spec do
     end
   end
 
-  namespace :data do
-    desc 'Run Data unit tests'
-    task :unit do
-      run_test_scheme! 'Braintree-Data-Specs'
-    end
+  desc 'Run Data tests'
+  task :data do
+    run_test_scheme! 'Braintree-Data-Specs'
   end
 
   namespace :paypal do
@@ -113,7 +111,7 @@ namespace :spec do
   end
 
   desc 'Run all spec schemes'
-  task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:api:integration paypal:integration paypal:acceptance]
+  task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:api:integration spec:paypal:integration spec:paypal:acceptance spec:data]
 end
 
 namespace :demo do
