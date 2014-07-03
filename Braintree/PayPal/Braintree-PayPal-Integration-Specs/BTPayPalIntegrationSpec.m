@@ -29,16 +29,16 @@ describe(@"preparePayPalMobile", ^{
 
                 // Assert that Braintree environment is added
                 [[[mockPayPalMobile expect] classMethod] addEnvironments:[OCMArg checkWithBlock:^BOOL(NSDictionary *environments) {
-                    return [environments count] == 1 && [NSURL URLWithString:environments[@"Braintree-PayPal-iOS"][@"api"]] != nil;
+                    return [environments count] == 1 && [NSURL URLWithString:environments[@"Braintree"][@"api"]] != nil;
                 }]];
 
                 // Assert that Braintree environment is configured with a client id
                 [[[mockPayPalMobile expect] classMethod] initializeWithClientIdsForEnvironments:[OCMArg checkWithBlock:^BOOL(NSDictionary *clientIdsForEnvironments) {
-                    return [clientIdsForEnvironments count] == 1 && [clientIdsForEnvironments[@"Braintree-PayPal-iOS"] length] > 0;
+                    return [clientIdsForEnvironments count] == 1 && [clientIdsForEnvironments[@"Braintree"] length] > 0;
                 }]];
 
                 // Assert that Braintree environment is actually used
-                [[[mockPayPalMobile expect] classMethod] preconnectWithEnvironment:@"Braintree-PayPal-iOS"];
+                [[[mockPayPalMobile expect] classMethod] preconnectWithEnvironment:@"Braintree"];
 
                 [testClient btPayPal_preparePayPalMobileWithError:NULL];
 
