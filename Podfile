@@ -57,8 +57,6 @@ end
 
 target 'Braintree-PayPal-Demo' do
   pod 'Braintree/PayPal', :path => '.'
-  pod 'Braintree/UI', :path => '.'
-  pod 'Braintree/api', :path => '.'
 end
 
 target 'Braintree-PayPal-Acceptance-Specs' do

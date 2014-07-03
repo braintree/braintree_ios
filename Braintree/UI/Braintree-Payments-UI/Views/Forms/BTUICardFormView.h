@@ -1,5 +1,4 @@
 #import "BTUIThemedView.h"
-#import "BTDropInErrorState.h"
 
 typedef NS_OPTIONS(NSUInteger, BTUICardFormOptionalFields) {
     BTUICardFormOptionalFieldsNone       = 0,
