@@ -7,6 +7,7 @@
 #import "BTMutableCardPaymentMethod.h"
 #import "BTHTTP.h"
 #import "BTOfflineModeURLProtocol.h"
+#import "BTAnalyticsMetadata.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -167,7 +168,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
     if (self.clientToken.analyticsEnabled) {
         NSDictionary *requestParameters = @{ @"analytics": @[@{ @"kind": eventKind }],
-                                             @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
+                                             @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                             @"_meta": [BTAnalyticsMetadata metadata] };
 
         [self.analyticsHttp POST:@"/"
              parameters:requestParameters

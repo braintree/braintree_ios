@@ -2,6 +2,7 @@
 #import "BTClient+Offline.h"
 #import "BTClient+Testing.h"
 #import "BTTestClientTokenFactory.h"
+#import "BTAnalyticsMetadata.h"
 
 #import "BTLogger.h"
 
@@ -75,6 +76,25 @@ describe(@"post analytics event", ^{
                             initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:nil]];
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp reject] POST:[OCMArg any] parameters:[OCMArg any] completion:[OCMArg any]];
+        client.analyticsHttp = (id)mockHttp;
+
+        [client postAnalyticsEvent:@"An Event" success:nil failure:nil];
+        [mockHttp verify];
+    });
+
+    it(@"includes the metadata", ^{
+        NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
+        BTClient *client = [[BTClient alloc]
+                            initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyAnalytics:@{
+                                                                                                                    BTClientTokenKeyURL:analyticsUrl } }]];
+
+
+        OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
+        [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(id obj) {
+            NSLog(@"%@", obj);
+            expect(obj[@"_meta"]).to.equal([BTAnalyticsMetadata metadata]);
+            return [obj[@"_meta"] isEqual:[BTAnalyticsMetadata metadata]];
+        }] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
 
         [client postAnalyticsEvent:@"An Event" success:nil failure:nil];
