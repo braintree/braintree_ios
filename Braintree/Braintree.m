@@ -20,6 +20,9 @@
     self = [self init];
     if (self) {
         self.client = [[BTClient alloc] initWithClientToken:clientToken];
+        [self.client postAnalyticsEvent:@"sdk.ios.braintree.init"
+                                success:nil
+                                failure:nil];
     }
     return self;
 }
@@ -30,6 +33,9 @@
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
                     completion:(BraintreeNonceCompletionBlock)completionBlock {
+    [self.client postAnalyticsEvent:@"custom.ios.tokenize.call"
+                            success:nil
+                            failure:nil];
 
     [self.client saveCardWithNumber:cardNumber
                     expirationMonth:expirationMonth
@@ -50,7 +56,12 @@
 #pragma mark Drop-In
 
 - (BTDropInViewController *)dropInViewControllerWithDelegate:(id<BTDropInViewControllerDelegate>)delegate {
+    [self.client postAnalyticsEvent:@"custom.ios.dropin.init"
+                            success:nil
+                            failure:nil];
+
     BTDropInViewController *dropInViewController = [[BTDropInViewController alloc] initWithClient:self.client];
+
     dropInViewController.delegate = delegate;
     [dropInViewController fetchPaymentMethods];
     return dropInViewController;
@@ -59,9 +70,14 @@
 #pragma mark Custom: PayPal
 
 - (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate {
+    [self.client postAnalyticsEvent:@"custom.ios.paypal.init"
+                            success:nil
+                            failure:nil];
+
     if (!self.client.btPayPal_isPayPalEnabled){
         return nil;
     }
+
     BTPayPalButton *button = [self payPalButton];
     button.client = self.client;
     button.delegate = delegate;
