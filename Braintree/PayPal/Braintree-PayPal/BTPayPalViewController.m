@@ -3,6 +3,8 @@
 #import "BTClient+BTPayPal.h"
 #import "BTErrors+BTPayPal.h"
 
+#import "BTMutablePayPalPaymentMethod.h"
+
 @implementation BTPayPalViewController
 
 - (instancetype)initWithClient:(BTClient *)client
@@ -74,6 +76,12 @@
 
         [self.client savePaypalPaymentMethodWithAuthCode:authCode
                                                  success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                     NSString *userDisplayStringFromPayPalSDK = futurePaymentAuthorization[@"user"][@"display_string"];
+                                                     if (paypalPaymentMethod.email == nil && [userDisplayStringFromPayPalSDK isKindOfClass:[NSString class]]) {
+                                                         BTMutablePayPalPaymentMethod *mutablePayPalPaymentMethod = [paypalPaymentMethod mutableCopy];
+                                                         mutablePayPalPaymentMethod.email = userDisplayStringFromPayPalSDK;
+                                                         paypalPaymentMethod = mutablePayPalPaymentMethod;
+                                                     }
                                                      if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalPaymentMethod:)]) {
                                                          [self.delegate payPalViewController:self didCreatePayPalPaymentMethod:paypalPaymentMethod];
                                                      }

@@ -209,8 +209,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         payPalPaymentMethod             = [BTMutablePayPalPaymentMethod new];
         payPalPaymentMethod.nonce       = response[@"nonce"];
         payPalPaymentMethod.locked      = [response[@"isLocked"] boolValue];
-        payPalPaymentMethod.email       = response[@"details"][@"email"];
-        payPalPaymentMethod.description = response[@"description"];
+        id email = response[@"details"][@"email"];
+        payPalPaymentMethod.email = [email isKindOfClass:[NSString class]] ? email : nil;
+        id description = response[@"description"];
+        payPalPaymentMethod.description = [description isKindOfClass:[NSString class]] ? description : nil;
     }
     return payPalPaymentMethod;
 }

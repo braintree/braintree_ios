@@ -404,7 +404,7 @@ describe(@"clients with PayPal activated", ^{
     it(@"can save a PayPal payment method based on an auth code", ^AsyncBlock{
         [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode" success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
             expect(payPalPaymentMethod.nonce).to.beANonce();
-            expect(payPalPaymentMethod.email).notTo.beNil();
+            expect(payPalPaymentMethod.email).to.beKindOf([NSString class]);
             done();
         } failure:nil];
     });
