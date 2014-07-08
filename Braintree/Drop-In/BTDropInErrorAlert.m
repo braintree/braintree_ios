@@ -2,20 +2,17 @@
 
 @interface BTDropInErrorAlert () <UIAlertViewDelegate>
 
-@property (nonatomic, strong) NSError *error;
-
 @property (nonatomic, copy) void (^retryBlock)(void);
 
-@property (nonatomic, copy) void (^cancelBlock)(NSError *error);
+@property (nonatomic, copy) void (^cancelBlock)(void);
 
 @end
 
 @implementation BTDropInErrorAlert
 
-- (instancetype) initWithError:(NSError *)error cancel:(void (^)(NSError *error))cancelBlock retry:(void (^)(void))retryBlock{
+- (instancetype)initWithCancel:(void (^)(void))cancelBlock retry:(void (^)(void))retryBlock {
     self = [super init];
-    if (self){
-        self.error = error;
+    if (self) {
         self.retryBlock = retryBlock;
         self.cancelBlock = cancelBlock;
     }
@@ -23,23 +20,29 @@
 }
 
 
-- (void)show{
-    [[[UIAlertView alloc] initWithTitle:self.title
-                                message:nil
-                               delegate:self
-                      cancelButtonTitle:@"Cancel"
-                      otherButtonTitles:@"Try Again", nil] show];
+- (void)show {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
+                                           message:self.message
+                                          delegate:self
+                                 cancelButtonTitle:self.retryBlock ? @"Cancel" : @"OK"
+                                 otherButtonTitles:nil];
+
+    if (self.retryBlock) {
+        [alertView addButtonWithTitle:@"Try Again"];
+    }
+
+    [alertView show];
 }
 
-- (void)alertView:(__unused UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+- (void)alertView:(__unused UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0 && self.cancelBlock) {
-        self.cancelBlock(self.error);
+        self.cancelBlock();
     } else if (buttonIndex == 1 && self.retryBlock) {
         self.retryBlock();
     }
 }
 
-- (NSString *)title{
+- (NSString *)title {
     return _title ?: @"Connection Error";
 }
 

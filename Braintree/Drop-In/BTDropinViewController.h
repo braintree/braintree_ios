@@ -18,7 +18,7 @@
 /// The Drop In view controller delegates presentation and dismissal to the developer. It has been
 /// most thoroughly tested in the context of a UINavigationController.
 ///
-/// The Drop In can send success and failure messages to the developer via a block
+/// The Drop In can send success and cancelation messages to the developer via a block
 /// or a delegate. See `paymentMethodCompletionBlock` and `delegate`.
 ///
 /// You can customize Drop In in various ways, for example, you can change the primary Call To
@@ -108,16 +108,20 @@
 
 /// Informs the delegate when the user has successfully provided a payment method.
 ///
+/// Upon receiving this message, you should dismiss Drop In.
+///
 /// @param viewController The Drop In view controller informing its delegate of success
 /// @param paymentMethod The selected (and possibly newly created) payment method.
 - (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod;
 
-/// Informs the delegate when the Drop In itself has failed. Normally, Drop In handles its own error
-/// cases, so errors sent to this method are generally irrecoverable.
+/// Informs the delegate when the user has decided to cancel out of the Drop In payment form.
 ///
-///  @param viewController The Drop In view controller informing its delegate of failure.
-///  @param error An error that describes the failure.
-- (void)dropInViewController:(BTDropInViewController *)viewController didFailWithError:(NSError *)error;
+/// Drop In handles its own error cases, so this cancelation is user initiated and
+/// irreversable. Upon receiving this message, you should dismiss Drop In.
+///
+/// @param viewController The Drop In view controller informing its delegate of failure.
+/// @param error An error that describes the failure.
+- (void)dropInViewControllerDidCancel:(BTDropInViewController *)viewController;
 
 @optional
 

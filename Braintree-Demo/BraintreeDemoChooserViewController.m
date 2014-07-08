@@ -174,9 +174,13 @@
                                   animated:YES];
 }
 
-- (void)dropInViewController:(__unused BTDropInViewController *)viewController didFailWithError:(NSError *)error {
+- (void)dropInViewControllerDidCancel:(__unused BTDropInViewController *)viewController {
     [self.navigationController popViewControllerAnimated:YES];
-    [self displayError:error forTask:@"Drop-In"];
+    [[[UIAlertView alloc] initWithTitle:@"Drop In Canceled"
+                            message:nil
+                           delegate:nil
+                  cancelButtonTitle:@":("
+                  otherButtonTitles:nil] show];
 }
 
 @end

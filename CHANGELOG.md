@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## 3.0.0-rc8
+
+* Breaking Change
+  * Renamed a method in `BTDropInViewControllerDelegate` to send
+    cancelation messages to user. All errors within Drop In are now
+    handled internally with user interaction.
+
 ## 3.0.0-rc7
 
 * Breaking Change

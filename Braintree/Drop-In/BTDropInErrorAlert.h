@@ -3,8 +3,9 @@
 @interface BTDropInErrorAlert : NSObject
 
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *message;
 
-- (instancetype)initWithError:(NSError *)error cancel:(void (^)(NSError *error))cancelBlock retry:(void (^)(void))retryBlock;
+- (instancetype)initWithCancel:(void (^)(void))cancelBlock retry:(void (^)(void))retryBlock;
 
 - (void)show;
 

@@ -30,10 +30,12 @@
 /// activity can continue after dismissal
 @property (nonatomic, strong) BTPayPalButton *retainedPayPalButton;
 
-/// Strong reference to the BTDropInErrorAlert. Reference is needed to
+/// Strong reference to a BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
 @property (nonatomic, strong) BTDropInErrorAlert *fetchPaymentMethodsErrorAlert;
 
+/// Strong reference to  BTDropInErrorAlert. Reference is needed to
+/// handle user input from UIAlertView.
 @property (nonatomic, strong) BTDropInErrorAlert *savePayPalAccountErrorAlert;
 
 @end
@@ -265,6 +267,21 @@
         [self informDelegateDidAddPaymentMethod:paymentMethod];
     } else if (!self.dropInContentView.cardForm.hidden) {
         BTUICardFormView *cardForm = self.dropInContentView.cardForm;
+
+        void (^cardFail)(NSError *) = ^(NSError *error) {
+            [self showLoadingState:NO];
+
+            if (error && [error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
+                [self informUserDidFailWithError:error];
+            } else {
+                [[[UIAlertView alloc] initWithTitle:@"Error Saving Card"
+                                            message:@"Please try again."
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
+            }
+        };
+
         if (cardForm.valid) {
             [self informDelegateWillComplete];
             [self.client saveCardWithNumber:cardForm.number
@@ -277,23 +294,9 @@
                                         [self showLoadingState:NO];
                                         [self informDelegateDidAddPaymentMethod:card];
                                     }
-                                    failure:^(NSError *error) {
-                                        [self showLoadingState:NO];
-
-                                        if ([error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
-                                            [self informUserDidFailWithError:error];
-                                        } else {
-                                            [self informDelegateDidFailWithError:error];
-                                        }
-                                    }];
+                                    failure:cardFail];
         } else {
-            // Should never happen
-            [[[UIAlertView alloc] initWithTitle:@"Invalid form"
-                                        message:@"The card form is invalid"
-                                       delegate:nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil] show];
-            [self showLoadingState:NO];
+            cardFail(nil);
         }
     }
 }
@@ -356,10 +359,8 @@
     self.paymentMethods = newPaymentMethods;
 }
 
-- (void)dropInViewController:(BTDropInViewController *)viewController didFailWithError:(__unused NSError *)error {
+- (void)dropInViewControllerDidCancel:(BTDropInViewController *)viewController {
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
-
-    [[[UIAlertView alloc] initWithTitle:@"Error adding payment method" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 #pragma mark PayPal Button Presentation Delegate methods
@@ -402,22 +403,37 @@
     self.retainedPayPalButton = nil;
 }
 
-- (void)payPalButton:(BTPayPalButton *)button didFailWithError:(NSError *)error {
-    // Allow retained PayPal button to release, which will only happen if it isn't "ours"
-    self.retainedPayPalButton = nil;
+- (void)payPalButton:(BTPayPalButton *)button didFailWithError:(__unused NSError *)error {
 
-    self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithError:error
-                                                                          cancel:^(__unused NSError *error) {
-                                                                              // Use the paymentMethods setter to update state
-                                                                              [self setPaymentMethods:_paymentMethods];
-                                                                              self.savePayPalAccountErrorAlert = nil;
-                                                                          } retry:^{
-                                                                              [button sendActionsForControlEvents:UIControlEventTouchUpInside];
-                                                                              [self setPaymentMethods:_paymentMethods];
-                                                                              self.savePayPalAccountErrorAlert = nil;
-                                                                          }];
-    self.savePayPalAccountErrorAlert.title = @"PayPal Error";
-    [self.savePayPalAccountErrorAlert show];
+    if (self.retainedPayPalButton != self.dropInContentView.payPalButton) {
+        // Allow retained PayPal button to release, which will only happen if it isn't "ours"
+        self.retainedPayPalButton = nil;
+
+        self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
+            // Use the paymentMethods setter to update state
+            [self setPaymentMethods:_paymentMethods];
+            self.savePayPalAccountErrorAlert = nil;
+        } retry:nil];
+        self.savePayPalAccountErrorAlert.title = @"PayPal Error";
+        self.savePayPalAccountErrorAlert.message = @"Please try again.";
+        [self.savePayPalAccountErrorAlert show];
+    } else {
+
+        // Allow retained PayPal button to release, which will only happen if it isn't "ours"
+        self.retainedPayPalButton = nil;
+
+        self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
+            // Use the paymentMethods setter to update state
+            [self setPaymentMethods:_paymentMethods];
+            self.savePayPalAccountErrorAlert = nil;
+        } retry:^{
+            [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+            [self setPaymentMethods:_paymentMethods];
+            self.savePayPalAccountErrorAlert = nil;
+        }];
+        self.savePayPalAccountErrorAlert.title = @"PayPal Error";
+        [self.savePayPalAccountErrorAlert show];
+    }
 }
 
 #pragma mark Delegate Notifications
@@ -439,14 +455,14 @@
     }
 }
 
-- (void)informDelegateDidFailWithError:(NSError *)error {
+- (void)informDelegateDidCancel {
 
     if (self.paymentMethodCompletionBlock != nil) {
-        self.paymentMethodCompletionBlock(nil, error);
+        self.paymentMethodCompletionBlock(nil, nil);
     }
-    if ([self.delegate respondsToSelector:@selector(dropInViewController:didFailWithError:)]) {
-        [self.delegate dropInViewController:self
-                           didFailWithError:error];
+
+    if ([self.delegate respondsToSelector:@selector(dropInViewControllerDidCancel:)]) {
+        [self.delegate dropInViewControllerDidCancel:self];
     }
 }
 
@@ -465,8 +481,8 @@
     self.dropInContentView.hideCTA = shouldHideCallToAction;
 
     self.submitBarButtonItem = shouldHideCallToAction ? [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                                                    target:self
-                                                                                                                    action:@selector(tappedSubmitForm)] : nil;
+                                                                                                      target:self
+                                                                                                      action:@selector(tappedSubmitForm)] : nil;
     self.submitBarButtonItem.style = UIBarButtonItemStyleDone;
     self.navigationItem.rightBarButtonItem = self.submitBarButtonItem;
 }
@@ -567,25 +583,24 @@
     }
 }
 
-- (void) fetchPaymentMethods{
+- (void)fetchPaymentMethods{
     BOOL networkActivityIndicatorState = [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
     [self.client fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
         self.paymentMethods = paymentMethods;
-    } failure:^(NSError *error) {
+    } failure:^(__unused NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
-        self.fetchPaymentMethodsErrorAlert = [[BTDropInErrorAlert alloc] initWithError:error
-                                                                                cancel:^(NSError *error){
-                                                                                    [self informDelegateDidFailWithError:error];
-                                                                                    self.fetchPaymentMethodsErrorAlert = nil;
-                                                                                }
-                                                                                 retry:^{
-                                                                                     [self fetchPaymentMethods];
-                                                                                     self.fetchPaymentMethodsErrorAlert = nil;
-                                                                                 }
-                                              ];
+
+        self.fetchPaymentMethodsErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
+            [self informDelegateDidCancel];
+            self.fetchPaymentMethodsErrorAlert = nil;
+        } retry:^{
+            [self fetchPaymentMethods];
+            self.fetchPaymentMethodsErrorAlert = nil;
+        }];
+
         [self.fetchPaymentMethodsErrorAlert show];
     }];
 }
