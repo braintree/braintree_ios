@@ -1,5 +1,7 @@
 # Braintree-iOS Development Notes
 
+This document outlines development practices that we follow internally while developing this SDK.
+
 ## Development Merchant Server
 
 The included demo app utilizes a test merchant server hosted on heroku (`[https://braintree-sample-merchant.herokuapp.com](https://braintree-sample-merchant.herokuapp.com)`). It
@@ -26,6 +28,31 @@ You can now change the merchant server base URL specified in `BraintreeDemoTrans
 There are a number of test targets for each section of the project. You can run all tests on the command line with `bundle && rake spec:all`. 
 
 It's a good idea to run `rake`, which runs all unit tests, before committing.
+
+## Architecture
+
+There are several components that comprise this SDK:
+
+* `Braintree` is the top-level entry point to the SDK. You are here.
+* [Braintree-Drop-In](Braintree/Drop-In) composes API with Credit Card and PayPal UI to create a "three liner" payment form. (See also BTDropInViewControler.h)
+* [Braintree-Payments-UI](Braintree/UI) is a set of reusable UI componenets related to payments.
+* [Braintree-PayPal](Braintree/PayPal) provides a PayPal button and view controller. (See also `BTPayPalButton`.)
+* [Braintree-API](Braintree/api) provides the networking and communications layer. (See also `BTClient`.)
+  * This component is intended to avoid any dependency on `UIKit` and could easily be ported to OS X.
+
+The individual components may be of interest for advanced integrations and are each available as subspecs.
+
+## Environmental Assumptions
+
+* Xcode 5 and iOS SDK 7
+* iOS 7.0 target deployment
+* iPhone and iPad of all sizes and resolutions and the simulator
+* CocoaPods
+* ARC
+* `BT` namespace is reserved for Braintree
+* Host app does not integrate the [PayPal iOS SDK](https://github.com/paypal/paypal-ios-sdk)
+* Host app does not integrate with the Kount SDK
+* Host app has a secure, authenticated server with a [Braintree server-side integration](https://developers.braintreepayments.com/ios/start/hello-server)
 
 ## Deployment and Code Organization
 
