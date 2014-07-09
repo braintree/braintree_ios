@@ -55,6 +55,12 @@ The individual components may be of interest for advanced integrations and are e
 * Host app does not integrate with [card.io](https://www.card.io/)
 * Host app has a secure, authenticated server with a [Braintree server-side integration](https://developers.braintreepayments.com/ios/start/hello-server)
 
+## Committing
+
+* Commits should be small but atomic. Tests should always be passing; the product should always function appropriately.
+* Commit messages should be concise and descriptive.
+* Commit messages reference the trello board by ID or URL. (Sorry, these are not externally viewable.)
+
 ## Deployment and Code Organization
 
 * Code on master is assumed to be in a relatively good state at all times
