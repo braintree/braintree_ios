@@ -21,7 +21,7 @@ when the user taps it. This means that you are not required to override the `BTP
 
 Use [CocoaPods](https://cocoapods.com) and add the following to your `Podfile`:
 
-```
+```ruby
 pod 'Braintree/PayPal'
 ```
 
@@ -33,7 +33,7 @@ A straightforward integration approach is to just add a `BTPayPalButton` instanc
 
 1. Create an instance of `BTPayPalButton` either in your xib or storyboard or initialized in code and added as a subview, e.g.
 
-```
+```obj-c
 - (void)viewDidLoad {
   self.payPalButton = [[BTPayPalButton alloc] init];
   [self.view addSubview:self.payPalButton];
@@ -42,14 +42,14 @@ A straightforward integration approach is to just add a `BTPayPalButton` instanc
 
 2. Set the `client` and `delegate` properties of your `BTPayPalButton` instance, e.g.
 
-```
+```obj-c
 self.payPalButton.client = [[BTClient alloc] initWithClientToken:MY_CLIENT_TOKEN];
 self.payPalButton.delegate = self;
 ```
 
 3. Implement the required `BTPayPalButtonDelegate` protocol methods:
 
-```
+```obj-c
 - (void)payPalButton:(BTPayPalButton *)button addedPaymentMethod:(NSString *)paymentMethod {
   NSLog(@"Payment method %@ obtained and is ready for use", paymentMethod);
   // Send paymentMethod to your server for use...
@@ -63,7 +63,7 @@ self.payPalButton.delegate = self;
 4. Optional: `BTPayPalButton` handles presentation of a `BTPayPalViewController` out of the box, but you can change the presentation by implementing
 an additional optional `BTPayPalButtonViewControllerPresenterDelegate` method and setting the `presentationDelegate` property:
 
-```
+```obj-c
 - (void)payPalButton:(BTPayPalButton *)button requestsPresentationOfViewController:(UIViewController *)viewController {
   // Use your own presentation code here, e.g.
   [self.navigationController pushViewController:viewController];
