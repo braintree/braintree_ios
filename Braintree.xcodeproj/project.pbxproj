@@ -147,6 +147,7 @@
 		A79AC9A6193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */; };
 		A79ACA4A193FB3340095D7F1 /* good_root_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = A79ACA49193FB3340095D7F1 /* good_root_cert.der */; };
 		A79ACA4D1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */; };
+		A7AEF520196CD05C00360408 /* BraintreePublicInterfaceSanityCheckSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */; };
 		B0625DEDD37946988C5379F6 /* libPods-Braintree-API-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */; };
 		B81AA72C71C34DF0A3FA4779 /* libPods-Braintree-PayPal-Acceptance-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */; };
 		D574F60B94CB4F2AA8395FE1 /* libPods-Braintree-Payments-UI-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */; };
@@ -513,6 +514,7 @@
 		A79ACA49193FB3340095D7F1 /* good_root_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = good_root_cert.der; path = SSL/good_root_cert.der; sourceTree = "<group>"; };
 		A79ACA4B193FBEDE0095D7F1 /* BTAPIPinnedCertificates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIPinnedCertificates.h; sourceTree = "<group>"; };
 		A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormatterSpec.m; sourceTree = "<group>"; };
+		A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreePublicInterfaceSanityCheckSpec.m; sourceTree = "<group>"; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Specs.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1533,11 +1535,12 @@
 		A75DA36A1921394200D997A2 /* Braintree-Specs */ = {
 			isa = PBXGroup;
 			children = (
+				A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */,
 				A75DA3781921399C00D997A2 /* BraintreeSpec.m */,
 				161029FA192DB613002C1B2B /* BraintreeVersionSpec.m */,
+				A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */,
 				160D08A11926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m */,
 				A75DA36B1921394200D997A2 /* Supporting Files */,
-				A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */,
 			);
 			path = "Braintree-Specs";
 			sourceTree = "<group>";
@@ -2528,6 +2531,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7AEF520196CD05C00360408 /* BraintreePublicInterfaceSanityCheckSpec.m in Sources */,
 				161029FB192DB613002C1B2B /* BraintreeVersionSpec.m in Sources */,
 				A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */,
 				A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */,

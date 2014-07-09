@@ -32,7 +32,7 @@
 - (void)tokenizeCardWithNumber:(NSString *)cardNumber
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
-                    completion:(BraintreeNonceCompletionBlock)completionBlock {
+                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock {
     [self.client postAnalyticsEvent:@"custom.ios.tokenize.call"
                             success:nil
                             failure:nil];

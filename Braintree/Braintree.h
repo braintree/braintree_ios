@@ -6,8 +6,6 @@
 #import <Braintree/Braintree-Payments-UI.h>
 #import "BTDropInViewController.h"
 
-typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
-
 /// The `Braintree` class is the front door to the Braintree SDK for iOS. It contains
 /// everything you need to easily start accepting payments in your mobile app.
 ///
@@ -76,7 +74,7 @@ typedef void (^BraintreeNonceCompletionBlock)(NSString *nonce, NSError *error);
 - (void)tokenizeCardWithNumber:(NSString *)cardNumber
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
-                    completion:(BraintreeNonceCompletionBlock)completionBlock;
+                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
 
 #pragma mark Advanced Integrations
