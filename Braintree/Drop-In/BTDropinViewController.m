@@ -449,18 +449,9 @@
         [self.delegate dropInViewController:self
                 didSucceedWithPaymentMethod:paymentMethod];
     }
-
-    if (self.paymentMethodCompletionBlock) {
-        self.paymentMethodCompletionBlock(paymentMethod, nil);
-    }
 }
 
 - (void)informDelegateDidCancel {
-
-    if (self.paymentMethodCompletionBlock != nil) {
-        self.paymentMethodCompletionBlock(nil, nil);
-    }
-
     if ([self.delegate respondsToSelector:@selector(dropInViewControllerDidCancel:)]) {
         [self.delegate dropInViewControllerDidCancel:self];
     }

@@ -18,8 +18,8 @@
 /// The Drop In view controller delegates presentation and dismissal to the developer. It has been
 /// most thoroughly tested in the context of a UINavigationController.
 ///
-/// The Drop In can send success and cancelation messages to the developer via a block
-/// or a delegate. See `paymentMethodCompletionBlock` and `delegate`.
+/// The Drop In can send success and cancelation messages to the developer via the
+/// delegate. See `delegate` and `BTDropInViewControllerDelegate`.
 ///
 /// You can customize Drop In in various ways, for example, you can change the primary Call To
 /// Action button text. For visual customzation options see `theme` and `BTUI`. Like any
@@ -46,14 +46,6 @@
 
 /// The delegate that, if set, is notified of success or failure.
 @property (nonatomic, weak) id<BTDropInViewControllerDelegate> delegate;
-
-/// Functionally equivalent to the `BTDropInViewControllerDelegate` above, you may also register a
-/// single block callback for success and failure notifications.
-///
-/// @note The block (and thus all objects it retains) will be retained for the lifespan of this
-/// view controller instance.
-@property (nonatomic, strong) void (^paymentMethodCompletionBlock)(BTPaymentMethod *paymentMethod, NSError *error);
-
 
 #pragma mark Customization
 

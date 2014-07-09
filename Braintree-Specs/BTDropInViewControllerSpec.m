@@ -14,12 +14,6 @@ describe(@"initialization", ^{
 
         expect(viewController.delegate).to.beNil();
     });
-
-    it(@"starts without a completion block", ^{
-        BTDropInViewController *viewController = [[BTDropInViewController alloc] initWithClient:nil];
-
-        expect(viewController.paymentMethodCompletionBlock).to.beNil();
-    });
 });
 
 SpecEnd
