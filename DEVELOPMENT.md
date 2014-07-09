@@ -70,7 +70,7 @@ The individual components may be of interest for advanced integrations and are e
   * Functionality and user experience should be cohesive
   * Dead code should be kept to a minimum
 * Versioned deployments are tagged with their version numbers
-  * Version numbers conform to [SEMVER](https://semver.org)
+  * Version numbers conform to [SEMVER](http://semver.org)
   * These versions are more heavily tested
   * We will provide support for these versions and commit to maintaining backwards compatibility on our servers
 * Pull requests are welcome
