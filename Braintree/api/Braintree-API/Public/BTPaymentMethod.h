@@ -12,10 +12,4 @@
 /// argument of Braintree server-side client library methods.
 @property (nonatomic, readonly, copy) NSString *nonce;
 
-/// Indicates whether the payment method must be unlocked to be used, for example, in `Transaction.Create`.
-@property (nonatomic, readonly, assign, getter = isLocked) BOOL locked;
-
-/// Set of challenge questions required to unlock a payment method.
-@property (nonatomic, readonly, strong) NSSet *challengeQuestions;
-
 @end

@@ -127,7 +127,6 @@ describe(@"offline clients", ^{
                                           expect(card.nonce).to.beANonce();
                                           expect(card.type).to.equal(BTCardTypeVisa);
                                           expect(card.lastTwo).to.equal(@"11");
-                                          expect(card.isLocked).to.beFalsy();
                                           done();
                                       } failure:nil];
         });
@@ -208,7 +207,6 @@ describe(@"offline clients", ^{
                                                        success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                            expect(paypalPaymentMethod.nonce).to.beANonce();
                                                            expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
-                                                           expect(paypalPaymentMethod.locked).to.beFalsy();
                                                            done();
                                                        } failure:nil];
         });

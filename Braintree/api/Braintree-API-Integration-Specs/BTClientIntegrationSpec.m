@@ -109,7 +109,6 @@ describe(@"save card", ^{
                                   validate:YES
                                    success:^(BTPaymentMethod *card) {
                                        expect(card.nonce).to.beANonce();
-                                       expect(card.locked).to.beFalsy();
                                        done();
                                    } failure:nil];
         });
@@ -122,10 +121,8 @@ describe(@"save card", ^{
                                 postalCode:nil
                                   validate:YES
                                    success:^(BTCardPaymentMethod *card) {
-                                       expect(card.isLocked).to.beFalsy();
                                        expect(card.type).to.equal(BTCardTypeMasterCard);
                                        expect(card.lastTwo).to.equal(@"44");
-                                       expect(card.challengeQuestions).to.equal([NSSet setWithObject:@"cvv"]);
                                        expect(card.description).to.equal(@"ending in 44");
                                        done();
                                    } failure:nil];
@@ -219,7 +216,6 @@ describe(@"save card", ^{
                                            validate:YES
                                             success:^(BTCardPaymentMethod *card) {
                                                 expect(card.nonce).to.beANonce();
-                                                expect(card.isLocked).to.beFalsy();
                                                 done();
                                             } failure:nil];
             });
@@ -323,7 +319,6 @@ describe(@"list payment methods", ^{
             expect(paymentMethods).to.haveCountOf(2);
             [paymentMethods enumerateObjectsUsingBlock:^(BTPaymentMethod *card, NSUInteger idx, BOOL *stop) {
                 expect(card.nonce).to.beANonce();
-                expect(card.isLocked).to.beFalsy();
             }];
             done();
         } failure:nil];
