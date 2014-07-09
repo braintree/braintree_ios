@@ -28,8 +28,8 @@
     NSString *customerId = [[NSUUID UUID] UUIDString];
     [self.sessionManager GET:@"/client_token"
                   parameters:@{@"customer_id": customerId}
-                     success:^(AFHTTPRequestOperation *operation, __unused id responseObject) {
-                         completionBlock(operation.responseString, nil);
+                     success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
+                         completionBlock(responseObject[@"client_token"], nil);
                      }
                      failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
                          completionBlock(nil, error);
