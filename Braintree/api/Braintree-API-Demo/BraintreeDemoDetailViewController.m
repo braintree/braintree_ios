@@ -65,9 +65,9 @@ NSString * BraintreeDemoDetailViewControllerResultPropertyPrototypeCell = @"Resu
             break;
         case BraintreeDemoDetailViewControllerSectionIndexResult:
             if ([self.result isKindOfClass:[BTCardPaymentMethod class]]) {
-                return 5;
-            } else if ([self.result isKindOfClass:[BTPayPalPaymentMethod class]]) {
                 return 3;
+            } else if ([self.result isKindOfClass:[BTPayPalPaymentMethod class]]) {
+                return 2;
             } else if ([self.result isKindOfClass:[NSString class]]) {
                 return 1;
             } else if ([self.result respondsToSelector:@selector(objectAtIndex:)] && [self.result respondsToSelector:@selector(count)]) {
@@ -107,20 +107,12 @@ NSString * BraintreeDemoDetailViewControllerResultPropertyPrototypeCell = @"Resu
                             cell.detailTextLabel.text = card.nonce;
                             break;
                         case 1:
-                            cell.textLabel.text = @"isLocked";
-                            cell.detailTextLabel.text = card.isLocked ? @"YES" : @"NO";
-                            break;
-                        case 2:
                             cell.textLabel.text = @"type";
                             cell.detailTextLabel.text = card.typeString;
                             break;
-                        case 3:
+                        case 2:
                             cell.textLabel.text = @"lastTwo";
                             cell.detailTextLabel.text = card.lastTwo;
-                            break;
-                        case 4:
-                            cell.textLabel.text = @"challenge";
-                            cell.detailTextLabel.text = [[card.challengeQuestions allObjects] componentsJoinedByString:@", "];
                             break;
                         default:
                             break;
@@ -135,10 +127,6 @@ NSString * BraintreeDemoDetailViewControllerResultPropertyPrototypeCell = @"Resu
                             cell.detailTextLabel.text = card.nonce;
                             break;
                         case 1:
-                            cell.textLabel.text = @"isLocked";
-                            cell.detailTextLabel.text = card.isLocked ? @"YES" : @"NO";
-                            break;
-                        case 2:
                             cell.textLabel.text = @"email";
                             cell.detailTextLabel.text = card.email;
                             break;
