@@ -4,7 +4,7 @@ This document outlines development practices that we follow internally while dev
 
 ## Development Merchant Server
 
-The included demo app utilizes a test merchant server hosted on heroku (`[https://braintree-sample-merchant.herokuapp.com](https://braintree-sample-merchant.herokuapp.com)`). It
+The included demo app utilizes a test merchant server hosted on heroku ([https://braintree-sample-merchant.herokuapp.com](https://braintree-sample-merchant.herokuapp.com)). It
 produces client tokens that point to Braintree's Sandbox Environment.
 
 This merchant server is also provided as a gem called
