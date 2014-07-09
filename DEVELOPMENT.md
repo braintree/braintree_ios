@@ -12,7 +12,7 @@ This merchant server is also provided as a gem called
 taproot locally and hit a development Gateway running on `localhost`:
 
 ```
-cd Example
+cd taproot
 bundle
 taprootd
 
@@ -28,6 +28,8 @@ You can now change the merchant server base URL specified in `BraintreeDemoTrans
 There are a number of test targets for each section of the project. You can run all tests on the command line with `bundle && rake spec:all`. 
 
 It's a good idea to run `rake`, which runs all unit tests, before committing.
+
+The integration tests require a full Braintree stack running on localhost.
 
 ## Architecture
 
