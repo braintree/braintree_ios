@@ -4,7 +4,6 @@ describe(@"The Braintree PayPal button", ^{
     describe(@"login flow", ^{
         afterEach(^{
             [tester tapViewWithAccessibilityLabel:@"Change payment method"];
-
         });
 
         it(@"displays the PayPal delegate login flow and results in the button displaying details about the logged in user", ^{
@@ -37,7 +36,6 @@ describe(@"The Braintree PayPal button", ^{
 
             [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Agree"];
 
-            [tester waitForViewWithAccessibilityLabel:@"PayPal"];
             [tester waitForViewWithAccessibilityLabel:@"email@example.com"];
         });
     });

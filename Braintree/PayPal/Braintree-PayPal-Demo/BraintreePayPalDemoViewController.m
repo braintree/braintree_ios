@@ -3,6 +3,9 @@
 
 @interface BraintreePayPalDemoViewController () <UITextFieldDelegate>
 
+@property (nonatomic, weak) IBOutlet UILabel *emailLabel;
+@property (nonatomic, weak) IBOutlet UILabel *nonceLabel;
+
 @property (weak, nonatomic) IBOutlet BTPayPalButton *payPalButton;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *payPalButtonHeightConstraint;
@@ -46,6 +49,8 @@
 
 - (void)payPalButton:(BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
     NSLog(@"payPalButton:%@ addedPaymentMethod:(email:%@ nonce:%@)", button, paymentMethod.email, paymentMethod.nonce);
+    self.emailLabel.text = paymentMethod.email;
+    self.nonceLabel.text = paymentMethod.nonce;
 }
 
 - (void)payPalButton:(BTPayPalButton *)button didFailWithError:(NSError *)error {
