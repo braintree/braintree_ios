@@ -35,8 +35,8 @@ A straightforward integration approach is to just add a `BTPayPalButton` instanc
 
 ```obj-c
 - (void)viewDidLoad {
-  self.payPalButton = [[BTPayPalButton alloc] init];
-  [self.view addSubview:self.payPalButton];
+    self.payPalButton = [[BTPayPalButton alloc] init];
+    [self.view addSubview:self.payPalButton];
 }
 ```
 
@@ -51,12 +51,12 @@ self.payPalButton.delegate = self;
 
 ```obj-c
 - (void)payPalButton:(BTPayPalButton *)button addedPaymentMethod:(NSString *)paymentMethod {
-  NSLog(@"Payment method %@ obtained and is ready for use", paymentMethod);
-  // Send paymentMethod to your server for use...
+    NSLog(@"Payment method %@ obtained and is ready for use", paymentMethod);
+    // Send paymentMethod to your server for use...
 }
 
 - (void)payPalButtonRemovedPaymentMethod:(BTPayPalButton *)button {
-  NSLog(@"Payment method was removed");
+    NSLog(@"Payment method was removed");
 }
 ```
 
@@ -65,7 +65,7 @@ an additional optional `BTPayPalButtonViewControllerPresenterDelegate` method an
 
 ```obj-c
 - (void)payPalButton:(BTPayPalButton *)button requestsPresentationOfViewController:(UIViewController *)viewController {
-  // Use your own presentation code here, e.g.
-  [self.navigationController pushViewController:viewController];
+    // Use your own presentation code here, e.g.
+    [self.navigationController pushViewController:viewController];
 }
 ```
