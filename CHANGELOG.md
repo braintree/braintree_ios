@@ -6,6 +6,12 @@
   * Renamed a method in `BTDropInViewControllerDelegate` to send
     cancelation messages to user. All errors within Drop In are now
     handled internally with user interaction.
+  * Removed completion block interface on `BTDropInViewController`
+  * Removed crufty `BTMerchantIntegrationErrorUnknown` which was unused
+* Enhancements
+  * Added basic analytics instrumentation
+  * Improved Drop-in's error handling
+  * BTPayPalPaymentMethod now implements `NSMutableCopying`
 
 ## 3.0.0-rc7
 
