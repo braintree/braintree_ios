@@ -52,6 +52,7 @@ The individual components may be of interest for advanced integrations and are e
 * `BT` namespace is reserved for Braintree
 * Host app does not integrate the [PayPal iOS SDK](https://github.com/paypal/paypal-ios-sdk)
 * Host app does not integrate with the Kount SDK
+* Host app does not integrate with [card.io](https://www.card.io/)
 * Host app has a secure, authenticated server with a [Braintree server-side integration](https://developers.braintreepayments.com/ios/start/hello-server)
 
 ## Deployment and Code Organization
