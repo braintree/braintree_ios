@@ -15,8 +15,6 @@ NS_ENUM(NSInteger, BTErrorCode) {
     BTCustomerInputErrorUnknown,
     /// An error occurred due to invalid user input.
     BTCustomerInputErrorInvalid,
-    /// An error occured due to a general problem with SDK integration.
-    BTMerchantIntegrationErrorUnknown,
     /// An error occured due to an authorization problem with SDK integration.
     BTMerchantIntegrationErrorUnauthorized,
     /// An error occured due to a remove resource not found.
