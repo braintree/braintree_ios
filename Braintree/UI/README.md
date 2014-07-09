@@ -14,5 +14,5 @@ braintree-payments-ui is available through [CocoaPods](http://cocoapods.org), to
 it simply add the following line to your Podfile:
 
 ```ruby
-pod "Braintree/ui"
+pod 'Braintree/ui'
 ```
