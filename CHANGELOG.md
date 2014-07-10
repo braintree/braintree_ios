@@ -1,5 +1,16 @@
 # Braintree iOS SDK Release Notes
 
+## 3.0.0
+
+Initial release of 3.0.0
+
+https://www.braintreepayments.com/v.zero
+
+* Enhancements since rc8
+  * Added details to DEVELOPMENT.md
+  * Updated demo app to not use removed card properties
+  * Updated PayPal acceptance tests
+
 ## 3.0.0-rc8
 
 * Breaking Change
