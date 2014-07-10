@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 3.0.0
+## 3.0.0 (2014-07-09)
 
 Initial release of 3.0.0
 
