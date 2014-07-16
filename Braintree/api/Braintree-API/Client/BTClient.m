@@ -138,14 +138,16 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 }
 
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
+                              correlationId:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock{
+                                    failure:(BTClientFailureBlock)failureBlock {
 
-    NSDictionary *requestParameters = @{@"paypal_account": @{
-                                                @"consent_code": authCode
-                                                },
-                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
-                                        };
+    NSDictionary *requestParameters = @{ @"paypal_account": @{
+                                                 @"consent_code": authCode ?: NSNull.null,
+                                                 @"correlation_id": correlationId ?: NSNull.null
+                                                 },
+                                         @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                         };
 
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
@@ -160,6 +162,15 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             }
         }
     }];
+}
+
+- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
+                                    success:(BTClientPaypalSuccessBlock)successBlock
+                                    failure:(BTClientFailureBlock)failureBlock {
+    [self savePaypalPaymentMethodWithAuthCode:authCode
+                                correlationId:nil
+                                      success:successBlock
+                                      failure:failureBlock];
 }
 
 - (void)postAnalyticsEvent:(NSString *)eventKind

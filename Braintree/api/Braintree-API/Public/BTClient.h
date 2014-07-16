@@ -70,14 +70,23 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                    success:(BTClientCardSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock;
 
-
 /// Save a paypal payment method to Braintree
+/// @param authCode Authorization Code
+/// @param correlationId PayPal App Correlation Id
+/// @param successBlock success callback for handling the resulting new PayPal account payment method
+/// @param failureBlock failure callback for handling errors
+- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
+                              correlationId:(NSString *)applicationCorrelationId
+                                    success:(BTClientPaypalSuccessBlock)successBlock
+                                    failure:(BTClientFailureBlock)failureBlock;
+
+/// Save a paypal payment method to Braintree without a PayPal App Correlation ID
 /// @param authCode Authorization Code
 /// @param successBlock success callback for handling the resulting new PayPal account payment method
 /// @param failureBlock failure callback for handling errors
-- (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
+- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
                                     success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock;
+                                    failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
 
 
 /// "Fire and forget analytics" - transmits an analytics event to the Braintree analytics service

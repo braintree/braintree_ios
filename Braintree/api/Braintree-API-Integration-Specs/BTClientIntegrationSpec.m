@@ -397,12 +397,25 @@ describe(@"clients with PayPal activated", ^{
     });
 
     it(@"can save a PayPal payment method based on an auth code", ^AsyncBlock{
-        [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode" success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
+        [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode"
+                                          correlationId:@"testCorrelationId"
+                                                success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
             expect(payPalPaymentMethod.nonce).to.beANonce();
             expect(payPalPaymentMethod.email).to.beKindOf([NSString class]);
             done();
         } failure:nil];
     });
+
+    it(@"can save a PayPal payment method based on an auth code without a correlation id", ^AsyncBlock{
+        [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode"
+                                          correlationId:nil
+                                                success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
+            expect(payPalPaymentMethod.nonce).to.beANonce();
+            expect(payPalPaymentMethod.email).to.beKindOf([NSString class]);
+            done();
+        } failure:nil];
+    });
+
 });
 
 describe(@"a client initialized with a revoked authorization fingerprint", ^{

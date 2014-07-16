@@ -66,7 +66,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: ab63e259fe91eef4519b371ef0a4955af0e73e64
-  Braintree: 0ddde247b3f632619761e927da07f5f59db19a9f
+  Braintree: 7f44504f03bd6b2b8c6e4b1c73c20f4fc367db0b
   Expecta: ce8a51b9fad15a2cd573b291cb2909aaed865350
   HockeySDK: f9af97c2f5df4eb6ca6d2a9c408f2ff498edd608
   KIF: 443c517d14fc2a99d27d3df170bc274cdf288241

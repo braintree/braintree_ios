@@ -60,8 +60,17 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     return [[PayPalFuturePaymentViewController alloc] initWithConfiguration:self.clientToken.btPayPal_configuration delegate:delegate];
 }
 
-- (BOOL) btPayPal_isPayPalEnabled{
+- (BOOL) btPayPal_isPayPalEnabled {
     return self.clientToken.btPayPal_isPayPalEnabled;
+}
+
+- (NSString *)btPayPal_applicationCorrelationId {
+    NSString *payPalEnvironment = self.clientToken.btPayPal_environment;
+    if (![payPalEnvironment isEqualToString:PayPalEnvironmentProduction] && ![payPalEnvironment isEqualToString:PayPalEnvironmentSandbox]) {
+        return nil;
+    }
+
+    return [PayPalMobile applicationCorrelationIDForEnvironment:self.clientToken.btPayPal_environment];
 }
 
 @end

@@ -204,6 +204,7 @@ describe(@"offline clients", ^{
     describe(@"save Paypal account", ^{
         it(@"returns the newly saved account", ^AsyncBlock{
             [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
+                                                 correlationId:@"correlationId"
                                                        success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                            expect(paypalPaymentMethod.nonce).to.beANonce();
                                                            expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
@@ -227,7 +228,9 @@ describe(@"offline clients", ^{
             beforeEach(^AsyncBlock{
                 [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
                                        postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                           [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode" success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                           [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
+                                                                                correlationId:nil
+                                                                                      success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
                                                    paymentMethods = fetchedPaymentMethods;
                                                    done();
