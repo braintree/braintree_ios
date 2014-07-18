@@ -7,7 +7,6 @@
 #import "BTClient+Offline.h"
 
 NSString *BTClientPayPalMobileEnvironmentName = @"Braintree";
-NSString *const BTClientPayPalMobileDysonURL = @"https://www.paypalobjects.com/webstatic/risk/dyson_config_v2_sandbox.json";
 NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be initialized. Perhaps client token did not contain a valid PayPal configuration.";
 
 @implementation BTClient (BTPayPal)
@@ -41,8 +40,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
             }
         } else {
             [PayPalMobile addEnvironments:@{ BTClientPayPalMobileEnvironmentName:@{
-                                                     @"api": [self.clientToken.btPayPal_directBaseURL absoluteString],
-                                                     @"dyson": BTClientPayPalMobileDysonURL } }];
+                                                     @"api": [self.clientToken.btPayPal_directBaseURL absoluteString] } }];
             [PayPalMobile initializeWithClientIdsForEnvironments:@{BTClientPayPalMobileEnvironmentName: self.clientToken.btPayPal_clientId}];
             [PayPalMobile preconnectWithEnvironment:BTClientPayPalMobileEnvironmentName];
         }
