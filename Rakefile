@@ -23,8 +23,6 @@ SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
 DEMO_PLIST = "Braintree-Demo/Braintree-Demo-Info.plist"
 PUBLIC_REMOTE_NAME = "public"
-PUBLIC_PODS_REPO = "braintree_public"
-PUBLIC_PODS_REPO_URL = "git@github.com:braintree/CocoaPods.git"
 
 class << self
   def run cmd
@@ -295,16 +293,14 @@ end
 
 namespace :publish do
 
-  desc  "Push tag to github.com"
+  desc  "Push code and tag to github.com"
   task :push do
     run! "git push #{PUBLIC_REMOTE_NAME} HEAD #{current_version}"
   end
 
   desc  "Pod push."
   task :push_pod do
-    run! "pod repo add #{PUBLIC_PODS_REPO} #{PUBLIC_PODS_REPO_URL}" unless Dir.exist?(File.expand_path("~/.cocoapods/repos/#{PUBLIC_PODS_REPO}"))
-
-    run! "pod repo push #{PUBLIC_PODS_REPO}"
+    run! "pod trunk push Braintree.podspec"
   end
 
 end
