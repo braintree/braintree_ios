@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 3.0.1 (2014-
+## 3.0.1 (2014-07-21)
 
 * Enhancements
   * Add support for [PayPal Application Correlation ID](https://github.com/paypal/PayPal-iOS-SDK/blob/master/docs/future_payments_mobile.md#obtain-an-application-correlation-id)
