@@ -1,11 +1,7 @@
-SpecBegin(BTPayPal_AcceptanceSpec)
+SpecBegin(BTPayPal_Acceptance)
 
 describe(@"The Braintree PayPal button", ^{
     describe(@"login flow", ^{
-        afterEach(^{
-            [tester tapViewWithAccessibilityLabel:@"Change payment method"];
-        });
-
         it(@"displays the PayPal delegate login flow and results in the button displaying details about the logged in user", ^{
             // Tap PayPal Button
             [tester tapViewWithAccessibilityLabel:@"Pay with PayPal"];
