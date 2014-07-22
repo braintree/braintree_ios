@@ -2,13 +2,17 @@
 
 ## Overview
 
-`BTData` is our advanced fraud solution that is powered by Kount. This class enables you to collect device data and correlate it with a session identifier, which is also shared with your server.
+`Braintree/data` is our advanced fraud solution that is powered by `BTData` and Kount. This system enables you to collect device data and correlate it with a session identifier on your server.
 
 By default, we suggest you utilize the default merchant credentials embedded in `[BTData defaultDataForEnvironment:delegate]`.
 
 For direct Fraud Integration, please see [our documentation](https://www.braintreepayments.com/docs/general/fraud_tools#direct_fraud_tool_integration) or [contact our accounts team](accounts@braintreepayments.com).
 
+**Note:** Use of `Braintree/data` and `BTData` is optional. Since `Braintree/data` contains references to Apple's IDFA, including it in your app may impact your App Store submission review process.
+
 ### Usage
+
+First, add `pod "Braintree/data"` to your `Podfile`.
 
 #### Default
 

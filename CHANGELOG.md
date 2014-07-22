@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+
+## 3.1.0 (2014-07-22)
+
+* Integration Change:
+  * `Braintree/data` is no longer a default subspec. If you are currently using `BTData`, please add `pod "Braintree/data"` to your `Podfile`.
+
 ## 3.0.1 (2014-07-21)
 
 * Enhancements

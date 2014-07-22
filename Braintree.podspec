@@ -24,6 +24,8 @@ Pod::Spec.new do |s|
   s.compiler_flags = "-Wall -Werror -Wextra"
   s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES" }
 
+  s.default_subspecs = %w[Drop-In api PayPal UI]
+
   s.subspec 'Drop-In' do |s|
     s.source_files  = "Braintree/Drop-In/**/*.{h,m}"
     s.public_header_files = "Braintree/Drop-In/Public/*.h"
@@ -35,7 +37,6 @@ Pod::Spec.new do |s|
   s.subspec 'api' do |s|
     s.source_files  = "Braintree/api/Braintree-API/**/*.{h,m}"
     s.public_header_files = "Braintree/api/Braintree-API/Public/*.h"
-    s.dependency 'Braintree/Data'
   end
 
   s.subspec 'PayPal' do |s|
