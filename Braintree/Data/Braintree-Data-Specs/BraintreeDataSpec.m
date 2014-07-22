@@ -35,9 +35,9 @@ describe(@"Kount DeviceCollectorSDK", ^{
 });
 
 describe(@"defaultDataForEnvironment:delegate:", ^{
-    __block NSMutableArray *array;
+    __block NSMutableArray *arrayToRetainBTDataInstanceDuringAsyncAssertion;
     beforeAll(^{
-        array = [NSMutableArray array];
+        arrayToRetainBTDataInstanceDuringAsyncAssertion = [NSMutableArray array];
     });
 
     sharedExamplesFor(@"a no-op data collector", ^(NSDictionary *testData) {
@@ -47,6 +47,7 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
 
             TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
             BTData *data = [BTData defaultDataForEnvironment:env delegate:delegate];
+            [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
             [data collect];
             expect(delegate.didStart).to.beFalsy();
             expect(delegate.didComplete).will.beFalsy();
@@ -60,7 +61,7 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
             TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
             BTData *data = [BTData defaultDataForEnvironment:env delegate:delegate];
             [data collect];
-            [array addObject:data];
+            [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
             expect(delegate.didStart).to.beTruthy();
             expect(delegate.didComplete).will.beTruthy();
         });

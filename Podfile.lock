@@ -45,7 +45,6 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
-  - Braintree (from `./Braintree.podspec`)
   - Braintree (from `.`)
   - Braintree/api (from `.`)
   - Braintree/Data (from `.`)
