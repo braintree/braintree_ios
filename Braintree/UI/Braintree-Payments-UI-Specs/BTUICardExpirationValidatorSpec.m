@@ -83,6 +83,28 @@ describe(@"month:year:validForDate:", ^{
         });
     });
 
+    context(@"month and year formats", ^{
+        __block NSDate *today;
+
+        beforeEach(^{
+            NSDateComponents *components = [[NSDateComponents alloc] init];
+            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            components.day = 2;
+            components.month = 2;
+            components.year = 2014;
+            today = components.date;
+        });
+
+        it(@"accepts 2 digit years", ^{
+            BOOL monthYearValid = [BTUICardExpirationValidator month:4 year:14 validForDate:today];
+            expect(monthYearValid).to.beTruthy();
+        });
+
+        it(@"accepts 4 digit years", ^{
+            BOOL monthYearValid = [BTUICardExpirationValidator month:4 year:2014 validForDate:today];
+            expect(monthYearValid).to.beTruthy();
+        });
+    });
 });
 
 SpecEnd
