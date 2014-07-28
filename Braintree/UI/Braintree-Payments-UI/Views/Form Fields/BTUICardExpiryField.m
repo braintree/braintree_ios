@@ -4,6 +4,9 @@
 #import "BTUICardExpirationValidator.h"
 #import "BTUICardExpiryFormat.h"
 
+static NSString *BTUICardExpiryFieldComponentSeparator = @"/";
+static NSString *BTUICardExpiryFieldYYYYPrefix = @"20";
+
 @interface BTUICardExpiryField () <UITextFieldDelegate>
 @end
 
@@ -53,13 +56,13 @@
     UITextRange *newRange = [self.textField textRangeFromPosition:newPosition toPosition:newPosition];
     self.textField.selectedTextRange = newRange;
 
-    NSArray *expirationComponents = [self.textField.text componentsSeparatedByString:@"/"];
-    if(expirationComponents.count == 2 && self.textField.text.length == 5) {
+    NSArray *expirationComponents = [self expirationComponents];
+    if(expirationComponents.count == 2 && (self.textField.text.length == 5 || self.textField.text.length == 7)) {
         _expirationMonth = expirationComponents[0];
         _expirationYear = expirationComponents[1];
     }
 
-    self.displayAsValid = self.textField.text.length != 5 || self.valid;
+    self.displayAsValid = ((self.textField.text.length != 5 && self.textField.text.length != 7) || self.valid);
 
     [self.delegate formFieldDidChange:self];
 }
@@ -75,13 +78,14 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)newText {
-
     NSString *numericNewText = [BTUIUtil stripNonDigits:newText];
     if (![numericNewText isEqualToString:newText]) {
         return NO;
     }
     NSString *updatedText = [textField.text stringByReplacingCharactersInRange:range withString:numericNewText];
-    if(updatedText.length > 5) {
+
+    BOOL couldEndWithFourDigitYear = [self couldEndWithFourDigitYear];
+    if (couldEndWithFourDigitYear ? updatedText.length > 7 : updatedText.length > 5) {
         return NO;
     }
 
@@ -101,8 +105,21 @@
     return YES;
 }
 
+- (BOOL)entryComplete {
+    return [super entryComplete] && ![self.expirationYear isEqualToString:BTUICardExpiryFieldYYYYPrefix];
+}
 
 #pragma mark Helper
+
+- (BOOL)couldEndWithFourDigitYear {
+    NSArray *expirationComponents = [self expirationComponents];
+    NSString *yearComponent = [expirationComponents count] >= 2 ? expirationComponents[1] : nil;
+    return (yearComponent && yearComponent.length >= 2 && [[yearComponent substringToIndex:2] isEqualToString:BTUICardExpiryFieldYYYYPrefix]);
+}
+
+- (NSArray *)expirationComponents {
+    return [self.textField.text componentsSeparatedByString:BTUICardExpiryFieldComponentSeparator];
+}
 
 - (void)format {
     NSMutableString *s = [NSMutableString stringWithString:[BTUIUtil stripNonDigits:self.textField.text]];
@@ -122,10 +139,11 @@
         }
     }
 
-    if (s.length > 2 && [s characterAtIndex:2] != '/' ) {
-        [s insertString:@"/" atIndex:2];
+    if (s.length > 2 && ![[s substringWithRange:NSMakeRange(2, 1)] isEqualToString:BTUICardExpiryFieldComponentSeparator]) {
+        [s insertString:BTUICardExpiryFieldComponentSeparator
+                atIndex:2];
     } else if (s.length == 2) {
-        [s appendString:@"/"];
+        [s appendString:BTUICardExpiryFieldComponentSeparator];
     }
 
     NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:s attributes:self.theme.textFieldTextAttributes];
