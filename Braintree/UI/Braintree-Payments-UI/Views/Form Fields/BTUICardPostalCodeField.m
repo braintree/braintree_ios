@@ -17,6 +17,12 @@
     self.textField.keyboardType = _nonDigitsSupported ? UIKeyboardTypeNumbersAndPunctuation : UIKeyboardTypeNumberPad;
 }
 
+- (BOOL)entryComplete {
+    // Never allow auto-advancing out of postal code field since there is no way to know that the
+    // input value constitutes a complete postal code.
+    return NO;
+}
+
 - (BOOL)valid {
     return self.postalCode.length > 0;
 }
