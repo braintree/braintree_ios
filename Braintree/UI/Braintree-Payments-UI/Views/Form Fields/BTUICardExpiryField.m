@@ -15,10 +15,7 @@ static NSString *BTUICardExpiryFieldYYYYPrefix = @"20";
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        NSMutableAttributedString *placeholder = [[NSMutableAttributedString alloc] initWithString:@"MM/YY"
-                                                                                        attributes:self.theme.textFieldPlaceholderAttributes];
-        [self kernExpiration:placeholder];
-        [self setThemedAttributedPlaceholder:placeholder];
+        [self updatePlaceholder];
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.textField.delegate = self;
     }
@@ -61,6 +58,8 @@ static NSString *BTUICardExpiryFieldYYYYPrefix = @"20";
         _expirationMonth = expirationComponents[0];
         _expirationYear = expirationComponents[1];
     }
+
+    [self updatePlaceholder];
 
     self.displayAsValid = ((self.textField.text.length != 5 && self.textField.text.length != 7) || self.valid);
 
@@ -110,6 +109,17 @@ static NSString *BTUICardExpiryFieldYYYYPrefix = @"20";
 }
 
 #pragma mark Helper
+
+- (void)updatePlaceholder {
+    [self couldEndWithFourDigitYear] ? [self setThemedPlaceholder:@"MM/YYYY"] : [self setThemedPlaceholder:@"MM/YY"];
+}
+
+- (void)setThemedPlaceholder:(NSString *)placeholder {
+        NSMutableAttributedString *attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:placeholder
+                                                                                        attributes:self.theme.textFieldPlaceholderAttributes];
+        [self kernExpiration:attributedPlaceholder];
+        [self setThemedAttributedPlaceholder:attributedPlaceholder];
+}
 
 - (BOOL)couldEndWithFourDigitYear {
     NSArray *expirationComponents = [self expirationComponents];
