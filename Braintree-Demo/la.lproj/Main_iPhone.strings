@@ -1,0 +1,66 @@
+
+/* Class = "IBUILabel"; text = "[braintree payPalControlWithCompletion:];"; ObjectID = "2E9-9x-5fB"; */
+"2E9-9x-5fB.text" = "[braintree payPalControlWithCompletion:];";
+
+/* Class = "IBUILabel"; text = "Transmit nonce to your server → 💰"; ObjectID = "2q2-ZJ-xOe"; */
+"2q2-ZJ-xOe.text" = "Quarto, ad praesens amet → 💰";
+
+/* Class = "IBUILabel"; text = "Transaction"; ObjectID = "4hk-mK-yky"; */
+"4hk-mK-yky.text" = "negotium";
+
+/* Class = "IBUITableViewSection"; headerTitle = "Step 1: Fetch client token"; ObjectID = "7hw-3T-pMn"; */
+"7hw-3T-pMn.headerTitle" = "Vestigium I: Quaere omen clientis";
+
+/* Class = "IBUILabel"; text = "[braintree dropinViewControllerWithCompletion:];"; ObjectID = "9x8-Nu-myL"; */
+"9x8-Nu-myL.text" = "[braintree dropinViewControllerWithCompletion:];";
+
+/* Class = "IBUITableViewSection"; headerTitle = "Step 2: Create Nonce"; ObjectID = "LJb-7g-SHk"; */
+"LJb-7g-SHk.headerTitle" = "Vestigium II: Aliquam erat praesens";
+
+/* Class = "IBUILabel"; text = "PayPal Button"; ObjectID = "PaT-fr-JHw"; */
+"PaT-fr-JHw.text" = "Boto PayPali";
+
+/* Class = "IBUILabel"; text = "[braintree tokenizeCardWithNumber:…];"; ObjectID = "Rp4-mk-GPh"; */
+"Rp4-mk-GPh.text" = "[braintree tokenizeCardWithNumber:…];";
+
+/* Class = "IBUILabel"; text = "(nil)"; ObjectID = "TF6-8A-TuS"; */
+"TF6-8A-TuS.text" = "(nil)";
+
+/* Class = "IBUILabel"; text = "Nonce"; ObjectID = "Wbo-0U-3Vw"; */
+"Wbo-0U-3Vw.text" = "inparibus";
+
+/* Class = "IBUILabel"; text = "Make a Transaction"; ObjectID = "Wop-mr-JDF"; */
+"Wop-mr-JDF.text" = "Fac Inparibum";
+
+/* Class = "IBUINavigationItem"; title = "Braintree SDK for iOS"; ObjectID = "ZEn-QI-hbv"; */
+"ZEn-QI-hbv.title" = "MANIFESTATIO OB ARBORIS CEREBRIS";
+
+/* Class = "IBUILabel"; text = "Braintree"; ObjectID = "cV4-n0-2WW"; */
+"cV4-n0-2WW.text" = "Arbor Cerebris";
+
+/* Class = "IBUILabel"; text = "[Braintree braintreeWithClientToken:];"; ObjectID = "ccE-ej-MeD"; */
+"ccE-ej-MeD.text" = "[Braintree braintreeWithClientToken:];";
+
+/* Class = "IBUILabel"; text = "Initialize with a Client Token"; ObjectID = "cdT-q9-6cH"; */
+"cdT-q9-6cH.text" = "Initie cum omen clientis";
+
+/* Class = "IBUITableViewSection"; headerTitle = "Step 3: Make a Transaction"; ObjectID = "fYo-pp-MTy"; */
+"fYo-pp-MTy.headerTitle" = "Vestigium III: Paciscere";
+
+/* Class = "IBUILabel"; text = "Card Tokenization"; ObjectID = "g1s-7X-ara"; */
+"g1s-7X-ara.text" = "Omintere fiscalis";
+
+/* Class = "IBUILabel"; text = "Drop-In"; ObjectID = "hWi-9S-SNj"; */
+"hWi-9S-SNj.text" = "Dēmittō";
+
+/* Class = "IBUITableViewSection"; headerTitle = "Library Version"; ObjectID = "hnV-8l-v2h"; */
+"hnV-8l-v2h.headerTitle" = "versio bibliotheces";
+
+/* Class = "IBUILabel"; text = "pod \"Braintree\""; ObjectID = "ocb-oW-K0r"; */
+"ocb-oW-K0r.text" = "pod \"Braintree\"";
+
+/* Class = "IBUILabel"; text = "(nil)"; ObjectID = "pZN-Ur-Ks9"; */
+"pZN-Ur-Ks9.text" = "(nilum)";
+
+/* Class = "IBUILabel"; text = "(nil)"; ObjectID = "zaP-r6-4Ld"; */
+"zaP-r6-4Ld.text" = "(nilum)";

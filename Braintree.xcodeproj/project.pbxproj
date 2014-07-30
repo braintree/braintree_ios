@@ -390,6 +390,8 @@
 		164A13EC1966237E009FAAEA /* BTKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTKeychain.m; path = "Braintree/API/Braintree-API/Utility/BTKeychain.m"; sourceTree = SOURCE_ROOT; };
 		164A13ED19662D42009FAAEA /* BTReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTReachability.h; sourceTree = "<group>"; };
 		164A13EE19662D42009FAAEA /* BTReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTReachability.m; sourceTree = "<group>"; };
+		168792F919885B5000F3B9E3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
+		168792FB19885B5300F3B9E3 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		1696810C192D98EA00120846 /* BTUICardTypeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardTypeSpec.m; sourceTree = "<group>"; };
 		1696810D192D98EA00120846 /* BTUISpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUISpec.m; sourceTree = "<group>"; };
 		1696810E192D98EA00120846 /* Braintree-Payments-UI-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Payments-UI-Specs-Info.plist"; sourceTree = "<group>"; };
@@ -1842,6 +1844,7 @@
 			knownRegions = (
 				en,
 				Base,
+				la,
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
@@ -2599,6 +2602,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				16217521192D922F008DC35D /* Base */,
+				168792F919885B5000F3B9E3 /* en */,
+				168792FB19885B5300F3B9E3 /* la */,
 			);
 			name = Main_iPhone.storyboard;
 			sourceTree = "<group>";
