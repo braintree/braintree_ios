@@ -223,6 +223,8 @@
 		16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+BTMatches.m"; sourceTree = "<group>"; };
 		1613815D1923074000C3B5BE /* BTDropInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInViewController.h; sourceTree = "<group>"; };
 		1613815E1923074000C3B5BE /* BTDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInViewController.m; sourceTree = "<group>"; };
+		1615647419889010002F7316 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UI.strings; sourceTree = "<group>"; };
+		1615647519889011002F7316 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/UI.strings; sourceTree = "<group>"; };
 		1621741F192D85EB008DC35D /* Braintree-API.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-API.h"; sourceTree = "<group>"; };
 		16217420192D85EB008DC35D /* BTCardPaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardPaymentMethod.h; sourceTree = "<group>"; };
 		16217421192D85EB008DC35D /* BTClient+Offline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+Offline.h"; sourceTree = "<group>"; };
@@ -787,6 +789,14 @@
 			path = "Custom Expecta Matchers";
 			sourceTree = "<group>";
 		};
+		161564701988731D002F7316 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				161564731988900D002F7316 /* UI.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		1621741C192D8560008DC35D /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -1056,6 +1066,7 @@
 		162174D8192D8746008DC35D /* Braintree-Payments-UI */ = {
 			isa = PBXGroup;
 			children = (
+				161564701988731D002F7316 /* Localization */,
 				1621749B192D8746008DC35D /* Braintree-Payments-UI.h */,
 				1621749C192D8746008DC35D /* BTUIPaymentMethodType.h */,
 				1621749A192D8746008DC35D /* Models */,
@@ -2607,6 +2618,15 @@
 				1607FE7E192D97D60099D504 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		161564731988900D002F7316 /* UI.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1615647419889010002F7316 /* en */,
+				1615647519889011002F7316 /* la */,
+			);
+			name = UI.strings;
 			sourceTree = "<group>";
 		};
 		16217520192D922F008DC35D /* Main_iPad.storyboard */ = {

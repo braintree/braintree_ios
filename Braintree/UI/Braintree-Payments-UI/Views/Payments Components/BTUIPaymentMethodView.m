@@ -1,5 +1,6 @@
 #import "BTUIPaymentMethodView.h"
 #import "BTUI.h"
+#import "BTUICardType.h"
 
 #import "BTUIUnknownCardVectorArtView.h"
 
@@ -213,31 +214,31 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     case BTUIPaymentMethodTypeUnknown:
       return @"Card";
     case BTUIPaymentMethodTypeAMEX:
-      return @"AmEx";
+          return BTUICardBrandAMEX;
     case BTUIPaymentMethodTypeDinersClub:
-      return @"Diners Club";
+      return BTUICardBrandDinersClub;
     case BTUIPaymentMethodTypeDiscover:
-      return @"Discover";
+      return BTUICardBrandDiscover;
     case BTUIPaymentMethodTypeMasterCard:
-        return @"MasterCard";
+        return BTUICardBrandMasterCard;
     case BTUIPaymentMethodTypeVisa:
-        return @"Visa";
+          return BTUICardBrandVisa;
     case BTUIPaymentMethodTypeJCB:
-        return @"JCB";
+          return BTUICardBrandJCB;
     case BTUIPaymentMethodTypeLaser:
-        return @"Laser";
+          return BTUICardBrandLaser;
     case BTUIPaymentMethodTypeMaestro:
-        return @"Maestro";
+          return BTUICardBrandMaestro;
     case BTUIPaymentMethodTypeUnionPay:
-        return @"UnionPay";
+          return BTUICardBrandUnionPay;
     case BTUIPaymentMethodTypeSolo:
-        return @"Solo";
+          return BTUICardBrandSolo;
     case BTUIPaymentMethodTypeSwitch:
-        return @"Switch";
+          return BTUICardBrandSwitch;
     case BTUIPaymentMethodTypeUKMaestro:
-        return @"Maestro";
+          return BTUICardBrandMaestro;
     case BTUIPaymentMethodTypePayPal:
-        return @"PayPal";
+          return NSLocalizedStringWithDefaultValue(@"PAYPAL_CARD_BRAND", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"PayPal", @"PayPal payment method name");
     }
 }
 

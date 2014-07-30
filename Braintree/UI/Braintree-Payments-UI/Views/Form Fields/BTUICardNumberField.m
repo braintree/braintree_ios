@@ -9,7 +9,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setThemedPlaceholder:@"Card Number"];
+        [self setThemedPlaceholder:NSLocalizedStringWithDefaultValue(@"CARD_NUMBER_PLACEHOLDER", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Card Number", @"Credit card number field placeholder")];
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         _number = @"";
 

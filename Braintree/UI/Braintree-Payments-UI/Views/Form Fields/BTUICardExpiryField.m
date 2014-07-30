@@ -4,8 +4,13 @@
 #import "BTUICardExpirationValidator.h"
 #import "BTUICardExpiryFormat.h"
 
-static NSString *BTUICardExpiryFieldComponentSeparator = @"/";
-static NSString *BTUICardExpiryFieldYYYYPrefix = @"20";
+#define BTUICardExpiryFieldYYYYPrefix @"20"
+#define BTUICardExpiryFieldComponentSeparator @"/"
+
+
+
+#define BTUICardExpiryPlaceholderFourDigitYear NSLocalizedStringWithDefaultValue(@"EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"MM/YYYY", @"Credit card expiration date field placeholder (MM/YYYY format)")
+#define BTUICardExpiryPlaceholderTwoDigitYear NSLocalizedStringWithDefaultValue(@"EXPIRY_PLACEHOLDER_TWO", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"MM/YY", @"Credit card expiration date field placeholder (MM/YY format)")
 
 @interface BTUICardExpiryField () <UITextFieldDelegate>
 @end
@@ -111,7 +116,7 @@ static NSString *BTUICardExpiryFieldYYYYPrefix = @"20";
 #pragma mark Helper
 
 - (void)updatePlaceholder {
-    [self couldEndWithFourDigitYear] ? [self setThemedPlaceholder:@"MM/YYYY"] : [self setThemedPlaceholder:@"MM/YY"];
+    [self couldEndWithFourDigitYear] ? [self setThemedPlaceholder:BTUICardExpiryPlaceholderFourDigitYear] : [self setThemedPlaceholder:BTUICardExpiryPlaceholderTwoDigitYear];
 }
 
 - (void)setThemedPlaceholder:(NSString *)placeholder {

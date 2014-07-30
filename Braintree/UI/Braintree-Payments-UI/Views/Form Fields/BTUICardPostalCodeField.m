@@ -6,7 +6,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setThemedPlaceholder:@"Postal Code"];
+        [self setThemedPlaceholder:NSLocalizedStringWithDefaultValue(@"POSTAL_CODE_PLACEHOLDER", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Postal Code", @"Credit card billing postal code field placeholder")];
         self.nonDigitsSupported = NO;
     }
     return self;

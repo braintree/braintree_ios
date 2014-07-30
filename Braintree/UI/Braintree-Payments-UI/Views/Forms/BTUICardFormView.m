@@ -59,11 +59,12 @@
 }
 
 - (void)showTopLevelError:(NSString *)message {
+    NSString *localizedOK = NSLocalizedStringWithDefaultValue(@"TOP_LEVEL_ERROR_ALERT_VIEW_OK_BUTTON_TEXT", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"OK", @"OK Button on card form alert view for top level errors");
     [[[UIAlertView alloc] initWithTitle:message
-                               message:nil
-                              delegate:nil
-                     cancelButtonTitle:@"OK"
-                     otherButtonTitles:nil] show];
+                                message:nil
+                               delegate:nil
+                      cancelButtonTitle:localizedOK
+                      otherButtonTitles:nil] show];
 }
 
 - (void)setAlphaNumericPostalCode:(BOOL)alphaNumericPostalCode {
