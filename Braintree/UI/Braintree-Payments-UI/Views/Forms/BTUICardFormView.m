@@ -4,6 +4,7 @@
 #import "BTUICardCvvField.h"
 #import "BTUICardPostalCodeField.h"
 #import "BTUI.h"
+#import "BTUILocalizedString.h"
 
 @interface BTUICardFormView ()<BTUIFormFieldDelegate>
 
@@ -59,7 +60,7 @@
 }
 
 - (void)showTopLevelError:(NSString *)message {
-    NSString *localizedOK = NSLocalizedStringWithDefaultValue(@"TOP_LEVEL_ERROR_ALERT_VIEW_OK_BUTTON_TEXT", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"OK", @"OK Button on card form alert view for top level errors");
+    NSString *localizedOK = BTUILocalizedString(TOP_LEVEL_ERROR_ALERT_VIEW_OK_BUTTON_TEXT);
     [[[UIAlertView alloc] initWithTitle:message
                                 message:nil
                                delegate:nil

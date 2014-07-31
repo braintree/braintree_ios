@@ -3,6 +3,7 @@
 #import "BTUIViewUtil.h"
 #import "BTUI.h"
 #import "BTDropinViewController.h"
+#import "BTDropInLocalizedString.h"
 
 @interface BTDropInSelectPaymentMethodViewController ()
 
@@ -63,7 +64,7 @@
     BTPaymentMethod *paymentMethod = [self.paymentMethods objectAtIndex:indexPath.row];
     if ([paymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
         BTPayPalPaymentMethod *payPalPaymentMethod = (BTPayPalPaymentMethod *)paymentMethod;
-        NSString *typeString = NSLocalizedStringWithDefaultValue(@"PAYPAL", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"PayPal", @"PayPal (as a standalone term, referring to the payment method type, analogous to Visa or Discover");
+        NSString *typeString = BTDropInLocalizedString(PAYPAL);
         NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, (payPalPaymentMethod.description ?: @"")]];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [payPalPaymentMethod.description length])];

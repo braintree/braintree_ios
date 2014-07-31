@@ -1,16 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#define BTUICardBrandAMEX NSLocalizedStringWithDefaultValue(@"CARD_TYPE_AMERICAN_EXPRESS", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"American Express", @"American Express card brand")
-#define BTUICardBrandDinersClub NSLocalizedStringWithDefaultValue(@"CARD_TYPE_DINERS_CLUB", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Diners Club", @"Diners Club card brand")
-#define BTUICardBrandDiscover NSLocalizedStringWithDefaultValue(@"CARD_TYPE_DISCOVER", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Discover", @"Discover card brand")
-#define BTUICardBrandMasterCard NSLocalizedStringWithDefaultValue(@"CARD_TYPE_MASTER_CARD", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"MasterCard", @"MasterCard card brand")
-#define BTUICardBrandVisa NSLocalizedStringWithDefaultValue(@"CARD_TYPE_VISA", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Visa", @"Visa card brand")
-#define BTUICardBrandJCB NSLocalizedStringWithDefaultValue(@"CARD_TYPE_JCB", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"JCB", @"JCB card brand")
-#define BTUICardBrandMaestro NSLocalizedStringWithDefaultValue(@"CARD_TYPE_MAESTRO", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Maestro", @"Maestro card brand")
-#define BTUICardBrandUnionPay NSLocalizedStringWithDefaultValue(@"CARD_TYPE_UNION_PAY", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"UnionPay", @"UnionPay card brand")
-#define BTUICardBrandLaser NSLocalizedStringWithDefaultValue(@"CARD_TYPE_LASER", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Laser", @"Laser card brand")
-#define BTUICardBrandSolo NSLocalizedStringWithDefaultValue(@"CARD_TYPE_SOLO", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Solo", @"Solo card brand")
-#define BTUICardBrandSwitch NSLocalizedStringWithDefaultValue(@"CARD_TYPE_SWITCH", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Switch", @"Switch card brand")
+#import "BTUILocalizedString.h"
 
 /// Immutable card type
 @interface BTUICardType : NSObject

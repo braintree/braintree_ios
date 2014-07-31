@@ -214,31 +214,31 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     case BTUIPaymentMethodTypeUnknown:
       return @"Card";
     case BTUIPaymentMethodTypeAMEX:
-          return BTUICardBrandAMEX;
+          return BTUILocalizedString(CARD_TYPE_AMERICAN_EXPRESS);
     case BTUIPaymentMethodTypeDinersClub:
-      return BTUICardBrandDinersClub;
+          return BTUILocalizedString(CARD_TYPE_DINERS_CLUB);
     case BTUIPaymentMethodTypeDiscover:
-      return BTUICardBrandDiscover;
+      return BTUILocalizedString(CARD_TYPE_DISCOVER);
     case BTUIPaymentMethodTypeMasterCard:
-        return BTUICardBrandMasterCard;
+        return BTUILocalizedString(CARD_TYPE_MASTER_CARD);
     case BTUIPaymentMethodTypeVisa:
-          return BTUICardBrandVisa;
+          return BTUILocalizedString(CARD_TYPE_VISA);
     case BTUIPaymentMethodTypeJCB:
-          return BTUICardBrandJCB;
+          return BTUILocalizedString(CARD_TYPE_JCB);
     case BTUIPaymentMethodTypeLaser:
-          return BTUICardBrandLaser;
+          return BTUILocalizedString(CARD_TYPE_LASER);
     case BTUIPaymentMethodTypeMaestro:
-          return BTUICardBrandMaestro;
+          return BTUILocalizedString(CARD_TYPE_MAESTRO);
     case BTUIPaymentMethodTypeUnionPay:
-          return BTUICardBrandUnionPay;
+          return BTUILocalizedString(CARD_TYPE_UNION_PAY);
     case BTUIPaymentMethodTypeSolo:
-          return BTUICardBrandSolo;
+          return BTUILocalizedString(CARD_TYPE_SOLO);
     case BTUIPaymentMethodTypeSwitch:
-          return BTUICardBrandSwitch;
+          return BTUILocalizedString(CARD_TYPE_SWITCH);
     case BTUIPaymentMethodTypeUKMaestro:
-          return BTUICardBrandMaestro;
+          return BTUILocalizedString(CARD_TYPE_MAESTRO);
     case BTUIPaymentMethodTypePayPal:
-          return NSLocalizedStringWithDefaultValue(@"PAYPAL_CARD_BRAND", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"PayPal", @"PayPal payment method name");
+          return BTUILocalizedString(PAYPAL_CARD_BRAND);
     }
 }
 

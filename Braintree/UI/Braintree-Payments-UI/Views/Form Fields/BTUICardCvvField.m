@@ -3,6 +3,7 @@
 #import "BTUICardHint.h"
 #import "BTUIUtil.h"
 #import "BTUIViewUtil.h"
+#import "BTUILocalizedString.h"
 
 #define kMinimumCvvLength 3
 #define kMaximumCvvLength 4
@@ -17,7 +18,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setThemedPlaceholder:NSLocalizedStringWithDefaultValue(@"CVV_FIELD_PLACEHOLDER", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"CVV", @"CVV (credit card security code) field placeholder")];
+        [self setThemedPlaceholder:BTUILocalizedString(CARD_NUMBER_PLACEHOLDER)];
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.textField.delegate = self;
 

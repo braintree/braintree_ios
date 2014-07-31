@@ -38,7 +38,7 @@
 }
 
 - (void)setupViews {
-    self.accessibilityLabel = NSLocalizedString(@"Pay with PayPal", @"BTPayPalButton accessibility label");
+    self.accessibilityLabel = @"PayPal";
     self.userInteractionEnabled = YES;
     self.clipsToBounds = YES;
     self.opaque = NO;

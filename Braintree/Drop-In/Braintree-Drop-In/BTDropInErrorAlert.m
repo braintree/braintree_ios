@@ -1,4 +1,5 @@
 #import "BTDropInErrorAlert.h"
+#import "BTDropInLocalizedString.h"
 
 @interface BTDropInErrorAlert () <UIAlertViewDelegate>
 
@@ -21,8 +22,8 @@
 
 
 - (void)show {
-    NSString *localizedOK = NSLocalizedStringWithDefaultValue(@"ERROR_ALERT_OK_BUTTON_TEXT", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"OK", @"Button text to indicate acceptance of an alert condition");
-    NSString *localizedCancel = NSLocalizedStringWithDefaultValue(@"ERROR_ALERT_CANCEL_BUTTON_TEXT", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Cancel", @"Button text to indicate acceptance of an alert condition");
+    NSString *localizedOK = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
+    NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_CANCEL_BUTTON_TEXT);
 
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
                                                         message:self.message
@@ -31,7 +32,7 @@
                                  otherButtonTitles:nil];
 
     if (self.retryBlock) {
-        NSString *localizedTryAgain = NSLocalizedStringWithDefaultValue(@"ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Try Again", @"Button text to request that an failed operation should be restarted and to try again");
+        NSString *localizedTryAgain = BTDropInLocalizedString(ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT);
         [alertView addButtonWithTitle:localizedTryAgain];
 
     }
@@ -48,7 +49,7 @@
 }
 
 - (NSString *)title {
-    NSString *localizedConnectionError = NSLocalizedStringWithDefaultValue(@"ERROR_ALERT_CONNECTION_ERROR", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Connection Error", @"Vague title for alert view that ambiguously indicates an unspecified failure");
+    NSString *localizedConnectionError = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
 
     return _title ?: localizedConnectionError;
 }

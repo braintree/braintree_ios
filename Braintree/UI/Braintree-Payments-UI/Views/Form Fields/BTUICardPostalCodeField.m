@@ -1,12 +1,13 @@
 #import "BTUICardPostalCodeField.h"
 #import "BTUIFormField_Protected.h"
+#import "BTUILocalizedString.h"
 
 @implementation BTUICardPostalCodeField
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setThemedPlaceholder:NSLocalizedStringWithDefaultValue(@"POSTAL_CODE_PLACEHOLDER", @"UI", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-UI-Localization" ofType:@"bundle"]], @"Postal Code", @"Credit card billing postal code field placeholder")];
+        [self setThemedPlaceholder:BTUILocalizedString(POSTAL_CODE_PLACEHOLDER)];
         self.nonDigitsSupported = NO;
     }
     return self;

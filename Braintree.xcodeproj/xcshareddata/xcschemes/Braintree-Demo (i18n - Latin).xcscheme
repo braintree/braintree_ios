@@ -59,7 +59,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "-NSDoubleLocalizedStrings YES"
+            argument = "-NSDoubleLocalizedStrings NO"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
