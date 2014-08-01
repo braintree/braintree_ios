@@ -38,6 +38,7 @@
 #pragma mark Payment Data
 
 @property (nonatomic, strong) Braintree *braintree;
+@property (nonatomic, copy) NSString *merchantId;
 @property (nonatomic, copy) NSString *nonce;
 @property (nonatomic, copy) NSString *lastTransactionId;
 
@@ -58,8 +59,9 @@
 
     if (selectedCell == self.initializeBraintreeCell) {
         // Initialize Braintree
-        demoViewController = [[BraintreeDemoBraintreeInitializationDemoViewController alloc] initWithCompletion:^(Braintree *braintree, NSError *error){
+        demoViewController = [[BraintreeDemoBraintreeInitializationDemoViewController alloc] initWithCompletion:^(Braintree *braintree, NSString *merchantId, NSError *error){
             self.braintree = braintree;
+            self.merchantId = merchantId;
             self.nonce = nil;
             self.lastTransactionId = nil;
             if (error) {
@@ -105,7 +107,7 @@
 - (void)tableView:(__unused UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(__unused NSIndexPath *)indexPath {
     if (cell == self.braintreeStatusCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.braintree != nil);
-        cell.detailTextLabel.text = self.braintree ? [self.braintree description] : @"(nil)";
+        cell.detailTextLabel.text = self.braintree ? [NSString stringWithFormat:@"Initialized for merchant: %@", self.merchantId] : @"(nil)";
     } else if (cell == self.braintreePaymentMethodNonceCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil);
         cell.detailTextLabel.text = self.nonce ?: @"(nil)";

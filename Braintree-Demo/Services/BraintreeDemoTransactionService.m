@@ -24,6 +24,18 @@
     return self;
 }
 
+- (void)fetchMerchantConfigWithCompletion:(void (^)(NSString *merchantId, NSError *error))completionBlock {
+    [self.sessionManager GET:@"/config/current"
+              parameters:nil
+                 success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
+                     if (completionBlock) {
+                         completionBlock(responseObject[@"merchant_id"], nil);
+                     }
+                 } failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
+                     completionBlock(nil, error);
+                 }];
+}
+
 - (void)createCustomerAndFetchClientTokenWithCompletion:(void (^)(NSString *, NSError *))completionBlock {
     NSString *customerId = [[NSUUID UUID] UUIDString];
     [self.sessionManager GET:@"/client_token"

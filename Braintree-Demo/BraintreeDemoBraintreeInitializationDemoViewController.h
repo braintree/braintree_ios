@@ -3,5 +3,5 @@
 @class Braintree;
 
 @interface BraintreeDemoBraintreeInitializationDemoViewController : UIViewController
-- (instancetype)initWithCompletion:(void (^)(Braintree *braintree, NSError *error))completionBlock;
+- (instancetype)initWithCompletion:(void (^)(Braintree *braintree, NSString *currentMerchantName, NSError *error))completionBlock;
 @end
