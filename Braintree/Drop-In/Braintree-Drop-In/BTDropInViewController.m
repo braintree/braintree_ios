@@ -8,6 +8,7 @@
 #import "BTClient+BTPayPal.h"
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
+#import "BTDropInLocalizedString.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalButtonViewControllerPresenterDelegate, BTPayPalButtonDelegate, BTDropInViewControllerDelegate>
 
@@ -55,7 +56,7 @@
         self.selectedPaymentMethodIndex = NSNotFound;
         self.dropInContentView.state = BTDropInContentViewStateActivity;
         self.fullForm = YES;
-        _callToActionText = NSLocalizedStringWithDefaultValue(@"DEFAULT_CALL_TO_ACTION", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Pay", @"Default text to display in Drop In view controller call to action (Submit button)");
+        _callToActionText = BTDropInLocalizedString(DEFAULT_CALL_TO_ACTION);
     }
     return self;
 }
@@ -100,7 +101,7 @@
 
     self.dropInContentView.cardFormSectionHeader.textColor = self.theme.sectionHeaderTextColor;
     self.dropInContentView.cardFormSectionHeader.font = self.theme.sectionHeaderFont;
-    self.dropInContentView.cardFormSectionHeader.text = NSLocalizedStringWithDefaultValue(@"CARD_FORM_SECTION_HEADER", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Pay with a card", @"Section header above card form in Drop In view controller");
+    self.dropInContentView.cardFormSectionHeader.text = BTDropInLocalizedString(CARD_FORM_SECTION_HEADER);
 
 
      // Call the setters explicitly
@@ -243,7 +244,7 @@
         rootViewController = [self addPaymentMethodDropInViewController];
     } else {
         BTDropInSelectPaymentMethodViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodViewController alloc] init];
-        selectPaymentMethod.title = NSLocalizedStringWithDefaultValue(@"SELECT_PAYMENT_METHOD_TITLE", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Payment Method", @"Title for select payment method view controller");
+        selectPaymentMethod.title = BTDropInLocalizedString(SELECT_PAYMENT_METHOD_TITLE);
         selectPaymentMethod.theme = self.theme;
         selectPaymentMethod.paymentMethods = self.paymentMethods;
         selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentMethodIndex;
@@ -275,9 +276,9 @@
             if (error && [error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
                 [self informUserDidFailWithError:error];
             } else {
-                NSString *localizedAlertTitle = NSLocalizedStringWithDefaultValue(@"ERROR_SAVING_CARD_ALERT_TITLE", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Error Saving Card", @"Title for alert view that is displayed when Drop In submission fails because there was an error saving the card");
-                NSString *localizedAlertMessage = NSLocalizedStringWithDefaultValue(@"ERROR_SAVING_CARD_MESSAGE", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Please try again.", @"Message for alert view that is displayed when Drop In submission fails because there was an error saving the card");
-                NSString *localizedCancel = NSLocalizedStringWithDefaultValue(@"ERROR_ALERT_OK_BUTTON_TEXT", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"OK", @"Button text to indicate acceptance of an alert condition");
+                NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
+                NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
+                NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
                 
                 [[[UIAlertView alloc] initWithTitle:localizedAlertTitle
                                             message:localizedAlertMessage
@@ -409,7 +410,7 @@
 }
 
 - (void)payPalButton:(BTPayPalButton *)button didFailWithError:(__unused NSError *)error {
-    NSString *savePayPalAccountErrorAlertTitle = NSLocalizedStringWithDefaultValue(@"ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_TITLE", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"PayPal Error", @"Title for alert view that is displayed when Drop In submission fails because there was an error saving the PayPal account");
+    NSString *savePayPalAccountErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_TITLE);
 
     if (self.retainedPayPalButton != self.dropInContentView.payPalButton) {
         // Allow retained PayPal button to release, which will only happen if it isn't "ours"
@@ -421,7 +422,7 @@
             self.savePayPalAccountErrorAlert = nil;
         } retry:nil];
         self.savePayPalAccountErrorAlert.title = savePayPalAccountErrorAlertTitle;
-        self.savePayPalAccountErrorAlert.message = NSLocalizedStringWithDefaultValue(@"ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_MESSAGE", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Please try again.", @"Message for alert view that is displayed when Drop In submission fails because there was an error saving the PayPal account");
+        self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_MESSAGE);
         [self.savePayPalAccountErrorAlert show];
     } else {
         // Allow retained PayPal button to release, which will only happen if it isn't "ours"
@@ -609,7 +610,7 @@
 - (BTDropInViewController *)addPaymentMethodDropInViewController {
     BTDropInViewController *addPaymentMethodViewController = [[BTDropInViewController alloc] initWithClient:self.client];
 
-    addPaymentMethodViewController.title = NSLocalizedStringWithDefaultValue(@"ADD_PAYMENT_METHOD_VIEW_CONTROLLER_TITLE", @"DropIn", [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]], @"Add Payment Method", @"Title for view controller presented by Drop In to collect a new payment method when payment methods are already on file");
+    addPaymentMethodViewController.title = BTDropInLocalizedString(ADD_PAYMENT_METHOD_VIEW_CONTROLLER_TITLE);
     addPaymentMethodViewController.fullForm = NO;
     addPaymentMethodViewController.shouldHideCallToAction = YES;
     addPaymentMethodViewController.delegate = self;
