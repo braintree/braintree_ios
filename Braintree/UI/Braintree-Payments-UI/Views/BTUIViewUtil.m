@@ -9,19 +9,19 @@
         return BTUIPaymentMethodTypeUnknown;
     }
 
-    if ([cardType.brand isEqualToString:BTUICardBrandAMEX]) {
+    if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_AMERICAN_EXPRESS)]) {
         return BTUIPaymentMethodTypeAMEX;
-    } else if ([cardType.brand isEqualToString:BTUICardBrandVisa]) {
+    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_VISA)]) {
         return BTUIPaymentMethodTypeVisa;
-    } else if ([cardType.brand isEqualToString:BTUICardBrandMasterCard]) {
+    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_MASTER_CARD)]) {
         return BTUIPaymentMethodTypeMasterCard;
-    } else if ([cardType.brand isEqualToString:BTUICardBrandDiscover]) {
+    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_DISCOVER)]) {
         return BTUIPaymentMethodTypeDiscover;
-    } else if ([cardType.brand isEqualToString:BTUICardBrandMaestro]) {
+    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_DISCOVER)]) {
         return BTUIPaymentMethodTypeMaestro;
-    } else if ([cardType.brand isEqualToString:BTUICardBrandDinersClub]) {
+    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_MAESTRO)]) {
         return BTUIPaymentMethodTypeDinersClub;
-    } else if ([cardType.brand isEqualToString:BTUICardBrandJCB]) {
+    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_DINERS_CLUB)]) {
         return BTUIPaymentMethodTypeJCB;
     } else {
         return BTUIPaymentMethodTypeUnknown;

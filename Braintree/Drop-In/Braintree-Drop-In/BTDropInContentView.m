@@ -1,6 +1,7 @@
 #import "BTDropInContentView.h"
+#import "BTDropInLocalizedString.h"
 
-@interface BTDropInContentView ()<UIGestureRecognizerDelegate>
+@interface BTDropInContentView () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSArray *verticalLayoutConstraints;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
@@ -45,7 +46,8 @@
         self.selectedPaymentMethodView = [[BTUIPaymentMethodView alloc] init];
 
         self.changeSelectedPaymentMethodButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        [self.changeSelectedPaymentMethodButton setTitle:@"Change payment method" forState:UIControlStateNormal];
+        [self.changeSelectedPaymentMethodButton setTitle:BTDropInLocalizedString(DROP_IN_CHANGE_PAYMENT_METHOD_BUTTON_TEXT)
+                                                forState:UIControlStateNormal];
 
         self.ctaControl = [[BTUICTAControl alloc] init];
 

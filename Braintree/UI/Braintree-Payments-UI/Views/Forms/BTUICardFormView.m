@@ -4,6 +4,7 @@
 #import "BTUICardCvvField.h"
 #import "BTUICardPostalCodeField.h"
 #import "BTUI.h"
+#import "BTUILocalizedString.h"
 
 @interface BTUICardFormView ()<BTUIFormFieldDelegate>
 
@@ -59,11 +60,12 @@
 }
 
 - (void)showTopLevelError:(NSString *)message {
+    NSString *localizedOK = BTUILocalizedString(TOP_LEVEL_ERROR_ALERT_VIEW_OK_BUTTON_TEXT);
     [[[UIAlertView alloc] initWithTitle:message
-                               message:nil
-                              delegate:nil
-                     cancelButtonTitle:@"OK"
-                     otherButtonTitles:nil] show];
+                                message:nil
+                               delegate:nil
+                      cancelButtonTitle:localizedOK
+                      otherButtonTitles:nil] show];
 }
 
 - (void)setAlphaNumericPostalCode:(BOOL)alphaNumericPostalCode {

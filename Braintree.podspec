@@ -32,6 +32,7 @@ Pod::Spec.new do |s|
     s.dependency 'Braintree/api'
     s.dependency 'Braintree/PayPal'
     s.dependency 'Braintree/UI'
+    s.resource_bundle = { "Braintree-Drop-In-Localization" => "Braintree/Drop-In/Braintree-Drop-In/Localization/*.lproj" }
   end
 
   s.subspec 'api' do |s|
@@ -54,6 +55,7 @@ Pod::Spec.new do |s|
     s.public_header_files = 'Braintree/UI/Braintree-Payments-UI/**/*.h'
     s.compiler_flags = "-Wall -Wextra"
     s.frameworks = 'UIKit'
+    s.resource_bundle = { "Braintree-UI-Localization" => "Braintree/UI/Braintree-Payments-UI/Localization/*.lproj" }
   end
 
   s.subspec 'Data' do |s|

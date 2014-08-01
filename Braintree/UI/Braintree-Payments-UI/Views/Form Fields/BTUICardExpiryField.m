@@ -3,9 +3,13 @@
 #import "BTUIUtil.h"
 #import "BTUICardExpirationValidator.h"
 #import "BTUICardExpiryFormat.h"
+#import "BTUILocalizedString.h"
 
-static NSString *BTUICardExpiryFieldComponentSeparator = @"/";
-static NSString *BTUICardExpiryFieldYYYYPrefix = @"20";
+#define BTUICardExpiryFieldYYYYPrefix @"20"
+#define BTUICardExpiryFieldComponentSeparator @"/"
+
+#define BTUICardExpiryPlaceholderFourDigitYear BTUILocalizedString(EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR)
+#define BTUICardExpiryPlaceholderTwoDigitYear BTUILocalizedString(EXPIRY_PLACEHOLDER_TWO_DIGIT_YEAR)
 
 @interface BTUICardExpiryField () <UITextFieldDelegate>
 @end
@@ -111,7 +115,7 @@ static NSString *BTUICardExpiryFieldYYYYPrefix = @"20";
 #pragma mark Helper
 
 - (void)updatePlaceholder {
-    [self couldEndWithFourDigitYear] ? [self setThemedPlaceholder:@"MM/YYYY"] : [self setThemedPlaceholder:@"MM/YY"];
+    [self couldEndWithFourDigitYear] ? [self setThemedPlaceholder:BTUILocalizedString(EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR)] : [self setThemedPlaceholder:BTUILocalizedString(EXPIRY_PLACEHOLDER_TWO_DIGIT_YEAR)];
 }
 
 - (void)setThemedPlaceholder:(NSString *)placeholder {

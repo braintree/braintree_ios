@@ -223,6 +223,12 @@
 		16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+BTMatches.m"; sourceTree = "<group>"; };
 		1613815D1923074000C3B5BE /* BTDropInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInViewController.h; sourceTree = "<group>"; };
 		1613815E1923074000C3B5BE /* BTDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInViewController.m; sourceTree = "<group>"; };
+		1615647419889010002F7316 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UI.strings; sourceTree = "<group>"; };
+		1615647519889011002F7316 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/UI.strings; sourceTree = "<group>"; };
+		1615647C198AB9A2002F7316 /* BTUILocalizedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUILocalizedString.h; sourceTree = "<group>"; };
+		1615647D198AB9A2002F7316 /* BTUILocalizedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUILocalizedString.m; sourceTree = "<group>"; };
+		1615647E198AE55A002F7316 /* BTDropInLocalizedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInLocalizedString.h; sourceTree = "<group>"; };
+		1615647F198AE55A002F7316 /* BTDropInLocalizedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInLocalizedString.m; sourceTree = "<group>"; };
 		1621741F192D85EB008DC35D /* Braintree-API.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-API.h"; sourceTree = "<group>"; };
 		16217420192D85EB008DC35D /* BTCardPaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardPaymentMethod.h; sourceTree = "<group>"; };
 		16217421192D85EB008DC35D /* BTClient+Offline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+Offline.h"; sourceTree = "<group>"; };
@@ -386,10 +392,14 @@
 		162175A3192D9505008DC35D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		162998CA194FAFC400534798 /* BTUIFloatLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIFloatLabel.h; sourceTree = "<group>"; };
 		162998CB194FAFC400534798 /* BTUIFloatLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIFloatLabel.m; sourceTree = "<group>"; };
+		163A69B91988555D00FEEE6C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DropIn.strings; sourceTree = "<group>"; };
+		163A69BA1988555F00FEEE6C /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/DropIn.strings; sourceTree = "<group>"; };
 		164A13EB1966237E009FAAEA /* BTKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTKeychain.h; path = "Braintree/API/Braintree-API/Utility/BTKeychain.h"; sourceTree = SOURCE_ROOT; };
 		164A13EC1966237E009FAAEA /* BTKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTKeychain.m; path = "Braintree/API/Braintree-API/Utility/BTKeychain.m"; sourceTree = SOURCE_ROOT; };
 		164A13ED19662D42009FAAEA /* BTReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTReachability.h; sourceTree = "<group>"; };
 		164A13EE19662D42009FAAEA /* BTReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTReachability.m; sourceTree = "<group>"; };
+		168792F919885B5000F3B9E3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
+		168792FB19885B5300F3B9E3 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		1696810C192D98EA00120846 /* BTUICardTypeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardTypeSpec.m; sourceTree = "<group>"; };
 		1696810D192D98EA00120846 /* BTUISpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUISpec.m; sourceTree = "<group>"; };
 		1696810E192D98EA00120846 /* Braintree-Payments-UI-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Payments-UI-Specs-Info.plist"; sourceTree = "<group>"; };
@@ -783,6 +793,16 @@
 			path = "Custom Expecta Matchers";
 			sourceTree = "<group>";
 		};
+		161564701988731D002F7316 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				161564731988900D002F7316 /* UI.strings */,
+				1615647C198AB9A2002F7316 /* BTUILocalizedString.h */,
+				1615647D198AB9A2002F7316 /* BTUILocalizedString.m */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		1621741C192D8560008DC35D /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -1052,6 +1072,7 @@
 		162174D8192D8746008DC35D /* Braintree-Payments-UI */ = {
 			isa = PBXGroup;
 			children = (
+				161564701988731D002F7316 /* Localization */,
 				1621749B192D8746008DC35D /* Braintree-Payments-UI.h */,
 				1621749C192D8746008DC35D /* BTUIPaymentMethodType.h */,
 				1621749A192D8746008DC35D /* Models */,
@@ -1204,6 +1225,16 @@
 			path = "Braintree-API-Integration-Specs";
 			sourceTree = "<group>";
 		};
+		168ED82419884EC00011F4CD /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				163A69B81988547E00FEEE6C /* DropIn.strings */,
+				1615647E198AE55A002F7316 /* BTDropInLocalizedString.h */,
+				1615647F198AE55A002F7316 /* BTDropInLocalizedString.m */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		16968110192D98EA00120846 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -1338,18 +1369,7 @@
 		1697BEFC192300130051F2AE /* Drop-In */ = {
 			isa = PBXGroup;
 			children = (
-				1613815D1923074000C3B5BE /* BTDropInViewController.h */,
-				1613815E1923074000C3B5BE /* BTDropInViewController.m */,
-				A7529C76192AB6BA00B2E1B2 /* BTDropInContentView.h */,
-				A7529C77192AB6BA00B2E1B2 /* BTDropInContentView.m */,
-				2DBDD71D192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.h */,
-				2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.m */,
-				2DBDD71F192BFFB800D8AA56 /* BTDropInUtil.h */,
-				2DBDD720192BFFB800D8AA56 /* BTDropInUtil.m */,
-				A74E2E711953690A004DFF73 /* BTDropInErrorState.h */,
-				A74E2E721953690A004DFF73 /* BTDropInErrorState.m */,
-				A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */,
-				A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */,
+				16F60F9C1987297E00048501 /* Braintree-Drop-In */,
 			);
 			path = "Drop-In";
 			sourceTree = "<group>";
@@ -1411,6 +1431,26 @@
 				162998CB194FAFC400534798 /* BTUIFloatLabel.m */,
 			);
 			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		16F60F9C1987297E00048501 /* Braintree-Drop-In */ = {
+			isa = PBXGroup;
+			children = (
+				168ED82419884EC00011F4CD /* Localization */,
+				1613815D1923074000C3B5BE /* BTDropInViewController.h */,
+				1613815E1923074000C3B5BE /* BTDropInViewController.m */,
+				A7529C76192AB6BA00B2E1B2 /* BTDropInContentView.h */,
+				A7529C77192AB6BA00B2E1B2 /* BTDropInContentView.m */,
+				2DBDD71D192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.h */,
+				2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.m */,
+				2DBDD71F192BFFB800D8AA56 /* BTDropInUtil.h */,
+				2DBDD720192BFFB800D8AA56 /* BTDropInUtil.m */,
+				A74E2E711953690A004DFF73 /* BTDropInErrorState.h */,
+				A74E2E721953690A004DFF73 /* BTDropInErrorState.m */,
+				A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */,
+				A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */,
+			);
+			path = "Braintree-Drop-In";
 			sourceTree = "<group>";
 		};
 		A72B380D196339C7009AD2F5 /* Data */ = {
@@ -1842,6 +1882,7 @@
 			knownRegions = (
 				en,
 				Base,
+				la,
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
@@ -2587,6 +2628,15 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		161564731988900D002F7316 /* UI.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1615647419889010002F7316 /* en */,
+				1615647519889011002F7316 /* la */,
+			);
+			name = UI.strings;
+			sourceTree = "<group>";
+		};
 		16217520192D922F008DC35D /* Main_iPad.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2599,6 +2649,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				16217521192D922F008DC35D /* Base */,
+				168792F919885B5000F3B9E3 /* en */,
+				168792FB19885B5300F3B9E3 /* la */,
 			);
 			name = Main_iPhone.storyboard;
 			sourceTree = "<group>";
@@ -2625,6 +2677,15 @@
 				162175A3192D9505008DC35D /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		163A69B81988547E00FEEE6C /* DropIn.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				163A69B91988555D00FEEE6C /* en */,
+				163A69BA1988555F00FEEE6C /* la */,
+			);
+			name = DropIn.strings;
 			sourceTree = "<group>";
 		};
 		16968150192D999400120846 /* InfoPlist.strings */ = {

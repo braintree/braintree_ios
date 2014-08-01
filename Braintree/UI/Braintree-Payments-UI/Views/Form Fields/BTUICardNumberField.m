@@ -3,13 +3,14 @@
 #import "BTUIUtil.h"
 #import "BTUICardHint.h"
 #import "BTUIViewUtil.h"
+#import "BTUILocalizedString.h"
 
 @implementation BTUICardNumberField
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setThemedPlaceholder:@"Card Number"];
+        [self setThemedPlaceholder:BTUILocalizedString(CARD_NUMBER_PLACEHOLDER)];
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         _number = @"";
 

@@ -1,5 +1,6 @@
 #import "BTUIPaymentMethodView.h"
 #import "BTUI.h"
+#import "BTUICardType.h"
 
 #import "BTUIUnknownCardVectorArtView.h"
 
@@ -213,31 +214,31 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     case BTUIPaymentMethodTypeUnknown:
       return @"Card";
     case BTUIPaymentMethodTypeAMEX:
-      return @"AmEx";
+          return BTUILocalizedString(CARD_TYPE_AMERICAN_EXPRESS);
     case BTUIPaymentMethodTypeDinersClub:
-      return @"Diners Club";
+          return BTUILocalizedString(CARD_TYPE_DINERS_CLUB);
     case BTUIPaymentMethodTypeDiscover:
-      return @"Discover";
+      return BTUILocalizedString(CARD_TYPE_DISCOVER);
     case BTUIPaymentMethodTypeMasterCard:
-        return @"MasterCard";
+        return BTUILocalizedString(CARD_TYPE_MASTER_CARD);
     case BTUIPaymentMethodTypeVisa:
-        return @"Visa";
+          return BTUILocalizedString(CARD_TYPE_VISA);
     case BTUIPaymentMethodTypeJCB:
-        return @"JCB";
+          return BTUILocalizedString(CARD_TYPE_JCB);
     case BTUIPaymentMethodTypeLaser:
-        return @"Laser";
+          return BTUILocalizedString(CARD_TYPE_LASER);
     case BTUIPaymentMethodTypeMaestro:
-        return @"Maestro";
+          return BTUILocalizedString(CARD_TYPE_MAESTRO);
     case BTUIPaymentMethodTypeUnionPay:
-        return @"UnionPay";
+          return BTUILocalizedString(CARD_TYPE_UNION_PAY);
     case BTUIPaymentMethodTypeSolo:
-        return @"Solo";
+          return BTUILocalizedString(CARD_TYPE_SOLO);
     case BTUIPaymentMethodTypeSwitch:
-        return @"Switch";
+          return BTUILocalizedString(CARD_TYPE_SWITCH);
     case BTUIPaymentMethodTypeUKMaestro:
-        return @"Maestro";
+          return BTUILocalizedString(CARD_TYPE_MAESTRO);
     case BTUIPaymentMethodTypePayPal:
-        return @"PayPal";
+          return BTUILocalizedString(PAYPAL_CARD_BRAND);
     }
 }
 

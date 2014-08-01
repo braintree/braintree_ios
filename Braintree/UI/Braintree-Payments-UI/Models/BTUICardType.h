@@ -1,13 +1,6 @@
 #import <Foundation/Foundation.h>
 
-static NSString * const BTUICardBrandAMEX = @"American Express";
-static NSString * const BTUICardBrandDinersClub = @"Diners Club";
-static NSString * const BTUICardBrandDiscover = @"Discover";
-static NSString * const BTUICardBrandMasterCard = @"MasterCard";
-static NSString * const BTUICardBrandVisa = @"Visa";
-static NSString * const BTUICardBrandJCB = @"JCB";
-static NSString * const BTUICardBrandMaestro = @"Maestro";
-static NSString * const BTUICardBrandUnionPay = @"UnionPay";
+#import "BTUILocalizedString.h"
 
 /// Immutable card type
 @interface BTUICardType : NSObject

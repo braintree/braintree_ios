@@ -1,12 +1,13 @@
 #import "BTUICardPostalCodeField.h"
 #import "BTUIFormField_Protected.h"
+#import "BTUILocalizedString.h"
 
 @implementation BTUICardPostalCodeField
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setThemedPlaceholder:@"Postal Code"];
+        [self setThemedPlaceholder:BTUILocalizedString(POSTAL_CODE_PLACEHOLDER)];
         self.nonDigitsSupported = NO;
     }
     return self;

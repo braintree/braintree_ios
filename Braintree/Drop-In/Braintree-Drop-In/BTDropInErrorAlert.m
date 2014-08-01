@@ -1,4 +1,5 @@
 #import "BTDropInErrorAlert.h"
+#import "BTDropInLocalizedString.h"
 
 @interface BTDropInErrorAlert () <UIAlertViewDelegate>
 
@@ -21,14 +22,19 @@
 
 
 - (void)show {
+    NSString *localizedOK = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
+    NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_CANCEL_BUTTON_TEXT);
+
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
-                                           message:self.message
-                                          delegate:self
-                                 cancelButtonTitle:self.retryBlock ? @"Cancel" : @"OK"
+                                                        message:self.message
+                                                       delegate:self
+                                              cancelButtonTitle:self.retryBlock ? localizedCancel : localizedOK
                                  otherButtonTitles:nil];
 
     if (self.retryBlock) {
-        [alertView addButtonWithTitle:@"Try Again"];
+        NSString *localizedTryAgain = BTDropInLocalizedString(ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT);
+        [alertView addButtonWithTitle:localizedTryAgain];
+
     }
 
     [alertView show];
@@ -43,7 +49,9 @@
 }
 
 - (NSString *)title {
-    return _title ?: @"Connection Error";
+    NSString *localizedConnectionError = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
+
+    return _title ?: localizedConnectionError;
 }
 
 @end

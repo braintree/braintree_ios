@@ -8,6 +8,7 @@
 #import "BTClient+BTPayPal.h"
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
+#import "BTDropInLocalizedString.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalButtonViewControllerPresenterDelegate, BTPayPalButtonDelegate, BTDropInViewControllerDelegate>
 
@@ -55,7 +56,7 @@
         self.selectedPaymentMethodIndex = NSNotFound;
         self.dropInContentView.state = BTDropInContentViewStateActivity;
         self.fullForm = YES;
-        _callToActionText = @"Pay";
+        _callToActionText = BTDropInLocalizedString(DEFAULT_CALL_TO_ACTION);
     }
     return self;
 }
@@ -100,7 +101,8 @@
 
     self.dropInContentView.cardFormSectionHeader.textColor = self.theme.sectionHeaderTextColor;
     self.dropInContentView.cardFormSectionHeader.font = self.theme.sectionHeaderFont;
-    self.dropInContentView.cardFormSectionHeader.text = @"Pay with a card";
+    self.dropInContentView.cardFormSectionHeader.text = BTDropInLocalizedString(CARD_FORM_SECTION_HEADER);
+
 
      // Call the setters explicitly
     [self setCallToActionText:_callToActionText];
@@ -242,7 +244,7 @@
         rootViewController = [self addPaymentMethodDropInViewController];
     } else {
         BTDropInSelectPaymentMethodViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodViewController alloc] init];
-        selectPaymentMethod.title = @"Payment Method";
+        selectPaymentMethod.title = BTDropInLocalizedString(SELECT_PAYMENT_METHOD_TITLE);
         selectPaymentMethod.theme = self.theme;
         selectPaymentMethod.paymentMethods = self.paymentMethods;
         selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentMethodIndex;
@@ -274,14 +276,18 @@
             if (error && [error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
                 [self informUserDidFailWithError:error];
             } else {
-                [[[UIAlertView alloc] initWithTitle:@"Error Saving Card"
-                                            message:@"Please try again."
+                NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
+                NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
+                NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
+                
+                [[[UIAlertView alloc] initWithTitle:localizedAlertTitle
+                                            message:localizedAlertMessage
                                            delegate:nil
-                                  cancelButtonTitle:@"OK"
+                                  cancelButtonTitle:localizedCancel
                                   otherButtonTitles:nil] show];
             }
         };
-
+        
         if (cardForm.valid) {
             [self informDelegateWillComplete];
             [self.client saveCardWithNumber:cardForm.number
@@ -404,6 +410,7 @@
 }
 
 - (void)payPalButton:(BTPayPalButton *)button didFailWithError:(__unused NSError *)error {
+    NSString *savePayPalAccountErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_TITLE);
 
     if (self.retainedPayPalButton != self.dropInContentView.payPalButton) {
         // Allow retained PayPal button to release, which will only happen if it isn't "ours"
@@ -414,11 +421,10 @@
             [self setPaymentMethods:_paymentMethods];
             self.savePayPalAccountErrorAlert = nil;
         } retry:nil];
-        self.savePayPalAccountErrorAlert.title = @"PayPal Error";
-        self.savePayPalAccountErrorAlert.message = @"Please try again.";
+        self.savePayPalAccountErrorAlert.title = savePayPalAccountErrorAlertTitle;
+        self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_MESSAGE);
         [self.savePayPalAccountErrorAlert show];
     } else {
-
         // Allow retained PayPal button to release, which will only happen if it isn't "ours"
         self.retainedPayPalButton = nil;
 
@@ -431,7 +437,7 @@
             [self setPaymentMethods:_paymentMethods];
             self.savePayPalAccountErrorAlert = nil;
         }];
-        self.savePayPalAccountErrorAlert.title = @"PayPal Error";
+        self.savePayPalAccountErrorAlert.title = savePayPalAccountErrorAlertTitle;
         [self.savePayPalAccountErrorAlert show];
     }
 }
@@ -563,11 +569,14 @@
 - (BTUICardFormOptionalFields) optionalFieldsFromClientToken{
     NSSet *challenges = self.client.challenges;
 
-    if ([challenges containsObject:@"cvv"] && [challenges containsObject:@"postal_code"]) {
+    static NSString *cvvChallenge = @"cvv";
+    static NSString *postalCodeChallenge = @"postal_code";
+
+    if ([challenges containsObject:cvvChallenge] && [challenges containsObject:postalCodeChallenge]) {
         return BTUICardFormOptionalFieldsAll;
-    } else if ([challenges containsObject:@"cvv"]){
+    } else if ([challenges containsObject:cvvChallenge]){
         return BTUICardFormOptionalFieldsCvv;
-    } else if ([challenges containsObject:@"postal_code"]){
+    } else if ([challenges containsObject:postalCodeChallenge]){
         return BTUICardFormOptionalFieldsPostalCode;
     } else {
         return BTUICardFormOptionalFieldsNone;
@@ -600,7 +609,8 @@
 
 - (BTDropInViewController *)addPaymentMethodDropInViewController {
     BTDropInViewController *addPaymentMethodViewController = [[BTDropInViewController alloc] initWithClient:self.client];
-    addPaymentMethodViewController.title = @"Add Payment Method";
+
+    addPaymentMethodViewController.title = BTDropInLocalizedString(ADD_PAYMENT_METHOD_VIEW_CONTROLLER_TITLE);
     addPaymentMethodViewController.fullForm = NO;
     addPaymentMethodViewController.shouldHideCallToAction = YES;
     addPaymentMethodViewController.delegate = self;

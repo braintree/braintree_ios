@@ -3,6 +3,7 @@
 #import "BTUIViewUtil.h"
 #import "BTUI.h"
 #import "BTDropinViewController.h"
+#import "BTDropInLocalizedString.h"
 
 @interface BTDropInSelectPaymentMethodViewController ()
 
@@ -54,15 +55,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"paymentMethodCell"];
+    static NSString *paymentMethodCellIdentifier = @"paymentMethodCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:paymentMethodCellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"paymentMethodCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:paymentMethodCellIdentifier];
     }
 
     BTPaymentMethod *paymentMethod = [self.paymentMethods objectAtIndex:indexPath.row];
     if ([paymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
         BTPayPalPaymentMethod *payPalPaymentMethod = (BTPayPalPaymentMethod *)paymentMethod;
-        NSString *typeString = @"PayPal";
+        NSString *typeString = BTDropInLocalizedString(PAYPAL);
         NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, (payPalPaymentMethod.description ?: @"")]];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [payPalPaymentMethod.description length])];

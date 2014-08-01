@@ -126,31 +126,31 @@
 
     dispatch_once(&p, ^{
 
-        BTUICardType *visa = [[BTUICardType alloc] initWithBrand:BTUICardBrandVisa prefixes:@[@"4"]];
-        BTUICardType *mastercard = [[BTUICardType alloc] initWithBrand:BTUICardBrandMasterCard
+        BTUICardType *visa = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_VISA) prefixes:@[@"4"]];
+        BTUICardType *mastercard = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_MASTER_CARD)
                                                               prefixes:@[@"51", @"52", @"53", @"54", @"55"]];
-        BTUICardType *discover = [[BTUICardType alloc] initWithBrand:BTUICardBrandDiscover prefixes:@[@"6011", @"65", @"644", @"645", @"646", @"647", @"648", @"649", @"622"]];
-        BTUICardType *jcb = [[BTUICardType alloc] initWithBrand:BTUICardBrandJCB prefixes:@[@"35"]];
+        BTUICardType *discover = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_DISCOVER) prefixes:@[@"6011", @"65", @"644", @"645", @"646", @"647", @"648", @"649", @"622"]];
+        BTUICardType *jcb = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_JCB) prefixes:@[@"35"]];
 
-        BTUICardType *amex = [[BTUICardType alloc] initWithBrand:BTUICardBrandAMEX
+        BTUICardType *amex = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_AMERICAN_EXPRESS)
                                                         prefixes:@[@"34", @"37"]
                                               validNumberLengths:[NSIndexSet indexSetWithIndex:15]
                                                   validCvvLength:4
                                                     formatSpaces:@[@4, @10]];
 
-        BTUICardType *dinersClub = [[BTUICardType alloc] initWithBrand:BTUICardBrandDinersClub
+        BTUICardType *dinersClub = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_DINERS_CLUB)
                                                               prefixes:@[@"36", @"38", @"300", @"301", @"302", @"303", @"304", @"305"]
                                                     validNumberLengths:[NSIndexSet indexSetWithIndex:14]
                                                         validCvvLength:3
                                                           formatSpaces:nil];
 
-        BTUICardType *maestro = [[BTUICardType alloc] initWithBrand:BTUICardBrandMaestro
+        BTUICardType *maestro = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)
                                                            prefixes:@[@"5018", @"5020", @"5038", @"6304", @"6759", @"6761", @"6762", @"6763"]
                                                  validNumberLengths:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(12, 8)]
                                                      validCvvLength:3
                                                        formatSpaces:nil];
 
-        BTUICardType *unionPay = [[BTUICardType alloc] initWithBrand:BTUICardBrandUnionPay
+        BTUICardType *unionPay = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_UNION_PAY)
                                                             prefixes:@[@"62"]
                                                   validNumberLengths:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(16, 4)]
                                                       validCvvLength:3

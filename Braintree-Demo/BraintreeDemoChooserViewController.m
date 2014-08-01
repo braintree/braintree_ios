@@ -137,7 +137,7 @@
     dropInViewController.title = @"Subscribe";
     dropInViewController.summaryTitle = @"App Fancy Magazine";
     dropInViewController.summaryDescription = @"53 Week Subscription";
-    dropInViewController.displayAmount = @"$19";
+    dropInViewController.displayAmount = [NSNumberFormatter localizedStringFromNumber:@(19) numberStyle:NSNumberFormatterCurrencyStyle];
     dropInViewController.callToActionText = @"$19 - Subscribe Now";
     dropInViewController.shouldHideCallToAction = NO;
 
