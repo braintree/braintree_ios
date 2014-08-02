@@ -153,6 +153,8 @@
 		A7AEF520196CD05C00360408 /* BraintreePublicInterfaceSanityCheckSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */; };
 		A7FC1CC61992B38A00636548 /* BTClientStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */; };
 		B0625DEDD37946988C5379F6 /* libPods-Braintree-API-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */; };
+		B6C840F7198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C840F5198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m */; };
+		B6C840F8198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6C840F6198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib */; };
 		B81AA72C71C34DF0A3FA4779 /* libPods-Braintree-PayPal-Acceptance-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */; };
 		D574F60B94CB4F2AA8395FE1 /* libPods-Braintree-Payments-UI-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */; };
 		DE9E3D60A4E542CD8A6F80F2 /* libPods-Braintree-PayPal-Integration-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEE50EAA429F4DA691822A24 /* libPods-Braintree-PayPal-Integration-Specs.a */; };
@@ -570,6 +572,9 @@
 		A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTClientStoreSpec.m; path = "Braintree/API/Braintree-API-Specs/BTClientStoreSpec.m"; sourceTree = SOURCE_ROOT; };
 		A7FC1CF1199305A500636548 /* BTAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchHandler.h; sourceTree = "<group>"; };
 		A7FC1CF2199305A500636548 /* BTAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchHandler.m; sourceTree = "<group>"; };
+		B6C840F4198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BraintreeDemoVenmoAppSwitchViewController.h; path = "../../../../Users/ayakanonaka/braintree-ios/Braintree-Demo/BraintreeDemoVenmoAppSwitchViewController.h"; sourceTree = "<group>"; };
+		B6C840F5198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoVenmoAppSwitchViewController.m; path = "../../../../Users/ayakanonaka/braintree-ios/Braintree-Demo/BraintreeDemoVenmoAppSwitchViewController.m"; sourceTree = "<group>"; };
+		B6C840F6198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BraintreeDemoVenmoAppSwitchViewController.xib; path = "../../../../Users/ayakanonaka/braintree-ios/Braintree-Demo/BraintreeDemoVenmoAppSwitchViewController.xib"; sourceTree = "<group>"; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Specs.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1179,6 +1184,7 @@
 		1621751D192D922F008DC35D /* Demo Use Case View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B6C840F3198C5ABF00579BD8 /* Venmo App Switch Auth */,
 				16217514192D922F008DC35D /* [Braintree braintreeWithClientToken:] */,
 				16217518192D922F008DC35D /* [braintree payPalControlWithCompletion:] */,
 				1621751C192D922F008DC35D /* [braintree tokenizeCardWithNumber:expirationMonth:expirationYear:completion:] */,
@@ -1736,6 +1742,16 @@
 			path = TestWallet;
 			sourceTree = "<group>";
 		};
+		B6C840F3198C5ABF00579BD8 /* Venmo App Switch Auth */ = {
+			isa = PBXGroup;
+			children = (
+				B6C840F4198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.h */,
+				B6C840F5198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m */,
+				B6C840F6198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib */,
+			);
+			name = "Venmo App Switch Auth";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2082,6 +2098,7 @@
 				16217535192D922F008DC35D /* Main_iPhone.storyboard in Resources */,
 				16217533192D922F008DC35D /* Images.xcassets in Resources */,
 				1621752E192D922F008DC35D /* BraintreeDemoBraintreeInitializationDemoViewController.xib in Resources */,
+				B6C840F8198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib in Resources */,
 				16217532192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2610,6 +2627,7 @@
 				1621752F192D922F008DC35D /* BraintreeDemoPayPalButtonDemoViewController.m in Sources */,
 				1621752A192D922F008DC35D /* BraintreeDemoTransactionService.m in Sources */,
 				16217538192D922F008DC35D /* main.m in Sources */,
+				B6C840F7198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m in Sources */,
 				1621752C192D922F008DC35D /* BraintreeDemoChooserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
