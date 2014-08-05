@@ -18,7 +18,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setThemedPlaceholder:BTUILocalizedString(CARD_NUMBER_PLACEHOLDER)];
+        [self setThemedPlaceholder:BTUILocalizedString(CVV_FIELD_PLACEHOLDER)];
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.textField.delegate = self;
 
