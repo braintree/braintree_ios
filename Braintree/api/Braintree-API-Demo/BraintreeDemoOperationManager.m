@@ -103,7 +103,7 @@
     operation.name = @"Save PayPal Account";
     operation.block = ^(void (^callback)(id result, NSError *error)) {
         [self.client savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                           correlationId:self.client.btPayPal_applicationCorrelationId
+                                           applicationCorrelationID:self.client.btPayPal_applicationCorrelationId
                                                  success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                      callback(paypalPaymentMethod, nil);
                                                  } failure:^(NSError *error) {

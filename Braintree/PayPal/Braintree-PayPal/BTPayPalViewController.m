@@ -75,7 +75,7 @@
         }
 
         [self.client savePaypalPaymentMethodWithAuthCode:authCode
-                                           correlationId:[self.client btPayPal_applicationCorrelationId]
+                                applicationCorrelationID:[self.client btPayPal_applicationCorrelationId]
                                                  success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                      NSString *userDisplayStringFromPayPalSDK = futurePaymentAuthorization[@"user"][@"display_string"];
                                                      if (paypalPaymentMethod.email == nil && [userDisplayStringFromPayPalSDK isKindOfClass:[NSString class]]) {

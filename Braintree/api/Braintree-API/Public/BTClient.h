@@ -73,18 +73,18 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// Save a paypal payment method to Braintree
 ///
 /// @param authCode Authorization Code
-/// @param correlationId PayPal App Correlation Id (See `-[BTClient btPayPal_applicationCorrelationId]`.)
+/// @param applicationCorrelationID PayPal App Correlation Id (See `-[BTClient btPayPal_applicationCorrelationId]` and https://github.com/paypal/PayPal-iOS-SDK/blob/master/docs/future_payments_mobile.md#obtain-an-application-correlation-id.)
 /// @param successBlock success callback for handling the resulting new PayPal account payment method
 /// @param failureBlock failure callback for handling errors
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
-                              correlationId:(NSString *)applicationCorrelationId
+                              applicationCorrelationID:(NSString *)applicationCorrelationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock;
 
 /// Save a paypal payment method to Braintree without a PayPal App Correlation ID
 ///
 /// @note This signature has been deprecated in favor of
-/// savePaypalPaymentMethodWithAuthCode:correlationId:success:failure: to encourage the submission
+/// savePaypalPaymentMethodWithAuthCode:applicationCorrelationID:success:failure: to encourage the submission
 /// of PayPal app correlation ids.
 ///
 /// @param authCode Authorization Code
