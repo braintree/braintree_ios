@@ -138,7 +138,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 }
 
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
-                              correlationId:(NSString *)correlationId
+                   applicationCorrelationID:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
 
@@ -168,7 +168,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
     [self savePaypalPaymentMethodWithAuthCode:authCode
-                                correlationId:nil
+                     applicationCorrelationID:nil
                                       success:successBlock
                                       failure:failureBlock];
 }

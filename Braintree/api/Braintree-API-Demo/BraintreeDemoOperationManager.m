@@ -1,6 +1,7 @@
 #import "BraintreeDemoOperationManager.h"
 #import "Braintree-API.h"
 #import "BTClient+Offline.h"
+#import "BTClient+BTPayPal.h"
 
 @interface BraintreeDemoOperationManager ()
 @property (nonatomic, strong) BTClient *client;
@@ -101,11 +102,13 @@
     BraintreeDemoClientOperation *operation = [BraintreeDemoClientOperation new];
     operation.name = @"Save PayPal Account";
     operation.block = ^(void (^callback)(id result, NSError *error)) {
-        [self.client savePaypalPaymentMethodWithAuthCode:@"authCode" success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-            callback(paypalPaymentMethod, nil);
-        } failure:^(NSError *error) {
-            callback(nil, error);
-        }];
+        [self.client savePaypalPaymentMethodWithAuthCode:@"authCode"
+                                           applicationCorrelationID:self.client.btPayPal_applicationCorrelationId
+                                                 success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                     callback(paypalPaymentMethod, nil);
+                                                 } failure:^(NSError *error) {
+                                                     callback(nil, error);
+                                                 }];
     };
     return operation;
 }

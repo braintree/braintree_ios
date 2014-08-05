@@ -204,7 +204,7 @@ describe(@"offline clients", ^{
     describe(@"save Paypal account", ^{
         it(@"returns the newly saved account", ^AsyncBlock{
             [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                                 correlationId:@"correlationId"
+                                      applicationCorrelationID:@"correlationId"
                                                        success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                            expect(paypalPaymentMethod.nonce).to.beANonce();
                                                            expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
@@ -229,13 +229,13 @@ describe(@"offline clients", ^{
                 [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
                                        postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
                                            [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                                                                correlationId:nil
+                                                                     applicationCorrelationID:nil
                                                                                       success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                               [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
-                                                   paymentMethods = fetchedPaymentMethods;
-                                                   done();
-                                               } failure:nil];
-                                           } failure:nil];
+                                                                                          [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
+                                                                                              paymentMethods = fetchedPaymentMethods;
+                                                                                              done();
+                                                                                          } failure:nil];
+                                                                                      } failure:nil];
                                        } failure:nil];
             });
 
@@ -249,7 +249,7 @@ describe(@"offline clients", ^{
                 expect(paymentMethods[1]).to.beKindOf([BTCardPaymentMethod class]);
                 expect([paymentMethods[1] lastTwo]).to.equal(@"11");
             });
-
+            
             it(@"includes saved PayPal accounts", ^{
                 expect(paymentMethods[0]).to.beKindOf([BTPayPalPaymentMethod class]);
                 expect([paymentMethods[0] email]).to.endWith(@"@example.com");
