@@ -3,7 +3,14 @@
 @implementation BTDropInLocalizedString
 
 + (NSBundle *)localizationBundle {
-    return [NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"Braintree-Drop-In-Localization" ofType:@"bundle"]];
+
+    static NSString * bundleName = @"Braintree-Drop-In-Localization";
+    NSString *localizationBundlePath = [[NSBundle mainBundle] pathForResource:bundleName ofType:@"bundle"];
+    if (!localizationBundlePath) {
+        localizationBundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:bundleName ofType:@"bundle"];
+    }
+
+    return [NSBundle bundleWithPath:localizationBundlePath];
 }
 
 + (NSString *)localizationTable {
