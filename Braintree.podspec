@@ -24,20 +24,20 @@ Pod::Spec.new do |s|
   s.compiler_flags = "-Wall -Werror -Wextra"
   s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES" }
 
-  s.default_subspecs = %w[Drop-In api PayPal UI]
+  s.default_subspecs = %w[Drop-In API PayPal UI]
 
   s.subspec 'Drop-In' do |s|
     s.source_files  = "Braintree/Drop-In/**/*.{h,m}"
     s.public_header_files = "Braintree/Drop-In/Public/*.h"
-    s.dependency 'Braintree/api'
+    s.dependency 'Braintree/API'
     s.dependency 'Braintree/PayPal'
     s.dependency 'Braintree/UI'
     s.resource_bundle = { "Braintree-Drop-In-Localization" => "Braintree/Drop-In/Braintree-Drop-In/Localization/*.lproj" }
   end
 
-  s.subspec 'api' do |s|
-    s.source_files  = "Braintree/api/Braintree-API/**/*.{h,m}"
-    s.public_header_files = "Braintree/api/Braintree-API/Public/*.h"
+  s.subspec 'API' do |s|
+    s.source_files  = "Braintree/API/Braintree-API/**/*.{h,m}"
+    s.public_header_files = "Braintree/API/Braintree-API/Public/*.h"
   end
 
   s.subspec 'PayPal' do |s|
@@ -46,7 +46,7 @@ Pod::Spec.new do |s|
     s.frameworks = "AVFoundation", "CoreLocation", "MessageUI", "SystemConfiguration"
     s.vendored_library = "Braintree/PayPal/Braintree-PayPal/PayPalMobileSDK/libPayPalMobile.a"
     s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES", "OTHER_LDFLAGS" => "-ObjC -lc++" }
-    s.dependency 'Braintree/api'
+    s.dependency 'Braintree/API'
     s.dependency 'Braintree/UI'
   end
 

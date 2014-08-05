@@ -23,7 +23,7 @@ end
 
 # API #
 target 'Braintree-API-Specs' do
-  pod 'Braintree/api', :path => '.'
+  pod 'Braintree/API', :path => '.'
 
   pod 'OHHTTPStubs', '~> 3.1.0'
 
@@ -31,13 +31,13 @@ target 'Braintree-API-Specs' do
 end
 
 target 'Braintree-API-Integration-Specs' do
-  pod 'Braintree/api', :path => '.'
+  pod 'Braintree/API', :path => '.'
 
   pods_for_specs
 end
 
 target 'Braintree-API-Demo' do
-  pod 'Braintree/api', :path => '.'
+  pod 'Braintree/API', :path => '.'
 end
 
 
