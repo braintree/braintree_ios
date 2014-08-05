@@ -31,11 +31,6 @@
     return NSLocalizedStringWithDefaultValue(@"ERROR_ALERT_CONNECTION_ERROR", [self localizationTable], [self localizationBundle], @"Connection Error", @"Vague title for alert view that ambiguously indicates an unspecified failure");
 }
 
-+ (NSString *)PAYPAL {
-    return NSLocalizedStringWithDefaultValue(@"PAYPAL", [self localizationTable], [self localizationBundle], @"PayPal", @"PayPal (as a standalone term, referring to the payment method type, analogous to Visa or Discover");
-
-}
-
 + (NSString *)DEFAULT_CALL_TO_ACTION {
     return NSLocalizedStringWithDefaultValue(@"DEFAULT_CALL_TO_ACTION", [self localizationTable], [self localizationBundle], @"Pay", @"Default text to display in Drop In view controller call to action (Submit button)");
 }

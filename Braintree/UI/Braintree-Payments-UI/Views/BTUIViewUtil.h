@@ -7,6 +7,7 @@
 @interface BTUIViewUtil : NSObject
 
 + (BTUIPaymentMethodType)paymentMethodTypeForCardType:(BTUICardType *)cardType;
++ (NSString *)nameForPaymentMethodType:(BTUIPaymentMethodType)paymentMethodType;
 
 + (void)vibrate;
 

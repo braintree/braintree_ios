@@ -4,6 +4,7 @@
 #import "BTUI.h"
 #import "BTDropinViewController.h"
 #import "BTDropInLocalizedString.h"
+#import "BTUILocalizedString.h"
 
 @interface BTDropInSelectPaymentMethodViewController ()
 
@@ -64,7 +65,7 @@
     BTPaymentMethod *paymentMethod = [self.paymentMethods objectAtIndex:indexPath.row];
     if ([paymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
         BTPayPalPaymentMethod *payPalPaymentMethod = (BTPayPalPaymentMethod *)paymentMethod;
-        NSString *typeString = BTDropInLocalizedString(PAYPAL);
+        NSString *typeString = BTUILocalizedString(PAYPAL_CARD_BRAND);
         NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, (payPalPaymentMethod.description ?: @"")]];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
         [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [payPalPaymentMethod.description length])];
@@ -78,9 +79,14 @@
 
     } else if([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
         BTCardPaymentMethod *card = (BTCardPaymentMethod *)paymentMethod;
-        NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", card.typeString, card.description]];
-        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [card.typeString length])];
-        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([card.typeString length], [card.description length])];
+
+
+        BTUIPaymentMethodType uiPaymentMethodType = [BTDropInUtil uiForCardType:card.type];
+        NSString *typeString = [BTUIViewUtil nameForPaymentMethodType:uiPaymentMethodType];
+
+        NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, card.description]];
+        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
+        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [card.description length])];
         cell.textLabel.attributedText = typeWithDescription;
 
         BTUIPaymentMethodType uiType = [BTDropInUtil uiForCardType:card.type];

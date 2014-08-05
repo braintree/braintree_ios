@@ -82,4 +82,8 @@
     return NSLocalizedStringWithDefaultValue(@"CARD_TYPE_SWITCH", [self localizationTable], [self localizationBundle], @"Switch", @"Switch card brand");
 }
 
++ (NSString *)PAYMENT_METHOD_TYPE_PAYPAL {
+    return NSLocalizedStringWithDefaultValue(@"PAYPAL", [self localizationTable], [self localizationBundle], @"PayPal", @"PayPal (as a standalone term, referring to the payment method type, analogous to Visa or Discover");
+}
+
 @end

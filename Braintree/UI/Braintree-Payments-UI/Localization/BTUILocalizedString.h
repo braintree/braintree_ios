@@ -26,5 +26,5 @@
 + (NSString *)CARD_TYPE_SWITCH;
 + (NSString *)CARD_TYPE_SOLO;
 + (NSString *)CARD_TYPE_LASER;
-;
++ (NSString *)PAYMENT_METHOD_TYPE_PAYPAL;
 @end
