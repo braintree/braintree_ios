@@ -1861,7 +1861,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = BT;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				TargetAttributes = {
 					162174DE192D9220008DC35D = {
 						DevelopmentTeam = QK3APTBF2M;
@@ -3932,6 +3932,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(PRODUCT_NAME)/$(PRODUCT_NAME)-Prefix.pch";
 				INFOPLIST_FILE = "$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
