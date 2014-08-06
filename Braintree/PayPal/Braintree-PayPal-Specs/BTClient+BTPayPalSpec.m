@@ -40,8 +40,9 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             NSString *clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
             NSError *error;
             BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-            [client btPayPal_preparePayPalMobileWithError: &error];
+            BOOL success = [client btPayPal_preparePayPalMobileWithError: &error];
             expect(error).to.beNil();
+            expect(success).to.beTruthy();
         });
 
         it(@"returns an error if the client ID is present but the Base URL is missing", ^{
@@ -50,10 +51,11 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             NSError *error;
             BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
 
-            [client btPayPal_preparePayPalMobileWithError: &error];
+            BOOL success = [client btPayPal_preparePayPalMobileWithError: &error];
 
             expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
             expect(error.userInfo).notTo.beNil;
+            expect(success).to.beFalsy();
         });
 
         it(@"returns an error if the PayPal Base URL is present but the client ID is missing", ^{

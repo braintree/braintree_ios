@@ -23,7 +23,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     return [self offlineTestClientTokenWithAdditionalParameters:payPalClientTokenData];
 }
 
-- (void)btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)error {
+- (BOOL)btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)error {
     if ([self.clientToken.btPayPal_environment isEqualToString: BTClientTokenPayPalEnvironmentOffline]) {
         [PayPalMobile initializeWithClientIdsForEnvironments:@{@"": @""}];
         [PayPalMobile preconnectWithEnvironment:PayPalEnvironmentNoNetwork];
@@ -37,6 +37,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                 *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain
                                              code:BTMerchantIntegrationErrorPayPalConfiguration
                                          userInfo:@{ NSLocalizedDescriptionKey: BTClientPayPalConfigurationError}];
+                return NO;
             }
         } else {
             [PayPalMobile addEnvironments:@{ BTClientPayPalMobileEnvironmentName:@{
@@ -50,8 +51,11 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
             *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain
                                          code:BTMerchantIntegrationErrorPayPalConfiguration
                                      userInfo:@{ NSLocalizedDescriptionKey: BTClientPayPalConfigurationError}];
+            return NO;
         }
     }
+
+    return YES;
 }
 
 - (PayPalFuturePaymentViewController *)btPayPal_futurePaymentFutureControllerWithDelegate:(id<PayPalFuturePaymentDelegate>)delegate {
