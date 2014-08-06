@@ -24,6 +24,8 @@
 }
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+
     self.title = @"Custom: Tokenization";
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.navigationItem.rightBarButtonItems = @[

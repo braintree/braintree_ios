@@ -20,6 +20,8 @@
 }
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+
     BTPayPalButton *payPalButton = [self.braintree payPalButtonWithDelegate:self];
 
     if (payPalButton) {
