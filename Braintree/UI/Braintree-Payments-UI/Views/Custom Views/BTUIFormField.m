@@ -95,8 +95,8 @@
     return index == self.textField.text.length && self.valid;
 }
 
-- (void)becomeFirstResponder {
-    [self.textField becomeFirstResponder];
+- (BOOL)becomeFirstResponder {
+    return [self.textField becomeFirstResponder];
 }
 
 #pragma mark - Theme

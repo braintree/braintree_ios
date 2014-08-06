@@ -13,7 +13,7 @@
 @interface BTUIFormField : BTUIThemedView <UITextFieldDelegate>
 
 - (void)updateAppearance;
-- (void)becomeFirstResponder;
+- (BOOL)becomeFirstResponder;
 
 @property (nonatomic, weak) id<BTUIFormFieldDelegate> delegate;
 @property (nonatomic, assign) BOOL vibrateOnInvalidInput;
