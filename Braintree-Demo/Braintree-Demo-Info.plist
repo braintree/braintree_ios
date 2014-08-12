@@ -24,16 +24,6 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>None</string>
-			<key>CFBundleURLName</key>
-			<string>com.braintreepayments.demo-app.v1</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.braintreepayments.demo-app.v1</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string>com.braintreepayments.Braintree-Demo</string>
