@@ -46,7 +46,7 @@
 
 @implementation BraintreeDemoChooserViewController
 
-- (void)viewWillAppear:(__unused BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
     [self.tableView reloadData];
