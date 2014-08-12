@@ -40,7 +40,7 @@
                                           @"x-error": @"com.braintreepayments.demo-app.v1://x-callback-url/vzero/auth/venmo/error",
                                           @"x-cancel": @"com.braintreepayments.demo-app.v1://x-callback-url/vzero/auth/venmo/cancel",
                                           @"x-source": @"Braintree Demo",
-                                          @"braintreeMerchantId": self.merchantID
+                                          @"braintree_merchant_id": self.merchantID
                                           };
 
     NSURL *venmoAppSwitchURL = [[NSURL URLWithString:@"venmo://x-callback-url/vzero/auth"] uq_URLByAppendingQueryDictionary:appSwitchParameters];
