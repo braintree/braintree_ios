@@ -250,11 +250,11 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #pragma mark - Library Version
 
 + (NSString *)libraryVersion {
-#if defined(COCOAPODS) && defined(COCOAPODS_VERSION_MAJOR_Braintree_api) && defined(COCOAPODS_VERSION_MINOR_Braintree_api) && defined(COCOAPODS_VERSION_PATCH_Braintree_api)
+#if defined(COCOAPODS) && defined(COCOAPODS_VERSION_MAJOR_Braintree_API) && defined(COCOAPODS_VERSION_MINOR_Braintree_API) && defined(COCOAPODS_VERSION_PATCH_Braintree_API)
     return [NSString stringWithFormat:@"%d.%d.%d",
-            COCOAPODS_VERSION_MAJOR_Braintree_api,
-            COCOAPODS_VERSION_MINOR_Braintree_api,
-            COCOAPODS_VERSION_PATCH_Braintree_api];
+            COCOAPODS_VERSION_MAJOR_Braintree_API,
+            COCOAPODS_VERSION_MINOR_Braintree_API,
+            COCOAPODS_VERSION_PATCH_Braintree_API];
 #else
 #ifdef DEBUG
     return @"development";
