@@ -40,7 +40,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             NSString *clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
             NSError *error;
             BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-            BOOL success = [client btPayPal_preparePayPalMobileWithError: &error];
+            BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
             expect(error).to.beNil();
             expect(success).to.beTruthy();
         });
@@ -51,7 +51,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             NSError *error;
             BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
 
-            BOOL success = [client btPayPal_preparePayPalMobileWithError: &error];
+            BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
 
             expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
             expect(error.userInfo).notTo.beNil;
@@ -64,7 +64,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             NSError *error;
             BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
 
-            [client btPayPal_preparePayPalMobileWithError: &error];
+            [client btPayPal_preparePayPalMobileWithError:&error];
 
             expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
             expect(error.userInfo).notTo.beNil;
@@ -83,7 +83,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
                 NSError *error;
                 BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
 
-                [client btPayPal_preparePayPalMobileWithError: &error];
+                [client btPayPal_preparePayPalMobileWithError:&error];
 
                 expect(error).to.beNil();
             });
