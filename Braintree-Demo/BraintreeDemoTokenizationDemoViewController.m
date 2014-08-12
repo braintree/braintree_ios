@@ -5,7 +5,7 @@
 @interface BraintreeDemoTokenizationDemoViewController ()
 
 @property (nonatomic, strong) Braintree *braintree;
-@property (nonatomic, copy) void (^completionBlock)(BraintreeDemoTokenizationDemoViewController *, NSString *);
+@property (nonatomic, copy) void (^completionBlock)(NSString *);
 
 @property (nonatomic, strong) IBOutlet UITextField *cardNumberField;
 @property (nonatomic, strong) IBOutlet UITextField *expirationMonthField;
@@ -14,7 +14,7 @@
 
 @implementation BraintreeDemoTokenizationDemoViewController
 
-- (instancetype)initWithBraintree:(Braintree *)braintree completion:(void (^)(BraintreeDemoTokenizationDemoViewController *, NSString *))completionBlock {
+- (instancetype)initWithBraintree:(Braintree *)braintree completion:(void (^)(NSString *))completionBlock {
     self = [self initWithNibName:nil bundle:nil];
     if (self) {
         self.braintree = braintree;
@@ -59,7 +59,7 @@
 
                                     if (nonce) {
                                         NSLog(@"Card tokenized -> Nonce Received: %@", nonce);
-                                        self.completionBlock(self, nonce);
+                                        self.completionBlock(nonce);
                                     }
                                 }];
 }

@@ -5,6 +5,8 @@
 #import "BTPayPalButton.h"
 
 #import "BTDropInViewController.h"
+#import "PayPalTouch.h"
+#import "BTAppSwitchHandler.h"
 
 @interface Braintree ()
 @property (nonatomic, strong) BTClient *client;
@@ -107,4 +109,9 @@
 #endif
 #endif
 }
+
++ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    return [[BTAppSwitchHandler sharedHandler] handleAppSwitchURL:url sourceApplication:sourceApplication];
+}
+
 @end

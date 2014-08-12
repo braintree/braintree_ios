@@ -268,4 +268,45 @@ describe(@"offline clients", ^{
     });
 });
 
+describe(@"coding", ^{
+    it(@"roundtrips the client", ^{
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyClientApiURL: @"http://example.com/api" }]];
+        NSMutableData *data = [NSMutableData data];
+        NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+        [client encodeWithCoder:coder];
+        [coder finishEncoding];
+        NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        BTClient *returnedClient = [[BTClient alloc] initWithCoder:decoder];
+        [decoder finishDecoding];
+
+        expect(returnedClient.clientToken.authorizationFingerprint).to.equal(client.clientToken.authorizationFingerprint);
+        expect(returnedClient.clientApiHttp).to.equal(client.clientApiHttp);
+        expect(returnedClient.analyticsHttp).to.equal(client.analyticsHttp);
+    });
+});
+
+
+describe(@"isEqual:", ^{
+    it(@"returns YES if client tokens are equal", ^{
+        NSString *sampleClientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyClientApiURL: @"http://example.com/api" }];
+        BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString];
+        BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString];
+        expect(client1).to.equal(client2);
+    });
+
+    it(@"returns YES if client tokens are not defined", ^{
+        BTClient *client1 = [[BTClient alloc] init];
+        BTClient *client2 = [[BTClient alloc] init];
+        expect(client1).to.equal(client2);
+    });
+
+    it(@"returns NO if client tokens are not equal", ^{
+        NSString *sampleClientTokenString1 = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyClientApiURL: @"a-scheme://yo" }];
+        NSString *sampleClientTokenString2 = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyClientApiURL: @"another-scheme://yo" }];
+        BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString1];
+        BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString2];
+        expect(client1).notTo.equal(client2);
+    });
+});
+
 SpecEnd

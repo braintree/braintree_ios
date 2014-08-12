@@ -40,6 +40,7 @@ PODS:
   - KIF (3.0.4):
     - KIF/XCTest
   - KIF/XCTest (3.0.4)
+  - NSURL+QueryDictionary (1.0.3)
   - OCHamcrest (3.0.1)
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.4)
@@ -55,6 +56,7 @@ DEPENDENCIES:
   - Expecta (~> 0.3.0)
   - HockeySDK
   - KIF (~> 3.0)
+  - NSURL+QueryDictionary (~> 1.0)
   - OCHamcrest (~> 3.0.1)
   - OCMock (~> 2.2.3)
   - OHHTTPStubs (~> 3.1.0)
@@ -70,6 +72,7 @@ SPEC CHECKSUMS:
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
   KIF: 443c517d14fc2a99d27d3df170bc274cdf288241
+  NSURL+QueryDictionary: 1ad81be60c10e3f4d80c5c4beb7125de96aaec5e
   OCHamcrest: 207233b7d7a44dadd66aca398947cc7e029c9be5
   OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
   OHHTTPStubs: 398901e787d9b62ce539a8a3df0b81431a98236a

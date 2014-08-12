@@ -1,13 +1,20 @@
 //
 //  PayPalConfiguration.h
 //
-//  Version 2.1.1-bt
+//  Version 2.3.0-beta-3
 //
 //  Copyright (c) 2014, PayPal
 //  All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+
+typedef NS_ENUM(NSInteger, PayPalShippingAddressOption) {
+  PayPalShippingAddressOptionNone = 0,
+  PayPalShippingAddressOptionProvided = 1,
+  PayPalShippingAddressOptionPayPal = 2,
+  PayPalShippingAddressOptionBoth = 3,
+};
 
 /// You use a PayPalConfiguration object to configure many aspects of how the SDK behaves.
 @interface PayPalConfiguration : NSObject <NSCopying>
@@ -27,13 +34,13 @@
 @property(nonatomic, copy, readwrite) NSString *defaultUserPhoneNumber;
 
 /// Your company name, as it should be displayed to the user
-/// when requesting consent via a PayPalFuturePaymentViewController.
+/// when requesting consent via a PayPalFuturePaymentViewController or a PayPalProfileSharingViewController.
 @property(nonatomic, copy, readwrite) NSString *merchantName;
 /// URL of your company's privacy policy, which will be offered to the user
-/// when requesting consent via a PayPalFuturePaymentViewController.
+/// when requesting consent via a PayPalFuturePaymentViewController or a PayPalProfileSharingViewController.
 @property(nonatomic, copy, readwrite) NSURL *merchantPrivacyPolicyURL;
 /// URL of your company's user agreement, which will be offered to the user
-/// when requesting consent via a PayPalFuturePaymentViewController.
+/// when requesting consent via a PayPalFuturePaymentViewController or a PayPalProfileSharingViewController.
 @property(nonatomic, copy, readwrite) NSURL *merchantUserAgreementURL;
 
 /// If set to NO, the SDK will only support paying with PayPal, not with credit cards.
@@ -41,6 +48,21 @@
 /// Future payments (via PayPalFuturePaymentViewController) always use PayPal.
 /// Defaults to YES.
 @property(nonatomic, assign, readwrite) BOOL acceptCreditCards;
+
+/// Scheme defined in application's plist to perform app switch
+@property(nonatomic, copy, readwrite) NSString *callbackURLScheme;
+
+
+/// For single payments, options for the shipping address.
+/// - PayPalShippingAddressOptionNone: no shipping address applies.
+/// - PayPalShippingAddressOptionProvided: shipping address will be provided by your app,
+///   in the shippingAddress property of PayPalPayment.
+/// - PayPalShippingAddressOptionPayPal: user will choose from shipping addresses on file
+///   for their PayPal account.
+/// - PayPalShippingAddressOptionBoth: user will choose from the shipping address provided by your app,
+///   in the shippingAddress property of PayPalPayment, plus the shipping addresses on file for the user's PayPal account.
+/// Defaults to PayPalShippingAddressOptionNone.
+@property(nonatomic, assign, readwrite) PayPalShippingAddressOption payPalShippingAddressOption;
 
 /// If set to YES, then if the user pays via their PayPal account,
 /// the SDK will remember the user's PayPal username or phone number;
@@ -67,7 +89,7 @@
 /// E.g., specifying "en" on a device set to "English" and "United Kingdom" will result in "en_GB".
 ///
 /// These localizations are currently included:
-/// ar,da,de,en,en_AU,en_GB,en_SE,es,es_MX,fr,he,it,ja,ko,ms,nb,nl,pl,pt,pt_BR,ru,sv,th,tr,zh-Hans,zh-Hant_HK,zh-Hant_TW.
+/// ar,da,de,en,en_AU,en_GB,en_SE,es,es_MX,fr,he,it,ja,ko,ms,nb,nl,pl,pt,pt_BR,ru,sv,th,tr,zh-Hans,zh-Hant,zh-Hant_TW.
 @property(nonatomic, copy, readwrite) NSString *languageOrLocale;
 
 /// Normally, the SDK blurs the screen when the app is backgrounded,

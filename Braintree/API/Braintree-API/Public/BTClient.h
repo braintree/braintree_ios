@@ -9,6 +9,9 @@
 /// Block type that takes an `NSArray` of `BTPaymentMethod`s
 typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray *paymentMethods);
 
+/// Block type that takes an `NSArray` of `BTPaymentMethod`s and an `NSArray` of `BTPaymentApp`s
+typedef void (^BTClientPaymentOptionListSuccessBlock)(NSArray *paymentMethods, NSArray *paymentApps);
+
 /// Block type that takes a `BTCardPaymentMethod`
 typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 
@@ -24,7 +27,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// A `BTClient` performs Braintree API operations and returns
 /// resulting responses or errors. It is the entry-point for all
 /// communication with Braintree.
-@interface BTClient : NSObject
+@interface BTClient : NSObject <NSCoding>
 
 /// Initialize and configure a `BTClient` with a client token.
 /// The client token dictates the behavior of subsequent operations.
@@ -45,6 +48,15 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param failureBlock success callback for handling errors
 - (void)fetchPaymentMethodsWithSuccess:(BTClientPaymentMethodListSuccessBlock)successBlock
                                failure:(BTClientFailureBlock)failureBlock;
+
+/// Obtain a list of all supported payment options
+///
+/// @param successBlock success callback for handling the returned list of payment methods
+/// @param failureBlock success callback for handling errors
+- (void)fetchPaymentOptionsForSchemes:(NSArray *)schemes
+                              success:(BTClientPaymentOptionListSuccessBlock)successBlock
+                              failure:(BTClientFailureBlock)failureBlock;
+
 
 /// Save a card to Braintree
 ///
@@ -101,6 +113,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)postAnalyticsEvent:(NSString *)eventKind
                    success:(BTClientAnalyticsSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock;
+
+- (void)postAnalyticsEvent:(NSString *)eventKind;
 
 #pragma mark - Library Metadata
 

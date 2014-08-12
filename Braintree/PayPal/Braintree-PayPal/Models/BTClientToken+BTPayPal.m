@@ -45,6 +45,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
         configuration.merchantPrivacyPolicyURL = privacyPolicyURLString ? [NSURL URLWithString:privacyPolicyURLString] : [NSURL URLWithString:BTClientTokenPayPalNonLiveDefaultValueMerchantPrivacyPolicyUrl];
         configuration.merchantUserAgreementURL = userAgreementURLString ? [NSURL URLWithString:userAgreementURLString] : [NSURL URLWithString:BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl];
     }
+
     return configuration;
 }
 

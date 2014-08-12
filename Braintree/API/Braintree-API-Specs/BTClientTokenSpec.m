@@ -12,6 +12,7 @@ describe(@"initialization from Base 64 encoded JSON", ^{
 
         expect(clientToken.clientApiURL).to.equal([NSURL URLWithString:@"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api"]);
         expect(clientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key");
+        expect(clientToken.paymentAppSchemes).to.equal([NSSet setWithArray: @[@"bt-test-venmo", @"bt-test-paypal"]]);
     });
 });
 
@@ -155,6 +156,50 @@ describe(@"initialization from a raw claims set", ^{
         expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
         expect(error.code).to.equal(BTMerchantIntegrationErrorInvalidClientToken);
         expect(error.localizedDescription).to.contain(@"client api url");
+    });
+});
+
+describe(@"coding", ^{
+    it(@"roundtrips the clientToken", ^{
+
+        NSString *clientTokenEncodedJSON = [BTTestClientTokenFactory base64EncodedToken];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenEncodedJSON error:NULL];
+
+        NSMutableData *data = [NSMutableData data];
+        NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+        [clientToken encodeWithCoder:coder];
+        [coder finishEncoding];
+
+        NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        BTClientToken *returnedClientToken = [[BTClientToken alloc] initWithCoder:decoder];
+        [decoder finishDecoding];
+
+        expect(returnedClientToken.clientApiURL).to.equal([NSURL URLWithString:@"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api"]);
+        expect(returnedClientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key");
+        expect(returnedClientToken.paymentAppSchemes).to.equal([NSSet setWithArray: @[@"bt-test-venmo", @"bt-test-paypal"]]);
+
+    });
+});
+
+describe(@"isEqual:", ^{
+    it(@"returns YES when claims are equal", ^{
+        NSString *clientTokenEncodedJSON = [BTTestClientTokenFactory base64EncodedToken];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenEncodedJSON error:NULL];
+        BTClientToken *clientToken2 = [[BTClientToken alloc] initWithClientTokenString:clientTokenEncodedJSON error:NULL];
+
+        expect(clientToken.claims).to.equal(clientToken2.claims);
+
+        expect(clientToken).to.equal(clientToken2);
+    });
+
+    it(@"returns NO if claims are not equal", ^{
+        NSString *clientTokenString1 = [BTTestClientTokenFactory tokenWithAnalyticsUrl:@"a-url://"];
+        NSString *clientTokenString2 = [BTTestClientTokenFactory tokenWithAnalyticsUrl:@"another-url://"];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenString1 error:nil];
+        BTClientToken *clientToken2 = [[BTClientToken alloc] initWithClientTokenString:clientTokenString2 error:nil];
+
+        expect(clientToken.claims).notTo.equal(clientToken2.claims);
+        expect(clientToken).notTo.equal(clientToken2);
     });
 });
 

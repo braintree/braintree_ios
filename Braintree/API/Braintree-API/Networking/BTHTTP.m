@@ -7,8 +7,8 @@
 
 @interface BTHTTP ()<NSURLSessionDelegate>
 
-@property (nonatomic, strong) NSURL *baseURL;
 @property (nonatomic, strong) NSURLSession *session;
+@property (nonatomic, strong) NSURL *baseURL;
 
 - (NSDictionary *)defaultHeaders;
 
@@ -184,239 +184,253 @@
 
 #pragma mark - Error Classification
 
-    + (NSError *)domainRequestErrorForError:(NSError *)error {
-        NSError *returnedError;
-        if (error != nil) {
-            NSDictionary *userInfoDictionary = @{NSUnderlyingErrorKey: error};
-            if ([error.domain isEqualToString:NSURLErrorDomain]) {
-                NSInteger returnedErrorCode;
-                switch (error.code) {
-                    case NSURLErrorSecureConnectionFailed:
-                    case NSURLErrorServerCertificateHasBadDate:
-                    case NSURLErrorServerCertificateUntrusted:
-                    case NSURLErrorServerCertificateHasUnknownRoot:
-                    case NSURLErrorServerCertificateNotYetValid:
-                    case NSURLErrorClientCertificateRejected:
-                    case NSURLErrorClientCertificateRequired:
-                    case NSURLErrorCannotLoadFromNetwork:
-                        returnedErrorCode = BTServerErrorSSL;
-                        break;
-                    case NSURLErrorCannotConnectToHost:
-                    case NSURLErrorTimedOut:
-                        returnedErrorCode = BTServerErrorGatewayUnavailable;
-                        break;
-                    case NSURLErrorUnsupportedURL:
-                    case NSURLErrorBadServerResponse:
-                        returnedErrorCode = BTServerErrorUnexpectedError;
-                        break;
-                    case NSURLErrorNetworkConnectionLost:
-                    case NSURLErrorInternationalRoamingOff:
-                    case NSURLErrorCallIsActive:
-                    case NSURLErrorDataNotAllowed:
-                    case NSURLErrorNotConnectedToInternet:
-                        returnedErrorCode = BTServerErrorNetworkUnavailable;
-                        break;
-                    default:
-                        returnedErrorCode = BTServerErrorUnknown;
-                        break;
-                }
-                returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                    code:returnedErrorCode
-                                                userInfo:userInfoDictionary];
-            } else if ([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSPropertyListReadCorruptError) {
-                returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                    code:BTServerErrorUnexpectedError
-                                                userInfo:userInfoDictionary];
++ (NSError *)domainRequestErrorForError:(NSError *)error {
+    NSError *returnedError;
+    if (error != nil) {
+        NSDictionary *userInfoDictionary = @{NSUnderlyingErrorKey: error};
+        if ([error.domain isEqualToString:NSURLErrorDomain]) {
+            NSInteger returnedErrorCode;
+            switch (error.code) {
+                case NSURLErrorSecureConnectionFailed:
+                case NSURLErrorServerCertificateHasBadDate:
+                case NSURLErrorServerCertificateUntrusted:
+                case NSURLErrorServerCertificateHasUnknownRoot:
+                case NSURLErrorServerCertificateNotYetValid:
+                case NSURLErrorClientCertificateRejected:
+                case NSURLErrorClientCertificateRequired:
+                case NSURLErrorCannotLoadFromNetwork:
+                    returnedErrorCode = BTServerErrorSSL;
+                    break;
+                case NSURLErrorCannotConnectToHost:
+                case NSURLErrorTimedOut:
+                    returnedErrorCode = BTServerErrorGatewayUnavailable;
+                    break;
+                case NSURLErrorUnsupportedURL:
+                case NSURLErrorBadServerResponse:
+                    returnedErrorCode = BTServerErrorUnexpectedError;
+                    break;
+                case NSURLErrorNetworkConnectionLost:
+                case NSURLErrorInternationalRoamingOff:
+                case NSURLErrorCallIsActive:
+                case NSURLErrorDataNotAllowed:
+                case NSURLErrorNotConnectedToInternet:
+                    returnedErrorCode = BTServerErrorNetworkUnavailable;
+                    break;
+                default:
+                    returnedErrorCode = BTServerErrorUnknown;
+                    break;
             }
+            returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                code:returnedErrorCode
+                                            userInfo:userInfoDictionary];
+        } else if ([error.domain isEqualToString:NSCocoaErrorDomain] && error.code == NSPropertyListReadCorruptError) {
+            returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                code:BTServerErrorUnexpectedError
+                                            userInfo:userInfoDictionary];
         }
-        return returnedError;
     }
+    return returnedError;
+}
 
-    + (NSError *)defaultDomainErrorForStatusCode:(NSInteger)statusCode error:(NSError *)error {
-        NSDictionary *userInfoDictionary = error ? @{NSUnderlyingErrorKey: error} : nil;
-        switch (statusCode) {
-            case 200 ... 299:
-                return nil;
-            case 403:
-                return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                           code:BTMerchantIntegrationErrorUnauthorized
-                                       userInfo:userInfoDictionary];
-            case 404:
-                return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                           code:BTMerchantIntegrationErrorNotFound
-                                       userInfo:userInfoDictionary];
-            case 422:
-                return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                           code:BTCustomerInputErrorInvalid
-                                       userInfo:userInfoDictionary];
-            case 400 ... 402:
-            case 405 ... 421:
-            case 423 ... 499:
-                return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                           code:BTCustomerInputErrorUnknown
-                                       userInfo:userInfoDictionary];
-            case 503:
-                return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                           code:BTServerErrorGatewayUnavailable
-                                       userInfo:userInfoDictionary];
-            case 500 ... 502:
-            case 504 ... 599:
-                return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                           code:BTServerErrorUnknown
-                                       userInfo:userInfoDictionary];
-            default:
-                return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                           code:BTUnknownError
-                                       userInfo:userInfoDictionary];
-        }
++ (NSError *)defaultDomainErrorForStatusCode:(NSInteger)statusCode error:(NSError *)error {
+    NSDictionary *userInfoDictionary = error ? @{NSUnderlyingErrorKey: error} : nil;
+    switch (statusCode) {
+        case 200 ... 299:
+            return nil;
+        case 403:
+            return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                       code:BTMerchantIntegrationErrorUnauthorized
+                                   userInfo:userInfoDictionary];
+        case 404:
+            return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                       code:BTMerchantIntegrationErrorNotFound
+                                   userInfo:userInfoDictionary];
+        case 422:
+            return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                       code:BTCustomerInputErrorInvalid
+                                   userInfo:userInfoDictionary];
+        case 400 ... 402:
+        case 405 ... 421:
+        case 423 ... 499:
+            return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                       code:BTCustomerInputErrorUnknown
+                                   userInfo:userInfoDictionary];
+        case 503:
+            return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                       code:BTServerErrorGatewayUnavailable
+                                   userInfo:userInfoDictionary];
+        case 500 ... 502:
+        case 504 ... 599:
+            return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                       code:BTServerErrorUnknown
+                                   userInfo:userInfoDictionary];
+        default:
+            return [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                       code:BTUnknownError
+                                   userInfo:userInfoDictionary];
     }
+}
 
 #pragma mark - Default Headers
 
-    - (NSDictionary *)defaultHeaders {
-        return @{ @"User-Agent": [self userAgentString],
-                  @"Accept": [self acceptString],
-                  @"Accept-Language": [self acceptLanguageString] };
+- (NSDictionary *)defaultHeaders {
+    return @{ @"User-Agent": [self userAgentString],
+              @"Accept": [self acceptString],
+              @"Accept-Language": [self acceptLanguageString] };
+}
+
+- (NSString *)userAgentString {
+    return [NSString stringWithFormat:@"Braintree/iOS/%@",
+            [BTClient libraryVersion]];
+}
+
+- (NSString *)platformString {
+    size_t size = 128;
+    char *hwModel = alloca(size);
+
+    if (sysctlbyname("hw.model", hwModel, &size, NULL, 0) != 0) {
+        return nil;
     }
 
-    - (NSString *)userAgentString {
-        return [NSString stringWithFormat:@"Braintree/iOS/%@",
-                [BTClient libraryVersion]];
-    }
-
-    - (NSString *)platformString {
-        size_t size = 128;
-        char *hwModel = alloca(size);
-
-        if (sysctlbyname("hw.model", hwModel, &size, NULL, 0) != 0) {
-            return nil;
-        }
-
-        NSString *hwModelString = [NSString stringWithCString:hwModel encoding:NSUTF8StringEncoding];
+    NSString *hwModelString = [NSString stringWithCString:hwModel encoding:NSUTF8StringEncoding];
 #if TARGET_IPHONE_SIMULATOR
-        hwModelString = [hwModelString stringByAppendingString:@"(simulator)"];
+    hwModelString = [hwModelString stringByAppendingString:@"(simulator)"];
 #endif
-        return hwModelString;
+    return hwModelString;
+}
+
+- (NSString *)architectureString {
+    size_t size = 128;
+    char *hwMachine = alloca(size);
+
+    if (sysctlbyname("hw.machine", hwMachine, &size, NULL, 0) != 0) {
+        return nil;
     }
 
-    - (NSString *)architectureString {
-        size_t size = 128;
-        char *hwMachine = alloca(size);
+    return [NSString stringWithCString:hwMachine encoding:NSUTF8StringEncoding];
+}
 
-        if (sysctlbyname("hw.machine", hwMachine, &size, NULL, 0) != 0) {
-            return nil;
-        }
+- (NSString *)acceptString {
+    return @"application/json";
+}
 
-        return [NSString stringWithCString:hwMachine encoding:NSUTF8StringEncoding];
-    }
-
-    - (NSString *)acceptString {
-        return @"application/json";
-    }
-
-    - (NSString *)acceptLanguageString {
-        NSLocale *locale = [NSLocale currentLocale];
-        return [NSString stringWithFormat:@"%@-%@",
-                [locale objectForKey:NSLocaleLanguageCode],
-                [locale objectForKey:NSLocaleCountryCode]];
-    }
+- (NSString *)acceptLanguageString {
+    NSLocale *locale = [NSLocale currentLocale];
+    return [NSString stringWithFormat:@"%@-%@",
+            [locale objectForKey:NSLocaleLanguageCode],
+            [locale objectForKey:NSLocaleCountryCode]];
+}
 
 #pragma mark - Helpers
 
-    + (NSString *)stringByURLEncodingAllCharactersInString:(NSString *)aString {
-        NSString *encodedString = (__bridge_transfer NSString * ) CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                                                          (__bridge CFStringRef)aString,
-                                                                                                          NULL,
-                                                                                                          (CFStringRef)@"&()<>@,;:\\\"/[]?=+$|^~`{}",
-                                                                                                          kCFStringEncodingUTF8);
-        return encodedString;
-    }
++ (NSString *)stringByURLEncodingAllCharactersInString:(NSString *)aString {
+    NSString *encodedString = (__bridge_transfer NSString * ) CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                                                      (__bridge CFStringRef)aString,
+                                                                                                      NULL,
+                                                                                                      (CFStringRef)@"&()<>@,;:\\\"/[]?=+$|^~`{}",
+                                                                                                      kCFStringEncodingUTF8);
+    return encodedString;
+}
 
-    + (NSString *)queryStringWithDictionary:(NSDictionary *)dict {
-        NSMutableString *queryString = [NSMutableString string];
-        for (id key in dict) {
-            NSString *encodedKey = [self stringByURLEncodingAllCharactersInString:[key description]];
-            id value = [dict objectForKey:key];
-            if([value isKindOfClass:[NSArray class]]) {
-                for(id obj in value) {
-                    [queryString appendFormat:@"%@%%5B%%5D=%@&",
-                     encodedKey,
-                     [self stringByURLEncodingAllCharactersInString:[obj description]]
-                     ];
-                }
-            } else if([value isKindOfClass:[NSDictionary class]]) {
-                for(id subkey in value) {
-                    [queryString appendFormat:@"%@%%5B%@%%5D=%@&",
-                     encodedKey,
-                     [self stringByURLEncodingAllCharactersInString:[subkey description]],
-                     [self stringByURLEncodingAllCharactersInString:[[value objectForKey:subkey] description]]
-                     ];
-                }
-            } else if([value isKindOfClass:[NSNull class]]) {
-                [queryString appendFormat:@"%@=&", encodedKey];
-            } else {
-                [queryString appendFormat:@"%@=%@&",
++ (NSString *)queryStringWithDictionary:(NSDictionary *)dict {
+    NSMutableString *queryString = [NSMutableString string];
+    for (id key in dict) {
+        NSString *encodedKey = [self stringByURLEncodingAllCharactersInString:[key description]];
+        id value = [dict objectForKey:key];
+        if([value isKindOfClass:[NSArray class]]) {
+            for(id obj in value) {
+                [queryString appendFormat:@"%@%%5B%%5D=%@&",
                  encodedKey,
-                 [self stringByURLEncodingAllCharactersInString:[value description]]
+                 [self stringByURLEncodingAllCharactersInString:[obj description]]
                  ];
             }
-        }
-        if([queryString length] > 0) {
-            [queryString deleteCharactersInRange:NSMakeRange([queryString length] - 1, 1)]; // remove trailing &
-        }
-        return queryString;
-    }
-
-    + (BOOL)serverTrustIsValid:(SecTrustRef)serverTrust {
-        BOOL isValid = NO;
-        SecTrustResultType result;
-
-        OSStatus errorCode = SecTrustEvaluate(serverTrust, &result);
-        isValid = errorCode != 0 && (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed);
-        return isValid;
-    }
-
-    - (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust forDomain:(NSString *)domain {
-        NSArray *policies = @[(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)domain)];
-
-        SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
-
-        CFIndex certificateCount = SecTrustGetCertificateCount(serverTrust);
-        if (certificateCount == 0) {
-            return NO;
-        }
-
-        NSData *serverRootCertificate = (__bridge_transfer NSData *)SecCertificateCopyData(SecTrustGetCertificateAtIndex(serverTrust, certificateCount-1));
-
-        NSMutableArray *pinnedCertificates = [NSMutableArray array];
-        for (NSData *certificateData in self.pinnedCertificates) {
-            [pinnedCertificates addObject:(__bridge_transfer id)SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData)];
-        }
-        SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)pinnedCertificates);
-        
-        if (![[self class] serverTrustIsValid:serverTrust]) {
-            return NO;
-        }
-        
-        return [self.pinnedCertificates containsObject:serverRootCertificate];
-    }
-    
-    
-    - (void)URLSession:(__unused NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler{
-        if ([[[challenge protectionSpace] authenticationMethod] isEqualToString: NSURLAuthenticationMethodServerTrust]) {
-            
-            SecTrustRef serverTrust = [[challenge protectionSpace] serverTrust];
-            
-            BOOL ok = [self evaluateServerTrust:serverTrust forDomain:challenge.protectionSpace.host];
-            if (ok) {
-                NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
-                completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
-            } else {
-                completionHandler(NSURLSessionAuthChallengeRejectProtectionSpace, nil);
+        } else if([value isKindOfClass:[NSDictionary class]]) {
+            for(id subkey in value) {
+                [queryString appendFormat:@"%@%%5B%@%%5D=%@&",
+                 encodedKey,
+                 [self stringByURLEncodingAllCharactersInString:[subkey description]],
+                 [self stringByURLEncodingAllCharactersInString:[[value objectForKey:subkey] description]]
+                 ];
             }
+        } else if([value isKindOfClass:[NSNull class]]) {
+            [queryString appendFormat:@"%@=&", encodedKey];
+        } else {
+            [queryString appendFormat:@"%@=%@&",
+             encodedKey,
+             [self stringByURLEncodingAllCharactersInString:[value description]]
+             ];
         }
-        
     }
-    
-    
-    @end
+    if([queryString length] > 0) {
+        [queryString deleteCharactersInRange:NSMakeRange([queryString length] - 1, 1)]; // remove trailing &
+    }
+    return queryString;
+}
+
++ (BOOL)serverTrustIsValid:(SecTrustRef)serverTrust {
+    BOOL isValid = NO;
+    SecTrustResultType result;
+
+    OSStatus errorCode = SecTrustEvaluate(serverTrust, &result);
+    isValid = errorCode != 0 && (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed);
+    return isValid;
+}
+
+- (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust forDomain:(NSString *)domain {
+    NSArray *policies = @[(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)domain)];
+
+    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
+
+    CFIndex certificateCount = SecTrustGetCertificateCount(serverTrust);
+    if (certificateCount == 0) {
+        return NO;
+    }
+
+    NSData *serverRootCertificate = (__bridge_transfer NSData *)SecCertificateCopyData(SecTrustGetCertificateAtIndex(serverTrust, certificateCount-1));
+
+    NSMutableArray *pinnedCertificates = [NSMutableArray array];
+    for (NSData *certificateData in self.pinnedCertificates) {
+        [pinnedCertificates addObject:(__bridge_transfer id)SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData)];
+    }
+    SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)pinnedCertificates);
+
+    if (![[self class] serverTrustIsValid:serverTrust]) {
+        return NO;
+    }
+
+    return [self.pinnedCertificates containsObject:serverRootCertificate];
+}
+
+
+- (void)URLSession:(__unused NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler{
+    if ([[[challenge protectionSpace] authenticationMethod] isEqualToString: NSURLAuthenticationMethodServerTrust]) {
+
+        SecTrustRef serverTrust = [[challenge protectionSpace] serverTrust];
+
+        BOOL ok = [self evaluateServerTrust:serverTrust forDomain:challenge.protectionSpace.host];
+        if (ok) {
+            NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
+            completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+        } else {
+            completionHandler(NSURLSessionAuthChallengeRejectProtectionSpace, nil);
+        }
+    }
+}
+
+- (BOOL)isEqualToHTTP:(BTHTTP *)http {
+    return (self.baseURL == http.baseURL) || [self.baseURL isEqual:http.baseURL];
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+
+    if ([object isKindOfClass:[BTHTTP class]]) {
+        return [self isEqualToHTTP:object];
+    }
+
+    return NO;
+}
+
+@end

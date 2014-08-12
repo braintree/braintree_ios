@@ -8,6 +8,7 @@
 #import "BTHTTP.h"
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
+#import "BTPaymentApp.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -53,6 +54,29 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 }
 
 
+#pragma mark - NSCoding methods
+
+- (void)encodeWithCoder:(NSCoder *)coder{
+    [coder encodeObject:self.clientToken forKey:@"clientToken"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder{
+    self = [super init];
+    if (self){
+        self.clientToken = [decoder decodeObjectForKey:@"clientToken"];
+
+        self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
+        [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+
+        if (self.clientToken.analyticsEnabled) {
+            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.analyticsURL];
+        }
+    }
+    return self;
+}
+
+
+
 #pragma mark - API Methods
 
 - (void)fetchPaymentMethodsWithSuccess:(BTClientPaymentMethodListSuccessBlock)successBlock
@@ -77,6 +101,51 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                 }
 
                 successBlock(paymentMethods);
+            }
+        } else {
+            if (failureBlock) {
+                failureBlock(error);
+            }
+        }
+    }];
+}
+
+- (void)fetchPaymentOptionsForSchemes:(NSArray *)schemes
+                              success:(BTClientPaymentOptionListSuccessBlock)successBlock
+                              failure:(BTClientFailureBlock) failureBlock {
+    NSDictionary *parameters = @{
+                                 @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                 @"payment_app_schemes": schemes,
+                                 };
+
+    [self.clientApiHttp GET:@"v1/payment_options" parameters:parameters completion:^(BTHTTPResponse *response, NSError *error) {
+        if (response.isSuccess) {
+            if (successBlock) {
+                NSArray *responsePaymentMethods = response.object[@"paymentMethods"];
+
+                NSMutableArray *paymentMethods = [NSMutableArray array];
+                for (NSDictionary *paymentMethodDictionary in responsePaymentMethods) {
+                    BTPaymentMethod *paymentMethod = [[self class] paymentMethodFromAPIResponseDictionary:paymentMethodDictionary];
+                    if (paymentMethod == nil) {
+                        NSLog(@"Unable to create payment method from %@", paymentMethodDictionary);
+                    } else {
+                        [paymentMethods addObject:paymentMethod];
+                    }
+                }
+
+                NSArray *responsePaymentApps = response.object[@"paymentApps"];
+
+                NSMutableArray *paymentApps = [NSMutableArray array];
+                for (NSDictionary *paymentAppDictionary in responsePaymentApps) {
+                    BTPaymentApp *paymentApp = [[self class] paymentAppFromAPIResponseDictionary:paymentAppDictionary];
+                    if (paymentApp == nil) {
+                        NSLog(@"Unable to create payment app from %@", paymentAppDictionary);
+                    } else {
+                        [paymentApps addObject:paymentApp];
+                    }
+                }
+
+                successBlock(paymentMethods, paymentApps);
             }
         } else {
             if (failureBlock) {
@@ -202,6 +271,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }
 }
 
+- (void)postAnalyticsEvent:(NSString *)eventKind {
+    [self postAnalyticsEvent:eventKind success:nil failure:nil];
+}
+
 #pragma mark - Response Parsing
 
 + (BTPaymentMethod *)paymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
@@ -212,6 +285,16 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     } else {
         return nil;
     }
+}
+
++ (BTPaymentApp *)paymentAppFromAPIResponseDictionary:(NSDictionary *)response {
+    BTPaymentApp *app = [[BTPaymentApp alloc] init];
+
+    app.iconURL = ([response[@"icon"] length] > 0) ? [NSURL URLWithString:response[@"icon"]] : nil;
+    app.label   = response[@"label"];
+    app.scheme  = response[@"scheme"];
+
+    return app;
 }
 
 + (BTPayPalPaymentMethod *)payPalPaymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
@@ -262,6 +345,22 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     return @"unknown";
 #endif
 #endif
+}
+
+- (BOOL)isEqualToClient:(BTClient *)client {
+    return (self.clientToken == client.clientToken) || [self.clientToken isEqual:client.clientToken];
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+
+    if ([object isKindOfClass:[BTClient class]]) {
+        return [self isEqualToClient:object];
+    }
+
+    return NO;
 }
 
 @end

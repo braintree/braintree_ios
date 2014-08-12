@@ -5,10 +5,15 @@
 #import "BTPayPalHorizontalSignatureWhiteView.h"
 #import "BTUI.h"
 #import "BTLogger.h"
+#import "BTPayPalAppSwitchHandler.h"
 
-@interface BTPayPalButton () <BTPayPalViewControllerDelegate, BTPayPalButtonViewControllerPresenterDelegate>
+#import "BTPayPalAdapter.h"
+
+@interface BTPayPalButton () <BTPayPalButtonViewControllerPresenterDelegate, BTPayPalAdapterDelegate>
 @property (nonatomic, strong) BTPayPalHorizontalSignatureWhiteView *payPalHorizontalSignatureView;
 @property (nonatomic, strong) BTPayPalViewController *braintreePayPalViewController;
+
+@property (nonatomic, strong) BTPayPalAdapter *adapter;
 @end
 
 @implementation BTPayPalButton
@@ -37,6 +42,12 @@
     return self;
 }
 
+- (void)setClient:(BTClient *)client {
+    _client = client;
+    self.adapter = [[BTPayPalAdapter alloc] initWithClient:client];
+    self.adapter.delegate = self;
+}
+
 - (void)setupViews {
     self.accessibilityLabel = @"PayPal";
     self.userInteractionEnabled = YES;
@@ -61,23 +72,14 @@
 }
 
 - (void)didReceiveTouch {
-    if (self.client == nil) {
-        [[BTLogger sharedLogger] log:@"BTPayPalButton tapped without a client. You must assign a BTClient to the the BTPayPalButton before it requests presents presentation of the PayPal view controller."];
-        return;
-    }
-
-    // Only allow presentation of one braintreePayPalViewController at a time.
-    if (self.braintreePayPalViewController == nil) {
-        self.userInteractionEnabled = NO;
-        self.braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
-        self.braintreePayPalViewController.delegate = self;
-        [self requestPresentationOfViewController:self.braintreePayPalViewController];
-    }
+    self.userInteractionEnabled = NO;
+    [self.adapter initiatePayPalAuth];
 }
 
 - (id<BTPayPalButtonViewControllerPresenterDelegate>)presentationDelegate {
     return _presentationDelegate ?: self;
 }
+
 
 #pragma mark State Change Messages
 
@@ -95,6 +97,12 @@
 - (void)informDelegateWillCreatePayPalPaymentMethod {
     if ([self.delegate respondsToSelector:@selector(payPalButtonWillCreatePayPalPaymentMethod:)]) {
         [self.delegate payPalButtonWillCreatePayPalPaymentMethod:self];
+    }
+}
+
+- (void)informDelegateDidCancel {
+    if ([self.delegate respondsToSelector:@selector(payPalButtonDidCancel)]) {
+        [self.delegate payPalButtonDidCancel];
     }
 }
 
@@ -118,34 +126,6 @@
     [UIView animateWithDuration:0.08f animations:^{
         self.backgroundColor = highlighted ? [[BTUI braintreeTheme]  payPalButtonActiveBlue] : [[BTUI braintreeTheme]  payPalButtonBlue];
     }];
-}
-
-
-#pragma mark - BTPayPalViewControllerDelegate implementation
-
-- (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController {
-    [self requestDismissalOfViewController:viewController];
-    [self informDelegateWillCreatePayPalPaymentMethod];
-}
-
-- (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
-    self.userInteractionEnabled = YES;
-    self.braintreePayPalViewController = nil;
-    [self informDelegateDidCreatePayPalPaymentMethod:payPalPaymentMethod];
-}
-
-- (void)payPalViewController:(BTPayPalViewController *)viewController didFailWithError:(NSError *)error {
-    self.userInteractionEnabled = YES;
-    NSLog(@"PayPal view controller failed with error: %@", error);
-    self.braintreePayPalViewController = nil;
-    [self requestDismissalOfViewController:viewController];
-    [self informDelegateDidFailWithError:error];
-}
-
-- (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
-    self.userInteractionEnabled = YES;
-    self.braintreePayPalViewController = nil;
-    [self requestDismissalOfViewController:viewController];
 }
 
 #pragma mark - BTPayPalButtonViewControllerPresenterDelegate default implementation
@@ -228,6 +208,39 @@
                                              metrics:metrics
                                                views:views]];
     return constraints;
+}
+
+#pragma mark PayPal Adapter Delegate Methods
+
+- (void)payPalAdapterWillCreatePayPalPaymentMethod:(__unused BTPayPalAdapter *)payPalAdapter {
+    [self informDelegateWillCreatePayPalPaymentMethod];
+}
+
+- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
+    self.userInteractionEnabled = YES;
+
+    [self informDelegateDidCreatePayPalPaymentMethod:paymentMethod];
+}
+
+- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter didFailWithError:(NSError *)error {
+    self.userInteractionEnabled = YES;
+
+    [self informDelegateDidFailWithError:error];
+}
+
+- (void)payPalAdapterDidCancel:(__unused BTPayPalAdapter *)payPalAdapter {
+    self.userInteractionEnabled = YES;
+
+    [self informDelegateDidCancel];
+}
+
+- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter requestsPresentationOfViewController:(UIViewController *)viewController {
+
+    [self requestPresentationOfViewController:viewController];
+}
+
+- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter requestsDismissalOfViewController:(UIViewController *)viewController {
+    [self requestDismissalOfViewController:viewController];
 }
 
 @end

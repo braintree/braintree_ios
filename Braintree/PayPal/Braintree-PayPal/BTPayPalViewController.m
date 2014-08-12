@@ -66,7 +66,7 @@
     NSString *authCode = futurePaymentAuthorization[@"response"][@"code"];
     if (authCode == nil) {
         if ([self.delegate respondsToSelector:@selector(payPalViewController:didFailWithError:)]) {
-            NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTUnknownError userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow failed to generate an auth code" }];
+            NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalUnknownError userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow failed to generate an auth code" }];
             [self.delegate payPalViewController:self didFailWithError:error];
         }
     } else {

@@ -6,7 +6,7 @@
 #import "BTClient_Internal.h"
 #import "BTClient+Offline.h"
 
-NSString *BTClientPayPalMobileEnvironmentName = @"Braintree";
+NSString *const BTClientPayPalMobileEnvironmentName = @"Braintree";
 NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be initialized. Perhaps client token did not contain a valid PayPal configuration.";
 
 @implementation BTClient (BTPayPal)
@@ -30,13 +30,12 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     } else if ([self.clientToken.btPayPal_environment isEqualToString: BTClientTokenPayPalEnvironmentLive]) {
         [PayPalMobile initializeWithClientIdsForEnvironments:@{PayPalEnvironmentProduction: self.clientToken.btPayPal_clientId}];
         [PayPalMobile preconnectWithEnvironment:PayPalEnvironmentProduction];
-        
     } else if ([self.clientToken.btPayPal_environment isEqualToString: BTClientTokenPayPalEnvironmentCustom]) {
         if (self.clientToken.btPayPal_directBaseURL == nil || self.clientToken.btPayPal_clientId == nil) {
             if (error) {
                 *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain
                                              code:BTMerchantIntegrationErrorPayPalConfiguration
-                                         userInfo:@{ NSLocalizedDescriptionKey: BTClientPayPalConfigurationError}];
+                                         userInfo:@{ NSLocalizedDescriptionKey: BTClientPayPalConfigurationError }];
                 return NO;
             }
         } else {
@@ -45,8 +44,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
             [PayPalMobile initializeWithClientIdsForEnvironments:@{BTClientPayPalMobileEnvironmentName: self.clientToken.btPayPal_clientId}];
             [PayPalMobile preconnectWithEnvironment:BTClientPayPalMobileEnvironmentName];
         }
-        
-    } else{
+    } else {
         if (error){
             *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain
                                          code:BTMerchantIntegrationErrorPayPalConfiguration
@@ -73,6 +71,14 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     }
 
     return [PayPalMobile applicationCorrelationIDForEnvironment:self.clientToken.btPayPal_environment];
+}
+
+- (PayPalConfiguration *)btPayPal_configuration{
+    return self.clientToken.btPayPal_configuration;
+}
+
+- (NSString *)btPayPal_environment{
+    return [self.clientToken.btPayPal_environment isEqualToString:BTClientTokenPayPalEnvironmentLive] ? PayPalEnvironmentProduction : BTClientPayPalMobileEnvironmentName;
 }
 
 @end

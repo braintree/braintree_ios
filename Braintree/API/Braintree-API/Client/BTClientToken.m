@@ -3,6 +3,7 @@
 NSString *const BTClientTokenKeyAuthorizationFingerprint = @"authorizationFingerprint";
 NSString *const BTClientTokenKeyClientApiURL = @"clientApiUrl";
 NSString *const BTClientTokenKeyChallenges = @"challenges";
+NSString *const BTClientTokenKeyURLSchemes = @"paymentAppSchemes";
 NSString *const BTClientTokenKeyAnalytics = @"analytics";
 NSString *const BTClientTokenKeyURL = @"url";
 
@@ -66,12 +67,37 @@ NSString *const BTClientTokenKeyURL = @"url";
     return [NSURL URLWithString:self.claims[BTClientTokenKeyAnalytics][BTClientTokenKeyURL]];
 }
 
+- (NSSet *)paymentAppSchemes{
+    return [NSSet setWithArray:self.claims[BTClientTokenKeyURLSchemes]];
+}
+
 #pragma mark JSON Parsing
 
 - (NSDictionary *)parseJSONString:(NSString *)rawJSONString error:(NSError * __autoreleasing *)error {
     NSData *rawJSONData = [rawJSONString dataUsingEncoding:NSUTF8StringEncoding];
 
     return [NSJSONSerialization JSONObjectWithData:rawJSONData options:0 error:error];
+}
+
+
+#pragma mark NSCoding 
+
+- (void)encodeWithCoder:(NSCoder *)coder{
+    [coder encodeObject:self.authorizationFingerprint forKey:@"authorizationFingerprint"];
+    [coder encodeObject:self.clientApiURL forKey:@"clientApiURL"];
+    [coder encodeObject:self.claims forKey:@"claims"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder{
+    self = [super init];
+    if (!self){
+        return  nil;
+    }
+    self.authorizationFingerprint = [decoder decodeObjectForKey:@"authorizationFingerprint"];
+    self.clientApiURL = [decoder decodeObjectForKey:@"clientApiURL"];
+    self.claims = [decoder decodeObjectForKey:@"claims"];
+
+    return self;
 }
 
 #pragma mark Client Token Parsing
@@ -165,6 +191,22 @@ NSString *const BTClientTokenKeyURL = @"url";
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<BTClientToken: authorizationFingerprint:%@ clientApiURL:%@, analyticsURL:%@>", self.authorizationFingerprint, self.clientApiURL, self.analyticsURL];
+}
+
+- (BOOL)isEqualToClientToken:(BTClientToken *)clientToken {
+    return (self.claims == clientToken.claims) || [self.claims isEqual:clientToken.claims];
+}
+
+- (BOOL)isEqual:(id)object {
+    if (self == object) {
+        return YES;
+    }
+
+    if ([object isKindOfClass:[BTClientToken class]]) {
+        return [self isEqualToClientToken:object];
+    }
+
+    return NO;
 }
 
 @end

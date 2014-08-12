@@ -1,3 +1,5 @@
+workspace 'Braintree.xcworkspace'
+
 def pods_for_specs
   pod 'Specta', '~> 0.2.1'
   pod 'Expecta', '~> 0.3.0'
@@ -12,6 +14,7 @@ target 'Braintree-Demo' do
 
   pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.2'
+  pod 'NSURL+QueryDictionary', '~> 1.0'
 end
 
 target 'Braintree-Specs' do

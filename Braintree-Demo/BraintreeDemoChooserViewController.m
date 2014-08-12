@@ -75,12 +75,13 @@
         demoViewController = [self configuredDropInViewController];
     } else if (selectedCell == self.customPayPalCell) {
         // Custom usage of PayPal Button
-        demoViewController = [[BraintreeDemoPayPalButtonDemoViewController alloc] initWithBraintree:self.braintree];
+        demoViewController = [[BraintreeDemoPayPalButtonDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
+            self.nonce = nonce;
+        }];
     } else if (selectedCell == self.tokenizationCell) {
         // Custom card Tokenization
-        demoViewController = [[BraintreeDemoTokenizationDemoViewController alloc] initWithBraintree:self.braintree completion:^(__unused BraintreeDemoTokenizationDemoViewController *viewController, NSString *nonce) {
+        demoViewController = [[BraintreeDemoTokenizationDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
             self.nonce = nonce;
-            [self.navigationController popViewControllerAnimated:YES];
         }];
     } else if (selectedCell == self.makeATransactionCell) {
         [[BraintreeDemoTransactionService sharedService]

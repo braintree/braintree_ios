@@ -570,4 +570,24 @@ describe(@"protocolClasses property", ^{
     });
 });
 
+
+describe(@"isEqual:", ^{
+    it(@"returns YES if BTHTTPs have the same baseURL", ^{
+        NSURL *baseURL = [NSURL URLWithString:@"an-url://hi"];
+        BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL];
+        BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL];
+
+        expect(http1).to.equal(http2);
+    });
+
+    it(@"returns NO if BTHTTPs do not have the same baseURL", ^{
+        NSURL *baseURL1 = [NSURL URLWithString:@"an-url://hi"];
+        NSURL *baseURL2 = [NSURL URLWithString:@"an-url://hi-again"];
+        BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL1];
+        BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL2];
+
+        expect(http1).notTo.equal(http2);
+    });
+});
+
 SpecEnd

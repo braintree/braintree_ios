@@ -7,6 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BraintreeDemoPayPalButtonDemoViewController">
             <connections>
                 <outlet property="activityIndicator" destination="J2f-X3-rQB" id="rFR-t4-m75"/>
+                <outlet property="customPayPalButton" destination="d9t-Db-q1y" id="grm-nm-fBo"/>
                 <outlet property="emailLabel" destination="3Z8-Pa-pWG" id="55X-YI-SCD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -28,9 +29,32 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="color" red="0.96027960530000001" green="0.54742703790000002" blue="0.09705604625" alpha="1" colorSpace="calibratedRGB"/>
                 </activityIndicatorView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d9t-Db-q1y">
+                    <rect key="frame" x="47" y="269" width="227" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Pay with PayPal (Custom Button)">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tappedCustomPayPalButton:" destination="-1" eventType="touchUpInside" id="7RA-Ym-sn2"/>
+                    </connections>
+                </button>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1VB-V2-fn8">
+                    <rect key="frame" x="47" y="94" width="227" height="29"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <segments>
+                        <segment title="BTPayPalButton"/>
+                        <segment title="Custom button"/>
+                    </segments>
+                    <connections>
+                        <action selector="toggledIntegrationMethod:" destination="-1" eventType="valueChanged" id="fbS-GJ-Lnt"/>
+                    </connections>
+                </segmentedControl>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="centerX" secondItem="d9t-Db-q1y" secondAttribute="centerX" id="3TT-6K-GZW"/>
+                <constraint firstAttribute="centerY" secondItem="d9t-Db-q1y" secondAttribute="centerY" id="Bfe-kv-acV"/>
                 <constraint firstItem="3Z8-Pa-pWG" firstAttribute="centerX" secondItem="J2f-X3-rQB" secondAttribute="centerX" id="Mtn-Sm-3En"/>
                 <constraint firstAttribute="bottom" secondItem="3Z8-Pa-pWG" secondAttribute="bottom" constant="131" id="OEd-cm-HvR"/>
                 <constraint firstItem="3Z8-Pa-pWG" firstAttribute="centerY" secondItem="J2f-X3-rQB" secondAttribute="centerY" id="abs-wa-f47"/>

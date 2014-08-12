@@ -20,6 +20,29 @@
 	<string>3.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>CFBundleURLName</key>
+			<string>com.braintreepayments.demo-app.v1</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.braintreepayments.demo-app.v1</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.braintreepayments.Braintree-Demo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.braintreepayments.Braintree-Demo.payments</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>3.1.0</string>
 	<key>LSRequiresIPhoneOS</key>

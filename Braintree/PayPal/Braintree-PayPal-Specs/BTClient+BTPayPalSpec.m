@@ -35,6 +35,16 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
         mutableClaims = [baseClaims mutableCopy];
     });
 
+    describe(@"in Live PayPal environment", ^{
+        describe(@"btPayPal_payPalEnvironment", ^{
+            it(@"returns PayPal mSDK notion of Live", ^{
+                mutableClaims[@"paypal"][@"environment"] = BTClientTokenPayPalEnvironmentLive;
+                BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(mutableClaims)];
+                expect([client btPayPal_environment]).to.equal(PayPalEnvironmentProduction);
+            });
+        });
+    });
+
     describe(@"with custom PayPal environment", ^{
         it(@"does not return an error with the valid set of claims", ^{
             NSString *clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
@@ -69,6 +79,14 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
             expect(error.userInfo).notTo.beNil;
         });
+
+        describe(@"btPayPal_payPalEnvironment", ^{
+            it(@"returns a pretty custom environment name", ^{
+                mutableClaims[@"paypal"][@"environment"] = BTClientTokenPayPalEnvironmentCustom;
+                BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(mutableClaims)];
+                expect([client btPayPal_environment]).to.equal(BTClientPayPalMobileEnvironmentName);
+            });
+        });
     });
 
     describe(@"when the environment is not production", ^{
@@ -88,6 +106,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
                 expect(error).to.beNil();
             });
         });
+
     });
 
 

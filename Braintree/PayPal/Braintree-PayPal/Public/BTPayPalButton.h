@@ -54,6 +54,8 @@
 /// @param button The requesting `BTPayPalButton`
 - (void)payPalButtonWillCreatePayPalPaymentMethod:(BTPayPalButton *)button;
 
+- (void)payPalButtonDidCancel;
+
 @end
 
 /// Delegate protocol for receiving request to present a view controller when the user taps the `BTPayPalButton` instance.
