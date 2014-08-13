@@ -54,7 +54,7 @@
 /// @param button The requesting `BTPayPalButton`
 - (void)payPalButtonWillCreatePayPalPaymentMethod:(BTPayPalButton *)button;
 
-- (void)payPalButtonDidCancel;
+- (void)payPalButtonDidCancel:(BTPayPalButton *)button;
 
 @end
 
