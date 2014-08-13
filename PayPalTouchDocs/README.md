@@ -38,7 +38,7 @@ Accepting Payments with PayPal requires you to opt into the "Accept PayPal" opti
 
 You can add a PayPal button in two ways:
 
-* [Drop-In UI](https://developers.braintreepayments.com/ios+ruby/sdk/client/drop-in). If you completed Step 1 using the Drop-In payment UI, the PayPal button should be included as a part of the Drop-In.
+* [Drop-In UI](https://developers.braintreepayments.com/ios+ruby/sdk/client/drop-in). If you completed Step 1 using the Drop-In payment UI, the PayPal button should be included as a part of the Drop-In. Note, there is currently a Known Issue (#known-issues) whereby PayPal Touch app switch from the Drop-In UI is not yet fully supported.
 * [PayPal Button](https://developers.braintreepayments.com/ios+ruby/sdk/client/paypal). You can also add the PayPal button by itself.
 * [Your Own Custom UI](custom-paypal-touch.md) using [`BTPayPalAdapter`](../Braintree/PayPal/Braintree-PayPal/BTPayPalAdapter.h).
 
