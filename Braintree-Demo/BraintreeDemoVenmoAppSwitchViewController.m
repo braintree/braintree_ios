@@ -1,5 +1,7 @@
 #import "BraintreeDemoVenmoAppSwitchViewController.h"
 
+#import "BTVenmoAppSwitchReturnURL.h"
+
 #import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
 
 @interface BraintreeDemoVenmoAppSwitchViewController ()
@@ -35,15 +37,8 @@
 
 - (IBAction)tappedToVenmoAppSwitch
 {
-    NSDictionary *appSwitchParameters = @{
-                                          @"x-success": @"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/venmo/success",
-                                          @"x-error": @"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/venmo/error",
-                                          @"x-cancel": @"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/venmo/cancel",
-                                          @"x-source": @"Braintree Demo",
-                                          @"braintree_merchant_id": self.merchantID
-                                          };
+    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequest appSwitchURLForMerchantID:self.merchantID];
 
-    NSURL *venmoAppSwitchURL = [[NSURL URLWithString:@"com.venmo.touch.v1://x-callback-url/vzero/auth"] uq_URLByAppendingQueryDictionary:appSwitchParameters];
     [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
 }
 

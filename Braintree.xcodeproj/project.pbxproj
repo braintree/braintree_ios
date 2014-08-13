@@ -84,6 +84,9 @@
 		162175A7192D9505008DC35D /* BTClientIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1621759F192D9505008DC35D /* BTClientIntegrationSpec.m */; };
 		162175A8192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 162175A0192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m */; };
 		162175AA192D9505008DC35D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 162175A4192D9505008DC35D /* InfoPlist.strings */; };
+		162D8DA4199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 162D8DA1199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.xib */; };
+		162D8DA5199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 162D8DA2199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.m */; };
+		162D8DAB199B2A3A0040B1A4 /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 162D8DA8199B281D0040B1A4 /* BTVenmoAppSwitchURLSpec.m */; };
 		162D8DAF199B2D070040B1A4 /* BTURLUtilsSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 162D8DAE199B2D070040B1A4 /* BTURLUtilsSpecs.m */; };
 		16968115192D98EA00120846 /* BTUICardTypeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810C192D98EA00120846 /* BTUICardTypeSpec.m */; };
 		16968116192D98EA00120846 /* BTUISpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810D192D98EA00120846 /* BTUISpec.m */; };
@@ -153,8 +156,6 @@
 		A7AEF520196CD05C00360408 /* BraintreePublicInterfaceSanityCheckSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */; };
 		A7FC1CC61992B38A00636548 /* BTClientStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */; };
 		B0625DEDD37946988C5379F6 /* libPods-Braintree-API-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */; };
-		B6C840F7198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C840F5198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m */; };
-		B6C840F8198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B6C840F6198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib */; };
 		B81AA72C71C34DF0A3FA4779 /* libPods-Braintree-PayPal-Acceptance-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */; };
 		D574F60B94CB4F2AA8395FE1 /* libPods-Braintree-Payments-UI-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */; };
 		DE9E3D60A4E542CD8A6F80F2 /* libPods-Braintree-PayPal-Integration-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEE50EAA429F4DA691822A24 /* libPods-Braintree-PayPal-Integration-Specs.a */; };
@@ -399,6 +400,16 @@
 		162175A3192D9505008DC35D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		162998CA194FAFC400534798 /* BTUIFloatLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIFloatLabel.h; sourceTree = "<group>"; };
 		162998CB194FAFC400534798 /* BTUIFloatLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIFloatLabel.m; sourceTree = "<group>"; };
+		162D8D9D199AEF710040B1A4 /* BTAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchHandler.m; sourceTree = "<group>"; };
+		162D8D9E199AEF710040B1A4 /* BTAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchHandler.h; sourceTree = "<group>"; };
+		162D8D9F199AEF940040B1A4 /* BTVenmoAppSwitchReturnURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchReturnURL.h; sourceTree = "<group>"; };
+		162D8DA0199AEF940040B1A4 /* BTVenmoAppSwitchReturnURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchReturnURL.m; sourceTree = "<group>"; };
+		162D8DA1199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BraintreeDemoVenmoAppSwitchViewController.xib; sourceTree = "<group>"; };
+		162D8DA2199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoVenmoAppSwitchViewController.m; sourceTree = "<group>"; };
+		162D8DA3199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoVenmoAppSwitchViewController.h; sourceTree = "<group>"; };
+		162D8DA6199B27640040B1A4 /* BTVenmoAppSwitchURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchURL.h; sourceTree = "<group>"; };
+		162D8DA7199B27640040B1A4 /* BTVenmoAppSwitchURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchURL.m; sourceTree = "<group>"; };
+		162D8DA8199B281D0040B1A4 /* BTVenmoAppSwitchURLSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchURLSpec.m; sourceTree = "<group>"; };
 		162D8DAC199B2B6C0040B1A4 /* BTURLUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTURLUtils.h; sourceTree = "<group>"; };
 		162D8DAD199B2B6C0040B1A4 /* BTURLUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTURLUtils.m; sourceTree = "<group>"; };
 		162D8DAE199B2D070040B1A4 /* BTURLUtilsSpecs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTURLUtilsSpecs.m; sourceTree = "<group>"; };
@@ -528,11 +539,6 @@
 		A75DA36C1921394200D997A2 /* Braintree-Specs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Braintree-Specs-Info.plist"; sourceTree = "<group>"; };
 		A75DA3781921399C00D997A2 /* BraintreeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeSpec.m; sourceTree = "<group>"; };
 		A75DA37A19213AB000D997A2 /* Braintree-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Specs-Prefix.pch"; sourceTree = "<group>"; };
-		A76EC231197DE95A002BBCC0 /* WLTAppSwitchAuthRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLTAppSwitchAuthRequestManager.h; sourceTree = "<group>"; };
-		A76EC232197DE95A002BBCC0 /* WLTAppSwitchAuthRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLTAppSwitchAuthRequestManager.m; sourceTree = "<group>"; };
-		A76EC236197EDED3002BBCC0 /* WLTDoNothingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLTDoNothingViewController.h; sourceTree = "<group>"; };
-		A76EC237197EDED3002BBCC0 /* WLTDoNothingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLTDoNothingViewController.m; sourceTree = "<group>"; };
-		A76EC23F19803364002BBCC0 /* WLTAppSwitchAuthRequestManagerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLTAppSwitchAuthRequestManagerSpec.m; sourceTree = "<group>"; };
 		A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSSLPinningSpec.m; sourceTree = "<group>"; };
 		A79ACA33193FB27E0095D7F1 /* BTHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTP.h; sourceTree = "<group>"; };
 		A79ACA34193FB27E0095D7F1 /* BTHTTP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTHTTP.m; sourceTree = "<group>"; };
@@ -542,25 +548,8 @@
 		A79ACA49193FB3340095D7F1 /* good_root_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = good_root_cert.der; path = SSL/good_root_cert.der; sourceTree = "<group>"; };
 		A79ACA4B193FBEDE0095D7F1 /* BTAPIPinnedCertificates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIPinnedCertificates.h; sourceTree = "<group>"; };
 		A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormatterSpec.m; sourceTree = "<group>"; };
-		A7A2DF72197DC21900A9D869 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A7A2DF74197DC21900A9D869 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A7A2DF75197DC21900A9D869 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A7A2DF76197DC21900A9D869 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A7A2DF77197DC21900A9D869 /* TestWallet-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TestWallet-Info.plist"; sourceTree = "<group>"; };
-		A7A2DF78197DC21900A9D869 /* TestWallet-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestWallet-Prefix.pch"; sourceTree = "<group>"; };
-		A7A2DF79197DC21900A9D869 /* WLTAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLTAppDelegate.h; sourceTree = "<group>"; };
-		A7A2DF7A197DC21900A9D869 /* WLTAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLTAppDelegate.m; sourceTree = "<group>"; };
-		A7A2DF7B197DC21900A9D869 /* WLTManualAuthTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLTManualAuthTableViewController.h; sourceTree = "<group>"; };
-		A7A2DF7C197DC21900A9D869 /* WLTManualAuthTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLTManualAuthTableViewController.m; sourceTree = "<group>"; };
-		A7A2DF86197DC22100A9D869 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A7A2DF87197DC22100A9D869 /* TestWalletTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TestWalletTests-Info.plist"; sourceTree = "<group>"; };
-		A7A2DF8C197DCB4A00A9D869 /* WLTAppSwitchAuthRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WLTAppSwitchAuthRequest.h; sourceTree = "<group>"; };
-		A7A2DF8D197DCB4A00A9D869 /* WLTAppSwitchAuthRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLTAppSwitchAuthRequest.m; sourceTree = "<group>"; };
-		A7A2DF8F197DCEF300A9D869 /* WLTAppSwitchAuthRequestSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WLTAppSwitchAuthRequestSpec.m; sourceTree = "<group>"; };
-		A7A2DF91197DCF2500A9D869 /* TestWalletTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestWalletTests-Prefix.pch"; sourceTree = "<group>"; };
 		A7A88B81198072810015D018 /* BraintreeAppSwitchAuthResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeAppSwitchAuthResponse.h; sourceTree = "<group>"; };
 		A7A88B82198072810015D018 /* BraintreeAppSwitchAuthResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeAppSwitchAuthResponse.m; sourceTree = "<group>"; };
-		A7A88B841981811D0015D018 /* BTHTTP_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTP_Internal.h; sourceTree = "<group>"; };
 		A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler_Internal.h; sourceTree = "<group>"; };
 		A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreePublicInterfaceSanityCheckSpec.m; sourceTree = "<group>"; };
 		A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler.h; sourceTree = "<group>"; };
@@ -570,11 +559,6 @@
 		A7FC1CC31992B37900636548 /* BTClientStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTClientStore.h; path = "Braintree/API/Braintree-API/Client/BTClientStore.h"; sourceTree = SOURCE_ROOT; };
 		A7FC1CC41992B37900636548 /* BTClientStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTClientStore.m; path = "Braintree/API/Braintree-API/Client/BTClientStore.m"; sourceTree = SOURCE_ROOT; };
 		A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTClientStoreSpec.m; path = "Braintree/API/Braintree-API-Specs/BTClientStoreSpec.m"; sourceTree = SOURCE_ROOT; };
-		A7FC1CF1199305A500636548 /* BTAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchHandler.h; sourceTree = "<group>"; };
-		A7FC1CF2199305A500636548 /* BTAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchHandler.m; sourceTree = "<group>"; };
-		B6C840F4198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BraintreeDemoVenmoAppSwitchViewController.h; path = "../../../../Users/ayakanonaka/braintree-ios/Braintree-Demo/BraintreeDemoVenmoAppSwitchViewController.h"; sourceTree = "<group>"; };
-		B6C840F5198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoVenmoAppSwitchViewController.m; path = "../../../../Users/ayakanonaka/braintree-ios/Braintree-Demo/BraintreeDemoVenmoAppSwitchViewController.m"; sourceTree = "<group>"; };
-		B6C840F6198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BraintreeDemoVenmoAppSwitchViewController.xib; path = "../../../../Users/ayakanonaka/braintree-ios/Braintree-Demo/BraintreeDemoVenmoAppSwitchViewController.xib"; sourceTree = "<group>"; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Specs.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -947,7 +931,6 @@
 			children = (
 				A79ACA33193FB27E0095D7F1 /* BTHTTP.h */,
 				A79ACA34193FB27E0095D7F1 /* BTHTTP.m */,
-				A7A88B841981811D0015D018 /* BTHTTP_Internal.h */,
 				A79ACA47193FB27E0095D7F1 /* BTHTTPResponse.h */,
 				A79ACA48193FB27E0095D7F1 /* BTHTTPResponse.m */,
 				A79ACA35193FB27E0095D7F1 /* Certificates */,
@@ -1579,13 +1562,16 @@
 		A75DA34A1921392E00D997A2 /* Braintree */ = {
 			isa = PBXGroup;
 			children = (
+				162D8D9D199AEF710040B1A4 /* BTAppSwitchHandler.m */,
+				162D8D9E199AEF710040B1A4 /* BTAppSwitchHandler.h */,
+				162D8D9F199AEF940040B1A4 /* BTVenmoAppSwitchReturnURL.h */,
+				162D8DA6199B27640040B1A4 /* BTVenmoAppSwitchURL.h */,
+				162D8DA7199B27640040B1A4 /* BTVenmoAppSwitchURL.m */,
+				162D8DA0199AEF940040B1A4 /* BTVenmoAppSwitchReturnURL.m */,
 				A75DA34B1921392E00D997A2 /* Braintree.h */,
 				A75DA34C1921392E00D997A2 /* Braintree.m */,
 				A7021B071921631C0090CE8F /* Braintree_Internal.h */,
-				A7FC1CF1199305A500636548 /* BTAppSwitchHandler.h */,
-				A7FC1CF2199305A500636548 /* BTAppSwitchHandler.m */,
 				1621741C192D8560008DC35D /* API */,
-				A7B8EBAC1979D66F009B6653 /* TestWallet */,
 				A72B380D196339C7009AD2F5 /* Data */,
 				1697BEFC192300130051F2AE /* Drop-In */,
 				1621741E192D857A008DC35D /* PayPal */,
@@ -1651,6 +1637,7 @@
 				A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */,
 				160D08A11926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m */,
 				A75DA36B1921394200D997A2 /* Supporting Files */,
+				162D8DA8199B281D0040B1A4 /* BTVenmoAppSwitchURLSpec.m */,
 			);
 			path = "Braintree-Specs";
 			sourceTree = "<group>";
@@ -1664,26 +1651,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A76EC234197DEA8E002BBCC0 /* App Switch Auth */ = {
-			isa = PBXGroup;
-			children = (
-				A7A2DF8C197DCB4A00A9D869 /* WLTAppSwitchAuthRequest.h */,
-				A7A2DF8D197DCB4A00A9D869 /* WLTAppSwitchAuthRequest.m */,
-				A76EC231197DE95A002BBCC0 /* WLTAppSwitchAuthRequestManager.h */,
-				A76EC232197DE95A002BBCC0 /* WLTAppSwitchAuthRequestManager.m */,
-			);
-			path = "App Switch Auth";
-			sourceTree = "<group>";
-		};
-		A76EC235197DF344002BBCC0 /* Manual Auth */ = {
-			isa = PBXGroup;
-			children = (
-				A7A2DF7B197DC21900A9D869 /* WLTManualAuthTableViewController.h */,
-				A7A2DF7C197DC21900A9D869 /* WLTManualAuthTableViewController.m */,
-			);
-			path = "Manual Auth";
-			sourceTree = "<group>";
-		};
 		A79ACA35193FB27E0095D7F1 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -1691,37 +1658,6 @@
 				A79ACA4B193FBEDE0095D7F1 /* BTAPIPinnedCertificates.h */,
 			);
 			path = Certificates;
-			sourceTree = "<group>";
-		};
-		A7A2DF70197DC21900A9D869 /* TestWallet */ = {
-			isa = PBXGroup;
-			children = (
-				A7A2DF71197DC21900A9D869 /* Main.storyboard */,
-				A7A2DF73197DC21900A9D869 /* InfoPlist.strings */,
-				A7A2DF75197DC21900A9D869 /* Images.xcassets */,
-				A7A2DF76197DC21900A9D869 /* main.m */,
-				A7A2DF77197DC21900A9D869 /* TestWallet-Info.plist */,
-				A7A2DF78197DC21900A9D869 /* TestWallet-Prefix.pch */,
-				A7A2DF79197DC21900A9D869 /* WLTAppDelegate.h */,
-				A7A2DF7A197DC21900A9D869 /* WLTAppDelegate.m */,
-				A76EC236197EDED3002BBCC0 /* WLTDoNothingViewController.h */,
-				A76EC237197EDED3002BBCC0 /* WLTDoNothingViewController.m */,
-				A76EC235197DF344002BBCC0 /* Manual Auth */,
-				A76EC234197DEA8E002BBCC0 /* App Switch Auth */,
-			);
-			path = TestWallet;
-			sourceTree = "<group>";
-		};
-		A7A2DF84197DC22100A9D869 /* TestWalletTests */ = {
-			isa = PBXGroup;
-			children = (
-				A7A2DF85197DC22100A9D869 /* InfoPlist.strings */,
-				A7A2DF87197DC22100A9D869 /* TestWalletTests-Info.plist */,
-				A7A2DF8F197DCEF300A9D869 /* WLTAppSwitchAuthRequestSpec.m */,
-				A7A2DF91197DCF2500A9D869 /* TestWalletTests-Prefix.pch */,
-				A76EC23F19803364002BBCC0 /* WLTAppSwitchAuthRequestManagerSpec.m */,
-			);
-			path = TestWalletTests;
 			sourceTree = "<group>";
 		};
 		A7A88B7E198072270015D018 /* App Switch Auth */ = {
@@ -1733,21 +1669,12 @@
 			name = "App Switch Auth";
 			sourceTree = "<group>";
 		};
-		A7B8EBAC1979D66F009B6653 /* TestWallet */ = {
-			isa = PBXGroup;
-			children = (
-				A7A2DF70197DC21900A9D869 /* TestWallet */,
-				A7A2DF84197DC22100A9D869 /* TestWalletTests */,
-			);
-			path = TestWallet;
-			sourceTree = "<group>";
-		};
 		B6C840F3198C5ABF00579BD8 /* Venmo App Switch Auth */ = {
 			isa = PBXGroup;
 			children = (
-				B6C840F4198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.h */,
-				B6C840F5198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m */,
-				B6C840F6198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib */,
+				162D8DA1199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.xib */,
+				162D8DA2199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.m */,
+				162D8DA3199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.h */,
 			);
 			name = "Venmo App Switch Auth";
 			sourceTree = "<group>";
@@ -2098,7 +2025,7 @@
 				16217535192D922F008DC35D /* Main_iPhone.storyboard in Resources */,
 				16217533192D922F008DC35D /* Images.xcassets in Resources */,
 				1621752E192D922F008DC35D /* BraintreeDemoBraintreeInitializationDemoViewController.xib in Resources */,
-				B6C840F8198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.xib in Resources */,
+				162D8DA4199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.xib in Resources */,
 				16217532192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2621,13 +2548,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7A88B83198072810015D018 /* BraintreeAppSwitchAuthResponse.m in Sources */,
+				162D8DA5199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.m in Sources */,
 				1621752D192D922F008DC35D /* BraintreeDemoBraintreeInitializationDemoViewController.m in Sources */,
 				1621752B192D922F008DC35D /* BraintreeDemoAppDelegate.m in Sources */,
 				16217531192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.m in Sources */,
 				1621752F192D922F008DC35D /* BraintreeDemoPayPalButtonDemoViewController.m in Sources */,
 				1621752A192D922F008DC35D /* BraintreeDemoTransactionService.m in Sources */,
 				16217538192D922F008DC35D /* main.m in Sources */,
-				B6C840F7198C5AEA00579BD8 /* BraintreeDemoVenmoAppSwitchViewController.m in Sources */,
 				1621752C192D922F008DC35D /* BraintreeDemoChooserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2727,6 +2654,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				162D8DAB199B2A3A0040B1A4 /* BTVenmoAppSwitchURLSpec.m in Sources */,
 				A7AEF520196CD05C00360408 /* BraintreePublicInterfaceSanityCheckSpec.m in Sources */,
 				161029FB192DB613002C1B2B /* BraintreeVersionSpec.m in Sources */,
 				A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */,
@@ -2903,30 +2831,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				A72B3816196339C7009AD2F5 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		A7A2DF71197DC21900A9D869 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A7A2DF72197DC21900A9D869 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		A7A2DF73197DC21900A9D869 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A7A2DF74197DC21900A9D869 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		A7A2DF85197DC22100A9D869 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A7A2DF86197DC22100A9D869 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

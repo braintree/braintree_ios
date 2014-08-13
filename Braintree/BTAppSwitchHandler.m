@@ -2,6 +2,7 @@
 
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTPayPalPaymentMethod.h"
+#import "BTVenmoAppSwitchReturnURL.h"
 
 @interface BTAppSwitchHandler () <BTPayPalAppSwitchHandlerDelegate>
 
@@ -44,7 +45,23 @@
 }
 
 - (BOOL)handleAppSwitchURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [[BTPayPalAppSwitchHandler sharedHandler] handleAppSwitchURL:url sourceApplication:sourceApplication];
+    if ([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:sourceApplication]) {
+        BTVenmoAppSwitchReturnURL *venmoReturnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
+
+        switch (venmoReturnURL.state) {
+            case BTVenmoAppSwitchReturnURLStateSucceeded: {
+                BTPaymentMethod *venmoPaymentMethod = venmoReturnURL.paymentMethod;
+                [self.delegate appSwitchHandler:self didCreatePaymentMethod:venmoPaymentMethod];
+                break;
+            }
+            default:
+                @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Not implemented" userInfo:nil];
+        }
+
+    } else {
+        return [[BTPayPalAppSwitchHandler sharedHandler] handleAppSwitchURL:url sourceApplication:sourceApplication];
+    }
+    return NO;
 }
 
 

@@ -5,6 +5,8 @@
 
 #import <Braintree/BTAppSwitchHandler.h>
 
+NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
+
 @implementation BraintreeDemoAppDelegate
 
 - (BOOL)application:(__unused UIApplication *)application didFinishLaunchingWithOptions:(__unused NSDictionary *)launchOptions {
@@ -15,14 +17,16 @@
     //Braintree Orange
     self.window.tintColor = [UIColor colorWithRed:255/255.0f green:136/255.0f blue:51/255.0f alpha:1.0f];
 
-    [[BTAppSwitchHandler sharedHandler] setAppSwitchCallbackURLScheme:@"com.braintreepayments.Braintree-Demo.payments"];
+    [[BTAppSwitchHandler sharedHandler] setAppSwitchCallbackURLScheme:paymentsURLScheme];
 
     return YES;
 }
 
 
 - (BOOL)application:(UIApplication *)__unused application openURL:(NSURL *)url  sourceApplication:(NSString *)sourceApplication annotation:(id)__unused annotation{
-    return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
+    if ([url.scheme isEqualToString:BraintreeDemoAppDelegatePaymentsURLScheme]) {
+        return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
+    }
 }
 
 @end
