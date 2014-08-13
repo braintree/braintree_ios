@@ -213,12 +213,12 @@
 #pragma mark PayPal Adapter Delegate Methods
 
 - (void)payPalAdapterWillCreatePayPalPaymentMethod:(__unused BTPayPalAdapter *)payPalAdapter {
+    self.userInteractionEnabled = NO;
     [self informDelegateWillCreatePayPalPaymentMethod];
 }
 
 - (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
     self.userInteractionEnabled = YES;
-
     [self informDelegateDidCreatePayPalPaymentMethod:paymentMethod];
 }
 
@@ -234,8 +234,11 @@
     [self informDelegateDidCancel];
 }
 
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter requestsPresentationOfViewController:(UIViewController *)viewController {
+- (void)payPalAdapterWillAppSwitch:(__unused BTPayPalAdapter *)payPalAdapter {
+    self.userInteractionEnabled = YES;
+}
 
+- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter requestsPresentationOfViewController:(UIViewController *)viewController {
     [self requestPresentationOfViewController:viewController];
 }
 

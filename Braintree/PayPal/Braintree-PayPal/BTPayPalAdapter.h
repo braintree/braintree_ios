@@ -35,7 +35,7 @@
 
 @optional
 
-- (void)payPalAdapterWillSwitchToAuthenticatorApp:(BTPayPalAdapter *)payPalAdapter;
+- (void)payPalAdapterWillAppSwitch:(BTPayPalAdapter *)payPalAdapter;
 
 #pragma mark view controller based authentication
 

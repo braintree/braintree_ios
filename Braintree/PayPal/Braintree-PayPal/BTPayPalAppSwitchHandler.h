@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 
-
 @class BTClient, BTPayPalPaymentMethod;
 @protocol BTPayPalAppSwitchHandlerDelegate;
 
@@ -33,8 +32,12 @@
 /// @see BTPayPalAppSwitchHandler
 @protocol BTPayPalAppSwitchHandlerDelegate <NSObject>
 
-
 @optional
+
+/// This message is sent immediately before app switch will be initiated.
+///
+/// @param appSwitchHandler
+- (void)payPalAppSwitchHandlerWillAppSwitch:(BTPayPalAppSwitchHandler *)appSwitchHandler;
 
 /// This message is sent when the user has authorized PayPal, and the payment method
 /// is about to be created.

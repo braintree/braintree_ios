@@ -1,4 +1,4 @@
-#import "BTPayPalAppSwitchHandler.h"
+#import "BTPayPalAppSwitchHandler_Internal.h"
 
 #import "BTClient+BTPayPal.h"
 #import "BTMutablePayPalPaymentMethod.h"
@@ -7,10 +7,6 @@
 
 #import "PayPalMobile.h"
 #import "PayPalTouch.h"
-
-@interface BTPayPalAppSwitchHandler ()
-
-@end
 
 @implementation BTPayPalAppSwitchHandler
 
@@ -92,12 +88,12 @@
 
 - (BOOL)initiatePayPalAuthWithClient:(BTClient *)client delegate:(id<BTPayPalAppSwitchHandlerDelegate>)delegate {
     if (![[self class] validateClient:client delegate:delegate appSwitchCallbackURLScheme:self.appSwitchCallbackURLScheme]) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
+        [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
         return NO;
     }
 
     if (![PayPalTouch canAppSwitchForUrlScheme:self.appSwitchCallbackURLScheme]) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.bad-callback-url-scheme"];
+        [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.bad-callback-url-scheme"];
         [[BTLogger sharedLogger] log:@"BTPayPalAppSwitchHandler appSwitchCallbackURLScheme not supported by PayPal."];
         return NO;
     }
@@ -108,6 +104,7 @@
     PayPalConfiguration *configuration = client.btPayPal_configuration;
     configuration.callbackURLScheme = self.appSwitchCallbackURLScheme;
 
+    [self informDelegateWillAppSwitch];
     BOOL payPalTouchDidAuthorize = [PayPalTouch authorizeFuturePayments:configuration];
     if (payPalTouchDidAuthorize) {
         [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.success"];
@@ -138,6 +135,12 @@
 
 
 #pragma mark Delegate Method Invocations
+
+- (void)informDelegateWillAppSwitch {
+  if ([self.delegate respondsToSelector:@selector(payPalAppSwitchHandlerWillAppSwitch:)]) {
+    [self.delegate payPalAppSwitchHandlerWillAppSwitch:self];
+  }
+}
 
 - (void)informDelegateWillCreatePayPalPaymentMethod {
     if ([self.delegate respondsToSelector:@selector(payPalAppSwitchHandlerWillCreatePayPalPaymentMethod:)]) {

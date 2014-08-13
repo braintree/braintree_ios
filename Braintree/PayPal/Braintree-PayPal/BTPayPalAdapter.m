@@ -48,6 +48,12 @@
     [self.delegate payPalAdapter:self requestsDismissalOfViewController:viewController];
 }
 
+- (void)informDelegateWillAppSwitch {
+    if ([self.delegate respondsToSelector:@selector(payPalAdapterWillAppSwitch:)]) {
+        [self.delegate payPalAdapterWillAppSwitch:self];
+    }
+}
+
 - (void)informDelegateWillCreatePayPalPaymentMethod {
     if ([self.delegate respondsToSelector:@selector(payPalAdapterWillCreatePayPalPaymentMethod:)]) {
         [self.delegate payPalAdapterWillCreatePayPalPaymentMethod:self];
@@ -93,6 +99,10 @@
 }
 
 #pragma mark BTPayPalAppSwitchHandler Delegate implementation
+
+- (void)payPalAppSwitchHandlerWillAppSwitch:(__unused BTPayPalAppSwitchHandler *)appSwitchHandler {
+    [self informDelegateWillAppSwitch];
+}
 
 - (void)payPalAppSwitchHandlerWillCreatePayPalPaymentMethod:(__unused BTPayPalAppSwitchHandler *)appSwitchHandler {
     [self.client postAnalyticsEvent:@"ios.paypal.adapter.appswitch.will-create-payment-method"];

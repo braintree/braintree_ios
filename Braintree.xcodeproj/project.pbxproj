@@ -129,6 +129,7 @@
 		1696821F192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16968213192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.xib */; };
 		169D5F8D19660C4100C2A50D /* BTAnalyticsMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 169D5F8C19660C4100C2A50D /* BTAnalyticsMetadataSpec.m */; };
 		2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */; };
+		2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */; };
 		2DCDDFCA194F9E1400F691CF /* BTHTTPSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCDDFC9194F9E1400F691CF /* BTHTTPSpec.m */; };
 		537C08EBC7044CA9B1796EA2 /* libPods-Braintree-Data-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDCE86975684EFC94DA10AB /* libPods-Braintree-Data-Demo.a */; };
 		66D0902C25AD47F2B9BB463C /* libPods-Braintree-API-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA18037F59BA4BC296136D1C /* libPods-Braintree-API-Demo.a */; };
@@ -236,7 +237,7 @@
 		16217420192D85EB008DC35D /* BTCardPaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardPaymentMethod.h; sourceTree = "<group>"; };
 		16217421192D85EB008DC35D /* BTClient+Offline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+Offline.h"; sourceTree = "<group>"; };
 		16217422192D85EB008DC35D /* BTClient+Testing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+Testing.h"; sourceTree = "<group>"; };
-		16217423192D85EB008DC35D /* BTClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTClient.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		16217423192D85EB008DC35D /* BTClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTClient.h; sourceTree = "<group>"; };
 		16217424192D85EB008DC35D /* BTClientToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTClientToken.h; sourceTree = "<group>"; };
 		16217425192D85EB008DC35D /* BTErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTErrors.h; sourceTree = "<group>"; };
 		16217426192D85EB008DC35D /* BTPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentMethod.h; sourceTree = "<group>"; };
@@ -472,6 +473,7 @@
 		2D085DDD1947BF1000293215 /* BTUIPayPalMonogramCardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalMonogramCardView.h; sourceTree = "<group>"; };
 		2D085DDE1947BF1000293215 /* BTUIPayPalMonogramCardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalMonogramCardView.m; sourceTree = "<group>"; };
 		2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUI_UIColor.m; sourceTree = "<group>"; };
+		2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalAppSwitchHandlerSpec.m; sourceTree = "<group>"; };
 		2DBDD71D192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInSelectPaymentMethodViewController.h; sourceTree = "<group>"; };
 		2DBDD71E192BEB1300D8AA56 /* BTDropInSelectPaymentMethodViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInSelectPaymentMethodViewController.m; sourceTree = "<group>"; };
 		2DBDD71F192BFFB800D8AA56 /* BTDropInUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInUtil.h; sourceTree = "<group>"; };
@@ -553,6 +555,7 @@
 		A7A88B81198072810015D018 /* BraintreeAppSwitchAuthResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeAppSwitchAuthResponse.h; sourceTree = "<group>"; };
 		A7A88B82198072810015D018 /* BraintreeAppSwitchAuthResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeAppSwitchAuthResponse.m; sourceTree = "<group>"; };
 		A7A88B841981811D0015D018 /* BTHTTP_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTP_Internal.h; sourceTree = "<group>"; };
+		A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler_Internal.h; sourceTree = "<group>"; };
 		A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreePublicInterfaceSanityCheckSpec.m; sourceTree = "<group>"; };
 		A7EF7FE01977389C00542E70 /* BTPaymentApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTPaymentApp.h; path = "Braintree/API/Braintree-API/Public/BTPaymentApp.h"; sourceTree = SOURCE_ROOT; };
 		A7EF7FE11977389C00542E70 /* BTPaymentApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTPaymentApp.m; path = "Braintree/API/Braintree-API/Public/BTPaymentApp.m"; sourceTree = SOURCE_ROOT; };
@@ -773,6 +776,7 @@
 			children = (
 				1607FE6E192D97CD0099D504 /* BTClient+BTPayPalSpec.m */,
 				1607FE6F192D97CD0099D504 /* BTClientToken+BTPayPalSpec.m */,
+				2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */,
 				1607FE70192D97CD0099D504 /* BTPayPalViewControllerSpec.m */,
 				1607FE75192D97CD0099D504 /* Supporting Files */,
 			);
@@ -1035,6 +1039,7 @@
 				A7FC1CC11992B24900636548 /* BTPayPalAdapter.h */,
 				A7FC1CC21992B24900636548 /* BTPayPalAdapter.m */,
 				A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */,
+				A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */,
 				A7FC1CC01992B24900636548 /* BTPayPalAppSwitchHandler.m */,
 				16217480192D8725008DC35D /* BTPayPalButton.m */,
 				16217481192D8725008DC35D /* BTPayPalViewController.m */,
@@ -2565,6 +2570,7 @@
 			files = (
 				1607FE78192D97CD0099D504 /* BTClientToken+BTPayPalSpec.m in Sources */,
 				1607FE77192D97CD0099D504 /* BTClient+BTPayPalSpec.m in Sources */,
+				2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */,
 				1607FE79192D97CD0099D504 /* BTPayPalViewControllerSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
