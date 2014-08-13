@@ -380,10 +380,12 @@
     }
 }
 
-- (void)payPalButton:(__unused BTPayPalButton *)button requestsDismissalOfViewController:(UIViewController *)viewController {
-    if (button != self.dropInContentView.payPalButton) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } else {
+- (void)payPalButton:(BTPayPalButton *)button requestsDismissalOfViewController:(UIViewController *)viewController {
+    // If the button is in our view hierarchy and we are its delegate,
+    // then it is our job to dismiss the given view controller as requested.
+    // This is the "normal" case. See payPalButtonWillCreatePayPalPaymentMethod:
+    // below for the other case: "returning"
+    if (button == self.dropInContentView.payPalButton) {
         [viewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
@@ -399,6 +401,14 @@
     // dismissal of the UI and release of encapsulating View Controller.
     // Reference count is decremented in subsequent delegate method calls. See below.
     self.retainedPayPalButton = button;
+
+    // If the button is *not* in our view hierarchy *yet* we are its delegate,
+    // then it is in a presented view controller, which we can now dismiss.
+    // This is the "returning" case. See payPalButton:requestsDismissalOfViewController:
+    // above for the "normal" case.
+    if (button != self.dropInContentView.payPalButton) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)payPalButton:( __unused BTPayPalButton *)button didCreatePayPalPaymentMethod:(__unused BTPaymentMethod *)paymentMethod {
@@ -406,7 +416,7 @@
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
 
-    // Allow retained PayPal button to release, which will only happen if it isn't "ours"
+    // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
     self.retainedPayPalButton = nil;
 }
 
@@ -414,9 +424,6 @@
     NSString *savePayPalAccountErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_TITLE);
 
     if (self.retainedPayPalButton != self.dropInContentView.payPalButton) {
-        // Allow retained PayPal button to release, which will only happen if it isn't "ours"
-        self.retainedPayPalButton = nil;
-
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
@@ -426,9 +433,6 @@
         self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_MESSAGE);
         [self.savePayPalAccountErrorAlert show];
     } else {
-        // Allow retained PayPal button to release, which will only happen if it isn't "ours"
-        self.retainedPayPalButton = nil;
-
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
@@ -441,6 +445,14 @@
         self.savePayPalAccountErrorAlert.title = savePayPalAccountErrorAlertTitle;
         [self.savePayPalAccountErrorAlert show];
     }
+
+    // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
+    self.retainedPayPalButton = nil;
+}
+
+- (void)payPalButtonDidCancel:(__unused BTPayPalButton *)button {
+    // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
+    self.retainedPayPalButton = nil;
 }
 
 #pragma mark Delegate Notifications

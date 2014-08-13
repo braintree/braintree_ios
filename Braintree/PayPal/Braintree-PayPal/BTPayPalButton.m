@@ -101,8 +101,8 @@
 }
 
 - (void)informDelegateDidCancel {
-    if ([self.delegate respondsToSelector:@selector(payPalButtonDidCancel)]) {
-        [self.delegate payPalButtonDidCancel];
+    if ([self.delegate respondsToSelector:@selector(payPalButtonDidCancel:)]) {
+        [self.delegate payPalButtonDidCancel:self];
     }
 }
 
