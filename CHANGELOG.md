@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 3.2.0-rc2 (2014-08-13)
+
+* Fixed the `payPalButtonDidCancel:` delegate method to take button as parameter (breaking change)
+* Fixed drop-in UI bug in which UI didn't update after authorization via app switch.
+
 ## 3.2.0-rc1 (2014-08-12)
 
 * Add support and docs for PayPal Touch app switch
