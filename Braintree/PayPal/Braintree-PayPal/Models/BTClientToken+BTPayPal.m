@@ -13,6 +13,8 @@ NSString *const BTClientTokenPayPalBraintreeProxyBasePath = @"/v1/";
 NSString *const BTClientTokenPayPalEnvironmentCustom = @"custom";
 NSString *const BTClientTokenPayPalEnvironmentLive = @"live";
 NSString *const BTClientTokenPayPalEnvironmentOffline = @"offline";
+NSString *const BTClientTokenPayPalDisableAppSwitch = @"touchDisabled";
+
 
 NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantName = @"Offline Test Merchant";
 NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantPrivacyPolicyUrl = @"http://example.com/privacy";
@@ -63,6 +65,10 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 
 - (BOOL) btPayPal_isPayPalEnabled{
     return [self.claims[BTClientTokenKeyPayPalEnabled] boolValue];
+}
+
+- (BOOL)btPayPal_disableAppSwitch{
+    return [self.btPayPal_claims[BTClientTokenPayPalDisableAppSwitch] boolValue];
 }
 
 @end

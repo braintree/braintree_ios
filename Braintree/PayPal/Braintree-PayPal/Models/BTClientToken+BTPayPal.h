@@ -13,6 +13,7 @@ extern NSString *const BTClientTokenKeyPayPalEnabled;
 extern NSString *const BTClientTokenPayPalEnvironmentCustom;
 extern NSString *const BTClientTokenPayPalEnvironmentLive;
 extern NSString *const BTClientTokenPayPalEnvironmentOffline;
+extern NSString *const BTClientTokenPayPalDisableAppSwitch;
 
 // Default PayPal merchant name in offline mode
 extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantName;
@@ -38,6 +39,8 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 
 // Returns the PayPal environment name
 - (NSString *)btPayPal_environment;
+
+- (BOOL)btPayPal_disableAppSwitch;
 
 // Returns a `PayPalConfiguration` with preset configuration options
 // determined by Braintree.

@@ -6,6 +6,7 @@
 #import "BraintreeDemoPayPalButtonDemoViewController.h"
 #import "BraintreeDemoTokenizationDemoViewController.h"
 #import "BraintreeDemoTransactionService.h"
+#import "BTClient_Internal.h"
 
 @interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate>
 

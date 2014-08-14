@@ -4,6 +4,8 @@
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTLogger.h"
 #import "BTErrors+BTPayPal.h"
+#import "BTClient_Internal.h"
+#import "BTClientToken+BTPayPal.h"
 
 #import "PayPalMobile.h"
 #import "PayPalTouch.h"
@@ -87,6 +89,12 @@
 }
 
 - (BOOL)initiatePayPalAuthWithClient:(BTClient *)client delegate:(id<BTPayPalAppSwitchHandlerDelegate>)delegate {
+
+    if ([client.clientToken btPayPal_disableAppSwitch]){
+        [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
+        return  NO;
+    }
+
     if (![[self class] validateClient:client delegate:delegate appSwitchCallbackURLScheme:self.appSwitchCallbackURLScheme]) {
         [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
         return NO;
