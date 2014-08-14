@@ -47,7 +47,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
     context(@"with PayPal Touch Disabled", ^{
         it(@"returns NO", ^{
             [[[client expect] andReturn:clientToken] clientToken];
-            [[[clientToken stub] andReturnValue:@YES] btPayPal_disableAppSwitch];
+            [[[clientToken stub] andReturnValue:@YES] btPayPal_isTouchDisabled];
             [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
             BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
             expect(initiated).to.beFalsy();
@@ -58,7 +58,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
         beforeEach(^{
             [[[client stub] andReturn:clientToken] clientToken];
-            [[[clientToken stub] andReturnValue:@NO] btPayPal_disableAppSwitch];
+            [[[clientToken stub] andReturnValue:@NO] btPayPal_isTouchDisabled];
         });
 
         describe(@"with invalid parameters", ^{

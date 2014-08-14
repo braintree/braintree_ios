@@ -40,7 +40,7 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 // Returns the PayPal environment name
 - (NSString *)btPayPal_environment;
 
-- (BOOL)btPayPal_disableAppSwitch;
+- (BOOL)btPayPal_isTouchDisabled;
 
 // Returns a `PayPalConfiguration` with preset configuration options
 // determined by Braintree.

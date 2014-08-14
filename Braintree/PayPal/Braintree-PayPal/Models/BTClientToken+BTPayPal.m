@@ -67,7 +67,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
     return [self.claims[BTClientTokenKeyPayPalEnabled] boolValue];
 }
 
-- (BOOL)btPayPal_disableAppSwitch{
+- (BOOL)btPayPal_isTouchDisabled{
     return [self.btPayPal_claims[BTClientTokenPayPalDisableAppSwitch] boolValue];
 }
 

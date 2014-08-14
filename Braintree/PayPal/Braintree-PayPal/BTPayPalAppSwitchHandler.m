@@ -90,7 +90,7 @@
 
 - (BOOL)initiatePayPalAuthWithClient:(BTClient *)client delegate:(id<BTPayPalAppSwitchHandlerDelegate>)delegate {
 
-    if ([client.clientToken btPayPal_disableAppSwitch]){
+    if ([client.clientToken btPayPal_isTouchDisabled]){
         [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
         return  NO;
     }
