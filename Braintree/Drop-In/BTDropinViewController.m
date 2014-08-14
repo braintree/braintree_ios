@@ -565,9 +565,9 @@
 
     if ([challenges containsObject:@"cvv"] && [challenges containsObject:@"postal_code"]) {
         return BTUICardFormOptionalFieldsAll;
-    } else if ([challenges containsObject:@"cvv"]){
+    } else if ([challenges containsObject:@"cvv"]) {
         return BTUICardFormOptionalFieldsCvv;
-    } else if ([challenges containsObject:@"postal_code"]){
+    } else if ([challenges containsObject:@"postal_code"]) {
         return BTUICardFormOptionalFieldsPostalCode;
     } else {
         return BTUICardFormOptionalFieldsNone;
