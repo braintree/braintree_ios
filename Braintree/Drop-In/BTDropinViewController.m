@@ -560,7 +560,7 @@
     }];
 }
 
-- (BTUICardFormOptionalFields) optionalFieldsFromClientToken{
+- (BTUICardFormOptionalFields)optionalFieldsFromClientToken {
     NSSet *challenges = self.client.challenges;
 
     if ([challenges containsObject:@"cvv"] && [challenges containsObject:@"postal_code"]) {
@@ -574,7 +574,7 @@
     }
 }
 
-- (void)fetchPaymentMethods{
+- (void)fetchPaymentMethods {
     BOOL networkActivityIndicatorState = [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
