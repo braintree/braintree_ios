@@ -552,7 +552,7 @@
 
 - (void)updateValidity {
     BTPaymentMethod *paymentMethod = [self selectedPaymentMethod];
-    BOOL valid = paymentMethod != nil || (!self.dropInContentView.cardForm.hidden && self.dropInContentView.cardForm.valid);
+    BOOL valid = (paymentMethod != nil) || (!self.dropInContentView.cardForm.hidden && self.dropInContentView.cardForm.valid);
 
     [self.navigationItem.rightBarButtonItem setEnabled:valid];
     [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
