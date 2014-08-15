@@ -191,6 +191,11 @@ const CGFloat formFieldBottomMargin = 11;
     }
 }
 
+- (void)setBottomBorder:(BOOL)bottomBorder {
+    _bottomBorder = bottomBorder;
+    [self setNeedsDisplay];
+}
+
 - (void)updateConstraints {
 
     NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin]),

@@ -94,7 +94,15 @@
         [fields addObject:self.postalCodeField];
         self.postalCodeField.hidden = NO;
     }
+
+    // Set bottom border for fields
+    for (NSUInteger i = 0; i < fields.count - 1; i++) {
+        [fields[i] setBottomBorder:YES];
+    }
+    [[fields lastObject] setBottomBorder:NO];
+
     self.fields = fields;
+
     [self invalidateIntrinsicContentSize];
 }
 
@@ -107,19 +115,16 @@
     _numberField = [[BTUICardNumberField alloc] init];
     self.numberField.translatesAutoresizingMaskIntoConstraints = NO;
     self.numberField.delegate = self;
-    self.numberField.bottomBorder = YES;
     [self addSubview:self.numberField];
 
     _expiryField = [[BTUICardExpiryField alloc] init];
     self.expiryField.translatesAutoresizingMaskIntoConstraints = NO;
     self.expiryField.delegate = self;
-    self.expiryField.bottomBorder = YES;
     [self addSubview:self.expiryField];
 
     _cvvField = [[BTUICardCvvField alloc] init];
     self.cvvField.translatesAutoresizingMaskIntoConstraints = NO;
     self.cvvField.delegate = self;
-    self.cvvField.bottomBorder = YES;
     [self addSubview:self.cvvField];
 
     _postalCodeField = [[BTUICardPostalCodeField alloc] init];
