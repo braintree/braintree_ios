@@ -49,15 +49,6 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)fetchPaymentMethodsWithSuccess:(BTClientPaymentMethodListSuccessBlock)successBlock
                                failure:(BTClientFailureBlock)failureBlock;
 
-/// Obtain a list of all supported payment options
-///
-/// @param successBlock success callback for handling the returned list of payment methods
-/// @param failureBlock success callback for handling errors
-- (void)fetchPaymentOptionsForSchemes:(NSArray *)schemes
-                              success:(BTClientPaymentOptionListSuccessBlock)successBlock
-                              failure:(BTClientFailureBlock)failureBlock;
-
-
 /// Save a card to Braintree
 ///
 /// You have two options for validation when saving a card to Braintree. You can specify

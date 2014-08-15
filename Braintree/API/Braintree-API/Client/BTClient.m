@@ -110,51 +110,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }];
 }
 
-- (void)fetchPaymentOptionsForSchemes:(NSArray *)schemes
-                              success:(BTClientPaymentOptionListSuccessBlock)successBlock
-                              failure:(BTClientFailureBlock) failureBlock {
-    NSDictionary *parameters = @{
-                                 @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                 @"payment_app_schemes": schemes,
-                                 };
-
-    [self.clientApiHttp GET:@"v1/payment_options" parameters:parameters completion:^(BTHTTPResponse *response, NSError *error) {
-        if (response.isSuccess) {
-            if (successBlock) {
-                NSArray *responsePaymentMethods = response.object[@"paymentMethods"];
-
-                NSMutableArray *paymentMethods = [NSMutableArray array];
-                for (NSDictionary *paymentMethodDictionary in responsePaymentMethods) {
-                    BTPaymentMethod *paymentMethod = [[self class] paymentMethodFromAPIResponseDictionary:paymentMethodDictionary];
-                    if (paymentMethod == nil) {
-                        NSLog(@"Unable to create payment method from %@", paymentMethodDictionary);
-                    } else {
-                        [paymentMethods addObject:paymentMethod];
-                    }
-                }
-
-                NSArray *responsePaymentApps = response.object[@"paymentApps"];
-
-                NSMutableArray *paymentApps = [NSMutableArray array];
-                for (NSDictionary *paymentAppDictionary in responsePaymentApps) {
-                    BTPaymentApp *paymentApp = [[self class] paymentAppFromAPIResponseDictionary:paymentAppDictionary];
-                    if (paymentApp == nil) {
-                        NSLog(@"Unable to create payment app from %@", paymentAppDictionary);
-                    } else {
-                        [paymentApps addObject:paymentApp];
-                    }
-                }
-
-                successBlock(paymentMethods, paymentApps);
-            }
-        } else {
-            if (failureBlock) {
-                failureBlock(error);
-            }
-        }
-    }];
-}
-
 - (void)saveCardWithNumber:(NSString *)creditCardNumber
            expirationMonth:(NSString *)expirationMonth
             expirationYear:(NSString *)expirationYear
