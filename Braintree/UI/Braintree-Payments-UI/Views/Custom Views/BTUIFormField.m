@@ -5,6 +5,12 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+const CGFloat formFieldTopMargin = 7;
+const CGFloat formFieldLabelHeight = 15;
+const CGFloat formFieldVerticalSpace = 1;
+const CGFloat formFieldTextFieldHeight = 20;
+const CGFloat formFieldBottomMargin = 11;
+
 @interface BTUIFormField ()<BTUITextFieldEditDelegate>
 
 @property (nonatomic, strong) BTUIFloatLabel *floatLabel;
@@ -58,6 +64,11 @@
                                                    object:nil];
     }
     return self;
+}
+
+- (CGSize)intrinsicContentSize {
+    CGFloat height = formFieldTopMargin + formFieldLabelHeight + formFieldVerticalSpace + formFieldTextFieldHeight + formFieldBottomMargin;
+    return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }
 
 - (void)setAccessoryView:(UIView *)accessoryView {
@@ -181,8 +192,15 @@
 }
 
 - (void)updateConstraints {
+
     NSDictionary *metrics = @{@"horizontalMargin": @([self.theme horizontalMargin]),
-                              @"accessoryViewWidth": @44 };
+                              @"accessoryViewWidth": @44,
+                              @"formFieldTopMargin": @(formFieldTopMargin),
+                              @"formFieldLabelHeight": @(formFieldLabelHeight),
+                              @"formFieldVerticalSpace": @(formFieldVerticalSpace),
+                              @"formFieldTextFieldHeight": @(formFieldTextFieldHeight),
+                              @"formFieldBottomMargin": @(formFieldBottomMargin)
+                              };
     NSDictionary *views = @{ @"textField": self.textField,
                              @"floatLabel": self.floatLabel,
                              @"accessoryView": self.accessoryView };
@@ -208,7 +226,7 @@
 
     [self.layoutConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[accessoryView(==accessoryViewWidth)]" options:0 metrics:metrics views:views]];
 
-    [self.layoutConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(7)-[floatLabel(==15)]-(1)-[textField(==20)]-(11)-|" options:0 metrics:metrics views:views]];
+    [self.layoutConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(formFieldTopMargin)-[floatLabel(==formFieldLabelHeight)]-(formFieldVerticalSpace)-[textField(==formFieldTextFieldHeight)]-(formFieldBottomMargin)-|" options:0 metrics:metrics views:views]];
     [self.layoutConstraints addObject:[NSLayoutConstraint constraintWithItem:self.accessoryView
                                                                    attribute:NSLayoutAttributeCenterY
                                                                    relatedBy:NSLayoutRelationEqual

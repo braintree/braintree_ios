@@ -6,6 +6,7 @@
 #import "BTUI.h"
 #import "BTUILocalizedString.h"
 
+
 @interface BTUICardFormView ()<BTUIFormFieldDelegate>
 
 @property (nonatomic, strong) BTUICardNumberField *numberField;
@@ -37,7 +38,14 @@
 }
 
 - (CGSize)intrinsicContentSize {
-    return CGSizeMake(UIViewNoIntrinsicMetric, CGRectGetMaxY([[self.fields lastObject] frame]));
+    CGFloat height = 0;
+    for (BTUIFormField *field in self.fields) {
+        height += field.intrinsicContentSize.height;
+    }
+     // subtract (number of field adjacencies) * (number of pixels overlap per adjacency)
+    height -= (self.fields.count - 1) * 1;
+
+    return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }
 
 #pragma mark - Getters/setters
@@ -87,9 +95,6 @@
         self.postalCodeField.hidden = NO;
     }
     self.fields = fields;
-    [self updateConstraints];
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
     [self invalidateIntrinsicContentSize];
 }
 
@@ -136,10 +141,6 @@
                                                                  metrics:0
                                                                    views:@{@"v": self.numberField}]];
 
-    // Layout now (early) so that we can calculate the correct intrinsic content size
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-    [self invalidateIntrinsicContentSize];
 }
 
 - (void)updateConstraints {
