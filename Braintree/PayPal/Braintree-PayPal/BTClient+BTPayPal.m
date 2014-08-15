@@ -81,4 +81,8 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     return [self.clientToken.btPayPal_environment isEqualToString:BTClientTokenPayPalEnvironmentLive] ? PayPalEnvironmentProduction : BTClientPayPalMobileEnvironmentName;
 }
 
+- (BOOL)btPayPal_isTouchDisabled{
+    return self.clientToken.btPayPal_isTouchDisabled;
+}
+
 @end

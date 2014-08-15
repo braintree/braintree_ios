@@ -160,31 +160,31 @@ describe(@"btPayPal_directBaseURL", ^{
 
 describe(@"btPayPal_disableAppSwitch", ^{
     it(@"returns that app switch is not disabled when there is no claim", ^{
-        expect(clientToken.btPayPal_disableAppSwitch).to.equal(NO);
+        expect(clientToken.btPayPal_isTouchDisabled).to.equal(NO);
     });
 
     it(@"returns that app switch is not disabled when there is no PayPal configuration", ^{
         [mutableClaims removeObjectForKey:BTClientTokenPayPalNamespace];
         clientToken = [[BTClientToken alloc] initWithClaims:mutableClaims error:nil];
-        expect(clientToken.btPayPal_disableAppSwitch).to.equal(NO);
+        expect(clientToken.btPayPal_isTouchDisabled).to.equal(NO);
     });
 
     it(@"returns that app switch is not disabled when there is a claim that is false", ^{
         mutableClaims[BTClientTokenPayPalNamespace][BTClientTokenPayPalDisableAppSwitch] = @NO;
         clientToken = [[BTClientToken alloc] initWithClaims:mutableClaims error:nil];
-        expect(clientToken.btPayPal_disableAppSwitch).to.equal(NO);
+        expect(clientToken.btPayPal_isTouchDisabled).to.equal(NO);
     });
 
     it(@"returns that app switch is disabled when there is a claim that is true", ^{
         mutableClaims[BTClientTokenPayPalNamespace][BTClientTokenPayPalDisableAppSwitch] = @YES;
         clientToken = [[BTClientToken alloc] initWithClaims:mutableClaims error:nil];
-        expect(clientToken.btPayPal_disableAppSwitch).to.equal(YES);
+        expect(clientToken.btPayPal_isTouchDisabled).to.equal(YES);
     });
 
     it(@"returns that app switch is disabled when there is a claim that is 'TRUEDAT'", ^{
         mutableClaims[BTClientTokenPayPalNamespace][BTClientTokenPayPalDisableAppSwitch] = @"TRUEDAT";
         clientToken = [[BTClientToken alloc] initWithClaims:mutableClaims error:nil];
-        expect(clientToken.btPayPal_disableAppSwitch).to.equal(YES);
+        expect(clientToken.btPayPal_isTouchDisabled).to.equal(YES);
     });
 });
 

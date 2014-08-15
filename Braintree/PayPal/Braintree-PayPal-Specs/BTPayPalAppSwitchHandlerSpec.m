@@ -2,19 +2,15 @@
 #import "BTClient+BTPayPal.h"
 #import "PayPalMobile.h"
 #import "BTClientToken.h"
-#import "BTClientToken+BTPayPal.h"
-#import "BTClient_Internal.h"
 
 SpecBegin(BTPayPalAppSwitchHandler)
 
 __block id client;
-__block id clientToken;
 __block id delegate;
 __block id payPalTouch;
 
 beforeEach(^{
     client = [OCMockObject mockForClass:[BTClient class]];
-    clientToken = [OCMockObject mockForClass:[BTClientToken class]];
     delegate = [OCMockObject mockForProtocol:@protocol(BTPayPalAppSwitchHandlerDelegate)];
     payPalTouch = [OCMockObject mockForClass:[PayPalTouch class]];
 });
@@ -46,8 +42,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
     context(@"with PayPal Touch Disabled", ^{
         it(@"returns NO", ^{
-            [[[client expect] andReturn:clientToken] clientToken];
-            [[[clientToken stub] andReturnValue:@YES] btPayPal_isTouchDisabled];
+            [[[client expect] andReturnValue:@YES] btPayPal_isTouchDisabled];
             [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
             BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
             expect(initiated).to.beFalsy();
@@ -56,17 +51,25 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
     context(@"with PayPal Touch Enabled", ^{
 
-        beforeEach(^{
-            [[[client stub] andReturn:clientToken] clientToken];
-            [[[clientToken stub] andReturnValue:@NO] btPayPal_isTouchDisabled];
-        });
+        context(@"with invalid parameters", ^{
 
-        describe(@"with invalid parameters", ^{
-            it(@"returns NO if appSwitchCallbackURLScheme is nil", ^{
-                appSwitchHandler.appSwitchCallbackURLScheme = nil;
-                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
-                BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
-                expect(initiated).to.beFalsy();
+            context(@"with a client", ^{
+                beforeEach(^{
+                    [[[client expect] andReturnValue:@NO] btPayPal_isTouchDisabled];
+                });
+
+                it(@"returns NO if appSwitchCallbackURLScheme is nil", ^{
+                    appSwitchHandler.appSwitchCallbackURLScheme = nil;
+                    [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
+                    BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
+                    expect(initiated).to.beFalsy();
+                });
+
+                it(@"returns NO with a nil delegate", ^{
+                    [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
+                    BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:nil];
+                    expect(initiated).to.beFalsy();
+                });
             });
 
             it(@"returns NO with a nil client", ^{
@@ -74,16 +77,12 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 expect(initiated).to.beFalsy();
             });
 
-            it(@"returns NO with a nil delegate", ^{
-                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
-                BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:nil];
-                expect(initiated).to.beFalsy();
-            });
         });
 
         it(@"returns NO if PayPalTouch can not app switch", ^{
             [[[payPalTouch expect] andReturnValue:@NO] canAppSwitchForUrlScheme:OCMOCK_ANY];
             [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.bad-callback-url-scheme"];
+            [[[client expect] andReturnValue:@NO] btPayPal_isTouchDisabled];
             BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
             expect(initiated).to.beFalsy();
         });
@@ -93,6 +92,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
             beforeEach(^{
                 [[[payPalTouch expect] andReturnValue:@YES] canAppSwitchForUrlScheme:OCMOCK_ANY];
                 [[[client stub] andReturn:[[PayPalConfiguration alloc] init]] btPayPal_configuration];
+                [[[client expect] andReturnValue:@NO] btPayPal_isTouchDisabled];
             });
 
             it(@"returns NO if PayPalTouch does not authorize", ^{

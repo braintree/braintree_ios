@@ -4,8 +4,6 @@
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTLogger.h"
 #import "BTErrors+BTPayPal.h"
-#import "BTClient_Internal.h"
-#import "BTClientToken+BTPayPal.h"
 
 #import "PayPalMobile.h"
 #import "PayPalTouch.h"
@@ -90,7 +88,7 @@
 
 - (BOOL)initiatePayPalAuthWithClient:(BTClient *)client delegate:(id<BTPayPalAppSwitchHandlerDelegate>)delegate {
 
-    if ([client.clientToken btPayPal_isTouchDisabled]){
+    if ([client btPayPal_isTouchDisabled]){
         [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
         return  NO;
     }
