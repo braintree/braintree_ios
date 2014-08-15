@@ -8,7 +8,6 @@
 #import "BTHTTP.h"
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
-#import "BTPaymentApp.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -240,16 +239,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     } else {
         return nil;
     }
-}
-
-+ (BTPaymentApp *)paymentAppFromAPIResponseDictionary:(NSDictionary *)response {
-    BTPaymentApp *app = [[BTPaymentApp alloc] init];
-
-    app.iconURL = ([response[@"icon"] length] > 0) ? [NSURL URLWithString:response[@"icon"]] : nil;
-    app.label   = response[@"label"];
-    app.scheme  = response[@"scheme"];
-
-    return app;
 }
 
 + (BTPayPalPaymentMethod *)payPalPaymentMethodFromAPIResponseDictionary:(NSDictionary *)response {

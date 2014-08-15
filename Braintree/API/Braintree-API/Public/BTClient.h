@@ -9,9 +9,6 @@
 /// Block type that takes an `NSArray` of `BTPaymentMethod`s
 typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray *paymentMethods);
 
-/// Block type that takes an `NSArray` of `BTPaymentMethod`s and an `NSArray` of `BTPaymentApp`s
-typedef void (^BTClientPaymentOptionListSuccessBlock)(NSArray *paymentMethods, NSArray *paymentApps);
-
 /// Block type that takes a `BTCardPaymentMethod`
 typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 
