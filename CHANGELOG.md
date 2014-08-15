@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.2.0-rc3 (2014-08-14)
+
+* Add support for app switch configuration via client token.
+
 ## 3.2.0-rc2 (2014-08-13)
 
 * Fixed the `payPalButtonDidCancel:` delegate method to take button as parameter (breaking change)
