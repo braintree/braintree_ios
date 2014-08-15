@@ -20,21 +20,21 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.1.0):
+  - Braintree (3.2.0-rc2):
     - Braintree/API
     - Braintree/Drop-In
     - Braintree/PayPal
     - Braintree/UI
-  - Braintree/API (3.1.0)
-  - Braintree/Data (3.1.0)
-  - Braintree/Drop-In (3.1.0):
+  - Braintree/API (3.2.0-rc2)
+  - Braintree/Data (3.2.0-rc2)
+  - Braintree/Drop-In (3.2.0-rc2):
     - Braintree/API
     - Braintree/PayPal
     - Braintree/UI
-  - Braintree/PayPal (3.1.0):
+  - Braintree/PayPal (3.2.0-rc2):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.1.0)
+  - Braintree/UI (3.2.0-rc2)
   - Expecta (0.3.1)
   - HockeySDK (3.5.6)
   - KIF (3.0.4):
@@ -68,7 +68,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: 85deb53ecf4b4800e8175eec0532d5fd8f10185b
+  Braintree: 1f554fef2d7ceb0e9481d46c28b1739633d1e097
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
   KIF: 443c517d14fc2a99d27d3df170bc274cdf288241
