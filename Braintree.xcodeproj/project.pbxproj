@@ -561,8 +561,6 @@
 		A7A88B841981811D0015D018 /* BTHTTP_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTP_Internal.h; sourceTree = "<group>"; };
 		A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler_Internal.h; sourceTree = "<group>"; };
 		A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreePublicInterfaceSanityCheckSpec.m; sourceTree = "<group>"; };
-		A7EF7FE01977389C00542E70 /* BTPaymentApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTPaymentApp.h; path = "Braintree/API/Braintree-API/Public/BTPaymentApp.h"; sourceTree = SOURCE_ROOT; };
-		A7EF7FE11977389C00542E70 /* BTPaymentApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTPaymentApp.m; path = "Braintree/API/Braintree-API/Public/BTPaymentApp.m"; sourceTree = SOURCE_ROOT; };
 		A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler.h; sourceTree = "<group>"; };
 		A7FC1CC01992B24900636548 /* BTPayPalAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalAppSwitchHandler.m; sourceTree = "<group>"; };
 		A7FC1CC11992B24900636548 /* BTPayPalAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAdapter.h; sourceTree = "<group>"; };
@@ -923,8 +921,6 @@
 		1621743B192D85EB008DC35D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A7EF7FE01977389C00542E70 /* BTPaymentApp.h */,
-				A7EF7FE11977389C00542E70 /* BTPaymentApp.m */,
 				1621742F192D85EB008DC35D /* BTPayPalPaymentMethod_Mutable.h */,
 				16217430192D85EB008DC35D /* BTCardPaymentMethod.m */,
 				16217431192D85EB008DC35D /* BTCardPaymentMethod_Mutable.h */,
