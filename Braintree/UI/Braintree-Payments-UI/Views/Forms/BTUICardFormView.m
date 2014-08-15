@@ -147,17 +147,15 @@
     [self removeConstraints:self.dynamicConstraints];
 
     NSMutableArray *newContraints = [NSMutableArray array];
-    UIView *viewAbove = self.numberField;
-    for (UIView *view in self.fields){
-        if(view != self.numberField){
-            [newContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[v]-(-1)-[v2]"
-                                                                                       options:0
-                                                                                       metrics:0
-                                                                                         views:@{@"v": viewAbove, @"v2": view }]];
-            viewAbove = view;
-        }
-
+    for (NSUInteger i = 0; i < self.fields.count - 1; i++) {
+        BTUIFormField *fieldAbove = self.fields[i];
+        BTUIFormField *fieldBelow = self.fields[i+1];
+        [newContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[v]-(-1)-[v2]"
+                                                                                   options:0
+                                                                                   metrics:0
+                                                                                     views:@{@"v": fieldAbove, @"v2": fieldBelow }]];
     }
+
     self.dynamicConstraints = newContraints;
     [self addConstraints:self.dynamicConstraints];
 
