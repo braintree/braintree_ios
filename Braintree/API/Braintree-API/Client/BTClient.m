@@ -164,11 +164,23 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }];
 }
 
+// Deprecated
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
     [self savePaypalPaymentMethodWithAuthCode:authCode
                      applicationCorrelationID:nil
+                                      success:successBlock
+                                      failure:failureBlock];
+}
+
+// Deprecated
+- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
+                              correlationId:(NSString *)correlationId
+                                    success:(BTClientPaypalSuccessBlock)successBlock
+                                    failure:(BTClientFailureBlock)failureBlock {
+    [self savePaypalPaymentMethodWithAuthCode:authCode
+                     applicationCorrelationID:correlationId
                                       success:successBlock
                                       failure:failureBlock];
 }
