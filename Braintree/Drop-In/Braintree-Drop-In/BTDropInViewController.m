@@ -559,7 +559,7 @@
 
 - (void)updateValidity {
     BTPaymentMethod *paymentMethod = [self selectedPaymentMethod];
-    BOOL valid = paymentMethod != nil || (!self.dropInContentView.cardForm.hidden && self.dropInContentView.cardForm.valid);
+    BOOL valid = (paymentMethod != nil) || (!self.dropInContentView.cardForm.hidden && self.dropInContentView.cardForm.valid);
 
     [self.navigationItem.rightBarButtonItem setEnabled:valid];
     [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
@@ -567,7 +567,7 @@
     }];
 }
 
-- (BTUICardFormOptionalFields) optionalFieldsFromClientToken{
+- (BTUICardFormOptionalFields)optionalFieldsFromClientToken {
     NSSet *challenges = self.client.challenges;
 
     static NSString *cvvChallenge = @"cvv";
@@ -575,16 +575,16 @@
 
     if ([challenges containsObject:cvvChallenge] && [challenges containsObject:postalCodeChallenge]) {
         return BTUICardFormOptionalFieldsAll;
-    } else if ([challenges containsObject:cvvChallenge]){
+    } else if ([challenges containsObject:cvvChallenge]) {
         return BTUICardFormOptionalFieldsCvv;
-    } else if ([challenges containsObject:postalCodeChallenge]){
+    } else if ([challenges containsObject:postalCodeChallenge]) {
         return BTUICardFormOptionalFieldsPostalCode;
     } else {
         return BTUICardFormOptionalFieldsNone;
     }
 }
 
-- (void)fetchPaymentMethods{
+- (void)fetchPaymentMethods {
     BOOL networkActivityIndicatorState = [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
