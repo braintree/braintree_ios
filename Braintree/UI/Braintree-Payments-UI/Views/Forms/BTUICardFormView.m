@@ -6,6 +6,7 @@
 #import "BTUI.h"
 #import "BTUILocalizedString.h"
 
+
 @interface BTUICardFormView ()<BTUIFormFieldDelegate>
 
 @property (nonatomic, strong) BTUICardNumberField *numberField;
@@ -37,7 +38,14 @@
 }
 
 - (CGSize)intrinsicContentSize {
-    return CGSizeMake(UIViewNoIntrinsicMetric, CGRectGetMaxY([[self.fields lastObject] frame]));
+    CGFloat height = 0;
+    for (BTUIFormField *field in self.fields) {
+        height += field.intrinsicContentSize.height;
+    }
+     // subtract (number of field adjacencies) * (number of pixels overlap per adjacency)
+    height -= (self.fields.count - 1) * 1;
+
+    return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }
 
 #pragma mark - Getters/setters
@@ -86,10 +94,15 @@
         [fields addObject:self.postalCodeField];
         self.postalCodeField.hidden = NO;
     }
+
+    // Set bottom border for fields
+    for (NSUInteger i = 0; i < fields.count - 1; i++) {
+        [fields[i] setBottomBorder:YES];
+    }
+    [[fields lastObject] setBottomBorder:NO];
+
     self.fields = fields;
-    [self updateConstraints];
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
+
     [self invalidateIntrinsicContentSize];
 }
 
@@ -102,19 +115,16 @@
     _numberField = [[BTUICardNumberField alloc] init];
     self.numberField.translatesAutoresizingMaskIntoConstraints = NO;
     self.numberField.delegate = self;
-    self.numberField.bottomBorder = YES;
     [self addSubview:self.numberField];
 
     _expiryField = [[BTUICardExpiryField alloc] init];
     self.expiryField.translatesAutoresizingMaskIntoConstraints = NO;
     self.expiryField.delegate = self;
-    self.expiryField.bottomBorder = YES;
     [self addSubview:self.expiryField];
 
     _cvvField = [[BTUICardCvvField alloc] init];
     self.cvvField.translatesAutoresizingMaskIntoConstraints = NO;
     self.cvvField.delegate = self;
-    self.cvvField.bottomBorder = YES;
     [self addSubview:self.cvvField];
 
     _postalCodeField = [[BTUICardPostalCodeField alloc] init];
@@ -136,27 +146,21 @@
                                                                  metrics:0
                                                                    views:@{@"v": self.numberField}]];
 
-    // Layout now (early) so that we can calculate the correct intrinsic content size
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-    [self invalidateIntrinsicContentSize];
 }
 
 - (void)updateConstraints {
     [self removeConstraints:self.dynamicConstraints];
 
     NSMutableArray *newContraints = [NSMutableArray array];
-    UIView *viewAbove = self.numberField;
-    for (UIView *view in self.fields){
-        if(view != self.numberField){
-            [newContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[v]-(-1)-[v2]"
-                                                                                       options:0
-                                                                                       metrics:0
-                                                                                         views:@{@"v": viewAbove, @"v2": view }]];
-            viewAbove = view;
-        }
-
+    for (NSUInteger i = 0; i < self.fields.count - 1; i++) {
+        BTUIFormField *fieldAbove = self.fields[i];
+        BTUIFormField *fieldBelow = self.fields[i+1];
+        [newContraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[v]-(-1)-[v2]"
+                                                                                   options:0
+                                                                                   metrics:0
+                                                                                     views:@{@"v": fieldAbove, @"v2": fieldBelow }]];
     }
+
     self.dynamicConstraints = newContraints;
     [self addConstraints:self.dynamicConstraints];
 

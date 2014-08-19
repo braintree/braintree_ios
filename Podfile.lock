@@ -20,30 +20,32 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.2.0-rc2):
+  - Braintree (3.2.0-rc3):
     - Braintree/API
     - Braintree/Drop-In
     - Braintree/PayPal
     - Braintree/UI
-  - Braintree/API (3.2.0-rc2)
-  - Braintree/Data (3.2.0-rc2)
-  - Braintree/Drop-In (3.2.0-rc2):
+  - Braintree/API (3.2.0-rc3)
+  - Braintree/Data (3.2.0-rc3)
+  - Braintree/Drop-In (3.2.0-rc3):
     - Braintree/API
     - Braintree/PayPal
     - Braintree/UI
-  - Braintree/PayPal (3.2.0-rc2):
+  - Braintree/PayPal (3.2.0-rc3):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.2.0-rc2)
+  - Braintree/UI (3.2.0-rc3)
   - Expecta (0.3.1)
   - HockeySDK (3.5.6)
-  - KIF (3.0.4):
+  - KIF (3.0.7):
     - KIF/XCTest
-  - KIF/XCTest (3.0.4)
+  - KIF/XCTest (3.0.7)
   - NSURL+QueryDictionary (1.0.3)
   - OCHamcrest (3.0.1)
   - OCMock (2.2.4)
-  - OHHTTPStubs (3.1.4)
+  - OHHTTPStubs (3.1.5):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/Core (3.1.5)
   - Specta (0.2.1)
 
 DEPENDENCIES:
@@ -68,14 +70,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: 1f554fef2d7ceb0e9481d46c28b1739633d1e097
+  Braintree: 48f910324b3c6ae18c97bfc3a6bba08afbce77d1
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
-  KIF: 443c517d14fc2a99d27d3df170bc274cdf288241
+  KIF: 685ab7b49c1092732b7cb3106cc957366b01e225
   NSURL+QueryDictionary: 1ad81be60c10e3f4d80c5c4beb7125de96aaec5e
   OCHamcrest: 207233b7d7a44dadd66aca398947cc7e029c9be5
   OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
-  OHHTTPStubs: 398901e787d9b62ce539a8a3df0b81431a98236a
+  OHHTTPStubs: c1e362552b71b81e1deb7a80f44c51585b946c43
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
 
 COCOAPODS: 0.33.1

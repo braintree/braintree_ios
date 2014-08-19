@@ -23,8 +23,11 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         expect(client).to.respondTo(@selector(challenges));
         expect(client).to.respondTo(@selector(fetchPaymentMethodsWithSuccess:failure:));
         expect(client).to.respondTo(@selector(saveCardWithNumber:expirationMonth:expirationYear:cvv:postalCode:validate:success:failure:));
-        expect(client).to.respondTo(@selector(savePaypalPaymentMethodWithAuthCode:success:failure:));
         expect(client).to.respondTo(@selector(savePaypalPaymentMethodWithAuthCode:applicationCorrelationID:success:failure:));
+
+        // Supported but deprecated
+        expect(client).to.respondTo(@selector(savePaypalPaymentMethodWithAuthCode:success:failure:));
+        expect(client).to.respondTo(@selector(savePaypalPaymentMethodWithAuthCode:correlationId:success:failure:));
     });
 
     it(@"includes BTPayPalButon", ^{

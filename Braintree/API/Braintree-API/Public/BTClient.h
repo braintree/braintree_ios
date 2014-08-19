@@ -77,7 +77,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param successBlock success callback for handling the resulting new PayPal account payment method
 /// @param failureBlock failure callback for handling errors
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
-                              applicationCorrelationID:(NSString *)applicationCorrelationId
+                   applicationCorrelationID:(NSString *)applicationCorrelationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock;
 
@@ -94,6 +94,19 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
 
+/// Save a paypal payment method to Braintree
+///
+/// @note This signature has been deprecated in favor of
+/// savePaypalPaymentMethodWithAuthCode:applicationCorrelationID:success:failure: for clarity
+///
+/// @param authCode Authorization Code
+/// @param correlationId PayPal App Correlation ID (See `-[BTClient btPayPal_applicationCorrelationId]` and https://github.com/paypal/PayPal-iOS-SDK/blob/master/docs/future_payments_mobile.md#obtain-an-application-correlation-id.)
+/// @param successBlock success callback for handling the resulting new PayPal account payment method
+/// @param failureBlock failure callback for handling errors
+- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
+                              correlationId:(NSString *)correlationId
+                                    success:(BTClientPaypalSuccessBlock)successBlock
+                                    failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
 
 /// "Fire and forget analytics" - transmits an analytics event to the Braintree analytics service
 ///
