@@ -1,7 +1,6 @@
 #import "BraintreeDemoVenmoAppSwitchViewController.h"
 
-#import "BTVenmoAppSwitchReturnURL.h"
-
+#import "BTVenmoAppSwitchURL.h"
 #import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
 
 @interface BraintreeDemoVenmoAppSwitchViewController ()
@@ -37,7 +36,7 @@
 
 - (IBAction)tappedToVenmoAppSwitch
 {
-    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequest appSwitchURLForMerchantID:self.merchantID];
+    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchURL appSwitchURLForMerchantID:self.merchantID];
 
     [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
 }

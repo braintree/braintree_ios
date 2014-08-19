@@ -17,6 +17,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
     //Braintree Orange
     self.window.tintColor = [UIColor colorWithRed:255/255.0f green:136/255.0f blue:51/255.0f alpha:1.0f];
 
+    NSString *paymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
     [[BTAppSwitchHandler sharedHandler] setAppSwitchCallbackURLScheme:paymentsURLScheme];
 
     return YES;
@@ -27,6 +28,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
     if ([url.scheme isEqualToString:BraintreeDemoAppDelegatePaymentsURLScheme]) {
         return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
     }
+    return YES;
 }
 
 @end

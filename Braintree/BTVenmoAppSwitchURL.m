@@ -8,6 +8,7 @@
 
 #import "BTVenmoAppSwitchURL.h"
 #import "BTURLUtils.h"
+#import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
 
 @implementation BTVenmoAppSwitchURL
 
