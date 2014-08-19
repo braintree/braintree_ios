@@ -18,7 +18,7 @@ describe(@"canHandleReturnURL:sourceApplication:", ^{
         [mockVenmoAppSwitchReturnURL stopMocking];
     });
 
-    it(@"returns YES if sourceApplication is BTVenmoAppSwitchReturnURL isValidURL:sourceApplication: returns YES", ^{
+    it(@"returns YES if [BTVenmoAppSwitchReturnURL isValidURL:sourceApplication:] returns YES", ^{
         [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@YES] isValidURL:testURL sourceApplication:testSourceApplication];
 
         BTVenmoAppSwitchHandler *handler = [[BTVenmoAppSwitchHandler alloc] init];
@@ -27,7 +27,7 @@ describe(@"canHandleReturnURL:sourceApplication:", ^{
         expect(handled).to.beTruthy();
     });
 
-    it(@"returns NO if sourceApplication is NOT com.venmo.touch.v1", ^{
+    it(@"returns NO if [BTVenmoAppSwitchReturnURL isValidURL:sourceApplication:] returns NO", ^{
         [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@NO] isValidURL:testURL sourceApplication:testSourceApplication];
 
         BTVenmoAppSwitchHandler *handler = [[BTVenmoAppSwitchHandler alloc] init];
