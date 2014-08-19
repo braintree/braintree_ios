@@ -15,6 +15,17 @@
 * Known Issues:
   * Drop In view controller is not yet compatible with PayPal Touch (app switch auth)
 
+## 3.1.1 (2014-08-17)
+
+* Enhancements
+  * Accept four digit years in expiry field
+  * Internationalize
+  * Support iOS 8 SDK
+* Integration changes
+  * Merge `api` and `API` directory content
+  * Deprecate `savePaypalPaymentMethodWithAuthCode:correlationId:success:failure` in favor of
+    `savePaypalPaymentMethodWithAuthCode:applicationCorrelationID:success:failure`
+
 ## 3.1.0 (2014-07-22)
 
 * Integration Change:
