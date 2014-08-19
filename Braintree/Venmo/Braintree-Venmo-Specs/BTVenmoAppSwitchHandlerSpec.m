@@ -1,0 +1,49 @@
+#import "BTVenmoAppSwitchHandler.h"
+#import "BTVenmoAppSwitchReturnURL.h"
+
+SpecBegin(BTVenmoAppSwitchHandler)
+
+describe(@"canHandleReturnURL:sourceApplication:", ^{
+
+    __block id mockVenmoAppSwitchReturnURL;
+    NSString *testSourceApplication = @"a-source.app.App";
+    NSURL *testURL = [NSURL URLWithString:@"another-scheme://a-host"];
+
+    beforeEach(^{
+        mockVenmoAppSwitchReturnURL = [OCMockObject mockForClass:[BTVenmoAppSwitchReturnURL class]];
+    });
+
+    afterEach(^{
+        [mockVenmoAppSwitchReturnURL verify];
+        [mockVenmoAppSwitchReturnURL stopMocking];
+    });
+
+    it(@"returns YES if sourceApplication is BTVenmoAppSwitchReturnURL isValidURL:sourceApplication: returns YES", ^{
+        [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@YES] isValidURL:testURL sourceApplication:testSourceApplication];
+
+        BTVenmoAppSwitchHandler *handler = [[BTVenmoAppSwitchHandler alloc] init];
+        BOOL handled = [handler canHandleReturnURL:testURL sourceApplication:testSourceApplication];
+
+        expect(handled).to.beTruthy();
+    });
+
+    it(@"returns NO if sourceApplication is NOT com.venmo.touch.v1", ^{
+        [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@NO] isValidURL:testURL sourceApplication:testSourceApplication];
+
+        BTVenmoAppSwitchHandler *handler = [[BTVenmoAppSwitchHandler alloc] init];
+        BOOL handled = [handler canHandleReturnURL:testURL sourceApplication:testSourceApplication];
+
+        expect(handled).to.beFalsy();
+    });
+});
+
+describe(@"sharedHandler", ^{
+
+    it(@"returns one and only one instance", ^{
+        expect([BTVenmoAppSwitchHandler sharedHandler]).to.beIdenticalTo([BTVenmoAppSwitchHandler sharedHandler]);
+    });
+    
+});
+
+
+SpecEnd

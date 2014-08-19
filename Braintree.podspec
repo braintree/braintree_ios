@@ -32,6 +32,8 @@ Pod::Spec.new do |s|
     s.dependency 'Braintree/API'
     s.dependency 'Braintree/PayPal'
     s.dependency 'Braintree/UI'
+    s.dependency 'Braintree/Venmo'
+    s.dependency 'Braintree/AppSwitch'
     s.resource_bundle = { "Braintree-Drop-In-Localization" => "Braintree/Drop-In/Braintree-Drop-In/Localization/*.lproj" }
   end
 
@@ -41,13 +43,28 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'PayPal' do |s|
-    s.source_files  = "Braintree/PayPal/Braintree-PayPal/**/*.{h,m}"
+    s.source_files = "Braintree/PayPal/Braintree-PayPal/**/*.{h,m}"
     s.public_header_files = "Braintree/PayPal/Braintree-PayPal/**/*.h"
     s.frameworks = "AVFoundation", "CoreLocation", "MessageUI", "SystemConfiguration"
     s.vendored_library = "Braintree/PayPal/Braintree-PayPal/PayPalMobileSDK/libPayPalMobile.a"
     s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES", "OTHER_LDFLAGS" => "-ObjC -lc++" }
     s.dependency 'Braintree/API'
     s.dependency 'Braintree/UI'
+    s.dependency 'Braintree/AppSwitch'
+  end
+
+  s.subspec 'Venmo' do |s|
+    s.source_files = "Braintree/Venmo/Braintree-Venmo/**/*.{h,m}"
+    s.public_header_files = "Braintree/Venmo/Braintree-Venmo/**/*.h"
+    s.compiler_flags = "-Wall -Wextra"
+    s.dependency 'Braintree/AppSwitch'
+    s.dependency 'Braintree/API'
+  end
+
+  s.subspec 'AppSwitch' do |s|
+    s.source_files = "Braintree/AppSwitch/Braintree-AppSwitch/**/*.{h,m}"
+    s.public_header_files = "Braintree/AppSwitch/Braintree-AppSwitch/**/*.h"
+    s.compiler_flags = "-Wall -Wextra"
   end
 
   s.subspec 'UI' do |s|
