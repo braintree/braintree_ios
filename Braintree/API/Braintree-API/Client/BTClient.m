@@ -303,7 +303,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
 - (instancetype)copyWithMetadata:(void (^)(BTClientMutableMetadata *metadata))metadataBlock {
     BTClientMutableMetadata *mutableMetadata = [self.metadata mutableCopy];
-    metadataBlock(mutableMetadata);
+    if (metadataBlock) {
+        metadataBlock(mutableMetadata);
+    }
     BTClient *copiedClient = [self copy];
     copiedClient.metadata = mutableMetadata;
     return copiedClient;

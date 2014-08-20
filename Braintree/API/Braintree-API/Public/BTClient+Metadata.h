@@ -9,7 +9,7 @@
 ///
 ///  Useful for temporary metadata overrides.
 ///
-///  @param clientBlock block to be invoked.
+///  @param metadataBlock block for customizing metadata
 - (instancetype)copyWithMetadata:(void (^)(BTClientMutableMetadata *metadata))metadataBlock;
 
 @end
