@@ -7,7 +7,7 @@
 
 typedef void (^BTHTTPCompletionBlock)(BTHTTPResponse *response, NSError *error);
 
-@interface BTHTTP : NSObject
+@interface BTHTTP : NSObject<NSCopying>
 
 /// An optional array of pinned certificates, each an NSData instance
 /// consisting of DER encoded x509 certificates

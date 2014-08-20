@@ -399,6 +399,7 @@ describe(@"clients with PayPal activated", ^{
     it(@"can save a PayPal payment method based on an auth code", ^AsyncBlock{
         [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode"
                                applicationCorrelationID:@"testCorrelationId"
+                                             parameters:nil
                                                 success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
             expect(payPalPaymentMethod.nonce).to.beANonce();
             expect(payPalPaymentMethod.email).to.beKindOf([NSString class]);
@@ -409,6 +410,7 @@ describe(@"clients with PayPal activated", ^{
     it(@"can save a PayPal payment method based on an auth code without a correlation id", ^AsyncBlock{
         [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode"
                                applicationCorrelationID:nil
+                                             parameters:nil
                                                 success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
             expect(payPalPaymentMethod.nonce).to.beANonce();
             expect(payPalPaymentMethod.email).to.beKindOf([NSString class]);

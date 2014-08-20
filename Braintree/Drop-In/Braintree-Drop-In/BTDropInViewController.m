@@ -9,6 +9,7 @@
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
+#import "BTClient+Metadata.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalButtonViewControllerPresenterDelegate, BTPayPalButtonDelegate, BTDropInViewControllerDelegate>
 
@@ -47,9 +48,13 @@
     self = [self init];
     if (self) {
         self.theme = [BTUI braintreeTheme];
-        self.client = client;
         self.dropInContentView = [[BTDropInContentView alloc] init];
-        self.dropInContentView.payPalButton.client = self.client;
+
+        self.client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+            metadata.integration = BTClientMetadataIntegrationDropIn;
+        }];
+
+        self.dropInContentView.payPalButton.client = self.client ;
         self.dropInContentView.payPalButton.presentationDelegate = self;
         self.dropInContentView.payPalButton.delegate = self;
         self.dropInContentView.hidePayPal =  !self.client.btPayPal_isPayPalEnabled;
@@ -105,7 +110,7 @@
     self.dropInContentView.cardFormSectionHeader.text = BTDropInLocalizedString(CARD_FORM_SECTION_HEADER);
 
 
-     // Call the setters explicitly
+    // Call the setters explicitly
     [self setCallToActionText:_callToActionText];
     [self setSummaryDescription:_summaryDescription];
     [self setSummaryTitle:_summaryTitle];
@@ -287,20 +292,25 @@
                                   otherButtonTitles:nil] show];
             }
         };
-        
+
         if (cardForm.valid) {
             [self informDelegateWillComplete];
-            [self.client saveCardWithNumber:cardForm.number
-                            expirationMonth:cardForm.expirationMonth
-                             expirationYear:cardForm.expirationYear
-                                        cvv:cardForm.cvv
-                                 postalCode:cardForm.postalCode
-                                   validate:YES
-                                    success:^(BTCardPaymentMethod *card) {
-                                        [self showLoadingState:NO];
-                                        [self informDelegateDidAddPaymentMethod:card];
-                                    }
-                                    failure:cardFail];
+
+            BTClient *client = [self.client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+                metadata.source = BTClientMetadataSourceForm;
+            }];
+
+            [client saveCardWithNumber:cardForm.number
+                       expirationMonth:cardForm.expirationMonth
+                        expirationYear:cardForm.expirationYear
+                                   cvv:cardForm.cvv
+                            postalCode:cardForm.postalCode
+                              validate:YES
+                               success:^(BTCardPaymentMethod *card) {
+                                   [self showLoadingState:NO];
+                                   [self informDelegateDidAddPaymentMethod:card];
+                               }
+                               failure:cardFail];
         } else {
             cardFail(nil);
         }
@@ -469,7 +479,7 @@
     _fullForm = fullForm;
     if (!self.fullForm) {
         self.dropInContentView.state = BTDropInContentViewStateForm;
-        
+
     }
 }
 

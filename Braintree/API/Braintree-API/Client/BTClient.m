@@ -8,6 +8,7 @@
 #import "BTHTTP.h"
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
+#import "BTClient+Metadata.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -42,8 +43,18 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         if (self.clientToken.analyticsEnabled) {
             self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.analyticsURL];
         }
+        self.metadata = [[BTClientMetadata alloc] init];
     }
     return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    BTClient *copiedClient = [[BTClient allocWithZone:zone] init];
+    copiedClient.clientToken = [_clientToken copy];
+    copiedClient.clientApiHttp = [_clientApiHttp copy];
+    copiedClient.analyticsHttp = [_analyticsHttp copy];
+    copiedClient.metadata = [_metadata copy];
+    return copiedClient;
 }
 
 #pragma mark - Configuration
@@ -51,7 +62,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 - (NSSet *)challenges {
     return self.clientToken.challenges;
 }
-
 
 #pragma mark - API Methods
 
@@ -95,6 +105,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                    success:(BTClientCardSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
 
+    NSMutableDictionary *requestParameters = [self basePostParameters];
     NSMutableDictionary *creditCardParams = [@{ @"number": creditCardNumber,
                                                 @"expiration_month": expirationMonth,
                                                 @"expiration_year": expirationYear,
@@ -102,10 +113,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                                         @"validate": @(shouldValidate)
                                                         }
                                                 } mutableCopy];
-
-    NSMutableDictionary *requestParameters = [@{ @"credit_card": creditCardParams,
-                                                 @"authorization_fingerprint": self.clientToken.authorizationFingerprint }
-                                              mutableCopy];
+    [requestParameters addEntriesFromDictionary:@{ @"credit_card": creditCardParams,
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                   }];
 
     if (cvv) {
         requestParameters[@"credit_card"][@"cvv"] = cvv;
@@ -142,12 +152,13 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
 
-    NSDictionary *requestParameters = @{ @"paypal_account": @{
-                                                 @"consent_code": authCode ?: NSNull.null,
-                                                 @"correlation_id": correlationId ?: NSNull.null
-                                                 },
-                                         @"authorization_fingerprint": self.clientToken.authorizationFingerprint
-                                         };
+    NSMutableDictionary *requestParameters = [self basePostParameters];
+    [requestParameters addEntriesFromDictionary:@{ @"paypal_account": @{
+                                                           @"consent_code": authCode ?: NSNull.null,
+                                                           @"correlation_id": correlationId ?: NSNull.null
+                                                           },
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                   }];
 
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
@@ -195,18 +206,18 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                              @"_meta": [BTAnalyticsMetadata metadata] };
 
         [self.analyticsHttp POST:@"/"
-             parameters:requestParameters
-             completion:^(BTHTTPResponse *response, NSError *error) {
-                 if (response.isSuccess) {
-                     if (successBlock) {
-                         successBlock();
-                     }
-                 } else {
-                     if (failureBlock) {
-                         failureBlock(error);
-                     }
-                 }
-             }];
+                      parameters:requestParameters
+                      completion:^(BTHTTPResponse *response, NSError *error) {
+                          if (response.isSuccess) {
+                              if (successBlock) {
+                                  successBlock();
+                              }
+                          } else {
+                              if (failureBlock) {
+                                  failureBlock(error);
+                              }
+                          }
+                      }];
     } else {
         if (successBlock) {
             successBlock();
@@ -253,6 +264,14 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     return card;
 }
 
+- (NSMutableDictionary *)basePostParameters {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"_meta"] = [NSMutableDictionary dictionary];
+    parameters[@"_meta"][@"integration"] = self.metadata.integrationString;
+    parameters[@"_meta"][@"source"] = self.metadata.sourceString;
+    return parameters;
+}
+
 #pragma mark - Debug
 
 - (NSString *)description {
@@ -274,6 +293,20 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     return @"unknown";
 #endif
 #endif
+}
+
+#pragma mark - BTClient+Metadata
+
+- (BTClientMetadata *)metadata {
+    return _metadata;
+}
+
+- (instancetype)copyWithMetadata:(void (^)(BTClientMutableMetadata *metadata))metadataBlock {
+    BTClientMutableMetadata *mutableMetadata = [self.metadata mutableCopy];
+    metadataBlock(mutableMetadata);
+    BTClient *copiedClient = [self copy];
+    copiedClient.metadata = mutableMetadata;
+    return copiedClient;
 }
 
 @end

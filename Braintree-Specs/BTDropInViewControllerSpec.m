@@ -6,7 +6,7 @@ describe(@"initialization", ^{
     it(@"sets the client", ^{
         id mockClient = [OCMockObject niceMockForClass:[BTClient class]];
         BTDropInViewController *viewController = [[BTDropInViewController alloc] initWithClient:mockClient];
-        expect(viewController.client).to.beIdenticalTo(mockClient);
+        expect(viewController.client).notTo.beIdenticalTo(mockClient);
     });
 
     it(@"starts without a delegate", ^{

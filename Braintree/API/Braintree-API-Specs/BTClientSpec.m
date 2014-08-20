@@ -1,6 +1,7 @@
 #import "BTClient_Internal.h"
 #import "BTClient+Offline.h"
 #import "BTClient+Testing.h"
+#import "BTClient+Metadata.h"
 #import "BTTestClientTokenFactory.h"
 #import "BTAnalyticsMetadata.h"
 
@@ -53,6 +54,80 @@ describe(@"BTClient", ^{
                 [[mockLogger expect] log:containsString(@"BTClient could not initialize because the provided clientToken was invalid")];
                 expect(client).to.beNil;
             });
+        });
+    });
+});
+
+describe(@"_meta", ^{
+
+    __block NSString *clientToken;
+    beforeEach(^{
+        clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:nil];
+    });
+
+    describe(@"default values", ^{
+        BOOL (^isDefaultMetadata)(id) = ^BOOL(id obj) {
+            BTClientMetadata *defaultMetadata = [[BTClientMetadata alloc] init];
+            NSDictionary *params = (NSDictionary *)obj;
+            return [params[@"_meta"][@"integration"] isEqualToString:defaultMetadata.integrationString] &&
+            [params[@"_meta"][@"source"] isEqualToString:defaultMetadata.sourceString];
+        };
+
+        it(@"includes default _meta parameters in PayPal requests", ^{
+            BTClient *client = [[BTClient alloc] initWithClientToken:clientToken];
+            OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
+            [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isDefaultMetadata] completion:[OCMArg any]];
+            client.clientApiHttp = (id)mockHttp;
+            [client savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:nil success:nil failure:nil];
+            [mockHttp verify];
+        });
+
+        it(@"includes default _meta parameters in card requests", ^{
+            BTClient *client = [[BTClient alloc] initWithClientToken:clientToken];
+            OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
+            [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isDefaultMetadata] completion:[OCMArg any]];
+            client.clientApiHttp = (id)mockHttp;
+            [client saveCardWithNumber:@"4111111111111111" expirationMonth:@"01" expirationYear:@"01" cvv:nil postalCode:nil validate:YES success:nil failure:nil];
+            [mockHttp verify];
+        });
+    });
+
+    describe(@"custom values", ^{
+
+        __block BTClientMutableMetadata *customMetadata;
+        __block BTClient *customMetadataClient;
+        beforeEach(^{
+
+            customMetadata = [[BTClientMutableMetadata alloc] init];
+            customMetadata.integration = BTClientMetadataIntegrationDropIn;
+            customMetadata.source = BTClientMetadataSourceForm;
+
+            customMetadataClient = [[[BTClient alloc] initWithClientToken:clientToken] copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+                metadata.integration = customMetadata.integration;
+                metadata.source = customMetadata.source;
+            }];
+        });
+
+        BOOL (^isCustomMetadata)(id) = ^BOOL(id obj) {
+            NSDictionary *params = (NSDictionary *)obj;
+            return [params[@"_meta"][@"integration"] isEqualToString:customMetadata.integrationString] &&
+            [params[@"_meta"][@"source"] isEqualToString:customMetadata.sourceString];
+        };
+
+        it(@"includes custom _meta parameters in PayPal requests", ^{
+            OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
+            [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isCustomMetadata] completion:[OCMArg any]];
+            customMetadataClient.clientApiHttp = (id)mockHttp;
+            [customMetadataClient savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:nil success:nil failure:nil];
+            [mockHttp verify];
+        });
+
+        it(@"includes default _meta parameters in card requests", ^{
+            OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
+            [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isCustomMetadata] completion:[OCMArg any]];
+            customMetadataClient.clientApiHttp = (id)mockHttp;
+            [customMetadataClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"01" expirationYear:@"01" cvv:nil postalCode:nil validate:YES success:nil failure:nil];
+            [mockHttp verify];
         });
     });
 });
@@ -249,7 +324,7 @@ describe(@"offline clients", ^{
                 expect(paymentMethods[1]).to.beKindOf([BTCardPaymentMethod class]);
                 expect([paymentMethods[1] lastTwo]).to.equal(@"11");
             });
-            
+
             it(@"includes saved PayPal accounts", ^{
                 expect(paymentMethods[0]).to.beKindOf([BTPayPalPaymentMethod class]);
                 expect([paymentMethods[0] email]).to.endWith(@"@example.com");
@@ -267,5 +342,29 @@ describe(@"offline clients", ^{
         });
     });
 });
+
+describe(@"copy", ^{
+    __block BTClient *client;
+    beforeEach(^{
+        NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
+        NSDictionary *additionalParameters = @{BTClientTokenKeyAnalytics: @{BTClientTokenKeyURL: analyticsUrl}};
+        client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:additionalParameters]];
+    });
+
+    it(@"returns a different instance", ^{
+        expect([client copy]).toNot.beIdenticalTo(client);
+    });
+
+    it(@"returns an instance with different properties", ^{
+        BTClient *copiedClient = [client copy];
+        expect(copiedClient.clientToken).notTo.beNil();
+        expect(copiedClient.clientToken).notTo.beIdenticalTo(client.clientToken);
+        expect(copiedClient.clientApiHttp).notTo.beNil();
+        expect(copiedClient.clientApiHttp).notTo.beIdenticalTo(client.clientApiHttp);
+        expect(copiedClient.analyticsHttp).notTo.beNil();
+        expect(copiedClient.analyticsHttp).notTo.beIdenticalTo(client.analyticsHttp);
+    });
+});
+
 
 SpecEnd

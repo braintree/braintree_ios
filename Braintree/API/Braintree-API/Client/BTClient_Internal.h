@@ -6,4 +6,5 @@
 @property (nonatomic, strong, readwrite) BTHTTP *clientApiHttp;
 @property (nonatomic, strong, readwrite) BTHTTP *analyticsHttp;
 @property (nonatomic, strong) BTClientToken *clientToken;
+@property (nonatomic, copy) BTClientMetadata *metadata;
 @end
