@@ -1590,7 +1590,6 @@
 				A75DA34A1921392E00D997A2 /* Braintree */,
 				16217529192D922F008DC35D /* Braintree-Demo */,
 				A75DA36A1921394200D997A2 /* Braintree-Specs */,
-				A7B7436319A40B9F000A6A7A /* Braintree-AppSwitch-Specs */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A75DA3521921394200D997A2 /* Products */,
 				3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */,
@@ -1725,6 +1724,7 @@
 		A7B7432019A3DFC1000A6A7A /* AppSwitch */ = {
 			isa = PBXGroup;
 			children = (
+				A7B7436319A40B9F000A6A7A /* Braintree-AppSwitch-Specs */,
 				A7B7432119A3DFC1000A6A7A /* Braintree-AppSwitch */,
 			);
 			path = AppSwitch;
