@@ -19,22 +19,25 @@
     return instance;
 }
 
-- (BOOL)handleAppSwitchURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+- (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
     if (![[self class] validateClient:self.client delegate:self.delegate appSwitchCallbackURLScheme:self.appSwitchCallbackURLScheme]) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.invalid"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.can-handle.invalid"];
         return NO;
     }
 
     if (![url.scheme isEqualToString:self.appSwitchCallbackURLScheme]) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.different-scheme"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.can-handle.different-scheme"];
         return NO;
     }
 
     if (![PayPalTouch canHandleURL:url sourceApplication:sourceApplication]) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.paypal-cannot-handle-url"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.can-handle.paypal-cannot-handle"];
         return NO;
     }
+    return YES;
+}
 
+- (void)handleReturnURL:(NSURL *)url {
     PayPalTouchResult *result = [PayPalTouch parseAppSwitchURL:url];
     NSString *code;
     switch (result.resultType) {
@@ -42,7 +45,7 @@
             [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.parse-error"];
             NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalUnknownError userInfo:nil];
             [self informDelegateDidFailWithError:error];
-            return YES;
+            return;
         }
         case PayPalTouchResultTypeCancel:
             [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.cancel"];
@@ -51,7 +54,7 @@
                 [[BTLogger sharedLogger] log:[NSString stringWithFormat:@"PayPal Wallet error: %@", result.error]];
             }
             [self informDelegateDidCancel];
-            return YES;
+            return;
         case PayPalTouchResultTypeSuccess:
             code = result.authorization[@"response"][@"code"];
             break;
@@ -61,7 +64,7 @@
         NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalUnknownError userInfo:@{NSLocalizedDescriptionKey: @"Auth code not found in PayPal Touch app switch response" }];
         [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.code-error"];
         [self informDelegateDidFailWithError:error];
-        return YES;
+        return;
     }
 
     [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.authorized"];
@@ -83,7 +86,6 @@
 
                                              }];
 
-    return YES;
 }
 
 - (BOOL)initiatePayPalAuthWithClient:(BTClient *)client delegate:(id<BTPayPalAppSwitchHandlerDelegate>)delegate {

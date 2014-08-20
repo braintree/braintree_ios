@@ -13,8 +13,6 @@
 
 + (instancetype)sharedHandler;
 
-- (BOOL)initiateAuthWithClient:(BTClient *)client delegate:(id<BTAppSwitchHandlerDelegate>)delegate;
-
 - (BOOL)handleAppSwitchURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 @end

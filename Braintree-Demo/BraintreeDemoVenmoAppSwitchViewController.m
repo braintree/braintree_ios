@@ -1,7 +1,7 @@
 #import "BraintreeDemoVenmoAppSwitchViewController.h"
 
-#import "BTVenmoAppSwitchURL.h"
-#import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
+#import "BTVenmoAppSwitchHandler.h"
+//#import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
 
 @interface BraintreeDemoVenmoAppSwitchViewController ()
 @property (nonatomic, strong) Braintree *braintree;
@@ -36,9 +36,8 @@
 
 - (IBAction)tappedToVenmoAppSwitch
 {
-    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchURL appSwitchURLForMerchantID:self.merchantID];
-
-    [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
+    [BTVenmoAppSwitchHandler sharedHandler].callbackURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
+    [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.braintree.client delegate:self];
 }
 
 @end

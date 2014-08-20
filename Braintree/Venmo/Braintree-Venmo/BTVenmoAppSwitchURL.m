@@ -1,35 +1,44 @@
-//
-//  BTVenmoAppSwitchURL.m
-//  Braintree
-//
-//  Created by Mickey Reiss on 8/12/14.
-//
-//
-
 #import "BTVenmoAppSwitchURL.h"
 #import "BTURLUtils.h"
-#import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
+
+#define kXCallbackTemplate @"scheme://x-callback-url/path"
+#define kVenmoScheme @"com.venmo.touch.v1"
 
 @implementation BTVenmoAppSwitchURL
 
 + (BOOL)isAppSwitchAvailable {
-    // We have a return URL registered
-    // Venmo app that registers the URL is present
-    return NO;
+    NSURL *url = [self appSwitchBaseURLComponents].URL;
+    return [[UIApplication sharedApplication] canOpenURL:url];
 }
 
-+ (NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID {
++ (NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID returnURLScheme:(NSString *)scheme {
     NSDictionary *appSwitchParameters = @{
-                                          @"x-success": @"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/venmo/success",
-                                          @"x-error": @"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/venmo/error",
-                                          @"x-cancel": @"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/venmo/cancel",
-                                          @"x-source": @"Braintree Demo",
+                                          @"x-success": [self returnURLWithScheme:scheme result:@"success"],
+                                          @"x-error": [self returnURLWithScheme:scheme result:@"error"],
+                                          @"x-cancel": [self returnURLWithScheme:scheme result:@"cancel"],
+                                          @"x-source": scheme,
                                           @"braintree_merchant_id": merchantID
                                           };
 
-    NSURL *venmoAppSwitchURL = [[NSURL URLWithString:@"com.venmo.touch.v1://x-callback-url/vzero/auth"] uq_URLByAppendingQueryDictionary:appSwitchParameters];
+    NSURLComponents *components = [self appSwitchBaseURLComponents];
+    components.percentEncodedQuery = [BTURLUtils queryStringWithDictionary:appSwitchParameters];
+    return components.URL;
+}
 
-    return venmoAppSwitchURL;
+#pragma mark Internal Helpers
+
++ (NSURL *)returnURLWithScheme:(NSString *)scheme result:(NSString *)result {
+    NSURLComponents *components = [NSURLComponents componentsWithString:kXCallbackTemplate];
+    components.scheme = scheme;
+    components.percentEncodedPath = [NSString stringWithFormat:@"/vzero/auth/venmo/%@", result];
+    return components.URL;
+}
+
++ (NSURLComponents *)appSwitchBaseURLComponents {
+    NSURLComponents *components = [NSURLComponents componentsWithString:kXCallbackTemplate];
+    components.scheme = kVenmoScheme;
+    components.percentEncodedPath = @"/vzero/auth";
+    return components;
 }
 
 @end

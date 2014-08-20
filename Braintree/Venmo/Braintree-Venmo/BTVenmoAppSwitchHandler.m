@@ -1,11 +1,21 @@
 #import "BTVenmoAppSwitchHandler.h"
+#import "BTVenmoAppSwitchURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 
 @implementation BTVenmoAppSwitchHandler
 
-- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id)delegate {
-    NSLog(@"%@ %@", client, delegate);
-    return YES;
+- (BOOL)initiateAppSwitchWithClient:(__unused BTClient *)client delegate:(__unused id)delegate {
+    if (!self.callbackURLScheme) {
+        return NO;
+    }
+
+    if (![BTVenmoAppSwitchURL isAppSwitchAvailable]) {
+        return NO;
+    }
+//        NSString *merchantID = client.merchantID;
+    NSString *merchantID = @"xxx";
+    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchURL appSwitchURLForMerchantID:merchantID returnURLScheme:self.callbackURLScheme];
+    return [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {

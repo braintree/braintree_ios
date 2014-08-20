@@ -6,6 +6,7 @@ typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
     BTVenmoAppSwitchReturnURLStateSucceeded,
     BTVenmoAppSwitchReturnURLStateFailed,
     BTVenmoAppSwitchReturnURLStateCanceled,
+    BTVenmoAppSwitchReturnURLStateUnknown
 };
 
 /// This class interprets URLs received from the Venmo app via app switch returns.
@@ -30,12 +31,12 @@ typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
 - (instancetype)initWithURL:(NSURL *)url;
 
 /// The overall status of the app switch - success, failure or cancelation
-- (BTVenmoAppSwitchReturnURLState) state;
+@property (nonatomic, assign, readonly) BTVenmoAppSwitchReturnURLState state;
 
 /// Creates and returns a payment method object that represents the payment method
 /// authorized in the Venmo app switch.
 ///
 ///  @return A new payment method object with a transactable or vaultable nonce
-- (BTPaymentMethod *)paymentMethod;
+@property (nonatomic, strong, readonly) BTPaymentMethod *paymentMethod;
 
 @end
