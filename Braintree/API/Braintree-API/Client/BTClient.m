@@ -262,7 +262,16 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         id email = response[@"details"][@"email"];
         payPalPaymentMethod.email = [email isKindOfClass:[NSString class]] ? email : nil;
         id description = response[@"description"];
-        payPalPaymentMethod.description = [description isKindOfClass:[NSString class]] ? description : nil;
+        if ([description isKindOfClass:[NSString class]]) {
+            // Braintree gateway has some inconsistent behavior depending on
+            // the type of nonce, and sometimes returns "PayPal" for description,
+            // and sometimes returns a real identifying string. The former is not
+            // desirable for display. The latter is.
+            // As a workaround, we ignore descriptions that look like "PayPal".
+            if (![[description lowercaseString] isEqualToString:@"paypal"]) {
+                payPalPaymentMethod.description = nil;
+            }
+        }
     }
     return payPalPaymentMethod;
 }
