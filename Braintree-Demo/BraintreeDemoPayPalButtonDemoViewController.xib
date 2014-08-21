@@ -17,15 +17,15 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap PayPal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Z8-Pa-pWG">
-                    <rect key="frame" x="117" y="416" width="86" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to switch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Z8-Pa-pWG">
+                    <rect key="frame" x="109" y="527" width="102" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="J2f-X3-rQB">
-                    <rect key="frame" x="142" y="408" width="37" height="37"/>
+                    <rect key="frame" x="142" y="450" width="37" height="37"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="color" red="0.96027960530000001" green="0.54742703790000002" blue="0.09705604625" alpha="1" colorSpace="calibratedRGB"/>
                 </activityIndicatorView>
@@ -39,7 +39,17 @@
                         <action selector="tappedCustomPayPalButton:" destination="-1" eventType="touchUpInside" id="7RA-Ym-sn2"/>
                     </connections>
                 </button>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1VB-V2-fn8">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="57D-o6-4f3">
+                    <rect key="frame" x="73" y="339" width="175" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Choose card from Venmo">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapVenmo:" destination="-1" eventType="touchUpInside" id="al2-4w-koC"/>
+                    </connections>
+                </button>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1VB-V2-fn8">
                     <rect key="frame" x="47" y="94" width="227" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <segments>
@@ -55,10 +65,14 @@
             <constraints>
                 <constraint firstAttribute="centerX" secondItem="d9t-Db-q1y" secondAttribute="centerX" id="3TT-6K-GZW"/>
                 <constraint firstAttribute="centerY" secondItem="d9t-Db-q1y" secondAttribute="centerY" id="Bfe-kv-acV"/>
-                <constraint firstItem="3Z8-Pa-pWG" firstAttribute="centerX" secondItem="J2f-X3-rQB" secondAttribute="centerX" id="Mtn-Sm-3En"/>
-                <constraint firstAttribute="bottom" secondItem="3Z8-Pa-pWG" secondAttribute="bottom" constant="131" id="OEd-cm-HvR"/>
-                <constraint firstItem="3Z8-Pa-pWG" firstAttribute="centerY" secondItem="J2f-X3-rQB" secondAttribute="centerY" id="abs-wa-f47"/>
+                <constraint firstAttribute="centerX" secondItem="J2f-X3-rQB" secondAttribute="centerX" id="IUy-h7-PdE"/>
+                <constraint firstItem="1VB-V2-fn8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="94" id="Jhj-qR-Edj"/>
+                <constraint firstAttribute="bottom" secondItem="3Z8-Pa-pWG" secondAttribute="bottom" constant="20" id="OEd-cm-HvR"/>
+                <constraint firstAttribute="centerX" secondItem="57D-o6-4f3" secondAttribute="centerX" id="Wdr-EL-fnS"/>
+                <constraint firstItem="57D-o6-4f3" firstAttribute="top" secondItem="d9t-Db-q1y" secondAttribute="bottom" constant="40" id="b3S-DA-9yM"/>
+                <constraint firstAttribute="centerX" secondItem="1VB-V2-fn8" secondAttribute="centerX" id="dVr-Bb-Zu3"/>
                 <constraint firstAttribute="centerX" secondItem="3Z8-Pa-pWG" secondAttribute="centerX" id="eaP-Ht-7wf"/>
+                <constraint firstItem="3Z8-Pa-pWG" firstAttribute="top" secondItem="J2f-X3-rQB" secondAttribute="bottom" constant="40" id="r1E-Yr-FpD"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

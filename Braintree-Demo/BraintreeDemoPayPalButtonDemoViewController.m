@@ -2,8 +2,9 @@
 
 #import <Braintree/Braintree.h>
 #import <Braintree/BTClient+BTPayPal.h>
+#import <Braintree/BTVenmoAppSwitchHandler.h>
 
-@interface BraintreeDemoPayPalButtonDemoViewController () <BTPayPalButtonDelegate, BTPayPalAdapterDelegate>
+@interface BraintreeDemoPayPalButtonDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPayPalAdapterDelegate>
 @property (nonatomic, strong) Braintree *braintree;
 
 @property (nonatomic, strong) BTPayPalButton *payPalButton;
@@ -81,6 +82,11 @@
     self.customPayPalButton.alpha = 0;
 
     self.emailLabel.text = nil;
+}
+
+- (IBAction)didTapVenmo:(__unused id)sender {
+    [BTVenmoAppSwitchHandler sharedHandler].returnURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
+    [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.braintree.client delegate:self];
 }
 
 - (void)willReceivePaymentMethod {
@@ -177,4 +183,31 @@
                      }];
 }
 
+#pragma mark - 
+
+- (void)appSwitcherWillSwitch:(id<BTAppSwitching>)switcher {
+    NSLog(@"appSwitcherWillSwitch:%@", switcher);
+}
+
+- (void)appSwitcherWillCreatePaymentMethod:(id<BTAppSwitching>)switcher {
+    NSLog(@"appSwitcherCreatePayment:%@", switcher);
+}
+
+- (void)appSwitcher:(id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    NSLog(@"appSwitcher:%@", switcher);
+    NSLog(@"payment: %@", paymentMethod);
+}
+
+- (void)appSwitcher:(id<BTAppSwitching>)switcher didFailWithError:(NSError *)error {
+    NSLog(@"appSwitcher:%@", switcher);
+    NSLog(@"error: %@", error);
+}
+
+- (void)appSwitcherDidCancel:(id<BTAppSwitching>)switcher {
+    NSLog(@"appSwitcherDidCancel:%@", switcher);
+}
+
+
 @end
+
+
