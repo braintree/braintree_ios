@@ -1,6 +1,5 @@
 #import "BraintreeDemoAppDelegate.h"
 #import <HockeySDK/HockeySDK.h>
-#import "BraintreeAppSwitchAuthResponse.h"
 #import "Braintree.h"
 
 #import <Braintree/BTAppSwitchHandler.h>

@@ -155,7 +155,6 @@
 		A79AC9A6193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */; };
 		A79ACA4A193FB3340095D7F1 /* good_root_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = A79ACA49193FB3340095D7F1 /* good_root_cert.der */; };
 		A79ACA4D1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */; };
-		A7A88B83198072810015D018 /* BraintreeAppSwitchAuthResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A88B82198072810015D018 /* BraintreeAppSwitchAuthResponse.m */; };
 		A7AEF520196CD05C00360408 /* BraintreePublicInterfaceSanityCheckSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */; };
 		A7B7432B19A3E093000A6A7A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		A7B7432C19A3E093000A6A7A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
@@ -559,8 +558,6 @@
 		A79ACA49193FB3340095D7F1 /* good_root_cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; name = good_root_cert.der; path = SSL/good_root_cert.der; sourceTree = "<group>"; };
 		A79ACA4B193FBEDE0095D7F1 /* BTAPIPinnedCertificates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIPinnedCertificates.h; sourceTree = "<group>"; };
 		A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormatterSpec.m; sourceTree = "<group>"; };
-		A7A88B81198072810015D018 /* BraintreeAppSwitchAuthResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeAppSwitchAuthResponse.h; sourceTree = "<group>"; };
-		A7A88B82198072810015D018 /* BraintreeAppSwitchAuthResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeAppSwitchAuthResponse.m; sourceTree = "<group>"; };
 		A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler_Internal.h; sourceTree = "<group>"; };
 		A7AEF51E196CCFC800360408 /* BraintreePublicInterfaceSanityCheckSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreePublicInterfaceSanityCheckSpec.m; sourceTree = "<group>"; };
 		A7B7432A19A3E093000A6A7A /* Braintree-Venmo-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Venmo-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1239,7 +1236,6 @@
 		16217529192D922F008DC35D /* Braintree-Demo */ = {
 			isa = PBXGroup;
 			children = (
-				A7A88B7E198072270015D018 /* App Switch Auth */,
 				1621750D192D922F008DC35D /* BraintreeDemoAppDelegate.h */,
 				1621750E192D922F008DC35D /* BraintreeDemoAppDelegate.m */,
 				1621750F192D922F008DC35D /* BraintreeDemoChooserViewController.h */,
@@ -1710,15 +1706,6 @@
 				A79ACA4B193FBEDE0095D7F1 /* BTAPIPinnedCertificates.h */,
 			);
 			path = Certificates;
-			sourceTree = "<group>";
-		};
-		A7A88B7E198072270015D018 /* App Switch Auth */ = {
-			isa = PBXGroup;
-			children = (
-				A7A88B81198072810015D018 /* BraintreeAppSwitchAuthResponse.h */,
-				A7A88B82198072810015D018 /* BraintreeAppSwitchAuthResponse.m */,
-			);
-			name = "App Switch Auth";
 			sourceTree = "<group>";
 		};
 		A7B7432019A3DFC1000A6A7A /* AppSwitch */ = {
@@ -2814,7 +2801,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7A88B83198072810015D018 /* BraintreeAppSwitchAuthResponse.m in Sources */,
 				162D8DA5199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.m in Sources */,
 				1621752D192D922F008DC35D /* BraintreeDemoBraintreeInitializationDemoViewController.m in Sources */,
 				1621752B192D922F008DC35D /* BraintreeDemoAppDelegate.m in Sources */,
