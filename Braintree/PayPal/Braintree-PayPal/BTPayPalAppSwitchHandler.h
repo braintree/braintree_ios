@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
+#import "BTAppSwitchHandlerDelegate.h"
 
 @class BTClient, BTPayPalPaymentMethod;
-@protocol BTPayPalAppSwitchHandlerDelegate;
 
 @interface BTPayPalAppSwitchHandler : NSObject
 
@@ -15,51 +15,14 @@
 
 @property (nonatomic, readonly, strong) BTClient *client;
 
-@property (nonatomic, weak) id<BTPayPalAppSwitchHandlerDelegate>delegate;
-
+@property (nonatomic, weak) id<BTAppSwitchHandlerDelegate>delegate;
 
 + (instancetype)sharedHandler;
 
-- (BOOL)initiatePayPalAuthWithClient:(BTClient *)client delegate:(id<BTPayPalAppSwitchHandlerDelegate>)delegate;
+- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchHandlerDelegate>)delegate;
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 - (void)handleReturnURL:(NSURL *)url;
-
-@end
-
-
-/// Delegate protocol for receiving messages about state changes to a `BTPayPalappSwitchHandler`
-///
-/// @see BTPayPalAppSwitchHandler
-@protocol BTPayPalAppSwitchHandlerDelegate <NSObject>
-
-@optional
-
-/// This message is sent immediately before app switch will be initiated.
-///
-/// @param appSwitchHandler
-- (void)payPalAppSwitchHandlerWillAppSwitch:(BTPayPalAppSwitchHandler *)appSwitchHandler;
-
-/// This message is sent when the user has authorized PayPal, and the payment method
-/// is about to be created.
-///
-/// @param appSwitchHandler
-- (void)payPalAppSwitchHandlerWillCreatePayPalPaymentMethod:(BTPayPalAppSwitchHandler *)appSwitchHandler;
-
-@required
-
-/// This message is sent when a payment method has been authorized and is available.
-///
-/// @param appSwitchHandler The requesting `BTPayPalAppSwitchHandler`
-/// @param nonce
-- (void)payPalAppSwitchHandler:(BTPayPalAppSwitchHandler *)appSwitchHandler didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod;
-
-/// This message is sent when the payment method could not be created.
-///
-/// @param
-- (void)payPalAppSwitchHandler:(BTPayPalAppSwitchHandler *)appSwitchHandler didFailWithError:(NSError *)error;
-
-- (void)payPalAppSwitchHandlerAuthenticatorAppDidCancel:(BTPayPalAppSwitchHandler *)appSwitchHandler;
 
 @end

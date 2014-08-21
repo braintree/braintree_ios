@@ -3,7 +3,7 @@
 #import "BTVenmoAppSwitchHandler.h"
 //#import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
 
-@interface BraintreeDemoVenmoAppSwitchViewController ()
+@interface BraintreeDemoVenmoAppSwitchViewController ()<BTAppSwitchHandlerDelegate>
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, strong) void (^completionBlock)(NSString *nonce);
 @property (nonatomic, copy) NSString *merchantID;
@@ -36,8 +36,28 @@
 
 - (IBAction)tappedToVenmoAppSwitch
 {
-    [BTVenmoAppSwitchHandler sharedHandler].callbackURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
+    [BTVenmoAppSwitchHandler sharedHandler].returnURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
     [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.braintree.client delegate:self];
+}
+
+- (void)appSwitchHandlerWillAppSwitch:(id)appSwitchHandler {
+    NSLog(@"appSwitchHandlerWillAppSwitch:%@", appSwitchHandler);
+}
+
+- (void)appSwitchHandlerWillCreatePaymentMethod:(id)appSwitchHandler {
+    NSLog(@"appSwitchHandlerWillCreatePaymentMethod:%@", appSwitchHandler);
+}
+
+- (void)appSwitchHandler:(id)appSwitchHandler didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    NSLog(@"appSwitchHandler:%@ didCreatePaymentMethod:%@", appSwitchHandler, paymentMethod);
+}
+
+- (void)appSwitchHandler:(id)appSwitchHandler didFailWithError:(NSError *)error {
+    NSLog(@"appSwitchHandler:%@ didFailWithError:%@", appSwitchHandler, error);
+}
+
+- (void)appSwitchHandlerDidCancel:(id)appSwitchHandler {
+    NSLog(@"appSwitchHandlerDidCancel:%@", appSwitchHandler);
 }
 
 @end

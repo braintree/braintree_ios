@@ -6,7 +6,7 @@
 
 #import "PayPalMobile.h"
 
-@interface BTPayPalAdapter () <BTPayPalViewControllerDelegate, BTPayPalAppSwitchHandlerDelegate>
+@interface BTPayPalAdapter () <BTPayPalViewControllerDelegate, BTAppSwitchHandlerDelegate>
 
 @end
 
@@ -30,7 +30,7 @@
 
 - (void)initiatePayPalAuth {
 
-    BOOL appSwitchHandled = [[BTPayPalAppSwitchHandler sharedHandler] initiatePayPalAuthWithClient:self.client delegate:self];
+    BOOL appSwitchHandled = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
 
     if (appSwitchHandled) {
         [self.client postAnalyticsEvent:@"ios.paypal.adapter.appswitch.initiate"];
@@ -98,28 +98,28 @@
     [self informDelegateDidCancel];
 }
 
-#pragma mark BTPayPalAppSwitchHandler Delegate implementation
+#pragma mark BTAppSwitchHandler Delegate implementation
 
-- (void)payPalAppSwitchHandlerWillAppSwitch:(__unused BTPayPalAppSwitchHandler *)appSwitchHandler {
+- (void)appSwitchHandlerWillAppSwitch:(__unused id)appSwitchHandler {
     [self informDelegateWillAppSwitch];
 }
 
-- (void)payPalAppSwitchHandlerWillCreatePayPalPaymentMethod:(__unused BTPayPalAppSwitchHandler *)appSwitchHandler {
+- (void)appSwitchHandlerWillCreatePaymentMethod:(__unused id)appSwitchHandler {
     [self.client postAnalyticsEvent:@"ios.paypal.adapter.appswitch.will-create-payment-method"];
     [self informDelegateWillCreatePayPalPaymentMethod];
 }
 
-- (void)payPalAppSwitchHandler:(__unused BTPayPalAppSwitchHandler *)appSwitchHandler didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
+- (void)appSwitchHandler:(__unused id)appSwitchHandler didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     [self.client postAnalyticsEvent:@"ios.paypal.adapter.appswitch.did-create-payment-method"];
-    [self informDelegateDidCreatePayPalPaymentMethod:payPalPaymentMethod];
+    [self informDelegateDidCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod];
 }
 
-- (void)payPalAppSwitchHandler:(__unused BTPayPalAppSwitchHandler *)appSwitchHandler didFailWithError:(NSError *)error {
+- (void)appSwitchHandler:(__unused id)appSwitchHandler didFailWithError:(NSError *)error {
     [self.client postAnalyticsEvent:@"ios.paypal.adapter.appswitch.did-fail-with-error"];
     [self informDelegateDidFailWithError:error];
 }
 
-- (void)payPalAppSwitchHandlerAuthenticatorAppDidCancel:(__unused BTPayPalAppSwitchHandler *)appSwitchHandler {
+- (void)appSwitchHandlerDidCancel:(__unused id)appSwitchHandler {
     [self.client postAnalyticsEvent:@"ios.paypal.adapter.appswitch.did-cancel"];
     [self informDelegateDidCancel];
 }

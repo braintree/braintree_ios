@@ -44,7 +44,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
         it(@"returns NO", ^{
             [[[client expect] andReturnValue:@YES] btPayPal_isTouchDisabled];
             [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
-            BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
+            BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
             expect(initiated).to.beFalsy();
         });
     });
@@ -61,19 +61,19 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 it(@"returns NO if appSwitchCallbackURLScheme is nil", ^{
                     appSwitchHandler.appSwitchCallbackURLScheme = nil;
                     [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
-                    BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
+                    BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
                     expect(initiated).to.beFalsy();
                 });
 
                 it(@"returns NO with a nil delegate", ^{
                     [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
-                    BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:nil];
+                    BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:nil];
                     expect(initiated).to.beFalsy();
                 });
             });
 
             it(@"returns NO with a nil client", ^{
-                BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:nil delegate:delegate];
+                BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:nil delegate:delegate];
                 expect(initiated).to.beFalsy();
             });
 
@@ -83,7 +83,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
             [[[payPalTouch expect] andReturnValue:@NO] canAppSwitchForUrlScheme:OCMOCK_ANY];
             [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.bad-callback-url-scheme"];
             [[[client expect] andReturnValue:@NO] btPayPal_isTouchDisabled];
-            BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
+            BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
             expect(initiated).to.beFalsy();
         });
 
@@ -99,7 +99,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 [[[payPalTouch expect] andReturnValue:@NO] authorizeFuturePayments:OCMOCK_ANY];
                 [[delegate expect] payPalAppSwitchHandlerWillAppSwitch:appSwitchHandler];
                 [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.fail"];
-                BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
+                BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
                 expect(initiated).to.beFalsy();
             });
 
@@ -107,7 +107,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 [[[payPalTouch expect] andReturnValue:@YES] authorizeFuturePayments:OCMOCK_ANY];
                 [[delegate expect] payPalAppSwitchHandlerWillAppSwitch:appSwitchHandler];
                 [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.success"];
-                BOOL initiated = [appSwitchHandler initiatePayPalAuthWithClient:client delegate:delegate];
+                BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
                 expect(initiated).to.beTruthy();
             });
         });

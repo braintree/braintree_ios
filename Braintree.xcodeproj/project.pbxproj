@@ -526,6 +526,7 @@
 		A7281C5519A53DE500BFD6EC /* BTAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchHandler.h; sourceTree = "<group>"; };
 		A7281C5619A53DE500BFD6EC /* BTAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchHandler.m; sourceTree = "<group>"; };
 		A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchURLSpec.m; sourceTree = "<group>"; };
+		A7281C5C19A56FAF00BFD6EC /* BTAppSwitchHandlerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchHandlerDelegate.h; sourceTree = "<group>"; };
 		A72B37FD19633826009AD2F5 /* Braintree-Data-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Data-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A72B380F196339C7009AD2F5 /* DeviceCollectorSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceCollectorSDK.h; sourceTree = "<group>"; };
 		A72B3810196339C7009AD2F5 /* libDeviceCollectorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libDeviceCollectorLibrary.a; sourceTree = "<group>"; };
@@ -1732,6 +1733,7 @@
 		A7B7432119A3DFC1000A6A7A /* Braintree-AppSwitch */ = {
 			isa = PBXGroup;
 			children = (
+				A7281C5C19A56FAF00BFD6EC /* BTAppSwitchHandlerDelegate.h */,
 			);
 			path = "Braintree-AppSwitch";
 			sourceTree = "<group>";

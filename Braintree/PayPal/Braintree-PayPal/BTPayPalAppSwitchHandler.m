@@ -88,7 +88,7 @@
 
 }
 
-- (BOOL)initiatePayPalAuthWithClient:(BTClient *)client delegate:(id<BTPayPalAppSwitchHandlerDelegate>)delegate {
+- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchHandlerDelegate>)delegate {
 
     if ([client btPayPal_isTouchDisabled]){
         [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
@@ -122,7 +122,7 @@
     return payPalTouchDidAuthorize;
 }
 
-+ (BOOL)validateClient:(BTClient *)client delegate:(id<BTPayPalAppSwitchHandlerDelegate>)delegate appSwitchCallbackURLScheme:(NSString *)appSwitchCallbackURLScheme {
++ (BOOL)validateClient:(BTClient *)client delegate:(id<BTAppSwitchHandlerDelegate>)delegate appSwitchCallbackURLScheme:(NSString *)appSwitchCallbackURLScheme {
     if (client == nil) {
         [[BTLogger sharedLogger] log:@"BTPayPalAppSwitchHandler is missing a client."];
         return NO;
@@ -145,27 +145,27 @@
 #pragma mark Delegate Method Invocations
 
 - (void)informDelegateWillAppSwitch {
-  if ([self.delegate respondsToSelector:@selector(payPalAppSwitchHandlerWillAppSwitch:)]) {
-    [self.delegate payPalAppSwitchHandlerWillAppSwitch:self];
+  if ([self.delegate respondsToSelector:@selector(appSwitchHandlerWillAppSwitch:)]) {
+    [self.delegate appSwitchHandlerWillAppSwitch:self];
   }
 }
 
 - (void)informDelegateWillCreatePayPalPaymentMethod {
-    if ([self.delegate respondsToSelector:@selector(payPalAppSwitchHandlerWillCreatePayPalPaymentMethod:)]) {
-        [self.delegate payPalAppSwitchHandlerWillCreatePayPalPaymentMethod:self];
+    if ([self.delegate respondsToSelector:@selector(appSwitchHandlerWillCreatePaymentMethod:)]) {
+        [self.delegate appSwitchHandlerWillCreatePaymentMethod:self];
     }
 }
 
-- (void)informDelegateDidCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
-    [self.delegate payPalAppSwitchHandler:self didCreatePayPalPaymentMethod:payPalPaymentMethod];
+- (void)informDelegateDidCreatePayPalPaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [self.delegate appSwitchHandler:self didCreatePaymentMethod:paymentMethod];
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
-    [self.delegate payPalAppSwitchHandler:self didFailWithError:error];
+    [self.delegate appSwitchHandler:self didFailWithError:error];
 }
 
 - (void)informDelegateDidCancel {
-    [self.delegate payPalAppSwitchHandlerAuthenticatorAppDidCancel:self];
+    [self.delegate appSwitchHandlerDidCancel:self];
 }
 
 @end
