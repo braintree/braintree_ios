@@ -16,11 +16,11 @@
 }
 
 - (void)setAppSwitchCallbackURLScheme:(NSString *)appSwitchCallbackURLScheme {
-    [BTPayPalAppSwitchHandler sharedHandler].appSwitchCallbackURLScheme = appSwitchCallbackURLScheme;
+    [BTPayPalAppSwitchHandler sharedHandler].returnURLScheme = appSwitchCallbackURLScheme;
 }
 
 - (NSString *)appSwitchCallbackURLScheme {
-    return [BTPayPalAppSwitchHandler sharedHandler].appSwitchCallbackURLScheme;
+    return [BTPayPalAppSwitchHandler sharedHandler].returnURLScheme;
 }
 
 - (BOOL)handleAppSwitchURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {

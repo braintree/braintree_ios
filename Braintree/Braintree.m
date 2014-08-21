@@ -6,7 +6,10 @@
 
 #import "BTDropInViewController.h"
 #import "PayPalTouch.h"
-#import "BTAppSwitchHandler.h"
+
+#import "BTAppSwitch.h"
+#import "BTVenmoAppSwitchHandler.h"
+#import "BTPayPalAppSwitchHandler.h"
 
 @interface Braintree ()
 @property (nonatomic, strong) BTClient *client;
@@ -110,8 +113,19 @@
 #endif
 }
 
++ (void)setReturnURLScheme:(NSString *)scheme {
+    [BTAppSwitch sharedInstance].returnURLScheme = scheme;
+    [self initAppSwitchingOptions];
+}
+
 + (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [[BTAppSwitchHandler sharedHandler] handleAppSwitchURL:url sourceApplication:sourceApplication];
+    [self initAppSwitchingOptions];
+    return [[BTAppSwitch sharedInstance] handleReturnURL:url sourceApplication:sourceApplication];
+}
+
++ (void)initAppSwitchingOptions {
+    [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler]];
+    [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler]];
 }
 
 @end

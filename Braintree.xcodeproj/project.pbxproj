@@ -502,6 +502,9 @@
 		2DC3791A193FB53C00BD2BB9 /* BTUITextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUITextField.h; sourceTree = "<group>"; };
 		2DC3791B193FB53C00BD2BB9 /* BTUITextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUITextField.m; sourceTree = "<group>"; };
 		2DCDDFC9194F9E1400F691CF /* BTHTTPSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSpec.m; sourceTree = "<group>"; };
+		2DD1B72919A5AB69000404D0 /* BTAppSwitching.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitching.h; sourceTree = "<group>"; };
+		2DD1B72A19A5B685000404D0 /* BTAppSwitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitch.h; sourceTree = "<group>"; };
+		2DD1B72B19A5B685000404D0 /* BTAppSwitch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitch.m; sourceTree = "<group>"; };
 		3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Specs.xcconfig"; path = "Pods/Pods-Braintree-Specs.xcconfig"; sourceTree = "<group>"; };
 		450771C9BADB4C4893CAA26E /* Pods-Braintree-Payments-UI-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-UI-Demo.xcconfig"; path = "Pods/Pods-Braintree-Payments-UI-Demo.xcconfig"; sourceTree = "<group>"; };
 		49D0108CF663453B80F1BEA8 /* Pods-Braintree-Payments-UI-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-UI-Specs.xcconfig"; path = "Pods/Pods-Braintree-Payments-UI-Specs.xcconfig"; sourceTree = "<group>"; };
@@ -525,7 +528,7 @@
 		A7281C5519A53DE500BFD6EC /* BTAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchHandler.h; sourceTree = "<group>"; };
 		A7281C5619A53DE500BFD6EC /* BTAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchHandler.m; sourceTree = "<group>"; };
 		A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchURLSpec.m; sourceTree = "<group>"; };
-		A7281C5C19A56FAF00BFD6EC /* BTAppSwitchHandlerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchHandlerDelegate.h; sourceTree = "<group>"; };
+		A7281C5C19A56FAF00BFD6EC /* BTAppSwitchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchingDelegate.h; sourceTree = "<group>"; };
 		A72B37FD19633826009AD2F5 /* Braintree-Data-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Data-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A72B380F196339C7009AD2F5 /* DeviceCollectorSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceCollectorSDK.h; sourceTree = "<group>"; };
 		A72B3810196339C7009AD2F5 /* libDeviceCollectorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libDeviceCollectorLibrary.a; sourceTree = "<group>"; };
@@ -1720,7 +1723,10 @@
 		A7B7432119A3DFC1000A6A7A /* Braintree-AppSwitch */ = {
 			isa = PBXGroup;
 			children = (
-				A7281C5C19A56FAF00BFD6EC /* BTAppSwitchHandlerDelegate.h */,
+				A7281C5C19A56FAF00BFD6EC /* BTAppSwitchingDelegate.h */,
+				2DD1B72919A5AB69000404D0 /* BTAppSwitching.h */,
+				2DD1B72A19A5B685000404D0 /* BTAppSwitch.h */,
+				2DD1B72B19A5B685000404D0 /* BTAppSwitch.m */,
 			);
 			path = "Braintree-AppSwitch";
 			sourceTree = "<group>";

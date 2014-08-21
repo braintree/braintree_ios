@@ -92,6 +92,15 @@
 /// @return A string representation of this library's current semver.org version (if integrating with CocoaPods).
 + (NSString *)libraryVersion;
 
+#pragma mark - One Touch™ Payments
+
+/// The custom URL scheme that the authenticating app should use to return users to your app via `openURL:` (app switch).
+///
+/// When `nil` or when invalid, One Touch app switch will be disabled
+///
+/// @note This must match the entry in your app's Info.plist, and must be prefixed
+/// with your Bundle ID, e.g. com.yourcompany.Your-App.payment
++ (void)setReturnURLScheme:(NSString *)scheme;
 
 ///  Handle app switch URL requests for the Braintree SDK
 ///

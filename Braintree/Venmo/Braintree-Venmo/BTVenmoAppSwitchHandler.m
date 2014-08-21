@@ -4,7 +4,10 @@
 
 @implementation BTVenmoAppSwitchHandler
 
-- (BOOL)initiateAppSwitchWithClient:(__unused BTClient *)client delegate:(__unused id)delegate {
+@synthesize returnURLScheme;
+@synthesize delegate;
+
+- (BOOL)initiateAppSwitchWithClient:(__unused BTClient *)client delegate:(__unused id<BTAppSwitchingDelegate>)theDelegate {
     if (!self.returnURLScheme) {
         return NO;
     }
@@ -15,7 +18,7 @@
 //        NSString *merchantID = client.merchantID;
     NSString *merchantID = @"xxx";
     NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchURL appSwitchURLForMerchantID:merchantID returnURLScheme:self.returnURLScheme];
-    self.delegate = delegate;
+    self.delegate = theDelegate;
     return [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
 }
 
@@ -24,17 +27,17 @@
 }
 
 - (void)handleReturnURL:(NSURL *)url {
-    [self.delegate appSwitchHandlerWillCreatePaymentMethod:self];
+    [self.delegate appSwitcherWillCreatePaymentMethod:self];
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded:
-            [self.delegate appSwitchHandler:self didCreatePaymentMethod:returnURL.paymentMethod];
+            [self.delegate appSwitcher:self didCreatePaymentMethod:returnURL.paymentMethod];
             break;
         case BTVenmoAppSwitchReturnURLStateFailed:
             // TODO - failure
             break;
         case BTVenmoAppSwitchReturnURLStateCanceled:
-            [self.delegate appSwitchHandlerDidCancel:self];
+            [self.delegate appSwitcherDidCancel:self];
             break;
         default:
             // should not happen

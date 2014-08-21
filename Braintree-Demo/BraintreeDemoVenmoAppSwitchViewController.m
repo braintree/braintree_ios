@@ -3,7 +3,7 @@
 #import "BTVenmoAppSwitchHandler.h"
 //#import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
 
-@interface BraintreeDemoVenmoAppSwitchViewController ()<BTAppSwitchHandlerDelegate>
+@interface BraintreeDemoVenmoAppSwitchViewController ()<BTAppSwitchingDelegate>
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, strong) void (^completionBlock)(NSString *nonce);
 @property (nonatomic, copy) NSString *merchantID;
@@ -40,24 +40,26 @@
     [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.braintree.client delegate:self];
 }
 
-- (void)appSwitchHandlerWillAppSwitch:(id)appSwitchHandler {
-    NSLog(@"appSwitchHandlerWillAppSwitch:%@", appSwitchHandler);
+- (void)appSwitcherWillSwitch:(id<BTAppSwitching>)switcher {
+    NSLog(@"appSwitcherWillSwitch:%@", switcher);
 }
 
-- (void)appSwitchHandlerWillCreatePaymentMethod:(id)appSwitchHandler {
-    NSLog(@"appSwitchHandlerWillCreatePaymentMethod:%@", appSwitchHandler);
+- (void)appSwitcherWillCreatePaymentMethod:(id<BTAppSwitching>)switcher {
+    NSLog(@"appSwitcherCreatePayment:%@", switcher);
 }
 
-- (void)appSwitchHandler:(id)appSwitchHandler didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    NSLog(@"appSwitchHandler:%@ didCreatePaymentMethod:%@", appSwitchHandler, paymentMethod);
+- (void)appSwitcher:(id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    NSLog(@"appSwitcher:%@", switcher);
+    NSLog(@"payment: %@", paymentMethod);
 }
 
-- (void)appSwitchHandler:(id)appSwitchHandler didFailWithError:(NSError *)error {
-    NSLog(@"appSwitchHandler:%@ didFailWithError:%@", appSwitchHandler, error);
+- (void)appSwitcher:(id<BTAppSwitching>)switcher didFailWithError:(NSError *)error {
+    NSLog(@"appSwitcher:%@", switcher);
+    NSLog(@"error: %@", error);
 }
 
-- (void)appSwitchHandlerDidCancel:(id)appSwitchHandler {
-    NSLog(@"appSwitchHandlerDidCancel:%@", appSwitchHandler);
+- (void)appSwitcherDidCancel:(id<BTAppSwitching>)switcher {
+    NSLog(@"appSwitcherDidCancel:%@", switcher);
 }
 
 @end
