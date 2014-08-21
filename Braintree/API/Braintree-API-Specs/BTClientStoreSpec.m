@@ -1,8 +1,44 @@
 #import "BTClientStore.h"
 
 #import "BTClient_Internal.h"
+#import "BTKeychain.h"
+
+@interface BTClientTestStore : NSObject
++ (void)reset;
++ (BOOL)setData:(NSData *)data forKey:(NSString *)key;
++ (NSData *)dataForKey:(NSString *)key;
+@end
+
+static NSMutableDictionary *_store;
+
+@implementation BTClientTestStore
++ (void)reset {
+    _store = [NSMutableDictionary dictionary];
+}
+
++ (BOOL)setData:(NSData *)data forKey:(NSString *)key {
+    [_store setObject:data forKey:key];
+    return YES;
+}
++ (NSData *)dataForKey:(NSString *)key {
+    return [_store objectForKey:key];
+}
+@end
 
 SpecBegin(BTClientStore)
+
+__block id btKeychainMock;
+
+beforeEach(^{
+    btKeychainMock = [OCMockObject mockForClass:[BTKeychain class]];
+    [BTClientTestStore reset];
+    [[[btKeychainMock stub] andCall:@selector(setData:forKey:) onObject:[BTClientTestStore class]] setData:OCMOCK_ANY forKey:OCMOCK_ANY];
+    [[[btKeychainMock stub] andCall:@selector(dataForKey:) onObject:[BTClientTestStore class]] dataForKey:OCMOCK_ANY];
+});
+
+afterEach(^{
+    [btKeychainMock stopMocking];
+});
 
 describe(@"fetchClient:", ^{
 
