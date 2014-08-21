@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.2.0-rc4 (2014-08-21)
+
+* Minor fixes and test improvements
+
 ## 3.2.0-rc3 (2014-08-14)
 
 * Add support for app switch configuration via client token.
