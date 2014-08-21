@@ -2,8 +2,6 @@
 #import <HockeySDK/HockeySDK.h>
 #import "Braintree.h"
 
-#import <Braintree/BTAppSwitchHandler.h>
-
 NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
 
 @implementation BraintreeDemoAppDelegate

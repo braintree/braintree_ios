@@ -141,13 +141,13 @@
 		8307670773DF4AC381C3FE80 /* libPods-Braintree-PayPal-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 133578558B4E45ECA2C2D586 /* libPods-Braintree-PayPal-Specs.a */; };
 		9F196546AC414D6099AB4689 /* libPods-Braintree-AppSwitch-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0952D25AC13D43208F8288B6 /* libPods-Braintree-AppSwitch-Specs.a */; };
 		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
-		A7281C5219A53C0800BFD6EC /* BTAppSwitchHandlerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5119A53C0800BFD6EC /* BTAppSwitchHandlerSpec.m */; };
 		A7281C5819A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */; };
 		A72B37FE19633826009AD2F5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		A72B37FF19633826009AD2F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A72B381719633AB0009AD2F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A72B3815196339C7009AD2F5 /* InfoPlist.strings */; };
 		A72B38191963590E009AD2F5 /* BraintreeDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */; };
+		A72B3E3C19A68B6B0073F43F /* BTAppSwitchSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A72B3E3B19A68B6B0073F43F /* BTAppSwitchSpec.m */; };
 		A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
@@ -524,9 +524,6 @@
 		A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorAlert.h; sourceTree = "<group>"; };
 		A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorAlert.m; sourceTree = "<group>"; };
 		A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorStateSpec.m; sourceTree = "<group>"; };
-		A7281C5119A53C0800BFD6EC /* BTAppSwitchHandlerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchHandlerSpec.m; sourceTree = "<group>"; };
-		A7281C5519A53DE500BFD6EC /* BTAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchHandler.h; sourceTree = "<group>"; };
-		A7281C5619A53DE500BFD6EC /* BTAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchHandler.m; sourceTree = "<group>"; };
 		A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchURLSpec.m; sourceTree = "<group>"; };
 		A7281C5C19A56FAF00BFD6EC /* BTAppSwitchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchingDelegate.h; sourceTree = "<group>"; };
 		A72B37FD19633826009AD2F5 /* Braintree-Data-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Data-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -538,6 +535,7 @@
 		A72B3816196339C7009AD2F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A72B381D196367BF009AD2F5 /* BTData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTData.h; sourceTree = "<group>"; };
 		A72B381E196367BF009AD2F5 /* BTData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTData.m; sourceTree = "<group>"; };
+		A72B3E3B19A68B6B0073F43F /* BTAppSwitchSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchSpec.m; sourceTree = "<group>"; };
 		A744BEFD1963805900B61C23 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		A74E2E711953690A004DFF73 /* BTDropInErrorState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorState.h; sourceTree = "<group>"; };
 		A74E2E721953690A004DFF73 /* BTDropInErrorState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorState.m; sourceTree = "<group>"; };
@@ -1618,8 +1616,6 @@
 				A75DA34B1921392E00D997A2 /* Braintree.h */,
 				A75DA34C1921392E00D997A2 /* Braintree.m */,
 				A7021B071921631C0090CE8F /* Braintree_Internal.h */,
-				A7281C5519A53DE500BFD6EC /* BTAppSwitchHandler.h */,
-				A7281C5619A53DE500BFD6EC /* BTAppSwitchHandler.m */,
 				A72B380D196339C7009AD2F5 /* Data */,
 				1697BEFC192300130051F2AE /* Drop-In */,
 				1621741E192D857A008DC35D /* PayPal */,
@@ -1776,8 +1772,8 @@
 		A7B7436319A40B9F000A6A7A /* Braintree-AppSwitch-Specs */ = {
 			isa = PBXGroup;
 			children = (
-				A7281C5119A53C0800BFD6EC /* BTAppSwitchHandlerSpec.m */,
 				A7B7436419A40B9F000A6A7A /* Supporting Files */,
+				A72B3E3B19A68B6B0073F43F /* BTAppSwitchSpec.m */,
 			);
 			path = "Braintree-AppSwitch-Specs";
 			sourceTree = "<group>";
@@ -2934,7 +2930,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7281C5219A53C0800BFD6EC /* BTAppSwitchHandlerSpec.m in Sources */,
+				A72B3E3C19A68B6B0073F43F /* BTAppSwitchSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

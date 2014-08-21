@@ -98,7 +98,7 @@
     [self informDelegateDidCancel];
 }
 
-#pragma mark BTAppSwitchHandler Delegate implementation
+#pragma mark BTAppSwitchingDelegate implementation
 
 - (void)appSwitcherWillInitiate:(__unused id<BTAppSwitching>)switcher {
     [self informDelegateWillAppSwitch];
