@@ -309,4 +309,33 @@ describe(@"isEqual:", ^{
     });
 });
 
+describe(@"Internal helper", ^{
+    describe(@"payPalPaymentMethodFromAPIResponseDictionary:", ^{
+        __block NSMutableDictionary *responseDictionary;
+        beforeEach(^{
+            responseDictionary = [NSMutableDictionary dictionaryWithDictionary:@{@"nonce": @"a-nonce-value",
+                                                                                 @"details": @{@"email": @"email@foo.bar"}}];
+        });
+
+        it(@"returns a PayPal payment method with nil description if description is null", ^{
+            responseDictionary[@"description"] = [NSNull null];
+            BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
+            expect(paymentMethod.description).to.beNil();
+        });
+
+        it(@"returns a PayPal payment method with nil description if description is 'PayPal'", ^{
+            responseDictionary[@"description"] = @"PayPal";
+            BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
+            expect(paymentMethod.description).to.beNil();
+        });
+
+        it(@"returns a PayPal payment method with the description if description is not 'PayPal' and non-nil", ^{
+            responseDictionary[@"description"] = @"foo";
+            BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
+            expect(paymentMethod.description).equal(@"foo");
+        });
+    });
+});
+
+
 SpecEnd
