@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.2.0-rc5 (2014-08-22)
+
+* Merge fixes from 3.1.3
+
 ## 3.2.0-rc4 (2014-08-21)
 
 * Minor fixes and test improvements
