@@ -242,7 +242,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             // desirable for display. The latter is.
             // As a workaround, we ignore descriptions that look like "PayPal".
             if (![[description lowercaseString] isEqualToString:@"paypal"]) {
-                payPalPaymentMethod.description = nil;
+                payPalPaymentMethod.description = description;
             }
         }
     }
