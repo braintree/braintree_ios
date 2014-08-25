@@ -24,10 +24,7 @@ typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
 
 @interface BTClientMutableMetadata : BTClientMetadata
 
-
 - (void)setIntegration:(BTClientMetadataIntegrationType)integration;
 - (void)setSource:(BTClientMetadataSourceType)source;
-//@property (nonatomic, assign, readwrite, setter=setIntegration:) BTClientMetadataIntegrationType integration;
-//@property (nonatomic, assign, readwrite, setter=setSource:) BTClientMetadataSourceType source;
 
 @end
