@@ -1,7 +1,7 @@
 #import "BTClient_Internal.h"
 #import "BTClient+Offline.h"
 #import "BTClient+Testing.h"
-#import "BTClient+Metadata.h"
+#import "BTClient_Metadata.h"
 
 SpecBegin(BTClient_Metadata)
 

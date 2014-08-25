@@ -528,8 +528,8 @@
 		A7B7431019A29201000A6A7A /* BTClientMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientMetadata.h; sourceTree = "<group>"; };
 		A7B7431119A29201000A6A7A /* BTClientMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTClientMetadata.m; sourceTree = "<group>"; };
 		A7B7431219A2932F000A6A7A /* BTClientMetadataSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientMetadataSpec.m; sourceTree = "<group>"; };
-		A7B7431519A3B7DF000A6A7A /* BTClient+Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+Metadata.h"; sourceTree = "<group>"; };
 		A7B7431719A3BB9E000A6A7A /* BTClient+MetadataSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTClient+MetadataSpec.m"; sourceTree = "<group>"; };
+		A7E5BEAF19ABDA59006AEB9B /* BTClient_Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClient_Metadata.h; sourceTree = "<group>"; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Specs.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -849,6 +849,7 @@
 		16217428192D85EB008DC35D /* @Public API */ = {
 			isa = PBXGroup;
 			children = (
+				A7E5BEAF19ABDA59006AEB9B /* BTClient_Metadata.h */,
 				1621741F192D85EB008DC35D /* Braintree-API.h */,
 				16217420192D85EB008DC35D /* BTCardPaymentMethod.h */,
 				16217421192D85EB008DC35D /* BTClient+Offline.h */,
@@ -858,7 +859,6 @@
 				16217425192D85EB008DC35D /* BTErrors.h */,
 				16217426192D85EB008DC35D /* BTPaymentMethod.h */,
 				16217427192D85EB008DC35D /* BTPayPalPaymentMethod.h */,
-				A7B7431519A3B7DF000A6A7A /* BTClient+Metadata.h */,
 			);
 			name = "@Public API";
 			path = Public;

@@ -1,4 +1,5 @@
 #import "BTClient.h"
+#import "BTClient_Metadata.h"
 #import "BTClient_Internal.h"
 #import "BTClientToken.h"
 #import "BTLogger.h"
@@ -8,10 +9,13 @@
 #import "BTHTTP.h"
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
-#import "BTClient+Metadata.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
+
+@interface BTClient ()
+- (void)setMetadata:(BTClientMetadata *)metadata;
+@end
 
 @implementation BTClient
 
@@ -53,7 +57,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     copiedClient.clientToken = [_clientToken copy];
     copiedClient.clientApiHttp = [_clientApiHttp copy];
     copiedClient.analyticsHttp = [_analyticsHttp copy];
-    copiedClient.metadata = [_metadata copy];
+    copiedClient.metadata = [self.metadata copy];
     return copiedClient;
 }
 
@@ -295,10 +299,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #endif
 }
 
-#pragma mark - BTClient+Metadata
+#pragma mark - BTClient_Metadata
 
-- (BTClientMetadata *)metadata {
-    return _metadata;
+- (void)setMetadata:(BTClientMetadata *)metadata {
+    _metadata = metadata;
 }
 
 - (instancetype)copyWithMetadata:(void (^)(BTClientMutableMetadata *metadata))metadataBlock {

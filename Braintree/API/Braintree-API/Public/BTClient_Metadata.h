@@ -1,7 +1,7 @@
 #import "BTClient.h"
 #import "BTClientMetadata.h"
 
-@interface BTClient (Metadata)
+@interface BTClient ()
 
 @property (nonatomic, copy, readonly) BTClientMetadata *metadata;
 
