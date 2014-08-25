@@ -36,7 +36,6 @@
 		1607FE8B192D97FF0099D504 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		1607FE8C192D97FF0099D504 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		1607FE8D192D97FF0099D504 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
-		160D08A21926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 160D08A11926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m */; };
 		161029FB192DB613002C1B2B /* BraintreeVersionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 161029FA192DB613002C1B2B /* BraintreeVersionSpec.m */; };
 		16102A24192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
 		16102A25192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
@@ -206,7 +205,6 @@
 		1607FE7E192D97D60099D504 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1607FE80192D97D60099D504 /* Braintree-PayPal-Integration-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-PayPal-Integration-Specs-Prefix.pch"; sourceTree = "<group>"; };
 		1607FE8A192D97FF0099D504 /* Braintree-Payments-UI-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Payments-UI-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		160D08A11926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInViewControllerSpec.m; sourceTree = "<group>"; };
 		161029E8192DAFC3002C1B2B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		161029E9192DAFC3002C1B2B /* DEVELOPMENT.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DEVELOPMENT.md; sourceTree = "<group>"; };
 		161029EA192DAFC3002C1B2B /* Braintree.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Braintree.podspec; sourceTree = "<group>"; };
@@ -1590,7 +1588,6 @@
 				A75DA3781921399C00D997A2 /* BraintreeSpec.m */,
 				161029FA192DB613002C1B2B /* BraintreeVersionSpec.m */,
 				A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */,
-				160D08A11926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m */,
 				A75DA36B1921394200D997A2 /* Supporting Files */,
 			);
 			path = "Braintree-Specs";
@@ -2589,7 +2586,6 @@
 				161029FB192DB613002C1B2B /* BraintreeVersionSpec.m in Sources */,
 				A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */,
 				A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */,
-				160D08A21926E3FF00F6BAA2 /* BTDropInViewControllerSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
