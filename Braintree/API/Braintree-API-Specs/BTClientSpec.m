@@ -280,6 +280,12 @@ describe(@"copy", ^{
         expect([client copy]).toNot.beIdenticalTo(client);
     });
 
+    pending(@"BTClient implementing isEqual:", ^{
+        it(@"returns an equal instance", ^{
+            expect([client copy]).to.equal(client);
+        });
+    });
+
     it(@"returns an instance with different properties", ^{
         BTClient *copiedClient = [client copy];
         expect(copiedClient.clientToken).notTo.beNil();

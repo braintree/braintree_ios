@@ -169,6 +169,12 @@ describe(@"copy", ^{
         expect([clientToken copy]).notTo.beIdenticalTo(clientToken);
     });
 
+    pending(@"BTClientToken implementing isEqual:", ^{
+        it(@"returns an equal instance", ^{
+            expect([clientToken copy]).to.equal(clientToken);
+        });
+    });
+
     it(@"returned instance has equal values and claims", ^{
         BTClientToken *copiedClientToken = [clientToken copy];
         expect(copiedClientToken.clientApiURL).to.equal(clientToken.clientApiURL);
