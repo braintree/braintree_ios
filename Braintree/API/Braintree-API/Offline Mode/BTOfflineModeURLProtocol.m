@@ -216,6 +216,7 @@ static BTOfflineClientBackend *backend;
 
 - (NSDictionary *)responseDictionaryForPayPalPaymentMethod {
     return @{
+             @"description": @"PayPal",
              @"nonce": [self generateNonce],
              @"isLocked": @0,
              @"details": @{ @"email": @"email@example.com" },

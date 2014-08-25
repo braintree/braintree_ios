@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 3.2.0-rc5 (2014-08-22)
+
+* Merge fixes from 3.1.3
+
+## 3.2.0-rc4 (2014-08-21)
+
+* Minor fixes and test improvements
+
 ## 3.2.0-rc3 (2014-08-14)
 
 * Add support for app switch configuration via client token.
@@ -14,6 +22,16 @@
 * Add support and docs for PayPal Touch app switch
 * Known Issues:
   * Drop In view controller is not yet compatible with PayPal Touch (app switch auth)
+
+## 3.1.3 (2014-08-22)
+
+* Fix another PayPal payment method display issue in Drop In UI
+
+## 3.1.2 (2014-08-21)
+
+* Fixes
+  * Minor internationalization issue
+  * PayPal payment method display issue in Drop In UI
 
 ## 3.1.1 (2014-08-17)
 
