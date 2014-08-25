@@ -109,7 +109,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                    success:(BTClientCardSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
 
-    NSMutableDictionary *requestParameters = [self basePostParameters];
+    NSMutableDictionary *requestParameters = [self metaPostParameters];
     NSMutableDictionary *creditCardParams = [@{ @"number": creditCardNumber,
                                                 @"expiration_month": expirationMonth,
                                                 @"expiration_year": expirationYear,
@@ -156,12 +156,12 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
 
-    NSMutableDictionary *requestParameters = [self basePostParameters];
+    NSMutableDictionary *requestParameters = [self metaPostParameters];
     [requestParameters addEntriesFromDictionary:@{ @"paypal_account": @{
                                                            @"consent_code": authCode ?: NSNull.null,
                                                            @"correlation_id": correlationId ?: NSNull.null
                                                            },
-                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                                    }];
 
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
@@ -268,7 +268,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     return card;
 }
 
-- (NSMutableDictionary *)basePostParameters {
+- (NSMutableDictionary *)metaPostParameters {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"_meta"] = [NSMutableDictionary dictionary];
     parameters[@"_meta"][@"integration"] = self.metadata.integrationString;
