@@ -33,10 +33,10 @@
 }
 
 - (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    for (id<BTAppSwitching> switchingInstance in [self.appSwitchingInstances allObjects]) {
-        if ([switchingInstance canHandleReturnURL:url sourceApplication:sourceApplication]) {
-            if ([switchingInstance delegate]) {
-                [switchingInstance handleReturnURL:url];
+    for (id<BTAppSwitching> switcher in [self.appSwitchingInstances allObjects]) {
+        if ([switcher canHandleReturnURL:url sourceApplication:sourceApplication]) {
+            if ([switcher delegate]) {
+                [switcher handleReturnURL:url];
             } else {
                 // Fallback BTSwitchingDelegate here
             }

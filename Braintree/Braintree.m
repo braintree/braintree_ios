@@ -113,6 +113,8 @@
 #endif
 }
 
+#pragma mark App Switching
+
 + (void)setReturnURLScheme:(NSString *)scheme {
     [BTAppSwitch sharedInstance].returnURLScheme = scheme;
     [self initAppSwitchingOptions];
