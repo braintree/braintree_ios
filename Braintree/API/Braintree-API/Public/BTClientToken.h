@@ -6,10 +6,12 @@ extern NSString *const BTClientTokenKeyAuthorizationFingerprint;
 extern NSString *const BTClientTokenKeyClientApiURL;
 extern NSString *const BTClientTokenKeyAnalytics;
 extern NSString *const BTClientTokenKeyURL;
+extern NSString *const BTClientTokenKeyMerchantId;
 
 @interface BTClientToken : NSObject <NSCoding>
 
 @property (nonatomic, readonly, copy) NSString *authorizationFingerprint;
+@property (nonatomic, readonly, copy) NSString *merchantId;
 @property (nonatomic, readonly, strong) NSURL *clientApiURL;
 @property (nonatomic, readonly, strong) NSSet *challenges;
 @property (nonatomic, readonly, strong) NSSet *paymentAppSchemes;

@@ -5,6 +5,7 @@
 + (NSString *)token;
 + (NSString *)tokenWithAnalyticsUrl:(NSString *)analyticsUrl;
 + (NSString *)base64EncodedToken;
++ (NSString *)base64EncodedTokenWithMerchantId:(NSString *)merchantId;
 + (NSString *)tokenWithPayPalClientId;
 + (NSString *)invalidToken;
 + (NSString *)tokenWithoutCustomerIdentifier;

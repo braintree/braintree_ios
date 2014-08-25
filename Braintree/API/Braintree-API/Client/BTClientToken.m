@@ -6,6 +6,7 @@ NSString *const BTClientTokenKeyChallenges = @"challenges";
 NSString *const BTClientTokenKeyURLSchemes = @"paymentAppSchemes";
 NSString *const BTClientTokenKeyAnalytics = @"analytics";
 NSString *const BTClientTokenKeyURL = @"url";
+NSString *const BTClientTokenKeyMerchantId = @"merchantId";
 
 @interface BTClientToken ()
 
@@ -53,6 +54,10 @@ NSString *const BTClientTokenKeyURL = @"url";
         }
     }
     return self;
+}
+
+- (NSString *)merchantId {
+    return self.claims[BTClientTokenKeyMerchantId];
 }
 
 - (NSSet *)challenges {

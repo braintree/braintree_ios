@@ -52,6 +52,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     return self.clientToken.challenges;
 }
 
+- (NSString *)merchantId {
+    return self.clientToken.merchantId;
+}
 
 #pragma mark - NSCoding methods
 

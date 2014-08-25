@@ -37,6 +37,10 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// (potentially among other factors).
 @property (nonatomic, readonly) NSSet *challenges;
 
+/// The public Braintree Merchant ID for which this client
+/// was initialized.
+@property (nonatomic, copy, readonly) NSString *merchantId;
+
 #pragma mark API Methods
 
 /// Obtain a list of payment methods saved to Braintree

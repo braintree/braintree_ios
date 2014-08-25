@@ -338,4 +338,16 @@ describe(@"Internal helper", ^{
 });
 
 
+describe(@"merchantId", ^{
+    it(@"can be nil (for old client tokens)", ^{
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:nil]];
+        expect(client.merchantId).to.beNil();
+    });
+
+    it(@"returns the merchant id from the client token", ^{
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyMerchantId: @"merchant-id" }]];
+        expect(client.merchantId).to.equal(@"merchant-id");
+    });
+});
+
 SpecEnd
