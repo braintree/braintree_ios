@@ -6,7 +6,7 @@
     if (!URL) {
         return nil;
     }
-    
+
     NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
     urlComponents.percentEncodedQuery = [self queryStringWithDictionary:dictionary];
     return urlComponents.URL;
@@ -56,5 +56,28 @@
     return encodedString;
 }
 
++ (NSDictionary *)dictionaryForQueryString:(NSString *)queryString {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    NSArray *components = [queryString componentsSeparatedByString:@"&"];
+    for (NSString *keyValueString in components) {
+        if ([keyValueString length] == 0) {
+            continue;
+        }
+
+        NSArray *keyValueArray = [keyValueString componentsSeparatedByString:@"="];
+        NSString *key = [self percentDecodedStringForString:keyValueArray[0]];
+        if (keyValueArray.count == 2) {
+            NSString *value = [self percentDecodedStringForString:keyValueArray[1]];
+            parameters[key] = value;
+        } else {
+            parameters[key] = [NSNull null];
+        }
+    }
+    return [NSDictionary dictionaryWithDictionary:parameters];
+}
+
++ (NSString *)percentDecodedStringForString:(NSString *)string {
+    return [[string stringByReplacingOccurrencesOfString:@"+" withString:@" "] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
 
 @end
