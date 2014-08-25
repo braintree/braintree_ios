@@ -22,26 +22,6 @@
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7B7432919A3E093000A6A7A"
-               BuildableName = "Braintree-Venmo-Specs.xctest"
-               BlueprintName = "Braintree-Venmo-Specs"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7B7435E19A40B9E000A6A7A"
-               BuildableName = "Braintree-AppSwitch-Specs.xctest"
-               BlueprintName = "Braintree-AppSwitch-Specs"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

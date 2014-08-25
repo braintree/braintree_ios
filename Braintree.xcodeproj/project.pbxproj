@@ -2097,9 +2097,6 @@
 				CLASSPREFIX = BT;
 				LastUpgradeCheck = 0600;
 				TargetAttributes = {
-					1607FE47192D974C0099D504 = {
-						TestTargetID = 162174DE192D9220008DC35D;
-					};
 					1607FE5D192D97570099D504 = {
 						TestTargetID = 162174DE192D9220008DC35D;
 					};
@@ -2109,9 +2106,6 @@
 					162174DE192D9220008DC35D = {
 						DevelopmentTeam = QK3APTBF2M;
 					};
-					1621753E192D94BB008DC35D = {
-						TestTargetID = 162174DE192D9220008DC35D;
-					};
 					16217552192D94C7008DC35D = {
 						TestTargetID = 162174DE192D9220008DC35D;
 					};
@@ -2120,9 +2114,6 @@
 					};
 					16968189192D9A5000120846 = {
 						DevelopmentTeam = QK3APTBF2M;
-					};
-					A72B37FC19633826009AD2F5 = {
-						TestTargetID = 162174DE192D9220008DC35D;
 					};
 					A75DA3601921394200D997A2 = {
 						TestTargetID = 162174DE192D9220008DC35D;
@@ -3236,7 +3227,6 @@
 			baseConfigurationReference = CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3275,7 +3265,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -3285,7 +3274,6 @@
 			baseConfigurationReference = CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3317,7 +3305,6 @@
 				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -3664,7 +3651,6 @@
 			baseConfigurationReference = 815EE2A671E046E3AD3F176F /* Pods-Braintree-API-Specs.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3703,7 +3689,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -3713,7 +3698,6 @@
 			baseConfigurationReference = 815EE2A671E046E3AD3F176F /* Pods-Braintree-API-Specs.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3745,7 +3729,6 @@
 				INFOPLIST_FILE = "Braintree/API/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -4232,7 +4215,6 @@
 			baseConfigurationReference = 0E3027E149854D1899379B01 /* Pods-Braintree-Data-Specs.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -4272,7 +4254,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -4282,7 +4263,6 @@
 			baseConfigurationReference = 0E3027E149854D1899379B01 /* Pods-Braintree-Data-Specs.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -4315,7 +4295,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -4457,7 +4436,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Braintree-Venmo-Specs/Braintree-Venmo-Specs-Prefix.pch";
+				GCC_PREFIX_HEADER = "Braintree/Venmo/Braintree-Venmo-Specs/Braintree-Venmo-Specs-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -4503,7 +4482,7 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Braintree-Venmo-Specs/Braintree-Venmo-Specs-Prefix.pch";
+				GCC_PREFIX_HEADER = "Braintree/Venmo/Braintree-Venmo-Specs/Braintree-Venmo-Specs-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
