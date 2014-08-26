@@ -19,7 +19,7 @@ describe(@"canHandleReturnURL:sourceApplication:", ^{
     });
 
     it(@"returns YES if [BTVenmoAppSwitchReturnURL isValidURL:sourceApplication:] returns YES", ^{
-        [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@YES] isValidSourceApplication:testSourceApplication];
+        [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@YES] isValidURL:testURL sourceApplication:testSourceApplication];
 
         BTVenmoAppSwitchHandler *handler = [[BTVenmoAppSwitchHandler alloc] init];
         BOOL handled = [handler canHandleReturnURL:testURL sourceApplication:testSourceApplication];
@@ -28,7 +28,7 @@ describe(@"canHandleReturnURL:sourceApplication:", ^{
     });
 
     it(@"returns NO if [BTVenmoAppSwitchReturnURL isValidURL:sourceApplication:] returns NO", ^{
-        [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@NO] isValidSourceApplication:testSourceApplication];
+        [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@NO] isValidURL:testURL sourceApplication:testSourceApplication];
 
         BTVenmoAppSwitchHandler *handler = [[BTVenmoAppSwitchHandler alloc] init];
         BOOL handled = [handler canHandleReturnURL:testURL sourceApplication:testSourceApplication];

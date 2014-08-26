@@ -59,17 +59,18 @@ describe(@"URL parsing", ^{
 });
 
 describe(@"isValidURL:sourceApplication:", ^{
+    NSURL *url = [NSURL URLWithString:@"scheme://x-callback-url/vzero/auth/venmo/foo"];
 
     it(@"accepts app switches received from Venmo", ^{
-        expect([BTVenmoAppSwitchReturnURL isValidSourceApplication:@"net.kortina.labs.Venmo"]).to.beTruthy();
+        expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:@"net.kortina.labs.Venmo"]).to.beTruthy();
     });
 
     it(@"accepts app switches received from PayPal Debug (for developer-facing test wallet)", ^{
-        expect([BTVenmoAppSwitchReturnURL isValidSourceApplication:@"com.paypal.PPClient.Debug"]).to.beTruthy();
+        expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:@"com.paypal.PPClient.Debug"]).to.beTruthy();
     });
 
     it(@"rejects app switches received from all others", ^{
-        expect([BTVenmoAppSwitchReturnURL isValidSourceApplication:@"com.YourCompany.Some-App"]).to.beFalsy();
+        expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:@"com.YourCompany.Some-App"]).to.beFalsy();
     });
 });
 

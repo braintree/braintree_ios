@@ -25,8 +25,8 @@
     return [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
 }
 
-- (BOOL)canHandleReturnURL:(__unused NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [BTVenmoAppSwitchReturnURL isValidSourceApplication:sourceApplication];
+- (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    return [BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:sourceApplication];
 }
 
 - (void)handleReturnURL:(NSURL *)url {

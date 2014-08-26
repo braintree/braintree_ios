@@ -6,8 +6,8 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"BTVenmoAppSwitchReturnU
 
 @implementation BTVenmoAppSwitchReturnURL
 
-+ (BOOL)isValidSourceApplication:(NSString *)sourceApplication {
-    return [self sourceApplicationIsValid:sourceApplication];
++ (BOOL)isValidURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    return [self isVenmoSourceApplication:sourceApplication] || [self isFakeWalletURL:url andSourceApplication:sourceApplication];
 }
 
 - (instancetype)initWithURL:(NSURL *)url {
@@ -34,9 +34,12 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"BTVenmoAppSwitchReturnU
 
 #pragma mark Internal Helpers
 
-+ (BOOL)sourceApplicationIsValid:(NSString *)sourceApplication {
-    return [sourceApplication isEqualToString:@"net.kortina.labs.Venmo"] ||  // Venmo app
-           [sourceApplication isEqualToString:@"com.paypal.PPClient.Debug"]; // fake wallet
++ (BOOL)isVenmoSourceApplication:(NSString *)sourceApplication {
+    return [sourceApplication isEqualToString:@"net.kortina.labs.Venmo"];
+}
+
++ (BOOL)isFakeWalletURL:(NSURL *)url andSourceApplication:(NSString *)sourceApplication {
+   return [sourceApplication isEqualToString:@"com.paypal.PPClient.Debug"] && [url.host isEqualToString:@"x-callback-url"] && [url.path hasPrefix:@"/vzero/auth/venmo/"];
 }
 
 @end

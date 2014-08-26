@@ -16,12 +16,13 @@ typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
 /// user-initiated cancelation. These states are communicated in the url.
 @interface BTVenmoAppSwitchReturnURL : NSObject
 
-/// Evaluates whether the sourceApplication is allowed for Venmo Touch.
+/// Evaluates whether the url-sourceApplication pair represents a valid Venmo Touch return.
 ///
-/// @param sourceApplication the source application that returned to this app via app switch (must be argument received in -[AppDelegate application:openURL:sourceApplication:annotation:])
+/// @param url               an app switch return URL
+/// @param sourceApplication an app switch source application
 ///
-/// @return YES if the sourceApplication is allowed for Venmo Touch
-+ (BOOL)isValidSourceApplication:(NSString *)sourceApplication;
+/// @return YES if the url-sourceApplication pair likely represent a Venmo Touch app switch return
++ (BOOL)isValidURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 /// Initializes a new BTVenmoAppSwitchReturnURL
 ///
