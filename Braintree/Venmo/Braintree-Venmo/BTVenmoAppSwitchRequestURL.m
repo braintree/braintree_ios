@@ -1,10 +1,10 @@
-#import "BTVenmoAppSwitchURL.h"
+#import "BTVenmoAppSwitchRequestURL.h"
 #import "BTURLUtils.h"
 
 #define kXCallbackTemplate @"scheme://x-callback-url/path"
 #define kVenmoScheme @"com.venmo.touch.v1"
 
-@implementation BTVenmoAppSwitchURL
+@implementation BTVenmoAppSwitchRequestURL
 
 + (BOOL)isAppSwitchAvailable {
     NSURL *url = [self appSwitchBaseURLComponents].URL;

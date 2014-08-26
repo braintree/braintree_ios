@@ -1,7 +1,6 @@
 #import "BraintreeDemoVenmoAppSwitchViewController.h"
 
 #import "BTVenmoAppSwitchHandler.h"
-//#import <NSURL+QueryDictionary/NSURL+QueryDictionary.h>
 
 @interface BraintreeDemoVenmoAppSwitchViewController ()<BTAppSwitchingDelegate>
 @property (nonatomic, strong) Braintree *braintree;
@@ -45,7 +44,7 @@
 }
 
 - (void)appSwitcherWillCreatePaymentMethod:(id<BTAppSwitching>)switcher {
-    NSLog(@"appSwitcherCreatePayment:%@", switcher);
+    NSLog(@"appSwitcherWillCreatePaymentMethod:%@", switcher);
 }
 
 - (void)appSwitcher:(id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {

@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
+#import "BTPaymentMethod.h"
 
-@class BTPaymentMethod;
+extern NSString *const BTVenmoAppSwitchReturnURLErrorDomain;
 
 typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
     BTVenmoAppSwitchReturnURLStateSucceeded,
@@ -15,13 +16,12 @@ typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
 /// user-initiated cancelation. These states are communicated in the url.
 @interface BTVenmoAppSwitchReturnURL : NSObject
 
-/// Evaluates whether the url-sourceApplication pair represents a valid Venmo Touch return.
+/// Evaluates whether the sourceApplication is allowed for Venmo Touch.
 ///
-/// @param url               an app switch return URL
-/// @param sourceApplication an app switch source application
+/// @param sourceApplication the source application that returned to this app via app switch (must be argument received in -[AppDelegate application:openURL:sourceApplication:annotation:])
 ///
-/// @return YES if the url-sourceApplication pair likely represent a Venmo Touch app switch return
-+ (BOOL)isValidURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+/// @return YES if the sourceApplication is allowed for Venmo Touch
++ (BOOL)isValidSourceApplication:(NSString *)sourceApplication;
 
 /// Initializes a new BTVenmoAppSwitchReturnURL
 ///
@@ -38,5 +38,9 @@ typedef NS_ENUM(NSUInteger, BTVenmoAppSwitchReturnURLState) {
 ///
 ///  @return A new payment method object with a transactable or vaultable nonce
 @property (nonatomic, strong, readonly) BTPaymentMethod *paymentMethod;
+
+/// If the return URL's state is BTVenmoAppSwitchReturnURLStateFailed,
+/// the error returned from Venmo via the app switch.
+@property (nonatomic, strong, readonly) NSError *error;
 
 @end

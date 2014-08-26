@@ -106,9 +106,14 @@
 }
 
 
-- (void)receivePaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
+- (void)receivePaymentMethod:(BTPaymentMethod *)paymentMethod {
     [self.activityIndicator stopAnimating];
-    self.emailLabel.text = paymentMethod.email;
+    if ([paymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
+        self.emailLabel.text = [(BTPayPalPaymentMethod *)paymentMethod email];
+    } else {
+        self.emailLabel.text = @"Got a nonce!";
+    }
+    
     NSLog(@"Got a nonce! %@", paymentMethod.nonce);
     if (self.completionBlock) {
         self.completionBlock(paymentMethod.nonce);
@@ -190,21 +195,23 @@
 }
 
 - (void)appSwitcherWillCreatePaymentMethod:(id<BTAppSwitching>)switcher {
-    NSLog(@"appSwitcherCreatePayment:%@", switcher);
+    NSLog(@"appSwitcherWillCreatePaymentMethod:%@", switcher);
+    [self willReceivePaymentMethod];
 }
 
 - (void)appSwitcher:(id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    NSLog(@"appSwitcher:%@", switcher);
-    NSLog(@"payment: %@", paymentMethod);
+    NSLog(@"appSwitcher:%@ didCreatePaymentMethod: %@", switcher, paymentMethod);
+    [self receivePaymentMethod:paymentMethod];
 }
 
 - (void)appSwitcher:(id<BTAppSwitching>)switcher didFailWithError:(NSError *)error {
-    NSLog(@"appSwitcher:%@", switcher);
-    NSLog(@"error: %@", error);
+    NSLog(@"appSwitcher:%@ error: %@", switcher, error);
+    [self fail:error];
 }
 
 - (void)appSwitcherDidCancel:(id<BTAppSwitching>)switcher {
     NSLog(@"appSwitcherDidCancel:%@", switcher);
+    [self cancel];
 }
 
 

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface BTVenmoAppSwitchURL : NSObject
+@interface BTVenmoAppSwitchRequestURL : NSObject
 
 + (BOOL)isAppSwitchAvailable;
 + (NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID returnURLScheme:(NSString *)scheme;

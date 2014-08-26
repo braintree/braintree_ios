@@ -1,7 +1,7 @@
-#import "BTVenmoAppSwitchURL.h"
+#import "BTVenmoAppSwitchRequestURL.h"
 #import <UIKit/UIKit.h>
 
-SpecBegin(BTVenmoAppSwitchURL)
+SpecBegin(BTVenmoAppSwitchRequestURL)
 
 describe(@"isAppSwitchAvailable", ^{
 
@@ -19,12 +19,12 @@ describe(@"isAppSwitchAvailable", ^{
 
     it(@"returns YES if application says the Venmo app is available", ^{
         [[[application expect] andReturnValue:@YES] canOpenURL:OCMOCK_ANY];
-        expect([BTVenmoAppSwitchURL isAppSwitchAvailable]).to.beTruthy();
+        expect([BTVenmoAppSwitchRequestURL isAppSwitchAvailable]).to.beTruthy();
     });
 
     it(@"returns NO if application says the Venmo app is not available", ^{
         [[[application expect] andReturnValue:@NO] canOpenURL:OCMOCK_ANY];
-        expect([BTVenmoAppSwitchURL isAppSwitchAvailable]).to.beFalsy();
+        expect([BTVenmoAppSwitchRequestURL isAppSwitchAvailable]).to.beFalsy();
     });
 });
 
