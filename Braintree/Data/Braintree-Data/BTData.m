@@ -41,9 +41,9 @@ static NSString *BTDataSharedMerchantId = @"600000";
 
         NSArray *skipList;
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled]) {
-            skipList = @[DC_COLLECTOR_DEVICE_ID, DC_COLLECTOR_GEO_LOCATION];
-        } else {
             skipList = @[DC_COLLECTOR_DEVICE_ID];
+        } else {
+            skipList = @[DC_COLLECTOR_DEVICE_ID, DC_COLLECTOR_GEO_LOCATION];
         }
         [self.kount setSkipList:skipList];
     }

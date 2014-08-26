@@ -26,6 +26,17 @@
 
 SpecBegin(BraintreeData)
 
+__block id mockCLLocationManager;
+
+beforeEach(^{
+    mockCLLocationManager = [OCMockObject mockForClass:[CLLocationManager class]];
+    [[[[mockCLLocationManager stub] andReturnValue:@(NO)] classMethod] locationServicesEnabled];
+});
+
+afterEach(^{
+    [mockCLLocationManager stopMocking];
+});
+
 describe(@"Kount DeviceCollectorSDK", ^{
     it(@"should initialize successfully", ^{
         DeviceCollectorSDK *deviceKollector = [[DeviceCollectorSDK alloc] initWithDebugOn:NO];
@@ -71,6 +82,29 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
     itBehavesLike(@"a successful data collector", @{@"environmentName": @"Sandbox", @"environment": @(BTDataEnvironmentSandbox)});
     itBehavesLike(@"a successful data collector", @{@"environmentName": @"Production", @"environment": @(BTDataEnvironmentProduction)});
     itBehavesLike(@"a no-op data collector@", @{@"environmentName": @"Development", @"environment": @(BTDataEnvironmentDevelopment)});
+
+
+    describe(@"collect with location services enabled", ^{
+        it(@"allows Kount to access GEO_LOCATION", ^{
+            // Enable location services
+            [[[[mockCLLocationManager stub] andReturnValue:@(YES)] classMethod] locationServicesEnabled];
+            [[[[mockCLLocationManager stub] andReturnValue:@(kCLAuthorizationStatusAuthorized)] classMethod] authorizationStatus];
+
+            // Stub out DeviceColectorSDK (initialized in -[BTData initWithDebugOn:])
+            id mockKount = [OCMockObject mockForClass:[DeviceCollectorSDK class]];
+            [[[[mockKount stub] andReturn:mockKount] classMethod] alloc];
+            mockKount = [[[mockKount stub] andReturn:mockKount] initWithDebugOn:OCMOCK_ANY];
+
+            // Assert that the skip list does NOT include GEO_LOCATION
+            [[mockKount expect] setSkipList:[OCMArg checkWithBlock:^BOOL(id obj) {
+                NSArray *skipList = obj;
+                return [skipList indexOfObject:DC_COLLECTOR_GEO_LOCATION] == NSNotFound;
+            }]];
+
+            [mockKount verify];
+            [mockKount stopMocking];
+        });
+    });
 });
 
 SpecEnd
