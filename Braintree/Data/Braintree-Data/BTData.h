@@ -40,30 +40,52 @@ typedef NS_ENUM(NSInteger, BTDataEnvironment) {
 /// @return a preconfigured instance of BTData
 + (instancetype)defaultDataForEnvironment:(BTDataEnvironment)environment delegate:(id<BTDataDelegate>)delegate;
 
-/// Initialize collector instance.
+/// Collect fraud data for the current session.
 ///
-/// @param debugLogging Enable/disable logging of debugging messages
-- (instancetype)initWithDebugOn:(BOOL)debugLogging;
+/// @return an opaque string of the device data that can be passed into server-side calls, such as Transaction.create.
+- (NSString *)collectDeviceData;
+
+
+#pragma mark Direct Integrations
+
+/// Set your fraud merchant id.
+///
+/// @note If you do not call this method, a generic Braintree value will be used.
+///
+/// @param fraudMerchantId The fraudMerchantId you have established with your Braintree account manager.
+- (void)setFraudMerchantId:(NSString *)fraudMerchantId;
 
 /// Set the URL that the Device Collector will use.
+///
+/// @note If you do not call this method, a generic Braintree value will be used.
 ///
 /// @param url Full URL to device collector 302-redirect page
 - (void)setCollectorUrl:(NSString *)url;
 
-/// Set your Merchant Id.
+
+#pragma mark Deprecated Methods
+
+/// Initialize collector instance.
 ///
-/// @param merc Kount Merchant Id
-- (void)setKountMerchantId:(NSString *)merc;
+/// @param debugLogging Enable/disable logging of debugging messages
+- (instancetype)initWithDebugOn:(BOOL)debugLogging DEPRECATED_ATTRIBUTE;
+
 
 /// Collect device information for a session with a randomly
 /// generated session identifier.
 /// @return the newly constructed Kount session id
-- (NSString *)collect;
+- (NSString *)collect DEPRECATED_MSG_ATTRIBUTE("Please use the collectDeviceData method instead");
 
 /// Collect device information for the given session.
 ///
 /// @param sessionId Unique session id
-- (void)collect:(NSString*)sessionId;
+- (void)collect:(NSString*)sessionId DEPRECATED_MSG_ATTRIBUTE("Please use the collectDeviceData method instead");
+
+
+/// Set your Merchant Id.
+///
+/// @param merc Kount Merchant Id
+- (void)setKountMerchantId:(NSString *)merc DEPRECATED_MSG_ATTRIBUTE("Please use setFraudMerchantId instead");
 
 @end
 

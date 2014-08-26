@@ -58,10 +58,26 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
 
             TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
             BTData *data = [BTData defaultDataForEnvironment:env delegate:delegate];
-            [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
+
+            expect(data).to.beNil();
+        });
+    });
+
+    sharedExamplesFor(@"a deprecated successful data collector", ^(NSDictionary *testData) {
+        it([NSString stringWithFormat:@"successfully starts and completes in %@ environment", testData[@"environmentName"]], ^{
+            BTDataEnvironment env = [testData[@"environment"] integerValue];
+
+            TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
+            BTData *data = [BTData defaultDataForEnvironment:env delegate:delegate];
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [data collect];
-            expect(delegate.didStart).to.beFalsy();
-            expect(delegate.didComplete).will.beFalsy();
+#pragma clang diagnostic pop
+
+            [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
+            expect(delegate.didStart).to.beTruthy();
+            expect(delegate.didComplete).will.beTruthy();
         });
     });
 
@@ -71,17 +87,32 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
 
             TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
             BTData *data = [BTData defaultDataForEnvironment:env delegate:delegate];
-            [data collect];
+            [data setFraudMerchantId:@"600000"];
+
+            NSString *deviceDataString = [data collectDeviceData];
+
+            NSDictionary *deviceDataDictionary = [NSJSONSerialization JSONObjectWithData:[deviceDataString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                 options:0
+                                                                                   error:NULL];
+
+            expect(deviceDataDictionary[@"fraud_merchant_id"]).to.equal(@"600000");
+            expect(deviceDataDictionary[@"device_session_id"]).to.haveCountOf(32);
+
             [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
             expect(delegate.didStart).to.beTruthy();
             expect(delegate.didComplete).will.beTruthy();
         });
     });
 
+    itBehavesLike(@"a successful deprecated data collector", @{@"environmentName": @"QA", @"environment": @(BTDataEnvironmentQA)});
+    itBehavesLike(@"a successful deprecated data collector", @{@"environmentName": @"Sandbox", @"environment": @(BTDataEnvironmentSandbox)});
+    itBehavesLike(@"a successful deprecated data collector", @{@"environmentName": @"Production", @"environment": @(BTDataEnvironmentProduction)});
+
     itBehavesLike(@"a successful data collector", @{@"environmentName": @"QA", @"environment": @(BTDataEnvironmentQA)});
     itBehavesLike(@"a successful data collector", @{@"environmentName": @"Sandbox", @"environment": @(BTDataEnvironmentSandbox)});
     itBehavesLike(@"a successful data collector", @{@"environmentName": @"Production", @"environment": @(BTDataEnvironmentProduction)});
-    itBehavesLike(@"a no-op data collector@", @{@"environmentName": @"Development", @"environment": @(BTDataEnvironmentDevelopment)});
+    itBehavesLike(@"a no-op data collector", @{@"environmentName": @"Development", @"environment": @(BTDataEnvironmentDevelopment)});
+
 });
 
 SpecEnd
