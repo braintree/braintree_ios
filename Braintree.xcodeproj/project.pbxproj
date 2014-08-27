@@ -411,6 +411,7 @@
 		162175A1192D9505008DC35D /* braintree-api-integration-specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "braintree-api-integration-specs-Info.plist"; sourceTree = "<group>"; };
 		162175A2192D9505008DC35D /* braintree-api-integration-specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "braintree-api-integration-specs-Prefix.pch"; sourceTree = "<group>"; };
 		162175A3192D9505008DC35D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1621A5CB19AEA0B80085CBB2 /* Braintree-Venmo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-Venmo.h"; sourceTree = "<group>"; };
 		162998CA194FAFC400534798 /* BTUIFloatLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIFloatLabel.h; sourceTree = "<group>"; };
 		162998CB194FAFC400534798 /* BTUIFloatLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIFloatLabel.m; sourceTree = "<group>"; };
 		162D8DA1199B23DC0040B1A4 /* BraintreeDemoVenmoAppSwitchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BraintreeDemoVenmoAppSwitchViewController.xib; sourceTree = "<group>"; };
@@ -1326,6 +1327,14 @@
 			path = "Braintree-API-Integration-Specs";
 			sourceTree = "<group>";
 		};
+		1621A5CA19AEA08E0085CBB2 /* @Public */ = {
+			isa = PBXGroup;
+			children = (
+				1621A5CB19AEA0B80085CBB2 /* Braintree-Venmo.h */,
+			);
+			path = "@Public";
+			sourceTree = "<group>";
+		};
 		168ED82419884EC00011F4CD /* Localization */ = {
 			isa = PBXGroup;
 			children = (
@@ -1727,8 +1736,8 @@
 		A7B7432319A3DFF7000A6A7A /* Venmo */ = {
 			isa = PBXGroup;
 			children = (
-				A7B7432E19A3E094000A6A7A /* Braintree-Venmo-Specs */,
 				A7B7432419A3DFF7000A6A7A /* Braintree-Venmo */,
+				A7B7432E19A3E094000A6A7A /* Braintree-Venmo-Specs */,
 			);
 			path = Venmo;
 			sourceTree = "<group>";
@@ -1736,6 +1745,7 @@
 		A7B7432419A3DFF7000A6A7A /* Braintree-Venmo */ = {
 			isa = PBXGroup;
 			children = (
+				1621A5CA19AEA08E0085CBB2 /* @Public */,
 				A7B7433D19A3E4B5000A6A7A /* BTVenmoAppSwitchReturnURL.h */,
 				A7B7433E19A3E4B5000A6A7A /* BTVenmoAppSwitchReturnURL.m */,
 				A7B7433F19A3E4B5000A6A7A /* BTVenmoAppSwitchRequestURL.h */,

@@ -3,6 +3,7 @@
 
 #import <Braintree/Braintree-API.h>
 #import <Braintree/Braintree-PayPal.h>
+#import <Braintree/Braintree-Venmo.h>
 #import <Braintree/Braintree-Payments-UI.h>
 #import "BTDropInViewController.h"
 

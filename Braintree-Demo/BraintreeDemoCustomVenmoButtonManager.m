@@ -4,8 +4,6 @@
 
 #import <Braintree/UIColor+BTUI.h>
 
-#import <Braintree/BTVenmoAppSwitchHandler.h>
-
 @interface BraintreeDemoCustomVenmoButtonManager ()
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, weak) id<BTAppSwitchingDelegate> delegate;
