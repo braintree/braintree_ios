@@ -16,7 +16,7 @@
                                           @"x-success": [self returnURLWithScheme:scheme result:@"success"],
                                           @"x-error": [self returnURLWithScheme:scheme result:@"error"],
                                           @"x-cancel": [self returnURLWithScheme:scheme result:@"cancel"],
-                                          @"x-source": scheme,
+                                          @"x-source": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"],
                                           @"braintree_merchant_id": merchantID
                                           };
 
