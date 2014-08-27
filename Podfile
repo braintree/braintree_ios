@@ -15,6 +15,8 @@ target 'Braintree-Demo' do
   pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.2'
   pod 'NSURL+QueryDictionary', '~> 1.0'
+  pod 'UIActionSheet+Blocks'
+  pod 'PureLayout'
 end
 
 target 'Braintree-Specs' do

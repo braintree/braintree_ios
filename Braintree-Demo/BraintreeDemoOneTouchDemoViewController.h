@@ -2,7 +2,7 @@
 
 @class Braintree;
 
-@interface BraintreeDemoPayPalButtonDemoViewController : UIViewController
+@interface BraintreeDemoOneTouchDemoViewController : UIViewController
 - (instancetype)initWithBraintree:(Braintree *)braintree completion:(void (^)(NSString *nonce))completionBlock;
 
 @end

@@ -53,7 +53,9 @@ PODS:
   - OHHTTPStubs (3.1.5):
     - OHHTTPStubs/Core
   - OHHTTPStubs/Core (3.1.5)
+  - PureLayout (1.0.1)
   - Specta (0.2.1)
+  - UIActionSheet+Blocks (0.8.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
@@ -71,7 +73,9 @@ DEPENDENCIES:
   - OCHamcrest (~> 3.0.1)
   - OCMock (~> 2.2.3)
   - OHHTTPStubs (~> 3.1.0)
+  - PureLayout
   - Specta (~> 0.2.1)
+  - UIActionSheet+Blocks
 
 EXTERNAL SOURCES:
   Braintree:
@@ -87,6 +91,8 @@ SPEC CHECKSUMS:
   OCHamcrest: 207233b7d7a44dadd66aca398947cc7e029c9be5
   OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
   OHHTTPStubs: c1e362552b71b81e1deb7a80f44c51585b946c43
+  PureLayout: 972964b21dbcbc5cc36785aed16aba03176f057d
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
+  UIActionSheet+Blocks: c8b9c02f3d08964e8f7a4202f004a639c15eab80
 
 COCOAPODS: 0.33.1

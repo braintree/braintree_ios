@@ -1,6 +1,6 @@
 
 /* Class = "IBUILabel"; text = "[braintree payPalControlWithCompletion:];"; ObjectID = "2E9-9x-5fB"; */
-"2E9-9x-5fB.text" = "[braintree payPalControlWithCompletion:];";
+"2E9-9x-5fB.text" = "Botae One Touchis";
 
 /* Class = "IBUILabel"; text = "Transmit nonce to your server → 💰"; ObjectID = "2q2-ZJ-xOe"; */
 "2q2-ZJ-xOe.text" = "Quarto, ad praesens amet → 💰";
@@ -18,7 +18,7 @@
 "LJb-7g-SHk.headerTitle" = "Vestigium II: Aliquam erat praesens";
 
 /* Class = "IBUILabel"; text = "PayPal Button"; ObjectID = "PaT-fr-JHw"; */
-"PaT-fr-JHw.text" = "Boto PayPali";
+"PaT-fr-JHw.text" = "Boto One Touch";
 
 /* Class = "IBUILabel"; text = "[braintree tokenizeCardWithNumber:…];"; ObjectID = "Rp4-mk-GPh"; */
 "Rp4-mk-GPh.text" = "[braintree tokenizeCardWithNumber:…];";
