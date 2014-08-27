@@ -92,6 +92,7 @@
 /// @return A string representation of this library's current semver.org version (if integrating with CocoaPods).
 + (NSString *)libraryVersion;
 
+
 #pragma mark - One Touch™ Payments
 
 /// The custom URL scheme that the authenticating app should use to return users to your app via `openURL:` (app switch).

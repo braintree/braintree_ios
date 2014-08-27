@@ -22,7 +22,15 @@
 
     NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:client.merchantId returnURLScheme:self.returnURLScheme];
     self.delegate = theDelegate;
+
+    if ([self.delegate respondsToSelector:@selector(appSwitcherWillSwitch:)]) {
+        [self.delegate appSwitcherWillSwitch:self];
+    }
     return [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
+}
+
++ (BOOL)isAvailable {
+    return [BTVenmoAppSwitchRequestURL isAppSwitchAvailable];
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
@@ -30,7 +38,9 @@
 }
 
 - (void)handleReturnURL:(NSURL *)url {
-    [self.delegate appSwitcherWillCreatePaymentMethod:self];
+    if ([self.delegate respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {
+        [self.delegate appSwitcherWillCreatePaymentMethod:self];
+    }
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded:

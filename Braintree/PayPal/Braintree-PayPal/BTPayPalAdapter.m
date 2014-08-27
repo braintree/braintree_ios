@@ -30,9 +30,9 @@
 
 - (void)initiatePayPalAuth {
 
-    BOOL appSwitchHandled = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
+    BOOL appSwitchInitiated = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
 
-    if (appSwitchHandled) {
+    if (appSwitchInitiated) {
         [self.client postAnalyticsEvent:@"ios.paypal.adapter.appswitch.initiate"];
     } else {
         [self.client postAnalyticsEvent:@"ios.paypal.adapter.viewcontroller.initiate"];

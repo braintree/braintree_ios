@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BTAppSwitching.h"
+
 @interface BTAppSwitch : NSObject
 
 @property (nonatomic, readwrite, copy) NSString *returnURLScheme;

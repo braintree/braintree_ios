@@ -1,13 +1,25 @@
 #import "BraintreeDemoCustomVenmoButtonManager.h"
 
+#import <Braintree/Braintree.h>
+
 #import <Braintree/UIColor+BTUI.h>
-#import <Braintree/BTClient.h>
+
+#import <Braintree/BTVenmoAppSwitchHandler.h>
+
+@interface BraintreeDemoCustomVenmoButtonManager ()
+@property (nonatomic, strong) BTClient *client;
+@property (nonatomic, weak) id<BTAppSwitchingDelegate> delegate;
+@end
 
 @implementation BraintreeDemoCustomVenmoButtonManager
 
-- (instancetype)initWithClient:(__unused BTClient *)client {
+@synthesize button = _button;
+
+- (instancetype)initWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate {
     self = [self init];
     if (self) {
+        self.client = client;
+        self.delegate = delegate;
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_button setTitle:@"Venmo (custom button)" forState:UIControlStateNormal];
         [_button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
@@ -17,13 +29,15 @@
     return self;
 }
 
+- (UIButton *)button {
+    return [BTVenmoAppSwitchHandler isAvailable] ? _button : nil;
+}
+
 - (void)tappedCustomVenmo:(BraintreeDemoCustomVenmoButtonManager *)sender {
     NSLog(@"You tapped the Venmo button: %@", sender);
-    [[[UIAlertView alloc] initWithTitle:@"Not Yet Implemented"
-                                message:nil
-                               delegate:nil
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
+
+    BOOL venmoSwitchInitiated = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self.delegate];
+    NSParameterAssert(venmoSwitchInitiated);
 }
 
 @end

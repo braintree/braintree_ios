@@ -102,7 +102,7 @@ typedef UIButton BTPaymentButton;
     }
 
     // Setup customVenmoButton;
-    self.customVenmoButtonManager = [[BraintreeDemoCustomVenmoButtonManager alloc] initWithClient:self.braintree.client];
+    self.customVenmoButtonManager = [[BraintreeDemoCustomVenmoButtonManager alloc] initWithClient:self.braintree.client delegate:self];
     if (self.customVenmoButtonManager) {
         [self.view addSubview:self.customVenmoButtonManager.button];
         [self.customVenmoButtonManager.button autoCenterInSuperview];
