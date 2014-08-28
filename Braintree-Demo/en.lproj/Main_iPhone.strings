@@ -1,6 +1,6 @@
 
 /* Class = "IBUILabel"; text = "[braintree payPalControlWithCompletion:];"; ObjectID = "2E9-9x-5fB"; */
-"2E9-9x-5fB.text" = "App switch based payments with Venmo and PayPal";
+"2E9-9x-5fB.text" = "Easy Payments with Venmo and PayPal";
 
 /* Class = "IBUILabel"; text = "Transmit nonce to your server → 💰"; ObjectID = "2q2-ZJ-xOe"; */
 "2q2-ZJ-xOe.text" = "Transmit nonce to your server → 💰";
