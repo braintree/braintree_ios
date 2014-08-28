@@ -26,22 +26,18 @@ PODS:
     - Braintree/PayPal
     - Braintree/UI
   - Braintree/API (3.2.0-rc5)
-  - Braintree/AppSwitch (3.2.0-rc5)
   - Braintree/Data (3.2.0-rc5)
   - Braintree/Drop-In (3.2.0-rc5):
     - Braintree/API
-    - Braintree/AppSwitch
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
   - Braintree/PayPal (3.2.0-rc5):
     - Braintree/API
-    - Braintree/AppSwitch
     - Braintree/UI
   - Braintree/UI (3.2.0-rc5)
   - Braintree/Venmo (3.2.0-rc5):
     - Braintree/API
-    - Braintree/AppSwitch
   - Expecta (0.3.1)
   - HockeySDK (3.5.6)
   - KIF (3.0.7):
@@ -61,7 +57,6 @@ DEPENDENCIES:
   - AFNetworking (~> 2.2)
   - Braintree (from `.`)
   - Braintree/API (from `.`)
-  - Braintree/AppSwitch (from `.`)
   - Braintree/Data (from `.`)
   - Braintree/PayPal (from `.`)
   - Braintree/UI (from `.`)
@@ -83,7 +78,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: f7976ddd883620b25ed051cd2af3f43da5b63477
+  Braintree: a0ead11a777fe1aa2b1c31574c57b7b36d6e24db
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
   KIF: 685ab7b49c1092732b7cb3106cc957366b01e225

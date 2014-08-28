@@ -76,11 +76,6 @@ target 'Braintree-Venmo-Specs' do
   pods_for_specs
 end
 
-target 'Braintree-AppSwitch-Specs' do
-  pod 'Braintree/AppSwitch', :path => '.'
-  pods_for_specs
-end
-
 # UI #
 target 'Braintree-Payments-UI-Demo' do
   pod 'Braintree/UI', :path => '.'
