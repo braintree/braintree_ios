@@ -7,7 +7,6 @@
 #import "BraintreeDemoTokenizationDemoViewController.h"
 #import "BraintreeDemoTransactionService.h"
 #import "BTClient_Internal.h"
-#import "BraintreeDemoVenmoAppSwitchViewController.h"
 
 @interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate>
 
@@ -83,10 +82,6 @@
     } else if (selectedCell == self.tokenizationCell) {
         // Custom card Tokenization
         demoViewController = [[BraintreeDemoTokenizationDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
-            self.nonce = nonce;
-        }];
-    } else if (selectedCell == self.customVenmoCell) {
-        demoViewController = [[BraintreeDemoVenmoAppSwitchViewController alloc] initWithBraintree:self.braintree merchantID:self.merchantId completion:^(NSString *nonce) {
             self.nonce = nonce;
         }];
     } else if (selectedCell == self.makeATransactionCell) {
