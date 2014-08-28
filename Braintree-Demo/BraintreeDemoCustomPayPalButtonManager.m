@@ -10,10 +10,11 @@
 
 @implementation BraintreeDemoCustomPayPalButtonManager
 
-- (id)initWithClient:(BTClient *)client {
+- (id)initWithClient:(BTClient *)client delegate:(id<BTPayPalAdapterDelegate>)delegate {
     self = [self init];
     if (self) {
         self.payPalAdapter = [[BTPayPalAdapter alloc] initWithClient:client];
+        self.payPalAdapter.delegate = delegate;
 
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_button setTitle:@"PayPal (custom button)" forState:UIControlStateNormal];
@@ -22,11 +23,6 @@
         [_button addTarget:self action:@selector(tappedCustomPayPal:) forControlEvents:UIControlEventTouchUpInside];
     }
     return self;
-}
-
-- (void)setDelegate:(id<BTPayPalAdapterDelegate>)delegate {
-    _delegate = delegate;
-    self.payPalAdapter.delegate = delegate;
 }
 
 - (void)tappedCustomPayPal:(BraintreeDemoCustomPayPalButtonManager *)sender {

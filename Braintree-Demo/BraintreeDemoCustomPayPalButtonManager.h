@@ -5,7 +5,7 @@
 
 @interface BraintreeDemoCustomPayPalButtonManager : NSObject
 
-- (instancetype)initWithClient:(BTClient *)client;
+- (instancetype)initWithClient:(BTClient *)client delegate:(id<BTPayPalAdapterDelegate>)delegate;
 
 @property (nonatomic, strong, readonly) UIButton *button;
 

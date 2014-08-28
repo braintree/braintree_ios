@@ -86,7 +86,6 @@
                                                  [self informDelegateDidCreatePayPalPaymentMethod:paypalPaymentMethod];
                                              } failure:^(NSError *error) {
                                                  [self informDelegateDidFailWithError:error];
-
                                              }];
 
 }

@@ -87,7 +87,7 @@ typedef UIButton BTPaymentButton;
     }
 
     // Setup customPayPalButton;
-    self.customPayPalButtonManager = [[BraintreeDemoCustomPayPalButtonManager alloc] initWithClient:self.braintree.client];
+    self.customPayPalButtonManager = [[BraintreeDemoCustomPayPalButtonManager alloc] initWithClient:self.braintree.client delegate:self];
     if (self.customPayPalButtonManager) {
         [self.view addSubview:self.customPayPalButtonManager.button];
         [self.customPayPalButtonManager.button autoCenterInSuperview];
