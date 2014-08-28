@@ -3,8 +3,10 @@
 #import "BTUI.h"
 #import "UIColor+BTUI.h"
 
+#import "BTUIVenmoWordmarkVectorArtView.h"
+
 @interface BTUIVenmoButton ()
-@property (nonatomic, strong) UIView *venmoWordmark;
+@property (nonatomic, strong) BTUIVenmoWordmarkVectorArtView *venmoWordmark;
 @end
 
 @implementation BTUIVenmoButton
@@ -28,12 +30,15 @@
 
 - (void)setupView {
     self.theme = [BTUI braintreeTheme];
+    self.userInteractionEnabled = YES;
+    self.clipsToBounds = YES;
+    self.opaque = NO;
+    self.backgroundColor = [UIColor clearColor];
 
-    UILabel *interimLabel;
-    self.venmoWordmark = interimLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    interimLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    interimLabel.text = @"V E N M O";
-    interimLabel.textColor = [self.theme venmoPrimaryBlue];
+    self.venmoWordmark = [[BTUIVenmoWordmarkVectorArtView alloc] init];
+    self.venmoWordmark.userInteractionEnabled = NO;
+    self.venmoWordmark.translatesAutoresizingMaskIntoConstraints = NO;
+    self.venmoWordmark.color = [self.theme venmoPrimaryBlue];
 
     [self addSubview:self.venmoWordmark];
 }
@@ -41,17 +46,22 @@
 - (void)updateConstraints {
     NSDictionary *metrics = @{ @"minHeight": @([self.theme paymentButtonMinHeight]),
                                @"maxHeight": @([self.theme paymentButtonMaxHeight]),
-                               @"required": @(UILayoutPriorityRequired) };
-    NSDictionary *views = @{ @"self": self };
+                               @"minWidth": @(200),
+                               @"required": @(UILayoutPriorityRequired),
+                               @"high": @(UILayoutPriorityDefaultHigh),
+                               @"breathingRoom": @(10) };
+    NSDictionary *views = @{ @"self": self ,
+                             @"venmoWordmark": self.venmoWordmark };
 
-    // View-level constraints
-    
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[self(>=minHeight@required,<=maxHeight@required)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[self(>=minWidth)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    // Venmo wordmark constraints
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[self(>=minHeight@required,<=maxHeight@required)]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                     attribute:NSLayoutAttributeCenterX
@@ -68,7 +78,43 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=breathingRoom@required)-[venmoWordmark]-(>=breathingRoom@required)-|"
+                                            options:0
+                                            metrics:metrics
+                                              views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=breathingRoom@required)-[venmoWordmark]-(>=breathingRoom@required)-|"
+                                            options:0
+                                            metrics:metrics
+                                              views:views]];
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
+                                                     attribute:NSLayoutAttributeHeight
+                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                        toItem:self.venmoWordmark
+                                                     attribute:NSLayoutAttributeHeight
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
+                                                     attribute:NSLayoutAttributeWidth
+                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
+                                                        toItem:self.venmoWordmark
+                                                     attribute:NSLayoutAttributeWidth
+                                                    multiplier:1.20f
+                                                      constant:0.0f]];
     [super updateConstraints];
+}
+
+- (void)setHighlighted:(BOOL)highlighted {
+    [UIView animateWithDuration:0.08f animations:^{
+        if (highlighted) {
+            self.venmoWordmark.alpha = 0.3;
+        } else {
+            self.venmoWordmark.alpha = 1.0f;
+        }
+    }];
 }
 
 @end

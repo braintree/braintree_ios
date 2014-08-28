@@ -97,6 +97,7 @@ typedef UIButton BTPaymentButton;
     // Setup btVenmoButton
     self.btVenmoButton = [[BTUIVenmoButton alloc] initWithFrame:CGRectZero];
     if (self.btVenmoButton) {
+        [self.btVenmoButton addTarget:self action:@selector(tappedVenmoButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.btVenmoButton];
         [self.btVenmoButton autoCenterInSuperview];
     }
@@ -208,13 +209,11 @@ typedef UIButton BTPaymentButton;
     [self setDefaultIntegration:selectedIntegrationTechnique];
 }
 
-#pragma mark -
-
-
-- (IBAction)didTapVenmo:(__unused id)sender {
-    [BTVenmoAppSwitchHandler sharedHandler].returnURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
+- (void)tappedVenmoButton:(__unused id)sender {
     [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.braintree.client delegate:self];
 }
+
+#pragma mark -
 
 - (void)willReceivePaymentMethod {
     [self.activityIndicator startAnimating];

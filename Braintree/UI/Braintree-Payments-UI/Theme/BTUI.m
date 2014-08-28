@@ -136,7 +136,7 @@
 }
 
 - (CGFloat)paymentButtonMinHeight {
-    return 40.0f;
+    return 44.0f;
 }
 
 - (CGFloat)paymentButtonMaxHeight {
