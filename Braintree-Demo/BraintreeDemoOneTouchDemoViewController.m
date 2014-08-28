@@ -27,6 +27,8 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo) ];
 }
 
+NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey";
+
 
 // TODO: Temporary typdefs, pending implementation of these classes
 typedef UIButton BTVenmoButton;
@@ -108,7 +110,19 @@ typedef UIButton BTPaymentButton;
         [self.customVenmoButtonManager.button autoCenterInSuperview];
     }
 
-    [self switchToIntegration:0 animated:NO];
+    [self switchToIntegration:self.defaultIntegration animated:NO];
+}
+
+
+#pragma mark Default Integration Technique Persistence
+
+- (BraintreeDemoOneTouchIntegrationTechnique)defaultIntegration {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey];
+}
+
+- (void)setDefaultIntegration:(BraintreeDemoOneTouchIntegrationTechnique)integrationTechnique {
+    [[NSUserDefaults standardUserDefaults] setInteger:integrationTechnique forKey:BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark Integration Chooser
@@ -193,6 +207,7 @@ typedef UIButton BTPaymentButton;
                          [self setTitle:[self integrationNameForTechnique:selectedIntegrationTechnique]];
                      }];
     self.emailLabel.text = [self integrationNameForTechnique:selectedIntegrationTechnique];
+    [self setDefaultIntegration:selectedIntegrationTechnique];
 }
 
 #pragma mark -
