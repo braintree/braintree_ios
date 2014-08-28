@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 #import "Braintree-API.h"
+#import "Braintree-Payments-UI.h"
 
 @protocol BTPayPalButtonDelegate;
 @protocol BTPayPalButtonViewControllerPresenterDelegate;
@@ -25,6 +26,8 @@
 ///
 /// @see Braintree-API-iOS
 @property (nonatomic, strong) BTClient *client;
+
+@property (nonatomic, strong) BTUI *theme;
 
 @end
 

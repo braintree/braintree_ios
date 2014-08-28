@@ -31,7 +31,6 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 
 // TODO: Temporary typdefs, pending implementation of these classes
-typedef UIButton BTVenmoButton;
 typedef UIButton BTPaymentButton;
 
 @interface BraintreeDemoOneTouchDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPayPalAdapterDelegate>
@@ -46,7 +45,7 @@ typedef UIButton BTPaymentButton;
 @property (nonatomic, strong) BTPayPalButton *btPayPalButton;
 @property (nonatomic, strong) BraintreeDemoCustomPayPalButtonManager *customPayPalButtonManager;
 
-@property (nonatomic, strong) BTVenmoButton *btVenmoButton;
+@property (nonatomic, strong) BTUIVenmoButton *btVenmoButton;
 @property (nonatomic, strong) BraintreeDemoCustomVenmoButtonManager *customVenmoButtonManager;
 
 
@@ -75,7 +74,7 @@ typedef UIButton BTPaymentButton;
                                                                                            target:self
                                                                                            action:@selector(showIntegrationChooser:)];
 
-    // Setup btPayPalButton;
+    // Setup btPayPalButton
     self.btPayPalButton = [self.braintree payPalButtonWithDelegate:self];
 
     if (self.btPayPalButton) {
@@ -88,22 +87,21 @@ typedef UIButton BTPaymentButton;
         [self.btPayPalButton autoSetDimension:ALDimensionHeight toSize:60];
     }
 
-    // Setup customPayPalButton;
+    // Setup customPayPalButton
     self.customPayPalButtonManager = [[BraintreeDemoCustomPayPalButtonManager alloc] initWithClient:self.braintree.client delegate:self];
     if (self.customPayPalButtonManager) {
         [self.view addSubview:self.customPayPalButtonManager.button];
         [self.customPayPalButtonManager.button autoCenterInSuperview];
     }
 
-    // Setup btVenmoButton;
-    // TODO: Implement a venmo button
-    self.btVenmoButton = nil;
+    // Setup btVenmoButton
+    self.btVenmoButton = [[BTUIVenmoButton alloc] initWithFrame:CGRectZero];
     if (self.btVenmoButton) {
         [self.view addSubview:self.btVenmoButton];
         [self.btVenmoButton autoCenterInSuperview];
     }
 
-    // Setup customVenmoButton;
+    // Setup customVenmoButton
     self.customVenmoButtonManager = [[BraintreeDemoCustomVenmoButtonManager alloc] initWithClient:self.braintree.client delegate:self];
     if (self.customVenmoButtonManager) {
         [self.view addSubview:self.customVenmoButtonManager.button];

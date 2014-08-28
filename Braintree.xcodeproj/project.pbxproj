@@ -488,6 +488,8 @@
 		169D5F8A1966087800C2A50D /* BTAnalyticsMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTAnalyticsMetadata.h; path = "Braintree/API/Braintree-API/Utility/BTAnalyticsMetadata.h"; sourceTree = SOURCE_ROOT; };
 		169D5F8B1966087800C2A50D /* BTAnalyticsMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTAnalyticsMetadata.m; path = "Braintree/API/Braintree-API/Utility/BTAnalyticsMetadata.m"; sourceTree = SOURCE_ROOT; };
 		169D5F8C19660C4100C2A50D /* BTAnalyticsMetadataSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTAnalyticsMetadataSpec.m; path = "Braintree/API/Braintree-API-Specs/BTAnalyticsMetadataSpec.m"; sourceTree = SOURCE_ROOT; };
+		16A2EA3319AEB8B100093EB5 /* BTUIVenmoButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIVenmoButton.h; sourceTree = "<group>"; };
+		16A2EA3419AEB8B100093EB5 /* BTUIVenmoButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIVenmoButton.m; sourceTree = "<group>"; };
 		16BAFCAE194BB89E0047E96B /* BTUICardExpiryFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormat.m; sourceTree = "<group>"; };
 		16BAFCAF194BB89E0047E96B /* BTUICardExpiryFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUICardExpiryFormat.h; sourceTree = "<group>"; };
 		16F9996919AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomPayPalButtonManager.h; sourceTree = "<group>"; };
@@ -1169,9 +1171,9 @@
 		162174D8192D8746008DC35D /* Braintree-Payments-UI */ = {
 			isa = PBXGroup;
 			children = (
-				161564701988731D002F7316 /* Localization */,
 				1621749B192D8746008DC35D /* Braintree-Payments-UI.h */,
 				1621749C192D8746008DC35D /* BTUIPaymentMethodType.h */,
+				161564701988731D002F7316 /* Localization */,
 				1621749A192D8746008DC35D /* Models */,
 				162174D7192D8746008DC35D /* Theme */,
 				162174D4192D8746008DC35D /* Views */,
@@ -1519,6 +1521,8 @@
 				162174AF192D8746008DC35D /* BTUIPaymentMethodView.m */,
 				162174B0192D8746008DC35D /* BTUISummaryView.h */,
 				162174B1192D8746008DC35D /* BTUISummaryView.m */,
+				16A2EA3319AEB8B100093EB5 /* BTUIVenmoButton.h */,
+				16A2EA3419AEB8B100093EB5 /* BTUIVenmoButton.m */,
 			);
 			path = "Payments Components";
 			sourceTree = "<group>";

@@ -49,6 +49,7 @@
 }
 
 - (void)setupViews {
+    self.theme = [BTUI braintreeTheme];
     self.accessibilityLabel = @"PayPal";
     self.userInteractionEnabled = YES;
     self.clipsToBounds = YES;
@@ -143,8 +144,8 @@
 - (NSArray *)defaultConstraints {
     CGFloat BTPayPalButtonHorizontalSignatureWidth = 95.0f;
     CGFloat BTPayPalButtonHorizontalSignatureHeight = 23.0f;
-    CGFloat BTPayPalButtonMinHeight = 40.0f;
-    CGFloat BTPayPalButtonMaxHeight = 60.0f;
+    CGFloat BTPayPalButtonMinHeight = [self.theme paymentButtonMinHeight];
+    CGFloat BTPayPalButtonMaxHeight = [self.theme paymentButtonMaxHeight];
     CGFloat BTPayPalButtonMinWidth = 240.0f;
 
     NSDictionary *metrics = @{ @"minHeight": @(BTPayPalButtonMinHeight),

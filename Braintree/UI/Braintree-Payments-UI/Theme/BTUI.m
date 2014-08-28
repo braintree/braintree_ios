@@ -105,6 +105,12 @@
     return [self payBlue];
 }
 
+#pragma mark Venmo Colors
+
+- (UIColor *)venmoPrimaryBlue {
+    return [UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f];
+}
+
 #pragma mark Adjustments
 
 - (CGFloat)highlightedBrightnessAdjustment {
@@ -127,6 +133,14 @@
 
 - (CGFloat)horizontalMargin {
     return 17.0f;
+}
+
+- (CGFloat)paymentButtonMinHeight {
+    return 40.0f;
+}
+
+- (CGFloat)paymentButtonMaxHeight {
+    return 60.0f;
 }
 
 #pragma mark - Type

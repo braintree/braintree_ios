@@ -4,3 +4,4 @@
 #import <Braintree/BTUISummaryView.h>
 #import <Braintree/BTUICardFormView.h>
 #import <Braintree/BTUIPaymentMethodView.h>
+#import <Braintree/BTUIVenmoButton.h>

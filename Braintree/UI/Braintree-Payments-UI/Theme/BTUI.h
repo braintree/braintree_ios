@@ -49,6 +49,10 @@
 - (UIColor *)payPalButtonBlue;
 - (UIColor *)payPalButtonActiveBlue;
 
+#pragma mark Venmo Colors
+
+- (UIColor *)venmoPrimaryBlue;
+
 #pragma mark Typography
 
 - (UIFont *)controlFont;
@@ -69,6 +73,8 @@
 - (CGFloat)cornerRadius;
 - (CGFloat)formattedEntryKerning;
 - (CGFloat)horizontalMargin;
+- (CGFloat)paymentButtonMinHeight;
+- (CGFloat)paymentButtonMaxHeight;
 
 #pragma mark Transitions
 
