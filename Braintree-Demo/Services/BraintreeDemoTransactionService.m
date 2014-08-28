@@ -19,10 +19,20 @@
 - (id)init {
     self = [super init];
     if (self) {
-//        self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://braintree-sample-merchant.herokuapp.com"]];
-        self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://executive-sample-merchant.herokuapp.com"]];
+        [self setEnvironment:BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant];
     }
     return self;
+}
+
+- (void)setEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment {
+    switch (environment) {
+        case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
+            self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://braintree-sample-merchant.herokuapp.com"]];
+            break;
+        case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
+            self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://executive-sample-merchant.herokuapp.com"]];
+            break;
+    }
 }
 
 - (void)fetchMerchantConfigWithCompletion:(void (^)(NSString *merchantId, NSError *error))completionBlock {
