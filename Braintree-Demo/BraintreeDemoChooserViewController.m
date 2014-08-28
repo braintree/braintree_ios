@@ -37,10 +37,6 @@
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *libraryVersionCell;
 
-#pragma mark Venmo Development
-
-@property (nonatomic, weak) IBOutlet UITableViewCell *customVenmoCell;
-
 #pragma mark Payment Data
 
 @property (nonatomic, strong) Braintree *braintree;
