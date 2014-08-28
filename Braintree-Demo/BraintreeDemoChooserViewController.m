@@ -1,6 +1,7 @@
 #import "BraintreeDemoChooserViewController.h"
 
 #import <Braintree/Braintree.h>
+#import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
 
 #import "BraintreeDemoBraintreeInitializationDemoViewController.h"
 #import "BraintreeDemoPayPalButtonDemoViewController.h"
@@ -8,6 +9,8 @@
 #import "BraintreeDemoTransactionService.h"
 
 @interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate>
+
+@property (nonatomic, weak) IBOutlet UIBarButtonItem *environmentSelector;
 
 #pragma mark Status Cells
 @property (nonatomic, weak) IBOutlet UITableViewCell *braintreeStatusCell;
@@ -133,6 +136,38 @@
             cell.detailTextLabel.enabled = YES;
         }
     }
+}
+
+- (IBAction)tappedEnvironmentSelector:(UIBarButtonItem *)sender {
+    [UIActionSheet showFromBarButtonItem:sender
+                                animated:YES
+                               withTitle:@"Choose a Merchant Server Environment"
+                       cancelButtonTitle:@"Cancel"
+                  destructiveButtonTitle:nil
+                       otherButtonTitles:@[@"Sandbox Merchant", @"Production Merchant"]
+                                tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
+                                    if (buttonIndex == actionSheet.cancelButtonIndex) {
+                                        return;
+                                    }
+
+                                    BraintreeDemoTransactionServiceEnvironment environment;
+                                    NSString *environmentName;
+                                    
+                                    if (buttonIndex == 1) {
+                                        environment = BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant;
+                                        environmentName = self.environmentSelector.title = @"Production";
+                                    } else {
+                                        environment = BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant;
+                                        environmentName = @"Sandbox";
+                                    }
+
+                                    [[BraintreeDemoTransactionService sharedService] setEnvironment:environment];
+                                    self.environmentSelector.title = environmentName;
+                                    self.braintree = nil;
+                                    self.merchantId = nil;
+                                    self.nonce = nil;
+                                    self.lastTransactionId = nil;
+                                }];
 }
 
 - (BTDropInViewController *)configuredDropInViewController {
