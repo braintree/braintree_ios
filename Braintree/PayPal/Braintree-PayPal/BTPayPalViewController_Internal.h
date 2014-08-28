@@ -1,6 +1,6 @@
 #import "BTPayPalViewController.h"
 #import "PayPalMobile.h"
 
-@interface BTPayPalViewController () <PayPalFuturePaymentDelegate>
-@property (nonatomic, readwrite, strong) PayPalFuturePaymentViewController *payPalFuturePaymentViewController;
+@interface BTPayPalViewController () <PayPalProfileSharingDelegate>
+@property (nonatomic, readwrite, strong) PayPalProfileSharingViewController *payPalProfileSharingViewController;
 @end
