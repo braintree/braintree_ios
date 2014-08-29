@@ -94,17 +94,7 @@
 #pragma mark Library
 
 + (NSString *)libraryVersion {
-#if defined(COCOAPODS) && defined(COCOAPODS_VERSION_MAJOR_Braintree) &&defined(COCOAPODS_VERSION_MINOR_Braintree) && defined(COCOAPODS_VERSION_PATCH_Braintree)
-    return [NSString stringWithFormat:@"%d.%d.%d",
-            COCOAPODS_VERSION_MAJOR_Braintree,
-            COCOAPODS_VERSION_MINOR_Braintree,
-            COCOAPODS_VERSION_PATCH_Braintree];
-#else
-#ifdef DEBUG
-    return @"development";
-#else
-    return @"unknown";
-#endif
-#endif
+    return [BTClient libraryVersion];
 }
+
 @end

@@ -8,6 +8,7 @@
 #import "BTHTTP.h"
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
+#import "Braintree-Version.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -271,18 +272,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #pragma mark - Library Version
 
 + (NSString *)libraryVersion {
-#if defined(COCOAPODS) && defined(COCOAPODS_VERSION_MAJOR_Braintree_API) && defined(COCOAPODS_VERSION_MINOR_Braintree_API) && defined(COCOAPODS_VERSION_PATCH_Braintree_API)
-    return [NSString stringWithFormat:@"%d.%d.%d",
-            COCOAPODS_VERSION_MAJOR_Braintree_API,
-            COCOAPODS_VERSION_MINOR_Braintree_API,
-            COCOAPODS_VERSION_PATCH_Braintree_API];
-#else
-#ifdef DEBUG
-    return @"development";
-#else
-    return @"unknown";
-#endif
-#endif
+    return BRAINTREE_VERSION;
 }
 
 @end

@@ -29,6 +29,7 @@
         [self setObject:@([m deviceLocationLongitude]) forKey:@"deviceLocationLongitude" inDictionary:data];
     }
     [self setObject:[m iosIdentifierForVendor] forKey:@"iosIdentifierForVendor" inDictionary:data];
+    [self setObject:@([m iosIsCocoapods]) forKey:@"iosIsCocoapods" inDictionary:data];
     [self setObject:[m deviceAppGeneratedPersistentUuid] forKey:@"deviceAppGeneratedPersistentUuid" inDictionary:data];
     [self setObject:@([m isSimulator]) forKey:@"isSimulator" inDictionary:data];
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
@@ -124,6 +125,10 @@
 
 - (NSString *)iosIdentifierForVendor {
     return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+}
+
+- (BOOL)iosIsCocoapods {
+    return COCOAPODS;
 }
 
 - (NSString *)deviceAppGeneratedPersistentUuid {
