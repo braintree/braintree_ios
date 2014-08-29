@@ -50,6 +50,27 @@
 
 @implementation BraintreeDemoChooserViewController
 
+- (void)viewDidLoad {
+    [self switchToEnvironment:[BraintreeDemoTransactionService mostRecentlyUsedEnvironment]];
+
+    // Perform a best effort attempt to initialize the session.
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[BraintreeDemoTransactionService sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
+        if (error) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            return;
+        }
+
+        [[BraintreeDemoTransactionService sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            if (error) {
+                return;
+            }
+            [self resetWithBraintree:[Braintree braintreeWithClientToken:clientToken] merchantId:merchantId];
+        }];
+    }];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
@@ -59,6 +80,13 @@
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 }
 
+- (void)resetWithBraintree:(Braintree *)braintree merchantId:(NSString *)merchantId {
+    self.braintree = braintree;
+    self.merchantId = merchantId;
+    self.nonce = nil;
+    self.lastTransactionId = nil;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     UIViewController *demoViewController;
@@ -66,10 +94,7 @@
     if (selectedCell == self.initializeBraintreeCell) {
         // Initialize Braintree
         demoViewController = [[BraintreeDemoBraintreeInitializationDemoViewController alloc] initWithCompletion:^(Braintree *braintree, NSString *merchantId, NSError *error){
-            self.braintree = braintree;
-            self.merchantId = merchantId;
-            self.nonce = nil;
-            self.lastTransactionId = nil;
+            [self resetWithBraintree:braintree merchantId:merchantId];
             if (error) {
                 NSLog(@"Error initializing Braintree: %@", error);
             }
@@ -153,23 +178,35 @@
                                     }
 
                                     BraintreeDemoTransactionServiceEnvironment environment;
-                                    NSString *environmentName;
-                                    
+
                                     if (buttonIndex == 1) {
                                         environment = BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant;
-                                        environmentName = self.environmentSelector.title = @"Production";
                                     } else {
                                         environment = BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant;
-                                        environmentName = @"Sandbox";
                                     }
 
-                                    [[BraintreeDemoTransactionService sharedService] setEnvironment:environment];
-                                    self.environmentSelector.title = environmentName;
-                                    self.braintree = nil;
-                                    self.merchantId = nil;
-                                    self.nonce = nil;
-                                    self.lastTransactionId = nil;
+                                    [self switchToEnvironment:environment];
                                 }];
+}
+
+- (void)switchToEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment {
+    NSString *environmentName;
+
+    switch (environment) {
+        case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
+            environmentName = @"Sandbox";
+            break;
+        case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
+            environmentName = @"Production";
+    }
+
+    [[BraintreeDemoTransactionService sharedService] setEnvironment:environment];
+    self.environmentSelector.title = environmentName;
+    self.braintree = nil;
+    self.merchantId = nil;
+    self.nonce = nil;
+    self.lastTransactionId = nil;
+
 }
 
 - (BTDropInViewController *)configuredDropInViewController {
@@ -218,10 +255,10 @@
 - (void)dropInViewControllerDidCancel:(__unused BTDropInViewController *)viewController {
     [self.navigationController popViewControllerAnimated:YES];
     [[[UIAlertView alloc] initWithTitle:@"Drop In Canceled"
-                            message:nil
-                           delegate:nil
-                  cancelButtonTitle:@":("
-                  otherButtonTitles:nil] show];
+                                message:nil
+                               delegate:nil
+                      cancelButtonTitle:@":("
+                      otherButtonTitles:nil] show];
 }
 
 @end
