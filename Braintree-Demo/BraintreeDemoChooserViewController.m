@@ -49,6 +49,10 @@
 
 @implementation BraintreeDemoChooserViewController
 
+- (void)viewDidLoad {
+    [self switchToEnvironment:[BraintreeDemoTransactionService mostRecentlyUsedEnvironment]];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
@@ -151,15 +155,27 @@
                                     }
 
                                     BraintreeDemoTransactionServiceEnvironment environment;
-                                    NSString *environmentName;
-                                    
+
                                     if (buttonIndex == 1) {
                                         environment = BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant;
-                                        environmentName = self.environmentSelector.title = @"Production";
                                     } else {
                                         environment = BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant;
-                                        environmentName = @"Sandbox";
                                     }
+
+                                    [self switchToEnvironment:environment];
+                                }];
+}
+
+- (void)switchToEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment {
+    NSString *environmentName;
+
+    switch (environment) {
+        case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
+            environmentName = @"Sandbox";
+            break;
+        case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
+            environmentName = @"Production";
+    }
 
                                     [[BraintreeDemoTransactionService sharedService] setEnvironment:environment];
                                     self.environmentSelector.title = environmentName;
@@ -167,7 +183,7 @@
                                     self.merchantId = nil;
                                     self.nonce = nil;
                                     self.lastTransactionId = nil;
-                                }];
+
 }
 
 - (BTDropInViewController *)configuredDropInViewController {

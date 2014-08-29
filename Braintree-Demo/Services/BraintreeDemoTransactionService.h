@@ -8,6 +8,7 @@ typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceEnvironment) {
 @interface BraintreeDemoTransactionService : NSObject
 
 + (instancetype)sharedService;
++ (BraintreeDemoTransactionServiceEnvironment)mostRecentlyUsedEnvironment;
 
 - (void)setEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment;
 
