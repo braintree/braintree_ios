@@ -46,7 +46,7 @@ describe(@"preparePayPalMobile", ^{
                 [mockPayPalMobile stopMocking];
             });
 
-            it(@"enables BTPayPalViewController to embed a PayPalFuturePaymentViewController that hits the specified environment", ^{
+            it(@"enables BTPayPalViewController to embed a PayPalProfileSharingViewController that hits the specified environment", ^{
                 OCMockObject *mockPayPalMobile = [OCMockObject mockForClass:[PayPalMobile class]];
                 [[[mockPayPalMobile stub] classMethod] preconnectWithEnvironment:[OCMArg isNotNil]];
 
@@ -54,7 +54,7 @@ describe(@"preparePayPalMobile", ^{
 
                 [payPalViewController view];
 
-                expect(payPalViewController.payPalFuturePaymentViewController).to.beKindOf([PayPalFuturePaymentViewController class]);
+                expect(payPalViewController.payPalProfileSharingViewController).to.beKindOf([PayPalProfileSharingViewController class]);
                 [mockPayPalMobile stopMocking];
             });
         });
@@ -114,10 +114,10 @@ describe(@"preparePayPalMobile", ^{
             [mockPayPalMobile stopMocking];
         });
 
-        it(@"enables BTPayPalViewController to embed a PayPalFuturePaymentViewController that hits the mock mode environment", ^{
+        it(@"enables BTPayPalViewController to embed a PayPalProfileSharingViewController that hits the mock mode environment", ^{
             BTPayPalViewController *payPalViewController = [[BTPayPalViewController alloc] initWithClient:client];
             [payPalViewController view];
-            expect(payPalViewController.payPalFuturePaymentViewController).to.beKindOf([PayPalFuturePaymentViewController class]);
+            expect(payPalViewController.payPalProfileSharingViewController).to.beKindOf([PayPalProfileSharingViewController class]);
         });
     });
 });

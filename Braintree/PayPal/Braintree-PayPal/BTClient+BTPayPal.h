@@ -1,9 +1,9 @@
 #import "BTClient.h"
 
-@class PayPalFuturePaymentViewController;
+@class PayPalProfileSharingViewController;
 @class PayPalConfiguration;
 
-@protocol PayPalFuturePaymentDelegate;
+@protocol PayPalProfileSharingDelegate;
 
 extern NSString *const BTClientPayPalMobileEnvironmentName;
 
@@ -12,7 +12,7 @@ extern NSString *const BTClientPayPalMobileEnvironmentName;
 + (NSString *)btPayPal_offlineTestClientToken;
 - (BOOL)btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)error;
 - (BOOL)btPayPal_isPayPalEnabled;
-- (PayPalFuturePaymentViewController *)btPayPal_futurePaymentFutureControllerWithDelegate:(id<PayPalFuturePaymentDelegate>)delegate;
+- (PayPalProfileSharingViewController *)btPayPal_profileSharingViewControllerWithDelegate:(id<PayPalProfileSharingDelegate>)delegate;
 - (NSString *)btPayPal_applicationCorrelationId;
 - (PayPalConfiguration *)btPayPal_configuration;
 - (NSString *)btPayPal_environment;

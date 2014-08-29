@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.2.0-rc6 (2014-08-29)
+
+* Update PayPal implementation to expose PayPal display email/phone consistently across client and server
+
 ## 3.2.0-rc5 (2014-08-22)
 
 * Merge fixes from 3.1.3

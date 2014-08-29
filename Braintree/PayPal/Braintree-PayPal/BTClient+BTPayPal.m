@@ -56,8 +56,11 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     return YES;
 }
 
-- (PayPalFuturePaymentViewController *)btPayPal_futurePaymentFutureControllerWithDelegate:(id<PayPalFuturePaymentDelegate>)delegate {
-    return [[PayPalFuturePaymentViewController alloc] initWithConfiguration:self.clientToken.btPayPal_configuration delegate:delegate];
+- (PayPalProfileSharingViewController *)btPayPal_profileSharingViewControllerWithDelegate:(id<PayPalProfileSharingDelegate>)delegate {
+    NSSet *scopes = [NSSet setWithObjects:kPayPalOAuth2ScopeFuturePayments, kPayPalOAuth2ScopeEmail, nil];
+    return [[PayPalProfileSharingViewController alloc] initWithScopeValues:scopes
+                                                             configuration:self.clientToken.btPayPal_configuration
+                                                                  delegate:delegate];
 }
 
 - (BOOL) btPayPal_isPayPalEnabled {

@@ -1,3 +1,12 @@
+//
+//  PayPalTouch.h
+//
+//  Version 2.3.1-bt1
+//
+//  Copyright (c) 2014, PayPal
+//  All rights reserved.
+//
+
 #import <Foundation/Foundation.h>
 #import "PayPalConfiguration.h"
 
