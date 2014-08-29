@@ -488,6 +488,8 @@
 		16A2EA3419AEB8B100093EB5 /* BTUIVenmoButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIVenmoButton.m; sourceTree = "<group>"; };
 		16A2EA3519AEC40000093EB5 /* BTUIVenmoWordmarkVectorArtView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIVenmoWordmarkVectorArtView.h; sourceTree = "<group>"; };
 		16A2EA3619AEC40000093EB5 /* BTUIVenmoWordmarkVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIVenmoWordmarkVectorArtView.m; sourceTree = "<group>"; };
+		16A2EA3719AFE22A00093EB5 /* BTPaymentButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentButton.h; sourceTree = "<group>"; };
+		16A2EA3819AFE22A00093EB5 /* BTPaymentButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentButton.m; sourceTree = "<group>"; };
 		16BAFCAE194BB89E0047E96B /* BTUICardExpiryFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormat.m; sourceTree = "<group>"; };
 		16BAFCAF194BB89E0047E96B /* BTUICardExpiryFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUICardExpiryFormat.h; sourceTree = "<group>"; };
 		16F5AF4619B7822C0043A412 /* BTPaymentMethodAuthorizationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentMethodAuthorizationDelegate.h; sourceTree = "<group>"; };
@@ -1566,6 +1568,8 @@
 				A74E2E721953690A004DFF73 /* BTDropInErrorState.m */,
 				A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */,
 				A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */,
+				16A2EA3719AFE22A00093EB5 /* BTPaymentButton.h */,
+				16A2EA3819AFE22A00093EB5 /* BTPaymentButton.m */,
 			);
 			path = "Braintree-Drop-In";
 			sourceTree = "<group>";

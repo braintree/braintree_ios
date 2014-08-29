@@ -143,6 +143,11 @@
     return 60.0f;
 }
 
+- (CGFloat)paymentButtonWordMarkHeight {
+    return 16.0f;
+}
+
+
 #pragma mark - Type
 
 - (UIFont *)controlFont {

@@ -33,7 +33,7 @@
     self.userInteractionEnabled = YES;
     self.clipsToBounds = YES;
     self.opaque = NO;
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor whiteColor];
 
     self.venmoWordmark = [[BTUIVenmoWordmarkVectorArtView alloc] init];
     self.venmoWordmark.userInteractionEnabled = NO;
@@ -46,6 +46,7 @@
 - (void)updateConstraints {
     NSDictionary *metrics = @{ @"minHeight": @([self.theme paymentButtonMinHeight]),
                                @"maxHeight": @([self.theme paymentButtonMaxHeight]),
+                               @"wordMarkHeight": @([self.theme paymentButtonWordMarkHeight]),
                                @"minWidth": @(200),
                                @"required": @(UILayoutPriorityRequired),
                                @"high": @(UILayoutPriorityDefaultHigh),
@@ -53,15 +54,10 @@
     NSDictionary *views = @{ @"self": self ,
                              @"venmoWordmark": self.venmoWordmark };
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[self(>=minWidth)]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[self(>=minHeight@required,<=maxHeight@required)]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[venmoWordmark(<=wordMarkHeight)]"
+                                            options:0
+                                            metrics:metrics
+                                              views:views]];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                     attribute:NSLayoutAttributeCenterX
@@ -79,31 +75,6 @@
                                                     multiplier:1.0f
                                                       constant:0.0f]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(>=breathingRoom@required)-[venmoWordmark]-(>=breathingRoom@required)-|"
-                                            options:0
-                                            metrics:metrics
-                                              views:views]];
-
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=breathingRoom@required)-[venmoWordmark]-(>=breathingRoom@required)-|"
-                                            options:0
-                                            metrics:metrics
-                                              views:views]];
-
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
-                                                     attribute:NSLayoutAttributeHeight
-                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                        toItem:self.venmoWordmark
-                                                     attribute:NSLayoutAttributeHeight
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
-
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
-                                                     attribute:NSLayoutAttributeWidth
-                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
-                                                        toItem:self.venmoWordmark
-                                                     attribute:NSLayoutAttributeWidth
-                                                    multiplier:1.20f
-                                                      constant:0.0f]];
     [super updateConstraints];
 }
 
