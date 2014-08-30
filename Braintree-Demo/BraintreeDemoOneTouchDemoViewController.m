@@ -30,7 +30,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
 NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey";
 
 
-@interface BraintreeDemoOneTouchDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPayPalAdapterDelegate>
+@interface BraintreeDemoOneTouchDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPayPalAdapterDelegate, BTPaymentMethodAuthorizationDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, copy) void (^completionBlock)(NSString *nonce);
@@ -322,10 +322,19 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     [self cancel];
 }
 
-#pragma mark BTPaymentButton Delegate
+#pragma mark Braintree Payment Auth Delegate
 
-- (void)paymentButton:(BTPaymentButton *)paymentButton requestsPresentationOfViewController
+#warning TODO implement
+- (BOOL)paymentMethodAuthorizer:(id)sender requestsUserChallengeWithViewController:(UIViewController *)viewController
+
+- (BOOL)paymentMethodAuthorizer:(id)sender requestsDismissalOfUserChallengeViewController:(UIViewController *)viewController;
+
+- (void)paymentMethodAuthorizerWillRequestUserChallengeWithAppSwitch:(id)sender;
+
+- (void)paymentMethodAuthorizerDidCompleteUserChallenge:(id)sender;
+
+- (void)paymentMethodAuthorizer:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod;
+
+- (void)paymentMethodAuthorizer:(id)sender didFailWithError:(NSError *)error;
 
 @end
-
-
