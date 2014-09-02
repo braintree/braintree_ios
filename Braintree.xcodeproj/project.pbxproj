@@ -516,6 +516,7 @@
 		4FDA475E687C46DD8BF91453 /* Pods-Braintree-PayPal-Acceptance-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Acceptance-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Acceptance-Specs.xcconfig"; sourceTree = "<group>"; };
 		4FEE5C97D00D4124A961B590 /* libPods-TestWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E818DD8A8AF4D919E587C99 /* Pods-Braintree-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.xcconfig"; path = "Pods/Pods-Braintree-Demo.xcconfig"; sourceTree = "<group>"; };
+		77037AD319B0112A0097DADE /* BTAppSwitchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTAppSwitchingDelegate.h; path = "braintree/API/Braintree-API/Public/BTAppSwitchingDelegate.h"; sourceTree = SOURCE_ROOT; };
 		77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Acceptance-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		815EE2A671E046E3AD3F176F /* Pods-Braintree-API-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-API-Specs.xcconfig"; path = "Pods/Pods-Braintree-API-Specs.xcconfig"; sourceTree = "<group>"; };
@@ -578,8 +579,7 @@
 		A7E5BEB019ABE5D0006AEB9B /* BTAppSwitchSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchSpec.m; sourceTree = "<group>"; };
 		A7E5BEB319ABE5F3006AEB9B /* BTAppSwitch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitch.h; sourceTree = "<group>"; };
 		A7E5BEB419ABE5F3006AEB9B /* BTAppSwitch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitch.m; sourceTree = "<group>"; };
-		A7E5BEB519ABE5F3006AEB9B /* BTAppSwitching.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitching.h; sourceTree = "<group>"; };
-		A7E5BEB619ABE5F3006AEB9B /* BTAppSwitchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchingDelegate.h; sourceTree = "<group>"; };
+		A7E5BEB519ABE5F3006AEB9B /* BTAppSwitching.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTAppSwitching.h; path = "../../../../braintree/API/Braintree-API/Public/BTAppSwitching.h"; sourceTree = "<group>"; };
 		A7E5BEB719ABF18F006AEB9B /* BTVenmoAppSwitchReturnURLSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchReturnURLSpec.m; sourceTree = "<group>"; };
 		A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler.h; sourceTree = "<group>"; };
 		A7FC1CC01992B24900636548 /* BTPayPalAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalAppSwitchHandler.m; sourceTree = "<group>"; };
@@ -932,6 +932,8 @@
 		16217428192D85EB008DC35D /* @Public API */ = {
 			isa = PBXGroup;
 			children = (
+				77037AD319B0112A0097DADE /* BTAppSwitchingDelegate.h */,
+				A7E5BEB519ABE5F3006AEB9B /* BTAppSwitching.h */,
 				1621741F192D85EB008DC35D /* Braintree-API.h */,
 				161CB1BD19B13DDC00C5A411 /* Braintree-Version.h */,
 				16217420192D85EB008DC35D /* BTCardPaymentMethod.h */,
@@ -1786,8 +1788,6 @@
 			children = (
 				A7E5BEB319ABE5F3006AEB9B /* BTAppSwitch.h */,
 				A7E5BEB419ABE5F3006AEB9B /* BTAppSwitch.m */,
-				A7E5BEB519ABE5F3006AEB9B /* BTAppSwitching.h */,
-				A7E5BEB619ABE5F3006AEB9B /* BTAppSwitchingDelegate.h */,
 			);
 			path = "App Switch";
 			sourceTree = "<group>";
