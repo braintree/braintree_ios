@@ -206,9 +206,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                    failure:(BTClientFailureBlock)failureBlock {
 
     if (self.clientToken.analyticsEnabled) {
-        NSDictionary *requestParameters = @{ @"analytics": @[@{ @"kind": eventKind }],
-                                             @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                             @"_meta": [BTAnalyticsMetadata metadata] };
+        NSMutableDictionary *requestParameters = [self metaAnalyticsParameters];
+        [requestParameters addEntriesFromDictionary:@{ @"analytics": @[@{ @"kind": eventKind }],
+                                                       @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                       }];
 
         [self.analyticsHttp POST:@"/"
                       parameters:requestParameters
@@ -279,11 +280,25 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 }
 
 - (NSMutableDictionary *)metaPostParameters {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    parameters[@"_meta"] = [NSMutableDictionary dictionary];
-    parameters[@"_meta"][@"integration"] = self.metadata.integrationString;
-    parameters[@"_meta"][@"source"] = self.metadata.sourceString;
-    return parameters;
+    return [self mutableDictionaryCopyWithClientMetadata:nil];
+}
+
+- (NSMutableDictionary *)metaAnalyticsParameters {
+    return [self mutableDictionaryCopyWithClientMetadata:@{@"_meta": [BTAnalyticsMetadata metadata]}];
+}
+
+- (NSMutableDictionary *)mutableDictionaryCopyWithClientMetadata:(NSDictionary *)parameters {
+    NSMutableDictionary *result = parameters ? [parameters mutableCopy] : [NSMutableDictionary dictionary];
+    NSDictionary *metaValue = result[@"_meta"];
+    if (![metaValue isKindOfClass:[NSDictionary class]]) {
+        metaValue = @{};
+    }
+    NSMutableDictionary *mutableMetaValue = [metaValue mutableCopy];
+    mutableMetaValue[@"integration"] = self.metadata.integrationString;
+    mutableMetaValue[@"source"] = self.metadata.sourceString;
+
+    result[@"_meta"] = mutableMetaValue;
+    return result;
 }
 
 #pragma mark - Debug
