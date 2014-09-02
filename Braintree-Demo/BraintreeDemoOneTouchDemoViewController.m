@@ -75,6 +75,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     self.btPaymentButton = [[BTPaymentButton alloc] initWithFrame:CGRectZero];
     if (self.btPaymentButton) {
         self.btPaymentButton.delegate = self;
+        self.btPaymentButton.client = self.braintree.client;
         [self.view addSubview:self.btPaymentButton];
         [self.btPaymentButton autoCenterInSuperview];
         [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
@@ -324,17 +325,30 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 #pragma mark Braintree Payment Auth Delegate
 
-#warning TODO implement
-- (BOOL)paymentMethodAuthorizer:(id)sender requestsUserChallengeWithViewController:(UIViewController *)viewController
+- (BOOL)paymentMethodAuthorizer:(__unused id)sender requestsUserChallengeWithViewController:(UIViewController *)viewController {
+    [self presentViewController:viewController animated:YES completion:nil];
+    return YES;
+}
 
-- (BOOL)paymentMethodAuthorizer:(id)sender requestsDismissalOfUserChallengeViewController:(UIViewController *)viewController;
+- (BOOL)paymentMethodAuthorizer:(__unused id)sender requestsDismissalOfUserChallengeViewController:(UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+    return YES;
+}
 
-- (void)paymentMethodAuthorizerWillRequestUserChallengeWithAppSwitch:(id)sender;
+- (void)paymentMethodAuthorizerWillRequestUserChallengeWithAppSwitch:(__unused id)sender {
+    NSLog(@"Will app switch!");
+}
 
-- (void)paymentMethodAuthorizerDidCompleteUserChallenge:(id)sender;
+- (void)paymentMethodAuthorizerDidCompleteUserChallenge:(__unused id)sender {
+    NSLog(@"App Switch Complete");
+}
 
-- (void)paymentMethodAuthorizer:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod;
+- (void)paymentMethodAuthorizer:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [self receivePaymentMethod:paymentMethod];
+}
 
-- (void)paymentMethodAuthorizer:(id)sender didFailWithError:(NSError *)error;
+- (void)paymentMethodAuthorizer:(__unused id)sender didFailWithError:(NSError *)error {
+    [self fail:error];
+}
 
 @end

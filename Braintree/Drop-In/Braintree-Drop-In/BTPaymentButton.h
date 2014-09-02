@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@class BTPaymentMethod;
+@class BTClient, BTPaymentMethod;
 @protocol BTPaymentMethodAuthorizationDelegate;
 
 typedef NS_OPTIONS(NSInteger, BTPaymentButtonPaymentMethods) {
@@ -11,15 +11,15 @@ typedef NS_OPTIONS(NSInteger, BTPaymentButtonPaymentMethods) {
 
 @interface BTPaymentButton : UIView
 
-@property (nonatomic, assign) BTPaymentButtonPaymentMethods paymentMethods;
+@property (nonatomic, assign) BTPaymentButtonPaymentMethods enabledPaymentMethods;
 
+@property (nonatomic, strong) BTClient *client;
 @property (nonatomic, weak) id<BTPaymentMethodAuthorizationDelegate> delegate;
 
 @end
 
 @protocol BTPaymentMethodAuthorizationDelegate <NSObject>
 
-#warning TODO document
 - (BOOL)paymentMethodAuthorizer:(id)sender requestsUserChallengeWithViewController:(UIViewController *)viewController;
 
 - (BOOL)paymentMethodAuthorizer:(id)sender requestsDismissalOfUserChallengeViewController:(UIViewController *)viewController;
