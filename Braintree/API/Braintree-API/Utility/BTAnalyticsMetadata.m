@@ -128,7 +128,11 @@
 }
 
 - (BOOL)iosIsCocoapods {
-    return COCOAPODS;
+#ifdef COCOAPODS
+    return YES;
+#else
+    return NO;
+#endif
 }
 
 - (NSString *)deviceAppGeneratedPersistentUuid {
