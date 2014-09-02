@@ -9,6 +9,7 @@
 #import "BTHTTP.h"
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
+#import "Braintree-Version.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -250,7 +251,16 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         id email = response[@"details"][@"email"];
         payPalPaymentMethod.email = [email isKindOfClass:[NSString class]] ? email : nil;
         id description = response[@"description"];
-        payPalPaymentMethod.description = [description isKindOfClass:[NSString class]] ? description : nil;
+        if ([description isKindOfClass:[NSString class]]) {
+            // Braintree gateway has some inconsistent behavior depending on
+            // the type of nonce, and sometimes returns "PayPal" for description,
+            // and sometimes returns a real identifying string. The former is not
+            // desirable for display. The latter is.
+            // As a workaround, we ignore descriptions that look like "PayPal".
+            if (![[description lowercaseString] isEqualToString:@"paypal"]) {
+                payPalPaymentMethod.description = description;
+            }
+        }
     }
     return payPalPaymentMethod;
 }
@@ -285,18 +295,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #pragma mark - Library Version
 
 + (NSString *)libraryVersion {
-#if defined(COCOAPODS) && defined(COCOAPODS_VERSION_MAJOR_Braintree_API) && defined(COCOAPODS_VERSION_MINOR_Braintree_API) && defined(COCOAPODS_VERSION_PATCH_Braintree_API)
-    return [NSString stringWithFormat:@"%d.%d.%d",
-            COCOAPODS_VERSION_MAJOR_Braintree_API,
-            COCOAPODS_VERSION_MINOR_Braintree_API,
-            COCOAPODS_VERSION_PATCH_Braintree_API];
-#else
-#ifdef DEBUG
-    return @"development";
-#else
-    return @"unknown";
-#endif
-#endif
+    return BRAINTREE_VERSION;
 }
 
 #pragma mark - BTClient_Metadata

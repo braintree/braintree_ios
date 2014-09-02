@@ -1,6 +1,8 @@
 #import "BraintreeDemoTransactionService.h"
 #import <AFNetworking/AFNetworking.h>
 
+NSString *BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey = @"BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey";
+
 @interface BraintreeDemoTransactionService ()
 @property (nonatomic, strong) AFHTTPRequestOperationManager *sessionManager;
 @end
@@ -19,9 +21,26 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://braintree-sample-merchant.herokuapp.com"]];
+        [self setEnvironment:[[self class] mostRecentlyUsedEnvironment]];
     }
     return self;
+}
+
++ (BraintreeDemoTransactionServiceEnvironment)mostRecentlyUsedEnvironment {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey];
+}
+
+- (void)setEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment {
+    switch (environment) {
+        case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
+            self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://braintree-sample-merchant.herokuapp.com"]];
+            break;
+        case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
+            self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://executive-sample-merchant.herokuapp.com"]];
+            break;
+    }
+    [[NSUserDefaults standardUserDefaults] setInteger:environment forKey:BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)fetchMerchantConfigWithCompletion:(void (^)(NSString *merchantId, NSError *error))completionBlock {

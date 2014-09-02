@@ -86,6 +86,9 @@
                                                      if (paypalPaymentMethod.email == nil && [userDisplayStringFromPayPalSDK isKindOfClass:[NSString class]]) {
                                                          BTMutablePayPalPaymentMethod *mutablePayPalPaymentMethod = [paypalPaymentMethod mutableCopy];
                                                          mutablePayPalPaymentMethod.email = userDisplayStringFromPayPalSDK;
+                                                         if (!mutablePayPalPaymentMethod.description) {
+                                                             mutablePayPalPaymentMethod.description = userDisplayStringFromPayPalSDK;
+                                                         }
                                                          paypalPaymentMethod = mutablePayPalPaymentMethod;
                                                      }
                                                      if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalPaymentMethod:)]) {

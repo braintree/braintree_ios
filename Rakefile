@@ -21,6 +21,7 @@ task :distribute => %w[distribute:build distribute:hockeyapp]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
+VERSION_FILE = "Braintree/API/Braintree-API/Public/Braintree-Version.h"
 DEMO_PLIST = "Braintree-Demo/Braintree-Demo-Info.plist"
 PUBLIC_REMOTE_NAME = "public"
 
@@ -256,15 +257,13 @@ namespace :release do
     run "git tag -l | tail -n #{n}"
     version = ask("What version are you releasing?") { |q| q.validate = /\A#{SEMVER}\Z/ }
 
-    tmp_podspec = Tempfile.new(PODSPEC)
-    File.open(PODSPEC) do |podspec|
-      podspec.each_line do |line|
-        line.gsub!(SEMVER, version) if line =~ /s\.version\s*=/
-        tmp_podspec.write(line)
-      end
-    end
-    tmp_podspec.close
-    FileUtils.mv(tmp_podspec.path, PODSPEC)
+    podspec = File.read(PODSPEC)
+    podspec.gsub!(/(s\.version\s*=\s*)"#{SEMVER}"/, "\\1\"#{version}\"")
+    File.open(PODSPEC, "w") { |f| f.puts podspec }
+
+    version_header = File.read(VERSION_FILE)
+    version_header.gsub!(SEMVER, version)
+    File.open(VERSION_FILE, "w") { |f| f.puts version_header }
 
     run! "pod update Braintree"
     run! "plutil -replace CFBundleVersion -string #{current_version} -- #{DEMO_PLIST}"

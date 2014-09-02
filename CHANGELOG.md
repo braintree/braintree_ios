@@ -1,5 +1,15 @@
 # Braintree iOS SDK Release Notes
 
+## 3.1.3 (2014-08-22)
+
+* Fix another PayPal payment method display issue in Drop In UI
+
+## 3.1.2 (2014-08-21)
+
+* Fixes
+  * Minor internationalization issue
+  * PayPal payment method display issue in Drop In UI
+
 ## 3.1.1 (2014-08-17)
 
 * Enhancements
