@@ -24,9 +24,9 @@
 
 - (IBAction)tappedCollect
 {
-    NSString *sessionId = [self.data collect];
+    NSString *deviceData = [self.data collectDeviceData];
 
-    NSLog(@"Collected data for session %@", sessionId);
+    NSLog(@"Collected data %@", deviceData);
 }
 
 - (void)btDataDidStartCollectingData:(BTData *)data
