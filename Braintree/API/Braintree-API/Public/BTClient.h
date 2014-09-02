@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+#import "BTClientMetadata.h"
 #import "BTCardPaymentMethod.h"
 #import "BTPayPalPaymentMethod.h"
 #import "BTErrors.h"
@@ -24,7 +25,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// A `BTClient` performs Braintree API operations and returns
 /// resulting responses or errors. It is the entry-point for all
 /// communication with Braintree.
-@interface BTClient : NSObject
+@interface BTClient : NSObject<NSCopying>
 
 /// Initialize and configure a `BTClient` with a client token.
 /// The client token dictates the behavior of subsequent operations.

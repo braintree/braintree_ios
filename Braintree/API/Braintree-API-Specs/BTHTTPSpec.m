@@ -570,4 +570,26 @@ describe(@"protocolClasses property", ^{
     });
 });
 
+describe(@"copy", ^{
+    __block BTHTTP *http;
+    beforeEach(^{
+        http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL]];
+    });
+
+    it(@"returns a different instance", ^{
+        expect(http).toNot.beIdenticalTo([http copy]);
+    });
+
+    pending(@"BTHTTP implementing isEqual:", ^{
+        it(@"returns an equal instance", ^{
+            expect([http copy]).to.equal(http);
+        });
+    });
+
+    it(@"returned instance has the same certificates", ^{
+        BTHTTP *copiedHTTP = [http copy];
+        expect(copiedHTTP.pinnedCertificates).to.equal(http.pinnedCertificates);
+    });
+});
+
 SpecEnd

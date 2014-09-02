@@ -32,6 +32,13 @@
     return self;
 }
 
+- (instancetype)copyWithZone:(NSZone *)zone {
+    BTHTTP *copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:_baseURL];
+    copiedHTTP.pinnedCertificates = [_pinnedCertificates copy];
+    [copiedHTTP setProtocolClasses:_session.configuration.protocolClasses];
+    return copiedHTTP;
+}
+
 #pragma mark - Getters/setters
 
 - (void)setProtocolClasses:(NSArray *)protocolClasses {

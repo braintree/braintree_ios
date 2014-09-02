@@ -7,7 +7,7 @@ extern NSString *const BTClientTokenKeyClientApiURL;
 extern NSString *const BTClientTokenKeyAnalytics;
 extern NSString *const BTClientTokenKeyURL;
 
-@interface BTClientToken : NSObject
+@interface BTClientToken : NSObject<NSCopying>
 
 @property (nonatomic, readonly, copy) NSString *authorizationFingerprint;
 @property (nonatomic, readonly, strong) NSURL *clientApiURL;

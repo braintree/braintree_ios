@@ -1,4 +1,5 @@
 #import "BTClient.h"
+#import "BTClient_Metadata.h"
 #import "BTClient_Internal.h"
 #import "BTClientToken.h"
 #import "BTLogger.h"
@@ -12,6 +13,10 @@
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
+
+@interface BTClient ()
+- (void)setMetadata:(BTClientMetadata *)metadata;
+@end
 
 @implementation BTClient
 
@@ -43,8 +48,18 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         if (self.clientToken.analyticsEnabled) {
             self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.analyticsURL];
         }
+        self.metadata = [[BTClientMetadata alloc] init];
     }
     return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    BTClient *copiedClient = [[BTClient allocWithZone:zone] init];
+    copiedClient.clientToken = [_clientToken copy];
+    copiedClient.clientApiHttp = [_clientApiHttp copy];
+    copiedClient.analyticsHttp = [_analyticsHttp copy];
+    copiedClient.metadata = [self.metadata copy];
+    return copiedClient;
 }
 
 #pragma mark - Configuration
@@ -52,7 +67,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 - (NSSet *)challenges {
     return self.clientToken.challenges;
 }
-
 
 #pragma mark - API Methods
 
@@ -96,6 +110,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                    success:(BTClientCardSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
 
+    NSMutableDictionary *requestParameters = [self metaPostParameters];
     NSMutableDictionary *creditCardParams = [@{ @"number": creditCardNumber,
                                                 @"expiration_month": expirationMonth,
                                                 @"expiration_year": expirationYear,
@@ -103,10 +118,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                                         @"validate": @(shouldValidate)
                                                         }
                                                 } mutableCopy];
-
-    NSMutableDictionary *requestParameters = [@{ @"credit_card": creditCardParams,
-                                                 @"authorization_fingerprint": self.clientToken.authorizationFingerprint }
-                                              mutableCopy];
+    [requestParameters addEntriesFromDictionary:@{ @"credit_card": creditCardParams,
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                   }];
 
     if (cvv) {
         requestParameters[@"credit_card"][@"cvv"] = cvv;
@@ -143,12 +157,13 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
 
-    NSDictionary *requestParameters = @{ @"paypal_account": @{
-                                                 @"consent_code": authCode ?: NSNull.null,
-                                                 @"correlation_id": correlationId ?: NSNull.null
-                                                 },
-                                         @"authorization_fingerprint": self.clientToken.authorizationFingerprint
-                                         };
+    NSMutableDictionary *requestParameters = [self metaPostParameters];
+    [requestParameters addEntriesFromDictionary:@{ @"paypal_account": @{
+                                                           @"consent_code": authCode ?: NSNull.null,
+                                                           @"correlation_id": correlationId ?: NSNull.null
+                                                           },
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                                   }];
 
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
@@ -191,23 +206,24 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                    failure:(BTClientFailureBlock)failureBlock {
 
     if (self.clientToken.analyticsEnabled) {
-        NSDictionary *requestParameters = @{ @"analytics": @[@{ @"kind": eventKind }],
-                                             @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                             @"_meta": [BTAnalyticsMetadata metadata] };
+        NSMutableDictionary *requestParameters = [self metaAnalyticsParameters];
+        [requestParameters addEntriesFromDictionary:@{ @"analytics": @[@{ @"kind": eventKind }],
+                                                       @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                       }];
 
         [self.analyticsHttp POST:@"/"
-             parameters:requestParameters
-             completion:^(BTHTTPResponse *response, NSError *error) {
-                 if (response.isSuccess) {
-                     if (successBlock) {
-                         successBlock();
-                     }
-                 } else {
-                     if (failureBlock) {
-                         failureBlock(error);
-                     }
-                 }
-             }];
+                      parameters:requestParameters
+                      completion:^(BTHTTPResponse *response, NSError *error) {
+                          if (response.isSuccess) {
+                              if (successBlock) {
+                                  successBlock();
+                              }
+                          } else {
+                              if (failureBlock) {
+                                  failureBlock(error);
+                              }
+                          }
+                      }];
     } else {
         if (successBlock) {
             successBlock();
@@ -263,6 +279,28 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     return card;
 }
 
+- (NSMutableDictionary *)metaPostParameters {
+    return [self mutableDictionaryCopyWithClientMetadata:nil];
+}
+
+- (NSMutableDictionary *)metaAnalyticsParameters {
+    return [self mutableDictionaryCopyWithClientMetadata:@{@"_meta": [BTAnalyticsMetadata metadata]}];
+}
+
+- (NSMutableDictionary *)mutableDictionaryCopyWithClientMetadata:(NSDictionary *)parameters {
+    NSMutableDictionary *result = parameters ? [parameters mutableCopy] : [NSMutableDictionary dictionary];
+    NSDictionary *metaValue = result[@"_meta"];
+    if (![metaValue isKindOfClass:[NSDictionary class]]) {
+        metaValue = @{};
+    }
+    NSMutableDictionary *mutableMetaValue = [metaValue mutableCopy];
+    mutableMetaValue[@"integration"] = self.metadata.integrationString;
+    mutableMetaValue[@"source"] = self.metadata.sourceString;
+
+    result[@"_meta"] = mutableMetaValue;
+    return result;
+}
+
 #pragma mark - Debug
 
 - (NSString *)description {
@@ -273,6 +311,22 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
 + (NSString *)libraryVersion {
     return BRAINTREE_VERSION;
+}
+
+#pragma mark - BTClient_Metadata
+
+- (void)setMetadata:(BTClientMetadata *)metadata {
+    _metadata = metadata;
+}
+
+- (instancetype)copyWithMetadata:(void (^)(BTClientMutableMetadata *metadata))metadataBlock {
+    BTClientMutableMetadata *mutableMetadata = [self.metadata mutableCopy];
+    if (metadataBlock) {
+        metadataBlock(mutableMetadata);
+    }
+    BTClient *copiedClient = [self copy];
+    copiedClient.metadata = mutableMetadata;
+    return copiedClient;
 }
 
 @end
