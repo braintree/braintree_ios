@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 
-#import "BTClientMetadata.h"
 #import "BTCardPaymentMethod.h"
 #import "BTPayPalPaymentMethod.h"
 #import "BTErrors.h"
