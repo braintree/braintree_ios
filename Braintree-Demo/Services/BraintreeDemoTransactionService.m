@@ -39,7 +39,6 @@ NSString *BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey = @"B
             self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://executive-sample-merchant.herokuapp.com"]];
             break;
     }
-    self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:5111"]];
     [[NSUserDefaults standardUserDefaults] setInteger:environment forKey:BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
