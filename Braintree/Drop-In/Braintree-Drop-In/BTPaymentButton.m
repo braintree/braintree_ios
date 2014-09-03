@@ -5,8 +5,10 @@
 #import "BTUIVenmoButton.h"
 #import "BTUIPayPalButton.h"
 
+#import "BTPaymentMethodAuthorizationDelegate.h"
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTPayPalAdapter.h"
+#import "BTCollectionViewFlowLayoutWithSeparators.h"
 
 #import <FLEX/FLEXManager.h>
 
@@ -36,11 +38,11 @@
 - (void)setupViews {
     [[FLEXManager sharedManager] showExplorer];
 
-    UICollectionViewFlowLayout *defaultLayout = [[UICollectionViewFlowLayout alloc] init];
-    defaultLayout.minimumInteritemSpacing = 00.0f;
+    BTCollectionViewFlowLayoutWithSeparators *layout = [[BTCollectionViewFlowLayoutWithSeparators alloc] init];
+    layout.minimumInteritemSpacing = 0.0f;
 
     self.paymentButtonsCollectionView = [[UICollectionView alloc] initWithFrame:self.bounds
-                                                           collectionViewLayout:defaultLayout];
+                                                           collectionViewLayout:layout];
     self.paymentButtonsCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.paymentButtonsCollectionView.allowsSelection = NO;
     self.paymentButtonsCollectionView.delegate = self;
@@ -66,6 +68,11 @@
 }
 
 #pragma mark UICollectionViewDataSource methods
+
+- (UICollectionReusableView *)collectionView:(__unused UICollectionView *)collectionView viewForSupplementaryElementOfKind:(__unused NSString *)kind atIndexPath:(__unused NSIndexPath *)indexPath {
+    NSLog(@"supp");
+    return nil;
+}
 
 - (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSParameterAssert(section == 0);
@@ -126,7 +133,7 @@
 }
 
 - (void)appSwitcherWillCreatePaymentMethod:(__unused id<BTAppSwitching>)switcher {
-    [self.delegate paymentMethodAuthorizerDidCompleteUserChallenge:self];
+    [self.delegate paymentMethodAuthorizerDidCompleteUserChallengeWithAppSwitch:self];
 }
 
 - (void)appSwitcher:(__unused id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {

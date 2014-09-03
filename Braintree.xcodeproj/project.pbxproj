@@ -497,6 +497,8 @@
 		16F5AF3E19B69F3B0043A412 /* BTPayPalHorizontalSignatureWhiteView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalHorizontalSignatureWhiteView.h; sourceTree = "<group>"; };
 		16F5AF3F19B6A4450043A412 /* BTPayPalWordmarkVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalWordmarkVectorArtView.m; sourceTree = "<group>"; };
 		16F5AF4019B6A4450043A412 /* BTPayPalWordmarkVectorArtView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalWordmarkVectorArtView.h; sourceTree = "<group>"; };
+		16F5AF4419B6A7DA0043A412 /* BTCollectionViewFlowLayoutWithSeparators.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCollectionViewFlowLayoutWithSeparators.h; sourceTree = "<group>"; };
+		16F5AF4519B6A7DA0043A412 /* BTCollectionViewFlowLayoutWithSeparators.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCollectionViewFlowLayoutWithSeparators.m; sourceTree = "<group>"; };
 		16F9996919AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomPayPalButtonManager.h; sourceTree = "<group>"; };
 		16F9996A19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomPayPalButtonManager.m; sourceTree = "<group>"; };
 		16F9996C19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomVenmoButtonManager.h; sourceTree = "<group>"; };
@@ -1158,6 +1160,7 @@
 		162174D4192D8746008DC35D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				16F5AF4119B6A7AA0043A412 /* Collection Views */,
 				162174B6192D8746008DC35D /* BTUIViewUtil.h */,
 				162174B7192D8746008DC35D /* BTUIViewUtil.m */,
 				16BAFCAD194BB8280047E96B /* Custom Views */,
@@ -1558,6 +1561,15 @@
 				162998CB194FAFC400534798 /* BTUIFloatLabel.m */,
 			);
 			path = "Custom Views";
+			sourceTree = "<group>";
+		};
+		16F5AF4119B6A7AA0043A412 /* Collection Views */ = {
+			isa = PBXGroup;
+			children = (
+				16F5AF4419B6A7DA0043A412 /* BTCollectionViewFlowLayoutWithSeparators.h */,
+				16F5AF4519B6A7DA0043A412 /* BTCollectionViewFlowLayoutWithSeparators.m */,
+			);
+			path = "Collection Views";
 			sourceTree = "<group>";
 		};
 		16F60F9C1987297E00048501 /* Braintree-Drop-In */ = {
