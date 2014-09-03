@@ -490,6 +490,7 @@
 		16A2EA3619AEC40000093EB5 /* BTUIVenmoWordmarkVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIVenmoWordmarkVectorArtView.m; sourceTree = "<group>"; };
 		16BAFCAE194BB89E0047E96B /* BTUICardExpiryFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormat.m; sourceTree = "<group>"; };
 		16BAFCAF194BB89E0047E96B /* BTUICardExpiryFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUICardExpiryFormat.h; sourceTree = "<group>"; };
+		16F5AF4619B7822C0043A412 /* BTPaymentMethodAuthorizationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentMethodAuthorizationDelegate.h; sourceTree = "<group>"; };
 		16F9996919AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomPayPalButtonManager.h; sourceTree = "<group>"; };
 		16F9996A19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomPayPalButtonManager.m; sourceTree = "<group>"; };
 		16F9996C19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomVenmoButtonManager.h; sourceTree = "<group>"; };
@@ -1653,6 +1654,7 @@
 				1621741E192D857A008DC35D /* PayPal */,
 				1621741D192D8567008DC35D /* UI */,
 				A7B7432319A3DFF7000A6A7A /* Venmo */,
+				16F5AF4619B7822C0043A412 /* BTPaymentMethodAuthorizationDelegate.h */,
 			);
 			path = Braintree;
 			sourceTree = "<group>";
