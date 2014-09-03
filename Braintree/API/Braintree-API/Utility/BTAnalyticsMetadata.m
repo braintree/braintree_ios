@@ -7,6 +7,12 @@
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
 
+#ifdef __IPHONE_8_0
+#define kBTCLuthorizationStatusAuthorized kCLAuthorizationStatusAuthorizedAlways
+#else
+#define kBTCLuthorizationStatusAuthorized kCLAuthorizationStatusAuthorized
+#endif
+
 @implementation BTAnalyticsMetadata
 
 + (NSDictionary *)metadata {
@@ -24,7 +30,7 @@
     [self setObject:[m deviceManufacturer] forKey:@"deviceManufacturer" inDictionary:data];
     [self setObject:[m deviceModel] forKey:@"deviceModel" inDictionary:data];
     [self setObject:[m deviceNetworkType] forKey:@"deviceNetworkType" inDictionary:data];
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kBTCLuthorizationStatusAuthorized) {
         [self setObject:@([m deviceLocationLatitude]) forKey:@"deviceLocationLatitude" inDictionary:data];
         [self setObject:@([m deviceLocationLongitude]) forKey:@"deviceLocationLongitude" inDictionary:data];
     }
@@ -33,6 +39,7 @@
     [self setObject:[m deviceAppGeneratedPersistentUuid] forKey:@"deviceAppGeneratedPersistentUuid" inDictionary:data];
     [self setObject:@([m isSimulator]) forKey:@"isSimulator" inDictionary:data];
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
+    [self setObject:[m userInterfaceOrientation] forKey:@"userInterfaceOrientation" inDictionary:data];
     [self setObject:[m userInterfaceOrientation] forKey:@"userInterfaceOrientation" inDictionary:data];
 
     return [NSDictionary dictionaryWithDictionary:data];
@@ -158,6 +165,8 @@
 }
 
 - (NSString *)userInterfaceOrientation {
+// UIViewController interface orientation methods are deprecated as of iOS 8
+#ifndef __IPHONE_8_0
     if ([UIApplication class] == nil) {
         return nil;
     }
@@ -176,6 +185,9 @@
         default:
             return @"Unknown";
     }
+#else
+    return nil;
+#endif
 }
 
 - (NSString *)deviceScreenOrientation {
