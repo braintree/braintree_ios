@@ -249,6 +249,11 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     self.emailLabel.text = @"Canceled 🔰";
 }
 
+- (void)reset {
+    [self.activityIndicator stopAnimating];
+    self.emailLabel.text = @"";
+}
+
 #pragma mark PayPal Button Delegate Methods
 
 - (void)payPalButtonWillCreatePayPalPaymentMethod:(__unused BTPayPalButton *)button {
@@ -338,8 +343,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     NSLog(@"Will app switch!");
 }
 
-- (void)paymentMethodAuthorizerDidCompleteUserChallenge:(__unused id)sender {
-    NSLog(@"App Switch Complete");
+- (void)paymentMethodAuthorizerDidCompleteUserChallengeWithAppSwitch:(__unused id)sender {
+    NSLog(@"Did Complete User Challenge with App Switch");
+    [self reset];
 }
 
 - (void)paymentMethodAuthorizer:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {

@@ -79,13 +79,16 @@
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
-    [UIView animateWithDuration:0.08f animations:^{
-        if (highlighted) {
-            self.venmoWordmark.alpha = 0.3;
-        } else {
-            self.venmoWordmark.alpha = 1.0f;
-        }
-    }];
+    [UIView animateWithDuration:0.08f
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                            if (highlighted) {
+                                self.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
+                            } else {
+                                self.backgroundColor = [UIColor whiteColor];
+                            }
+                        }
+                     completion:nil];
 }
 
 @end

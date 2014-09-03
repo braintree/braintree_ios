@@ -80,4 +80,17 @@
     return CGSizeMake(UIViewNoIntrinsicMetric, 44);
 }
 
+- (void)setHighlighted:(BOOL)highlighted {
+    [UIView animateWithDuration:0.08f
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                            if (highlighted) {
+                                self.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
+                            } else {
+                                self.backgroundColor = [UIColor whiteColor];
+                            }
+                        }
+                     completion:nil];
+}
+
 @end

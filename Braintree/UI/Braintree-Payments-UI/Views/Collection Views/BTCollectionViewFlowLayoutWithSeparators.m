@@ -2,11 +2,11 @@
 
 NSString *BTCollectionViewFlowLayoutWithSeparatorsSeparatorKind = @"BTCollectionViewFlowLayoutWithSeparatorsSeparatorKind";
 
-@interface SeparatorLine : UICollectionViewCell
+@interface TempSeparatorLine : UICollectionViewCell
 
 @end
 
-@implementation SeparatorLine
+@implementation TempSeparatorLine
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -23,12 +23,27 @@ NSString *BTCollectionViewFlowLayoutWithSeparatorsSeparatorKind = @"BTCollection
 
 @end
 
+@interface BTCollectionViewFlowLayoutWithSeparators ()
+@property (nonatomic, strong) NSMutableArray *itemAttributes;
+@end
+
 @implementation BTCollectionViewFlowLayoutWithSeparators
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self registerClass:[TempSeparatorLine class] forDecorationViewOfKind:BTCollectionViewFlowLayoutWithSeparatorsSeparatorKind];
+    }
+    return self;
+}
 
 - (void)prepareLayout {
     [super prepareLayout];
 
-    [self registerClass:[SeparatorLine class] forDecorationViewOfKind:BTCollectionViewFlowLayoutWithSeparatorsSeparatorKind];
+    NSParameterAssert(self.collectionView.numberOfSections == 1);
+    NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
+    CGFloat totalWidth = self.collectionView.frame.size.width;
+    self.itemSize = CGSizeMake(totalWidth/numberOfItems, self.collectionView.frame.size.height);
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
