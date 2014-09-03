@@ -8,69 +8,10 @@
 #import "BTPaymentMethodAuthorizationDelegate.h"
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTPayPalAdapter.h"
-#import "BTCollectionViewFlowLayoutWithSeparators.h"
+#import "BTHorizontalButtonStackCollectionViewFlowLayout.h"
+#import "BTPaymentButtonCollectionViewCell.h"
 
 #import <FLEX/FLEXManager.h>
-
-@interface BTPaymentButtonCollectionViewCell : UICollectionViewCell
-@property (nonatomic, strong) NSMutableArray *paymentButtonConstraints;
-@property (nonatomic, strong) UIControl *paymentButton;
-@end
-
-@implementation BTPaymentButtonCollectionViewCell
-
-- (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.paymentButtonConstraints = [NSMutableArray array];
-    }
-    return self;
-}
-
-- (void)setPaymentButton:(UIControl *)paymentButton {
-    if (self.paymentButtonConstraints) {
-        [self removeConstraints:self.paymentButtonConstraints];
-        [self.paymentButtonConstraints removeAllObjects];
-    }
-    [self.paymentButton removeFromSuperview];
-
-    _paymentButton = paymentButton;
-    [self addSubview:paymentButton];
-
-    paymentButton.userInteractionEnabled = NO;
-
-    [self setNeedsUpdateConstraints];
-}
-
-- (void)updateConstraints {
-    if (self.paymentButton) {
-        NSDictionary *views = @{ @"paymentButton": self.paymentButton };
-        [self.paymentButtonConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[paymentButton]|"
-                                                                                                   options:0
-                                                                                                   metrics:nil
-                                                                                                     views:views]];
-        [self.paymentButtonConstraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[paymentButton]|"
-                                                                                                   options:0
-                                                                                                   metrics:nil
-                                                                                                     views:views]];
-        [self addConstraints:self.paymentButtonConstraints];
-    }
-    [super updateConstraints];
-}
-
-- (void)setHighlighted:(BOOL)highlighted {
-    [super setHighlighted:highlighted];
-
-    [self.paymentButton setHighlighted:highlighted];
-}
-
-- (void)setSelected:(BOOL)selected {
-    [super setSelected:selected];
-
-    [self.paymentButton setSelected:selected];
-}
-
-@end
 
 @interface BTPaymentButton () <BTAppSwitchingDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPayPalAdapterDelegate>
 @property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
@@ -99,7 +40,7 @@
 - (void)setupViews {
     [[FLEXManager sharedManager] showExplorer];
 
-    BTCollectionViewFlowLayoutWithSeparators *layout = [[BTCollectionViewFlowLayoutWithSeparators alloc] init];
+    BTHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;
 
     self.paymentButtonsCollectionView = [[UICollectionView alloc] initWithFrame:self.bounds
