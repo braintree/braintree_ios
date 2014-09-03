@@ -32,6 +32,10 @@ PODS:
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
+  - Braintree/Payment-Authorization (3.2.0-rc6):
+    - Braintree/API
+    - Braintree/PayPal
+    - Braintree/Venmo
   - Braintree/PayPal (3.2.0-rc6):
     - Braintree/API
     - Braintree/UI
@@ -58,6 +62,7 @@ DEPENDENCIES:
   - Braintree (from `.`)
   - Braintree/API (from `.`)
   - Braintree/Data (from `.`)
+  - Braintree/Payment-Authorization
   - Braintree/PayPal (from `.`)
   - Braintree/UI (from `.`)
   - Braintree/Venmo (from `.`)
@@ -78,7 +83,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: 3550009cffc16ac172ea2dc372105703f0b1a071
+  Braintree: 2036de4e4e9a3afa372c2fbce30ae1def682bcb5
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
   KIF: 685ab7b49c1092732b7cb3106cc957366b01e225

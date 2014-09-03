@@ -74,10 +74,11 @@
 
 #pragma mark Custom: Generic Payment Method Authorization
 
-- (void)initiatePaymentMethodAuthorization:(BTPaymentMethodAuthorizationType)type delegate:(__unused id<BTPaymentMethodAuthorizationDelegate>)delegate {
+- (void)initiatePaymentMethodAuthorization:(BTPaymentAuthorizationType)type delegate:(__unused id<BTPaymentAuthorizerDelegate>)delegate {
     switch (type) {
         case BTPaymentMethodAuthorizationTypeCard:
         case BTPaymentAuthorizationTypePayPal:
+            [[BTPayPalAdapter alloc] initWithClient:self.client]
         case BTPaymentMethodAuthorizationTypeVenmo:
         default:
             @throw [NSException exceptionWithName:NSInternalInconsistencyException

@@ -71,4 +71,12 @@ Pod::Spec.new do |s|
     s.vendored_library = "Braintree/Data/Braintree-Data/libDeviceCollectorLibrary.a"
     s.frameworks = "UIKit", "SystemConfiguration"
   end
+
+  s.subspec 'Payment-Authorization' do |s|
+    s.source_files = "Braintree/Payment-Authorization/Braintree-Payment-Authorization/**/*.{h,m}"
+    s.frameworks = "UIKit"
+    s.dependency 'Braintree/API'
+    s.dependency 'Braintree/PayPal'
+    s.dependency 'Braintree/Venmo'
+  end
 end

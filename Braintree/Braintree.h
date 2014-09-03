@@ -5,7 +5,9 @@
 #import <Braintree/Braintree-PayPal.h>
 #import <Braintree/Braintree-Venmo.h>
 #import <Braintree/Braintree-Payments-UI.h>
+
 #import "BTDropInViewController.h"
+#import "BTPaymentMethodAuthorizationDelegate.h"
 
 /// The `Braintree` class is the front door to the Braintree SDK for iOS. It contains
 /// everything you need to easily start accepting payments in your mobile app.
@@ -78,7 +80,7 @@
                     completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
 
-/// Initializes a payment method authorization flow.
+/// Initiates a payment method authorization flow.
 ///
 /// You should invoke this method after some user interaction takes place (for example, when the user taps a "PayPal" button.
 ///
@@ -88,7 +90,7 @@
 ///
 ///  @param type     the payment type to authorize, such as PayPal or Venmo
 ///  @param delegate a delegate that receives lifecycle updates about the payment method authorization
-- (void)initiatePaymentMethodAuthorization:(BTPaymentMethodAuthorizationType)type delegate:(id<BTPaymentMethodAuthorizationDelegate>)delegate;
+- (void)initiatePaymentMethodAuthorization:(BTPaymentAuthorizationType)type delegate:(id<BTPaymentAuthorizerDelegate>)delegate;
 
 
 #pragma mark Advanced Integrations
