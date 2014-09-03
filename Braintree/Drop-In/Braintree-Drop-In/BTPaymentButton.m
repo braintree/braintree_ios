@@ -3,7 +3,7 @@
 #import "BTClient.h"
 
 #import "BTUIVenmoButton.h"
-#import "BTPayPalButton.h"
+#import "BTUIPayPalButton.h"
 
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTPayPalAdapter.h"
@@ -77,7 +77,7 @@
 
     UIControl *paymentButton;
     if (indexPath.row == 0) {
-        paymentButton = [[BTPayPalButton alloc] initWithFrame:cell.bounds];
+        paymentButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
     } else {
         paymentButton = [[BTUIVenmoButton alloc] initWithFrame:cell.bounds];
         [paymentButton addTarget:self action:@selector(tappedVenmo:) forControlEvents:UIControlEventTouchUpInside];

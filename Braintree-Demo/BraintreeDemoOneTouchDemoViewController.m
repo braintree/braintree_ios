@@ -85,7 +85,6 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
     // Setup btPayPalButton
     self.btPayPalButton = [self.braintree payPalButtonWithDelegate:self];
-
     if (self.btPayPalButton) {
         self.btPayPalButton.delegate = self;
         [self.btPayPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];

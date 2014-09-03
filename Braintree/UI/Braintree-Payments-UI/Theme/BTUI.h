@@ -46,6 +46,8 @@
 
 #pragma mark PayPal Colors
 
+- (UIColor *)payBlue;
+- (UIColor *)palBlue;
 - (UIColor *)payPalButtonBlue;
 - (UIColor *)payPalButtonActiveBlue;
 

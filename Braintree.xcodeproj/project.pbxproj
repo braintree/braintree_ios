@@ -294,8 +294,6 @@
 		16217485192D8725008DC35D /* BTClient+BTPayPal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTPayPal.m"; sourceTree = "<group>"; };
 		16217486192D8725008DC35D /* BTClientToken+BTPayPal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BTClientToken+BTPayPal.h"; path = "Models/BTClientToken+BTPayPal.h"; sourceTree = "<group>"; };
 		16217487192D8725008DC35D /* BTClientToken+BTPayPal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "BTClientToken+BTPayPal.m"; path = "Models/BTClientToken+BTPayPal.m"; sourceTree = "<group>"; };
-		1621748C192D8725008DC35D /* BTPayPalHorizontalSignatureWhiteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPayPalHorizontalSignatureWhiteView.h; sourceTree = "<group>"; };
-		1621748D192D8725008DC35D /* BTPayPalHorizontalSignatureWhiteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalHorizontalSignatureWhiteView.m; sourceTree = "<group>"; };
 		1621748F192D8725008DC35D /* Braintree-PayPal-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-PayPal-Prefix.pch"; sourceTree = "<group>"; };
 		16217491192D8725008DC35D /* BTErrors+BTPayPal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTErrors+BTPayPal.m"; sourceTree = "<group>"; };
 		16217493192D872E008DC35D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
@@ -493,6 +491,12 @@
 		16BAFCAE194BB89E0047E96B /* BTUICardExpiryFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormat.m; sourceTree = "<group>"; };
 		16BAFCAF194BB89E0047E96B /* BTUICardExpiryFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUICardExpiryFormat.h; sourceTree = "<group>"; };
 		16F5AF4619B7822C0043A412 /* BTPaymentMethodAuthorizationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentMethodAuthorizationDelegate.h; sourceTree = "<group>"; };
+		16F5AF3B19B68F640043A412 /* BTUIPayPalButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalButton.h; sourceTree = "<group>"; };
+		16F5AF3C19B68F640043A412 /* BTUIPayPalButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalButton.m; sourceTree = "<group>"; };
+		16F5AF3D19B69F3B0043A412 /* BTPayPalHorizontalSignatureWhiteView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalHorizontalSignatureWhiteView.m; sourceTree = "<group>"; };
+		16F5AF3E19B69F3B0043A412 /* BTPayPalHorizontalSignatureWhiteView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalHorizontalSignatureWhiteView.h; sourceTree = "<group>"; };
+		16F5AF3F19B6A4450043A412 /* BTPayPalWordmarkVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalWordmarkVectorArtView.m; sourceTree = "<group>"; };
+		16F5AF4019B6A4450043A412 /* BTPayPalWordmarkVectorArtView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalWordmarkVectorArtView.h; sourceTree = "<group>"; };
 		16F9996919AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomPayPalButtonManager.h; sourceTree = "<group>"; };
 		16F9996A19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomPayPalButtonManager.m; sourceTree = "<group>"; };
 		16F9996C19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomVenmoButtonManager.h; sourceTree = "<group>"; };
@@ -1067,8 +1071,8 @@
 		1621748E192D8725008DC35D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1621748C192D8725008DC35D /* BTPayPalHorizontalSignatureWhiteView.h */,
-				1621748D192D8725008DC35D /* BTPayPalHorizontalSignatureWhiteView.m */,
+				16F5AF3D19B69F3B0043A412 /* BTPayPalHorizontalSignatureWhiteView.m */,
+				16F5AF3E19B69F3B0043A412 /* BTPayPalHorizontalSignatureWhiteView.h */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1119,6 +1123,10 @@
 		162174CE192D8746008DC35D /* Vector Art */ = {
 			isa = PBXGroup;
 			children = (
+				16F5AF4019B6A4450043A412 /* BTPayPalWordmarkVectorArtView.h */,
+				16F5AF3F19B6A4450043A412 /* BTPayPalWordmarkVectorArtView.m */,
+				162174CC192D8746008DC35D /* BTUIAmExVectorArtView.h */,
+				162174CD192D8746008DC35D /* BTUIAmExVectorArtView.m */,
 				162174B8192D8746008DC35D /* BTUICardVectorArtView.h */,
 				162174B9192D8746008DC35D /* BTUICardVectorArtView.m */,
 				162174BA192D8746008DC35D /* BTUICVVBackVectorArtView.h */,
@@ -1135,16 +1143,14 @@
 				162174C5192D8746008DC35D /* BTUIMaestroVectorArtView.m */,
 				162174C6192D8746008DC35D /* BTUIMasterCardVectorArtView.h */,
 				162174C7192D8746008DC35D /* BTUIMasterCardVectorArtView.m */,
-				162174C8192D8746008DC35D /* BTUIUnknownCardVectorArtView.h */,
-				162174C9192D8746008DC35D /* BTUIUnknownCardVectorArtView.m */,
-				162174CA192D8746008DC35D /* BTUIVisaVectorArtView.h */,
-				162174CB192D8746008DC35D /* BTUIVisaVectorArtView.m */,
-				162174CC192D8746008DC35D /* BTUIAmExVectorArtView.h */,
-				162174CD192D8746008DC35D /* BTUIAmExVectorArtView.m */,
 				2D085DDD1947BF1000293215 /* BTUIPayPalMonogramCardView.h */,
 				2D085DDE1947BF1000293215 /* BTUIPayPalMonogramCardView.m */,
+				162174C8192D8746008DC35D /* BTUIUnknownCardVectorArtView.h */,
+				162174C9192D8746008DC35D /* BTUIUnknownCardVectorArtView.m */,
 				16A2EA3519AEC40000093EB5 /* BTUIVenmoWordmarkVectorArtView.h */,
 				16A2EA3619AEC40000093EB5 /* BTUIVenmoWordmarkVectorArtView.m */,
+				162174CA192D8746008DC35D /* BTUIVisaVectorArtView.h */,
+				162174CB192D8746008DC35D /* BTUIVisaVectorArtView.m */,
 			);
 			path = "Vector Art";
 			sourceTree = "<group>";
@@ -1528,6 +1534,8 @@
 				162174B1192D8746008DC35D /* BTUISummaryView.m */,
 				16A2EA3319AEB8B100093EB5 /* BTUIVenmoButton.h */,
 				16A2EA3419AEB8B100093EB5 /* BTUIVenmoButton.m */,
+				16F5AF3B19B68F640043A412 /* BTUIPayPalButton.h */,
+				16F5AF3C19B68F640043A412 /* BTUIPayPalButton.m */,
 			);
 			path = "Payments Components";
 			sourceTree = "<group>";
