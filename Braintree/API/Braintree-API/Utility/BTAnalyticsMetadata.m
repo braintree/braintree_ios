@@ -8,9 +8,9 @@
 #import <sys/utsname.h>
 
 #ifdef __IPHONE_8_0
-#define kBTCLuthorizationStatusAuthorized kCLAuthorizationStatusAuthorizedAlways
+#define kBTCLAuthorizationStatusAuthorized kCLAuthorizationStatusAuthorizedAlways
 #else
-#define kBTCLuthorizationStatusAuthorized kCLAuthorizationStatusAuthorized
+#define kBTCLAuthorizationStatusAuthorized kCLAuthorizationStatusAuthorized
 #endif
 
 @implementation BTAnalyticsMetadata
@@ -30,7 +30,7 @@
     [self setObject:[m deviceManufacturer] forKey:@"deviceManufacturer" inDictionary:data];
     [self setObject:[m deviceModel] forKey:@"deviceModel" inDictionary:data];
     [self setObject:[m deviceNetworkType] forKey:@"deviceNetworkType" inDictionary:data];
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kBTCLuthorizationStatusAuthorized) {
+    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kBTCLAuthorizationStatusAuthorized) {
         [self setObject:@([m deviceLocationLatitude]) forKey:@"deviceLocationLatitude" inDictionary:data];
         [self setObject:@([m deviceLocationLongitude]) forKey:@"deviceLocationLongitude" inDictionary:data];
     }
