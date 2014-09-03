@@ -32,16 +32,19 @@
 - (void)tokenizeCardWithNumber:(NSString *)cardNumber
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
-                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock {
+                           CVV:(NSString *)CVV
+                    postalCode:(NSString *)postalCode
+                    completion:(void (^)(NSString *, NSError *))completionBlock
+{
     [self.client postAnalyticsEvent:@"custom.ios.tokenize.call"
                             success:nil
                             failure:nil];
-
+    
     [self.client saveCardWithNumber:cardNumber
                     expirationMonth:expirationMonth
                      expirationYear:expirationYear
-                                cvv:nil
-                         postalCode:nil
+                                cvv:CVV
+                         postalCode:postalCode
                            validate:NO
                             success:^(BTCardPaymentMethod *card) {
                                 if (completionBlock) {
@@ -52,6 +55,7 @@
                                 completionBlock(nil, error);
                             }];
 }
+
 
 #pragma mark Drop-In
 
