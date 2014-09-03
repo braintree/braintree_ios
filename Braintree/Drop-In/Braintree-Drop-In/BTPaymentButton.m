@@ -13,6 +13,8 @@
 
 #import <FLEX/FLEXManager.h>
 
+NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentButtonCellIdentifier";
+
 @interface BTPaymentButton () <BTAppSwitchingDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPayPalAdapterDelegate>
 @property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
 @property (nonatomic, strong) BTPayPalAdapter *payPalAdapter;
@@ -51,13 +53,18 @@
     self.paymentButtonsCollectionView.delegate = self;
     self.paymentButtonsCollectionView.dataSource = self;
     self.paymentButtonsCollectionView.backgroundColor = [UIColor grayColor];
-    [self.paymentButtonsCollectionView registerClass:[BTPaymentButtonCollectionViewCell class] forCellWithReuseIdentifier:@"PaymentButtonCell"];
+    [self.paymentButtonsCollectionView registerClass:[BTPaymentButtonCollectionViewCell class] forCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier];
 
     [self addSubview:self.paymentButtonsCollectionView];
 
     // TODO: Use new interface instead of BTPayPalAdapter
     self.payPalAdapter = [[BTPayPalAdapter alloc] initWithClient:self.client];
     self.payPalAdapter.delegate = self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self.paymentButtonsCollectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)setClient:(BTClient *)client {
@@ -92,7 +99,8 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    BTPaymentButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PaymentButtonCell" forIndexPath:indexPath];
+    BTPaymentButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier
+                                                                                        forIndexPath:indexPath];
 
     UIControl *paymentButton;
     if (indexPath.row == 0) {
