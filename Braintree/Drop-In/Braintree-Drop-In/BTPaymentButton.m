@@ -20,6 +20,14 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 @implementation BTPaymentButton
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        [self setupViews];
+    }
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

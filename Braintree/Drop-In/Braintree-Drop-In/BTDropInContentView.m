@@ -36,7 +36,7 @@
                                                                                  metrics:@{@"borderWidth": @(self.theme.borderWidth)}
                                                                                    views:@{@"border": summaryBorderBottom}]];
 
-        self.payPalButton = [[BTPayPalButton alloc] init];
+        self.paymentButton = [[BTPaymentButton alloc] init];
 
         self.cardFormSectionHeader = [[UILabel alloc] init];
 
@@ -54,7 +54,7 @@
         // Add Constraints & Subviews
 
         // Full-Width Views
-        for (UIView *view in @[self.payPalButton, self.selectedPaymentMethodView, self.summaryView, self.ctaControl, self.cardForm]) {
+        for (UIView *view in @[self.paymentButton, self.selectedPaymentMethodView, self.summaryView, self.ctaControl, self.cardForm]) {
             [self addSubview:view];
             view.translatesAutoresizingMaskIntoConstraints = NO;
             [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
@@ -94,7 +94,7 @@
     NSDictionary *viewBindings = @{
                                    @"activityView": self.activityView,
                                    @"summaryView": self.summaryView,
-                                   @"payPalButton": self.payPalButton,
+                                   @"paymentButton": self.paymentButton,
                                    @"cardFormSectionHeader": self.cardFormSectionHeader,
                                    @"cardForm": self.cardForm,
                                    @"ctaControl": self.ctaControl,
@@ -160,14 +160,14 @@
                     self.activityView.alpha = 0.0f;
                 } completion:^(__unused BOOL finished) {
                     [self setState:newState];
-                    self.payPalButton.alpha = 0.0f;
+                    self.paymentButton.alpha = 0.0f;
                     self.cardForm.alpha = 0.0f;
                     self.cardFormSectionHeader.alpha = 0.0f;
                     self.ctaControl.alpha = 0.0f;
                     [self setNeedsUpdateConstraints];
                     [self layoutIfNeeded];
                     [UIView animateWithDuration:duration animations:^{
-                        self.payPalButton.alpha = 1.0f;
+                        self.paymentButton.alpha = 1.0f;
                         self.cardForm.alpha = 1.0f;
                         self.cardFormSectionHeader.alpha = 1.0f;
                         self.ctaControl.alpha = 1.0f;
@@ -202,7 +202,7 @@
 
 - (void) setHidePayPal:(BOOL)payPalButtonHidden{
     _hidePayPal = payPalButtonHidden;
-    self.payPalButton.hidden = payPalButtonHidden;
+    self.paymentButton.hidden = payPalButtonHidden;
     [self updateLayout];
 }
 
@@ -211,7 +211,7 @@
     // Reset all to hidden, just for clarity
     self.activityView.hidden = YES;
     self.summaryView.hidden = self.hideSummary;
-    self.payPalButton.hidden = YES;
+    self.paymentButton.hidden = YES;
     self.cardFormSectionHeader.hidden = YES;
     self.cardForm.hidden = YES;
     self.selectedPaymentMethodView.hidden = YES;
@@ -223,7 +223,7 @@
             self.activityView.hidden = YES;
             [self.activityView stopAnimating];
             self.ctaControl.hidden = self.hideCTA;
-            self.payPalButton.hidden = self.hidePayPal ;
+            self.paymentButton.hidden = self.hidePayPal ;
             self.cardFormSectionHeader.hidden = NO;
             self.cardForm.hidden = NO;
             break;
@@ -276,7 +276,7 @@
             return @[[NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
         } else {
             summaryViewVisualFormat = [NSString stringWithFormat:@"%@-(35)-", summaryViewVisualFormat];
-            return @[[NSString stringWithFormat:@"V:|%@[payPalButton(==40)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
+            return @[[NSString stringWithFormat:@"V:|%@[paymentButton(==44)]-(18)-[cardFormSectionHeader]-(7)-[cardForm]%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
         }
 
     } else {
