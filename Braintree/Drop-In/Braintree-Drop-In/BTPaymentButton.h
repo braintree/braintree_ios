@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 #import "BTPaymentMethodAuthorizationDelegate.h"
+#import "BTUIThemedView.h"
 
 @class BTClient, BTPaymentMethod;
 @protocol BTPaymentMethodAuthorizationDelegate;
@@ -12,7 +13,7 @@ typedef NS_OPTIONS(NSInteger, BTPaymentButtonPaymentMethods) {
     BTPaymentButtonPaymentMethodAll = BTPaymentButtonPaymentMethodVenmo | BTPaymentButtonPaymentMethodPayPal,
 };
 
-@interface BTPaymentButton : UIView
+@interface BTPaymentButton : BTUIThemedView
 
 // TODO: Refactor to use a unified notion of PaymentMethodTypes
 @property (nonatomic, strong) NSOrderedSet *enabledPaymentMethods;

@@ -9,12 +9,13 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.theme = [BTUI braintreeTheme];
         self.opaque = NO;
         self.backgroundColor = [UIColor clearColor];
 
         self.line = [[UIView alloc] initWithFrame:CGRectZero];
         self.line.translatesAutoresizingMaskIntoConstraints = NO;
-        self.line.backgroundColor = [UIColor lightGrayColor];
+        self.line.backgroundColor = self.theme.borderColor;
         [self addSubview:self.line];
     }
     return self;

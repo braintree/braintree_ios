@@ -16,6 +16,9 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 @interface BTPaymentButton () <BTAppSwitchingDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPayPalAdapterDelegate>
 @property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
 @property (nonatomic, strong) BTPayPalAdapter *payPalAdapter;
+
+@property (nonatomic, strong) UIView *topBorder;
+@property (nonatomic, strong) UIView *bottomBorder;
 @end
 
 @implementation BTPaymentButton
@@ -61,7 +64,17 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     self.paymentButtonsCollectionView.backgroundColor = [UIColor grayColor];
     [self.paymentButtonsCollectionView registerClass:[BTPaymentButtonCollectionViewCell class] forCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier];
 
+    self.topBorder = [[UIView alloc] init];
+    self.topBorder.backgroundColor = [self.theme borderColor];
+    self.topBorder.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.bottomBorder = [[UIView alloc] init];
+    self.bottomBorder.backgroundColor = [self.theme borderColor];
+    self.bottomBorder.translatesAutoresizingMaskIntoConstraints = NO;
+
     [self addSubview:self.paymentButtonsCollectionView];
+    [self addSubview:self.topBorder];
+    [self addSubview:self.bottomBorder];
 
     // TODO: Use new interface instead of BTPayPalAdapter
     self.payPalAdapter = [[BTPayPalAdapter alloc] initWithClient:self.client];
@@ -74,14 +87,36 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (void)updateConstraints {
-    NSDictionary *views = @{ @"paymentButtonsCollectionView": self.paymentButtonsCollectionView };
+    NSDictionary *views = @{ @"paymentButtonsCollectionView": self.paymentButtonsCollectionView,
+                             @"topBorder": self.topBorder,
+                             @"bottomBorder": self.bottomBorder };
+    NSDictionary *metrics = @{ @"borderWidth": @(self.theme.borderWidth) };
+    
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[paymentButtonsCollectionView]|"
                                                                  options:0
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[paymentButtonsCollectionView]|"
                                                                  options:0
-                                                                 metrics:nil
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[topBorder]|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[topBorder(==borderWidth)]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[bottomBorder]|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bottomBorder(==borderWidth)]|"
+                                                                 options:0
+                                                                 metrics:metrics
                                                                    views:views]];
 
     [super updateConstraints];
