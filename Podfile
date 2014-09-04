@@ -17,6 +17,7 @@ target 'Braintree-Demo' do
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
   pod 'UIActionSheet+Blocks'
+  pod 'FLEX'
 end
 
 target 'Braintree-Specs' do
@@ -95,4 +96,10 @@ end
 
 target 'Braintree-Data-Demo' do
   pod 'Braintree/Data', :path => '.'
+end
+
+# Payment-Authorization #
+target 'Braintree-Payment-Authorization-Specs' do 
+  pods_for_specs
+  pod 'Braintree/Payment-Authorization'
 end

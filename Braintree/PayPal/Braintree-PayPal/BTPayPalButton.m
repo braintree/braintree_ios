@@ -203,12 +203,11 @@
                                              metrics:metrics
                                                views:views]];
 
-    [constraints addObjectsFromArray:
-     [NSLayoutConstraint constraintsWithVisualFormat:@"H:[self(>=260@required)]"
-                                             options:0
-                                             metrics:metrics
-                                               views:views]];
     return constraints;
+}
+
+- (CGSize)intrinsicContentSize {
+    return CGSizeMake(320, UIViewNoIntrinsicMetric);
 }
 
 #pragma mark PayPal Adapter Delegate Methods

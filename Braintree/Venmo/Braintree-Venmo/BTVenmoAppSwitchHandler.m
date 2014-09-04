@@ -2,12 +2,18 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 
+@interface BTVenmoAppSwitchHandler ()
+@property (nonatomic, strong) BTClient *client;
+@end
+
 @implementation BTVenmoAppSwitchHandler
 
 @synthesize returnURLScheme;
 @synthesize delegate;
 
-- (BOOL)initiateAppSwitchWithClient:(__unused BTClient *)client delegate:(__unused id<BTAppSwitchingDelegate>)theDelegate {
+- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(__unused id<BTAppSwitchingDelegate>)theDelegate {
+    self.client = client;
+
     if (!self.returnURLScheme) {
         return NO;
     }
@@ -43,9 +49,17 @@
     }
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     switch (returnURL.state) {
-        case BTVenmoAppSwitchReturnURLStateSucceeded:
-            [self.delegate appSwitcher:self didCreatePaymentMethod:returnURL.paymentMethod];
+        case BTVenmoAppSwitchReturnURLStateSucceeded: {
+            [self.client fetchPaymentMethodWithNonce:returnURL.paymentMethod.nonce
+                                             success:^(BTPaymentMethod *paymentMethod){
+                                                 [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
+                                             }
+                                             failure:^(NSError *error){
+                                                 // TODO: Wrap error
+                                                 [self.delegate appSwitcher:self didFailWithError:error];
+                                             }];
             break;
+        }
         case BTVenmoAppSwitchReturnURLStateFailed:
             [self.delegate appSwitcher:self didFailWithError:returnURL.error];
             break;

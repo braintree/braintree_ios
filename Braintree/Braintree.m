@@ -72,6 +72,20 @@
     return dropInViewController;
 }
 
+#pragma mark Custom: Generic Payment Method Authorization
+
+- (void)initiatePaymentMethodAuthorization:(BTPaymentAuthorizationType)type delegate:(__unused id<BTPaymentAuthorizerDelegate>)delegate {
+    switch (type) {
+        case BTPaymentAuthorizationTypePayPal:
+        case BTPaymentAuthorizationTypeVenmo:
+        default:
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                           reason:[NSString stringWithFormat:@"Payment Method Authorization not yet implemented for given type (%ld)", (long)type]
+                                         userInfo:nil];
+            break;
+    }
+}
+
 #pragma mark Custom: PayPal
 
 - (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate {
@@ -88,12 +102,6 @@
     button.delegate = delegate;
 
     return button;
-}
-
-#pragma mark -
-
-- (BTPayPalButton *)payPalButton {
-    return _payPalButton ?: [[BTPayPalButton alloc] init];
 }
 
 #pragma mark Library

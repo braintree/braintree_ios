@@ -58,8 +58,8 @@
     return NSLocalizedStringWithDefaultValue(@"ERROR_SAVING_CARD_MESSAGE", [self localizationTable], [self localizationBundle], @"Please try again.", @"Message for alert view that is displayed when Drop In submission fails because there was an error saving the card");
 }
 
-+ (NSString *)ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_TITLE {
-    return NSLocalizedStringWithDefaultValue(@"ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_TITLE", [self localizationTable], [self localizationBundle], @"PayPal Error", @"Title for alert view that is displayed when Drop In submission fails because there was an error saving the PayPal account");
++ (NSString *)ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE {
+    return NSLocalizedStringWithDefaultValue(@"ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE", [self localizationTable], [self localizationBundle], @"PayPal Error", @"Title for alert view that is displayed when Drop In submission fails because there was an error saving the PayPal account");
 }
 
 

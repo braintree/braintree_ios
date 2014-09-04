@@ -1,5 +1,5 @@
 #import "BTVenmoAppSwitchReturnURL.h"
-#import "BTPaymentMethod_Mutable.h"
+#import "BTMutableCardPaymentMethod.h"
 #import "BTURLUtils.h"
 
 NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"BTVenmoAppSwitchReturnURLErrorDomain";
@@ -16,7 +16,7 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"BTVenmoAppSwitchReturnU
         NSDictionary *parameters = [BTURLUtils dictionaryForQueryString:url.query];
         if ([url.path isEqualToString:@"/vzero/auth/venmo/success"]) {
             _state = BTVenmoAppSwitchReturnURLStateSucceeded;
-            _paymentMethod = [[BTPaymentMethod alloc] init];
+            _paymentMethod = [[BTMutableCardPaymentMethod alloc] init];
             _paymentMethod.nonce = parameters[@"paymentMethodNonce"];
         } else if ([url.path isEqualToString:@"/vzero/auth/venmo/error"]) {
             _state = BTVenmoAppSwitchReturnURLStateFailed;

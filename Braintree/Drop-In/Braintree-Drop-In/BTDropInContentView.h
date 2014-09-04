@@ -3,6 +3,8 @@
 #import "Braintree-Payments-UI.h"
 #import "Braintree-PayPal.h"
 
+#import "BTPaymentButton.h"
+
 typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
     BTDropInContentViewStateForm = 0,
     BTDropInContentViewStatePaymentMethodsOnFile,
@@ -14,7 +16,7 @@ typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
 
 @property (nonatomic, strong) BTUISummaryView *summaryView;
 @property (nonatomic, strong) BTUICTAControl *ctaControl;
-@property (nonatomic, strong) BTPayPalButton *payPalButton;
+@property (nonatomic, strong) BTPaymentButton *paymentButton;
 @property (nonatomic, strong) UILabel *cardFormSectionHeader;
 @property (nonatomic, strong) BTUICardFormView *cardForm;
 

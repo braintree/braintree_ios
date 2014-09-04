@@ -2,6 +2,10 @@
 #import <HockeySDK/HockeySDK.h>
 #import "Braintree.h"
 
+#if DEBUG
+#import <FLEX/FLEXManager.h>
+#endif
+
 NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
 
 @implementation BraintreeDemoAppDelegate
@@ -27,5 +31,15 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
     }
     return YES;
 }
+
+#if DEBUG
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
+    CGPoint location = [[[event allTouches] anyObject] locationInView:[self window]];
+    if(location.y > 0 && location.y < [[UIApplication sharedApplication] statusBarFrame].size.height) {
+        [[FLEXManager sharedManager] showExplorer];
+    }
+}
+#endif
 
 @end

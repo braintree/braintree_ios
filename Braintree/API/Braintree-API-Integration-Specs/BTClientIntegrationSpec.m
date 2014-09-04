@@ -349,6 +349,31 @@ describe(@"list payment methods", ^{
     });
 });
 
+describe(@"show payment method", ^{
+    it(@"gets a full representation of a payment method based on a nonce", ^AsyncBlock{
+        [testClient saveCardWithNumber:@"4111111111111111"
+                       expirationMonth:@"12"
+                        expirationYear:@"2018"
+                                   cvv:@"100"
+                            postalCode:nil
+                              validate:YES
+                               success:^(BTCardPaymentMethod *card){
+                                   NSString *aNonce = card.nonce;
+                                   [testClient fetchPaymentMethodWithNonce:aNonce
+                                                                    success:^(BTPaymentMethod *paymentMethod) {
+                                                                        expect(paymentMethod).to.beKindOf([BTCardPaymentMethod class]);
+
+                                                                        BTCardPaymentMethod *cardPaymentMethod = (BTCardPaymentMethod *)paymentMethod;
+                                                                        expect(cardPaymentMethod.lastTwo).to.equal(@"11");
+                                                                        expect(cardPaymentMethod.type).to.equal(BTCardTypeVisa);
+                                                                        done();
+                                                                    }
+                                                                   failure:nil];
+                               }
+                               failure:nil];
+    });
+});
+
 describe(@"get nonce", ^{
     it(@"gets an info dictionary about a nonce", ^AsyncBlock {
         [testClient saveCardWithNumber:@"4111111111111111"

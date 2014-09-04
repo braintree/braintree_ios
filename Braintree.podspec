@@ -33,6 +33,7 @@ Pod::Spec.new do |s|
     s.dependency 'Braintree/PayPal'
     s.dependency 'Braintree/UI'
     s.dependency 'Braintree/Venmo'
+    s.dependency 'Braintree/Payment-Authorization'
     s.resource_bundle = { "Braintree-Drop-In-Localization" => "Braintree/Drop-In/Braintree-Drop-In/Localization/*.lproj" }
   end
 
@@ -70,5 +71,14 @@ Pod::Spec.new do |s|
     s.source_files = "Braintree/Data/Braintree-Data/**/*.{h,m}"
     s.vendored_library = "Braintree/Data/Braintree-Data/libDeviceCollectorLibrary.a"
     s.frameworks = "UIKit", "SystemConfiguration"
+  end
+
+  s.subspec 'Payment-Authorization' do |s|
+    s.source_files = "Braintree/Payment-Authorization/Braintree-Payment-Authorization/**/*.{h,m}"
+    s.public_header_files = "Braintree/Payment-Authorization/Braintree-Payment-Authorization/Public/*.h"
+    s.frameworks = "UIKit"
+    s.dependency 'Braintree/API'
+    s.dependency 'Braintree/PayPal'
+    s.dependency 'Braintree/Venmo'
   end
 end
