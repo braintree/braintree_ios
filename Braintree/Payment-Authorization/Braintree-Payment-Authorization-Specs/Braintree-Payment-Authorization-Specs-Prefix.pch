@@ -13,5 +13,3 @@
 #import <OCHamcrest/OCHamcrest.h>
 
 #import <OHHTTPStubs/OHHTTPStubs.h>
-
-#import "BTSpecHelper.h"

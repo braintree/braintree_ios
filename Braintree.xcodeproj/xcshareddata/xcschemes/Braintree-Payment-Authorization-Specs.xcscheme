@@ -16,7 +16,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7CB615319B7AF6E00E972A8"
+               BlueprintIdentifier = "2D9DDB3419B8171800C53140"
                BuildableName = "Braintree-Payment-Authorization-Specs.xctest"
                BlueprintName = "Braintree-Payment-Authorization-Specs"
                ReferencedContainer = "container:Braintree.xcodeproj">
