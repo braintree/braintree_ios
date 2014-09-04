@@ -30,7 +30,7 @@
 
 /// Strong reference to an additional BTPayPalButton. Reference is needed so
 /// activity can continue after dismissal
-@property (nonatomic, strong) BTPaymentButton *retainedPayPalButton;
+@property (nonatomic, strong) BTPaymentButton *retainedPaymentButton;
 
 /// Strong reference to a BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
@@ -401,7 +401,7 @@
     // delegate method invoked by BTPayPalViewController is still executed even after
     // dismissal of the UI and release of encapsulating View Controller.
     // Reference count is decremented in subsequent delegate method calls. See below.
-    self.retainedPayPalButton = sender;
+    self.retainedPaymentButton = sender;
 
     // If the button is *not* in our view hierarchy *yet* we are its delegate,
     // then it is in a presented view controller, which we can now dismiss.
@@ -418,13 +418,13 @@
     self.paymentMethods = newPaymentMethods;
 
     // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
-    self.retainedPayPalButton = nil;
+    self.retainedPaymentButton = nil;
 }
 
 - (void)paymentAuthorizer:(id)sender didFailWithError:(__unused NSError *)error {
     NSString *savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
 
-    if (self.retainedPayPalButton != self.dropInContentView.paymentButton) {
+    if (self.retainedPaymentButton != self.dropInContentView.paymentButton) {
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
@@ -448,12 +448,12 @@
     }
 
     // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
-    self.retainedPayPalButton = nil;
+    self.retainedPaymentButton = nil;
 }
 
 - (void)paymentAuthorizerDidCancel:(__unused id)sender {
     // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
-    self.retainedPayPalButton = nil;
+    self.retainedPaymentButton = nil;
 
     self.paymentMethods = self.paymentMethods;
 }

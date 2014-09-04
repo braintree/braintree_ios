@@ -239,6 +239,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 - (void)postAnalyticsEvent:(NSString *)eventKind
                    success:(BTClientAnalyticsSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
+    NSLog(@"postAnalyticsEvent: %@", eventKind);
 
     if (self.clientToken.analyticsEnabled) {
         NSDictionary *requestParameters = @{ @"analytics": @[@{ @"kind": eventKind }],

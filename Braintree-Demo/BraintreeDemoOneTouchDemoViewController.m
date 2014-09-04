@@ -226,7 +226,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     NSLog(@"%@", error);
     [self.activityIndicator stopAnimating];
     self.emailLabel.text = @"An error occurred";
-    [[[UIAlertView alloc] initWithTitle:@"Failed to tokenize PayPal Auth Code"
+    [[[UIAlertView alloc] initWithTitle:@"Failure"
                                 message:[error localizedDescription]
                                delegate:nil
                       cancelButtonTitle:@"OK"
