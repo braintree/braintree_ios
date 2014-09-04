@@ -23,12 +23,21 @@ NSString *BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorV
     NSParameterAssert(self.collectionView.numberOfSections == 1);
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
     CGFloat totalWidth = self.collectionView.frame.size.width;
-    NSParameterAssert(numberOfItems > 0);
+
+    if (numberOfItems == 0) {
+        return;
+    }
+
     self.itemSize = CGSizeMake(totalWidth/numberOfItems, self.collectionView.frame.size.height);
 }
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
     NSMutableArray *layoutAttributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
+
+    NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
+    if (numberOfItems == 0) {
+        return layoutAttributes;
+    }
 
     for (UICollectionViewLayoutAttributes *attributes in [layoutAttributes subarrayWithRange:NSMakeRange(0, [layoutAttributes count] - 1)]) {
         UICollectionViewLayoutAttributes *separatorAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind

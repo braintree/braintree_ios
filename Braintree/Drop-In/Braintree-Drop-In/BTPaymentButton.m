@@ -87,21 +87,24 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (void)setEnabledPaymentMethods:(NSOrderedSet *)enabledPaymentMethods {
-    if (enabledPaymentMethods.count == 0) {
-        NSLog(@"[BTPaymentButton] Refusing to update BTPaymentButton to use an empty set of Payment Methods");
-        return;
-    }
-
     _enabledPaymentMethods = enabledPaymentMethods;
 
     [self.paymentButtonsCollectionView reloadData];
+}
+
+- (NSOrderedSet *)filteredEnabledPaymentMethods {
+    NSMutableOrderedSet *filteredEnabledPaymentMethods = [self.enabledPaymentMethods mutableCopy];
+    if (![BTVenmoAppSwitchHandler isAvailable]) {
+        [filteredEnabledPaymentMethods removeObject:@(BTPaymentButtonPaymentMethodVenmo)];
+    }
+    return filteredEnabledPaymentMethods;
 }
 
 #pragma mark UICollectionViewDataSource methods
 
 - (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSParameterAssert(section == 0);
-    return [self.enabledPaymentMethods count];
+    return [self.filteredEnabledPaymentMethods count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -110,7 +113,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     BTPaymentButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier
                                                                                         forIndexPath:indexPath];
 
-    BTPaymentButtonPaymentMethods paymentMethod = [self.enabledPaymentMethods[indexPath.row] integerValue];
+    BTPaymentButtonPaymentMethods paymentMethod = [self.filteredEnabledPaymentMethods[indexPath.row] integerValue];
 
     UIControl *paymentButton;
     switch (paymentMethod) {
