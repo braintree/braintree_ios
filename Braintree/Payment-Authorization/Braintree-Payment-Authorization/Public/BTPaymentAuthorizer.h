@@ -9,7 +9,7 @@
 - (instancetype)initWithType:(BTPaymentAuthorizationType)type
                       client:(BTClient *)client;
 
-- (void)authorize;
+- (BOOL)authorize;
 
 @property (nonatomic, weak) id<BTPaymentAuthorizerDelegate> delegate;
 

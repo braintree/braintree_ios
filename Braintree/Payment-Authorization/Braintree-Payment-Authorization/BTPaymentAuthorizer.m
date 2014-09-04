@@ -22,8 +22,9 @@
     return self;
 }
 
-- (void)authorize {
+- (BOOL)authorize {
     [NSException raise:@"Unimplemented abstract authorization" format:nil];
+    return NO;
 }
 
 - (void)informDelegateWillRequestUserChallengeWithAppSwitch {
@@ -61,5 +62,35 @@
         [self.delegate paymentAuthorizer:self didFailWithError:error];
     }
 }
+
+
+#pragma mark BTAppSwitchingDelegate
+
+- (void)appSwitcherWillInitiate:(__unused id<BTAppSwitching>)switcher {
+    [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.will-initiate"];
+    [self informDelegateWillRequestUserChallengeWithAppSwitch];
+}
+
+- (void)appSwitcherWillCreatePaymentMethod:(__unused id<BTAppSwitching>)switcher {
+    [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.will-create-payment-method"];
+    [self informDelegateDidCompleteUserChallengeWithAppSwitch];
+}
+
+- (void)appSwitcher:(__unused id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.did-create-payment-method"];
+    [self informDelegateDidCreatePaymentMethod:paymentMethod];
+}
+
+- (void)appSwitcher:(__unused id<BTAppSwitching>)switcher didFailWithError:(NSError *)error {
+    [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.did-fail-with-error"];
+    [self informDelegateDidFailWithError:error];
+}
+
+- (void)appSwitcherDidCancel:(__unused id<BTAppSwitching>)switcher {
+    [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.did-cancel"];
+    [self informDelegateDidCompleteUserChallengeWithAppSwitch];
+}
+
+
 
 @end

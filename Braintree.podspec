@@ -74,6 +74,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Payment-Authorization' do |s|
     s.source_files = "Braintree/Payment-Authorization/Braintree-Payment-Authorization/**/*.{h,m}"
+    s.public_header_files = "Braintree/Payment-Authorization/Braintree-Payment-Authorization/Public/*.h"
     s.frameworks = "UIKit"
     s.dependency 'Braintree/API'
     s.dependency 'Braintree/PayPal'

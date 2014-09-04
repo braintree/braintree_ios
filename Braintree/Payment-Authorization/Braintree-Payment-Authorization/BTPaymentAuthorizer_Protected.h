@@ -1,6 +1,7 @@
 #import "BTPaymentAuthorizer.h"
+#import "BTAppSwitchingDelegate.h"
 
-@interface BTPaymentAuthorizer () {
+@interface BTPaymentAuthorizer () <BTAppSwitchingDelegate> {
 @protected
     BTClient *_client;
 }
@@ -16,7 +17,6 @@
 
 - (void)informDelegateDidCreatePaymentMethod:(BTPaymentMethod *)paymentMethod;
 - (void)informDelegateDidFailWithError:(NSError *)error;
-
 
 @end
 
