@@ -76,10 +76,8 @@
 
 - (void)initiatePaymentMethodAuthorization:(BTPaymentAuthorizationType)type delegate:(__unused id<BTPaymentAuthorizerDelegate>)delegate {
     switch (type) {
-        case BTPaymentMethodAuthorizationTypeCard:
         case BTPaymentAuthorizationTypePayPal:
-            [[BTPayPalAdapter alloc] initWithClient:self.client]
-        case BTPaymentMethodAuthorizationTypeVenmo:
+        case BTPaymentAuthorizationTypeVenmo:
         default:
             @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                            reason:[NSString stringWithFormat:@"Payment Method Authorization not yet implemented for given type (%ld)", (long)type]

@@ -516,12 +516,7 @@
 		2DC3791A193FB53C00BD2BB9 /* BTUITextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUITextField.h; sourceTree = "<group>"; };
 		2DC3791B193FB53C00BD2BB9 /* BTUITextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUITextField.m; sourceTree = "<group>"; };
 		2DCDDFC9194F9E1400F691CF /* BTHTTPSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSpec.m; sourceTree = "<group>"; };
-		2DE9752819B80D2F009E2198 /* BTPaymentAuthorizer_Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentAuthorizer_Protected.h; sourceTree = "<group>"; };
 		2DE9752A19B80D2F009E2198 /* BTPaymentAuthorizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentAuthorizer.m; sourceTree = "<group>"; };
-		2DE9752B19B80D2F009E2198 /* BTPaymentAuthorizerPayPal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentAuthorizerPayPal.h; sourceTree = "<group>"; };
-		2DE9752C19B80D2F009E2198 /* BTPaymentAuthorizerPayPal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentAuthorizerPayPal.m; sourceTree = "<group>"; };
-		2DE9752D19B80D2F009E2198 /* BTPaymentAuthorizerVenmo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentAuthorizerVenmo.h; sourceTree = "<group>"; };
-		2DE9752E19B80D2F009E2198 /* BTPaymentAuthorizerVenmo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentAuthorizerVenmo.m; sourceTree = "<group>"; };
 		3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Specs.xcconfig"; path = "Pods/Pods-Braintree-Specs.xcconfig"; sourceTree = "<group>"; };
 		450771C9BADB4C4893CAA26E /* Pods-Braintree-Payments-UI-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-UI-Demo.xcconfig"; path = "Pods/Pods-Braintree-Payments-UI-Demo.xcconfig"; sourceTree = "<group>"; };
 		49D0108CF663453B80F1BEA8 /* Pods-Braintree-Payments-UI-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-UI-Specs.xcconfig"; path = "Pods/Pods-Braintree-Payments-UI-Specs.xcconfig"; sourceTree = "<group>"; };
@@ -1838,12 +1833,7 @@
 			isa = PBXGroup;
 			children = (
 				A763BED619B8C3D90087939C /* Public */,
-				2DE9752819B80D2F009E2198 /* BTPaymentAuthorizer_Protected.h */,
 				2DE9752A19B80D2F009E2198 /* BTPaymentAuthorizer.m */,
-				2DE9752B19B80D2F009E2198 /* BTPaymentAuthorizerPayPal.h */,
-				2DE9752C19B80D2F009E2198 /* BTPaymentAuthorizerPayPal.m */,
-				2DE9752D19B80D2F009E2198 /* BTPaymentAuthorizerVenmo.h */,
-				2DE9752E19B80D2F009E2198 /* BTPaymentAuthorizerVenmo.m */,
 			);
 			path = "Braintree-Payment-Authorization";
 			sourceTree = "<group>";

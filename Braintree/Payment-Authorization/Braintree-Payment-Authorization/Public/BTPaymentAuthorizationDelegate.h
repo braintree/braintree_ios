@@ -2,11 +2,6 @@
 
 @class BTPaymentMethod;
 
-typedef NS_ENUM(NSInteger, BTPaymentAuthorizationType) {
-    BTPaymentAuthorizationTypePayPal,
-    BTPaymentAuthorizationTypeVenmo
-};
-
 /// Protocol for receiving authorization lifecycle messages from a payment authorizer
 @protocol BTPaymentAuthorizerDelegate <NSObject>
 
@@ -17,7 +12,7 @@ typedef NS_ENUM(NSInteger, BTPaymentAuthorizationType) {
 ///  @param viewController The view controller to be presented
 ///
 ///  @return Whether the view controller was presented.
-- (BOOL)paymentAuthorizer:(id)sender requestsUserChallengeWithViewController:(UIViewController *)viewController;
+- (BOOL)paymentAuthorizer:(id)sender requestsAuthorizationWithViewController:(UIViewController *)viewController;
 
 ///  The payment authorizer has completed and requires dismissal of a view controller.
 ///
@@ -25,20 +20,27 @@ typedef NS_ENUM(NSInteger, BTPaymentAuthorizationType) {
 ///  @param viewController The view controller to be presented
 ///
 ///  @return Whether the view controller was dismissed.
-- (BOOL)paymentAuthorizer:(id)sender requestsDismissalOfUserChallengeViewController:(UIViewController *)viewController;
+- (BOOL)paymentAuthorizer:(id)sender requestsDismissalOfAuthorizationViewController:(UIViewController *)viewController;
 
 ///  The payment authorizer will perform an app switch in order to obtain user
 ///  payment authorization.
 ///
+///  @note REPHRASE Reenable the button in case things fail
 ///  @param sender The payment authorizer
-- (void)paymentAuthorizerWillRequestUserChallengeWithAppSwitch:(id)sender;
+- (void)paymentAuthorizerWillRequestAuthorizationWithAppSwitch:(id)sender;
 
-///  The payment authorizer, having performed an app switch in order to obtain user
-///  payment authorization, has received results from the app switch and will use
-///  those results to create a payment method.
+///  The payment authorizer, having obtained user payment details and/or user
+///  authorization, will now process the results.
+///
+///  @note This typically indicates asynchronous network activity. When you receive this message, your UI should indicate this activity.
+///  @note REPHRASE Disable the button in case things fail
+///  @param sender The payment authorizer
+- (void)paymentAuthorizerWillProcessAuthorizationResponse:(id)sender;
+
+///  The payment authorizer has cancelled.
 ///
 ///  @param sender The payment authorizer
-- (void)paymentAuthorizerDidCompleteUserChallengeWithAppSwitch:(id)sender;
+- (void)paymentAuthorizerDidCancel:(id)sender;
 
 ///  The payment authorizer received authorization, which it then successfully
 ///  used to create a payment method.

@@ -1,6 +1,4 @@
-#import "BTPaymentAuthorizer_Protected.h"
-#import "BTPaymentAuthorizerPayPal.h"
-#import "BTPaymentAuthorizerVenmo.h"
+#import "BTPaymentAuthorizer.h"
 
 #import "BTClient.h"
 #import "BTClient+BTPayPal.h"
@@ -29,39 +27,14 @@ afterEach(^{
     [delegate stopMocking];
 });
 
-describe(@"initWithType:client:", ^{
+fdescribe(@"authorize:", ^{
 
-    it(@"returns a PayPal authorizer", ^{
-        BTPaymentAuthorizer *authorizer = [[BTPaymentAuthorizer alloc] initWithType:BTPaymentAuthorizationTypePayPal client:client];
-        expect(authorizer).to.beKindOf([BTPaymentAuthorizerPayPal class]);
-    });
-
-    it(@"returns a Venmo authorizer", ^{
-        BTPaymentAuthorizer *authorizer = [[BTPaymentAuthorizer alloc] initWithType:BTPaymentAuthorizationTypeVenmo client:client];
-        expect(authorizer).to.beKindOf([BTPaymentAuthorizerVenmo class]);
-    });
-
-});
-
-describe(@"authorize", ^{
-
+    __block BTPaymentAuthorizationType paymentAuthorizationType;
     __block BTPaymentAuthorizer *authorizer;
 
-    context(@"for abstract BTPaymentAuthorizer", ^{
-
-        beforeEach(^{
-            authorizer = [[BTPaymentAuthorizer alloc] init];
-        });
-
-        it(@"throws an exception", ^{
-            BOOL thrown;
-            @try {
-                [authorizer authorize];
-            } @catch (NSException *e) {
-                thrown = YES;
-            }
-            expect(thrown).to.beTruthy();
-        });
+    beforeEach(^{
+        authorizer = [[BTPaymentAuthorizer alloc] init];
+        authorizer.client = client;
     });
 
     context(@"when type is BTPaymentAuthorizationTypePayPal", ^{
@@ -69,10 +42,10 @@ describe(@"authorize", ^{
         __block id payPalAppSwitchHandler;
 
         beforeEach(^{
+            paymentAuthorizationType = BTPaymentAuthorizationTypePayPal;
+
             payPalAppSwitchHandler = [OCMockObject mockForClass:[BTPayPalAppSwitchHandler class]];
             [[[payPalAppSwitchHandler stub] andReturn:payPalAppSwitchHandler] sharedHandler];
-
-            authorizer = [[BTPaymentAuthorizer alloc] initWithType:BTPaymentAuthorizationTypePayPal client:client];
         });
 
         afterEach(^{
@@ -90,7 +63,7 @@ describe(@"authorize", ^{
                 [[delegate expect] paymentAuthorizerWillRequestUserChallengeWithAppSwitch:authorizer];
                 authorizer.delegate = delegate;
 
-                BOOL initiated = [authorizer authorize];
+                BOOL initiated = [authorizer authorize:BTPaymentAuthorizationTypePayPal];
                 expect(initiated).to.beTruthy();
             });
         });
@@ -102,12 +75,12 @@ describe(@"authorize", ^{
             });
 
             it(@"returns YES and invokes view controller delegate method", ^{
-                [[delegate expect] paymentAuthorizer:authorizer requestsUserChallengeWithViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
+                [[delegate expect] paymentAuthorizer:authorizer requestsUserAuthorizationWithViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
                     return [obj isKindOfClass:[UIViewController class]];
                 }]];
                 authorizer.delegate = delegate;
 
-                BOOL initiated = [authorizer authorize];
+                BOOL initiated = [authorizer authorize:BTPaymentAuthorizationTypePayPal];
                 expect(initiated).to.beTruthy();
             });
         });
