@@ -38,6 +38,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (void)setupViews {
+    self.enabledPaymentMethods = [NSOrderedSet orderedSetWithObjects:@(BTPaymentButtonPaymentMethodPayPal), @(BTPaymentButtonPaymentMethodVenmo), nil];
+
     BTHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;
 
@@ -63,11 +65,6 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [self.paymentButtonsCollectionView.collectionViewLayout invalidateLayout];
 }
 
-- (void)setClient:(BTClient *)client {
-    _client = client;
-    self.payPalAdapter.client = client;
-}
-
 - (void)updateConstraints {
     NSDictionary *views = @{ @"paymentButtonsCollectionView": self.paymentButtonsCollectionView };
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[paymentButtonsCollectionView]|"
@@ -82,28 +79,49 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [super updateConstraints];
 }
 
-#pragma mark UICollectionViewDataSource methods
+#pragma mark PaymentButton State
 
-- (UICollectionReusableView *)collectionView:(__unused UICollectionView *)collectionView viewForSupplementaryElementOfKind:(__unused NSString *)kind atIndexPath:(__unused NSIndexPath *)indexPath {
-    NSLog(@"supp");
-    return nil;
+- (void)setClient:(BTClient *)client {
+    _client = client;
+    self.payPalAdapter.client = client;
 }
+
+- (void)setEnabledPaymentMethods:(NSOrderedSet *)enabledPaymentMethods {
+    if (enabledPaymentMethods.count == 0) {
+        NSLog(@"[BTPaymentButton] Refusing to update BTPaymentButton to use an empty set of Payment Methods");
+        return;
+    }
+
+    _enabledPaymentMethods = enabledPaymentMethods;
+
+    [self.paymentButtonsCollectionView reloadData];
+}
+
+#pragma mark UICollectionViewDataSource methods
 
 - (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSParameterAssert(section == 0);
-    return 2;
+    return [self.enabledPaymentMethods count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSParameterAssert(indexPath.section == 0);
+
     BTPaymentButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier
                                                                                         forIndexPath:indexPath];
 
+    BTPaymentButtonPaymentMethods paymentMethod = [self.enabledPaymentMethods[indexPath.row] integerValue];
+
     UIControl *paymentButton;
-    if (indexPath.row == 0) {
-        paymentButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
-    } else {
-        paymentButton = [[BTUIVenmoButton alloc] initWithFrame:cell.bounds];
-        [paymentButton addTarget:self action:@selector(tappedVenmo:) forControlEvents:UIControlEventTouchUpInside];
+    switch (paymentMethod) {
+        case BTPaymentButtonPaymentMethodPayPal:
+            paymentButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
+            break;
+        case BTPaymentButtonPaymentMethodVenmo:
+            paymentButton = [[BTUIVenmoButton alloc] initWithFrame:cell.bounds];
+            break;
+        default:
+            break;
     }
     paymentButton.translatesAutoresizingMaskIntoConstraints = NO;
 

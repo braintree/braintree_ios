@@ -5,7 +5,6 @@
 NSString *BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind = @"BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind";
 
 @interface BTHorizontalButtonStackCollectionViewFlowLayout ()
-@property (nonatomic, strong) NSMutableArray *itemAttributes;
 @end
 
 @implementation BTHorizontalButtonStackCollectionViewFlowLayout
@@ -24,6 +23,7 @@ NSString *BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorV
     NSParameterAssert(self.collectionView.numberOfSections == 1);
     NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
     CGFloat totalWidth = self.collectionView.frame.size.width;
+    NSParameterAssert(numberOfItems > 0);
     self.itemSize = CGSizeMake(totalWidth/numberOfItems, self.collectionView.frame.size.height);
 }
 

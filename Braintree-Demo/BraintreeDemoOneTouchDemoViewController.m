@@ -45,6 +45,10 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 @property (nonatomic, strong) BTUIVenmoButton *btVenmoButton;
 @property (nonatomic, strong) BraintreeDemoCustomVenmoButtonManager *customVenmoButtonManager;
 
+#pragma mark UI Configuration
+
+@property (nonatomic, weak) IBOutlet UISwitch *venmoPaymentMethodSwitch;
+@property (nonatomic, weak) IBOutlet UISwitch *payPalPaymentMethodSwitch;
 
 #pragma mark UI Results
 
@@ -354,6 +358,26 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 - (void)paymentMethodAuthorizer:(__unused id)sender didFailWithError:(NSError *)error {
     [self fail:error];
+}
+
+
+#pragma mark UI Configurations for Development Testing
+
+- (IBAction)togglePaymentMethods {
+    NSMutableOrderedSet *enabledPaymentMethods = [NSMutableOrderedSet orderedSet];
+    if (self.payPalPaymentMethodSwitch.on) {
+        [enabledPaymentMethods addObject:@(BTPaymentButtonPaymentMethodPayPal)];
+    }
+    if (self.venmoPaymentMethodSwitch.on) {
+        [enabledPaymentMethods addObject:@(BTPaymentButtonPaymentMethodVenmo)];
+    }
+    self.btPaymentButton.enabledPaymentMethods = enabledPaymentMethods;
+
+    NSOrderedSet *actualEnabledPaymentMethods = self.btPaymentButton.enabledPaymentMethods;
+    [self.payPalPaymentMethodSwitch setOn:[actualEnabledPaymentMethods containsObject:@(BTPaymentButtonPaymentMethodPayPal)]
+                                 animated:YES];
+    [self.venmoPaymentMethodSwitch setOn:[actualEnabledPaymentMethods containsObject:@(BTPaymentButtonPaymentMethodVenmo)]
+                                 animated:YES];
 }
 
 @end
