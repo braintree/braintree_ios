@@ -47,10 +47,13 @@ describe(@"authorize", ^{
     context(@"when type is BTPaymentAuthorizationTypePayPal", ^{
 
         __block id payPalAppSwitchHandler;
+        __block BTPaymentAuthorizer *authorizer;
 
         beforeEach(^{
             payPalAppSwitchHandler = [OCMockObject mockForClass:[BTPayPalAppSwitchHandler class]];
             [[[payPalAppSwitchHandler stub] andReturn:payPalAppSwitchHandler] sharedHandler];
+
+            authorizer = [[BTPaymentAuthorizer alloc] initWithType:BTPaymentAuthorizationTypePayPal client:client];
         });
 
         afterEach(^{
@@ -64,10 +67,26 @@ describe(@"authorize", ^{
                 [[[payPalAppSwitchHandler stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
             });
 
-            it(@"invokes app switch delegate methods", ^{
-                BTPaymentAuthorizer *authorizer = [[BTPaymentAuthorizer alloc] initWithType:BTPaymentAuthorizationTypePayPal client:client];
+            it(@"invokes app switch delegate method", ^{
                 [[delegate expect] paymentAuthorizerWillRequestUserChallengeWithAppSwitch:authorizer];
                 authorizer.delegate = delegate;
+
+                [authorizer authorize];
+            });
+        });
+
+        context(@"and app switch is unavailable", ^{
+
+            beforeEach(^{
+                [[[payPalAppSwitchHandler stub] andReturnValue:@NO] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
+            });
+
+            it(@"invokes view controller delegate method", ^{
+                [[delegate expect] paymentAuthorizer:authorizer requestsUserChallengeWithViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    return [obj isKindOfClass:[UIViewController class]];
+                }]];
+                authorizer.delegate = delegate;
+
                 [authorizer authorize];
             });
         });

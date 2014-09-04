@@ -26,23 +26,39 @@
     [NSException raise:@"Unimplemented abstract authorization" format:nil];
 }
 
-- (void)informDelegate:(SEL)selector {
-    [self informDelegate:selector args:@[]];
+- (void)informDelegateWillRequestUserChallengeWithAppSwitch {
+    if ([self.delegate respondsToSelector:@selector(paymentAuthorizerWillRequestUserChallengeWithAppSwitch:)]) {
+        [self.delegate paymentAuthorizerWillRequestUserChallengeWithAppSwitch:self];
+    }
 }
 
-- (void)informDelegate:(SEL)selector args:(NSArray *)args {
-    if ([self.delegate respondsToSelector:selector]) {
-        NSMethodSignature *signature = [NSMutableArray instanceMethodSignatureForSelector:@selector(addObject:)];
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-        [invocation setTarget:self.delegate];
-        [invocation setSelector:selector];
-        id arg = self;
-        [invocation setArgument:&arg atIndex:0];
-        for (NSUInteger i = 0; i < args.count; i++) {
-            arg = args[i];
-            [invocation setArgument:&arg atIndex:i + 1];
-        }
-        [invocation invoke];
+- (void)informDelegateDidCompleteUserChallengeWithAppSwitch {
+    if ([self.delegate respondsToSelector:@selector(paymentAuthorizerDidCompleteUserChallengeWithAppSwitch:)]) {
+        [self.delegate paymentAuthorizerDidCompleteUserChallengeWithAppSwitch:self];
+    }
+}
+
+- (void)informDelegateRequestsUserChallengeWithViewController:(UIViewController *)viewController {
+    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:requestsUserChallengeWithViewController:)]) {
+        [self.delegate paymentAuthorizer:self requestsUserChallengeWithViewController:viewController];
+    }
+}
+
+- (void)informDelegateRequestsDismissalOfUserChallengeViewController:(UIViewController *)viewController {
+    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:requestsDismissalOfUserChallengeViewController:)]) {
+        [self.delegate paymentAuthorizer:self requestsDismissalOfUserChallengeViewController:viewController];
+    }
+}
+
+- (void)informDelegateDidCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:didCreatePaymentMethod:)]) {
+        [self.delegate paymentAuthorizer:self didCreatePaymentMethod:paymentMethod];
+    }
+}
+
+- (void)informDelegateDidFailWithError:(NSError *)error {
+    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:didFailWithError:)]) {
+        [self.delegate paymentAuthorizer:self didFailWithError:error];
     }
 }
 

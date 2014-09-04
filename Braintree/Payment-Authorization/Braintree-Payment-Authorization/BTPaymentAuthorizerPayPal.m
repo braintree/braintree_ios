@@ -26,15 +26,14 @@
 
     if (appSwitchInitiated) {
         [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.initiate"];
-        [self informDelegate:@selector(paymentAuthorizerWillRequestUserChallengeWithAppSwitch:)];
+        [self informDelegateWillRequestUserChallengeWithAppSwitch];
     } else {
         [self.client postAnalyticsEvent:@"ios.paypal.authorizer.viewcontroller.initiate"];
         [[BTLogger sharedLogger] log:@"PayPal Touch is unavailable: falling back to BTPayPalViewController"];
 
         BTPayPalViewController *braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
         braintreePayPalViewController.delegate = self;
-        [self informDelegate:@selector(paymentAuthorizer:requestsUserChallengeWithViewController:)
-                        args:@[braintreePayPalViewController]];
+        [self informDelegateRequestsUserChallengeWithViewController:braintreePayPalViewController];
     }
 }
 
@@ -42,51 +41,49 @@
 
 - (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.viewcontroller.will-create-payment-method"];
-    [self informDelegate:@selector(paymentAuthorizer:requestsDismissalOfUserChallengeViewController:)
-                    args:@[viewController]];
+    [self informDelegateRequestsDismissalOfUserChallengeViewController:viewController];
 }
 
 - (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.viewcontroller.did-create-payment-method"];
-    [self informDelegate:@selector(paymentAuthorizer:didCreatePaymentMethod:)
-                    args:@[payPalPaymentMethod]];
+    [self informDelegateDidCreatePaymentMethod:payPalPaymentMethod];
 }
 
 - (void)payPalViewController:(__unused BTPayPalViewController *)viewController didFailWithError:(NSError *)error {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.viewcontroller.did-fail-with-error"];
-    [self informDelegate:@selector(paymentAuthorizer:didFailWithError:) args:@[error]];
+    [self informDelegateDidFailWithError:error];
 }
 
 - (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.viewcontroller.did-cancel"];
-    [self informDelegate:@selector(paymentAuthorizer:requestsDismissalOfUserChallengeViewController:) args:@[viewController]];
+    [self informDelegateRequestsDismissalOfUserChallengeViewController:viewController];
 }
 
 #pragma mark BTAppSwitchingDelegate
 
 - (void)appSwitcherWillInitiate:(__unused id<BTAppSwitching>)switcher {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.will-initiate"];
-    [self informDelegate:@selector(paymentAuthorizerWillRequestUserChallengeWithAppSwitch:)];
+    [self informDelegateWillRequestUserChallengeWithAppSwitch];
 }
 
 - (void)appSwitcherWillCreatePaymentMethod:(__unused id<BTAppSwitching>)switcher {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.will-create-payment-method"];
-    [self informDelegate:@selector(paymentAuthorizerDidCompleteUserChallengeWithAppSwitch:)];
+    [self informDelegateDidCompleteUserChallengeWithAppSwitch];
 }
 
 - (void)appSwitcher:(__unused id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.did-create-payment-method"];
-    [self informDelegate:@selector(paymentAuthorizer:didCreatePaymentMethod:) args:@[paymentMethod]];
+    [self informDelegateDidCreatePaymentMethod:paymentMethod];
 }
 
 - (void)appSwitcher:(__unused id<BTAppSwitching>)switcher didFailWithError:(NSError *)error {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.did-fail-with-error"];
-    [self informDelegate:@selector(paymentAuthorizer:didFailWithError:) args:@[error]];
+    [self informDelegateDidFailWithError:error];
 }
 
 - (void)appSwitcherDidCancel:(__unused id<BTAppSwitching>)switcher {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.appswitch.did-cancel"];
-    [self informDelegate:@selector(paymentAuthorizerDidCompleteUserChallengeWithAppSwitch:)];
+    [self informDelegateDidCompleteUserChallengeWithAppSwitch];
 }
 
 
