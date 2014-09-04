@@ -32,10 +32,33 @@
 - (void)tokenizeCardWithNumber:(NSString *)cardNumber
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
+                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock {
+    [self.client postAnalyticsEvent:@"custom.ios.tokenize.call"
+                            success:nil
+                            failure:nil];
+
+    [self.client saveCardWithNumber:cardNumber
+                    expirationMonth:expirationMonth
+                     expirationYear:expirationYear
+                                cvv:nil
+                         postalCode:nil
+                           validate:NO
+                            success:^(BTCardPaymentMethod *card) {
+                                if (completionBlock) {
+                                    completionBlock(card.nonce, nil);
+                                }
+                            }
+                            failure:^(NSError *error) {
+                                completionBlock(nil, error);
+                            }];
+}
+
+- (void)tokenizeCardWithNumber:(NSString *)cardNumber
+               expirationMonth:(NSString *)expirationMonth
+                expirationYear:(NSString *)expirationYear
                            CVV:(NSString *)CVV
                     postalCode:(NSString *)postalCode
-                    completion:(void (^)(NSString *, NSError *))completionBlock
-{
+                    completion:(void (^)(NSString *, NSError *))completionBlock {
     [self.client postAnalyticsEvent:@"custom.ios.tokenize.call"
                             success:nil
                             failure:nil];

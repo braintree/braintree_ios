@@ -61,12 +61,23 @@
 - (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate;
 
 
+
+
 /// Creates and returns a nonce for the given credit card details.
 ///
 /// @note The credit card details provided are not validated until a
 ///  Braintree operation, such as `Transaction.Create` is performed on
 ///  your server.
 ///
+/// @param cardNumber      Card number to tokenize
+/// @param expirationMonth Card's expiration month
+/// @param expirationYear  Card's expiration year
+/// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
+- (void)tokenizeCardWithNumber:(NSString *)cardNumber
+               expirationMonth:(NSString *)expirationMonth
+                expirationYear:(NSString *)expirationYear
+                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
+
 /// @param cardNumber      Card number to tokenize
 /// @param expirationMonth Card's expiration month
 /// @param expirationYear  Card's expiration year
