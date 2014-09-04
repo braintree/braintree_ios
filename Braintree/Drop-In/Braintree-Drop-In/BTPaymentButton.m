@@ -214,36 +214,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     NSLog(@"selected cell: %@", cell);
 }
 
-#pragma mark - BTPaymentAuthorizer Delegate
-
-- (void)paymentAuthorizer:(__unused id)sender requestsAuthorizationWithViewController:(UIViewController *)viewController {
-    [self informDelegateRequestsAuthorizationWithViewController:viewController];
-}
-
-- (void)paymentAuthorizer:(__unused id)sender requestsDismissalOfAuthorizationViewController:(UIViewController *)viewController {
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
-}
-
-- (void)paymentAuthorizerWillRequestAuthorizationWithAppSwitch:(__unused id)sender {
-    [self informDelegateWillRequestAuthorizationWithAppSwitch];
-}
-
-- (void)paymentAuthorizerWillProcessAuthorizationResponse:(__unused id)sender {
-    [self informDelegateWillProcessAuthorizationResponse];
-}
-
-- (void)paymentAuthorizerDidCancel:(__unused id)sender {
-    [self informDelegateDidCancel];
-}
-
-- (void)paymentAuthorizer:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    [self informDelegateDidCreatePaymentMethod:paymentMethod];
-}
-
-- (void)paymentAuthorizer:(__unused id)sender didFailWithError:(NSError *)error {
-    [self informDelegateDidFailWithError:error];
-}
-
+#pragma mark Delegate informers
 
 - (void)informDelegateWillRequestAuthorizationWithAppSwitch {
     if ([self.delegate respondsToSelector:@selector(paymentAuthorizerWillRequestAuthorizationWithAppSwitch:)]) {
@@ -285,6 +256,36 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     if ([self.delegate respondsToSelector:@selector(paymentAuthorizerDidCancel:)]) {
         [self.delegate paymentAuthorizerDidCancel:self];
     }
+}
+
+#pragma mark - BTPaymentAuthorizer Delegate
+
+- (void)paymentAuthorizer:(__unused id)sender requestsAuthorizationWithViewController:(UIViewController *)viewController {
+    [self informDelegateRequestsAuthorizationWithViewController:viewController];
+}
+
+- (void)paymentAuthorizer:(__unused id)sender requestsDismissalOfAuthorizationViewController:(UIViewController *)viewController {
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+}
+
+- (void)paymentAuthorizerWillRequestAuthorizationWithAppSwitch:(__unused id)sender {
+    [self informDelegateWillRequestAuthorizationWithAppSwitch];
+}
+
+- (void)paymentAuthorizerWillProcessAuthorizationResponse:(__unused id)sender {
+    [self informDelegateWillProcessAuthorizationResponse];
+}
+
+- (void)paymentAuthorizerDidCancel:(__unused id)sender {
+    [self informDelegateDidCancel];
+}
+
+- (void)paymentAuthorizer:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [self informDelegateDidCreatePaymentMethod:paymentMethod];
+}
+
+- (void)paymentAuthorizer:(__unused id)sender didFailWithError:(NSError *)error {
+    [self informDelegateDidFailWithError:error];
 }
 
 @end
