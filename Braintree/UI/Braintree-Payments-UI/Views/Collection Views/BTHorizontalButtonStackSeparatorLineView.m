@@ -15,10 +15,19 @@
 
         self.line = [[UIView alloc] initWithFrame:CGRectZero];
         self.line.translatesAutoresizingMaskIntoConstraints = NO;
-        self.line.backgroundColor = self.theme.borderColor;
+        [self updateThemeAttributes];
         [self addSubview:self.line];
     }
     return self;
+}
+
+- (void)updateThemeAttributes {
+    self.line.backgroundColor = self.theme.borderColor;
+}
+
+- (void)setTheme:(BTUI *)theme {
+    _theme = theme;
+    [self updateThemeAttributes];
 }
 
 - (void)updateConstraints {
