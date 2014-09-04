@@ -104,12 +104,6 @@
     return button;
 }
 
-//#pragma mark -
-//
-//- (BTPayPalButton *)payPalButton {
-//    return _payPalButton ?: [[BTPayPalButton alloc] init];
-//}
-
 #pragma mark Library
 
 + (NSString *)libraryVersion {

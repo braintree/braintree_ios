@@ -49,6 +49,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 }
 
 - (void)setupViews {
+    self.clipsToBounds = YES;
     self.enabledPaymentMethods = [NSOrderedSet orderedSetWithObjects:@(BTPaymentAuthorizationTypePayPal), @(BTPaymentAuthorizationTypeVenmo), nil];
 
     BTHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTHorizontalButtonStackCollectionViewFlowLayout alloc] init];
@@ -78,6 +79,12 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
     self.paymentAuthorizer = [[BTPaymentAuthorizer alloc] initWithClient:self.client];
     self.paymentAuthorizer.delegate = self;
+}
+
+- (CGSize)intrinsicContentSize {
+    CGFloat height = self.enabledPaymentMethods.count > 0 ? 44 : 0;
+
+    return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }
 
 - (void)layoutSubviews {
@@ -131,6 +138,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 - (void)setEnabledPaymentMethods:(NSOrderedSet *)enabledPaymentMethods {
     _enabledPaymentMethods = enabledPaymentMethods;
 
+    [self invalidateIntrinsicContentSize];
     [self.paymentButtonsCollectionView reloadData];
 }
 

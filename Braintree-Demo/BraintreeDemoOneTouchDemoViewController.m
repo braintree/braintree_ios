@@ -84,7 +84,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         [self.btPaymentButton autoCenterInSuperview];
         [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
         [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
-        [self.btPaymentButton autoSetDimension:ALDimensionHeight toSize:44];
+        NSLayoutConstraint *heightConstraint =  [self.btPaymentButton autoSetDimension:ALDimensionHeight toSize:44];
+        heightConstraint.priority = UILayoutPriorityDefaultLow;
+        [self.btPaymentButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     }
 
     // Setup btPayPalButton
@@ -367,8 +369,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     if (self.venmoPaymentMethodSwitch.on) {
         [enabledPaymentMethods addObject:@(BTPaymentAuthorizationTypeVenmo)];
     }
-    self.btPaymentButton.enabledPaymentMethods = enabledPaymentMethods;
 
+    self.btPaymentButton.enabledPaymentMethods = enabledPaymentMethods;
+    
     NSOrderedSet *actualEnabledPaymentMethods = self.btPaymentButton.enabledPaymentMethods;
     [self.payPalPaymentMethodSwitch setOn:[actualEnabledPaymentMethods containsObject:@(BTPaymentAuthorizationTypePayPal)]
                                  animated:YES];
