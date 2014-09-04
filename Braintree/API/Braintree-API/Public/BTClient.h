@@ -9,6 +9,9 @@
 /// Block type that takes an `NSArray` of `BTPaymentMethod`s
 typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray *paymentMethods);
 
+/// Block type that takes a single `BTPaymentMethod`
+typedef void (^BTClientPaymentMethodSuccessBlock)(BTPaymentMethod *paymentMethod);
+
 /// Block type that takes a `BTCardPaymentMethod`
 typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 
@@ -49,6 +52,10 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param failureBlock success callback for handling errors
 - (void)fetchPaymentMethodsWithSuccess:(BTClientPaymentMethodListSuccessBlock)successBlock
                                failure:(BTClientFailureBlock)failureBlock;
+
+- (void)fetchPaymentMethodWithNonce:(NSString *)nonce
+                            success:(BTClientPaymentMethodSuccessBlock)successBlock
+                            failure:(BTClientFailureBlock)failureBlock;
 
 /// Save a card to Braintree
 ///

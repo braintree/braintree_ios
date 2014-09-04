@@ -46,6 +46,8 @@
 
 #pragma mark PayPal Colors
 
+- (UIColor *)payBlue;
+- (UIColor *)palBlue;
 - (UIColor *)payPalButtonBlue;
 - (UIColor *)payPalButtonActiveBlue;
 
@@ -75,6 +77,7 @@
 - (CGFloat)horizontalMargin;
 - (CGFloat)paymentButtonMinHeight;
 - (CGFloat)paymentButtonMaxHeight;
+- (CGFloat)paymentButtonWordMarkHeight;
 
 #pragma mark Transitions
 

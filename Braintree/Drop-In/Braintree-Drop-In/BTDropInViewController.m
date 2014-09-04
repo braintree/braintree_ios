@@ -9,8 +9,9 @@
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
+#import "BTPaymentAuthorizer.h"
 
-@interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPayPalButtonViewControllerPresenterDelegate, BTPayPalButtonDelegate, BTDropInViewControllerDelegate>
+@interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentAuthorizerDelegate, BTDropInViewControllerDelegate>
 
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
@@ -29,7 +30,7 @@
 
 /// Strong reference to an additional BTPayPalButton. Reference is needed so
 /// activity can continue after dismissal
-@property (nonatomic, strong) BTPayPalButton *retainedPayPalButton;
+@property (nonatomic, strong) BTPaymentButton *retainedPayPalButton;
 
 /// Strong reference to a BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
@@ -49,9 +50,8 @@
         self.theme = [BTUI braintreeTheme];
         self.client = client;
         self.dropInContentView = [[BTDropInContentView alloc] init];
-        self.dropInContentView.payPalButton.client = self.client;
-        self.dropInContentView.payPalButton.presentationDelegate = self;
-        self.dropInContentView.payPalButton.delegate = self;
+        self.dropInContentView.paymentButton.client = self.client;
+        self.dropInContentView.paymentButton.delegate = self;
         self.dropInContentView.hidePayPal =  !self.client.btPayPal_isPayPalEnabled;
         self.selectedPaymentMethodIndex = NSNotFound;
         self.dropInContentView.state = BTDropInContentViewStateActivity;
@@ -369,29 +369,31 @@
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark PayPal Button Presentation Delegate methods
+#pragma mark Payment Method Authorizer Delegate methods
 
-- (void)payPalButton:(BTPayPalButton *)button requestsPresentationOfViewController:(UIViewController *)viewController {
-    if (button != self.dropInContentView.payPalButton) {
+- (void)paymentAuthorizer:(id)sender requestsAuthorizationWithViewController:(UIViewController *)viewController {
+    if (sender != self.dropInContentView.paymentButton) {
         [self.presentedViewController presentViewController:viewController animated:YES completion:nil];
     } else {
         [self presentViewController:viewController animated:YES completion:nil];
     }
 }
 
-- (void)payPalButton:(BTPayPalButton *)button requestsDismissalOfViewController:(UIViewController *)viewController {
+- (void)paymentAuthorizer:(id)sender requestsDismissalOfAuthorizationViewController:(UIViewController *)viewController {
     // If the button is in our view hierarchy and we are its delegate,
     // then it is our job to dismiss the given view controller as requested.
     // This is the "normal" case. See payPalButtonWillCreatePayPalPaymentMethod:
     // below for the other case: "returning"
-    if (button == self.dropInContentView.payPalButton) {
+    if (sender == self.dropInContentView.paymentButton) {
         [viewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
-#pragma mark PayPal Button Delegate methods
+- (void)paymentAuthorizerWillRequestAuthorizationWithAppSwitch:(id)sender {
+    NSLog(@"DropIn paymentAuthorizerWillRequestAuthorizationWithAppSwitch:%@", sender);
+}
 
-- (void)payPalButtonWillCreatePayPalPaymentMethod:(BTPayPalButton *)button {
+- (void)paymentAuthorizerWillProcessAuthorizationResponse:(id)sender {
     self.dropInContentView.state = BTDropInContentViewStateActivity;
 
     // Assign button to retainedPayPalButton to increment its reference count
@@ -399,18 +401,18 @@
     // delegate method invoked by BTPayPalViewController is still executed even after
     // dismissal of the UI and release of encapsulating View Controller.
     // Reference count is decremented in subsequent delegate method calls. See below.
-    self.retainedPayPalButton = button;
+    self.retainedPayPalButton = sender;
 
     // If the button is *not* in our view hierarchy *yet* we are its delegate,
     // then it is in a presented view controller, which we can now dismiss.
     // This is the "returning" case. See payPalButton:requestsDismissalOfViewController:
     // above for the "normal" case.
-    if (button != self.dropInContentView.payPalButton) {
+    if (sender != self.dropInContentView.paymentButton) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
-- (void)payPalButton:( __unused BTPayPalButton *)button didCreatePayPalPaymentMethod:(__unused BTPaymentMethod *)paymentMethod {
+- (void)paymentAuthorizer:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
@@ -419,17 +421,17 @@
     self.retainedPayPalButton = nil;
 }
 
-- (void)payPalButton:(BTPayPalButton *)button didFailWithError:(__unused NSError *)error {
-    NSString *savePayPalAccountErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_TITLE);
+- (void)paymentAuthorizer:(id)sender didFailWithError:(__unused NSError *)error {
+    NSString *savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
 
-    if (self.retainedPayPalButton != self.dropInContentView.payPalButton) {
+    if (self.retainedPayPalButton != self.dropInContentView.paymentButton) {
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
             self.savePayPalAccountErrorAlert = nil;
         } retry:nil];
-        self.savePayPalAccountErrorAlert.title = savePayPalAccountErrorAlertTitle;
-        self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_MESSAGE);
+        self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
+        self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
         [self.savePayPalAccountErrorAlert show];
     } else {
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
@@ -437,11 +439,11 @@
             [self setPaymentMethods:_paymentMethods];
             self.savePayPalAccountErrorAlert = nil;
         } retry:^{
-            [button sendActionsForControlEvents:UIControlEventTouchUpInside];
+            [sender sendActionsForControlEvents:UIControlEventTouchUpInside];
             [self setPaymentMethods:_paymentMethods];
             self.savePayPalAccountErrorAlert = nil;
         }];
-        self.savePayPalAccountErrorAlert.title = savePayPalAccountErrorAlertTitle;
+        self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
         [self.savePayPalAccountErrorAlert show];
     }
 
@@ -449,9 +451,11 @@
     self.retainedPayPalButton = nil;
 }
 
-- (void)payPalButtonDidCancel:(__unused BTPayPalButton *)button {
+- (void)paymentAuthorizerDidCancel:(__unused id)sender {
     // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
     self.retainedPayPalButton = nil;
+
+    self.paymentMethods = self.paymentMethods;
 }
 
 #pragma mark Delegate Notifications
@@ -626,8 +630,7 @@
     addPaymentMethodViewController.fullForm = NO;
     addPaymentMethodViewController.shouldHideCallToAction = YES;
     addPaymentMethodViewController.delegate = self;
-    addPaymentMethodViewController.dropInContentView.payPalButton.delegate = self;
-    addPaymentMethodViewController.dropInContentView.payPalButton.presentationDelegate = self;
+    addPaymentMethodViewController.dropInContentView.paymentButton.delegate = self;
     return addPaymentMethodViewController;
 }
 

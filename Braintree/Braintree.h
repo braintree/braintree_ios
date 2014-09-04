@@ -8,7 +8,7 @@
 
 #import <Braintree/BTDropInViewController.h>
 #import <Braintree/BTPaymentAuthorizer.h>
-#import <Braintree/BTPaymentAuthorizationDelegate.h>
+#import <Braintree/BTPaymentButton.h>
 
 /// The `Braintree` class is the front door to the Braintree SDK for iOS. It contains
 /// everything you need to easily start accepting payments in your mobile app.

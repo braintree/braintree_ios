@@ -113,6 +113,30 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }];
 }
 
+- (void)fetchPaymentMethodWithNonce:(NSString *)nonce
+                            success:(BTClientPaymentMethodSuccessBlock)successBlock
+                            failure:(BTClientFailureBlock)failureBlock {
+    NSDictionary *parameters = @{
+                                 @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                 };
+    [self.clientApiHttp GET:[NSString stringWithFormat:@"v1/payment_methods/%@", nonce]
+                 parameters:parameters
+                 completion:^(BTHTTPResponse *response, NSError *error) {
+                     if (response.isSuccess) {
+                         if (successBlock) {
+                             NSArray *paymentMethods = response.object[@"paymentMethods"];
+                             
+                             BTPaymentMethod *paymentMethod = [[self class] paymentMethodFromAPIResponseDictionary:[paymentMethods firstObject]];
+                             successBlock(paymentMethod);
+                         }
+                     } else {
+                         if (failureBlock) {
+                             failureBlock(error);
+                         }
+                     }
+                 }];
+}
+
 - (void)saveCardWithNumber:(NSString *)creditCardNumber
            expirationMonth:(NSString *)expirationMonth
             expirationYear:(NSString *)expirationYear

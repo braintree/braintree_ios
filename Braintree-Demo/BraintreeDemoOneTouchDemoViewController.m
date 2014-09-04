@@ -30,10 +30,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
 NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey";
 
 
-// TODO: Temporary typdefs, pending implementation of these classes
-typedef UIButton BTPaymentButton;
-
-@interface BraintreeDemoOneTouchDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPayPalAdapterDelegate>
+@interface BraintreeDemoOneTouchDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPayPalAdapterDelegate, BTPaymentAuthorizerDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, copy) void (^completionBlock)(NSString *nonce);
@@ -48,6 +45,10 @@ typedef UIButton BTPaymentButton;
 @property (nonatomic, strong) BTUIVenmoButton *btVenmoButton;
 @property (nonatomic, strong) BraintreeDemoCustomVenmoButtonManager *customVenmoButtonManager;
 
+#pragma mark UI Configuration
+
+@property (nonatomic, weak) IBOutlet UISwitch *venmoPaymentMethodSwitch;
+@property (nonatomic, weak) IBOutlet UISwitch *payPalPaymentMethodSwitch;
 
 #pragma mark UI Results
 
@@ -74,9 +75,20 @@ typedef UIButton BTPaymentButton;
                                                                                            target:self
                                                                                            action:@selector(showIntegrationChooser:)];
 
+    // Setup btPaymentButton
+    self.btPaymentButton = [[BTPaymentButton alloc] initWithFrame:CGRectZero];
+    if (self.btPaymentButton) {
+        self.btPaymentButton.delegate = self;
+        self.btPaymentButton.client = self.braintree.client;
+        [self.view addSubview:self.btPaymentButton];
+        [self.btPaymentButton autoCenterInSuperview];
+        [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
+        [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+        [self.btPaymentButton autoSetDimension:ALDimensionHeight toSize:44];
+    }
+
     // Setup btPayPalButton
     self.btPayPalButton = [self.braintree payPalButtonWithDelegate:self];
-
     if (self.btPayPalButton) {
         self.btPayPalButton.delegate = self;
         [self.btPayPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -100,6 +112,9 @@ typedef UIButton BTPaymentButton;
         [self.btVenmoButton addTarget:self action:@selector(tappedVenmoButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.btVenmoButton];
         [self.btVenmoButton autoCenterInSuperview];
+        [self.btVenmoButton autoSetDimension:ALDimensionHeight toSize:44];
+        [self.btVenmoButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
+        [self.btVenmoButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
     }
 
     // Setup customVenmoButton
@@ -141,39 +156,26 @@ typedef UIButton BTPaymentButton;
     }
 }
 
-- (UIControl *)integrationButtonForTechnique:(BraintreeDemoOneTouchIntegrationTechnique)integrationTechnique {
-    static UIButton *notAvailableLabel;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        notAvailableLabel = [[UIButton alloc] init];
-        [notAvailableLabel setTitle:@"Not Yet Implemented" forState:UIControlStateNormal];
-        [notAvailableLabel setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        notAvailableLabel.alpha = 0;
-        notAvailableLabel.enabled = NO;
-        [self.view addSubview:notAvailableLabel];
-        [notAvailableLabel autoCenterInSuperview];
-    });
-
-    UIControl *button;
-
+- (UIView *)integrationButtonForTechnique:(BraintreeDemoOneTouchIntegrationTechnique)integrationTechnique {
+    UIView *paymentButton;
     switch (integrationTechnique) {
         case BraintreeDemoOneTouchIntegrationTechniqueBTPaymentButton:
-            button = self.btPaymentButton;
+            paymentButton = self.btPaymentButton;
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo:
-            button = self.customVenmoButtonManager.button;
+            paymentButton = self.customVenmoButtonManager.button;
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal:
-            button = self.customPayPalButtonManager.button;
+            paymentButton = self.customPayPalButtonManager.button;
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueBTVenmoButton:
-            button = self.btVenmoButton;
+            paymentButton = self.btVenmoButton;
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueBTPayPalButton:
-            button = self.btPayPalButton;
+            paymentButton = self.btPayPalButton;
             break;
     }
-    return button ?: notAvailableLabel;
+    return paymentButton;
 }
 
 - (void)showIntegrationChooser:(id)sender {
@@ -298,7 +300,7 @@ typedef UIButton BTPaymentButton;
                                        completion:nil];
 }
 
-#pragma mark -
+#pragma mark App Switcher Delegate
 
 - (void)appSwitcherWillSwitch:(id<BTAppSwitching>)switcher {
     NSLog(@"appSwitcherWillSwitch:%@", switcher);
@@ -324,7 +326,54 @@ typedef UIButton BTPaymentButton;
     [self cancel];
 }
 
+#pragma mark - Braintree Payment Auth Delegate
+
+- (void)paymentAuthorizer:(__unused id)sender requestsAuthorizationWithViewController:(UIViewController *)viewController  {
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)paymentAuthorizer:(__unused id)sender requestsDismissalOfAuthorizationViewController:(UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)paymentAuthorizerWillRequestAuthorizationWithAppSwitch:(__unused id)sender {
+    NSLog(@"Will app switch!");
+}
+
+- (void)paymentAuthorizerWillProcessAuthorizationResponse:(__unused id)sender {
+    [self willReceivePaymentMethod];
+}
+
+- (void)paymentAuthorizer:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [self receivePaymentMethod:paymentMethod];
+}
+
+- (void)paymentAuthorizer:(__unused id)sender didFailWithError:(NSError *)error {
+    [self fail:error];
+}
+
+- (void)paymentAuthorizerDidCancel:(__unused id)sender {
+    [self cancel];
+}
+
+
+#pragma mark UI Configurations for Development Testing
+
+- (IBAction)togglePaymentMethods {
+    NSMutableOrderedSet *enabledPaymentMethods = [NSMutableOrderedSet orderedSet];
+    if (self.payPalPaymentMethodSwitch.on) {
+        [enabledPaymentMethods addObject:@(BTPaymentAuthorizationTypePayPal)];
+    }
+    if (self.venmoPaymentMethodSwitch.on) {
+        [enabledPaymentMethods addObject:@(BTPaymentAuthorizationTypeVenmo)];
+    }
+    self.btPaymentButton.enabledPaymentMethods = enabledPaymentMethods;
+
+    NSOrderedSet *actualEnabledPaymentMethods = self.btPaymentButton.enabledPaymentMethods;
+    [self.payPalPaymentMethodSwitch setOn:[actualEnabledPaymentMethods containsObject:@(BTPaymentAuthorizationTypePayPal)]
+                                 animated:YES];
+    [self.venmoPaymentMethodSwitch setOn:[actualEnabledPaymentMethods containsObject:@(BTPaymentAuthorizationTypeVenmo)]
+                                 animated:YES];
+}
 
 @end
-
-

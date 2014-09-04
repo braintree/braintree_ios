@@ -90,19 +90,19 @@
 #pragma mark PayPal Colors
 
 - (UIColor *)payBlue {
-    return [UIColor bt_colorWithBytesR:12 G:141 B:196];
+    return [UIColor bt_colorFromHex:@"003087" alpha:1.0f];
 }
 
 - (UIColor *)palBlue {
-    return [UIColor bt_colorWithBytesR:1 G:156 B:222];
+    return [UIColor bt_colorFromHex:@"009CDE" alpha:1.0f];
 }
 
 - (UIColor *)payPalButtonBlue {
-    return [self palBlue];
+    return [UIColor bt_colorWithBytesR:12 G:141 B:196];
 }
 
 - (UIColor *)payPalButtonActiveBlue {
-    return [self payBlue];
+    return [UIColor bt_colorWithBytesR:1 G:156 B:222];
 }
 
 #pragma mark Venmo Colors
@@ -142,6 +142,11 @@
 - (CGFloat)paymentButtonMaxHeight {
     return 60.0f;
 }
+
+- (CGFloat)paymentButtonWordMarkHeight {
+    return 16.0f;
+}
+
 
 #pragma mark - Type
 

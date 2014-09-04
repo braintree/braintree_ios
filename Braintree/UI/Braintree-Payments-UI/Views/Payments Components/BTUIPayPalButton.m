@@ -1,15 +1,14 @@
-#import "BTUIVenmoButton.h"
+#import "BTUIPayPalButton.h"
+
+#import "BTPayPalWordmarkVectorArtView.h"
 
 #import "BTUI.h"
-#import "UIColor+BTUI.h"
 
-#import "BTUIVenmoWordmarkVectorArtView.h"
-
-@interface BTUIVenmoButton ()
-@property (nonatomic, strong) BTUIVenmoWordmarkVectorArtView *venmoWordmark;
+@interface BTUIPayPalButton ()
+@property (nonatomic, strong) BTPayPalWordmarkVectorArtView *payPalWordmark;
 @end
 
-@implementation BTUIVenmoButton
+@implementation BTUIPayPalButton
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -35,12 +34,11 @@
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];
 
-    self.venmoWordmark = [[BTUIVenmoWordmarkVectorArtView alloc] init];
-    self.venmoWordmark.userInteractionEnabled = NO;
-    self.venmoWordmark.translatesAutoresizingMaskIntoConstraints = NO;
-    self.venmoWordmark.color = [self.theme venmoPrimaryBlue];
+    self.payPalWordmark = [[BTPayPalWordmarkVectorArtView alloc] init];
+    self.payPalWordmark.userInteractionEnabled = NO;
+    self.payPalWordmark.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [self addSubview:self.venmoWordmark];
+    [self addSubview:self.payPalWordmark];
 }
 
 - (void)updateConstraints {
@@ -52,17 +50,17 @@
                                @"high": @(UILayoutPriorityDefaultHigh),
                                @"breathingRoom": @(10) };
     NSDictionary *views = @{ @"self": self ,
-                             @"venmoWordmark": self.venmoWordmark };
+                             @"payPalWordmark": self.payPalWordmark };
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[venmoWordmark(<=wordMarkHeight)]"
-                                            options:0
-                                            metrics:metrics
-                                              views:views]];
-
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[payPalWordmark(<=wordMarkHeight)]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                     attribute:NSLayoutAttributeCenterX
                                                     relatedBy:NSLayoutRelationEqual
-                                                       toItem:self.venmoWordmark
+                                                       toItem:self.payPalWordmark
                                                     attribute:NSLayoutAttributeCenterX
                                                    multiplier:1.0f
                                                       constant:0.0f]];
@@ -70,12 +68,16 @@
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.venmoWordmark
+                                                        toItem:self.payPalWordmark
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
 
     [super updateConstraints];
+}
+
+- (CGSize)intrinsicContentSize {
+    return CGSizeMake(UIViewNoIntrinsicMetric, 44);
 }
 
 - (void)setHighlighted:(BOOL)highlighted {

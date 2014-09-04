@@ -15,6 +15,14 @@
 
 @implementation BTPaymentAuthorizer
 
+- (instancetype)initWithClient:(BTClient *)client {
+    self = [super init];
+    if (self) {
+        self.client = client;
+    }
+    return self;
+}
+
 - (void)authorize:(BTPaymentAuthorizationType)type {
     [self authorize:type options:BTPaymentAuthorizationOptionMechanismAny];
 }
@@ -23,8 +31,10 @@
     switch (type) {
         case BTPaymentAuthorizationTypePayPal:
             [self authorizePayPal:options];
+            break;
         case BTPaymentAuthorizationTypeVenmo:
             [self authorizeVenmo:options];
+            break;
         default:
             break;
     }
@@ -44,16 +54,18 @@
     }
 }
 
-- (NSOrderedSet *)supportedAuthorizationTypes {
-    NSMutableOrderedSet *mutableOrderedSet = [NSMutableOrderedSet orderedSet];
-    if ([self.client btPayPal_isPayPalEnabled]) {
-        [mutableOrderedSet addObject:@(BTPaymentAuthorizationTypePayPal)];
+- (BOOL)supportsAuthorizationType:(BTPaymentAuthorizationType)type {
+    switch (type) {
+        case BTPaymentAuthorizationTypePayPal:
+            return [self.client btPayPal_isPayPalEnabled];
+            break;
+        case BTPaymentAuthorizationTypeVenmo:
+            return [BTVenmoAppSwitchHandler isAvailable];
+            break;
+        default:
+            return NO;
+            break;
     }
-    if ([BTVenmoAppSwitchHandler isAvailable]) {
-        [mutableOrderedSet addObject:@(BTPaymentAuthorizationTypeVenmo)];
-    }
-
-    return [mutableOrderedSet copy];
 }
 
 #pragma mark Venmo
@@ -169,6 +181,7 @@
 - (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.viewcontroller.will-create-payment-method"];
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+    [self informDelegateWillProcessAuthorizationResponse];
 }
 
 - (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
@@ -184,6 +197,7 @@
 - (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
     [self.client postAnalyticsEvent:@"ios.paypal.authorizer.viewcontroller.did-cancel"];
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+    [self informDelegateDidCancel];
 }
 
 #pragma mark BTAppSwitchingDelegate
