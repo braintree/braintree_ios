@@ -432,7 +432,7 @@
             self.savePayPalAccountErrorAlert = nil;
         } retry:nil];
         self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
-        self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_MESSAGE);
+        self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
         [self.savePayPalAccountErrorAlert show];
     } else {
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
