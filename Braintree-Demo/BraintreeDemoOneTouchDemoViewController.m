@@ -360,6 +360,10 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     [self fail:error];
 }
 
+- (void)paymentMethodAuthorizerDidCancel:(__unused id)sender {
+    [self cancel];
+}
+
 
 #pragma mark UI Configurations for Development Testing
 

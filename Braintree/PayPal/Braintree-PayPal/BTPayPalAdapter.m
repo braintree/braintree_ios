@@ -40,12 +40,16 @@
 
         BTPayPalViewController *braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
         braintreePayPalViewController.delegate = self;
-        [self.delegate payPalAdapter:self requestsPresentationOfViewController:braintreePayPalViewController];
+        if ([self.delegate respondsToSelector:@selector(payPalAdapter:requestsPresentationOfViewController:)]) {
+            [self.delegate payPalAdapter:self requestsPresentationOfViewController:braintreePayPalViewController];
+        }
     }
 }
 
 - (void)requestDismissalOfViewController:(BTPayPalViewController *)viewController {
-    [self.delegate payPalAdapter:self requestsDismissalOfViewController:viewController];
+    if ([self.delegate respondsToSelector:@selector(payPalAdapter:requestsDismissalOfViewController:)]) {
+        [self.delegate payPalAdapter:self requestsDismissalOfViewController:viewController];
+    }
 }
 
 - (void)informDelegateWillAppSwitch {
@@ -61,15 +65,21 @@
 }
 
 - (void)informDelegateDidCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
-    [self.delegate payPalAdapter:self didCreatePayPalPaymentMethod:payPalPaymentMethod];
+    if ([self.delegate respondsToSelector:@selector(payPalAdapter:didCreatePayPalPaymentMethod:)]) {
+        [self.delegate payPalAdapter:self didCreatePayPalPaymentMethod:payPalPaymentMethod];
+    }
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
-    [self.delegate payPalAdapter:self didFailWithError:error];
+    if ([self.delegate respondsToSelector:@selector(payPalAdapter:didFailWithError:)]) {
+        [self.delegate payPalAdapter:self didFailWithError:error];
+    }
 }
 
 - (void)informDelegateDidCancel {
-    [self.delegate payPalAdapterDidCancel:self];
+    if ([self.delegate respondsToSelector:@selector(payPalAdapterDidCancel:)]) {
+        [self.delegate payPalAdapterDidCancel:self];
+    }
 }
 
 

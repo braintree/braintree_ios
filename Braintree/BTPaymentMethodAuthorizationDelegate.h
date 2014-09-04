@@ -24,4 +24,6 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodAuthorizationType) {
 
 - (void)paymentMethodAuthorizer:(id)sender didFailWithError:(NSError *)error;
 
+- (void)paymentMethodAuthorizerDidCancel:(id)sender;
+
 @end

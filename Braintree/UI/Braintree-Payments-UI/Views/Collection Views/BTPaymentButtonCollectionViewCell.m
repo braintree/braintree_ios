@@ -9,6 +9,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.contentView.userInteractionEnabled = NO;
         self.paymentButtonConstraints = [NSMutableArray array];
     }
     return self;

@@ -423,7 +423,7 @@
 }
 
 - (void)paymentMethodAuthorizer:(id)sender didFailWithError:(__unused NSError *)error {
-    NSString *savePayPalAccountErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_TITLE);
+    NSString *savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
 
     if (self.retainedPayPalButton != self.dropInContentView.paymentButton) {
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
@@ -431,7 +431,7 @@
             [self setPaymentMethods:_paymentMethods];
             self.savePayPalAccountErrorAlert = nil;
         } retry:nil];
-        self.savePayPalAccountErrorAlert.title = savePayPalAccountErrorAlertTitle;
+        self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
         self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYPAL_ACCOUNT_ALERT_MESSAGE);
         [self.savePayPalAccountErrorAlert show];
     } else {
@@ -444,7 +444,7 @@
             [self setPaymentMethods:_paymentMethods];
             self.savePayPalAccountErrorAlert = nil;
         }];
-        self.savePayPalAccountErrorAlert.title = savePayPalAccountErrorAlertTitle;
+        self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
         [self.savePayPalAccountErrorAlert show];
     }
 
@@ -452,11 +452,12 @@
     self.retainedPayPalButton = nil;
 }
 
-// TODO: Need a payment method authorizer analogue
-//- (void)payPalButtonDidCancel:(__unused BTPayPalButton *)button {
-//    // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
-//    self.retainedPayPalButton = nil;
-//}
+- (void)paymentMethodAuthorizerDidCancel:(__unused id)sender {
+    // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
+    self.retainedPayPalButton = nil;
+
+    self.paymentMethods = self.paymentMethods;
+}
 
 #pragma mark Delegate Notifications
 

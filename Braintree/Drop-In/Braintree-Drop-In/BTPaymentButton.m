@@ -236,6 +236,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 - (void)appSwitcherDidCancel:(__unused id<BTAppSwitching>)switcher {
     NSLog(@"Cancel");
+    [self.delegate paymentMethodAuthorizerDidCancel:self];
 }
 
 #pragma mark - BTPayPalAdapter Delegate
@@ -259,7 +260,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 - (void)payPalAdapterDidCancel:(BTPayPalAdapter *)payPalAdapter {
     NSLog(@"%@", payPalAdapter);
 
-    [self.delegate paymentMethodAuthorizerDidCompleteUserChallengeWithAppSwitch:self];
+    [self.delegate paymentMethodAuthorizerDidCancel:self];
 }
 
 - (void)payPalAdapterWillAppSwitch:(BTPayPalAdapter *)payPalAdapter {

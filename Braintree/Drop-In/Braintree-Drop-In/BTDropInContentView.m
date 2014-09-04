@@ -250,7 +250,7 @@
 
 - (BOOL)gestureRecognizer:(__unused UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     // Disallow recognition of tap gestures on UIControls (like, say, buttons)
-    if (([touch.view isKindOfClass:[UIControl class]])) {
+    if ([touch.view isKindOfClass:[UIControl class]] || [touch.view isDescendantOfView:self.paymentButton]) {
         return NO;
     }
     return YES;
