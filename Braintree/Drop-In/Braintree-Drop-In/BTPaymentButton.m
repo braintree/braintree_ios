@@ -11,8 +11,6 @@
 #import "BTHorizontalButtonStackCollectionViewFlowLayout.h"
 #import "BTPaymentButtonCollectionViewCell.h"
 
-#import <FLEX/FLEXManager.h>
-
 NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentButtonCellIdentifier";
 
 @interface BTPaymentButton () <BTAppSwitchingDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPayPalAdapterDelegate>
@@ -40,8 +38,6 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (void)setupViews {
-    [[FLEXManager sharedManager] showExplorer];
-
     BTHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;
 
