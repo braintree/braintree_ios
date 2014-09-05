@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.compiler_flags = "-Wall -Werror -Wextra"
   s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES" }
 
-  s.default_subspecs = %w[Drop-In API PayPal UI]
+  s.default_subspecs = %w[Drop-In API PayPal Venmo UI Payments]
 
   s.subspec 'Drop-In' do |s|
     s.source_files  = "Braintree/Drop-In/**/*.{h,m}"
@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
     s.dependency 'Braintree/PayPal'
     s.dependency 'Braintree/UI'
     s.dependency 'Braintree/Venmo'
-    s.dependency 'Braintree/Payment-Authorization'
+    s.dependency 'Braintree/Payments'
     s.resource_bundle = { "Braintree-Drop-In-Localization" => "Braintree/Drop-In/Braintree-Drop-In/Localization/*.lproj" }
   end
 
@@ -73,9 +73,9 @@ Pod::Spec.new do |s|
     s.frameworks = "UIKit", "SystemConfiguration"
   end
 
-  s.subspec 'Payment-Authorization' do |s|
-    s.source_files = "Braintree/Payment-Authorization/Braintree-Payment-Authorization/**/*.{h,m}"
-    s.public_header_files = "Braintree/Payment-Authorization/Braintree-Payment-Authorization/Public/*.h"
+  s.subspec 'Payments' do |s|
+    s.source_files = "Braintree/Payments/Braintree-Payments/**/*.{h,m}"
+    s.public_header_files = "Braintree/Payments/Braintree-Payments/Public/*.h"
     s.frameworks = "UIKit"
     s.dependency 'Braintree/API'
     s.dependency 'Braintree/PayPal'

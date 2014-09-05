@@ -5,7 +5,7 @@
 #import "BTUIVenmoButton.h"
 #import "BTUIPayPalButton.h"
 
-#import "BTPaymentAuthorizer.h"
+#import "BTPaymentProvider.h"
 #import "BTHorizontalButtonStackCollectionViewFlowLayout.h"
 #import "BTPaymentButtonCollectionViewCell.h"
 
@@ -13,9 +13,9 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 NSInteger BTPaymentButtonPayPalCellIndex = 0;
 NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
-@interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPaymentAuthorizerDelegate>
+@interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPaymentMethodCreationDelegate>
 @property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
-@property (nonatomic, strong) BTPaymentAuthorizer *paymentAuthorizer;
+@property (nonatomic, strong) BTPaymentProvider *paymentAuthorizer;
 
 @property (nonatomic, strong) UIView *topBorder;
 @property (nonatomic, strong) UIView *bottomBorder;
@@ -34,7 +34,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 - (instancetype)initWithPaymentAuthorizationTypes:(NSOrderedSet *)enabledPaymentAuthorizationTypes {
     self = [self init];
     if (self) {
-        self.enabledPaymentAuthorizationTypes = enabledPaymentAuthorizationTypes;
+        self.enabledPaymentProviderTypes = enabledPaymentAuthorizationTypes;
     }
     return self;
 }
@@ -58,7 +58,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 - (void)setupViews {
     self.clipsToBounds = YES;
-    self.enabledPaymentAuthorizationTypes = [NSOrderedSet orderedSetWithObjects:@(BTPaymentAuthorizationTypePayPal), @(BTPaymentAuthorizationTypeVenmo), nil];
+    self.enabledPaymentProviderTypes = [NSOrderedSet orderedSetWithObjects:@(BTPaymentProviderTypePayPal), @(BTPaymentProviderTypeVenmo), nil];
 
     BTHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;
@@ -85,12 +85,12 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     [self addSubview:self.topBorder];
     [self addSubview:self.bottomBorder];
 
-    self.paymentAuthorizer = [[BTPaymentAuthorizer alloc] initWithClient:self.client];
+    self.paymentAuthorizer = [[BTPaymentProvider alloc] initWithClient:self.client];
     self.paymentAuthorizer.delegate = self;
 }
 
 - (CGSize)intrinsicContentSize {
-    CGFloat height = self.enabledPaymentAuthorizationTypes.count > 0 ? 44 : 0;
+    CGFloat height = self.enabledPaymentProviderTypes.count > 0 ? 44 : 0;
 
     return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }
@@ -143,20 +143,20 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     self.paymentAuthorizer.client = client;
 }
 
-- (void)setEnabledPaymentAuthorizationTypes:(NSOrderedSet *)enabledPaymentAuthorizationTypes {
-    _enabledPaymentAuthorizationTypes = enabledPaymentAuthorizationTypes;
+- (void)setEnabledPaymentProviderTypes:(NSOrderedSet *)enabledPaymentAuthorizationTypes {
+    _enabledPaymentProviderTypes = enabledPaymentAuthorizationTypes;
 
     [self invalidateIntrinsicContentSize];
     [self.paymentButtonsCollectionView reloadData];
 }
 
 - (NSOrderedSet *)filteredEnabledPaymentAuthorizationTypes {
-    NSMutableOrderedSet *filteredEnabledPaymentMethods = [self.enabledPaymentAuthorizationTypes mutableCopy];
-    if (![self.paymentAuthorizer supportsAuthorizationType:BTPaymentAuthorizationTypeVenmo]) {
-        [filteredEnabledPaymentMethods removeObject:@(BTPaymentAuthorizationTypeVenmo)];
+    NSMutableOrderedSet *filteredEnabledPaymentMethods = [self.enabledPaymentProviderTypes mutableCopy];
+    if (![self.paymentAuthorizer supportsAuthorizationType:BTPaymentProviderTypeVenmo]) {
+        [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypeVenmo)];
     }
-    if (![self.paymentAuthorizer supportsAuthorizationType:BTPaymentAuthorizationTypePayPal]) {
-        [filteredEnabledPaymentMethods removeObject:@(BTPaymentAuthorizationTypePayPal)];
+    if (![self.paymentAuthorizer supportsAuthorizationType:BTPaymentProviderTypePayPal]) {
+        [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypePayPal)];
     }
     return filteredEnabledPaymentMethods;
 }
@@ -176,14 +176,14 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
     NSInteger index = indexPath.row;
     NSNumber *paymentAuthorizationTypeNumber = self.filteredEnabledPaymentAuthorizationTypes[index];
-    BTPaymentAuthorizationType paymentMethod = [paymentAuthorizationTypeNumber integerValue];
+    BTPaymentProviderType paymentMethod = [paymentAuthorizationTypeNumber integerValue];
 
     UIControl *paymentButton;
     switch (paymentMethod) {
-        case BTPaymentAuthorizationTypePayPal:
+        case BTPaymentProviderTypePayPal:
             paymentButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
             break;
-        case BTPaymentAuthorizationTypeVenmo:
+        case BTPaymentProviderTypeVenmo:
             paymentButton = [[BTUIVenmoButton alloc] initWithFrame:cell.bounds];
             break;
         default:
@@ -212,9 +212,9 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
     NSAssert(self.client, @"BTPaymentButton tapped without a BTClient instance. Please set a client on this payment button: myPaymentButton.client = (BTClient *)myClient;");
     if (indexPath.row == BTPaymentButtonPayPalCellIndex) {
-        [self.paymentAuthorizer authorize:BTPaymentAuthorizationTypePayPal];
+        [self.paymentAuthorizer createPaymentMethod:BTPaymentProviderTypePayPal];
     } else if (indexPath.row == BTPaymentButtonVenmoCellIndex) {
-        [self.paymentAuthorizer authorize:BTPaymentAuthorizationTypeVenmo];
+        [self.paymentAuthorizer createPaymentMethod:BTPaymentProviderTypeVenmo];
     } else {
         NSLog(@"Should never happen");
     }
@@ -224,75 +224,75 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 #pragma mark Delegate informers
 
-- (void)informDelegateWillRequestAuthorizationWithAppSwitch {
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizerWillRequestAuthorizationWithAppSwitch:)]) {
-        [self.delegate paymentAuthorizerWillRequestAuthorizationWithAppSwitch:self];
+- (void)informDelegateWillPerformAppSwitch {
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillPerformAppSwitch:)]) {
+        [self.delegate paymentMethodCreatorWillPerformAppSwitch:self];
     }
 }
 
-- (void)informDelegateWillProcessAuthorizationResponse {
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizerWillProcessAuthorizationResponse:)]) {
-        [self.delegate paymentAuthorizerWillProcessAuthorizationResponse:self];
+- (void)informDelegateWillProcess {
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillProcess:)]) {
+        [self.delegate paymentMethodCreatorWillProcess:self];
     }
 }
 
-- (void)informDelegateRequestsAuthorizationWithViewController:(UIViewController *)viewController {
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:requestsAuthorizationWithViewController:)]) {
-        [self.delegate paymentAuthorizer:self requestsAuthorizationWithViewController:viewController];
+- (void)informDelegateRequestsPresentationOfViewController:(UIViewController *)viewController {
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:requestsPresentationOfViewController:)]) {
+        [self.delegate paymentMethodCreator:self requestsPresentationOfViewController:viewController];
     }
 }
 
-- (void)informDelegateRequestsDismissalOfAuthorizationViewController:(UIViewController *)viewController {
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:requestsDismissalOfAuthorizationViewController:)]) {
-        [self.delegate paymentAuthorizer:self requestsDismissalOfAuthorizationViewController:viewController];
+- (void)informDelegateRequestsDismissalOfViewController:(UIViewController *)viewController {
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:requestsDismissalOfViewController:)]) {
+        [self.delegate paymentMethodCreator:self requestsDismissalOfViewController:viewController];
     }
 }
 
 - (void)informDelegateDidCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:didCreatePaymentMethod:)]) {
-        [self.delegate paymentAuthorizer:self didCreatePaymentMethod:paymentMethod];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didCreatePaymentMethod:)]) {
+        [self.delegate paymentMethodCreator:self didCreatePaymentMethod:paymentMethod];
     }
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:didFailWithError:)]) {
-        [self.delegate paymentAuthorizer:self didFailWithError:error];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didFailWithError:)]) {
+        [self.delegate paymentMethodCreator:self didFailWithError:error];
     }
 }
 
 - (void)informDelegateDidCancel {
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizerDidCancel:)]) {
-        [self.delegate paymentAuthorizerDidCancel:self];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorDidCancel:)]) {
+        [self.delegate paymentMethodCreatorDidCancel:self];
     }
 }
 
 #pragma mark - BTPaymentAuthorizer Delegate
 
-- (void)paymentAuthorizer:(__unused id)sender requestsAuthorizationWithViewController:(UIViewController *)viewController {
-    [self informDelegateRequestsAuthorizationWithViewController:viewController];
+- (void)paymentMethodCreator:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
+    [self informDelegateRequestsPresentationOfViewController:viewController];
 }
 
-- (void)paymentAuthorizer:(__unused id)sender requestsDismissalOfAuthorizationViewController:(UIViewController *)viewController {
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+- (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
+    [self informDelegateRequestsDismissalOfViewController:viewController];
 }
 
-- (void)paymentAuthorizerWillRequestAuthorizationWithAppSwitch:(__unused id)sender {
-    [self informDelegateWillRequestAuthorizationWithAppSwitch];
+- (void)paymentMethodCreatorWillPerformAppSwitch:(__unused id)sender {
+    [self informDelegateWillPerformAppSwitch];
 }
 
-- (void)paymentAuthorizerWillProcessAuthorizationResponse:(__unused id)sender {
-    [self informDelegateWillProcessAuthorizationResponse];
+- (void)paymentMethodCreatorWillProcess:(__unused id)sender {
+    [self informDelegateWillProcess];
 }
 
-- (void)paymentAuthorizerDidCancel:(__unused id)sender {
+- (void)paymentMethodCreatorDidCancel:(__unused id)sender {
     [self informDelegateDidCancel];
 }
 
-- (void)paymentAuthorizer:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+- (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     [self informDelegateDidCreatePaymentMethod:paymentMethod];
 }
 
-- (void)paymentAuthorizer:(__unused id)sender didFailWithError:(NSError *)error {
+- (void)paymentMethodCreator:(__unused id)sender didFailWithError:(NSError *)error {
     [self informDelegateDidFailWithError:error];
 }
 

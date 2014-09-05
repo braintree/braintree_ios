@@ -3,7 +3,7 @@
 #import "BTClient.h"
 #import "BTClient+BTPayPal.h"
 #import "BTPayPalButton.h"
-#import "BTPaymentAuthorizer.h"
+#import "BTPaymentProvider.h"
 
 #import "BTDropInViewController.h"
 
@@ -46,7 +46,7 @@
     return dropInViewController;
 }
 
-- (BTPaymentButton *)paymentButtonWithPaymentAuthorizationTypes:(NSOrderedSet *)types delegate:(id<BTPaymentAuthorizerDelegate>)delegate {
+- (BTPaymentButton *)paymentButtonWithPaymentProviderTypes:(NSOrderedSet *)types delegate:(id<BTPaymentMethodCreationDelegate>)delegate {
     BTPaymentButton *button = [[BTPaymentButton alloc] initWithPaymentAuthorizationTypes:types];
     button.client = self.client;
     button.delegate = delegate;
@@ -79,15 +79,10 @@
                             }];
 }
 
-- (void)authorizePayment:(BTPaymentAuthorizationType)type
-                delegate:(__unused id<BTPaymentAuthorizerDelegate>)delegate {
-    [self.authorizer setDelegate:delegate];
-    [self.authorizer authorize:type];
-    return;
-}
-
-- (BTPaymentAuthorizer *)authorizer {
-    return _authorizer ?: [[BTPaymentAuthorizer alloc] initWithClient:self.client];
+- (BTPaymentProvider *)paymentProviderWithDelegate:(id)delegate {
+    BTPaymentProvider *provider = [[BTPaymentProvider alloc] initWithClient:self.client];
+    provider.delegate = delegate;
+    return provider;
 }
 
 #pragma mark Deprecated

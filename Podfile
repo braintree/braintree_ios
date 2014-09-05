@@ -98,8 +98,8 @@ target 'Braintree-Data-Demo' do
   pod 'Braintree/Data', :path => '.'
 end
 
-# Payment-Authorization #
-target 'Braintree-Payment-Authorization-Specs' do 
+# Payments #
+target 'Braintree-Payments-Specs' do
   pods_for_specs
-  pod 'Braintree/Payment-Authorization'
+  pod 'Braintree/Payments'
 end

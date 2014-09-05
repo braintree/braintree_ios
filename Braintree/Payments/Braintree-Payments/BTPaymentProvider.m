@@ -1,4 +1,4 @@
-#import "BTPaymentAuthorizer.h"
+#import "BTPaymentProvider.h"
 #import "BTClient.h"
 #import "BTAppSwitching.h"
 
@@ -10,10 +10,10 @@
 
 #import "BTLogger.h"
 
-@interface BTPaymentAuthorizer () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate>
+@interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate>
 @end
 
-@implementation BTPaymentAuthorizer
+@implementation BTPaymentProvider
 
 - (instancetype)initWithClient:(BTClient *)client {
     self = [super init];
@@ -23,16 +23,16 @@
     return self;
 }
 
-- (void)authorize:(BTPaymentAuthorizationType)type {
-    [self authorize:type options:BTPaymentAuthorizationOptionMechanismAny];
+- (void)createPaymentMethod:(BTPaymentProviderType)type {
+    [self createPaymentMethod:type options:BTPaymentAuthorizationOptionMechanismAny];
 }
 
-- (void)authorize:(BTPaymentAuthorizationType)type options:(BTPaymentAuthorizationOptions)options {
+- (void)createPaymentMethod:(BTPaymentProviderType)type options:(BTPaymentMethodCreationOptions)options {
     switch (type) {
-        case BTPaymentAuthorizationTypePayPal:
+        case BTPaymentProviderTypePayPal:
             [self authorizePayPal:options];
             break;
-        case BTPaymentAuthorizationTypeVenmo:
+        case BTPaymentProviderTypeVenmo:
             [self authorizeVenmo:options];
             break;
         default:
@@ -54,12 +54,12 @@
     }
 }
 
-- (BOOL)supportsAuthorizationType:(BTPaymentAuthorizationType)type {
+- (BOOL)supportsAuthorizationType:(BTPaymentProviderType)type {
     switch (type) {
-        case BTPaymentAuthorizationTypePayPal:
+        case BTPaymentProviderTypePayPal:
             return [self.client btPayPal_isPayPalEnabled];
             break;
-        case BTPaymentAuthorizationTypeVenmo:
+        case BTPaymentProviderTypeVenmo:
             return [BTVenmoAppSwitchHandler isAvailable];
             break;
         default:
@@ -70,11 +70,11 @@
 
 #pragma mark Venmo
 
-- (void)authorizeVenmo:(BTPaymentAuthorizationOptions)options {
+- (void)authorizeVenmo:(BTPaymentMethodCreationOptions)options {
 
     if ((options & BTPaymentAuthorizationOptionMechanismAppSwitch) == 0) {
         NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorOptionNotSupported userInfo:nil];
-        [self.delegate paymentAuthorizer:self didFailWithError:error];
+        [self.delegate paymentMethodCreator:self didFailWithError:error];
         return;
     }
 
@@ -90,14 +90,14 @@
 
 #pragma mark PayPal
 
-- (void)authorizePayPal:(BTPaymentAuthorizationOptions)options {
+- (void)authorizePayPal:(BTPaymentMethodCreationOptions)options {
 
     BOOL appSwitchOptionEnabled = (options & BTPaymentAuthorizationOptionMechanismAppSwitch) == BTPaymentAuthorizationOptionMechanismAppSwitch;
     BOOL viewControllerOptionEnabled = (options & BTPaymentAuthorizationOptionMechanismViewController) == BTPaymentAuthorizationOptionMechanismViewController;
 
     if (!appSwitchOptionEnabled && !viewControllerOptionEnabled) {
         NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorOptionNotSupported userInfo:@{ NSLocalizedDescriptionKey: @"At least one of BTPaymentAuthorizationOptionMechanismAppSwitch or BTPaymentAuthorizationOptionMechanismViewController must be enabled in options" }];
-        [self.delegate paymentAuthorizer:self didFailWithError:error];
+        [self.delegate paymentMethodCreator:self didFailWithError:error];
         return;
     }
 
@@ -133,50 +133,50 @@
 
 - (void)informDelegateWillRequestAuthorizationWithAppSwitch {
     [self.client postAnalyticsEvent:@"ios.authorizer.will-app-switch"];
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizerWillRequestAuthorizationWithAppSwitch:)]) {
-        [self.delegate paymentAuthorizerWillRequestAuthorizationWithAppSwitch:self];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillPerformAppSwitch:)]) {
+        [self.delegate paymentMethodCreatorWillPerformAppSwitch:self];
     }
 }
 
 - (void)informDelegateWillProcessAuthorizationResponse {
     [self.client postAnalyticsEvent:@"ios.authorizer.will-process-authorization-response"];
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizerWillProcessAuthorizationResponse:)]) {
-        [self.delegate paymentAuthorizerWillProcessAuthorizationResponse:self];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillProcess:)]) {
+        [self.delegate paymentMethodCreatorWillProcess:self];
     }
 }
 
 - (void)informDelegateRequestsAuthorizationWithViewController:(UIViewController *)viewController {
     [self.client postAnalyticsEvent:@"ios.authorizer.requests-authorization-with-view-controller"];
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:requestsAuthorizationWithViewController:)]) {
-        [self.delegate paymentAuthorizer:self requestsAuthorizationWithViewController:viewController];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:requestsPresentationOfViewController:)]) {
+        [self.delegate paymentMethodCreator:self requestsPresentationOfViewController:viewController];
     }
 }
 
 - (void)informDelegateRequestsDismissalOfAuthorizationViewController:(UIViewController *)viewController {
     [self.client postAnalyticsEvent:@"ios.authorizer.requests-dismissal-of-authorization-view-controller"];
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:requestsDismissalOfAuthorizationViewController:)]) {
-        [self.delegate paymentAuthorizer:self requestsDismissalOfAuthorizationViewController:viewController];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:requestsDismissalOfViewController:)]) {
+        [self.delegate paymentMethodCreator:self requestsDismissalOfViewController:viewController];
     }
 }
 
 - (void)informDelegateDidCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     [self.client postAnalyticsEvent:@"ios.authorizer.did-create-payment-method"];
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:didCreatePaymentMethod:)]) {
-        [self.delegate paymentAuthorizer:self didCreatePaymentMethod:paymentMethod];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didCreatePaymentMethod:)]) {
+        [self.delegate paymentMethodCreator:self didCreatePaymentMethod:paymentMethod];
     }
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
     [self.client postAnalyticsEvent:@"ios.authorizer.did-fail-with-error"];
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizer:didFailWithError:)]) {
-        [self.delegate paymentAuthorizer:self didFailWithError:error];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didFailWithError:)]) {
+        [self.delegate paymentMethodCreator:self didFailWithError:error];
     }
 }
 
 - (void)informDelegateDidCancel {
     [self.client postAnalyticsEvent:@"ios.authorizer.did-cancel"];
-    if ([self.delegate respondsToSelector:@selector(paymentAuthorizerDidCancel:)]) {
-        [self.delegate paymentAuthorizerDidCancel:self];
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorDidCancel:)]) {
+        [self.delegate paymentMethodCreatorDidCancel:self];
     }
 }
 

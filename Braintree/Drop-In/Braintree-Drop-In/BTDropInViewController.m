@@ -9,10 +9,10 @@
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
-#import "BTPaymentAuthorizer.h"
+#import "btpaymentmethodcreationdelegate.h"
 #import "BTClient_Metadata.h"
 
-@interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentAuthorizerDelegate, BTDropInViewControllerDelegate>
+@interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>
 
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
@@ -381,7 +381,7 @@
 
 #pragma mark Payment Method Authorizer Delegate methods
 
-- (void)paymentAuthorizer:(id)sender requestsAuthorizationWithViewController:(UIViewController *)viewController {
+- (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
     if (sender != self.dropInContentView.paymentButton) {
         [self.presentedViewController presentViewController:viewController animated:YES completion:nil];
     } else {
@@ -389,7 +389,7 @@
     }
 }
 
-- (void)paymentAuthorizer:(id)sender requestsDismissalOfAuthorizationViewController:(UIViewController *)viewController {
+- (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
     // If the button is in our view hierarchy and we are its delegate,
     // then it is our job to dismiss the given view controller as requested.
     // This is the "normal" case. See payPalButtonWillCreatePayPalPaymentMethod:
@@ -399,11 +399,11 @@
     }
 }
 
-- (void)paymentAuthorizerWillRequestAuthorizationWithAppSwitch:(id)sender {
+- (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
     NSLog(@"DropIn paymentAuthorizerWillRequestAuthorizationWithAppSwitch:%@", sender);
 }
 
-- (void)paymentAuthorizerWillProcessAuthorizationResponse:(id)sender {
+- (void)paymentMethodCreatorWillProcess:(id)sender {
     self.dropInContentView.state = BTDropInContentViewStateActivity;
 
     // Assign button to retainedPayPalButton to increment its reference count
@@ -422,7 +422,7 @@
     }
 }
 
-- (void)paymentAuthorizer:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+- (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
@@ -431,7 +431,7 @@
     self.retainedPaymentButton = nil;
 }
 
-- (void)paymentAuthorizer:(id)sender didFailWithError:(__unused NSError *)error {
+- (void)paymentMethodCreator:(id)sender didFailWithError:(__unused NSError *)error {
     NSString *savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
 
     if (self.retainedPaymentButton != self.dropInContentView.paymentButton) {
@@ -461,7 +461,7 @@
     self.retainedPaymentButton = nil;
 }
 
-- (void)paymentAuthorizerDidCancel:(__unused id)sender {
+- (void)paymentMethodCreatorDidCancel:(__unused id)sender {
     // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
     self.retainedPaymentButton = nil;
 

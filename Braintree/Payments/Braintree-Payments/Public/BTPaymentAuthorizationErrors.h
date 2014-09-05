@@ -1,4 +1,4 @@
-#pragma mark BTPaymentAuthorization Errors
+#pragma mark Braintree-Payments Errors
 
 /// BTPaymentAuthorization NSError Domain
 extern NSString *const BTPaymentAuthorizationErrorDomain;

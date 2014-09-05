@@ -3,15 +3,15 @@
 #import "BTUIThemedView.h"
 
 @class BTClient, BTPaymentMethod;
-@protocol BTPaymentAuthorizerDelegate;
+@protocol BTPaymentMethodCreationDelegate;
 
 @interface BTPaymentButton : BTUIThemedView
 
 - (instancetype)initWithPaymentAuthorizationTypes:(NSOrderedSet *)paymentAuthorizationTypes;
 
-@property (nonatomic, strong) NSOrderedSet *enabledPaymentAuthorizationTypes;
+@property (nonatomic, strong) NSOrderedSet *enabledPaymentProviderTypes;
 
 @property (nonatomic, strong) BTClient *client;
-@property (nonatomic, weak) id<BTPaymentAuthorizerDelegate> delegate;
+@property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
 
 @end

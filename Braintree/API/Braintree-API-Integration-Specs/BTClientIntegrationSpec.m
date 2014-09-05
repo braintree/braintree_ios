@@ -446,11 +446,10 @@ describe(@"clients with PayPal activated", ^{
 describe(@"a client initialized with a revoked authorization fingerprint", ^{
     __block BTClient *testClient;
     beforeEach(^AsyncBlock{
-        [BTClient testClientWithConfiguration:@{
-                                                BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
-                                                BTClientTestConfigurationKeyCustomer: @YES,
-                                                BTClientTestConfigurationKeyRevoked: @YES,
-                                                } completion:^(BTClient *client) {
+        [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
+                                                 BTClientTestConfigurationKeyCustomer: @YES,
+                                                 BTClientTestConfigurationKeyRevoked: @YES }
+                                   completion:^(BTClient *client) {
                                                     testClient = client;
                                                     done();
                                                 }];

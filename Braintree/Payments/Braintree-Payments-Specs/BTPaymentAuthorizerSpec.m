@@ -1,4 +1,4 @@
-#import "BTPaymentAuthorizer.h"
+#import "BTPaymentProvider.h"
 
 #import "BTClient.h"
 #import "BTClient+BTPayPal.h"
@@ -16,7 +16,7 @@ beforeEach(^{
     [[client stub] btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)[OCMArg anyPointer]];
     [[client stub] postAnalyticsEvent:OCMOCK_ANY];
 
-    delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentAuthorizerDelegate)];
+    delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 });
 
 afterEach(^{
@@ -29,20 +29,20 @@ afterEach(^{
 
 fdescribe(@"authorize:", ^{
 
-    __block BTPaymentAuthorizationType paymentAuthorizationType;
-    __block BTPaymentAuthorizer *authorizer;
+    __block BTPaymentProviderType paymentAuthorizationType;
+    __block BTPaymentProvider *authorizer;
 
     beforeEach(^{
-        authorizer = [[BTPaymentAuthorizer alloc] init];
+        authorizer = [[BTPaymentProvider alloc] init];
         authorizer.client = client;
     });
 
-    context(@"when type is BTPaymentAuthorizationTypePayPal", ^{
+    context(@"when type is BTPaymentProviderTypePayPal", ^{
 
         __block id payPalAppSwitchHandler;
 
         beforeEach(^{
-            paymentAuthorizationType = BTPaymentAuthorizationTypePayPal;
+            paymentAuthorizationType = BTPaymentProviderTypePayPal;
 
             payPalAppSwitchHandler = [OCMockObject mockForClass:[BTPayPalAppSwitchHandler class]];
             [[[payPalAppSwitchHandler stub] andReturn:payPalAppSwitchHandler] sharedHandler];
@@ -63,7 +63,7 @@ fdescribe(@"authorize:", ^{
                 [[delegate expect] paymentAuthorizerWillRequestUserChallengeWithAppSwitch:authorizer];
                 authorizer.delegate = delegate;
 
-                BOOL initiated = [authorizer authorize:BTPaymentAuthorizationTypePayPal];
+                BOOL initiated = [authorizer createPaymentMethod:BTPaymentProviderTypePayPal];
                 expect(initiated).to.beTruthy();
             });
         });
@@ -80,14 +80,14 @@ fdescribe(@"authorize:", ^{
                 }]];
                 authorizer.delegate = delegate;
 
-                BOOL initiated = [authorizer authorize:BTPaymentAuthorizationTypePayPal];
+                BOOL initiated = [authorizer createPaymentMethod:BTPaymentProviderTypePayPal];
                 expect(initiated).to.beTruthy();
             });
         });
     });
 
 
-    context(@"when type is BTPaymentAuthorizationTypeVenmo", ^{
+    context(@"when type is BTPaymentProviderTypeVenmo", ^{
 
         __block id venmoAppSwitchHandler;
 
@@ -95,7 +95,7 @@ fdescribe(@"authorize:", ^{
             venmoAppSwitchHandler = [OCMockObject mockForClass:[BTVenmoAppSwitchHandler class]];
             [[[venmoAppSwitchHandler stub] andReturn:venmoAppSwitchHandler] sharedHandler];
 
-            authorizer = [[BTPaymentAuthorizer alloc] initWithType:BTPaymentAuthorizationTypeVenmo client:client];
+            authorizer = [[BTPaymentProvider alloc] initWithType:BTPaymentProviderTypeVenmo client:client];
             authorizer.delegate = delegate;
         });
 
