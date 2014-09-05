@@ -3,6 +3,7 @@
 #import "BTClient+Testing.h"
 #import "BTTestClientTokenFactory.h"
 #import "BTAnalyticsMetadata.h"
+#import "BTClient_Metadata.h"
 
 #import "BTLogger.h"
 
@@ -84,22 +85,33 @@ describe(@"post analytics event", ^{
 
     it(@"includes the metadata", ^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
-        BTClient *client = [[BTClient alloc]
+        __block NSString *expectedSource, *expectedIntegration;
+        BTClient *client = [[[BTClient alloc]
                             initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyAnalytics:@{
-                                                                                                                    BTClientTokenKeyURL:analyticsUrl } }]];
-
+                                                                                                                    BTClientTokenKeyURL:analyticsUrl } }]]
+                            copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+                                expectedIntegration = [metadata integrationString];
+                                expectedSource = [metadata sourceString];
+                            }];
 
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(id obj) {
             NSLog(@"%@", obj);
-            expect(obj[@"_meta"]).to.equal([BTAnalyticsMetadata metadata]);
-            return [obj[@"_meta"] isEqual:[BTAnalyticsMetadata metadata]];
+            NSDictionary *expectedMetadata = ({
+                NSMutableDictionary *metadata = [NSMutableDictionary dictionaryWithDictionary:[BTAnalyticsMetadata metadata]];
+                metadata[@"source"] = expectedSource;
+                metadata[@"integration"] = expectedIntegration;
+                [metadata copy];
+            });
+            expect(obj[@"_meta"]).to.equal(expectedMetadata);
+            return [obj[@"_meta"] isEqual:expectedMetadata];
         }] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
 
         [client postAnalyticsEvent:@"An Event" success:nil failure:nil];
         [mockHttp verify];
     });
+
 });
 
 describe(@"offline clients", ^{
@@ -249,7 +261,7 @@ describe(@"offline clients", ^{
                 expect(paymentMethods[1]).to.beKindOf([BTCardPaymentMethod class]);
                 expect([paymentMethods[1] lastTwo]).to.equal(@"11");
             });
-            
+
             it(@"includes saved PayPal accounts", ^{
                 expect(paymentMethods[0]).to.beKindOf([BTPayPalPaymentMethod class]);
                 expect([paymentMethods[0] email]).to.endWith(@"@example.com");
@@ -306,6 +318,35 @@ describe(@"isEqual:", ^{
         BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString1];
         BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString2];
         expect(client1).notTo.equal(client2);
+    });
+});
+        
+describe(@"copy", ^{
+    __block BTClient *client;
+    beforeEach(^{
+        NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
+        NSDictionary *additionalParameters = @{BTClientTokenKeyAnalytics: @{BTClientTokenKeyURL: analyticsUrl}};
+        client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:additionalParameters]];
+    });
+
+    it(@"returns a different instance", ^{
+        expect([client copy]).toNot.beIdenticalTo(client);
+    });
+
+    pending(@"BTClient implementing isEqual:", ^{
+        it(@"returns an equal instance", ^{
+            expect([client copy]).to.equal(client);
+        });
+    });
+
+    it(@"returns an instance with different properties", ^{
+        BTClient *copiedClient = [client copy];
+        expect(copiedClient.clientToken).notTo.beNil();
+        expect(copiedClient.clientToken).notTo.beIdenticalTo(client.clientToken);
+        expect(copiedClient.clientApiHttp).notTo.beNil();
+        expect(copiedClient.clientApiHttp).notTo.beIdenticalTo(client.clientApiHttp);
+        expect(copiedClient.analyticsHttp).notTo.beNil();
+        expect(copiedClient.analyticsHttp).notTo.beIdenticalTo(client.analyticsHttp);
     });
 });
 

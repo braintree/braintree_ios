@@ -1,6 +1,7 @@
 #import "BTPayPalViewController_Internal.h"
 
 #import "BTClient+BTPayPal.h"
+#import "BTClient_Metadata.h"
 #import "BTErrors+BTPayPal.h"
 
 #import "BTMutablePayPalPaymentMethod.h"
@@ -75,8 +76,12 @@
             [self.delegate payPalViewControllerWillCreatePayPalPaymentMethod:self];
         }
 
-        [self.client savePaypalPaymentMethodWithAuthCode:authCode
-                                applicationCorrelationID:[self.client btPayPal_applicationCorrelationId]
+        BTClient *client = [self.client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+            metadata.source = BTClientMetadataSourcePayPalSDK;
+        }];
+
+        [client savePaypalPaymentMethodWithAuthCode:authCode
+                                applicationCorrelationID:[client btPayPal_applicationCorrelationId]
                                                  success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                      NSString *userDisplayStringFromPayPalSDK = profileSharingAuthorization[@"user"][@"display_string"];
                                                      if (paypalPaymentMethod.email == nil && [userDisplayStringFromPayPalSDK isKindOfClass:[NSString class]]) {

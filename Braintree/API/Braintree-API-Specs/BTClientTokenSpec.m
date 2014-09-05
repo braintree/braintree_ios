@@ -211,4 +211,29 @@ describe(@"isEqual:", ^{
     });
 });
 
+describe(@"copy", ^{
+    __block BTClientToken *clientToken;
+    beforeEach(^{
+        NSString *clientTokenRawJSON = [BTTestClientTokenFactory token];
+        clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
+    });
+
+    it(@"returns a different instance", ^{
+        expect([clientToken copy]).notTo.beIdenticalTo(clientToken);
+    });
+
+    pending(@"BTClientToken implementing isEqual:", ^{
+        it(@"returns an equal instance", ^{
+            expect([clientToken copy]).to.equal(clientToken);
+        });
+    });
+
+    it(@"returned instance has equal values and claims", ^{
+        BTClientToken *copiedClientToken = [clientToken copy];
+        expect(copiedClientToken.clientApiURL).to.equal(clientToken.clientApiURL);
+        expect(copiedClientToken.analyticsURL).to.equal(clientToken.analyticsURL);
+        expect(copiedClientToken.claims).to.equal(clientToken.claims);
+    });
+});
+
 SpecEnd

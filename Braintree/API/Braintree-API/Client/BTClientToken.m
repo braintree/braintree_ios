@@ -60,6 +60,14 @@ NSString *const BTClientTokenKeyMerchantId = @"merchantId";
     return self.claims[BTClientTokenKeyMerchantId];
 }
 
+- (instancetype)copyWithZone:(NSZone *)zone {
+    BTClientToken *copiedClientToken = [[[self class] allocWithZone:zone] init];
+    copiedClientToken.authorizationFingerprint = [_authorizationFingerprint copy];
+    copiedClientToken.clientApiURL = [_clientApiURL copy];
+    copiedClientToken.claims = [_claims copy];
+    return copiedClientToken;
+}
+
 - (NSSet *)challenges {
     return [NSSet setWithArray:self.claims[BTClientTokenKeyChallenges]];
 }

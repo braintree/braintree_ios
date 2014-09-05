@@ -112,6 +112,11 @@ describe(@"metadata", ^{
             [mock stopMocking];
         });
     });
+    describe(@"iosIsCocoaPods", ^{
+        it(@"returns YES if compiled with CocoaPods", ^{
+            expect([BTAnalyticsMetadata metadata][@"iosIsCocoapods"]).to.beTruthy();
+        });
+    });
     describe(@"isSimulator", ^{
         it(@"returns true for ios simulators", ^{
             expect([BTAnalyticsMetadata metadata][@"isSimulator"]).to.beTruthy();

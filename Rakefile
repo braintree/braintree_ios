@@ -274,7 +274,7 @@ namespace :release do
     run! "pod update Braintree"
     run! "plutil -replace CFBundleVersion -string #{current_version} -- #{DEMO_PLIST}"
     run! "plutil -replace CFBundleShortVersionString -string #{current_version} -- #{DEMO_PLIST}"
-    run! "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock #{DEMO_PLIST}"
+    run! "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock #{DEMO_PLIST} #{VERSION_FILE}"
   end
 
   desc  "Test."
