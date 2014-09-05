@@ -81,7 +81,7 @@
     BOOL appSwitchInitiated = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
 
     if (appSwitchInitiated) {
-        [self informDelegateWillRequestAuthorizationWithAppSwitch];
+        [self informDelegateWillPerformAppSwitch];
     } else {
         NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorUnknown userInfo:@{ NSLocalizedDescriptionKey: @"Venmo authorization failed" }];
         [self informDelegateDidFailWithError:error];
@@ -105,7 +105,7 @@
     if (appSwitchOptionEnabled) {
         initiated = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
         if (initiated) {
-            [self informDelegateWillRequestAuthorizationWithAppSwitch];
+            [self informDelegateWillPerformAppSwitch];
         }
     }
 
@@ -115,7 +115,7 @@
         BTPayPalViewController *braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
         if (braintreePayPalViewController) {
             braintreePayPalViewController.delegate = self;
-            [self informDelegateRequestsAuthorizationWithViewController:braintreePayPalViewController];
+            [self informDelegateRequestsPresentationOfViewController:braintreePayPalViewController];
             initiated = YES;
         } else {
             NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorInitialization userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize BTPayPalViewController" }];
@@ -131,21 +131,21 @@
 
 #pragma mark Inform Delegate
 
-- (void)informDelegateWillRequestAuthorizationWithAppSwitch {
+- (void)informDelegateWillPerformAppSwitch {
     [self.client postAnalyticsEvent:@"ios.authorizer.will-app-switch"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillPerformAppSwitch:)]) {
         [self.delegate paymentMethodCreatorWillPerformAppSwitch:self];
     }
 }
 
-- (void)informDelegateWillProcessAuthorizationResponse {
+- (void)informDelegateWillProcess {
     [self.client postAnalyticsEvent:@"ios.authorizer.will-process-authorization-response"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillProcess:)]) {
         [self.delegate paymentMethodCreatorWillProcess:self];
     }
 }
 
-- (void)informDelegateRequestsAuthorizationWithViewController:(UIViewController *)viewController {
+- (void)informDelegateRequestsPresentationOfViewController:(UIViewController *)viewController {
     [self.client postAnalyticsEvent:@"ios.authorizer.requests-authorization-with-view-controller"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:requestsPresentationOfViewController:)]) {
         [self.delegate paymentMethodCreator:self requestsPresentationOfViewController:viewController];
@@ -184,7 +184,7 @@
 
 - (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController {
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
-    [self informDelegateWillProcessAuthorizationResponse];
+    [self informDelegateWillProcess];
 }
 
 - (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
@@ -203,11 +203,11 @@
 #pragma mark BTAppSwitchingDelegate
 
 - (void)appSwitcherWillInitiate:(__unused id<BTAppSwitching>)switcher {
-    [self informDelegateWillRequestAuthorizationWithAppSwitch];
+    [self informDelegateWillPerformAppSwitch];
 }
 
 - (void)appSwitcherWillCreatePaymentMethod:(__unused id<BTAppSwitching>)switcher {
-    [self informDelegateWillProcessAuthorizationResponse];
+    [self informDelegateWillProcess];
 }
 
 - (void)appSwitcher:(__unused id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
