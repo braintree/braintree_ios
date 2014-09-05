@@ -1,3 +1,4 @@
+#import "BTVenmoErrors.h"
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTVenmoAppSwitchRequestURL.h"
@@ -108,6 +109,13 @@ describe(@"initiateAppSwitchWithClient:delegate:", ^{
         [[[mockClient stub] andReturn:mockClient] copyWithMetadata:OCMOCK_ANY];
         [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
         [[[mockClient expect] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
+
+        [[delegate expect] appSwitcher:handler didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
+            NSError *error = (NSError *)obj;
+            expect(error.domain).to.equal(BTVenmoErrorDomain);
+            expect(error.code).to.equal(BTVenmoErrorAppSwitchDisabled);
+            return YES;
+        }]];
 
         [handler initiateAppSwitchWithClient:mockClient delegate:delegate];
 

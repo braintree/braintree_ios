@@ -24,5 +24,11 @@ NS_ENUM(NSInteger, BTVenmoErrorCode) {
     /// UIApplication failed to switch to Venmo despite it being available.
     /// `[UIApplication openURL:]` returned `NO` when `YES` was expected.
     BTVenmoErrorAppSwitchFailed = 4,
+
+    /// App switch completed, but the client encountered an error while attempting
+    /// to communicate with the Braintree server.
+    /// Check for a `NSUnderlyingError` value in the `userInfo` dictionary for information
+    /// about the underlying cause.
+    BTVenmoErrorFailureFetchingPaymentMethod = 5,
 };
 

@@ -2,6 +2,7 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTClient+BTVenmo.h"
+#import "BTVenmoErrors.h"
 #import "BTClient_Metadata.h"
 #import "BTMutableCardPaymentMethod.h"
 #import "BTVenmoErrors.h"
@@ -97,7 +98,11 @@
                                                      }
                                                      failure:^(NSError *error){
                                                          [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
-                                                         [self informDelegateDidFailWithError:error];
+                                                         NSError *venmoError = [NSError errorWithDomain:BTVenmoErrorDomain
+                                                                                                   code:BTVenmoErrorFailureFetchingPaymentMethod
+                                                                                               userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch payment method",
+                                                                                                          NSUnderlyingErrorKey: error}];
+                                                         [self informDelegateDidFailWithError:venmoError];
                                                      }];
                     break;
                 }
@@ -110,7 +115,6 @@
                     break;
                 }
             }
-
             break;
         }
         case BTVenmoAppSwitchReturnURLStateFailed:
