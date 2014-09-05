@@ -2,52 +2,72 @@
 @import Foundation;
 
 #import "BTPaymentAuthorizationErrors.h"
+#import "BTClient.h"
+#import "BTPaymentMethod.h"
 
-@class BTClient, BTPaymentMethod;
 @protocol BTPaymentAuthorizerDelegate;
 
+/// Type of payment authorization to perform
 typedef NS_ENUM(NSInteger, BTPaymentAuthorizationType) {
+
+    /// Authorize via PayPal
     BTPaymentAuthorizationTypePayPal = 0,
+
+    /// Authorize via Venmo
     BTPaymentAuthorizationTypeVenmo
 };
 
-
+/// Options for payment authorization
 typedef NS_OPTIONS(NSInteger, BTPaymentAuthorizationOptions) {
+
+    /// Enable app-switch authorization if available.
+    /// This is the highest priority mechanism option.
     BTPaymentAuthorizationOptionMechanismAppSwitch = 1 << 0,
+
+    /// Authorize via in-app view controller presentation, if available for authorization type.
+    /// BTPaymentAuthorizationOptionMechanismAppSwitch takes precedence.
     BTPaymentAuthorizationOptionMechanismViewController = 1 << 1,
+
+    /// Authorize via any available mechanism
     BTPaymentAuthorizationOptionMechanismAny = BTPaymentAuthorizationOptionMechanismViewController | BTPaymentAuthorizationOptionMechanismAppSwitch
 };
 
-/// TODO: Description
+/// Perform payment authorization.
 @interface BTPaymentAuthorizer : NSObject
 
 - (instancetype)initWithClient:(BTClient *)client;
 
 - (id)init __attribute__((unavailable("Please use initWithClient:")));
 
-///  Perform authorization with custom options
+/// Initiate authorization with options
 ///
-///  @param type    The type of authorization to perform
-///  @param options Authorization options
+/// The delegate's paymentAuthorizer:didFailWithError: will be invoked if
+/// authorization cannot be initiated.
+///
+/// @param type    The type of authorization to perform
+/// @param options Authorization options, such as mechanism
 - (void)authorize:(BTPaymentAuthorizationType)type options:(BTPaymentAuthorizationOptions)options;
 
-///  Perform authorization
+/// Perform authorization
 ///
-///  Shorthand for `authorize:type options:BTPaymentAuthorizationOptionMechanismAny`
+/// Shorthand for `authorize:type options:BTPaymentAuthorizationOptionMechanismAny`
 ///
-///  @see authorize:options:
+/// The delegate's paymentAuthorizer:didFailWithError: will be invoked if
+/// authorization cannot be initiated.
 ///
-///  @param type    The type of authorization to perform
+/// @see authorize:options:
+///
+/// @param type    The type of authorization to perform
 - (void)authorize:(BTPaymentAuthorizationType)type;
 
-///  BTClient to use in authorizing
+/// BTClient to use in payment authorization
 @property (nonatomic, strong) BTClient *client;
 
-///  Delegate to receive messages during payment authorization process
+/// Delegate to receive messages during payment authorization process
 @property (nonatomic, weak) id<BTPaymentAuthorizerDelegate> delegate;
 
-///  The set of available authorization types, represented as NSValues
-///  of BTPaymentAuthorizationType.
+/// The set of available authorization types, represented as NSValues
+/// of BTPaymentAuthorizationType.
 - (BOOL)supportsAuthorizationType:(BTPaymentAuthorizationType)type;
 
 @end
@@ -55,54 +75,68 @@ typedef NS_OPTIONS(NSInteger, BTPaymentAuthorizationOptions) {
 /// Protocol for receiving authorization lifecycle messages from a payment authorizer
 @protocol BTPaymentAuthorizerDelegate <NSObject>
 
-///  The payment authorizer requires presentation of a view controller in order to
-///  obtain user payment authorization.
+/// The payment authorizer requires presentation of a view controller in order to
+/// obtain user payment authorization.
 ///
-///  @param sender         The payment authorizer
-///  @param viewController The view controller to be presented
+/// Your implementation should ensure that this viewController is presented, e.g. via
+/// `presentViewController:animated:completion:`
 ///
-///  @return Whether the view controller was presented.
+/// @param sender         The payment authorizer
+/// @param viewController The view controller to be presented
 - (void)paymentAuthorizer:(id)sender requestsAuthorizationWithViewController:(UIViewController *)viewController;
 
-///  The payment authorizer has completed and requires dismissal of a view controller.
+/// The payment authorizer requires dismissal of a view controller.
 ///
-///  @param sender         The payment authorizer
-///  @param viewController The view controller to be presented
+/// Your implementation should ensure that this viewController is dismissed, e.g. via
+/// `dismissViewControllerAnimated:completion:`
 ///
-///  @return Whether the view controller was dismissed.
+/// @param sender         The payment authorizer
+/// @param viewController The view controller to be presented
 - (void)paymentAuthorizer:(id)sender requestsDismissalOfAuthorizationViewController:(UIViewController *)viewController;
 
-///  The payment authorizer will perform an app switch in order to obtain user
-///  payment authorization.
+/// The payment authorizer will perform an app switch in order to obtain user
+/// payment authorization.
 ///
-///  @note REPHRASE Reenable the button in case things fail
-///  @param sender The payment authorizer
+/// Your implementation of this method should set your app to the state
+/// it should be in if the user manually app-switches back to your app.
+/// For example, re-enable any controls that are disabled.
+///
+/// @param sender The payment authorizer
 - (void)paymentAuthorizerWillRequestAuthorizationWithAppSwitch:(id)sender;
 
-///  The payment authorizer, having obtained user payment details and/or user
-///  authorization, will now process the results.
+/// The payment authorizer, having obtained user payment details and/or user
+/// authorization, will now process the results.
 ///
-///  @note This typically indicates asynchronous network activity. When you receive this message, your UI should indicate this activity.
-///  @note REPHRASE Disable the button in case things fail
-///  @param sender The payment authorizer
+/// This typically indicates asynchronous network activity.
+/// When you receive this message, your UI should indicate activity.
+///
+/// @param sender The payment authorizer
 - (void)paymentAuthorizerWillProcessAuthorizationResponse:(id)sender;
 
-///  The payment authorizer has cancelled.
+/// The payment authorizer has cancelled.
 ///
-///  @param sender The payment authorizer
+/// @param sender The payment authorizer
 - (void)paymentAuthorizerDidCancel:(id)sender;
 
-///  The payment authorizer received authorization, which it then successfully
-///  used to create a payment method.
+/// The payment authorizer received authorization, which it then successfully
+/// used to create a payment method.
 ///
-///  @param sender        The payment authorizer
-///  @param paymentMethod The resulting payment method
+/// Typically an implementation will convey this paymentMethod to your own server
+/// for further use.
+///
+/// @param sender        The payment authorizer
+/// @param paymentMethod The resulting payment method
 - (void)paymentAuthorizer:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod;
 
-///  The payment authorizer failed to create a payment method.
+/// The payment authorizer failed to create a payment method.
 ///
-///  @param sender The payment authorizer
-///  @param error  An error that characterizes the failure
+/// A failure may occur at any point during payment authorization, such as when:
+/// - Payment authorization is initiated with bad configuration
+/// - An authorization provider (e.g. Venmo or PayPal) encounters an error
+/// - A network or gateway error occurs
+///
+/// @param sender The payment authorizer
+/// @param error  An error that characterizes the failure
 - (void)paymentAuthorizer:(id)sender didFailWithError:(NSError *)error;
 
 @end
