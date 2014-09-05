@@ -3,4 +3,3 @@
 #import <Braintree/BTErrors+BTPayPal.h>
 #import <Braintree/BTPayPalButton.h>
 #import <Braintree/BTPayPalViewController.h>
-#import <Braintree/BTPayPalAdapter.h>

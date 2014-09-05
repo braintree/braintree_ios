@@ -626,8 +626,6 @@
 		A7EC136C19BA3D6100B64D19 /* BTClient+BTVenmo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTVenmo.m"; sourceTree = "<group>"; };
 		A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler.h; sourceTree = "<group>"; };
 		A7FC1CC01992B24900636548 /* BTPayPalAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalAppSwitchHandler.m; sourceTree = "<group>"; };
-		A7FC1CC11992B24900636548 /* BTPayPalAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAdapter.h; sourceTree = "<group>"; };
-		A7FC1CC21992B24900636548 /* BTPayPalAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalAdapter.m; sourceTree = "<group>"; };
 		A7FC1CC31992B37900636548 /* BTClientStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTClientStore.h; path = "Braintree/API/Braintree-API/Client/BTClientStore.h"; sourceTree = SOURCE_ROOT; };
 		A7FC1CC41992B37900636548 /* BTClientStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTClientStore.m; path = "Braintree/API/Braintree-API/Client/BTClientStore.m"; sourceTree = SOURCE_ROOT; };
 		A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTClientStoreSpec.m; path = "Braintree/API/Braintree-API-Specs/BTClientStoreSpec.m"; sourceTree = SOURCE_ROOT; };
@@ -1143,8 +1141,6 @@
 			children = (
 				1621747F192D8725008DC35D /* @Public */,
 				16217491192D8725008DC35D /* BTErrors+BTPayPal.m */,
-				A7FC1CC11992B24900636548 /* BTPayPalAdapter.h */,
-				A7FC1CC21992B24900636548 /* BTPayPalAdapter.m */,
 				A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */,
 				A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */,
 				A7FC1CC01992B24900636548 /* BTPayPalAppSwitchHandler.m */,
