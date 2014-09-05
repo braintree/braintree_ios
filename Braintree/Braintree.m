@@ -13,12 +13,22 @@
 
 @interface Braintree ()
 @property (nonatomic, strong) BTClient *client;
+
+@property (nonatomic, strong) NSMutableSet *retainedPaymentProviders;
 @end
 
 @implementation Braintree
 
 + (Braintree *)braintreeWithClientToken:(NSString *)clientToken {
     return [[self alloc] initWithClientToken:clientToken];
+}
+
+- (id)init {
+    self =[super init];
+    if (self) {
+        self.retainedPaymentProviders = [NSMutableSet set];
+    }
+    return self;
 }
 
 - (instancetype)initWithClientToken:(NSString *)clientToken {
@@ -79,10 +89,13 @@
                             }];
 }
 
-- (BTPaymentProvider *)paymentProviderWithDelegate:(id)delegate {
-    BTPaymentProvider *provider = [[BTPaymentProvider alloc] initWithClient:self.client];
-    provider.delegate = delegate;
-    return provider;
+- (BTPaymentProvider *)paymentProviderWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate {
+    BTPaymentProvider *paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
+    paymentProvider.delegate = delegate;
+
+    [self.retainedPaymentProviders addObject:paymentProvider];
+
+    return paymentProvider;
 }
 
 #pragma mark Deprecated

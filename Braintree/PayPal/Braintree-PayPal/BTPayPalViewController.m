@@ -53,7 +53,7 @@
     }
 }
 
-#pragma mark - PayPalFuturePaymentDelegate implementation
+#pragma mark - PayPalProfileSharingDelegate implementation
 
 
 - (void)userDidCancelPayPalProfileSharingViewController:(__unused PayPalProfileSharingViewController *)profileSharingViewController {
