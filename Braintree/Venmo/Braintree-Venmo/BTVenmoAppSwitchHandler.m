@@ -1,6 +1,7 @@
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
+#import "BTClient_Metadata.h"
 
 @interface BTVenmoAppSwitchHandler ()
 @property (nonatomic, strong) BTClient *client;
@@ -12,6 +13,11 @@
 @synthesize delegate;
 
 - (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(__unused id<BTAppSwitchingDelegate>)theDelegate {
+
+    client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+        metadata.source = BTClientMetadataSourceVenmoApp;
+    }];
+
     self.client = client;
 
     if (!self.returnURLScheme) {

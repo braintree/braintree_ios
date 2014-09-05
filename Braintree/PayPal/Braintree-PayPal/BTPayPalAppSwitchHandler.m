@@ -1,5 +1,6 @@
 #import "BTPayPalAppSwitchHandler_Internal.h"
 
+#import "BTClient_Metadata.h"
 #import "BTClient+BTPayPal.h"
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTLogger.h"
@@ -91,6 +92,10 @@
 }
 
 - (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)theDelegate {
+
+    client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+        metadata.source = BTClientMetadataSourcePayPalApp;
+    }];
 
     if ([client btPayPal_isTouchDisabled]){
         [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
