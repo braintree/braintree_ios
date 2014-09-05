@@ -1,20 +1,20 @@
 #import "BraintreeDemoCustomPayPalButtonManager.h"
 
-#import <Braintree/BTPayPalAdapter.h>
+#import <Braintree/Braintree-Payments.h>
 #import <Braintree/BTClient+BTPayPal.h>
 #import <Braintree/UIColor+BTUI.h>
 
 @interface BraintreeDemoCustomPayPalButtonManager ()
-@property (nonatomic, strong) BTPayPalAdapter *payPalAdapter;
+@property (nonatomic, strong) BTPaymentProvider *paymentProvider;
 @end
 
 @implementation BraintreeDemoCustomPayPalButtonManager
 
-- (id)initWithClient:(BTClient *)client delegate:(id<BTPayPalAdapterDelegate>)delegate {
+- (id)initWithClient:(BTClient *)client delegate:(id<BTPaymentMethodCreationDelegate>)delegate {
     self = [self init];
     if (self) {
-        self.payPalAdapter = [[BTPayPalAdapter alloc] initWithClient:client];
-        self.payPalAdapter.delegate = delegate;
+        self.paymentProvider = [[BTPaymentProvider alloc] initWithClient:client];
+        self.paymentProvider.delegate = delegate;
 
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_button setTitle:@"PayPal (custom button)" forState:UIControlStateNormal];
@@ -26,10 +26,9 @@
 }
 
 - (void)tappedCustomPayPal:(BraintreeDemoCustomPayPalButtonManager *)sender {
-    NSLog(@"You tapped the PayPal button: %@", sender);
-
-    NSLog(@"Tapped PayPal - initiating PayPal auth using BTPayPalAdapter");
-    [self.payPalAdapter initiatePayPalAuth];
+    NSLog(@"You tapped the custom PayPal button: %@", sender);
+    NSLog(@"Tapped PayPal - initiating PayPal auth using BTPaymentProvider");
+    [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
 }
 
 @end

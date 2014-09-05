@@ -30,7 +30,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
 NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey";
 
 
-@interface BraintreeDemoOneTouchDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPayPalAdapterDelegate, BTPaymentMethodCreationDelegate>
+@interface BraintreeDemoOneTouchDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPaymentMethodCreationDelegate, BTPaymentMethodCreationDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, copy) void (^completionBlock)(NSString *nonce);
@@ -276,34 +276,6 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     [self cancel];
 }
 
-#pragma mark PayPal Adapter Delegate Methods
-
-- (void)payPalAdapterWillCreatePayPalPaymentMethod:(__unused BTPayPalAdapter *)payPalAdapter {
-    [self willReceivePaymentMethod];
-}
-
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
-    [self receivePaymentMethod:paymentMethod];
-}
-
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter didFailWithError:(NSError *)error {
-    [self fail:error];
-}
-
-- (void)payPalAdapterDidCancel:(__unused BTPayPalAdapter *)payPalAdapter {
-    [self cancel];
-}
-
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter requestsPresentationOfViewController:(UIViewController *)viewController {
-    [self presentViewController:viewController
-                       animated:YES
-                     completion:nil];
-}
-
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter requestsDismissalOfViewController:(UIViewController *)viewController {
-    [viewController dismissViewControllerAnimated:YES
-                                       completion:nil];
-}
 
 #pragma mark App Switcher Delegate
 
@@ -331,33 +303,40 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     [self cancel];
 }
 
-#pragma mark - Braintree Payment Auth Delegate
+#pragma mark PaymentMethodCreationDelegate
 
-- (void)paymentMethodCreator:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController  {
+- (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
+    NSLog(@"paymentMethodCreator:%@ requestsPresentationOfViewController:%@", sender, viewController);
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
+- (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
+    NSLog(@"paymentMethodCreator:%@ requestsDismissalOfViewController:%@", sender, viewController);
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)paymentMethodCreatorWillPerformAppSwitch:(__unused id)sender {
+- (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
+    NSLog(@"paymentMethodCreatorWillPerformAppSwitch:%@", sender);
 }
 
-- (void)paymentMethodCreatorWillProcess:(__unused id)sender {
+- (void)paymentMethodCreatorWillProcess:(id)sender {
+    NSLog(@"paymentMethodCreatorWillProcess:%@", sender);
     [self willReceivePaymentMethod];
 }
 
-- (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+- (void)paymentMethodCreatorDidCancel:(id)sender {
+    NSLog(@"paymentMethodCreatorDidCancel:%@", sender);
+    [self cancel];
+}
+
+- (void)paymentMethodCreator:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    NSLog(@"paymentMethodCreator:%@ didCreatePaymentMethod: %@", sender, paymentMethod);
     [self receivePaymentMethod:paymentMethod];
 }
 
-- (void)paymentMethodCreator:(__unused id)sender didFailWithError:(NSError *)error {
+- (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+    NSLog(@"paymentMethodCreator:%@ error: %@", sender, error);
     [self fail:error];
-}
-
-- (void)paymentMethodCreatorDidCancel:(__unused id)sender {
-    [self cancel];
 }
 
 
