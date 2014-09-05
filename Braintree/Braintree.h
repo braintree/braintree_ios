@@ -42,9 +42,9 @@
 + (Braintree *)braintreeWithClientToken:(NSString *)clientToken;
 
 
-#pragma mark Drop In
+#pragma mark UI
 
-/// Creates and returns a payment flow for accepting credit card and PayPal-based payments.
+/// Creates and returns a payment flow for accepting credit card, PayPal and Venmo based payments.
 ///
 /// Present this view controller in your app to prompt your user for payment info, and you will
 /// receive a payment method nonce.
@@ -54,16 +54,23 @@
 /// @return A Drop-In view controller to be presented in your app's payment flow.
 - (BTDropInViewController *)dropInViewControllerWithDelegate:(id<BTDropInViewControllerDelegate>)delegate;
 
+/// Creates and returns a payment button for accepting credit card, PayPal and Venmo based payments.
+///
+/// Payment method authorization may take place via app switch or via a UI flow in a view controller.
+///
+/// If available, this button will initiate One Touch Payments for PayPal or Venmo.
+/// To enable One Touch, you should use setReturnURLSchemes: and handleOpenURL:sourceApplication: (see below).
+///
+/// @note The payment button touch handlers may initiate view controllers and/or app switching. For fine-grained control, you may use BTPaymentAuthorizer directly.
+///
+/// @param types    payment method types to enable from BTPaymentAuthorizationType. If nil, the button may expose any available payment authorization types.
+/// @param delegate a delegate that receives lifecycle updates about the payment method authorization
+///
+/// @return A button you can add to your checkout flow.
+- (BTPaymentButton *)paymentButtonWithPaymentAuthorizationTypes:(NSOrderedSet *)types delegate:(id<BTPaymentAuthorizerDelegate>)delegate;
+
 
 #pragma mark Custom
-
-/// Creates and returns a PayPal button that can be added to the UI. When tapped, this button will initiate the PayPal authorization flow.
-///
-/// @param delegate Delegate that is notified of completion, receiving either a payment method with a nonce (upon user agreement and success) or an error (upon failure).
-///
-/// @return A PayPal button to be added as a subview in your UI.
-- (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate;
-
 
 /// Creates and returns a nonce for the given credit card details.
 ///
@@ -83,22 +90,48 @@
 
 /// Initiates a payment method authorization flow.
 ///
-/// You should invoke this method after some user interaction takes place (for example, when the user taps a "PayPal" button.
+/// You should invoke this method after some user interaction takes place (for example, when the user taps your "Pay with PayPal" button.)
 ///
-/// Payment method authorizaiton takes place via app switch (if available) or via a UI flow in a view controller.
+/// Payment method authorization may take place via app switch or via a UI flow in a view controller.
 ///
-/// @note If you do not wish to implement your own UI, the Braintree SDK includes UI options for payment buttons that allow the user to initiate payment method authorization.
+/// If available, this method may initiate One Touch Payments for PayPal or Venmo.
+/// To enable One Touch, you should use setReturnURLSchemes: and handleOpenURL:sourceApplication: (see below).
 ///
-///  @param type     the payment type to authorize, such as PayPal or Venmo
-///  @param delegate a delegate that receives lifecycle updates about the payment method authorization
-- (void)initiatePaymentMethodAuthorization:(BTPaymentAuthorizationType)type delegate:(id<BTPaymentAuthorizerDelegate>)delegate;
+/// @note If you do not wish to implement your own UI, see also dropInViewControllerWithDelegate: and paymentButtonForPaymentAuthorizationTypes:.
+///
+/// @note The payment button touch handlers may initiate view controllers and/or app switching. For fine-grained control, you may use BTPaymentAuthorizer directly.
+///
+/// @see BTDropInViewController
+/// @see BTPaymentButton
+///
+/// @param type     the payment type to authorize, such as PayPal or Venmo
+/// @param delegate a delegate that receives lifecycle updates about the payment method authorization
+- (void)authorizePayment:(BTPaymentAuthorizationType)type delegate:(id<BTPaymentAuthorizerDelegate>)delegate;
+
+#pragma mark - One Touch Payments
+
+/// The custom URL scheme that the authenticating app should use to return users to your app via `openURL:` (app switch).
+///
+/// When `nil` or when invalid, One Touch app switch will be disabled
+///
+/// @note This must match the entry in your app's Info.plist, and must be prefixed
+/// with your Bundle ID, e.g. com.yourcompany.Your-App.payment
++ (void)setReturnURLScheme:(NSString *)scheme;
+
+/// Handle app switch URL requests for the Braintree SDK
+///
+/// @param url               The URL received by the application delegate `openURL` method
+/// @param sourceApplication The source application received by the application delegate `openURL` method
+///
+/// @return Whether Braintree was able to handle the URL and source application
++ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 
 #pragma mark Advanced Integrations
 
 /// A pre-configured BTClient based on your client token.
 ///
-/// You can use this client when setting BTPayPalButton or BTDropInViewController's client.
+/// You can use this client to initialize various SDK objects, such as BTDropInViewController, BTPaymentButton, BTPaymentAuthorizer, etc.
 @property (nonatomic, readonly) BTClient *client;
 
 
@@ -109,24 +142,16 @@
 /// @return A string representation of this library's current semver.org version (if integrating with CocoaPods).
 + (NSString *)libraryVersion;
 
+@end
 
-#pragma mark - One Touch™ Payments
+@interface Braintree (Deprecated)
 
-/// The custom URL scheme that the authenticating app should use to return users to your app via `openURL:` (app switch).
-///
-/// When `nil` or when invalid, One Touch app switch will be disabled
-///
-/// @note This must match the entry in your app's Info.plist, and must be prefixed
-/// with your Bundle ID, e.g. com.yourcompany.Your-App.payment
-+ (void)setReturnURLScheme:(NSString *)scheme;
 
-///  Handle app switch URL requests for the Braintree SDK
+/// Creates and returns a PayPal button that can be added to the UI. When tapped, this button will initiate the PayPal authorization flow.
 ///
-///  @param url               The URL received by the application delegate `openURL` method
-///  @param sourceApplication The source application received by the application delegate `openURL` method
+/// @param delegate Delegate that is notified of completion, receiving either a payment method with a nonce (upon user agreement and success) or an error (upon failure).
 ///
-///  @return Whether Braintree was able to handle the URL and source application
-+ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
-
+/// @return A PayPal button to be added as a subview in your UI.
+- (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate DEPRECATED_MSG_ATTRIBUTE("Please use -[braintree paymentButtonWithDelegate:]");
 
 @end

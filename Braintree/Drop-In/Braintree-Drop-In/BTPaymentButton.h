@@ -7,8 +7,9 @@
 
 @interface BTPaymentButton : BTUIThemedView
 
-// TODO: Refactor to use a unified notion of PaymentMethodTypes
-@property (nonatomic, strong) NSOrderedSet *enabledPaymentMethods;
+- (instancetype)initWithPaymentAuthorizationTypes:(NSOrderedSet *)paymentAuthorizationTypes;
+
+@property (nonatomic, strong) NSOrderedSet *enabledPaymentAuthorizationTypes;
 
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, weak) id<BTPaymentAuthorizerDelegate> delegate;

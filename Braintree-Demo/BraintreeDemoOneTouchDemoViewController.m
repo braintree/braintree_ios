@@ -90,7 +90,10 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     }
 
     // Setup btPayPalButton
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.btPayPalButton = [self.braintree payPalButtonWithDelegate:self];
+#pragma clang diagnostic pop
     if (self.btPayPalButton) {
         self.btPayPalButton.delegate = self;
         [self.btPayPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -362,20 +365,20 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 #pragma mark UI Configurations for Development Testing
 
 - (IBAction)togglePaymentMethods {
-    NSMutableOrderedSet *enabledPaymentMethods = [NSMutableOrderedSet orderedSet];
+    NSMutableOrderedSet *enabledPaymentAuthorizationTypes = [NSMutableOrderedSet orderedSet];
     if (self.payPalPaymentMethodSwitch.on) {
-        [enabledPaymentMethods addObject:@(BTPaymentAuthorizationTypePayPal)];
+        [enabledPaymentAuthorizationTypes addObject:@(BTPaymentAuthorizationTypePayPal)];
     }
     if (self.venmoPaymentMethodSwitch.on) {
-        [enabledPaymentMethods addObject:@(BTPaymentAuthorizationTypeVenmo)];
+        [enabledPaymentAuthorizationTypes addObject:@(BTPaymentAuthorizationTypeVenmo)];
     }
 
-    self.btPaymentButton.enabledPaymentMethods = enabledPaymentMethods;
+    self.btPaymentButton.enabledPaymentAuthorizationTypes = enabledPaymentAuthorizationTypes;
     
-    NSOrderedSet *actualEnabledPaymentMethods = self.btPaymentButton.enabledPaymentMethods;
-    [self.payPalPaymentMethodSwitch setOn:[actualEnabledPaymentMethods containsObject:@(BTPaymentAuthorizationTypePayPal)]
+    NSOrderedSet *actualEnabledPaymentAuthorizationTypes = self.btPaymentButton.enabledPaymentAuthorizationTypes;
+    [self.payPalPaymentMethodSwitch setOn:[actualEnabledPaymentAuthorizationTypes containsObject:@(BTPaymentAuthorizationTypePayPal)]
                                  animated:YES];
-    [self.venmoPaymentMethodSwitch setOn:[actualEnabledPaymentMethods containsObject:@(BTPaymentAuthorizationTypeVenmo)]
+    [self.venmoPaymentMethodSwitch setOn:[actualEnabledPaymentAuthorizationTypes containsObject:@(BTPaymentAuthorizationTypeVenmo)]
                                  animated:YES];
 }
 

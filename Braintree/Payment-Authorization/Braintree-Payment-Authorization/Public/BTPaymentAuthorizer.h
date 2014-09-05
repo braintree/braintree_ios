@@ -9,7 +9,6 @@
 
 /// Type of payment authorization to perform
 typedef NS_ENUM(NSInteger, BTPaymentAuthorizationType) {
-
     /// Authorize via PayPal
     BTPaymentAuthorizationTypePayPal = 0,
 
@@ -32,25 +31,28 @@ typedef NS_OPTIONS(NSInteger, BTPaymentAuthorizationOptions) {
     BTPaymentAuthorizationOptionMechanismAny = BTPaymentAuthorizationOptionMechanismViewController | BTPaymentAuthorizationOptionMechanismAppSwitch
 };
 
-/// Perform payment authorization.
+/// The BTPaymentAuthorizer enables you to collect payment information from the user.
+///
+/// This class abstracts the various payment payment providers and authorization
+/// techniques. After initialization, you must set a client and delegate before
+/// calling `authorize:`. The authorization may request (via the delegate) that
+/// you present a view controller, e.g., a PayPal login screen. authorize: may also
+/// initiate an app switch if available. (See +[Braintree setReturnURLScheme:] and +[Braintree handleOpenURL:sourceApplication:])
 @interface BTPaymentAuthorizer : NSObject
 
 - (instancetype)initWithClient:(BTClient *)client;
 
 - (id)init __attribute__((unavailable("Please use initWithClient:")));
 
-/// Initiate authorization with options
-///
-/// The delegate's paymentAuthorizer:didFailWithError: will be invoked if
-/// authorization cannot be initiated.
-///
-/// @param type    The type of authorization to perform
-/// @param options Authorization options, such as mechanism
-- (void)authorize:(BTPaymentAuthorizationType)type options:(BTPaymentAuthorizationOptions)options;
+/// BTClient to use during authorization
+@property (nonatomic, strong) BTClient *client;
 
-/// Perform authorization
+/// Delegate to receive messages during payment authorization process
+@property (nonatomic, weak) id<BTPaymentAuthorizerDelegate> delegate;
+
+/// Initate authorization
 ///
-/// Shorthand for `authorize:type options:BTPaymentAuthorizationOptionMechanismAny`
+/// Shorthand for `[authorize:type options:BTPaymentAuthorizationOptionMechanismAny]`
 ///
 /// The delegate's paymentAuthorizer:didFailWithError: will be invoked if
 /// authorization cannot be initiated.
@@ -60,14 +62,17 @@ typedef NS_OPTIONS(NSInteger, BTPaymentAuthorizationOptions) {
 /// @param type    The type of authorization to perform
 - (void)authorize:(BTPaymentAuthorizationType)type;
 
-/// BTClient to use in payment authorization
-@property (nonatomic, strong) BTClient *client;
+/// Initiate authorization with custom options
+///
+/// The delegate's paymentAuthorizer:didFailWithError: will be invoked if
+/// authorization cannot be initiated.
+///
+/// @param type    The type of authorization to perform
+/// @param options Authorization options
+- (void)authorize:(BTPaymentAuthorizationType)type options:(BTPaymentAuthorizationOptions)options;
 
-/// Delegate to receive messages during payment authorization process
-@property (nonatomic, weak) id<BTPaymentAuthorizerDelegate> delegate;
-
-/// The set of available authorization types, represented as NSValues
-/// of BTPaymentAuthorizationType.
+/// The set of all available authorization types, represented as NSValues
+/// boxing BTPaymentAuthorizationType.
 - (BOOL)supportsAuthorizationType:(BTPaymentAuthorizationType)type;
 
 @end

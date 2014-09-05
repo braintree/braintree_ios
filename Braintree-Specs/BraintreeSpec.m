@@ -65,15 +65,55 @@ describe(@"payPalButtonWithCompletion:", ^{
             
         });
         it(@"should return a payPalButton", ^{
-            UIControl *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            BTPayPalButton *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil];
+#pragma clang diagnostic pop
             expect(control).to.beKindOf([BTPayPalButton class]);
         });
     });
+
     describe(@"with PayPal disabled", ^{
         it(@"should not return a payPalButton", ^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             UIControl *control = [braintree payPalButtonWithDelegate:nil];
+#pragma clang diagnostic pop
             expect(control).to.beNil;
         });
+    });
+});
+
+describe(@"paymentButtonWithPaymentAuthorizationTypes:delegate:", ^{
+    it(@"returns a PaymentButton with specified authorization types enabled", ^{
+        id enabledPaymentAuthorizationTypes = [NSOrderedSet orderedSetWithObjects:@(BTPaymentAuthorizationTypePayPal), nil];
+        BTPaymentButton *button = [braintree paymentButtonWithPaymentAuthorizationTypes:enabledPaymentAuthorizationTypes delegate:nil];
+
+        expect(button).to.beKindOf([BTPaymentButton class]);
+        expect(button.enabledPaymentAuthorizationTypes).to.equal(enabledPaymentAuthorizationTypes);
+    });
+});
+
+describe(@"authorizePayment:delegate:", ^{
+    it(@"provides a convinience around BTPaymentAuthorizer", ^{
+        id delegate = [OCMockObject niceMockForProtocol:@protocol(BTPaymentAuthorizerDelegate)];
+        id authorizer = [OCMockObject niceMockForClass:[BTPaymentAuthorizer class]];
+        BTPaymentAuthorizationType type = BTPaymentAuthorizationTypePayPal;
+
+        braintree.authorizer = authorizer;
+
+        [(BTPaymentAuthorizer *)[authorizer expect] setDelegate:delegate];
+        [(BTPaymentAuthorizer *)[authorizer expect] authorize:type];
+
+        [braintree authorizePayment:type
+                           delegate:delegate];
+
+        [authorizer verify];
+        [authorizer stopMocking];
+    });
+
+    it(@"utilizes the an authorizer with the same client as Braintree", ^{
+        expect(braintree.authorizer.client).to.equal(braintree.client);
     });
 });
 

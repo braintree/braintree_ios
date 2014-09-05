@@ -15,6 +15,10 @@
 /// determined ViewController. If you need to customize this behavior, you can specify your own `BTPayPalButtonViewControllerPresenterDelegate`.
 @interface BTPayPalButton : UIControl
 
+- (id)init DEPRECATED_MSG_ATTRIBUTE("Please use BTUIPayPalButton or BTPaymentButton. BTPayPalButton is deprecated.");
+- (id)initWithFrame:(CGRect)frame DEPRECATED_MSG_ATTRIBUTE("Please use BTUIPayPalButton or BTPaymentButton. BTPayPalButton is deprecated.");
+- (id)initWithCoder:(NSCoder *)aDecoder DEPRECATED_MSG_ATTRIBUTE("Please use BTUIPayPalButton or BTPaymentButton. BTPayPalButton is deprecated.");
+
 /// A delegate that is notified as the PayPal consent flow triggered by this button changes state.
 @property (nonatomic, weak) id<BTPayPalButtonDelegate> delegate;
 

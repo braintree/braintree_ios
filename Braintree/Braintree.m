@@ -3,9 +3,9 @@
 #import "BTClient.h"
 #import "BTClient+BTPayPal.h"
 #import "BTPayPalButton.h"
+#import "BTPaymentAuthorizer.h"
 
 #import "BTDropInViewController.h"
-#import "PayPalTouch.h"
 
 #import "BTAppSwitch.h"
 #import "BTVenmoAppSwitchHandler.h"
@@ -32,7 +32,28 @@
     return self;
 }
 
-#pragma mark Tokenization
+#pragma mark UI
+
+- (BTDropInViewController *)dropInViewControllerWithDelegate:(id<BTDropInViewControllerDelegate>)delegate {
+    [self.client postAnalyticsEvent:@"custom.ios.dropin.init"
+                            success:nil
+                            failure:nil];
+
+    BTDropInViewController *dropInViewController = [[BTDropInViewController alloc] initWithClient:self.client];
+
+    dropInViewController.delegate = delegate;
+    [dropInViewController fetchPaymentMethods];
+    return dropInViewController;
+}
+
+- (BTPaymentButton *)paymentButtonWithPaymentAuthorizationTypes:(NSOrderedSet *)types delegate:(id<BTPaymentAuthorizerDelegate>)delegate {
+    BTPaymentButton *button = [[BTPaymentButton alloc] initWithPaymentAuthorizationTypes:types];
+    button.client = self.client;
+    button.delegate = delegate;
+    return button;
+}
+
+#pragma mark Custom
 
 - (void)tokenizeCardWithNumber:(NSString *)cardNumber
                expirationMonth:(NSString *)expirationMonth
@@ -58,35 +79,18 @@
                             }];
 }
 
-#pragma mark Drop-In
-
-- (BTDropInViewController *)dropInViewControllerWithDelegate:(id<BTDropInViewControllerDelegate>)delegate {
-    [self.client postAnalyticsEvent:@"custom.ios.dropin.init"
-                            success:nil
-                            failure:nil];
-
-    BTDropInViewController *dropInViewController = [[BTDropInViewController alloc] initWithClient:self.client];
-
-    dropInViewController.delegate = delegate;
-    [dropInViewController fetchPaymentMethods];
-    return dropInViewController;
+- (void)authorizePayment:(BTPaymentAuthorizationType)type
+                delegate:(__unused id<BTPaymentAuthorizerDelegate>)delegate {
+    [self.authorizer setDelegate:delegate];
+    [self.authorizer authorize:type];
+    return;
 }
 
-#pragma mark Custom: Generic Payment Method Authorization
-
-- (void)initiatePaymentMethodAuthorization:(BTPaymentAuthorizationType)type delegate:(__unused id<BTPaymentAuthorizerDelegate>)delegate {
-    switch (type) {
-        case BTPaymentAuthorizationTypePayPal:
-        case BTPaymentAuthorizationTypeVenmo:
-        default:
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                           reason:[NSString stringWithFormat:@"Payment Method Authorization not yet implemented for given type (%ld)", (long)type]
-                                         userInfo:nil];
-            break;
-    }
+- (BTPaymentAuthorizer *)authorizer {
+    return _authorizer ?: [[BTPaymentAuthorizer alloc] initWithClient:self.client];
 }
 
-#pragma mark Custom: PayPal
+#pragma mark Deprecated
 
 - (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate {
     [self.client postAnalyticsEvent:@"custom.ios.paypal.init"
@@ -102,6 +106,14 @@
     button.delegate = delegate;
 
     return button;
+}
+
+- (BTPayPalButton *)payPalButton {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    _payPalButton = _payPalButton ?: [[BTPayPalButton alloc] init];
+#pragma clang diagnostic pop
+    return _payPalButton;
 }
 
 #pragma mark Library
