@@ -98,8 +98,6 @@ describe(@"paymentProviderWithDelegate", ^{
     it(@"provides a configured BTPaymentProvider", ^{
         id delegate = [OCMockObject niceMockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
-        braintree.paymentProvider
-
         BTPaymentProvider *provider = [braintree paymentProviderWithDelegate:delegate];
         expect(provider.client).to.equal(braintree.client);
         expect(provider.delegate).to.equal(delegate);

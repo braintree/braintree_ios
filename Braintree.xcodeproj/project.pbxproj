@@ -45,6 +45,7 @@
 		16102A2A192DBB2C002C1B2B /* EXPMatchers+BTMatches.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */; };
 		16102A2B192DBB2C002C1B2B /* EXPMatchers+BTMatches.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */; };
 		16102A31192DBC06002C1B2B /* BTVersionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 161029FC192DB7FA002C1B2B /* BTVersionSpec.m */; };
+		1614DD0919BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1614DD0819BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.m */; };
 		162174E0192D9220008DC35D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		162174E2192D9220008DC35D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 162174E1192D9220008DC35D /* CoreGraphics.framework */; };
 		162174E3192D9220008DC35D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
@@ -252,6 +253,8 @@
 		16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+BTMatches.m"; sourceTree = "<group>"; };
 		1613815D1923074000C3B5BE /* BTDropInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInViewController.h; sourceTree = "<group>"; };
 		1613815E1923074000C3B5BE /* BTDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInViewController.m; sourceTree = "<group>"; };
+		1614DD0719BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomMultiPaymentButtonManager.h; sourceTree = "<group>"; };
+		1614DD0819BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomMultiPaymentButtonManager.m; sourceTree = "<group>"; };
 		1615647419889010002F7316 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UI.strings; sourceTree = "<group>"; };
 		1615647519889011002F7316 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/UI.strings; sourceTree = "<group>"; };
 		1615647C198AB9A2002F7316 /* BTUILocalizedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUILocalizedString.h; sourceTree = "<group>"; };
@@ -1650,6 +1653,8 @@
 		16F9996819AE7287007ADA2C /* Custom Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				1614DD0719BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.h */,
+				1614DD0819BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.m */,
 				16F9996919AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.h */,
 				16F9996A19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m */,
 				16F9996C19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.h */,
@@ -2991,6 +2996,7 @@
 				1621752B192D922F008DC35D /* BraintreeDemoAppDelegate.m in Sources */,
 				16217531192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.m in Sources */,
 				1621752F192D922F008DC35D /* BraintreeDemoOneTouchDemoViewController.m in Sources */,
+				1614DD0919BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.m in Sources */,
 				1621752A192D922F008DC35D /* BraintreeDemoTransactionService.m in Sources */,
 				16217538192D922F008DC35D /* main.m in Sources */,
 				16F9996E19AE73A3007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m in Sources */,
