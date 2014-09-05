@@ -1,6 +1,7 @@
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
+#import "BTClient+BTVenmo.h"
 #import "BTClient_Metadata.h"
 
 @interface BTVenmoAppSwitchHandler ()
@@ -20,6 +21,11 @@
 
     self.client = client;
 
+    if ([client btVenmo_status] == BTVenmoStatusOff) {
+        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.venmo-status-off"];
+        return NO;
+    }
+
     if (!self.returnURLScheme) {
         [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.nil-return-url-scheme"];
         return NO;
@@ -35,7 +41,9 @@
         return NO;
     }
 
-    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:client.merchantId returnURLScheme:self.returnURLScheme];
+    BOOL offline = client.btVenmo_status == BTVenmoStatusOffline;
+
+    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:client.merchantId returnURLScheme:self.returnURLScheme offline:offline];
     self.delegate = theDelegate;
 
     if ([self.delegate respondsToSelector:@selector(appSwitcherWillSwitch:)]) {

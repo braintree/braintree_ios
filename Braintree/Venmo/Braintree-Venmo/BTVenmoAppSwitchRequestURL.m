@@ -11,14 +11,16 @@
     return [[UIApplication sharedApplication] canOpenURL:url];
 }
 
-+ (NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID returnURLScheme:(NSString *)scheme {
-    NSDictionary *appSwitchParameters = @{
-                                          @"x-success": [self returnURLWithScheme:scheme result:@"success"],
-                                          @"x-error": [self returnURLWithScheme:scheme result:@"error"],
-                                          @"x-cancel": [self returnURLWithScheme:scheme result:@"cancel"],
-                                          @"x-source": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"],
-                                          @"braintree_merchant_id": merchantID
-                                          };
++ (NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID returnURLScheme:(NSString *)scheme offline:(BOOL)offline {
+    NSMutableDictionary *appSwitchParameters = [@{@"x-success": [self returnURLWithScheme:scheme result:@"success"],
+                                                  @"x-error": [self returnURLWithScheme:scheme result:@"error"],
+                                                  @"x-cancel": [self returnURLWithScheme:scheme result:@"cancel"],
+                                                  @"x-source": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"],
+                                                  @"braintree_merchant_id": merchantID,
+                                                  } mutableCopy];
+    if (offline) {
+        appSwitchParameters[@"offline"] = @1;
+    }
 
     NSURLComponents *components = [self appSwitchBaseURLComponents];
     components.percentEncodedQuery = [BTURLUtils queryStringWithDictionary:appSwitchParameters];

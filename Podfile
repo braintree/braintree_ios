@@ -74,6 +74,7 @@ end
 # Venmo #
 target 'Braintree-Venmo-Specs' do
   pod 'Braintree/Venmo', :path => '.'
+  pod 'NSURL+QueryDictionary', '~> 1.0'
   pods_for_specs
 end
 

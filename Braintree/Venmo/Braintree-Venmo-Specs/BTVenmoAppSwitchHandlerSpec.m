@@ -1,7 +1,17 @@
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTVenmoAppSwitchReturnURL.h"
+#import "BTClient+BTVenmo.h"
+#import "BTClient_Metadata.h"
 
 SpecBegin(BTVenmoAppSwitchHandler)
+
+describe(@"sharedHandler", ^{
+
+    it(@"returns one and only one instance", ^{
+        expect([BTVenmoAppSwitchHandler sharedHandler]).to.beIdenticalTo([BTVenmoAppSwitchHandler sharedHandler]);
+    });
+
+});
 
 describe(@"canHandleReturnURL:sourceApplication:", ^{
 
@@ -37,13 +47,30 @@ describe(@"canHandleReturnURL:sourceApplication:", ^{
     });
 });
 
-describe(@"sharedHandler", ^{
+describe(@"initiateAppSwitchWithClient:delegate:", ^{
+    __block BTVenmoAppSwitchHandler *handler;
 
-    it(@"returns one and only one instance", ^{
-        expect([BTVenmoAppSwitchHandler sharedHandler]).to.beIdenticalTo([BTVenmoAppSwitchHandler sharedHandler]);
+    beforeEach(^{
+        handler = [[BTVenmoAppSwitchHandler alloc] init];
     });
-    
-});
 
+    it(@"returns NO if client has `btVenmo_status` BTVenmoStatusOff", ^{
+        id mockClient = [OCMockObject mockForClass:[BTClient class]];
+        id delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
+
+        [[[mockClient stub] andReturn:mockClient] copyWithMetadata:OCMOCK_ANY];
+        [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
+        [[[mockClient expect] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
+
+        [handler initiateAppSwitchWithClient:mockClient delegate:delegate];
+
+        [mockClient verify];
+        [mockClient stopMocking];
+
+        [delegate verify];
+        [delegate stopMocking];
+    });
+
+});
 
 SpecEnd

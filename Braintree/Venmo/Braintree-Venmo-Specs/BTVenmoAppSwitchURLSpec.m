@@ -1,4 +1,5 @@
 #import "BTVenmoAppSwitchRequestURL.h"
+#import <NSURL+QueryDictionary.h>
 #import <UIKit/UIKit.h>
 
 SpecBegin(BTVenmoAppSwitchRequestURL)
@@ -27,5 +28,35 @@ describe(@"isAppSwitchAvailable", ^{
         expect([BTVenmoAppSwitchRequestURL isAppSwitchAvailable]).to.beFalsy();
     });
 });
+
+describe(@"appSwitchURLForMerchantID:returnURLScheme:offline:", ^{
+
+    __block NSString *bundleDisplayName = @"Your App";
+
+    beforeEach(^{
+        id nsBundle = [OCMockObject mockForClass:[NSBundle class]];
+        [[[nsBundle stub] andReturn:nsBundle] mainBundle];
+        [[[nsBundle stub] andReturn:bundleDisplayName] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    });
+
+    it(@"returns a URL that does not indicate offline mode", ^{
+        NSURL *url = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:@"merchant-id"
+                                                           returnURLScheme:@"a.scheme"
+                                                                   offline:NO];
+
+        expect(url.uq_queryDictionary[@"offline"]).to.beNil();
+    });
+
+    it(@"returns a URL indicating offline mode", ^{
+        NSURL *url = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:@"merchant-id"
+                                                           returnURLScheme:@"a.scheme"
+                                                                   offline:YES];
+
+        expect([url.uq_queryDictionary[@"offline"] integerValue]).to.equal(1);
+    });
+
+
+});
+
 
 SpecEnd
