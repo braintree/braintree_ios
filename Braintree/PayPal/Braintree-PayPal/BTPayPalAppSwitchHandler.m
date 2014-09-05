@@ -25,17 +25,17 @@
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
     if (![[self class] validateClient:self.client delegate:self.delegate returnURLScheme:self.returnURLScheme]) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.can-handle.invalid"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.can-handle.invalid"];
         return NO;
     }
 
     if (![url.scheme isEqualToString:self.returnURLScheme]) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.can-handle.different-scheme"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.can-handle.different-scheme"];
         return NO;
     }
 
     if (![PayPalTouch canHandleURL:url sourceApplication:sourceApplication]) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.can-handle.paypal-cannot-handle"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.can-handle.paypal-cannot-handle"];
         return NO;
     }
     return YES;
@@ -46,15 +46,15 @@
     NSString *code;
     switch (result.resultType) {
         case PayPalTouchResultTypeError: {
-            [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.parse-error"];
+            [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.error"];
             NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalUnknownError userInfo:nil];
             [self informDelegateDidFailWithError:error];
             return;
         }
         case PayPalTouchResultTypeCancel:
-            [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.cancel"];
+            [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.cancel"];
             if (result.error) {
-                [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.cancel-error"];
+                [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.cancel-error"];
                 [[BTLogger sharedLogger] log:[NSString stringWithFormat:@"PayPal Wallet error: %@", result.error]];
             }
             [self informDelegateDidCancel];
@@ -66,12 +66,12 @@
 
     if (!code) {
         NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalUnknownError userInfo:@{NSLocalizedDescriptionKey: @"Auth code not found in PayPal Touch app switch response" }];
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.code-error"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.code-error"];
         [self informDelegateDidFailWithError:error];
         return;
     }
 
-    [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.authorized"];
+    [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.authorized"];
 
     [self informDelegateWillCreatePayPalPaymentMethod];
 
@@ -84,8 +84,10 @@
                                                      mutablePayPalPaymentMethod.email = userDisplayStringFromAppSwitchResponse;
                                                      paypalPaymentMethod = mutablePayPalPaymentMethod;
                                                  }
+                                                 [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.success"];
                                                  [self informDelegateDidCreatePayPalPaymentMethod:paypalPaymentMethod];
                                              } failure:^(NSError *error) {
+                                                 [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.client-failure"];
                                                  [self informDelegateDidFailWithError:error];
                                              }];
 
@@ -98,17 +100,17 @@
     }];
 
     if ([client btPayPal_isTouchDisabled]){
-        [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
+        [client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.disabled"];
         return  NO;
     }
 
     if (![[self class] validateClient:client delegate:theDelegate returnURLScheme:self.returnURLScheme]) {
-        [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
+        [client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.invalid"];
         return NO;
     }
 
     if (![PayPalTouch canAppSwitchForUrlScheme:self.returnURLScheme]) {
-        [client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.bad-callback-url-scheme"];
+        [client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.bad-callback-url-scheme"];
         [[BTLogger sharedLogger] log:@"BTPayPalAppSwitchHandler appSwitchCallbackURLScheme not supported by PayPal."];
         return NO;
     }
@@ -122,9 +124,9 @@
     [self informDelegateWillAppSwitch];
     BOOL payPalTouchDidAuthorize = [PayPalTouch authorizeFuturePayments:configuration];
     if (payPalTouchDidAuthorize) {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.success"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.success"];
     } else {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.fail"];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.failure"];
     }
     return payPalTouchDidAuthorize;
 }

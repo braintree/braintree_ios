@@ -21,14 +21,17 @@
     self.client = client;
 
     if (!self.returnURLScheme) {
+        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.nil-return-url-scheme"];
         return NO;
     }
 
     if (!client.merchantId) {
+        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.nil-merchant-id"];
         return NO;
     }
 
     if (![BTVenmoAppSwitchRequestURL isAppSwitchAvailable]) {
+        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.app-switch-unavailable"];
         return NO;
     }
 
@@ -38,7 +41,13 @@
     if ([self.delegate respondsToSelector:@selector(appSwitcherWillSwitch:)]) {
         [self.delegate appSwitcherWillSwitch:self];
     }
-    return [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
+    BOOL success = [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
+    if (success) {
+        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
+    } else {
+        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.failure"];
+    }
+    return success;
 }
 
 + (BOOL)isAvailable {
@@ -56,20 +65,24 @@
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded: {
+            [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
             [self.client fetchPaymentMethodWithNonce:returnURL.paymentMethod.nonce
                                              success:^(BTPaymentMethod *paymentMethod){
+                                                 [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.success"];
                                                  [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
                                              }
                                              failure:^(NSError *error){
-                                                 // TODO: Wrap error
+                                                 [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
                                                  [self.delegate appSwitcher:self didFailWithError:error];
                                              }];
             break;
         }
         case BTVenmoAppSwitchReturnURLStateFailed:
+            [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.error"];
             [self.delegate appSwitcher:self didFailWithError:returnURL.error];
             break;
         case BTVenmoAppSwitchReturnURLStateCanceled:
+            [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.cancel"];
             [self.delegate appSwitcherDidCancel:self];
             break;
         default:
