@@ -261,6 +261,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                        }];
 
+        [[BTLogger sharedLogger] log:[NSString stringWithFormat:@"BTClient postAnalyticsEvent:%@", eventKind]];
+
         [self.analyticsHttp POST:@"/"
                       parameters:requestParameters
                       completion:^(BTHTTPResponse *response, NSError *error) {
