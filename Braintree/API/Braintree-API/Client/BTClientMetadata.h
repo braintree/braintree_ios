@@ -2,6 +2,8 @@
 
 typedef NS_ENUM(NSInteger, BTClientMetadataSourceType) {
     BTClientMetadataSourcePayPalSDK,
+    BTClientMetadataSourcePayPalApp,
+    BTClientMetadataSourceVenmoApp,
     BTClientMetadataSourceForm,
     BTClientMetadataSourceUnknown
 };

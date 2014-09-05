@@ -58,6 +58,10 @@
     switch (source) {
         case BTClientMetadataSourcePayPalSDK:
             return @"paypal-sdk";
+        case BTClientMetadataSourcePayPalApp:
+            return @"paypal-app";
+        case BTClientMetadataSourceVenmoApp:
+            return @"venmo-app";
         case BTClientMetadataSourceForm:
             return @"form";
         default:

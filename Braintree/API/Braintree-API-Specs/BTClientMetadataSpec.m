@@ -15,6 +15,13 @@ describe(@"string values", ^{
 
         m.source = BTClientMetadataSourcePayPalSDK;
         expect(m.sourceString).to.equal(@"paypal-sdk");
+
+        m.source = BTClientMetadataSourcePayPalApp;
+        expect(m.sourceString).to.equal(@"paypal-app");
+
+        m.source = BTClientMetadataSourceVenmoApp;
+        expect(m.sourceString).to.equal(@"venmo-app");
+
     });
 
     it(@"integration returns expected strings", ^{
