@@ -58,8 +58,8 @@
     return success;
 }
 
-+ (BOOL)isAvailable {
-    return [BTVenmoAppSwitchRequestURL isAppSwitchAvailable];
++ (BOOL)isAvailableForClient:(BTClient *)client {
+    return [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] && client.btVenmo_status != BTVenmoStatusOff;
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {

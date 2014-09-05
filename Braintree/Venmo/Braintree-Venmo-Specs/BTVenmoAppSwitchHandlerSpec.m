@@ -1,5 +1,6 @@
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTVenmoAppSwitchReturnURL.h"
+#import "BTVenmoAppSwitchRequestURL.h"
 #import "BTClient+BTVenmo.h"
 #import "BTClient_Metadata.h"
 
@@ -12,6 +13,52 @@ describe(@"sharedHandler", ^{
     });
 
 });
+
+describe(@"isAvailableForClient:", ^{
+
+    __block BTVenmoAppSwitchHandler *handler;
+    __block id mockClient;
+    __block id mockBTVenmoAppSwitchRequestURL;
+
+    beforeEach(^{
+        handler = [[BTVenmoAppSwitchHandler alloc] init];
+        mockClient = [OCMockObject mockForClass:[BTClient class]];
+        mockBTVenmoAppSwitchRequestURL = [OCMockObject mockForClass:[BTVenmoAppSwitchRequestURL class]];
+    });
+
+    afterEach(^{
+        [mockClient verify];
+        [mockClient stopMocking];
+        [mockBTVenmoAppSwitchRequestURL verify];
+        [mockBTVenmoAppSwitchRequestURL stopMocking];
+    });
+
+    it(@"returns YES if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] and venmo status is production", ^{
+        [[[mockClient stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
+        [[[mockBTVenmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
+        expect([BTVenmoAppSwitchHandler isAvailableForClient:mockClient]).to.beTruthy();
+    });
+
+    it(@"returns YES if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] and venmo status is offline", ^{
+        [[[mockClient stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOffline)] btVenmo_status];
+        [[[mockBTVenmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
+        expect([BTVenmoAppSwitchHandler isAvailableForClient:mockClient]).to.beTruthy();
+    });
+
+    it(@"returns NO if venmo status is off", ^{
+        [[[mockClient stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
+        [[[mockBTVenmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
+        expect([BTVenmoAppSwitchHandler isAvailableForClient:mockClient]).to.beFalsy();
+    });
+
+    it(@"returns NO if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] returns NO", ^{
+        [[[mockClient stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
+        [[[mockBTVenmoAppSwitchRequestURL stub] andReturnValue:@NO] isAppSwitchAvailable];
+        expect([BTVenmoAppSwitchHandler isAvailableForClient:mockClient]).to.beFalsy();
+    });
+
+});
+
 
 describe(@"canHandleReturnURL:sourceApplication:", ^{
 

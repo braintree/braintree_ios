@@ -8,8 +8,10 @@
 
 /// Returns whether Venmo Touch is available
 ///
-/// @return true if the Venmo app is installed
-+ (BOOL)isAvailable;
+/// @param client A BTClient
+///
+/// @return YES if the Venmo app is installed
++ (BOOL)isAvailableForClient:(BTClient*)client;
 
 @end
 

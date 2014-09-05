@@ -60,7 +60,7 @@
             return [self.client btPayPal_isPayPalEnabled];
             break;
         case BTPaymentProviderTypeVenmo:
-            return [BTVenmoAppSwitchHandler isAvailable];
+            return [BTVenmoAppSwitchHandler isAvailableForClient:self.client];
             break;
         default:
             return NO;

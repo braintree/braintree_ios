@@ -28,7 +28,7 @@
 }
 
 - (UIButton *)button {
-    return [BTVenmoAppSwitchHandler isAvailable] ? _button : nil;
+    return [BTVenmoAppSwitchHandler isAvailableForClient:self.client] ? _button : nil;
 }
 
 - (void)tappedCustomVenmo:(BraintreeDemoCustomVenmoButtonManager *)sender {
