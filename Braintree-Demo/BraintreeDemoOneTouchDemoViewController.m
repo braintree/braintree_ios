@@ -155,9 +155,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         case BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal:
             return @"Custom PayPal button";
         case BraintreeDemoOneTouchIntegrationTechniqueBTVenmoButton:
-            return @"BTVenmoButton";
+            return @"BTUIVenmoButton";
         case BraintreeDemoOneTouchIntegrationTechniqueBTPayPalButton:
-            return @"BTPayPalButton";
+            return @"BTUIPayPalButton";
     }
 }
 
