@@ -255,6 +255,8 @@
 		1613815E1923074000C3B5BE /* BTDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInViewController.m; sourceTree = "<group>"; };
 		1614DD0719BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomMultiPaymentButtonManager.h; sourceTree = "<group>"; };
 		1614DD0819BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomMultiPaymentButtonManager.m; sourceTree = "<group>"; };
+		1614DD0A19BA78F40037A3D0 /* BTVenmoErrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoErrors.h; sourceTree = "<group>"; };
+		1614DD0B19BA79020037A3D0 /* BTVenmoErrors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoErrors.m; sourceTree = "<group>"; };
 		1615647419889010002F7316 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UI.strings; sourceTree = "<group>"; };
 		1615647519889011002F7316 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/UI.strings; sourceTree = "<group>"; };
 		1615647C198AB9A2002F7316 /* BTUILocalizedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUILocalizedString.h; sourceTree = "<group>"; };
@@ -1399,6 +1401,8 @@
 			isa = PBXGroup;
 			children = (
 				1621A5CB19AEA0B80085CBB2 /* Braintree-Venmo.h */,
+				1614DD0A19BA78F40037A3D0 /* BTVenmoErrors.h */,
+				1614DD0B19BA79020037A3D0 /* BTVenmoErrors.m */,
 			);
 			path = "@Public";
 			sourceTree = "<group>";

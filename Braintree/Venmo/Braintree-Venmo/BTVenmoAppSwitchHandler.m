@@ -3,6 +3,8 @@
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTClient+BTVenmo.h"
 #import "BTClient_Metadata.h"
+#import "BTMutableCardPaymentMethod.h"
+#import "BTVenmoErrors.h"
 
 @interface BTVenmoAppSwitchHandler ()
 @property (nonatomic, strong) BTClient *client;
@@ -74,15 +76,39 @@
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded: {
             [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
-            [self.client fetchPaymentMethodWithNonce:returnURL.paymentMethod.nonce
-                                             success:^(BTPaymentMethod *paymentMethod){
-                                                 [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.success"];
-                                                 [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
-                                             }
-                                             failure:^(NSError *error){
-                                                 [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
-                                                 [self.delegate appSwitcher:self didFailWithError:error];
-                                             }];
+
+            switch (self.client.btVenmo_status) {
+                case BTVenmoStatusOffline: {
+                    [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.offline"];
+                    BTMutableCardPaymentMethod *c = [[BTMutableCardPaymentMethod alloc] init];
+                    c.lastTwo = @"11";
+                    c.type = BTCardTypeVisa;
+                    c.nonce = returnURL.paymentMethod.nonce;
+                    [self.delegate appSwitcher:self didCreatePaymentMethod:[c copy]];
+                    break;
+                }
+                case BTVenmoStatusProduction: {
+                    [self.client fetchPaymentMethodWithNonce:returnURL.paymentMethod.nonce
+                                                     success:^(BTPaymentMethod *paymentMethod){
+                                                         [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.success"];
+                                                         [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
+                                                     }
+                                                     failure:^(NSError *error){
+                                                         [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
+                                                         [self.delegate appSwitcher:self didFailWithError:error];
+                                                     }];
+                    break;
+                }
+                case BTVenmoStatusOff: {
+                    NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                                         code:BTVenmoErrorAppSwitchDisabled
+                                                     userInfo:@{ NSLocalizedDescriptionKey: @"Received a Venmo app switch return while Venmo is disabled" }];
+                    [self.delegate appSwitcher:self didFailWithError:error];
+                    [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.off"];
+                    break;
+                }
+            }
+
             break;
         }
         case BTVenmoAppSwitchReturnURLStateFailed:

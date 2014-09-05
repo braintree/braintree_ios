@@ -1,0 +1,2 @@
+
+NSString *const BTVenmoErrorDomain = @"BTVenmoErrorDomain";
