@@ -5,15 +5,10 @@
 #import "BTPayPalHorizontalSignatureWhiteView.h"
 #import "BTUI.h"
 #import "BTLogger.h"
-#import "BTPayPalAppSwitchHandler.h"
 
-#import "BTPayPalAdapter.h"
-
-@interface BTPayPalButton () <BTPayPalButtonViewControllerPresenterDelegate, BTPayPalAdapterDelegate>
+@interface BTPayPalButton () <BTPayPalViewControllerDelegate, BTPayPalButtonViewControllerPresenterDelegate>
 @property (nonatomic, strong) BTPayPalHorizontalSignatureWhiteView *payPalHorizontalSignatureView;
 @property (nonatomic, strong) BTPayPalViewController *braintreePayPalViewController;
-
-@property (nonatomic, strong) BTPayPalAdapter *adapter;
 @end
 
 @implementation BTPayPalButton
@@ -42,14 +37,7 @@
     return self;
 }
 
-- (void)setClient:(BTClient *)client {
-    _client = client;
-    self.adapter = [[BTPayPalAdapter alloc] initWithClient:client];
-    self.adapter.delegate = self;
-}
-
 - (void)setupViews {
-    self.theme = [BTUI braintreeTheme];
     self.accessibilityLabel = @"PayPal";
     self.userInteractionEnabled = YES;
     self.clipsToBounds = YES;
@@ -73,14 +61,23 @@
 }
 
 - (void)didReceiveTouch {
-    self.userInteractionEnabled = NO;
-    [self.adapter initiatePayPalAuth];
+    if (self.client == nil) {
+        [[BTLogger sharedLogger] log:@"BTPayPalButton tapped without a client. You must assign a BTClient to the the BTPayPalButton before it requests presents presentation of the PayPal view controller."];
+        return;
+    }
+
+    // Only allow presentation of one braintreePayPalViewController at a time.
+    if (self.braintreePayPalViewController == nil) {
+        self.userInteractionEnabled = NO;
+        self.braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
+        self.braintreePayPalViewController.delegate = self;
+        [self requestPresentationOfViewController:self.braintreePayPalViewController];
+    }
 }
 
 - (id<BTPayPalButtonViewControllerPresenterDelegate>)presentationDelegate {
     return _presentationDelegate ?: self;
 }
-
 
 #pragma mark State Change Messages
 
@@ -98,12 +95,6 @@
 - (void)informDelegateWillCreatePayPalPaymentMethod {
     if ([self.delegate respondsToSelector:@selector(payPalButtonWillCreatePayPalPaymentMethod:)]) {
         [self.delegate payPalButtonWillCreatePayPalPaymentMethod:self];
-    }
-}
-
-- (void)informDelegateDidCancel {
-    if ([self.delegate respondsToSelector:@selector(payPalButtonDidCancel:)]) {
-        [self.delegate payPalButtonDidCancel:self];
     }
 }
 
@@ -129,6 +120,34 @@
     }];
 }
 
+
+#pragma mark - BTPayPalViewControllerDelegate implementation
+
+- (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController {
+    [self requestDismissalOfViewController:viewController];
+    [self informDelegateWillCreatePayPalPaymentMethod];
+}
+
+- (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
+    self.userInteractionEnabled = YES;
+    self.braintreePayPalViewController = nil;
+    [self informDelegateDidCreatePayPalPaymentMethod:payPalPaymentMethod];
+}
+
+- (void)payPalViewController:(BTPayPalViewController *)viewController didFailWithError:(NSError *)error {
+    self.userInteractionEnabled = YES;
+    NSLog(@"PayPal view controller failed with error: %@", error);
+    self.braintreePayPalViewController = nil;
+    [self requestDismissalOfViewController:viewController];
+    [self informDelegateDidFailWithError:error];
+}
+
+- (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
+    self.userInteractionEnabled = YES;
+    self.braintreePayPalViewController = nil;
+    [self requestDismissalOfViewController:viewController];
+}
+
 #pragma mark - BTPayPalButtonViewControllerPresenterDelegate default implementation
 
 - (void)payPalButton:(__unused BTPayPalButton *)button requestsPresentationOfViewController:(UIViewController *)viewController {
@@ -144,8 +163,8 @@
 - (NSArray *)defaultConstraints {
     CGFloat BTPayPalButtonHorizontalSignatureWidth = 95.0f;
     CGFloat BTPayPalButtonHorizontalSignatureHeight = 23.0f;
-    CGFloat BTPayPalButtonMinHeight = [self.theme paymentButtonMinHeight];
-    CGFloat BTPayPalButtonMaxHeight = [self.theme paymentButtonMaxHeight];
+    CGFloat BTPayPalButtonMinHeight = 40.0f;
+    CGFloat BTPayPalButtonMaxHeight = 60.0f;
     CGFloat BTPayPalButtonMinWidth = 240.0f;
 
     NSDictionary *metrics = @{ @"minHeight": @(BTPayPalButtonMinHeight),
@@ -203,47 +222,16 @@
                                              metrics:metrics
                                                views:views]];
 
+    [constraints addObjectsFromArray:
+     [NSLayoutConstraint constraintsWithVisualFormat:@"H:[self(>=260@required)]"
+                                             options:0
+                                             metrics:metrics
+                                               views:views]];
     return constraints;
 }
 
 - (CGSize)intrinsicContentSize {
     return CGSizeMake(320, UIViewNoIntrinsicMetric);
-}
-
-#pragma mark PayPal Adapter Delegate Methods
-
-- (void)payPalAdapterWillCreatePayPalPaymentMethod:(__unused BTPayPalAdapter *)payPalAdapter {
-    self.userInteractionEnabled = NO;
-    [self informDelegateWillCreatePayPalPaymentMethod];
-}
-
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
-    self.userInteractionEnabled = YES;
-    [self informDelegateDidCreatePayPalPaymentMethod:paymentMethod];
-}
-
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter didFailWithError:(NSError *)error {
-    self.userInteractionEnabled = YES;
-
-    [self informDelegateDidFailWithError:error];
-}
-
-- (void)payPalAdapterDidCancel:(__unused BTPayPalAdapter *)payPalAdapter {
-    self.userInteractionEnabled = YES;
-
-    [self informDelegateDidCancel];
-}
-
-- (void)payPalAdapterWillAppSwitch:(__unused BTPayPalAdapter *)payPalAdapter {
-    self.userInteractionEnabled = YES;
-}
-
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter requestsPresentationOfViewController:(UIViewController *)viewController {
-    [self requestPresentationOfViewController:viewController];
-}
-
-- (void)payPalAdapter:(__unused BTPayPalAdapter *)payPalAdapter requestsDismissalOfViewController:(UIViewController *)viewController {
-    [self requestDismissalOfViewController:viewController];
 }
 
 @end
