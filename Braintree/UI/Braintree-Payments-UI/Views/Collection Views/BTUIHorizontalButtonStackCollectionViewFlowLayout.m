@@ -1,18 +1,18 @@
-#import "BTHorizontalButtonStackCollectionViewFlowLayout.h"
-#import "BTHorizontalButtonStackSeparatorLineView.h"
+#import "BTUIHorizontalButtonStackCollectionViewFlowLayout.h"
+#import "BTUIHorizontalButtonStackSeparatorLineView.h"
 
 
 NSString *BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind = @"BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind";
 
-@interface BTHorizontalButtonStackCollectionViewFlowLayout ()
+@interface BTUIHorizontalButtonStackCollectionViewFlowLayout ()
 @end
 
-@implementation BTHorizontalButtonStackCollectionViewFlowLayout
+@implementation BTUIHorizontalButtonStackCollectionViewFlowLayout
 
 - (id)init {
     self = [super init];
     if (self) {
-        [self registerClass:[BTHorizontalButtonStackSeparatorLineView class] forDecorationViewOfKind:BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind];
+        [self registerClass:[BTUIHorizontalButtonStackSeparatorLineView class] forDecorationViewOfKind:BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind];
     }
     return self;
 }

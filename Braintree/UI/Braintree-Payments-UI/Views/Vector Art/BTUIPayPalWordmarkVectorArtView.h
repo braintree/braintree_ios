@@ -3,7 +3,7 @@
 
 @class BTUI;
 
-@interface BTPayPalWordmarkVectorArtView : BTUIVectorArtView
+@interface BTUIPayPalWordmarkVectorArtView : BTUIVectorArtView
 
 @property (nonatomic, strong) BTUI *theme;
 

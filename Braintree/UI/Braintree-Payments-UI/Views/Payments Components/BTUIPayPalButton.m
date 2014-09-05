@@ -1,11 +1,11 @@
 #import "BTUIPayPalButton.h"
 
-#import "BTPayPalWordmarkVectorArtView.h"
+#import "BTUIPayPalWordmarkVectorArtView.h"
 
 #import "BTUI.h"
 
 @interface BTUIPayPalButton ()
-@property (nonatomic, strong) BTPayPalWordmarkVectorArtView *payPalWordmark;
+@property (nonatomic, strong) BTUIPayPalWordmarkVectorArtView *payPalWordmark;
 @end
 
 @implementation BTUIPayPalButton
@@ -34,7 +34,7 @@
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];
 
-    self.payPalWordmark = [[BTPayPalWordmarkVectorArtView alloc] init];
+    self.payPalWordmark = [[BTUIPayPalWordmarkVectorArtView alloc] init];
     self.payPalWordmark.userInteractionEnabled = NO;
     self.payPalWordmark.translatesAutoresizingMaskIntoConstraints = NO;
 

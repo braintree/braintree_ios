@@ -1,10 +1,10 @@
-#import "BTPaymentButtonCollectionViewCell.h"
+#import "BTUIPaymentButtonCollectionViewCell.h"
 
-@interface BTPaymentButtonCollectionViewCell ()
+@interface BTUIPaymentButtonCollectionViewCell ()
 @property (nonatomic, strong) NSMutableArray *paymentButtonConstraints;
 @end
 
-@implementation BTPaymentButtonCollectionViewCell
+@implementation BTUIPaymentButtonCollectionViewCell
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];

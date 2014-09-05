@@ -6,8 +6,8 @@
 #import "BTUIPayPalButton.h"
 
 #import "BTPaymentProvider.h"
-#import "BTHorizontalButtonStackCollectionViewFlowLayout.h"
-#import "BTPaymentButtonCollectionViewCell.h"
+#import "BTUIHorizontalButtonStackCollectionViewFlowLayout.h"
+#import "BTUIPaymentButtonCollectionViewCell.h"
 
 NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentButtonCellIdentifier";
 NSInteger BTPaymentButtonPayPalCellIndex = 0;
@@ -60,7 +60,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     self.clipsToBounds = YES;
     self.enabledPaymentProviderTypes = [NSOrderedSet orderedSetWithObjects:@(BTPaymentProviderTypePayPal), @(BTPaymentProviderTypeVenmo), nil];
 
-    BTHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTHorizontalButtonStackCollectionViewFlowLayout alloc] init];
+    BTUIHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTUIHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;
 
     self.paymentButtonsCollectionView = [[UICollectionView alloc] initWithFrame:self.bounds
@@ -71,7 +71,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     self.paymentButtonsCollectionView.delegate = self;
     self.paymentButtonsCollectionView.dataSource = self;
     self.paymentButtonsCollectionView.backgroundColor = [UIColor grayColor];
-    [self.paymentButtonsCollectionView registerClass:[BTPaymentButtonCollectionViewCell class] forCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier];
+    [self.paymentButtonsCollectionView registerClass:[BTUIPaymentButtonCollectionViewCell class] forCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier];
 
     self.topBorder = [[UIView alloc] init];
     self.topBorder.backgroundColor = [self.theme borderColor];
@@ -171,7 +171,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSParameterAssert(indexPath.section == 0);
 
-    BTPaymentButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier
+    BTUIPaymentButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier
                                                                                         forIndexPath:indexPath];
 
     NSInteger index = indexPath.row;
@@ -208,7 +208,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    BTPaymentButtonCollectionViewCell *cell = (BTPaymentButtonCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    BTUIPaymentButtonCollectionViewCell *cell = (BTUIPaymentButtonCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
 
     NSAssert(self.client, @"BTPaymentButton tapped without a BTClient instance. Please set a client on this payment button: myPaymentButton.client = (BTClient *)myClient;");
     if (indexPath.row == BTPaymentButtonPayPalCellIndex) {

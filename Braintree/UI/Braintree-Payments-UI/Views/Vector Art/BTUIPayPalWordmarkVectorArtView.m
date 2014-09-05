@@ -1,7 +1,7 @@
-#import "BTPayPalWordmarkVectorArtView.h"
+#import "BTUIPayPalWordmarkVectorArtView.h"
 #import "BTUI.h"
 
-@implementation BTPayPalWordmarkVectorArtView
+@implementation BTUIPayPalWordmarkVectorArtView
 
 - (instancetype)init {
     self = [super init];

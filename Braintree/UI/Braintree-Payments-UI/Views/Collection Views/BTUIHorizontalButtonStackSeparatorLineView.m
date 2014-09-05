@@ -1,10 +1,10 @@
-#import "BTHorizontalButtonStackSeparatorLineView.h"
+#import "BTUIHorizontalButtonStackSeparatorLineView.h"
 
-@interface BTHorizontalButtonStackSeparatorLineView ()
+@interface BTUIHorizontalButtonStackSeparatorLineView ()
 @property (nonatomic, strong) UIView *line;
 @end
 
-@implementation BTHorizontalButtonStackSeparatorLineView
+@implementation BTUIHorizontalButtonStackSeparatorLineView
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];

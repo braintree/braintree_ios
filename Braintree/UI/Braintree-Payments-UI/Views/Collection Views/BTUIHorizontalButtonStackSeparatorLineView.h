@@ -2,6 +2,6 @@
 
 #import "BTUI.h"
 
-@interface BTHorizontalButtonStackSeparatorLineView : UICollectionReusableView
+@interface BTUIHorizontalButtonStackSeparatorLineView : UICollectionReusableView
 @property (nonatomic, strong) BTUI *theme;
 @end
