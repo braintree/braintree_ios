@@ -30,7 +30,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
 NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey";
 
 
-@interface BraintreeDemoOneTouchDemoViewController () <BTAppSwitchingDelegate, BTPayPalButtonDelegate, BTPaymentMethodCreationDelegate, BTPaymentMethodCreationDelegate>
+@interface BraintreeDemoOneTouchDemoViewController () <BTPaymentMethodCreationDelegate, BTPayPalButtonDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, copy) void (^completionBlock)(NSString *nonce);
@@ -217,7 +217,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 }
 
 - (void)tappedVenmoButton:(__unused id)sender {
-    [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.braintree.client delegate:self];
+    [[self.braintree paymentProviderWithDelegate:self] createPaymentMethod:BTPaymentProviderTypeVenmo];
 }
 
 #pragma mark -
