@@ -1,5 +1,6 @@
 #import "BTPayPalAppSwitchHandler_Internal.h"
 #import "BTClient+BTPayPal.h"
+#import "BTClient_Metadata.h"
 #import "PayPalMobile.h"
 #import "BTClientToken.h"
 
@@ -11,8 +12,10 @@ __block id payPalTouch;
 
 beforeEach(^{
     client = [OCMockObject mockForClass:[BTClient class]];
-    delegate = [OCMockObject mockForProtocol:@protocol(BTPayPalAppSwitchHandlerDelegate)];
+    delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
     payPalTouch = [OCMockObject mockForClass:[PayPalTouch class]];
+
+    [[[client stub] andReturn:client] copyWithMetadata:OCMOCK_ANY];
 });
 
 afterEach(^{
@@ -37,13 +40,13 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
     beforeEach(^{
         appSwitchHandler = [[BTPayPalAppSwitchHandler alloc] init];
-        appSwitchHandler.appSwitchCallbackURLScheme = @"test.your.code";
+        appSwitchHandler.returnURLScheme = @"test.your.code";
     });
 
     context(@"with PayPal Touch Disabled", ^{
         it(@"returns NO", ^{
             [[[client expect] andReturnValue:@YES] btPayPal_isTouchDisabled];
-            [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.disabled"];
+            [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.disabled"];
             BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
             expect(initiated).to.beFalsy();
         });
@@ -59,14 +62,14 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 });
 
                 it(@"returns NO if appSwitchCallbackURLScheme is nil", ^{
-                    appSwitchHandler.appSwitchCallbackURLScheme = nil;
-                    [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
+                    appSwitchHandler.returnURLScheme = nil;
+                    [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.invalid"];
                     BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
                     expect(initiated).to.beFalsy();
                 });
 
                 it(@"returns NO with a nil delegate", ^{
-                    [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.invalid"];
+                    [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.invalid"];
                     BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:nil];
                     expect(initiated).to.beFalsy();
                 });
@@ -81,7 +84,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
         it(@"returns NO if PayPalTouch can not app switch", ^{
             [[[payPalTouch expect] andReturnValue:@NO] canAppSwitchForUrlScheme:OCMOCK_ANY];
-            [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.bad-callback-url-scheme"];
+            [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.bad-callback-url-scheme"];
             [[[client expect] andReturnValue:@NO] btPayPal_isTouchDisabled];
             BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
             expect(initiated).to.beFalsy();
@@ -97,16 +100,16 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
             it(@"returns NO if PayPalTouch does not authorize", ^{
                 [[[payPalTouch expect] andReturnValue:@NO] authorizeFuturePayments:OCMOCK_ANY];
-                [[delegate expect] payPalAppSwitchHandlerWillAppSwitch:appSwitchHandler];
-                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.fail"];
+                [[delegate expect] appSwitcherWillSwitch:appSwitchHandler];
+                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.failure"];
                 BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
                 expect(initiated).to.beFalsy();
             });
 
             it(@"returns YES when PayPalTouch can and does app switch", ^{
                 [[[payPalTouch expect] andReturnValue:@YES] authorizeFuturePayments:OCMOCK_ANY];
-                [[delegate expect] payPalAppSwitchHandlerWillAppSwitch:appSwitchHandler];
-                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.initiate.success"];
+                [[delegate expect] appSwitcherWillSwitch:appSwitchHandler];
+                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.success"];
                 BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
                 expect(initiated).to.beTruthy();
             });
@@ -114,39 +117,27 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
     });
 });
 
-describe(@"handleAppSwitchURL:sourceApplication:", ^{
+describe(@"handleReturnURL:", ^{
 
     __block BTPayPalAppSwitchHandler *appSwitchHandler;
     __block NSURL *sampleURL = [NSURL URLWithString:@"test.your.code://hello"];
-    __block NSString *sampleSourceApplication = @"com.a.wallet";
 
     beforeEach(^{
         appSwitchHandler = [[BTPayPalAppSwitchHandler alloc] init];
-        appSwitchHandler.appSwitchCallbackURLScheme = @"test.your.code";
+        appSwitchHandler.returnURLScheme = @"test.your.code";
         appSwitchHandler.delegate = delegate;
         appSwitchHandler.client = client;
     });
 
-    describe(@"with invalid initial state", ^{
-        it(@"returns NO if appSwitchCallbackURLScheme is nil", ^{
-            appSwitchHandler.appSwitchCallbackURLScheme = nil;
-            [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.invalid"];
-            BOOL initiated = [appSwitchHandler handleAppSwitchURL:sampleURL sourceApplication:sampleSourceApplication];
-            expect(initiated).to.beFalsy();
-        });
+    describe(@"with returnURLScheme", ^{
+        [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.handle.error"];
+        [[delegate expect] appSwitcher:appSwitchHandler didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
+            return [obj isKindOfClass:[NSError class]];
+        }]];
 
-        it(@"returns NO with a nil client", ^{
-            appSwitchHandler.client = nil;
-            BOOL initiated = [appSwitchHandler handleAppSwitchURL:sampleURL sourceApplication:sampleSourceApplication];
-            expect(initiated).to.beFalsy();
-        });
+        appSwitchHandler.returnURLScheme = nil;
+        [appSwitchHandler handleReturnURL:sampleURL];
 
-        it(@"returns NO with a nil delegate", ^{
-            appSwitchHandler.delegate = nil;
-            [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch-handler.handle.invalid"];
-            BOOL initiated = [appSwitchHandler handleAppSwitchURL:sampleURL sourceApplication:sampleSourceApplication];
-            expect(initiated).to.beFalsy();
-        });
     });
 
     pending(@"with valid initial state and invalid URL");
