@@ -9,7 +9,6 @@ NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-
 SpecBegin(BTClient_BTPayPal)
 
 describe(@"btPayPal_preparePayPalMobileWithError", ^{
