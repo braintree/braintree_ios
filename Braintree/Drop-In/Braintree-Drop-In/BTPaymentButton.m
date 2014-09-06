@@ -166,7 +166,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 #pragma mark UICollectionViewDataSource methods
 
-- (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(__unused NSInteger)section {
     NSParameterAssert(section == 0);
     return [self.filteredEnabledPaymentAuthorizationTypes count];
 }

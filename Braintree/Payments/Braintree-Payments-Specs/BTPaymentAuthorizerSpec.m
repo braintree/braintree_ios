@@ -27,7 +27,7 @@ afterEach(^{
     [delegate stopMocking];
 });
 
-fdescribe(@"authorize:", ^{
+describe(@"authorize:", ^{
 
     __block BTPaymentProviderType paymentAuthorizationType;
     __block BTPaymentProvider *authorizer;
