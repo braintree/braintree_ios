@@ -75,9 +75,10 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize
-                                                                                           target:self
-                                                                                           action:@selector(showIntegrationChooser:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Integration"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(showIntegrationChooser:)];
 
     // Setup btPaymentButton
     self.btPaymentButton = [self.braintree paymentButtonWithDelegate:self];
@@ -234,7 +235,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
                          }
 
                          [[self integrationButtonForTechnique:selectedIntegrationTechnique] setAlpha:1.0f];
-                         [self setTitle:[self integrationNameForTechnique:selectedIntegrationTechnique]];
+                         self.navigationItem.rightBarButtonItem.title = [self integrationNameForTechnique:selectedIntegrationTechnique];
 
                          CGFloat switchesAlpha = [self shouldShowPaymentProviderSwitchForTechnique:selectedIntegrationTechnique] ? 1.0f : 0.0f;
                          self.venmoPaymentMethodSwitch.alpha = switchesAlpha;
