@@ -80,11 +80,11 @@
             switch (self.client.btVenmo_status) {
                 case BTVenmoStatusOffline: {
                     [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.offline"];
-                    BTMutableCardPaymentMethod *c = [[BTMutableCardPaymentMethod alloc] init];
-                    c.lastTwo = @"11";
-                    c.type = BTCardTypeVisa;
-                    c.nonce = returnURL.paymentMethod.nonce;
-                    [self.delegate appSwitcher:self didCreatePaymentMethod:[c copy]];
+                    BTMutableCardPaymentMethod *fakeCard = [[BTMutableCardPaymentMethod alloc] init];
+                    fakeCard.lastTwo = @"11";
+                    fakeCard.type = BTCardTypeVisa;
+                    fakeCard.nonce = returnURL.paymentMethod.nonce;
+                    [self.delegate appSwitcher:self didCreatePaymentMethod:fakeCard];
                     break;
                 }
                 case BTVenmoStatusProduction: {
