@@ -15,6 +15,7 @@
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>
 
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
+@property (nonatomic, strong) BTDropInViewController *addPaymentMethodDropInViewController;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
 @property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;
 @property (nonatomic, strong) UIBarButtonItem *submitBarButtonItem;
@@ -28,10 +29,6 @@
 ///
 /// Defaults to `YES`.
 @property (nonatomic, assign) BOOL fullForm;
-
-/// Strong reference to an additional BTPayPalButton. Reference is needed so
-/// activity can continue after dismissal
-@property (nonatomic, strong) BTPaymentButton *retainedPaymentButton;
 
 /// Strong reference to a BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
@@ -247,7 +244,7 @@
 - (void)tappedChangePaymentMethod {
     UIViewController *rootViewController;
     if (self.paymentMethods.count == 1) {
-        rootViewController = [self addPaymentMethodDropInViewController];
+        rootViewController = self.addPaymentMethodDropInViewController;
     } else {
         BTDropInSelectPaymentMethodViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodViewController alloc] init];
         selectPaymentMethod.title = BTDropInLocalizedString(SELECT_PAYMENT_METHOD_TITLE);
@@ -362,7 +359,7 @@
 }
 
 - (void)selectPaymentMethodViewControllerDidRequestNew:(BTDropInSelectPaymentMethodViewController *)viewController {
-    [viewController.navigationController pushViewController:[self addPaymentMethodDropInViewController] animated:YES];
+    [viewController.navigationController pushViewController:self.addPaymentMethodDropInViewController animated:YES];
 }
 
 #pragma mark BTDropInViewControllerDelegate implementation
@@ -389,29 +386,21 @@
     }
 }
 
-- (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
-    // If the button is in our view hierarchy and we are its delegate,
-    // then it is our job to dismiss the given view controller as requested.
-    // This is the "normal" case. See payPalButtonWillCreatePayPalPaymentMethod:
-    // below for the other case: "returning"
-    if (sender == self.dropInContentView.paymentButton) {
-        [viewController dismissViewControllerAnimated:YES completion:nil];
+- (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(__unused UIViewController *)viewController {
+
+    // If there is a presented view controller, dismiss it.
+    if ([self presentedViewController]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
+
 }
 
 - (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
     NSLog(@"DropIn paymentAuthorizerWillRequestAuthorizationWithAppSwitch:%@", sender);
 }
 
-- (void)paymentMethodCreatorWillProcess:(id)sender {
+- (void)paymentMethodCreatorWillProcess:(__unused id)sender {
     self.dropInContentView.state = BTDropInContentViewStateActivity;
-
-    // Assign button to retainedPayPalButton to increment its reference count
-    // This is a bit of duct-tape to make sure that the network activity and subsequent async
-    // delegate method invoked by BTPayPalViewController is still executed even after
-    // dismissal of the UI and release of encapsulating View Controller.
-    // Reference count is decremented in subsequent delegate method calls. See below.
-    self.retainedPaymentButton = sender;
 
     // If there is a presented view controller, dismiss it.
     if ([self presentedViewController]) {
@@ -425,8 +414,8 @@
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
 
-    // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
-    self.retainedPaymentButton = nil;
+    // Let the addPaymentMethodDropInViewController release
+    self.addPaymentMethodDropInViewController = nil;
 }
 
 - (void)paymentMethodCreator:(id)sender didFailWithError:(__unused NSError *)error {
@@ -461,8 +450,8 @@
         [self.savePayPalAccountErrorAlert show];
     }
 
-    // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
-    self.retainedPaymentButton = nil;
+    // Let the addPaymentMethodDropInViewController release
+    self.addPaymentMethodDropInViewController = nil;
 }
 
 - (void)paymentMethodCreatorDidCancel:(__unused id)sender {
@@ -472,11 +461,11 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 
-    // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
-    self.retainedPaymentButton = nil;
-
     // Refresh payment methods display
     self.paymentMethods = self.paymentMethods;
+
+    // Let the addPaymentMethodDropInViewController release
+    self.addPaymentMethodDropInViewController = nil;
 }
 
 #pragma mark Delegate Notifications
@@ -645,14 +634,16 @@
 #pragma mark - Helpers
 
 - (BTDropInViewController *)addPaymentMethodDropInViewController {
-    BTDropInViewController *addPaymentMethodViewController = [[BTDropInViewController alloc] initWithClient:self.client];
+    if (!_addPaymentMethodDropInViewController) {
+        _addPaymentMethodDropInViewController = [[BTDropInViewController alloc] initWithClient:self.client];
 
-    addPaymentMethodViewController.title = BTDropInLocalizedString(ADD_PAYMENT_METHOD_VIEW_CONTROLLER_TITLE);
-    addPaymentMethodViewController.fullForm = NO;
-    addPaymentMethodViewController.shouldHideCallToAction = YES;
-    addPaymentMethodViewController.delegate = self;
-    addPaymentMethodViewController.dropInContentView.paymentButton.delegate = self;
-    return addPaymentMethodViewController;
+        _addPaymentMethodDropInViewController.title = BTDropInLocalizedString(ADD_PAYMENT_METHOD_VIEW_CONTROLLER_TITLE);
+        _addPaymentMethodDropInViewController.fullForm = NO;
+        _addPaymentMethodDropInViewController.shouldHideCallToAction = YES;
+        _addPaymentMethodDropInViewController.delegate = self;
+        _addPaymentMethodDropInViewController.dropInContentView.paymentButton.delegate = self;
+    }
+    return _addPaymentMethodDropInViewController;
 }
 
 @end
