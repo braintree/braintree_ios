@@ -24,7 +24,8 @@
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    if (![[self class] validateClient:self.client delegate:self.delegate returnURLScheme:self.returnURLScheme]) {
+    NSError *validationError = [[self class] validateClient:self.client delegate:self.delegate returnURLScheme:self.returnURLScheme];
+    if (validationError) {
         [self.client postAnalyticsEvent:@"ios.paypal.appswitch.can-handle.invalid"];
         return NO;
     }
