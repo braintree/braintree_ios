@@ -33,6 +33,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 @interface BraintreeDemoOneTouchDemoViewController () <BTPaymentMethodCreationDelegate, BTPayPalButtonDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
+@property (nonatomic, strong) BTPaymentProvider *paymentProvider;
 @property (nonatomic, copy) void (^completionBlock)(NSString *nonce);
 
 #pragma mark Integration Methods
@@ -40,7 +41,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 @property (nonatomic, strong) BTPaymentButton *btPaymentButton;
 @property (nonatomic, strong) BraintreeDemoCustomMultiPaymentButtonManager*customPaymentButtonManager;
 
-@property (nonatomic, strong) BTPayPalButton *btPayPalButton;
+@property (nonatomic, strong) BTUIPayPalButton *btPayPalButton;
 @property (nonatomic, strong) BraintreeDemoCustomPayPalButtonManager *customPayPalButtonManager;
 
 @property (nonatomic, strong) BTUIVenmoButton *btVenmoButton;
@@ -67,6 +68,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     self = [self init];
     if (self) {
         self.braintree = braintree;
+        self.paymentProvider = [self.braintree paymentProviderWithDelegate:self];
         self.completionBlock = completionBlock;
     }
     return self;
@@ -93,12 +95,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     }
 
     // Setup btPayPalButton
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    self.btPayPalButton = [self.braintree payPalButtonWithDelegate:self];
-#pragma clang diagnostic pop
-    if (self.btPayPalButton) {
-        self.btPayPalButton.delegate = self;
+    self.btPayPalButton = [[BTUIPayPalButton alloc] init];
+    if (self.btPayPalButton && [self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal]) {
+        [self.btPayPalButton addTarget:self action:@selector(tappedPayPalButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.btPayPalButton];
         [self.btPayPalButton autoCenterInSuperview];
         [self.btPayPalButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
@@ -126,7 +125,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
     // Setup btVenmoButton
     self.btVenmoButton = [[BTUIVenmoButton alloc] initWithFrame:CGRectZero];
-    if (self.btVenmoButton) {
+    if (self.btVenmoButton && [self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeVenmo]) {
         [self.btVenmoButton addTarget:self action:@selector(tappedVenmoButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:self.btVenmoButton];
         [self.btVenmoButton autoCenterInSuperview];
@@ -144,7 +143,6 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
     [self switchToIntegration:self.defaultIntegration animated:NO];
 }
-
 
 #pragma mark Default Integration Technique Persistence
 
@@ -248,7 +246,11 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 }
 
 - (void)tappedVenmoButton:(__unused id)sender {
-    [[self.braintree paymentProviderWithDelegate:self] createPaymentMethod:BTPaymentProviderTypeVenmo];
+    [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
+}
+
+- (void)tappedPayPalButton:(__unused id)sender {
+    [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
 }
 
 #pragma mark -
