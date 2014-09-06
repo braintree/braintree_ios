@@ -97,9 +97,6 @@
     BOOL initiated = NO;
     if (appSwitchOptionEnabled) {
         initiated = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
-        if (initiated) {
-            [self informDelegateWillPerformAppSwitch];
-        }
     }
 
     if(!initiated && viewControllerOptionEnabled) {
