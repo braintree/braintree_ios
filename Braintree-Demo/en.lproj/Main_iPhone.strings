@@ -1,6 +1,6 @@
 
 /* Class = "IBUILabel"; text = "[braintree payPalControlWithCompletion:];"; ObjectID = "2E9-9x-5fB"; */
-"2E9-9x-5fB.text" = "Easy Payments with Venmo and PayPal";
+"2E9-9x-5fB.text" = "[braintree paymentButtonWithDelegate:…]";
 
 /* Class = "IBUILabel"; text = "Transmit nonce to your server → 💰"; ObjectID = "2q2-ZJ-xOe"; */
 "2q2-ZJ-xOe.text" = "Transmit nonce to your server → 💰";
@@ -8,17 +8,14 @@
 /* Class = "IBUILabel"; text = "Transaction"; ObjectID = "4hk-mK-yky"; */
 "4hk-mK-yky.text" = "Transaction";
 
-/* Class = "IBUITableViewSection"; headerTitle = "Step 1: Fetch client token"; ObjectID = "7hw-3T-pMn"; */
-"7hw-3T-pMn.headerTitle" = "Step 1: Fetch client token";
-
 /* Class = "IBUILabel"; text = "[braintree dropinViewControllerWithCompletion:];"; ObjectID = "9x8-Nu-myL"; */
-"9x8-Nu-myL.text" = "[braintree dropinViewControllerWithCompletion:];";
+"9x8-Nu-myL.text" = "[braintree dropinViewControllerWithCompletion:…];";
 
 /* Class = "IBUITableViewSection"; headerTitle = "Step 2: Create Nonce"; ObjectID = "LJb-7g-SHk"; */
-"LJb-7g-SHk.headerTitle" = "Step 2: Create Nonce";
+"LJb-7g-SHk.headerTitle" = "Create a Payment Method";
 
 /* Class = "IBUILabel"; text = "One Touch"; ObjectID = "PaT-fr-JHw"; */
-"PaT-fr-JHw.text" = "One Touch™";
+"PaT-fr-JHw.text" = "One Touch for Venmo & PayPal";
 
 /* Class = "IBUILabel"; text = "[braintree tokenizeCardWithNumber:…];"; ObjectID = "Rp4-mk-GPh"; */
 "Rp4-mk-GPh.text" = "[braintree tokenizeCardWithNumber:…];";
@@ -33,10 +30,10 @@
 "Wop-mr-JDF.text" = "Make a Transaction";
 
 /* Class = "IBUINavigationItem"; title = "Braintree SDK for iOS"; ObjectID = "ZEn-QI-hbv"; */
-"ZEn-QI-hbv.title" = "v.zero dev";
+"ZEn-QI-hbv.title" = "v.zero";
 
 /* Class = "IBUILabel"; text = "Braintree"; ObjectID = "cV4-n0-2WW"; */
-"cV4-n0-2WW.text" = "Braintree";
+"cV4-n0-2WW.text" = "Merchant";
 
 /* Class = "IBUILabel"; text = "[Braintree braintreeWithClientToken:];"; ObjectID = "ccE-ej-MeD"; */
 "ccE-ej-MeD.text" = "[Braintree braintreeWithClientToken:];";
@@ -45,7 +42,7 @@
 "cdT-q9-6cH.text" = "Initialize with a Client Token";
 
 /* Class = "IBUITableViewSection"; headerTitle = "Step 3: Make a Transaction"; ObjectID = "fYo-pp-MTy"; */
-"fYo-pp-MTy.headerTitle" = "Step 3: Make a Transaction";
+"fYo-pp-MTy.headerTitle" = "Create a Transaction";
 
 /* Class = "IBUILabel"; text = "Card Tokenization"; ObjectID = "g1s-7X-ara"; */
 "g1s-7X-ara.text" = "Card Tokenization";

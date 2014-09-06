@@ -15,13 +15,10 @@
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *environmentSelector;
 
 #pragma mark Status Cells
+
 @property (nonatomic, weak) IBOutlet UITableViewCell *braintreeStatusCell;
 @property (nonatomic, weak) IBOutlet UITableViewCell *braintreePaymentMethodNonceCell;
 @property (nonatomic, weak) IBOutlet UITableViewCell *braintreeTransactionCell;
-
-#pragma mark Initialization Cells
-
-@property (nonatomic, weak) IBOutlet UITableViewCell *initializeBraintreeCell;
 
 #pragma mark Drop-In Use Case Cells
 
@@ -54,22 +51,7 @@
 - (void)viewDidLoad {
     [self switchToEnvironment:[BraintreeDemoTransactionService mostRecentlyUsedEnvironment]];
 
-    // Perform a best effort attempt to initialize the session.
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [[BraintreeDemoTransactionService sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
-        if (error) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            return;
-        }
-
-        [[BraintreeDemoTransactionService sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error) {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            if (error) {
-                return;
-            }
-            [self resetWithBraintree:[Braintree braintreeWithClientToken:clientToken] merchantId:merchantId];
-        }];
-    }];
+    [self initializeBraintree];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -81,6 +63,39 @@
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 }
 
+
+#pragma mark Checkout Lifecycle
+
+- (void)initializeBraintree {
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    
+    self.braintree = nil;
+    self.merchantId = nil;
+    self.nonce = nil;
+    self.lastTransactionId = nil;
+
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [[BraintreeDemoTransactionService sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error){
+        if (error) {
+            [self displayError:error forTask:@"Fetching Client Token"];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            return;
+        }
+
+        Braintree *braintree = [Braintree braintreeWithClientToken:clientToken];
+
+        [[BraintreeDemoTransactionService sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error){
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            if (error) {
+                [self displayError:error forTask:@"Fetching Merchant Config"];
+                return;
+            }
+
+            [self resetWithBraintree:braintree merchantId:merchantId];
+        }];
+    }];
+}
+
 - (void)resetWithBraintree:(Braintree *)braintree merchantId:(NSString *)merchantId {
     self.braintree = braintree;
     self.merchantId = merchantId;
@@ -88,19 +103,45 @@
     self.lastTransactionId = nil;
 }
 
+- (void)setNonce:(NSString *)nonce {
+    _nonce = nonce;
+    self.lastTransactionId = nil;
+    [self.tableView reloadData];
+}
+- (void)setLastTransactionId:(NSString *)lastTransactionId {
+    _lastTransactionId = lastTransactionId;
+    [self.tableView reloadData];
+}
+
+- (void)displayError:(NSError *)error forTask:(NSString *)task {
+    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Error %@", task]
+                                message:[error localizedDescription]
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
+    NSLog(@"Failed %@: %@", task, error);
+}
+
+- (BTDropInViewController *)configuredDropInViewController {
+    BTDropInViewController *dropInViewController = [self.braintree dropInViewControllerWithDelegate:self];
+
+    dropInViewController.title = @"Subscribe";
+    dropInViewController.summaryTitle = @"App Fancy Magazine";
+    dropInViewController.summaryDescription = @"53 Week Subscription";
+    dropInViewController.displayAmount = [NSNumberFormatter localizedStringFromNumber:@(19) numberStyle:NSNumberFormatterCurrencyStyle];
+    dropInViewController.callToActionText = @"$19 - Subscribe Now";
+    dropInViewController.shouldHideCallToAction = NO;
+
+    return dropInViewController;
+}
+
+#pragma mark Table View Delegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     UIViewController *demoViewController;
 
-    if (selectedCell == self.initializeBraintreeCell) {
-        // Initialize Braintree
-        demoViewController = [[BraintreeDemoBraintreeInitializationDemoViewController alloc] initWithCompletion:^(Braintree *braintree, NSString *merchantId, NSError *error){
-            [self resetWithBraintree:braintree merchantId:merchantId];
-            if (error) {
-                NSLog(@"Error initializing Braintree: %@", error);
-            }
-        }];
-    } else if (selectedCell == self.dropInPaymentViewControllerCell) {
+    if (selectedCell == self.dropInPaymentViewControllerCell) {
         // Drop-In (vanilla, no customization)
         demoViewController = [self configuredDropInViewController];
     } else if (selectedCell == self.customPayPalCell) {
@@ -140,7 +181,7 @@
 - (void)tableView:(__unused UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(__unused NSIndexPath *)indexPath {
     if (cell == self.braintreeStatusCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.braintree != nil);
-        cell.detailTextLabel.text = self.braintree ? [NSString stringWithFormat:@"Initialized for merchant: %@", self.merchantId] : @"(nil)";
+        cell.detailTextLabel.text = self.braintree ? [NSString stringWithFormat:@"%@", self.merchantId] : @"(nil)";
     } else if (cell == self.braintreePaymentMethodNonceCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil);
         cell.detailTextLabel.text = self.nonce ?: @"(nil)";
@@ -152,7 +193,7 @@
     } else if (cell == self.libraryVersionCell) {
         cell.textLabel.text = [NSString stringWithFormat:@"pod \"Braintree\", \"%@\"", [Braintree libraryVersion]];
     } else {
-        if (!self.braintree && cell != self.initializeBraintreeCell) {
+        if (!self.braintree) {
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.userInteractionEnabled = NO;
             cell.textLabel.enabled = NO;
@@ -165,6 +206,8 @@
         }
     }
 }
+
+#pragma mark UI Actions
 
 - (IBAction)tappedEnvironmentSelector:(UIBarButtonItem *)sender {
     [UIActionSheet showFromBarButtonItem:sender
@@ -207,43 +250,8 @@
 
     [[BraintreeDemoTransactionService sharedService] setEnvironment:environment];
     self.environmentSelector.title = environmentName;
-    self.braintree = nil;
-    self.merchantId = nil;
-    self.nonce = nil;
-    self.lastTransactionId = nil;
 
-}
-
-- (BTDropInViewController *)configuredDropInViewController {
-    BTDropInViewController *dropInViewController = [self.braintree dropInViewControllerWithDelegate:self];
-
-    dropInViewController.title = @"Subscribe";
-    dropInViewController.summaryTitle = @"App Fancy Magazine";
-    dropInViewController.summaryDescription = @"53 Week Subscription";
-    dropInViewController.displayAmount = [NSNumberFormatter localizedStringFromNumber:@(19) numberStyle:NSNumberFormatterCurrencyStyle];
-    dropInViewController.callToActionText = @"$19 - Subscribe Now";
-    dropInViewController.shouldHideCallToAction = NO;
-
-    return dropInViewController;
-}
-
-- (void)setNonce:(NSString *)nonce {
-    _nonce = nonce;
-    self.lastTransactionId = nil;
-    [self.tableView reloadData];
-}
-- (void)setLastTransactionId:(NSString *)lastTransactionId {
-    _lastTransactionId = lastTransactionId;
-    [self.tableView reloadData];
-}
-
-- (void)displayError:(NSError *)error forTask:(NSString *)task {
-    [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Error %@", task]
-                                message:[error localizedDescription]
-                               delegate:nil
-                      cancelButtonTitle:@"OK"
-                      otherButtonTitles:nil] show];
-    NSLog(@"Failed %@: %@", task, error);
+    [self initializeBraintree];
 }
 
 
