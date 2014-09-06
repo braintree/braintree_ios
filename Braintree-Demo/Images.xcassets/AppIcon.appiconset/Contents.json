@@ -1,21 +1,20 @@
 {
   "images" : [
     {
-      "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "58 - Settings.png",
+      "size" : "29x29",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "80 - Spotlight.png",
+      "filename" : "120 - iPhone App Icon-spotlight.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "120 - iPhone App Icon.png",
+      "filename" : "120 - iPhone App Icon@2x.png",
       "scale" : "2x"
     },
     {
@@ -29,25 +28,27 @@
       "scale" : "2x"
     },
     {
-      "idiom" : "ipad",
       "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "120 - iPhone App Icon-ipad-spotlight@1x.png",
       "scale" : "1x"
     },
     {
-      "idiom" : "ipad",
       "size" : "40x40",
+      "idiom" : "ipad",
+      "filename" : "120 - iPhone App Icon-ipad-spotlight@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "76 - iPhone App Icon.png",
+      "filename" : "120 - iPhone App Icon-ipad@1x.png",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "152 - iPad App Icon.png",
+      "filename" : "120 - iPhone App Icon-ipad@2x.png",
       "scale" : "2x"
     }
   ],
