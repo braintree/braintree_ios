@@ -78,14 +78,7 @@
         return;
     }
 
-    BOOL appSwitchInitiated = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
-
-    if (appSwitchInitiated) {
-        [self informDelegateWillPerformAppSwitch];
-    } else {
-        NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorUnknown userInfo:@{ NSLocalizedDescriptionKey: @"Venmo authorization failed" }];
-        [self informDelegateDidFailWithError:error];
-    }
+    [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
 }
 
 #pragma mark PayPal
@@ -203,6 +196,10 @@
 #pragma mark BTAppSwitchingDelegate
 
 - (void)appSwitcherWillInitiate:(__unused id<BTAppSwitching>)switcher {
+    [self informDelegateWillPerformAppSwitch];
+}
+
+- (void)appSwitcherWillSwitch:(__unused id<BTAppSwitching>)switcher {
     [self informDelegateWillPerformAppSwitch];
 }
 
