@@ -22,27 +22,25 @@
     self.client = client;
     self.delegate = delegate;
 
-    if ([client btVenmo_status] == BTVenmoStatusOff) {
-        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.venmo-status-off"];
-        [self informDelegateDidFailWithErrorCode:BTVenmoErrorAppSwitchDisabled localizedDescription:@"Venmo App Switch is not enabled."];
-        return NO;
-    }
-
-    if (!self.returnURLScheme) {
-        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.nil-return-url-scheme"];
-        [self informDelegateDidFailWithErrorCode:BTVenmoErrorInvalidIntegration localizedDescription:@"Venmo App Switch requires you to set a returnURLScheme. Please call +[Braintree setReturnURLScheme:]."];
-        return NO;
-    }
-
-    if (!client.merchantId) {
-        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.nil-merchant-id"];
-        [self informDelegateDidFailWithErrorCode:BTVenmoErrorInvalidIntegration localizedDescription:@"Venmo App Switch could not find all required fields in the client token."];
-        return NO;
-    }
-
-    if (![BTVenmoAppSwitchRequestURL isAppSwitchAvailable]) {
-        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.app-switch-unavailable"];
-        [self informDelegateDidFailWithErrorCode:BTVenmoErrorAppSwitchVenmoAppNotAvailable localizedDescription:@"No version of the Venmo app is installed on this device that is compatible with app switch."];
+    NSError *error = [self availabilityErrorForClient:client];
+    if (error) {
+        switch (error.code) {
+            case BTVenmoErrorAppSwitchDisabled:
+                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.venmo-status-off"];
+                break;
+            case BTVenmoErrorIntegrationReturnURLScheme:
+                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.invalid-return-url-scheme"];
+                break;
+            case BTVenmoErrorIntegrationClientMerchantId:
+                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.invalid-merchant-id"];
+                break;
+            case BTVenmoErrorAppSwitchVenmoAppNotAvailable:
+                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.app-switch-unavailable"];
+                break;
+            default:
+                break;
+        }
+        [self informDelegateDidFailWithError:error];
         return NO;
     }
 
@@ -62,8 +60,38 @@
     return YES;
 }
 
-+ (BOOL)isAvailableForClient:(BTClient *)client {
-    return [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] && client.btVenmo_status != BTVenmoStatusOff;
+
+- (BOOL)isAvailableForClient:(BTClient *)client {
+    return [self availabilityErrorForClient:client] == nil;
+}
+
+- (NSError *)availabilityErrorForClient:(BTClient *)client {
+
+    if ([client btVenmo_status] == BTVenmoStatusOff) {
+        return [NSError errorWithDomain:BTVenmoErrorDomain
+                                   code:BTVenmoErrorAppSwitchDisabled
+                               userInfo:@{ NSLocalizedDescriptionKey:@"Venmo App Switch is not enabled." }];
+    }
+
+    if (!self.returnURLScheme) {
+        return [NSError errorWithDomain:BTVenmoErrorDomain
+                                   code:BTVenmoErrorIntegrationReturnURLScheme
+                               userInfo:@{ NSLocalizedDescriptionKey:@"Venmo App Switch requires you to set a returnURLScheme. Please call +[Braintree setReturnURLScheme:]." }];
+    }
+
+    if (!client.merchantId) {
+        return [NSError errorWithDomain:BTVenmoErrorDomain
+                                   code:BTVenmoErrorIntegrationClientMerchantId
+                               userInfo:@{ NSLocalizedDescriptionKey:@"Venmo App Switch could not find all required fields in the client token." }];
+    }
+
+    if (![BTVenmoAppSwitchRequestURL isAppSwitchAvailable]) {
+        return [NSError errorWithDomain:BTVenmoErrorDomain
+                                   code:BTVenmoErrorAppSwitchVenmoAppNotAvailable
+                               userInfo:@{ NSLocalizedDescriptionKey:@"No version of the Venmo app is installed on this device that is compatible with app switch." }];
+    }
+
+    return nil;
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {

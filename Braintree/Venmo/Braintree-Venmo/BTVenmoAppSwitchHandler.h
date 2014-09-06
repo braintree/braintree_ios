@@ -11,7 +11,7 @@
 /// @param client A BTClient
 ///
 /// @return YES if the Venmo app is installed
-+ (BOOL)isAvailableForClient:(BTClient*)client;
+- (BOOL)isAvailableForClient:(BTClient*)client;
 
 @end
 
