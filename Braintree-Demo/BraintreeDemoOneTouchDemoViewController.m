@@ -324,12 +324,12 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 - (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
     NSLog(@"paymentMethodCreator:%@ requestsPresentationOfViewController:%@", sender, viewController);
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
     NSLog(@"paymentMethodCreator:%@ requestsDismissalOfViewController:%@", sender, viewController);
-    [self.navigationController popToViewController:self animated:YES];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
