@@ -52,7 +52,7 @@
     NSDictionary *views = @{ @"self": self ,
                              @"payPalWordmark": self.payPalWordmark };
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[payPalWordmark(<=wordMarkHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[payPalWordmark(wordMarkHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];

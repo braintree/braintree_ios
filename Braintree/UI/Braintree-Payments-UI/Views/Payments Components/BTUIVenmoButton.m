@@ -54,7 +54,7 @@
     NSDictionary *views = @{ @"self": self ,
                              @"venmoWordmark": self.venmoWordmark };
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[venmoWordmark(<=wordMarkHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[venmoWordmark(wordMarkHeight)]"
                                             options:0
                                             metrics:metrics
                                               views:views]];

@@ -144,7 +144,7 @@
 }
 
 - (CGFloat)paymentButtonWordMarkHeight {
-    return 16.0f;
+    return 18.0f;
 }
 
 
