@@ -275,9 +275,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 - (void)receivePaymentMethod:(BTPaymentMethod *)paymentMethod {
     [self.activityIndicator stopAnimating];
     if ([paymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
-        self.emailLabel.text = [(BTPayPalPaymentMethod *)paymentMethod email];
+        self.emailLabel.text = [NSString stringWithFormat:@"Got a nonce 💎! %@", [(BTPayPalPaymentMethod *)paymentMethod email]];
     } else {
-        self.emailLabel.text = @"Got a nonce!";
+        self.emailLabel.text = @"Got a nonce 💎!";
     }
     
     NSLog(@"Got a nonce! %@", paymentMethod.nonce);
