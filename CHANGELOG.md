@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.3.0 (2014-09-08)
+
+* New feature: One Touch
+
 ## 3.2.0 (2014-09-02)
 
 * Update BTData (fraud) API to match Braintree-Data.js
