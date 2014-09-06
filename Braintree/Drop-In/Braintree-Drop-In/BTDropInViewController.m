@@ -413,13 +413,11 @@
     // Reference count is decremented in subsequent delegate method calls. See below.
     self.retainedPaymentButton = sender;
 
-    // If the button is *not* in our view hierarchy *yet* we are its delegate,
-    // then it is in a presented view controller, which we can now dismiss.
-    // This is the "returning" case. See payPalButton:requestsDismissalOfViewController:
-    // above for the "normal" case.
-    if (sender != self.dropInContentView.paymentButton) {
+    // If there is a presented view controller, dismiss it.
+    if ([self presentedViewController]) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
+
 }
 
 - (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
@@ -434,7 +432,13 @@
 - (void)paymentMethodCreator:(id)sender didFailWithError:(__unused NSError *)error {
     NSString *savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
 
-    if (self.retainedPaymentButton != self.dropInContentView.paymentButton) {
+    if (sender != self.dropInContentView.paymentButton) {
+
+        // If there is a presented view controller, dismiss it.
+        if ([self presentedViewController]) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
@@ -462,9 +466,16 @@
 }
 
 - (void)paymentMethodCreatorDidCancel:(__unused id)sender {
+
+    // If there is a presented view controller, dismiss it.
+    if ([self presentedViewController]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+
     // Decrement PayPal button retain count so it can release if it isn't retained elsewhere. See above "duct-tape" note.
     self.retainedPaymentButton = nil;
 
+    // Refresh payment methods display
     self.paymentMethods = self.paymentMethods;
 }
 
