@@ -83,7 +83,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
                                                                                            action:@selector(showIntegrationChooser:)];
 
     // Setup btPaymentButton
-    self.btPaymentButton = [self.braintree paymentButtonWithPaymentProviderTypes:nil delegate:self];
+    self.btPaymentButton = [self.braintree paymentButtonWithDelegate:self];
     if (self.btPaymentButton) {
         [self.view addSubview:self.btPaymentButton];
         [self.btPaymentButton autoCenterInSuperview];
