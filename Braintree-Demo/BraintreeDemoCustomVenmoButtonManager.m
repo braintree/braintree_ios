@@ -19,6 +19,10 @@
     if (self) {
         self.client = client;
         self.delegate = delegate;
+
+        self.paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
+        self.paymentProvider.delegate = self.delegate;
+
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
         [_button setTitle:@"Venmo (custom button)" forState:UIControlStateNormal];
         [_button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
@@ -35,8 +39,6 @@
 - (void)tappedCustomVenmo:(BraintreeDemoCustomVenmoButtonManager *)sender {
     NSLog(@"You tapped the Venmo button: %@", sender);
 
-    self.paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
-    self.paymentProvider.delegate = self.delegate;
     [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
 }
 
