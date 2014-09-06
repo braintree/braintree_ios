@@ -15,7 +15,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 @interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPaymentMethodCreationDelegate>
 @property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
-@property (nonatomic, strong) BTPaymentProvider *paymentAuthorizer;
+@property (nonatomic, strong) BTPaymentProvider *paymentProvider;
 
 @property (nonatomic, strong) UIView *topBorder;
 @property (nonatomic, strong) UIView *bottomBorder;
@@ -88,8 +88,8 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     [self addSubview:self.topBorder];
     [self addSubview:self.bottomBorder];
 
-    self.paymentAuthorizer = [[BTPaymentProvider alloc] initWithClient:self.client];
-    self.paymentAuthorizer.delegate = self;
+    self.paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
+    self.paymentProvider.delegate = self;
 }
 
 - (CGSize)intrinsicContentSize {
@@ -143,7 +143,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 - (void)setClient:(BTClient *)client {
     _client = client;
-    self.paymentAuthorizer.client = client;
+    self.paymentProvider.client = client;
 }
 
 - (void)setEnabledPaymentMethodTypes:(NSOrderedSet *)enabledPaymentAuthorizationTypes {
@@ -155,10 +155,10 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 - (NSOrderedSet *)filteredEnabledPaymentAuthorizationTypes {
     NSMutableOrderedSet *filteredEnabledPaymentMethods = [self.enabledPaymentMethodTypes mutableCopy];
-    if (![self.paymentAuthorizer supportsAuthorizationType:BTPaymentProviderTypeVenmo]) {
+    if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeVenmo]) {
         [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypeVenmo)];
     }
-    if (![self.paymentAuthorizer supportsAuthorizationType:BTPaymentProviderTypePayPal]) {
+    if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal]) {
         [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypePayPal)];
     }
     return filteredEnabledPaymentMethods;
@@ -215,9 +215,9 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
     NSAssert(self.client, @"BTPaymentButton tapped without a BTClient instance. Please set a client on this payment button: myPaymentButton.client = (BTClient *)myClient;");
     if (indexPath.row == BTPaymentButtonPayPalCellIndex) {
-        [self.paymentAuthorizer createPaymentMethod:BTPaymentProviderTypePayPal];
+        [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
     } else if (indexPath.row == BTPaymentButtonVenmoCellIndex) {
-        [self.paymentAuthorizer createPaymentMethod:BTPaymentProviderTypeVenmo];
+        [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
     } else {
         NSLog(@"Should never happen");
     }

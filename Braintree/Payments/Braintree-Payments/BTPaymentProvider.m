@@ -54,7 +54,7 @@
     }
 }
 
-- (BOOL)supportsAuthorizationType:(BTPaymentProviderType)type {
+- (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type {
     switch (type) {
         case BTPaymentProviderTypePayPal:
             return [self.client btPayPal_isPayPalEnabled];

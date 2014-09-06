@@ -81,8 +81,9 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 /// @param options Authorization options
 - (void)createPaymentMethod:(BTPaymentProviderType)type options:(BTPaymentMethodCreationOptions)options;
 
-/// The set of all available authorization types, represented as NSValues
-/// boxing BTPaymentAuthorizationType.
-- (BOOL)supportsAuthorizationType:(BTPaymentProviderType)type;
+/// Query whether it will be possible to create a payment method of the specified type.
+///
+/// @return YES if this payment provider could create a payment method of the specified type
+- (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type;
 
 @end
