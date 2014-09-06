@@ -210,9 +210,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    BTUIPaymentButtonCollectionViewCell *cell = (BTUIPaymentButtonCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-
+- (void)collectionView:(__unused UICollectionView *)collectionView didSelectItemAtIndexPath:(__unused NSIndexPath *)indexPath {
     NSAssert(self.client, @"BTPaymentButton tapped without a BTClient instance. Please set a client on this payment button: myPaymentButton.client = (BTClient *)myClient;");
     if (indexPath.row == BTPaymentButtonPayPalCellIndex) {
         [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
@@ -221,8 +219,6 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     } else {
         NSLog(@"Should never happen");
     }
-
-    NSLog(@"selected cell: %@", cell);
 }
 
 #pragma mark Delegate informers
