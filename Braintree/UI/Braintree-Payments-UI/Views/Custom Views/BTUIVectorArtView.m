@@ -7,8 +7,6 @@
 {
     CGContextRef ctx = UIGraphicsGetCurrentContext();
     CGContextSaveGState(ctx);
-    NSLog(@"%f/%f, %f/%f", rect.size.width, self.artDimensions.width, rect.size.height, self.artDimensions.height);
-    NSLog(@"%f, %f", rect.size.width/self.artDimensions.width, rect.size.height/self.artDimensions.height);
     CGFloat scaleFactor = MIN(rect.size.width/self.artDimensions.width, rect.size.height/self.artDimensions.height);
     CGContextScaleCTM(ctx, scaleFactor, scaleFactor);
     CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
