@@ -54,7 +54,7 @@
 /// @return A Drop-In view controller to be presented in your app's payment flow.
 - (BTDropInViewController *)dropInViewControllerWithDelegate:(id<BTDropInViewControllerDelegate>)delegate;
 
-/// Creates and returns a payment button for accepting credit card, PayPal and Venmo based payments.
+/// Creates and returns a payment button for accepting PayPal and Venmo based payments.
 ///
 /// Payment method authorization may take place via app switch or via a UI flow in a view controller.
 ///
