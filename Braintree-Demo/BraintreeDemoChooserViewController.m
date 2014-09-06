@@ -58,9 +58,6 @@
     [super viewWillAppear:animated];
 
     [self.tableView reloadData];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithWhite:42/255.0f alpha:1.0f]; // 2a2a2a
-    [self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 }
 
 

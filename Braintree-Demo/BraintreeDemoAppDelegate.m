@@ -15,8 +15,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 
-    //Braintree Orange
-    self.window.tintColor = [UIColor colorWithRed:255/255.0f green:136/255.0f blue:51/255.0f alpha:1.0f];
+    [self setupAppearance];
 
     NSString *paymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
     [Braintree setReturnURLScheme:paymentsURLScheme];
@@ -30,6 +29,14 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
         return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
     }
     return YES;
+}
+
+- (void)setupAppearance {
+    UIColor *pleasantGray = [UIColor colorWithWhite:42/255.0f alpha:1.0f];
+
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setBarTintColor:pleasantGray];
+    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlack];
 }
 
 #if DEBUG
