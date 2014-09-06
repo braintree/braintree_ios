@@ -368,9 +368,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         [enabledPaymentProviderTypes addObject:@(BTPaymentProviderTypeVenmo)];
     }
 
-    self.btPaymentButton.enabledPaymentProviderTypes = enabledPaymentProviderTypes;
+    self.btPaymentButton.enabledPaymentMethodTypes = enabledPaymentProviderTypes;
 
-    NSOrderedSet *actualEnabledPaymentProviderTypes = self.btPaymentButton.enabledPaymentProviderTypes;
+    NSOrderedSet *actualEnabledPaymentProviderTypes = self.btPaymentButton.enabledPaymentMethodTypes;
     [self.payPalPaymentMethodSwitch setOn:[actualEnabledPaymentProviderTypes containsObject:@(BTPaymentProviderTypePayPal)]
                                  animated:YES];
     [self.venmoPaymentMethodSwitch setOn:[actualEnabledPaymentProviderTypes containsObject:@(BTPaymentProviderTypeVenmo)]
