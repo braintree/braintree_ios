@@ -12,10 +12,10 @@
 
 @implementation BTVenmoAppSwitchHandler
 
-@synthesize returnURLScheme;
-@synthesize delegate;
+@synthesize returnURLScheme = _returnURLScheme;
+@synthesize delegate = _delegate;
 
-- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(__unused id<BTAppSwitchingDelegate>)theDelegate {
+- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate {
 
     client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
         metadata.source = BTClientMetadataSourceVenmoApp;
@@ -46,11 +46,9 @@
     BOOL offline = client.btVenmo_status == BTVenmoStatusOffline;
 
     NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:client.merchantId returnURLScheme:self.returnURLScheme offline:offline];
-    self.delegate = theDelegate;
+    self.delegate = delegate;
 
-    if ([self.delegate respondsToSelector:@selector(appSwitcherWillSwitch:)]) {
-        [self.delegate appSwitcherWillSwitch:self];
-    }
+    [self informDelegateWillSwitch];
     BOOL success = [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
     if (success) {
         [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
@@ -69,9 +67,7 @@
 }
 
 - (void)handleReturnURL:(NSURL *)url {
-    if ([self.delegate respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {
-        [self.delegate appSwitcherWillCreatePaymentMethod:self];
-    }
+    [self informDelegateWillCreatePaymentMethod];
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded: {
@@ -84,18 +80,18 @@
                     fakeCard.lastTwo = @"11";
                     fakeCard.type = BTCardTypeVisa;
                     fakeCard.nonce = returnURL.paymentMethod.nonce;
-                    [self.delegate appSwitcher:self didCreatePaymentMethod:fakeCard];
+                    [self informDelegateDidCreatePaymentMethod:fakeCard];
                     break;
                 }
                 case BTVenmoStatusProduction: {
                     [self.client fetchPaymentMethodWithNonce:returnURL.paymentMethod.nonce
                                                      success:^(BTPaymentMethod *paymentMethod){
                                                          [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.success"];
-                                                         [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
+                                                         [self informDelegateDidCreatePaymentMethod:paymentMethod];
                                                      }
                                                      failure:^(NSError *error){
                                                          [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
-                                                         [self.delegate appSwitcher:self didFailWithError:error];
+                                                         [self informDelegateDidFailWithError:error];
                                                      }];
                     break;
                 }
@@ -103,7 +99,7 @@
                     NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
                                                          code:BTVenmoErrorAppSwitchDisabled
                                                      userInfo:@{ NSLocalizedDescriptionKey: @"Received a Venmo app switch return while Venmo is disabled" }];
-                    [self.delegate appSwitcher:self didFailWithError:error];
+                    [self informDelegateDidFailWithError:error];
                     [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.off"];
                     break;
                 }
@@ -113,17 +109,51 @@
         }
         case BTVenmoAppSwitchReturnURLStateFailed:
             [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.error"];
-            [self.delegate appSwitcher:self didFailWithError:returnURL.error];
+            [self informDelegateDidFailWithError:returnURL.error];
             break;
         case BTVenmoAppSwitchReturnURLStateCanceled:
             [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.cancel"];
-            [self.delegate appSwitcherDidCancel:self];
+            [self informDelegateDidCancel];
             break;
         default:
             // should not happen
             break;
     }
 }
+
+#pragma mark Delegate Informers
+
+- (void)informDelegateWillSwitch {
+    if ([self.delegate respondsToSelector:@selector(appSwitcherWillSwitch:)]) {
+        [self.delegate appSwitcherWillSwitch:self];
+    }
+}
+
+- (void)informDelegateWillCreatePaymentMethod {
+    if ([self.delegate respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {
+        [self.delegate appSwitcherWillCreatePaymentMethod:self];
+    }
+}
+
+- (void)informDelegateDidCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    if ([self.delegate respondsToSelector:@selector(appSwitcher:didCreatePaymentMethod:)]) {
+        [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
+    }
+}
+
+- (void)informDelegateDidFailWithError:(NSError *)error {
+    if ([self.delegate respondsToSelector:@selector(appSwitcher:didFailWithError:)]) {
+        [self.delegate appSwitcher:self didFailWithError:error];
+    }
+}
+
+- (void)informDelegateDidCancel {
+    if ([self.delegate respondsToSelector:@selector(appSwitcherDidCancel:)]) {
+        [self.delegate appSwitcherDidCancel:self];
+    }
+}
+
+#pragma mark Singleton
 
 + (instancetype)sharedHandler {
     static BTVenmoAppSwitchHandler *instance;
