@@ -239,7 +239,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 #pragma mark -
 
-- (void)willReceivePaymentMethod {
+- (void)process {
     [self.activityIndicator startAnimating];
     self.emailLabel.text = nil;
 }
@@ -278,7 +278,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 #pragma mark PayPal Button Delegate Methods
 
 - (void)payPalButtonWillCreatePayPalPaymentMethod:(__unused BTPayPalButton *)button {
-    [self willReceivePaymentMethod];
+    [self process];
 }
 
 - (void)payPalButton:(__unused BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
@@ -302,7 +302,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 - (void)appSwitcherWillCreatePaymentMethod:(id<BTAppSwitching>)switcher {
     NSLog(@"appSwitcherWillCreatePaymentMethod:%@", switcher);
-    [self willReceivePaymentMethod];
+    [self process];
 }
 
 - (void)appSwitcher:(id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
@@ -323,36 +323,36 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 #pragma mark PaymentMethodCreationDelegate
 
 - (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
-    NSLog(@"paymentMethodCreator:%@ requestsPresentationOfViewController:%@", sender, viewController);
+    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreator:%@ requestsPresentationOfViewController:%@", sender, viewController);
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
-    NSLog(@"paymentMethodCreator:%@ requestsDismissalOfViewController:%@", sender, viewController);
+    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreator:%@ requestsDismissalOfViewController:%@", sender, viewController);
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
-    NSLog(@"paymentMethodCreatorWillPerformAppSwitch:%@", sender);
+    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreatorWillPerformAppSwitch:%@", sender);
 }
 
 - (void)paymentMethodCreatorWillProcess:(id)sender {
-    NSLog(@"paymentMethodCreatorWillProcess:%@", sender);
-    [self willReceivePaymentMethod];
+    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreatorWillProcess:%@", sender);
+    [self process];
 }
 
 - (void)paymentMethodCreatorDidCancel:(id)sender {
-    NSLog(@"paymentMethodCreatorDidCancel:%@", sender);
+    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreatorDidCancel:%@", sender);
     [self cancel];
 }
 
 - (void)paymentMethodCreator:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    NSLog(@"paymentMethodCreator:%@ didCreatePaymentMethod: %@", sender, paymentMethod);
+    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreator:%@ didCreatePaymentMethod: %@", sender, paymentMethod);
     [self receivePaymentMethod:paymentMethod];
 }
 
 - (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
-    NSLog(@"paymentMethodCreator:%@ error: %@", sender, error);
+    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreator:%@ error: %@", sender, error);
     [self fail:error];
 }
 
