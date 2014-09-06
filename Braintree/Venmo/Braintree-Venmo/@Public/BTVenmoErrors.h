@@ -1,7 +1,9 @@
-@import Foundation;
+#pragma mark BTPaymentAuthorization Errors
 
+/// BTVenmoErrorDomain NSError Domain
 extern NSString *const BTVenmoErrorDomain;
 
+/// BTVenmo NSError Codes
 NS_ENUM(NSInteger, BTVenmoErrorCode) {
     BTVenmoErrorUnknown = 0,
 

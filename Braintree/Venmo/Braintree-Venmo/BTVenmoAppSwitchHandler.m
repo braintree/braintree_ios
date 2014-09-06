@@ -1,4 +1,5 @@
 #import "BTVenmoAppSwitchHandler.h"
+#import "BTVenmoAppSwitchHandler_Internal.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTClient+BTVenmo.h"
@@ -6,10 +7,6 @@
 #import "BTClient_Metadata.h"
 #import "BTMutableCardPaymentMethod.h"
 #import "BTVenmoErrors.h"
-
-@interface BTVenmoAppSwitchHandler ()
-@property (nonatomic, strong) BTClient *client;
-@end
 
 @implementation BTVenmoAppSwitchHandler
 
@@ -74,10 +71,10 @@
 }
 
 - (void)handleReturnURL:(NSURL *)url {
-    [self informDelegateWillCreatePaymentMethod];
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded: {
+            [self informDelegateWillCreatePaymentMethod];
             [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
 
             switch (self.client.btVenmo_status) {
