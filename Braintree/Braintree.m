@@ -62,7 +62,7 @@
 }
 
 - (BTPaymentButton *)paymentButtonWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate paymentProviderTypes:(NSOrderedSet *)types {
-    BTPaymentButton *button = [[BTPaymentButton alloc] initWithPaymentAuthorizationTypes:types];
+    BTPaymentButton *button = [[BTPaymentButton alloc] initWithPaymentProviderTypes:types];
     button.client = self.client;
     button.delegate = delegate;
     return button;

@@ -31,12 +31,12 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     return self;
 }
 
-- (instancetype)initWithPaymentAuthorizationTypes:(NSOrderedSet *)enabledPaymentAuthorizationTypes {
+- (instancetype)initWithPaymentProviderTypes:(NSOrderedSet *)enabledPaymentProviderTypes {
     self = [self init];
     if (self) {
         [self setupViews];
-        if (enabledPaymentAuthorizationTypes) {
-            self.enabledPaymentMethodTypes = enabledPaymentAuthorizationTypes;
+        if (enabledPaymentProviderTypes) {
+            self.enabledPaymentProviderTypes = enabledPaymentProviderTypes;
         }
     }
     return self;
@@ -61,7 +61,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 - (void)setupViews {
     self.clipsToBounds = YES;
-    self.enabledPaymentMethodTypes = [NSOrderedSet orderedSetWithObjects:@(BTPaymentProviderTypePayPal), @(BTPaymentProviderTypeVenmo), nil];
+    self.enabledPaymentProviderTypes = [NSOrderedSet orderedSetWithObjects:@(BTPaymentProviderTypePayPal), @(BTPaymentProviderTypeVenmo), nil];
 
     BTUIHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTUIHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;
@@ -93,7 +93,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 }
 
 - (CGSize)intrinsicContentSize {
-    CGFloat height = self.enabledPaymentMethodTypes.count > 0 ? 44 : 0;
+    CGFloat height = self.enabledPaymentProviderTypes.count > 0 ? 44 : 0;
 
     return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }
@@ -146,15 +146,15 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     self.paymentProvider.client = client;
 }
 
-- (void)setEnabledPaymentMethodTypes:(NSOrderedSet *)enabledPaymentAuthorizationTypes {
-    _enabledPaymentMethodTypes = enabledPaymentAuthorizationTypes;
+- (void)setEnabledPaymentProviderTypes:(NSOrderedSet *)enabledPaymentProviderTypes {
+    _enabledPaymentProviderTypes = enabledPaymentProviderTypes;
 
     [self invalidateIntrinsicContentSize];
     [self.paymentButtonsCollectionView reloadData];
 }
 
-- (NSOrderedSet *)filteredEnabledPaymentAuthorizationTypes {
-    NSMutableOrderedSet *filteredEnabledPaymentMethods = [self.enabledPaymentMethodTypes mutableCopy];
+- (NSOrderedSet *)filteredEnabledPaymentProviderTypes {
+    NSMutableOrderedSet *filteredEnabledPaymentMethods = [self.enabledPaymentProviderTypes mutableCopy];
     if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeVenmo]) {
         [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypeVenmo)];
     }
@@ -168,7 +168,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 - (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(__unused NSInteger)section {
     NSParameterAssert(section == 0);
-    return [self.filteredEnabledPaymentAuthorizationTypes count];
+    return [self.filteredEnabledPaymentProviderTypes count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -178,8 +178,8 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
                                                                                         forIndexPath:indexPath];
 
     NSInteger index = indexPath.row;
-    NSNumber *paymentAuthorizationTypeNumber = self.filteredEnabledPaymentAuthorizationTypes[index];
-    BTPaymentProviderType paymentMethod = [paymentAuthorizationTypeNumber integerValue];
+    NSNumber *paymentProviderTypeNumber = self.filteredEnabledPaymentProviderTypes[index];
+    BTPaymentProviderType paymentMethod = [paymentProviderTypeNumber integerValue];
 
     UIControl *paymentButton;
     switch (paymentMethod) {
@@ -269,7 +269,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     }
 }
 
-#pragma mark - BTPaymentAuthorizer Delegate
+#pragma mark - BTPaymentProvider Delegate
 
 - (void)paymentMethodCreator:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
     [self informDelegateRequestsPresentationOfViewController:viewController];

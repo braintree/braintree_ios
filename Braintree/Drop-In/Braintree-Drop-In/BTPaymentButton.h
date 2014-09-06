@@ -7,12 +7,12 @@
 
 @interface BTPaymentButton : BTUIThemedView
 
-- (instancetype)initWithPaymentAuthorizationTypes:(NSOrderedSet *)paymentAuthorizationTypes;
+- (instancetype)initWithPaymentProviderTypes:(NSOrderedSet *)paymentAuthorizationTypes;
 - (id)initWithFrame:(CGRect)frame;
 - (id)initWithCoder:(NSCoder *)aDecoder;
 - (id)init;
 
-@property (nonatomic, strong) NSOrderedSet *enabledPaymentMethodTypes;
+@property (nonatomic, strong) NSOrderedSet *enabledPaymentProviderTypes;
 
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
