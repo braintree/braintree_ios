@@ -17,6 +17,7 @@ target 'Braintree-Demo' do
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
   pod 'UIActionSheet+Blocks'
+  pod 'UIAlertView+Blocks'
   pod 'FLEX'
 end
 

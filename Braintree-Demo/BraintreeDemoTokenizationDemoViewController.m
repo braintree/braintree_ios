@@ -1,6 +1,7 @@
 #import "BraintreeDemoTokenizationDemoViewController.h"
 
 #import <Braintree/Braintree.h>
+#import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 @interface BraintreeDemoTokenizationDemoViewController ()
 
@@ -26,7 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"Custom: Tokenization";
+    self.title = @"Tokenization";
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     self.navigationItem.rightBarButtonItems = @[
                                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
@@ -36,7 +37,9 @@
                                                                                               target:self
                                                                                               action:@selector(setupDemoData)]
                                                 ];
+}
 
+- (void)viewDidAppear:(__unused BOOL)animated {
     [self.cardNumberField becomeFirstResponder];
 }
 
@@ -53,13 +56,19 @@
                                         [[[UIAlertView alloc] initWithTitle:@"Error"
                                                                     message:[error localizedDescription]
                                                                    delegate:nil
-                                                          cancelButtonTitle:@"Ok"
+                                                          cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil] show];
                                     }
 
                                     if (nonce) {
                                         NSLog(@"Card tokenized -> Nonce Received: %@", nonce);
-                                        self.completionBlock(nonce);
+                                        [UIAlertView showWithTitle:@"Success"
+                                                           message:@"Nonce Received"
+                                                 cancelButtonTitle:@"OK"
+                                                 otherButtonTitles:nil
+                                                          tapBlock:^(__unused UIAlertView *alertView, __unused NSInteger buttonIndex) {
+                                                              self.completionBlock(nonce);
+                                                          }];
                                     }
                                 }];
 }

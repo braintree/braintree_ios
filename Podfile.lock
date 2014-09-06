@@ -60,6 +60,7 @@ PODS:
   - PureLayout (1.0.1)
   - Specta (0.2.1)
   - UIActionSheet+Blocks (0.8.1)
+  - UIAlertView+Blocks (0.8.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
@@ -81,6 +82,7 @@ DEPENDENCIES:
   - PureLayout
   - Specta (~> 0.2.1)
   - UIActionSheet+Blocks
+  - UIAlertView+Blocks
 
 EXTERNAL SOURCES:
   Braintree:
@@ -100,5 +102,6 @@ SPEC CHECKSUMS:
   PureLayout: 972964b21dbcbc5cc36785aed16aba03176f057d
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
   UIActionSheet+Blocks: c8b9c02f3d08964e8f7a4202f004a639c15eab80
+  UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
 
 COCOAPODS: 0.33.1
