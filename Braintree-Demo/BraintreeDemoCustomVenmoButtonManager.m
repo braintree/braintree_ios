@@ -6,6 +6,7 @@
 
 @interface BraintreeDemoCustomVenmoButtonManager ()
 @property (nonatomic, strong) BTClient *client;
+@property (nonatomic, strong) BTPaymentProvider *paymentProvider;
 @property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
 @end
 
@@ -28,15 +29,15 @@
 }
 
 - (UIButton *)button {
-    return [BTVenmoAppSwitchHandler isAvailableForClient:self.client] ? _button : nil;
+    return [self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeVenmo] ? _button : nil;
 }
 
 - (void)tappedCustomVenmo:(BraintreeDemoCustomVenmoButtonManager *)sender {
     NSLog(@"You tapped the Venmo button: %@", sender);
 
-    BTPaymentProvider *provider = [[BTPaymentProvider alloc] initWithClient:self.client];
-    provider.delegate = self.delegate;
-    [provider createPaymentMethod:BTPaymentProviderTypeVenmo];
+    self.paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
+    self.paymentProvider.delegate = self.delegate;
+    [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
 }
 
 @end
