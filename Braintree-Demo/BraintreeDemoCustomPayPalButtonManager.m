@@ -10,6 +10,8 @@
 
 @implementation BraintreeDemoCustomPayPalButtonManager
 
+@synthesize button = _button;
+
 - (id)initWithClient:(BTClient *)client delegate:(id<BTPaymentMethodCreationDelegate>)delegate {
     self = [self init];
     if (self) {
@@ -23,6 +25,10 @@
         [_button addTarget:self action:@selector(tappedCustomPayPal:) forControlEvents:UIControlEventTouchUpInside];
     }
     return self;
+}
+
+- (UIButton *)button {
+    return [self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal] ? _button : nil;
 }
 
 - (void)tappedCustomPayPal:(BraintreeDemoCustomPayPalButtonManager *)sender {
