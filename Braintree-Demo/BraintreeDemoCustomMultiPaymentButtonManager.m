@@ -10,7 +10,7 @@
 
 @property (nonatomic, weak) id<BTPaymentMethodCreationDelegate>delegate;
 
-@property (nonatomic, strong) UIViewController *cardViewController;
+@property (nonatomic, strong) UINavigationController *cardFormNavigationViewController;
 @property (nonatomic, strong) BTUICardFormView *cardForm;
 @property (nonatomic, strong) Braintree *braintree;
 
@@ -87,33 +87,32 @@
         self.cardForm.optionalFields = BTUICardFormOptionalFieldsNone;
 
         UIViewController *cardFormViewController = [[UIViewController alloc] init];
-        [cardFormViewController.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+        cardFormViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                                                target:self
+                                                                                                                action:@selector(cancel)];
+        cardFormViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                                                                   target:self
-                                                                                                                  action:@selector(saveCardVC)]];
+                                                                                                                  action:@selector(saveCardVC)];
+        cardFormViewController.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone;
+
         cardFormViewController.title = @"💳";
         [cardFormViewController.view addSubview:self.cardForm];
         cardFormViewController.view.backgroundColor = sender.backgroundColor;
+
         [self.cardForm autoPinToTopLayoutGuideOfViewController:cardFormViewController withInset:40];
         [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
         [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
 
-        self.cardViewController = cardFormViewController;
+        self.cardFormNavigationViewController = [[UINavigationController alloc] initWithRootViewController:cardFormViewController];
+
+        [self.delegate paymentMethodCreator:self requestsPresentationOfViewController:self.cardFormNavigationViewController];
     } else {
         [self.paymentProvider createPaymentMethod:sender.tag];
     }
 }
 
-- (void)setCardViewController:(UINavigationController *)cardViewController {
-    _cardViewController = cardViewController;
-    if (cardViewController) {
-        [self.delegate paymentMethodCreator:self requestsPresentationOfViewController:cardViewController];
-    } else {
-        [self.delegate paymentMethodCreator:self requestsDismissalOfViewController:cardViewController];
-    }
-}
-
 - (void)cancelCardVC {
-    self.cardViewController = nil;
+    [self.delegate paymentMethodCreator:self requestsDismissalOfViewController:self.cardFormNavigationViewController];
 }
 
 - (void)saveCardVC {
