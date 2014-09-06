@@ -30,7 +30,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
 NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey";
 
 
-@interface BraintreeDemoOneTouchDemoViewController () <BTPaymentMethodCreationDelegate, BTPayPalButtonDelegate>
+@interface BraintreeDemoOneTouchDemoViewController () <BTPaymentMethodCreationDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, strong) BTPaymentProvider *paymentProvider;
@@ -289,24 +289,6 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 - (void)cancel {
     [self.activityIndicator stopAnimating];
     self.emailLabel.text = @"Canceled 🔰";
-}
-
-#pragma mark PayPal Button Delegate Methods
-
-- (void)payPalButtonWillCreatePayPalPaymentMethod:(__unused BTPayPalButton *)button {
-    [self process];
-}
-
-- (void)payPalButton:(__unused BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod {
-    [self receivePaymentMethod:paymentMethod];
-}
-
-- (void)payPalButton:(__unused BTPayPalButton *)button didFailWithError:(NSError *)error {
-    [self fail:error];
-}
-
-- (void)payPalButtonDidCancel {
-    [self cancel];
 }
 
 #pragma mark PaymentMethodCreationDelegate
