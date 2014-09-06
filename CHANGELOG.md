@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## 3.3.0-rc8 (2014-09-06)
+
+* Bug fixes
+* Known Issues
+  * PayPal view controller fails to dismiss when user taps cancel in certain cases
+  * Venmo app switch is not yet enabled on Production
+
 ## 3.3.0-rc7 (2014-09-06)
 
 * Known Issues
