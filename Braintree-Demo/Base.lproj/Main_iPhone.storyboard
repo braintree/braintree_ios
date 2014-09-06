@@ -252,6 +252,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Braintree SDK" id="ZEn-QI-hbv">
+                        <barButtonItem key="leftBarButtonItem" title="Feedback" id="zOL-h6-wAg">
+                            <connections>
+                                <action selector="tappedGiveFeedback" destination="OhD-eg-98w" id="cqw-sP-w0z"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Sandbox" id="U3F-pU-15a">
                             <connections>
                                 <action selector="tappedEnvironmentSelector:" destination="OhD-eg-98w" id="qM1-LD-aQ8"/>

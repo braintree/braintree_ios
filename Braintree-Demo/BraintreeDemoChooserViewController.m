@@ -1,5 +1,6 @@
 #import "BraintreeDemoChooserViewController.h"
 
+#import <HockeySDK/HockeySDK.h>
 #import <Braintree/Braintree.h>
 #import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
 
@@ -187,6 +188,10 @@
 
                                     [self switchToEnvironment:environment];
                                 }];
+}
+
+- (IBAction)tappedGiveFeedback {
+    [[[BITHockeyManager sharedHockeyManager] feedbackManager] showFeedbackListView];
 }
 
 - (void)switchToEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment {
