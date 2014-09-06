@@ -38,6 +38,7 @@
                 [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.app-switch-unavailable"];
                 break;
             default:
+                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.unrecognized-error"];
                 break;
         }
         [self informDelegateDidFailWithError:error];
