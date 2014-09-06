@@ -1,11 +1,8 @@
 #import "BraintreeDemoOneTouchDemoViewController.h"
 
 #import <Braintree/Braintree.h>
-#import <Braintree/BTClient+BTPayPal.h>
-#import <Braintree/BTVenmoAppSwitchHandler.h>
 
 #import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
-
 #import <PureLayout/PureLayout.h>
 
 #import "BraintreeDemoCustomMultiPaymentButtonManager.h"
@@ -306,33 +303,6 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 }
 
 - (void)payPalButtonDidCancel {
-    [self cancel];
-}
-
-
-#pragma mark App Switcher Delegate
-
-- (void)appSwitcherWillSwitch:(id<BTAppSwitching>)switcher {
-    NSLog(@"appSwitcherWillSwitch:%@", switcher);
-}
-
-- (void)appSwitcherWillCreatePaymentMethod:(id<BTAppSwitching>)switcher {
-    NSLog(@"appSwitcherWillCreatePaymentMethod:%@", switcher);
-    [self process];
-}
-
-- (void)appSwitcher:(id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    NSLog(@"appSwitcher:%@ didCreatePaymentMethod: %@", switcher, paymentMethod);
-    [self receivePaymentMethod:paymentMethod];
-}
-
-- (void)appSwitcher:(id<BTAppSwitching>)switcher didFailWithError:(NSError *)error {
-    NSLog(@"appSwitcher:%@ error: %@", switcher, error);
-    [self fail:error];
-}
-
-- (void)appSwitcherDidCancel:(id<BTAppSwitching>)switcher {
-    NSLog(@"appSwitcherDidCancel:%@", switcher);
     [self cancel];
 }
 
