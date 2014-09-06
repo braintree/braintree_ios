@@ -153,9 +153,11 @@
             self.nonce = nonce;
         }];
     } else if (selectedCell == self.makeATransactionCell) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [[BraintreeDemoTransactionService sharedService]
          makeTransactionWithPaymentMethodNonce:self.nonce
          completion:^(NSString *transactionId, NSError *error){
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
              if (error) {
                  [self displayError:error forTask:@"Creating Transation"];
              } else {
