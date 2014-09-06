@@ -1,8 +1,9 @@
 # Braintree iOS SDK Release Notes
 
-## 3.3.0 (2014-09-08)
+## 3.3.0-rc7 (2014-09-06)
 
-* New feature: One Touch
+* Known Issues
+  * PayPal view controller fails to dismiss when user taps cancel in certain cases
 
 ## 3.2.0 (2014-09-02)
 
