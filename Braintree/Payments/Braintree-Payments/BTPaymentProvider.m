@@ -11,6 +11,7 @@
 #import "BTLogger.h"
 
 @interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate>
+@property (nonatomic, assign) BOOL shouldInformDelegateOfErrors;
 @end
 
 @implementation BTPaymentProvider
@@ -90,13 +91,16 @@
 
     if (!appSwitchOptionEnabled && !viewControllerOptionEnabled) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:@{ NSLocalizedDescriptionKey: @"At least one of BTPaymentAuthorizationOptionMechanismAppSwitch or BTPaymentAuthorizationOptionMechanismViewController must be enabled in options" }];
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
+        [self informDelegateDidFailWithError:error];
         return;
     }
 
     BOOL initiated = NO;
     if (appSwitchOptionEnabled) {
+        // Only report errors to delegate if we have no fallback strategy
+        self.shouldInformDelegateOfErrors = !viewControllerOptionEnabled;
         initiated = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
+        self.shouldInformDelegateOfErrors = YES;
     }
 
     if(!initiated && viewControllerOptionEnabled) {
@@ -157,9 +161,13 @@
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
-    [self.client postAnalyticsEvent:@"ios.authorizer.did-fail-with-error"];
-    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didFailWithError:)]) {
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
+    if (self.shouldInformDelegateOfErrors) {
+        [self.client postAnalyticsEvent:@"ios.authorizer.did-fail-with-error"];
+        if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didFailWithError:)]) {
+            [self.delegate paymentMethodCreator:self didFailWithError:error];
+        }
+    } else {
+        [self.client postAnalyticsEvent:@"ios.authorizer.did-fail-with-fallback"];
     }
 }
 
