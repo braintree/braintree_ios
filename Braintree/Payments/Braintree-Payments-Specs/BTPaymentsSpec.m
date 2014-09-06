@@ -6,7 +6,7 @@
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler.h"
 
-SpecBegin(BTPaymentAuthorizer)
+SpecBegin(BTPaymentProvider)
 
 __block id client;
 __block id delegate;
@@ -15,6 +15,7 @@ beforeEach(^{
     client = [OCMockObject mockForClass:[BTClient class]];
     [[client stub] btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)[OCMArg anyPointer]];
     [[client stub] postAnalyticsEvent:OCMOCK_ANY];
+    [[[client stub] andReturnValue:@YES] btPayPal_isPayPalEnabled];
 
     delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 });
@@ -27,14 +28,14 @@ afterEach(^{
     [delegate stopMocking];
 });
 
-describe(@"authorize:", ^{
+describe(@"createPaymentMethod:", ^{
 
-    __block BTPaymentProviderType paymentAuthorizationType;
-    __block BTPaymentProvider *authorizer;
+    __block BTPaymentProviderType providerType;
+    __block BTPaymentProvider *provider;
 
     beforeEach(^{
-        authorizer = [[BTPaymentProvider alloc] init];
-        authorizer.client = client;
+        provider = [[BTPaymentProvider alloc] initWithClient:client];
+        provider.client = client;
     });
 
     context(@"when type is BTPaymentProviderTypePayPal", ^{
@@ -42,7 +43,7 @@ describe(@"authorize:", ^{
         __block id payPalAppSwitchHandler;
 
         beforeEach(^{
-            paymentAuthorizationType = BTPaymentProviderTypePayPal;
+            providerType = BTPaymentProviderTypePayPal;
 
             payPalAppSwitchHandler = [OCMockObject mockForClass:[BTPayPalAppSwitchHandler class]];
             [[[payPalAppSwitchHandler stub] andReturn:payPalAppSwitchHandler] sharedHandler];
@@ -59,12 +60,10 @@ describe(@"authorize:", ^{
                 [[[payPalAppSwitchHandler stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
             });
 
-            it(@"returns YES and invokes app switch delegate method", ^{
-                [[delegate expect] paymentAuthorizerWillRequestUserChallengeWithAppSwitch:authorizer];
-                authorizer.delegate = delegate;
-
-                BOOL initiated = [authorizer createPaymentMethod:BTPaymentProviderTypePayPal];
-                expect(initiated).to.beTruthy();
+            pending(@"invokes an app switch delegate method", ^{
+                [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
+                provider.delegate = delegate;
+                [provider createPaymentMethod:BTPaymentProviderTypePayPal];
             });
         });
 
@@ -75,13 +74,12 @@ describe(@"authorize:", ^{
             });
 
             it(@"returns YES and invokes view controller delegate method", ^{
-                [[delegate expect] paymentAuthorizer:authorizer requestsUserAuthorizationWithViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
+                [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
                     return [obj isKindOfClass:[UIViewController class]];
                 }]];
-                authorizer.delegate = delegate;
+                provider.delegate = delegate;
 
-                BOOL initiated = [authorizer createPaymentMethod:BTPaymentProviderTypePayPal];
-                expect(initiated).to.beTruthy();
+                [provider createPaymentMethod:BTPaymentProviderTypePayPal];
             });
         });
     });
@@ -95,8 +93,7 @@ describe(@"authorize:", ^{
             venmoAppSwitchHandler = [OCMockObject mockForClass:[BTVenmoAppSwitchHandler class]];
             [[[venmoAppSwitchHandler stub] andReturn:venmoAppSwitchHandler] sharedHandler];
 
-            authorizer = [[BTPaymentProvider alloc] initWithType:BTPaymentProviderTypeVenmo client:client];
-            authorizer.delegate = delegate;
+            provider.delegate = delegate;
         });
 
         context(@"and app switch is available", ^{
@@ -106,11 +103,9 @@ describe(@"authorize:", ^{
             });
 
 
-            it(@"returns YES and invokes an app switch delegate method", ^{
-                [[delegate expect] paymentAuthorizerWillRequestUserChallengeWithAppSwitch:authorizer];
-
-                BOOL initiated = [authorizer authorize];
-                expect(initiated).to.beTruthy();
+            pending(@"invokes an app switch delegate method", ^{
+                [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
+                [provider createPaymentMethod:BTPaymentProviderTypeVenmo];
             });
         });
 
@@ -122,8 +117,7 @@ describe(@"authorize:", ^{
 
 
             it(@"returns NO and does not invokes an app switch delegate method", ^{
-                BOOL initiated = [authorizer authorize];
-                expect(initiated).to.beFalsy();
+                [provider createPaymentMethod:BTPaymentProviderTypeVenmo];
             });
         });
     });

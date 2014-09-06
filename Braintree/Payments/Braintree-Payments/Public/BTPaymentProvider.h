@@ -1,7 +1,7 @@
 @import UIKit;
 @import Foundation;
 
-#import "BTPaymentAuthorizationErrors.h"
+#import "BTPaymentProviderErrors.h"
 #import "BTClient.h"
 #import "BTPaymentMethod.h"
 #import "BTPaymentMethodCreationDelegate.h"

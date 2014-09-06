@@ -73,7 +73,7 @@
 - (void)authorizeVenmo:(BTPaymentMethodCreationOptions)options {
 
     if ((options & BTPaymentAuthorizationOptionMechanismAppSwitch) == 0) {
-        NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorOptionNotSupported userInfo:nil];
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:nil];
         [self.delegate paymentMethodCreator:self didFailWithError:error];
         return;
     }
@@ -89,7 +89,7 @@
     BOOL viewControllerOptionEnabled = (options & BTPaymentAuthorizationOptionMechanismViewController) == BTPaymentAuthorizationOptionMechanismViewController;
 
     if (!appSwitchOptionEnabled && !viewControllerOptionEnabled) {
-        NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorOptionNotSupported userInfo:@{ NSLocalizedDescriptionKey: @"At least one of BTPaymentAuthorizationOptionMechanismAppSwitch or BTPaymentAuthorizationOptionMechanismViewController must be enabled in options" }];
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:@{ NSLocalizedDescriptionKey: @"At least one of BTPaymentAuthorizationOptionMechanismAppSwitch or BTPaymentAuthorizationOptionMechanismViewController must be enabled in options" }];
         [self.delegate paymentMethodCreator:self didFailWithError:error];
         return;
     }
@@ -108,13 +108,13 @@
             [self informDelegateRequestsPresentationOfViewController:braintreePayPalViewController];
             initiated = YES;
         } else {
-            NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorInitialization userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize BTPayPalViewController" }];
+            NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorInitialization userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize BTPayPalViewController" }];
             [self informDelegateDidFailWithError:error];
         }
     }
 
     if (!initiated) {
-        NSError *error = [NSError errorWithDomain:BTPaymentAuthorizationErrorDomain code:BTPaymentAuthorizationErrorUnknown userInfo:@{ NSLocalizedDescriptionKey: @"PayPal authorization failed" }];
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorUnknown userInfo:@{ NSLocalizedDescriptionKey: @"PayPal authorization failed" }];
         [self informDelegateDidFailWithError:error];
     }
 }
