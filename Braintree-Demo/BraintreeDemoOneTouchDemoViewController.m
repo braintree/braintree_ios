@@ -51,6 +51,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 #pragma mark UI Configuration
 
+
+@property (nonatomic, weak) IBOutlet UILabel *venmoPaymentMethodSwitchLabel;
+@property (nonatomic, weak) IBOutlet UILabel *payPalPaymentMethodSwitchLabel;
 @property (nonatomic, weak) IBOutlet UISwitch *venmoPaymentMethodSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *payPalPaymentMethodSwitch;
 
@@ -156,7 +159,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-#pragma mark Integration Chooser
+#pragma mark Integration Chooser Data
 
 - (NSString *)integrationNameForTechnique:(BraintreeDemoOneTouchIntegrationTechnique)integrationTechnique {
     switch (integrationTechnique) {
@@ -200,6 +203,12 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     return paymentButton;
 }
 
+- (BOOL)shouldShowPaymentProviderSwitchForTechnique:(BraintreeDemoOneTouchIntegrationTechnique)integrationTechnique {
+    return integrationTechnique == BraintreeDemoOneTouchIntegrationTechniqueBTPaymentButton;
+}
+
+#pragma mark Integration Chooser
+
 - (void)showIntegrationChooser:(id)sender {
     NSMutableArray *allIntegrationTechniqueNames = [NSMutableArray arrayWithCapacity:[BraintreeDemoOneTouchAllIntegrationTechniques() count]];
     for (NSNumber *integrationTechnique in BraintreeDemoOneTouchAllIntegrationTechniques()) {
@@ -226,8 +235,15 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
                          for (NSNumber *integrationTechnique in BraintreeDemoOneTouchAllIntegrationTechniques()) {
                              [[self integrationButtonForTechnique:[integrationTechnique integerValue]] setAlpha:0.0f];
                          }
+
                          [[self integrationButtonForTechnique:selectedIntegrationTechnique] setAlpha:1.0f];
                          [self setTitle:[self integrationNameForTechnique:selectedIntegrationTechnique]];
+
+                         CGFloat switchesAlpha = [self shouldShowPaymentProviderSwitchForTechnique:selectedIntegrationTechnique] ? 1.0f : 0.0f;
+                         self.venmoPaymentMethodSwitch.alpha = switchesAlpha;
+                         self.payPalPaymentMethodSwitch.alpha = switchesAlpha;
+                         self.venmoPaymentMethodSwitchLabel.alpha = switchesAlpha;
+                         self.payPalPaymentMethodSwitchLabel.alpha = switchesAlpha;
                      }];
     self.emailLabel.text = [self integrationNameForTechnique:selectedIntegrationTechnique];
     [self setDefaultIntegration:selectedIntegrationTechnique];

@@ -9,7 +9,9 @@
                 <outlet property="activityIndicator" destination="J2f-X3-rQB" id="rFR-t4-m75"/>
                 <outlet property="emailLabel" destination="3Z8-Pa-pWG" id="55X-YI-SCD"/>
                 <outlet property="payPalPaymentMethodSwitch" destination="ff1-bs-lRF" id="QMV-hV-fIv"/>
+                <outlet property="payPalPaymentMethodSwitchLabel" destination="Ls0-G1-itS" id="9t1-xC-Z1G"/>
                 <outlet property="venmoPaymentMethodSwitch" destination="oNA-MZ-CYZ" id="TRJ-R0-jKK"/>
+                <outlet property="venmoPaymentMethodSwitchLabel" destination="onK-WL-GfX" id="q3H-tO-k2m"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
