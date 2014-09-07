@@ -93,11 +93,34 @@
 
 }
 
-- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)theDelegate {
+- (NSError *)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)theDelegate {
 
     client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
         metadata.source = BTClientMetadataSourcePayPalApp;
     }];
+
+    NSError *error = [self appSwitchErrorForClient:client];
+    if (error) {
+        if ([error.domain isEqualToString:BTBraintreePayPalErrorDomain]) {
+            switch (error.code) {
+                case BTPayPalErrorPayPalDisabled:
+                    [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.disabled"];
+                case BTPayPalErrorAppSwitchDisabled:
+                    [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.app-switch-disabled"];
+                    break;
+                case BTPayPalErrorAppSwitchUnavailable:
+                    [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.unavailable"];
+                    break;
+                case BTMerchantIntegrationErrorPayPalConfiguration:
+                    [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.invalid"];
+                    break;
+                default:
+                    [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.unrecognized-error"];
+                    break;
+            }
+        }
+        return error;
+    }
 
     self.delegate = theDelegate;
     self.client = client;
@@ -110,15 +133,20 @@
         [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.success"];
         [self informDelegateWillAppSwitch];
     } else {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.failure"];
-        [self informDelegateDidFailWithErrorCode:BTPayPalErrorAppSwitchFailed
-                            localizedDescription:@"Failed to initiate PayPal app switch."];
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.failure"];
+        error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain
+                                    code:BTPayPalErrorAppSwitchFailed
+                                userInfo:@{NSLocalizedDescriptionKey:@"Failed to initiate PayPal app switch."}];
     }
 
-    return payPalTouchDidAuthorize;
+    return error;
 }
 
-- (NSError *)appSwitchErrorWithClient:(BTClient *)client {
+- (BOOL)appSwitchAvailableForClient:(BTClient *)client {
+    return [self appSwitchErrorForClient:client] == nil;
+}
+
+- (NSError *)appSwitchErrorForClient:(BTClient *)client {
     if (![client btPayPal_isPayPalEnabled]){
         return [NSError errorWithDomain:BTBraintreePayPalErrorDomain
                                    code:BTPayPalErrorPayPalDisabled

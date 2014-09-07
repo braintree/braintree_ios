@@ -19,17 +19,19 @@
 ///
 /// @param client A BTClient
 ///
-/// @return Error that will be encountered
-- (NSError *)appSwitchErrorWithClient:(BTClient*)client;
+/// @return       Error that will be encountered
+- (BOOL)appSwitchAvailableForClient:(BTClient*)client;
 
 ///  Perform app switch
 ///
 ///  @param client   A BTClient needed for obtaining app switch configuration,
 ///                  and performing post-switch gateway operations.
 ///  @param delegate A delegate that will receive throughout the app switch cycle
+///                  after successful initiation.
 ///
-///  @return whether app switch is occurring.
-- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate;
+///  @return         Error encountered in attempting to app switch.
+///                  If `nil`, app switch initiation was successful.
+- (NSError *)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate;
 
 ///  Whether this instance can be used to handle this response URL.
 ///
