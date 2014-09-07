@@ -1,3 +1,5 @@
+@import UIKit;
+
 #import "BTVenmoErrors.h"
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler_Internal.h"
@@ -142,14 +144,52 @@ describe(@"An instance", ^{
 
     describe(@"initiateAppSwitchWithClient:delegate:", ^{
 
-        it(@"returns error if client has `btVenmo_status` BTVenmoStatusOff", ^{
+        it(@"returns BTVenmoErrorAppSwitchDisabled error if client has `btVenmo_status` BTVenmoStatusOff", ^{
 
-            [[[client expect] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
+            [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
 
             NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
             expect(error.domain).to.equal(BTVenmoErrorDomain);
             expect(error.code).to.equal(BTVenmoErrorAppSwitchDisabled);
         });
+
+        context(@"btVenmo_status BTVenmoStatusProduction", ^{
+            __block id venmoRequestURL;
+            __block id sharedApplication;
+
+            beforeEach(^{
+                venmoRequestURL = [OCMockObject mockForClass:[BTVenmoAppSwitchRequestURL class]];
+                sharedApplication = [OCMockObject mockForClass:[UIApplication class]];
+                [[[sharedApplication stub] andReturn:sharedApplication] sharedApplication];
+                [[[sharedApplication stub] andReturnValue:@YES] canOpenURL:OCMOCK_ANY];
+
+            });
+
+            afterEach(^{
+                [venmoRequestURL verify];
+                [venmoRequestURL stopMocking];
+            });
+
+            beforeEach(^{
+                [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
+            });
+
+            it(@"returns nil and calls delegate if successfully app switches", ^{
+                handler.returnURLScheme = @"a-scheme";
+                [[[client stub] andReturn:@"a-merchant-id"] merchantId];
+                NSURL *url = [NSURL URLWithString:@"a-scheme://a-host"];
+                [[[venmoRequestURL stub] andReturn:url] appSwitchURLForMerchantID:@"a-merchant-id" returnURLScheme:@"a-scheme" offline:NO];
+                [[[sharedApplication expect] andReturnValue:@YES] openURL:url];
+
+                [[delegate expect] appSwitcherWillSwitch:handler];
+
+                NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
+                expect(error).to.beNil();
+            });
+
+        });
+
+
     });
 
     describe(@"handleReturnURL:", ^{
