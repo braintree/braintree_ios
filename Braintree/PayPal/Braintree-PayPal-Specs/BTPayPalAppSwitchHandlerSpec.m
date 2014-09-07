@@ -113,7 +113,6 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
             it(@"returns nil when PayPalTouch can and does app switch", ^{
                 [[[payPalTouch expect] andReturnValue:@YES] authorizeFuturePayments:OCMOCK_ANY];
-                [[delegate expect] appSwitcherWillSwitch:appSwitchHandler];
                 [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.success"];
                 NSError *error = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
                 expect(error).to.beNil();

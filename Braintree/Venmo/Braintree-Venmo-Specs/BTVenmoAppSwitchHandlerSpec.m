@@ -185,9 +185,8 @@ describe(@"An instance", ^{
                     [[[venmoRequestURL stub] andReturn:url] appSwitchURLForMerchantID:@"a-merchant-id" returnURLScheme:@"a-scheme" offline:NO];
                 });
 
-                it(@"returns nil and calls delegate if successfully app switches", ^{
+                it(@"returns nil if successfully app switches", ^{
                     [[[sharedApplication expect] andReturnValue:@YES] openURL:url];
-                    [[delegate expect] appSwitcherWillSwitch:handler];
 
                     NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
                     expect(error).to.beNil();

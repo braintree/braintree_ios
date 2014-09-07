@@ -57,10 +57,10 @@ describe(@"createPaymentMethod:", ^{
         context(@"and app switch is available", ^{
 
             beforeEach(^{
-                [[[payPalAppSwitchHandler stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
+                [[[payPalAppSwitchHandler stub] andReturn:nil] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
             });
 
-            pending(@"invokes an app switch delegate method", ^{
+            it(@"invokes an app switch delegate method", ^{
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
                 provider.delegate = delegate;
                 [provider createPaymentMethod:BTPaymentProviderTypePayPal];
@@ -70,7 +70,8 @@ describe(@"createPaymentMethod:", ^{
         context(@"and app switch is unavailable", ^{
 
             beforeEach(^{
-                [[[payPalAppSwitchHandler stub] andReturnValue:@NO] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
+                NSError *error = [NSError errorWithDomain:@"a-domain" code:1 userInfo:nil];
+                [[[payPalAppSwitchHandler stub] andReturn:error] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
             });
 
             it(@"returns YES and invokes view controller delegate method", ^{
@@ -99,11 +100,10 @@ describe(@"createPaymentMethod:", ^{
         context(@"and app switch is available", ^{
 
             beforeEach(^{
-                [[[venmoAppSwitchHandler stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
+                [[[venmoAppSwitchHandler stub] andReturn:nil] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
             });
 
-
-            pending(@"invokes an app switch delegate method", ^{
+            it(@"invokes an app switch delegate method", ^{
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
                 [provider createPaymentMethod:BTPaymentProviderTypeVenmo];
             });
@@ -111,12 +111,18 @@ describe(@"createPaymentMethod:", ^{
 
         context(@"and app switch is unavailable", ^{
 
+            NSError *error = [NSError errorWithDomain:@"a-domain" code:1 userInfo:nil];
+
             beforeEach(^{
-                [[[venmoAppSwitchHandler stub] andReturnValue:@NO] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
+                [[[venmoAppSwitchHandler stub] andReturn:error] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY];
             });
 
 
-            it(@"returns NO and does not invokes an app switch delegate method", ^{
+            it(@"returns NO and does not invoke a willAppSwitch delegate method", ^{
+                [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    expect(obj).to.equal(error);
+                    return obj == error;
+                }]];
                 [provider createPaymentMethod:BTPaymentProviderTypeVenmo];
             });
         });

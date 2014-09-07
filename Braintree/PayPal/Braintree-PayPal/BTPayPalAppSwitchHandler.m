@@ -135,7 +135,6 @@
     BOOL payPalTouchDidAuthorize = [PayPalTouch authorizeFuturePayments:configuration];
     if (payPalTouchDidAuthorize) {
         [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.success"];
-        [self informDelegateWillAppSwitch];
     } else {
         [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.failed"];
         error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain
@@ -197,12 +196,6 @@
 
 
 #pragma mark Delegate Method Invocations
-
-- (void)informDelegateWillAppSwitch {
-    if ([self.delegate respondsToSelector:@selector(appSwitcherWillSwitch:)]) {
-        [self.delegate appSwitcherWillSwitch:self];
-    }
-}
 
 - (void)informDelegateWillCreatePayPalPaymentMethod {
     if ([self.delegate respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {

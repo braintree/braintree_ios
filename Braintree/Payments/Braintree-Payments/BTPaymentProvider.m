@@ -78,6 +78,8 @@
     NSError *error = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
     if (error) {
         [self informDelegateDidFailWithError:error];
+    } else {
+        [self informDelegateWillPerformAppSwitch];
     }
 }
 
@@ -108,6 +110,7 @@
             
         } else {
             initiated = YES;
+            [self informDelegateWillPerformAppSwitch];
         }
     }
 

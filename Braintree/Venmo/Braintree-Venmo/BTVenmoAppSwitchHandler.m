@@ -53,7 +53,6 @@
     BOOL success = [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
     if (success) {
         [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
-        [self informDelegateWillSwitch];
     } else {
         [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.failure"];
         return [NSError errorWithDomain:BTVenmoErrorDomain code:BTVenmoErrorAppSwitchFailed userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
@@ -152,12 +151,6 @@
 }
 
 #pragma mark Delegate Informers
-
-- (void)informDelegateWillSwitch {
-    if ([self.delegate respondsToSelector:@selector(appSwitcherWillSwitch:)]) {
-        [self.delegate appSwitcherWillSwitch:self];
-    }
-}
 
 - (void)informDelegateWillCreatePaymentMethod {
     if ([self.delegate respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {
