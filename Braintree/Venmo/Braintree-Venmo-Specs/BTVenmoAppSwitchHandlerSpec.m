@@ -156,6 +156,7 @@ describe(@"An instance", ^{
         context(@"btVenmo_status BTVenmoStatusProduction", ^{
             __block id venmoRequestURL;
             __block id sharedApplication;
+            NSURL *url = [NSURL URLWithString:@"a-scheme://a-host"];
 
             beforeEach(^{
                 venmoRequestURL = [OCMockObject mockForClass:[BTVenmoAppSwitchRequestURL class]];
@@ -168,25 +169,39 @@ describe(@"An instance", ^{
             afterEach(^{
                 [venmoRequestURL verify];
                 [venmoRequestURL stopMocking];
+
+                [sharedApplication verify];
+                [sharedApplication stopMocking];
             });
 
             beforeEach(^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
             });
 
-            it(@"returns nil and calls delegate if successfully app switches", ^{
-                handler.returnURLScheme = @"a-scheme";
-                [[[client stub] andReturn:@"a-merchant-id"] merchantId];
-                NSURL *url = [NSURL URLWithString:@"a-scheme://a-host"];
-                [[[venmoRequestURL stub] andReturn:url] appSwitchURLForMerchantID:@"a-merchant-id" returnURLScheme:@"a-scheme" offline:NO];
-                [[[sharedApplication expect] andReturnValue:@YES] openURL:url];
+            context(@"with valid setup", ^{
+                beforeEach(^{
+                    handler.returnURLScheme = @"a-scheme";
+                    [[[client stub] andReturn:@"a-merchant-id"] merchantId];
+                    [[[venmoRequestURL stub] andReturn:url] appSwitchURLForMerchantID:@"a-merchant-id" returnURLScheme:@"a-scheme" offline:NO];
+                });
 
-                [[delegate expect] appSwitcherWillSwitch:handler];
+                it(@"returns nil and calls delegate if successfully app switches", ^{
+                    [[[sharedApplication expect] andReturnValue:@YES] openURL:url];
+                    [[delegate expect] appSwitcherWillSwitch:handler];
 
-                NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
-                expect(error).to.beNil();
+                    NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
+                    expect(error).to.beNil();
+                });
+
+                it(@"returns error if app switch unexpectedly fails", ^{
+                    [[[sharedApplication expect] andReturnValue:@NO] openURL:url];
+
+                    NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
+                    expect(error.domain).to.equal(BTVenmoErrorDomain);
+                    expect(error.code).to.equal(BTVenmoErrorAppSwitchFailed);
+                });
+
             });
-
         });
 
 
@@ -231,11 +246,11 @@ describe(@"An instance", ^{
                 [[delegate expect] appSwitcherWillCreatePaymentMethod:handler];
                 [[client expect] postAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
                 [[client expect] fetchPaymentMethodWithNonce:@"a-nonce" success:OCMOCK_ANY failure:OCMOCK_ANY];
-
+                
                 // TODO - examine blocks passed to fetchPaymentMethodWithNonce
                 // [[client expect] fetchPaymentMethodWithNonce:@"a-nonce" success:OCMOCK_ANY failure:OCMOCK_ANY];
                 // [[delegate expect] appSwitcher:handler didCreatePaymentMethod:paymentMethod];
-
+                
                 [handler handleReturnURL:returnURL];
             });
         });
