@@ -15,6 +15,13 @@
 /// A delegate that receives messages throughout the app switch cycle
 @property (nonatomic, weak) id<BTAppSwitchingDelegate>delegate;
 
+/// Returns error that will be encountered if trying to initiate app switch
+///
+/// @param client A BTClient
+///
+/// @return Error that will be encountered
+- (NSError *)appSwitchErrorWithClient:(BTClient*)client;
+
 ///  Perform app switch
 ///
 ///  @param client   A BTClient needed for obtaining app switch configuration,

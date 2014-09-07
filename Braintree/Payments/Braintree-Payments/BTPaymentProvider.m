@@ -58,13 +58,10 @@
     switch (type) {
         case BTPaymentProviderTypePayPal:
             return [self.client btPayPal_isPayPalEnabled];
-            break;
         case BTPaymentProviderTypeVenmo:
-            return [[BTVenmoAppSwitchHandler sharedHandler] isAvailableForClient:self.client];
-            break;
+            return nil == [[BTVenmoAppSwitchHandler sharedHandler] appSwitchErrorWithClient:self.client];
         default:
             return NO;
-            break;
     }
 }
 
@@ -78,6 +75,29 @@
         return;
     }
 
+    NSError *error = [[BTVenmoAppSwitchHandler sharedHandler] appSwitchErrorWithClient:self.client];
+    if (error) {
+        if ([error.domain isEqualToString:BTVenmoErrorDomain]) {
+            switch (error.code) {
+                case BTVenmoErrorAppSwitchDisabled:
+                    [self.client postAnalyticsEvent:@"ios.venmo.payments.appswitch.error.venmo-status-off"];
+                    break;
+                case BTVenmoErrorIntegrationReturnURLScheme:
+                    [self.client postAnalyticsEvent:@"ios.venmo.payments.appswitch.error.invalid-return-url-scheme"];
+                    break;
+                case BTVenmoErrorIntegrationClientMerchantId:
+                    [self.client postAnalyticsEvent:@"ios.venmo.payments.appswitch.error.invalid-merchant-id"];
+                    break;
+                case BTVenmoErrorAppSwitchVenmoAppNotAvailable:
+                    [self.client postAnalyticsEvent:@"ios.venmo.payments.appswitch.error.app-switch-unavailable"];
+                    break;
+                default:
+                    [self.client postAnalyticsEvent:@"ios.venmo.payments.appswitch.error.unrecognized-error"];
+                    break;
+            }
+        }
+        [self informDelegateDidFailWithError:error];
+    }
     [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
 }
 
@@ -94,13 +114,46 @@
         return;
     }
 
+    NSError *error;
     BOOL initiated = NO;
     if (appSwitchOptionEnabled) {
-        initiated = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
+        error = [[BTPayPalAppSwitchHandler sharedHandler] appSwitchErrorWithClient:self.client];
+        if (error == nil) {
+
+            initiated = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
+
+        } else {
+
+            NSMutableString *message = [@"PayPal Touch is unavailable." mutableCopy];
+            if (error.userInfo[NSLocalizedDescriptionKey]) {
+                [message appendFormat:@" Reason: \"%@\"", error.userInfo[NSLocalizedDescriptionKey]];
+            }
+            [[BTLogger sharedLogger] log:message];
+
+            if (error) {
+                if ([error.domain isEqualToString:BTBraintreePayPalErrorDomain]) {
+                    switch (error.code) {
+                        case BTPayPalErrorPayPalDisabled:
+                            [self.client postAnalyticsEvent:@"ios.paypal.payments.appswitch.error.disabled"];
+                        case BTPayPalErrorAppSwitchDisabled:
+                            [self.client postAnalyticsEvent:@"ios.paypal.payments.appswitch.error.app-switch-disabled"];
+                            break;
+                        case BTPayPalErrorAppSwitchUnavailable:
+                            [self.client postAnalyticsEvent:@"ios.paypal.payments.appswitch.error.unavailable"];
+                            break;
+                        case BTMerchantIntegrationErrorPayPalConfiguration:
+                            [self.client postAnalyticsEvent:@"ios.paypal.payments.appswitch.error.invalid"];
+                            break;
+                        default:
+                            [self.client postAnalyticsEvent:@"ios.paypal.payments.appswitch.error.unrecognized-error"];
+                            break;
+                    }
+                }
+            }
+        }
     }
 
     if(!initiated && viewControllerOptionEnabled) {
-        [[BTLogger sharedLogger] log:@"PayPal Touch is unavailable: falling back to BTPayPalViewController"];
 
         BTPayPalViewController *braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
         if (braintreePayPalViewController) {
@@ -114,7 +167,11 @@
     }
 
     if (!initiated) {
-        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorUnknown userInfo:@{ NSLocalizedDescriptionKey: @"PayPal authorization failed" }];
+        NSMutableDictionary *userInfo = [@{ NSLocalizedDescriptionKey: @"PayPal authorization failed" } mutableCopy];
+        if (error != nil) {
+            userInfo[NSUnderlyingErrorKey] = error;
+        }
+        [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorUnknown userInfo:userInfo];
         [self informDelegateDidFailWithError:error];
     }
 }

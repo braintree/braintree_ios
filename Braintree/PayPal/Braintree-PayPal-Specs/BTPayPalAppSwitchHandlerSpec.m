@@ -61,7 +61,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                     [[[client expect] andReturnValue:@NO] btPayPal_isTouchDisabled];
                 });
 
-                it(@"returns NO if appSwitchCallbackURLScheme is nil", ^{
+                fit(@"returns NO if appSwitchCallbackURLScheme is nil", ^{
                     appSwitchHandler.returnURLScheme = nil;
                     [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.invalid"];
                     BOOL initiated = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];

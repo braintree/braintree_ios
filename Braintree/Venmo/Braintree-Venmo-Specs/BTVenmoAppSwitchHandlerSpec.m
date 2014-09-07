@@ -38,7 +38,7 @@ describe(@"An instance", ^{
         [delegate stopMocking];
     });
 
-    describe(@"isAvailableForClient:", ^{
+    describe(@"availableWithClient:", ^{
 
         __block id venmoAppSwitchRequestURL;
 
@@ -60,25 +60,25 @@ describe(@"An instance", ^{
             it(@"returns YES if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] and venmo status is production", ^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
-                expect([handler isAvailableForClient:client]).to.beTruthy();
+                expect([handler availableWithClient:client]).to.beTruthy();
             });
 
             it(@"returns YES if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] and venmo status is offline", ^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOffline)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
-                expect([handler isAvailableForClient:client]).to.beTruthy();
+                expect([handler availableWithClient:client]).to.beTruthy();
             });
 
             it(@"returns NO if venmo status is off", ^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
-                expect([handler isAvailableForClient:client]).to.beFalsy();
+                expect([handler availableWithClient:client]).to.beFalsy();
             });
 
             it(@"returns NO if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] returns NO", ^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@NO] isAppSwitchAvailable];
-                expect([handler isAvailableForClient:client]).to.beFalsy();
+                expect([handler availableWithClient:client]).to.beFalsy();
             });
         });
 
@@ -91,18 +91,18 @@ describe(@"An instance", ^{
             it(@"returns YES if merchant is not nil and returnURLScheme is not nil", ^{
                 [[[client stub] andReturn:@"a-merchant-id"] merchantId];
                 handler.returnURLScheme = @"a-scheme";
-                expect([handler isAvailableForClient:client]).to.beTruthy();
+                expect([handler availableWithClient:client]).to.beTruthy();
             });
 
             it(@"returns NO if merchant is nil", ^{
                 handler.returnURLScheme = @"a-scheme";
                 [[[client stub] andReturn:nil] merchantId];
-                expect([handler isAvailableForClient:client]).to.beFalsy();
+                expect([handler availableWithClient:client]).to.beFalsy();
             });
 
             it(@"returns NO if returnURLScheme is nil", ^{
                 [[[client stub] andReturn:@"a-merchant-id"] merchantId];
-                expect([handler isAvailableForClient:client]).to.beFalsy();
+                expect([handler availableWithClient:client]).to.beFalsy();
             });
         });
     });
