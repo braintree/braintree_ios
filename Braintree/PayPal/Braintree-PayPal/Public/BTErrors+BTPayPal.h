@@ -25,4 +25,7 @@ NS_ENUM(NSInteger, BTPayPalErrorCode) {
 
     /// Failed to switch to PayPal when attempting to initiate app switch payment method creation.
     BTPayPalErrorAppSwitchFailed = 6,
+
+    /// Parameters used to initiate app switch are invalid
+    BTPayPalErrorAppSwitchInvalidParameters = 7,
 };

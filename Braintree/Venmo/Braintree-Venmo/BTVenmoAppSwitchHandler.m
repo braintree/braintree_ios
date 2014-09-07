@@ -24,19 +24,19 @@
         if ([error.domain isEqualToString:BTVenmoErrorDomain]) {
             switch (error.code) {
                 case BTVenmoErrorAppSwitchDisabled:
-                    [self.client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.disabled"];
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.disabled"];
                     break;
                 case BTVenmoErrorIntegrationReturnURLScheme:
-                    [self.client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.invalid.return-url-scheme"];
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.invalid.return-url-scheme"];
                     break;
                 case BTVenmoErrorIntegrationClientMerchantId:
-                    [self.client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.invalid.merchant-id"];
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.invalid.merchant-id"];
                     break;
                 case BTVenmoErrorAppSwitchVenmoAppNotAvailable:
-                    [self.client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unavailable"];
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unavailable"];
                     break;
                 default:
-                    [self.client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unrecognized-error"];
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unrecognized-error"];
                     break;
             }
         }
