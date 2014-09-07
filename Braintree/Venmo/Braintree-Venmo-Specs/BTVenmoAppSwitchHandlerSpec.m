@@ -60,25 +60,25 @@ describe(@"An instance", ^{
             it(@"returns YES if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] and venmo status is production", ^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
-                expect([handler availableWithClient:client]).to.beTruthy();
+                expect([handler appSwitchAvailableForClient:client]).to.beTruthy();
             });
 
             it(@"returns YES if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] and venmo status is offline", ^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOffline)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
-                expect([handler availableWithClient:client]).to.beTruthy();
+                expect([handler appSwitchAvailableForClient:client]).to.beTruthy();
             });
 
             it(@"returns NO if venmo status is off", ^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
-                expect([handler availableWithClient:client]).to.beFalsy();
+                expect([handler appSwitchAvailableForClient:client]).to.beFalsy();
             });
 
             it(@"returns NO if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] returns NO", ^{
                 [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@NO] isAppSwitchAvailable];
-                expect([handler availableWithClient:client]).to.beFalsy();
+                expect([handler appSwitchAvailableForClient:client]).to.beFalsy();
             });
         });
 
@@ -91,18 +91,18 @@ describe(@"An instance", ^{
             it(@"returns YES if merchant is not nil and returnURLScheme is not nil", ^{
                 [[[client stub] andReturn:@"a-merchant-id"] merchantId];
                 handler.returnURLScheme = @"a-scheme";
-                expect([handler availableWithClient:client]).to.beTruthy();
+                expect([handler appSwitchAvailableForClient:client]).to.beTruthy();
             });
 
             it(@"returns NO if merchant is nil", ^{
                 handler.returnURLScheme = @"a-scheme";
                 [[[client stub] andReturn:nil] merchantId];
-                expect([handler availableWithClient:client]).to.beFalsy();
+                expect([handler appSwitchAvailableForClient:client]).to.beFalsy();
             });
 
             it(@"returns NO if returnURLScheme is nil", ^{
                 [[[client stub] andReturn:@"a-merchant-id"] merchantId];
-                expect([handler availableWithClient:client]).to.beFalsy();
+                expect([handler appSwitchAvailableForClient:client]).to.beFalsy();
             });
         });
     });
@@ -142,19 +142,13 @@ describe(@"An instance", ^{
 
     describe(@"initiateAppSwitchWithClient:delegate:", ^{
 
-        it(@"returns NO if client has `btVenmo_status` BTVenmoStatusOff", ^{
-
-            [[delegate expect] appSwitcher:handler didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
-                NSError *error = (NSError *)obj;
-                expect(error.domain).to.equal(BTVenmoErrorDomain);
-                expect(error.code).to.equal(BTVenmoErrorAppSwitchDisabled);
-                return YES;
-            }]];
+        it(@"returns error if client has `btVenmo_status` BTVenmoStatusOff", ^{
 
             [[[client expect] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
 
-            [handler initiateAppSwitchWithClient:client delegate:delegate];
-
+            NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
+            expect(error.domain).to.equal(BTVenmoErrorDomain);
+            expect(error.code).to.equal(BTVenmoErrorAppSwitchDisabled);
         });
     });
 
