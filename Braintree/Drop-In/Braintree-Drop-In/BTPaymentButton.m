@@ -10,8 +10,6 @@
 #import "BTUIPaymentButtonCollectionViewCell.h"
 
 NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentButtonCellIdentifier";
-NSInteger BTPaymentButtonPayPalCellIndex = 0;
-NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
 @interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPaymentMethodCreationDelegate>
 @property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
@@ -164,6 +162,12 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     return filteredEnabledPaymentMethods;
 }
 
+- (BTPaymentProviderType)paymentProviderForIndexPath:(NSIndexPath *)indexPath {
+    NSInteger index = indexPath.row;
+    NSNumber *paymentProviderTypeNumber = self.filteredEnabledPaymentProviderTypes[index];
+    return (BTPaymentProviderType)[paymentProviderTypeNumber integerValue];
+}
+
 #pragma mark UICollectionViewDataSource methods
 
 - (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(__unused NSInteger)section {
@@ -176,10 +180,7 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
 
     BTUIPaymentButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier
                                                                                         forIndexPath:indexPath];
-
-    NSInteger index = indexPath.row;
-    NSNumber *paymentProviderTypeNumber = self.filteredEnabledPaymentProviderTypes[index];
-    BTPaymentProviderType paymentMethod = [paymentProviderTypeNumber integerValue];
+    BTPaymentProviderType paymentMethod = [self paymentProviderForIndexPath:indexPath];
 
     UIControl *paymentButton;
     switch (paymentMethod) {
@@ -210,14 +211,20 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     return cell;
 }
 
-- (void)collectionView:(__unused UICollectionView *)collectionView didSelectItemAtIndexPath:(__unused NSIndexPath *)indexPath {
+- (void)collectionView:(__unused UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSAssert(self.client, @"BTPaymentButton tapped without a BTClient instance. Please set a client on this payment button: myPaymentButton.client = (BTClient *)myClient;");
-    if (indexPath.row == BTPaymentButtonPayPalCellIndex) {
-        [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
-    } else if (indexPath.row == BTPaymentButtonVenmoCellIndex) {
+
+    BTPaymentProviderType paymentMethod = [self paymentProviderForIndexPath:indexPath];
+
+    switch (paymentMethod) {
+        case BTPaymentProviderTypePayPal:
+            [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
+            break;
+        case BTPaymentProviderTypeVenmo:
         [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
-    } else {
-        NSLog(@"Should never happen");
+        default:
+            NSLog(@"BTPaymentButton collection view received didSelectItemAtIndexPath for unknown indexPath. This should never happen.");
+            break;
     }
 }
 
