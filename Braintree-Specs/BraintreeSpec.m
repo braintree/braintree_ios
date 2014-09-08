@@ -84,10 +84,10 @@ describe(@"payPalButtonWithCompletion:", ^{
     });
 });
 
-describe(@"paymentButtonWithPaymentProviderTypes:delegate:", ^{
+describe(@"paymentButtonWithDelegate:paymentProviderTypes:", ^{
     it(@"returns a PaymentButton with specified payment providers", ^{
         id enabledPaymentProviderTypes = [NSOrderedSet orderedSetWithObjects:@(BTPaymentProviderTypePayPal), nil];
-        BTPaymentButton *button = [braintree paymentButtonWithPaymentProviderTypes:enabledPaymentProviderTypes delegate:nil];
+        BTPaymentButton *button = [braintree paymentButtonWithDelegate:nil paymentProviderTypes:enabledPaymentProviderTypes];
 
         expect(button).to.beKindOf([BTPaymentButton class]);
         expect(button.enabledPaymentProviderTypes).to.equal(enabledPaymentProviderTypes);
