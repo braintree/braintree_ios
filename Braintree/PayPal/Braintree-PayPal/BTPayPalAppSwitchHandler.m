@@ -103,7 +103,7 @@
     if (appSwitchError) {
         BOOL analyticsEventPosted = NO;
         if ([appSwitchError.domain isEqualToString:BTAppSwitchErrorDomain]) {
-            BOOL analyticsEventPosted = YES;
+            analyticsEventPosted = YES;
             switch (appSwitchError.code) {
                 case BTAppSwitchErrorDisabled:
                     [client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.app-switch-disabled"];

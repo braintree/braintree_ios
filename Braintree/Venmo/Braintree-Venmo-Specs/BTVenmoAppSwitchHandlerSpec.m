@@ -147,7 +147,9 @@ describe(@"An instance", ^{
 
             [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
 
-            NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
+            NSError *error;
+            BOOL handled = [handler initiateAppSwitchWithClient:client delegate:delegate error:&error];
+            expect(handled).to.beFalsy();
             expect(error.domain).to.equal(BTAppSwitchErrorDomain);
             expect(error.code).to.equal(BTAppSwitchErrorDisabled);
         });
@@ -187,14 +189,17 @@ describe(@"An instance", ^{
                 it(@"returns nil if successfully app switches", ^{
                     [[[sharedApplication expect] andReturnValue:@YES] openURL:url];
 
-                    NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
-                    expect(error).to.beNil();
+                    NSError *error;
+                    BOOL handled = [handler initiateAppSwitchWithClient:client delegate:delegate error:&error];
+                    expect(handled).to.beTruthy();
                 });
 
                 it(@"returns error if app switch unexpectedly fails", ^{
                     [[[sharedApplication expect] andReturnValue:@NO] openURL:url];
 
-                    NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
+                    NSError *error;
+                    BOOL handled = [handler initiateAppSwitchWithClient:client delegate:delegate error:&error];
+                    expect(handled).to.beFalsy();
                     expect(error.domain).to.equal(BTAppSwitchErrorDomain);
                     expect(error.code).to.equal(BTAppSwitchErrorFailed);
                 });
