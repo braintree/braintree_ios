@@ -8,7 +8,7 @@ HighLine.color_scheme = HighLine::SampleColorScheme.new
 task :default => %w[sanity_checks spec]
 
 desc "Run default set of tasks"
-task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:payment_authorization]
+task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:payments]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
 task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
@@ -81,10 +81,9 @@ namespace :spec do
   end
 
   desc 'Run Payment Authorization tests'
-  task :payment_authorization do
-    run_test_scheme! 'Braintree-Payment-Authorization-Specs'
+  task :payments do
+    run_test_scheme! 'Braintree-Payments-Specs'
   end
-
 
   desc 'Run Data tests'
   task :data do
@@ -123,7 +122,7 @@ namespace :spec do
   end
 
   desc 'Run all spec schemes'
-  task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:api:integration spec:paypal:integration spec:paypal:acceptance spec:payment-authorization spec:data]
+  task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:api:integration spec:paypal:integration spec:paypal:acceptance spec:payments spec:data]
 end
 
 namespace :demo do
