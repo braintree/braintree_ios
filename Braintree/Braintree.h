@@ -76,7 +76,7 @@
 /// payment provider types and their display order.
 ///
 /// @param delegate a delegate that receives lifecycle updates about the payment method authorization
-/// @param types    payment method types to enable from BTPaymentAuthorizationType. If nil, the button may expose any available payment authorization types.
+/// @param types    payment method types to enable from BTPaymentProviderType. If nil, the button may expose any available payment authorization types.
 ///
 /// @return A button you can add to your checkout flow.
 - (BTPaymentButton *)paymentButtonWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate paymentProviderTypes:(NSOrderedSet *)types;
@@ -109,9 +109,9 @@
 /// If available, this method may initiate One Touch Payments for PayPal or Venmo.
 /// To enable One Touch, you should use setReturnURLSchemes: and handleOpenURL:sourceApplication: (see below).
 ///
-/// @note If you do not wish to implement your own UI, see also dropInViewControllerWithDelegate: and paymentButtonForPaymentAuthorizationTypes:.
+/// @note If you do not wish to implement your own UI, see also dropInViewControllerWithDelegate: and paymentButtonWithDelegate:paymentProviderTypes:.
 ///
-/// @note The payment button touch handlers may initiate view controllers and/or app switching. For fine-grained control, you may use BTPaymentAuthorizer directly.
+/// @note The payment button touch handlers may initiate view controllers and/or app switching. For fine-grained control, you may use BTPaymentProvider directly.
 ///
 /// @see BTDropInViewController
 /// @see BTPaymentButton
@@ -143,7 +143,7 @@
 
 /// A pre-configured BTClient based on your client token.
 ///
-/// You can use this client to initialize various SDK objects, such as BTDropInViewController, BTPaymentButton, BTPaymentAuthorizer, etc.
+/// You can use this client to initialize various SDK objects, such as BTDropInViewController, BTPaymentButton, BTPaymentProvider, etc.
 @property (nonatomic, readonly) BTClient *client;
 
 
