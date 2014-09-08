@@ -13,18 +13,21 @@
 /// The `Braintree` class is the front door to the Braintree SDK for iOS. It contains
 /// everything you need to easily start accepting payments in your mobile app.
 ///
-/// You can choose: Drop-In or Custom.
+/// You can use Drop-In (our own provided UI components), or Custom (your own UI with a
+/// Braintree backend).
 ///
 /// With Drop-In, you can rely us to provide a fast, easy-to-use UI, which your users will
-/// interact with in order to provide payment details. The result, from the programmer's
-/// perspective, is a nonce. Send this nonce to your server to perform a variety of payment 
-/// operations, such as creating a sale.
+/// interact with in order to provide payment details.
 ///
-/// With custom, you have control of your UI, but errors will be handled on the
+/// With Custom, you have control of your UI, but errors will be handled on the
 /// server-side via multiple server-side calls to Braintree. Like Drop-In, the end result is
 /// a nonce, which you may transmit to your servers.
 ///
-/// For advanced integrations, you should use BTClient, BTPayPalButton, BTDropInViewController, etc. directly.
+/// Regardless of how you integrate, the result, from the programmer's perspective, is a `BTPaymentMethod`
+/// that has a `nonce` property. Send this nonce to your server to perform a variety of payment
+/// operations, such as creating a sale.
+///
+/// For advanced integrations, you can use BTClient, BTPaymentButton, BTDropInViewController, etc. directly.
 @interface Braintree : NSObject
 
 /// Returns an instance of `Braintree`, the public interface of Braintree-iOS.
@@ -56,12 +59,12 @@
 
 /// Creates and returns a payment button for accepting PayPal and Venmo based payments.
 ///
-/// Payment method authorization may take place via app switch or via a UI flow in a view controller.
+/// Payment method creation may take place via app switch or via a UI flow in a view controller.
 ///
 /// If available, this button will initiate One Touch Payments for PayPal or Venmo.
 /// To enable One Touch, you should use setReturnURLSchemes: and handleOpenURL:sourceApplication: (see below).
 ///
-/// @note The payment button touch handlers may initiate view controllers and/or app switching. For fine-grained control, you may use BTPaymentAuthorizer directly.
+/// @note The payment button touch handlers may initiate view controllers and/or app switching. For fine-grained control, you may use BTPaymentProvider directly.
 ///
 /// @param delegate a delegate that receives lifecycle updates about the payment method authorization
 ///
