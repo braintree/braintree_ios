@@ -80,6 +80,9 @@
     if (appSwitchSuccess) {
         [self informDelegateWillPerformAppSwitch];
     } else {
+        if (!error) {
+            error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorUnknown userInfo:@{NSLocalizedDescriptionKey: @"App Switch did not initiate, but did not return an error"}];
+        }
         [self informDelegateDidFailWithError:error];
     }
 }
