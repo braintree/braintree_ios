@@ -6,8 +6,8 @@ iOS UI classes for adding PayPal as a Braintree payment option.
 
 This project provides two primary classes:
 
-1. `BTPayPalButton` is a `UIControl` that you can use to offer PayPal as a payment option to your user. It can be used by adding it to your view hierarchy and setting delegate methods.
-2. `BTPayPalViewController` is a `UIViewController` that provides the PayPal authentication UX and – on successful auth – a resulting transactable payment method.
+1. `BTPayPalViewController` is a `UIViewController` that provides the PayPal authentication UX and – on successful auth – a resulting transactable payment method.
+2. `BTPayPalButton` is a `UIControl` that you can use to offer PayPal as a payment option to your user. It can be used by adding it to your view hierarchy and setting delegate methods. **(Deprecated - please see `BTPaymentButton` in the [Payments subspec](../Payments))**
 
 This library depends on `Braintree/API`, which provides `BTClient`, used as an initialization parameter for both of the above.
 

@@ -9,9 +9,6 @@
 
 @optional
 
-/// This message is sent immediately before app switch will be initiated.
-- (void)appSwitcherWillSwitch:(id<BTAppSwitching>)switcher;
-
 /// This message is sent when the user has authorized payment, and the payment method
 /// is about to be created.
 - (void)appSwitcherWillCreatePaymentMethod:(id<BTAppSwitching>)switcher;

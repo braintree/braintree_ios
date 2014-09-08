@@ -13,60 +13,59 @@
 @synthesize returnURLScheme = _returnURLScheme;
 @synthesize delegate = _delegate;
 
-- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate {
+- (NSError *)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate {
 
     client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
         metadata.source = BTClientMetadataSourceVenmoApp;
     }];
 
+    NSError *error = [self appSwitchErrorForClient:client];
+    if (error) {
+        if ([error.domain isEqualToString:BTVenmoErrorDomain]) {
+            switch (error.code) {
+                case BTVenmoErrorAppSwitchDisabled:
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.disabled"];
+                    break;
+                case BTVenmoErrorIntegrationReturnURLScheme:
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.invalid.return-url-scheme"];
+                    break;
+                case BTVenmoErrorIntegrationClientMerchantId:
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.invalid.merchant-id"];
+                    break;
+                case BTVenmoErrorAppSwitchVenmoAppNotAvailable:
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unavailable"];
+                    break;
+                default:
+                    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unrecognized-error"];
+                    break;
+            }
+        }
+        return error;
+    }
+
     self.client = client;
     self.delegate = delegate;
-
-    NSError *error = [self availabilityErrorForClient:client];
-    if (error) {
-        switch (error.code) {
-            case BTVenmoErrorAppSwitchDisabled:
-                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.venmo-status-off"];
-                break;
-            case BTVenmoErrorIntegrationReturnURLScheme:
-                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.invalid-return-url-scheme"];
-                break;
-            case BTVenmoErrorIntegrationClientMerchantId:
-                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.invalid-merchant-id"];
-                break;
-            case BTVenmoErrorAppSwitchVenmoAppNotAvailable:
-                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.app-switch-unavailable"];
-                break;
-            default:
-                [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.unrecognized-error"];
-                break;
-        }
-        [self informDelegateDidFailWithError:error];
-        return NO;
-    }
 
     BOOL offline = client.btVenmo_status == BTVenmoStatusOffline;
 
     NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:client.merchantId returnURLScheme:self.returnURLScheme offline:offline];
 
     BOOL success = [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
-    if (!success) {
-        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.failure"];
-        [self informDelegateDidFailWithErrorCode:BTVenmoErrorAppSwitchFailed localizedDescription:@"UIApplication failed to perform app switch to Venmo."];
-        return NO;
+    if (success) {
+        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
+    } else {
+        [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.failure"];
+        return [NSError errorWithDomain:BTVenmoErrorDomain code:BTVenmoErrorAppSwitchFailed userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
     }
-
-    [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
-    [self informDelegateWillSwitch];
-    return YES;
+    return nil;
 }
 
 
-- (BOOL)isAvailableForClient:(BTClient *)client {
-    return [self availabilityErrorForClient:client] == nil;
+- (BOOL)appSwitchAvailableForClient:(BTClient *)client {
+    return [self appSwitchErrorForClient:client] == nil;
 }
 
-- (NSError *)availabilityErrorForClient:(BTClient *)client {
+- (NSError *)appSwitchErrorForClient:(BTClient *)client {
 
     if ([client btVenmo_status] == BTVenmoStatusOff) {
         return [NSError errorWithDomain:BTVenmoErrorDomain
@@ -152,12 +151,6 @@
 }
 
 #pragma mark Delegate Informers
-
-- (void)informDelegateWillSwitch {
-    if ([self.delegate respondsToSelector:@selector(appSwitcherWillSwitch:)]) {
-        [self.delegate appSwitcherWillSwitch:self];
-    }
-}
 
 - (void)informDelegateWillCreatePaymentMethod {
     if ([self.delegate respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {

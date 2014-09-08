@@ -15,14 +15,25 @@
 /// A delegate that receives messages throughout the app switch cycle
 @property (nonatomic, weak) id<BTAppSwitchingDelegate>delegate;
 
-///  Perform app switch
+/// Checks integration setup and presence of app on device to determine
+/// if app switch is available for the given client.
+///
+/// @param client A BTClient
+///
+/// @return       Whether app switch is available
+- (BOOL)appSwitchAvailableForClient:(BTClient*)client;
+
+///  Attempt to initiate app switch
 ///
 ///  @param client   A BTClient needed for obtaining app switch configuration,
-///                  and performing post-switch gateway operations.
-///  @param delegate A delegate that will receive throughout the app switch cycle
+///                  reporting analytics events, and performing post-switch
+///                  gateway operations.
+///  @param delegate A delegate that will receive messags throughout the app
+///                  switch cycle after successful initiation.
 ///
-///  @return whether app switch is occurring.
-- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate;
+///  @return         Error encountered in attempting to app switch.
+///                  If `nil`, app switch initiation was successful.
+- (NSError *)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate;
 
 ///  Whether this instance can be used to handle this response URL.
 ///
