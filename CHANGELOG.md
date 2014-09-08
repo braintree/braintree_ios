@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+
+## 3.3.0-rc9 (2014-09-07)
+
+* Bug fixes and internal API changes
+* Known Issues
+  * Crasher when app switching to Venmo and CFBundleDisplayName is unavailable
+
+
 ## 3.3.0-rc8 (2014-09-06)
 
 * Bug fixes
