@@ -60,8 +60,8 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
             [[[client stub] andReturnValue:@YES] btPayPal_isTouchDisabled];
             [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.app-switch-disabled"];
             NSError *error = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
-            expect(error.domain).to.equal(BTBraintreePayPalErrorDomain);
-            expect(error.code).to.equal(BTPayPalErrorAppSwitchDisabled);
+            expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+            expect(error.code).to.equal(BTAppSwitchErrorDisabled);
         });
     });
 
@@ -75,25 +75,25 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
         context(@"with invalid parameters", ^{
 
-            it(@"returns a BTPayPalErrorAppSwitchReturnURLScheme error if returnURLScheme is nil", ^{
+            it(@"returns a BTAppSwitchErrorIntegrationReturnURLScheme error if returnURLScheme is nil", ^{
                 appSwitchHandler.returnURLScheme = nil;
                 [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.invalid.return-url-scheme"];
                 NSError *error = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
-                expect(error.domain).to.equal(BTBraintreePayPalErrorDomain);
-                expect(error.code).to.equal(BTPayPalErrorAppSwitchReturnURLScheme);
+                expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+                expect(error.code).to.equal(BTAppSwitchErrorIntegrationReturnURLScheme);
             });
 
-            it(@"returns a BTPayPalErrorAppSwitchInvalidParameters error with a nil delegate", ^{
+            it(@"returns a BTAppSwitchErrorIntegrationInvalidParameters error with a nil delegate", ^{
                 [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.invalid.parameters"];
                 NSError *error = [appSwitchHandler initiateAppSwitchWithClient:client delegate:nil];
-                expect(error.domain).to.equal(BTBraintreePayPalErrorDomain);
-                expect(error.code).to.equal(BTPayPalErrorAppSwitchInvalidParameters);
+                expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+                expect(error.code).to.equal(BTAppSwitchErrorIntegrationInvalidParameters);
             });
 
-            it(@"returns a BTPayPalErrorAppSwitchInvalidParameters error with a nil client", ^{
+            it(@"returns a BTAppSwitchErrorIntegrationInvalidParameters error with a nil client", ^{
                 NSError *error = [appSwitchHandler initiateAppSwitchWithClient:nil delegate:delegate];
-                expect(error.domain).to.equal(BTBraintreePayPalErrorDomain);
-                expect(error.code).to.equal(BTPayPalErrorAppSwitchInvalidParameters);
+                expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+                expect(error.code).to.equal(BTAppSwitchErrorIntegrationInvalidParameters);
             });
 
         });
@@ -103,12 +103,12 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 [[[payPalTouch stub] andReturnValue:@YES] canAppSwitchForUrlScheme:OCMOCK_ANY];
             });
 
-            it(@"returns a BTPayPalErrorAppSwitchFailed error if PayPalTouch fails to app switch", ^{
+            it(@"returns a BTAppSwitchErrorFailed error if PayPalTouch fails to app switch", ^{
                 [[[payPalTouch stub] andReturnValue:@NO] authorizeFuturePayments:OCMOCK_ANY];
                 [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.failed"];
                 NSError *error = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate];
-                expect(error.domain).to.equal(BTBraintreePayPalErrorDomain);
-                expect(error.code).to.equal(BTPayPalErrorAppSwitchFailed);
+                expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+                expect(error.code).to.equal(BTAppSwitchErrorFailed);
             });
 
             it(@"returns nil when PayPalTouch can and does app switch", ^{

@@ -1,4 +1,5 @@
 #import "BTPayPalAppSwitchHandler.h"
+#import "BTAppSwitchErrors.h"
 
 @interface BTPayPalAppSwitchHandler ()
 

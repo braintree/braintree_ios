@@ -3,10 +3,8 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTClient+BTVenmo.h"
-#import "BTVenmoErrors.h"
 #import "BTClient_Metadata.h"
 #import "BTMutableCardPaymentMethod.h"
-#import "BTVenmoErrors.h"
 
 @implementation BTVenmoAppSwitchHandler
 
@@ -21,18 +19,18 @@
 
     NSError *appSwitchError = [self appSwitchErrorForClient:client];
     if (appSwitchError) {
-        if ([appSwitchError.domain isEqualToString:BTVenmoErrorDomain]) {
+        if ([appSwitchError.domain isEqualToString:BTAppSwitchErrorDomain]) {
             switch (appSwitchError.code) {
-                case BTVenmoErrorAppSwitchDisabled:
+                case BTAppSwitchErrorDisabled:
                     [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.disabled"];
                     break;
-                case BTVenmoErrorIntegrationReturnURLScheme:
+                case BTAppSwitchErrorIntegrationReturnURLScheme:
                     [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.invalid.return-url-scheme"];
                     break;
-                case BTVenmoErrorIntegrationClientMerchantId:
+                case BTAppSwitchErrorIntegrationMerchantId:
                     [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.invalid.merchant-id"];
                     break;
-                case BTVenmoErrorAppSwitchVenmoAppNotAvailable:
+                case BTAppSwitchErrorAppNotAvailable:
                     [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unavailable"];
                     break;
                 default:
@@ -59,9 +57,9 @@
     } else {
         [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.failure"];
         if (error) {
-        *error = [NSError errorWithDomain:BTVenmoErrorDomain
-                                     code:BTVenmoErrorAppSwitchFailed
-                                 userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
+            *error = [NSError errorWithDomain:BTAppSwitchErrorDomain
+                                         code:BTAppSwitchErrorFailed
+                                     userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
         }
         return NO;
     }
@@ -76,26 +74,26 @@
 - (NSError *)appSwitchErrorForClient:(BTClient *)client {
 
     if ([client btVenmo_status] == BTVenmoStatusOff) {
-        return [NSError errorWithDomain:BTVenmoErrorDomain
-                                   code:BTVenmoErrorAppSwitchDisabled
+        return [NSError errorWithDomain:BTAppSwitchErrorDomain
+                                   code:BTAppSwitchErrorDisabled
                                userInfo:@{ NSLocalizedDescriptionKey:@"Venmo App Switch is not enabled." }];
     }
 
     if (!self.returnURLScheme) {
-        return [NSError errorWithDomain:BTVenmoErrorDomain
-                                   code:BTVenmoErrorIntegrationReturnURLScheme
+        return [NSError errorWithDomain:BTAppSwitchErrorDomain
+                                   code:BTAppSwitchErrorIntegrationReturnURLScheme
                                userInfo:@{ NSLocalizedDescriptionKey:@"Venmo App Switch requires you to set a returnURLScheme. Please call +[Braintree setReturnURLScheme:]." }];
     }
 
     if (!client.merchantId) {
-        return [NSError errorWithDomain:BTVenmoErrorDomain
-                                   code:BTVenmoErrorIntegrationClientMerchantId
+        return [NSError errorWithDomain:BTAppSwitchErrorDomain
+                                   code:BTAppSwitchErrorIntegrationMerchantId
                                userInfo:@{ NSLocalizedDescriptionKey:@"Venmo App Switch could not find all required fields in the client token." }];
     }
 
     if (![BTVenmoAppSwitchRequestURL isAppSwitchAvailable]) {
-        return [NSError errorWithDomain:BTVenmoErrorDomain
-                                   code:BTVenmoErrorAppSwitchVenmoAppNotAvailable
+        return [NSError errorWithDomain:BTAppSwitchErrorDomain
+                                   code:BTAppSwitchErrorAppNotAvailable
                                userInfo:@{ NSLocalizedDescriptionKey:@"No version of the Venmo app is installed on this device that is compatible with app switch." }];
     }
 
@@ -125,8 +123,8 @@
                                                      }
                                                      failure:^(NSError *error){
                                                          [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
-                                                         NSError *venmoError = [NSError errorWithDomain:BTVenmoErrorDomain
-                                                                                                   code:BTVenmoErrorFailureFetchingPaymentMethod
+                                                         NSError *venmoError = [NSError errorWithDomain:BTAppSwitchErrorDomain
+                                                                                                   code:BTAppSwitchErrorFailureFetchingPaymentMethod
                                                                                                userInfo:@{NSLocalizedDescriptionKey: @"Failed to fetch payment method",
                                                                                                           NSUnderlyingErrorKey: error}];
                                                          [self informDelegateDidFailWithError:venmoError];
@@ -134,8 +132,8 @@
                     break;
                 }
                 case BTVenmoStatusOff: {
-                    NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
-                                                         code:BTVenmoErrorAppSwitchDisabled
+                    NSError *error = [NSError errorWithDomain:BTAppSwitchErrorDomain
+                                                         code:BTAppSwitchErrorDisabled
                                                      userInfo:@{ NSLocalizedDescriptionKey: @"Received a Venmo app switch return while Venmo is disabled" }];
                     [self informDelegateDidFailWithError:error];
                     [self.client postAnalyticsEvent:@"ios.venmo.appswitch.handle.off"];
@@ -179,7 +177,7 @@
 }
 
 - (void)informDelegateDidFailWithErrorCode:(NSInteger)code localizedDescription:(NSString *)localizedDescription {
-    NSError *error = [NSError errorWithDomain:BTVenmoErrorDomain
+    NSError *error = [NSError errorWithDomain:BTAppSwitchErrorDomain
                                          code:code
                                      userInfo:@{ NSLocalizedDescriptionKey:localizedDescription }];
     [self informDelegateDidFailWithError:error];

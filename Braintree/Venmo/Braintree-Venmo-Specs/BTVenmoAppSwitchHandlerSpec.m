@@ -1,6 +1,5 @@
 @import UIKit;
 
-#import "BTVenmoErrors.h"
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler_Internal.h"
 #import "BTVenmoAppSwitchReturnURL.h"
@@ -144,13 +143,13 @@ describe(@"An instance", ^{
 
     describe(@"initiateAppSwitchWithClient:delegate:", ^{
 
-        it(@"returns BTVenmoErrorAppSwitchDisabled error if client has `btVenmo_status` BTVenmoStatusOff", ^{
+        it(@"returns BTAppSwitchErrorDisabled error if client has `btVenmo_status` BTVenmoStatusOff", ^{
 
             [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
 
             NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
-            expect(error.domain).to.equal(BTVenmoErrorDomain);
-            expect(error.code).to.equal(BTVenmoErrorAppSwitchDisabled);
+            expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+            expect(error.code).to.equal(BTAppSwitchErrorDisabled);
         });
 
         context(@"btVenmo_status BTVenmoStatusProduction", ^{
@@ -196,8 +195,8 @@ describe(@"An instance", ^{
                     [[[sharedApplication expect] andReturnValue:@NO] openURL:url];
 
                     NSError *error = [handler initiateAppSwitchWithClient:client delegate:delegate];
-                    expect(error.domain).to.equal(BTVenmoErrorDomain);
-                    expect(error.code).to.equal(BTVenmoErrorAppSwitchFailed);
+                    expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+                    expect(error.code).to.equal(BTAppSwitchErrorFailed);
                 });
 
             });
@@ -245,11 +244,11 @@ describe(@"An instance", ^{
                 [[delegate expect] appSwitcherWillCreatePaymentMethod:handler];
                 [[client expect] postAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
                 [[client expect] fetchPaymentMethodWithNonce:@"a-nonce" success:OCMOCK_ANY failure:OCMOCK_ANY];
-                
+
                 // TODO - examine blocks passed to fetchPaymentMethodWithNonce
                 // [[client expect] fetchPaymentMethodWithNonce:@"a-nonce" success:OCMOCK_ANY failure:OCMOCK_ANY];
                 // [[delegate expect] appSwitcher:handler didCreatePaymentMethod:paymentMethod];
-                
+
                 [handler handleReturnURL:returnURL];
             });
         });
