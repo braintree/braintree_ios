@@ -6,21 +6,29 @@
 
 SpecBegin(PublicInterfaceSanityCheck)
 
-describe(@"the public facing API guaranteed to be stable in this version of the SDK", ^{
+fdescribe(@"the public facing API guaranteed to be stable in this version of the SDK", ^{
     it(@"includes Braintree", ^{
         Braintree *braintree = [OCMockObject mockForClass:[Braintree class]];
         expect([Braintree class]).to.respondTo(@selector(braintreeWithClientToken:));
         expect(braintree).to.respondTo(@selector(dropInViewControllerWithDelegate:));
-        expect(braintree).to.respondTo(@selector(payPalButtonWithDelegate:));
         expect(braintree).to.respondTo(@selector(tokenizeCardWithNumber:expirationMonth:expirationYear:completion:));
         expect([Braintree class]).to.respondTo(@selector(libraryVersion));
         expect(braintree).to.respondTo(@selector(client));
+        expect([Braintree class]).to.respondTo(@selector(setReturnURLScheme:));
+        expect([Braintree class]).to.respondTo(@selector(handleOpenURL:sourceApplication:));
+        expect(braintree).to.respondTo(@selector(paymentProviderWithDelegate:));
+        expect(braintree).to.respondTo(@selector(paymentButtonWithDelegate:));
+        expect(braintree).to.respondTo(@selector(paymentButtonWithDelegate:paymentProviderTypes:));
+
+        // Supported but deprecated
+        expect(braintree).to.respondTo(@selector(payPalButtonWithDelegate:));
     });
 
     it(@"includes BTClient", ^{
         BTClient *client = [OCMockObject mockForClass:[BTClient class]];
         expect(client).to.respondTo(@selector(initWithClientToken:));
         expect(client).to.respondTo(@selector(challenges));
+        expect(client).to.respondTo(@selector(fetchPaymentMethodWithNonce:success:failure:));
         expect(client).to.respondTo(@selector(fetchPaymentMethodsWithSuccess:failure:));
         expect(client).to.respondTo(@selector(saveCardWithNumber:expirationMonth:expirationYear:cvv:postalCode:validate:success:failure:));
         expect(client).to.respondTo(@selector(savePaypalPaymentMethodWithAuthCode:applicationCorrelationID:success:failure:));
