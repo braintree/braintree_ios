@@ -71,6 +71,17 @@
 /// @return A button you can add to your checkout flow.
 - (BTPaymentButton *)paymentButtonWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate;
 
+/// Creates and returns a payment button for accepting PayPal and/or Venmo based payments.
+///
+/// This method has identical behavior to paymentButtonWithDelegate: but allows you to specify the
+/// payment provider types and their display order.
+///
+/// @param delegate a delegate that receives lifecycle updates about the payment method authorization
+/// @param types    payment method types to enable from BTPaymentAuthorizationType. If nil, the button may expose any available payment authorization types.
+///
+/// @return A button you can add to your checkout flow.
+- (BTPaymentButton *)paymentButtonWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate paymentProviderTypes:(NSOrderedSet *)types;
+
 
 #pragma mark Custom
 

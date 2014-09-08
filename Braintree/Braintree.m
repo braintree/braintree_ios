@@ -56,8 +56,13 @@
     return dropInViewController;
 }
 
+
 - (BTPaymentButton *)paymentButtonWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate {
-    BTPaymentButton *button = [[BTPaymentButton alloc] init];
+    return [self paymentButtonWithDelegate:delegate paymentProviderTypes:nil];
+}
+
+- (BTPaymentButton *)paymentButtonWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate paymentProviderTypes:(NSOrderedSet *)types {
+    BTPaymentButton *button = [[BTPaymentButton alloc] initWithPaymentProviderTypes:types];
     button.client = self.client;
     button.delegate = delegate;
     return button;

@@ -31,6 +31,17 @@ NSInteger BTPaymentButtonVenmoCellIndex = 1;
     return self;
 }
 
+- (instancetype)initWithPaymentProviderTypes:(NSOrderedSet *)enabledPaymentProviderTypes {
+    self = [self init];
+    if (self) {
+        [self setupViews];
+        if (enabledPaymentProviderTypes) {
+            self.enabledPaymentProviderTypes = enabledPaymentProviderTypes;
+        }
+    }
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
