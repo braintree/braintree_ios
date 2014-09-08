@@ -89,7 +89,7 @@
         UIViewController *cardFormViewController = [[UIViewController alloc] init];
         cardFormViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                                                 target:self
-                                                                                                                action:@selector(cancel)];
+                                                                                                                action:@selector(cancelCardVC)];
         cardFormViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
                                                                                                                   target:self
                                                                                                                   action:@selector(saveCardVC)];
