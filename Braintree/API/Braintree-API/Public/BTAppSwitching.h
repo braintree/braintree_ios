@@ -31,9 +31,10 @@
 ///  @param delegate A delegate that will receive messags throughout the app
 ///                  switch cycle after successful initiation.
 ///
-///  @return         Error encountered in attempting to app switch.
-///                  If `nil`, app switch initiation was successful.
-- (NSError *)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate;
+///  @param error    Error encountered in attempting to app switch if applicable.
+///
+///  @return whether app switch is occurring.
+- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate error:(NSError * __autoreleasing *)error;
 
 ///  Whether this instance can be used to handle this response URL.
 ///

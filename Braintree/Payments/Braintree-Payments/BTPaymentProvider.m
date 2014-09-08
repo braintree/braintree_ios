@@ -75,11 +75,12 @@
         return;
     }
 
-    NSError *error = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
-    if (error) {
-        [self informDelegateDidFailWithError:error];
-    } else {
+    NSError *error;
+    BOOL appSwitchSuccess = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
+    if (appSwitchSuccess) {
         [self informDelegateWillPerformAppSwitch];
+    } else {
+        [self informDelegateDidFailWithError:error];
     }
 }
 
@@ -100,17 +101,16 @@
     BOOL initiated = NO;
     if (appSwitchOptionEnabled) {
 
-        error = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self];
-        if (error) {
+        BOOL appSwitchSuccess = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
+        if (appSwitchSuccess) {
+            initiated = YES;
+            [self informDelegateWillPerformAppSwitch];
+        } else {
             NSMutableString *message = [@"PayPal Touch is not available." mutableCopy];
             if (error.userInfo[NSLocalizedDescriptionKey]) {
                 [message appendFormat:@" Reason: \"%@\"", error.userInfo[NSLocalizedDescriptionKey]];
             }
             [[BTLogger sharedLogger] log:message];
-            
-        } else {
-            initiated = YES;
-            [self informDelegateWillPerformAppSwitch];
         }
     }
 

@@ -13,16 +13,16 @@
 @synthesize returnURLScheme = _returnURLScheme;
 @synthesize delegate = _delegate;
 
-- (NSError *)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate {
+- (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate error:(NSError *__autoreleasing *)error {
 
     client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
         metadata.source = BTClientMetadataSourceVenmoApp;
     }];
 
-    NSError *error = [self appSwitchErrorForClient:client];
-    if (error) {
-        if ([error.domain isEqualToString:BTVenmoErrorDomain]) {
-            switch (error.code) {
+    NSError *appSwitchError = [self appSwitchErrorForClient:client];
+    if (appSwitchError) {
+        if ([appSwitchError.domain isEqualToString:BTVenmoErrorDomain]) {
+            switch (appSwitchError.code) {
                 case BTVenmoErrorAppSwitchDisabled:
                     [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.disabled"];
                     break;
@@ -40,7 +40,10 @@
                     break;
             }
         }
-        return error;
+        if (error) {
+            *error = appSwitchError;
+        }
+        return NO;
     }
 
     self.client = client;
@@ -55,9 +58,14 @@
         [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
     } else {
         [client postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.failure"];
-        return [NSError errorWithDomain:BTVenmoErrorDomain code:BTVenmoErrorAppSwitchFailed userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
+        if (error) {
+        *error = [NSError errorWithDomain:BTVenmoErrorDomain
+                                     code:BTVenmoErrorAppSwitchFailed
+                                 userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
+        }
+        return NO;
     }
-    return nil;
+    return YES;
 }
 
 
