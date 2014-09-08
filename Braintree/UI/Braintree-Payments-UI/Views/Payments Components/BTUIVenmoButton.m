@@ -73,7 +73,7 @@
                                                         toItem:self.venmoWordmark
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
-                                                      constant:0.0f]];
+                                                      constant:-1.5f]];
 
     [super updateConstraints];
 }

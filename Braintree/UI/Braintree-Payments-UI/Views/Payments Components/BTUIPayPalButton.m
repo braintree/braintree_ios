@@ -71,7 +71,7 @@
                                                         toItem:self.payPalWordmark
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
-                                                      constant:0.0f]];
+                                                      constant:-1.0f]];
 
     [super updateConstraints];
 }
