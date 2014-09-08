@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "3.3.0-rc9"
+  s.version          = "3.3.0"
   s.summary          = "Braintree v.zero SDK. Accept payments in your app"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers

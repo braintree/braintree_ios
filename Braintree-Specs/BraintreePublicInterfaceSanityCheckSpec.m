@@ -6,7 +6,7 @@
 
 SpecBegin(PublicInterfaceSanityCheck)
 
-fdescribe(@"the public facing API guaranteed to be stable in this version of the SDK", ^{
+describe(@"the public facing API guaranteed to be stable in this version of the SDK", ^{
     it(@"includes Braintree", ^{
         Braintree *braintree = [OCMockObject mockForClass:[Braintree class]];
         expect([Braintree class]).to.respondTo(@selector(braintreeWithClientToken:));
