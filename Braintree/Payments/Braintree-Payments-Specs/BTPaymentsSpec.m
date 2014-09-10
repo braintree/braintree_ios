@@ -38,6 +38,45 @@ describe(@"createPaymentMethod:", ^{
         provider.client = client;
     });
 
+    context(@"when type is BTPaymentProviderTypeApplePay", ^{
+        __block id pkPaymentAuthorizationViewController;
+        beforeEach(^{
+            pkPaymentAuthorizationViewController = [OCMockObject mockForClass:[PKPaymentAuthorizationViewController class]];
+        });
+
+        context(@"PKPaymentAuthorizationViewController can NOT make a payment", ^{
+
+            beforeEach(^{
+                [[[pkPaymentAuthorizationViewController stub] andReturnValue:@NO] canMakePayments];
+                provider.delegate = delegate;
+            });
+
+            it(@"calls delegate didFailWithError method", ^{
+                [[delegate expect] paymentMethodCreator:provider didFailWithError:OCMOCK_ANY];
+                [provider createPaymentMethod:BTPaymentProviderTypeApplePay];
+            });
+
+        });
+
+        context(@"PKPaymentAuthorizationViewController CAN make a payment", ^{
+
+            beforeEach(^{
+                [[[pkPaymentAuthorizationViewController stub] andReturnValue:@YES] canMakePayments];
+                [[[pkPaymentAuthorizationViewController stub] andReturn:pkPaymentAuthorizationViewController] alloc];
+                __unused id _ = [[[pkPaymentAuthorizationViewController stub] andReturn:pkPaymentAuthorizationViewController] initWithPaymentRequest:OCMOCK_ANY];
+                [[pkPaymentAuthorizationViewController stub] setDelegate:OCMOCK_ANY];
+                provider.delegate = delegate;
+            });
+
+            it(@"calls delegate didFailWithError method", ^{
+                [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:pkPaymentAuthorizationViewController];
+                [provider createPaymentMethod:BTPaymentProviderTypeApplePay];
+            });
+
+        });
+
+    });
+
     context(@"when type is BTPaymentProviderTypePayPal", ^{
 
         __block id payPalAppSwitchHandler;

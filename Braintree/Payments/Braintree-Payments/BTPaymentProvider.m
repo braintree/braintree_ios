@@ -63,6 +63,8 @@
 
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type {
     switch (type) {
+        case BTPaymentProviderTypeApplePay:
+            return [PKPaymentAuthorizationViewController canMakePayments];
         case BTPaymentProviderTypePayPal:
             return [self.client btPayPal_isPayPalEnabled];
         case BTPaymentProviderTypeVenmo:
@@ -82,13 +84,16 @@
         return;
     }
 
-    if ([PKPaymentAuthorizationViewController canMakePayments]) {
-        PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
-        request.merchantIdentifier = @"apple-pay-merchant-id"; // TODO - get this from client token
-        PKPaymentAuthorizationViewController *applePayViewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
-        applePayViewController.delegate = self;
-        [self informDelegateRequestsPresentationOfViewController:applePayViewController];
+    if (![PKPaymentAuthorizationViewController canMakePayments]) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:nil];
+        [self.delegate paymentMethodCreator:self didFailWithError:error];
+        return;
     }
+    PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+    request.merchantIdentifier = @"apple-pay-merchant-id"; // TODO - get this from client token
+    PKPaymentAuthorizationViewController *applePayViewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
+    applePayViewController.delegate = self;
+    [self informDelegateRequestsPresentationOfViewController:applePayViewController];
 }
 
 #pragma mark Venmo
