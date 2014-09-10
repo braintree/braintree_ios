@@ -276,7 +276,7 @@
     [self informDelegateRequestsDismissalOfAuthorizationViewController:controller];
 }
 
-- (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
 
     [self.client saveApplePayPayment:payment success:^(BTPaymentMethod *applePayPaymentMethod){
         [self informDelegateDidCreatePaymentMethod:applePayPaymentMethod];
@@ -287,7 +287,6 @@
                                 userInfo:@{NSLocalizedDescriptionKey: @"Error processing Apple Payment with Braintree",
                                            NSUnderlyingErrorKey: error}];
         [self informDelegateDidFailWithError:error];
-        [self informDelegateRequestsDismissalOfAuthorizationViewController:controller];
         completion(PKPaymentAuthorizationStatusFailure);
     }];
 }
