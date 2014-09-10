@@ -1,3 +1,5 @@
+@import PassKit;
+
 #import "BTPaymentProvider.h"
 #import "BTClient.h"
 #import "BTAppSwitching.h"
@@ -10,7 +12,9 @@
 
 #import "BTLogger.h"
 
-@interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate>
+
+
+@interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate, PKPaymentAuthorizationViewControllerDelegate>
 @end
 
 @implementation BTPaymentProvider
@@ -34,6 +38,9 @@
             break;
         case BTPaymentProviderTypeVenmo:
             [self authorizeVenmo:options];
+            break;
+        case BTPaymentProviderTypeApplePay:
+            [self authorizeApplePay:options];
             break;
         default:
             break;
@@ -62,6 +69,25 @@
             return [[BTVenmoAppSwitchHandler sharedHandler] appSwitchAvailableForClient:self.client];
         default:
             return NO;
+    }
+}
+
+#pragma mark Apple Pay
+
+- (void)authorizeApplePay:(BTPaymentMethodCreationOptions)options {
+
+    if ((options & BTPaymentAuthorizationOptionMechanismViewController) == 0) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:nil];
+        [self.delegate paymentMethodCreator:self didFailWithError:error];
+        return;
+    }
+
+    if ([PKPaymentAuthorizationViewController canMakePayments]) {
+        PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+        request.merchantIdentifier = @"apple-pay-merchant-id"; // TODO - get this from client token
+        PKPaymentAuthorizationViewController *applePayViewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
+        applePayViewController.delegate = self;
+        [self informDelegateRequestsPresentationOfViewController:applePayViewController];
     }
 }
 
@@ -237,6 +263,28 @@
 
 - (void)appSwitcherDidCancel:(__unused id<BTAppSwitching>)switcher {
     [self informDelegateDidCancel];
+}
+
+#pragma mark PKPaymentAuthorizationViewControllerDelegate
+
+- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:controller];
+}
+
+- (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+
+    [self.client saveApplePayPayment:payment success:^(BTPaymentMethod *applePayPaymentMethod){
+        [self informDelegateDidCreatePaymentMethod:applePayPaymentMethod];
+        completion(PKPaymentAuthorizationStatusSuccess);
+    } failure:^(NSError *error) {
+        error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                    code:BTPaymentProviderErrorUnknown // TODO - Use a more specific error code here
+                                userInfo:@{NSLocalizedDescriptionKey: @"Error processing Apple Payment with Braintree",
+                                           NSUnderlyingErrorKey: error}];
+        [self informDelegateDidFailWithError:error];
+        [self informDelegateRequestsDismissalOfAuthorizationViewController:controller];
+        completion(PKPaymentAuthorizationStatusFailure);
+    }];
 }
 
 @end

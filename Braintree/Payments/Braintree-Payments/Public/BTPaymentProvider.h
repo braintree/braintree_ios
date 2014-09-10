@@ -12,7 +12,10 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderType) {
     BTPaymentProviderTypePayPal = 0,
 
     /// Authorize via Venmo
-    BTPaymentProviderTypeVenmo
+    BTPaymentProviderTypeVenmo,
+
+    /// Authorize via Apple Pay
+    BTPaymentProviderTypeApplePay
 };
 
 /// Options for payment method creation

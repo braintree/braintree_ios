@@ -1,3 +1,5 @@
+@import PassKit;
+
 #import <Foundation/Foundation.h>
 
 #import "BTCardPaymentMethod.h"
@@ -14,6 +16,10 @@ typedef void (^BTClientPaymentMethodSuccessBlock)(BTPaymentMethod *paymentMethod
 
 /// Block type that takes a `BTCardPaymentMethod`
 typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
+
+/// Success Block type for the Save Apple Pay call
+/// TODO - Create a BTApplePayPaymentMethod class
+typedef void (^BTClientApplePaySuccessBlock)(BTPaymentMethod *applePayPaymentMethod);
 
 /// Success Block type for the Save Paypal call
 typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentMethod);
@@ -80,6 +86,12 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                   validate:(BOOL)shouldValidate
                    success:(BTClientCardSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock;
+
+
+/// Save a payment created by Apple Pay
+- (void)saveApplePayPayment:(PKPayment *)applePayPayment
+                    success:(BTClientApplePaySuccessBlock)successBlock
+                    failure:(BTClientFailureBlock)failureBlock;
 
 /// Save a paypal payment method to Braintree
 ///

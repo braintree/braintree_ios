@@ -139,7 +139,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                      if (response.isSuccess) {
                          if (successBlock) {
                              NSArray *paymentMethods = response.object[@"paymentMethods"];
-                             
+
                              BTPaymentMethod *paymentMethod = [[self class] paymentMethodFromAPIResponseDictionary:[paymentMethods firstObject]];
                              successBlock(paymentMethod);
                          }
@@ -202,6 +202,35 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }];
 }
 
+- (void)saveApplePayPayment:(PKPayment *)applePayPayment
+                    success:(BTClientApplePaySuccessBlock)successBlock
+                    failure:(BTClientFailureBlock)failureBlock {
+    NSMutableDictionary *requestParameters = [self metaPostParameters];
+    [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
+                                                           @"token": applePayPayment.token,
+                                                           @"billing_address": [NSNull null], // TODO - applePayPayment.billingAddress
+                                                           @"shipping_address": [NSNull null], // TODO - applePayPayment.shippingAddress
+                                                           @"shipping_method": [NSNull null], // TODO - applePayPayment.shippingMethod
+                                                           },
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                                   }];
+
+    [self.clientApiHttp POST:@"v1/payment_methods/apple_pay_payments" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
+        if (response.isSuccess) {
+            if (successBlock){
+                NSDictionary *paymentMethodResponse = response.object[@"applePayPaymentMethods"][0];
+                BTMutablePaymentMethod *paymentMethod = [[BTMutablePaymentMethod alloc] init];
+                paymentMethod.nonce = paymentMethodResponse[@"nonce"];
+                successBlock(paymentMethod);
+            }
+        } else {
+            if (failureBlock) {
+                failureBlock([NSError errorWithDomain:error.domain code:BTUnknownError userInfo:nil]);
+            }
+        }
+    }];
+}
+
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
                    applicationCorrelationID:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
@@ -224,7 +253,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             }
         } else {
             if (failureBlock) {
-                failureBlock([NSError errorWithDomain:error.domain code:BTUnknownError userInfo:nil]);
+                failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                 code:BTUnknownError // TODO - use a client error code
+                                             userInfo:@{NSUnderlyingErrorKey: error}]);
             }
         }
     }];
