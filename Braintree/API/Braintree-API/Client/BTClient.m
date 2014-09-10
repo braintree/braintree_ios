@@ -218,7 +218,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self.clientApiHttp POST:@"v1/payment_methods/apple_pay_payments" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSDictionary *paymentMethodResponse = response.object[@"applePayPaymentMethods"][0];
+                NSDictionary *paymentMethodResponse = [response.object[@"applePayPaymentMethods"] firstObject];
                 BTMutablePaymentMethod *paymentMethod = [[BTMutablePaymentMethod alloc] init];
                 paymentMethod.nonce = paymentMethodResponse[@"nonce"];
                 successBlock(paymentMethod);
