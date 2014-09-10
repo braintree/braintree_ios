@@ -87,8 +87,8 @@ describe(@"post analytics event", ^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
         __block NSString *expectedSource, *expectedIntegration;
         BTClient *client = [[[BTClient alloc]
-                            initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyAnalytics:@{
-                                                                                                                    BTClientTokenKeyURL:analyticsUrl } }]]
+                             initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyAnalytics:@{
+                                                                                                                     BTClientTokenKeyURL:analyticsUrl } }]]
                             copyWithMetadata:^(BTClientMutableMetadata *metadata) {
                                 expectedIntegration = [metadata integrationString];
                                 expectedSource = [metadata sourceString];
@@ -129,18 +129,17 @@ describe(@"offline clients", ^{
 
     describe(@"save card", ^{
         it(@"returns the newly saved card", ^AsyncBlock{
-            [offlineClient saveCardWithNumber:@"4111111111111111"
-                              expirationMonth:@"12"
-                               expirationYear:@"2038"
-                                          cvv:nil
-                                   postalCode:nil
-                                     validate:YES
-                                      success:^(BTCardPaymentMethod *card) {
-                                          expect(card.nonce).to.beANonce();
-                                          expect(card.type).to.equal(BTCardTypeVisa);
-                                          expect(card.lastTwo).to.equal(@"11");
-                                          done();
-                                      } failure:nil];
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2038";
+            [offlineClient saveCardWithRequest:request
+                                       success:^(BTCardPaymentMethod *card) {
+                                           expect(card.nonce).to.beANonce();
+                                           expect(card.type).to.equal(BTCardTypeVisa);
+                                           expect(card.lastTwo).to.equal(@"11");
+                                           done();
+                                       } failure:nil];
         });
 
         it(@"saves a cards with the correct card types", ^AsyncBlock{
@@ -152,130 +151,350 @@ describe(@"offline clients", ^{
                                                    @"Card": @"1234" };
 
             [cardTypesAndNumbers enumerateKeysAndObjectsUsingBlock:^(NSString *typeString, NSString *number, BOOL *stop) {
-                [offlineClient saveCardWithNumber:number
+                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+                request.number = number;
+                request.expirationMonth = @"12";
+                request.expirationYear = @"2038";
+                request.shouldValidate = @YES;
+                [offlineClient saveCardWithRequest:request
+                                           success:^(BTCardPaymentMethod *card) {
+                                               expect(card.typeString).to.equal(typeString);
+                                               done();
+                                           }
+                                           failure:nil];
+            }];
+        });
+
+        it(@"assigns new cards a nonce", ^AsyncBlock{
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2038";
+            request.shouldValidate = @YES;
+
+            [offlineClient saveCardWithRequest:request
+                                       success:^(BTPaymentMethod *card) {
+                                           expect(card.nonce).to.beANonce();
+
+                                           done();
+                                       }
+                                       failure:nil];
+        });
+
+        it(@"assigns each card a unique nonce", ^AsyncBlock{
+            NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
+
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2038";
+
+            [offlineClient saveCardWithRequest:request
+                                       success:^(BTPaymentMethod *card) {
+                                           [uniqueNoncesReturned addObject:card.nonce];
+                                           [offlineClient saveCardWithRequest:request
+                                                                      success:^(BTPaymentMethod *card) {
+                                                                          [uniqueNoncesReturned addObject:card.nonce];
+                                                                          [offlineClient saveCardWithRequest:request
+                                                                                                     success:^(BTPaymentMethod *card){
+                                                                                                         [uniqueNoncesReturned addObject:card.nonce];
+
+                                                                                                         expect(uniqueNoncesReturned).to.haveCountOf(3);
+
+                                                                                                         done();
+                                                                                                     }
+                                                                                                     failure:nil];
+                                                                      }
+                                                                      failure:nil];
+                                       }
+                                       failure:nil];
+        });
+
+        it(@"accepts a nil success block", ^AsyncBlock{
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2038";
+            request.shouldValidate = @YES;
+
+            [offlineClient saveCardWithRequest:request
+                                       success:nil
+                                       failure:nil];
+
+            wait_for_potential_async_exceptions(done);
+        });
+
+        it(@"accepts a nil failure block", ^AsyncBlock{
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2038";
+            request.shouldValidate = @YES;
+
+            [offlineClient saveCardWithRequest:request
+                                       success:nil
+                                       failure:nil];
+
+            wait_for_potential_async_exceptions(done);
+        });
+
+        it(@"returns the newly saved card", ^AsyncBlock{
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2038";
+            request.shouldValidate = @YES;
+
+            [offlineClient saveCardWithRequest:request
+                                       success:^(BTCardPaymentMethod *card) {
+                                           expect(card.nonce).to.beANonce();
+                                           expect(card.type).to.equal(BTCardTypeVisa);
+                                           expect(card.lastTwo).to.equal(@"11");
+                                           done();
+                                       }
+                                       failure:nil];
+        });
+
+        it(@"saves a cards with the correct card types", ^AsyncBlock{
+            NSDictionary *cardTypesAndNumbers = @{ @"American Express": @"378282246310005",
+                                                   @"Discover": @"6011111111111117",
+                                                   @"MasterCard": @"5555555555554444",
+                                                   @"Visa": @"4012000077777777",
+                                                   @"JCB": @"3530111333300000",
+                                                   @"Card": @"1234" };
+
+            [cardTypesAndNumbers enumerateKeysAndObjectsUsingBlock:^(NSString *typeString, NSString *number, BOOL *stop) {
+                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+                request.number = number;
+                request.expirationMonth = @"12";
+                request.expirationYear = @"2038";
+                request.shouldValidate = @YES;
+
+                [offlineClient saveCardWithRequest:request
+                                           success:^(BTCardPaymentMethod *card) {
+                                               expect(card.typeString).to.equal(typeString);
+                                               done();
+                                           }
+                                           failure:nil];
+            }];
+        });
+
+        it(@"assigns new cards a nonce", ^AsyncBlock{
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2038";
+            request.shouldValidate = @YES;
+
+            [offlineClient saveCardWithRequest:request
+                                       success:^(BTPaymentMethod *card) {
+                                           expect(card.nonce).to.beANonce();
+
+                                           done();
+                                       }
+                                       failure:nil];
+        });
+
+        it(@"assigns each card a unique nonce", ^AsyncBlock{
+            NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
+
+            BTClientCardRequest *request1 = [[BTClientCardRequest alloc] init];
+            request1.number = @"4111111111111111";
+            request1.expirationMonth = @"12";
+            request1.expirationYear = @"2038";
+            request1.shouldValidate = @YES;
+
+            BTClientCardRequest *request2 = [[BTClientCardRequest alloc] init];
+            request2.number = @"5555555555554444";
+            request2.expirationMonth = @"12";
+            request2.expirationYear = @"2038";
+            request2.shouldValidate = @YES;
+
+            [offlineClient saveCardWithRequest:request1
+                                       success:^(BTPaymentMethod *card){
+                                           [uniqueNoncesReturned addObject:card.nonce];
+                                           [offlineClient saveCardWithRequest:request2
+                                                                      success:^(BTPaymentMethod *card){
+                                                                          [uniqueNoncesReturned addObject:card.nonce];
+                                                                          expect(uniqueNoncesReturned).to.haveCountOf(2);
+
+                                                                          done();
+                                                                      } failure:nil];
+                                       }
+                                       failure:nil];
+        });
+
+        it(@"exhibits identical behavior when tokenizing a card", ^{
+
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.shouldValidate = @NO;
+
+            [offlineClient saveCardWithRequest:request
+                                       success:^(BTCardPaymentMethod *card) {
+                                           expect(card.lastTwo).to.equal(@"11");
+                                       } failure:nil];
+        });
+
+        describe(@"deprecated signature", ^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            it(@"returns the newly saved card", ^AsyncBlock{
+                [offlineClient saveCardWithNumber:@"4111111111111111"
                                   expirationMonth:@"12"
                                    expirationYear:@"2038"
                                               cvv:nil
                                        postalCode:nil
                                          validate:YES
                                           success:^(BTCardPaymentMethod *card) {
-                                              expect(card.typeString).to.equal(typeString);
+                                              expect(card.nonce).to.beANonce();
+                                              expect(card.type).to.equal(BTCardTypeVisa);
+                                              expect(card.lastTwo).to.equal(@"11");
                                               done();
-                                          }
-                                          failure:nil];
-            }];
-        });
+                                          } failure:nil];
+            });
 
-        it(@"assigns new cards a nonce", ^AsyncBlock{
-            [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                   postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                       expect(card.nonce).to.beANonce();
+            it(@"saves a cards with the correct card types", ^AsyncBlock{
+                NSDictionary *cardTypesAndNumbers = @{ @"American Express": @"378282246310005",
+                                                       @"Discover": @"6011111111111117",
+                                                       @"MasterCard": @"5555555555554444",
+                                                       @"Visa": @"4012000077777777",
+                                                       @"JCB": @"3530111333300000",
+                                                       @"Card": @"1234" };
 
-                                       done();
-                                   } failure:nil];
-        });
+                [cardTypesAndNumbers enumerateKeysAndObjectsUsingBlock:^(NSString *typeString, NSString *number, BOOL *stop) {
+                    [offlineClient saveCardWithNumber:number
+                                      expirationMonth:@"12"
+                                       expirationYear:@"2038"
+                                                  cvv:nil
+                                           postalCode:nil
+                                             validate:YES
+                                              success:^(BTCardPaymentMethod *card) {
+                                                  expect(card.typeString).to.equal(typeString);
+                                                  done();
+                                              }
+                                              failure:nil];
+                }];
+            });
 
-        it(@"assigns each card a unique nonce", ^AsyncBlock{
-            NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
-
-            [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038"
-                                          cvv:nil
-                                   postalCode:nil
-                                     validate:YES success:^(BTPaymentMethod *card) {
-                                         [uniqueNoncesReturned addObject:card.nonce];
-                                         [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                                                postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                                                    [uniqueNoncesReturned addObject:card.nonce];
-                                                                    [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                                                                           postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                                                                               [uniqueNoncesReturned addObject:card.nonce];
-
-                                                                                               expect(uniqueNoncesReturned).to.haveCountOf(3);
-
-                                                                                               done();
-                                                                                           } failure:nil];
-                                                                } failure:nil];
-                                     } failure:nil];
-        });
-
-        it(@"accepts a nil success block", ^AsyncBlock{
-            [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                   postalCode:nil validate:YES success:nil failure:nil];
-
-            wait_for_potential_async_exceptions(done);
-        });
-
-        it(@"accepts a nil failure block", ^AsyncBlock{
-            [offlineClient saveCardWithNumber:@"4111111111111112" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                   postalCode:nil validate:YES success:nil failure:nil];
-
-            wait_for_potential_async_exceptions(done);
-        });
-    });
-
-    describe(@"save Paypal account", ^{
-        it(@"returns the newly saved account", ^AsyncBlock{
-            [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                      applicationCorrelationID:@"correlationId"
-                                                       success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                           expect(paypalPaymentMethod.nonce).to.beANonce();
-                                                           expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
-                                                           done();
-                                                       } failure:nil];
-        });
-    });
-
-
-    describe(@"fetch payment methods", ^{
-        it(@"initialy retrieves an empty list", ^AsyncBlock{
-            [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
-                expect(paymentMethods).to.haveCountOf(0);
-                done();
-            } failure:nil];
-        });
-
-        describe(@"with two payment methods on file", ^{
-            __block NSArray *paymentMethods;
-
-            beforeEach(^AsyncBlock{
+            it(@"assigns new cards a nonce", ^AsyncBlock{
                 [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
                                        postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                           [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                                                     applicationCorrelationID:nil
-                                                                                      success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                                                          [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
-                                                                                              paymentMethods = fetchedPaymentMethods;
-                                                                                              done();
-                                                                                          } failure:nil];
-                                                                                      } failure:nil];
+                                           expect(card.nonce).to.beANonce();
+
+                                           done();
                                        } failure:nil];
             });
 
-            it(@"returns the list of payment methods", ^{
-                expect(paymentMethods).to.haveCountOf(2);
-                expect([paymentMethods[0] nonce]).to.beANonce();
-                expect([paymentMethods[1] nonce]).to.beANonce();
+            it(@"assigns each card a unique nonce", ^AsyncBlock{
+                NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
+
+                [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038"
+                                              cvv:nil
+                                       postalCode:nil
+                                         validate:YES success:^(BTPaymentMethod *card) {
+                                             [uniqueNoncesReturned addObject:card.nonce];
+                                             [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                                                    postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
+                                                                        [uniqueNoncesReturned addObject:card.nonce];
+                                                                        [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                                                                               postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
+                                                                                                   [uniqueNoncesReturned addObject:card.nonce];
+
+                                                                                                   expect(uniqueNoncesReturned).to.haveCountOf(3);
+
+                                                                                                   done();
+                                                                                               } failure:nil];
+                                                                    } failure:nil];
+                                         } failure:nil];
             });
 
-            it(@"includes saved cards", ^{
-                expect(paymentMethods[1]).to.beKindOf([BTCardPaymentMethod class]);
-                expect([paymentMethods[1] lastTwo]).to.equal(@"11");
+            it(@"accepts a nil success block", ^AsyncBlock{
+                [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                       postalCode:nil validate:YES success:nil failure:nil];
+
+                wait_for_potential_async_exceptions(done);
             });
 
-            it(@"includes saved PayPal accounts", ^{
-                expect(paymentMethods[0]).to.beKindOf([BTPayPalPaymentMethod class]);
-                expect([paymentMethods[0] email]).to.endWith(@"@example.com");
+            it(@"accepts a nil failure block", ^AsyncBlock{
+                [offlineClient saveCardWithNumber:@"4111111111111112" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                       postalCode:nil validate:YES success:nil failure:nil];
+
+                wait_for_potential_async_exceptions(done);
             });
-            
-            it(@"assigns distinct nonces for each payment method", ^{
-                expect([paymentMethods[0] nonce]).notTo.equal([paymentMethods[1] nonce]);
+#pragma clang diagnostic pop
+        });
+
+        describe(@"save Paypal account", ^{
+            it(@"returns the newly saved account", ^AsyncBlock{
+                [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
+                                          applicationCorrelationID:@"correlationId"
+                                                           success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                               expect(paypalPaymentMethod.nonce).to.beANonce();
+                                                               expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
+                                                               done();
+                                                           } failure:nil];
             });
         });
-        
-        it(@"accepts a nil success block", ^AsyncBlock{
-            [offlineClient fetchPaymentMethodsWithSuccess:nil failure:nil];
-            
-            wait_for_potential_async_exceptions(done);
+
+
+        describe(@"fetch payment methods", ^{
+            it(@"initialy retrieves an empty list", ^AsyncBlock{
+                [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
+                    expect(paymentMethods).to.haveCountOf(0);
+                    done();
+                } failure:nil];
+            });
+
+            describe(@"with two payment methods on file", ^{
+                __block NSArray *paymentMethods;
+
+                beforeEach(^AsyncBlock{
+                    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+                    request.number = @"4111111111111111";
+                    request.expirationMonth = @"12";
+                    request.expirationYear = @"2038";
+                    request.shouldValidate = @YES;
+                    [offlineClient saveCardWithRequest:request
+                                               success:^(BTPaymentMethod *card){
+                                                   [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
+                                                                             applicationCorrelationID:nil
+                                                                                              success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                                                                  [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
+                                                                                                      paymentMethods = fetchedPaymentMethods;
+                                                                                                      done();
+                                                                                                  } failure:nil];
+                                                                                              } failure:nil];
+                                               }
+                                               failure:nil];
+                });
+
+                it(@"returns the list of payment methods", ^{
+                    expect(paymentMethods).to.haveCountOf(2);
+                    expect([paymentMethods[0] nonce]).to.beANonce();
+                    expect([paymentMethods[1] nonce]).to.beANonce();
+                });
+
+                it(@"includes saved cards", ^{
+                    expect(paymentMethods[1]).to.beKindOf([BTCardPaymentMethod class]);
+                    expect([paymentMethods[1] lastTwo]).to.equal(@"11");
+                });
+
+                it(@"includes saved PayPal accounts", ^{
+                    expect(paymentMethods[0]).to.beKindOf([BTPayPalPaymentMethod class]);
+                    expect([paymentMethods[0] email]).to.endWith(@"@example.com");
+                });
+
+                it(@"assigns distinct nonces for each payment method", ^{
+                    expect([paymentMethods[0] nonce]).notTo.equal([paymentMethods[1] nonce]);
+                });
+            });
+
+            it(@"accepts a nil success block", ^AsyncBlock{
+                [offlineClient fetchPaymentMethodsWithSuccess:nil failure:nil];
+
+                wait_for_potential_async_exceptions(done);
+            });
         });
     });
 });
@@ -320,7 +539,7 @@ describe(@"isEqual:", ^{
         expect(client1).notTo.equal(client2);
     });
 });
-        
+
 describe(@"copy", ^{
     __block BTClient *client;
     beforeEach(^{
@@ -363,13 +582,13 @@ describe(@"Internal helper", ^{
             BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
             expect(paymentMethod.description).to.beNil();
         });
-
+        
         it(@"returns a PayPal payment method with nil description if description is 'PayPal'", ^{
             responseDictionary[@"description"] = @"PayPal";
             BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
             expect(paymentMethod.description).to.beNil();
         });
-
+        
         it(@"returns a PayPal payment method with the description if description is not 'PayPal' and non-nil", ^{
             responseDictionary[@"description"] = @"foo";
             BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
@@ -384,7 +603,7 @@ describe(@"merchantId", ^{
         BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:nil]];
         expect(client.merchantId).to.beNil();
     });
-
+    
     it(@"returns the merchant id from the client token", ^{
         BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyMerchantId: @"merchant-id" }]];
         expect(client.merchantId).to.equal(@"merchant-id");

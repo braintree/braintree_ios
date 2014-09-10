@@ -8,6 +8,8 @@
 
 #import <Braintree/BTDropInViewController.h>
 #import <Braintree/BTPaymentButton.h>
+#import <Braintree/BTClientCardRequest.h>
+
 
 /// The `Braintree` class is the front door to the Braintree SDK for iOS. It contains
 /// everything you need to easily start accepting payments in your mobile app.
@@ -84,24 +86,17 @@
 
 #pragma mark Custom
 
-/// Creates and returns a nonce for the given credit card details.
+/// Creates and returns a payment method nonce for the given credit card details.
 ///
-/// @note The credit card details provided are not validated until a
-///  Braintree operation, such as `Transaction.Create` is performed on
-///  your server.
+/// @note The credit card details provided are neither validated nor added to the Vault until you
+///       perform a server-side operation with the nonce, such as `Transaction.create`, is performed.
 ///
-/// @param cardNumber      Card number to tokenize
-/// @param expirationMonth Card's expiration month
-/// @param expirationYear  Card's expiration year
-/// @param CVV		       Card's CVV
-/// @param postalCode      Postal code of the billing address
+/// @see BTClientCardRequest
+///
+/// @param cardDetails a card request object containing the raw card details
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
-- (void)tokenizeCardWithNumber:(NSString *)cardNumber
-               expirationMonth:(NSString *)expirationMonth
-                expirationYear:(NSString *)expirationYear
-                           CVV:(NSString *)CVV
-                    postalCode:(NSString *)postalCode
-                    completion:(void (^)(NSString *, NSError *))completionBlock;
+- (void)tokenizeCard:(BTClientCardRequest *)cardDetails
+          completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
 
 /// Initiates a payment method creation flow.
@@ -161,6 +156,23 @@
 @end
 
 @interface Braintree (Deprecated)
+
+/// Creates and returns a nonce for the given credit card details.
+///
+/// This signature has been deprecated in favor of the more flexible `tokenizeCard:completion:`.
+///
+/// @note The credit card details provided are not validated until a
+///  Braintree operation, such as `Transaction.Create` is performed on
+///  your server.
+///
+/// @param cardNumber      Card number to tokenize
+/// @param expirationMonth Card's expiration month
+/// @param expirationYear  Card's expiration year
+/// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
+- (void)tokenizeCardWithNumber:(NSString *)cardNumber
+               expirationMonth:(NSString *)expirationMonth
+                expirationYear:(NSString *)expirationYear
+                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Please use -[braintree tokenizeCardWithComponents:completion:]");
 
 
 /// Creates and returns a PayPal button that can be added to the UI. When tapped, this button will initiate the PayPal authorization flow.

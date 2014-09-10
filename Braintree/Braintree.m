@@ -70,30 +70,38 @@
 
 #pragma mark Custom
 
-- (void)tokenizeCardWithNumber:(NSString *)cardNumber
-               expirationMonth:(NSString *)expirationMonth
-                expirationYear:(NSString *)expirationYear
-                           CVV:(NSString *)CVV
-                    postalCode:(NSString *)postalCode
-                    completion:(void (^)(NSString *, NSError *))completionBlock {
+- (void)tokenizeCard:(BTClientCardRequest *)cardRequest
+          completion:(void (^)(NSString *, NSError *))completionBlock {
+    NSAssert(![cardRequest.shouldValidate boolValue], @"-Braintree tokenizeCard:] was called with invalid card request. `shouldValidate` must be NO for tokenization.");
     [self.client postAnalyticsEvent:@"custom.ios.tokenize.call"
                             success:nil
                             failure:nil];
-    
-    [self.client saveCardWithNumber:cardNumber
-                    expirationMonth:expirationMonth
-                     expirationYear:expirationYear
-                                cvv:CVV
-                         postalCode:postalCode
-                           validate:NO
-                            success:^(BTCardPaymentMethod *card) {
-                                if (completionBlock) {
-                                    completionBlock(card.nonce, nil);
-                                }
-                            }
-                            failure:^(NSError *error) {
-                                completionBlock(nil, error);
-                            }];
+
+    [self.client saveCardWithRequest:cardRequest
+                             success:^(BTCardPaymentMethod *card) {
+                                 if (completionBlock) {
+                                     completionBlock(card.nonce, nil);
+                                 }
+                             }
+                             failure:^(NSError *error) {
+                                 if (completionBlock) {
+                                     completionBlock(nil, error);
+                                 }
+                             }];
+    return;
+}
+
+- (void)tokenizeCardWithNumber:(NSString *)cardNumber
+               expirationMonth:(NSString *)expirationMonth
+                expirationYear:(NSString *)expirationYear
+                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock {
+    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+    request.number = cardNumber;
+    request.expirationMonth = expirationMonth;
+    request.expirationYear = expirationYear;
+
+    [self tokenizeCard:request
+            completion:completionBlock];
 }
 
 - (BTPaymentProvider *)paymentProviderWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate {
