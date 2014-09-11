@@ -225,6 +225,21 @@ describe(@"offline clients", ^{
         });
     });
 
+    describe(@"save Apple Pay payments", ^{
+        it(@"returns the newly saved account", ^AsyncBlock{
+            id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
+            id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
+
+            [[[payment stub] andReturn:paymentToken] token];
+            [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+
+            [offlineClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                expect(applePayPaymentMethod.nonce).to.beANonce();
+                done();
+            } failure:nil];
+
+        });
+    });
 
     describe(@"fetch payment methods", ^{
         it(@"initialy retrieves an empty list", ^AsyncBlock{

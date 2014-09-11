@@ -6,6 +6,7 @@
 #import "BTMutablePaymentMethod.h"
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTMutableCardPaymentMethod.h"
+#import "BTMutableApplePayPaymentMethod.h"
 #import "BTHTTP.h"
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
@@ -207,7 +208,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                     failure:(BTClientFailureBlock)failureBlock {
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
-                                                           @"token": applePayPayment.token,
+                                                           @"token": [applePayPayment.token.paymentData base64EncodedStringWithOptions:0],
                                                            @"billing_address": [NSNull null], // TODO - applePayPayment.billingAddress
                                                            @"shipping_address": [NSNull null], // TODO - applePayPayment.shippingAddress
                                                            @"shipping_method": [NSNull null], // TODO - applePayPayment.shippingMethod
@@ -215,13 +216,16 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                                    }];
 
-    [self.clientApiHttp POST:@"v1/payment_methods/apple_pay_payments" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
+    [self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSDictionary *paymentMethodResponse = [response.object[@"applePayPaymentMethods"] firstObject];
-                BTMutablePaymentMethod *paymentMethod = [[BTMutablePaymentMethod alloc] init];
-                paymentMethod.nonce = paymentMethodResponse[@"nonce"];
-                successBlock(paymentMethod);
+                NSDictionary *applePayPaymentMethodResponse = response.object[@"creditCards"][0];
+                BTMutableApplePayPaymentMethod *paymentMethod = [[BTMutableApplePayPaymentMethod alloc] init];
+                paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
+
+                if (successBlock) {
+                    successBlock(paymentMethod);
+                }
             }
         } else {
             if (failureBlock) {

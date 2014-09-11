@@ -4,6 +4,7 @@
 
 #import "BTCardPaymentMethod.h"
 #import "BTPayPalPaymentMethod.h"
+#import "BTApplePayPaymentMethod.h"
 #import "BTErrors.h"
 
 #pragma mark Types
@@ -19,7 +20,7 @@ typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 
 /// Success Block type for the Save Apple Pay call
 /// TODO - Create a BTApplePayPaymentMethod class
-typedef void (^BTClientApplePaySuccessBlock)(BTPaymentMethod *applePayPaymentMethod);
+typedef void (^BTClientApplePaySuccessBlock)(BTApplePayPaymentMethod *applePayPaymentMethod);
 
 /// Success Block type for the Save Paypal call
 typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentMethod);

@@ -1,5 +1,6 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTOfflineClientBackend.h"
+#import "BTMutableApplePayPaymentMethod.h"
 #import "BTMutableCardPaymentMethod.h"
 #import "BTMutablePayPalPaymentMethod.h"
 #import <objc/runtime.h>
@@ -77,6 +78,33 @@ static BTOfflineClientBackend *backend;
             responseData = ({
                 NSError *error;
                 NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"creditCards": @[ [self responseDictionaryForPaymentMethod:card] ] }
+                                                               options:0
+                                                                 error:&error];
+                NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
+                data;
+            });
+        } else {
+            response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
+                                                   statusCode:501
+                                                  HTTPVersion:BTOfflineModeHTTPVersionString
+                                                 headerFields:@{}];
+            responseData = nil;
+        }
+    } else if ([request.HTTPMethod isEqualToString:@"POST"] && [request.URL.path isEqualToString:@"/v1/payment_methods/apple_payment_tokens"]) {
+
+        NSDictionary *requestObject = [self queryDictionaryFromRequest:request];
+
+        id payment = requestObject[@"apple_pay_payment"];
+        if (payment) {
+//            [[[self class] backend] addPaymentMethod:card];
+
+            response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
+                                                   statusCode:201
+                                                  HTTPVersion:BTOfflineModeHTTPVersionString
+                                                 headerFields:@{@"Content-Type": @"application/json"}];
+            responseData = ({
+                NSError *error;
+                NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"creditCards": @[ [self responseDictionaryForApplePayPayment] ] }
                                                                options:0
                                                                  error:&error];
                 NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
@@ -199,6 +227,13 @@ static BTOfflineClientBackend *backend;
     } else {
         return nil;
     }
+}
+
+- (NSDictionary *)responseDictionaryForApplePayPayment {
+    return @{
+             @"nonce": [self generateNonce],
+             @"type": @"ApplePayPayment"
+             };
 }
 
 - (NSDictionary *)responseDictionaryForCard:(BTCardPaymentMethod *)card {

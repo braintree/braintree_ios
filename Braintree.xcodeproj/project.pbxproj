@@ -133,6 +133,7 @@
 		16F9996B19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F9996A19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m */; };
 		16F9996E19AE73A3007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F9996D19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m */; };
 		2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */; };
+		2D70E0FA19C2238300456723 /* BTApplePayPaymentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D70E0F919C2238300456723 /* BTApplePayPaymentMethod.m */; };
 		2D92BC6919BADB01009663B2 /* Braintree-Payments-Specs-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2D92BC6719BADB01009663B2 /* Braintree-Payments-Specs-Info.plist */; };
 		2D9DDB3619B8171900C53140 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		2D9DDB3719B8171900C53140 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
@@ -525,6 +526,11 @@
 		2D085DDE1947BF1000293215 /* BTUIPayPalMonogramCardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalMonogramCardView.m; sourceTree = "<group>"; };
 		2D4363A619BACC7500F7A04D /* BTVenmoAppSwitchHandler_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchHandler_Internal.h; sourceTree = "<group>"; };
 		2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUI_UIColor.m; sourceTree = "<group>"; };
+		2D70E0F419C21D0700456723 /* BTApplePayPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTApplePayPaymentMethod.m; path = Models/BTApplePayPaymentMethod.m; sourceTree = "<group>"; };
+		2D70E0F619C21E4600456723 /* BTMutableApplePayPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTMutableApplePayPaymentMethod.h; path = Models/BTMutableApplePayPaymentMethod.h; sourceTree = "<group>"; };
+		2D70E0F719C21E4600456723 /* BTMutableApplePayPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTMutableApplePayPaymentMethod.m; path = Models/BTMutableApplePayPaymentMethod.m; sourceTree = "<group>"; };
+		2D70E0F819C2232B00456723 /* BTApplePayPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTApplePayPaymentMethod.h; sourceTree = "<group>"; };
+		2D70E0F919C2238300456723 /* BTApplePayPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTApplePayPaymentMethod.m; sourceTree = "<group>"; };
 		2D92BC6719BADB01009663B2 /* Braintree-Payments-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Payments-Specs-Info.plist"; sourceTree = "<group>"; };
 		2D92BC6819BADB01009663B2 /* Braintree-Payments-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Payments-Specs-Prefix.pch"; sourceTree = "<group>"; };
 		2D9DDB3519B8171900C53140 /* Braintree-Payments-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Payments-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -988,6 +994,7 @@
 		16217428192D85EB008DC35D /* @Public API */ = {
 			isa = PBXGroup;
 			children = (
+				2D70E0F819C2232B00456723 /* BTApplePayPaymentMethod.h */,
 				2DBFFA6419BD564000F3D9B1 /* BTAppSwitchErrors.h */,
 				77037AD319B0112A0097DADE /* BTAppSwitchingDelegate.h */,
 				A7E5BEB519ABE5F3006AEB9B /* BTAppSwitching.h */,
@@ -1038,6 +1045,9 @@
 				16217438192D85EB008DC35D /* BTPayPalPaymentMethod.m */,
 				16217439192D85EB008DC35D /* BTMutablePayPalPaymentMethod.h */,
 				1621743A192D85EB008DC35D /* BTMutablePayPalPaymentMethod.m */,
+				2D70E0F419C21D0700456723 /* BTApplePayPaymentMethod.m */,
+				2D70E0F619C21E4600456723 /* BTMutableApplePayPaymentMethod.h */,
+				2D70E0F719C21E4600456723 /* BTMutableApplePayPaymentMethod.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1368,6 +1378,7 @@
 				16217586192D94FB008DC35D /* Helpers */,
 				1621758D192D94FB008DC35D /* Supporting Files */,
 				A7B7431719A3BB9E000A6A7A /* BTClient_MetadataSpec.m */,
+				2D70E0F919C2238300456723 /* BTApplePayPaymentMethod.m */,
 			);
 			path = "Braintree-API-Specs";
 			sourceTree = "<group>";
@@ -3021,6 +3032,7 @@
 				162D8DAF199B2D070040B1A4 /* BTURLUtilsSpecs.m in Sources */,
 				A7FC1CC61992B38A00636548 /* BTClientStoreSpec.m in Sources */,
 				16102A27192DBB2C002C1B2B /* EXPMatchers+BTDeepEquals.m in Sources */,
+				2D70E0FA19C2238300456723 /* BTApplePayPaymentMethod.m in Sources */,
 				A7E5BEB119ABE5D0006AEB9B /* BTAppSwitchSpec.m in Sources */,
 				16217598192D94FB008DC35D /* BTOfflineModeURLProtocolSpec.m in Sources */,
 			);
