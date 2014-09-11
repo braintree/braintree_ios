@@ -89,8 +89,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         [self.btPaymentButton autoCenterInSuperview];
         [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
         [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
-        NSLayoutConstraint *heightConstraint =  [self.btPaymentButton autoSetDimension:ALDimensionHeight toSize:44];
-        heightConstraint.priority = UILayoutPriorityDefaultLow;
+        [ALView autoSetPriority:UILayoutPriorityDefaultLow forConstraints:^{
+            [self.btPaymentButton autoSetDimension:ALDimensionHeight toSize:44];
+        }];
         [self.btPaymentButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     }
 
