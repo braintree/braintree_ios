@@ -8,6 +8,7 @@
 #import "BraintreeDemoCustomMultiPaymentButtonManager.h"
 #import "BraintreeDemoCustomPayPalButtonManager.h"
 #import "BraintreeDemoCustomVenmoButtonManager.h"
+#import "BraintreeDemoCustomApplePayButtonManager.h"
 
 typedef NS_ENUM(NSInteger, BraintreeDemoOneTouchIntegrationTechnique) {
     BraintreeDemoOneTouchIntegrationTechniqueBTPaymentButton,
@@ -15,6 +16,7 @@ typedef NS_ENUM(NSInteger, BraintreeDemoOneTouchIntegrationTechnique) {
     BraintreeDemoOneTouchIntegrationTechniqueBTVenmoButton,
     BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal,
     BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo,
+    BraintreeDemoOneTouchIntegrationTechniqueCustomApplePay,
     BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton,
 };
 
@@ -24,6 +26,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
               @(BraintreeDemoOneTouchIntegrationTechniqueBTVenmoButton),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo),
+              @(BraintreeDemoOneTouchIntegrationTechniqueCustomApplePay),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton) ];
 }
 
@@ -46,6 +49,8 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 @property (nonatomic, strong) BTUIVenmoButton *btVenmoButton;
 @property (nonatomic, strong) BraintreeDemoCustomVenmoButtonManager *customVenmoButtonManager;
+
+@property (nonatomic, strong) BraintreeDemoCustomApplePayButtonManager *customApplePayButtonManager;
 
 #pragma mark UI Configuration
 
@@ -89,8 +94,8 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         [self.btPaymentButton autoCenterInSuperview];
         [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
         [self.btPaymentButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
-        NSLayoutConstraint *heightConstraint =  [self.btPaymentButton autoSetDimension:ALDimensionHeight toSize:44];
-        heightConstraint.priority = UILayoutPriorityDefaultLow;
+//        NSLayoutConstraint *heightConstraint =  [self.btPaymentButton autoSetDimension:ALDimensionHeight toSize:44];
+//        heightConstraint.priority = UILayoutPriorityDefaultLow;
         [self.btPaymentButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     }
 
@@ -141,6 +146,14 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         [self.customVenmoButtonManager.button autoCenterInSuperview];
     }
 
+    // Setup customApplePayButton
+    self.customApplePayButtonManager = [[BraintreeDemoCustomApplePayButtonManager alloc] initWithClient:self.braintree.client delegate:self];
+    if (self.customApplePayButtonManager) {
+        [self.view addSubview:self.customApplePayButtonManager.button];
+        [self.customApplePayButtonManager.button autoCenterInSuperview];
+    }
+
+    
     [self switchToIntegration:self.defaultIntegration animated:NO];
 }
 
@@ -165,6 +178,8 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
             return @"Custom Venmo button";
         case BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal:
             return @"Custom PayPal button";
+        case BraintreeDemoOneTouchIntegrationTechniqueCustomApplePay:
+            return @"Custom Apple Pay button";
         case BraintreeDemoOneTouchIntegrationTechniqueBTVenmoButton:
             return @"BTUIVenmoButton";
         case BraintreeDemoOneTouchIntegrationTechniqueBTPayPalButton:
@@ -182,6 +197,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo:
             paymentButton = self.customVenmoButtonManager.button;
+            break;
+        case BraintreeDemoOneTouchIntegrationTechniqueCustomApplePay:
+            paymentButton = self.customApplePayButtonManager.button;
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal:
             paymentButton = self.customPayPalButtonManager.button;

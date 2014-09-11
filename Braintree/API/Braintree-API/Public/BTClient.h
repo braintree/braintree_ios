@@ -19,7 +19,6 @@ typedef void (^BTClientPaymentMethodSuccessBlock)(BTPaymentMethod *paymentMethod
 typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 
 /// Success Block type for the Save Apple Pay call
-/// TODO - Create a BTApplePayPaymentMethod class
 typedef void (^BTClientApplePaySuccessBlock)(BTApplePayPaymentMethod *applePayPaymentMethod);
 
 /// Success Block type for the Save Paypal call
