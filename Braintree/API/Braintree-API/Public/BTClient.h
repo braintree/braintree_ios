@@ -88,7 +88,9 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                    failure:(BTClientFailureBlock)failureBlock;
 
 
-/// Save a payment created by Apple Pay
+/// Save a PKPayment created by Apple Pay
+///
+/// @param applePayPayment A PKPayment
 - (void)saveApplePayPayment:(PKPayment *)applePayPayment
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;

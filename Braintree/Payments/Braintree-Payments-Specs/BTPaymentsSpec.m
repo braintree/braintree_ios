@@ -6,6 +6,11 @@
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler.h"
 
+
+@interface BTPaymentProvider () <PKPaymentAuthorizationViewControllerDelegate>
+@end
+
+
 SpecBegin(BTPaymentProvider)
 
 __block id client;
@@ -36,6 +41,7 @@ describe(@"createPaymentMethod:", ^{
     beforeEach(^{
         provider = [[BTPaymentProvider alloc] initWithClient:client];
         provider.client = client;
+        provider.delegate = delegate;
     });
 
     context(@"when type is BTPaymentProviderTypeApplePay", ^{
@@ -48,7 +54,6 @@ describe(@"createPaymentMethod:", ^{
 
             beforeEach(^{
                 [[[pkPaymentAuthorizationViewController stub] andReturnValue:@NO] canMakePayments];
-                provider.delegate = delegate;
             });
 
             it(@"calls delegate didFailWithError method", ^{
@@ -65,7 +70,6 @@ describe(@"createPaymentMethod:", ^{
                 [[[pkPaymentAuthorizationViewController stub] andReturn:pkPaymentAuthorizationViewController] alloc];
                 __unused id _ = [[[pkPaymentAuthorizationViewController stub] andReturn:pkPaymentAuthorizationViewController] initWithPaymentRequest:OCMOCK_ANY];
                 [[pkPaymentAuthorizationViewController stub] setDelegate:OCMOCK_ANY];
-                provider.delegate = delegate;
             });
 
             it(@"calls delegate didFailWithError method", ^{
@@ -73,6 +77,70 @@ describe(@"createPaymentMethod:", ^{
                 [provider createPaymentMethod:BTPaymentProviderTypeApplePay];
             });
 
+        });
+
+        describe(@"implementation of PKPaymentAuthorizationViewControllerDelegate", ^{
+
+            __block id pkPayment;
+            beforeEach(^{
+                pkPayment = [OCMockObject mockForClass:[PKPayment class]];
+            });
+
+
+
+            context(@"when saveApplePayPayment:success:failure: succeeds", ^{
+                __block id paymentMethod;
+                beforeEach(^{
+                    paymentMethod = [OCMockObject mockForClass:[BTPaymentMethod class]];
+                    [[client stub] saveApplePayPayment:pkPayment success:[OCMArg checkWithBlock:^BOOL(id obj) {
+                        ((BTClientApplePaySuccessBlock)obj)(paymentMethod);
+                        return YES;
+                    }] failure:OCMOCK_ANY];
+                });
+
+                it(@"paymentAuthorizationViewController:didAuthorizePayment:completion: calls delegate didCreatePaymentMethod:", ^AsyncBlock{
+
+                    [[delegate expect] paymentMethodCreator:provider didCreatePaymentMethod:paymentMethod];
+
+                    [provider paymentAuthorizationViewController:pkPaymentAuthorizationViewController didAuthorizePayment:pkPayment completion:^(PKPaymentAuthorizationStatus status) {
+                        expect(status).to.equal(PKPaymentAuthorizationStatusSuccess);
+                        done();
+                    }];
+                });
+            });
+
+            context(@"when saveApplePayPayment:success:failure: fails", ^{
+
+                NSError *expectedError = [NSError errorWithDomain:@"a-domain" code:123 userInfo:nil];
+
+                beforeEach(^{
+                    [[client stub] saveApplePayPayment:pkPayment success:OCMOCK_ANY failure:[OCMArg checkWithBlock:^BOOL(id obj) {
+                        ((BTClientFailureBlock)obj)(expectedError);
+                        return YES;
+                    }]];
+                });
+
+                it(@"paymentAuthorizationViewController:didAuthorizePayment:completion: calls delegate didFailWithError:", ^AsyncBlock{
+
+                    [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
+                        NSError *error = (NSError *)obj;
+                        expect(error.domain).to.equal(BTPaymentProviderErrorDomain);
+                        expect(error.code).to.equal(BTPaymentProviderErrorUnknown);
+                        expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(expectedError);
+                        return YES;
+                    }]];
+
+                    [provider paymentAuthorizationViewController:pkPaymentAuthorizationViewController didAuthorizePayment:pkPayment completion:^(PKPaymentAuthorizationStatus status) {
+                        expect(status).to.equal(PKPaymentAuthorizationStatusFailure);
+                        done();
+                    }];
+                });
+            });
+
+            it(@"paymentAuthorizationViewControllerDidFinish: calls delegate didCreatePaymentMethod:", ^{
+                [[delegate expect] paymentMethodCreator:provider requestsDismissalOfViewController:pkPaymentAuthorizationViewController];
+                [provider paymentAuthorizationViewControllerDidFinish:pkPaymentAuthorizationViewController];
+            });
         });
 
     });

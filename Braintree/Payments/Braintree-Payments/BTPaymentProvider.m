@@ -13,7 +13,6 @@
 #import "BTLogger.h"
 
 
-
 @interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate, PKPaymentAuthorizationViewControllerDelegate>
 @end
 
