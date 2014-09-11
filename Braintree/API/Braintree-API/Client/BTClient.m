@@ -224,7 +224,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                 paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
 
                 if (successBlock) {
-                    successBlock(paymentMethod);
+                    successBlock([paymentMethod copy]);
                 }
             }
         } else {

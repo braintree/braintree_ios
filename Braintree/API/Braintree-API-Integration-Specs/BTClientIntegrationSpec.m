@@ -409,6 +409,35 @@ describe(@"get nonce", ^{
     });
 });
 
+describe(@"clients with Apple Pay activated", ^{
+    __block BTClient *testClient;
+    beforeEach(^AsyncBlock{
+        [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
+                                                 BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
+                                                 BTClientTestConfigurationKeyCustomer: @YES }
+                                   completion:^(BTClient *client) {
+                                       testClient = client;
+                                       done();
+                                   }];
+    });
+
+    it(@"can save an Apple Pay payment based on an PKPayment", ^AsyncBlock{
+
+        id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
+        id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
+
+        [[[payment stub] andReturn:paymentToken] token];
+        [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+
+        [testClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+            expect(applePayPaymentMethod.nonce).to.beANonce();
+            done();
+        } failure:nil];
+    });
+
+});
+
+
 describe(@"clients with PayPal activated", ^{
     __block BTClient *testClient;
     beforeEach(^AsyncBlock{
