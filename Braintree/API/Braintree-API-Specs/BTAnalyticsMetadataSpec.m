@@ -129,7 +129,12 @@ describe(@"metadata", ^{
     });
     describe(@"userInterfaceOrientation", ^{
         it(@"returns the user interface orientation, e.g. Portrait or Landscape", ^{
-            expect([BTAnalyticsMetadata metadata][@"userInterfaceOrientation"]).to.equal(@"Unknown");
+            if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+                expect([BTAnalyticsMetadata metadata][@"userInterfaceOrientation"]).to.beNil();
+            } else {
+                expect([BTAnalyticsMetadata metadata][@"userInterfaceOrientation"]).to.equal(@"Unknown");
+            }
+
         });
     });
 });
