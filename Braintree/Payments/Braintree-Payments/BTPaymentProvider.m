@@ -1,7 +1,7 @@
 @import PassKit;
 
 #import "BTPaymentProvider.h"
-#import "BTClient.h"
+#import "BTClient_Internal.h"
 #import "BTAppSwitching.h"
 
 #import "BTVenmoAppSwitchHandler.h"
@@ -9,7 +9,7 @@
 #import "BTPayPalViewController.h"
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTClient+BTPayPal.h"
-#import "BTClient+BTPaymentApplePay.h"
+#import "BTClientApplePayConfiguration.h"
 
 #import "BTLogger.h"
 
@@ -78,12 +78,12 @@
 
 - (BOOL)applePlayEnabled {
     // TODO - check for sandbox and use mock view controller
-    return self.client.btPayment_applePayConfiguration.enabled && [PKPaymentAuthorizationViewController canMakePayments];
+    return self.client.applePayConfiguration.enabled && [PKPaymentAuthorizationViewController canMakePayments];
 }
 
 - (void)authorizeApplePay:(BTPaymentMethodCreationOptions)options {
 
-    if (!self.client.btPayment_applePayConfiguration.enabled) {
+    if (!self.client.applePayConfiguration.enabled) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
                                          userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
@@ -107,7 +107,7 @@
         return;
     }
     PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
-    request.merchantIdentifier = self.client.btPayment_applePayConfiguration.merchantId;
+    request.merchantIdentifier = self.client.applePayConfiguration.merchantId;
     PKPaymentAuthorizationViewController *applePayViewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
     applePayViewController.delegate = self;
     [self informDelegateRequestsPresentationOfViewController:applePayViewController];

@@ -1,11 +1,13 @@
+@import PassKit;
+
 #import "BTPaymentProvider.h"
 
-#import "BTClient.h"
+#import "BTClient_Internal.h"
 #import "BTClient+BTPayPal.h"
+#import "BTClientApplePayConfiguration.h"
 
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler.h"
-
 
 @interface BTPaymentProvider () <PKPaymentAuthorizationViewControllerDelegate>
 @end
@@ -46,8 +48,10 @@ describe(@"createPaymentMethod:", ^{
 
     context(@"when type is BTPaymentProviderTypeApplePay", ^{
         __block id pkPaymentAuthorizationViewController;
+        BTClientApplePayConfiguration *applePayConfiguration = [[BTClientApplePayConfiguration alloc] initWithDictionary:@{@"merchantId": @"a-merchant-id"}];
         beforeEach(^{
             pkPaymentAuthorizationViewController = [OCMockObject mockForClass:[PKPaymentAuthorizationViewController class]];
+            [[[client stub] andReturn:applePayConfiguration] applePayConfiguration];
         });
 
         context(@"PKPaymentAuthorizationViewController can NOT make a payment", ^{
@@ -72,7 +76,7 @@ describe(@"createPaymentMethod:", ^{
                 [[pkPaymentAuthorizationViewController stub] setDelegate:OCMOCK_ANY];
             });
 
-            it(@"calls delegate didFailWithError method", ^{
+            fit(@"calls delegate didFailWithError method", ^{
                 [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:pkPaymentAuthorizationViewController];
                 [provider createPaymentMethod:BTPaymentProviderTypeApplePay];
             });
@@ -130,7 +134,9 @@ describe(@"createPaymentMethod:", ^{
                         return YES;
                     }]];
 
-                    [provider paymentAuthorizationViewController:pkPaymentAuthorizationViewController didAuthorizePayment:pkPayment completion:^(PKPaymentAuthorizationStatus status) {
+                    [provider paymentAuthorizationViewController:pkPaymentAuthorizationViewController
+                                             didAuthorizePayment:pkPayment
+                                                      completion:^(PKPaymentAuthorizationStatus status) {
                         expect(status).to.equal(PKPaymentAuthorizationStatusFailure);
                         done();
                     }];

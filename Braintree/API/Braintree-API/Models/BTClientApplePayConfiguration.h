@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface BTPaymentApplePayConfiguration : NSObject
+@interface BTClientApplePayConfiguration : NSObject
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

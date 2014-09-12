@@ -1,3 +1,5 @@
+@import PassKit;
+
 #import "BTClient.h"
 #import "BTClient_Metadata.h"
 #import "BTClient_Internal.h"
@@ -20,6 +22,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 @end
 
 @implementation BTClient
+
+@synthesize applePayConfiguration = _applePayConfiguration;
 
 - (instancetype)initWithClientToken:(NSString *)clientTokenString {
     if(![clientTokenString isKindOfClass: NSString.class]){
@@ -389,6 +393,17 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     result[@"_meta"] = mutableMetaValue;
     return result;
 }
+
+
+#pragma mark - Apple Pay Configuration
+
+- (BTClientApplePayConfiguration *)applePayConfiguration {
+    if (!_applePayConfiguration) {
+        _applePayConfiguration = [[BTClientApplePayConfiguration alloc] initWithDictionary:self.clientToken.claims[@"applePay"]];
+    }
+    return _applePayConfiguration;
+}
+
 
 #pragma mark - Debug
 

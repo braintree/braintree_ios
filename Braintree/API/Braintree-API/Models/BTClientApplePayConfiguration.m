@@ -1,6 +1,6 @@
-#import "BTPaymentApplePayConfiguration.h"
+#import "BTClientApplePayConfiguration.h"
 
-@implementation BTPaymentApplePayConfiguration
+@implementation BTClientApplePayConfiguration
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
     self = [super init];

@@ -1,3 +1,7 @@
+#ifdef __IPHONE_8_0
+@import PassKit;
+#endif
+
 #import "BTClient_Internal.h"
 #import "BTClient+Offline.h"
 #import "BTClient+Testing.h"
@@ -225,6 +229,8 @@ describe(@"offline clients", ^{
         });
     });
 
+#ifdef __IPHONE_8_0
+
     describe(@"save Apple Pay payments", ^{
         it(@"returns the newly saved account", ^AsyncBlock{
             id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
@@ -240,6 +246,8 @@ describe(@"offline clients", ^{
 
         });
     });
+
+#endif
 
     describe(@"fetch payment methods", ^{
         it(@"initialy retrieves an empty list", ^AsyncBlock{
@@ -405,5 +413,48 @@ describe(@"merchantId", ^{
         expect(client.merchantId).to.equal(@"merchant-id");
     });
 });
+
+
+describe(@"applePayConfiguration", ^{
+
+    __block NSMutableDictionary *baseClientTokenClaims;
+
+    beforeEach(^{
+
+        baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
+                                                                                 BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api"}];
+        
+    });
+
+    it(@"returns an instance of BTClientApplePayConfiguration", ^{
+        NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
+        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+        expect(client.applePayConfiguration).to.beKindOf([BTClientApplePayConfiguration class]);
+    });
+
+    it(@"is disabled if no applePay key is present", ^{
+        NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
+        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+        expect(client.applePayConfiguration.enabled).to.beFalsy();
+    });
+
+    it(@"is enabled if an applePay key has a dictionary value", ^{
+        baseClientTokenClaims[@"applePay"] = @{};
+        NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
+        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+        expect(client.applePayConfiguration.enabled).to.beTruthy();
+        expect(client.applePayConfiguration.merchantId).to.beNil();
+    });
+
+    it(@"is enabled and has a merchantId if applePay value has a merchantId entry", ^{
+        baseClientTokenClaims[@"applePay"] = @{@"merchantId": @"abcd"};
+        NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
+        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+        expect(client.applePayConfiguration.enabled).to.beTruthy();
+        expect(client.applePayConfiguration.merchantId).to.equal(@"abcd");
+    });
+    
+});
+
 
 SpecEnd

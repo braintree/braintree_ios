@@ -23,6 +23,12 @@
     return [[[self tokenWithMerchantId:merchantId] dataUsingEncoding:NSUTF8StringEncoding] base64EncodedStringWithOptions:0];
 }
 
++ (NSString *)base64EncodedTokenFromDictionary:(NSDictionary *)dictionary {
+    NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
+    return [data base64EncodedStringWithOptions:0];
+}
+
 + (NSString *)tokenWithPayPalClientId {
     return @"{\"authorizationFingerprint\":\"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key\",\"clientApiUrl\":\"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api\",\"paypalClientId\":\"testPayPalClientId\"}";
 }

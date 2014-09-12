@@ -1,11 +1,11 @@
-@import PassKit;
-
 #import <Foundation/Foundation.h>
 
 #import "BTCardPaymentMethod.h"
 #import "BTPayPalPaymentMethod.h"
 #import "BTApplePayPaymentMethod.h"
 #import "BTErrors.h"
+
+@class PKPayment;
 
 #pragma mark Types
 
