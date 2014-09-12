@@ -11,10 +11,12 @@
 #import "BTClient+BTPayPal.h"
 #import "BTClientApplePayConfiguration.h"
 
+#import "BTMockApplePayPaymentAuthorizationViewController.h"
+
 #import "BTLogger.h"
 
 
-@interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate, PKPaymentAuthorizationViewControllerDelegate>
+@interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate, PKPaymentAuthorizationViewControllerDelegate, BTMockApplePayPaymentAuthorizationViewControllerDelegate>
 @end
 
 @implementation BTPaymentProvider
@@ -88,35 +90,55 @@
 }
 
 - (void)authorizeApplePay:(BTPaymentMethodCreationOptions)options {
+    switch (self.client.applePayConfiguration.status) {
+        case BTClientApplePayStatusOff: {
+            NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                                 code:BTPaymentProviderErrorOptionNotSupported
+                                             userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
+            [self.delegate paymentMethodCreator:self didFailWithError:error];
+            break;
+        }
+        case BTClientApplePayStatusProduction: {
+            if (![self applePayEnabled]) {
+                NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                                     code:BTPaymentProviderErrorOptionNotSupported
+                                                 userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
+                [self.delegate paymentMethodCreator:self didFailWithError:error];
+                return;
+            }
+            
+            if ((options & BTPaymentAuthorizationOptionMechanismViewController) == 0) {
+                NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                                     code:BTPaymentProviderErrorOptionNotSupported
+                                                 userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay requires option BTPaymentAuthorizationOptionMechanismViewController"}];
+                [self.delegate paymentMethodCreator:self didFailWithError:error];
+                return;
+            }
+            
+            if (![PKPaymentAuthorizationViewController canMakePayments]) {
+                NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                                     code:BTPaymentProviderErrorOptionNotSupported
+                                                 userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay can not make payments on this device"}];
+                [self.delegate paymentMethodCreator:self didFailWithError:error];
+                return;
+            }
 
-    if (![self applePayEnabled]) {
-        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
-                                             code:BTPaymentProviderErrorOptionNotSupported
-                                         userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
-        return;
-    }
+            PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+            request.merchantIdentifier = self.client.applePayConfiguration.merchantId;
+            PKPaymentAuthorizationViewController *applePayViewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
+            applePayViewController.delegate = self;
+            [self informDelegateRequestsPresentationOfViewController:applePayViewController];
+            break;
+        }
+        case BTClientApplePayStatusMock: {
+            BTMockApplePayPaymentAuthorizationViewController *vc = [[BTMockApplePayPaymentAuthorizationViewController alloc] init];
 
-    if ((options & BTPaymentAuthorizationOptionMechanismViewController) == 0) {
-        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
-                                             code:BTPaymentProviderErrorOptionNotSupported
-                                         userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay requires option BTPaymentAuthorizationOptionMechanismViewController"}];
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
-        return;
-    }
+            vc.delegate = self;
 
-    if (![PKPaymentAuthorizationViewController canMakePayments]) {
-        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
-                                             code:BTPaymentProviderErrorOptionNotSupported
-                                         userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay can not make payments on this device"}];
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
-        return;
+            [self informDelegateRequestsPresentationOfViewController:vc];
+            break;
+        }
     }
-    PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
-    request.merchantIdentifier = self.client.applePayConfiguration.merchantId;
-    PKPaymentAuthorizationViewController *applePayViewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
-    applePayViewController.delegate = self;
-    [self informDelegateRequestsPresentationOfViewController:applePayViewController];
 }
 
 #pragma mark Venmo
@@ -315,6 +337,27 @@
         [self informDelegateDidFailWithError:error];
         completion(PKPaymentAuthorizationStatusFailure);
     }];
+}
+
+#pragma mark Mock Apple Pay Payment Authorization View Controller Delegate
+
+- (void)mockApplePayPaymentAuthorizationViewControllerDidFinish:(BTMockApplePayPaymentAuthorizationViewController *)viewController {
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+    // TODO - inform delegate did cancel when canceling
+}
+
+- (void)mockApplePayPaymentAuthorizationViewController:(__unused BTMockApplePayPaymentAuthorizationViewController *)viewController
+                                  didAuthorizePayment:(PKPayment *)payment
+                                           completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+    BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
+    [self.client saveApplePayPayment:request
+                             success:^(__unused BTApplePayPaymentMethod *applePayPaymentMethod) {
+                                 [self informDelegateDidCreatePaymentMethod:applePayPaymentMethod];
+                                 completion(PKPaymentAuthorizationStatusSuccess);
+                             } failure:^(NSError *error) {
+                                 [self informDelegateDidFailWithError:error];
+                                 completion(PKPaymentAuthorizationStatusFailure);
+                             }];
 }
 
 @end

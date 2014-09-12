@@ -437,6 +437,10 @@
 		1662191519BA4B0F00736A4D /* Braintree-Payments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-Payments.h"; sourceTree = "<group>"; };
 		16654EAF19B7CD020081965A /* BTUIHorizontalButtonStackSeparatorLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIHorizontalButtonStackSeparatorLineView.h; sourceTree = "<group>"; };
 		16654EB019B7CD020081965A /* BTUIHorizontalButtonStackSeparatorLineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIHorizontalButtonStackSeparatorLineView.m; sourceTree = "<group>"; };
+		168597B619C39648003F4D17 /* BTMockApplePayPaymentAuthorizationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTMockApplePayPaymentAuthorizationViewController.m; sourceTree = "<group>"; };
+		168597B719C39648003F4D17 /* BTMockApplePayPaymentAuthorizationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockApplePayPaymentAuthorizationViewController.h; sourceTree = "<group>"; };
+		168597B819C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockApplePayPaymentAuthorizationView.h; sourceTree = "<group>"; };
+		168597B919C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTMockApplePayPaymentAuthorizationView.m; sourceTree = "<group>"; };
 		168792F919885B5000F3B9E3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		168792FB19885B5300F3B9E3 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		1696810C192D98EA00120846 /* BTUICardTypeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardTypeSpec.m; sourceTree = "<group>"; };
@@ -1234,6 +1238,7 @@
 			children = (
 				162174B6192D8746008DC35D /* BTUIViewUtil.h */,
 				162174B7192D8746008DC35D /* BTUIViewUtil.m */,
+				168597B319C39616003F4D17 /* Apple Pay */,
 				16F5AF4119B6A7AA0043A412 /* Collection Views */,
 				16BAFCAD194BB8280047E96B /* Custom Views */,
 				16BAFCAB194BB7D50047E96B /* Form Fields */,
@@ -1417,6 +1422,17 @@
 				162175A5192D9505008DC35D /* Supporting Files */,
 			);
 			path = "Braintree-API-Integration-Specs";
+			sourceTree = "<group>";
+		};
+		168597B319C39616003F4D17 /* Apple Pay */ = {
+			isa = PBXGroup;
+			children = (
+				168597B619C39648003F4D17 /* BTMockApplePayPaymentAuthorizationViewController.m */,
+				168597B719C39648003F4D17 /* BTMockApplePayPaymentAuthorizationViewController.h */,
+				168597B819C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.h */,
+				168597B919C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.m */,
+			);
+			path = "Apple Pay";
 			sourceTree = "<group>";
 		};
 		168ED82419884EC00011F4CD /* Localization */ = {

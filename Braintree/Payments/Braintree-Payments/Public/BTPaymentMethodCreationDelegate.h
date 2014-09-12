@@ -1,5 +1,7 @@
 @import Foundation;
 
+#import "BTPaymentMethod.h"
+
 /// Protocol for receiving payment method creation lifecycle messages from
 /// an object creating a payment method, such as BTPaymentButton or BTPaymentProvider.
 @protocol BTPaymentMethodCreationDelegate <NSObject>

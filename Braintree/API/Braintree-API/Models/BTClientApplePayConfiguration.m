@@ -20,6 +20,7 @@
         } else {
             _status = BTClientApplePayStatusOff;
         }
+
     }
     return self;
 }
