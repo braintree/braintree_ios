@@ -64,7 +64,7 @@
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type {
     switch (type) {
         case BTPaymentProviderTypeApplePay:
-            return [self applePlayEnabled];
+            return [self applePayEnabled];
         case BTPaymentProviderTypePayPal:
             return [self.client btPayPal_isPayPalEnabled];
         case BTPaymentProviderTypeVenmo:
@@ -76,14 +76,20 @@
 
 #pragma mark Apple Pay
 
-- (BOOL)applePlayEnabled {
-    // TODO - check for sandbox and use mock view controller
-    return self.client.applePayConfiguration.enabled && [PKPaymentAuthorizationViewController canMakePayments];
+- (BOOL)applePayEnabled {
+    switch (self.client.applePayConfiguration.status) {
+        case BTClientApplePayStatusProduction:
+            return [PKPaymentAuthorizationViewController canMakePayments];
+        case BTClientApplePayStatusMock:
+            return YES;
+        default:
+            return NO;
+    }
 }
 
 - (void)authorizeApplePay:(BTPaymentMethodCreationOptions)options {
 
-    if (!self.client.applePayConfiguration.enabled) {
+    if (![self applePayEnabled]) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
                                          userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
@@ -295,7 +301,10 @@
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
 
-    [self.client saveApplePayPayment:payment success:^(BTPaymentMethod *applePayPaymentMethod){
+    // TODO - use a mock payment request here if Apple Pay is in mock mode?
+    BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
+
+    [self.client saveApplePayPayment:request success:^(BTPaymentMethod *applePayPaymentMethod){
         [self informDelegateDidCreatePaymentMethod:applePayPaymentMethod];
         completion(PKPaymentAuthorizationStatusSuccess);
     } failure:^(NSError *error) {

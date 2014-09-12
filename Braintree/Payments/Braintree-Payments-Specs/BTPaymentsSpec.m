@@ -76,7 +76,7 @@ describe(@"createPaymentMethod:", ^{
                 [[pkPaymentAuthorizationViewController stub] setDelegate:OCMOCK_ANY];
             });
 
-            fit(@"calls delegate didFailWithError method", ^{
+            it(@"calls delegate didFailWithError method", ^{
                 [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:pkPaymentAuthorizationViewController];
                 [provider createPaymentMethod:BTPaymentProviderTypeApplePay];
             });
