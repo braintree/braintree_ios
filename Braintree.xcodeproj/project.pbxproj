@@ -136,6 +136,7 @@
 		2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */; };
 		2D70E0FA19C2238300456723 /* BTApplePayPaymentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D70E0F919C2238300456723 /* BTApplePayPaymentMethod.m */; };
 		2D92BC6919BADB01009663B2 /* Braintree-Payments-Specs-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2D92BC6719BADB01009663B2 /* Braintree-Payments-Specs-Info.plist */; };
+		2D9C951B19C38BFF00A086E1 /* BTClientApplePayConfigurationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9C951A19C38BE000A086E1 /* BTClientApplePayConfigurationSpec.m */; };
 		2D9DDB3619B8171900C53140 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		2D9DDB3719B8171900C53140 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */; };
@@ -538,6 +539,7 @@
 		2D92BC6819BADB01009663B2 /* Braintree-Payments-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Payments-Specs-Prefix.pch"; sourceTree = "<group>"; };
 		2D9C951819C3716D00A086E1 /* BTClientApplePayConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTClientApplePayConfiguration.h; path = Models/BTClientApplePayConfiguration.h; sourceTree = "<group>"; };
 		2D9C951919C3716D00A086E1 /* BTClientApplePayConfiguration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTClientApplePayConfiguration.m; path = Models/BTClientApplePayConfiguration.m; sourceTree = "<group>"; };
+		2D9C951A19C38BE000A086E1 /* BTClientApplePayConfigurationSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTClientApplePayConfigurationSpec.m; sourceTree = "<group>"; };
 		2D9DDB3519B8171900C53140 /* Braintree-Payments-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Payments-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalAppSwitchHandlerSpec.m; sourceTree = "<group>"; };
 		2DA864EA19BD516A004737C5 /* BTAppSwitchErrors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitchErrors.m; sourceTree = "<group>"; };
@@ -1369,8 +1371,11 @@
 			isa = PBXGroup;
 			children = (
 				169D5F8C19660C4100C2A50D /* BTAnalyticsMetadataSpec.m */,
+				2D70E0F919C2238300456723 /* BTApplePayPaymentMethod.m */,
 				A7E5BEB019ABE5D0006AEB9B /* BTAppSwitchSpec.m */,
 				16217577192D94FB008DC35D /* BTCardSpec.m */,
+				A7B7431719A3BB9E000A6A7A /* BTClient_MetadataSpec.m */,
+				2D9C951A19C38BE000A086E1 /* BTClientApplePayConfigurationSpec.m */,
 				A7B7431219A2932F000A6A7A /* BTClientMetadataSpec.m */,
 				16217578192D94FB008DC35D /* BTClientSpec.m */,
 				A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */,
@@ -1388,8 +1393,6 @@
 				161029FC192DB7FA002C1B2B /* BTVersionSpec.m */,
 				16217586192D94FB008DC35D /* Helpers */,
 				1621758D192D94FB008DC35D /* Supporting Files */,
-				A7B7431719A3BB9E000A6A7A /* BTClient_MetadataSpec.m */,
-				2D70E0F919C2238300456723 /* BTApplePayPaymentMethod.m */,
 			);
 			path = "Braintree-API-Specs";
 			sourceTree = "<group>";
@@ -3026,6 +3029,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16217595192D94FB008DC35D /* BTMutableCardSpec.m in Sources */,
+				2D9C951B19C38BFF00A086E1 /* BTClientApplePayConfigurationSpec.m in Sources */,
 				16217594192D94FB008DC35D /* BTLoggerSpec.m in Sources */,
 				169D5F8D19660C4100C2A50D /* BTAnalyticsMetadataSpec.m in Sources */,
 				16102A31192DBC06002C1B2B /* BTVersionSpec.m in Sources */,

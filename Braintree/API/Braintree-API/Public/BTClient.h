@@ -2,10 +2,11 @@
 
 #import "BTCardPaymentMethod.h"
 #import "BTPayPalPaymentMethod.h"
-#import "BTApplePayPaymentMethod.h"
-#import "BTErrors.h"
 
-@class PKPayment;
+#import "BTApplePayPaymentMethod.h"
+#import "BTClientApplePayRequest.h"
+
+#import "BTErrors.h"
 
 #pragma mark Types
 
@@ -88,10 +89,10 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                    failure:(BTClientFailureBlock)failureBlock;
 
 
-/// Save a PKPayment created by Apple Pay
+/// Save a a payment created via Apple Pay
 ///
-/// @param applePayPayment A PKPayment
-- (void)saveApplePayPayment:(PKPayment *)applePayPayment
+/// @param applePayRequest A BTClientApplePayRequest
+- (void)saveApplePayPayment:(BTClientApplePayRequest *)applePayRequest
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;
 

@@ -233,9 +233,11 @@ describe(@"offline clients", ^{
 
     describe(@"save Apple Pay payments", ^{
         it(@"returns the newly saved account", ^AsyncBlock{
+            id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
             id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
             id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
+            [[[paymentRequest stub] andReturn:payment] payment];
             [[[payment stub] andReturn:paymentToken] token];
             [[[paymentToken stub] andReturn:[NSData data]] paymentData];
 
@@ -432,25 +434,23 @@ describe(@"applePayConfiguration", ^{
         expect(client.applePayConfiguration).to.beKindOf([BTClientApplePayConfiguration class]);
     });
 
-    it(@"is disabled if no applePay key is present", ^{
+    it(@"is off if no applePay key is present", ^{
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration.enabled).to.beFalsy();
+        expect(client.applePayConfiguration).to.equal(BTClientApplePayStatusOff);
     });
 
-    it(@"is enabled if an applePay key has a dictionary value", ^{
-        baseClientTokenClaims[@"applePay"] = @{};
+    it(@"is in production mode if an applePay key has a dictionary value and is 'production'", ^{
+        baseClientTokenClaims[@"applePay"] = @{@"status": @"production"};
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration.enabled).to.beTruthy();
-        expect(client.applePayConfiguration.merchantId).to.beNil();
+        expect(client.applePayConfiguration).to.equal(BTClientApplePayStatusProduction);
     });
 
-    it(@"is enabled and has a merchantId if applePay value has a merchantId entry", ^{
+    it(@"has a merchantId if applePay value has a merchantId entry", ^{
         baseClientTokenClaims[@"applePay"] = @{@"merchantId": @"abcd"};
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration.enabled).to.beTruthy();
         expect(client.applePayConfiguration.merchantId).to.equal(@"abcd");
     });
     

@@ -207,12 +207,20 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }];
 }
 
-- (void)saveApplePayPayment:(PKPayment *)applePayPayment
+- (void)saveApplePayPayment:(BTClientApplePayRequest *)applePayRequest
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
+
+    NSData *paymentTokenData;
+    if (self.applePayConfiguration.status == BTClientApplePayStatusMock) {
+        paymentTokenData = [NSData data]; // TODO - use mock data
+    } else {
+        paymentTokenData = applePayRequest.payment.token.paymentData;
+    }
+
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
-                                                           @"token": [applePayPayment.token.paymentData base64EncodedStringWithOptions:0],
+                                                           @"token": [paymentTokenData base64EncodedStringWithOptions:0],
                                                            @"billing_address": [NSNull null], // TODO - applePayPayment.billingAddress
                                                            @"shipping_address": [NSNull null], // TODO - applePayPayment.shippingAddress
                                                            @"shipping_method": [NSNull null], // TODO - applePayPayment.shippingMethod
