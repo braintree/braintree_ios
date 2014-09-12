@@ -93,11 +93,15 @@
 /// @param cardNumber      Card number to tokenize
 /// @param expirationMonth Card's expiration month
 /// @param expirationYear  Card's expiration year
+/// @param CVV		       Card's CVV
+/// @param postalCode      Postal code of the billing address
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
 - (void)tokenizeCardWithNumber:(NSString *)cardNumber
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
-                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
+                           CVV:(NSString *)CVV
+                    postalCode:(NSString *)postalCode
+                    completion:(void (^)(NSString *, NSError *))completionBlock;
 
 
 /// Initiates a payment method creation flow.
