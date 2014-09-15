@@ -17,6 +17,13 @@
 
 
 @interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate, PKPaymentAuthorizationViewControllerDelegate, BTMockApplePayPaymentAuthorizationViewControllerDelegate>
+
+// TODO: Move to a dedicated Apple Pay manager (?)
+@property (nonatomic, strong) NSError *applePayError;
+
+// TODO: Move to a dedicated Apple Pay manager (?)
+@property (nonatomic, strong) BTPaymentMethod *applePayPaymentMethod;
+
 @end
 
 @implementation BTPaymentProvider
@@ -51,7 +58,7 @@
 
 - (void)setClient:(BTClient *)client {
     _client = client;
-
+    
     // If PayPal is a possibility with this client, prepare.
     if ([self.client btPayPal_isPayPalEnabled]) {
         NSError *error;
@@ -122,7 +129,7 @@
                 [self.delegate paymentMethodCreator:self didFailWithError:error];
                 return;
             }
-
+            
             PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
             request.merchantIdentifier = self.client.applePayConfiguration.merchantId;
             PKPaymentAuthorizationViewController *applePayViewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:request];
@@ -132,9 +139,9 @@
         }
         case BTClientApplePayStatusMock: {
             BTMockApplePayPaymentAuthorizationViewController *vc = [[BTMockApplePayPaymentAuthorizationViewController alloc] init];
-
+            
             vc.delegate = self;
-
+            
             [self informDelegateRequestsPresentationOfViewController:vc];
             break;
         }
@@ -144,13 +151,13 @@
 #pragma mark Venmo
 
 - (void)authorizeVenmo:(BTPaymentMethodCreationOptions)options {
-
+    
     if ((options & BTPaymentAuthorizationOptionMechanismAppSwitch) == 0) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:nil];
         [self.delegate paymentMethodCreator:self didFailWithError:error];
         return;
     }
-
+    
     NSError *error;
     BOOL appSwitchSuccess = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
     if (appSwitchSuccess) {
@@ -166,20 +173,20 @@
 #pragma mark PayPal
 
 - (void)authorizePayPal:(BTPaymentMethodCreationOptions)options {
-
+    
     BOOL appSwitchOptionEnabled = (options & BTPaymentAuthorizationOptionMechanismAppSwitch) == BTPaymentAuthorizationOptionMechanismAppSwitch;
     BOOL viewControllerOptionEnabled = (options & BTPaymentAuthorizationOptionMechanismViewController) == BTPaymentAuthorizationOptionMechanismViewController;
-
+    
     if (!appSwitchOptionEnabled && !viewControllerOptionEnabled) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:@{ NSLocalizedDescriptionKey: @"At least one of BTPaymentAuthorizationOptionMechanismAppSwitch or BTPaymentAuthorizationOptionMechanismViewController must be enabled in options" }];
         [self.delegate paymentMethodCreator:self didFailWithError:error];
         return;
     }
-
+    
     NSError *error;
     BOOL initiated = NO;
     if (appSwitchOptionEnabled) {
-
+        
         BOOL appSwitchSuccess = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
         if (appSwitchSuccess) {
             initiated = YES;
@@ -192,9 +199,9 @@
             [[BTLogger sharedLogger] log:message];
         }
     }
-
+    
     if(!initiated && viewControllerOptionEnabled) {
-
+        
         BTPayPalViewController *braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
         if (braintreePayPalViewController) {
             braintreePayPalViewController.delegate = self;
@@ -207,7 +214,7 @@
             [self informDelegateDidFailWithError:error];
         }
     }
-
+    
     if (!initiated) {
         NSMutableDictionary *userInfo = [@{ NSLocalizedDescriptionKey: @"PayPal authorization failed" } mutableCopy];
         if (error != nil) {
@@ -317,47 +324,58 @@
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
-- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:controller];
-}
-
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
-
     // TODO - use a mock payment request here if Apple Pay is in mock mode?
     BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
-
+    
     [self.client saveApplePayPayment:request success:^(BTPaymentMethod *applePayPaymentMethod){
         [self informDelegateDidCreatePaymentMethod:applePayPaymentMethod];
+        self.applePayPaymentMethod = applePayPaymentMethod;
         completion(PKPaymentAuthorizationStatusSuccess);
     } failure:^(NSError *error) {
-        error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
-                                    code:BTPaymentProviderErrorUnknown // TODO - Use a more specific error code here
-                                userInfo:@{NSLocalizedDescriptionKey: @"Error processing Apple Payment with Braintree",
-                                           NSUnderlyingErrorKey: error}];
-        [self informDelegateDidFailWithError:error];
+        self.applePayError = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                                 code:BTPaymentProviderErrorUnknown // TODO - Use a more specific error code here
+                                             userInfo:@{NSLocalizedDescriptionKey: @"Error processing Apple Payment with Braintree",
+                                                        NSUnderlyingErrorKey: error}];
         completion(PKPaymentAuthorizationStatusFailure);
     }];
 }
 
-#pragma mark Mock Apple Pay Payment Authorization View Controller Delegate
-
-- (void)mockApplePayPaymentAuthorizationViewControllerDidFinish:(BTMockApplePayPaymentAuthorizationViewController *)viewController {
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
-    // TODO - inform delegate did cancel when canceling
+- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:controller];
 }
 
+#pragma mark Mock Apple Pay Payment Authorization View Controller Delegate
+
 - (void)mockApplePayPaymentAuthorizationViewController:(__unused BTMockApplePayPaymentAuthorizationViewController *)viewController
-                                  didAuthorizePayment:(PKPayment *)payment
-                                           completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+                                   didAuthorizePayment:(PKPayment *)payment
+                                            completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+    
+    
     BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
     [self.client saveApplePayPayment:request
                              success:^(__unused BTApplePayPaymentMethod *applePayPaymentMethod) {
-                                 [self informDelegateDidCreatePaymentMethod:applePayPaymentMethod];
+                                 self.applePayPaymentMethod = applePayPaymentMethod;
                                  completion(PKPaymentAuthorizationStatusSuccess);
                              } failure:^(NSError *error) {
-                                 [self informDelegateDidFailWithError:error];
+                                 self.applePayError = error;
                                  completion(PKPaymentAuthorizationStatusFailure);
                              }];
+}
+
+- (void)mockApplePayPaymentAuthorizationViewControllerDidFinish:(BTMockApplePayPaymentAuthorizationViewController *)viewController {
+    if (self.applePayError) {
+        [self informDelegateDidFailWithError:self.applePayError];
+    } else if (self.applePayPaymentMethod) {
+        [self informDelegateDidCreatePaymentMethod:self.applePayPaymentMethod];
+    } else {
+        [self informDelegateDidCancel];
+    }
+
+    self.applePayError = nil;
+    self.applePayPaymentMethod = nil;
+    
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
 }
 
 @end
