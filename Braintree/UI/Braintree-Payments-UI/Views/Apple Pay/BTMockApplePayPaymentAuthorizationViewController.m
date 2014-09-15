@@ -36,6 +36,14 @@
                                                                         views:views]];
 }
 
++ (BOOL)canMakePayments {
+    NSOperatingSystemVersion v;
+    v.majorVersion = 8;
+    v.minorVersion = 0;
+    v.patchVersion = 0;
+    return [[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)] && [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:v];
+}
+
 - (void)cancel:(__unused id)sender {
     [self.delegate mockApplePayPaymentAuthorizationViewControllerDidFinish:self];
 }

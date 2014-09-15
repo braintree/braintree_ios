@@ -7,6 +7,8 @@
 
 @property (nonatomic, weak) id<BTMockApplePayPaymentAuthorizationViewControllerDelegate> delegate;
 
++ (BOOL)canMakePayments;
+
 @end
 
 @protocol BTMockApplePayPaymentAuthorizationViewControllerDelegate <NSObject>
