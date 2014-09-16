@@ -25,11 +25,17 @@
 
         if ([self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeApplePay]) {
             _button = [UIButton buttonWithType:UIButtonTypeCustom];
-            [_button setTitle:@"Apple Pay (custom button)" forState:UIControlStateNormal];
-            [_button setTitleColor:[UIColor bt_colorFromHex:@"111111" alpha:1.0f] forState:UIControlStateNormal];
-            [_button setTitleColor:[[UIColor bt_colorFromHex:@"111111" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
+            [_button setImage:[UIImage imageNamed:@"ApplePayBTN_42pt__black_textLogo_"]
+                     forState:UIControlStateNormal];
+            [_button setTitleColor:[UIColor bt_colorFromHex:@"111111" alpha:1.0f]
+                          forState:UIControlStateNormal];
+
+            [_button setTitleColor:[[UIColor bt_colorFromHex:@"111111" alpha:1.0f]
+                                    bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
             _button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:20];
-            [_button addTarget:self action:@selector(tappedCustomApplePay:) forControlEvents:UIControlEventTouchUpInside];
+            [_button addTarget:self
+                        action:@selector(tappedCustomApplePay:)
+              forControlEvents:UIControlEventTouchUpInside];
         }
     }
     return self;
