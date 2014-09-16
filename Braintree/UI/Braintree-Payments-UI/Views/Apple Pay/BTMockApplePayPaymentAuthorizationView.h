@@ -4,7 +4,7 @@
 
 @interface BTMockApplePayPaymentAuthorizationView : UIView
 
-- (instancetype)initWithDelegate:(id<BTMockApplePayPaymentAuthorizationViewDelegate>)delegate;
+- (instancetype)initWithDelegate:(id<BTMockApplePayPaymentAuthorizationViewDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 
 @end
 

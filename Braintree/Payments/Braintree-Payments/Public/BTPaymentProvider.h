@@ -44,6 +44,11 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 ///
 @interface BTPaymentProvider : NSObject
 
+/// Initializes a payment provider
+///
+/// @param client The BTClient that is used for communicating with Braintree during payment method creation
+///
+/// @return An initialized payment provider
 - (instancetype)initWithClient:(BTClient *)client;
 
 - (id)init __attribute__((unavailable("Please use initWithClient:")));
