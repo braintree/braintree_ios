@@ -59,8 +59,7 @@
 		16217531192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1621751A192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.m */; };
 		16217532192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1621751B192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.xib */; };
 		16217533192D922F008DC35D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1621751E192D922F008DC35D /* Images.xcassets */; };
-		16217534192D922F008DC35D /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16217520192D922F008DC35D /* Main_iPad.storyboard */; };
-		16217535192D922F008DC35D /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16217522192D922F008DC35D /* Main_iPhone.storyboard */; };
+		16217535192D922F008DC35D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16217522192D922F008DC35D /* Main.storyboard */; };
 		16217538192D922F008DC35D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 16217526192D922F008DC35D /* main.m */; };
 		16217540192D94BB008DC35D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		16217541192D94BB008DC35D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
@@ -384,8 +383,7 @@
 		1621751A192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoTokenizationDemoViewController.m; sourceTree = "<group>"; };
 		1621751B192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BraintreeDemoTokenizationDemoViewController.xib; sourceTree = "<group>"; };
 		1621751E192D922F008DC35D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		1621751F192D922F008DC35D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		16217521192D922F008DC35D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		16217521192D922F008DC35D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		16217523192D922F008DC35D /* Braintree-Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Demo-Info.plist"; sourceTree = "<group>"; };
 		16217524192D922F008DC35D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		16217526192D922F008DC35D /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -429,8 +427,8 @@
 		1662191519BA4B0F00736A4D /* Braintree-Payments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-Payments.h"; sourceTree = "<group>"; };
 		16654EAF19B7CD020081965A /* BTUIHorizontalButtonStackSeparatorLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIHorizontalButtonStackSeparatorLineView.h; sourceTree = "<group>"; };
 		16654EB019B7CD020081965A /* BTUIHorizontalButtonStackSeparatorLineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIHorizontalButtonStackSeparatorLineView.m; sourceTree = "<group>"; };
-		168792F919885B5000F3B9E3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
-		168792FB19885B5300F3B9E3 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
+		168792F919885B5000F3B9E3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		168792FB19885B5300F3B9E3 /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/Main.strings; sourceTree = "<group>"; };
 		1696810C192D98EA00120846 /* BTUICardTypeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardTypeSpec.m; sourceTree = "<group>"; };
 		1696810D192D98EA00120846 /* BTUISpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUISpec.m; sourceTree = "<group>"; };
 		1696810E192D98EA00120846 /* Braintree-Payments-UI-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Payments-UI-Specs-Info.plist"; sourceTree = "<group>"; };
@@ -1289,8 +1287,7 @@
 				16217510192D922F008DC35D /* BraintreeDemoChooserViewController.m */,
 				1621751D192D922F008DC35D /* Demo Use Case View Controllers */,
 				1621751E192D922F008DC35D /* Images.xcassets */,
-				16217520192D922F008DC35D /* Main_iPad.storyboard */,
-				16217522192D922F008DC35D /* Main_iPhone.storyboard */,
+				16217522192D922F008DC35D /* Main.storyboard */,
 				1621750C192D922F008DC35D /* Services */,
 				16217528192D922F008DC35D /* Supporting Files */,
 			);
@@ -2294,9 +2291,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				16217534192D922F008DC35D /* Main_iPad.storyboard in Resources */,
 				16217530192D922F008DC35D /* BraintreeDemoOneTouchDemoViewController.xib in Resources */,
-				16217535192D922F008DC35D /* Main_iPhone.storyboard in Resources */,
+				16217535192D922F008DC35D /* Main.storyboard in Resources */,
 				16217533192D922F008DC35D /* Images.xcassets in Resources */,
 				2D92BC6919BADB01009663B2 /* Braintree-Payments-Specs-Info.plist in Resources */,
 				1621752E192D922F008DC35D /* BraintreeDemoBraintreeInitializationDemoViewController.xib in Resources */,
@@ -3091,22 +3087,14 @@
 			name = UI.strings;
 			sourceTree = "<group>";
 		};
-		16217520192D922F008DC35D /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1621751F192D922F008DC35D /* Base */,
-			);
-			name = Main_iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		16217522192D922F008DC35D /* Main_iPhone.storyboard */ = {
+		16217522192D922F008DC35D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				16217521192D922F008DC35D /* Base */,
 				168792F919885B5000F3B9E3 /* en */,
 				168792FB19885B5300F3B9E3 /* la */,
 			);
-			name = Main_iPhone.storyboard;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		16217525192D922F008DC35D /* InfoPlist.strings */ = {
