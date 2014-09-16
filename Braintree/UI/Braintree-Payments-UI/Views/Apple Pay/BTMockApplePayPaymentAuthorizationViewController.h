@@ -7,6 +7,8 @@
 
 @property (nonatomic, weak) id<BTMockApplePayPaymentAuthorizationViewControllerDelegate> delegate;
 
+- (instancetype)initWithPaymentRequest:(PKPaymentRequest *)request NS_DESIGNATED_INITIALIZER;
+
 + (BOOL)canMakePayments;
 
 @end

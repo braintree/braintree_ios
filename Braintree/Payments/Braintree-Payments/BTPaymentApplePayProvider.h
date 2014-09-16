@@ -1,7 +1,7 @@
 @import Foundation;
 
 @class BTClient;
-@protocol BTPaymentMethodCreationDelegate;
+#import "BTPaymentMethodCreationDelegate.h"
 
 @interface BTPaymentApplePayProvider : NSObject
 
@@ -10,6 +10,6 @@
 @property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
 
 - (BOOL)canAuthorizeApplePayPayment;
-- (void)authorizeApplePayPayment;
+- (void)authorizeApplePay;
 
 @end

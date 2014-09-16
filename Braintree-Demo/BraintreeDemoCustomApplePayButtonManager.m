@@ -23,12 +23,14 @@
         self.paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
         self.paymentProvider.delegate = self.delegate;
 
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_button setTitle:@"Apple Pay (custom button)" forState:UIControlStateNormal];
-        [_button setTitleColor:[UIColor bt_colorFromHex:@"111111" alpha:1.0f] forState:UIControlStateNormal];
-        [_button setTitleColor:[[UIColor bt_colorFromHex:@"111111" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
-        _button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:20];
-        [_button addTarget:self action:@selector(tappedCustomApplePay:) forControlEvents:UIControlEventTouchUpInside];
+        if ([self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeApplePay]) {
+            _button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_button setTitle:@"Apple Pay (custom button)" forState:UIControlStateNormal];
+            [_button setTitleColor:[UIColor bt_colorFromHex:@"111111" alpha:1.0f] forState:UIControlStateNormal];
+            [_button setTitleColor:[[UIColor bt_colorFromHex:@"111111" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
+            _button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:20];
+            [_button addTarget:self action:@selector(tappedCustomApplePay:) forControlEvents:UIControlEventTouchUpInside];
+        }
     }
     return self;
 }

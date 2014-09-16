@@ -106,4 +106,76 @@ describe(@"paymentAuthorizationViewControllerAvailable", ^{
     });
 });
 
+describe(@"authorizeApplePay", ^{
+    BTPaymentApplePayProvider *(^testApplePayProvider)(BOOL isSimulator, BOOL paymentAuthorizationViewControllerAvailable);
+
+    testApplePayProvider = ^BTPaymentApplePayProvider *(BOOL isSimulator, BOOL paymentAuthorizationViewControllerAvailable){
+        id mockClient = [OCMockObject mockForClass:[BTClient class]];
+        BTPaymentApplePayProvider *applePayProvider = [[BTPaymentApplePayProvider alloc] initWithClient:mockClient];
+
+        id fakeConfiguration = [OCMockObject mockForClass:[BTClientApplePayConfiguration class]];
+        id mockApplePayPayment = [OCMockObject partialMockForObject:applePayProvider];
+
+        [[[mockApplePayPayment stub] andReturnValue:OCMOCK_VALUE(isSimulator)] isSimulator];
+        [[[mockApplePayPayment stub] andReturnValue:OCMOCK_VALUE(paymentAuthorizationViewControllerAvailable)] paymentAuthorizationViewControllerCanMakePayments];
+
+        [[[fakeConfiguration stub] andReturnValue:OCMOCK_VALUE(BTClientApplePayStatusProduction)] status];
+        [[[fakeConfiguration stub] andReturn:@"a merchant id"] merchantId];
+        [[[mockClient stub] andReturn:fakeConfiguration] applePayConfiguration];
+
+        return applePayProvider;
+    };
+
+    describe(@"on a simulator", ^{
+        it(@"presents a mock Apple Pay view controller", ^{
+            OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
+
+            BTPaymentApplePayProvider *provider = testApplePayProvider(YES, YES);
+            provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
+
+            [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
+                return [obj isKindOfClass:[BTMockApplePayPaymentAuthorizationViewController class]];
+            }]];
+
+            [provider authorizeApplePay];
+
+            [delegate verify];
+        });
+    });
+
+    describe(@"on a supported device", ^{
+        it(@"presents the Apple Pay view controller", ^{
+            OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
+
+            BTPaymentApplePayProvider *provider = testApplePayProvider(NO, YES);
+            provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
+
+            [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
+                return [obj isKindOfClass:[PKPaymentAuthorizationViewController class]];
+            }]];
+
+            [provider authorizeApplePay];
+
+            [delegate verify];
+        });
+    });
+
+    describe(@"on an unsupported device", ^{
+        it(@"fails to present a payment authorization view controller", ^{
+            OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
+
+            BTPaymentApplePayProvider *provider = testApplePayProvider(NO, NO);
+            provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
+
+            [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg any]];
+
+            [provider authorizeApplePay];
+
+            [delegate verify];
+        });
+    });
+
+
+});
+
 SpecEnd
