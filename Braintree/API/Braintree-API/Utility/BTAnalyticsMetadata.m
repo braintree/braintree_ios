@@ -3,7 +3,7 @@
 
 #import "BTKeychain.h"
 #import "BTReachability.h"
-#import <CoreLocation/CoreLocation.h>
+@import CoreLocation;
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
 

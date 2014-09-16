@@ -1,5 +1,5 @@
 #import "BTUIVectorArtView.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 @implementation BTUIVectorArtView
 
