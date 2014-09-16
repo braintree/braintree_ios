@@ -213,7 +213,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
     NSData *paymentTokenData;
     if (self.applePayConfiguration.status == BTClientApplePayStatusMock) {
-        paymentTokenData = [NSData data]; // TODO - use mock data
+        paymentTokenData = [@"fake-valid-apple-pay-token" dataUsingEncoding:NSUTF8StringEncoding];
     } else {
         paymentTokenData = applePayRequest.payment.token.paymentData;
     }
