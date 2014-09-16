@@ -39,7 +39,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 #pragma mark Integration Methods
 
 @property (nonatomic, strong) BTPaymentButton *btPaymentButton;
-@property (nonatomic, strong) BraintreeDemoCustomMultiPaymentButtonManager*customPaymentButtonManager;
+@property (nonatomic, strong) BraintreeDemoCustomMultiPaymentButtonManager *customPaymentButtonManager;
 
 @property (nonatomic, strong) BTUIPayPalButton *btPayPalButton;
 @property (nonatomic, strong) BraintreeDemoCustomPayPalButtonManager *customPayPalButtonManager;
