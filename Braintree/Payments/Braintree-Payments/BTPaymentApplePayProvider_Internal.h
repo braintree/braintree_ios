@@ -2,7 +2,7 @@
 
 @interface BTPaymentApplePayProvider ()
 
-- (BOOL)isSimulator;
++ (BOOL)isSimulator;
 - (BOOL)paymentAuthorizationViewControllerCanMakePayments;
 
 @end

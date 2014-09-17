@@ -59,7 +59,7 @@
     }
 
     UIViewController *paymentAuthorizationViewController;
-    if ([self isSimulator]) {
+    if ([[self class] isSimulator]) {
         paymentAuthorizationViewController = ({
             BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
             mockVC.delegate = self;
@@ -94,7 +94,7 @@
 
 #pragma mark Internal Helpers - Exposed for Testing
 
-- (BOOL)isSimulator {
++ (BOOL)isSimulator {
 #if TARGET_IPHONE_SIMULATOR
     return YES;
 #else
@@ -104,7 +104,7 @@
 
 - (BOOL)paymentAuthorizationViewControllerCanMakePayments {
 #ifdef __IPHONE_8_0
-    if ([self isSimulator]) {
+    if ([[self class] isSimulator]) {
         return [BTMockApplePayPaymentAuthorizationViewController canMakePayments];
     } else {
         return [PKPaymentAuthorizationViewController canMakePayments];
