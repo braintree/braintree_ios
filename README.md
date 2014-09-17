@@ -1,5 +1,11 @@
 # Braintree v.zero SDK for iOS
 
+:construction: :construction: :construction:
+
+**This is the Apple Pay pre-release.** This branch is a preview of how to use Apple Pay via v.zero. The API and behavior on this branch may change. Braintree Apple Pay support is coming soon.  
+
+--
+
 Welcome to Braintree's v.zero SDK for iOS. This CocoaPod will help you accept card, PayPal, and Venmo payments in your iOS app.
 
 ![Screenshot of v.zero](screenshot.png)
