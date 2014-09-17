@@ -407,7 +407,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
 - (BTClientApplePayConfiguration *)applePayConfiguration {
     if (!_applePayConfiguration) {
-        _applePayConfiguration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:self.clientToken.claims[@"applePay"]];
+        _applePayConfiguration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:self.clientToken.claims[@"apple_pay"]];
     }
     return _applePayConfiguration;
 }
