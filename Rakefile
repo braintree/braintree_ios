@@ -14,7 +14,7 @@ desc "Run internal release process, pushing to internal GitHub Enterprise only"
 task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
 
 desc "Publish code and pod to public github.com"
-task :publish => %w[publish:push publish:push_pod]
+task :publish => %w[publish:push publish:push_pod publish:cocoadocs]
 
 desc "Distribute app, in its current state, to HockeyApp"
 task :distribute => %w[distribute:build distribute:hockeyapp]
@@ -313,6 +313,11 @@ namespace :publish do
   desc  "Pod push."
   task :push_pod do
     run! "pod trunk push Braintree.podspec"
+  end
+
+  desc "Force CocoaDocs reparse"
+  task :cocoadocs do
+    run! "curl --silent --show-error http://199.229.252.197:4567/redeploy/Braintree/latest"
   end
 
 end

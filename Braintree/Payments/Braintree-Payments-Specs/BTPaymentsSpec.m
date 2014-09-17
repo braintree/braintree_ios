@@ -63,7 +63,7 @@ describe(@"createPaymentMethod:", ^{
             [provider createPaymentMethod:BTPaymentProviderTypeApplePay options:BTPaymentAuthorizationOptionMechanismViewController];
         });
 
-        fit(@"calls delegate didFailWithError: if options are 0", ^{
+        it(@"calls delegate didFailWithError: if options are 0", ^{
             [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg checkWithBlock:^BOOL(id error) {
                 expect([error domain]).to.equal(BTPaymentProviderErrorDomain);
                 expect([error code]).to.equal(BTPaymentProviderErrorOptionNotSupported);
