@@ -1,14 +1,13 @@
 #import "BTApplePayPaymentMethod.h"
 #import "BTMutableApplePayPaymentMethod.h"
 
-@interface BTApplePayPaymentMethod () {
-@protected
-    NSString *_nonce;
-}
-
+@interface BTApplePayPaymentMethod ()
+@property (nonatomic, copy, readwrite) NSString *nonce;
 @end
 
 @implementation BTApplePayPaymentMethod
+
+@synthesize nonce = _nonce;
 
 - (id)copyWithZone:(NSZone *)zone {
     BTApplePayPaymentMethod *copy = [[BTApplePayPaymentMethod allocWithZone:zone] init];

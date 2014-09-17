@@ -229,27 +229,31 @@ describe(@"offline clients", ^{
         });
     });
 
-#ifdef __IPHONE_8_0
-
     describe(@"save Apple Pay payments", ^{
-        it(@"returns the newly saved account", ^AsyncBlock{
-            id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
-            id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
-            id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
-            [[[paymentRequest stub] andReturn:payment] payment];
-            [[[payment stub] andReturn:paymentToken] token];
-            [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+        context(@"in production", ^{
+            beforeEach(^{
+                offlineClient = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{@"applePay": @"production"}]];
+            });
+            
+            it(@"returns the newly saved account", ^AsyncBlock{
+                id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
+                id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
+                id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
-            [offlineClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                expect(applePayPaymentMethod.nonce).to.beANonce();
-                done();
-            } failure:nil];
+                [[[paymentRequest stub] andReturn:payment] payment];
+                [[[payment stub] andReturn:paymentToken] token];
+                [[[paymentToken stub] andReturn:[NSData data]] paymentData];
 
+                [offlineClient saveApplePayPayment:paymentRequest success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                    expect(applePayPaymentMethod.nonce).to.beANonce();
+                    done();
+                } failure:nil];
+                
+            });
         });
-    });
 
-#endif
+    });
 
     describe(@"fetch payment methods", ^{
         it(@"initialy retrieves an empty list", ^AsyncBlock{
@@ -437,14 +441,14 @@ describe(@"applePayConfiguration", ^{
     it(@"is off if no applePay key is present", ^{
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration).to.equal(BTClientApplePayStatusOff);
+        expect(client.applePayConfiguration.status).to.equal(BTClientApplePayStatusOff);
     });
 
     it(@"is in production mode if an applePay key has a dictionary value and is 'production'", ^{
         baseClientTokenClaims[@"applePay"] = @{@"status": @"production"};
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration).to.equal(BTClientApplePayStatusProduction);
+        expect(client.applePayConfiguration.status).to.equal(BTClientApplePayStatusProduction);
     });
 
     it(@"has a merchantId if applePay value has a merchantId entry", ^{
