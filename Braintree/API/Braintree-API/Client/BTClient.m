@@ -211,16 +211,33 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
 
-    NSData *paymentTokenData;
-    if (self.applePayConfiguration.status == BTClientApplePayStatusMock) {
-        paymentTokenData = [@"fake-valid-apple-pay-token" dataUsingEncoding:NSUTF8StringEncoding];
-    } else {
-        paymentTokenData = applePayRequest.payment.token.paymentData;
+    id paymentTokenValue;
+    switch (self.applePayConfiguration.status) {
+        case BTClientApplePayStatusOff:
+            failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                             code:BTErrorUnsupported
+                                         userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant"}]);
+            return;
+        case BTClientApplePayStatusMock:
+            paymentTokenValue = @"mock-payment-token-data";
+            break;
+        case BTClientApplePayStatusProduction:
+            if (applePayRequest.payment) {
+                paymentTokenValue = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
+            } else {
+                failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                 code:BTErrorUnsupported
+                                             userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required production"}]);
+                return;
+            }
+            break;
+        default:
+            paymentTokenValue = [NSNull null];
     }
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
-                                                           @"token": [paymentTokenData base64EncodedStringWithOptions:0],
+                                                           @"token": paymentTokenValue,
                                                            @"billing_address": [NSNull null], // TODO - applePayPayment.billingAddress
                                                            @"shipping_address": [NSNull null], // TODO - applePayPayment.shippingAddress
                                                            @"shipping_method": [NSNull null], // TODO - applePayPayment.shippingMethod

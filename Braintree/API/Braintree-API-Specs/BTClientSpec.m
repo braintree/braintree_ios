@@ -236,6 +236,16 @@ describe(@"offline clients", ^{
                 offlineClient = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{@"apple_pay": @"production"}]];
             });
             
+            it(@"fails if payment is nil", ^AsyncBlock{
+                id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
+                [[[paymentRequest stub] andReturn:nil] payment];
+
+                [offlineClient saveApplePayPayment:paymentRequest success:nil failure:^(NSError *error) {
+                    expect(error.code).to.equal(BTErrorUnsupported);
+                    done();
+                }];
+            });
+
             it(@"returns the newly saved account", ^AsyncBlock{
                 id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
                 id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
@@ -452,7 +462,7 @@ describe(@"applePayConfiguration", ^{
     });
 
     it(@"has a merchantId if applePay value has a merchantId entry", ^{
-        baseClientTokenClaims[@"apple_pay"] = @{@"merchant_id": @"abcd"};
+        baseClientTokenClaims[@"apple_pay"] = @{@"merchantId": @"abcd"};
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
         expect(client.applePayConfiguration.merchantId).to.equal(@"abcd");

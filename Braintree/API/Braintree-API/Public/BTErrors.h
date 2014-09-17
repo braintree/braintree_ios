@@ -33,6 +33,8 @@ NS_ENUM(NSInteger, BTErrorCode) {
     BTServerErrorSSL,
     /// A error occured interpreting the server's response. Please retry your request.
     BTServerErrorUnexpectedError,
+    /// The requested operation is not supported for this merchant or integration
+    BTErrorUnsupported,
 };
 
 #pragma mark NSError userInfo Keys

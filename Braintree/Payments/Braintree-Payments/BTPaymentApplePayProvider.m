@@ -59,6 +59,8 @@
     }
 
     UIViewController *paymentAuthorizationViewController;
+
+
     if ([[self class] isSimulator]) {
         paymentAuthorizationViewController = ({
             BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
