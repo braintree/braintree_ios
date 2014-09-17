@@ -233,7 +233,7 @@ describe(@"offline clients", ^{
 
         context(@"in production", ^{
             beforeEach(^{
-                offlineClient = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{@"applePay": @"production"}]];
+                offlineClient = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{@"apple_pay": @"production"}]];
             });
             
             it(@"returns the newly saved account", ^AsyncBlock{
@@ -445,14 +445,14 @@ describe(@"applePayConfiguration", ^{
     });
 
     it(@"is in production mode if an applePay key has a dictionary value and is 'production'", ^{
-        baseClientTokenClaims[@"applePay"] = @{@"status": @"production"};
+        baseClientTokenClaims[@"apple_pay"] = @{@"status": @"production"};
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
         expect(client.applePayConfiguration.status).to.equal(BTClientApplePayStatusProduction);
     });
 
     it(@"has a merchantId if applePay value has a merchantId entry", ^{
-        baseClientTokenClaims[@"applePay"] = @{@"merchantId": @"abcd"};
+        baseClientTokenClaims[@"apple_pay"] = @{@"merchant_id": @"abcd"};
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
         expect(client.applePayConfiguration.merchantId).to.equal(@"abcd");
