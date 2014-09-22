@@ -74,9 +74,14 @@
     [payPalButton autoPinEdge:ALEdgeRight toEdge:ALEdgeLeft ofView:cardButton];
     [cardButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
 
+    [venmoButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
+    [venmoButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
+    [payPalButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
+    [payPalButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
+    [cardButton autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
+    [cardButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:0];
+
     [view autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:venmoButton];
-    [venmoButton autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:payPalButton];
-    [venmoButton autoMatchDimension:ALDimensionHeight toDimension:ALDimensionHeight ofView:cardButton];
 
     _view = view;
 }

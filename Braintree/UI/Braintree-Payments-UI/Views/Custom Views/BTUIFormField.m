@@ -3,7 +3,7 @@
 #import "BTUITextField.h"
 #import "BTUIFloatLabel.h"
 
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 const CGFloat formFieldTopMargin = 7;
 const CGFloat formFieldLabelHeight = 15;

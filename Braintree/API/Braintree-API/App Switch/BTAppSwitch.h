@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "BTAppSwitching.h"
 
 @interface BTAppSwitch : NSObject

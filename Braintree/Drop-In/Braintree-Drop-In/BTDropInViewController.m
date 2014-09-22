@@ -444,11 +444,7 @@
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
             self.savePayPalAccountErrorAlert = nil;
-        } retry:^{
-            [sender sendActionsForControlEvents:UIControlEventTouchUpInside];
-            [self setPaymentMethods:_paymentMethods];
-            self.savePayPalAccountErrorAlert = nil;
-        }];
+        } retry:nil];
         self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
         [self.savePayPalAccountErrorAlert show];
     }

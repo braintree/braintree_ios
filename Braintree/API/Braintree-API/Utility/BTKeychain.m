@@ -1,5 +1,5 @@
 #import "BTKeychain.h"
-#import <Security/Security.h>
+@import Security;
 
 @implementation BTKeychain
 

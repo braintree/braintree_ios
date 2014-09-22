@@ -1,4 +1,4 @@
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "Braintree-API.h"
 
 @class BTUI;
