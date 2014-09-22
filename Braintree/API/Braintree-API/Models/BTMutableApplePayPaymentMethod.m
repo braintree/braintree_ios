@@ -1,7 +1,6 @@
 #import "BTMutableApplePayPaymentMethod.h"
+#import "BTApplePayPaymentMethod_Internal.h"
 
 @implementation BTMutableApplePayPaymentMethod
-
-@synthesize nonce = _nonce;
 
 @end

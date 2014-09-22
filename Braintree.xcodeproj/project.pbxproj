@@ -134,7 +134,7 @@
 		16F9996E19AE73A3007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F9996D19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m */; };
 		2D1D9D1019C24A01005E6090 /* BraintreeDemoCustomApplePayButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D1D9D0F19C24A01005E6090 /* BraintreeDemoCustomApplePayButtonManager.m */; };
 		2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */; };
-		2D70E0FA19C2238300456723 /* BTApplePayPaymentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D70E0F919C2238300456723 /* BTApplePayPaymentMethod.m */; };
+		2D70E0FA19C2238300456723 /* BTApplePayPaymentMethodSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D70E0F919C2238300456723 /* BTApplePayPaymentMethodSpec.m */; };
 		2D92BC6919BADB01009663B2 /* Braintree-Payments-Specs-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2D92BC6719BADB01009663B2 /* Braintree-Payments-Specs-Info.plist */; };
 		2D9C951B19C38BFF00A086E1 /* BTClientApplePayConfigurationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D9C951A19C38BE000A086E1 /* BTClientApplePayConfigurationSpec.m */; };
 		2D9DDB3619B8171900C53140 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
