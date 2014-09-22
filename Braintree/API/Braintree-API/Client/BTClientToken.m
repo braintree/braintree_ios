@@ -3,16 +3,18 @@
 NSString *const BTClientTokenKeyAuthorizationFingerprint = @"authorizationFingerprint";
 NSString *const BTClientTokenKeyClientApiURL = @"clientApiUrl";
 NSString *const BTClientTokenKeyChallenges = @"challenges";
-NSString *const BTClientTokenKeyURLSchemes = @"paymentAppSchemes";
 NSString *const BTClientTokenKeyAnalytics = @"analytics";
 NSString *const BTClientTokenKeyURL = @"url";
 NSString *const BTClientTokenKeyMerchantId = @"merchantId";
+NSString *const BTClientTokenKeyVersion = @"version";
+NSString *const BTClientTokenKeyApplePay = @"applePay";
+NSString *const BTClientTokenKeyStatus = @"status";
 
 @interface BTClientToken ()
 
 @property (nonatomic, readwrite, copy) NSString *authorizationFingerprint;
 @property (nonatomic, readwrite, strong) NSURL *clientApiURL;
-@property (nonatomic, readwrite, strong) NSDictionary *claims;
+@property (nonatomic, readwrite, strong) NSMutableDictionary *configuration;
 
 - (NSDictionary *)decodeClientToken:(NSString *)rawClientTokenString error:(NSError **)error;
 
@@ -24,27 +26,18 @@ NSString *const BTClientTokenKeyMerchantId = @"merchantId";
 @implementation BTClientToken
 
 - (instancetype)initWithClientTokenString:(NSString *)JSONString error:(NSError * __autoreleasing *)error {
-    NSDictionary *claims = [self decodeClientToken:JSONString error:error];
+    NSDictionary *configuration = [self decodeClientToken:JSONString error:error];
 
-    if (!claims) {
+    if (!configuration) {
         return nil;
     }
 
-    self = [self initWithClaims:claims
-                          error:error];
-    return self;
-}
-
-- (instancetype)initWithClaims:(NSDictionary *)claims
-                         error:(NSError * __autoreleasing *)error {
-    self = [self init];
+    self = [super init];
     if (self) {
-        self.authorizationFingerprint = [self parseAuthorizationFingerprint:claims[BTClientTokenKeyAuthorizationFingerprint]
+        self.authorizationFingerprint = [self parseAuthorizationFingerprint:configuration[BTClientTokenKeyAuthorizationFingerprint]
                                                                       error:error];
-        self.clientApiURL = [self parseClientApiURL:([claims[BTClientTokenKeyClientApiURL] isKindOfClass:[NSString class]] ? claims[BTClientTokenKeyClientApiURL]: nil)
+        self.clientApiURL = [self parseClientApiURL:([configuration[BTClientTokenKeyClientApiURL] isKindOfClass:[NSString class]] ? configuration[BTClientTokenKeyClientApiURL]: nil)
                                               error:error];
-
-        self.claims = claims;
 
         if (!self.authorizationFingerprint || !self.clientApiURL) {
             if (error && !*error) {
@@ -52,36 +45,42 @@ NSString *const BTClientTokenKeyMerchantId = @"merchantId";
             }
             return nil;
         }
+
+        self.configuration = [configuration mutableCopy];
     }
     return self;
 }
 
+- (void)updateConfiguration:(NSDictionary *)configuration {
+    [self.configuration addEntriesFromDictionary:configuration];
+}
+
 - (NSString *)merchantId {
-    return self.claims[BTClientTokenKeyMerchantId];
+    return self.configuration[BTClientTokenKeyMerchantId];
+}
+
+- (NSDictionary *)applePayConfiguration {
+    return self.configuration[BTClientTokenKeyApplePay];
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {
     BTClientToken *copiedClientToken = [[[self class] allocWithZone:zone] init];
     copiedClientToken.authorizationFingerprint = [_authorizationFingerprint copy];
     copiedClientToken.clientApiURL = [_clientApiURL copy];
-    copiedClientToken.claims = [_claims copy];
+    copiedClientToken.configuration = [self.configuration copy];
     return copiedClientToken;
 }
 
 - (NSSet *)challenges {
-    return [NSSet setWithArray:self.claims[BTClientTokenKeyChallenges]];
+    return [NSSet setWithArray:self.configuration[BTClientTokenKeyChallenges]];
 }
 
-- (BOOL)isAnalyticsEnabled {
-    return [self.claims[BTClientTokenKeyAnalytics] isKindOfClass:[NSDictionary class]] && [self.claims[BTClientTokenKeyAnalytics][BTClientTokenKeyURL] isKindOfClass:[NSString class]];
+- (BOOL)analyticsEnabled {
+    return [self.configuration[BTClientTokenKeyAnalytics] isKindOfClass:[NSDictionary class]] && [self.configuration[BTClientTokenKeyAnalytics][BTClientTokenKeyURL] isKindOfClass:[NSString class]];
 }
 
 - (NSURL *)analyticsURL {
-    return [NSURL URLWithString:self.claims[BTClientTokenKeyAnalytics][BTClientTokenKeyURL]];
-}
-
-- (NSSet *)paymentAppSchemes{
-    return [NSSet setWithArray:self.claims[BTClientTokenKeyURLSchemes]];
+    return [NSURL URLWithString:self.configuration[BTClientTokenKeyAnalytics][BTClientTokenKeyURL]];
 }
 
 #pragma mark JSON Parsing
@@ -98,18 +97,16 @@ NSString *const BTClientTokenKeyMerchantId = @"merchantId";
 - (void)encodeWithCoder:(NSCoder *)coder{
     [coder encodeObject:self.authorizationFingerprint forKey:@"authorizationFingerprint"];
     [coder encodeObject:self.clientApiURL forKey:@"clientApiURL"];
-    [coder encodeObject:self.claims forKey:@"claims"];
+    [coder encodeObject:self.configuration forKey:@"claims"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder{
-    self = [super init];
-    if (!self){
-        return  nil;
+    self = [self init];
+    if (self){
+        self.authorizationFingerprint = [decoder decodeObjectForKey:@"authorizationFingerprint"];
+        self.clientApiURL = [decoder decodeObjectForKey:@"clientApiURL"];
+        self.configuration = [decoder decodeObjectForKey:@"claims"];
     }
-    self.authorizationFingerprint = [decoder decodeObjectForKey:@"authorizationFingerprint"];
-    self.clientApiURL = [decoder decodeObjectForKey:@"clientApiURL"];
-    self.claims = [decoder decodeObjectForKey:@"claims"];
-
     return self;
 }
 
@@ -117,14 +114,17 @@ NSString *const BTClientTokenKeyMerchantId = @"merchantId";
 
 - (NSDictionary *)decodeClientToken:(NSString *)rawClientTokenString error:(NSError * __autoreleasing *)error {
     NSError *JSONError;
+    BOOL clientTokenWasBase64Encoded = NO;
     NSData *base64DecodedClientToken = [[NSData alloc] initWithBase64EncodedString:rawClientTokenString
                                                                            options:0];
 
     NSDictionary *rawClientToken;
     if (base64DecodedClientToken) {
         rawClientToken = [NSJSONSerialization JSONObjectWithData:base64DecodedClientToken options:0 error:&JSONError];
+        clientTokenWasBase64Encoded = YES;
     } else {
         rawClientToken = [self parseJSONString:rawClientTokenString error:&JSONError];
+        clientTokenWasBase64Encoded = NO;
     }
 
     if (!rawClientToken) {
@@ -143,12 +143,49 @@ NSString *const BTClientTokenKeyMerchantId = @"merchantId";
             *error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                          code:BTMerchantIntegrationErrorInvalidClientToken
                                      userInfo:@{
-                                                NSUnderlyingErrorKey: JSONError,
                                                 NSLocalizedDescriptionKey: @"Invalid client token. Please ensure your server is generating a valid Braintree ClientToken.",
                                                 NSLocalizedFailureReasonErrorKey: @"Invalid JSON. Expected to find an object at JSON root."
                                                 }];
         }
         return nil;
+    }
+
+    NSError *clientTokenFormatError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                          code:BTMerchantIntegrationErrorInvalidClientToken
+                                                      userInfo:@{
+                                                                 NSLocalizedDescriptionKey: @"Invalid client token format. Please pass the client token string directly as it is generated by the server-side SDK.",
+                                                                 NSLocalizedFailureReasonErrorKey: @"Unsupported client token format."
+                                                                 }];
+
+    switch ([rawClientToken[BTClientTokenKeyVersion] integerValue]) {
+        case 1:
+            if (base64DecodedClientToken) {
+                if (error) {
+                    *error = clientTokenFormatError;
+                }
+                return nil;
+            }
+            break;
+        case 2:
+            /* FALLTHROUGH */
+        case 3:
+            if (!base64DecodedClientToken) {
+                if (error) {
+                    *error = clientTokenFormatError;
+                }
+                return nil;
+            }
+            break;
+        default:
+            if (error) {
+                *error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                             code:BTMerchantIntegrationErrorInvalidClientToken
+                                         userInfo:@{
+                                                    NSLocalizedDescriptionKey: @"Invalid client token version. Please ensure your server is generating a valid Braintree ClientToken with a server-side SDK that is compatible with this version of Braintree iOS.",
+                                                    NSLocalizedFailureReasonErrorKey: @"Unsupported client token version."
+                                                    }];
+            }
+            return nil;
     }
 
     return rawClientToken;
@@ -207,7 +244,7 @@ NSString *const BTClientTokenKeyMerchantId = @"merchantId";
 }
 
 - (BOOL)isEqualToClientToken:(BTClientToken *)clientToken {
-    return (self.claims == clientToken.claims) || [self.claims isEqual:clientToken.claims];
+    return (self.configuration == clientToken.configuration) || [self.configuration isEqual:clientToken.configuration];
 }
 
 - (BOOL)isEqual:(id)object {

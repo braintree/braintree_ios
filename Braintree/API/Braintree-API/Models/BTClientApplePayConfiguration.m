@@ -1,5 +1,7 @@
 #import "BTClientApplePayConfiguration.h"
 
+#import "BTClientToken.h"
+
 @implementation BTClientApplePayConfiguration
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
@@ -12,7 +14,7 @@
         }
 
         // status
-        NSString *statusString = dictionary[@"status"];
+        NSString *statusString = dictionary[BTClientTokenKeyStatus];
         if ([statusString isEqualToString:@"mock"]) {
             _status = BTClientApplePayStatusMock;
         } else if([statusString isEqualToString:@"production"]) {

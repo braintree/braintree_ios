@@ -21,12 +21,14 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 - (void)setMetadata:(BTClientMetadata *)metadata;
 @end
 
+// TODO: Ensure that v3 client tokens disable most functioanlity until we have configuration is ready
+
 @implementation BTClient
 
 @synthesize applePayConfiguration = _applePayConfiguration;
 
 - (instancetype)initWithClientToken:(NSString *)clientTokenString {
-    if(![clientTokenString isKindOfClass: NSString.class]){
+    if(![clientTokenString isKindOfClass:[NSString class]]){
         NSString *reason = @"BTClient could not initialize because the provided clientToken was of an invalid type";
         [[BTLogger sharedLogger] log:reason];
 
@@ -210,6 +212,15 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 - (void)saveApplePayPayment:(BTClientApplePayRequest *)applePayRequest
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
+
+    if (self.applePayConfiguration.status == BTClientApplePayStatusOff) {
+        if (failureBlock) {
+            failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                             code:BTMerchantIntegrationErrorInvalidClientToken
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Client token disables Apple Pay. Please ensure that Apple Pay is enabled in the control panel." }]);
+        }
+        return;
+    }
 
     NSData *paymentTokenData;
     if (self.applePayConfiguration.status == BTClientApplePayStatusMock) {
@@ -406,8 +417,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #pragma mark - Apple Pay Configuration
 
 - (BTClientApplePayConfiguration *)applePayConfiguration {
-    if (!_applePayConfiguration) {
-        _applePayConfiguration = [[BTClientApplePayConfiguration alloc] initWithDictionary:self.clientToken.claims[@"applePay"]];
+    if (!_applePayConfiguration && [self.clientToken.applePayConfiguration isKindOfClass:[NSDictionary class]]) {
+        _applePayConfiguration = [[BTClientApplePayConfiguration alloc] initWithDictionary:self.clientToken.applePayConfiguration];
     }
     return _applePayConfiguration;
 }

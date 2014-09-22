@@ -2,6 +2,130 @@
 
 @implementation BTTestClientTokenFactory
 
++ (NSMutableDictionary *)tokenDataWithConfiguration {
+    return [@{
+              @"authorizationFingerprint": @"an_authorziation_fingerprint",
+              @"configUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration",
+              @"challenges": @[
+                      @"cvv"
+                      ],
+              @"paymentApps": @[],
+              @"clientApiUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api",
+              @"assetsUrl": @"https://assets.example.com",
+              @"authUrl": @"https://auth.venmo.example.com",
+              @"analytics": @{
+                      @"url": @"https://client-analytics.example.com"
+                      },
+              @"threeDSecureEnabled": @NO,
+              @"paypalEnabled": @YES,
+              @"paypal": @{
+                      @"displayName": @"Acme Widgets, Ltd. (Sandbox)",
+                      @"clientId": @"a_paypal_client_id",
+                      @"privacyUrl": @"http://example.com/pp",
+                      @"userAgreementUrl": @"http://example.com/tos",
+                      @"baseUrl": @"https://assets.example.com",
+                      @"assetsUrl": @"https://checkout.paypal.example.com",
+                      @"directBaseUrl": [NSNull null],
+                      @"allowHttp": @YES,
+                      @"environmentNoNetwork": @YES,
+                      @"environment": @"offline",
+                      @"merchantAccountId": @"a_merchant_account_id",
+                      @"currencyIsoCode": @"USD"
+                      },
+              @"merchantId": @"a_merchant_id",
+              @"venmo": @"offline",
+              @"applePay": @{ @"status": @"mock" }
+              } mutableCopy];
+}
+
++ (NSMutableDictionary *)configuration {
+    return [@{
+              @"version": @3,
+              @"challenges": @[
+                      @"cvv"
+                      ],
+              @"paymentApps": @[],
+              @"clientApiUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api",
+              @"assetsUrl": @"https://assets.example.com",
+              @"authUrl": @"https://auth.venmo.example.com",
+              @"analytics": @{
+                      @"url": @"https://client-analytics.example.com"
+                      },
+              @"threeDSecureEnabled": @NO,
+              @"paypalEnabled": @YES,
+              @"paypal": @{
+                      @"displayName": @"Acme Widgets, Ltd. (Sandbox)",
+                      @"clientId": @"a_paypal_client_id",
+                      @"privacyUrl": @"http://example.com/pp",
+                      @"userAgreementUrl": @"http://example.com/tos",
+                      @"baseUrl": @"https://assets.example.com",
+                      @"assetsUrl": @"https://checkout.paypal.example.com",
+                      @"directBaseUrl": [NSNull null],
+                      @"allowHttp": @YES,
+                      @"environmentNoNetwork": @YES,
+                      @"environment": @"offline",
+                      @"merchantAccountId": @"a_merchant_account_id",
+                      @"currencyIsoCode": @"USD"
+                      },
+              @"merchantId": @"a_merchant_id",
+              @"venmo": @"offline",
+              @"applePay": @{ @"status": @"mock" }
+              } mutableCopy];
+}
+
++ (NSMutableDictionary *)tokenDataWithoutConfiguration {
+    return [@{
+              @"authorizationFingerprint": @"an_authorization_fingerprint",
+              @"configUrl": @"https://example.com:443/merchants/a_merchant_id/client_api/v1/configuration"
+              } mutableCopy];
+}
+
++ (NSString *)tokenWithVersion:(NSInteger)version {
+    return [self tokenWithVersion:version overrides:nil];
+}
++ (NSString *)tokenWithVersion:(NSInteger)version
+                     overrides:(NSDictionary *)overrides {
+    BOOL base64Encoded;
+    NSMutableDictionary *baseTokenData;
+
+    switch (version) {
+        case 3:
+            base64Encoded = YES;
+            baseTokenData = [self tokenDataWithoutConfiguration];
+            break;
+        case 2:
+            base64Encoded = YES;
+            baseTokenData = [self tokenDataWithConfiguration];
+            break;
+        case 1:
+            base64Encoded = NO;
+            baseTokenData = [self tokenDataWithConfiguration];
+            break;
+        default:
+            return nil;
+            break;
+    }
+
+    baseTokenData[@"version"] = @(version);
+
+    if (overrides) {
+        [baseTokenData addEntriesFromDictionary:overrides];
+    }
+
+    NSError *jsonSerializationError;
+    NSData *configurationData = [NSJSONSerialization dataWithJSONObject:baseTokenData
+                                                                options:0
+                                                                  error:&jsonSerializationError];
+    NSAssert(jsonSerializationError == nil, @"Failed to generated test client token JSON: %@", jsonSerializationError);
+
+    if (base64Encoded) {
+        return [configurationData base64EncodedStringWithOptions:0];
+    } else {
+        return [[NSString alloc] initWithData:configurationData
+                                     encoding:NSUTF8StringEncoding];
+    }
+}
+
 + (NSString *)token {
     return @"{\"authorizationFingerprint\":\"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key\",\"clientApiUrl\":\"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api\",\"paymentAppSchemes\": [\"bt-test-venmo\",\"bt-test-paypal\"]}";
 }
