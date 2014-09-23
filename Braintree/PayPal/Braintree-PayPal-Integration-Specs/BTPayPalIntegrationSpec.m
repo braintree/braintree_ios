@@ -14,14 +14,16 @@ describe(@"preparePayPalMobile", ^{
         describe(@"with PayPal enabled", ^{
             __block BTClient *testClient;
 
-            beforeEach(^AsyncBlock{
-                [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier:@"altpay_merchant",
-                                                         BTClientTestConfigurationKeyPublicKey:@"altpay_merchant_public_key",
-                                                         BTClientTestConfigurationKeyCustomer:@YES }
-                                           completion:^(BTClient *client) {
-                                               testClient = client;
-                                               done();
-                                           }];
+            beforeEach(^{
+                waitUntil(^(DoneCallback done){
+                    [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier:@"altpay_merchant",
+                                                             BTClientTestConfigurationKeyPublicKey:@"altpay_merchant_public_key",
+                                                             BTClientTestConfigurationKeyCustomer:@YES }
+                                               completion:^(BTClient *client) {
+                                                   testClient = client;
+                                                   done();
+                                               }];
+                });
             });
 
             it(@"configures BTClient for use with PayPal based on the client token configuration", ^{
@@ -62,16 +64,18 @@ describe(@"preparePayPalMobile", ^{
         describe(@"with PayPal disabled", ^{
             __block BTClient *testClient;
 
-            beforeEach(^AsyncBlock{
-                NSString *merchantIdWithPayPalDisabled = @"integration2_merchant_id";
-                NSString *merchantKeyWithPayPalDisabled = @"integration2_public_key";
-                [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: merchantIdWithPayPalDisabled,
-                                                         BTClientTestConfigurationKeyPublicKey:merchantKeyWithPayPalDisabled,
-                                                         BTClientTestConfigurationKeyCustomer: @YES }
-                                           completion:^(BTClient *client) {
-                                               testClient = client;
-                                               done();
-                                           }];
+            beforeEach(^{
+                waitUntil(^(DoneCallback done){
+                    NSString *merchantIdWithPayPalDisabled = @"integration2_merchant_id";
+                    NSString *merchantKeyWithPayPalDisabled = @"integration2_public_key";
+                    [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: merchantIdWithPayPalDisabled,
+                                                             BTClientTestConfigurationKeyPublicKey:merchantKeyWithPayPalDisabled,
+                                                             BTClientTestConfigurationKeyCustomer: @YES }
+                                               completion:^(BTClient *client) {
+                                                   testClient = client;
+                                                   done();
+                                               }];
+                });
             });
 
             it(@"fails to initialize if the paypal directBaseURL is not present", ^{

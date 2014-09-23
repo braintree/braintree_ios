@@ -96,124 +96,146 @@ describe(@"performing a request", ^{
     });
 
     describe(@"base URL", ^{
-        it(@"sends requests using the specified URL scheme", ^AsyncBlock{
-            [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+        it(@"sends requests using the specified URL scheme", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
 
-                expect(httpRequest.URL.scheme).to.equal(@"bt-http-test");
-                done();
-            }];
+                    expect(httpRequest.URL.scheme).to.equal(@"bt-http-test");
+                    done();
+                }];
+            });
         });
 
-        it(@"sends requests to the host at the base URL", ^AsyncBlock{
-            [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                expect(httpRequest.URL.host).to.equal(@"base.example.com");
+        it(@"sends requests to the host at the base URL", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    expect(httpRequest.URL.host).to.equal(@"base.example.com");
 
-                done();
-            }];
+                    done();
+                }];
+            });
         });
 
-        it(@"appends the path to the base URL", ^AsyncBlock{
-            [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+        it(@"appends the path to the base URL", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
 
-                expect(httpRequest.URL.path).to.equal(@"/base/path/200.json");
-                done();
-            }];
+                    expect(httpRequest.URL.path).to.equal(@"/base/path/200.json");
+                    done();
+                }];
+            });
         });
     });
 
     describe(@"HTTP methods", ^{
-        it(@"sends a GET request", ^AsyncBlock{
-            [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error){
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                expect(httpRequest.URL.path).to.match(@"/200.json$");
-                expect(httpRequest.HTTPMethod).to.equal(@"GET");
-                expect(httpRequest.HTTPBody).to.beNil();
-                done();
-            }];
+        it(@"sends a GET request", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error){
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    expect(httpRequest.URL.path).to.match(@"/200.json$");
+                    expect(httpRequest.HTTPMethod).to.equal(@"GET");
+                    expect(httpRequest.HTTPBody).to.beNil();
+                    done();
+                }];
+            });
         });
 
-        it(@"sends a GET request with parameters", ^AsyncBlock{
-            [http GET:@"200.json" parameters:@{@"param": @"value"} completion:^(BTHTTPResponse *response, NSError *error){
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                expect(httpRequest.URL.path).to.match(@"/200.json$");
-                expect(httpRequest.URL.query).to.equal(@"param=value");
-                expect(httpRequest.HTTPMethod).to.equal(@"GET");
-                expect(httpRequest.HTTPBody).to.beNil();
-                done();
-            }];
+        it(@"sends a GET request with parameters", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:@"200.json" parameters:@{@"param": @"value"} completion:^(BTHTTPResponse *response, NSError *error){
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    expect(httpRequest.URL.path).to.match(@"/200.json$");
+                    expect(httpRequest.URL.query).to.equal(@"param=value");
+                    expect(httpRequest.HTTPMethod).to.equal(@"GET");
+                    expect(httpRequest.HTTPBody).to.beNil();
+                    done();
+                }];
+            });
         });
 
-        it(@"sends a POST request", ^AsyncBlock{
-            [http POST:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                expect(httpRequest.URL.path).to.match(@"/200.json$");
-                expect(httpRequest.HTTPBody).to.beNil();
-                expect(httpRequest.HTTPMethod).to.equal(@"POST");
-                expect(httpRequest.URL.query).to.beNil();
-                done();
-            }];
+        it(@"sends a POST request", ^{
+            waitUntil(^(DoneCallback done){
+                [http POST:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    expect(httpRequest.URL.path).to.match(@"/200.json$");
+                    expect(httpRequest.HTTPBody).to.beNil();
+                    expect(httpRequest.HTTPMethod).to.equal(@"POST");
+                    expect(httpRequest.URL.query).to.beNil();
+                    done();
+                }];
+            });
         });
 
-        it(@"sends a POST request with parameters", ^AsyncBlock{
-            [http POST:@"200.json" parameters:@{@"param": @"value"} completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponse:response];
-                expect(httpRequest.URL.path).to.match(@"/200.json$");
-                expect(httpRequestBody).to.equal(@"{\n  \"param\" : \"value\"\n}");
-                expect(httpRequest.HTTPMethod).to.equal(@"POST");
-                expect(httpRequest.URL.query).to.beNil();
-                done();
-            }];
+        it(@"sends a POST request with parameters", ^{
+            waitUntil(^(DoneCallback done){
+                [http POST:@"200.json" parameters:@{@"param": @"value"} completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponse:response];
+                    expect(httpRequest.URL.path).to.match(@"/200.json$");
+                    expect(httpRequestBody).to.equal(@"{\n  \"param\" : \"value\"\n}");
+                    expect(httpRequest.HTTPMethod).to.equal(@"POST");
+                    expect(httpRequest.URL.query).to.beNil();
+                    done();
+                }];
+            });
         });
 
-        it(@"sends a PUT request", ^AsyncBlock{
-            [http PUT:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                expect(httpRequest.URL.path).to.match(@"200.json$");
-                expect(httpRequest.HTTPBody).to.beNil();
-                expect(httpRequest.HTTPMethod).to.equal(@"PUT");
-                expect(httpRequest.URL.query).to.beNil();
-                done();
-            }];
+        it(@"sends a PUT request", ^{
+            waitUntil(^(DoneCallback done){
+                [http PUT:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    expect(httpRequest.URL.path).to.match(@"200.json$");
+                    expect(httpRequest.HTTPBody).to.beNil();
+                    expect(httpRequest.HTTPMethod).to.equal(@"PUT");
+                    expect(httpRequest.URL.query).to.beNil();
+                    done();
+                }];
+            });
         });
 
-        it(@"sends a PUT request with parameters", ^AsyncBlock{
-            [http PUT:@"200.json" parameters:@{@"param": @"value"} completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponse:response];
-                expect(httpRequest.URL.path).to.match(@"200.json$");
-                expect(httpRequestBody).to.equal(@"{\n  \"param\" : \"value\"\n}");
-                expect(httpRequest.HTTPMethod).to.equal(@"PUT");
-                expect(httpRequest.URL.query).to.beNil();
-                done();
-            }];
+        it(@"sends a PUT request with parameters", ^{
+            waitUntil(^(DoneCallback done){
+                [http PUT:@"200.json" parameters:@{@"param": @"value"} completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponse:response];
+                    expect(httpRequest.URL.path).to.match(@"200.json$");
+                    expect(httpRequestBody).to.equal(@"{\n  \"param\" : \"value\"\n}");
+                    expect(httpRequest.HTTPMethod).to.equal(@"PUT");
+                    expect(httpRequest.URL.query).to.beNil();
+                    done();
+                }];
+            });
         });
 
 
-        it(@"sends a DELETE request", ^AsyncBlock{
-            [http DELETE:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                expect(httpRequest.URL.path).to.match(@"200.json$");
-                expect(httpRequest.HTTPBody).to.beNil();
-                expect(httpRequest.HTTPMethod).to.equal(@"DELETE");
-                expect(httpRequest.URL.query).to.equal(@"");
-                done();
-            }];
+        it(@"sends a DELETE request", ^{
+            waitUntil(^(DoneCallback done){
+                [http DELETE:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    expect(httpRequest.URL.path).to.match(@"200.json$");
+                    expect(httpRequest.HTTPBody).to.beNil();
+                    expect(httpRequest.HTTPMethod).to.equal(@"DELETE");
+                    expect(httpRequest.URL.query).to.equal(@"");
+                    done();
+                }];
+            });
         });
 
-        it(@"sends a DELETE request with parameters", ^AsyncBlock{
-            [http DELETE:@"200.json" parameters:@{@"param": @"value"} completion:^(BTHTTPResponse *response, NSError *error){
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+        it(@"sends a DELETE request with parameters", ^{
+            waitUntil(^(DoneCallback done){
+                [http DELETE:@"200.json" parameters:@{@"param": @"value"} completion:^(BTHTTPResponse *response, NSError *error){
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
 
-                expect(httpRequest.URL.path).to.match(@"/200.json$");
-                expect(httpRequest.URL.query).to.equal(@"param=value");
-                expect(httpRequest.HTTPMethod).to.equal(@"DELETE");
-                expect(httpRequest.HTTPBody).to.beNil();
-                done();
-            }];
+                    expect(httpRequest.URL.path).to.match(@"/200.json$");
+                    expect(httpRequest.URL.query).to.equal(@"param=value");
+                    expect(httpRequest.HTTPMethod).to.equal(@"DELETE");
+                    expect(httpRequest.HTTPBody).to.beNil();
+                    done();
+                }];
+            });
         });
     });
 
@@ -233,31 +255,37 @@ describe(@"performing a request", ^{
             [OHHTTPStubs removeStub:stubDescriptor];
         });
 
-        it(@"include Accept", ^AsyncBlock{
-            [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
-                expect(requestHeaders[@"Accept"]).to.equal(@"application/json");
-                done();
-            }];
+        it(@"include Accept", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
+                    expect(requestHeaders[@"Accept"]).to.equal(@"application/json");
+                    done();
+                }];
+            });
         });
 
-        it(@"include User-Agent", ^AsyncBlock{
-            [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
-                expect(requestHeaders[@"User-Agent"]).to.match(@"^Braintree/iOS/\\d+\\.\\d+\\.\\d+$");
-                done();
-            }];
+        it(@"include User-Agent", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
+                    expect(requestHeaders[@"User-Agent"]).to.match(@"^Braintree/iOS/\\d+\\.\\d+\\.\\d+$");
+                    done();
+                }];
+            });
         });
 
-        it(@"include Accept-Language", ^AsyncBlock{
-            [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
-                NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
-                expect(requestHeaders[@"Accept-Language"]).to.equal(@"en-US");
-                done();
-            }];
+        it(@"include Accept-Language", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                    NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
+                    expect(requestHeaders[@"Accept-Language"]).to.equal(@"en-US");
+                    done();
+                }];
+            });
         });
     });
 
@@ -276,51 +304,55 @@ describe(@"performing a request", ^{
         });
 
         describe(@"in GET requests", ^{
-            it(@"transmits the parameters as URL encoded query parameters", ^AsyncBlock{
-                NSArray *expectedQueryParameters = @[ @"numericParameter=42",
-                                                @"falseBooleanParameter=0",
-                                                @"dictionaryParameter%5BdictionaryKey%5D=dictionaryValue",
-                                                @"trueBooleanParameter=1",
-                                                @"stringParameter=value",
-                                                @"crazyStringParameter%5B%5D=crazy%2520and%26value",
-                                                @"arrayParameter%5B%5D=arrayItem1",
-                                                @"arrayParameter%5B%5D=arrayItem2" ];
+            it(@"transmits the parameters as URL encoded query parameters", ^{
+                waitUntil(^(DoneCallback done){
+                    NSArray *expectedQueryParameters = @[ @"numericParameter=42",
+                                                          @"falseBooleanParameter=0",
+                                                          @"dictionaryParameter%5BdictionaryKey%5D=dictionaryValue",
+                                                          @"trueBooleanParameter=1",
+                                                          @"stringParameter=value",
+                                                          @"crazyStringParameter%5B%5D=crazy%2520and%26value",
+                                                          @"arrayParameter%5B%5D=arrayItem1",
+                                                          @"arrayParameter%5B%5D=arrayItem2" ];
 
-                [http GET:@"200.json" parameters:parameterDictionary completion:^(BTHTTPResponse *response, NSError *error) {
-                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                    NSArray *actualQueryComponents = [httpRequest.URL.query componentsSeparatedByString:@"&"];
+                    [http GET:@"200.json" parameters:parameterDictionary completion:^(BTHTTPResponse *response, NSError *error) {
+                        NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                        NSArray *actualQueryComponents = [httpRequest.URL.query componentsSeparatedByString:@"&"];
 
-                    for(NSString *expectedComponent in expectedQueryParameters){
-                        expect(actualQueryComponents).to.contain(expectedComponent);
-                    }
+                        for(NSString *expectedComponent in expectedQueryParameters){
+                            expect(actualQueryComponents).to.contain(expectedComponent);
+                        }
 
-                    done();
-                }];
+                        done();
+                    }];
+                });
             });
         });
 
         describe(@"in non-GET requests", ^{
-            it(@"transmits the parameters as JSON", ^AsyncBlock{
-                NSDictionary *expectedParameters = @{ @"numericParameter": @42,
-                                                 @"falseBooleanParameter": @NO,
-                                                 @"dictionaryParameter": @{
-                                                         @"dictionaryKey": @"dictionaryValue"
-                                                          },
-                                                 @"trueBooleanParameter": @YES,
-                                                  @"stringParameter": @"value",
-                                                 @"crazyStringParameter[]": @"crazy%20and&value", @"arrayParameter": @[ @"arrayItem1", @"arrayItem2" ] };
+            it(@"transmits the parameters as JSON", ^{
+                waitUntil(^(DoneCallback done){
+                    NSDictionary *expectedParameters = @{ @"numericParameter": @42,
+                                                          @"falseBooleanParameter": @NO,
+                                                          @"dictionaryParameter": @{
+                                                                  @"dictionaryKey": @"dictionaryValue"
+                                                                  },
+                                                          @"trueBooleanParameter": @YES,
+                                                          @"stringParameter": @"value",
+                                                          @"crazyStringParameter[]": @"crazy%20and&value", @"arrayParameter": @[ @"arrayItem1", @"arrayItem2" ] };
 
-                [http POST:@"200.json" parameters:parameterDictionary completion:^(BTHTTPResponse *response, NSError *error) {
-                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
-                    NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponse:response];
+                    [http POST:@"200.json" parameters:parameterDictionary completion:^(BTHTTPResponse *response, NSError *error) {
+                        NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+                        NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponse:response];
 
-                    expect([httpRequest valueForHTTPHeaderField:@"Content-type"]).to.equal(@"application/json; charset=utf-8");
-                    NSDictionary *actualParameters = [NSJSONSerialization JSONObjectWithData:[httpRequestBody dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                     options:0
-                                                                                       error:NULL];
-                    expect(actualParameters).to.equal(expectedParameters);
-                    done();
-                }];
+                        expect([httpRequest valueForHTTPHeaderField:@"Content-type"]).to.equal(@"application/json; charset=utf-8");
+                        NSDictionary *actualParameters = [NSJSONSerialization JSONObjectWithData:[httpRequestBody dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                         options:0
+                                                                                           error:NULL];
+                        expect(actualParameters).to.equal(expectedParameters);
+                        done();
+                    }];
+                });
             });
         });
     });
@@ -333,240 +365,268 @@ describe(@"interpreting responses", ^{
     });
 
     describe(@"response code parser", ^{
-        it(@"interprets 2xx as a completion with success", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
-            }];
+        it(@"interprets 2xx as a completion with success", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+                }];
 
-            [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response.statusCode).to.equal(200);
-                expect(response.isSuccess).to.beTruthy();
+                [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response.statusCode).to.equal(200);
+                    expect(response.isSuccess).to.beTruthy();
 
-                expect(error).to.beNil();
+                    expect(error).to.beNil();
 
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"interprets 403 as an integration error", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:403 headers:@{@"Content-Type": @"application/json"}];
-            }];
+        it(@"interprets 403 as an integration error", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:403 headers:@{@"Content-Type": @"application/json"}];
+                }];
 
-            [http GET:@"403.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response.statusCode).to.equal(403);
-                expect(response.isSuccess).to.beFalsy();
-                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                expect(error.code).to.equal(BTMerchantIntegrationErrorUnauthorized);
+                [http GET:@"403.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response.statusCode).to.equal(403);
+                    expect(response.isSuccess).to.beFalsy();
+                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                    expect(error.code).to.equal(BTMerchantIntegrationErrorUnauthorized);
 
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"interprets 422 as an client error", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:422 headers:@{@"Content-Type": @"application/json"}];
-            }];
+        it(@"interprets 422 as an client error", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:422 headers:@{@"Content-Type": @"application/json"}];
+                }];
 
-            [http GET:@"422.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response.statusCode).to.equal(422);
-                expect(response.isSuccess).to.beFalsy();
-                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                [http GET:@"422.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response.statusCode).to.equal(422);
+                    expect(response.isSuccess).to.beFalsy();
+                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                    expect(error.code).to.equal(BTCustomerInputErrorInvalid);
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"interprets 5xx as an error", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:503 headers:@{@"Content-Type": @"application/json"}];
-            }];
+        it(@"interprets 5xx as an error", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:503 headers:@{@"Content-Type": @"application/json"}];
+                }];
 
-            [http GET:@"503.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response.statusCode).to.equal(503);
-                expect(response.isSuccess).to.beFalsy();
-                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                expect(error.code).to.equal(BTServerErrorGatewayUnavailable);
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                [http GET:@"503.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response.statusCode).to.equal(503);
+                    expect(response.isSuccess).to.beFalsy();
+                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                    expect(error.code).to.equal(BTServerErrorGatewayUnavailable);
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"interprets the network being down as an error", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:nil]];
-            }];
+        it(@"interprets the network being down as an error", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:nil]];
+                }];
 
-            [http GET:@"network-down" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response).to.beNil();
-                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                expect(error.code).to.equal(BTServerErrorNetworkUnavailable);
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                [http GET:@"network-down" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response).to.beNil();
+                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                    expect(error.code).to.equal(BTServerErrorNetworkUnavailable);
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"interprets the server being unavailable as an error", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotConnectToHost userInfo:nil]];
-            }];
+        it(@"interprets the server being unavailable as an error", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotConnectToHost userInfo:nil]];
+                }];
 
 
-            [http GET:@"gateway-down" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response.isSuccess).to.beFalsy();
+                [http GET:@"gateway-down" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response.isSuccess).to.beFalsy();
 
-                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                expect(error.code).to.equal(BTServerErrorGatewayUnavailable);
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                    expect(error.code).to.equal(BTServerErrorGatewayUnavailable);
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
     });
 
     describe(@"response body parser", ^{
-        it(@"parses a JSON response body", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:[@"{\"status\": \"OK\"}" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
-            }];
+        it(@"parses a JSON response body", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:[@"{\"status\": \"OK\"}" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+                }];
 
-            [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error){
-                expect(response.object).to.equal(@{@"status": @"OK"});
+                [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error){
+                    expect(response.object).to.equal(@{@"status": @"OK"});
 
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"parses a JSON response body, even for a non-200 response", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:[@"{\"status\": \"ERROR\"}" dataUsingEncoding:NSUTF8StringEncoding] statusCode:422 headers:@{@"Content-Type": @"application/json"}];
-            }];
+        it(@"parses a JSON response body, even for a non-200 response", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:[@"{\"status\": \"ERROR\"}" dataUsingEncoding:NSUTF8StringEncoding] statusCode:422 headers:@{@"Content-Type": @"application/json"}];
+                }];
 
-            [http GET:@"422.json" completion:^(BTHTTPResponse *response, NSError *error){
-                expect(response.object).to.equal(@{@"status": @"ERROR"});
+                [http GET:@"422.json" completion:^(BTHTTPResponse *response, NSError *error){
+                    expect(response.object).to.equal(@{@"status": @"ERROR"});
 
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"accepts empty responses", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:nil statusCode:200 headers:nil];
-            }];
+        it(@"accepts empty responses", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:nil statusCode:200 headers:nil];
+                }];
 
-            [http GET:@"empty.json" completion:^(BTHTTPResponse *response, NSError *error){
-                expect(response.statusCode).to.equal(200);
-                expect(response.isSuccess).to.beTruthy();
-                expect(response.object).to.beNil();
+                [http GET:@"empty.json" completion:^(BTHTTPResponse *response, NSError *error){
+                    expect(response.statusCode).to.equal(200);
+                    expect(response.isSuccess).to.beTruthy();
+                    expect(response.object).to.beNil();
 
-                expect(error).to.beNil();
+                    expect(error).to.beNil();
 
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"interprets invalid JSON responses as a server error", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:[@"{ really invalid json ]" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
-            }];
+        it(@"interprets invalid JSON responses as a server error", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:[@"{ really invalid json ]" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+                }];
 
-            [http GET:@"invalid.json" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response).to.beNil();
+                [http GET:@"invalid.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response).to.beNil();
 
-                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                expect(error.code).to.equal(BTServerErrorUnexpectedError);
+                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                    expect(error.code).to.equal(BTServerErrorUnexpectedError);
 
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
 
-        it(@"interprets valid but non-JSON responses as a server error", ^AsyncBlock{
-            id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-                return YES;
-            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-                return [OHHTTPStubsResponse responseWithData:[@"<html>response</html>" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"text/html"}];
-            }];
+        it(@"interprets valid but non-JSON responses as a server error", ^{
+            waitUntil(^(DoneCallback done){
+                id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return YES;
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithData:[@"<html>response</html>" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"text/html"}];
+                }];
 
-            [http GET:@"200.html" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response).to.beNil();
+                [http GET:@"200.html" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response).to.beNil();
 
-                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                expect(error.code).to.equal(BTServerErrorUnexpectedError);
+                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                    expect(error.code).to.equal(BTServerErrorUnexpectedError);
 
-                [OHHTTPStubs removeStub:stub];
-                done();
-            }];
+                    [OHHTTPStubs removeStub:stub];
+                    done();
+                }];
+            });
         });
     });
 
-    it(@"noops for a nil completion block", ^AsyncBlock{
-        setAsyncSpecTimeout(2);
+    it(@"noops for a nil completion block", ^{
+        waitUntil(^(DoneCallback done){
+            setAsyncSpecTimeout(2);
 
-        [http GET:@"200.json" parameters:nil completion:nil];
+            [http GET:@"200.json" parameters:nil completion:nil];
 
-        wait_for_potential_async_exceptions(done);
+            wait_for_potential_async_exceptions(done);
+        });
     });
 });
 
 describe(@"protocolClasses property", ^{
-    it(@"successfully intercepts requests", ^AsyncBlock{
-        BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL]];
-
-        [http GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
-            expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-            expect(error.code).to.equal(BTServerErrorUnexpectedError);
-
-            [http setProtocolClasses:@[[BTHTTPTestProtocol class]]];
+    it(@"successfully intercepts requests", ^{
+        waitUntil(^(DoneCallback done){
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL]];
 
             [http GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(error).to.beNil();
-                expect(response.isSuccess).to.beTruthy();
-                done();
-            }];
+                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                expect(error.code).to.equal(BTServerErrorUnexpectedError);
 
-        }];
+                [http setProtocolClasses:@[[BTHTTPTestProtocol class]]];
+
+                [http GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(error).to.beNil();
+                    expect(response.isSuccess).to.beTruthy();
+                    done();
+                }];
+
+            }];
+        });
     });
 
-    it(@"only intercepts requests made by that instnace of BTHTTP", ^AsyncBlock{
-        BTHTTP *httpWithTestProtocol = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL]];
-        
-        [httpWithTestProtocol setProtocolClasses:@[[BTHTTPTestProtocol class]]];
-        
-        BTHTTP *httpWithoutTestProtocol = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL]];
-        
-        [httpWithTestProtocol GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
-            expect(response.isSuccess).to.beTruthy();
-            [httpWithoutTestProtocol GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
-                expect(response.isSuccess).to.beFalsy();
-                done();
+    it(@"only intercepts requests made by that instnace of BTHTTP", ^{
+        waitUntil(^(DoneCallback done){
+            BTHTTP *httpWithTestProtocol = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL]];
+
+            [httpWithTestProtocol setProtocolClasses:@[[BTHTTPTestProtocol class]]];
+
+            BTHTTP *httpWithoutTestProtocol = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL]];
+
+            [httpWithTestProtocol GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response.isSuccess).to.beTruthy();
+                [httpWithoutTestProtocol GET:@"/" completion:^(BTHTTPResponse *response, NSError *error) {
+                    expect(response.isSuccess).to.beFalsy();
+                    done();
+                }];
             }];
-        }];
+        });
     });
 });
 
@@ -584,27 +644,27 @@ describe(@"isEqual:", ^{
         NSURL *baseURL2 = [NSURL URLWithString:@"an-url://hi-again"];
         BTHTTP *http1  = [[BTHTTP alloc] initWithBaseURL:baseURL1];
         BTHTTP *http2  = [[BTHTTP alloc] initWithBaseURL:baseURL2];
-
+        
         expect(http1).notTo.equal(http2);
     });
 });
-        
+
 describe(@"copy", ^{
     __block BTHTTP *http;
     beforeEach(^{
         http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL]];
     });
-
+    
     it(@"returns a different instance", ^{
         expect(http).toNot.beIdenticalTo([http copy]);
     });
-
+    
     pending(@"BTHTTP implementing isEqual:", ^{
         it(@"returns an equal instance", ^{
             expect([http copy]).to.equal(http);
         });
     });
-
+    
     it(@"returned instance has the same certificates", ^{
         BTHTTP *copiedHTTP = [http copy];
         expect(copiedHTTP.pinnedCertificates).to.equal(http.pinnedCertificates);
