@@ -91,7 +91,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (CGSize)intrinsicContentSize {
-    CGFloat height = self.enabledPaymentProviderTypes.count > 0 ? 44 : 0;
+    CGFloat height = self.filteredEnabledPaymentProviderTypes.count > 0 ? 44 : 0;
 
     return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }

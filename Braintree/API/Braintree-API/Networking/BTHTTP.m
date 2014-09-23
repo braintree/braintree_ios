@@ -89,6 +89,8 @@
     NSURL *fullPathURL = [self.baseURL URLByAppendingPathComponent:aPath];
     NSURLComponents *components = [NSURLComponents componentsWithString:fullPathURL.absoluteString];
 
+    NSMutableDictionary *headers = [NSMutableDictionary dictionaryWithDictionary:self.defaultHeaders];
+
     NSMutableURLRequest *request;
 
     if ([method isEqualToString:@"GET"] || [method isEqualToString:@"DELETE"]) {
@@ -115,9 +117,9 @@
         }
 
         [request setHTTPBody:bodyData];
-        NSDictionary *headers = @{@"Content-Type": @"application/json; charset=utf-8"};
-        [request setAllHTTPHeaderFields:headers];
+        headers[@"Content-Type"]  = @"application/json; charset=utf-8";
     }
+    [request setAllHTTPHeaderFields:headers];
 
     [request setHTTPMethod:method];
 

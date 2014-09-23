@@ -1,4 +1,4 @@
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "BTUIFormField.h"
 
 /// Private class extension for implementors of BTUIFormField subclasses.

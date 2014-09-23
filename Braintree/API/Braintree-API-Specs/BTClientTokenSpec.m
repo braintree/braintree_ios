@@ -245,30 +245,30 @@ describe(@"PayPal", ^{
     __block NSMutableDictionary *mutableClaims;
     __block BTClientToken *clientToken;
 
-    beforeEach(^AsyncBlock{
-
-        NSMutableDictionary *paypalClaims = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                            BTClientTokenKeyPayPalClientId: @"PayPal-Test-Merchant-ClientId",
-                                                                                            BTClientTokenKeyPayPalMerchantName: @"PayPal Merchant",
-                                                                                            BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
-                                                                                            BTClientTokenKeyPayPalMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
-                                                                                            BTClientTokenKeyPayPalEnvironment: @"PayPalEnvironmentName",
-                                                                                            BTClientTokenKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com"
-                                                                                            }];
-
-        NSDictionary *baseClaims = @{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                      BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                      BTClientTokenKeyPayPalEnabled: @YES,
-                                      BTClientTokenKeyPayPal: paypalClaims};
-
-        mutableClaims = [baseClaims mutableCopy];
-
-
-
-        clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:baseClaims] error:NULL];
-        done();
+    beforeEach(^{
+        waitUntil(^(DoneCallback done) {
+            NSMutableDictionary *paypalClaims = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                                BTClientTokenKeyPayPalClientId: @"PayPal-Test-Merchant-ClientId",
+                                                                                                BTClientTokenKeyPayPalMerchantName: @"PayPal Merchant",
+                                                                                                BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
+                                                                                                BTClientTokenKeyPayPalMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
+                                                                                                BTClientTokenKeyPayPalEnvironment: @"PayPalEnvironmentName",
+                                                                                                BTClientTokenKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com"
+                                                                                                }];
+            
+            NSDictionary *baseClaims = @{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
+                                          BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
+                                          BTClientTokenKeyPayPalEnabled: @YES,
+                                          BTClientTokenKeyPayPal: paypalClaims};
+            
+            mutableClaims = [baseClaims mutableCopy];
+            
+            
+            
+            clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:baseClaims] error:NULL];
+            done();
+        });
     });
-
 
     describe(@"btPayPal_payPalClientIdentifier", ^{
         it(@"returns the client id as specified by the client token", ^{
