@@ -50,6 +50,7 @@ describe(@"BTClient", ^{
             expect(client).to.beNil();
             [mockLogger verify];
         });
+        
         describe(@"initialize With Invalid Data", ^{
             it(@"should return nil when initialized with NSData instead of a string", ^{
                 NSString *invalidString = @"invalidString";
@@ -117,7 +118,7 @@ describe(@"post analytics event", ^{
 
 });
 
-fdescribe(@"offline clients", ^{
+describe(@"offline clients", ^{
     __block BTClient *offlineClient;
 
     beforeEach(^{
@@ -413,7 +414,7 @@ describe(@"Internal helper", ^{
 
 describe(@"merchantId", ^{
     it(@"can be nil (for old client tokens)", ^{
-        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil]];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyMerchantId: NSNull.null }]];
         expect(client.merchantId).to.beNil();
     });
 

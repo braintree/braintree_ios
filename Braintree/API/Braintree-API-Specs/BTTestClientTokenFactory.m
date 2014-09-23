@@ -108,9 +108,13 @@
 
     baseTokenData[@"version"] = @(version);
 
-    if (overrides) {
-        [baseTokenData addEntriesFromDictionary:overrides];
-    }
+    [overrides enumerateKeysAndObjectsUsingBlock:^(id key, id obj, __unused BOOL *stop){
+        if([obj isKindOfClass:[NSNull class]]) {
+            [baseTokenData removeObjectForKey:key];
+        } else {
+            [baseTokenData setObject:obj forKey:key];
+        }
+    }];
 
     NSError *jsonSerializationError;
     NSData *configurationData = [NSJSONSerialization dataWithJSONObject:baseTokenData

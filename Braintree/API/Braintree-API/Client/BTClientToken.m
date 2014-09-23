@@ -10,6 +10,29 @@ NSString *const BTClientTokenKeyVersion = @"version";
 NSString *const BTClientTokenKeyApplePay = @"applePay";
 NSString *const BTClientTokenKeyStatus = @"status";
 
+
+NSString *const BTClientTokenKeyPayPalEnabled = @"paypalEnabled";
+NSString *const BTClientTokenKeyPayPal = @"paypal";
+NSString *const BTClientTokenKeyPayPalClientId = @"clientId";
+NSString *const BTClientTokenKeyPayPalDirectBaseUrl = @"directBaseUrl";
+NSString *const BTClientTokenKeyPayPalMerchantName = @"displayName";
+NSString *const BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl = @"privacyUrl";
+NSString *const BTClientTokenKeyPayPalMerchantUserAgreementUrl = @"userAgreementUrl";
+NSString *const BTClientTokenKeyPayPalEnvironment = @"environment";
+
+NSString *const BTClientTokenPayPalBraintreeProxyBasePath = @"/v1/";
+NSString *const BTClientTokenPayPalEnvironmentCustom = @"custom";
+NSString *const BTClientTokenPayPalEnvironmentLive = @"live";
+NSString *const BTClientTokenPayPalEnvironmentOffline = @"offline";
+
+NSString *const BTClientTokenKeyPayPalDisableAppSwitch = @"touchDisabled";
+
+NSString *const BTClientTokenKeyVenmo = @"venmo";
+
+NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantName = @"Offline Test Merchant";
+NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantPrivacyPolicyUrl = @"http://example.com/privacy";
+NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl = @"http://example.com/tos";
+
 @interface BTClientToken ()
 
 @property (nonatomic, readwrite, copy) NSString *authorizationFingerprint;
@@ -21,6 +44,7 @@ NSString *const BTClientTokenKeyStatus = @"status";
 - (NSString *)parseAuthorizationFingerprint:(NSString *)authorizationFingerprint error:(NSError **)error;
 - (NSURL *)parseAuthorizationURL:(NSString *)authorizationURLString error:(NSError **)error;
 - (NSURL *)parseClientApiURL:(NSString *)clientApiURLString error:(NSError **)error;
+
 @end
 
 @implementation BTClientToken
@@ -257,6 +281,67 @@ NSString *const BTClientTokenKeyStatus = @"status";
     }
 
     return NO;
+}
+
+
+#pragma mark PayPal
+
+- (NSString *)btPayPal_clientId {
+    return self.btPayPal_claims[BTClientTokenKeyPayPalClientId];
+}
+
+-(NSDictionary *)btPayPal_claims{
+    return self.configuration[BTClientTokenKeyPayPal];
+}
+
+- (NSString*)btPayPal_environment {
+    return self.btPayPal_claims[BTClientTokenKeyPayPalEnvironment];
+}
+
+- (NSURL *)btPayPal_directBaseURL {
+    NSString *apiUrl = self.btPayPal_claims[BTClientTokenKeyPayPalDirectBaseUrl];
+    NSURL *directBaseURL;
+    if (apiUrl == nil) {
+        directBaseURL = nil;
+    } else {
+        NSString *urlString = [NSString stringWithFormat:@"%@%@", apiUrl, BTClientTokenPayPalBraintreeProxyBasePath];
+        directBaseURL = [NSURL URLWithString:urlString];
+    }
+    return directBaseURL;
+}
+
+- (BOOL) btPayPal_isPayPalEnabled {
+    return [self.configuration[BTClientTokenKeyPayPalEnabled] boolValue];
+}
+
+- (BOOL)btPayPal_isTouchDisabled {
+    return [self.btPayPal_claims[BTClientTokenKeyPayPalDisableAppSwitch] boolValue];
+}
+
+- (NSString *)btPayPal_merchantName {
+    return self.btPayPal_claims[BTClientTokenKeyPayPalMerchantName];
+}
+
+- (NSURL *)btPayPal_merchantUserAgreementURL {
+    NSString *urlString = self.btPayPal_claims[BTClientTokenKeyPayPalMerchantUserAgreementUrl];
+    return urlString ? [NSURL URLWithString:urlString] : nil;
+}
+
+- (NSURL *)btPayPal_privacyPolicyURL {
+    NSString *urlString = self.btPayPal_claims[BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl];
+    return urlString ? [NSURL URLWithString:urlString] : nil;
+}
+
+
+#pragma mark Venmo
+
+- (NSString *)btVenmo_status {
+    id status = self.configuration[BTClientTokenKeyVenmo];
+    if ([status isKindOfClass:[NSString class]]) {
+        return status;
+    } else {
+        return nil;
+    }
 }
 
 @end
