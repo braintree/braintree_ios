@@ -105,3 +105,23 @@ target 'Braintree-Payments-Specs' do
   pods_for_specs
   pod 'Braintree/Payments'
 end
+
+
+# Add '$(PLATFORM_DIR)/Developer/Library/Frameworks' to Specta targets
+# Fixes http://stackoverflow.com/questions/24275470/xctest-xctest-h-not-found-on-old-projects-built-in-xcode-6
+# via http://stackoverflow.com/a/25078857/306657
+post_install do |installer|
+    targets = installer.project.targets.select{ |t| t.to_s.include? "Specta" }
+    if (targets.count > 0)
+        targets.each do |target|
+            target.build_configurations.each do |config|
+                s = config.build_settings['FRAMEWORK_SEARCH_PATHS']
+                s = [ '$(inherited)' ] if s == nil;
+                s.push('$(PLATFORM_DIR)/Developer/Library/Frameworks')
+                config.build_settings['FRAMEWORK_SEARCH_PATHS'] = s
+            end
+        end
+    else
+        puts "WARNING: Specta targets not found"
+    end
+end
