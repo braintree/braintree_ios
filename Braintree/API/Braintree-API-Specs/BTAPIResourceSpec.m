@@ -42,6 +42,7 @@
 
 @end
 
+
 SpecBegin(BTAPIResource)
 
 fdescribe(@"API Response object parsing", ^{
@@ -58,8 +59,35 @@ fdescribe(@"API Response object parsing", ^{
         expect(resource.optionalString).to.equal(@"an optional string");
     });
 
-    xit(@"nil APIDictionary");
-    xit(@"non-dictionary APIDictionary");
+    it(@"rejects a nil APIDictionary", ^{
+        NSError *error;
+        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:nil
+                                                                       error:&error];
+
+        expect(resource).to.beNil();
+        expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+        expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryInvalid);
+    });
+
+    it(@"rejects a non-dictionary APIDictionary", ^{
+        NSError *error;
+        id anArray = @[ @"an", @"array" ];
+        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:anArray
+                                                                       error:&error];
+
+        expect(resource).to.beNil();
+        expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+        expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryInvalid);
+    });
+
+    it(@"returns nil in an error case when the error pointer is NULL", ^{
+        expect(^{
+            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:nil
+                                                                           error:NULL];
+
+            expect(resource).to.beNil();
+        }).notTo.raiseAny();
+    });
 
     it(@"rejects incomplete API dictionaries that are missing keys because specified keys imply required keys", ^{
         NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
@@ -153,18 +181,69 @@ fdescribe(@"API Response object parsing", ^{
         expect(resource.optionalString).to.equal(@"an optional string");
     });
 
-    pending(@"APIFormat validation", ^{
-        pending(@"pass invalid selectors with wrong number of arguments");
-        pending(@"invalid values");
-        pending(@"not a dictionary");
+    describe(@"APIFormat validation", ^{
+        describe(@"BTAPIResourceValueTypeString", ^{
+            it(@"rejects selectors which have incorrect number of arguments", ^{
+                OCMockObject *mockTestAPIResource = [OCMockObject partialMockForObject:[BTTestAPIResource new]];
+                [[[[mockTestAPIResource stub] andReturn:@{ @"api-key-with-string-value": BTAPIResourceValueTypeString(@selector(init)) }] classMethod] APIFormat];
+
+                NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
+                NSError *error = nil;
+                BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+                                                                               error:&error];
+
+                expect(resource).to.beNil();
+                expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+                expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+            });
+
+            it(@"ignores selectors that the model does not implement", ^{
+                OCMockObject *mockTestAPIResource = [OCMockObject partialMockForObject:[BTTestAPIResource new]];
+                [[[[mockTestAPIResource stub] andReturn:@{ @"api-key-with-string-value": BTAPIResourceValueTypeString(NSSelectorFromString(@"notASelector:")) }] classMethod] APIFormat];
+
+                NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
+                NSError *error = nil;
+                BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+                                                                               error:&error];
+
+                expect(resource).to.beNil();
+                expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+                expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+            });
+        });
+
+        it(@"rejects invalid Format types", ^{
+            OCMockObject *mockTestAPIResource = [OCMockObject partialMockForObject:[BTTestAPIResource new]];
+            [[[[mockTestAPIResource stub] andReturn:@{ @"api-key-with-string-value": @"INVALID" }] classMethod] APIFormat];
+
+            NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
+            NSError *error = nil;
+            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+                                                                           error:&error];
+
+            expect(resource).to.beNil();
+            expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+            expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+        });
+
+        it(@"rejects non-dictionary Formats", ^{
+            OCMockObject *mockTestAPIResource = [OCMockObject partialMockForObject:[BTTestAPIResource new]];
+            [[[[mockTestAPIResource stub] andReturn:@"this is not a valid APIFormat"] classMethod] APIFormat];
+
+            NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
+            NSError *error = nil;
+            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+                                                                           error:&error];
+
+            expect(resource).to.beNil();
+            expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+            expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+        });
     });
-
-    pending(@"nested resources");
     
+    pending(@"can parse nested resources");
 });
 
-pending(@"API Request object generation", ^{
-    
-});
+pending(@"API Request object generation");
 
 SpecEnd

@@ -495,6 +495,8 @@
 		169D5F8A1966087800C2A50D /* BTAnalyticsMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTAnalyticsMetadata.h; path = "Braintree/API/Braintree-API/Utility/BTAnalyticsMetadata.h"; sourceTree = SOURCE_ROOT; };
 		169D5F8B1966087800C2A50D /* BTAnalyticsMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTAnalyticsMetadata.m; path = "Braintree/API/Braintree-API/Utility/BTAnalyticsMetadata.m"; sourceTree = SOURCE_ROOT; };
 		169D5F8C19660C4100C2A50D /* BTAnalyticsMetadataSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTAnalyticsMetadataSpec.m; path = "Braintree/API/Braintree-API-Specs/BTAnalyticsMetadataSpec.m"; sourceTree = SOURCE_ROOT; };
+		16A1C1B919D34968006672C1 /* BTAPIResourceValueTypeError.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIResourceValueTypeError.h; sourceTree = "<group>"; };
+		16A1C1BA19D34968006672C1 /* BTAPIResourceValueTypeError.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAPIResourceValueTypeError.m; sourceTree = "<group>"; };
 		16A2EA3319AEB8B100093EB5 /* BTUIVenmoButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIVenmoButton.h; sourceTree = "<group>"; };
 		16A2EA3419AEB8B100093EB5 /* BTUIVenmoButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIVenmoButton.m; sourceTree = "<group>"; };
 		16A2EA3519AEC40000093EB5 /* BTUIVenmoWordmarkVectorArtView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIVenmoWordmarkVectorArtView.h; sourceTree = "<group>"; };
@@ -1377,6 +1379,8 @@
 			isa = PBXGroup;
 			children = (
 				1637D0B419D2268E00F34F39 /* BTAPIResourceValueAdapter.h */,
+				16A1C1B919D34968006672C1 /* BTAPIResourceValueTypeError.h */,
+				16A1C1BA19D34968006672C1 /* BTAPIResourceValueTypeError.m */,
 				1637D0B519D2268E00F34F39 /* BTAPIResourceValueAdapter.m */,
 				1637D0B019D1248400F34F39 /* BTAPIResource.m */,
 				1637D0B119D1248400F34F39 /* BTAPIResource.h */,

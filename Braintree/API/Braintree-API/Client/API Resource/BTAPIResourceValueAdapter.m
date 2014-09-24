@@ -3,12 +3,12 @@
 @interface BTAPIResourceValueAdapter ()
 @property (nonatomic, copy) BOOL (^validatorBlock)(id rawValue);
 @property (nonatomic, copy) id (^transformerBlock)(id rawValue);
-@property (nonatomic, copy) void (^setterBlock)(id model, id value);
+@property (nonatomic, copy) BOOL (^setterBlock)(id model, id value, NSError * __autoreleasing *error);
 @end
 
 @implementation BTAPIResourceValueAdapter
 
-- (instancetype)initWithValidator:(BOOL (^)(id))validatorBlock setter:(void (^)(id, id))setterBlock {
+- (instancetype)initWithValidator:(BOOL (^)(id))validatorBlock setter:(BOOL (^)(id, id, NSError *__autoreleasing*))setterBlock {
     id (^identity)(id) = ^id(id rawValue){
         return rawValue;
     };
@@ -19,7 +19,7 @@
 
 - (instancetype)initWithValidator:(BOOL (^)(id))validatorBlock
                       transformer:(id (^)(id))transformerBlock
-                           setter:(void (^)(id, id))setterBlock {
+                           setter:(BOOL (^)(id, id, NSError *__autoreleasing*))setterBlock {
     self = [super init];
     if (self) {
         self.validatorBlock = validatorBlock;
@@ -39,12 +39,17 @@
     return self.validatorBlock(value);
 }
 
-- (void)setValue:(id)value onModel:(id)model {
+- (BOOL)setValue:(id)value onModel:(id)model error:(NSError *__autoreleasing *)error {
+    NSAssert(self.transformerBlock != nil, @"BTAPIResourceValueAdapter must always retain a transformer block.");
     if (!self.setterBlock || !self.transformerBlock) {
-        return;
+        return NO;
     }
 
-    return self.setterBlock(model, self.transformerBlock(value));
+    return self.setterBlock(model, self.transformerBlock(value), error);
+}
+
+- (NSError *)resourceValueTypeError {
+    return nil;
 }
 
 @end

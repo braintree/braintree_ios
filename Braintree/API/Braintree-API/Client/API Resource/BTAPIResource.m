@@ -1,31 +1,42 @@
 #import "BTAPIResource.h"
+#import "BTLogger.h"
 #import "BTAPIResourceValueAdapter.h"
+#import "BTAPIResourceValueTypeError.h"
 
 NSString *const BTAPIResourceErrorDomain = @"BTAPIResourceError";
 
 id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter) {
-    return [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
+    NSMutableString *setterString = [NSStringFromSelector(setter) mutableCopy];
+    NSInteger setterNumberOfArguments = [setterString replaceOccurrencesOfString:@":"
+                                                                      withString:@":"
+                                                                         options:0
+                                                                           range:NSMakeRange(0, [setterString length])];
+    if (setterNumberOfArguments != 1) {
+        return [BTAPIResourceValueTypeError errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
+                                              description:@"Selector passed to BTAPIResourceValueTypeString must take exactly one argument. Got: (%@), which takes (%d).", setterString, setterNumberOfArguments];
+    }
+
+    BTAPIResourceValueAdapter *valueAdapter = [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
         return [value isKindOfClass:[NSString class]];
-    } setter:^(id model, id value) {
-        //        if (!self.modelValueSetter) {
-        //            return;
-        //        }
-        //
-        //        if (![model respondsToSelector:self.modelValueSetter]) {
-        //            return;
-        //        }
-        //
-        //        if ([[model methodSignatureForSelector:self.modelValueSetter] numberOfArguments] != 1) {
-        //            return;
-        //        }
+    } setter:^BOOL(id model, id value, NSError **error){
+        if (!setter || ![model respondsToSelector:setter]) {
+            if (error) {
+                *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
+                                             code:BTAPIResourceErrorResourceSpecificationInvalid
+                                         userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Model (%@) does not respond to the selector (%@) passed to BTAPIResourceValueTypeString.", model, NSStringFromSelector(setter)] }];
+            }
+            return NO;
+        }
 
-        //        if (modelStringSetter) {
-
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[model methodSignatureForSelector:setter]];
+        NSMethodSignature *signature = [model methodSignatureForSelector:setter];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
         [invocation setSelector:setter];
         [invocation setArgument:&value atIndex:2];
         [invocation invokeWithTarget:model];
+        return YES;
     }];
+
+    return valueAdapter;
 }
 
 id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter) {
@@ -36,11 +47,12 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter) {
             return [NSSet setWithArray:rawValue];
         }
         return rawValue;
-    } setter:^(id model, id value) {
+    } setter:^BOOL(id model, id value, __unused NSError * __autoreleasing * error) {
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[model methodSignatureForSelector:setter]];
         [invocation setSelector:setter];
         [invocation setArgument:&value atIndex:2];
         [invocation invokeWithTarget:model];
+        return YES;
     }];
 }
 
@@ -53,10 +65,8 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
         return value == nil || [value isKindOfClass:[NSNull class]] || [APIResourceValueType isValidValue:value];
     } transformer:^id(id rawValue) {
         return [rawValue isKindOfClass:[NSNull class]] ? nil : rawValue;
-    }  setter:^(id model, id value) {
-        if (value) {
-            [APIResourceValueType setValue:value onModel:model];
-        }
+    }  setter:^BOOL(id model, id value, NSError *__autoreleasing* error) {
+        return [APIResourceValueType setValue:value onModel:model error:error];
     }];
 
     valueType.optional = YES;
@@ -67,16 +77,63 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 @implementation BTAPIResource
 
 + (id)resourceWithAPIDictionary:(NSDictionary *)APIDictionary error:(NSError *__autoreleasing *)error {
+
+    if (!APIDictionary) {
+        if (error) {
+            *error = [self errorWithCode:BTAPIResourceErrorResourceDictionaryInvalid
+                             description:@"Expected a value for APIDictionary. Got nil."];
+        }
+
+        return nil;
+    }
+
+    if (![APIDictionary isKindOfClass:[NSDictionary class]]) {
+        if (error) {
+            *error = [self errorWithCode:BTAPIResourceErrorResourceDictionaryInvalid
+                             description:@"Expected an NSDictionary for APIDictionary. Got (%@).", APIDictionary];
+        }
+
+        return nil;
+    }
+
     id model = [[[self resourceModelClass] alloc] init];
 
     if (!model) {
         if (error) {
-            *error = [self errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid description:@"Expected an allocated BTAPIResource from resourceModel. Got: nil."];
+            *error = [self errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
+                             description:@"Expected an allocated BTAPIResource from resourceModel. Got: nil."];
         }
         return nil;
     }
 
     NSDictionary *APIFormat = [self APIFormat];
+
+    if (![APIFormat isKindOfClass:[NSDictionary class]]) {
+        if (error) {
+            *error = [self errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
+                             description:@"APIFormat must return an NSDictionary. Got (%@).", APIFormat];
+        }
+        return nil;
+    }
+
+    for (id key in APIFormat) {
+        id obj = APIFormat[key];
+        if (![obj conformsToProtocol:@protocol(BTAPIResourceValueType)]) {
+            if (error) {
+                *error = [self errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
+                                 description:@"The specified API Format is invalid. Got (%@). Invalid key: %@.", APIFormat, key];
+                return nil;
+            }
+        } else if ([obj resourceValueTypeError] != nil) {
+            if (error) {
+                *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
+                                             code:BTAPIResourceErrorResourceSpecificationInvalid
+                                         userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The specified API Format is invalid. Got (%@). Invalid key: %@.", APIFormat, key],
+                                                     NSUnderlyingErrorKey: [obj resourceValueTypeError] }];
+                return nil;
+            }
+        }
+    }
 
     NSSet *allRequiredFormatKeys = [APIFormat keysOfEntriesPassingTest:^BOOL(__unused id key, id obj, __unused BOOL *stop) {
         if ([obj respondsToSelector:@selector(optional)]) {
@@ -109,7 +166,9 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
         id obj = APIDictionary[key];
 
         if ([valueType isValidValue:obj]) {
-            [valueType setValue:obj onModel:model];
+            if (![valueType setValue:obj onModel:model error:error]) {
+                return nil;
+            }
         } else {
             if (error) {
                 *error = [self errorWithCode:BTAPIResourceErrorResourceDictionaryInvalid
@@ -161,4 +220,3 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 }
 
 @end
-

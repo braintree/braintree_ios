@@ -35,6 +35,8 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 
 - (BOOL)isValidValue:(id)value;
 
-- (void)setValue:(id)value onModel:(id)model;
+- (BOOL)setValue:(id)value onModel:(id)model error:(NSError *__autoreleasing *)error;
+
+- (NSError *)resourceValueTypeError;
 
 @end
