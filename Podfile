@@ -1,7 +1,7 @@
 workspace 'Braintree.xcworkspace'
 
 def pods_for_specs
-  pod 'Specta', '~> 0.2.1'
+  pod 'Specta', :git => 'https://github.com/specta/specta.git', :branch => '0.3-wip'
   pod 'Expecta', '~> 0.3.0'
   pod 'OCMock', '~> 2.2.3'
   pod 'OCHamcrest', '~> 3.0.1'

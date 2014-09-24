@@ -130,100 +130,114 @@ describe(@"offline clients", ^{
     });
 
     describe(@"save card", ^{
-        it(@"returns the newly saved card", ^AsyncBlock{
-            [offlineClient saveCardWithNumber:@"4111111111111111"
-                              expirationMonth:@"12"
-                               expirationYear:@"2038"
-                                          cvv:nil
-                                   postalCode:nil
-                                     validate:YES
-                                      success:^(BTCardPaymentMethod *card) {
-                                          expect(card.nonce).to.beANonce();
-                                          expect(card.type).to.equal(BTCardTypeVisa);
-                                          expect(card.lastTwo).to.equal(@"11");
-                                          done();
-                                      } failure:nil];
-        });
-
-        it(@"saves a cards with the correct card types", ^AsyncBlock{
-            NSDictionary *cardTypesAndNumbers = @{ @"American Express": @"378282246310005",
-                                                   @"Discover": @"6011111111111117",
-                                                   @"MasterCard": @"5555555555554444",
-                                                   @"Visa": @"4012000077777777",
-                                                   @"JCB": @"3530111333300000",
-                                                   @"Card": @"1234" };
-
-            [cardTypesAndNumbers enumerateKeysAndObjectsUsingBlock:^(NSString *typeString, NSString *number, BOOL *stop) {
-                [offlineClient saveCardWithNumber:number
+        it(@"returns the newly saved card", ^{
+            waitUntil(^(DoneCallback done){
+                [offlineClient saveCardWithNumber:@"4111111111111111"
                                   expirationMonth:@"12"
                                    expirationYear:@"2038"
                                               cvv:nil
                                        postalCode:nil
                                          validate:YES
                                           success:^(BTCardPaymentMethod *card) {
-                                              expect(card.typeString).to.equal(typeString);
+                                              expect(card.nonce).to.beANonce();
+                                              expect(card.type).to.equal(BTCardTypeVisa);
+                                              expect(card.lastTwo).to.equal(@"11");
                                               done();
-                                          }
-                                          failure:nil];
-            }];
+                                          } failure:nil];
+            });
         });
 
-        it(@"assigns new cards a nonce", ^AsyncBlock{
-            [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                   postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                       expect(card.nonce).to.beANonce();
+        it(@"saves a cards with the correct card types", ^{
+            waitUntil(^(DoneCallback done){
+                NSDictionary *cardTypesAndNumbers = @{ @"American Express": @"378282246310005",
+                                                       @"Discover": @"6011111111111117",
+                                                       @"MasterCard": @"5555555555554444",
+                                                       @"Visa": @"4012000077777777",
+                                                       @"JCB": @"3530111333300000",
+                                                       @"Card": @"1234" };
 
-                                       done();
-                                   } failure:nil];
+                [cardTypesAndNumbers enumerateKeysAndObjectsUsingBlock:^(NSString *typeString, NSString *number, BOOL *stop) {
+                    [offlineClient saveCardWithNumber:number
+                                      expirationMonth:@"12"
+                                       expirationYear:@"2038"
+                                                  cvv:nil
+                                           postalCode:nil
+                                             validate:YES
+                                              success:^(BTCardPaymentMethod *card) {
+                                                  expect(card.typeString).to.equal(typeString);
+                                                  done();
+                                              }
+                                              failure:nil];
+                }];
+            });
         });
 
-        it(@"assigns each card a unique nonce", ^AsyncBlock{
-            NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
+        it(@"assigns new cards a nonce", ^{
+            waitUntil(^(DoneCallback done){
+                [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                       postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
+                                           expect(card.nonce).to.beANonce();
 
-            [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038"
-                                          cvv:nil
-                                   postalCode:nil
-                                     validate:YES success:^(BTPaymentMethod *card) {
-                                         [uniqueNoncesReturned addObject:card.nonce];
-                                         [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                                                postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                                                    [uniqueNoncesReturned addObject:card.nonce];
-                                                                    [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                                                                           postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                                                                               [uniqueNoncesReturned addObject:card.nonce];
-
-                                                                                               expect(uniqueNoncesReturned).to.haveCountOf(3);
-
-                                                                                               done();
-                                                                                           } failure:nil];
-                                                                } failure:nil];
-                                     } failure:nil];
+                                           done();
+                                       } failure:nil];
+            });
         });
 
-        it(@"accepts a nil success block", ^AsyncBlock{
-            [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                   postalCode:nil validate:YES success:nil failure:nil];
+        it(@"assigns each card a unique nonce", ^{
+            waitUntil(^(DoneCallback done){
+                NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
 
-            wait_for_potential_async_exceptions(done);
+                [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038"
+                                              cvv:nil
+                                       postalCode:nil
+                                         validate:YES success:^(BTPaymentMethod *card) {
+                                             [uniqueNoncesReturned addObject:card.nonce];
+                                             [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                                                    postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
+                                                                        [uniqueNoncesReturned addObject:card.nonce];
+                                                                        [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                                                                               postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
+                                                                                                   [uniqueNoncesReturned addObject:card.nonce];
+
+                                                                                                   expect(uniqueNoncesReturned).to.haveCountOf(3);
+
+                                                                                                   done();
+                                                                                               } failure:nil];
+                                                                    } failure:nil];
+                                         } failure:nil];
+            });
         });
 
-        it(@"accepts a nil failure block", ^AsyncBlock{
-            [offlineClient saveCardWithNumber:@"4111111111111112" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                   postalCode:nil validate:YES success:nil failure:nil];
+        it(@"accepts a nil success block", ^{
+            waitUntil(^(DoneCallback done){
+                [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                       postalCode:nil validate:YES success:nil failure:nil];
 
-            wait_for_potential_async_exceptions(done);
+                wait_for_potential_async_exceptions(done);
+            });
+        });
+
+        it(@"accepts a nil failure block", ^{
+            waitUntil(^(DoneCallback done){
+                [offlineClient saveCardWithNumber:@"4111111111111112" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                       postalCode:nil validate:YES success:nil failure:nil];
+
+                wait_for_potential_async_exceptions(done);
+            });
         });
     });
 
     describe(@"save Paypal account", ^{
-        it(@"returns the newly saved account", ^AsyncBlock{
-            [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                      applicationCorrelationID:@"correlationId"
-                                                       success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                           expect(paypalPaymentMethod.nonce).to.beANonce();
-                                                           expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
-                                                           done();
-                                                       } failure:nil];
+        it(@"returns the newly saved account", ^{
+            waitUntil(^(DoneCallback done){
+                [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
+                                          applicationCorrelationID:@"correlationId"
+                                                           success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                               expect(paypalPaymentMethod.nonce).to.beANonce();
+                                                               expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
+                                                               done();
+                                                           } failure:nil];
+            });
         });
     });
 
@@ -234,7 +248,8 @@ describe(@"offline clients", ^{
                 offlineClient = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{@"apple_pay": @"production"}]];
             });
 
-            it(@"fails if payment is nil", ^AsyncBlock{
+            it(@"fails if payment is nil", ^{
+                waitUntil(^(DoneCallback done){
                 id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
                 [[[paymentRequest stub] andReturn:nil] payment];
 
@@ -242,9 +257,11 @@ describe(@"offline clients", ^{
                     expect(error.code).to.equal(BTErrorUnsupported);
                     done();
                 }];
+                });
             });
 
-            it(@"returns the newly saved account with SDK support for Apple Pay, or calls the failure block if there is no SDK support", ^AsyncBlock{
+            it(@"returns the newly saved account with SDK support for Apple Pay, or calls the failure block if there is no SDK support", ^{
+                waitUntil(^(DoneCallback done){
                 id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
                 if ([PKPayment class] && [PKPaymentToken class]) {
                     id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
@@ -265,33 +282,38 @@ describe(@"offline clients", ^{
                         done();
                     }];
                 }
+                });
             });
         });
     });
 
     describe(@"fetch payment methods", ^{
-        it(@"initialy retrieves an empty list", ^AsyncBlock{
-            [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
-                expect(paymentMethods).to.haveCountOf(0);
-                done();
-            } failure:nil];
+        it(@"initialy retrieves an empty list", ^{
+            waitUntil(^(DoneCallback done){
+                [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
+                    expect(paymentMethods).to.haveCountOf(0);
+                    done();
+                } failure:nil];
+            });
         });
 
         describe(@"with two payment methods on file", ^{
             __block NSArray *paymentMethods;
 
-            beforeEach(^AsyncBlock{
-                [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                       postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                           [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                                                     applicationCorrelationID:nil
-                                                                                      success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                                                          [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
-                                                                                              paymentMethods = fetchedPaymentMethods;
-                                                                                              done();
+            beforeEach(^{
+                waitUntil(^(DoneCallback done){
+                    [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                           postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
+                                               [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
+                                                                         applicationCorrelationID:nil
+                                                                                          success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                                                              [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
+                                                                                                  paymentMethods = fetchedPaymentMethods;
+                                                                                                  done();
+                                                                                              } failure:nil];
                                                                                           } failure:nil];
-                                                                                      } failure:nil];
-                                       } failure:nil];
+                                           } failure:nil];
+                });
             });
 
             it(@"returns the list of payment methods", ^{
@@ -314,11 +336,12 @@ describe(@"offline clients", ^{
                 expect([paymentMethods[0] nonce]).notTo.equal([paymentMethods[1] nonce]);
             });
         });
+        it(@"accepts a nil success block", ^{
+            waitUntil(^(DoneCallback done){
+                [offlineClient fetchPaymentMethodsWithSuccess:nil failure:nil];
 
-        it(@"accepts a nil success block", ^AsyncBlock{
-            [offlineClient fetchPaymentMethodsWithSuccess:nil failure:nil];
-
-            wait_for_potential_async_exceptions(done);
+                wait_for_potential_async_exceptions(done);
+            });
         });
     });
 });
@@ -433,7 +456,6 @@ describe(@"merchantId", ^{
         expect(client.merchantId).to.equal(@"merchant-id");
     });
 });
-
 
 describe(@"applePayConfiguration", ^{
 
