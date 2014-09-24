@@ -85,6 +85,7 @@
 		162175A8192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 162175A0192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m */; };
 		162175AA192D9505008DC35D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 162175A4192D9505008DC35D /* InfoPlist.strings */; };
 		162D8DAF199B2D070040B1A4 /* BTURLUtilsSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 162D8DAE199B2D070040B1A4 /* BTURLUtilsSpecs.m */; };
+		1637D0B319D1E23400F34F39 /* BTAPIResourceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1637D0B219D1E13F00F34F39 /* BTAPIResourceSpec.m */; };
 		16968115192D98EA00120846 /* BTUICardTypeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810C192D98EA00120846 /* BTUICardTypeSpec.m */; };
 		16968116192D98EA00120846 /* BTUISpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810D192D98EA00120846 /* BTUISpec.m */; };
 		16968118192D98EA00120846 /* EXPMatchers+haveKerning.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968112192D98EA00120846 /* EXPMatchers+haveKerning.m */; };
@@ -418,6 +419,11 @@
 		162D8DAC199B2B6C0040B1A4 /* BTURLUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTURLUtils.h; sourceTree = "<group>"; };
 		162D8DAD199B2B6C0040B1A4 /* BTURLUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTURLUtils.m; sourceTree = "<group>"; };
 		162D8DAE199B2D070040B1A4 /* BTURLUtilsSpecs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTURLUtilsSpecs.m; sourceTree = "<group>"; };
+		1637D0B019D1248400F34F39 /* BTAPIResource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAPIResource.m; sourceTree = "<group>"; };
+		1637D0B119D1248400F34F39 /* BTAPIResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIResource.h; sourceTree = "<group>"; };
+		1637D0B219D1E13F00F34F39 /* BTAPIResourceSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAPIResourceSpec.m; sourceTree = "<group>"; };
+		1637D0B419D2268E00F34F39 /* BTAPIResourceValueAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIResourceValueAdapter.h; sourceTree = "<group>"; };
+		1637D0B519D2268E00F34F39 /* BTAPIResourceValueAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAPIResourceValueAdapter.m; sourceTree = "<group>"; };
 		163A69B91988555D00FEEE6C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/DropIn.strings; sourceTree = "<group>"; };
 		163A69BA1988555F00FEEE6C /* la */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = la; path = la.lproj/DropIn.strings; sourceTree = "<group>"; };
 		164A13EB1966237E009FAAEA /* BTKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTKeychain.h; path = "Braintree/API/Braintree-API/Utility/BTKeychain.h"; sourceTree = SOURCE_ROOT; };
@@ -1000,6 +1006,7 @@
 				1621742D192D85EB008DC35D /* BTClientToken.m */,
 				A7B7431019A29201000A6A7A /* BTClientMetadata.h */,
 				A7B7431119A29201000A6A7A /* BTClientMetadata.m */,
+				1637D0AF19D1246D00F34F39 /* API Resources */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -1319,6 +1326,7 @@
 			isa = PBXGroup;
 			children = (
 				169D5F8C19660C4100C2A50D /* BTAnalyticsMetadataSpec.m */,
+				1637D0B219D1E13F00F34F39 /* BTAPIResourceSpec.m */,
 				A7E5BEB019ABE5D0006AEB9B /* BTAppSwitchSpec.m */,
 				16217577192D94FB008DC35D /* BTCardSpec.m */,
 				A7B7431219A2932F000A6A7A /* BTClientMetadataSpec.m */,
@@ -1363,6 +1371,18 @@
 				162175A5192D9505008DC35D /* Supporting Files */,
 			);
 			path = "Braintree-API-Integration-Specs";
+			sourceTree = "<group>";
+		};
+		1637D0AF19D1246D00F34F39 /* API Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1637D0B419D2268E00F34F39 /* BTAPIResourceValueAdapter.h */,
+				1637D0B519D2268E00F34F39 /* BTAPIResourceValueAdapter.m */,
+				1637D0B019D1248400F34F39 /* BTAPIResource.m */,
+				1637D0B119D1248400F34F39 /* BTAPIResource.h */,
+			);
+			name = "API Resources";
+			path = "API Resource";
 			sourceTree = "<group>";
 		};
 		168ED82419884EC00011F4CD /* Localization */ = {
@@ -2914,6 +2934,7 @@
 				16102A24192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m in Sources */,
 				1621759C192D94FB008DC35D /* BTSpecHelper.m in Sources */,
 				1621759B192D94FB008DC35D /* BTHTTPSpecStubResponseManager.m in Sources */,
+				1637D0B319D1E23400F34F39 /* BTAPIResourceSpec.m in Sources */,
 				16217597192D94FB008DC35D /* BTOfflineClientBackendSpec.m in Sources */,
 				2DCDDFCA194F9E1400F691CF /* BTHTTPSpec.m in Sources */,
 				16217596192D94FB008DC35D /* BTMutablePayPalAccountSpec.m in Sources */,
