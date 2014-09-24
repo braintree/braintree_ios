@@ -82,7 +82,8 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(SEL setter, Class B
         return [value isKindOfClass:[NSDictionary class]];
     } transformer:^id(id rawValue, NSError * __autoreleasing *error) {
         NSError *nestedResourceError;
-        id nestedResource = [BTAPIResourceClass resourceWithAPIDictionary:rawValue error:&nestedResourceError];
+        id nestedResource = [BTAPIResourceClass modelWithAPIDictionary:rawValue
+                                                                 error:&nestedResourceError];
 
         if (nestedResourceError && error) {
             *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
@@ -117,7 +118,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 
 @implementation BTAPIResource
 
-+ (id)resourceWithAPIDictionary:(NSDictionary *)APIDictionary error:(NSError *__autoreleasing *)error {
++ (id)modelWithAPIDictionary:(NSDictionary *)APIDictionary error:(NSError *__autoreleasing *)error {
 
     if (!APIDictionary) {
         if (error) {
@@ -222,7 +223,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
     return model;
 }
 
-+ (NSDictionary *)APIDictionaryWithResource:(id)resource {
++ (NSDictionary *)APIDictionaryWithModel:(id)resource {
     NSLog(@"%@", resource);
     return nil;
 }

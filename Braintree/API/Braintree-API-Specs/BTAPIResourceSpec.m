@@ -77,7 +77,7 @@ describe(@"API Response object parsing", ^{
     it(@"parses a valid response dictionary, returning the well-formed model object", ^{
         NSDictionary *APIDictionary = [BTTestAPIResource sampleValidAPIDictionaryForTest];
         NSError *error;
-        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+        BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                        error:&error];
 
         expect(error).to.beNil();
@@ -89,7 +89,7 @@ describe(@"API Response object parsing", ^{
 
     it(@"rejects a nil APIDictionary", ^{
         NSError *error;
-        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:nil
+        BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:nil
                                                                        error:&error];
 
         expect(resource).to.beNil();
@@ -100,7 +100,7 @@ describe(@"API Response object parsing", ^{
     it(@"rejects a non-dictionary APIDictionary", ^{
         NSError *error;
         id anArray = @[ @"an", @"array" ];
-        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:anArray
+        BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:anArray
                                                                        error:&error];
 
         expect(resource).to.beNil();
@@ -110,8 +110,8 @@ describe(@"API Response object parsing", ^{
 
     it(@"returns nil in an error case when the error pointer is NULL", ^{
         expect(^{
-            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:nil
-                                                                           error:NULL];
+            BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:nil
+                                                                        error:NULL];
 
             expect(resource).to.beNil();
         }).notTo.raiseAny();
@@ -121,7 +121,7 @@ describe(@"API Response object parsing", ^{
         NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
         [APIDictionary removeObjectForKey:@"api-key-with-string-value"];
         NSError *error;
-        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+        BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                        error:&error];
 
         expect(resource).to.beNil();
@@ -133,7 +133,7 @@ describe(@"API Response object parsing", ^{
         NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
         [APIDictionary removeObjectForKey:@"api-key-with-optional-string-value"];
         NSError *error;
-        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+        BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                        error:&error];
 
         expect(error).to.beNil();
@@ -146,7 +146,7 @@ describe(@"API Response object parsing", ^{
         NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
         APIDictionary[@"new-thing"] = @"extra string";
         NSError *error;
-        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+        BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                        error:&error];
 
         expect(error).to.beNil();
@@ -160,7 +160,7 @@ describe(@"API Response object parsing", ^{
         NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
         APIDictionary[@"api-key-with-string-value"] = invalidValue;
         NSError *error = nil;
-        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+        BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                        error:&error];
 
         expect(resource).to.beNil();
@@ -173,7 +173,7 @@ describe(@"API Response object parsing", ^{
             NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
             APIDictionary[@"api-key-with-string-value"] = [NSNull null];
             NSError *error;
-            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+            BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                            error:&error];
 
             expect(resource).to.beNil();
@@ -185,7 +185,7 @@ describe(@"API Response object parsing", ^{
             NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
             APIDictionary[@"api-key-with-optional-string-value"] = [NSNull null];
             NSError *error;
-            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+            BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                            error:&error];
 
             expect(error).to.beNil();
@@ -200,7 +200,7 @@ describe(@"API Response object parsing", ^{
         NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
         APIDictionary[invalidKey] = @"Ignored value";
         NSError *error;
-        BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+        BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                        error:&error];
 
         expect(error).to.beNil();
@@ -216,7 +216,7 @@ describe(@"API Response object parsing", ^{
 
             NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
             NSError *error = nil;
-            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+            BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                            error:&error];
 
             expect(resource).to.beNil();
@@ -230,7 +230,7 @@ describe(@"API Response object parsing", ^{
 
             NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
             NSError *error = nil;
-            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+            BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                            error:&error];
 
             expect(resource).to.beNil();
@@ -244,7 +244,7 @@ describe(@"API Response object parsing", ^{
 
             NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
             NSError *error = nil;
-            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+            BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                            error:&error];
 
             expect(resource).to.beNil();
@@ -258,7 +258,7 @@ describe(@"API Response object parsing", ^{
 
             NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
             NSError *error = nil;
-            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+            BTTestModel *resource = [BTTestAPIResource modelWithAPIDictionary:APIDictionary
                                                                            error:&error];
 
             expect(resource).to.beNil();
@@ -270,7 +270,7 @@ describe(@"API Response object parsing", ^{
     it(@"parses nested resources", ^{
         NSDictionary *APIDictionary = [BTTestParentAPIResource sampleValidAPIDictionaryForTest];
         NSError *error;
-        BTTestParentModel *resource = [BTTestParentAPIResource resourceWithAPIDictionary:APIDictionary
+        BTTestParentModel *resource = [BTTestParentAPIResource modelWithAPIDictionary:APIDictionary
                                                                                    error:&error];
 
         expect(error).to.beNil();
@@ -282,7 +282,7 @@ describe(@"API Response object parsing", ^{
     it(@"reject invalid nested resources with errors", ^{
         NSDictionary *APIDictionary = @{ @"api-key-with-nested-resource": @{} };
         NSError *error;
-        BTTestParentModel *resource = [BTTestParentAPIResource resourceWithAPIDictionary:APIDictionary
+        BTTestParentModel *resource = [BTTestParentAPIResource modelWithAPIDictionary:APIDictionary
                                                                                    error:&error];
 
         expect(resource).to.beNil();

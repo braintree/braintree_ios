@@ -19,9 +19,9 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 
 @interface BTAPIResource : NSObject
 
-+ (id)resourceWithAPIDictionary:(NSDictionary *)APIDictionary error:(NSError *__autoreleasing *)error;
++ (id)modelWithAPIDictionary:(NSDictionary *)APIDictionary error:(NSError *__autoreleasing *)error;
 
-+ (NSDictionary *)APIDictionaryWithResource:(id)resource;
++ (NSDictionary *)APIDictionaryWithModel:(id)resource;
 
 
 #pragma mark Methods to Override
