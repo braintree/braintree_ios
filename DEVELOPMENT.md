@@ -46,7 +46,7 @@ The individual components may be of interest for advanced integrations and are e
 
 ## Environmental Assumptions
 
-* Xcode 5 and iOS SDK 7
+* Xcode 6 and iOS 8 SDK
 * iOS 7.0 target deployment
 * iPhone and iPad of all sizes and resolutions and the simulator
 * CocoaPods
