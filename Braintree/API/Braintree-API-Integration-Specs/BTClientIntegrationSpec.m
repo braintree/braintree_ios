@@ -1,4 +1,4 @@
-#import "BTClient.h"
+#import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 
 void wait_for_potential_async_exceptions(void (^done)(void)) {
@@ -421,19 +421,21 @@ describe(@"clients with Apple Pay activated", ^{
                                    }];
     });
 
-    it(@"can save an Apple Pay payment based on an PKPayment", ^AsyncBlock{
+    if ([PKPayment class] && testClient.applePayConfiguration.status != BTClientApplePayStatusOff) {
+        it(@"can save an Apple Pay payment based on an PKPayment if Apple Pay is supported", ^AsyncBlock{
 
-        id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
-        id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
+            id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
+            id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
-        [[[payment stub] andReturn:paymentToken] token];
-        [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+            [[[payment stub] andReturn:paymentToken] token];
+            [[[paymentToken stub] andReturn:[NSData data]] paymentData];
 
-        [testClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-            expect(applePayPaymentMethod.nonce).to.beANonce();
-            done();
-        } failure:nil];
-    });
+            [testClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                expect(applePayPaymentMethod.nonce).to.beANonce();
+                done();
+            } failure:nil];
+        });
+    }
 
 });
 

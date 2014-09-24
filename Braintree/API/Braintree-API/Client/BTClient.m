@@ -211,13 +211,22 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
 
+    if (![PKPayment class]) {
+        failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                         code:BTErrorUnsupported
+                                     userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not supported on this device"}]);
+        return;
+
+    }
+
     id paymentTokenValue;
+    NSError *error;
     switch (self.applePayConfiguration.status) {
         case BTClientApplePayStatusOff:
-            failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                             code:BTErrorUnsupported
-                                         userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant"}]);
-            return;
+            error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                        code:BTErrorUnsupported
+                                    userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant"}];
+            break;
         case BTClientApplePayStatusMock:
             paymentTokenValue = @"mock-payment-token-data";
             break;
@@ -225,14 +234,21 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             if (applePayRequest.payment) {
                 paymentTokenValue = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
             } else {
-                failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                 code:BTErrorUnsupported
-                                             userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required production"}]);
-                return;
+                error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                            code:BTErrorUnsupported
+                                        userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required production"}];
             }
             break;
         default:
             paymentTokenValue = [NSNull null];
+            break;
+    }
+
+    if (error != nil) {
+        if (failureBlock) {
+            failureBlock(error);
+        }
+        return;
     }
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];

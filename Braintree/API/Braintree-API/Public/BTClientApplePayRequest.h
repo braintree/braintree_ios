@@ -1,6 +1,5 @@
-#import <Foundation/Foundation.h>
-
-@class PKPayment;
+@import Foundation;
+@import PassKit;
 
 /// A builder for preparing save Apple Pay Token client API requests.
 ///

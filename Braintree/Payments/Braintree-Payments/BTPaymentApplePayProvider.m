@@ -22,6 +22,10 @@
 }
 
 - (BOOL)canAuthorizeApplePayPayment {
+    if (![PKPayment class]) {
+        return NO;
+    }
+
     if (self.client.applePayConfiguration.status == BTClientApplePayStatusOff) {
         return NO;
     }
@@ -34,6 +38,14 @@
 }
 
 - (void)authorizeApplePay {
+    if (![PKPayment class]) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                             code:BTPaymentProviderErrorOptionNotSupported
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not supported in this version of the iOS SDK" }];
+        [self informDelegateDidFailWithError:error];
+        return;
+    }
+
     if (!self.delegate) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorInitialization
@@ -80,11 +92,15 @@
 }
 
 - (PKPaymentRequest *)paymentRequest {
+    if (![PKPaymentRequest class]) {
+        return nil;
+    }
     PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
     paymentRequest.merchantIdentifier = self.client.applePayConfiguration.merchantId;
     // TODO - Retrieve these payment related values from client token
     paymentRequest.countryCode = @"US";
     paymentRequest.currencyCode = @"USD";
+
     paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
     paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
 
@@ -105,16 +121,14 @@
 }
 
 - (BOOL)paymentAuthorizationViewControllerCanMakePayments {
-#ifdef __IPHONE_8_0
+    if (![PKPaymentAuthorizationViewController class]) {
+        return NO;
+    }
     if ([[self class] isSimulator]) {
         return [BTMockApplePayPaymentAuthorizationViewController canMakePayments];
     } else {
         return [PKPaymentAuthorizationViewController canMakePayments];
     }
-    return YES;
-#else
-    return NO;
-#endif
 }
 
 #pragma mark PKPaymentAuthorizationViewController Delegate
