@@ -2,6 +2,7 @@
 #import "BTLogger.h"
 #import "BTAPIResourceValueAdapter.h"
 #import "BTAPIResourceValueTypeError.h"
+#import "BTAPIResourceValueType.h"
 
 NSString *const BTAPIResourceErrorDomain = @"BTAPIResourceError";
 

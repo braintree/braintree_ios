@@ -557,6 +557,7 @@
 		9A0D18A73520462F8D2FB1CD /* libPods-Braintree-API-Public-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Public-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7146AA76DA46D093BB89AC /* Pods-Braintree-Data-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Data-Demo.xcconfig"; path = "Pods/Pods-Braintree-Data-Demo.xcconfig"; sourceTree = "<group>"; };
 		A7021B071921631C0090CE8F /* Braintree_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree_Internal.h; sourceTree = "<group>"; };
+		A707F30519D381AD00223F7A /* BTAPIResourceValueType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIResourceValueType.h; sourceTree = "<group>"; };
 		A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorAlert.h; sourceTree = "<group>"; };
 		A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorAlert.m; sourceTree = "<group>"; };
 		A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorStateSpec.m; sourceTree = "<group>"; };
@@ -1384,6 +1385,7 @@
 				1637D0B519D2268E00F34F39 /* BTAPIResourceValueAdapter.m */,
 				1637D0B019D1248400F34F39 /* BTAPIResource.m */,
 				1637D0B119D1248400F34F39 /* BTAPIResource.h */,
+				A707F30519D381AD00223F7A /* BTAPIResourceValueType.h */,
 			);
 			name = "API Resources";
 			path = "API Resource";
