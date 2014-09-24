@@ -1,14 +1,6 @@
 @import Foundation;
 
-extern NSString *const BTAPIResourceErrorDomain;
-
-typedef NS_ENUM(NSInteger, BTAPIResourceErrorCode) {
-    BTAPIResourceErrorUnknown,
-    BTAPIResourceErrorResourceSpecificationInvalid,
-    BTAPIResourceErrorResourceDictionaryMissingKey,
-    BTAPIResourceErrorResourceDictionaryInvalid,
-    BTAPIResourceErrorResourceDictionaryNestedResourceInvalid,
-};
+#import "BTAPIResourceErrors.h"
 
 @protocol BTAPIResourceValueType;
 
@@ -24,7 +16,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 + (NSDictionary *)APIDictionaryWithModel:(id)resource;
 
 
-#pragma mark Methods to Override
+#pragma mark Abstract Methods
 
 + (Class)resourceModelClass;
 

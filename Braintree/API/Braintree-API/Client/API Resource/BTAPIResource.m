@@ -4,9 +4,6 @@
 #import "BTAPIResourceValueTypeError.h"
 #import "BTAPIResourceValueType.h"
 
-NSString *const BTAPIResourceErrorDomain = @"BTAPIResourceError";
-
-
 BTAPIResourceValueTypeError *BTAPIResourceValueTypeValidateSetter(SEL setter) {
     NSMutableString *setterString = [NSStringFromSelector(setter) mutableCopy];
     NSInteger setterNumberOfArguments = [setterString replaceOccurrencesOfString:@":"
@@ -17,9 +14,11 @@ BTAPIResourceValueTypeError *BTAPIResourceValueTypeValidateSetter(SEL setter) {
         return [BTAPIResourceValueTypeError errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
                                               description:@"Selector passed to BTAPIResourceValueTypeString must take exactly one argument. Got: (%@), which takes (%d).", setterString, setterNumberOfArguments];
     }
-    
+
     return nil;
 }
+
+#pragma mark Value Types
 
 id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter) {
     BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
@@ -89,7 +88,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(SEL setter, Class B
             *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
                                          code:BTAPIResourceErrorResourceDictionaryNestedResourceInvalid
                                      userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Value in API Dictionary for nested resource of type (%@) is invalid. Got: (%@).", BTAPIResourceClass, rawValue],
-                                                     NSUnderlyingErrorKey: nestedResourceError }];
+                                                 NSUnderlyingErrorKey: nestedResourceError }];
         }
 
         return nestedResource;
@@ -116,7 +115,11 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
     return valueType;
 }
 
+#pragma mark -
+
 @implementation BTAPIResource
+
+#pragma mark Model <-> API Dictionary
 
 + (id)modelWithAPIDictionary:(NSDictionary *)APIDictionary error:(NSError *__autoreleasing *)error {
 
@@ -223,12 +226,13 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
     return model;
 }
 
-+ (NSDictionary *)APIDictionaryWithModel:(id)resource {
-    NSLog(@"%@", resource);
-    return nil;
++ (NSDictionary *)APIDictionaryWithModel:(__unused id)resource {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:@"APIDictionaryWithModel is not yet implemented"
+                                 userInfo:nil];
 }
 
-#pragma mark -
+#pragma mark Internal Helpers
 
 + (NSError *)errorWithCode:(NSInteger)code description:(NSString *)description, ... {
     va_list args;
@@ -241,7 +245,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
                            userInfo:@{ NSLocalizedDescriptionKey: interpolatedDescription }];
 }
 
-#pragma mark Methods to Override
+#pragma mark Abstract Methods
 
 + (Class)resourceModelClass {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
@@ -249,15 +253,9 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
                                  userInfo:nil];
 }
 
-+ (NSSet *)keys {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:@"BTAPIResource subclasses must override +keys"
-                                 userInfo:nil];
-}
-
 + (NSDictionary *)APIFormat {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:@"BTAPIResource subclasses must override +APIFormat:"
+                                   reason:@"BTAPIResource subclasses must override +APIFormat"
                                  userInfo:nil];
 }
 
