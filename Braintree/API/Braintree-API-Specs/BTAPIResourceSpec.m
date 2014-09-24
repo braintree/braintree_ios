@@ -4,7 +4,6 @@
 
 @interface BTTestModel : NSObject
 @property (nonatomic, copy) NSString *string;
-@property (nonatomic, copy) NSString *readOnly;
 @property (nonatomic, copy) NSString *optionalString;
 @property (nonatomic, strong) NSSet *stringSet;
 @end

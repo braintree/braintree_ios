@@ -1,6 +1,7 @@
 @import Foundation;
 
 #import "BTAPIResource.h"
+#import "BTAPIResourceValueType.h"
 
 @interface BTAPIResourceValueTypeError : NSObject <BTAPIResourceValueType>
 
