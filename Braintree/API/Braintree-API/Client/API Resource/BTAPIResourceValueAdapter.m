@@ -2,14 +2,14 @@
 
 @interface BTAPIResourceValueAdapter ()
 @property (nonatomic, copy) BOOL (^validatorBlock)(id rawValue);
-@property (nonatomic, copy) id (^transformerBlock)(id rawValue);
+@property (nonatomic, copy) id (^transformerBlock)(id rawValue, NSError * __autoreleasing *);
 @property (nonatomic, copy) BOOL (^setterBlock)(id model, id value, NSError * __autoreleasing *error);
 @end
 
 @implementation BTAPIResourceValueAdapter
 
 - (instancetype)initWithValidator:(BOOL (^)(id))validatorBlock setter:(BOOL (^)(id, id, NSError *__autoreleasing*))setterBlock {
-    id (^identity)(id) = ^id(id rawValue){
+    id (^identity)(id, NSError * __autoreleasing *) = ^id(id rawValue, __unused NSError * __autoreleasing *error){
         return rawValue;
     };
     return [self initWithValidator:validatorBlock
@@ -18,7 +18,7 @@
 }
 
 - (instancetype)initWithValidator:(BOOL (^)(id))validatorBlock
-                      transformer:(id (^)(id))transformerBlock
+                      transformer:(id (^)(id, NSError * __autoreleasing *))transformerBlock
                            setter:(BOOL (^)(id, id, NSError *__autoreleasing*))setterBlock {
     self = [super init];
     if (self) {
@@ -45,7 +45,13 @@
         return NO;
     }
 
-    return self.setterBlock(model, self.transformerBlock(value), error);
+    id transformedValue = self.transformerBlock(value, error);
+    
+    if (!transformedValue) {
+        return self.optional;
+    }
+
+    return self.setterBlock(model, transformedValue, error);
 }
 
 - (NSError *)resourceValueTypeError {

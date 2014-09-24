@@ -5,7 +5,8 @@
 
 NSString *const BTAPIResourceErrorDomain = @"BTAPIResourceError";
 
-id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter) {
+
+BTAPIResourceValueTypeError *BTAPIResourceValueTypeValidateSetter(SEL setter) {
     NSMutableString *setterString = [NSStringFromSelector(setter) mutableCopy];
     NSInteger setterNumberOfArguments = [setterString replaceOccurrencesOfString:@":"
                                                                       withString:@":"
@@ -14,6 +15,15 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter) {
     if (setterNumberOfArguments != 1) {
         return [BTAPIResourceValueTypeError errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
                                               description:@"Selector passed to BTAPIResourceValueTypeString must take exactly one argument. Got: (%@), which takes (%d).", setterString, setterNumberOfArguments];
+    }
+    
+    return nil;
+}
+
+id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter) {
+    BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
+    if (error) {
+        return error;
     }
 
     BTAPIResourceValueAdapter *valueAdapter = [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
@@ -40,9 +50,14 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter) {
 }
 
 id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter) {
+    BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
+    if (error) {
+        return error;
+    }
+
     return [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
         return [value isKindOfClass:[NSSet class]] || [value isKindOfClass:[NSArray class]];
-    } transformer:^id(id rawValue){
+    } transformer:^id(id rawValue, __unused NSError * __autoreleasing *error){
         if ([rawValue isKindOfClass:[NSArray class]]) {
             return [NSSet setWithArray:rawValue];
         }
@@ -56,14 +71,39 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter) {
     }];
 }
 
-id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(Class __unused BTAPIResourceClass) {
-    return nil;
+id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(SEL setter, Class BTAPIResourceClass) {
+    BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
+    if (error) {
+        return error;
+    }
+
+    return [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
+        return [value isKindOfClass:[NSDictionary class]];
+    } transformer:^id(id rawValue, NSError * __autoreleasing *error) {
+        NSError *nestedResourceError;
+        id nestedResource = [BTAPIResourceClass resourceWithAPIDictionary:rawValue error:&nestedResourceError];
+
+        if (nestedResourceError && error) {
+            *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
+                                         code:BTAPIResourceErrorResourceDictionaryNestedResourceInvalid
+                                     userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Value in API Dictionary for nested resource of type (%@) is invalid. Got: (%@).", BTAPIResourceClass, rawValue],
+                                                     NSUnderlyingErrorKey: nestedResourceError }];
+        }
+
+        return nestedResource;
+    } setter:^BOOL(id model, id value, __unused NSError * __autoreleasing *error) {
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[model methodSignatureForSelector:setter]];
+        [invocation setSelector:setter];
+        [invocation setArgument:&value atIndex:2];
+        [invocation invokeWithTarget:model];
+        return YES;
+    }];
 }
 
 id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueType> APIResourceValueType) {
     BTAPIResourceValueAdapter *valueType = [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
         return value == nil || [value isKindOfClass:[NSNull class]] || [APIResourceValueType isValidValue:value];
-    } transformer:^id(id rawValue) {
+    } transformer:^id(id rawValue, __unused NSError * __autoreleasing *error) {
         return [rawValue isKindOfClass:[NSNull class]] ? nil : rawValue;
     }  setter:^BOOL(id model, id value, NSError *__autoreleasing* error) {
         return [APIResourceValueType setValue:value onModel:model error:error];

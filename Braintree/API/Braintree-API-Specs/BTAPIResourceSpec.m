@@ -7,17 +7,21 @@
 @property (nonatomic, copy) NSString *readOnly;
 @property (nonatomic, copy) NSString *optionalString;
 @property (nonatomic, strong) NSSet *stringSet;
-@property (nonatomic, strong) BTTestModel *nestedModel;
 @end
 
 @implementation BTTestModel
 @end
 
+@interface BTTestParentModel : NSObject
+@property (nonatomic, strong) BTTestModel *child;
+@end
+
+@implementation BTTestParentModel
+@end
+
 
 @interface BTTestAPIResource : BTAPIResource
-
 + (NSDictionary *)sampleValidAPIDictionaryForTest;
-
 @end
 
 @implementation BTTestAPIResource
@@ -30,7 +34,7 @@
     return @{
              @"api-key-with-string-value": BTAPIResourceValueTypeString(@selector(setString:)),
              @"api-key-with-string-set-value": BTAPIResourceValueTypeStringSet(@selector(setStringSet:)),
-             @"api-key-with-optional-string-value": BTAPIResourceValueTypeOptional(BTAPIResourceValueTypeString(@selector(setOptionalString:)))
+             @"api-key-with-optional-string-value": BTAPIResourceValueTypeOptional(BTAPIResourceValueTypeString(@selector(setOptionalString:))),
              };
 }
 
@@ -38,6 +42,31 @@
     return @{ @"api-key-with-string-value": @"a string",
               @"api-key-with-string-set-value": @[ @"first string", @"second string" ],
               @"api-key-with-optional-string-value": @"an optional string" };
+}
+
+@end
+
+@interface BTTestParentAPIResource : BTAPIResource
++ (NSDictionary *)sampleValidAPIDictionaryForTest;
+@end
+
+@implementation BTTestParentAPIResource
+
++ (Class)resourceModelClass {
+    return [BTTestParentModel class];
+}
+
++ (NSDictionary *)APIFormat {
+    return @{
+             @"api-key-with-nested-resource": BTAPIResourceValueTypeAPIResource(@selector(setChild:), [BTTestAPIResource class])
+             };
+}
+
++ (NSDictionary *)sampleValidAPIDictionaryForTest {
+    return @{ @"api-key-with-nested-resource": @{
+                      @"api-key-with-string-value": @"a string",
+                      @"api-key-with-string-set-value": @[ @"first string", @"second string" ],
+                      @"api-key-with-optional-string-value": @"an optional string" } };
 }
 
 @end
@@ -182,34 +211,32 @@ fdescribe(@"API Response object parsing", ^{
     });
 
     describe(@"APIFormat validation", ^{
-        describe(@"BTAPIResourceValueTypeString", ^{
-            it(@"rejects selectors which have incorrect number of arguments", ^{
-                OCMockObject *mockTestAPIResource = [OCMockObject partialMockForObject:[BTTestAPIResource new]];
-                [[[[mockTestAPIResource stub] andReturn:@{ @"api-key-with-string-value": BTAPIResourceValueTypeString(@selector(init)) }] classMethod] APIFormat];
+        it(@"rejects selectors which have incorrect number of arguments", ^{
+            OCMockObject *mockTestAPIResource = [OCMockObject partialMockForObject:[BTTestAPIResource new]];
+            [[[[mockTestAPIResource stub] andReturn:@{ @"api-key-with-string-value": BTAPIResourceValueTypeString(@selector(init)) }] classMethod] APIFormat];
 
-                NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
-                NSError *error = nil;
-                BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
-                                                                               error:&error];
+            NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
+            NSError *error = nil;
+            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+                                                                           error:&error];
 
-                expect(resource).to.beNil();
-                expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-                expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
-            });
+            expect(resource).to.beNil();
+            expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+            expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+        });
 
-            it(@"ignores selectors that the model does not implement", ^{
-                OCMockObject *mockTestAPIResource = [OCMockObject partialMockForObject:[BTTestAPIResource new]];
-                [[[[mockTestAPIResource stub] andReturn:@{ @"api-key-with-string-value": BTAPIResourceValueTypeString(NSSelectorFromString(@"notASelector:")) }] classMethod] APIFormat];
+        it(@"ignores selectors that the model does not implement", ^{
+            OCMockObject *mockTestAPIResource = [OCMockObject partialMockForObject:[BTTestAPIResource new]];
+            [[[[mockTestAPIResource stub] andReturn:@{ @"api-key-with-string-value": BTAPIResourceValueTypeString(NSSelectorFromString(@"notASelector:")) }] classMethod] APIFormat];
 
-                NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
-                NSError *error = nil;
-                BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
-                                                                               error:&error];
+            NSMutableDictionary *APIDictionary = [[BTTestAPIResource sampleValidAPIDictionaryForTest] mutableCopy];
+            NSError *error = nil;
+            BTTestModel *resource = [BTTestAPIResource resourceWithAPIDictionary:APIDictionary
+                                                                           error:&error];
 
-                expect(resource).to.beNil();
-                expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-                expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
-            });
+            expect(resource).to.beNil();
+            expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+            expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
         });
 
         it(@"rejects invalid Format types", ^{
@@ -240,8 +267,29 @@ fdescribe(@"API Response object parsing", ^{
             expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
         });
     });
-    
-    pending(@"can parse nested resources");
+
+    it(@"parses nested resources", ^{
+        NSDictionary *APIDictionary = [BTTestParentAPIResource sampleValidAPIDictionaryForTest];
+        NSError *error;
+        BTTestParentModel *resource = [BTTestParentAPIResource resourceWithAPIDictionary:APIDictionary
+                                                                                   error:&error];
+
+        expect(error).to.beNil();
+        expect(resource.child.string).to.equal(@"a string");
+        expect(resource.child.stringSet).to.equal([NSSet setWithObjects:@"first string", @"second string", nil]);
+        expect(resource.child.optionalString).to.equal(@"an optional string");
+    });
+
+    it(@"reject invalid nested resources with errors", ^{
+        NSDictionary *APIDictionary = @{ @"api-key-with-nested-resource": @{} };
+        NSError *error;
+        BTTestParentModel *resource = [BTTestParentAPIResource resourceWithAPIDictionary:APIDictionary
+                                                                                   error:&error];
+
+        expect(resource).to.beNil();
+        expect(error.domain).to.equal(BTAPIResourceErrorDomain);
+        expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryNestedResourceInvalid);
+    });
 });
 
 pending(@"API Request object generation");

@@ -7,13 +7,14 @@ typedef NS_ENUM(NSInteger, BTAPIResourceErrorCode) {
     BTAPIResourceErrorResourceSpecificationInvalid,
     BTAPIResourceErrorResourceDictionaryMissingKey,
     BTAPIResourceErrorResourceDictionaryInvalid,
+    BTAPIResourceErrorResourceDictionaryNestedResourceInvalid,
 };
 
 @protocol BTAPIResourceValueType;
 
-id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL modelStringSetter);
-id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL modelStringSetSetter);
-id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(Class BTAPIResourceClass);
+id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter);
+id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter);
+id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(SEL setter, Class BTAPIResourceClass);
 id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueType> APIResourceValueType);
 
 @interface BTAPIResource : NSObject
