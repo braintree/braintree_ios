@@ -74,7 +74,7 @@
 
 SpecBegin(BTAPIResource)
 
-fdescribe(@"API Response object parsing", ^{
+describe(@"API Response object parsing", ^{
     it(@"parses a valid response dictionary, returning the well-formed model object", ^{
         NSDictionary *APIDictionary = [BTTestAPIResource sampleValidAPIDictionaryForTest];
         NSError *error;
