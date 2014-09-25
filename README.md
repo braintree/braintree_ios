@@ -1,6 +1,6 @@
 # Braintree v.zero SDK for iOS
 
-Welcome to Braintree's v.zero SDK for iOS. This CocoaPod will help you accept card and PayPal payments in your iOS app.
+Welcome to Braintree's v.zero SDK for iOS. This CocoaPod will help you accept card, PayPal, and Venmo payments in your iOS app.
 
 ![Screenshot of v.zero](screenshot.png)
 
@@ -8,7 +8,7 @@ Welcome to Braintree's v.zero SDK for iOS. This CocoaPod will help you accept ca
 
 Start with [**'Hello, Client!'**](https://developers.braintreepayments.com/ios/start/hello-client) for instructions on basic setup and usage.
 
-Next, read the [**full documentation**](https://developers.braintreepayments.com/ios/sdk/client) for information about integration options, such as Drop-In UI, custom PayPal button and credit card tokenization.
+Next, read the [**full documentation**](https://developers.braintreepayments.com/ios/sdk/client) for information about integration options, such as Drop-In UI, custom payment button, and credit card tokenization.
 
 Finally, [**cocoadocs.org/docsets/Braintree**](http://cocoadocs.org/docsets/Braintree) hosts the complete, up-to-date API documentation generated straight from the header files.
 

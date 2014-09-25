@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface BTUICardExpiryFormat : NSObject
 @property (nonatomic, copy) NSString *value;

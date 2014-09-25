@@ -1,5 +1,16 @@
 # Braintree iOS SDK Release Notes
 
+## 3.3.1 (2014-09-16)
+
+* Enhancements
+  * Update Kount library to 2.5.3, which removes use of IDFA
+  * Use @import for system frameworks
+* Fixes
+  * Crasher in Drop-In that treats BTPaymentButton like a UIControl
+  * Xcode 6 and iOS 8 deprecations
+  * Bug in BTPaymentButton intrinsic size height calculation
+  * Autolayout ambiguity in demo app
+
 ## 3.3.0 (2014-09-08)
 
 * Features

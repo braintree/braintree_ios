@@ -8,28 +8,29 @@ __block BTClientToken *clientToken;
 __block BTClientToken *clientTokenOffline;
 __block BTClientToken *clientTokenPayPalDisabled;
 
-beforeEach(^AsyncBlock{
+beforeEach(^{
+    waitUntil(^(DoneCallback done){
+        NSMutableDictionary *paypalClaims = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                            BTClientTokenPayPalKeyClientId: @"PayPal-Test-Merchant-ClientId",
+                                                                                            BTClientTokenPayPalKeyMerchantName: @"PayPal Merchant",
+                                                                                            BTClientTokenPayPalKeyMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
+                                                                                            BTClientTokenPayPalKeyMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
+                                                                                            BTClientTokenPayPalKeyEnvironment: @"PayPalEnvironmentName",
+                                                                                            BTClientTokenPayPalKeyDirectBaseUrl: @"http://api.paypal.example.com"
+                                                                                            }];
 
-    NSMutableDictionary *paypalClaims = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                        BTClientTokenPayPalKeyClientId: @"PayPal-Test-Merchant-ClientId",
-                                                                                        BTClientTokenPayPalKeyMerchantName: @"PayPal Merchant",
-                                                                                        BTClientTokenPayPalKeyMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
-                                                                                        BTClientTokenPayPalKeyMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
-                                                                                        BTClientTokenPayPalKeyEnvironment: @"PayPalEnvironmentName",
-                                                                                        BTClientTokenPayPalKeyDirectBaseUrl: @"http://api.paypal.example.com"
-                                                                                        }];
+        NSDictionary *baseClaims = @{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
+                                      BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
+                                      BTClientTokenKeyPayPalEnabled: @YES,
+                                      BTClientTokenPayPalNamespace: paypalClaims};
 
-     NSDictionary *baseClaims = @{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                                           BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                                           BTClientTokenKeyPayPalEnabled: @YES,
-                                                           BTClientTokenPayPalNamespace: paypalClaims};
-
-    mutableClaims = [baseClaims mutableCopy];
-    clientToken = [[BTClientToken alloc] initWithClaims:baseClaims
-                                                  error:NULL];
-    clientTokenOffline = [[BTClientToken alloc] initWithClaims:mutableClaims
-                                                         error:nil];
-    done();
+        mutableClaims = [baseClaims mutableCopy];
+        clientToken = [[BTClientToken alloc] initWithClaims:baseClaims
+                                                      error:NULL];
+        clientTokenOffline = [[BTClientToken alloc] initWithClaims:mutableClaims
+                                                             error:nil];
+        done();
+    });
 });
 
 
@@ -52,9 +53,9 @@ describe(@"btPayPal_isPayPalEnabled", ^{
                                       BTClientTokenKeyPayPalEnabled: @NO};
 
         clientTokenPayPalDisabled = [[BTClientToken alloc] initWithClaims:baseClaims
-                                                             error:nil];
+                                                                    error:nil];
     });
-    
+
     it(@"returns false if the paypalEnabled flag is set to False in the client Token", ^{
         expect(clientTokenPayPalDisabled.btPayPal_isPayPalEnabled).to.beFalsy();
     });
