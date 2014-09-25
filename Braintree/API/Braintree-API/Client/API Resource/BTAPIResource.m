@@ -12,7 +12,7 @@ BTAPIResourceValueTypeError *BTAPIResourceValueTypeValidateSetter(SEL setter) {
                                                                            range:NSMakeRange(0, [setterString length])];
     if (setterNumberOfArguments != 1) {
         return [BTAPIResourceValueTypeError errorWithCode:BTAPIResourceErrorAPIFormatInvalid
-                                              description:@"Selector passed to BTAPIResourceValueTypeString must take exactly one argument. Got: (%@), which takes (%d).", setterString, setterNumberOfArguments];
+                                              description:@"Selector passed to ValueType must take exactly one argument. Got: (%@), which takes (%d).", setterString, setterNumberOfArguments];
     }
 
     return nil;
@@ -42,6 +42,37 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter) {
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
         [invocation setSelector:setter];
         [invocation setArgument:&value atIndex:2];
+        [invocation invokeWithTarget:model];
+        return YES;
+    }];
+
+    return valueAdapter;
+}
+
+id<BTAPIResourceValueType> BTAPIResourceValueTypeBool(SEL setter) {
+    BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
+    if (error) {
+        return error;
+    }
+
+    BTAPIResourceValueAdapter *valueAdapter = [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
+        return [value isEqual:@YES] || [value isEqual:@NO];
+    } setter:^BOOL(id model, id value, NSError **error){
+        if (!setter || ![model respondsToSelector:setter]) {
+            if (error) {
+                *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
+                                             code:BTAPIResourceErrorAPIFormatInvalid
+                                         userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Model (%@) does not respond to the selector (%@) passed to BTAPIResourceValueTypeBool.", model, NSStringFromSelector(setter)] }];
+            }
+            return NO;
+        }
+
+        BOOL booleanValue = [value isEqual:@YES] ? YES : NO;
+
+        NSMethodSignature *signature = [model methodSignatureForSelector:setter];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        [invocation setSelector:setter];
+        [invocation setArgument:&booleanValue atIndex:2];
         [invocation invokeWithTarget:model];
         return YES;
     }];

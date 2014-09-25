@@ -93,6 +93,13 @@
 /// @return A ValueType for use in `APIFormat`s
 id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter);
 
+/// A ValueType that parses a BOOL and saves it in the model with a selector.
+///
+/// @param setter A selector that is sent to the model object with the BOOL value as the first argument
+///
+/// @return A ValueType for use in `APIFormat`s
+id<BTAPIResourceValueType> BTAPIResourceValueTypeBool(SEL setter);
+
 /// A ValueType that parses a set of strings and saves it in the model with a selector.
 ///
 /// Note: This value type will accept an array or a set; the cannonical represnetation is a NSSet.
