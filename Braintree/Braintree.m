@@ -2,6 +2,8 @@
 
 #import "BTClient.h"
 #import "BTClient+BTPayPal.h"
+#import "BTLogger.h"
+
 #import "BTPayPalButton.h"
 #import "BTPaymentProvider.h"
 
@@ -133,6 +135,12 @@
 
 + (NSString *)libraryVersion {
     return [BTClient libraryVersion];
+}
+
+#pragma mark Log Level
+
++ (void)setLogLevel:(BTLogLevel)logLevel {
+    [[BTLogger sharedLogger] setLevel:logLevel];
 }
 
 #pragma mark App Switching

@@ -1,6 +1,6 @@
 #import "BTLogger.h"
 
-#define variadicLogLevel(level) \
+#define variadicLogLevel(level, format) \
     va_list args; \
     va_start(args, format); \
     [self logLevel:level format:format arguments:args]; \
@@ -22,43 +22,61 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _level = BTLoggerLevelInfo;
+        _level = BTLogLevelInfo;
     }
     return self;
 }
 
 - (void)log:(NSString *)format, ... {
-    variadicLogLevel(BTLoggerLevelInfo)
+    variadicLogLevel(BTLogLevelInfo, format)
 }
 
 - (void)critical:(NSString *)format, ... {
-    variadicLogLevel(BTLoggerLevelCritical)
+    variadicLogLevel(BTLogLevelCritical, format)
 }
 
 - (void)error:(NSString *)format, ... {
-    variadicLogLevel(BTLoggerLevelError)
+    variadicLogLevel(BTLogLevelError, format)
 }
 
 - (void)warning:(NSString *)format, ... {
-    variadicLogLevel(BTLoggerLevelWarning)
+    variadicLogLevel(BTLogLevelWarning, format)
 }
 
 - (void)info:(NSString *)format, ... {
-    variadicLogLevel(BTLoggerLevelInfo)
+    variadicLogLevel(BTLogLevelInfo, format)
 }
 
 - (void)debug:(NSString *)format, ... {
-    variadicLogLevel(BTLoggerLevelDebug)
+    variadicLogLevel(BTLogLevelDebug, format)
 }
 
-- (void)logLevel:(BTLoggerLevel)level format:(NSString *)format arguments:(va_list)arguments {
+- (void)logLevel:(BTLogLevel)level format:(NSString *)format arguments:(va_list)arguments {
     if (level <= self.level) {
+        NSString *message = [[NSString alloc] initWithFormat:format arguments:arguments];
         if (self.logBlock) {
-            NSString *message = [[NSString alloc] initWithFormat:format arguments:arguments];
-            self.logBlock(message);
+            self.logBlock(level, message);
         } else {
-            NSLogv(format, arguments);
+            NSString *levelString = [[self class] levelString:level];
+            NSLog(@"[%@] %@", levelString, message);
         }
+    }
+}
+
++ (NSString *)levelString:(BTLogLevel)level {
+    switch (level) {
+        case BTLogLevelCritical:
+            return @"Critical";
+        case BTLogLevelError:
+            return @"Error";
+        case BTLogLevelWarning:
+            return @"Warning";
+        case BTLogLevelInfo:
+            return @"Info";
+        case BTLogLevelDebug:
+            return @"Debug";
+        default:
+            return nil;
     }
 }
 

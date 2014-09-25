@@ -1,6 +1,8 @@
 #import "Braintree.h"
 #import "Braintree_Internal.h"
 
+#import "BTLogger.h"
+
 #import <Braintree/BTClient+Offline.h>
 #import <Braintree/BTPayPalButton.h>
 #import <Braintree/BTClientToken+BTPayPal.h>
@@ -120,5 +122,25 @@ describe(@"libraryVersion", ^{
                                         range:NSMakeRange(0, [version length])]).to.equal(1);
     });
 });
+
+describe(@"setLogLevel:", ^{
+    it(@"sets the log level", ^{
+        id mockLogger = [OCMockObject mockForClass:[BTLogger class]];
+        [[[mockLogger stub] andReturn:mockLogger] sharedLogger];
+
+        [[mockLogger expect] setLevel:BTLogLevelNone];
+        [Braintree setLogLevel:BTLogLevelNone];
+
+        [[mockLogger expect] setLevel:BTLogLevelWarning];
+        [Braintree setLogLevel:BTLogLevelWarning];
+
+        [[mockLogger expect] setLevel:BTLogLevelDebug];
+        [Braintree setLogLevel:BTLogLevelDebug];
+
+        [mockLogger verify];
+        [mockLogger stopMocking];
+    });
+});
+
 
 SpecEnd
