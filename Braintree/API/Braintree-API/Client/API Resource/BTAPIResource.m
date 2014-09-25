@@ -11,7 +11,7 @@ BTAPIResourceValueTypeError *BTAPIResourceValueTypeValidateSetter(SEL setter) {
                                                                          options:0
                                                                            range:NSMakeRange(0, [setterString length])];
     if (setterNumberOfArguments != 1) {
-        return [BTAPIResourceValueTypeError errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
+        return [BTAPIResourceValueTypeError errorWithCode:BTAPIResourceErrorAPIFormatInvalid
                                               description:@"Selector passed to BTAPIResourceValueTypeString must take exactly one argument. Got: (%@), which takes (%d).", setterString, setterNumberOfArguments];
     }
 
@@ -32,7 +32,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter) {
         if (!setter || ![model respondsToSelector:setter]) {
             if (error) {
                 *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
-                                             code:BTAPIResourceErrorResourceSpecificationInvalid
+                                             code:BTAPIResourceErrorAPIFormatInvalid
                                          userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Model (%@) does not respond to the selector (%@) passed to BTAPIResourceValueTypeString.", model, NSStringFromSelector(setter)] }];
             }
             return NO;
@@ -86,7 +86,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(SEL setter, Class B
 
         if (nestedResourceError && error) {
             *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
-                                         code:BTAPIResourceErrorResourceDictionaryNestedResourceInvalid
+                                         code:BTAPIResourceErrorAPIDictionaryNestedResourceInvalid
                                      userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Value in API Dictionary for nested resource of type (%@) is invalid. Got: (%@).", BTAPIResourceClass, rawValue],
                                                  NSUnderlyingErrorKey: nestedResourceError }];
         }
@@ -125,7 +125,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 
     if (!APIDictionary) {
         if (error) {
-            *error = [self errorWithCode:BTAPIResourceErrorResourceDictionaryInvalid
+            *error = [self errorWithCode:BTAPIResourceErrorAPIDictionaryInvalid
                              description:@"Expected a value for APIDictionary. Got nil."];
         }
 
@@ -134,7 +134,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 
     if (![APIDictionary isKindOfClass:[NSDictionary class]]) {
         if (error) {
-            *error = [self errorWithCode:BTAPIResourceErrorResourceDictionaryInvalid
+            *error = [self errorWithCode:BTAPIResourceErrorAPIDictionaryInvalid
                              description:@"Expected an NSDictionary for APIDictionary. Got (%@).", APIDictionary];
         }
 
@@ -145,7 +145,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 
     if (!model) {
         if (error) {
-            *error = [self errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
+            *error = [self errorWithCode:BTAPIResourceErrorAPIFormatInvalid
                              description:@"Expected an allocated BTAPIResource from resourceModel. Got: nil."];
         }
         return nil;
@@ -155,7 +155,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 
     if (![APIFormat isKindOfClass:[NSDictionary class]]) {
         if (error) {
-            *error = [self errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
+            *error = [self errorWithCode:BTAPIResourceErrorAPIFormatInvalid
                              description:@"APIFormat must return an NSDictionary. Got (%@).", APIFormat];
         }
         return nil;
@@ -165,14 +165,14 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
         id obj = APIFormat[key];
         if (![obj conformsToProtocol:@protocol(BTAPIResourceValueType)]) {
             if (error) {
-                *error = [self errorWithCode:BTAPIResourceErrorResourceSpecificationInvalid
+                *error = [self errorWithCode:BTAPIResourceErrorAPIFormatInvalid
                                  description:@"The specified API Format is invalid. Got (%@). Invalid key: %@.", APIFormat, key];
                 return nil;
             }
         } else if ([obj resourceValueTypeError] != nil) {
             if (error) {
                 *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
-                                             code:BTAPIResourceErrorResourceSpecificationInvalid
+                                             code:BTAPIResourceErrorAPIFormatInvalid
                                          userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"The specified API Format is invalid. Got (%@). Invalid key: %@.", APIFormat, key],
                                                      NSUnderlyingErrorKey: [obj resourceValueTypeError] }];
                 return nil;
@@ -194,7 +194,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
 
     if (![allRequiredFormatKeys isSubsetOfSet:allDictionaryKeys]) {
         if (error) {
-            *error = [self errorWithCode:BTAPIResourceErrorResourceDictionaryMissingKey
+            *error = [self errorWithCode:BTAPIResourceErrorAPIDictionaryMissingKey
                              description:@"Expected APIDictionary to contain all keys in APIFormat (%@). Got (%@).", allRequiredFormatKeys, allDictionaryKeys];
         }
         return nil;
@@ -216,7 +216,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
             }
         } else {
             if (error) {
-                *error = [self errorWithCode:BTAPIResourceErrorResourceDictionaryInvalid
+                *error = [self errorWithCode:BTAPIResourceErrorAPIDictionaryInvalid
                                  description:@"Actual type for value (%@) does not match the type specified in APIFormat for key (%@). ", obj, key];
             }
             return nil;

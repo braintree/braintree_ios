@@ -1381,15 +1381,15 @@
 		1637D0AF19D1246D00F34F39 /* API Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1637D0B419D2268E00F34F39 /* BTAPIResourceValueAdapter.h */,
-				16A1C1B919D34968006672C1 /* BTAPIResourceValueTypeError.h */,
-				16A1C1BA19D34968006672C1 /* BTAPIResourceValueTypeError.m */,
-				1637D0B519D2268E00F34F39 /* BTAPIResourceValueAdapter.m */,
-				1637D0B019D1248400F34F39 /* BTAPIResource.m */,
 				1637D0B119D1248400F34F39 /* BTAPIResource.h */,
+				1637D0B019D1248400F34F39 /* BTAPIResource.m */,
 				A707F30619D387C800223F7A /* BTAPIResourceErrors.h */,
 				A707F30719D387C800223F7A /* BTAPIResourceErrors.m */,
+				1637D0B419D2268E00F34F39 /* BTAPIResourceValueAdapter.h */,
+				1637D0B519D2268E00F34F39 /* BTAPIResourceValueAdapter.m */,
 				A707F30519D381AD00223F7A /* BTAPIResourceValueType.h */,
+				16A1C1B919D34968006672C1 /* BTAPIResourceValueTypeError.h */,
+				16A1C1BA19D34968006672C1 /* BTAPIResourceValueTypeError.m */,
 			);
 			name = "API Resources";
 			path = "API Resource";

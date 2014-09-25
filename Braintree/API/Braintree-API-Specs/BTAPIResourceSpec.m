@@ -94,7 +94,7 @@ describe(@"API Response object parsing", ^{
 
         expect(resource).to.beNil();
         expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-        expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryInvalid);
+        expect(error.code).to.equal(BTAPIResourceErrorAPIDictionaryInvalid);
     });
 
     it(@"rejects a non-dictionary APIDictionary", ^{
@@ -105,7 +105,7 @@ describe(@"API Response object parsing", ^{
 
         expect(resource).to.beNil();
         expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-        expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryInvalid);
+        expect(error.code).to.equal(BTAPIResourceErrorAPIDictionaryInvalid);
     });
 
     it(@"returns nil in an error case when the error pointer is NULL", ^{
@@ -126,7 +126,7 @@ describe(@"API Response object parsing", ^{
 
         expect(resource).to.beNil();
         expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-        expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryMissingKey);
+        expect(error.code).to.equal(BTAPIResourceErrorAPIDictionaryMissingKey);
     });
 
     it(@"parses incomplete API dictionaries that are missing optional keys", ^{
@@ -165,7 +165,7 @@ describe(@"API Response object parsing", ^{
 
         expect(resource).to.beNil();
         expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-        expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryInvalid);
+        expect(error.code).to.equal(BTAPIResourceErrorAPIDictionaryInvalid);
     });
 
     describe(@"an explicit null value", ^{
@@ -178,7 +178,7 @@ describe(@"API Response object parsing", ^{
 
             expect(resource).to.beNil();
             expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-            expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryMissingKey);
+            expect(error.code).to.equal(BTAPIResourceErrorAPIDictionaryMissingKey);
         });
 
         it(@"is treated like an omitted value for optional keys", ^{
@@ -221,7 +221,7 @@ describe(@"API Response object parsing", ^{
 
             expect(resource).to.beNil();
             expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-            expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+            expect(error.code).to.equal(BTAPIResourceErrorAPIFormatInvalid);
         });
 
         it(@"ignores selectors that the model does not implement", ^{
@@ -235,7 +235,7 @@ describe(@"API Response object parsing", ^{
 
             expect(resource).to.beNil();
             expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-            expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+            expect(error.code).to.equal(BTAPIResourceErrorAPIFormatInvalid);
         });
 
         it(@"rejects invalid Format types", ^{
@@ -249,7 +249,7 @@ describe(@"API Response object parsing", ^{
 
             expect(resource).to.beNil();
             expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-            expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+            expect(error.code).to.equal(BTAPIResourceErrorAPIFormatInvalid);
         });
 
         it(@"rejects non-dictionary Formats", ^{
@@ -263,7 +263,7 @@ describe(@"API Response object parsing", ^{
 
             expect(resource).to.beNil();
             expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-            expect(error.code).to.equal(BTAPIResourceErrorResourceSpecificationInvalid);
+            expect(error.code).to.equal(BTAPIResourceErrorAPIFormatInvalid);
         });
     });
 
@@ -287,7 +287,7 @@ describe(@"API Response object parsing", ^{
 
         expect(resource).to.beNil();
         expect(error.domain).to.equal(BTAPIResourceErrorDomain);
-        expect(error.code).to.equal(BTAPIResourceErrorResourceDictionaryNestedResourceInvalid);
+        expect(error.code).to.equal(BTAPIResourceErrorAPIDictionaryNestedResourceInvalid);
     });
 });
 
