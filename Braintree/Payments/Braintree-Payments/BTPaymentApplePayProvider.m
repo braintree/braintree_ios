@@ -5,6 +5,7 @@
 #import "BTMockApplePayPaymentAuthorizationViewController.h"
 #import "BTPaymentMethodCreationDelegate.h"
 #import "BTPaymentProviderErrors.h"
+#import "BTLogger_Internal.h"
 
 @interface BTPaymentApplePayProvider () <BTMockApplePayPaymentAuthorizationViewControllerDelegate, PKPaymentAuthorizationViewControllerDelegate>
 @property (nonatomic, strong) BTClient *client;
@@ -38,6 +39,9 @@
 }
 
 - (void)authorizeApplePay {
+
+    [[BTLogger sharedLogger] warning:@"Braintree's API for Apple Pay is PRE-RELEASE and subject to change!"];
+
     if (![PKPayment class]) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported

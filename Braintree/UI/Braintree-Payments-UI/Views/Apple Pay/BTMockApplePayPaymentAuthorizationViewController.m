@@ -1,6 +1,7 @@
 #import "BTMockApplePayPaymentAuthorizationViewController.h"
 
 #import "BTMockApplePayPaymentAuthorizationView.h"
+#import "BTLogger_Internal.h"
 
 @interface BTMockApplePayPaymentAuthorizationViewController () <BTMockApplePayPaymentAuthorizationViewDelegate>
 
@@ -11,7 +12,7 @@
 - (instancetype)initWithPaymentRequest:(PKPaymentRequest *)request {
     self = [super init];
     if (self) {
-        NSLog(@"Request: %@; items: %@", request.merchantIdentifier, request.paymentSummaryItems);
+        [[BTLogger sharedLogger] debug:@"Initializing BTMockApplePayPaymentAuthorizationViewController with PKRequest merchantIdentifier: %@; items: %@", request.merchantIdentifier, request.paymentSummaryItems ];
     }
     return self;
 }

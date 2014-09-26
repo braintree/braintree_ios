@@ -45,9 +45,7 @@
     return [self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeApplePay] ? _button : nil;
 }
 
-- (void)tappedCustomApplePay:(BraintreeDemoCustomApplePayButtonManager *)sender {
-    NSLog(@"You tapped the Apple Pay button: %@", sender);
-
+- (void)tappedCustomApplePay:(__unused BraintreeDemoCustomApplePayButtonManager *)sender {
     [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeApplePay];
 }
 @end

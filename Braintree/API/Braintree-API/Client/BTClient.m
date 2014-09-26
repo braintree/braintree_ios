@@ -211,6 +211,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
 
+    [[BTLogger sharedLogger] warning:@"Braintree's API for Apple Pay is PRE-RELEASE and subject to change!"];
+
     if (![PKPayment class]) {
         failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                          code:BTErrorUnsupported
@@ -341,7 +343,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                        }];
 
-        [[BTLogger sharedLogger] info:@"BTClient postAnalyticsEvent:%@", eventKind];
+        [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@", eventKind];
 
         [self.analyticsHttp POST:@"/"
                       parameters:requestParameters

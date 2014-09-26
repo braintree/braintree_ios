@@ -60,7 +60,7 @@
             self.logBlock(level, message);
         } else {
             NSString *levelString = [[self class] levelString:level];
-            NSLog(@"[BraintreeSDK %@] %@", levelString, message);
+            NSLog(@"[BraintreeSDK] %@ %@", [levelString uppercaseString], message);
         }
     }
 }
