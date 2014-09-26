@@ -7,8 +7,7 @@
 #import "BTPayPalViewController.h"
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTClient+BTPayPal.h"
-
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 
 @interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate>
 @end
@@ -49,7 +48,7 @@
         [self.client btPayPal_preparePayPalMobileWithError:&error];
         if (error) {
             [self.client postAnalyticsEvent:@"ios.authorizer.init.paypal-error"];
-            [[BTLogger sharedLogger] log:[NSString stringWithFormat:@"PayPal is unavailable: %@", [error localizedDescription]]];
+            [[BTLogger sharedLogger] error:@"PayPal is unavailable: %@", [error localizedDescription]];
         }
     }
 }

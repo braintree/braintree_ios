@@ -5,7 +5,7 @@
 #import "BTAnalyticsMetadata.h"
 #import "BTClient_Metadata.h"
 
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 
 SpecBegin(BTClient)
 
@@ -28,7 +28,7 @@ describe(@"BTClient", ^{
         });
 
         it(@"returns nil and logs an error when given an invalid client token (also throw an exception in DEBUG)", ^{
-            [[mockLogger expect] log:containsString(@"clientToken was invalid")];
+            [[mockLogger expect] error:containsString(@"clientToken was invalid")];
 
             __block BTClient *client;
 
@@ -96,7 +96,6 @@ describe(@"post analytics event", ^{
 
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(id obj) {
-            NSLog(@"%@", obj);
             NSDictionary *expectedMetadata = ({
                 NSMutableDictionary *metadata = [NSMutableDictionary dictionaryWithDictionary:[BTAnalyticsMetadata metadata]];
                 metadata[@"source"] = expectedSource;

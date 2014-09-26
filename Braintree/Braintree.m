@@ -2,6 +2,8 @@
 
 #import "BTClient.h"
 #import "BTClient+BTPayPal.h"
+#import "BTLogger.h"
+
 #import "BTPayPalButton.h"
 #import "BTPaymentProvider.h"
 

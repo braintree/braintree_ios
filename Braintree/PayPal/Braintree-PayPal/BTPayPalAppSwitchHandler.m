@@ -3,7 +3,7 @@
 #import "BTClient_Metadata.h"
 #import "BTClient+BTPayPal.h"
 #import "BTMutablePayPalPaymentMethod.h"
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 #import "BTErrors+BTPayPal.h"
 
 #import "PayPalMobile.h"
@@ -55,7 +55,7 @@
             [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.cancel"];
             if (result.error) {
                 [self.client postAnalyticsEvent:@"ios.paypal.appswitch.handle.cancel-error"];
-                [[BTLogger sharedLogger] log:[NSString stringWithFormat:@"PayPal Wallet error: %@", result.error]];
+                [[BTLogger sharedLogger] error:@"PayPal Wallet error: %@", result.error];
             }
             [self informDelegateDidCancel];
             return;

@@ -2,7 +2,7 @@
 #import "BTClient_Metadata.h"
 #import "BTClient_Internal.h"
 #import "BTClientToken.h"
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 #import "BTMutablePaymentMethod.h"
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTMutableCardPaymentMethod.h"
@@ -23,7 +23,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 - (instancetype)initWithClientToken:(NSString *)clientTokenString {
     if(![clientTokenString isKindOfClass: NSString.class]){
         NSString *reason = @"BTClient could not initialize because the provided clientToken was of an invalid type";
-        [[BTLogger sharedLogger] log:reason];
+        [[BTLogger sharedLogger] error:reason];
 
         return nil;
     }
@@ -33,7 +33,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         self.clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenString error:&error];
         if (!self.clientToken) {
             NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
-            [[BTLogger sharedLogger] log:reason];
+            [[BTLogger sharedLogger] error:reason];
 #ifdef DEBUG
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:reason
@@ -260,6 +260,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         [requestParameters addEntriesFromDictionary:@{ @"analytics": @[@{ @"kind": eventKind }],
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                        }];
+
+        [[BTLogger sharedLogger] info:@"BTClient postAnalyticsEvent:%@", eventKind];
 
         [self.analyticsHttp POST:@"/"
                       parameters:requestParameters
