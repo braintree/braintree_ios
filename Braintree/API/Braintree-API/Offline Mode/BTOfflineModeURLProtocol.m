@@ -96,8 +96,6 @@ static BTOfflineClientBackend *backend;
 
         id payment = requestObject[@"apple_pay_payment"];
         if (payment) {
-//            [[[self class] backend] addPaymentMethod:card];
-
             response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
                                                    statusCode:201
                                                   HTTPVersion:BTOfflineModeHTTPVersionString
