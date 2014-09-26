@@ -100,7 +100,7 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeString(SEL setter);
 /// @return A ValueType for use in `APIFormat`s
 id<BTAPIResourceValueType> BTAPIResourceValueTypeBool(SEL setter);
 
-/// A ValueType that parses a set of strings and saves it in the model with a selector.
+/// A ValueType that parses a set of strings and saves it in the model as an NSSet with a selector.
 ///
 /// Note: This value type will accept an array or a set; the cannonical represnetation is a NSSet.
 ///
@@ -108,6 +108,13 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeBool(SEL setter);
 ///
 /// @return A ValueType for use in `APIFormat`s
 id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter);
+
+/// A ValueType that parses an array of strings and saves it in the model as an NSArray with a selector.
+///
+/// @param setter A selector that is sent to the model object with the value as the first argument
+///
+/// @return A ValueType for use in `APIFormat`s
+id<BTAPIResourceValueType> BTAPIResourceValueTypeStringArray(SEL setter);
 
 /// A ValueType that parses a nested API resource and saves it in the model with a selector.
 ///
@@ -117,9 +124,29 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter);
 /// @return A ValueType for use in `APIFormat`s
 id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(SEL setter, Class BTAPIResourceClass);
 
+/// A ValueType that wraps another ValueType, in order to map the API values to native values.
+///
+/// Note: The *mapped* value will be passed to the selector of the ValueType this function receives.
+///
+/// @param APIResourceValueType Another ValueType that describes the value if it is present
+/// @param map a Dictionary that maps API values to native value
+///
+/// @return A ValueType for use in `APIFormat`s
+id<BTAPIResourceValueType> BTAPIResourceValueTypeMap(id<BTAPIResourceValueType> APIResourceValueType, NSDictionary *map);
+
 /// A ValueType that wraps another ValueType, making it optional in the API
 ///
-/// @param setter Another ValueType that describes the value if it is present
+/// @param APIResourceValueType Another ValueType that describes the value if it is present
 ///
 /// @return A ValueType for use in `APIFormat`s
 id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueType> APIResourceValueType);
+
+/// A ValueType that maps API strings to enum values
+///
+/// Example API mapping: `@{ @"on": @YES, @"off": @NO }` for API Dictionary: `@{ @"doCrazyThing": @"on" }`
+///
+/// @param setter A selector that is sent to the model object with the enum value as the first argument
+/// @param mapping A mapping from string values present in the API to enum values
+///
+/// @return A ValueType for use in `APIFormat`s
+id<BTAPIResourceValueType> BTAPIResourceValueTypeEnumMapping(SEL setter, NSDictionary *mapping);

@@ -6,6 +6,7 @@
 #import "BTPaymentMethodCreationDelegate.h"
 #import "BTPaymentProviderErrors.h"
 #import "BTLogger_Internal.h"
+#import "BTClientDeprecatedApplePayConfiguration.h"
 
 @interface BTPaymentApplePayProvider () <BTMockApplePayPaymentAuthorizationViewControllerDelegate, PKPaymentAuthorizationViewControllerDelegate>
 @property (nonatomic, strong) BTClient *client;

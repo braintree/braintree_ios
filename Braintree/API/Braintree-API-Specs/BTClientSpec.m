@@ -6,6 +6,7 @@
 #import "BTTestClientTokenFactory.h"
 #import "BTAnalyticsMetadata.h"
 #import "BTClient_Metadata.h"
+#import "BTClientDeprecatedApplePayConfiguration.h"
 
 #import "BTLogger_Internal.h"
 
@@ -470,7 +471,7 @@ describe(@"applePayConfiguration", ^{
     it(@"returns an instance of BTClientApplePayConfiguration", ^{
         NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration).to.beKindOf([BTClientApplePayConfiguration class]);
+        expect(client.applePayConfiguration).to.beKindOf([BTClientDeprecatedApplePayConfiguration class]);
     });
 
     it(@"is off if no applePay key is present", ^{

@@ -1,14 +1,15 @@
 #import "BTClient.h"
 #import "BTHTTP.h"
 #import "BTClientToken.h"
-#import "BTClientApplePayConfiguration.h"
+
+@class BTClientDeprecatedApplePayConfiguration;
 
 @interface BTClient ()
 @property (nonatomic, strong, readwrite) BTHTTP *clientApiHttp;
 @property (nonatomic, strong, readwrite) BTHTTP *analyticsHttp;
 @property (nonatomic, strong) BTClientToken *clientToken;
 
-@property (nonatomic, strong, readonly) BTClientApplePayConfiguration *applePayConfiguration;
+@property (nonatomic, strong, readonly) BTClientDeprecatedApplePayConfiguration *applePayConfiguration;
 
 // Internal helpers
 // Declared here to make available for testing

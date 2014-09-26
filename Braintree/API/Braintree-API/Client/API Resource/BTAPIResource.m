@@ -1,5 +1,5 @@
 #import "BTAPIResource.h"
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 #import "BTAPIResourceValueAdapter.h"
 #import "BTAPIResourceValueTypeError.h"
 #import "BTAPIResourceValueType.h"
@@ -102,6 +102,29 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter) {
     }];
 }
 
+
+id<BTAPIResourceValueType> BTAPIResourceValueTypeStringArray(SEL setter) {
+    BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
+    if (error) {
+        return error;
+    }
+
+    return [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
+        return [value isKindOfClass:[NSSet class]] || [value isKindOfClass:[NSArray class]];
+    } transformer:^id(id rawValue, __unused NSError * __autoreleasing *error){
+        if ([rawValue isKindOfClass:[NSSet class]]) {
+            return [(NSSet *)rawValue allObjects];
+        }
+        return rawValue;
+    } setter:^BOOL(id model, id value, __unused NSError * __autoreleasing * error) {
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[model methodSignatureForSelector:setter]];
+        [invocation setSelector:setter];
+        [invocation setArgument:&value atIndex:2];
+        [invocation invokeWithTarget:model];
+        return YES;
+    }];
+}
+
 id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(SEL setter, Class BTAPIResourceClass) {
     BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
     if (error) {
@@ -132,6 +155,28 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeAPIResource(SEL setter, Class B
     }];
 }
 
+
+id<BTAPIResourceValueType> BTAPIResourceValueTypeMap(id<BTAPIResourceValueType> APIResourceValueType, NSDictionary *mapping) {
+    return [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
+        if (![value isKindOfClass:[NSArray class]]) {
+            return NO;
+        }
+
+        NSSet *requiredKeys = [NSSet setWithArray:value];
+        NSSet *mappingKeys = [NSSet setWithArray:[mapping allKeys]];
+
+        return [requiredKeys isSubsetOfSet:mappingKeys];
+    } transformer:^id(id rawValue, __unused NSError * __autoreleasing *error) {
+        NSMutableArray *mappedArray = [NSMutableArray arrayWithCapacity:[rawValue count]];
+        for (id obj in rawValue) {
+            [mappedArray addObject:mapping[obj]];
+        }
+        return [mappedArray copy];
+    } setter:^BOOL(id model, id value, __unused NSError * __autoreleasing *error) {
+        return [APIResourceValueType setValue:value onModel:model error:error];
+    }];
+}
+
 id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueType> APIResourceValueType) {
     BTAPIResourceValueAdapter *valueType = [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
         return value == nil || [value isKindOfClass:[NSNull class]] || [APIResourceValueType isValidValue:value];
@@ -144,6 +189,21 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeOptional(id<BTAPIResourceValueT
     valueType.optional = YES;
 
     return valueType;
+}
+
+id<BTAPIResourceValueType> BTAPIResourceValueTypeEnumMapping(SEL setter, NSDictionary *mapping) {
+    return [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
+        return [[mapping allKeys] containsObject:value];
+    } transformer:^id(id rawValue, __unused NSError * __autoreleasing *error) {
+        return mapping[rawValue];
+    }  setter:^BOOL(id model, id value, __unused NSError *__autoreleasing* error) {
+        NSInteger primitiveValue = [value integerValue];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[model methodSignatureForSelector:setter]];
+        [invocation setSelector:setter];
+        [invocation setArgument:&primitiveValue atIndex:2];
+        [invocation invokeWithTarget:model];
+        return YES;
+    }];
 }
 
 #pragma mark -

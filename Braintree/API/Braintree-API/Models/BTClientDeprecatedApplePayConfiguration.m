@@ -1,7 +1,7 @@
-#import "BTClientApplePayConfiguration.h"
+#import "BTClientDeprecatedApplePayConfiguration.h"
 #import "BTLogger_Internal.h"
 
-@implementation BTClientApplePayConfiguration
+@implementation BTClientDeprecatedApplePayConfiguration
 
 - (instancetype)initWithConfigurationObject:(id)configurationObject {
     self = [super init];
@@ -33,7 +33,7 @@
     return self;
 }
 
-+ (BTClientApplePayStatusType)statusTypeForString:(NSString *)statusString {
++ (BTClientApplePayStatus)statusTypeForString:(NSString *)statusString {
     if ([statusString isEqualToString:@"mock"]) {
         return BTClientApplePayStatusMock;
     } else if([statusString isEqualToString:@"production"]) {

@@ -13,6 +13,7 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
+#import "BTClientDeprecatedApplePayConfiguration.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -442,9 +443,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
 #pragma mark - Apple Pay Configuration
 
-- (BTClientApplePayConfiguration *)applePayConfiguration {
+- (BTClientDeprecatedApplePayConfiguration *)applePayConfiguration {
     if (!_applePayConfiguration) {
-        _applePayConfiguration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:self.clientToken.claims[@"apple_pay"]];
+        _applePayConfiguration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:self.clientToken.claims[@"apple_pay"]];
     }
     return _applePayConfiguration;
 }

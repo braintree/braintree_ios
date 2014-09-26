@@ -1,43 +1,43 @@
-#import "BTClientApplePayConfiguration.h"
+#import "BTClientDeprecatedApplePayConfiguration.h"
 #import "BTLogger_Internal.h"
 
-SpecBegin(BTClientApplePayConfiguration)
+SpecBegin(BTClientDeprecatedApplePayConfiguration)
 
 describe(@"initWithConfigurationObject:", ^{
 
     context(@"when argument is a dictionary", ^{
         it(@"is initialized", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@{}];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@{}];
             expect(configuration.status).to.equal(BTClientApplePayStatusOff);
         });
 
         it(@"has status off when status is 'off'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@{@"status": @"off"}];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@{@"status": @"off"}];
             expect(configuration.status).to.equal(BTClientApplePayStatusOff);
         });
 
         it(@"has status off when status is 'I AM ON'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@{@"status": @"i am off"}];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@{@"status": @"i am off"}];
             expect(configuration.status).to.equal(BTClientApplePayStatusOff);
         });
 
         it(@"has status mock when status is 'mock'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@{@"status": @"mock"}];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@{@"status": @"mock"}];
             expect(configuration.status).to.equal(BTClientApplePayStatusMock);
         });
 
         it(@"has status production when status is 'production'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@{@"status": @"production"}];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@{@"status": @"production"}];
             expect(configuration.status).to.equal(BTClientApplePayStatusProduction);
         });
 
         it(@"does not have a merchant id if no merchant id key is present", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@{}];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@{}];
             expect(configuration.merchantId).to.beNil();
         });
 
         it(@"has a merchant id if a merchant id key is present", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@{@"merchantId": @"1234"}];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@{@"merchantId": @"1234"}];
             expect(configuration.merchantId).to.equal(@"1234");
         });
 
@@ -46,7 +46,7 @@ describe(@"initWithConfigurationObject:", ^{
             [[[mockLogger stub] andReturn:mockLogger] sharedLogger];
             [[mockLogger stub] info:OCMOCK_ANY];
             [[mockLogger expect] warning:OCMOCK_ANY];
-            __unused id _ = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@{}];
+            __unused id _ = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@{}];
             [mockLogger verify];
             [mockLogger stopMocking];
         });
@@ -55,32 +55,32 @@ describe(@"initWithConfigurationObject:", ^{
 
     context(@"when argument is a string", ^{
         it(@"has status off when argument is 'I AM ON'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@"I AM ON"];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@"I AM ON"];
             expect(configuration.status).to.equal(BTClientApplePayStatusOff);
         });
 
         it(@"has status off when argument is 'off'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@"off"];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@"off"];
             expect(configuration.status).to.equal(BTClientApplePayStatusOff);
         });
 
         it(@"has status mock when argument is 'mock'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@"mock"];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@"mock"];
             expect(configuration.status).to.equal(BTClientApplePayStatusMock);
         });
 
         it(@"mocks merchant ID with has a non-nil value when argument is 'mock'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@"mock"];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@"mock"];
             expect(configuration.merchantId).notTo.beNil();
         });
 
         it(@"has status production when argument is 'production'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@"production"];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@"production"];
             expect(configuration.status).to.equal(BTClientApplePayStatusProduction);
         });
 
         it(@"has a nil merchant ID when argument is 'production'", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@"production"];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@"production"];
             expect(configuration.merchantId).to.beNil();
         });
 
@@ -89,7 +89,7 @@ describe(@"initWithConfigurationObject:", ^{
             [[[mockLogger stub] andReturn:mockLogger] sharedLogger];
             [[mockLogger stub] info:OCMOCK_ANY];
             [[mockLogger expect] warning:OCMOCK_ANY];
-            __unused id _ = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:@"mock"];
+            __unused id _ = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:@"mock"];
             [mockLogger verify];
             [mockLogger stopMocking];
         });
@@ -97,7 +97,7 @@ describe(@"initWithConfigurationObject:", ^{
 
     context(@"when argument is nil", ^{
         it(@"is initialized with status off", ^{
-            BTClientApplePayConfiguration *configuration = [[BTClientApplePayConfiguration alloc] initWithConfigurationObject:nil];
+            BTClientDeprecatedApplePayConfiguration *configuration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:nil];
             expect(configuration.status).to.equal(BTClientApplePayStatusOff);
         });
     });
