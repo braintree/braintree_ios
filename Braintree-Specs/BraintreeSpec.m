@@ -1,6 +1,8 @@
 #import "Braintree.h"
 #import "Braintree_Internal.h"
 
+#import "BTLogger.h"
+
 #import <Braintree/BTClient+Offline.h>
 #import <Braintree/BTPayPalButton.h>
 #import <Braintree/BTClientToken+BTPayPal.h>
@@ -120,5 +122,6 @@ describe(@"libraryVersion", ^{
                                         range:NSMakeRange(0, [version length])]).to.equal(1);
     });
 });
+
 
 SpecEnd
