@@ -1,4 +1,6 @@
-#import "BTLogger.h"
+@import Foundation;
+
+#import "BTLogger_Internal.h"
 
 #define variadicLogLevel(level, format) \
     va_list args; \

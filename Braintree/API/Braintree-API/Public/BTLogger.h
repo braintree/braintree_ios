@@ -1,3 +1,4 @@
+@import Foundation;
 
 /// Braintree SDK Logging Levels
 typedef NS_ENUM(NSUInteger, BTLogLevel) {
@@ -21,3 +22,13 @@ typedef NS_ENUM(NSUInteger, BTLogLevel) {
     BTLogLevelDebug    = 5
 };
 
+/// Braintree leveled logger
+@interface BTLogger : NSObject
+
+/// The logger singleton used by the Braintree SDK
++ (instancetype)sharedLogger;
+
+/// The current log level, with default value BTLogLevelInfo
+@property (nonatomic, assign) BTLogLevel level;
+
+@end

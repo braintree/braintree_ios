@@ -7,8 +7,7 @@
 #import "BTPayPalViewController.h"
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTClient+BTPayPal.h"
-
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 
 @interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate>
 @end

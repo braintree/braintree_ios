@@ -2,7 +2,7 @@
 #import "BTClient_Metadata.h"
 #import "BTClient_Internal.h"
 #import "BTClientToken.h"
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 #import "BTMutablePaymentMethod.h"
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTMutableCardPaymentMethod.h"
@@ -261,7 +261,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                        }];
 
-        [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@", eventKind];
+        [[BTLogger sharedLogger] info:@"BTClient postAnalyticsEvent:%@", eventKind];
 
         [self.analyticsHttp POST:@"/"
                       parameters:requestParameters

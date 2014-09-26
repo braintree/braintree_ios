@@ -154,10 +154,6 @@
 /// @return A string representation of this library's current semver.org version (if integrating with CocoaPods).
 + (NSString *)libraryVersion;
 
-/// Set the logging level
-/// Defaults to BTLogLevelInfo
-+ (void)setLogLevel:(BTLogLevel)logLevel;
-
 @end
 
 @interface Braintree (Deprecated)

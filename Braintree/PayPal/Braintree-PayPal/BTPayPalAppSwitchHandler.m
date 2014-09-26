@@ -3,7 +3,7 @@
 #import "BTClient_Metadata.h"
 #import "BTClient+BTPayPal.h"
 #import "BTMutablePayPalPaymentMethod.h"
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 #import "BTErrors+BTPayPal.h"
 
 #import "PayPalMobile.h"

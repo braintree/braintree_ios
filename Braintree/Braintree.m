@@ -137,12 +137,6 @@
     return [BTClient libraryVersion];
 }
 
-#pragma mark Log Level
-
-+ (void)setLogLevel:(BTLogLevel)logLevel {
-    [[BTLogger sharedLogger] setLevel:logLevel];
-}
-
 #pragma mark App Switching
 
 + (void)setReturnURLScheme:(NSString *)scheme {

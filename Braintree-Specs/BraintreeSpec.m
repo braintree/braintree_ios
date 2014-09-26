@@ -123,24 +123,5 @@ describe(@"libraryVersion", ^{
     });
 });
 
-describe(@"setLogLevel:", ^{
-    it(@"sets the log level", ^{
-        id mockLogger = [OCMockObject mockForClass:[BTLogger class]];
-        [[[mockLogger stub] andReturn:mockLogger] sharedLogger];
-
-        [[mockLogger expect] setLevel:BTLogLevelNone];
-        [Braintree setLogLevel:BTLogLevelNone];
-
-        [[mockLogger expect] setLevel:BTLogLevelWarning];
-        [Braintree setLogLevel:BTLogLevelWarning];
-
-        [[mockLogger expect] setLevel:BTLogLevelDebug];
-        [Braintree setLogLevel:BTLogLevelDebug];
-
-        [mockLogger verify];
-        [mockLogger stopMocking];
-    });
-});
-
 
 SpecEnd

@@ -4,7 +4,7 @@
 #import "BTPayPalViewController.h"
 #import "BTPayPalHorizontalSignatureWhiteView.h"
 #import "BTUI.h"
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 
 @interface BTPayPalButton () <BTPayPalViewControllerDelegate, BTPayPalButtonViewControllerPresenterDelegate>
 @property (nonatomic, strong) BTPayPalHorizontalSignatureWhiteView *payPalHorizontalSignatureView;

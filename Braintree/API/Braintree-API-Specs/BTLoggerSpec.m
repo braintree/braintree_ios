@@ -1,4 +1,4 @@
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 
 SpecBegin(BTLogger)
 
@@ -10,6 +10,10 @@ describe(@"sharedLogger", ^{
         expect(logger1).to.equal(logger2);
     });
 });
+
+SpecEnd
+
+SpecBegin(BTLogger_Internal)
 
 describe(@"logger", ^{
 

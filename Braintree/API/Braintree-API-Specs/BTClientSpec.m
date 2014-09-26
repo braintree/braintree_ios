@@ -5,7 +5,7 @@
 #import "BTAnalyticsMetadata.h"
 #import "BTClient_Metadata.h"
 
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 
 SpecBegin(BTClient)
 

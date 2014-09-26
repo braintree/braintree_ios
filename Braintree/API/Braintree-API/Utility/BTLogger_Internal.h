@@ -1,10 +1,8 @@
 @import Foundation;
 
-#import "BTLogLevel.h"
+#import "BTLogger.h"
 
-@interface BTLogger : NSObject
-
-+ (instancetype)sharedLogger;
+@interface BTLogger ()
 
 - (void)log:(NSString *)format, ...;
 - (void)critical:(NSString *)format, ...;
@@ -13,9 +11,7 @@
 - (void)info:(NSString *)format, ...;
 - (void)debug:(NSString *)format, ...;
 
-@property (nonatomic, assign) BTLogLevel level;
-
 /// Custom block for handling log messages
-@property (nonatomic, copy) void (^logBlock)(BTLogLevel, NSString *);
+@property (nonatomic, copy) void (^logBlock)(BTLogLevel level, NSString *message);
 
 @end
