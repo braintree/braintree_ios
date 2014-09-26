@@ -40,7 +40,7 @@
 
 - (void)authorizeApplePay {
 
-    [[BTLogger sharedLogger] warning:@"Braintree's API for Apple Pay is PRE-RELEASE and subject to change!"];
+    [[BTLogger sharedLogger] warning:@"⚠️⚠️⚠️ Braintree's API for Apple Pay is PRE-RELEASE and subject to change! ⚠️⚠️⚠️"];
 
     if (![PKPayment class]) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
