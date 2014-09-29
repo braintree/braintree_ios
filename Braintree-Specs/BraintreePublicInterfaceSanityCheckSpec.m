@@ -11,7 +11,7 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         Braintree *braintree = [OCMockObject mockForClass:[Braintree class]];
         expect([Braintree class]).to.respondTo(@selector(braintreeWithClientToken:));
         expect(braintree).to.respondTo(@selector(dropInViewControllerWithDelegate:));
-        expect(braintree).to.respondTo(@selector(tokenizeCardWithNumber:expirationMonth:expirationYear:completion:));
+        expect(braintree).to.respondTo(@selector(tokenizeCard:completion:));
         expect([Braintree class]).to.respondTo(@selector(libraryVersion));
         expect(braintree).to.respondTo(@selector(client));
         expect([Braintree class]).to.respondTo(@selector(setReturnURLScheme:));
@@ -21,6 +21,7 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         expect(braintree).to.respondTo(@selector(paymentButtonWithDelegate:paymentProviderTypes:));
 
         // Supported but deprecated
+        expect(braintree).to.respondTo(@selector(tokenizeCardWithNumber:expirationMonth:expirationYear:completion:));
         expect(braintree).to.respondTo(@selector(payPalButtonWithDelegate:));
     });
 
@@ -30,10 +31,11 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         expect(client).to.respondTo(@selector(challenges));
         expect(client).to.respondTo(@selector(fetchPaymentMethodWithNonce:success:failure:));
         expect(client).to.respondTo(@selector(fetchPaymentMethodsWithSuccess:failure:));
-        expect(client).to.respondTo(@selector(saveCardWithNumber:expirationMonth:expirationYear:cvv:postalCode:validate:success:failure:));
+        expect(client).to.respondTo(@selector(saveCardWithRequest:success:failure:));
         expect(client).to.respondTo(@selector(savePaypalPaymentMethodWithAuthCode:applicationCorrelationID:success:failure:));
 
         // Supported but deprecated
+        expect(client).to.respondTo(@selector(saveCardWithNumber:expirationMonth:expirationYear:cvv:postalCode:validate:success:failure:));
         expect(client).to.respondTo(@selector(savePaypalPaymentMethodWithAuthCode:success:failure:));
         expect(client).to.respondTo(@selector(savePaypalPaymentMethodWithAuthCode:correlationId:success:failure:));
     });
