@@ -1,9 +1,13 @@
 #import "BTData.h"
 #import "DeviceCollectorSDK.h"
+#import "PayPalMobile.h"
+#import "BTClient+BTPayPal.h"
+#import "BTLogger.h"
 
 static NSString *BTDataSharedMerchantId = @"600000";
 
 @interface BTData () <DeviceCollectorSDKDelegate>
+@property (nonatomic, strong) BTClient *client;
 @property (nonatomic, copy) NSString *fraudMerchantId;
 @property (nonatomic, strong) DeviceCollectorSDK *kount;
 @end
@@ -11,6 +15,9 @@ static NSString *BTDataSharedMerchantId = @"600000";
 @implementation BTData
 
 + (instancetype)defaultDataForEnvironment:(BTDataEnvironment)environment delegate:(id<BTDataDelegate>)delegate {
+    if (environment == BTDataEnvironmentDevelopment) {
+        return nil;
+    }
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -18,10 +25,60 @@ static NSString *BTDataSharedMerchantId = @"600000";
 #pragma clang diagnostic pop
     [data setDelegate:delegate];
 
+    [data setupEnvironment:environment];
+
+    return data;
+}
+
+- (instancetype)initWithClient:(BTClient *)client environment:(BTDataEnvironment)environment {
+    [[BTLogger sharedLogger] log:@"⚠️ The API for -[BTData initWithClient:environment:] is subject to change in the near future."];
+
+    if (!client) {
+        return nil;
+    }
+
+    if ([client btPayPal_isPayPalEnabled]) {
+        NSError *error;
+        if (![client btPayPal_preparePayPalMobileWithError:&error]) {
+            if (error) {
+                [[BTLogger sharedLogger] log:@"BTData could not initialize underlying PayPal SDK. BTData device data will not include PayPal application correlation id."];
+            }
+        }
+    }
+
+    self = [super init];
+    if (self) {
+        self.client = client;
+        [self setupWithDebugOn:NO];
+        [self setupEnvironment:environment];
+    }
+    return self;
+}
+
+- (instancetype)initWithDebugOn:(BOOL)debugLogging {
+    self = [self init];
+    if (self) {
+        [self setupWithDebugOn:debugLogging];
+    }
+    return self;
+}
+
+- (void)setupWithDebugOn:(BOOL)debugLogging {
+    self.kount = [[DeviceCollectorSDK alloc] initWithDebugOn:debugLogging];
+
+    NSArray *skipList;
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled]) {
+        skipList = @[DC_COLLECTOR_DEVICE_ID];
+    } else {
+        skipList = @[DC_COLLECTOR_DEVICE_ID, DC_COLLECTOR_GEO_LOCATION];
+    }
+    [self.kount setSkipList:skipList];
+}
+
+- (void)setupEnvironment:(BTDataEnvironment)environment {
     NSString *defaultCollectorUrl;
     switch (environment) {
         case BTDataEnvironmentDevelopment:
-            return nil;
             break;
         case BTDataEnvironmentQA:
             defaultCollectorUrl = @"https://assets.qa.braintreegateway.com/data/logo.htm";
@@ -33,26 +90,8 @@ static NSString *BTDataSharedMerchantId = @"600000";
             defaultCollectorUrl = @"https://assets.braintreegateway.com/data/logo.htm";
             break;
     }
-    [data setCollectorUrl:defaultCollectorUrl];
-    [data setFraudMerchantId:BTDataSharedMerchantId];
-
-    return data;
-}
-
-- (instancetype)initWithDebugOn:(BOOL)debugLogging {
-    self = [super init];
-    if (self) {
-        self.kount = [[DeviceCollectorSDK alloc] initWithDebugOn:debugLogging];
-
-        NSArray *skipList;
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized && [CLLocationManager locationServicesEnabled]) {
-            skipList = @[DC_COLLECTOR_DEVICE_ID];
-        } else {
-            skipList = @[DC_COLLECTOR_DEVICE_ID, DC_COLLECTOR_GEO_LOCATION];
-        }
-        [self.kount setSkipList:skipList];
-    }
-    return self;
+    [self setCollectorUrl:defaultCollectorUrl];
+    [self setFraudMerchantId:BTDataSharedMerchantId];
 }
 
 - (void)setCollectorUrl:(NSString *)url{
@@ -75,8 +114,14 @@ static NSString *BTDataSharedMerchantId = @"600000";
     NSString *deviceSessionId = [self collect];
 #pragma clang diagnostic pop
 
+    NSMutableDictionary *dataDictionary = [NSMutableDictionary dictionaryWithDictionary:@{ @"device_session_id": deviceSessionId,
+                                                                                           @"fraud_merchant_id": self.fraudMerchantId}];
+    if (self.client.btPayPal_applicationCorrelationId) {
+        dataDictionary[@"correlation_id"] = self.client.btPayPal_applicationCorrelationId;
+    }
+
     NSError *error;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"device_session_id": deviceSessionId, @"fraud_merchant_id": self.fraudMerchantId }
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dataDictionary
                                                    options:0
                                                      error:&error];
     if (error || !data) {
@@ -107,15 +152,21 @@ static NSString *BTDataSharedMerchantId = @"600000";
 #pragma mark DeviceCollectorSDKDelegate methods
 
 - (void)onCollectorStart {
-    [self.delegate btDataDidStartCollectingData:self];
+    if ([self.delegate respondsToSelector:@selector(btDataDidStartCollectingData:)]) {
+        [self.delegate btDataDidStartCollectingData:self];
+    }
 }
 
 - (void)onCollectorSuccess {
-    [self.delegate btDataDidComplete:self];
+    if ([self.delegate respondsToSelector:@selector(btDataDidComplete:)]) {
+        [self.delegate btDataDidComplete:self];
+    }
 }
 
 - (void)onCollectorError:(int)errorCode :(NSError *)error {
-    [self.delegate btData:self didFailWithErrorCode:errorCode error:error];
+    if ([self.delegate respondsToSelector:@selector(btData:didFailWithErrorCode:error:)]) {
+        [self.delegate btData:self didFailWithErrorCode:errorCode error:error];
+    }
 }
 
 @end

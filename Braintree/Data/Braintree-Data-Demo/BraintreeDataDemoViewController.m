@@ -1,10 +1,14 @@
 #import <Braintree/BTData.h>
 #import "BraintreeDataDemoViewController.h"
+#import <Braintree/BTClient.h>
+#import <Braintree/BTClient+Offline.h>
 
 @interface BraintreeDataDemoViewController () <BTDataDelegate>
 
 /// Retain BTData for entire lifecycle of view controller
 @property (nonatomic, strong) BTData *data;
+
+@property (nonatomic, strong) BTClient *client;
 @end
 
 @implementation BraintreeDataDemoViewController
@@ -13,12 +17,14 @@
 {
     [super viewDidLoad];
 
+    self.client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{}]];
 }
 
 - (IBAction)tappedInitialize
 {
-    self.data = [BTData defaultDataForEnvironment:BTDataEnvironmentSandbox
-                                            delegate:self];
+    self.data = [[BTData alloc] initWithClient:self.client
+                                   environment:BTDataEnvironmentSandbox];
+    self.data.delegate = self;
     NSLog(@"Initialized data %@", self.data);
 }
 

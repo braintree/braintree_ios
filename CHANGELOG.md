@@ -2,10 +2,14 @@
 
 ## WIP
 
+* Enhancements
+  * `BTData` now includes PayPal application correlation ID in device data blob
+
 * API Changes and Deprecations
   * `-[Braintree tokenizeCard:completion:]` and `-[BTClient saveCardWithRequest:success:failure:]` now take an extensible "request" object as an argument to pass the various raw card details:
     * The previous signatures that accepted raw details in the arguments are now deprecated.
     * These will be removed in the next major version (4.0.0).
+  * `BTData` has a new initializer that injects a `BTClient` instance
 
 ## 3.3.1 (2014-09-16)
 
