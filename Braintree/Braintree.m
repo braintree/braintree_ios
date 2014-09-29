@@ -70,12 +70,13 @@
 
 #pragma mark Custom
 
-- (void)tokenizeCard:(BTClientCardRequest *)cardRequest
+- (void)tokenizeCard:(BTClientCardTokenizationRequest *)tokenizationRequest
           completion:(void (^)(NSString *, NSError *))completionBlock {
-    NSAssert(![cardRequest.shouldValidate boolValue], @"-Braintree tokenizeCard:] was called with invalid card request. `shouldValidate` must be NO for tokenization.");
     [self.client postAnalyticsEvent:@"custom.ios.tokenize.call"
                             success:nil
                             failure:nil];
+
+    BTClientCardRequest *cardRequest = [[BTClientCardRequest alloc] initWithTokenizationRequest:tokenizationRequest];
 
     [self.client saveCardWithRequest:cardRequest
                              success:^(BTCardPaymentMethod *card) {

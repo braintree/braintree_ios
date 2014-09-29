@@ -8,8 +8,7 @@
 
 #import <Braintree/BTDropInViewController.h>
 #import <Braintree/BTPaymentButton.h>
-#import <Braintree/BTClientCardRequest.h>
-
+#import <Braintree/BTClientCardTokenizationRequest.h>
 
 /// The `Braintree` class is the front door to the Braintree SDK for iOS. It contains
 /// everything you need to easily start accepting payments in your mobile app.
@@ -93,9 +92,9 @@
 ///
 /// @see BTClientCardRequest
 ///
-/// @param cardDetails a card request object containing the raw card details
+/// @param cardDetails a tokenization request object containing the raw card details
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
-- (void)tokenizeCard:(BTClientCardRequest *)cardDetails
+- (void)tokenizeCard:(BTClientCardTokenizationRequest *)cardDetails
           completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
 

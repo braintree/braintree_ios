@@ -2,36 +2,33 @@
 
 @implementation BTClientCardRequest
 
-- (NSDictionary *)parameters {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+@synthesize shouldValidate = _shouldValidate;
 
-    [self safeSetObject:self.number toDictionary:parameters forKey:@"number"];
-    [self safeSetObject:self.expirationMonth toDictionary:parameters forKey:@"expiration_month"];
-    [self safeSetObject:self.expirationYear toDictionary:parameters forKey:@"expiration_year"];
-    [self safeSetObject:self.expirationDate toDictionary:parameters forKey:@"expiration_date"];
-    [self safeSetObject:self.cvv toDictionary:parameters forKey:@"cvv"];
-
-    if (self.postalCode) {
-        NSDictionary *billingAddress = @{ @"postal_code": self.postalCode };
-        [self safeSetObject:billingAddress toDictionary:parameters forKey:@"billing_address"];
-    }
-
-    if (self.shouldValidate) {
-        NSDictionary *options = @{ @"validate": @([self.shouldValidate boolValue]) };
-        [self safeSetObject:options toDictionary:parameters forKey:@"options"];
-    }
-
-    if (self.additionalParameters) {
-        [parameters addEntriesFromDictionary:self.additionalParameters];
-    }
-
-    return [parameters copy];
+- (instancetype)init {
+    return self = [super init];
 }
 
-- (void)safeSetObject:(id)object toDictionary:(NSMutableDictionary *)dictionary forKey:(NSString *)key {
-    if ([dictionary respondsToSelector:@selector(setObject:forKeyedSubscript:)] && key != nil && object != nil) {
-        dictionary[key] = object;
+- (instancetype)initWithTokenizationRequest:(BTClientCardTokenizationRequest *)tokenizationRequest {
+    if (!tokenizationRequest) {
+        return nil;
     }
+    
+    self = [self init];
+    if (self) {
+        self.number               = tokenizationRequest.number;
+        self.expirationYear       = tokenizationRequest.expirationYear;
+        self.expirationMonth      = tokenizationRequest.expirationMonth;
+        self.expirationDate       = tokenizationRequest.expirationDate;
+        self.cvv                  = tokenizationRequest.cvv;
+        self.postalCode           = tokenizationRequest.postalCode;
+        self.shouldValidate       = tokenizationRequest.shouldValidate;
+        self.additionalParameters = tokenizationRequest.additionalParameters;
+    }
+    return self;
+}
+
+- (BOOL)shouldValidate {
+    return _shouldValidate;
 }
 
 @end
