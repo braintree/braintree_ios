@@ -17,8 +17,37 @@ beforeEach(^{
 
 describe(@"tokenizeCardWithNumber:expirationMonth:expirationYear:completion:", ^{
     it(@"tokenizes a valid card", ^AsyncBlock{
+        BTClientCardTokenizationRequest *request = [[BTClientCardTokenizationRequest alloc] init];
+        request.number = @"4111111111111111";
+        request.expirationDate = @"12/2038";
+        [braintree tokenizeCard:request
+                     completion:^(NSString *nonce, NSError *error) {
+                         expect(nonce).to.beKindOf([NSString class]);
+                         expect(nonce).notTo.equal(@"");
+                         done();
+                     }];
+    });
+
+    it(@"tokenizes an invalid card", ^AsyncBlock{
+        BTClientCardTokenizationRequest *request = [[BTClientCardTokenizationRequest alloc] init];
+        request.number = @"bad-card";
+        request.expirationMonth = @"12";
+        request.expirationYear = @"2020";
+        [braintree tokenizeCard:request
+                     completion:^(NSString *nonce, NSError *error) {
+                         expect(nonce).to.beKindOf([NSString class]);
+                         expect(nonce).notTo.equal(@"");
+                         done();
+                     }];
+    });
+});
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+describe(@"tokenizeCardWithNumber:expirationMonth:expirationYear:completion:", ^{
+    it(@"tokenizes a valid card", ^AsyncBlock{
         [braintree tokenizeCardWithNumber:@"4111111111111111"
-                           expirationMonth:@"12"
+                          expirationMonth:@"12"
                            expirationYear:@"2020"
                                completion:^(NSString *nonce, NSError *error) {
                                    expect(nonce).to.beKindOf([NSString class]);
@@ -29,7 +58,7 @@ describe(@"tokenizeCardWithNumber:expirationMonth:expirationYear:completion:", ^
 
     it(@"tokenizes an invalid card", ^AsyncBlock{
         [braintree tokenizeCardWithNumber:@"bad-card"
-                           expirationMonth:@"12"
+                          expirationMonth:@"12"
                            expirationYear:@"2020"
                                completion:^(NSString *nonce, NSError *error) {
                                    expect(nonce).to.beKindOf([NSString class]);
@@ -38,6 +67,7 @@ describe(@"tokenizeCardWithNumber:expirationMonth:expirationYear:completion:", ^
                                }];
     });
 });
+#pragma clang diagnostic pop
 
 describe(@"dropInViewControllerWithCustomization:completion: Drop-In factory method", ^{
     it(@"constructs a Drop-In view controller", ^{
@@ -57,12 +87,12 @@ describe(@"dropInViewControllerWithCustomization:completion: Drop-In factory met
 
 describe(@"payPalButtonWithCompletion:", ^{
     __block Braintree *braintreeWithPayPalEnabled;
-    
+
     describe(@"with PayPal enabled", ^{
         beforeEach(^{
             NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTClientTokenKeyPayPalEnabled: @YES}];
             braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken];
-            
+
         });
         it(@"should return a payPalButton", ^{
 #pragma clang diagnostic push

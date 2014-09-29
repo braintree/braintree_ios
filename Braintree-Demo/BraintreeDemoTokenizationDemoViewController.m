@@ -46,31 +46,35 @@
 - (void)submitForm {
     NSLog(@"Tokenizing card!");
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
-    [self.braintree tokenizeCardWithNumber:self.cardNumberField.text
-                           expirationMonth:self.expirationMonthField.text
-                            expirationYear:self.expirationYearField.text
-                                completion:^(NSString *nonce, NSError *error) {
-                                    [self.navigationItem.rightBarButtonItem setEnabled:YES];
-                                    if (error) {
-                                        NSLog(@"Error: %@", error);
-                                        [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:[error localizedDescription]
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil] show];
-                                    }
 
-                                    if (nonce) {
-                                        NSLog(@"Card tokenized -> Nonce Received: %@", nonce);
-                                        [UIAlertView showWithTitle:@"Success"
-                                                           message:@"Nonce Received"
-                                                 cancelButtonTitle:@"OK"
-                                                 otherButtonTitles:nil
-                                                          tapBlock:^(__unused UIAlertView *alertView, __unused NSInteger buttonIndex) {
-                                                              self.completionBlock(nonce);
-                                                          }];
-                                    }
-                                }];
+    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+    request.number = self.cardNumberField.text;
+    request.expirationMonth = self.expirationMonthField.text;
+    request.expirationYear = self.expirationYearField.text;
+
+    [self.braintree tokenizeCard:request
+                      completion:^(NSString *nonce, NSError *error) {
+                          [self.navigationItem.rightBarButtonItem setEnabled:YES];
+                          if (error) {
+                              NSLog(@"Error: %@", error);
+                              [[[UIAlertView alloc] initWithTitle:@"Error"
+                                                          message:[error localizedDescription]
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil] show];
+                          }
+
+                          if (nonce) {
+                              NSLog(@"Card tokenized -> Nonce Received: %@", nonce);
+                              [UIAlertView showWithTitle:@"Success"
+                                                 message:@"Nonce Received"
+                                       cancelButtonTitle:@"OK"
+                                       otherButtonTitles:nil
+                                                tapBlock:^(__unused UIAlertView *alertView, __unused NSInteger buttonIndex) {
+                                                    self.completionBlock(nonce);
+                                                }];
+                          }
+                      }];
 }
 
 - (void)setupDemoData {

@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## WIP
+
+* API Changes and Deprecations
+  * `-[Braintree tokenizeCard:completion:]` and `-[BTClient saveCardWithRequest:success:failure:]` now take an extensible "request" object as an argument to pass the various raw card details:
+    * The previous signatures that accepted raw details in the arguments are now deprecated.
+    * These will be removed in the next major version (4.0.0).
+
 ## 3.3.1 (2014-09-16)
 
 * Enhancements
