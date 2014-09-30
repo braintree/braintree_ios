@@ -1,4 +1,16 @@
+
 # Braintree iOS SDK Release Notes
+
+## 3.x.y
+
+* Features
+  * Pre-release support for Apple Pay
+    * Support in `BTClient` and `BTPaymentProvider`
+    * Mock support for developing on the simulator against Sandbox accounts
+    * :warning: Braintree Apple Pay support is not yet production-ready. APIs and behavior *will* change. :warning:
+* Update requirements
+  * Xcode 6+
+  * Base SDK iOS 8+ (still compatible with iOS 7+ deployment target)
 
 ## 3.3.1 (2014-09-16)
 

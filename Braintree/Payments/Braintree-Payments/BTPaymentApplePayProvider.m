@@ -5,6 +5,8 @@
 #import "BTMockApplePayPaymentAuthorizationViewController.h"
 #import "BTPaymentMethodCreationDelegate.h"
 #import "BTPaymentProviderErrors.h"
+#import "BTLogger_Internal.h"
+#import "BTClientDeprecatedApplePayConfiguration.h"
 
 @interface BTPaymentApplePayProvider () <BTMockApplePayPaymentAuthorizationViewControllerDelegate, PKPaymentAuthorizationViewControllerDelegate>
 @property (nonatomic, strong) BTClient *client;
@@ -22,6 +24,10 @@
 }
 
 - (BOOL)canAuthorizeApplePayPayment {
+    if (![PKPayment class]) {
+        return NO;
+    }
+
     if (self.client.applePayConfiguration.status == BTClientApplePayStatusOff) {
         return NO;
     }
@@ -34,6 +40,17 @@
 }
 
 - (void)authorizeApplePay {
+
+    [[BTLogger sharedLogger] warning:@"⚠️⚠️⚠️ Braintree's API for Apple Pay is PRE-RELEASE and subject to change! ⚠️⚠️⚠️"];
+
+    if (![PKPayment class]) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                             code:BTPaymentProviderErrorOptionNotSupported
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not supported in this version of the iOS SDK" }];
+        [self informDelegateDidFailWithError:error];
+        return;
+    }
+
     if (!self.delegate) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorInitialization
@@ -59,7 +76,9 @@
     }
 
     UIViewController *paymentAuthorizationViewController;
-    if ([self isSimulator]) {
+
+
+    if ([[self class] isSimulator]) {
         paymentAuthorizationViewController = ({
             BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
             mockVC.delegate = self;
@@ -78,11 +97,15 @@
 }
 
 - (PKPaymentRequest *)paymentRequest {
+    if (![PKPaymentRequest class]) {
+        return nil;
+    }
     PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
     paymentRequest.merchantIdentifier = self.client.applePayConfiguration.merchantId;
     // TODO - Retrieve these payment related values from client token
     paymentRequest.countryCode = @"US";
     paymentRequest.currencyCode = @"USD";
+
     paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
     paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
 
@@ -94,7 +117,7 @@
 
 #pragma mark Internal Helpers - Exposed for Testing
 
-- (BOOL)isSimulator {
++ (BOOL)isSimulator {
 #if TARGET_IPHONE_SIMULATOR
     return YES;
 #else
@@ -103,16 +126,14 @@
 }
 
 - (BOOL)paymentAuthorizationViewControllerCanMakePayments {
-#ifdef __IPHONE_8_0
-    if ([self isSimulator]) {
+    if (![PKPaymentAuthorizationViewController class]) {
+        return NO;
+    }
+    if ([[self class] isSimulator]) {
         return [BTMockApplePayPaymentAuthorizationViewController canMakePayments];
     } else {
         return [PKPaymentAuthorizationViewController canMakePayments];
     }
-    return YES;
-#else
-    return NO;
-#endif
 }
 
 #pragma mark PKPaymentAuthorizationViewController Delegate

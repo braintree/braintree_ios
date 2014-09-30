@@ -103,6 +103,17 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         expect(BTBraintreePayPalErrorDomain).to.beKindOf([NSString class]);
         expect(BTMerchantIntegrationErrorPayPalConfiguration).notTo.beNil();
     });
+
+    it(@"includes BTLogger", ^{
+        expect([BTLogger class]).to.respondTo(@selector(sharedLogger));
+
+        id logger = [OCMockObject mockForClass:[BTLogger class]];
+        expect(logger).to.respondTo(@selector(setLevel:));
+        expect(logger).to.respondTo(@selector(level));
+
+        [logger stopMocking];
+    });
+
 });
 
 SpecEnd

@@ -1,13 +1,9 @@
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-typedef NS_ENUM(NSUInteger, BTClientApplePayStatusType) {
-    BTClientApplePayStatusOff = 0,
-    BTClientApplePayStatusMock = 1,
-    BTClientApplePayStatusProduction = 2,
-};
+#import "BTClientApplePayConfiguration.h"
 
 /// A utility that parses the Apple Pay configuration from the client token.
-@interface BTClientApplePayConfiguration : NSObject
+@interface BTClientDeprecatedApplePayConfiguration : NSObject
 
 /// Initialize an Apple Pay configuration based on a configuration from the client token.
 ///
@@ -16,14 +12,14 @@ typedef NS_ENUM(NSUInteger, BTClientApplePayStatusType) {
 /// @param dictionary A dictionary represnetation of the Apple Pay configuration.
 ///
 /// @return An initialized configuration object
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfigurationObject:(id)dictionary NS_DESIGNATED_INITIALIZER;
 
-- (id)init __attribute__((unavailable("Please use initWithDictionary:")));
+- (id)init __attribute__((unavailable("Please use initWithConfigurationObject:")));
 
 /// The current Apple Pay status.
 ///
 /// @see BTClientApplePayStatusType
-@property (nonatomic, assign, readonly) BTClientApplePayStatusType status;
+@property (nonatomic, assign, readonly) BTClientApplePayStatus status;
 
 /// The current Apple Pay merchant id for initializing a PKPaymentRequest
 @property (nonatomic, copy, readonly) NSString *merchantId;

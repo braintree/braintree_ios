@@ -4,7 +4,7 @@
 #import "BTPayPalViewController.h"
 #import "BTPayPalHorizontalSignatureWhiteView.h"
 #import "BTUI.h"
-#import "BTLogger.h"
+#import "BTLogger_Internal.h"
 
 @interface BTPayPalButton () <BTPayPalViewControllerDelegate, BTPayPalButtonViewControllerPresenterDelegate>
 @property (nonatomic, strong) BTPayPalHorizontalSignatureWhiteView *payPalHorizontalSignatureView;
@@ -62,7 +62,7 @@
 
 - (void)didReceiveTouch {
     if (self.client == nil) {
-        [[BTLogger sharedLogger] log:@"BTPayPalButton tapped without a client. You must assign a BTClient to the the BTPayPalButton before it requests presents presentation of the PayPal view controller."];
+        [[BTLogger sharedLogger] warning:@"BTPayPalButton tapped without a client. You must assign a BTClient to the the BTPayPalButton before it requests presents presentation of the PayPal view controller."];
         return;
     }
 

@@ -21,7 +21,7 @@
 - (void)btDataDidComplete:(BTData *)data {
     self.didComplete = YES;
 }
-
+q
 @end
 
 SpecBegin(BraintreeData)
@@ -104,11 +104,9 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
         });
     });
 
-    itBehavesLike(@"a successful deprecated data collector", @{@"environmentName": @"QA", @"environment": @(BTDataEnvironmentQA)});
     itBehavesLike(@"a successful deprecated data collector", @{@"environmentName": @"Sandbox", @"environment": @(BTDataEnvironmentSandbox)});
     itBehavesLike(@"a successful deprecated data collector", @{@"environmentName": @"Production", @"environment": @(BTDataEnvironmentProduction)});
 
-    itBehavesLike(@"a successful data collector", @{@"environmentName": @"QA", @"environment": @(BTDataEnvironmentQA)});
     itBehavesLike(@"a successful data collector", @{@"environmentName": @"Sandbox", @"environment": @(BTDataEnvironmentSandbox)});
     itBehavesLike(@"a successful data collector", @{@"environmentName": @"Production", @"environment": @(BTDataEnvironmentProduction)});
     itBehavesLike(@"a no-op data collector", @{@"environmentName": @"Development", @"environment": @(BTDataEnvironmentDevelopment)});

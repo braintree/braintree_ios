@@ -313,36 +313,36 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 #pragma mark PaymentMethodCreationDelegate
 
 - (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
-    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreator:%@ requestsPresentationOfViewController:%@", sender, viewController);
+    NSLog(@"[Braintree-Demo] paymentMethodCreator:%@ requestsPresentationOfViewController:%@", sender, viewController);
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
-    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreator:%@ requestsDismissalOfViewController:%@", sender, viewController);
+    NSLog(@"[Braintree-Demo] paymentMethodCreator:%@ requestsDismissalOfViewController:%@", sender, viewController);
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
-    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreatorWillPerformAppSwitch:%@", sender);
+    NSLog(@"[Braintree-Demo] paymentMethodCreatorWillPerformAppSwitch:%@", sender);
 }
 
 - (void)paymentMethodCreatorWillProcess:(id)sender {
-    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreatorWillProcess:%@", sender);
+    NSLog(@"[Braintree-Demo] paymentMethodCreatorWillProcess:%@", sender);
     [self process];
 }
 
 - (void)paymentMethodCreatorDidCancel:(id)sender {
-    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreatorDidCancel:%@", sender);
+    NSLog(@"[Braintree-Demo] paymentMethodCreatorDidCancel:%@", sender);
     [self cancel];
 }
 
 - (void)paymentMethodCreator:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreator:%@ didCreatePaymentMethod: %@", sender, paymentMethod);
+    NSLog(@"[Braintree-Demo] paymentMethodCreator:%@ didCreatePaymentMethod: %@", sender, paymentMethod);
     [self receivePaymentMethod:paymentMethod];
 }
 
 - (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
-    NSLog(@"[ONE TOUCH DEMO] paymentMethodCreator:%@ error: %@", sender, error);
+    NSLog(@"[Braintree-Demo] paymentMethodCreator:%@ error: %@", sender, error);
     [self fail:error];
 }
 

@@ -1,6 +1,6 @@
 @import PassKit;
 
-#import "BTClient.h"
+#import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 
 void wait_for_potential_async_exceptions(void (^done)(void)) {
@@ -40,7 +40,6 @@ describe(@"challenges", ^{
                                        }];
         });
     });
-
     it(@"returns a set of Gateway specified challenge questions for the merchant", ^{
         waitUntil(^(DoneCallback done){
             [BTClient testClientWithConfiguration:@{
@@ -54,7 +53,6 @@ describe(@"challenges", ^{
                                        }];
         });
     });
-
     it(@"returns a set of Gateway specified challenge questions for the merchant", ^{
         waitUntil(^(DoneCallback done){
             [BTClient testClientWithConfiguration:@{
@@ -68,7 +66,6 @@ describe(@"challenges", ^{
                                        }];
         });
     });
-
     it(@"returns a set of Gateway specified challenge questions for the merchant", ^{
         waitUntil(^(DoneCallback done){
             [BTClient testClientWithConfiguration:@{
@@ -396,7 +393,7 @@ describe(@"list payment methods", ^{
 
 describe(@"show payment method", ^{
     it(@"gets a full representation of a payment method based on a nonce", ^{
-        waitUntil(^(DoneCallback done) {
+        waitUntil(^(DoneCallback done){
             [testClient saveCardWithNumber:@"4111111111111111"
                            expirationMonth:@"12"
                             expirationYear:@"2018"
@@ -442,7 +439,7 @@ describe(@"get nonce", ^{
     });
 
     it(@"fails to get information about a non-existent nonce", ^{
-        waitUntil(^(DoneCallback done) {
+        waitUntil(^(DoneCallback done){
             [testClient fetchNonceInfo:@"non-existent-nonce" success:nil failure:^(NSError *error) {
                 expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                 expect(error.code).to.equal(BTMerchantIntegrationErrorNonceNotFound);
@@ -452,7 +449,7 @@ describe(@"get nonce", ^{
     });
 
     it(@"fails to get information about a poorly formatted nonce", ^{
-        waitUntil(^(DoneCallback done) {
+        waitUntil(^(DoneCallback done){
             [testClient fetchNonceInfo:@"?strange/nonce&private_key=foo&stuff%20more" success:nil failure:^(NSError *error) {
                 expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                 expect(error.code).to.equal(BTMerchantIntegrationErrorNonceNotFound);
@@ -465,11 +462,10 @@ describe(@"get nonce", ^{
 describe(@"clients with Apple Pay activated", ^{
     __block BTClient *testClient;
     beforeEach(^{
-        waitUntil(^(DoneCallback done) {
+        waitUntil(^(DoneCallback done){
             [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
                                                      BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
-                                                     BTClientTestConfigurationKeyCustomer: @YES
-                                                     }
+                                                     BTClientTestConfigurationKeyCustomer: @YES }
                                        completion:^(BTClient *client) {
                                            testClient = client;
                                            done();
@@ -477,20 +473,23 @@ describe(@"clients with Apple Pay activated", ^{
         });
     });
 
-    it(@"can save an Apple Pay payment based on an PKPayment", ^{
-        waitUntil(^(DoneCallback done) {
-            id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
-            id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
+    if ([PKPayment class] && testClient.applePayConfiguration.status != BTClientApplePayStatusOff) {
+        it(@"can save an Apple Pay payment based on an PKPayment if Apple Pay is supported", ^{
+            waitUntil(^(DoneCallback done){
 
-            [[[payment stub] andReturn:paymentToken] token];
-            [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+                id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
+                id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
-            [testClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                expect(applePayPaymentMethod.nonce).to.beANonce();
-                done();
-            } failure:nil];
+                [[[payment stub] andReturn:paymentToken] token];
+                [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+
+                [testClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                    expect(applePayPaymentMethod.nonce).to.beANonce();
+                    done();
+                } failure:nil];
+            });
         });
-    });
+    }
 });
 
 
