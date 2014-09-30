@@ -1,5 +1,6 @@
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
+#import "BTClientDeprecatedApplePayConfiguration.h"
 
 void wait_for_potential_async_exceptions(void (^done)(void)) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
