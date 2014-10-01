@@ -326,17 +326,23 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (NSString *)btPayPal_merchantName {
-    return self.btPayPal_claims[BTClientTokenKeyPayPalMerchantName];
+    BOOL isLive = [self.btPayPal_environment isEqualToString:BTClientTokenPayPalEnvironmentLive];
+    NSString *defaultName = isLive ? nil : BTClientTokenPayPalNonLiveDefaultValueMerchantName;
+    return self.btPayPal_claims[BTClientTokenKeyPayPalMerchantName] ?: defaultName;
 }
 
 - (NSURL *)btPayPal_merchantUserAgreementURL {
     NSString *urlString = self.btPayPal_claims[BTClientTokenKeyPayPalMerchantUserAgreementUrl];
-    return urlString ? [NSURL URLWithString:urlString] : nil;
+    BOOL isLive = [self.btPayPal_environment isEqualToString:BTClientTokenPayPalEnvironmentLive];
+    NSURL *defaultURL = isLive ? nil : [NSURL URLWithString:BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl];
+    return urlString ? [NSURL URLWithString:urlString] : defaultURL;
 }
 
 - (NSURL *)btPayPal_privacyPolicyURL {
     NSString *urlString = self.btPayPal_claims[BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl];
-    return urlString ? [NSURL URLWithString:urlString] : nil;
+    BOOL isLive = [self.btPayPal_environment isEqualToString:BTClientTokenPayPalEnvironmentLive];
+    NSURL *defaultURL = isLive ? nil : [NSURL URLWithString:BTClientTokenPayPalNonLiveDefaultValueMerchantPrivacyPolicyUrl];
+    return urlString ? [NSURL URLWithString:urlString] : defaultURL;
 }
 
 

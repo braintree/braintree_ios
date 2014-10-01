@@ -475,7 +475,7 @@ describe(@"clients with Apple Pay activated", ^{
         });
     });
 
-    if ([PKPayment class] && testClient.applePayConfiguration.status != BTClientApplePayStatusOff) {
+    if ([PKPayment class]) {
         it(@"can save an Apple Pay payment based on an PKPayment if Apple Pay is supported", ^{
             waitUntil(^(DoneCallback done){
 

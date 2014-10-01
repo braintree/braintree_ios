@@ -4,8 +4,6 @@
 
 @class BTClientConfiguration;
 
-#import "BTClientDeprecatedApplePayConfiguration.h"
-
 typedef void (^BTClientConfigurationSuccessBlock)(BTClientConfiguration *configuration);
 
 @interface BTClient ()
@@ -13,8 +11,6 @@ typedef void (^BTClientConfigurationSuccessBlock)(BTClientConfiguration *configu
 @property (nonatomic, strong, readwrite) BTHTTP *analyticsHttp;
 @property (nonatomic, strong, readwrite) BTHTTP *configHttp;
 @property (nonatomic, strong) BTClientToken *clientToken;
-
-@property (nonatomic, strong, readonly) BTClientDeprecatedApplePayConfiguration *applePayConfiguration;
 
 // Internal helpers
 // Declared here to make available for testing

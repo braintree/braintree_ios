@@ -9,6 +9,7 @@
     NSMutableDictionary *clientTokenDataDictionary =
     [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
                                                      BTClientTokenKeyClientApiURL: BTOfflineModeClientApiBaseURL,
+                                                     BTClientTokenKeyConfigURL: [BTOfflineModeClientApiBaseURL stringByAppendingString:@"/configuration"],
                                                      BTClientTokenKeyVersion: @2,
                                                      BTClientTokenKeyApplePay: @{
                                                              BTClientTokenKeyStatus: @"mock"

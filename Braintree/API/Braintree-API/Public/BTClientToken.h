@@ -4,6 +4,7 @@
 
 extern NSString *const BTClientTokenKeyAuthorizationFingerprint;
 extern NSString *const BTClientTokenKeyClientApiURL;
+extern NSString *const BTClientTokenKeyConfigURL;
 extern NSString *const BTClientTokenKeyChallenges;
 extern NSString *const BTClientTokenKeyAnalytics;
 extern NSString *const BTClientTokenKeyURL;

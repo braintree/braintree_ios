@@ -51,33 +51,6 @@ context(@"v2 base64 encoded client tokens", ^{
 
 });
 
-context(@"v3 base64 encoded bare-bones client tokens", ^{
-    it(@"can be parsed", ^{
-        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:1 overrides:nil] error:NULL];
-
-        expect(clientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint");
-        expect(clientToken.configURL).to.equal([NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"]);
-
-        expect(clientToken.clientApiURL).to.beNil();
-        expect(clientToken.applePayConfiguration).to.beNil();
-    });
-
-    it(@"accepts configuration obtained from the configuration endpoint", ^{
-        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:1 overrides:nil] error:NULL];
-
-        [clientToken updateConfiguration:[BTTestClientTokenFactory configuration]];
-
-        expect(clientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint");
-        expect(clientToken.clientApiURL).to.equal([NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api"]);
-        expect(clientToken.analyticsURL).to.equal([NSURL URLWithString:@"https://client-analytics.example.com"]);
-        expect(clientToken.configURL).to.equal([NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"]);
-        expect(clientToken.merchantId).to.equal(@"a_merchant_id");
-        expect(clientToken.challenges).to.equal([NSSet setWithArray:@[@"cvv"]]);
-        expect(clientToken.analyticsEnabled).to.equal(@YES);
-        expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock" });
-    });
-});
-
 context(@"edge cases", ^{
     it(@"fails to parse invalid JSON", ^{
         NSError *error;
@@ -137,7 +110,7 @@ describe(@"analytics enabled", ^{
     });
 
     it(@"returns false otherwise", ^{
-        NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithVersion:2];
+        NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAnalytics: NSNull.null }];
         BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:NULL];
         expect(clientToken.analyticsEnabled).to.beFalsy();
     });
@@ -145,7 +118,8 @@ describe(@"analytics enabled", ^{
 
 describe(@"coding", ^{
     it(@"roundtrips the clientToken", ^{
-        NSString *clientTokenEncodedJSON = [BTTestClientTokenFactory tokenWithVersion:2];
+        NSString *clientTokenEncodedJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyClientApiURL: @"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api",
+                                                                                                     BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key" }];
         BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenEncodedJSON error:NULL];
 
         NSMutableData *data = [NSMutableData data];
@@ -221,7 +195,9 @@ describe(@"venmo", ^{
 
     describe(@"btVenmo_status", ^{
         it(@"returns nil if a 'venmo' key is not present", ^{
-            BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:claims] error:NULL];
+            NSMutableDictionary *venmoNotPresentClaims = [claims mutableCopy];
+            venmoNotPresentClaims[@"venmo"] = [NSNull null];
+            BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:venmoNotPresentClaims] error:NULL];
             expect(clientToken.btVenmo_status).to.beNil();
         });
 
@@ -354,34 +330,34 @@ describe(@"PayPal", ^{
                     clientTokenMissingFields = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims] error:nil];
                 });
 
-                it(@"returns a PayPal configuration object with a the offline default merchant name if not specified in the client tokent", ^{
+                it(@"returns a PayPal configuration object with an offline default merchant name if not specified in the client tokent", ^{
                     expect(clientTokenMissingFields.btPayPal_merchantName).to.equal(BTClientTokenPayPalNonLiveDefaultValueMerchantName);
                 });
 
-                it(@"returns a PayPal configuration object with a the offline default merchant user agreement url if not specified by the client token", ^{
+                it(@"returns a PayPal configuration object with an offline default merchant user agreement url if not specified by the client token", ^{
                     expect(clientTokenMissingFields.btPayPal_merchantUserAgreementURL).to.equal(defaultUserAgreementURL);
                 });
 
-                it(@"returns a PayPal configuration object with a the offline default privacy policy URL if not specified in the client tokent", ^{
+                it(@"returns a PayPal configuration object with an offline default privacy policy URL if not specified in the client tokent", ^{
                     expect(clientTokenMissingFields.btPayPal_privacyPolicyURL).to.equal(defaultPrivacyPolicyURL);
                 });
             });
 
             describe(@"custom environment", ^{
                 beforeEach(^{
-                    mutableClaims[BTClientTokenKeyPayPal][BTClientTokenKeyPayPal] = BTClientTokenPayPalEnvironmentCustom;
+                    mutableClaims[BTClientTokenKeyPayPal][BTClientTokenKeyPayPalEnvironment] = BTClientTokenPayPalEnvironmentCustom;
                     clientTokenMissingFields = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims] error:nil];
                 });
 
-                it(@"returns a PayPal configuration object with a the offline default merchant name if not specified in the client tokent", ^{
+                it(@"returns a PayPal configuration object with an offline default merchant name if not specified in the client tokent", ^{
                     expect(clientTokenMissingFields.btPayPal_merchantName).to.equal(BTClientTokenPayPalNonLiveDefaultValueMerchantName);
                 });
 
-                it(@"returns a PayPal configuration object with a the offline default merchant user agreement url if not specified by the client token", ^{
+                it(@"returns a PayPal configuration object with an offline default merchant user agreement url if not specified by the client token", ^{
                     expect(clientTokenMissingFields.btPayPal_merchantUserAgreementURL).to.equal(defaultUserAgreementURL);
                 });
 
-                it(@"returns a PayPal configuration object with a the offline default privacy policy URL if not specified in the client tokent", ^{
+                it(@"returns a PayPal configuration object with an offline default privacy policy URL if not specified in the client token", ^{
                     expect(clientTokenMissingFields.btPayPal_privacyPolicyURL).to.equal(defaultPrivacyPolicyURL);
                 });
             });
