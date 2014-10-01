@@ -2,6 +2,7 @@
 
 NSString *const BTClientTokenKeyAuthorizationFingerprint = @"authorizationFingerprint";
 NSString *const BTClientTokenKeyClientApiURL = @"clientApiUrl";
+NSString *const BTClientTokenKeyConfigURL = @"configUrl";
 NSString *const BTClientTokenKeyChallenges = @"challenges";
 NSString *const BTClientTokenKeyAnalytics = @"analytics";
 NSString *const BTClientTokenKeyURL = @"url";
@@ -106,6 +107,12 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 - (NSURL *)analyticsURL {
     return [NSURL URLWithString:self.configuration[BTClientTokenKeyAnalytics][BTClientTokenKeyURL]];
 }
+
+- (NSURL *)configURL {
+    NSString *configURLString = self.configuration[BTClientTokenKeyConfigURL];
+    return [NSURL URLWithString:configURLString];
+}
+
 
 #pragma mark JSON Parsing
 
@@ -264,7 +271,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<BTClientToken: authorizationFingerprint:%@ clientApiURL:%@, analyticsURL:%@>", self.authorizationFingerprint, self.clientApiURL, self.analyticsURL];
+    return [NSString stringWithFormat:@"<BTClientToken: authorizationFingerprint:%@ configURL:%@, clientApiURL:%@, analyticsURL:%@>", self.authorizationFingerprint, self.configURL, self.clientApiURL, self.analyticsURL];
 }
 
 - (BOOL)isEqualToClientToken:(BTClientToken *)clientToken {

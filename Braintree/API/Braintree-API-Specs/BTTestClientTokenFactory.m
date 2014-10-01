@@ -4,7 +4,7 @@
 
 + (NSMutableDictionary *)tokenDataWithConfiguration {
     return [@{
-              @"authorizationFingerprint": @"an_authorziation_fingerprint",
+              @"authorizationFingerprint": @"an_authorization_fingerprint",
               @"configUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration",
               @"challenges": @[
                       @"cvv"

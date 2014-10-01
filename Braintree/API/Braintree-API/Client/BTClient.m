@@ -14,6 +14,7 @@
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
 #import "BTClientDeprecatedApplePayConfiguration.h"
+#import "BTClientConfigurationAPI.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -21,8 +22,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 @interface BTClient ()
 - (void)setMetadata:(BTClientMetadata *)metadata;
 @end
-
-// TODO: Ensure that v3 client tokens disable most functioanlity until we have configuration is ready
 
 @implementation BTClient
 
@@ -56,6 +55,11 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         if (self.clientToken.analyticsEnabled) {
             self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.analyticsURL];
         }
+
+        if (self.clientToken.configURL) {
+            self.configHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.configURL];
+        }
+
         self.metadata = [[BTClientMetadata alloc] init];
     }
     return self;
@@ -371,6 +375,29 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self postAnalyticsEvent:eventKind success:nil failure:nil];
 }
 
+- (void)fetchConfigurationWithSuccess:(BTClientConfigurationSuccessBlock)successBlock
+                              failure:(BTClientFailureBlock)failureBlock {
+    NSDictionary *parameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
+    [self.configHttp GET:@"/"
+              parameters:parameters
+              completion:^(BTHTTPResponse *response, NSError *error) {
+                  if (response.isSuccess) {
+                      NSError *resourceError;
+                      BTClientConfiguration *configuration = [BTClientConfigurationAPI modelWithAPIDictionary:response.object error:&resourceError];
+
+                      if (configuration) {
+                          successBlock(configuration);
+                      } else {
+                          failureBlock(resourceError);
+                      }
+                  } else {
+                      if (failureBlock) {
+                          failureBlock(error);
+                      }
+                  }
+              }];
+}
+
 #pragma mark - Response Parsing
 
 + (BTPaymentMethod *)paymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
@@ -455,7 +482,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #pragma mark - Debug
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<BTClient:%p clientApiHttp:%@, analyticsHttp:%@>", self, self.clientApiHttp, self.analyticsHttp];
+    return [NSString stringWithFormat:@"<BTClient:%p clientApiHttp:%@, analyticsHttp:%@, configHttp:%@>", self, self.clientApiHttp, self.analyticsHttp, self.configHttp];
 }
 
 #pragma mark - Library Version

@@ -3,6 +3,8 @@
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 
+#import "BTClientConfiguration.h"
+
 void wait_for_potential_async_exceptions(void (^done)(void)) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
         done();
@@ -634,6 +636,26 @@ describe(@"post analytics event", ^{
                                                                            }
                                                                            failure:nil];
                                                     }];
+        });
+    });
+});
+
+describe(@"client configuration", ^{
+    it(@"can be fetched from the endpoint specified in the client token", ^{
+        waitUntil(^(DoneCallback done) {
+            [testClient fetchConfigurationWithSuccess:^(BTClientConfiguration *configuration) {
+                expect(configuration).to.beKindOf([BTClientConfiguration class]);
+                expect(configuration.applePayConfiguration).to.beKindOf([BTClientApplePayConfiguration class]);
+
+                expect(configuration.applePayConfiguration.paymentRequest.countryCode).to.equal(@"US");
+                expect(configuration.applePayConfiguration.paymentRequest.currencyCode).to.equal(@"USD");
+                expect(configuration.applePayConfiguration.paymentRequest.merchantIdentifier).to.equal(@"integration_merchant_id-apple-pay");
+                expect(configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkAmex);
+                expect(configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkVisa);
+                expect(configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkMasterCard);
+
+                done();
+            } failure:nil];
         });
     });
 });
