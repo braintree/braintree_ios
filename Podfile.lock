@@ -66,12 +66,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
   - Braintree (from `.`)
-  - Braintree/API (from `.`)
   - Braintree/Data (from `.`)
-  - Braintree/Payments
-  - Braintree/PayPal (from `.`)
-  - Braintree/UI (from `.`)
-  - Braintree/Venmo (from `.`)
   - Expecta (~> 0.3.0)
   - FLEX
   - HockeySDK
@@ -108,4 +103,4 @@ SPEC CHECKSUMS:
   UIActionSheet+Blocks: c8b9c02f3d08964e8f7a4202f004a639c15eab80
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.1
