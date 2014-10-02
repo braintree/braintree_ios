@@ -90,7 +90,13 @@
             realVC.delegate = self;
             realVC;
         });
-
+        if (paymentAuthorizationViewController == nil) {
+            NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                                 code:BTPaymentProviderErrorInitialization
+                                             userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version and configuration." }];
+            [self informDelegateDidFailWithError:error];
+            return;
+        }
     }
 
     [self informDelegateRequestsPresentationOfViewController:paymentAuthorizationViewController];

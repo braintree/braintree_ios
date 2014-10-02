@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   s.default_subspecs = %w[Drop-In API PayPal Venmo UI Payments]
 
   s.subspec "Drop-In" do |s|
-    s.source_files  = "Braintree/Drop-In/**/*.{h,m}"
+    s.source_files  = "Braintree/Drop-In/Braintree-Drop-In/**/*.{h,m}"
     s.public_header_files = "Braintree/Drop-In/Public/*.h"
     s.dependency "Braintree/API"
     s.dependency "Braintree/PayPal"

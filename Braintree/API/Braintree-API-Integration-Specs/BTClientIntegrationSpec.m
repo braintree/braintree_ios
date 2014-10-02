@@ -2,6 +2,7 @@
 
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
+#import "BTClientDeprecatedApplePayConfiguration.h"
 
 #import "BTClientConfiguration.h"
 

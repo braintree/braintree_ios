@@ -7,10 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0385D52E93B848B99EE7BD33 /* libPods-Braintree-PayPal-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */; };
-		0871DCD7B0214218A97833CA /* libPods-Braintree-API-Integration-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */; };
-		08B6E12433764A2AAD33A34E /* libPods-Braintree-Venmo-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E87AEC871A4243CDBDB34507 /* libPods-Braintree-Venmo-Specs.a */; };
-		13F93A00696C4DD29D4A3327 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */; };
+		0B9C2085FC524408B405FCA2 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		160199F01964E14400010A56 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		160199F11964E14400010A56 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 162174E1192D9220008DC35D /* CoreGraphics.framework */; };
 		160199F21964E14400010A56 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
@@ -132,7 +129,9 @@
 		169D5F8D19660C4100C2A50D /* BTAnalyticsMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 169D5F8C19660C4100C2A50D /* BTAnalyticsMetadataSpec.m */; };
 		16F9996B19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F9996A19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m */; };
 		16F9996E19AE73A3007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F9996D19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m */; };
+		1EFB0A0363CB44C1BBC839D9 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		2D1D9D1019C24A01005E6090 /* BraintreeDemoCustomApplePayButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D1D9D0F19C24A01005E6090 /* BraintreeDemoCustomApplePayButtonManager.m */; };
+		2D479982C817470684206F4B /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */; };
 		2D70E0FA19C2238300456723 /* BTApplePayPaymentMethodSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D70E0F919C2238300456723 /* BTApplePayPaymentMethodSpec.m */; };
 		2D92BC6919BADB01009663B2 /* Braintree-Payments-Specs-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2D92BC6719BADB01009663B2 /* Braintree-Payments-Specs-Info.plist */; };
@@ -140,10 +139,13 @@
 		2D9DDB3719B8171900C53140 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */; };
 		2DCDDFCA194F9E1400F691CF /* BTHTTPSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCDDFC9194F9E1400F691CF /* BTHTTPSpec.m */; };
-		537C08EBC7044CA9B1796EA2 /* libPods-Braintree-Data-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CDCE86975684EFC94DA10AB /* libPods-Braintree-Data-Demo.a */; };
-		66D0902C25AD47F2B9BB463C /* libPods-Braintree-API-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EA18037F59BA4BC296136D1C /* libPods-Braintree-API-Demo.a */; };
-		705C08DBE078409499618CC7 /* libPods-Braintree-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */; };
-		8307670773DF4AC381C3FE80 /* libPods-Braintree-PayPal-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 133578558B4E45ECA2C2D586 /* libPods-Braintree-PayPal-Specs.a */; };
+		3A55D79CE7284DBEA25D9B29 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		48D55941EDDF41E4A8CAE86E /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		5C19DC17F86C859B0FA340B1 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		6280948B11CC4C92A0822D21 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		86105771EA3747D29C182FC8 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		8BED385EC4EA44ACB0E12663 /* libPods-Braintree-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */; };
+		9840211432D3E2663DEAE2C0 /* libPods-Braintree-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */; };
 		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
 		A7281C5819A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */; };
 		A72B37FE19633826009AD2F5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
@@ -175,13 +177,11 @@
 		A7EC136A19BA3BA800B64D19 /* BTClient+BTVenmoSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EC136919BA3BA800B64D19 /* BTClient+BTVenmoSpec.m */; };
 		A7FC1CC61992B38A00636548 /* BTClientStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */; };
 		A7FF7A4E19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF7A4D19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m */; };
-		B0625DEDD37946988C5379F6 /* libPods-Braintree-API-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */; };
-		B81AA72C71C34DF0A3FA4779 /* libPods-Braintree-PayPal-Acceptance-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */; };
-		C72256E32E9442568F7387CB /* libPods-Braintree-Payments-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD999D6FDD21459BA0ADFD5C /* libPods-Braintree-Payments-Specs.a */; };
-		D574F60B94CB4F2AA8395FE1 /* libPods-Braintree-Payments-UI-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */; };
-		DE9E3D60A4E542CD8A6F80F2 /* libPods-Braintree-PayPal-Integration-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEE50EAA429F4DA691822A24 /* libPods-Braintree-PayPal-Integration-Specs.a */; };
-		ECB5CEFEB2CC47898E2D7CCF /* libPods-Braintree-Payments-UI-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEFCE8D4BB249FCB2A52FA4 /* libPods-Braintree-Payments-UI-Specs.a */; };
-		F064D1A46CCE440C8EA6EE02 /* libPods-Braintree-Data-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE170CE2F87E4BC199DE13A1 /* libPods-Braintree-Data-Specs.a */; };
+		B6A81E06EEA7B8903188880B /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		CE819730B14F49C1AE0EC896 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		D16D9D24B33644F6A2B232AC /* libPods-Braintree-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */; };
+		FDB7027F92404FF7BE751551 /* libPods-Braintree-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */; };
+		FE5E271F71604A6CAAF96AFE /* libPods-Braintree-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,9 +204,9 @@
 /* Begin PBXFileReference section */
 		056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0952D25AC13D43208F8288B6 /* libPods-Braintree-AppSwitch-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-AppSwitch-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E3027E149854D1899379B01 /* Pods-Braintree-Data-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Data-Specs.xcconfig"; path = "Pods/Pods-Braintree-Data-Specs.xcconfig"; sourceTree = "<group>"; };
-		131DC0DC90E5466881F8A1A6 /* Pods-Braintree-PayPal-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Demo.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Demo.xcconfig"; sourceTree = "<group>"; };
+		0F0A2879A703F466DE0DAA47 /* Pods-Braintree-Data-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Data-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Data-Specs/Pods-Braintree-Data-Specs.release.xcconfig"; sourceTree = "<group>"; };
 		133578558B4E45ECA2C2D586 /* libPods-Braintree-PayPal-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		15AD2CC443481E5FA269CB4D /* Pods-Braintree-Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Dev.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Dev/Pods-Braintree-Dev.release.xcconfig"; sourceTree = "<group>"; };
 		1600ABC119B7D04900D25D93 /* BTUIPaymentButtonCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIPaymentButtonCollectionViewCell.h; sourceTree = "<group>"; };
 		1600ABC219B7D04900D25D93 /* BTUIPaymentButtonCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIPaymentButtonCollectionViewCell.m; sourceTree = "<group>"; };
 		160199EF1964E14400010A56 /* Braintree-Data-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Braintree-Data-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,7 +234,7 @@
 		1607FE7E192D97D60099D504 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1607FE80192D97D60099D504 /* Braintree-PayPal-Integration-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-PayPal-Integration-Specs-Prefix.pch"; sourceTree = "<group>"; };
 		1607FE8A192D97FF0099D504 /* Braintree-Payments-UI-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Payments-UI-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		161029E8192DAFC3002C1B2B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		161029E8192DAFC3002C1B2B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		161029E9192DAFC3002C1B2B /* DEVELOPMENT.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DEVELOPMENT.md; sourceTree = "<group>"; };
 		161029EA192DAFC3002C1B2B /* Braintree.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Braintree.podspec; sourceTree = "<group>"; };
 		161029EE192DAFD4002C1B2B /* Rakefile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; indentWidth = 2; path = Rakefile; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
@@ -526,7 +526,7 @@
 		16F9996A19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomPayPalButtonManager.m; sourceTree = "<group>"; };
 		16F9996C19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomVenmoButtonManager.h; sourceTree = "<group>"; };
 		16F9996D19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomVenmoButtonManager.m; sourceTree = "<group>"; };
-		29C0E04B87974F7C80D7C5B8 /* Pods-Braintree-API-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-API-Demo.xcconfig"; path = "Pods/Pods-Braintree-API-Demo.xcconfig"; sourceTree = "<group>"; };
+		1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Dev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Dev/Pods-Braintree-Dev.debug.xcconfig"; sourceTree = "<group>"; };
 		2CDCE86975684EFC94DA10AB /* libPods-Braintree-Data-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Data-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D085DD919463C9200293215 /* UIColor+BTUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+BTUI.h"; sourceTree = "<group>"; };
 		2D085DDA19463C9200293215 /* UIColor+BTUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BTUI.m"; sourceTree = "<group>"; };
@@ -558,22 +558,18 @@
 		2DE53D9019C36B72005D5E18 /* BTClientApplePayRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientApplePayRequest.h; sourceTree = "<group>"; };
 		2DE53D9119C36B72005D5E18 /* BTClientApplePayRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = BTClientApplePayRequest.m; path = Models/BTClientApplePayRequest.m; sourceTree = "<group>"; };
 		2DE9752A19B80D2F009E2198 /* BTPaymentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentProvider.m; sourceTree = "<group>"; };
-		3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Specs.xcconfig"; path = "Pods/Pods-Braintree-Specs.xcconfig"; sourceTree = "<group>"; };
-		450771C9BADB4C4893CAA26E /* Pods-Braintree-Payments-UI-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-UI-Demo.xcconfig"; path = "Pods/Pods-Braintree-Payments-UI-Demo.xcconfig"; sourceTree = "<group>"; };
-		49D0108CF663453B80F1BEA8 /* Pods-Braintree-Payments-UI-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-UI-Specs.xcconfig"; path = "Pods/Pods-Braintree-Payments-UI-Specs.xcconfig"; sourceTree = "<group>"; };
-		4FDA475E687C46DD8BF91453 /* Pods-Braintree-PayPal-Acceptance-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Acceptance-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Acceptance-Specs.xcconfig"; sourceTree = "<group>"; };
+		312C642A816448F6A6B7D69B /* libPods-Common.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEE5C97D00D4124A961B590 /* libPods-TestWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		541920E673CA4AEFA8070DE3 /* Pods-Braintree-Payments-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Payments-Specs.xcconfig"; path = "Pods/Pods-Braintree-Payments-Specs.xcconfig"; sourceTree = "<group>"; };
-		6E818DD8A8AF4D919E587C99 /* Pods-Braintree-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.xcconfig"; path = "Pods/Pods-Braintree-Demo.xcconfig"; sourceTree = "<group>"; };
 		77037AD319B0112A0097DADE /* BTAppSwitchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BTAppSwitchingDelegate.h; path = "braintree/API/Braintree-API/Public/BTAppSwitchingDelegate.h"; sourceTree = SOURCE_ROOT; };
 		77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Acceptance-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		815EE2A671E046E3AD3F176F /* Pods-Braintree-API-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-API-Specs.xcconfig"; path = "Pods/Pods-Braintree-API-Specs.xcconfig"; sourceTree = "<group>"; };
+		8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9270469696964D9BABE95E62 /* libPods-TestWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		95581D8AC805496185D61D9D /* Pods-Braintree-PayPal-Integration-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Integration-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Integration-Specs.xcconfig"; sourceTree = "<group>"; };
+		9688466195912EF908832ED1 /* Pods-Braintree-Data-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Data-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Data-Specs/Pods-Braintree-Data-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0D18A73520462F8D2FB1CD /* libPods-Braintree-API-Public-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Public-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F7146AA76DA46D093BB89AC /* Pods-Braintree-Data-Demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Data-Demo.xcconfig"; path = "Pods/Pods-Braintree-Data-Demo.xcconfig"; sourceTree = "<group>"; };
+		9D7A756197AEF3803FB4C30A /* Pods-Braintree-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		A7021B071921631C0090CE8F /* Braintree_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree_Internal.h; sourceTree = "<group>"; };
 		A707F30519D381AD00223F7A /* BTAPIResourceValueType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIResourceValueType.h; sourceTree = "<group>"; };
 		A707F30619D387C800223F7A /* BTAPIResourceErrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIResourceErrors.h; sourceTree = "<group>"; };
@@ -665,19 +661,23 @@
 		A7FF7A4C19C7820C000AFFA4 /* BTPaymentApplePayProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentApplePayProvider.m; sourceTree = "<group>"; };
 		A7FF7A4D19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentApplePayProviderSpec.m; sourceTree = "<group>"; };
 		A7FF7A4F19C787FC000AFFA4 /* BTPaymentApplePayProvider_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentApplePayProvider_Internal.h; sourceTree = "<group>"; };
-		B8B889AD350A461D983F90F6 /* Pods-Braintree-Venmo-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Venmo-Specs.xcconfig"; path = "Pods/Pods-Braintree-Venmo-Specs.xcconfig"; sourceTree = "<group>"; };
+		B3C50A597495438F81DA0348 /* libPods-Braintree-Build.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Build.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE7EE87B672453ED2CA5E126 /* Pods-Braintree-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-PayPal-Specs.xcconfig"; path = "Pods/Pods-Braintree-PayPal-Specs.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB48F4529C174EFF9F51A43F /* Pods-Braintree-API-Integration-Specs.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-API-Integration-Specs.xcconfig"; path = "Pods/Pods-Braintree-API-Integration-Specs.xcconfig"; sourceTree = "<group>"; };
+		D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
+		DBB99F0290C3945DDB8D1C16 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		DBED5868ADC94026BA7674E4 /* libPods-Braintree-Payment-Authorization-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payment-Authorization-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD999D6FDD21459BA0ADFD5C /* libPods-Braintree-Payments-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF5D840F7E4FDD1E97CF5318 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E87AEC871A4243CDBDB34507 /* libPods-Braintree-Venmo-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Venmo-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA18037F59BA4BC296136D1C /* libPods-Braintree-API-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECD7C2D30B9464B131693E49 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		EEE50EAA429F4DA691822A24 /* libPods-Braintree-PayPal-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBEFCE8D4BB249FCB2A52FA4 /* libPods-Braintree-Payments-UI-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-UI-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE170CE2F87E4BC199DE13A1 /* libPods-Braintree-Data-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Data-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -688,7 +688,7 @@
 				160199F11964E14400010A56 /* CoreGraphics.framework in Frameworks */,
 				160199F21964E14400010A56 /* UIKit.framework in Frameworks */,
 				160199F01964E14400010A56 /* Foundation.framework in Frameworks */,
-				537C08EBC7044CA9B1796EA2 /* libPods-Braintree-Data-Demo.a in Frameworks */,
+				FDB7027F92404FF7BE751551 /* libPods-Braintree-Dev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,7 +699,7 @@
 				1607FE49192D974C0099D504 /* XCTest.framework in Frameworks */,
 				1607FE4B192D974C0099D504 /* UIKit.framework in Frameworks */,
 				1607FE4A192D974C0099D504 /* Foundation.framework in Frameworks */,
-				8307670773DF4AC381C3FE80 /* libPods-Braintree-PayPal-Specs.a in Frameworks */,
+				3A55D79CE7284DBEA25D9B29 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,7 +710,7 @@
 				1607FE5F192D97570099D504 /* XCTest.framework in Frameworks */,
 				1607FE61192D97570099D504 /* UIKit.framework in Frameworks */,
 				1607FE60192D97570099D504 /* Foundation.framework in Frameworks */,
-				DE9E3D60A4E542CD8A6F80F2 /* libPods-Braintree-PayPal-Integration-Specs.a in Frameworks */,
+				86105771EA3747D29C182FC8 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,7 +721,7 @@
 				1607FE8B192D97FF0099D504 /* XCTest.framework in Frameworks */,
 				1607FE8D192D97FF0099D504 /* UIKit.framework in Frameworks */,
 				1607FE8C192D97FF0099D504 /* Foundation.framework in Frameworks */,
-				ECB5CEFEB2CC47898E2D7CCF /* libPods-Braintree-Payments-UI-Specs.a in Frameworks */,
+				1EFB0A0363CB44C1BBC839D9 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,7 +732,7 @@
 				162174E2192D9220008DC35D /* CoreGraphics.framework in Frameworks */,
 				162174E3192D9220008DC35D /* UIKit.framework in Frameworks */,
 				162174E0192D9220008DC35D /* Foundation.framework in Frameworks */,
-				13F93A00696C4DD29D4A3327 /* libPods-Braintree-Demo.a in Frameworks */,
+				9840211432D3E2663DEAE2C0 /* libPods-Braintree-Dev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -744,7 +744,7 @@
 				16217540192D94BB008DC35D /* XCTest.framework in Frameworks */,
 				16217542192D94BB008DC35D /* UIKit.framework in Frameworks */,
 				16217541192D94BB008DC35D /* Foundation.framework in Frameworks */,
-				B0625DEDD37946988C5379F6 /* libPods-Braintree-API-Specs.a in Frameworks */,
+				5C19DC17F86C859B0FA340B1 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,7 +755,7 @@
 				16217554192D94C7008DC35D /* XCTest.framework in Frameworks */,
 				16217556192D94C7008DC35D /* UIKit.framework in Frameworks */,
 				16217555192D94C7008DC35D /* Foundation.framework in Frameworks */,
-				0871DCD7B0214218A97833CA /* libPods-Braintree-API-Integration-Specs.a in Frameworks */,
+				0B9C2085FC524408B405FCA2 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,7 +766,7 @@
 				16968120192D997A00120846 /* CoreGraphics.framework in Frameworks */,
 				16968121192D997A00120846 /* UIKit.framework in Frameworks */,
 				1696811F192D997A00120846 /* Foundation.framework in Frameworks */,
-				0385D52E93B848B99EE7BD33 /* libPods-Braintree-PayPal-Demo.a in Frameworks */,
+				D16D9D24B33644F6A2B232AC /* libPods-Braintree-Dev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -777,7 +777,7 @@
 				1696816B192D9A3200120846 /* XCTest.framework in Frameworks */,
 				1696816D192D9A3200120846 /* UIKit.framework in Frameworks */,
 				1696816C192D9A3200120846 /* Foundation.framework in Frameworks */,
-				B81AA72C71C34DF0A3FA4779 /* libPods-Braintree-PayPal-Acceptance-Specs.a in Frameworks */,
+				CE819730B14F49C1AE0EC896 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -788,7 +788,7 @@
 				1696818C192D9A5000120846 /* CoreGraphics.framework in Frameworks */,
 				1696818D192D9A5000120846 /* UIKit.framework in Frameworks */,
 				1696818B192D9A5000120846 /* Foundation.framework in Frameworks */,
-				66D0902C25AD47F2B9BB463C /* libPods-Braintree-API-Demo.a in Frameworks */,
+				FE5E271F71604A6CAAF96AFE /* libPods-Braintree-Dev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -799,7 +799,7 @@
 				169681D8192D9AC700120846 /* CoreGraphics.framework in Frameworks */,
 				169681D9192D9AC700120846 /* UIKit.framework in Frameworks */,
 				169681D7192D9AC700120846 /* Foundation.framework in Frameworks */,
-				D574F60B94CB4F2AA8395FE1 /* libPods-Braintree-Payments-UI-Demo.a in Frameworks */,
+				8BED385EC4EA44ACB0E12663 /* libPods-Braintree-Dev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -809,7 +809,7 @@
 			files = (
 				2D9DDB3619B8171900C53140 /* XCTest.framework in Frameworks */,
 				2D9DDB3719B8171900C53140 /* Foundation.framework in Frameworks */,
-				C72256E32E9442568F7387CB /* libPods-Braintree-Payments-Specs.a in Frameworks */,
+				48D55941EDDF41E4A8CAE86E /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -820,7 +820,7 @@
 				A72B37FE19633826009AD2F5 /* XCTest.framework in Frameworks */,
 				A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */,
 				A72B37FF19633826009AD2F5 /* Foundation.framework in Frameworks */,
-				F064D1A46CCE440C8EA6EE02 /* libPods-Braintree-Data-Specs.a in Frameworks */,
+				B6A81E06EEA7B8903188880B /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,7 +831,7 @@
 				A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */,
 				A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */,
 				A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */,
-				705C08DBE078409499618CC7 /* libPods-Braintree-Specs.a in Frameworks */,
+				6280948B11CC4C92A0822D21 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,7 +842,7 @@
 				A7B7432B19A3E093000A6A7A /* XCTest.framework in Frameworks */,
 				A7B7432D19A3E094000A6A7A /* UIKit.framework in Frameworks */,
 				A7B7432C19A3E093000A6A7A /* Foundation.framework in Frameworks */,
-				08B6E12433764A2AAD33A34E /* libPods-Braintree-Venmo-Specs.a in Frameworks */,
+				2D479982C817470684206F4B /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1711,6 +1711,23 @@
 			name = "Custom Buttons";
 			sourceTree = "<group>";
 		};
+		847E11FCFF74B0CCB8E48E73 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9688466195912EF908832ED1 /* Pods-Braintree-Data-Specs.debug.xcconfig */,
+				0F0A2879A703F466DE0DAA47 /* Pods-Braintree-Data-Specs.release.xcconfig */,
+				9D7A756197AEF3803FB4C30A /* Pods-Braintree-Demo.debug.xcconfig */,
+				BE7EE87B672453ED2CA5E126 /* Pods-Braintree-Demo.release.xcconfig */,
+				1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Dev.debug.xcconfig */,
+				15AD2CC443481E5FA269CB4D /* Pods-Braintree-Dev.release.xcconfig */,
+				969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */,
+				D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */,
+				DBB99F0290C3945DDB8D1C16 /* Pods.debug.xcconfig */,
+				ECD7C2D30B9464B131693E49 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		A72B380D196339C7009AD2F5 /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -1754,21 +1771,7 @@
 				A75DA36A1921394200D997A2 /* Braintree-Specs */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A75DA3521921394200D997A2 /* Products */,
-				3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */,
-				29C0E04B87974F7C80D7C5B8 /* Pods-Braintree-API-Demo.xcconfig */,
-				DB48F4529C174EFF9F51A43F /* Pods-Braintree-API-Integration-Specs.xcconfig */,
-				815EE2A671E046E3AD3F176F /* Pods-Braintree-API-Specs.xcconfig */,
-				6E818DD8A8AF4D919E587C99 /* Pods-Braintree-Demo.xcconfig */,
-				4FDA475E687C46DD8BF91453 /* Pods-Braintree-PayPal-Acceptance-Specs.xcconfig */,
-				131DC0DC90E5466881F8A1A6 /* Pods-Braintree-PayPal-Demo.xcconfig */,
-				95581D8AC805496185D61D9D /* Pods-Braintree-PayPal-Integration-Specs.xcconfig */,
-				CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */,
-				450771C9BADB4C4893CAA26E /* Pods-Braintree-Payments-UI-Demo.xcconfig */,
-				49D0108CF663453B80F1BEA8 /* Pods-Braintree-Payments-UI-Specs.xcconfig */,
-				0E3027E149854D1899379B01 /* Pods-Braintree-Data-Specs.xcconfig */,
-				9F7146AA76DA46D093BB89AC /* Pods-Braintree-Data-Demo.xcconfig */,
-				B8B889AD350A461D983F90F6 /* Pods-Braintree-Venmo-Specs.xcconfig */,
-				541920E673CA4AEFA8070DE3 /* Pods-Braintree-Payments-Specs.xcconfig */,
+				847E11FCFF74B0CCB8E48E73 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1839,6 +1842,11 @@
 				E87AEC871A4243CDBDB34507 /* libPods-Braintree-Venmo-Specs.a */,
 				DBED5868ADC94026BA7674E4 /* libPods-Braintree-Payment-Authorization-Specs.a */,
 				DD999D6FDD21459BA0ADFD5C /* libPods-Braintree-Payments-Specs.a */,
+				FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */,
+				B3C50A597495438F81DA0348 /* libPods-Braintree-Build.a */,
+				8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */,
+				312C642A816448F6A6B7D69B /* libPods-Common.a */,
+				DF5D840F7E4FDD1E97CF5318 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2507,7 +2515,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-PayPal-Integration-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1F589B925D4047BFBE2EA2DD /* Copy Pods Resources */ = {
@@ -2522,7 +2530,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-API-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		25F70BD0A6154BD6ADB2E515 /* Check Pods Manifest.lock */ = {
@@ -2552,7 +2560,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-API-Demo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Dev/Pods-Braintree-Dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		292A50569BDA4839BE802CC1 /* Copy Pods Resources */ = {
@@ -2567,7 +2575,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-Venmo-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		353DA001681E498E8A18F822 /* Check Pods Manifest.lock */ = {
@@ -2612,7 +2620,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-Data-Demo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Dev/Pods-Braintree-Dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4C108ECE150D40B5A5907FFD /* Copy Pods Resources */ = {
@@ -2627,7 +2635,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-Data-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4D3643F187104968A142C2B4 /* Copy Pods Resources */ = {
@@ -2642,7 +2650,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-PayPal-Acceptance-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4FAE3209EC8D4C428D8C1467 /* Copy Pods Resources */ = {
@@ -2657,7 +2665,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-PayPal-Demo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Dev/Pods-Braintree-Dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5184CDDA2CF84BC384DCD347 /* Copy Pods Resources */ = {
@@ -2672,7 +2680,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-Payments-UI-Demo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Dev/Pods-Braintree-Dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		66BF5CF69D174581A2AA4D8F /* Copy Pods Resources */ = {
@@ -2687,7 +2695,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-API-Integration-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8475BD0C96EA478AB77461F4 /* Check Pods Manifest.lock */ = {
@@ -2807,7 +2815,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-Payments-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C6ABA4F57C534A5A944D502A /* Check Pods Manifest.lock */ = {
@@ -2837,7 +2845,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-Demo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Dev/Pods-Braintree-Dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C920695A44E54F25894A9E29 /* Check Pods Manifest.lock */ = {
@@ -2867,7 +2875,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-Payments-UI-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D010DA7D07A34BF5A22C0886 /* Check Pods Manifest.lock */ = {
@@ -2912,7 +2920,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-PayPal-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F1D849357AB142C18A1D4A74 /* Check Pods Manifest.lock */ = {
@@ -2942,7 +2950,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-Braintree-Specs-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -3322,7 +3330,7 @@
 /* Begin XCBuildConfiguration section */
 		16019A1A1964E14500010A56 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F7146AA76DA46D093BB89AC /* Pods-Braintree-Data-Demo.xcconfig */;
+			baseConfigurationReference = 1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Dev.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -3355,7 +3363,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3378,7 +3386,7 @@
 		};
 		16019A1B1964E14500010A56 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F7146AA76DA46D093BB89AC /* Pods-Braintree-Data-Demo.xcconfig */;
+			baseConfigurationReference = 15AD2CC443481E5FA269CB4D /* Pods-Braintree-Dev.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -3405,7 +3413,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Braintree/Data/Braintree-Data-Demo/Braintree-Data-Demo-Prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3428,7 +3436,7 @@
 		};
 		1607FE58192D974C0099D504 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3475,7 +3483,7 @@
 		};
 		1607FE59192D974C0099D504 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF87233E529D4DB8AB62B9D9 /* Pods-Braintree-PayPal-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3516,7 +3524,7 @@
 		};
 		1607FE6C192D97570099D504 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95581D8AC805496185D61D9D /* Pods-Braintree-PayPal-Integration-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3563,7 +3571,7 @@
 		};
 		1607FE6D192D97570099D504 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95581D8AC805496185D61D9D /* Pods-Braintree-PayPal-Integration-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3604,7 +3612,7 @@
 		};
 		1607FE98192D98000099D504 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 49D0108CF663453B80F1BEA8 /* Pods-Braintree-Payments-UI-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3651,7 +3659,7 @@
 		};
 		1607FE99192D98000099D504 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 49D0108CF663453B80F1BEA8 /* Pods-Braintree-Payments-UI-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3692,7 +3700,7 @@
 		};
 		16217505192D9220008DC35D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6E818DD8A8AF4D919E587C99 /* Pods-Braintree-Demo.xcconfig */;
+			baseConfigurationReference = 1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Dev.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -3724,7 +3732,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3771,7 +3779,7 @@
 		};
 		16217506192D9220008DC35D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6E818DD8A8AF4D919E587C99 /* Pods-Braintree-Demo.xcconfig */;
+			baseConfigurationReference = 15AD2CC443481E5FA269CB4D /* Pods-Braintree-Dev.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -3797,7 +3805,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3845,7 +3853,7 @@
 		};
 		1621754C192D94BB008DC35D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 815EE2A671E046E3AD3F176F /* Pods-Braintree-API-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3892,7 +3900,7 @@
 		};
 		1621754D192D94BB008DC35D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 815EE2A671E046E3AD3F176F /* Pods-Braintree-API-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3933,7 +3941,7 @@
 		};
 		16217561192D94C7008DC35D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB48F4529C174EFF9F51A43F /* Pods-Braintree-API-Integration-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -3980,7 +3988,7 @@
 		};
 		16217562192D94C7008DC35D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB48F4529C174EFF9F51A43F /* Pods-Braintree-API-Integration-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4021,7 +4029,7 @@
 		};
 		16968143192D997B00120846 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 131DC0DC90E5466881F8A1A6 /* Pods-Braintree-PayPal-Demo.xcconfig */;
+			baseConfigurationReference = 1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Dev.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4072,7 +4080,7 @@
 		};
 		16968144192D997B00120846 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 131DC0DC90E5466881F8A1A6 /* Pods-Braintree-PayPal-Demo.xcconfig */;
+			baseConfigurationReference = 15AD2CC443481E5FA269CB4D /* Pods-Braintree-Dev.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4117,7 +4125,7 @@
 		};
 		1696817A192D9A3200120846 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4FDA475E687C46DD8BF91453 /* Pods-Braintree-PayPal-Acceptance-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
@@ -4167,7 +4175,7 @@
 		};
 		1696817B192D9A3200120846 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4FDA475E687C46DD8BF91453 /* Pods-Braintree-PayPal-Acceptance-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
@@ -4211,7 +4219,7 @@
 		};
 		169681AF192D9A5200120846 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29C0E04B87974F7C80D7C5B8 /* Pods-Braintree-API-Demo.xcconfig */;
+			baseConfigurationReference = 1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Dev.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4263,7 +4271,7 @@
 		};
 		169681B0192D9A5200120846 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29C0E04B87974F7C80D7C5B8 /* Pods-Braintree-API-Demo.xcconfig */;
+			baseConfigurationReference = 15AD2CC443481E5FA269CB4D /* Pods-Braintree-Dev.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4309,7 +4317,7 @@
 		};
 		169681FB192D9AC800120846 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 450771C9BADB4C4893CAA26E /* Pods-Braintree-Payments-UI-Demo.xcconfig */;
+			baseConfigurationReference = 1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Dev.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4360,7 +4368,7 @@
 		};
 		169681FC192D9AC800120846 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 450771C9BADB4C4893CAA26E /* Pods-Braintree-Payments-UI-Demo.xcconfig */;
+			baseConfigurationReference = 15AD2CC443481E5FA269CB4D /* Pods-Braintree-Dev.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4405,7 +4413,7 @@
 		};
 		2D9DDB4319B8171A00C53140 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 541920E673CA4AEFA8070DE3 /* Pods-Braintree-Payments-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4452,7 +4460,7 @@
 		};
 		2D9DDB4419B8171A00C53140 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 541920E673CA4AEFA8070DE3 /* Pods-Braintree-Payments-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4494,7 +4502,7 @@
 		};
 		A72B380A19633826009AD2F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0E3027E149854D1899379B01 /* Pods-Braintree-Data-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
@@ -4544,7 +4552,7 @@
 		};
 		A72B380B19633826009AD2F5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0E3027E149854D1899379B01 /* Pods-Braintree-Data-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
@@ -4611,7 +4619,7 @@
 		};
 		A75DA3761921394200D997A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
@@ -4657,7 +4665,7 @@
 		};
 		A75DA3771921394200D997A2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3758B4D944E64253BA6CC9D8 /* Pods-Braintree-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
@@ -4697,7 +4705,7 @@
 		};
 		A7B7433819A3E094000A6A7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8B889AD350A461D983F90F6 /* Pods-Braintree-Venmo-Specs.xcconfig */;
+			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4744,7 +4752,7 @@
 		};
 		A7B7433919A3E094000A6A7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8B889AD350A461D983F90F6 /* Pods-Braintree-Venmo-Specs.xcconfig */;
+			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

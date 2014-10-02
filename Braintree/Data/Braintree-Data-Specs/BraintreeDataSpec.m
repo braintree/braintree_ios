@@ -21,7 +21,6 @@
 - (void)btDataDidComplete:(BTData *)data {
     self.didComplete = YES;
 }
-q
 @end
 
 SpecBegin(BraintreeData)

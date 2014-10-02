@@ -56,10 +56,14 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// Obtain a list of payment methods saved to Braintree
 ///
 /// @param successBlock success callback for handling the returned list of payment methods
-/// @param failureBlock success callback for handling errors
+/// @param failureBlock failure callback for handling errors
 - (void)fetchPaymentMethodsWithSuccess:(BTClientPaymentMethodListSuccessBlock)successBlock
                                failure:(BTClientFailureBlock)failureBlock;
 
+/// Obtain information about a payment method based on a nonce
+///
+/// @param successBlock success callback for handling the retrieved payment methods
+/// @param failureBlock failure callback for handling errors
 - (void)fetchPaymentMethodWithNonce:(NSString *)nonce
                             success:(BTClientPaymentMethodSuccessBlock)successBlock
                             failure:(BTClientFailureBlock)failureBlock;
