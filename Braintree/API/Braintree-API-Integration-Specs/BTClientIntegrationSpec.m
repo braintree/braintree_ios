@@ -460,21 +460,10 @@ describe(@"get nonce", ^{
 });
 
 describe(@"clients with Apple Pay activated", ^{
-    __block BTClient *testClient;
-    beforeEach(^{
-        waitUntil(^(DoneCallback done){
-            [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
-                                                     BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
-                                                     BTClientTestConfigurationKeyCustomer: @YES }
-                                       completion:^(BTClient *client) {
-                                           testClient = client;
-                                           done();
-                                       }];
-        });
-    });
-
+    
     if ([PKPayment class]) {
-        it(@"can save an Apple Pay payment based on an PKPayment if Apple Pay is supported", ^{
+        it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported", ^{
+
             waitUntil(^(DoneCallback done){
 
                 id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
@@ -482,8 +471,12 @@ describe(@"clients with Apple Pay activated", ^{
 
                 [[[payment stub] andReturn:paymentToken] token];
                 [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+                [[[paymentToken stub] andReturn:@"an amex 12345"] paymentInstrumentName];
+                [[[paymentToken stub] andReturn:PKPaymentNetworkAmex] paymentNetwork];
+                [[[paymentToken stub] andReturn:@"transaction-identifier"] transactionIdentifier];
 
-                [testClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
+                [testClient saveApplePayPayment:request success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                     expect(applePayPaymentMethod.nonce).to.beANonce();
                     done();
                 } failure:nil];

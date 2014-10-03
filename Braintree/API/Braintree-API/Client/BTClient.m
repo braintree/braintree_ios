@@ -227,7 +227,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
     }
 
-    NSString *paymentTokenValue;
+    NSString *encodedPaymentData;
     NSError *error;
     switch (self.configuration.applePayConfiguration.status) {
         case BTClientApplePayStatusOff:
@@ -236,12 +236,25 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                     userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again." }];
             [[BTLogger sharedLogger] warning:error.localizedDescription];
             break;
-        case BTClientApplePayStatusMock:
-            paymentTokenValue = @"fake-valid-apple-pay-payment-token";
+        case BTClientApplePayStatusMock: {
+            NSDictionary *mockPaymentDataDictionary = @{
+                                                        @"version": @"hello-version",
+                                                        @"data": @"hello-data",
+                                                        @"header": @{
+                                                                @"transactionId": @"hello-transaction-id",
+                                                                @"ephemeralPublicKey": @"hello-ephemeral-public-key",
+                                                                @"publicKeyHash": @"hello-public-key-hash"
+                                                                }};
+            NSError *error;
+            NSData *paymentData = [NSJSONSerialization dataWithJSONObject:mockPaymentDataDictionary options:0 error:&error];
+            NSAssert(error == nil, @"Unexpected JSON serialization error: %@", error);
+            encodedPaymentData = [paymentData base64EncodedStringWithOptions:0];
             break;
+        }
+
         case BTClientApplePayStatusProduction:
             if (applePayRequest.payment) {
-                paymentTokenValue = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
+                encodedPaymentData = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
             } else {
                 error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                             code:BTErrorUnsupported
@@ -260,13 +273,11 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];
-    [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
-                                                           @"token": paymentTokenValue,
-                                                           // TODO - send along payment instrument name
-                                                           // TODO - send along transaction identifier
-                                                           @"billing_address": [NSNull null], // TODO - applePayPayment.billingAddress
-                                                           @"shipping_address": [NSNull null], // TODO - applePayPayment.shippingAddress
-                                                           @"shipping_method": [NSNull null], // TODO - applePayPayment.shippingMethod
+    [requestParameters addEntriesFromDictionary:@{ @"apple_payment_token": @{
+                                                           @"paymentData": encodedPaymentData,
+                                                           @"paymentInstrumentName": applePayRequest.payment.token.paymentInstrumentName ?: NSNull.null,
+                                                           @"paymentNetwork": applePayRequest.payment.token.paymentNetwork ?: NSNull.null,
+                                                           @"transactionIdentifier": applePayRequest.payment.token.transactionIdentifier ?: NSNull.null,
                                                            },
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                                    }];
