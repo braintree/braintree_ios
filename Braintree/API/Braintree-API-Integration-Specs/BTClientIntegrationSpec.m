@@ -2,9 +2,6 @@
 
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
-#import "BTClientDeprecatedApplePayConfiguration.h"
-
-#import "BTClientConfiguration.h"
 
 void wait_for_potential_async_exceptions(void (^done)(void)) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
@@ -203,7 +200,7 @@ describe(@"save card", ^{
             });
         });
 
-        it(@"saves a transactable credit card nonce", ^{
+        fit(@"saves a transactable credit card nonce", ^{
             waitUntil(^(DoneCallback done){
                 [testClient saveCardWithNumber:@"4111111111111111"
                                expirationMonth:@"12"

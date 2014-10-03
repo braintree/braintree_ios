@@ -228,13 +228,19 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
     [[BTLogger sharedLogger] warning:@"⚠️⚠️⚠️ Braintree's API for Apple Pay is PRE-RELEASE and subject to change! ⚠️⚠️⚠️"];
-    
+
+
+    if (!applePayRequest) {
+        [[BTLogger sharedLogger] warning:@"-[BTClient saveApplePayPayment:success:failure:] received nil applePayRequest."];
+        return;
+    }
+
     if (![PKPayment class]) {
         failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                          code:BTErrorUnsupported
                                      userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not supported on this device"}]);
         return;
-        
+
     }
 
     [self withConfiguration:^(BTClientConfiguration *configuration) {
@@ -248,13 +254,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                 [[BTLogger sharedLogger] warning:error.localizedDescription];
                 break;
             case BTClientApplePayStatusMock:
-                if (applePayRequest.payment) {
                 paymentTokenValue = @"fake-valid-apple-pay-payment-token";
-                } else {
-                    error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                code:BTErrorUnsupported
-                                            userInfo:@{NSLocalizedDescriptionKey: @"A PKPayment is required in mock"}];
-                }
                 break;
             case BTClientApplePayStatusProduction:
                 if (applePayRequest.payment) {
@@ -268,14 +268,14 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             default:
                 return;
         }
-        
+
         if (error) {
             if (failureBlock) {
                 failureBlock(error);
             }
             return;
         }
-        
+
         NSMutableDictionary *requestParameters = [self metaPostParameters];
         [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
                                                                @"token": paymentTokenValue,
@@ -287,14 +287,14 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                                                },
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                                        }];
-        
+
         [self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
             if (response.isSuccess) {
                 if (successBlock){
                     NSDictionary *applePayPaymentMethodResponse = response.object[@"applePaymentTokens"][0];
                     BTMutableApplePayPaymentMethod *paymentMethod = [[BTMutableApplePayPaymentMethod alloc] init];
                     paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
-                    
+
                     if (successBlock) {
                         successBlock([paymentMethod copy]);
                     }

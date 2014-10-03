@@ -2,7 +2,7 @@
 #import "BTHTTP.h"
 #import "BTClientToken.h"
 
-@class BTClientConfiguration;
+#import "BTClientConfiguration.h"
 
 typedef void (^BTClientConfigurationSuccessBlock)(BTClientConfiguration *configuration);
 

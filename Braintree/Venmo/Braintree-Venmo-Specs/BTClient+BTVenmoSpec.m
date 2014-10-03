@@ -1,11 +1,11 @@
-#import "BTClientToken+BTVenmo.h"
+#import "BTClientToken.h"
 #import "BTClient+BTVenmo.h"
 #import <UIKit/UIKit.h>
 
 NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
     NSError *error;
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return [data base64EncodedStringWithOptions:0];
 }
 
 SpecBegin(BTClient_BTVenmo)
@@ -15,7 +15,8 @@ __block NSMutableDictionary *baseClientTokenClaims;
 beforeEach(^{
 
     baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                                                             BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api"}];
+                                                                             BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
+                                                                             BTClientTokenKeyVersion: @2 }];
 
 });
 

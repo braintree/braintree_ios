@@ -14,6 +14,7 @@
     static PKPaymentRequest *paymentRequest;
     dispatch_once(&onceToken, ^{
         paymentRequest = [[PKPaymentRequest alloc] init];
+        paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
     });
     return paymentRequest;
 }

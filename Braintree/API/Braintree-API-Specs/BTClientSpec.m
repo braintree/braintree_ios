@@ -242,17 +242,26 @@ describe(@"offline clients", ^{
     });
 
     describe(@"save Apple Pay payments", ^{
-        it(@"fails if payment is nil", ^{
+
+        it(@"fails if payment request is nil", ^{
+            OCMockObject *mockLogger = [OCMockObject partialMockForObject:[BTLogger sharedLogger]];
+            [[mockLogger expect] warning:OCMOCK_ANY];
+            [offlineClient saveApplePayPayment:nil success:nil failure:nil];
+            [mockLogger verify];
+        });
+
+        it(@"succeeds if payment is nil in mock mode", ^{
             waitUntil(^(DoneCallback done){
                 id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
                 [[[paymentRequest stub] andReturn:nil] payment];
 
-                [offlineClient saveApplePayPayment:paymentRequest success:nil failure:^(NSError *error) {
-                    expect(error.code).to.equal(BTErrorUnsupported);
+                [offlineClient saveApplePayPayment:paymentRequest success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                    expect(applePayPaymentMethod.nonce).to.beANonce();
                     done();
-                }];
+                } failure:nil];
             });
         });
+
         
         it(@"returns the newly saved account with SDK support for Apple Pay, or calls the failure block if there is no SDK support", ^{
             waitUntil(^(DoneCallback done){
