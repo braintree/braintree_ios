@@ -41,7 +41,7 @@
     }
 
     PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
-    request.merchantIdentifier = @"com.merchant.braintreepayments.dev-2";
+    request.merchantIdentifier = @"merchant.com.braintreepayments.dev-dcopeland";
     request.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"An Item"
                                                                          amount:[NSDecimalNumber decimalNumberWithString:@"0.5"]],
                                      [PKPaymentSummaryItem summaryItemWithLabel:@"An add-on"

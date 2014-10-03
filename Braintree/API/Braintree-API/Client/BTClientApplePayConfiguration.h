@@ -13,11 +13,11 @@ typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
 
 @property (nonatomic, assign) BTClientApplePayStatus status;
 
-@property (nonatomic, readonly, strong) PKPaymentRequest *paymentRequest;
+@property (nonatomic, copy) NSString *countryCode;
+@property (nonatomic, copy) NSString *currencyCode;
+@property (nonatomic, copy) NSString *merchantIdentifier;
+@property (nonatomic, copy) NSArray *supportedNetworks;
 
-- (void)setCountryCode:(NSString *)countryCode;
-- (void)setCurrencyCode:(NSString *)currencyCode;
-- (void)setMerchantIdentifier:(NSString *)merchantIdentifier;
-- (void)setSupportedNetworks:(NSArray *)supportedNetworks;
+- (PKPaymentRequest *)paymentRequest;
 
 @end

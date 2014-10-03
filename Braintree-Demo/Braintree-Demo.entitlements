@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.in-app-payments</key>
 	<array>
-		<string>merchant.com.braintreepayments.dev-1</string>
+		<string>merchant.com.braintreepayments.dev-dcopeland</string>
 	</array>
 </dict>
 </plist>

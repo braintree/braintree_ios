@@ -94,4 +94,15 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 /// @return YES if this payment provider could create a payment method of the specified type
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type;
 
+
+#pragma mark Payment Request Details
+
+@property (nonatomic, strong) NSArray *paymentSummaryItems;
+@property (nonatomic, assign) PKAddressField requiredBillingAddressFields;
+@property (nonatomic, assign) ABRecordRef billingAddress;
+@property (nonatomic, assign) PKAddressField requiredShippingAddressFields;
+@property (nonatomic, assign) ABRecordRef shippingAddress;
+@property (nonatomic, copy) NSArray *shippingMethods;
+
 @end
+

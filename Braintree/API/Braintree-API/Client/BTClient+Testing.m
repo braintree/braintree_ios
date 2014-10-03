@@ -1,7 +1,6 @@
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 
-
 #import "BTHTTP.h"
 
 NSString *BTClientTestConfigurationKeyMerchantIdentifier = @"merchant_id";
@@ -48,7 +47,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
         NSAssert(error == nil, @"testing/client_token failed or responded with an error: %@", error);
         NSString *clientTokenString = response.object[@"clientToken"];
 
-        block([[self alloc] initWithClientToken:clientTokenString]);
+        block([(BTClient *)[BTClient alloc] initWithClientToken:clientTokenString]);
     }];
 }
 

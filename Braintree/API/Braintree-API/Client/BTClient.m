@@ -213,7 +213,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                     failure:(BTClientFailureBlock)failureBlock {
     [[BTLogger sharedLogger] warning:@"⚠️⚠️⚠️ Braintree's API for Apple Pay is PRE-RELEASE and subject to change! ⚠️⚠️⚠️"];
 
-
     if (!applePayRequest) {
         [[BTLogger sharedLogger] warning:@"-[BTClient saveApplePayPayment:success:failure:] received nil applePayRequest."];
         return;

@@ -283,7 +283,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     NSLog(@"%@", error);
     [self.activityIndicator stopAnimating];
     self.emailLabel.text = @"An error occurred";
-    [[[UIAlertView alloc] initWithTitle:@"Failure"
+    [[[UIAlertView alloc] initWithTitle:@"Error"
                                 message:[error localizedDescription]
                                delegate:nil
                       cancelButtonTitle:@"OK"

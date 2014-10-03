@@ -73,18 +73,25 @@
         [self informDelegateDidFailWithError:error];
         return;
     }
+
+    if (!self.paymentRequest.paymentSummaryItems) {
+        [self informDelegateDidFailWithError:[NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                                                code:BTPaymentProviderErrorInitialization
+                                                             userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay cannot be initialized because paymentSummaryItems are not set. Please set them via the BTPaymentProvider paymentSummaryItems" }]];
+        return;
+    }
     
     UIViewController *paymentAuthorizationViewController;
     
     if ([[self class] isSimulator]) {
         paymentAuthorizationViewController = ({
-            BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.client.configuration.applePayConfiguration.paymentRequest];
+            BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
             mockVC.delegate = self;
             mockVC;
         });
     } else {
         paymentAuthorizationViewController = ({
-            PKPaymentAuthorizationViewController *realVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.client.configuration.applePayConfiguration.paymentRequest];
+            PKPaymentAuthorizationViewController *realVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
             realVC.delegate = self;
             realVC;
         });
@@ -106,10 +113,12 @@
     }
 
     PKPaymentRequest *paymentRequest = self.client.configuration.applePayConfiguration.paymentRequest;
-
-    // TODO Expose paymentSummaryItems
-    NSDecimalNumber *amount = [NSDecimalNumber decimalNumberWithString:@"1"];
-    paymentRequest.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Purchase" amount:amount] ];
+    paymentRequest.paymentSummaryItems = self.paymentSummaryItems;
+    paymentRequest.requiredBillingAddressFields = self.requiredBillingAddressFields;
+    paymentRequest.requiredShippingAddressFields = self.requiredShippingAddressFields;
+    paymentRequest.shippingAddress = self.shippingAddress;
+    paymentRequest.billingAddress = self.billingAddress;
+    paymentRequest.shippingMethods = self.shippingMethods;
 
     return paymentRequest;
 }

@@ -5,6 +5,8 @@
 #import "BTMockApplePayPaymentAuthorizationViewController.h"
 #import "BTPaymentProviderErrors.h"
 #import "BTClientConfiguration.h"
+#import "BTClientApplePayConfiguration.h"
+#import "BTPaymentApplePayProvider.h"
 
 SpecBegin(BTPaymentApplePayProvider)
 
@@ -14,6 +16,7 @@ describe(@"canAuthorizeApplePayPayment", ^{
     testApplePayProvider = ^BTPaymentApplePayProvider *(BOOL isSimulator, BTClientApplePayStatus applePayStatus, BOOL paymentAuthorizationViewControllerAvailable){
         id mockClient = [OCMockObject mockForClass:[BTClient class]];
         BTPaymentApplePayProvider *applePayProvider = [[BTPaymentApplePayProvider alloc] initWithClient:mockClient];
+        applePayProvider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
 
         id mockConfiguration = [OCMockObject mockForClass:[BTClientConfiguration class]];
         id mockApplePayConfiguration = [OCMockObject mockForClass:[BTClientApplePayConfiguration class]];
@@ -173,6 +176,7 @@ describe(@"authorizeApplePay", ^{
                 OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
                 BTPaymentApplePayProvider *provider = testApplePayProvider(YES, YES);
+                provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
                 provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
 
                 [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -188,6 +192,7 @@ describe(@"authorizeApplePay", ^{
                 OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
                 BTPaymentApplePayProvider *provider = testApplePayProvider(NO, YES);
+                provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
                 provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
 
                 [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -210,6 +215,7 @@ describe(@"authorizeApplePay", ^{
                 OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
                 BTPaymentApplePayProvider *provider = testApplePayProvider(NO, YES);
+                provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
                 provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
 
                 [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -225,6 +231,7 @@ describe(@"authorizeApplePay", ^{
                 OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
                 BTPaymentApplePayProvider *provider = testApplePayProvider(NO, YES);
+                provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
                 provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
 
                 [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -246,6 +253,7 @@ describe(@"authorizeApplePay", ^{
             OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
             BTPaymentApplePayProvider *provider = testApplePayProvider(NO, NO);
+                provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
             provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
 
             [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg any]];
@@ -255,8 +263,6 @@ describe(@"authorizeApplePay", ^{
             [delegate verify];
         });
     });
-
-
 });
 
 SpecEnd

@@ -22,7 +22,7 @@
 @implementation Braintree
 
 + (Braintree *)braintreeWithClientToken:(NSString *)clientToken {
-    return [[self alloc] initWithClientToken:clientToken];
+    return [(Braintree *)[self alloc] initWithClientToken:clientToken];
 }
 
 - (id)init {

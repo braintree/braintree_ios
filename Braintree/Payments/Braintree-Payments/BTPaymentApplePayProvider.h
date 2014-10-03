@@ -29,6 +29,13 @@
 /// @note You must set this delegate before calling `authorizeApplePay`.
 @property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
 
+@property (nonatomic, strong) NSArray *paymentSummaryItems;
+@property (nonatomic, assign) PKAddressField requiredBillingAddressFields;
+@property (nonatomic, assign) ABRecordRef billingAddress;
+@property (nonatomic, assign) PKAddressField requiredShippingAddressFields;
+@property (nonatomic, assign) ABRecordRef shippingAddress;
+@property (nonatomic, copy) NSArray *shippingMethods;
+
 /// Checks whether Apple Pay is possible, considering the current environment, simulator status,
 /// device, OS, etc.
 ///
