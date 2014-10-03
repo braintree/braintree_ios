@@ -38,6 +38,9 @@ NSString *BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey = @"B
         case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
             self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://executive-sample-merchant.herokuapp.com"]];
             break;
+        case BraintreeDemoTransactionServiceEnvironmentQASampleMerchant:
+            self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://braintree-qa-merchant.herokuapp.com"]];
+            break;
     }
     [[NSUserDefaults standardUserDefaults] setInteger:environment forKey:BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];

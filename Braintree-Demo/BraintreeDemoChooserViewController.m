@@ -215,7 +215,7 @@
                                withTitle:@"Choose a Merchant Server Environment"
                        cancelButtonTitle:@"Cancel"
                   destructiveButtonTitle:nil
-                       otherButtonTitles:@[@"Sandbox Merchant", @"Production Merchant"]
+                       otherButtonTitles:@[@"Sandbox Merchant", @"Production Merchant", @"QA Merchant"]
                                 tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
                                     if (buttonIndex == actionSheet.cancelButtonIndex) {
                                         return;
@@ -223,10 +223,16 @@
 
                                     BraintreeDemoTransactionServiceEnvironment environment;
 
-                                    if (buttonIndex == 1) {
-                                        environment = BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant;
-                                    } else {
+                                    if (buttonIndex == 0) {
                                         environment = BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant;
+                                    } else if (buttonIndex == 1) {
+                                        environment = BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant;
+                                    } else if (buttonIndex == 2) {
+                                        environment = BraintreeDemoTransactionServiceEnvironmentQASampleMerchant;
+                                    } else {
+                                        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                                                       reason:@"Unknown index for environment button"
+                                                                     userInfo:nil];
                                     }
 
                                     [self switchToEnvironment:environment];
@@ -246,6 +252,10 @@
             break;
         case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
             environmentName = @"Production";
+            break;
+        case BraintreeDemoTransactionServiceEnvironmentQASampleMerchant:
+            environmentName = @"QA";
+            break;
     }
 
     [[BraintreeDemoTransactionService sharedService] setEnvironment:environment];
