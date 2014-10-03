@@ -5,7 +5,7 @@
 
 #import <Braintree/BTClient+Offline.h>
 #import <Braintree/BTPayPalButton.h>
-#import <Braintree/BTClientToken+BTPayPal.h>
+#import <Braintree/BTClientToken.h>
 
 SpecBegin(Braintree)
 

@@ -1,9 +1,6 @@
 #import "BTClientConfigurationAPI.h"
 #import "BTClientConfiguration.h"
-
-@interface BTClientApplePayConfigurationAPI : BTAPIResource
-
-@end
+#import "BTClientApplePayConfigurationAPI.h"
 
 @implementation BTClientConfigurationAPI
 

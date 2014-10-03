@@ -1,6 +1,8 @@
 @import Foundation;
 @import PassKit;
 
+@class BTClientToken;
+
 typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
     BTClientApplePayStatusOff = 0,
     BTClientApplePayStatusMock = 1,

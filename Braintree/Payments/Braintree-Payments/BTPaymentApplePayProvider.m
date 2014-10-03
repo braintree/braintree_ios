@@ -6,7 +6,6 @@
 #import "BTPaymentMethodCreationDelegate.h"
 #import "BTPaymentProviderErrors.h"
 #import "BTLogger_Internal.h"
-#import "BTClientDeprecatedApplePayConfiguration.h"
 
 @interface BTPaymentApplePayProvider () <BTMockApplePayPaymentAuthorizationViewControllerDelegate, PKPaymentAuthorizationViewControllerDelegate>
 @property (nonatomic, strong) BTClient *client;
@@ -27,8 +26,8 @@
     if (![PKPayment class]) {
         return NO;
     }
-
-    if (self.client.applePayConfiguration.status == BTClientApplePayStatusOff) {
+    
+    if (self.client.configuration.applePayConfiguration.status == BTClientApplePayStatusOff) {
         return NO;
     }
 
@@ -59,14 +58,14 @@
         return;
     }
 
-    if (self.client.applePayConfiguration.status == BTClientApplePayStatusOff) {
+    if (self.client.configuration.applePayConfiguration.status == BTClientApplePayStatusOff) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
                                          userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
         [self.delegate paymentMethodCreator:self didFailWithError:error];
         return;
     }
-
+    
     if (![self canAuthorizeApplePayPayment]) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorInitialization
@@ -74,19 +73,18 @@
         [self informDelegateDidFailWithError:error];
         return;
     }
-
+    
     UIViewController *paymentAuthorizationViewController;
-
-
+    
     if ([[self class] isSimulator]) {
         paymentAuthorizationViewController = ({
-            BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
+            BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.client.configuration.applePayConfiguration.paymentRequest];
             mockVC.delegate = self;
             mockVC;
         });
     } else {
         paymentAuthorizationViewController = ({
-            PKPaymentAuthorizationViewController *realVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
+            PKPaymentAuthorizationViewController *realVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.client.configuration.applePayConfiguration.paymentRequest];
             realVC.delegate = self;
             realVC;
         });
@@ -106,15 +104,10 @@
     if (![PKPaymentRequest class]) {
         return nil;
     }
-    PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
-    paymentRequest.merchantIdentifier = self.client.applePayConfiguration.merchantId;
-    // TODO - Retrieve these payment related values from client token
-    paymentRequest.countryCode = @"US";
-    paymentRequest.currencyCode = @"USD";
 
-    paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
-    paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
+    PKPaymentRequest *paymentRequest = self.client.configuration.applePayConfiguration.paymentRequest;
 
+    // TODO Expose paymentSummaryItems
     NSDecimalNumber *amount = [NSDecimalNumber decimalNumberWithString:@"1"];
     paymentRequest.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Purchase" amount:amount] ];
 
@@ -148,7 +141,7 @@
                        didAuthorizePayment:(PKPayment *)payment
                                 completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     [self applePayPaymentAuthorizationViewControllerDidAuthorizePayment:payment
-                   completion:completion];
+                                                             completion:completion];
 }
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
@@ -161,7 +154,7 @@
                                    didAuthorizePayment:(PKPayment *)payment
                                             completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     [self applePayPaymentAuthorizationViewControllerDidAuthorizePayment:payment
-                   completion:completion];
+                                                             completion:completion];
 }
 
 - (void)mockApplePayPaymentAuthorizationViewControllerDidFinish:(BTMockApplePayPaymentAuthorizationViewController *)viewController {
@@ -172,7 +165,9 @@
 
 - (void)applePayPaymentAuthorizationViewControllerDidAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     BTClientApplePayRequest *request;
-    if (self.client.applePayConfiguration.status != BTClientApplePayStatusMock) {
+    if (self.client.configuration.applePayConfiguration.status == BTClientApplePayStatusMock) {
+        request = [[BTClientApplePayRequest alloc] init];
+    } else {
         request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
     }
 
@@ -200,7 +195,7 @@
 
     self.applePayError = nil;
     self.applePayPaymentMethod = nil;
-    
+
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
 }
 

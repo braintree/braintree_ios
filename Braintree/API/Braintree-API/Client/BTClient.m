@@ -13,7 +13,6 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
-#import "BTClientDeprecatedApplePayConfiguration.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -24,10 +23,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
 @implementation BTClient
 
-@synthesize applePayConfiguration = _applePayConfiguration;
-
 - (instancetype)initWithClientToken:(NSString *)clientTokenString {
-    if(![clientTokenString isKindOfClass: NSString.class]){
+    if(![clientTokenString isKindOfClass:[NSString class]]){
         NSString *reason = @"BTClient could not initialize because the provided clientToken was of an invalid type";
         [[BTLogger sharedLogger] error:reason];
 
@@ -48,12 +45,16 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             return nil;
         }
 
+        self.configuration = [[BTClientConfiguration alloc] initWithClientToken:self.clientToken];
+
         self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
 
         if (self.clientToken.analyticsEnabled) {
             self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.analyticsURL];
+            [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         }
+
         self.metadata = [[BTClientMetadata alloc] init];
     }
     return self;
@@ -98,7 +99,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }
     return self;
 }
-
 
 #pragma mark - API Methods
 
@@ -211,8 +211,13 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 - (void)saveApplePayPayment:(BTClientApplePayRequest *)applePayRequest
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
-
     [[BTLogger sharedLogger] warning:@"⚠️⚠️⚠️ Braintree's API for Apple Pay is PRE-RELEASE and subject to change! ⚠️⚠️⚠️"];
+
+
+    if (!applePayRequest) {
+        [[BTLogger sharedLogger] warning:@"-[BTClient saveApplePayPayment:success:failure:] received nil applePayRequest."];
+        return;
+    }
 
     if (![PKPayment class]) {
         failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
@@ -222,32 +227,45 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
     }
 
-    id paymentTokenValue;
+    NSString *encodedPaymentData;
     NSError *error;
-    switch (self.applePayConfiguration.status) {
+    switch (self.configuration.applePayConfiguration.status) {
         case BTClientApplePayStatusOff:
             error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                         code:BTErrorUnsupported
-                                    userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant"}];
+                                    userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again." }];
+            [[BTLogger sharedLogger] warning:error.localizedDescription];
             break;
-        case BTClientApplePayStatusMock:
-            paymentTokenValue = @"mock-payment-token-data";
+        case BTClientApplePayStatusMock: {
+            NSDictionary *mockPaymentDataDictionary = @{
+                                                        @"version": @"hello-version",
+                                                        @"data": @"hello-data",
+                                                        @"header": @{
+                                                                @"transactionId": @"hello-transaction-id",
+                                                                @"ephemeralPublicKey": @"hello-ephemeral-public-key",
+                                                                @"publicKeyHash": @"hello-public-key-hash"
+                                                                }};
+            NSError *error;
+            NSData *paymentData = [NSJSONSerialization dataWithJSONObject:mockPaymentDataDictionary options:0 error:&error];
+            NSAssert(error == nil, @"Unexpected JSON serialization error: %@", error);
+            encodedPaymentData = [paymentData base64EncodedStringWithOptions:0];
             break;
+        }
+
         case BTClientApplePayStatusProduction:
             if (applePayRequest.payment) {
-                paymentTokenValue = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
+                encodedPaymentData = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
             } else {
                 error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                             code:BTErrorUnsupported
-                                        userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required production"}];
+                                        userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required in production"}];
             }
             break;
         default:
-            paymentTokenValue = [NSNull null];
-            break;
+            return;
     }
 
-    if (error != nil) {
+    if (error) {
         if (failureBlock) {
             failureBlock(error);
         }
@@ -255,11 +273,11 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];
-    [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
-                                                           @"token": paymentTokenValue,
-                                                           @"billing_address": [NSNull null], // TODO - applePayPayment.billingAddress
-                                                           @"shipping_address": [NSNull null], // TODO - applePayPayment.shippingAddress
-                                                           @"shipping_method": [NSNull null], // TODO - applePayPayment.shippingMethod
+    [requestParameters addEntriesFromDictionary:@{ @"apple_payment_token": @{
+                                                           @"paymentData": encodedPaymentData,
+                                                           @"paymentInstrumentName": applePayRequest.payment.token.paymentInstrumentName ?: NSNull.null,
+                                                           @"paymentNetwork": applePayRequest.payment.token.paymentNetwork ?: NSNull.null,
+                                                           @"transactionIdentifier": applePayRequest.payment.token.transactionIdentifier ?: NSNull.null,
                                                            },
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                                    }];
@@ -267,9 +285,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSDictionary *applePayPaymentMethodResponse = response.object[@"creditCards"][0];
+                NSDictionary *applePayPaymentMethodResponse = [response.object[@"applePayCards"] firstObject];
                 BTMutableApplePayPaymentMethod *paymentMethod = [[BTMutableApplePayPaymentMethod alloc] init];
                 paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
+                paymentMethod.description = applePayPaymentMethodResponse[@"description"];
 
                 if (successBlock) {
                     successBlock([paymentMethod copy]);
@@ -370,6 +389,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self postAnalyticsEvent:eventKind success:nil failure:nil];
 }
 
+
 #pragma mark - Response Parsing
 
 + (BTPaymentMethod *)paymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
@@ -438,16 +458,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
     result[@"_meta"] = mutableMetaValue;
     return result;
-}
-
-
-#pragma mark - Apple Pay Configuration
-
-- (BTClientDeprecatedApplePayConfiguration *)applePayConfiguration {
-    if (!_applePayConfiguration) {
-        _applePayConfiguration = [[BTClientDeprecatedApplePayConfiguration alloc] initWithConfigurationObject:self.clientToken.claims[@"apple_pay"]];
-    }
-    return _applePayConfiguration;
 }
 
 

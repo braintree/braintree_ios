@@ -1,3 +1,5 @@
+@import PassKit;
+
 #import "BTClientApplePayConfiguration.h"
 
 @implementation BTClientApplePayConfiguration
@@ -5,17 +7,10 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        _paymentRequest = [[PKPaymentRequest alloc] init];
+        _paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
     }
     return self;
-}
-
-- (PKPaymentRequest *)paymentRequest {
-    static dispatch_once_t onceToken;
-    static PKPaymentRequest *paymentRequest;
-    dispatch_once(&onceToken, ^{
-        paymentRequest = [[PKPaymentRequest alloc] init];
-    });
-    return paymentRequest;
 }
 
 - (void)setCountryCode:(NSString *)countryCode {

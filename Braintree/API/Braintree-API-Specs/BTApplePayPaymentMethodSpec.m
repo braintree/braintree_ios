@@ -36,17 +36,17 @@ beforeEach(^{
 
 describe(@"mutableCopy", ^{
     it(@"returns a BTMutableApplyPayPaymentMethod", ^{
-        id copy = [mutable mutableCopy];
+        BTApplePayPaymentMethod *copy = [mutable mutableCopy];
         expect(copy).to.beKindOf([BTMutableApplePayPaymentMethod class]);
-        expect([copy nonce]).to.equal(mutable.nonce);
+        expect(copy.nonce).to.equal(@"a-nonce");
     });
 });
 
 describe(@"copy", ^{
     it(@"returns a BTApplyPayPaymentMethod", ^{
-        id copy = [mutable copy];
+        BTApplePayPaymentMethod *copy = [mutable copy];
         expect(copy).to.beKindOf([BTApplePayPaymentMethod class]);
-        expect([copy nonce]).to.equal(mutable.nonce);
+        expect(copy.nonce).to.equal(@"a-nonce");
     });
 });
 

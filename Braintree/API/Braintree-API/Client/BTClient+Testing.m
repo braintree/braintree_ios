@@ -1,4 +1,3 @@
-#import "BTClientToken.h"
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 
@@ -45,7 +44,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 
     [http POST:@"testing/client_token"
     parameters:parameters
-    completion:^(BTHTTPResponse *response, __unused NSError *error) {
+    completion:^(BTHTTPResponse *response, NSError *error) {
         NSAssert(error == nil, @"testing/client_token failed or responded with an error: %@", error);
         NSString *clientTokenString = response.object[@"clientToken"];
 

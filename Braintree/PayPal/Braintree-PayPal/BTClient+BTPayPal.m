@@ -1,5 +1,4 @@
 #import "BTClient+BTPayPal.h"
-#import "BTClientToken+BTPayPal.h"
 #import "BTErrors+BTPayPal.h"
 
 #import <PayPalMobile.h>
@@ -12,19 +11,20 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
 @implementation BTClient (BTPayPal)
 
 + (NSString *)btPayPal_offlineTestClientToken {
-    NSDictionary *payPalClientTokenData = @{ BTClientTokenPayPalNamespace: @{
-                                                     BTClientTokenPayPalKeyMerchantName: @"Offline Test Merchant",
-                                                     BTClientTokenPayPalKeyClientId: @"paypal-client-id",
-                                                     BTClientTokenPayPalKeyMerchantPrivacyPolicyUrl: @"http://example.com/privacy",
-                                                     BTClientTokenPayPalKeyEnvironment: BTClientTokenPayPalEnvironmentOffline,
-                                                     BTClientTokenPayPalKeyMerchantUserAgreementUrl: @"http://example.com/tos" }
+    NSDictionary *payPalClientTokenData = @{ BTClientTokenKeyPayPal: @{
+                                                     BTClientTokenKeyPayPalMerchantName: @"Offline Test Merchant",
+                                                     BTClientTokenKeyPayPalClientId: @"paypal-client-id",
+                                                     BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl: @"http://example.com/privacy",
+                                                     BTClientTokenKeyPayPalEnvironment: BTClientTokenPayPalEnvironmentOffline,
+                                                     BTClientTokenKeyPayPalMerchantUserAgreementUrl: @"http://example.com/tos" }
                                              };
 
     return [self offlineTestClientTokenWithAdditionalParameters:payPalClientTokenData];
 }
 
 - (BOOL)btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)error {
-    if ([self.clientToken.btPayPal_environment isEqualToString: BTClientTokenPayPalEnvironmentOffline]) {
+
+    if ([self.clientToken.btPayPal_environment isEqualToString:BTClientTokenPayPalEnvironmentOffline]) {
         [PayPalMobile initializeWithClientIdsForEnvironments:@{@"": @""}];
         [PayPalMobile preconnectWithEnvironment:PayPalEnvironmentNoNetwork];
     } else if ([self.clientToken.btPayPal_environment isEqualToString: BTClientTokenPayPalEnvironmentLive]) {
@@ -59,7 +59,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
 - (PayPalProfileSharingViewController *)btPayPal_profileSharingViewControllerWithDelegate:(id<PayPalProfileSharingDelegate>)delegate {
     NSSet *scopes = [NSSet setWithObjects:kPayPalOAuth2ScopeFuturePayments, kPayPalOAuth2ScopeEmail, nil];
     return [[PayPalProfileSharingViewController alloc] initWithScopeValues:scopes
-                                                             configuration:self.clientToken.btPayPal_configuration
+                                                             configuration:self.btPayPal_configuration
                                                                   delegate:delegate];
 }
 
@@ -76,15 +76,27 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     return [PayPalMobile applicationCorrelationIDForEnvironment:self.clientToken.btPayPal_environment];
 }
 
-- (PayPalConfiguration *)btPayPal_configuration{
-    return self.clientToken.btPayPal_configuration;
+- (PayPalConfiguration *)btPayPal_configuration {
+    PayPalConfiguration *configuration = [PayPalConfiguration new];
+
+    if ([self.clientToken.btPayPal_environment isEqualToString: BTClientTokenPayPalEnvironmentLive]) {
+        configuration.merchantName = self.clientToken.btPayPal_merchantName;
+        configuration.merchantPrivacyPolicyURL = self.clientToken.btPayPal_privacyPolicyURL;
+        configuration.merchantUserAgreementURL = self.clientToken.btPayPal_merchantUserAgreementURL;
+    } else {
+        configuration.merchantName = self.clientToken.btPayPal_merchantName ?: BTClientTokenPayPalNonLiveDefaultValueMerchantName;
+        configuration.merchantPrivacyPolicyURL = self.clientToken.btPayPal_privacyPolicyURL ?: [NSURL URLWithString:BTClientTokenPayPalNonLiveDefaultValueMerchantPrivacyPolicyUrl];
+        configuration.merchantUserAgreementURL = self.clientToken.btPayPal_merchantUserAgreementURL ?: [NSURL URLWithString:BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl];
+    }
+
+    return configuration;
 }
 
-- (NSString *)btPayPal_environment{
+- (NSString *)btPayPal_environment {
     return [self.clientToken.btPayPal_environment isEqualToString:BTClientTokenPayPalEnvironmentLive] ? PayPalEnvironmentProduction : BTClientPayPalMobileEnvironmentName;
 }
 
-- (BOOL)btPayPal_isTouchDisabled{
+- (BOOL)btPayPal_isTouchDisabled {
     return self.clientToken.btPayPal_isTouchDisabled;
 }
 

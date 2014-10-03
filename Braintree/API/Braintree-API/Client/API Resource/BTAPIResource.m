@@ -285,8 +285,14 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeEnumMapping(SEL setter, NSDicti
 
     if (![allRequiredFormatKeys isSubsetOfSet:allDictionaryKeys]) {
         if (error) {
+            NSSet *missingKeys = [allRequiredFormatKeys objectsPassingTest:^BOOL(id obj, __unused BOOL *stop) {
+                return ![allDictionaryKeys containsObject:obj];
+            }];
             *error = [self errorWithCode:BTAPIResourceErrorAPIDictionaryMissingKey
-                             description:@"Expected APIDictionary to contain all keys in APIFormat (%@). Got (%@).", allRequiredFormatKeys, allDictionaryKeys];
+                             description:@"Expected APIDictionary to contain all required keys in APIFormat (%@). Got (%@). Missing: (%@)",
+                      allRequiredFormatKeys,
+                      allDictionaryKeys,
+                      missingKeys];
         }
         return nil;
     }

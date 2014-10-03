@@ -42,7 +42,7 @@ static BTOfflineClientBackend *backend;
         response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
                                                statusCode:200
                                               HTTPVersion:BTOfflineModeHTTPVersionString
-                                             headerFields:@{@"Content-Type": @"application/json"}];
+                                             headerFields:@{@"Content-Type": @"application/json" }];
 
         NSMutableArray *responseCards = [NSMutableArray array];
         for (BTPaymentMethod *paymentMethod in [[[self class] backend] allPaymentMethods]) {
@@ -71,10 +71,10 @@ static BTOfflineClientBackend *backend;
         if (card) {
             [[[self class] backend] addPaymentMethod:card];
 
-        response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
-                                               statusCode:201
-                                              HTTPVersion:BTOfflineModeHTTPVersionString
-                                             headerFields:@{@"Content-Type": @"application/json"}];
+            response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
+                                                   statusCode:201
+                                                  HTTPVersion:BTOfflineModeHTTPVersionString
+                                                 headerFields:@{@"Content-Type": @"application/json"}];
             responseData = ({
                 NSError *error;
                 NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"creditCards": @[ [self responseDictionaryForPaymentMethod:card] ] }
@@ -93,16 +93,18 @@ static BTOfflineClientBackend *backend;
     } else if ([request.HTTPMethod isEqualToString:@"POST"] && [request.URL.path isEqualToString:@"/v1/payment_methods/apple_payment_tokens"]) {
 
         NSDictionary *requestObject = [self queryDictionaryFromRequest:request];
-
-        id payment = requestObject[@"apple_pay_payment"];
+        NSDictionary *payment = requestObject[@"apple_pay_payment"];
         if (payment) {
+            BTMutableApplePayPaymentMethod *apple = [[BTMutableApplePayPaymentMethod alloc] init];
+            [[[self class] backend] addPaymentMethod:apple];
+
             response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
                                                    statusCode:201
                                                   HTTPVersion:BTOfflineModeHTTPVersionString
                                                  headerFields:@{@"Content-Type": @"application/json"}];
             responseData = ({
                 NSError *error;
-                NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"creditCards": @[ [self responseDictionaryForApplePayPayment] ] }
+                NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"applePayCards": @[ [self responseDictionaryForApplePayPayment] ] }
                                                                options:0
                                                                  error:&error];
                 NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
@@ -150,6 +152,27 @@ static BTOfflineClientBackend *backend;
         responseData = ({
             NSError *error;
             NSData *data = [NSJSONSerialization dataWithJSONObject:@{ @"message": @"created", @"amount": @2 }
+                                                           options:0
+                                                             error:&error];
+            NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
+            data;
+        });
+    } else if ([request.HTTPMethod isEqualToString:@"GET"] && [request.URL.path isEqualToString:@"/configuration"]) {
+        response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
+                                               statusCode:200
+                                              HTTPVersion:BTOfflineModeHTTPVersionString
+                                             headerFields:@{@"Content-Type": @"application/json" }];
+
+        NSDictionary *testConfiguration = @{
+                                            @"applePay": @{ @"status": @"mock",
+                                                            @"countryCode": @"US",
+                                                            @"currencyCode": @"USD",
+                                                            @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ],
+                                                            @"merchantIdentifier": @"offline-mode-apple-merchant-identifier" }
+                                            };
+        responseData = ({
+            NSError *error;
+            NSData *data = [NSJSONSerialization dataWithJSONObject:testConfiguration
                                                            options:0
                                                              error:&error];
             NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
