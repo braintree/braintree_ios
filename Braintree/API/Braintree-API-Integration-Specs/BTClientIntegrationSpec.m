@@ -638,24 +638,4 @@ describe(@"post analytics event", ^{
     });
 });
 
-describe(@"client configuration", ^{
-    it(@"can be fetched from the endpoint specified in the client token", ^{
-        waitUntil(^(DoneCallback done) {
-            [testClient fetchConfigurationWithSuccess:^(BTClientConfiguration *configuration) {
-                expect(configuration).to.beKindOf([BTClientConfiguration class]);
-                expect(configuration.applePayConfiguration).to.beKindOf([BTClientApplePayConfiguration class]);
-
-                expect(configuration.applePayConfiguration.paymentRequest.countryCode).to.equal(@"US");
-                expect(configuration.applePayConfiguration.paymentRequest.currencyCode).to.equal(@"USD");
-                expect(configuration.applePayConfiguration.paymentRequest.merchantIdentifier).to.equal(@"integration_merchant_id-apple-pay");
-                expect(configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkAmex);
-                expect(configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkVisa);
-                expect(configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkMasterCard);
-
-                done();
-            } failure:nil];
-        });
-    });
-});
-
 SpecEnd

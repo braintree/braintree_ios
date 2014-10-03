@@ -13,8 +13,6 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
-#import "BTClientConfiguration.h"
-#import "BTClientConfigurationAPI.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -46,6 +44,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #endif
             return nil;
         }
+
+        self.configuration = [[BTClientConfiguration alloc] initWithClientToken:self.clientToken];
 
         self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
@@ -103,17 +103,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         }
     }
     return self;
-}
-
-#pragma mark - Configuration
-
-- (void)withConfiguration:(void (^)(BTClientConfiguration *configuration))configurationBlock {
-    [self fetchConfigurationWithSuccess:^(BTClientConfiguration *configuration) {
-        configurationBlock(configuration);
-    } failure:^(NSError *error){
-        [[BTLogger sharedLogger] critical:@"An error occured while attempting to obtain client configuration: %@", error];
-        configurationBlock(nil);
-    }];
 }
 
 #pragma mark - API Methods
@@ -228,83 +217,82 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
     [[BTLogger sharedLogger] warning:@"⚠️⚠️⚠️ Braintree's API for Apple Pay is PRE-RELEASE and subject to change! ⚠️⚠️⚠️"];
-
-
+    
+    
     if (!applePayRequest) {
         [[BTLogger sharedLogger] warning:@"-[BTClient saveApplePayPayment:success:failure:] received nil applePayRequest."];
         return;
     }
-
+    
     if (![PKPayment class]) {
         failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                          code:BTErrorUnsupported
                                      userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not supported on this device"}]);
         return;
-
+        
     }
-
-    [self withConfiguration:^(BTClientConfiguration *configuration) {
-        NSString *paymentTokenValue;
-        NSError *error;
-        switch (configuration.applePayConfiguration.status) {
-            case BTClientApplePayStatusOff:
+    
+    NSString *paymentTokenValue;
+    NSError *error;
+    switch (self.configuration.applePayConfiguration.status) {
+        case BTClientApplePayStatusOff:
+            error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                        code:BTErrorUnsupported
+                                    userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again." }];
+            [[BTLogger sharedLogger] warning:error.localizedDescription];
+            break;
+        case BTClientApplePayStatusMock:
+            paymentTokenValue = @"fake-valid-apple-pay-payment-token";
+            break;
+        case BTClientApplePayStatusProduction:
+            if (applePayRequest.payment) {
+                paymentTokenValue = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
+            } else {
                 error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                             code:BTErrorUnsupported
-                                        userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again." }];
-                [[BTLogger sharedLogger] warning:error.localizedDescription];
-                break;
-            case BTClientApplePayStatusMock:
-                paymentTokenValue = @"fake-valid-apple-pay-payment-token";
-                break;
-            case BTClientApplePayStatusProduction:
-                if (applePayRequest.payment) {
-                    paymentTokenValue = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
-                } else {
-                    error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                code:BTErrorUnsupported
-                                            userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required in production"}];
-                }
-                break;
-            default:
-                return;
-        }
-
-        if (error) {
-            if (failureBlock) {
-                failureBlock(error);
+                                        userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required in production"}];
             }
+            break;
+        default:
             return;
+    }
+    
+    if (error) {
+        if (failureBlock) {
+            failureBlock(error);
         }
+        return;
+    }
+    
+    NSMutableDictionary *requestParameters = [self metaPostParameters];
+    [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
+                                                           @"token": paymentTokenValue,
+                                                           // TODO - send along payment instrument name
+                                                           // TODO - send along transaction identifier
+                                                           @"billing_address": [NSNull null], // TODO - applePayPayment.billingAddress
+                                                           @"shipping_address": [NSNull null], // TODO - applePayPayment.shippingAddress
+                                                           @"shipping_method": [NSNull null], // TODO - applePayPayment.shippingMethod
+                                                           },
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                                   }];
+    
+    [self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
+        if (response.isSuccess) {
+            if (successBlock){
+                NSDictionary *applePayPaymentMethodResponse = [response.object[@"applePayCards"] firstObject];
+                BTMutableApplePayPaymentMethod *paymentMethod = [[BTMutableApplePayPaymentMethod alloc] init];
+                paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
+                paymentMethod.description = applePayPaymentMethodResponse[@"description"];
 
-        NSMutableDictionary *requestParameters = [self metaPostParameters];
-        [requestParameters addEntriesFromDictionary:@{ @"apple_pay_payment": @{
-                                                               @"token": paymentTokenValue,
-                                                               // TODO - send along payment instrument name
-                                                               // TODO - send along transaction identifier
-                                                               @"billing_address": [NSNull null], // TODO - applePayPayment.billingAddress
-                                                               @"shipping_address": [NSNull null], // TODO - applePayPayment.shippingAddress
-                                                               @"shipping_method": [NSNull null], // TODO - applePayPayment.shippingMethod
-                                                               },
-                                                       @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                                       }];
-
-        [self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
-            if (response.isSuccess) {
-                if (successBlock){
-                    NSDictionary *applePayPaymentMethodResponse = response.object[@"applePaymentTokens"][0];
-                    BTMutableApplePayPaymentMethod *paymentMethod = [[BTMutableApplePayPaymentMethod alloc] init];
-                    paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
-
-                    if (successBlock) {
-                        successBlock([paymentMethod copy]);
-                    }
-                }
-            } else {
-                if (failureBlock) {
-                    failureBlock([NSError errorWithDomain:error.domain code:BTUnknownError userInfo:nil]);
+                if (successBlock) {
+                    successBlock([paymentMethod copy]);
                 }
             }
-        }];
+        } else {
+            if (failureBlock) {
+                failureBlock([NSError errorWithDomain:error.domain code:BTUnknownError userInfo:nil]);
+            }
+        }
     }];
 }
 
@@ -395,28 +383,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self postAnalyticsEvent:eventKind success:nil failure:nil];
 }
 
-- (void)fetchConfigurationWithSuccess:(BTClientConfigurationSuccessBlock)successBlock
-                              failure:(BTClientFailureBlock)failureBlock {
-    NSDictionary *parameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
-    [self.configHttp GET:nil
-              parameters:parameters
-              completion:^(BTHTTPResponse *response, NSError *error) {
-                  if (response.isSuccess) {
-                      NSError *resourceError;
-                      BTClientConfiguration *configuration = [BTClientConfigurationAPI modelWithAPIDictionary:response.object error:&resourceError];
-
-                      if (configuration) {
-                          successBlock(configuration);
-                      } else {
-                          failureBlock(resourceError);
-                      }
-                  } else {
-                      if (failureBlock) {
-                          failureBlock(error);
-                      }
-                  }
-              }];
-}
 
 #pragma mark - Response Parsing
 

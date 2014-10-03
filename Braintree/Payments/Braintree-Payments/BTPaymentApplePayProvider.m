@@ -11,7 +11,6 @@
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, strong) NSError *applePayError;
 @property (nonatomic, strong) BTPaymentMethod *applePayPaymentMethod;
-@property (nonatomic, strong) BTClientApplePayConfiguration *applePayConfiguration;
 @end
 
 @implementation BTPaymentApplePayProvider
@@ -27,11 +26,10 @@
     if (![PKPayment class]) {
         return NO;
     }
-
-    //#warning TODO
-    //    if (self.client.applePayConfiguration.status == BTClientApplePayStatusOff) {
-    //        return NO;
-    //    }
+    
+    if (self.client.configuration.applePayConfiguration.status == BTClientApplePayStatusOff) {
+        return NO;
+    }
 
     if (![self paymentAuthorizationViewControllerCanMakePayments]) {
         return NO;
@@ -60,70 +58,56 @@
         return;
     }
 
-    [self.client fetchConfigurationWithSuccess:^(BTClientConfiguration *configuration) {
-        self.applePayConfiguration = configuration.applePayConfiguration;
-        if (configuration.applePayConfiguration.status == BTClientApplePayStatusOff) {
-            NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
-                                                 code:BTPaymentProviderErrorOptionNotSupported
-                                             userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
-            [self.delegate paymentMethodCreator:self didFailWithError:error];
-            return;
-        }
-
-        if (![self canAuthorizeApplePayPayment]) {
+    if (self.client.configuration.applePayConfiguration.status == BTClientApplePayStatusOff) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                             code:BTPaymentProviderErrorOptionNotSupported
+                                         userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
+        [self.delegate paymentMethodCreator:self didFailWithError:error];
+        return;
+    }
+    
+    if (![self canAuthorizeApplePayPayment]) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                             code:BTPaymentProviderErrorInitialization
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version and configuration received via client token. Is Apple Pay enabled?" }];
+        [self informDelegateDidFailWithError:error];
+        return;
+    }
+    
+    UIViewController *paymentAuthorizationViewController;
+    
+    if ([[self class] isSimulator]) {
+        paymentAuthorizationViewController = ({
+            BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.client.configuration.applePayConfiguration.paymentRequest];
+            mockVC.delegate = self;
+            mockVC;
+        });
+    } else {
+        paymentAuthorizationViewController = ({
+            PKPaymentAuthorizationViewController *realVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.client.configuration.applePayConfiguration.paymentRequest];
+            realVC.delegate = self;
+            realVC;
+        });
+        if (paymentAuthorizationViewController == nil) {
             NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                                  code:BTPaymentProviderErrorInitialization
-                                             userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version and configuration received via client token. Is Apple Pay enabled?" }];
+                                             userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version and configuration." }];
             [self informDelegateDidFailWithError:error];
             return;
         }
+    }
 
-        UIViewController *paymentAuthorizationViewController;
-
-        if ([[self class] isSimulator]) {
-            paymentAuthorizationViewController = ({
-                BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:configuration.applePayConfiguration.paymentRequest];
-                mockVC.delegate = self;
-                mockVC;
-            });
-        } else {
-            paymentAuthorizationViewController = ({
-                PKPaymentAuthorizationViewController *realVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:configuration.applePayConfiguration.paymentRequest];
-                realVC.delegate = self;
-                realVC;
-            });
-            if (paymentAuthorizationViewController == nil) {
-                NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
-                                                     code:BTPaymentProviderErrorInitialization
-                                                 userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version and configuration." }];
-                [self informDelegateDidFailWithError:error];
-                return;
-            }
-        }
-
-        [self informDelegateRequestsPresentationOfViewController:paymentAuthorizationViewController];
-    } failure:^(NSError *error) {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:@"Apple Pay configuration missing"
-                                     userInfo:@{ NSLocalizedDescriptionKey: @"Failed to fetch remote configuration for Apple Pay.",
-                                                 NSUnderlyingErrorKey: error }];
-    }];
+    [self informDelegateRequestsPresentationOfViewController:paymentAuthorizationViewController];
 }
 
-- (PKPaymentRequest *)paymentRequestWithConfiguration:(BTClientApplePayConfiguration *)configuration {
+- (PKPaymentRequest *)paymentRequest {
     if (![PKPaymentRequest class]) {
         return nil;
     }
 
-    PKPaymentRequest *paymentRequest = configuration.paymentRequest;
-    //    paymentRequest.merchantIdentifier = self.client.applePayConfiguration.merchantId;
-    // TODO - Retrieve these payment related values from client token
-    //    paymentRequest.countryCode = @"US";
-    //    paymentRequest.currencyCode = @"USD";
+    PKPaymentRequest *paymentRequest = self.client.configuration.applePayConfiguration.paymentRequest;
 
-    //    paymentRequest.supportedNetworks = @[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
-    //    paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
-
+    // TODO Expose paymentSummaryItems
     NSDecimalNumber *amount = [NSDecimalNumber decimalNumberWithString:@"1"];
     paymentRequest.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Purchase" amount:amount] ];
 
@@ -181,7 +165,7 @@
 
 - (void)applePayPaymentAuthorizationViewControllerDidAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     BTClientApplePayRequest *request;
-    if (self.applePayConfiguration.status == BTClientApplePayStatusMock) {
+    if (self.client.configuration.applePayConfiguration.status == BTClientApplePayStatusMock) {
         request = [[BTClientApplePayRequest alloc] init];
     } else {
         request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];

@@ -34,7 +34,16 @@
                       },
               @"merchantId": @"a_merchant_id",
               @"venmo": @"offline",
-              @"applePay": @{ @"status": @"mock" }
+              @"applePay": @{
+                      @"status": @"mock",
+                      @"countryCode": @"US",
+                      @"currencyCode": @"USD",
+                      @"merchantIdentifier": @"apple-pay-merchant-id",
+                      @"supportedNetworks": @[ @"visa",
+                                               @"mastercard",
+                                               @"amex" ]
+
+                      }
               } mutableCopy];
 }
 

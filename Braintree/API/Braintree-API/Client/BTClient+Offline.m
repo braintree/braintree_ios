@@ -12,8 +12,16 @@
                                                      BTClientTokenKeyConfigURL: [BTOfflineModeClientApiBaseURL stringByAppendingString:@"/configuration"],
                                                      BTClientTokenKeyVersion: @2,
                                                      BTClientTokenKeyApplePay: @{
-                                                             BTClientTokenKeyStatus: @"mock"
-                                                             }}];
+                                                             BTClientTokenKeyStatus: @"mock",
+                                                             @"countryCode": @"US",
+                                                             @"currencyCode": @"USD",
+                                                             @"merchantIdentifier": @"merchant-id-apple-pay",
+                                                             @"supportedNetworks": @[
+                                                                     @"visa",
+                                                                     @"mastercard",
+                                                                     @"amex"
+                                                                     ]
+                                                             } }];
 
     [clientTokenDataDictionary addEntriesFromDictionary:configuration];
 

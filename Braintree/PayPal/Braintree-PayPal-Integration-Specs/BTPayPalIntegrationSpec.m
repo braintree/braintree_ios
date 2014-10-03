@@ -1,7 +1,7 @@
 #import "BTClient+BTPayPal.h"
 #import "BTClient+Testing.h"
 #import "BTClient+Offline.h"
-#import "BTClientToken+BTPaypal.h"
+#import "BTClientToken.h"
 #import "PayPalMobile.h"
 #import "BTPayPalViewController_Internal.h"
 #import "BTErrors+BTPayPal.h"

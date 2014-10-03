@@ -60,6 +60,21 @@ describe(@"BTClient", ^{
             });
         });
     });
+
+    describe(@"configuration", ^{
+        it(@"parses Apple Pay configuration from the client token", ^{
+            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil]];
+
+            expect(client.configuration.applePayConfiguration.status).to.equal(BTClientApplePayStatusMock);
+            expect(client.configuration.applePayConfiguration.paymentRequest.countryCode).to.equal(@"US");
+            expect(client.configuration.applePayConfiguration.paymentRequest.currencyCode).to.equal(@"USD");
+            expect(client.configuration.applePayConfiguration.paymentRequest.merchantIdentifier).to.equal(@"apple-pay-merchant-id");
+            expect(client.configuration.applePayConfiguration.paymentRequest.merchantCapabilities).to.equal(PKMerchantCapability3DS);
+            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkAmex);
+            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkMasterCard);
+            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkVisa);
+        });
+    });
 });
 
 describe(@"post analytics event", ^{

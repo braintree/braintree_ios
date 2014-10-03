@@ -22,7 +22,11 @@ context(@"v1 raw JSON client tokens", ^{
         expect(clientToken.merchantId).to.equal(@"a_merchant_id");
         expect(clientToken.challenges).to.equal([NSSet setWithArray:@[@"cvv"]]);
         expect(clientToken.analyticsEnabled).to.equal(@YES);
-        expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock" });
+        expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock",
+                                                              @"countryCode": @"US",
+                                                              @"currencyCode": @"USD",
+                                                              @"merchantIdentifier": @"apple-pay-merchant-id",
+                                                              @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ] });
     });
 });
 
@@ -36,7 +40,11 @@ context(@"v2 base64 encoded client tokens", ^{
         expect(clientToken.merchantId).to.equal(@"a_merchant_id");
         expect(clientToken.challenges).to.equal([NSSet setWithArray:@[@"cvv"]]);
         expect(clientToken.analyticsEnabled).to.equal(@YES);
-        expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock" });
+        expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock",
+                                                              @"countryCode": @"US",
+                                                              @"currencyCode": @"USD",
+                                                              @"merchantIdentifier": @"apple-pay-merchant-id",
+                                                              @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ] });
     });
 
     it(@"must contain a client api url", ^{
