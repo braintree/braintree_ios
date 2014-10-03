@@ -200,7 +200,7 @@ describe(@"save card", ^{
             });
         });
 
-        fit(@"saves a transactable credit card nonce", ^{
+        it(@"saves a transactable credit card nonce", ^{
             waitUntil(^(DoneCallback done){
                 [testClient saveCardWithNumber:@"4111111111111111"
                                expirationMonth:@"12"
