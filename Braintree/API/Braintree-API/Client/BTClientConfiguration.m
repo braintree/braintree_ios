@@ -8,13 +8,17 @@
 @implementation BTClientConfiguration
 
 - (instancetype)initWithClientToken:(BTClientToken *)clientToken {
+    BTClientApplePayConfiguration *applePayConfiguration;
+
+    if (clientToken.applePayConfiguration) {
         NSError *error;
-        BTClientApplePayConfiguration *applePayConfiguration = [BTClientApplePayConfigurationAPI modelWithAPIDictionary:clientToken.applePayConfiguration
+        applePayConfiguration = [BTClientApplePayConfigurationAPI modelWithAPIDictionary:clientToken.applePayConfiguration
                                                                                                                   error:&error];
 
-    if (error) {
-        [[BTLogger sharedLogger] error:@"Failed to initialize BTClientConfiguration: %@", error];
-        return nil;
+        if (error) {
+            [[BTLogger sharedLogger] error:@"Failed to initialize BTClientConfiguration: %@", error];
+            return nil;
+        }
     }
 
     self = [super init];

@@ -1,5 +1,3 @@
-@import PassKit;
-
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 

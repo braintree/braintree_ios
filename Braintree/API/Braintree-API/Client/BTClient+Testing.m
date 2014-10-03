@@ -1,4 +1,3 @@
-#import "BTClientToken.h"
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 
