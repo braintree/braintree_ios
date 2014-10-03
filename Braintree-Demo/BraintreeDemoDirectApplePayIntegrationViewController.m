@@ -6,6 +6,7 @@
 @interface BraintreeDemoDirectApplePayIntegrationViewController () <PKPaymentAuthorizationViewControllerDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
+@property (nonatomic, strong) BTApplePayPaymentMethod *applePayPaymentMethod;
 @property (nonatomic, copy) void (^completionBlock)(NSString *nonce);
 
 @property (nonatomic, weak) IBOutlet UIButton *applePayButton;
@@ -69,12 +70,13 @@
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
+
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
     [self.braintree.client saveApplePayPayment:request
                                        success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                                           NSLog(@"Apple Pay Success! Got a nocne: %@", applePayPaymentMethod.nonce);
-                                           self.completionBlock(applePayPaymentMethod.nonce);
+                                           NSLog(@"Apple Pay Success! Got a nonce: %@", applePayPaymentMethod.nonce);
+                                           self.applePayPaymentMethod = applePayPaymentMethod;
                                            completion(PKPaymentAuthorizationStatusSuccess);
                                        } failure:^(NSError *error) {
                                            NSLog(@"Error: %@", error);
@@ -83,7 +85,9 @@
 }
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
-    [controller dismissViewControllerAnimated:YES completion:nil];
+    [controller dismissViewControllerAnimated:YES completion:^{
+        self.completionBlock(self.applePayPaymentMethod.nonce);
+    }];
 }
 
 @end
