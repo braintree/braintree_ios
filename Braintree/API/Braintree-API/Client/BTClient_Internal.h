@@ -6,7 +6,6 @@
 @interface BTClient ()
 @property (nonatomic, strong, readwrite) BTHTTP *clientApiHttp;
 @property (nonatomic, strong, readwrite) BTHTTP *analyticsHttp;
-@property (nonatomic, strong, readwrite) BTHTTP *configHttp;
 
 /// Models the contents of the client token, as it is received from the merchant server
 @property (nonatomic, strong) BTClientToken *clientToken;

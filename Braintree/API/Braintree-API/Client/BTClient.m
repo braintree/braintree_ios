@@ -55,11 +55,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         }
 
-        if (self.clientToken.configURL) {
-            self.configHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.configURL];
-            [self.configHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-        }
-
         self.metadata = [[BTClientMetadata alloc] init];
     }
     return self;
@@ -458,7 +453,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #pragma mark - Debug
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<BTClient:%p clientApiHttp:%@, analyticsHttp:%@, configHttp:%@>", self, self.clientApiHttp, self.analyticsHttp, self.configHttp];
+    return [NSString stringWithFormat:@"<BTClient:%p clientApiHttp:%@, analyticsHttp:%@>", self, self.clientApiHttp, self.analyticsHttp];
 }
 
 #pragma mark - Library Version
