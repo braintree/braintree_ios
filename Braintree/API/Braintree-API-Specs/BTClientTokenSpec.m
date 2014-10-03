@@ -1,7 +1,5 @@
 #import "BTClientToken.h"
-//#import "BTErrors.h"
 #import "BTTestClientTokenFactory.h"
-//#import "BTClientApplePayConfiguration.h"
 
 SpecBegin(BTClientToken)
 
