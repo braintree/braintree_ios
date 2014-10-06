@@ -45,6 +45,15 @@ context(@"v2 base64 encoded client tokens", ^{
                                                               @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ] });
     });
 
+    it(@"can be parsed with line breaks", ^{
+        NSString *clientTokenString = [BTTestClientTokenFactory tokenWithVersion:2
+                                                                       overrides:nil
+                                                                 encodingOptions:NSDataBase64Encoding64CharacterLineLength];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenString error:NULL];
+        expect(clientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint");
+    });
+
+
     it(@"must contain a client api url", ^{
         NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyClientApiURL: NSNull.null }];
         NSError *error;
