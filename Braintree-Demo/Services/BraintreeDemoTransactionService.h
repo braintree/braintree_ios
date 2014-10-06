@@ -3,7 +3,6 @@
 typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceEnvironment) {
     BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant,
     BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant,
-    BraintreeDemoTransactionServiceEnvironmentQASampleMerchant,
 };
 
 @interface BraintreeDemoTransactionService : NSObject
