@@ -76,10 +76,6 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
     return self;
 }
 
-- (void)updateConfiguration:(NSDictionary *)configuration {
-    [self.configuration addEntriesFromDictionary:configuration];
-}
-
 - (NSString *)merchantId {
     return self.configuration[BTClientTokenKeyMerchantId];
 }

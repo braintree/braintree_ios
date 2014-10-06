@@ -52,10 +52,6 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 
 -(BOOL)analyticsEnabled;
 
-#pragma mark Configuration
-
-- (void)updateConfiguration:(NSDictionary *)configuration;
-
 #pragma mark Credit Card Processing
 
 @property (nonatomic, readonly, strong) NSSet *challenges;
