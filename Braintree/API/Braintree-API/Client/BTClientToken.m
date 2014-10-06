@@ -140,11 +140,10 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 #pragma mark Client Token Parsing
 
 - (NSDictionary *)decodeClientToken:(NSString *)rawClientTokenString error:(NSError * __autoreleasing *)error {
-
     NSError *JSONError;
     BOOL clientTokenWasBase64Encoded = NO;
     NSData *base64DecodedClientToken = [[NSData alloc] initWithBase64EncodedString:rawClientTokenString
-                                                                           options:NSDataBase64DecodingIgnoreUnknownCharacters];
+                                                                           options:0];
 
     NSDictionary *rawClientToken;
     if (base64DecodedClientToken) {

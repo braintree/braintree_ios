@@ -92,16 +92,8 @@
 + (NSString *)tokenWithVersion:(NSInteger)version {
     return [self tokenWithVersion:version overrides:nil];
 }
-
 + (NSString *)tokenWithVersion:(NSInteger)version
                      overrides:(NSDictionary *)overrides {
-    return [self tokenWithVersion:version overrides:overrides encodingOptions:0];
-}
-
-+ (NSString *)tokenWithVersion:(NSInteger)version
-                     overrides:(NSDictionary *)overrides
-               encodingOptions:(NSDataBase64EncodingOptions)encodingOptions{
-
     BOOL base64Encoded;
     NSMutableDictionary *baseTokenData;
 
@@ -140,7 +132,7 @@
     NSAssert(jsonSerializationError == nil, @"Failed to generated test client token JSON: %@", jsonSerializationError);
 
     if (base64Encoded) {
-        return [configurationData base64EncodedStringWithOptions:encodingOptions];
+        return [configurationData base64EncodedStringWithOptions:0];
     } else {
         return [[NSString alloc] initWithData:configurationData
                                      encoding:NSUTF8StringEncoding];
