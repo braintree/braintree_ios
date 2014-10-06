@@ -2332,10 +2332,10 @@
 				LastUpgradeCheck = 0600;
 				TargetAttributes = {
 					162174DE192D9220008DC35D = {
-						DevelopmentTeam = 43253H4X22;
+						DevelopmentTeam = QK3APTBF2M;
 						SystemCapabilities = {
 							com.apple.OMC = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
