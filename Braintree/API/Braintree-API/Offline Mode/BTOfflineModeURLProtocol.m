@@ -93,7 +93,7 @@ static BTOfflineClientBackend *backend;
     } else if ([request.HTTPMethod isEqualToString:@"POST"] && [request.URL.path isEqualToString:@"/v1/payment_methods/apple_payment_tokens"]) {
 
         NSDictionary *requestObject = [self queryDictionaryFromRequest:request];
-        NSDictionary *payment = requestObject[@"apple_pay_payment"];
+        NSDictionary *payment = requestObject[@"applePaymentToken"];
         if (payment) {
             BTMutableApplePayPaymentMethod *apple = [[BTMutableApplePayPaymentMethod alloc] init];
             [[[self class] backend] addPaymentMethod:apple];

@@ -4,12 +4,11 @@ SpecBegin(BTClientConfiguration)
 
 describe(@"apple pay configuration", ^{
     if ([PKPayment class]) {
-        it(@"creates an empty payment request lazily if the PKPaymentRequest object is available", ^{
+        it(@"constructs an empty payment request if the PKPaymentRequest class is available", ^{
             BTClientConfiguration *configuration = [[BTClientConfiguration alloc] init];
             configuration.applePayConfiguration = [[BTClientApplePayConfiguration alloc] init];
 
             expect(configuration.applePayConfiguration.paymentRequest).to.beKindOf([PKPaymentRequest class]);
-            expect(configuration.applePayConfiguration.paymentRequest).to.beIdenticalTo(configuration.applePayConfiguration.paymentRequest);
         });
 
         it(@"sets default settings for the PKPaymentRequest", ^{
