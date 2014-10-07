@@ -50,6 +50,8 @@
         NSString *number = @"4111111111111111";
         NSString *expirationMonth = @"12";
         NSString *expirationYear = @"2038";
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [self.client saveCardWithNumber:number
                         expirationMonth:expirationMonth
                          expirationYear:expirationYear
@@ -62,6 +64,7 @@
                                 failure:^(NSError *error) {
                                     callback(nil,  error);
                                 }];
+#pragma clang diagnostic pop
     };
 
     return operation;
@@ -82,6 +85,8 @@
     BraintreeDemoClientOperation *operation = [BraintreeDemoClientOperation new];
     operation.name = @"Save Invalid Card";
     operation.block = ^(void (^callback)(id result, NSError *error)) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [self.client saveCardWithNumber:@"0000000000000000"
                         expirationMonth:@"99"
                          expirationYear:@"2038"
@@ -94,6 +99,7 @@
                                 failure:^(NSError *error) {
                                     callback(nil, error);
                                 }];
+#pragma clang diagnostic pop
     };
     return operation;
 }

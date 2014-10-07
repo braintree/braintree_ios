@@ -31,3 +31,5 @@ EverybodyVenmo.mobileprovision
 # This file should contain your HockeyApp auth
 # token from https://rink.hockeyapp.net/manage/auth_tokens
 .hockeyapp
+
+Braintree/API/Braintree-API-Integration-Specs/SSL/https_server.rb.pid

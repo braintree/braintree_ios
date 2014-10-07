@@ -7,6 +7,7 @@
 #import "BTClientApplePayRequest.h"
 
 #import "BTErrors.h"
+#import "BTClientCardRequest.h"
 
 #pragma mark Types
 
@@ -70,27 +71,15 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 
 /// Save a card to Braintree
 ///
-/// You have two options for validation when saving a card to Braintree. You can specify
-/// that only valid options should be saved.
-///
-/// @param cardNumber card number (PAN)
-/// @param expirationMonth card expiration month (e.g. @"01")
-/// @param expirationYear card expiration year (e.g. @"2018")`
-/// @param cvv card's cvv three or four digit verification code (optional, depending on your Gateway settings)
-/// @param postalCode card's postal code for address verification (optional, depending on your Gateway settings)
-/// @param validate whether details should be validated before creating a nonce for them
+/// @param request an object that includes the raw card details
 /// @param successBlock success callback for handling the resulting new card
 /// @param failureBlock failure callback for handling errors
 ///
 /// @see challenges
-- (void)saveCardWithNumber:(NSString *)creditCardNumber
-           expirationMonth:(NSString *)expirationMonth
-            expirationYear:(NSString *)expirationYear
-                       cvv:(NSString *)cvv
-                postalCode:(NSString *)postalCode
-                  validate:(BOOL)shouldValidate
-                   success:(BTClientCardSuccessBlock)successBlock
-                   failure:(BTClientFailureBlock)failureBlock;
+- (void)saveCardWithRequest:(BTClientCardRequest *)request
+                    success:(BTClientCardSuccessBlock)successBlock
+                    failure:(BTClientFailureBlock)failureBlock;
+
 
 
 /// Save a payment method created via Apple Pay
@@ -155,5 +144,33 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 ///
 /// @return A string representation of this library's current semver.org version.
 + (NSString *)libraryVersion;
+
+@end
+
+@interface BTClient (Deprecated)
+
+/// Save a card to Braintree
+///
+/// You have two options for validation when saving a card to Braintree. You can specify
+/// that only valid options should be saved.
+///
+/// @param cardNumber card number (PAN)
+/// @param expirationMonth card expiration month (e.g. @"01")
+/// @param expirationYear card expiration year (e.g. @"2018")`
+/// @param cvv card's cvv three or four digit verification code (optional, depending on your Gateway settings)
+/// @param postalCode card's postal code for address verification (optional, depending on your Gateway settings)
+/// @param validate whether details should be validated before creating a nonce for them
+/// @param successBlock success callback for handling the resulting new card
+/// @param failureBlock failure callback for handling errors
+///
+/// @see challenges
+- (void)saveCardWithNumber:(NSString *)creditCardNumber
+           expirationMonth:(NSString *)expirationMonth
+            expirationYear:(NSString *)expirationYear
+                       cvv:(NSString *)cvv
+                postalCode:(NSString *)postalCode
+                  validate:(BOOL)shouldValidate
+                   success:(BTClientCardSuccessBlock)successBlock
+                   failure:(BTClientFailureBlock)failureBlock DEPRECATED_MSG_ATTRIBUTE("Please use BTClientCardRequest and saveCardWithRequest:validate:success:failure:");
 
 @end

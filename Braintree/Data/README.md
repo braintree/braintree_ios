@@ -2,41 +2,39 @@
 
 ## Overview
 
-`Braintree/data` is our advanced fraud solution that is powered by `BTData` and Kount. This system enables you to collect device data and correlate it with a session identifier on your server.
+`Braintree/Data` is our advanced fraud solution that is powered by `BTData`, PayPal and Kount. This system enables you to collect device data and correlate it with a session identifier on your server.
 
-By default, we suggest you utilize the default merchant credentials embedded in `[BTData defaultDataForEnvironment:delegate]`.
+By default, we suggest you utilize the default merchant credentials embedded in `[[BTData alloc] initWithClient:client environment:BTDataEnvironmentProduction]`.
 
 For direct Fraud Integration, please see [our documentation](https://www.braintreepayments.com/docs/general/fraud_tools#direct_fraud_tool_integration) or [contact our accounts team](accounts@braintreepayments.com).
 
-**Note:** Use of `Braintree/data` and `BTData` is optional. Since `Braintree/data` contains references to Apple's IDFA, including it in your app may impact your App Store submission review process.
+**Note:** Use of `Braintree/Data` and `BTData` is optional. 
+
+**Note:** `Braintree/Data` no longer contains references to Apple's IDFA.
 
 ### Usage
 
-First, add `pod "Braintree/data"` to your `Podfile`.
+First, add `pod "Braintree/Data"` to your `Podfile`.
 
 #### Default
 
 Please follow these steps to integrate Braintree Data in your app:
 
-1. Initialize `BTData` using the convenience constructor `defaultDataForEnvironment:delegate:` in your AppDelegate.
+1. Initialize `BTData` using the convenience constructor `initWithClient:environment:` in your AppDelegate.
+    * See [our documentation](https://developers.braintreepayments.com/ios/start/hello-client) for instructions on initializing BTClient
     * Be sure to pass the current Braintree environment, and remember to change this value before shipping to the app store.
-    * The delegate is optional.
+
+2. Optionally, set a delegate to receive lifecycle notifications.
 
 2. Retain your `BTData` instance for your entire application lifecycle.
 
 3. Invoke `collect` (to generate a session id) or `collect:` (to provide a session id) as often as is needed. This will perform a device fingerprint and asynchronously send this data to Kount. This operation is relatively expensive. We recommend that you do this seldom and avoid interrupting your app startup with this call.
 
-
 #### Direct Fraud Tool Integration
 
-Direct fraud tool integration is similar to default. The only difference is upon initialization:
+Direct fraud tool integration is similar to default.
 
-1. Initialize `BTData` using `initWithDebugOn:`.
-
-2. Invoke `setCollectorUrl:` and `setKountMerchantId:` with the appropriate data.
-    * Optionally, you may specify a delegate with `setDelegate:`.
-
-3. Follow steps 2 and 3 above.
+After initializing `BTData` following the instructions above, invoke `setCollectorUrl:` and/or `setKountMerchantId:` with the appropriate data.
 
 Please contact our account management team for more information.
 
