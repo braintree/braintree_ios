@@ -272,7 +272,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];
-    [requestParameters addEntriesFromDictionary:@{ @"apple_payment_token": @{
+    [requestParameters addEntriesFromDictionary:@{ @"applePaymentToken": @{
                                                            @"paymentData": encodedPaymentData,
                                                            @"paymentInstrumentName": applePayRequest.payment.token.paymentInstrumentName ?: NSNull.null,
                                                            @"paymentNetwork": applePayRequest.payment.token.paymentNetwork ?: NSNull.null,
