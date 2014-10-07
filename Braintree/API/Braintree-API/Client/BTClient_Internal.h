@@ -1,8 +1,7 @@
 #import "BTClient.h"
 #import "BTHTTP.h"
 #import "BTClientToken.h"
-
-@class BTClientDeprecatedApplePayConfiguration;
+#import "BTClientDeprecatedApplePayConfiguration.h"
 
 @interface BTClient ()
 @property (nonatomic, strong, readwrite) BTHTTP *clientApiHttp;

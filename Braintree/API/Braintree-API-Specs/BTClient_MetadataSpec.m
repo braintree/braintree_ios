@@ -59,7 +59,10 @@ describe(@"BTClient POST _meta param", ^{
             OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
             [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isDefaultMetadata] completion:[OCMArg any]];
             client.clientApiHttp = (id)mockHttp;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [client saveCardWithNumber:@"4111111111111111" expirationMonth:@"01" expirationYear:@"01" cvv:nil postalCode:nil validate:YES success:nil failure:nil];
+#pragma clang diagnostic pop
             [mockHttp verify];
         });
     });
@@ -98,7 +101,10 @@ describe(@"BTClient POST _meta param", ^{
             OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
             [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isCustomMetadata] completion:[OCMArg any]];
             customMetadataClient.clientApiHttp = (id)mockHttp;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [customMetadataClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"01" expirationYear:@"01" cvv:nil postalCode:nil validate:YES success:nil failure:nil];
+#pragma clang diagnostic pop
             [mockHttp verify];
         });
     });

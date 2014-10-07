@@ -157,38 +157,20 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                  }];
 }
 
-- (void)saveCardWithNumber:(NSString *)creditCardNumber
-           expirationMonth:(NSString *)expirationMonth
-            expirationYear:(NSString *)expirationYear
-                       cvv:(NSString *)cvv
-                postalCode:(NSString *)postalCode
-                  validate:(BOOL)shouldValidate
-                   success:(BTClientCardSuccessBlock)successBlock
-                   failure:(BTClientFailureBlock)failureBlock {
+- (void)saveCardWithRequest:(BTClientCardRequest *)request
+                    success:(BTClientCardSuccessBlock)successBlock
+                    failure:(BTClientFailureBlock)failureBlock {
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];
-    NSMutableDictionary *creditCardParams = [@{ @"number": creditCardNumber,
-                                                @"expiration_month": expirationMonth,
-                                                @"expiration_year": expirationYear,
-                                                @"options": @{
-                                                        @"validate": @(shouldValidate)
-                                                        }
-                                                } mutableCopy];
+    NSMutableDictionary *creditCardParams = [request.parameters mutableCopy];
+
     [requestParameters addEntriesFromDictionary:@{ @"credit_card": creditCardParams,
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                    }];
 
-    if (cvv) {
-        requestParameters[@"credit_card"][@"cvv"] = cvv;
-    }
-
-    if (postalCode) {
-        requestParameters[@"credit_card"][@"billing_address"] = @{ @"postal_code": postalCode };
-    }
-
     [self.clientApiHttp POST:@"v1/payment_methods/credit_cards" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
-            NSDictionary *creditCardResponse = response.object[@"creditCards"][0];
+            NSDictionary *creditCardResponse = [response.object[@"creditCards"] firstObject];
             BTCardPaymentMethod *paymentMethod = [[self class] cardFromAPIResponseDictionary:creditCardResponse];
 
             if (successBlock) {
@@ -206,6 +188,29 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             }
         }
     }];
+}
+
+// Deprecated
+- (void)saveCardWithNumber:(NSString *)creditCardNumber
+           expirationMonth:(NSString *)expirationMonth
+            expirationYear:(NSString *)expirationYear
+                       cvv:(NSString *)cvv
+                postalCode:(NSString *)postalCode
+                  validate:(BOOL)shouldValidate
+                   success:(BTClientCardSuccessBlock)successBlock
+                   failure:(BTClientFailureBlock)failureBlock {
+
+    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+    request.number = creditCardNumber;
+    request.expirationMonth = expirationMonth;
+    request.expirationYear = expirationYear;
+    request.cvv = cvv;
+    request.postalCode = postalCode;
+    request.shouldValidate = shouldValidate;
+
+    [self saveCardWithRequest:request
+                      success:successBlock
+                      failure:failureBlock];
 }
 
 - (void)saveApplePayPayment:(BTClientApplePayRequest *)applePayRequest

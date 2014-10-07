@@ -297,12 +297,15 @@
                 metadata.source = BTClientMetadataSourceForm;
             }];
 
-            [client saveCardWithNumber:cardForm.number
-                       expirationMonth:cardForm.expirationMonth
-                        expirationYear:cardForm.expirationYear
-                                   cvv:cardForm.cvv
-                            postalCode:cardForm.postalCode
-                              validate:YES
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = cardForm.number;
+            request.expirationMonth = cardForm.expirationMonth;
+            request.expirationYear = cardForm.expirationYear;
+            request.cvv = cardForm.cvv;
+            request.postalCode = cardForm.postalCode;
+            request.shouldValidate = @YES;
+
+            [client saveCardWithRequest:request
                                success:^(BTCardPaymentMethod *card) {
                                    [self showLoadingState:NO];
                                    [self informDelegateDidAddPaymentMethod:card];

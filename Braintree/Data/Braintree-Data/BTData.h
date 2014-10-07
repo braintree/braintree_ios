@@ -1,4 +1,5 @@
 #import "DeviceCollectorSDK.h"
+#import "BTClient.h"
 
 // Error Codes sent to btData:didFailWithErrorCode:error:.
 //
@@ -32,13 +33,14 @@ typedef NS_ENUM(NSInteger, BTDataEnvironment) {
 /// @param delegate Object to notify
 @property (nonatomic, weak) id<BTDataDelegate> delegate;
 
-/// Returns a pre-configured instance of BTData that uses Braintree's shared
-/// merchant id and Braintree's shared collector URL.
-/// This is the suggested default if you do not have a custom Kount configuration.
-/// Contact Braintree support for more information about advanced fraud protection.
+/// Initialize a BTData instance for use alongside an existing BTClient instance
 ///
-/// @return a preconfigured instance of BTData
-+ (instancetype)defaultDataForEnvironment:(BTDataEnvironment)environment delegate:(id<BTDataDelegate>)delegate;
+/// @note BTData cannot currently read the Kount environment from BTClient. In the future, we will replace
+///       this method with a simpler `initWithClient:`.
+///
+/// @param client       A BTClient instance
+/// @param environment  The Braintree Kount configuration
+- (instancetype)initWithClient:(BTClient *)client environment:(BTDataEnvironment)environment NS_DESIGNATED_INITIALIZER;
 
 /// Collect fraud data for the current session.
 ///
@@ -68,8 +70,15 @@ typedef NS_ENUM(NSInteger, BTDataEnvironment) {
 /// Initialize collector instance.
 ///
 /// @param debugLogging Enable/disable logging of debugging messages
-- (instancetype)initWithDebugOn:(BOOL)debugLogging DEPRECATED_ATTRIBUTE;
+- (instancetype)initWithDebugOn:(BOOL)debugLogging DEPRECATED_MSG_ATTRIBUTE("Please use initWithClient:environment:");
 
+/// Returns a pre-configured instance of BTData that uses Braintree's shared
+/// merchant id and Braintree's shared collector URL.
+/// This is the suggested default if you do not have a custom Kount configuration.
+/// Contact Braintree support for more information about advanced fraud protection.
+///
+/// @return a preconfigured instance of BTData
++ (instancetype)defaultDataForEnvironment:(BTDataEnvironment)environment delegate:(id<BTDataDelegate>)delegate DEPRECATED_MSG_ATTRIBUTE("Please use initWithClient:environment:");
 
 /// Collect device information for a session with a randomly
 /// generated session identifier.

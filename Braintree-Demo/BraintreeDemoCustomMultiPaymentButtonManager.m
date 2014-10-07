@@ -26,7 +26,7 @@
     if (self) {
         self.braintree = braintree;
         self.delegate = delegate;
-       self.paymentProvider = [braintree paymentProviderWithDelegate:delegate];
+        self.paymentProvider = [braintree paymentProviderWithDelegate:delegate];
         [self setupCustomButtonView];
     }
     return self;
@@ -89,7 +89,7 @@
 - (void)tapped:(UIButton *)sender {
     if (sender.tag == -1) {
         self.cardForm = [[BTUICardFormView alloc] initForAutoLayout];
-        self.cardForm.optionalFields = BTUICardFormOptionalFieldsNone;
+        self.cardForm.optionalFields = BTUICardFormOptionalFieldsAll;
 
         UIViewController *cardFormViewController = [[UIViewController alloc] init];
         cardFormViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
@@ -122,18 +122,22 @@
 
 - (void)saveCardVC {
     [self cancelCardVC];
-    [self.braintree.client saveCardWithNumber:self.cardForm.number ?: @""
-                              expirationMonth:self.cardForm.expirationMonth ?: @""
-                               expirationYear:self.cardForm.expirationYear ?: @""
-                                          cvv:nil
-                                   postalCode:nil
-                                     validate:NO
-                                      success:^(BTCardPaymentMethod *card) {
-                                          [self.delegate paymentMethodCreator:self didCreatePaymentMethod:card];
-                                      }
-                                      failure:^(NSError *error) {
-                                          [self.delegate paymentMethodCreator:self didFailWithError:error];
-                                      }];
+
+    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+    request.number = self.cardForm.number;
+    request.expirationMonth = self.cardForm.expirationMonth;
+    request.expirationYear = self.cardForm.expirationYear;
+    request.cvv = self.cardForm.cvv;
+    request.postalCode = self.cardForm.postalCode;
+    request.shouldValidate = @NO;
+
+    [self.braintree.client saveCardWithRequest:request
+                                       success:^(BTCardPaymentMethod *card) {
+                                           [self.delegate paymentMethodCreator:self didCreatePaymentMethod:card];
+                                       }
+                                       failure:^(NSError *error) {
+                                           [self.delegate paymentMethodCreator:self didFailWithError:error];
+                                       }];
 }
 
 @end
