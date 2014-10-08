@@ -26,6 +26,9 @@ describe(@"canAuthorizeApplePayPayment", ^{
         [[[mockApplePayPayment stub] andReturnValue:OCMOCK_VALUE(paymentAuthorizationViewControllerAvailable)] paymentAuthorizationViewControllerCanMakePayments];
 
         [[[mockApplePayConfiguration stub] andReturnValue:OCMOCK_VALUE(applePayStatus)] status];
+        [[[mockApplePayConfiguration stub] andReturn:@[ PKPaymentNetworkAmex,
+                                                        PKPaymentNetworkVisa,
+                                                        PKPaymentNetworkMasterCard ]] supportedNetworks];
         [[[mockConfiguration stub] andReturn:mockApplePayConfiguration] applePayConfiguration];
         [[[mockClient stub] andReturn:mockConfiguration] configuration];
 

@@ -39,7 +39,6 @@
 }
 
 - (void)authorizeApplePay {
-
     [[BTLogger sharedLogger] warning:@"⚠️⚠️⚠️ Braintree's API for Apple Pay is PRE-RELEASE and subject to change! ⚠️⚠️⚠️"];
 
     if (![PKPayment class]) {
@@ -53,7 +52,7 @@
     if (!self.delegate) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorInitialization
-                                         userInfo:@{ NSLocalizedDescriptionKey: @"Delegate must not be nil to start Apple Pay authorization" }];
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Delegate must not be nil to start Apple Pay authorization" }];
         [self informDelegateDidFailWithError:error];
         return;
     }
@@ -61,7 +60,7 @@
     if (self.client.configuration.applePayConfiguration.status == BTClientApplePayStatusOff) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
-                                         userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account"}];
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account" }];
         [self.delegate paymentMethodCreator:self didFailWithError:error];
         return;
     }
@@ -74,24 +73,35 @@
         return;
     }
 
-    if (!self.paymentRequest.paymentSummaryItems) {
-        [self informDelegateDidFailWithError:[NSError errorWithDomain:BTPaymentProviderErrorDomain
-                                                                code:BTPaymentProviderErrorInitialization
-                                                             userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay cannot be initialized because paymentSummaryItems are not set. Please set them via the BTPaymentProvider paymentSummaryItems" }]];
+    PKPaymentRequest *paymentRequest = self.paymentRequest;
+
+    if (!paymentRequest) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                             code:BTPaymentProviderErrorInitialization
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize an Apple Pay PKPaymentRequest based on the client token configuration." }];
+        [self informDelegateDidFailWithError:error];
         return;
     }
-    
+
+    if (![paymentRequest.paymentSummaryItems count]) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                             code:BTPaymentProviderErrorInitialization
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay cannot be initialized because paymentSummaryItems are not set. Please set them via the BTPaymentProvider paymentSummaryItems" }];
+        [self informDelegateDidFailWithError:error];
+        return;
+    }
+
+
     UIViewController *paymentAuthorizationViewController;
-    
     if ([[self class] isSimulator]) {
         paymentAuthorizationViewController = ({
-            BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
+            BTMockApplePayPaymentAuthorizationViewController *mockVC = [[BTMockApplePayPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
             mockVC.delegate = self;
             mockVC;
         });
     } else {
         paymentAuthorizationViewController = ({
-            PKPaymentAuthorizationViewController *realVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:self.paymentRequest];
+            PKPaymentAuthorizationViewController *realVC = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
             realVC.delegate = self;
             realVC;
         });
@@ -140,7 +150,7 @@
     if ([[self class] isSimulator]) {
         return [BTMockApplePayPaymentAuthorizationViewController canMakePayments];
     } else {
-        return [PKPaymentAuthorizationViewController canMakePayments];
+        return [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:self.client.configuration.applePayConfiguration.supportedNetworks];
     }
 }
 
