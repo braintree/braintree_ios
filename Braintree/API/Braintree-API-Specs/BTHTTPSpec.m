@@ -282,7 +282,7 @@ describe(@"performing a request", ^{
                 [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
                     NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
                     NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
-                    expect(requestHeaders[@"User-Agent"]).to.match(@"^Braintree/iOS/\\d+\\.\\d+\\.\\d+$");
+                    expect(requestHeaders[@"User-Agent"]).to.match(@"^Braintree/iOS/\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$");
                     done();
                 }];
             });

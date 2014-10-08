@@ -24,7 +24,7 @@ describe(@"metadata", ^{
 
     describe(@"sdkVersion", ^{
         it(@"returns Braintree sdk version", ^{
-            expect([BTAnalyticsMetadata metadata][@"sdkVersion"]).to.match(@"^\\d+\\.\\d+\\.\\d+$");
+            expect([BTAnalyticsMetadata metadata][@"sdkVersion"]).to.match(@"^\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$");
         });
     });
     describe(@"merchantAppId", ^{
