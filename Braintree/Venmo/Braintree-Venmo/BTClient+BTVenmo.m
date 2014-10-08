@@ -1,6 +1,5 @@
 #import "BTClient+BTVenmo.h"
 #import "BTClient_Internal.h"
-#import "BTClientToken+BTVenmo.h"
 
 NSString *const BTVenmoStatusValueProduction = @"production";
 NSString *const BTVenmoStatusValueOffline = @"offline";

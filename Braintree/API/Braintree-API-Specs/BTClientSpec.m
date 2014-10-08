@@ -6,7 +6,7 @@
 #import "BTTestClientTokenFactory.h"
 #import "BTAnalyticsMetadata.h"
 #import "BTClient_Metadata.h"
-#import "BTClientDeprecatedApplePayConfiguration.h"
+#import "BTClientApplePayConfiguration.h"
 
 #import "BTLogger_Internal.h"
 
@@ -25,7 +25,7 @@ describe(@"BTClient", ^{
 
     describe(@"initialization", ^{
         it(@"constructs a client when given a valid client token", ^{
-            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory token]];
+            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil]];
 
             expect(client).to.beKindOf([BTClient class]);
         });
@@ -38,17 +38,18 @@ describe(@"BTClient", ^{
             switch (BTTestMode) {
                 case BTTestModeDebug:
                     expect(^{
-                        client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory invalidToken]];
+                        client = [[BTClient alloc] initWithClientToken:@"invalid token"];
                     }).to.raise(NSInvalidArgumentException);
                     break;
                 case BTTestModeRelease:
-                    client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory invalidToken]];
+                    client = [[BTClient alloc] initWithClientToken:@"invalid token"];
                     break;
             }
 
             expect(client).to.beNil();
             [mockLogger verify];
         });
+
         describe(@"initialize With Invalid Data", ^{
             it(@"should return nil when initialized with NSData instead of a string", ^{
                 NSString *invalidString = @"invalidString";
@@ -59,14 +60,29 @@ describe(@"BTClient", ^{
             });
         });
     });
+
+    describe(@"configuration", ^{
+        it(@"parses Apple Pay configuration from the client token", ^{
+            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil]];
+
+            expect(client.configuration.applePayConfiguration.status).to.equal(BTClientApplePayStatusMock);
+            expect(client.configuration.applePayConfiguration.paymentRequest.countryCode).to.equal(@"US");
+            expect(client.configuration.applePayConfiguration.paymentRequest.currencyCode).to.equal(@"USD");
+            expect(client.configuration.applePayConfiguration.paymentRequest.merchantIdentifier).to.equal(@"apple-pay-merchant-id");
+            expect(client.configuration.applePayConfiguration.paymentRequest.merchantCapabilities).to.equal(PKMerchantCapability3DS);
+            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkAmex);
+            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkMasterCard);
+            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkVisa);
+        });
+    });
 });
 
 describe(@"post analytics event", ^{
     it(@"sends events to the specified URL", ^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
         BTClient *client = [[BTClient alloc]
-                            initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyAnalytics:@{
-                                                                                                                    BTClientTokenKeyURL:analyticsUrl } }]];
+                            initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAnalytics:@{
+                                                                                                                  BTClientTokenKeyURL:analyticsUrl } }]];
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp expect] POST:@"/" parameters:[OCMArg any] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
@@ -76,8 +92,7 @@ describe(@"post analytics event", ^{
     });
 
     it(@"does not send the event if the analytics url is nil", ^{
-        BTClient *client = [[BTClient alloc]
-                            initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:nil]];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAnalytics: @{ BTClientTokenKeyURL: NSNull.null } }]];
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp reject] POST:[OCMArg any] parameters:[OCMArg any] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
@@ -160,13 +175,8 @@ describe(@"offline clients", ^{
                     request.number = number;
                     request.expirationMonth = @"12";
                     request.expirationYear = @"2038";
-                    request.shouldValidate = @YES;
+                    request.shouldValidate = YES;
                     [offlineClient saveCardWithRequest:request
-                                       expirationMonth:@"12"
-                                        expirationYear:@"2038"
-                                                   cvv:nil
-                                            postalCode:nil
-                                              validate:YES
                                                success:^(BTCardPaymentMethod *card) {
                                                    expect(card.typeString).to.equal(typeString);
                                                    done();
@@ -182,7 +192,7 @@ describe(@"offline clients", ^{
                 request.number = @"4111111111111111";
                 request.expirationMonth = @"12";
                 request.expirationYear = @"2038";
-                request.shouldValidate = @YES;
+                request.shouldValidate = YES;
 
                 [offlineClient saveCardWithRequest:request
                                            success:^(BTPaymentMethod *card) {
@@ -230,7 +240,7 @@ describe(@"offline clients", ^{
                 request.number = @"4111111111111111";
                 request.expirationMonth = @"12";
                 request.expirationYear = @"2038";
-                request.shouldValidate = @YES;
+                request.shouldValidate = YES;
 
                 [offlineClient saveCardWithRequest:request
                                            success:nil
@@ -246,7 +256,7 @@ describe(@"offline clients", ^{
                 request.number = @"4111111111111112";
                 request.expirationMonth = @"12";
                 request.expirationYear = @"2038";
-                request.shouldValidate = @YES;
+                request.shouldValidate = YES;
 
                 [offlineClient saveCardWithRequest:request
                                            success:nil
@@ -260,8 +270,8 @@ describe(@"offline clients", ^{
 
             BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
             request.number = @"4111111111111111";
-            request.shouldValidate = @NO;
-            
+            request.shouldValidate = NO;
+
             [offlineClient saveCardWithRequest:request
                                        success:^(BTCardPaymentMethod *card){
 
@@ -286,46 +296,49 @@ describe(@"offline clients", ^{
     });
 
     describe(@"save Apple Pay payments", ^{
-        context(@"in production", ^{
-            beforeEach(^{
-                offlineClient = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{@"apple_pay": @"production"}]];
+        it(@"fails if payment request is nil", ^{
+            OCMockObject *mockLogger = [OCMockObject partialMockForObject:[BTLogger sharedLogger]];
+            [[mockLogger expect] warning:OCMOCK_ANY];
+            [offlineClient saveApplePayPayment:nil success:nil failure:nil];
+            [mockLogger verify];
+        });
+
+        it(@"succeeds if payment is nil in mock mode", ^{
+            waitUntil(^(DoneCallback done){
+                id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
+                [[[paymentRequest stub] andReturn:nil] payment];
+
+                [offlineClient saveApplePayPayment:paymentRequest success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                    expect(applePayPaymentMethod.nonce).to.beANonce();
+                    done();
+                } failure:nil];
             });
+        });
 
-            it(@"fails if payment is nil", ^{
-                waitUntil(^(DoneCallback done){
-                    id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
-                    [[[paymentRequest stub] andReturn:nil] payment];
+        it(@"returns the newly saved account with SDK support for Apple Pay, or calls the failure block if there is no SDK support", ^{
+            waitUntil(^(DoneCallback done){
+                id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
+                if ([PKPayment class] && [PKPaymentToken class]) {
+                    id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
+                    id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
+                    [[[paymentRequest stub] andReturn:payment] payment];
+                    [[[payment stub] andReturn:paymentToken] token];
+                    [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+
+
+                    [offlineClient saveApplePayPayment:paymentRequest
+                                               success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                                                   expect(applePayPaymentMethod.nonce).to.beANonce();
+                                                   done();
+                                               } failure:nil];
+                } else {
                     [offlineClient saveApplePayPayment:paymentRequest success:nil failure:^(NSError *error) {
+                        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                         expect(error.code).to.equal(BTErrorUnsupported);
                         done();
                     }];
-                });
-            });
-
-            it(@"returns the newly saved account with SDK support for Apple Pay, or calls the failure block if there is no SDK support", ^{
-                waitUntil(^(DoneCallback done){
-                    id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
-                    if ([PKPayment class] && [PKPaymentToken class]) {
-                        id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
-                        id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
-
-                        [[[paymentRequest stub] andReturn:payment] payment];
-                        [[[payment stub] andReturn:paymentToken] token];
-                        [[[paymentToken stub] andReturn:[NSData data]] paymentData];
-
-                        [offlineClient saveApplePayPayment:paymentRequest success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                            expect(applePayPaymentMethod.nonce).to.beANonce();
-                            done();
-                        } failure:nil];
-                    } else {
-                        [offlineClient saveApplePayPayment:paymentRequest success:nil failure:^(NSError *error) {
-                            expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                            expect(error.code).to.equal(BTErrorUnsupported);
-                            done();
-                        }];
-                    }
-                });
+                }
             });
         });
     });
@@ -341,6 +354,7 @@ describe(@"offline clients", ^{
         });
 
         describe(@"deprecated signature", ^{
+            __block NSArray *paymentMethods;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             it(@"returns the newly saved card", ^{
@@ -368,7 +382,7 @@ describe(@"offline clients", ^{
                                                            @"Visa": @"4012000077777777",
                                                            @"JCB": @"3530111333300000",
                                                            @"Card": @"1234" };
-                    
+
                     [cardTypesAndNumbers enumerateKeysAndObjectsUsingBlock:^(NSString *typeString, NSString *number, BOOL *stop) {
                         [offlineClient saveCardWithNumber:number
                                           expirationMonth:@"12"
@@ -415,7 +429,7 @@ describe(@"offline clients", ^{
             it(@"assigns each card a unique nonce", ^{
                 waitUntil(^(DoneCallback done) {
                     NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
-                    
+
                     [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038"
                                                   cvv:nil
                                            postalCode:nil
@@ -427,9 +441,9 @@ describe(@"offline clients", ^{
                                                                             [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
                                                                                                    postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
                                                                                                        [uniqueNoncesReturned addObject:card.nonce];
-                                                                                                       
+
                                                                                                        expect(uniqueNoncesReturned).to.haveCountOf(3);
-                                                                                                       
+
                                                                                                        done();
                                                                                                    } failure:nil];
                                                                         } failure:nil];
@@ -439,10 +453,10 @@ describe(@"offline clients", ^{
 
             it(@"accepts a nil success block", ^{
                 waitUntil(^(DoneCallback done) {
-                [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                       postalCode:nil validate:YES success:nil failure:nil];
+                    [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
+                                           postalCode:nil validate:YES success:nil failure:nil];
 
-                wait_for_potential_async_exceptions(done);
+                    wait_for_potential_async_exceptions(done);
                 });
             });
 
@@ -450,7 +464,7 @@ describe(@"offline clients", ^{
                 waitUntil(^(DoneCallback done) {
                     [offlineClient saveCardWithNumber:@"4111111111111112" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
                                            postalCode:nil validate:YES success:nil failure:nil];
-                    
+
                     wait_for_potential_async_exceptions(done);
                 });
             });
@@ -495,7 +509,7 @@ describe(@"offline clients", ^{
                         request.number = @"4111111111111111";
                         request.expirationMonth = @"12";
                         request.expirationYear = @"2038";
-                        request.shouldValidate = @YES;
+                        request.shouldValidate = YES;
                         [offlineClient saveCardWithRequest:request
                                                    success:^(BTPaymentMethod *card){
                                                        [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
@@ -545,7 +559,7 @@ describe(@"offline clients", ^{
 
 describe(@"coding", ^{
     it(@"roundtrips the client", ^{
-        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyClientApiURL: @"http://example.com/api" }]];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyClientApiURL: @"http://example.com/api" }]];
         NSMutableData *data = [NSMutableData data];
         NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
         [client encodeWithCoder:coder];
@@ -563,7 +577,7 @@ describe(@"coding", ^{
 
 describe(@"isEqual:", ^{
     it(@"returns YES if client tokens are equal", ^{
-        NSString *sampleClientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyClientApiURL: @"http://example.com/api" }];
+        NSString *sampleClientTokenString = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyClientApiURL: @"http://example.com/api" }];
         BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString];
         BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString];
         expect(client1).to.equal(client2);
@@ -576,8 +590,16 @@ describe(@"isEqual:", ^{
     });
 
     it(@"returns NO if client tokens are not equal", ^{
-        NSString *sampleClientTokenString1 = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyClientApiURL: @"a-scheme://yo" }];
-        NSString *sampleClientTokenString2 = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyClientApiURL: @"another-scheme://yo" }];
+        NSString *sampleClientTokenString1 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyClientApiURL: @"a-scheme://yo" }];
+        NSString *sampleClientTokenString2 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyClientApiURL: @"another-scheme://yo" }];
+        BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString1];
+        BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString2];
+        expect(client1).notTo.equal(client2);
+    });
+
+    it(@"returns NO if client tokens differ by authorization fingerprint", ^{
+        NSString *sampleClientTokenString1 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint" }];
+        NSString *sampleClientTokenString2 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"another_authorization_fingerprint" }];
         BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString1];
         BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString2];
         expect(client1).notTo.equal(client2);
@@ -589,7 +611,7 @@ describe(@"copy", ^{
     beforeEach(^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
         NSDictionary *additionalParameters = @{BTClientTokenKeyAnalytics: @{BTClientTokenKeyURL: analyticsUrl}};
-        client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:additionalParameters]];
+        client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:additionalParameters]];
     });
 
     it(@"returns a different instance", ^{
@@ -632,7 +654,7 @@ describe(@"Internal helper", ^{
             BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
             expect(paymentMethod.description).to.beNil();
         });
-
+        
         it(@"returns a PayPal payment method with the description if description is not 'PayPal' and non-nil", ^{
             responseDictionary[@"description"] = @"foo";
             BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
@@ -644,54 +666,14 @@ describe(@"Internal helper", ^{
 
 describe(@"merchantId", ^{
     it(@"can be nil (for old client tokens)", ^{
-        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:nil]];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyMerchantId: NSNull.null }]];
         expect(client.merchantId).to.beNil();
     });
-
+    
     it(@"returns the merchant id from the client token", ^{
-        BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTClientTokenKeyMerchantId: @"merchant-id" }]];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyMerchantId: @"merchant-id" }]];
         expect(client.merchantId).to.equal(@"merchant-id");
     });
 });
-
-describe(@"applePayConfiguration", ^{
-
-    __block NSMutableDictionary *baseClientTokenClaims;
-
-    beforeEach(^{
-
-        baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                                                                 BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api"}];
-
-    });
-
-    it(@"returns an instance of BTClientApplePayConfiguration", ^{
-        NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
-        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration).to.beKindOf([BTClientDeprecatedApplePayConfiguration class]);
-    });
-    
-    it(@"is off if no applePay key is present", ^{
-        NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
-        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration.status).to.equal(BTClientApplePayStatusOff);
-    });
-    
-    it(@"is in production mode if an applePay key has a dictionary value and is 'production'", ^{
-        baseClientTokenClaims[@"apple_pay"] = @{@"status": @"production"};
-        NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
-        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration.status).to.equal(BTClientApplePayStatusProduction);
-    });
-    
-    it(@"has a merchantId if applePay value has a merchantId entry", ^{
-        baseClientTokenClaims[@"apple_pay"] = @{@"merchantId": @"abcd"};
-        NSString *clientTokenString = [BTTestClientTokenFactory base64EncodedTokenFromDictionary:baseClientTokenClaims];
-        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-        expect(client.applePayConfiguration.merchantId).to.equal(@"abcd");
-    });
-    
-});
-
 
 SpecEnd

@@ -1,9 +1,5 @@
-#import "BTApplePayPaymentMethod.h"
+#import "BTApplePayPaymentMethod_Internal.h"
 #import "BTMutableApplePayPaymentMethod.h"
-
-@interface BTApplePayPaymentMethod ()
-@property (nonatomic, copy, readwrite) NSString *nonce;
-@end
 
 @implementation BTApplePayPaymentMethod
 

@@ -94,4 +94,38 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 /// @return YES if this payment provider could create a payment method of the specified type
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type;
 
+
+#pragma mark Payment Request Details
+
+/// An array of PKPaymentSummaryItems
+///
+/// Currently only effects Apple Pay payments.
+@property (nonatomic, strong) NSArray *paymentSummaryItems;
+
+/// The set of required billing address fields (defaults to none)
+///
+/// Currently only effects Apple Pay payments.
+@property (nonatomic, assign) PKAddressField requiredBillingAddressFields;
+
+/// The customer's billing address for pre-populating the checkout form
+///
+/// Currently only effects Apple Pay payments.
+@property (nonatomic, assign) ABRecordRef billingAddress;
+
+/// The set of required billing address fields (defaults to none)
+///
+/// Currently only effects Apple Pay payments.
+@property (nonatomic, assign) PKAddressField requiredShippingAddressFields;
+
+/// The customer's billing address for pre-populating the checkout form
+///
+/// Currently only effects Apple Pay payments.
+@property (nonatomic, assign) ABRecordRef shippingAddress;
+
+/// Available shipping methods
+///
+/// Currently only effects Apple Pay payments.
+@property (nonatomic, copy) NSArray *shippingMethods;
+
 @end
+

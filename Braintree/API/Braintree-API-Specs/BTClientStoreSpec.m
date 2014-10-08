@@ -2,6 +2,7 @@
 
 #import "BTClient_Internal.h"
 #import "BTKeychain.h"
+#import "BTTestClientTokenFactory.h"
 
 @interface BTClientTestStore : NSObject
 + (void)reset;
@@ -45,8 +46,8 @@ describe(@"fetchClient:", ^{
     __block NSString *tokenString;
     __block NSString *altTokenString;
     beforeEach(^{
-        tokenString = @"{\"authorizationFingerprint\":\"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key\",\"clientApiUrl\":\"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api\",\"paymentAppSchemes\": [\"bt-test-venmo\",\"bt-test-paypal\"]}";
-        altTokenString = @"{\"authorizationFingerprint\":\"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key\",\"clientApiUrl\":\"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api\",\"paymentAppSchemes\": [\"a-different-thing\"]}";
+        tokenString = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorization_fingerprint": @"authorizationFingerprint1" }];
+        altTokenString = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorization_fingerprint": @"authorizationFingerprint2" }];
     });
 
     it(@"returns nil if no client has been stored", ^{

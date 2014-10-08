@@ -98,9 +98,12 @@
           completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
 
-/// Initiates a payment method creation flow.
+/// Initializes a provider that can initiate various payment method creation flows.
 ///
-/// You should invoke this method after some user interaction takes place (for example, when the user taps your "Pay with PayPal" button.)
+/// You should send `createPaymentMethod:` to the returned BTPaymentProvider after some user interaction takes place (for example, when the user taps your "Pay with PayPal" button.)
+///
+/// In order to receive delegate methods, the caller is responsible for retaining this Braintree
+/// instance or the returned BTPaymentProvider object!
 ///
 /// Payment method authorization may take place via app switch or via a UI flow in a view controller.
 ///

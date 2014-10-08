@@ -86,7 +86,13 @@
 
 - (void)httpRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(BTHTTPCompletionBlock)completionBlock {
 
-    NSURL *fullPathURL = [self.baseURL URLByAppendingPathComponent:aPath];
+    NSURL *fullPathURL;
+    if (aPath) {
+        fullPathURL = [self.baseURL URLByAppendingPathComponent:aPath];
+    } else {
+        fullPathURL = self.baseURL;
+    }
+
     NSURLComponents *components = [NSURLComponents componentsWithString:fullPathURL.absoluteString];
 
     NSMutableDictionary *headers = [NSMutableDictionary dictionaryWithDictionary:self.defaultHeaders];

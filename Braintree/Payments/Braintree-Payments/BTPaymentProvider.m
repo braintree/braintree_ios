@@ -300,4 +300,37 @@
     [self informDelegateDidFailWithError:error];
 }
 
+#pragma mark Payment Request Details
+
+- (void)setPaymentSummaryItems:(NSArray *)paymentSummaryItems {
+    _paymentSummaryItems = paymentSummaryItems;
+    self.applePayPaymentProvider.paymentSummaryItems = paymentSummaryItems;
+}
+
+- (void)setRequiredBillingAddressFields:(PKAddressField)requiredBillingAddressFields {
+    _requiredBillingAddressFields = requiredBillingAddressFields;
+    self.applePayPaymentProvider.requiredBillingAddressFields = requiredBillingAddressFields;
+}
+
+- (void)setRequiredShippingAddressFields:(PKAddressField)requiredShippingAddressFields {
+    _requiredShippingAddressFields = requiredShippingAddressFields;
+    self.applePayPaymentProvider.requiredShippingAddressFields = requiredShippingAddressFields;
+    ;
+}
+
+- (void)setBillingAddress:(ABRecordRef)billingAddress {
+    _billingAddress = billingAddress;
+    self.applePayPaymentProvider.billingAddress = billingAddress;
+}
+
+- (void)setShippingAddress:(ABRecordRef)shippingAddress {
+    _shippingAddress = shippingAddress;
+    self.applePayPaymentProvider.shippingAddress = shippingAddress;
+}
+
+- (void)setShippingMethods:(NSArray *)shippingMethods {
+    _shippingMethods = shippingMethods;
+    self.applePayPaymentProvider.shippingMethods = shippingMethods;
+}
+
 @end

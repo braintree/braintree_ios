@@ -2,6 +2,7 @@
 #import "BTClient.h"
 #import "BTCardPaymentMethod.h"
 #import "BTPayPalPaymentMethod.h"
+#import "BTApplePayPaymentMethod.h"
 #import "BTErrors.h"
 
 SpecBegin(PublicInterfaceSanityCheck)
@@ -77,6 +78,11 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         expect(cardPaymentMethod).to.respondTo(@selector(typeString));
         expect(cardPaymentMethod).to.respondTo(@selector(lastTwo));
         expect(cardPaymentMethod).to.respondTo(@selector(nonce));
+    });
+
+    it(@"includes BTPayPalPaymentMethod", ^{
+        BTApplePayPaymentMethod *applePayPaymentMethod = [OCMockObject mockForClass:[BTApplePayPaymentMethod class]];
+        expect(applePayPaymentMethod).to.respondTo(@selector(nonce));
     });
 
     it(@"includes BTPayPalPaymentMethod", ^{

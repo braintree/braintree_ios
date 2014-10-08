@@ -129,7 +129,7 @@
     request.expirationYear = self.cardForm.expirationYear;
     request.cvv = self.cardForm.cvv;
     request.postalCode = self.cardForm.postalCode;
-    request.shouldValidate = @NO;
+    request.shouldValidate = NO;
 
     [self.braintree.client saveCardWithRequest:request
                                        success:^(BTCardPaymentMethod *card) {

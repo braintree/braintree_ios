@@ -14,7 +14,6 @@
 @interface BTPaymentProvider () <PKPaymentAuthorizationViewControllerDelegate>
 @end
 
-
 SpecBegin(BTPaymentProvider)
 
 __block id client;

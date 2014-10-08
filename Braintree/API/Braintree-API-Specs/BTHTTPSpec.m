@@ -3,7 +3,7 @@
 
 #define kBTHTTPTestProtocolScheme @"bt-http-test"
 #define kBTHTTPTestProtocolHost @"base.example.com"
-#define kBTHTTPTestProtocolBasePath @"/base/path/"
+#define kBTHTTPTestProtocolBasePath @"/base/path"
 #define kBTHTTPTestProtocolPort @1234
 
 @interface BTHTTPTestProtocol : NSURLProtocol
@@ -124,6 +124,17 @@ describe(@"performing a request", ^{
                     NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
 
                     expect(httpRequest.URL.path).to.equal(@"/base/path/200.json");
+                    done();
+                }];
+            });
+        });
+
+        it(@"hits the base URL if the path is nil", ^{
+            waitUntil(^(DoneCallback done){
+                [http GET:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                    NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
+
+                    expect(httpRequest.URL.path).to.equal(@"/base/path");
                     done();
                 }];
             });
@@ -271,7 +282,7 @@ describe(@"performing a request", ^{
                 [http GET:@"stub://200/resource" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
                     NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponse:response];
                     NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
-                    expect(requestHeaders[@"User-Agent"]).to.match(@"^Braintree/iOS/\\d+\\.\\d+\\.\\d+$");
+                    expect(requestHeaders[@"User-Agent"]).to.match(@"^Braintree/iOS/\\d+\\.\\d+\\.\\d+(-[0-9a-zA-Z-]+)?$");
                     done();
                 }];
             });

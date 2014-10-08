@@ -303,7 +303,7 @@
             request.expirationYear = cardForm.expirationYear;
             request.cvv = cardForm.cvv;
             request.postalCode = cardForm.postalCode;
-            request.shouldValidate = @YES;
+            request.shouldValidate = YES;
 
             [client saveCardWithRequest:request
                                success:^(BTCardPaymentMethod *card) {
