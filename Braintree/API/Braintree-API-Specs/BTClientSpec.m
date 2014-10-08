@@ -175,7 +175,7 @@ describe(@"offline clients", ^{
                     request.number = number;
                     request.expirationMonth = @"12";
                     request.expirationYear = @"2038";
-                    request.shouldValidate = @YES;
+                    request.shouldValidate = YES;
                     [offlineClient saveCardWithRequest:request
                                                success:^(BTCardPaymentMethod *card) {
                                                    expect(card.typeString).to.equal(typeString);
@@ -192,7 +192,7 @@ describe(@"offline clients", ^{
                 request.number = @"4111111111111111";
                 request.expirationMonth = @"12";
                 request.expirationYear = @"2038";
-                request.shouldValidate = @YES;
+                request.shouldValidate = YES;
 
                 [offlineClient saveCardWithRequest:request
                                            success:^(BTPaymentMethod *card) {
@@ -240,7 +240,7 @@ describe(@"offline clients", ^{
                 request.number = @"4111111111111111";
                 request.expirationMonth = @"12";
                 request.expirationYear = @"2038";
-                request.shouldValidate = @YES;
+                request.shouldValidate = YES;
 
                 [offlineClient saveCardWithRequest:request
                                            success:nil
@@ -256,7 +256,7 @@ describe(@"offline clients", ^{
                 request.number = @"4111111111111112";
                 request.expirationMonth = @"12";
                 request.expirationYear = @"2038";
-                request.shouldValidate = @YES;
+                request.shouldValidate = YES;
 
                 [offlineClient saveCardWithRequest:request
                                            success:nil
@@ -270,7 +270,7 @@ describe(@"offline clients", ^{
 
             BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
             request.number = @"4111111111111111";
-            request.shouldValidate = @NO;
+            request.shouldValidate = NO;
 
             [offlineClient saveCardWithRequest:request
                                        success:^(BTCardPaymentMethod *card){
@@ -509,7 +509,7 @@ describe(@"offline clients", ^{
                         request.number = @"4111111111111111";
                         request.expirationMonth = @"12";
                         request.expirationYear = @"2038";
-                        request.shouldValidate = @YES;
+                        request.shouldValidate = YES;
                         [offlineClient saveCardWithRequest:request
                                                    success:^(BTPaymentMethod *card){
                                                        [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
