@@ -131,8 +131,6 @@
 		1696821E192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968212192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m */; };
 		1696821F192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 16968213192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.xib */; };
 		169D5F8D19660C4100C2A50D /* BTAnalyticsMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 169D5F8C19660C4100C2A50D /* BTAnalyticsMetadataSpec.m */; };
-		16E7B05B19E674B10057ABB7 /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 16E7B05A19E674B10057ABB7 /* screenshot.png */; };
-		16E7B05D19E674BC0057ABB7 /* CONTRIBUTING.md in Sources */ = {isa = PBXBuildFile; fileRef = 16E7B05C19E674BC0057ABB7 /* CONTRIBUTING.md */; };
 		16F9996B19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F9996A19AE729D007ADA2C /* BraintreeDemoCustomPayPalButtonManager.m */; };
 		16F9996E19AE73A3007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F9996D19AE72A9007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m */; };
 		1EFB0A0363CB44C1BBC839D9 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
@@ -157,7 +155,6 @@
 		A72B37FE19633826009AD2F5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		A72B37FF19633826009AD2F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
-		A72B381719633AB0009AD2F5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A72B3815196339C7009AD2F5 /* InfoPlist.strings */; };
 		A72B38191963590E009AD2F5 /* BraintreeDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */; };
 		A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
@@ -624,7 +621,6 @@
 		A72B3812196339C7009AD2F5 /* Braintree-Data-Specs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Braintree-Data-Specs-Info.plist"; sourceTree = "<group>"; };
 		A72B3813196339C7009AD2F5 /* Braintree-Data-Specs-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-Data-Specs-Prefix.pch"; sourceTree = "<group>"; };
 		A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDataSpec.m; sourceTree = "<group>"; };
-		A72B3816196339C7009AD2F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A72B381D196367BF009AD2F5 /* BTData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTData.h; sourceTree = "<group>"; };
 		A72B381E196367BF009AD2F5 /* BTData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTData.m; sourceTree = "<group>"; };
 		A744BEFD1963805900B61C23 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -1535,13 +1531,13 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		16968182192D9A3D00120846 /* Braintre-Paypal-Acceptance-Specs */ = {
+		16968182192D9A3D00120846 /* Braintree-Paypal-Acceptance-Specs */ = {
 			isa = PBXGroup;
 			children = (
 				1696817C192D9A3D00120846 /* BTPayPal_AcceptanceSpec.m */,
 				16968181192D9A3D00120846 /* Supporting Files */,
 			);
-			path = "Braintre-Paypal-Acceptance-Specs";
+			path = "Braintree-Paypal-Acceptance-Specs";
 			sourceTree = "<group>";
 		};
 		169681C6192D9A6800120846 /* Supporting Files */ = {
@@ -1672,10 +1668,10 @@
 		16E7B02D19E637340057ABB7 /* Specs */ = {
 			isa = PBXGroup;
 			children = (
-				16968182192D9A3D00120846 /* Braintre-Paypal-Acceptance-Specs */,
+				16968182192D9A3D00120846 /* Braintree-Paypal-Acceptance-Specs */,
 				162175A6192D9505008DC35D /* Braintree-API-Integration-Specs */,
 				1621758E192D94FB008DC35D /* Braintree-API-Specs */,
-				A72B3811196339C7009AD2F5 /* Braintree-Data-Integration-Specs */,
+				A72B3811196339C7009AD2F5 /* Braintree-Data-Specs */,
 				A7CB616E19B7B13000E972A8 /* Braintree-Payments-Specs */,
 				1607FE82192D97D60099D504 /* Braintree-PayPal-Integration-Specs */,
 				1607FE76192D97CD0099D504 /* Braintree-PayPal-Specs */,
@@ -1730,6 +1726,15 @@
 				16E7B05819E644700057ABB7 /* PayPalTouch.h */,
 			);
 			path = mSDK;
+			sourceTree = "<group>";
+		};
+		16E7B05E19E6798E0057ABB7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A72B3812196339C7009AD2F5 /* Braintree-Data-Specs-Info.plist */,
+				A72B3813196339C7009AD2F5 /* Braintree-Data-Specs-Prefix.pch */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		16F5AF4119B6A7AA0043A412 /* Collection Views */ = {
@@ -1805,15 +1810,13 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		A72B3811196339C7009AD2F5 /* Braintree-Data-Integration-Specs */ = {
+		A72B3811196339C7009AD2F5 /* Braintree-Data-Specs */ = {
 			isa = PBXGroup;
 			children = (
-				A72B3812196339C7009AD2F5 /* Braintree-Data-Specs-Info.plist */,
-				A72B3813196339C7009AD2F5 /* Braintree-Data-Specs-Prefix.pch */,
 				A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */,
-				A72B3815196339C7009AD2F5 /* InfoPlist.strings */,
+				16E7B05E19E6798E0057ABB7 /* Supporting Files */,
 			);
-			path = "Braintree-Data-Integration-Specs";
+			path = "Braintree-Data-Specs";
 			sourceTree = "<group>";
 		};
 		A75DA343192138F000D997A2 = {
@@ -2434,7 +2437,6 @@
 				2D92BC6919BADB01009663B2 /* Braintree-Payments-Specs-Info.plist in Resources */,
 				1621752E192D922F008DC35D /* BraintreeDemoBraintreeInitializationDemoViewController.xib in Resources */,
 				16217532192D922F008DC35D /* BraintreeDemoTokenizationDemoViewController.xib in Resources */,
-				16E7B05B19E674B10057ABB7 /* screenshot.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2509,7 +2511,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A72B381719633AB0009AD2F5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3039,7 +3040,6 @@
 				1621752F192D922F008DC35D /* BraintreeDemoOneTouchDemoViewController.m in Sources */,
 				1614DD0919BA5C5B0037A3D0 /* BraintreeDemoCustomMultiPaymentButtonManager.m in Sources */,
 				1621752A192D922F008DC35D /* BraintreeDemoTransactionService.m in Sources */,
-				16E7B05D19E674BC0057ABB7 /* CONTRIBUTING.md in Sources */,
 				16217538192D922F008DC35D /* main.m in Sources */,
 				16F9996E19AE73A3007ADA2C /* BraintreeDemoCustomVenmoButtonManager.m in Sources */,
 			);
@@ -3343,14 +3343,6 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		A72B3815196339C7009AD2F5 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A72B3816196339C7009AD2F5 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		A7B7433119A3E094000A6A7A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -3411,7 +3403,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/Braintree/Data/Braintree-Data-Demo/Braintree-Data-Demo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
@@ -3461,7 +3452,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/Braintree/Data/Braintree-Data-Demo/Braintree-Data-Demo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -3514,7 +3504,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -3554,7 +3543,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -3600,7 +3588,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -3640,7 +3627,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -3686,7 +3672,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/UI/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -3726,7 +3711,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/UI/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -3932,7 +3916,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/API/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -3972,7 +3955,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/API/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -4018,7 +4000,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/API/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -4058,7 +4039,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/API/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -4106,7 +4086,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4151,7 +4130,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4201,7 +4179,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4244,7 +4221,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/PayPal/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4295,7 +4271,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/API/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4341,7 +4316,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/API/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4393,7 +4367,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/UI/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4439,7 +4412,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Braintree/UI/$(PRODUCT_NAME)/$(PRODUCT_NAME)-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4488,7 +4460,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Specs/Braintree-Payments-Specs/Supporting Files/Braintree-Payments-Specs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4528,7 +4499,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Specs/Braintree-Payments-Specs/Supporting Files/Braintree-Payments-Specs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4576,7 +4546,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Specs/Braintree-Data-Integration-Specs/Braintree-Data-Specs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4619,7 +4588,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Specs/Braintree-Data-Integration-Specs/Braintree-Data-Specs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4774,7 +4742,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Specs/Braintree-Venmo-Specs/Supporting Files/Braintree-Venmo-Specs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4814,7 +4781,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "Specs/Braintree-Venmo-Specs/Supporting Files/Braintree-Venmo-Specs-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

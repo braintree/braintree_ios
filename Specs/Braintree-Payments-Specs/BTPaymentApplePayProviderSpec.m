@@ -136,6 +136,7 @@ describe(@"paymentAuthorizationViewControllerAvailable", ^{
                 BTPaymentApplePayProvider *provider = testApplePayProvider(NO);
                 id mockApplePayPaymentAuthorizationViewController = [OCMockObject mockForClass:[PKPaymentAuthorizationViewController class]];
                 [[[[mockApplePayPaymentAuthorizationViewController stub] andReturnValue:OCMOCK_VALUE(NO)] classMethod] canMakePayments];
+                [[[[mockApplePayPaymentAuthorizationViewController stub] andReturnValue:OCMOCK_VALUE(NO)] classMethod] canMakePaymentsUsingNetworks:OCMOCK_ANY];
                 expect([provider paymentAuthorizationViewControllerCanMakePayments]).to.beFalsy();
             });
 
