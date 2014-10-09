@@ -21,8 +21,8 @@ task :distribute => %w[distribute:build distribute:hockeyapp]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
-VERSION_FILE = "Braintree/API/Braintree-API/Public/Braintree-Version.h"
-DEMO_PLIST = "Braintree-Demo/Braintree-Demo-Info.plist"
+VERSION_FILE = "Braintree/API/@Public/Braintree-Version.h"
+DEMO_PLIST = "Demos/Braintree-Demo/Supporting Files/Braintree-Demo-Info.plist"
 PUBLIC_REMOTE_NAME = "public"
 
 class << self
@@ -63,7 +63,7 @@ namespace :spec do
 
     def with_https_server &block
       begin
-        pid = Process.spawn('ruby ./Braintree/api/Braintree-API-Integration-Specs/SSL/https_server.rb')
+        pid = Process.spawn('ruby ./Specs/Braintree-API-Integration-Specs/SSL/https_server.rb')
         puts "Started server (#{pid})"
         yield
         puts "Killing server (#{pid})"
@@ -159,7 +159,7 @@ task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_all_de
 namespace :sanity_checks do
   desc 'Check for pending tests'
   task :pending_specs do
-    run "ack 'fit\\(|fdescribe\\(' Braintree-Specs Braintree" and fail "Please do not commit pending specs."
+    run "ack 'fit\\(|fdescribe\\(' Specs" and fail "Please do not commit pending specs."
   end
 
   desc 'Verify that all demo apps Build successfully'
@@ -195,7 +195,7 @@ def apple_doc_command
 end
 
 def apple_doc_files
-  %x{find Braintree -name "*.h"}.split("\n").reject { |name| name =~ /PayPalMobileSDK/}.map { |name| name.gsub(' ', '\\ ')}.join(' ')
+  %x{find Braintree -name "*.h"}.split("\n").reject { |name| name =~ /mSDK/}.map { |name| name.gsub(' ', '\\ ')}.join(' ')
 end
 
 desc "Generate documentation via appledoc"
@@ -278,9 +278,9 @@ namespace :release do
     File.open(VERSION_FILE, "w") { |f| f.puts version_header }
 
     run! "pod update Braintree"
-    run! "plutil -replace CFBundleVersion -string #{current_version} -- #{DEMO_PLIST}"
-    run! "plutil -replace CFBundleShortVersionString -string #{current_version} -- #{DEMO_PLIST}"
-    run! "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock #{DEMO_PLIST} #{VERSION_FILE}"
+    run! "plutil -replace CFBundleVersion -string #{current_version} -- '#{DEMO_PLIST}'"
+    run! "plutil -replace CFBundleShortVersionString -string #{current_version} -- '#{DEMO_PLIST}'"
+    run! "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' #{VERSION_FILE}"
   end
 
   desc  "Test."
@@ -339,6 +339,6 @@ end
 
 desc "Generate code for pinned certificates. (Copies *.crt -> BTAPIPinnedCertificates.{h,m})"
 task :generate_pinned_certificates_code do
-  run! "cd #{File.join(File.dirname(__FILE__), "Braintree/api/Braintree-API/Networking/Certificates")} && ./codify_certificates.sh"
+  run! "cd #{File.join(File.dirname(__FILE__), "Braintree/API/Networking/Certificates")} && ./codify_certificates.sh"
 end
 
