@@ -17,8 +17,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1607FE89192D97FF0099D504"
-               BuildableName = "Braintree-Payments-UI-Specs.xctest"
-               BlueprintName = "Braintree-Payments-UI-Specs"
+               BuildableName = "Braintree-UI-Specs.xctest"
+               BlueprintName = "Braintree-UI-Specs"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>

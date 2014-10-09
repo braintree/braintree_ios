@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "169681D5192D9AC700120846"
-               BuildableName = "Braintree-Payments-UI-Demo.app"
-               BlueprintName = "Braintree-Payments-UI-Demo"
+               BuildableName = "Braintree-UI-Demo.app"
+               BlueprintName = "Braintree-UI-Demo"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "169681D5192D9AC700120846"
-            BuildableName = "Braintree-Payments-UI-Demo.app"
-            BlueprintName = "Braintree-Payments-UI-Demo"
+            BuildableName = "Braintree-UI-Demo.app"
+            BlueprintName = "Braintree-UI-Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -52,8 +52,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "169681D5192D9AC700120846"
-            BuildableName = "Braintree-Payments-UI-Demo.app"
-            BlueprintName = "Braintree-Payments-UI-Demo"
+            BuildableName = "Braintree-UI-Demo.app"
+            BlueprintName = "Braintree-UI-Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -70,8 +70,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "169681D5192D9AC700120846"
-            BuildableName = "Braintree-Payments-UI-Demo.app"
-            BlueprintName = "Braintree-Payments-UI-Demo"
+            BuildableName = "Braintree-UI-Demo.app"
+            BlueprintName = "Braintree-UI-Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
