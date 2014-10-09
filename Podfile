@@ -15,7 +15,7 @@ target 'Tests' do
             'Braintree-Data-Specs'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Data', :path => '.'
-  pod 'Specta', :git => 'https://github.com/specta/specta.git', :branch => '0.3-wip'
+  pod 'Specta', :git => 'https://github.com/specta/specta.git', :tag => 'v0.3.0.beta1'
   pod 'Expecta', '~> 0.3.0'
   pod 'OCMock', '~> 2.2.3'
   pod 'OCHamcrest', '~> 3.0.1'
