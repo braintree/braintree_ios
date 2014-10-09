@@ -16,7 +16,10 @@ describe(@"canAuthorizeApplePayPayment", ^{
     testApplePayProvider = ^BTPaymentApplePayProvider *(BOOL isSimulator, BTClientApplePayStatus applePayStatus, BOOL paymentAuthorizationViewControllerAvailable){
         id mockClient = [OCMockObject mockForClass:[BTClient class]];
         BTPaymentApplePayProvider *applePayProvider = [[BTPaymentApplePayProvider alloc] initWithClient:mockClient];
-        applePayProvider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
+
+        if ([PKPaymentSummaryItem class]) {
+            applePayProvider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
+        }
 
         id mockConfiguration = [OCMockObject mockForClass:[BTClientConfiguration class]];
         id mockApplePayConfiguration = [OCMockObject mockForClass:[BTClientApplePayConfiguration class]];
@@ -25,10 +28,12 @@ describe(@"canAuthorizeApplePayPayment", ^{
         [[[mockApplePayPayment stub] andReturnValue:OCMOCK_VALUE(isSimulator)] isSimulator];
         [[[mockApplePayPayment stub] andReturnValue:OCMOCK_VALUE(paymentAuthorizationViewControllerAvailable)] paymentAuthorizationViewControllerCanMakePayments];
 
-        [[[mockApplePayConfiguration stub] andReturnValue:OCMOCK_VALUE(applePayStatus)] status];
-        [[[mockApplePayConfiguration stub] andReturn:@[ PKPaymentNetworkAmex,
-                                                        PKPaymentNetworkVisa,
-                                                        PKPaymentNetworkMasterCard ]] supportedNetworks];
+        if ([PKPaymentSummaryItem class]) {
+            [[[mockApplePayConfiguration stub] andReturnValue:OCMOCK_VALUE(applePayStatus)] status];
+            [[[mockApplePayConfiguration stub] andReturn:@[ PKPaymentNetworkAmex,
+                                                            PKPaymentNetworkVisa,
+                                                            PKPaymentNetworkMasterCard ]] supportedNetworks];
+        }
         [[[mockConfiguration stub] andReturn:mockApplePayConfiguration] applePayConfiguration];
         [[[mockClient stub] andReturn:mockConfiguration] configuration];
 
@@ -72,6 +77,10 @@ describe(@"paymentAuthorizationViewControllerAvailable", ^{
     BTPaymentApplePayProvider *(^testApplePayProvider)(BOOL isSimulator);
 
     testApplePayProvider = ^BTPaymentApplePayProvider *(BOOL isSimulator){
+        if (![PKPaymentRequest class]) {
+            return nil;
+        }
+
         id mockClient = [OCMockObject mockForClass:[BTClient class]];
         BTPaymentApplePayProvider *applePayProvider = [[BTPaymentApplePayProvider alloc] initWithClient:mockClient];
 
@@ -87,6 +96,9 @@ describe(@"paymentAuthorizationViewControllerAvailable", ^{
 
         [[[mockApplePayConfiguration stub] andReturnValue:OCMOCK_VALUE(BTClientApplePayStatusProduction)] status];
         [[[mockApplePayConfiguration stub] andReturn:fakePaymentRequest] paymentRequest];
+        [[[mockApplePayConfiguration stub] andReturn:@[ PKPaymentNetworkAmex,
+                                                        PKPaymentNetworkVisa,
+                                                        PKPaymentNetworkMasterCard ]] supportedNetworks];
         [[[mockConfiguration stub] andReturn:mockApplePayConfiguration] applePayConfiguration];
         [[[mockClient stub] andReturn:mockConfiguration] configuration];
 
@@ -154,19 +166,24 @@ describe(@"authorizeApplePay", ^{
         id mockApplePayConfiguration = [OCMockObject mockForClass:[BTClientApplePayConfiguration class]];
         id mockApplePayPayment = [OCMockObject partialMockForObject:applePayProvider];
 
-        PKPaymentRequest *fakePaymentRequest = [[PKPaymentRequest alloc] init];
-        fakePaymentRequest.merchantIdentifier = @"a merchant";
-        fakePaymentRequest.supportedNetworks = @[ PKPaymentNetworkAmex ];
-        fakePaymentRequest.countryCode = @"US";
-        fakePaymentRequest.currencyCode = @"USD";
-        fakePaymentRequest.merchantCapabilities = PKMerchantCapability3DS;
-        fakePaymentRequest.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Item" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
-
         [[[mockApplePayPayment stub] andReturnValue:OCMOCK_VALUE(isSimulator)] isSimulator];
         [[[mockApplePayPayment stub] andReturnValue:OCMOCK_VALUE(paymentAuthorizationViewControllerAvailable)] paymentAuthorizationViewControllerCanMakePayments];
 
         [[[mockApplePayConfiguration stub] andReturnValue:OCMOCK_VALUE(BTClientApplePayStatusProduction)] status];
-        [[[mockApplePayConfiguration stub] andReturn:fakePaymentRequest] paymentRequest];
+        
+        if ([PKPaymentRequest class]) {
+            PKPaymentRequest *fakePaymentRequest = [[PKPaymentRequest alloc] init];
+            fakePaymentRequest.merchantIdentifier = @"a merchant";
+            fakePaymentRequest.supportedNetworks = @[ PKPaymentNetworkAmex ];
+            fakePaymentRequest.countryCode = @"US";
+            fakePaymentRequest.currencyCode = @"USD";
+            fakePaymentRequest.merchantCapabilities = PKMerchantCapability3DS;
+            fakePaymentRequest.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Item" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
+            [[[mockApplePayConfiguration stub] andReturn:fakePaymentRequest] paymentRequest];
+            [[[mockApplePayConfiguration stub] andReturn:@[ PKPaymentNetworkAmex,
+                                                            PKPaymentNetworkVisa,
+                                                            PKPaymentNetworkMasterCard ]] supportedNetworks];
+        }
         [[[mockConfiguration stub] andReturn:mockApplePayConfiguration] applePayConfiguration];
         [[[mockClient stub] andReturn:mockConfiguration] configuration];
 
@@ -195,7 +212,6 @@ describe(@"authorizeApplePay", ^{
                 OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
                 BTPaymentApplePayProvider *provider = testApplePayProvider(NO, YES);
-                provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
                 provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
 
                 [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -234,7 +250,6 @@ describe(@"authorizeApplePay", ^{
                 OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
                 BTPaymentApplePayProvider *provider = testApplePayProvider(NO, YES);
-                provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
                 provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
 
                 [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -256,7 +271,9 @@ describe(@"authorizeApplePay", ^{
             OCMockObject *delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
             BTPaymentApplePayProvider *provider = testApplePayProvider(NO, NO);
+            if ([PKPaymentSummaryItem class]) {
                 provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
+            }
             provider.delegate = (id<BTPaymentMethodCreationDelegate>)delegate;
 
             [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg any]];

@@ -1,7 +1,7 @@
 #import "DeviceCollectorSDK.h"
 #import "BTData.h"
 #import "BTTestClientTokenFactory.h"
-#import "BTClientToken+BTPayPal.h"
+#import "BTClientToken.h"
 #import "BTClient+BTPayPal.h"
 
 @interface TestDataDelegate : NSObject <BTDataDelegate>
@@ -29,7 +29,7 @@
 NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
     NSError *error;
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return [data base64EncodedStringWithOptions:0];
 }
 
 SpecBegin(BraintreeData)
@@ -38,7 +38,8 @@ __block NSMutableDictionary *baseClientTokenClaims;
 __block void (^waitForAssertion)(BOOL (^assertion)(void));
 
 beforeEach(^{
-    baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
+    baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyVersion: @2,
+                                                                             BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
                                                                              BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api" }];
 
 
@@ -114,45 +115,47 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
     });
 
     sharedExamplesFor(@"a successful data collector", ^(NSDictionary *testData){
-        it([NSString stringWithFormat:@"successfully starts and completes in %@ environment", testData[@"environmentName"]], ^AsyncBlock{
-            BTDataEnvironment env = [testData[@"environment"] integerValue];
-
-            baseClientTokenClaims[@"paypal"] = testData[@"paypalConfiguration"];
-            baseClientTokenClaims[@"paypalEnabled"] = @YES;
-
-            BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(baseClientTokenClaims)];
-
-            TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
-            BTData *data = [[BTData alloc] initWithClient:client environment:env];
-            data.delegate = delegate;
-            [data setFraudMerchantId:@"600000"];
-
-            NSString *deviceDataString = [data collectDeviceData];
-
-            NSDictionary *deviceDataDictionary = [NSJSONSerialization JSONObjectWithData:[deviceDataString dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                 options:0
-                                                                                   error:NULL];
-
-            expect(deviceDataDictionary[@"fraud_merchant_id"]).to.equal(@"600000");
-            expect(deviceDataDictionary[@"device_session_id"]).to.haveCountOf(32);
-
-            if ([testData[@"shouldIncludeCorrelationId"] boolValue]) {
-                expect(deviceDataDictionary[@"correlation_id"]).to.haveCountOf(32);
-            } else {
-                expect(deviceDataDictionary[@"correlation_id"]).to.beNil();
-            }
-
-            [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
-
-            waitForAssertion(^BOOL{
-                return delegate.didStart;
+        it([NSString stringWithFormat:@"successfully starts and completes in %@ environment", testData[@"environmentName"]], ^{
+            waitUntil(^(DoneCallback done) {
+                BTDataEnvironment env = [testData[@"environment"] integerValue];
+                
+                baseClientTokenClaims[@"paypal"] = testData[@"paypalConfiguration"];
+                baseClientTokenClaims[@"paypalEnabled"] = @YES;
+                
+                BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(baseClientTokenClaims)];
+                
+                TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
+                BTData *data = [[BTData alloc] initWithClient:client environment:env];
+                data.delegate = delegate;
+                [data setFraudMerchantId:@"600000"];
+                
+                NSString *deviceDataString = [data collectDeviceData];
+                
+                NSDictionary *deviceDataDictionary = [NSJSONSerialization JSONObjectWithData:[deviceDataString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                     options:0
+                                                                                       error:NULL];
+                
+                expect(deviceDataDictionary[@"fraud_merchant_id"]).to.equal(@"600000");
+                expect(deviceDataDictionary[@"device_session_id"]).to.haveCountOf(32);
+                
+                if ([testData[@"shouldIncludeCorrelationId"] boolValue]) {
+                    expect(deviceDataDictionary[@"correlation_id"]).to.haveCountOf(32);
+                } else {
+                    expect(deviceDataDictionary[@"correlation_id"]).to.beNil();
+                }
+                
+                [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
+                
+                waitForAssertion(^BOOL{
+                    return delegate.didStart;
+                });
+                
+                waitForAssertion(^BOOL{
+                    return delegate.didComplete;
+                });
+                
+                done();
             });
-
-            waitForAssertion(^BOOL{
-                return delegate.didComplete;
-            });
-
-            done();
         });
 
         it(@"ignores application correlation id if PayPal is disabled", ^{
@@ -203,8 +206,8 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
         });
     });
 
-    itBehavesLike(@"a successful deprecated data collector", @{@"environmentName": @"Sandbox", @"environment": @(BTDataEnvironmentSandbox)});
-    itBehavesLike(@"a successful deprecated data collector", @{@"environmentName": @"Production", @"environment": @(BTDataEnvironmentProduction)});
+    itBehavesLike(@"a deprecated successful data collector", @{@"environmentName": @"Sandbox", @"environment": @(BTDataEnvironmentSandbox)});
+    itBehavesLike(@"a deprecated successful data collector", @{@"environmentName": @"Production", @"environment": @(BTDataEnvironmentProduction)});
 
     itBehavesLike(@"a successful data collector", @{ @"environmentName": @"Sandbox",
                                                      @"environment": @(BTDataEnvironmentSandbox),

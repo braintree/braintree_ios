@@ -23,14 +23,16 @@
         self.paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
         self.paymentProvider.delegate = self.delegate;
 
-        self.paymentProvider.paymentSummaryItems = @[
-                                                     [PKPaymentSummaryItem summaryItemWithLabel:@"An amazing product"
-                                                                                         amount:[NSDecimalNumber decimalNumberWithString:@"1"]],
-                                                     [PKPaymentSummaryItem summaryItemWithLabel:@"An unbelievable price"
-                                                                                         amount:[NSDecimalNumber decimalNumberWithString:@"1"]],
-                                                     [PKPaymentSummaryItem summaryItemWithLabel:@"Grand Total"
-                                                                                         amount:[NSDecimalNumber decimalNumberWithString:@"2"]]
-                                                     ];
+        if ([PKPaymentSummaryItem class]) {
+            self.paymentProvider.paymentSummaryItems = @[
+                                                         [PKPaymentSummaryItem summaryItemWithLabel:@"An amazing product"
+                                                                                             amount:[NSDecimalNumber decimalNumberWithString:@"1"]],
+                                                         [PKPaymentSummaryItem summaryItemWithLabel:@"An unbelievable price"
+                                                                                             amount:[NSDecimalNumber decimalNumberWithString:@"1"]],
+                                                         [PKPaymentSummaryItem summaryItemWithLabel:@"Grand Total"
+                                                                                             amount:[NSDecimalNumber decimalNumberWithString:@"2"]]
+                                                         ];
+        }
 
         self.paymentProvider.requiredBillingAddressFields = PKAddressFieldPostalAddress;
 

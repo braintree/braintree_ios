@@ -17,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Df5-On-388">
-                    <rect key="frame" x="136.5" y="252" width="140" height="42"/>
+                    <rect key="frame" x="137" y="252" width="140" height="42"/>
                     <state key="normal" image="ApplePayBTN_42pt__black_textLogo_">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>

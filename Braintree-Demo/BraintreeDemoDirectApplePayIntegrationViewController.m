@@ -24,6 +24,18 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    if (![PKPaymentAuthorizationViewController class]) {
+        self.applePayButton.hidden = YES;
+        [UIAlertView showWithTitle:@"Apple Pay Error"
+                           message:@"Apple Pay is not available on this version of iOS"
+                             style:UIAlertViewStyleDefault
+                 cancelButtonTitle:@"OK"
+                 otherButtonTitles:nil
+                          tapBlock:nil];
+    }
+}
+
 - (NSArray *)supportedNetworks {
     return @[ PKPaymentNetworkAmex ];
 }

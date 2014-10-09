@@ -65,14 +65,19 @@ describe(@"BTClient", ^{
         it(@"parses Apple Pay configuration from the client token", ^{
             BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil]];
 
-            expect(client.configuration.applePayConfiguration.status).to.equal(BTClientApplePayStatusMock);
-            expect(client.configuration.applePayConfiguration.paymentRequest.countryCode).to.equal(@"US");
-            expect(client.configuration.applePayConfiguration.paymentRequest.currencyCode).to.equal(@"USD");
-            expect(client.configuration.applePayConfiguration.paymentRequest.merchantIdentifier).to.equal(@"apple-pay-merchant-id");
-            expect(client.configuration.applePayConfiguration.paymentRequest.merchantCapabilities).to.equal(PKMerchantCapability3DS);
-            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkAmex);
-            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkMasterCard);
-            expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkVisa);
+            if ([PKPaymentRequest class]) {
+                expect(client.configuration.applePayConfiguration.status).to.equal(BTClientApplePayStatusMock);
+                expect(client.configuration.applePayConfiguration.paymentRequest.countryCode).to.equal(@"US");
+                expect(client.configuration.applePayConfiguration.paymentRequest.currencyCode).to.equal(@"USD");
+                expect(client.configuration.applePayConfiguration.paymentRequest.merchantIdentifier).to.equal(@"apple-pay-merchant-id");
+                expect(client.configuration.applePayConfiguration.paymentRequest.merchantCapabilities).to.equal(PKMerchantCapability3DS);
+                expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkAmex);
+                expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkMasterCard);
+                expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkVisa);
+            } else {
+                expect(client.configuration.applePayConfiguration).to.beKindOf([BTClientApplePayConfiguration class]);
+                expect(client.configuration.applePayConfiguration.paymentRequest).to.beNil();
+            }
         });
     });
 });
@@ -309,9 +314,17 @@ describe(@"offline clients", ^{
                 [[[paymentRequest stub] andReturn:nil] payment];
 
                 [offlineClient saveApplePayPayment:paymentRequest success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                    expect(applePayPaymentMethod.nonce).to.beANonce();
-                    done();
-                } failure:nil];
+                    if ([PKPayment class]) {
+                        expect(applePayPaymentMethod.nonce).to.beANonce();
+                        done();
+                    }
+                } failure:^(NSError *error) {
+                    if (![PKPayment class]) {
+                        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                        expect(error.code).to.equal(BTErrorUnsupported);
+                        done();
+                    }
+                }];
             });
         });
 
