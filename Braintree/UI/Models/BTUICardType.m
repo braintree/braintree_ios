@@ -1,3 +1,5 @@
+@import UIKit;
+
 #import "BTUICardType.h"
 #import "BTUIUtil.h"
 

@@ -1,3 +1,5 @@
+@import UIKit;
+
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTURLUtils.h"
 

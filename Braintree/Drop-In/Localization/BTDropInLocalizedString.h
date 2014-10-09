@@ -1,3 +1,5 @@
+@import Foundation;
+
 #define BTDropInLocalizedString(KEY) [BTDropInLocalizedString KEY]
 
 @interface BTDropInLocalizedString : NSObject

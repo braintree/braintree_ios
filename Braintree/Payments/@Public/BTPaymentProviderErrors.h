@@ -1,3 +1,5 @@
+@import Foundation;
+
 #pragma mark Braintree-Payments Errors
 
 /// BTPaymentAuthorization NSError Domain

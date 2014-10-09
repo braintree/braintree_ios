@@ -1,3 +1,5 @@
+@import UIKit;
+
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
 
