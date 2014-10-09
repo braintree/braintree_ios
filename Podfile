@@ -15,7 +15,7 @@ target 'Tests' do
             'Braintree-Data-Specs'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Data', :path => '.'
-  pod 'Specta', :git => 'https://github.com/specta/specta.git', :tag => 'v0.3.0.beta1'
+  pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
   pod 'Expecta', '~> 0.3.0'
   pod 'OCMock', '~> 2.2.3'
   pod 'OCHamcrest', '~> 3.0.1'
@@ -29,7 +29,7 @@ target 'Braintree-Dev' do
             'Braintree-API-Demo',
             'Braintree-PayPal-Demo',
             'Braintree-Data-Demo',
-            'Braintree-Payments-UI-Demo'
+            'Braintree-UI-Demo'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'HockeySDK'
