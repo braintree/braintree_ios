@@ -35,6 +35,11 @@
     NSLog(@"Collected data %@", deviceData);
 }
 
+- (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {
+    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+    [locationManager requestWhenInUseAuthorization];
+}
+
 - (void)btDataDidStartCollectingData:(BTData *)data
 {
     NSLog(@"BTData:%@ didStartCollectingData", data);
