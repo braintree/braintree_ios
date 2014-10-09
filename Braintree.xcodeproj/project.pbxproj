@@ -1131,6 +1131,7 @@
 			isa = PBXGroup;
 			children = (
 				1621747B192D8725008DC35D /* Braintree-PayPal.h */,
+				16217484192D8725008DC35D /* BTClient+BTPayPal.h */,
 				1621747C192D8725008DC35D /* BTErrors+BTPayPal.h */,
 				1621747D192D8725008DC35D /* BTPayPalButton.h */,
 				1621747E192D8725008DC35D /* BTPayPalViewController.h */,
@@ -1141,7 +1142,6 @@
 		16217488192D8725008DC35D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				16217484192D8725008DC35D /* BTClient+BTPayPal.h */,
 				16217485192D8725008DC35D /* BTClient+BTPayPal.m */,
 			);
 			path = Models;
