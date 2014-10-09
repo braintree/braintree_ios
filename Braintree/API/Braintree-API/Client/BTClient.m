@@ -224,9 +224,11 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }
 
     if (![PKPayment class]) {
-        failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                         code:BTErrorUnsupported
-                                     userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not supported on this device"}]);
+        if (failureBlock) {
+            failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                             code:BTErrorUnsupported
+                                         userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not supported on this device"}]);
+        }
         return;
 
     }
