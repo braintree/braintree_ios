@@ -1022,8 +1022,7 @@
 				16217426192D85EB008DC35D /* BTPaymentMethod.h */,
 				16217427192D85EB008DC35D /* BTPayPalPaymentMethod.h */,
 			);
-			name = "@Public";
-			path = "@Public API";
+			path = "@Public";
 			sourceTree = "<group>";
 		};
 		1621742E192D85EB008DC35D /* Client */ = {
@@ -1913,8 +1912,7 @@
 				16BEE96119BA46780071FB1B /* BTPaymentMethodCreationDelegate.h */,
 				1662191519BA4B0F00736A4D /* Braintree-Payments.h */,
 			);
-			name = "@Public";
-			path = Public;
+			path = "@Public";
 			sourceTree = "<group>";
 		};
 		A79ACA35193FB27E0095D7F1 /* Certificates */ = {
