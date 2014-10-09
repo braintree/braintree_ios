@@ -1,7 +1,14 @@
 
 # Braintree iOS SDK Release Notes
 
-## WIP
+## 3.4.0-rc2 (2014-10-08)
+
+* Enhancements
+  * Fix build for Drop In view controller (`shouldValidate` bug)
+  * Bug fixes for iOS 7
+  * Improve test coverage and demo app
+
+## 3.4.0-rc1 (2014-10-07)
 
 * Features
   * Pre-release support for Apple Pay
