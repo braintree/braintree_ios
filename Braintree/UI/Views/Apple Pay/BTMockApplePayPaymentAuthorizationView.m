@@ -80,7 +80,7 @@ NSString *const BTMockApplePayPaymentAuthorizationControlCell =  @"BTMockApplePa
     }
 }
 
-- (NSString *)tableView:(__unused UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(__unused UITableView *)tableView titleForHeaderInSection:(__unused NSInteger)section {
     NSParameterAssert(section == 0);
 
     return @"Apple Pay - Mock Mode";
