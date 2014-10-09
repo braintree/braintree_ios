@@ -7,6 +7,8 @@
   * Fix build for Drop In view controller (`shouldValidate` bug)
   * Bug fixes for iOS 7
   * Improve test coverage and demo app
+  * Project Organization
+    * All library code is now located under `/Braintree`. We hope this helps with non-cocoapods integrations!
 
 ## 3.4.0-rc1 (2014-10-07)
 
