@@ -3403,7 +3403,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "Braintree-Demo/Braintree-Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -3429,7 +3429,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Braintree/Data/Braintree-Data",
+					"$(PROJECT_DIR)/Braintree/Data",
 					"$(PROJECT_DIR)/Braintree/PayPal/Braintree-PayPal/PayPalMobileSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
@@ -3486,7 +3486,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "Braintree-Demo/Braintree-Demo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
@@ -3506,7 +3506,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Braintree/Data/Braintree-Data",
+					"$(PROJECT_DIR)/Braintree/Data",
 					"$(PROJECT_DIR)/Braintree/PayPal/Braintree-PayPal/PayPalMobileSDK",
 				);
 				OTHER_CFLAGS = (
