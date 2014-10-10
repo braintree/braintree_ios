@@ -40,3 +40,18 @@ target 'Braintree-Dev' do
   pod 'UIAlertView+Blocks'
   pod 'FLEX'
 end
+
+
+post_install do |installer|
+    targets = installer.project.targets.select{ |t| t.to_s.end_with? "-Braintree" }
+    if (targets.count > 0)
+        targets.each do |target|
+            puts target
+            target.build_configurations.each do |config|
+                config.build_settings['RUN_CLANG_STATIC_ANALYZER'] = 'YES'
+            end
+        end
+    else
+        puts "WARNING: Braintree targets not found"
+    end
+end
