@@ -157,6 +157,8 @@
 		A72B37FF19633826009AD2F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A72B38191963590E009AD2F5 /* BraintreeDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */; };
+		A75C5B6219E88FFC00832A47 /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
+		A75C5B6319E8900000832A47 /* EXPMatchers+BTMatches.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */; };
 		A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
@@ -2829,6 +2831,8 @@
 				161029FB192DB613002C1B2B /* BraintreeVersionSpec.m in Sources */,
 				A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */,
 				A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */,
+				A75C5B6319E8900000832A47 /* EXPMatchers+BTMatches.m in Sources */,
+				A75C5B6219E88FFC00832A47 /* EXPMatchers+BTBeANonce.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

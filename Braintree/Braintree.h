@@ -97,6 +97,15 @@
 - (void)tokenizeCard:(BTClientCardTokenizationRequest *)cardDetails
           completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
+/// Creates and returns a payment method nonce for the given Apple Pay payment details
+///
+/// @note You should use this method if you have implemented Apple Pay directly with PassKit (PKPaymentRequest,
+///       PKPaymentAuthorizationViewController, etc.). Alternatively, you can use paymentProviderWithDelegate:.
+///
+/// @param applePayPayment a PKPayment you receive from a PKPaymentAuthorizationViewControllerDelegate
+/// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
+- (void)tokenizeApplePayPayment:(PKPayment *)applePayPayment
+                     completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
 /// Initializes a provider that can initiate various payment method creation flows.
 ///

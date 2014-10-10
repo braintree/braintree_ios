@@ -107,6 +107,18 @@
             completion:completionBlock];
 }
 
+- (void)tokenizeApplePayPayment:(PKPayment *)payment
+                     completion:(void (^)(NSString *, NSError *))completionBlock {
+    BTClientApplePayRequest *applePayRequest = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
+    [self.client saveApplePayPayment:applePayRequest
+                             success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                                 completionBlock(applePayPaymentMethod.nonce, nil);
+                             }
+                             failure:^(NSError *error) {
+                                 completionBlock(nil, error);
+                             }];
+}
+
 - (BTPaymentProvider *)paymentProviderWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate {
     BTPaymentProvider *paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
     paymentProvider.delegate = delegate;
