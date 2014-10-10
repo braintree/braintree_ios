@@ -278,13 +278,22 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         return;
     }
 
+    NSMutableDictionary *tokenParameterValue = [NSMutableDictionary dictionary];
+    if (encodedPaymentData) {
+        tokenParameterValue[@"paymentData"] = encodedPaymentData;
+    }
+    if (applePayRequest.payment.token.paymentInstrumentName) {
+        tokenParameterValue[@"paymentInstrumentName"] = applePayRequest.payment.token.paymentInstrumentName;
+    }
+    if (applePayRequest.payment.token.transactionIdentifier) {
+        tokenParameterValue[@"transactionIdentifier"] = applePayRequest.payment.token.transactionIdentifier;
+    }
+    if (applePayRequest.payment.token.paymentNetwork) {
+        tokenParameterValue[@"paymentNetwork"] = applePayRequest.payment.token.paymentNetwork;
+    }
+
     NSMutableDictionary *requestParameters = [self metaPostParameters];
-    [requestParameters addEntriesFromDictionary:@{ @"applePaymentToken": @{
-                                                           @"paymentData": encodedPaymentData,
-                                                           @"paymentInstrumentName": applePayRequest.payment.token.paymentInstrumentName ?: NSNull.null,
-                                                           @"paymentNetwork": applePayRequest.payment.token.paymentNetwork ?: NSNull.null,
-                                                           @"transactionIdentifier": applePayRequest.payment.token.transactionIdentifier ?: NSNull.null,
-                                                           },
+    [requestParameters addEntriesFromDictionary:@{ @"applePaymentToken": tokenParameterValue,
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                                    }];
 
