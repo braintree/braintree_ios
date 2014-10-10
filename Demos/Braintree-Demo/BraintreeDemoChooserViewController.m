@@ -52,8 +52,8 @@
 @implementation BraintreeDemoChooserViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     [self switchToEnvironment:[BraintreeDemoTransactionService mostRecentlyUsedEnvironment]];
-
     [self initializeBraintree];
 }
 

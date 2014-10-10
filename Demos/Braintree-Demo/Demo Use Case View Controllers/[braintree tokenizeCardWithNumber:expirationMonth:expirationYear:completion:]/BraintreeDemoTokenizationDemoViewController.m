@@ -40,6 +40,7 @@
 }
 
 - (void)viewDidAppear:(__unused BOOL)animated {
+    [super viewDidAppear:animated];
     [self.cardNumberField becomeFirstResponder];
 }
 

@@ -25,6 +25,7 @@
 }
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     if (![PKPaymentAuthorizationViewController class]) {
         self.applePayButton.hidden = YES;
         [UIAlertView showWithTitle:@"Apple Pay Error"
