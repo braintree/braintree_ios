@@ -141,17 +141,14 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 
 - (NSDictionary *)decodeClientToken:(NSString *)rawClientTokenString error:(NSError * __autoreleasing *)error {
     NSError *JSONError;
-    BOOL clientTokenWasBase64Encoded = NO;
     NSData *base64DecodedClientToken = [[NSData alloc] initWithBase64EncodedString:rawClientTokenString
                                                                            options:0];
 
     NSDictionary *rawClientToken;
     if (base64DecodedClientToken) {
         rawClientToken = [NSJSONSerialization JSONObjectWithData:base64DecodedClientToken options:0 error:&JSONError];
-        clientTokenWasBase64Encoded = YES;
     } else {
         rawClientToken = [self parseJSONString:rawClientTokenString error:&JSONError];
-        clientTokenWasBase64Encoded = NO;
     }
 
     if (!rawClientToken) {
