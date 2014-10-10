@@ -310,10 +310,7 @@ describe(@"offline clients", ^{
 
         it(@"succeeds if payment is nil in mock mode", ^{
             waitUntil(^(DoneCallback done){
-                id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
-                [[[paymentRequest stub] andReturn:nil] payment];
-
-                [offlineClient saveApplePayPayment:paymentRequest success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                [offlineClient saveApplePayPayment:nil success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                     if ([PKPayment class]) {
                         expect(applePayPaymentMethod.nonce).to.beANonce();
                         done();
@@ -330,23 +327,21 @@ describe(@"offline clients", ^{
 
         it(@"returns the newly saved account with SDK support for Apple Pay, or calls the failure block if there is no SDK support", ^{
             waitUntil(^(DoneCallback done){
-                id paymentRequest = [OCMockObject mockForClass:[BTClientApplePayRequest class]];
                 if ([PKPayment class] && [PKPaymentToken class]) {
                     id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
                     id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
-                    [[[paymentRequest stub] andReturn:payment] payment];
                     [[[payment stub] andReturn:paymentToken] token];
                     [[[paymentToken stub] andReturn:[NSData data]] paymentData];
 
 
-                    [offlineClient saveApplePayPayment:paymentRequest
+                    [offlineClient saveApplePayPayment:payment
                                                success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                                                    expect(applePayPaymentMethod.nonce).to.beANonce();
                                                    done();
                                                } failure:nil];
                 } else {
-                    [offlineClient saveApplePayPayment:paymentRequest success:nil failure:^(NSError *error) {
+                    [offlineClient saveApplePayPayment:nil success:nil failure:^(NSError *error) {
                         expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                         expect(error.code).to.equal(BTErrorUnsupported);
                         done();

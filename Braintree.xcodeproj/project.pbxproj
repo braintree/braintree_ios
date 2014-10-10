@@ -529,7 +529,6 @@
 		16E7B03119E63B360057ABB7 /* BTApplePayPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTApplePayPaymentMethod.m; sourceTree = "<group>"; };
 		16E7B03219E63B360057ABB7 /* BTCardPaymentMethod_Mutable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCardPaymentMethod_Mutable.h; sourceTree = "<group>"; };
 		16E7B03319E63B360057ABB7 /* BTCardPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCardPaymentMethod.m; sourceTree = "<group>"; };
-		16E7B03419E63B360057ABB7 /* BTClientApplePayRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTClientApplePayRequest.m; sourceTree = "<group>"; };
 		16E7B03519E63B360057ABB7 /* BTClientCardRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTClientCardRequest.m; sourceTree = "<group>"; };
 		16E7B03619E63B360057ABB7 /* BTClientCardTokenizationRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTClientCardTokenizationRequest.m; sourceTree = "<group>"; };
 		16E7B03719E63B360057ABB7 /* BTMutableApplePayPaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMutableApplePayPaymentMethod.h; sourceTree = "<group>"; };
@@ -595,7 +594,6 @@
 		2DCA765619DCAFEC002E1CBD /* Braintree-Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Braintree-Demo.entitlements"; sourceTree = "<group>"; };
 		2DCDDFC9194F9E1400F691CF /* BTHTTPSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSpec.m; sourceTree = "<group>"; };
 		2DD0202119D4A0D600F9313F /* BTLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTLogger.h; sourceTree = "<group>"; };
-		2DE53D9019C36B72005D5E18 /* BTClientApplePayRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientApplePayRequest.h; sourceTree = "<group>"; };
 		2DE9752A19B80D2F009E2198 /* BTPaymentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentProvider.m; sourceTree = "<group>"; };
 		312C642A816448F6A6B7D69B /* libPods-Common.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E30C5FE1F5450A242279524 /* libPods-Braintree-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1018,7 +1016,6 @@
 				16217423192D85EB008DC35D /* BTClient.h */,
 				16217421192D85EB008DC35D /* BTClient+Offline.h */,
 				16217422192D85EB008DC35D /* BTClient+Testing.h */,
-				2DE53D9019C36B72005D5E18 /* BTClientApplePayRequest.h */,
 				16FDE94F19C24029007718D2 /* BTClientCardRequest.h */,
 				161ABA9619D9C9CD006C0A43 /* BTClientCardTokenizationRequest.h */,
 				16217424192D85EB008DC35D /* BTClientToken.h */,
@@ -1056,7 +1053,6 @@
 				16E7B03119E63B360057ABB7 /* BTApplePayPaymentMethod.m */,
 				16E7B03219E63B360057ABB7 /* BTCardPaymentMethod_Mutable.h */,
 				16E7B03319E63B360057ABB7 /* BTCardPaymentMethod.m */,
-				16E7B03419E63B360057ABB7 /* BTClientApplePayRequest.m */,
 				16E7B03519E63B360057ABB7 /* BTClientCardRequest.m */,
 				16E7B03619E63B360057ABB7 /* BTClientCardTokenizationRequest.m */,
 				16E7B03719E63B360057ABB7 /* BTMutableApplePayPaymentMethod.h */,

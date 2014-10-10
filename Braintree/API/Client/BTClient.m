@@ -213,15 +213,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                       failure:failureBlock];
 }
 
-- (void)saveApplePayPayment:(BTClientApplePayRequest *)applePayRequest
+- (void)saveApplePayPayment:(PKPayment *)payment
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
     [[BTLogger sharedLogger] warning:@"⚠️⚠️⚠️ Braintree's API for Apple Pay is PRE-RELEASE and subject to change! ⚠️⚠️⚠️"];
-
-    if (!applePayRequest) {
-        [[BTLogger sharedLogger] warning:@"-[BTClient saveApplePayPayment:success:failure:] received nil applePayRequest."];
-        return;
-    }
 
     if (![PKPayment class]) {
         if (failureBlock) {
@@ -259,13 +254,18 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         }
 
         case BTClientApplePayStatusProduction:
-            if (applePayRequest.payment) {
-                encodedPaymentData = [applePayRequest.payment.token.paymentData base64EncodedStringWithOptions:0];
-            } else {
-                error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                            code:BTErrorUnsupported
-                                        userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required in production"}];
+            if (!payment) {
+                [[BTLogger sharedLogger] warning:@"-[BTClient saveApplePayPayment:success:failure:] received nil payment."];
+                NSError *error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                     code:BTErrorUnsupported
+                                                 userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required in production"}];
+                if (failureBlock) {
+                    failureBlock(error);
+                }
+                return;
             }
+
+            encodedPaymentData = [payment.token.paymentData base64EncodedStringWithOptions:0];
             break;
         default:
             return;
@@ -282,14 +282,14 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     if (encodedPaymentData) {
         tokenParameterValue[@"paymentData"] = encodedPaymentData;
     }
-    if (applePayRequest.payment.token.paymentInstrumentName) {
-        tokenParameterValue[@"paymentInstrumentName"] = applePayRequest.payment.token.paymentInstrumentName;
+    if (payment.token.paymentInstrumentName) {
+        tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentInstrumentName;
     }
-    if (applePayRequest.payment.token.transactionIdentifier) {
-        tokenParameterValue[@"transactionIdentifier"] = applePayRequest.payment.token.transactionIdentifier;
+    if (payment.token.transactionIdentifier) {
+        tokenParameterValue[@"transactionIdentifier"] = payment.token.transactionIdentifier;
     }
-    if (applePayRequest.payment.token.paymentNetwork) {
-        tokenParameterValue[@"paymentNetwork"] = applePayRequest.payment.token.paymentNetwork;
+    if (payment.token.paymentNetwork) {
+        tokenParameterValue[@"paymentNetwork"] = payment.token.paymentNetwork;
     }
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];
@@ -305,9 +305,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                 paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
                 paymentMethod.description = applePayPaymentMethodResponse[@"description"];
 
-                paymentMethod.shippingAddress = applePayRequest.payment.shippingAddress;
-                paymentMethod.shippingMethod = applePayRequest.payment.shippingMethod;
-                paymentMethod.billingAddress = applePayRequest.payment.billingAddress;
+                paymentMethod.shippingAddress = payment.shippingAddress;
+                paymentMethod.shippingMethod = payment.shippingMethod;
+                paymentMethod.billingAddress = payment.billingAddress;
 
                 if (successBlock) {
                     successBlock([paymentMethod copy]);

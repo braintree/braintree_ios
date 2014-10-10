@@ -738,8 +738,7 @@ describe(@"clients with Apple Pay activated", ^{
                 [[[paymentToken stub] andReturn:PKPaymentNetworkAmex] paymentNetwork];
                 [[[paymentToken stub] andReturn:@"transaction-identifier"] transactionIdentifier];
 
-                BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
-                [testClient saveApplePayPayment:request success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                [testClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                     expect(applePayPaymentMethod.nonce).to.beANonce();
                     expect(applePayPaymentMethod.shippingAddress).to.beNil();
                     expect(applePayPaymentMethod.billingAddress).to.beNil();
@@ -769,8 +768,7 @@ describe(@"clients with Apple Pay activated", ^{
                 [[[paymentToken stub] andReturn:PKPaymentNetworkAmex] paymentNetwork];
                 [[[paymentToken stub] andReturn:@"transaction-identifier"] transactionIdentifier];
 
-                BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
-                [testClient saveApplePayPayment:request success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                [testClient saveApplePayPayment:payment success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                     expect(applePayPaymentMethod.nonce).to.beANonce();
                     expect(applePayPaymentMethod.shippingAddress == shippingAddress).to.equal(YES);
                     expect(applePayPaymentMethod.billingAddress == billingAddress).to.equal(YES);

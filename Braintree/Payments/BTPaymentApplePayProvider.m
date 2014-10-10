@@ -183,14 +183,7 @@
 #pragma mark Payment Authorization
 
 - (void)applePayPaymentAuthorizationViewControllerDidAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
-    BTClientApplePayRequest *request;
-    if (self.client.configuration.applePayConfiguration.status == BTClientApplePayStatusMock) {
-        request = [[BTClientApplePayRequest alloc] init];
-    } else {
-        request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
-    }
-
-    [self.client saveApplePayPayment:request
+    [self.client saveApplePayPayment:payment
                              success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                                  self.applePayPaymentMethod = applePayPaymentMethod;
                                  completion(PKPaymentAuthorizationStatusSuccess);

@@ -85,8 +85,7 @@
 
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
-    BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
-    [self.braintree.client saveApplePayPayment:request
+    [self.braintree.client saveApplePayPayment:payment
                                        success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                                            NSLog(@"Apple Pay Success! Got a nonce: %@", applePayPaymentMethod.nonce);
                                            self.applePayPaymentMethod = applePayPaymentMethod;

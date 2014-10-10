@@ -109,8 +109,7 @@
 
 - (void)tokenizeApplePayPayment:(PKPayment *)payment
                      completion:(void (^)(NSString *, NSError *))completionBlock {
-    BTClientApplePayRequest *applePayRequest = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
-    [self.client saveApplePayPayment:applePayRequest
+    [self.client saveApplePayPayment:payment
                              success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                                  completionBlock(applePayPaymentMethod.nonce, nil);
                              }

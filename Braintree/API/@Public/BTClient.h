@@ -4,7 +4,6 @@
 #import "BTPayPalPaymentMethod.h"
 
 #import "BTApplePayPaymentMethod.h"
-#import "BTClientApplePayRequest.h"
 
 #import "BTErrors.h"
 #import "BTClientCardRequest.h"
@@ -87,7 +86,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param applePayRequest A BTClientApplePayRequest
 /// @param successBlock success callback for handling the resulting payment method
 /// @param failureBlock failure callback for handling errors
-- (void)saveApplePayPayment:(BTClientApplePayRequest *)applePayRequest
+- (void)saveApplePayPayment:(PKPayment *)payment
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;
 
