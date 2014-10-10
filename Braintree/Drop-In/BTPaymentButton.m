@@ -1,7 +1,7 @@
 #import "BTPaymentButton.h"
 
 #import "BTClient.h"
-
+#import "BTLogger_Internal.h"
 #import "BTUIVenmoButton.h"
 #import "BTUIPayPalButton.h"
 
@@ -191,7 +191,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
             paymentButton = [[BTUIVenmoButton alloc] initWithFrame:cell.bounds];
             break;
         default:
-            break;
+            [[BTLogger sharedLogger] warning:@"BTPaymentButton encountered an unexpected BTPaymentProviderType value: %@", @(paymentMethod)];
+            return cell;
     }
     paymentButton.translatesAutoresizingMaskIntoConstraints = NO;
 
