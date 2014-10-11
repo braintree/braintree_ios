@@ -99,33 +99,37 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 
 /// An array of PKPaymentSummaryItems
 ///
-/// Currently only effects Apple Pay payments.
+/// Currently only affects Apple Pay payments.
 @property (nonatomic, strong) NSArray *paymentSummaryItems;
 
 /// The set of required billing address fields (defaults to none)
 ///
-/// Currently only effects Apple Pay payments.
+/// Currently only affects Apple Pay payments.
 @property (nonatomic, assign) PKAddressField requiredBillingAddressFields;
 
 /// The customer's billing address for pre-populating the checkout form
 ///
-/// Currently only effects Apple Pay payments.
+/// Currently only affects Apple Pay payments.
 @property (nonatomic, assign) ABRecordRef billingAddress;
 
 /// The set of required billing address fields (defaults to none)
 ///
-/// Currently only effects Apple Pay payments.
+/// Currently only affects Apple Pay payments.
 @property (nonatomic, assign) PKAddressField requiredShippingAddressFields;
 
 /// The customer's billing address for pre-populating the checkout form
 ///
-/// Currently only effects Apple Pay payments.
+/// Currently only affects Apple Pay payments.
 @property (nonatomic, assign) ABRecordRef shippingAddress;
 
 /// Available shipping methods
 ///
-/// Currently only effects Apple Pay payments.
+/// Currently only affects Apple Pay payments.
 @property (nonatomic, copy) NSArray *shippingMethods;
 
-@end
+/// Supported payment networks
+///
+/// Currently only affects Apple Pay payments.
+@property (nonatomic, copy) NSArray *supportedNetworks;
 
+@end
