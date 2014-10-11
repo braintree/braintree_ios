@@ -49,18 +49,20 @@ describe(@"tokenizeCardWithNumber:expirationMonth:expirationYear:completion:", ^
 });
 
 describe(@"tokenizeApplePayPaymentToken:completion:", ^{
-    it(@"tokenizes a PKPaymentToken and returns a nonce", ^{
-        PKPayment *payment = [OCMockObject niceMockForClass:[PKPayment class]];
+    if ([PKPayment class]) {
+        it(@"tokenizes a PKPaymentToken and returns a nonce", ^{
+            PKPayment *payment = [OCMockObject niceMockForClass:[PKPayment class]];
 
-        waitUntil(^(DoneCallback done) {
-            [braintree tokenizeApplePayPayment:payment
-                                    completion:^(NSString *nonce, NSError *error){
-                                        expect(error).to.beNil();
-                                        expect(nonce).to.beANonce();
-                                        done();
-                                    }];
+            waitUntil(^(DoneCallback done) {
+                [braintree tokenizeApplePayPayment:payment
+                                        completion:^(NSString *nonce, NSError *error){
+                                            expect(error).to.beNil();
+                                            expect(nonce).to.beANonce();
+                                            done();
+                                        }];
+            });
         });
-    });
+    }
 });
 
 #pragma clang diagnostic push

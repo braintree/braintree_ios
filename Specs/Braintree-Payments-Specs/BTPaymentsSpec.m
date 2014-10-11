@@ -72,35 +72,36 @@ describe(@"createPaymentMethod:", ^{
             [provider createPaymentMethod:BTPaymentProviderTypeApplePay options:0];
         });
 
+        if ([PKPaymentAuthorizationViewController class]) {
+            it(@"passes payment request configurations straight through to Apple Pay provider", ^{
+                NSArray *supportedNetworks = @[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard ];
+                NSArray *paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Company" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
+                NSArray *shippingMethods = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
+                ABRecordRef shippingAddress = ABPersonCreate();
+                ABRecordRef billingAddress = ABPersonCreate();
 
-        it(@"passes payment request configurations straight through to Apple Pay provider", ^{
-            NSArray *supportedNetworks = @[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard ];
-            NSArray *paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Company" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
-            NSArray *shippingMethods = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
-            ABRecordRef shippingAddress = ABPersonCreate();
-            ABRecordRef billingAddress = ABPersonCreate();
+                [[applePayProvider expect] setPaymentSummaryItems:paymentSummaryItems];
+                [[applePayProvider expect] setRequiredBillingAddressFields:PKAddressFieldAll];
+                [[applePayProvider expect] setRequiredShippingAddressFields:PKAddressFieldAll];
+                [[applePayProvider expect] setBillingAddress:billingAddress];
+                [[applePayProvider expect] setShippingAddress:shippingAddress];
+                [[applePayProvider expect] setShippingMethods:shippingMethods];
+                [[applePayProvider expect] setSupportedNetworks:supportedNetworks];
 
-            [[applePayProvider expect] setPaymentSummaryItems:paymentSummaryItems];
-            [[applePayProvider expect] setRequiredBillingAddressFields:PKAddressFieldAll];
-            [[applePayProvider expect] setRequiredShippingAddressFields:PKAddressFieldAll];
-            [[applePayProvider expect] setBillingAddress:billingAddress];
-            [[applePayProvider expect] setShippingAddress:shippingAddress];
-            [[applePayProvider expect] setShippingMethods:shippingMethods];
-            [[applePayProvider expect] setSupportedNetworks:supportedNetworks];
+                [provider setPaymentSummaryItems:paymentSummaryItems];
+                [provider setRequiredBillingAddressFields:PKAddressFieldAll];
+                [provider setRequiredShippingAddressFields:PKAddressFieldAll];
+                [provider setBillingAddress:billingAddress];
+                [provider setShippingAddress:shippingAddress];
+                [provider setShippingMethods:shippingMethods];
+                [provider setSupportedNetworks:supportedNetworks];
 
-            [provider setPaymentSummaryItems:paymentSummaryItems];
-            [provider setRequiredBillingAddressFields:PKAddressFieldAll];
-            [provider setRequiredShippingAddressFields:PKAddressFieldAll];
-            [provider setBillingAddress:billingAddress];
-            [provider setShippingAddress:shippingAddress];
-            [provider setShippingMethods:shippingMethods];
-            [provider setSupportedNetworks:supportedNetworks];
-
-            [applePayProvider verify];
-
-            CFRelease(shippingAddress);
-            CFRelease(billingAddress);
-        });
+                [applePayProvider verify];
+                
+                CFRelease(shippingAddress);
+                CFRelease(billingAddress);
+            });
+        }
     });
 
     context(@"when type is BTPaymentProviderTypePayPal", ^{
