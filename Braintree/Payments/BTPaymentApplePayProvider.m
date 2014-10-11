@@ -123,14 +123,53 @@
     }
 
     PKPaymentRequest *paymentRequest = self.client.configuration.applePayConfiguration.paymentRequest;
-    paymentRequest.paymentSummaryItems = self.paymentSummaryItems;
-    paymentRequest.requiredBillingAddressFields = self.requiredBillingAddressFields;
-    paymentRequest.requiredShippingAddressFields = self.requiredShippingAddressFields;
-    paymentRequest.shippingAddress = self.shippingAddress;
-    paymentRequest.billingAddress = self.billingAddress;
-    paymentRequest.shippingMethods = self.shippingMethods;
+    if (self.paymentSummaryItems) {
+        paymentRequest.paymentSummaryItems = self.paymentSummaryItems;
+    }
+
+    if (self.requiredBillingAddressFields) {
+        paymentRequest.requiredBillingAddressFields = self.requiredBillingAddressFields;
+    }
+
+    if (self.requiredShippingAddressFields) {
+        paymentRequest.requiredShippingAddressFields = self.requiredShippingAddressFields;
+    }
+
+    if (self.shippingAddress) {
+        paymentRequest.shippingAddress = self.shippingAddress;
+    }
+
+    if (self.billingAddress) {
+        paymentRequest.billingAddress = self.billingAddress;
+    }
+
+    if (self.shippingMethods) {
+        paymentRequest.shippingMethods = self.shippingMethods;
+    }
+
+    if (self.supportedNetworks) {
+        paymentRequest.supportedNetworks = self.supportedNetworks;
+    }
 
     return paymentRequest;
+}
+
+- (void)setBillingAddress:(ABRecordRef)billingAddress {
+    _billingAddress = CFRetain(billingAddress);
+}
+
+- (void)setShippingAddress:(ABRecordRef)shippingAddress {
+    _shippingAddress = CFRetain(shippingAddress);
+}
+
+- (void)dealloc {
+    if (_billingAddress) {
+        CFRelease(_billingAddress);
+    }
+
+    if (_shippingAddress) {
+        CFRelease(_shippingAddress);
+    }
 }
 
 #pragma mark Internal Helpers - Exposed for Testing

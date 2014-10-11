@@ -1,4 +1,5 @@
 @import PassKit;
+@import AddressBook;
 
 #import "BTPaymentProvider.h"
 #import "BTPaymentApplePayProvider_Internal.h"
@@ -48,17 +49,17 @@ describe(@"createPaymentMethod:", ^{
     });
 
     context(@"when type is BTPaymentProviderTypeApplePay", ^{
-        __block id applePayProviderClass;
+        __block id applePayProvider;
 
         beforeEach(^{
-            applePayProviderClass = [OCMockObject mockForClass:[BTPaymentApplePayProvider class]];
-            [[[applePayProviderClass stub] andReturn:applePayProviderClass] alloc];
-            __unused id _ = [[[applePayProviderClass stub] andReturn:applePayProviderClass] initWithClient:OCMOCK_ANY];
-            [[applePayProviderClass stub] setDelegate:OCMOCK_ANY];
+            applePayProvider = [OCMockObject mockForClass:[BTPaymentApplePayProvider class]];
+            [[[applePayProvider stub] andReturn:applePayProvider] alloc];
+            __unused id _ = [[[applePayProvider stub] andReturn:applePayProvider] initWithClient:OCMOCK_ANY];
+            [[applePayProvider stub] setDelegate:OCMOCK_ANY];
         });
 
         it(@"calls authorizeApplePay if options includes BTPaymentAuthorizationOptionMechanismViewController", ^{
-            [[applePayProviderClass expect] authorizeApplePay];
+            [[applePayProvider expect] authorizeApplePay];
             [provider createPaymentMethod:BTPaymentProviderTypeApplePay options:BTPaymentAuthorizationOptionMechanismViewController];
         });
 
@@ -71,6 +72,35 @@ describe(@"createPaymentMethod:", ^{
             [provider createPaymentMethod:BTPaymentProviderTypeApplePay options:0];
         });
 
+
+        it(@"passes payment request configurations straight through to Apple Pay provider", ^{
+            NSArray *supportedNetworks = @[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard ];
+            NSArray *paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Company" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
+            NSArray *shippingMethods = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
+            ABRecordRef shippingAddress = ABPersonCreate();
+            ABRecordRef billingAddress = ABPersonCreate();
+
+            [[applePayProvider expect] setPaymentSummaryItems:paymentSummaryItems];
+            [[applePayProvider expect] setRequiredBillingAddressFields:PKAddressFieldAll];
+            [[applePayProvider expect] setRequiredShippingAddressFields:PKAddressFieldAll];
+            [[applePayProvider expect] setBillingAddress:billingAddress];
+            [[applePayProvider expect] setShippingAddress:shippingAddress];
+            [[applePayProvider expect] setShippingMethods:shippingMethods];
+            [[applePayProvider expect] setSupportedNetworks:supportedNetworks];
+
+            [provider setPaymentSummaryItems:paymentSummaryItems];
+            [provider setRequiredBillingAddressFields:PKAddressFieldAll];
+            [provider setRequiredShippingAddressFields:PKAddressFieldAll];
+            [provider setBillingAddress:billingAddress];
+            [provider setShippingAddress:shippingAddress];
+            [provider setShippingMethods:shippingMethods];
+            [provider setSupportedNetworks:supportedNetworks];
+
+            [applePayProvider verify];
+
+            CFRelease(shippingAddress);
+            CFRelease(billingAddress);
+        });
     });
 
     context(@"when type is BTPaymentProviderTypePayPal", ^{

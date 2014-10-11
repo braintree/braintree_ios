@@ -34,7 +34,8 @@
 @property (nonatomic, assign) ABRecordRef billingAddress;
 @property (nonatomic, assign) PKAddressField requiredShippingAddressFields;
 @property (nonatomic, assign) ABRecordRef shippingAddress;
-@property (nonatomic, copy) NSArray *shippingMethods;
+@property (nonatomic, strong) NSArray *shippingMethods;
+@property (nonatomic, strong) NSArray *supportedNetworks;
 
 /// Checks whether Apple Pay is possible, considering the current environment, simulator status,
 /// device, OS, etc.

@@ -319,18 +319,33 @@
 }
 
 - (void)setBillingAddress:(ABRecordRef)billingAddress {
-    _billingAddress = billingAddress;
+    _billingAddress = CFRetain(billingAddress);
     self.applePayPaymentProvider.billingAddress = billingAddress;
 }
 
 - (void)setShippingAddress:(ABRecordRef)shippingAddress {
-    _shippingAddress = shippingAddress;
+    _shippingAddress = CFRetain(shippingAddress);
     self.applePayPaymentProvider.shippingAddress = shippingAddress;
 }
 
 - (void)setShippingMethods:(NSArray *)shippingMethods {
     _shippingMethods = shippingMethods;
     self.applePayPaymentProvider.shippingMethods = shippingMethods;
+}
+
+- (void)setSupportedNetworks:(NSArray *)supportedNetworks {
+    _supportedNetworks = supportedNetworks;
+    self.applePayPaymentProvider.supportedNetworks = supportedNetworks;
+}
+
+- (void)dealloc {
+    if (_shippingAddress) {
+        CFRelease(_shippingAddress);
+    }
+
+    if (_billingAddress) {
+        CFRelease(_billingAddress);
+    }
 }
 
 @end
