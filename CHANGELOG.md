@@ -1,6 +1,22 @@
 
 # Braintree iOS SDK Release Notes
 
+## 3.4.0-rc3 (2014-10-10)
+
+* Integration
+  * This SDK now officially supports integration without CocoaPods
+    * Please see `docs/Manual Integration.md`
+    * Report bugs with these new integration instructions via [Github](https://github.com/braintree/braintree_ios/issues/new)
+* Apple Pay Enhancements
+  * `BTApplePayPaymentMethod` now includes address information
+  * New method in `Braintree` for tokenizing a `PKPayment` into a nonce 
+    * This is useful for merchants who integrate with Apple Pay using `PassKit`, rather than `BTPaymentProvider`
+  * `BTPaymentProvider` supports overriding `supportedNetworks`
+* Bug fixes
+  * Static analysis recommendations
+  * Avoid potential nil-block crasher
+  * Fix iOS 8 `CoreLocation` deprecation in `BTData`
+
 ## 3.4.0-rc2 (2014-10-08)
 
 * Enhancements
