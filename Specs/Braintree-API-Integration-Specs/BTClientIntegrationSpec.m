@@ -1,6 +1,8 @@
 #import "BTClient_Internal.h"
 #import "BTClient+Testing.h"
 
+@import AddressBook;
+
 void wait_for_potential_async_exceptions(void (^done)(void)) {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
         done();
@@ -722,13 +724,15 @@ describe(@"clients with Apple Pay activated", ^{
     
     if ([PKPayment class]) {
         it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported", ^{
-
             waitUntil(^(DoneCallback done){
 
                 id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
                 id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
                 [[[payment stub] andReturn:paymentToken] token];
+                [[[payment stub] andReturnValue:OCMOCK_VALUE(NULL)] shippingAddress];
+                [[[payment stub] andReturnValue:OCMOCK_VALUE(NULL)] billingAddress];
+                [[[payment stub] andReturn:nil] shippingMethod];
                 [[[paymentToken stub] andReturn:[NSData data]] paymentData];
                 [[[paymentToken stub] andReturn:@"an amex 12345"] paymentInstrumentName];
                 [[[paymentToken stub] andReturn:PKPaymentNetworkAmex] paymentNetwork];
@@ -737,6 +741,43 @@ describe(@"clients with Apple Pay activated", ^{
                 BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
                 [testClient saveApplePayPayment:request success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                     expect(applePayPaymentMethod.nonce).to.beANonce();
+                    expect(applePayPaymentMethod.shippingAddress).to.beNil();
+                    expect(applePayPaymentMethod.billingAddress).to.beNil();
+                    expect(applePayPaymentMethod.shippingMethod).to.beNil();
+                    done();
+                } failure:nil];
+            });
+        });
+
+        it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported and return address information alongside the nonce", ^{
+            waitUntil(^(DoneCallback done){
+                id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
+                id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
+
+                ABRecordRef shippingAddress = ABPersonCreate();
+                ABRecordRef billingAddress = ABPersonCreate();
+                PKShippingMethod *shippingMethod = [PKShippingMethod summaryItemWithLabel:@"Shipping Method" amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+                shippingMethod.detail = @"detail";
+                shippingMethod.identifier = @"identifier";
+
+                [[[payment stub] andReturn:paymentToken] token];
+                [[[payment stub] andReturnValue:OCMOCK_VALUE((void *)shippingAddress)] shippingAddress];
+                [[[payment stub] andReturnValue:OCMOCK_VALUE((void *)billingAddress)] billingAddress];
+                [[[payment stub] andReturn:shippingMethod] shippingMethod];
+                [[[paymentToken stub] andReturn:[NSData data]] paymentData];
+                [[[paymentToken stub] andReturn:@"an amex 12345"] paymentInstrumentName];
+                [[[paymentToken stub] andReturn:PKPaymentNetworkAmex] paymentNetwork];
+                [[[paymentToken stub] andReturn:@"transaction-identifier"] transactionIdentifier];
+
+                BTClientApplePayRequest *request = [[BTClientApplePayRequest alloc] initWithApplePayPayment:payment];
+                [testClient saveApplePayPayment:request success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                    expect(applePayPaymentMethod.nonce).to.beANonce();
+                    expect(applePayPaymentMethod.shippingAddress == shippingAddress).to.equal(YES);
+                    expect(applePayPaymentMethod.billingAddress == billingAddress).to.equal(YES);
+                    expect(applePayPaymentMethod.shippingMethod.label).to.equal(shippingMethod.label);
+                    expect(applePayPaymentMethod.shippingMethod.amount).to.equal(shippingMethod.amount);
+                    expect(applePayPaymentMethod.shippingMethod.detail).to.equal(shippingMethod.detail);
+                    expect(applePayPaymentMethod.shippingMethod.identifier).to.equal(shippingMethod.identifier);
                     done();
                 } failure:nil];
             });

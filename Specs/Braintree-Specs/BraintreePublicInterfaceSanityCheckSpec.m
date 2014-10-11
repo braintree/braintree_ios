@@ -80,9 +80,12 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         expect(cardPaymentMethod).to.respondTo(@selector(nonce));
     });
 
-    it(@"includes BTPayPalPaymentMethod", ^{
+    it(@"includes BTApplePayPaymentMethod", ^{
         BTApplePayPaymentMethod *applePayPaymentMethod = [OCMockObject mockForClass:[BTApplePayPaymentMethod class]];
         expect(applePayPaymentMethod).to.respondTo(@selector(nonce));
+        expect(applePayPaymentMethod).to.respondTo(@selector(shippingAddress));
+        expect(applePayPaymentMethod).to.respondTo(@selector(billingAddress));
+        expect(applePayPaymentMethod).to.respondTo(@selector(shippingMethod));
     });
 
     it(@"includes BTPayPalPaymentMethod", ^{

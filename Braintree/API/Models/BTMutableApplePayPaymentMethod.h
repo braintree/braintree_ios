@@ -2,4 +2,5 @@
 #import "BTApplePayPaymentMethod_Internal.h"
 
 @interface BTMutableApplePayPaymentMethod : BTApplePayPaymentMethod
+
 @end

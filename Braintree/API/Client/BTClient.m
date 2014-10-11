@@ -305,6 +305,10 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                 paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
                 paymentMethod.description = applePayPaymentMethodResponse[@"description"];
 
+                paymentMethod.shippingAddress = applePayRequest.payment.shippingAddress;
+                paymentMethod.shippingMethod = applePayRequest.payment.shippingMethod;
+                paymentMethod.billingAddress = applePayRequest.payment.billingAddress;
+
                 if (successBlock) {
                     successBlock([paymentMethod copy]);
                 }
