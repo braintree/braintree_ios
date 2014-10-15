@@ -1,7 +1,7 @@
 //
 //  PayPalTouch.h
 //
-//  Version 2.3.2-bt1
+//  Version 2.5.0-bt2
 //
 //  Copyright (c) 2014, PayPal
 //  All rights reserved.
@@ -51,8 +51,17 @@ typedef NS_ENUM(NSUInteger, PayPalTouchResultType) {
 
 /// Obtain future payments authorization via app switch.
 ///
+/// Available for backward compatibility.
+/// Same functionality can be achieved using `authorizeScopeValues:configuration:` using required scopes.
+///
+/// @param configuration The configuration to be used for the app switch
 /// @return YES if app switch was successful
 + (BOOL)authorizeFuturePayments:(PayPalConfiguration *)configuration;
+
+/// @param scopeValues Set of requested scope-values. Each scope-value is defined in PayPalOAuthScopes.h.
+/// @param configuration The configuration to be used for the app switch
+/// @return YES if app switch was successful
++ (BOOL)authorizeScopeValues:(NSSet *)scopeValues configuration:(PayPalConfiguration *)configuration;
 
 /// Process a URL request.
 ///

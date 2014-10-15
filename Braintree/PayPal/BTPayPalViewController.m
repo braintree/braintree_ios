@@ -6,6 +6,11 @@
 
 #import "BTMutablePayPalPaymentMethod.h"
 
+@interface BTPayPalViewController ()
+@property (nonatomic, strong) NSError *failureError;
+@property (nonatomic, strong) BTPayPalPaymentMethod *paymentMethod;
+@end
+
 @implementation BTPayPalViewController
 
 - (instancetype)initWithClient:(BTClient *)client
@@ -63,14 +68,13 @@
 }
 
 - (void)payPalProfileSharingViewController:(__unused PayPalProfileSharingViewController *)profileSharingViewController
-             userDidLogInWithAuthorization:(NSDictionary *)profileSharingAuthorization {
+            userWillLogInWithAuthorization:(NSDictionary *)profileSharingAuthorization
+                           completionBlock:(PayPalProfileSharingDelegateCompletionBlock)completionBlock {
     NSString *authCode = profileSharingAuthorization[@"response"][@"code"];
 
     if (authCode == nil) {
-        if ([self.delegate respondsToSelector:@selector(payPalViewController:didFailWithError:)]) {
-            NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalUnknownError userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow failed to generate an auth code" }];
-            [self.delegate payPalViewController:self didFailWithError:error];
-        }
+        self.failureError = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalUnknownError userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow failed to generate an auth code" }];
+        completionBlock();
     } else {
         if ([self.delegate respondsToSelector:@selector(payPalViewControllerWillCreatePayPalPaymentMethod:)]) {
             [self.delegate payPalViewControllerWillCreatePayPalPaymentMethod:self];
@@ -81,25 +85,37 @@
         }];
 
         [client savePaypalPaymentMethodWithAuthCode:authCode
-                                applicationCorrelationID:[client btPayPal_applicationCorrelationId]
-                                                 success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                     NSString *userDisplayStringFromPayPalSDK = profileSharingAuthorization[@"user"][@"display_string"];
-                                                     if (paypalPaymentMethod.email == nil && [userDisplayStringFromPayPalSDK isKindOfClass:[NSString class]]) {
-                                                         BTMutablePayPalPaymentMethod *mutablePayPalPaymentMethod = [paypalPaymentMethod mutableCopy];
-                                                         mutablePayPalPaymentMethod.email = userDisplayStringFromPayPalSDK;
-                                                         if (!mutablePayPalPaymentMethod.description) {
-                                                             mutablePayPalPaymentMethod.description = userDisplayStringFromPayPalSDK;
-                                                         }
-                                                         paypalPaymentMethod = mutablePayPalPaymentMethod;
-                                                     }
-                                                     if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalPaymentMethod:)]) {
-                                                         [self.delegate payPalViewController:self didCreatePayPalPaymentMethod:paypalPaymentMethod];
-                                                     }
-                                                 } failure:^(NSError *error) {
-                                                     if ([self.delegate respondsToSelector:@selector(payPalViewController:didFailWithError:)]) {
-                                                         [self.delegate payPalViewController:self didFailWithError:error];
-                                                     }
-                                                 }];
+                           applicationCorrelationID:[client btPayPal_applicationCorrelationId]
+                                            success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                NSString *userDisplayStringFromPayPalSDK = profileSharingAuthorization[@"user"][@"display_string"];
+                                                if (paypalPaymentMethod.email == nil && [userDisplayStringFromPayPalSDK isKindOfClass:[NSString class]]) {
+                                                    BTMutablePayPalPaymentMethod *mutablePayPalPaymentMethod = [paypalPaymentMethod mutableCopy];
+                                                    mutablePayPalPaymentMethod.email = userDisplayStringFromPayPalSDK;
+                                                    if (!mutablePayPalPaymentMethod.description) {
+                                                        mutablePayPalPaymentMethod.description = userDisplayStringFromPayPalSDK;
+                                                    }
+                                                    paypalPaymentMethod = mutablePayPalPaymentMethod;
+                                                }
+                                                self.paymentMethod = paypalPaymentMethod;
+                                                completionBlock();
+                                            } failure:^(NSError *error) {
+                                                self.failureError = error;
+                                                completionBlock();
+                                            }];
+    }
+}
+
+- (void)payPalProfileSharingViewController:(__unused PayPalProfileSharingViewController *)profileSharingViewController
+             userDidLogInWithAuthorization:(__unused NSDictionary *)profileSharingAuthorization {
+
+    if (self.paymentMethod && !self.failureError) {
+        if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalPaymentMethod:)]) {
+            [self.delegate payPalViewController:self didCreatePayPalPaymentMethod:self.paymentMethod];
+        }
+    } else {
+        if ([self.delegate respondsToSelector:@selector(payPalViewController:didFailWithError:)]) {
+            [self.delegate payPalViewController:self didFailWithError:self.failureError];
+        }
     }
 }
 

@@ -47,6 +47,10 @@
 @property (nonatomic, copy) NSString *nonce;
 @property (nonatomic, copy) NSString *lastTransactionId;
 
+#pragma mark Settings
+
+@property (weak, nonatomic) IBOutlet UISwitch *modalPresentationSwitch;
+
 @end
 
 @implementation BraintreeDemoChooserViewController
@@ -176,14 +180,29 @@
                                                animated:YES];
              }
          }];
+    } else {
+        return;
     }
 
     if (demoViewController) {
-        [self.navigationController pushViewController:demoViewController
-                                             animated:YES];
+        if (self.modalPresentationSwitch.on) {
+            demoViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPresentedViewController:)];
+            UINavigationController *vc = [[UINavigationController alloc] initWithRootViewController:demoViewController];
+
+            [self presentViewController:vc animated:YES completion:nil];
+
+        } else {
+            [self.navigationController pushViewController:demoViewController
+                                                 animated:YES];
+
+        }
     }
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)cancelPresentedViewController:(__unused id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)tableView:(__unused UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(__unused NSIndexPath *)indexPath {
@@ -200,6 +219,7 @@
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil);
     } else if (cell == self.libraryVersionCell) {
         cell.textLabel.text = [NSString stringWithFormat:@"pod \"Braintree\", \"%@\"", [Braintree libraryVersion]];
+    } else if (indexPath.section == 4) {
     } else {
         if (!self.braintree) {
             cell.accessoryType = UITableViewCellAccessoryNone;
