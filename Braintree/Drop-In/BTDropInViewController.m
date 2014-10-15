@@ -9,8 +9,9 @@
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
-#import "btpaymentmethodcreationdelegate.h"
+#import "BTPaymentMethodCreationDelegate.h"
 #import "BTClient_Metadata.h"
+#import "BTLogger_Internal.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>
 
@@ -390,26 +391,20 @@
 }
 
 - (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(__unused UIViewController *)viewController {
-
     // If there is a presented view controller, dismiss it.
+    // This is a bit of a coarse UX for nested modals.
+    // But then again, the root issue is that we're using nested modals in the first place.
     if ([self presentedViewController]) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-
 }
 
 - (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
-    NSLog(@"DropIn paymentAuthorizerWillRequestAuthorizationWithAppSwitch:%@", sender);
+    [[BTLogger sharedLogger] debug:@"DropIn paymentAuthorizerWillRequestAuthorizationWithAppSwitch:%@", sender];
 }
 
 - (void)paymentMethodCreatorWillProcess:(__unused id)sender {
     self.dropInContentView.state = BTDropInContentViewStateActivity;
-
-    // If there is a presented view controller, dismiss it.
-    if ([self presentedViewController]) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-
 }
 
 - (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
@@ -425,11 +420,6 @@
     NSString *savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
 
     if (sender != self.dropInContentView.paymentButton) {
-
-        // If there is a presented view controller, dismiss it.
-        if ([self presentedViewController]) {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
 
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
@@ -454,12 +444,6 @@
 }
 
 - (void)paymentMethodCreatorDidCancel:(__unused id)sender {
-
-    // If there is a presented view controller, dismiss it.
-    if ([self presentedViewController]) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-
     // Refresh payment methods display
     self.paymentMethods = self.paymentMethods;
 

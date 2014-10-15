@@ -226,16 +226,17 @@
 
 #pragma mark BTPayPalViewControllerDelegate
 
-- (void)payPalViewControllerWillCreatePayPalPaymentMethod:(BTPayPalViewController *)viewController {
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+- (void)payPalViewControllerWillCreatePayPalPaymentMethod:(__unused BTPayPalViewController *)viewController {
     [self informDelegateWillProcess];
 }
 
-- (void)payPalViewController:(__unused BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
+- (void)payPalViewController:(BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
     [self informDelegateDidCreatePaymentMethod:payPalPaymentMethod];
 }
 
 - (void)payPalViewController:(__unused BTPayPalViewController *)viewController didFailWithError:(NSError *)error {
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
     [self informDelegateDidFailWithError:error];
 }
 
