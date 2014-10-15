@@ -382,21 +382,24 @@
 
 #pragma mark Payment Method Authorizer Delegate methods
 
-- (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
-    if (sender != self.dropInContentView.paymentButton) {
-        [self.presentedViewController presentViewController:viewController animated:YES completion:nil];
+- (void)paymentMethodCreator:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
+    // In order to modally present PayPal on top of a nested Drop In, we need to first dismiss the
+    // nested Drop In. Canceling will return to the outer Drop In.
+    if ([self presentedViewController]) {
+        BTDropInContentViewStateType originalState = self.dropInContentView.state;
+        self.dropInContentView.state = BTDropInContentViewStateActivity;
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self presentViewController:viewController animated:YES completion:^{
+                self.dropInContentView.state = originalState;
+            }];
+        }];
     } else {
         [self presentViewController:viewController animated:YES completion:nil];
     }
 }
 
 - (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(__unused UIViewController *)viewController {
-    // If there is a presented view controller, dismiss it.
-    // This is a bit of a coarse UX for nested modals.
-    // But then again, the root issue is that we're using nested modals in the first place.
-    if ([self presentedViewController]) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
