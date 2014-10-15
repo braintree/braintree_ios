@@ -404,6 +404,12 @@
 
 - (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
     [[BTLogger sharedLogger] debug:@"DropIn paymentAuthorizerWillRequestAuthorizationWithAppSwitch:%@", sender];
+
+    // If there is a presented view controller, dismiss it before app switch
+    // so that the result of the app switch can be shown in this view controller.
+    if ([self presentedViewController]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)paymentMethodCreatorWillProcess:(__unused id)sender {
