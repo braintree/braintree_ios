@@ -1,7 +1,7 @@
 //
 //  PayPalMobile.h
 //
-//  Version 2.3.2-bt1
+//  Version 2.5.0-bt2
 //
 //  Copyright (c) 2014, PayPal
 //  All rights reserved.
@@ -15,10 +15,7 @@
 #import "PayPalPayment.h"
 #import "PayPalPaymentViewController.h"
 #import "PayPalProfileSharingViewController.h"
-
-
 #import "PayPalTouch.h"
-
 
 /// Production (default): Normal, live environment. Real money gets moved.
 /// This environment MUST be used for App Store submissions.
@@ -92,5 +89,8 @@ extern NSString *const PayPalEnvironmentNoNetwork;
 /// @return a dictionary of currently available environments (each of which
 /// is a dictionary). You may pass any key from this dictionary to setEnvironment.
 + (NSDictionary *)availableEnvironments;
+
+// @note For changing the clientId at runtime; currently used only by the Demo app.
++ (void)setClientId:(NSString *)clientId forEnvironment:(NSString *)environment;
 
 @end
