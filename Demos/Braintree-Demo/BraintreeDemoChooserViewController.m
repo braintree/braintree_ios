@@ -130,9 +130,9 @@
     BTDropInViewController *dropInViewController = [self.braintree dropInViewControllerWithDelegate:self];
 
     dropInViewController.title = @"Subscribe";
-    dropInViewController.summaryTitle = @"App Fancy Magazine";
+    dropInViewController.summaryTitle = @"Our Fancy Magazine";
     dropInViewController.summaryDescription = @"53 Week Subscription";
-    dropInViewController.displayAmount = [NSNumberFormatter localizedStringFromNumber:@(19) numberStyle:NSNumberFormatterCurrencyStyle];
+    dropInViewController.displayAmount = @"$19.00";
     dropInViewController.callToActionText = @"$19 - Subscribe Now";
     dropInViewController.shouldHideCallToAction = NO;
 
