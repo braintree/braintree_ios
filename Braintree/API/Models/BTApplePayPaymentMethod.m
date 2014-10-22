@@ -8,9 +8,9 @@
 - (id)copyWithZone:(NSZone *)zone {
     BTApplePayPaymentMethod *copy = [[BTApplePayPaymentMethod allocWithZone:zone] init];
     copy->_nonce = [self.nonce copy];
-    copy->_billingAddress = self.billingAddress;
     copy->_shippingMethod = [self.shippingMethod copy];
-    copy->_shippingAddress = self.shippingAddress;
+    copy.billingAddress = self.billingAddress;
+    copy.shippingAddress = self.shippingAddress;
     return copy;
 }
 
