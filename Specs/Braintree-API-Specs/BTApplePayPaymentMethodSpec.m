@@ -1,3 +1,5 @@
+@import AddressBook;
+
 #import "BTApplePayPaymentMethod.h"
 #import "BTMutableApplePayPaymentMethod.h"
 
@@ -6,7 +8,16 @@ SpecBegin(BTApplePayPaymentMethod)
 __block BTApplePayPaymentMethod *immutable;
 
 beforeEach(^{
-    immutable = [[BTApplePayPaymentMethod alloc] init];
+    ABRecordRef address;
+    BTMutableApplePayPaymentMethod *applePayPaymentMethod = [[BTMutableApplePayPaymentMethod alloc] init];
+    applePayPaymentMethod.nonce = @"a nonce";
+    address = ABPersonCreate();
+    applePayPaymentMethod.shippingAddress = address;
+    CFRelease(address);
+    address = ABPersonCreate();
+    applePayPaymentMethod.billingAddress = address;
+    CFRelease(address);
+    immutable = [applePayPaymentMethod copy];
 });
 
 describe(@"mutableCopy", ^{
@@ -14,12 +25,40 @@ describe(@"mutableCopy", ^{
         id copy = [immutable mutableCopy];
         expect(copy).to.beKindOf([BTMutableApplePayPaymentMethod class]);
     });
+
+    it(@"retains the shipping address", ^{
+        NSInteger referenceCount = CFGetRetainCount(immutable.shippingAddress);
+        BTApplePayPaymentMethod *copy = [immutable mutableCopy];
+        expect(copy.shippingAddress).to.equal(immutable.shippingAddress);
+        expect(CFGetRetainCount(copy.shippingAddress)).to.equal(referenceCount + 1);
+    });
+
+    it(@"retains the billing address", ^{
+        NSInteger referenceCount = CFGetRetainCount(immutable.shippingAddress);
+        BTApplePayPaymentMethod *copy = [immutable mutableCopy];
+        expect(copy.shippingAddress).to.equal(immutable.shippingAddress);
+        expect(CFGetRetainCount(copy.billingAddress)).to.equal(referenceCount + 1);
+    });
 });
 
 describe(@"copy", ^{
     it(@"returns a BTApplyPayPaymentMethod", ^{
         id copy = [immutable copy];
         expect(copy).to.beKindOf([BTApplePayPaymentMethod class]);
+    });
+
+    it(@"retains the shipping address", ^{
+        NSInteger referenceCount = CFGetRetainCount(immutable.shippingAddress);
+        BTApplePayPaymentMethod *copy = [immutable mutableCopy];
+        expect(copy.shippingAddress).to.equal(immutable.shippingAddress);
+        expect(CFGetRetainCount(copy.shippingAddress)).to.equal(referenceCount + 1);
+    });
+
+    it(@"retains the billing address", ^{
+        NSInteger referenceCount = CFGetRetainCount(immutable.shippingAddress);
+        BTApplePayPaymentMethod *copy = [immutable mutableCopy];
+        expect(copy.shippingAddress).to.equal(immutable.shippingAddress);
+        expect(CFGetRetainCount(copy.billingAddress)).to.equal(referenceCount + 1);
     });
 });
 

@@ -18,9 +18,7 @@
     BTMutableApplePayPaymentMethod *mutableInstance = [[BTMutableApplePayPaymentMethod allocWithZone:zone] init];
     [mutableInstance setNonce:self.nonce];
     [mutableInstance setShippingMethod:self.shippingMethod];
-    // TODO: Retain counts and leaks for ABRecordRef
     [mutableInstance setShippingAddress:self.shippingAddress];
-    // TODO: Retain counts and leaks for ABRecordRef
     [mutableInstance setBillingAddress:self.billingAddress];
     return mutableInstance;
 }
