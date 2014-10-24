@@ -8,9 +8,9 @@
 - (id)copyWithZone:(NSZone *)zone {
     BTApplePayPaymentMethod *copy = [[BTApplePayPaymentMethod allocWithZone:zone] init];
     copy->_nonce = [self.nonce copy];
-    copy->_billingAddress = self.billingAddress;
     copy->_shippingMethod = [self.shippingMethod copy];
-    copy->_shippingAddress = self.shippingAddress;
+    copy.billingAddress = self.billingAddress;
+    copy.shippingAddress = self.shippingAddress;
     return copy;
 }
 
@@ -18,9 +18,7 @@
     BTMutableApplePayPaymentMethod *mutableInstance = [[BTMutableApplePayPaymentMethod allocWithZone:zone] init];
     [mutableInstance setNonce:self.nonce];
     [mutableInstance setShippingMethod:self.shippingMethod];
-    // TODO: Retain counts and leaks for ABRecordRef
     [mutableInstance setShippingAddress:self.shippingAddress];
-    // TODO: Retain counts and leaks for ABRecordRef
     [mutableInstance setBillingAddress:self.billingAddress];
     return mutableInstance;
 }
