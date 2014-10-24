@@ -1,48 +1,37 @@
 
 # Braintree iOS SDK Release Notes
 
-## 3.4.0-rc3 (2014-10-10)
+## 3.4.0 (2014-10-24)
+
+* Features
+  * Stable Apple Pay support
+    * New method in `Braintree` for tokenizing a `PKPayment` into a nonce
+      * This is useful for merchants who integrate with Apple Pay using `PassKit`, rather than `BTPaymentProvider`
+    * `BTPaymentProvider` support for Apple Pay
+    * `BTApplePayPaymentMethod` with nonce and address information
+  * `BTData` now includes PayPal application correlation ID in device data blob
+  * Card.IO headers are now included in SDK
+
+* API Changes and Deprecations
+  * `-[Braintree tokenizeCard:completion:]` and `-[BTClient saveCardWithRequest:success:failure:]` now take an extensible "request" object as an argument to pass the various raw card details:
+    * The previous signatures that accepted raw details in the arguments are now deprecated.
+    * These will be removed in the next major version (4.0.0).
 
 * Integration
   * This SDK now officially supports integration without CocoaPods
     * Please see `docs/Manual Integration.md`
     * Report bugs with these new integration instructions via [Github](https://github.com/braintree/braintree_ios/issues/new)
-* Apple Pay Enhancements
-  * `BTApplePayPaymentMethod` now includes address information
-  * New method in `Braintree` for tokenizing a `PKPayment` into a nonce 
-    * This is useful for merchants who integrate with Apple Pay using `PassKit`, rather than `BTPaymentProvider`
-  * `BTPaymentProvider` supports overriding `supportedNetworks`
+  * Project Organization
+    * All library code is now located under `/Braintree`
+
 * Bug fixes
-  * Static analysis recommendations
+  * Fix a number of minor static analysis recommendations
   * Avoid potential nil-block crasher
   * Fix iOS 8 `CoreLocation` deprecation in `BTData`
 
-## 3.4.0-rc2 (2014-10-08)
-
-* Enhancements
-  * Fix build for Drop In view controller (`shouldValidate` bug)
-  * Bug fixes for iOS 7
-  * Improve test coverage and demo app
-  * Project Organization
-    * All library code is now located under `/Braintree`. We hope this helps with non-cocoapods integrations!
-
-## 3.4.0-rc1 (2014-10-07)
-
-* Features
-  * Pre-release support for Apple Pay
-    * Support in `BTClient` and `BTPaymentProvider`
-    * Mock support for developing on the simulator against Sandbox accounts
-    * :warning: Braintree Apple Pay support is not yet production-ready. APIs and behavior *will* change. :warning:
-* Update requirements
+* New minimum requirements
   * Xcode 6+
   * Base SDK iOS 8+ (still compatible with iOS 7+ deployment target)
-* Enhancements
-  * `BTData` now includes PayPal application correlation ID in device data blob
-* API Changes and Deprecations
-  * `-[Braintree tokenizeCard:completion:]` and `-[BTClient saveCardWithRequest:success:failure:]` now take an extensible "request" object as an argument to pass the various raw card details:
-    * The previous signatures that accepted raw details in the arguments are now deprecated.
-    * These will be removed in the next major version (4.0.0).
-  * `BTData` has a new initializer that injects a `BTClient` instance
 
 ## 3.3.1 (2014-09-16)
 
