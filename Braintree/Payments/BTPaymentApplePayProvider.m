@@ -189,7 +189,7 @@
     if ([[self class] isSimulator]) {
         return [BTMockApplePayPaymentAuthorizationViewController canMakePayments];
     } else {
-        return [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:self.client.configuration.applePayConfiguration.supportedNetworks];
+        return [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:self.paymentRequest.supportedNetworks];
     }
 }
 
