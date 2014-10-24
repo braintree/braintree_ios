@@ -113,10 +113,14 @@
 
     [self.client saveApplePayPayment:payment
                              success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                                 completionBlock(applePayPaymentMethod.nonce, nil);
+                                 if (completionBlock) {
+                                     completionBlock(applePayPaymentMethod.nonce, nil);
+                                 }
                              }
                              failure:^(NSError *error) {
-                                 completionBlock(nil, error);
+                                 if (completionBlock) {
+                                     completionBlock(nil, error);
+                                 }
                              }];
 }
 
