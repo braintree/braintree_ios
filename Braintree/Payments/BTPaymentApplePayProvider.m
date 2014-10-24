@@ -23,6 +23,15 @@
 }
 
 - (BOOL)canAuthorizeApplePayPayment {
+    static NSString *const failureEvent = @"ios.apple-pay-provider.check.fail";
+    static NSString *const successEvent = @"ios.apple-pay-provider.check.succeed";
+
+    BOOL result = [self canAuthorizeApplePayPaymentWithoutAnalytics];
+    [self.client postAnalyticsEvent:result ? successEvent : failureEvent];
+    return result;
+}
+
+- (BOOL)canAuthorizeApplePayPaymentWithoutAnalytics {
     if (![PKPayment class]) {
         return NO;
     }
@@ -39,7 +48,6 @@
 }
 
 - (void)authorizeApplePay {
-
     if (![PKPayment class]) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
@@ -60,11 +68,11 @@
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
                                          userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account" }];
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
+        [self informDelegateDidFailWithError:error];
         return;
     }
     
-    if (![self canAuthorizeApplePayPayment]) {
+    if (![self canAuthorizeApplePayPaymentWithoutAnalytics]) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorInitialization
                                          userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version and configuration received via client token. Is Apple Pay enabled?" }];
@@ -276,18 +284,21 @@
 }
 
 - (void)informDelegateDidCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [self.client postAnalyticsEvent:@"ios.apple-pay-provider.completion.succeed"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didCreatePaymentMethod:)]) {
         [self.delegate paymentMethodCreator:self didCreatePaymentMethod:paymentMethod];
     }
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
+    [self.client postAnalyticsEvent:@"ios.apple-pay-provider.completion.fail"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didFailWithError:)]) {
         [self.delegate paymentMethodCreator:self didFailWithError:error];
     }
 }
 
 - (void)informDelegateDidCancel {
+    [self.client postAnalyticsEvent:@"ios.apple-pay-provider.completion.cancel"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorDidCancel:)]) {
         [self.delegate paymentMethodCreatorDidCancel:self];
     }

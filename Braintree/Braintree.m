@@ -109,6 +109,8 @@
 
 - (void)tokenizeApplePayPayment:(PKPayment *)payment
                      completion:(void (^)(NSString *, NSError *))completionBlock {
+    [self.client postAnalyticsEvent:@"custom.ios.tokenize.apple-pay"];
+
     [self.client saveApplePayPayment:payment
                              success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                                  completionBlock(applePayPaymentMethod.nonce, nil);
