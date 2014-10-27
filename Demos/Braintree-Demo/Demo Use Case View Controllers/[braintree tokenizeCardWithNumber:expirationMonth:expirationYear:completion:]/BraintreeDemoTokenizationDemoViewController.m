@@ -1,9 +1,10 @@
 #import "BraintreeDemoTokenizationDemoViewController.h"
 
 #import <Braintree/Braintree.h>
+#import <Braintree/CardIO.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
-@interface BraintreeDemoTokenizationDemoViewController ()
+@interface BraintreeDemoTokenizationDemoViewController () <CardIOPaymentViewControllerDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, copy) void (^completionBlock)(NSString *);
@@ -37,11 +38,57 @@
                                                                                               target:self
                                                                                               action:@selector(setupDemoData)]
                                                 ];
+
+    UIButton *cardIOButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [cardIOButton setTitle:@"Scan Card" forState:UIControlStateNormal];
+    [cardIOButton addTarget:self action:@selector(presentCardIO) forControlEvents:UIControlEventTouchUpInside];
+    cardIOButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:cardIOButton];
+    NSDictionary *views = @{ @"expirationYearField": self.expirationYearField, @"cardIOButton": cardIOButton };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[expirationYearField]-[cardIOButton]"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[cardIOButton]|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:views]];
+
+    [CardIOPaymentViewController preload];
+
+}
+- (void)presentCardIO {
+    CardIOPaymentViewController *cardIO = [[CardIOPaymentViewController alloc] initWithPaymentDelegate:self];
+    cardIO.collectExpiry = YES;
+    cardIO.collectCVV = NO;
+    cardIO.useCardIOLogo = YES;
+    cardIO.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:cardIO animated:YES completion:nil];
+
+}
+
+- (void)userDidProvideCreditCardInfo:(CardIOCreditCardInfo *)cardInfo inPaymentViewController:(CardIOPaymentViewController *)paymentViewController {
+    NSLog(@"Scanned a card with Card.IO: %@", [cardInfo redactedCardNumber]);
+
+    if (cardInfo.expiryYear) {
+        self.expirationYearField.text = [NSString stringWithFormat:@"%d", (int)cardInfo.expiryYear];
+    }
+
+    if (cardInfo.expiryMonth) {
+        self.expirationMonthField.text = [NSString stringWithFormat:@"%d", (int)cardInfo.expiryMonth];
+    }
+
+    self.cardNumberField.text = cardInfo.cardNumber;
+
+    [paymentViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)userDidCancelPaymentViewController:(CardIOPaymentViewController *)paymentViewController {
+    [paymentViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewDidAppear:(__unused BOOL)animated {
     [super viewDidAppear:animated];
-    [self.cardNumberField becomeFirstResponder];
 }
 
 - (void)submitForm {
