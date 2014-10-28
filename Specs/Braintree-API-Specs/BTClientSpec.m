@@ -301,13 +301,6 @@ describe(@"offline clients", ^{
     });
 
     describe(@"save Apple Pay payments", ^{
-        it(@"fails if payment request is nil", ^{
-            OCMockObject *mockLogger = [OCMockObject partialMockForObject:[BTLogger sharedLogger]];
-            [[mockLogger expect] warning:OCMOCK_ANY];
-            [offlineClient saveApplePayPayment:nil success:nil failure:nil];
-            [mockLogger verify];
-        });
-
         it(@"succeeds if payment is nil in mock mode", ^{
             waitUntil(^(DoneCallback done){
                 [offlineClient saveApplePayPayment:nil success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
