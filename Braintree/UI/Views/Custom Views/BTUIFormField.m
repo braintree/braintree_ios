@@ -122,7 +122,7 @@ const CGFloat formFieldBottomMargin = 11;
 
 - (void)setThemedPlaceholder:(NSString *)placeholder {
     self.floatLabel.label.text = placeholder;
-    self.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder
+    self.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder ?: @""
                                                                            attributes:self.theme.textFieldPlaceholderAttributes];
 }
 

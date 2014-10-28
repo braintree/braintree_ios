@@ -119,8 +119,8 @@
 }
 
 - (void)setThemedPlaceholder:(NSString *)placeholder {
-        NSMutableAttributedString *attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:placeholder
-                                                                                        attributes:self.theme.textFieldPlaceholderAttributes];
+    NSMutableAttributedString *attributedPlaceholder = [[NSMutableAttributedString alloc] initWithString:placeholder ?: @""
+                                                                                              attributes:self.theme.textFieldPlaceholderAttributes];
         [self kernExpiration:attributedPlaceholder];
         [self setThemedAttributedPlaceholder:attributedPlaceholder];
 }
