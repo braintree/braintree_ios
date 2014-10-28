@@ -1,7 +1,7 @@
 //
 //  PayPalTouch.h
 //
-//  Version 2.5.0-bt2
+//  Version 2.6.0-bt1
 //
 //  Copyright (c) 2014, PayPal
 //  All rights reserved.
@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, PayPalTouchResultType) {
 @interface PayPalTouchResult : NSObject
 /// resultType can be success, cancel or some sort of an error
 @property (nonatomic, readonly, assign) PayPalTouchResultType resultType;
-/// When App Switch is succesful the authorization dictionary
+/// When App Switch is successful the authorization dictionary
 /// containing information that your server will need to process the payment.
 @property (nonatomic, readonly, copy) NSDictionary *authorization;
 /// This dictionary is always present when resultType is PayPalTouchResultTypeError.
@@ -56,7 +56,7 @@ typedef NS_ENUM(NSUInteger, PayPalTouchResultType) {
 ///
 /// @param configuration The configuration to be used for the app switch
 /// @return YES if app switch was successful
-+ (BOOL)authorizeFuturePayments:(PayPalConfiguration *)configuration;
++ (BOOL)authorizeFuturePayments:(PayPalConfiguration *)configuration __attribute__((deprecated("Please use authorizeScopeValues:configuration: instead")));
 
 /// @param scopeValues Set of requested scope-values. Each scope-value is defined in PayPalOAuthScopes.h.
 /// @param configuration The configuration to be used for the app switch
