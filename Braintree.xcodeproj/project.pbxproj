@@ -190,6 +190,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		167BDAC319FF24960002BF8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 169681D5192D9AC700120846;
+			remoteInfo = "Braintree-UI-Demo";
+		};
 		16968177192D9A3200120846 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -2115,6 +2122,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				167BDAC419FF24960002BF8A /* PBXTargetDependency */,
 			);
 			name = "Braintree-UI-Specs";
 			productName = "Braintree-Payments-UI-Specs";
@@ -2328,6 +2336,9 @@
 				CLASSPREFIX = BT;
 				LastUpgradeCheck = 0600;
 				TargetAttributes = {
+					1607FE89192D97FF0099D504 = {
+						TestTargetID = 169681D5192D9AC700120846;
+					};
 					162174DE192D9220008DC35D = {
 						DevelopmentTeam = QK3APTBF2M;
 						SystemCapabilities = {
@@ -2858,6 +2869,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		167BDAC419FF24960002BF8A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 169681D5192D9AC700120846 /* Braintree-UI-Demo */;
+			targetProxy = 167BDAC319FF24960002BF8A /* PBXContainerItemProxy */;
+		};
 		16968178192D9A3200120846 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1696811D192D997900120846 /* Braintree-PayPal-Demo */;
@@ -3353,6 +3369,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-UI-Demo.app/Braintree-UI-Demo";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -3391,6 +3408,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-UI-Demo.app/Braintree-UI-Demo";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = xctest;
 			};
