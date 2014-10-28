@@ -40,7 +40,7 @@
 + (BOOL)canMakePayments {
     NSOperatingSystemVersion v;
     v.majorVersion = 8;
-    v.minorVersion = 0;
+    v.minorVersion = 1;
     v.patchVersion = 0;
     return [[NSProcessInfo processInfo] respondsToSelector:@selector(operatingSystemVersion)] && [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:v];
 }
