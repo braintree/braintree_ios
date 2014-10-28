@@ -75,7 +75,7 @@
     if (![self canAuthorizeApplePayPaymentWithoutAnalytics]) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorInitialization
-                                         userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version and configuration received via client token. Is Apple Pay enabled?" }];
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version, cards in Passbook and configuration." }];
         [self informDelegateDidFailWithError:error];
         return;
     }
@@ -115,7 +115,7 @@
         if (paymentAuthorizationViewController == nil) {
             NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                                  code:BTPaymentProviderErrorInitialization
-                                             userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version and configuration." }];
+                                             userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize a Apple Pay authorization view controller. Check device, OS version, cards in Passbook and configuration." }];
             [self informDelegateDidFailWithError:error];
             return;
         }
