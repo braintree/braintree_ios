@@ -140,7 +140,7 @@
     PayPalConfiguration *configuration = client.btPayPal_configuration;
     configuration.callbackURLScheme = self.returnURLScheme;
 
-    BOOL payPalTouchDidAuthorize = [PayPalTouch authorizeFuturePayments:configuration];
+    BOOL payPalTouchDidAuthorize = [PayPalTouch authorizeScopeValues:self.client.btPayPal_scopes configuration:configuration];
     if (payPalTouchDidAuthorize) {
         [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.success"];
         return YES;

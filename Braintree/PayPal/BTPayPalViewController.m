@@ -42,7 +42,7 @@
             if ([self.delegate respondsToSelector:@selector(payPalViewController:didFailWithError:)]) {
                 NSError *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain
                                                      code:BTMerchantIntegrationErrorPayPalConfiguration
-                                                 userInfo:@{ NSLocalizedDescriptionKey: @"PayPalFuturePaymentsViewController could not be initialized. Perhaps client token did not contain a valid PayPal configuration. Please ensure that you have PayPal enabled and are including the configuration in your client token." }];
+                                                 userInfo:@{ NSLocalizedDescriptionKey: @"PayPalProfileSharingViewController could not be initialized. Perhaps client token did not contain a valid PayPal configuration. Please ensure that you have PayPal enabled and are including the configuration in your client token." }];
                 [self.delegate payPalViewController:self didFailWithError:error];
             }
             self.view = nil;

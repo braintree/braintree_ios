@@ -11,29 +11,30 @@ NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
 
 SpecBegin(BTClient_BTPayPal)
 
+__block NSMutableDictionary *mutableClaims;
+
+beforeEach(^{
+
+    NSDictionary *paypalClaims = @{
+                                   BTClientTokenKeyPayPalClientId: @"PayPal-Test-Merchant-ClientId",
+                                   BTClientTokenKeyPayPalMerchantName: @"PayPal Merchant",
+                                   BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
+                                   BTClientTokenKeyPayPalMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
+                                   BTClientTokenKeyPayPalEnvironment: BTClientTokenPayPalEnvironmentCustom,
+                                   BTClientTokenKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com" };
+
+    NSDictionary *baseClaims = @{ BTClientTokenKeyVersion: @2,
+                                  BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
+                                  BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
+                                  BTClientTokenKeyPayPalEnabled: @YES,
+                                  BTClientTokenKeyPayPal: [paypalClaims mutableCopy] };
+
+
+    mutableClaims = [baseClaims mutableCopy];
+});
+
+
 describe(@"btPayPal_preparePayPalMobileWithError", ^{
-
-    __block NSMutableDictionary *mutableClaims;
-
-    beforeEach(^{
-
-        NSDictionary *paypalClaims = @{
-                                       BTClientTokenKeyPayPalClientId: @"PayPal-Test-Merchant-ClientId",
-                                       BTClientTokenKeyPayPalMerchantName: @"PayPal Merchant",
-                                       BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
-                                       BTClientTokenKeyPayPalMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
-                                       BTClientTokenKeyPayPalEnvironment: BTClientTokenPayPalEnvironmentCustom,
-                                       BTClientTokenKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com" };
-
-        NSDictionary *baseClaims = @{ BTClientTokenKeyVersion: @2,
-                                      BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                      BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                      BTClientTokenKeyPayPalEnabled: @YES,
-                                      BTClientTokenKeyPayPal: [paypalClaims mutableCopy] };
-
-
-        mutableClaims = [baseClaims mutableCopy];
-    });
 
     describe(@"in Live PayPal environment", ^{
         describe(@"btPayPal_payPalEnvironment", ^{
@@ -108,9 +109,17 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
         });
 
     });
+});
 
+describe(@"scopes", ^{
+    it(@"includes email and future payments", ^{
+        NSString *clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
+        BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
 
-
+        NSSet *scopes = [client btPayPal_scopes];
+        expect(scopes).to.contain(kPayPalOAuth2ScopeEmail);
+        expect(scopes).to.contain(kPayPalOAuth2ScopeFuturePayments);
+    });
 });
 
 SpecEnd

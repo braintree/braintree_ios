@@ -17,4 +17,5 @@ extern NSString *const BTClientPayPalMobileEnvironmentName;
 - (PayPalConfiguration *)btPayPal_configuration;
 - (NSString *)btPayPal_environment;
 - (BOOL)btPayPal_isTouchDisabled;
+- (NSSet *)btPayPal_scopes;
 @end
