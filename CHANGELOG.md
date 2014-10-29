@@ -28,6 +28,7 @@
   * Fix a number of minor static analysis recommendations
   * Avoid potential nil-block crasher
   * Fix iOS 8 `CoreLocation` deprecation in `BTData`
+  * Fix double-dismisal bug in presentation of in-app PayPal login in Drop In
 
 * New minimum requirements
   * Xcode 6+
