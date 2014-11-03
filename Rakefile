@@ -43,11 +43,22 @@ class << self
   def current_version_with_sha
     %x{git describe}.strip
   end
+
+  def xctool(scheme, command, options={})
+    default_options = {
+      :build_settings => {}
+    }
+    options = options.reverse_merge(default_options)
+    build_settings = options[:build_settings].map{|k,v| "#{k}='#{v}'"}.join(" ")
+
+    return "xctool -reporter 'pretty' -workspace 'Braintree.xcworkspace' -scheme '#{scheme}' -sdk 'iphonesimulator8.1' -destination='platform=iOS Simulator,name=iPhone,0S=8.1' -configuration 'Release' #{build_settings} #{command}"
+  end
+
 end
 
 namespace :spec do
   def run_test_scheme! scheme
-    run! XCTool::Builder.new('Braintree.xcworkspace', scheme).test.as_cmd
+    run! xctool(scheme, 'test')
   end
 
   desc 'Run unit tests'
@@ -75,7 +86,7 @@ namespace :spec do
     desc 'Run api integration tests'
     task :integration do
       with_https_server do
-        run! XCTool::Builder.new('Braintree.xcworkspace', 'Braintree-API-Integration-Specs').with_build_setting('GCC_PREPROCESSOR_DEFINITIONS', 'SKIP_SSL_PINNING_SPECS=1').test.as_cmd
+        run! xctool('Braintree-API-Integration-Specs', 'test', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => 'SKIP_SSL_PINNING_SPECS=1'})
       end
     end
   end
@@ -117,7 +128,7 @@ namespace :spec do
   namespace :ui do
     desc 'Run UI unit tests'
     task :unit do
-      run_test_scheme! 'Braintree-Payments-UI-Specs'
+      run_test_scheme! 'Braintree-UI-Specs'
     end
   end
 
@@ -127,7 +138,7 @@ end
 
 namespace :demo do
   def build_demo! scheme
-    run! XCTool::Builder.new('Braintree.xcworkspace', scheme).build.as_cmd
+    run! xctool(scheme, 'build')
   end
 
   task :build do
@@ -142,7 +153,7 @@ namespace :demo do
 
   namespace :ui do
     task :build do
-      build_demo! 'Braintree-Payments-UI-Demo'
+      build_demo! 'Braintree-UI-Demo'
     end
   end
 
