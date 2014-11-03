@@ -17,6 +17,7 @@ beforeEach(^{
 
     [[[client stub] andReturn:client] copyWithMetadata:OCMOCK_ANY];
     [[[client stub] andReturn:[[PayPalConfiguration alloc] init]] btPayPal_configuration];
+    [[[client stub] andReturn:[NSSet setWithObjects:kPayPalOAuth2ScopeFuturePayments, kPayPalOAuth2ScopeEmail, nil]] btPayPal_scopes];
 });
 
 afterEach(^{
@@ -114,7 +115,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
             });
 
             it(@"returns a BTAppSwitchErrorFailed error if PayPalTouch fails to app switch", ^{
-                [[[payPalTouch stub] andReturnValue:@NO] authorizeFuturePayments:OCMOCK_ANY];
+                [[[payPalTouch stub] andReturnValue:@NO] authorizeScopeValues:OCMOCK_ANY configuration:OCMOCK_ANY];
                 [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.failed"];
                 NSError *error;
                 BOOL handled = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate error:&error];
@@ -124,7 +125,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
             });
 
             it(@"returns nil when PayPalTouch can and does app switch", ^{
-                [[[payPalTouch expect] andReturnValue:@YES] authorizeFuturePayments:OCMOCK_ANY];
+                [[[payPalTouch expect] andReturnValue:@YES] authorizeScopeValues:OCMOCK_ANY configuration:OCMOCK_ANY];
                 [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.success"];
                 NSError *error;
                 BOOL handled = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate error:&error];

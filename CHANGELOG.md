@@ -1,7 +1,11 @@
-
 # Braintree iOS SDK Release Notes
 
-## 3.4.0 (2014-10-24)
+## 3.4.1 (2014-10-29)
+
+* Bug fixes
+  * Remove duplicate symbols with 1Password SDK by upgrading internal PayPal SDK
+
+## 3.4.0 (2014-10-27)
 
 * Features
   * Stable Apple Pay support
@@ -11,6 +15,7 @@
     * `BTApplePayPaymentMethod` with nonce and address information
   * `BTData` now includes PayPal application correlation ID in device data blob
   * Card.IO headers are now included in SDK
+  * In-App PayPal login now supports 1Password
 
 * API Changes and Deprecations
   * `-[Braintree tokenizeCard:completion:]` and `-[BTClient saveCardWithRequest:success:failure:]` now take an extensible "request" object as an argument to pass the various raw card details:
@@ -28,6 +33,7 @@
   * Fix a number of minor static analysis recommendations
   * Avoid potential nil-block crasher
   * Fix iOS 8 `CoreLocation` deprecation in `BTData`
+  * Fix double-dismisal bug in presentation of in-app PayPal login in Drop In
 
 * New minimum requirements
   * Xcode 6+
