@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 3.4.1 (2014-10-29)
+## 3.4.1 (2014-11-03)
 
 * Bug fixes
   * Remove duplicate symbols with 1Password SDK by upgrading internal PayPal SDK
