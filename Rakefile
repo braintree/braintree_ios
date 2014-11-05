@@ -353,3 +353,10 @@ task :generate_pinned_certificates_code do
   run! "cd #{File.join(File.dirname(__FILE__), "Braintree/API/Networking/Certificates")} && ./codify_certificates.sh"
 end
 
+namespace :gen do
+  task :strings do
+    ["Drop-In", "UI"].each do |subspec|
+      run! "genstrings -o Braintree/#{subspec}/Localization/en.lproj Braintree/#{subspec}/**/*.m && mv  -f Braintree/#{subspec}/Localization/en.lproj/Localizable.strings Braintree/#{subspec}/Localization/en.lproj/#{subspec}.strings"
+    end
+  end
+end
