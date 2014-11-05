@@ -895,7 +895,6 @@ describe(@"post analytics event", ^{
                                                     BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
                                                     BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
                                                     BTClientTestConfigurationKeyCustomer:@YES,
-                                                    BTClientTestConfigurationKeyAnalytics:@{ BTClientTestConfigurationKeyURL: @"http://localhost:3000/merchants/integration_merchant_id/client_api/v1/analytics" },
                                                     BTClientTestConfigurationKeyClientTokenVersion: @2
                                                     } completion:^(BTClient *client) {
                                                         testClient = client;
