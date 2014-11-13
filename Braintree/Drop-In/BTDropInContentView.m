@@ -207,16 +207,16 @@
 }
 
 - (void)setTheme:(BTUI *)theme {
-  [super setTheme:theme];
-  
-  self.cardFormSectionHeader.textColor = theme.sectionHeaderTextColor;
-  self.cardFormSectionHeader.font = theme.sectionHeaderFont;
-  
-  self.summaryView.theme = theme;
-  self.ctaControl.theme = theme;
-  self.paymentButton.theme = theme;
-  self.cardForm.theme = theme;
-  self.selectedPaymentMethodView.theme = theme;
+    [super setTheme:theme];
+    
+    self.cardFormSectionHeader.textColor = theme.sectionHeaderTextColor;
+    self.cardFormSectionHeader.font = theme.sectionHeaderFont;
+    
+    self.summaryView.theme = theme;
+    self.ctaControl.theme = theme;
+    self.paymentButton.theme = theme;
+    self.cardForm.theme = theme;
+    self.selectedPaymentMethodView.theme = theme;
 }
 
 - (void)updateLayout {

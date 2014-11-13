@@ -169,9 +169,9 @@
 }
 
 - (void)setTheme:(BTUI *)theme {
-  [super setTheme:theme];
-  
-  [self setNeedsDisplay];
+    [super setTheme:theme];
+    
+    [self setNeedsDisplay];
 }
 
 #pragma mark - Drawing

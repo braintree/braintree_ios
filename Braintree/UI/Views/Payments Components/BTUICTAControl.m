@@ -57,15 +57,15 @@
 
 - (void)setTheme:(BTUI *)theme {
     _theme = theme;
-  
+
     [self syncUIToTheme];
 }
 
 - (BTUI *)theme {
-  if (_theme == nil) {
-    _theme = [BTUI braintreeTheme];
-  }
-  return _theme;
+    if (_theme == nil) {
+      _theme = [BTUI braintreeTheme];
+    }
+    return _theme;
 }
 
 - (void)showLoadingState: (__unused BOOL)loadingState{

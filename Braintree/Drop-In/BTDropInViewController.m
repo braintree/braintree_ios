@@ -323,11 +323,10 @@
 #pragma mark Sync UI
 
 - (void)syncUIToTheme {
-  self.view.backgroundColor = self.theme.viewBackgroundColor;
-  self.view.tintColor = self.theme.defaultTintColor;
+    self.view.backgroundColor = self.theme.viewBackgroundColor;
+    self.view.tintColor = self.theme.defaultTintColor;
   
-  //Delegate this to the view itself
-  self.dropInContentView.theme = self.theme;
+    self.dropInContentView.theme = self.theme;
 }
 
 #pragma mark Progress UI
@@ -532,18 +531,18 @@
 }
 
 - (void)setTheme:(BTUI *)newTheme {
-  _theme = newTheme;
-  
-  [self syncUIToTheme];
+    _theme = newTheme;
+    
+    [self syncUIToTheme];
 }
 
 #pragma mark Lazy Instantiation
 
 - (BTUI *)theme {
-  if (_theme == nil) {
-    _theme = [BTUI braintreeTheme];
-  }
-  return _theme;
+    if (_theme == nil) {
+      _theme = [BTUI braintreeTheme];
+    }
+    return _theme;
 }
 
 #pragma mark Data

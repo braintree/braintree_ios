@@ -204,17 +204,15 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 }
 
 - (void)syncUIToTheme {
-  self.typeLabel.font = self.theme.controlTitleFont;
-  self.typeLabel.textColor = self.theme.titleColor;
-  self.detailDescriptionLabel.font = self.theme.controlDetailFont;
-  self.detailDescriptionLabel.textColor = self.theme.detailColor;
-  self.topBorder.backgroundColor = self.theme.borderColor;
-  self.bottomBorder.backgroundColor = self.theme.borderColor;
-  
-  [self updateSubviews];
+    self.typeLabel.font = self.theme.controlTitleFont;
+    self.typeLabel.textColor = self.theme.titleColor;
+    self.detailDescriptionLabel.font = self.theme.controlDetailFont;
+    self.detailDescriptionLabel.textColor = self.theme.detailColor;
+    self.topBorder.backgroundColor = self.theme.borderColor;
+    self.bottomBorder.backgroundColor = self.theme.borderColor;
+    
+    [self updateSubviews];
 }
-
-
 
 #pragma mark -
 
@@ -238,9 +236,9 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 }
 
 - (void)setTheme:(BTUI *)theme {
-  [super setTheme:theme];
-  
-  [self syncUIToTheme];
+    [super setTheme:theme];
+    
+    [self syncUIToTheme];
 }
 
 @end
