@@ -328,8 +328,6 @@
   
   //Delegate this to the view itself
   self.dropInContentView.theme = self.theme;
-  self.addPaymentMethodDropInViewController.theme = self.theme;
-
 }
 
 #pragma mark Progress UI
@@ -652,7 +650,7 @@
 - (BTDropInViewController *)addPaymentMethodDropInViewController {
     if (!_addPaymentMethodDropInViewController) {
         _addPaymentMethodDropInViewController = [[BTDropInViewController alloc] initWithClient:self.client];
-
+        _addPaymentMethodDropInViewController.theme = self.theme;
         _addPaymentMethodDropInViewController.title = BTDropInLocalizedString(ADD_PAYMENT_METHOD_VIEW_CONTROLLER_TITLE);
         _addPaymentMethodDropInViewController.fullForm = NO;
         _addPaymentMethodDropInViewController.shouldHideCallToAction = YES;
