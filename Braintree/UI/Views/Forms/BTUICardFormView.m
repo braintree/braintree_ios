@@ -168,6 +168,12 @@
 
 }
 
+- (void)setTheme:(BTUI *)theme {
+  [super setTheme:theme];
+  
+  [self setNeedsDisplay];
+}
+
 #pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect {

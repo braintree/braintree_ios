@@ -28,7 +28,6 @@
 #pragma mark View Lifecycle
 
 - (void)setupView {
-    self.theme = [BTUI braintreeTheme];
     self.backgroundColor = self.tintColor;
 
     self.label = [[UILabel alloc] init];

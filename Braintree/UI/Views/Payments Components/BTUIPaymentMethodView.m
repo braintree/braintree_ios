@@ -63,16 +63,12 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 
     self.typeLabel = [[UILabel alloc] init];
     [self.typeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    self.typeLabel.font = [self.theme controlTitleFont];
-    [self.typeLabel setTextColor:[self.theme titleColor]];
     [self.typeLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self.typeLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
     self.detailDescriptionLabel = [[UILabel alloc] init];
     [self.detailDescriptionLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.detailDescriptionLabel.lineBreakMode = NSLineBreakByTruncatingMiddle; // TODO - use attributed string for line break
-    self.detailDescriptionLabel.font = [self.theme controlDetailFont];
-    [self.detailDescriptionLabel setTextColor:[self.theme detailColor]];
 
     // Activity Indicators
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -80,11 +76,9 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     [self.activityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     self.topBorder = [[UIView alloc] init];
-    self.topBorder.backgroundColor = [self.theme borderColor];
     self.topBorder.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.bottomBorder = [[UIView alloc] init];
-    self.bottomBorder.backgroundColor = [self.theme borderColor];
     self.bottomBorder.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self addSubview:self.iconView];
@@ -99,6 +93,7 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 
     // Setup views based on initial state
     [self updateSubviews];
+    [self syncUIToTheme];
 }
 
 - (void)updateConstraints {
@@ -208,6 +203,19 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     [self setNeedsLayout];
 }
 
+- (void)syncUIToTheme {
+  self.typeLabel.font = self.theme.controlTitleFont;
+  self.typeLabel.textColor = self.theme.titleColor;
+  self.detailDescriptionLabel.font = self.theme.controlDetailFont;
+  self.detailDescriptionLabel.textColor = self.theme.detailColor;
+  self.topBorder.backgroundColor = self.theme.borderColor;
+  self.bottomBorder.backgroundColor = self.theme.borderColor;
+  
+  [self updateSubviews];
+}
+
+
+
 #pragma mark -
 
 - (void)setDetailDescription:(NSString *)paymentMethodDescription {
@@ -227,6 +235,12 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     [UIView animateWithDuration:0.3f animations:^{
         [self updateSubviews];
     }];
+}
+
+- (void)setTheme:(BTUI *)theme {
+  [super setTheme:theme];
+  
+  [self syncUIToTheme];
 }
 
 @end

@@ -326,11 +326,10 @@
   self.view.backgroundColor = self.theme.viewBackgroundColor;
   self.view.tintColor = self.theme.defaultTintColor;
   
-  
   //Delegate this to the view itself
   self.dropInContentView.theme = self.theme;
-  self.dropInContentView.cardFormSectionHeader.textColor = self.theme.sectionHeaderTextColor;
-  self.dropInContentView.cardFormSectionHeader.font = self.theme.sectionHeaderFont;
+  self.addPaymentMethodDropInViewController.theme = self.theme;
+
 }
 
 #pragma mark Progress UI

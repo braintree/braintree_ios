@@ -75,11 +75,9 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [self.paymentButtonsCollectionView registerClass:[BTUIPaymentButtonCollectionViewCell class] forCellWithReuseIdentifier:BTPaymentButtonPaymentButtonCellIdentifier];
 
     self.topBorder = [[UIView alloc] init];
-    self.topBorder.backgroundColor = [self.theme borderColor];
     self.topBorder.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.bottomBorder = [[UIView alloc] init];
-    self.bottomBorder.backgroundColor = [self.theme borderColor];
     self.bottomBorder.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self addSubview:self.paymentButtonsCollectionView];
@@ -135,6 +133,17 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
                                                                    views:views]];
 
     [super updateConstraints];
+}
+
+- (void)syncUIToTheme {
+  self.bottomBorder.backgroundColor = self.theme.borderColor;
+  self.topBorder.backgroundColor = self.theme.borderColor;
+}
+
+- (void)setTheme:(BTUI *)theme {
+  [super setTheme:theme];
+  
+  [self syncUIToTheme];
 }
 
 #pragma mark PaymentButton State
