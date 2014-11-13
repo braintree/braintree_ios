@@ -68,8 +68,6 @@
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-    self.view.backgroundColor = self.theme.viewBackgroundColor;
-
     // Configure Subviews
     self.scrollView = [[BTUIScrollView alloc] init];
     self.scrollView.scrollRectToVisibleDelegate = self;
@@ -103,8 +101,7 @@
                                           action:@selector(tappedSubmitForm)
                                 forControlEvents:UIControlEventTouchUpInside];
 
-    self.dropInContentView.cardFormSectionHeader.textColor = self.theme.sectionHeaderTextColor;
-    self.dropInContentView.cardFormSectionHeader.font = self.theme.sectionHeaderFont;
+
     self.dropInContentView.cardFormSectionHeader.text = BTDropInLocalizedString(CARD_FORM_SECTION_HEADER);
 
 
@@ -322,6 +319,17 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark Sync UI
+
+- (void)syncUIToTheme {
+  self.view.backgroundColor = self.theme.viewBackgroundColor;
+  self.view.tintColor = self.theme.defaultTintColor;
+  
+  //Delegate this to the view itself
+  self.dropInContentView.cardFormSectionHeader.textColor = self.theme.sectionHeaderTextColor;
+  self.dropInContentView.cardFormSectionHeader.font = self.theme.sectionHeaderFont;
+}
+
 #pragma mark Progress UI
 
 - (void)showLoadingState:(BOOL)loadingState {
@@ -522,6 +530,12 @@
 - (void)setCallToActionText:(__unused NSString *)callToActionText {
     _callToActionText = callToActionText;
     self.dropInContentView.ctaControl.callToAction = callToActionText;
+}
+
+- (void)setTheme:(BTUI *)theme {
+  _theme = theme;
+  
+  [self syncUIToTheme];
 }
 
 #pragma mark Data
