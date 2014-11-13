@@ -43,10 +43,11 @@
 
 @implementation BTDropInViewController
 
+@synthesize theme = _theme;
+
 - (instancetype)initWithClient:(BTClient *)client {
     self = [self init];
     if (self) {
-        self.theme = [BTUI braintreeTheme];
         self.dropInContentView = [[BTDropInContentView alloc] init];
 
         self.client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
@@ -532,10 +533,19 @@
     self.dropInContentView.ctaControl.callToAction = callToActionText;
 }
 
-- (void)setTheme:(BTUI *)theme {
-  _theme = theme;
+- (void)setTheme:(BTUI *)newTheme {
+  _theme = newTheme;
   
   [self syncUIToTheme];
+}
+
+#pragma mark Lazy Instantiation
+
+- (BTUI *)theme {
+  if (_theme == nil) {
+    _theme = [BTUI braintreeTheme];
+  }
+  return _theme;
 }
 
 #pragma mark Data
