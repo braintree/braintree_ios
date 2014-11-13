@@ -2,29 +2,13 @@
 
 @implementation BTUIThemedView
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        _theme = [BTUI braintreeTheme];
-    }
-    return self;
-}
+#pragma mark Lazy Instantiation
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        _theme = [BTUI braintreeTheme];
-    }
-    return self;
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        _theme = [BTUI braintreeTheme];
-    }
-    return self;
+- (BTUI *)theme {
+  if (_theme == nil) {
+    _theme = [BTUI braintreeTheme];
+  }
+  return _theme;
 }
 
 @end

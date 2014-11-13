@@ -206,6 +206,16 @@
     [self updateLayout];
 }
 
+- (void)setTheme:(BTUI *)theme {
+  [super setTheme:theme];
+  
+  self.summaryView.theme = theme;
+  self.ctaControl.theme = theme;
+  self.paymentButton.theme = theme;
+  self.cardForm.theme = theme;
+  self.selectedPaymentMethodView.theme = theme;
+}
+
 - (void)updateLayout {
 
     // Reset all to hidden, just for clarity

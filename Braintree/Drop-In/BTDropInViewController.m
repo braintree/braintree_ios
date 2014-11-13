@@ -326,7 +326,9 @@
   self.view.backgroundColor = self.theme.viewBackgroundColor;
   self.view.tintColor = self.theme.defaultTintColor;
   
+  
   //Delegate this to the view itself
+  self.dropInContentView.theme = self.theme;
   self.dropInContentView.cardFormSectionHeader.textColor = self.theme.sectionHeaderTextColor;
   self.dropInContentView.cardFormSectionHeader.font = self.theme.sectionHeaderFont;
 }
@@ -337,7 +339,7 @@
     [self.dropInContentView.ctaControl showLoadingState:loadingState];
     self.submitBarButtonItem.enabled = !loadingState;
     if (self.submitBarButtonItem != nil) {
-        [BTUI activityIndicatorViewStyleForBarTintColor:self.navigationController.navigationBar.barTintColor];
+        [BTUI activityIndicatorViewStyleForBarTintColor:self.theme.defaultTintColor];
         UIActivityIndicatorView *submitInProgressActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         [submitInProgressActivityIndicator startAnimating];
         UIBarButtonItem *submitInProgressActivityIndicatorBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:submitInProgressActivityIndicator];
@@ -496,7 +498,6 @@
     _fullForm = fullForm;
     if (!self.fullForm) {
         self.dropInContentView.state = BTDropInContentViewStateForm;
-
     }
 }
 
