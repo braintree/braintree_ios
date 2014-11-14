@@ -150,7 +150,8 @@
     if (!self.fullForm) {
         self.dropInContentView.state = BTDropInContentViewStateForm;
     }
-
+  
+    [self syncUIToTheme];
     [self updateValidity];
 }
 
