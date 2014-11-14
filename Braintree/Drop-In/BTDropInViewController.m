@@ -336,8 +336,9 @@
     [self.dropInContentView.ctaControl showLoadingState:loadingState];
     self.submitBarButtonItem.enabled = !loadingState;
     if (self.submitBarButtonItem != nil) {
-        [BTUI activityIndicatorViewStyleForBarTintColor:self.theme.defaultTintColor];
-        UIActivityIndicatorView *submitInProgressActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        UIActivityIndicatorViewStyle style =
+            [BTUI activityIndicatorViewStyleForBarTintColor:self.navigationController.navigationBar.barTintColor];
+        UIActivityIndicatorView *submitInProgressActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
         [submitInProgressActivityIndicator startAnimating];
         UIBarButtonItem *submitInProgressActivityIndicatorBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:submitInProgressActivityIndicator];
         [self.navigationItem setRightBarButtonItem:(loadingState ? submitInProgressActivityIndicatorBarButtonItem : self.submitBarButtonItem) animated:YES];
