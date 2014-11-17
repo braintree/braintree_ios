@@ -21,7 +21,7 @@ Finally, [**cocoadocs.org/docsets/Braintree**](http://cocoadocs.org/docsets/Brai
 
 ## Feedback
 
-Braintree v.zero is brand new and in active development. We appreciate the time you take to try it out and welcome your feedback!
+Braintree v.zero is in active development. We appreciate the time you take to try it out and welcome your feedback!
 
 Here are a few ways to get in touch:
 
