@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
   s.version          = "3.4.2"
-  s.summary          = "Braintree v.zero SDK. Accept payments in your app"
+  s.summary          = "Braintree v.zero: A modern foundation for accepting payments"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
 
-                       This CocoaPod will help you accept credit card and PayPal payments in your iOS app.
+                       This CocoaPod will help you accept payments in your iOS app.
 
                        Check out our development portal at https://developers.braintreepayments.com.
   DESC
