@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 3.4.2 (2014-11-19)
+
+* Upgrade PayPal Mobile SDK to version 2.7.1
+  * Fixes symbol conflicts with 1Password
+  * Upgrades embedded card.io library to version 3.10.1 
+
 ## 3.4.1 (2014-11-05)
 
 * Bug fixes
