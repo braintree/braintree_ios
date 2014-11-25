@@ -14,6 +14,7 @@
   * Expose a new `status` property on `BTPaymentProvider`, which exposes the current status of payment method creation (Thanks, @Reflejo!)
 * Bug fixes
   * Fix swift build by making BTClient_Metadata.h private (https://github.com/braintree/braintree_ios/pull/84 and https://github.com/braintree/braintree_ios/pull/85)
+  * Drop In - Auto-correction and auto-capitalization improvements for postal code field in BTUICardFormView
 * Internal changes
   * Simplifications to API response parsing logic
 
