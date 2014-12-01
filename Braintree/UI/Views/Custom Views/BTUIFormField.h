@@ -30,4 +30,7 @@
 - (void)formFieldDidChange:(BTUIFormField *)formField;
 - (void)formFieldDidDeleteWhileEmpty:(BTUIFormField *)formField;
 
+@optional
+- (BOOL)formFieldShouldReturn:(BTUIFormField *)formField;
+
 @end

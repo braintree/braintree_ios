@@ -110,6 +110,10 @@ const CGFloat formFieldBottomMargin = 11;
     return [self.textField becomeFirstResponder];
 }
 
+- (BOOL)resignFirstResponder {
+    return [super resignFirstResponder] || [self.textField resignFirstResponder];
+}
+
 #pragma mark - Theme
 
 - (void)setTheme:(BTUI *)theme {
@@ -331,6 +335,14 @@ const CGFloat formFieldBottomMargin = 11;
 - (BOOL)textField:(__unused UITextField *)textField shouldChangeCharactersInRange:(__unused NSRange)range replacementString:(__unused NSString *)newText {
     // To be implemented by subclass
     return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(__unused UITextField *)textField {
+    if ([self.delegate respondsToSelector:@selector(formFieldShouldReturn:)]) {
+        return [self.delegate formFieldShouldReturn:self];
+    } else {
+        return YES;
+    }
 }
 
 - (void)tappedField {

@@ -9,6 +9,7 @@
     if (self) {
         [self setThemedPlaceholder:BTUILocalizedString(POSTAL_CODE_PLACEHOLDER)];
         self.nonDigitsSupported = NO;
+        self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     }
     return self;
 }
