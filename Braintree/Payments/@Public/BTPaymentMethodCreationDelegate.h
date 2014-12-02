@@ -74,4 +74,9 @@
 /// @param error  An error that characterizes the failure
 - (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error;
 
+@optional
+
+- (void)paymentMethodCreator:(id)sender didSelectShippingAddress:(ABRecordRef)address completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *, NSArray *))completion;
+- (void)paymentMethodCreator:(id)sender didSelectShippingMethod:(PKShippingMethod *)shippingMethod completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *))completion;
+
 @end
