@@ -3,12 +3,13 @@
 @implementation BTUILocalizedString
 
 + (NSBundle *)localizationBundle {
+
     static NSString * bundleName = @"Braintree-UI-Localization";
     NSString *localizationBundlePath = [[NSBundle mainBundle] pathForResource:bundleName ofType:@"bundle"];
     if (!localizationBundlePath) {
         localizationBundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:bundleName ofType:@"bundle"];
     }
-
+    
     return [NSBundle bundleWithPath:localizationBundlePath];
 }
 

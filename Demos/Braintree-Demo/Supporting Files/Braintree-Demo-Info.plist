@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>en</string>
+	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
 	<string>SDK Demo</string>
 	<key>CFBundleExecutable</key>
@@ -12,14 +12,37 @@
 	<string>com.braintreepayments.${PRODUCT_NAME:rfc1034identifier}</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+            <string>da</string>
+            <string>de</string>
+            <string>en_AU</string>
+            <string>en_CA</string>
+            <string>en_GB</string>
+            <string>en_UK</string>
+            <string>en</string>
+            <string>es_ES</string>
+            <string>es</string>
+            <string>fr_CA</string>
+            <string>fr_FR</string>
+            <string>fr</string>
+            <string>he</string>
+            <string>it</string>
+            <string>nb</string>
+            <string>nl</string>
+            <string>pl</string>
+            <string>pt</string>
+            <string>ru</string>
+            <string>sv</string>
+            <string>tr</string>
+            <string>zh-Hans</string>
+        </array>
 	<key>CFBundleName</key>
 	<string>Braintree iOS SDK Demo</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>3.4.2</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

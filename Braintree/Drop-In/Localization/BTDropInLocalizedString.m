@@ -9,12 +9,12 @@
     if (!localizationBundlePath) {
         localizationBundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:bundleName ofType:@"bundle"];
     }
-
+    
     return [NSBundle bundleWithPath:localizationBundlePath];
 }
 
 + (NSString *)localizationTable {
-    return @"DropIn";
+    return @"Drop-In";
 }
 
 + (NSString *)DROP_IN_CHANGE_PAYMENT_METHOD_BUTTON_TEXT {
