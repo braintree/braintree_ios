@@ -48,7 +48,7 @@ class << self
     default_options = {
       :build_settings => {}
     }
-    options = options.reverse_merge(default_options)
+    options = default_options.merge(options)
     build_settings = options[:build_settings].map{|k,v| "#{k}='#{v}'"}.join(" ")
 
     return "xctool -reporter 'pretty' -workspace 'Braintree.xcworkspace' -scheme '#{scheme}' -sdk 'iphonesimulator8.1' -destination='platform=iOS Simulator,name=iPhone,0S=8.1' -configuration 'Release' #{build_settings} #{command}"
