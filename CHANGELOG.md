@@ -1,5 +1,25 @@
 # Braintree iOS SDK Release Notes
 
+## 3.5.0 (2014-12-03)
+
+* Add localizations to UI and Drop-In subspecs:
+  * Danish (`da`)
+  * German (`de`)
+  * Additional English locales (`en_AU`, `en_CA`, `en_UK`, `en_GB`)
+  * Spanish (`es` and `es_ES`)
+  * French (`fr`, `fr_CA`, `fr_FR`)
+  * Hebrew (`he`)
+  * Italian (`it`)
+  * Norwegian (`nb`)
+  * Dutch (`nl`)
+  * Polish (`pl`)
+  * Portugese (`pt`)
+  * Russian (`ru`)
+  * Swedish (`sv`)
+  * Turkish (`tr`)
+  * Chinese (`zh-Hans`)
+* Add newlines to all files to support `GCC\_WARN\_ABOUT\_MISSING\_NEWLINE`
+
 ## 3.4.2 (2014-11-19)
 
 * Upgrade PayPal Mobile SDK to version 2.7.1
