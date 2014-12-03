@@ -3,11 +3,12 @@
 
 @interface BTTestValueTypesAPIResource : NSObject
 - (void)setBool:(BOOL)value;
+- (void)setURL:(NSURL *)url;
 @end
 
 @implementation BTTestValueTypesAPIResource
-- (void)setBool:(__unused BOOL)value {
-}
+- (void)setBool:(__unused BOOL)value {}
+- (void)setURL:(NSURL *)url {}
 @end
 
 SpecBegin(BTAPIResourceValueTypes)
@@ -52,6 +53,31 @@ describe(@"ValueTypes", ^{
 
             expect([v isValidValue:@42]).to.beFalsy();
             expect([v isValidValue:@"invalid-value"]).to.beFalsy();
+        });
+    });
+
+    describe(@"URL parsing", ^{
+        it(@"accepts only valid URL strings", ^{
+            id<BTAPIResourceValueType> v = BTAPIResourceValueTypeURL(@selector(setURL:));
+
+            expect([v isValidValue:@"http://example.com:8080/path/to/file?param"]).to.beTruthy();
+            expect([v isValidValue:@"🐴://🎄"]).to.beFalsy();
+            expect([v isValidValue:@(8)]).to.beFalsy();
+        });
+
+        it(@"uses the selector to set the parsed NSURL on the model", ^{
+            NSURL *url = [NSURL URLWithString:@"http://example.com:8080/path/to/file?param"];
+
+            id mockModel = [OCMockObject mockForClass:[BTTestValueTypesAPIResource class]];
+            [[mockModel expect] setURL:url];
+
+            id<BTAPIResourceValueType> v = BTAPIResourceValueTypeURL(@selector(setURL:));
+
+            NSError *error;
+            [v setValue:[url absoluteString] onModel:mockModel error:&error];
+
+            [mockModel verify];
+            expect(error).to.beNil();
         });
     });
 });

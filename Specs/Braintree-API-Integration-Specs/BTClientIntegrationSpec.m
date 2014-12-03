@@ -116,16 +116,16 @@ describe(@"save card with request", ^{
     describe(@"with validation enabled", ^{
         it(@"creates an unlocked card with a nonce", ^{
             waitUntil(^(DoneCallback done){
-                    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                    request.number = @"4111111111111111";
-                    request.expirationMonth = @"12";
-                    request.expirationYear = @"2018";
-                    request.shouldValidate = YES;
-                    [testClient saveCardWithRequest:request
-                                            success:^(BTPaymentMethod *card) {
-                                                expect(card.nonce).to.beANonce();
-                                                done();
-                                            } failure:nil];
+                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+                request.number = @"4111111111111111";
+                request.expirationMonth = @"12";
+                request.expirationYear = @"2018";
+                request.shouldValidate = YES;
+                [testClient saveCardWithRequest:request
+                                        success:^(BTPaymentMethod *card) {
+                                            expect(card.nonce).to.beANonce();
+                                            done();
+                                        } failure:nil];
             });
         });
 
@@ -721,7 +721,7 @@ describe(@"get nonce", ^{
 });
 
 describe(@"clients with Apple Pay activated", ^{
-    
+
     if ([PKPayment class]) {
         it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported", ^{
             waitUntil(^(DoneCallback done){
@@ -924,6 +924,98 @@ describe(@"post analytics event", ^{
                                                                            }
                                                                            failure:nil];
                                                     }];
+        });
+    });
+});
+
+describe(@"3d secure lookup", ^{
+    describe(@"of an eligible Visa", ^{
+        __block NSString *nonce;
+        __block BTClient *client;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done){
+                [BTClient testClientWithConfiguration:@{
+                                                        BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                        BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                        BTClientTestConfigurationKeyClientTokenVersion: @2
+                                                        } completion:^(BTClient *testClient) {
+                                                            client = testClient;
+
+                                                            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                                                            r.number = @"4010000000000018";
+                                                            r.expirationDate = @"12/2015";
+
+                                                            [client saveCardWithRequest:r
+                                                                                success:^(BTCardPaymentMethod *card) {
+                                                                                    nonce = card.nonce;
+                                                                                    done();
+                                                                                }
+                                                                                failure:nil];
+                                                        }];
+            });
+        });
+
+        it(@"performs lookup to give a new nonce and other parameters that allow you to kick off a web-based auth flow", ^{
+            waitUntil(^(DoneCallback done) {
+                [client lookupNonceForThreeDSecure:nonce
+                                 transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                           success:^(BTThreeDSecureLookup *threeDSecureLookupResult) {
+                                               expect(threeDSecureLookupResult.nonce).to.beANonce();
+                                               expect(threeDSecureLookupResult.nonce).notTo.equal(nonce);
+                                               expect(threeDSecureLookupResult.acsURL).to.equal([NSURL URLWithString:@"https://testcustomer34.cardinalcommerce.com/V3DSStart?osb=visa-3&VAA=B"]);
+                                               expect(threeDSecureLookupResult.termURL).to.equal([NSURL URLWithString:@"http://localhost:3000/merchants/integration_merchant_id/three_d_secure/authenticate"]);
+                                               expect(threeDSecureLookupResult.PAReq).to.beKindOf([NSString class]);
+
+                                               done();
+                                           }
+                                           failure:nil];
+            });
+        });
+    });
+
+    describe(@"of an ineligible Visa", ^{
+        __block NSString *nonce;
+        __block BTClient *client;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done){
+                [BTClient testClientWithConfiguration:@{
+                                                        BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                        BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                        BTClientTestConfigurationKeyClientTokenVersion: @2
+                                                        } completion:^(BTClient *testClient) {
+                                                            client = testClient;
+
+                                                            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                                                            r.number = @"4000000000000051";
+                                                            r.expirationDate = @"01/2020";
+
+                                                            [client saveCardWithRequest:r
+                                                                                success:^(BTCardPaymentMethod *card) {
+                                                                                    nonce = card.nonce;
+                                                                                    done();
+                                                                                }
+                                                                                failure:nil];
+                                                        }];
+            });
+        });
+        
+        it(@"performs lookup to give a new nonce without other parameters since no web-based auth flow is required", ^{
+            waitUntil(^(DoneCallback done) {
+                [client lookupNonceForThreeDSecure:nonce
+                                 transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                           success:^(BTThreeDSecureLookup *threeDSecureLookupResult) {
+                                               expect(threeDSecureLookupResult.nonce).to.beANonce();
+                                               expect(threeDSecureLookupResult.nonce).notTo.equal(nonce);
+                                               expect(threeDSecureLookupResult.acsURL).to.beNil();
+                                               expect(threeDSecureLookupResult.termURL).to.beNil();
+                                               expect(threeDSecureLookupResult.PAReq).to.beNil();
+                                               
+                                               done();
+                                           }
+                                           failure:nil];
+            });
         });
     });
 });

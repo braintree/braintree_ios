@@ -13,6 +13,7 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
+#import "BTThreeDSecureLookupAPI.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -402,6 +403,36 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         }
     }
 }
+
+#pragma mark 3D Secure Lookup
+
+- (void)lookupNonceForThreeDSecure:(NSString *)nonce
+                 transactionAmount:(NSDecimalNumber *)amount
+                           success:(BTClientThreeDSecureLookupResultSuccessBlock)successBlock
+                           failure:(BTClientFailureBlock)failureBlock {
+    NSDictionary *requestParameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                         @"payment_method_nonce": nonce,
+                                         @"amount": amount };
+    [self.clientApiHttp POST:@"v1/three_d_secure_verifications/lookup"
+                  parameters:requestParameters
+                  completion:^(BTHTTPResponse *response, NSError *error){
+        if (response.isSuccess) {
+            if (successBlock){
+                BTThreeDSecureLookup *lookup = [BTThreeDSecureLookupAPI modelWithAPIDictionary:response.object[@"lookup"] error:NULL];
+                successBlock(lookup);
+            }
+        } else {
+            if (failureBlock) {
+                failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                 code:BTUnknownError // TODO - use a client error code
+                                             userInfo:@{NSUnderlyingErrorKey: error}]);
+            }
+        }
+    }];
+
+}
+
+#pragma mark Braintree Analytics
 
 - (void)postAnalyticsEvent:(NSString *)eventKind {
     [self postAnalyticsEvent:eventKind success:nil failure:nil];

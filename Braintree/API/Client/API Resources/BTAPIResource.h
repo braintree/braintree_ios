@@ -116,6 +116,13 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter);
 /// @return A ValueType for use in `APIFormat`s
 id<BTAPIResourceValueType> BTAPIResourceValueTypeStringArray(SEL setter);
 
+/// A ValueType that maps API strings to NSURL
+///
+/// @param setter A selector that is sent to the model object with the parsed url as the first argument
+///
+/// @return A ValueType for use in `APIFormat`s
+id<BTAPIResourceValueType> BTAPIResourceValueTypeURL(SEL setter);
+
 /// A ValueType that parses a nested API resource and saves it in the model with a selector.
 ///
 /// @param setter A selector that is sent to the model object with the nested model as the first argument
