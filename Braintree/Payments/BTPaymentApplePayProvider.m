@@ -213,6 +213,20 @@
     [self applePayPaymentAuthorizationViewControllerDidFinish:controller];
 }
 
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
+                  didSelectShippingAddress:(ABRecordRef)address
+                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *, NSArray *))completion {
+    [self informDelegatePaymentAuthorizationViewControllerDidSelectShippingAddress:address
+                                                                        completion:completion];
+}
+
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
+                   didSelectShippingMethod:(PKShippingMethod *)shippingMethod
+                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *))completion {
+    [self informDelegatePaymentAuthorizationViewControllerDidSelectShippingMethod:shippingMethod
+                                                                       completion:completion];
+}
+
 #pragma mark MockApplePayPaymentAuthorizationViewController Delegate
 
 - (void)mockApplePayPaymentAuthorizationViewController:(__unused BTMockApplePayPaymentAuthorizationViewController *)viewController
@@ -301,6 +315,22 @@
     [self.client postAnalyticsEvent:@"ios.apple-pay-provider.completion.cancel"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorDidCancel:)]) {
         [self.delegate paymentMethodCreatorDidCancel:self];
+    }
+}
+
+- (void)informDelegatePaymentAuthorizationViewControllerDidSelectShippingAddress:(ABRecordRef)address completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *, NSArray *))completion {
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didSelectShippingAddress:completion:)]) {
+        [self.delegate paymentMethodCreator:self
+                   didSelectShippingAddress:address
+                                 completion:completion];
+    }
+}
+
+- (void)informDelegatePaymentAuthorizationViewControllerDidSelectShippingMethod:(PKShippingMethod *)shippingMethod completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *))completion {
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didSelectShippingMethod:completion:)]) {
+        [self.delegate paymentMethodCreator:self
+                    didSelectShippingMethod:shippingMethod
+                                 completion:completion];
     }
 }
 
