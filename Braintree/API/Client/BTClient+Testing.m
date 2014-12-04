@@ -76,6 +76,32 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
     }];
 }
 
+- (void)fetchNonceThreeDSecureVerificationInfo:(NSString *)nonce success:(BTClientNonceInfoSuccessBlock)successBlock failure:(BTClientFailureBlock)failureBlock {
+    NSMutableCharacterSet *nonceParamCharacterSet = [NSMutableCharacterSet alphanumericCharacterSet];
+    [nonceParamCharacterSet addCharactersInString:@"-"];
+
+    NSString *path = [NSString stringWithFormat:@"testing/three_d_secure_verifications/nonce/%@", [nonce stringByAddingPercentEncodingWithAllowedCharacters:nonceParamCharacterSet]];
+
+    NSDictionary *params = @{ @"public_key": @"integration_public_key", };
+    [self.clientApiHttp GET:path parameters:params completion:^(BTHTTPResponse *response, NSError *error) {
+        if (response.isSuccess) {
+            if (successBlock != nil) {
+                successBlock(response.object[@"threeDSecureVerification"]);
+            }
+        } else {
+            NSError *returnedError = error;
+            if (error.domain == BTBraintreeAPIErrorDomain && error.code == BTMerchantIntegrationErrorNotFound) {
+                returnedError = [NSError errorWithDomain:error.domain
+                                                    code:BTMerchantIntegrationErrorNonceNotFound
+                                                userInfo:@{NSUnderlyingErrorKey: error}];
+            }
+            if (failureBlock != nil) {
+                failureBlock(returnedError);
+            }
+        }
+    }];
+}
+
 - (NSDictionary *)defaultRequestParameters {
     return @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
 }

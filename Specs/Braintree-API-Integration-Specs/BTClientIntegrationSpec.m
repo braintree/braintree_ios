@@ -720,8 +720,72 @@ describe(@"get nonce", ^{
     });
 });
 
-describe(@"clients with Apple Pay activated", ^{
+describe(@"get nonce 3D Secure info", ^{
+    __block NSString *threeDSecureNonce;
+    beforeEach(^{
+        waitUntil(^(DoneCallback done) {
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2018";
+            request.shouldValidate = NO;
+            [testClient saveCardWithRequest:request
+                                    success:^(BTCardPaymentMethod *card) {
+                                        [testClient lookupNonceForThreeDSecure:card.nonce
+                                                             transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                                                       success:^(BTThreeDSecureLookup *threeDSecureLookup) {
+                                                                           threeDSecureNonce = threeDSecureLookup.nonce;
+                                                                           done();
+                                                                       } failure:nil];
+                                    } failure:nil];
+        });
+    });
+    
+    it(@"returns 3D Secure related info", ^{
+        waitUntil(^(DoneCallback done) {
+            [testClient fetchNonceThreeDSecureVerificationInfo:threeDSecureNonce
+                                                       success:^(NSDictionary *threeDSecureInfo){
+                                                           expect(threeDSecureInfo[@"eciFlag"]).to.equal(@"07");
+                                                           expect(threeDSecureInfo[@"reportStatus"]).to.equal(@"lookup_unenrolled");
+                                                           done();
+                                                       } failure:nil];
+        });
+    });
 
+    it(@"returns empty 3D Secure info for a non-3D Secure nonce", ^{
+        waitUntil(^(DoneCallback done) {
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2018";
+            request.shouldValidate = NO;
+            
+            [testClient saveCardWithRequest:request success:^(BTCardPaymentMethod *card) {
+                [testClient fetchNonceThreeDSecureVerificationInfo:card.nonce
+                                                           success:^(NSDictionary *nonceInfo) {
+                                                               expect(nonceInfo).to.beKindOf([NSNull class]);
+                                                               done();
+                                                           }
+                                                           failure:nil];
+            } failure:nil];
+        });
+    });
+
+    it(@"returns an error if the nonce is not found", ^{
+        waitUntil(^(DoneCallback done) {
+            [testClient fetchNonceThreeDSecureVerificationInfo:@"bad-nonce"
+                                                       success:nil
+                                                       failure:^(NSError *error) {
+                                                           expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                           expect(error.code).to.equal(BTMerchantIntegrationErrorNonceNotFound);
+                                                           done();
+                                                       }];
+        });
+    });
+
+});
+
+describe(@"clients with Apple Pay activated", ^{
     if ([PKPayment class]) {
         it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported", ^{
             waitUntil(^(DoneCallback done){
