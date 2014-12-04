@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "16968169192D9A3200120846"
-               BuildableName = "Braintree-PayPal-Acceptance-Specs.xctest"
-               BlueprintName = "Braintree-PayPal-Acceptance-Specs"
+               BuildableName = "Braintree-Acceptance-Specs.xctest"
+               BlueprintName = "Braintree-Acceptance-Specs"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>

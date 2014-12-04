@@ -35,6 +35,7 @@
 #pragma mark Braintree Operation Cells
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *makeATransactionCell;
+@property (nonatomic, weak) IBOutlet UITableViewCell *threeDSecureANonceCell;
 
 #pragma mark Meta Cells
 
@@ -46,6 +47,10 @@
 @property (nonatomic, copy) NSString *merchantId;
 @property (nonatomic, copy) NSString *nonce;
 @property (nonatomic, copy) NSString *lastTransactionId;
+
+#pragma mark -
+
+@property (nonatomic, strong) BTThreeDSecureViewController *threeDSecureViewController;
 
 #pragma mark Settings
 
@@ -180,6 +185,19 @@
                                                animated:YES];
              }
          }];
+    } else if (selectedCell == self.threeDSecureANonceCell) {
+        [self.braintree.client lookupNonceForThreeDSecure:self.nonce
+                                        transactionAmount:[NSDecimalNumber decimalNumberWithString:@"10"]
+                                                  success:^(BTThreeDSecureLookup *threeDSecureLookup) {
+                                                      self.threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:threeDSecureLookup];
+                                                      [self presentViewController:self.threeDSecureViewController animated:YES completion:nil];
+                                                      // TODO: Listen for completion
+                                                      // self.nonce = newNonce;
+                                                  }
+                                                  failure:^(NSError *error) {
+                                                      [self displayError:error forTask:@"3D Secure Lookup"];
+                                                      self.nonce = nil;
+                                                  }];
     } else {
         return;
     }
@@ -215,6 +233,8 @@
     } else if (cell == self.braintreeTransactionCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.lastTransactionId != nil);
         cell.detailTextLabel.text = self.lastTransactionId ?: @"(nil)";
+    } else if (cell == self.threeDSecureANonceCell) {
+        cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil && self.lastTransactionId == nil);
     } else if (cell == self.makeATransactionCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil);
     } else if (cell == self.libraryVersionCell) {

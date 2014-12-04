@@ -76,7 +76,9 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
     }];
 }
 
-- (void)fetchNonceThreeDSecureVerificationInfo:(NSString *)nonce success:(BTClientNonceInfoSuccessBlock)successBlock failure:(BTClientFailureBlock)failureBlock {
+- (void)fetchNonceThreeDSecureVerificationInfo:(NSString *)nonce
+                                       success:(BTClientNonceInfoSuccessBlock)successBlock
+                                       failure:(BTClientFailureBlock)failureBlock {
     NSMutableCharacterSet *nonceParamCharacterSet = [NSMutableCharacterSet alphanumericCharacterSet];
     [nonceParamCharacterSet addCharactersInString:@"-"];
 

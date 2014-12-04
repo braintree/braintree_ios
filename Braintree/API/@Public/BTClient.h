@@ -30,7 +30,7 @@ typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentM
 typedef void (^BTClientAnalyticsSuccessBlock)(void);
 
 /// Success Block type for 3D Secure lookups
-typedef void (^BTClientThreeDSecureLookupResultSuccessBlock)(BTThreeDSecureLookup *threeDSecureLookupResult);
+typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookup *threeDSecureLookup);
 
 /// Block type for handling `BTClient` errors
 typedef void (^BTClientFailureBlock)(NSError *error);
@@ -138,7 +138,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 
 - (void)lookupNonceForThreeDSecure:(NSString *)nonce
                  transactionAmount:(NSDecimalNumber *)amount
-                           success:(BTClientThreeDSecureLookupResultSuccessBlock)successBlock
+                           success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
                            failure:(BTClientFailureBlock)failureBlock;
 
 #pragma mark Create a Braintree Analytics Event

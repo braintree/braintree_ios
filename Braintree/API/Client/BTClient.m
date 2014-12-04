@@ -408,7 +408,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
 - (void)lookupNonceForThreeDSecure:(NSString *)nonce
                  transactionAmount:(NSDecimalNumber *)amount
-                           success:(BTClientThreeDSecureLookupResultSuccessBlock)successBlock
+                           success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
                            failure:(BTClientFailureBlock)failureBlock {
     NSDictionary *requestParameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                          @"payment_method_nonce": nonce,
