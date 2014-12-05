@@ -1,7 +1,6 @@
 #import "BraintreeDemoTokenizationDemoViewController.h"
 
 #import <Braintree/Braintree.h>
-#import <Braintree/CardIO.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
 @interface BraintreeDemoTokenizationDemoViewController () <CardIOPaymentViewControllerDelegate>
@@ -54,7 +53,7 @@
                                                                         metrics:nil
                                                                           views:views]];
 
-    [CardIOPaymentViewController preload];
+    [CardIOUtilities preload];
 
 }
 - (void)presentCardIO {

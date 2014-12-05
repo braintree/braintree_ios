@@ -1,7 +1,7 @@
 //
 //  PayPalTouch.h
 //
-//  Version 2.7.1-bt1
+//  Version 2.8.0-bt2
 //
 //  Copyright (c) 2014, PayPal
 //  All rights reserved.
