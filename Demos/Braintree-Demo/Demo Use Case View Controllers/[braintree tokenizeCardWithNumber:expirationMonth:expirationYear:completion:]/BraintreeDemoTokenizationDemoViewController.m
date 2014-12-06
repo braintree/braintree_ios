@@ -2,6 +2,7 @@
 
 #import <Braintree/Braintree.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
+#import <CardIO/CardIO.h>
 
 @interface BraintreeDemoTokenizationDemoViewController () <CardIOPaymentViewControllerDelegate>
 
