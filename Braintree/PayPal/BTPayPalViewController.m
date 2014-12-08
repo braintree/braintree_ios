@@ -58,10 +58,16 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.client postAnalyticsEvent:@"ios.paypal.viewcontroller.will-appear"];
+}
+
 #pragma mark - PayPalProfileSharingDelegate implementation
 
 
 - (void)userDidCancelPayPalProfileSharingViewController:(__unused PayPalProfileSharingViewController *)profileSharingViewController {
+    [self.client postAnalyticsEvent:@"ios.paypal.viewcontroller.did-cancel"];
     if ([self.delegate respondsToSelector:@selector(payPalViewControllerDidCancel:)]) {
         [self.delegate payPalViewControllerDidCancel:self];
     }
@@ -72,6 +78,7 @@
                            completionBlock:(PayPalProfileSharingDelegateCompletionBlock)completionBlock {
     NSString *authCode = profileSharingAuthorization[@"response"][@"code"];
 
+    [self.client postAnalyticsEvent:@"ios.paypal.viewcontroller.will-log-in"];
     if (authCode == nil) {
         self.failureError = [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalUnknownError userInfo:@{NSLocalizedDescriptionKey: @"PayPal flow failed to generate an auth code" }];
         completionBlock();
@@ -109,10 +116,12 @@
              userDidLogInWithAuthorization:(__unused NSDictionary *)profileSharingAuthorization {
 
     if (self.paymentMethod && !self.failureError) {
+        [self.client postAnalyticsEvent:@"ios.paypal.viewcontroller.success"];
         if ([self.delegate respondsToSelector:@selector(payPalViewController:didCreatePayPalPaymentMethod:)]) {
             [self.delegate payPalViewController:self didCreatePayPalPaymentMethod:self.paymentMethod];
         }
     } else {
+        [self.client postAnalyticsEvent:@"ios.paypal.viewcontroller.error"];
         if ([self.delegate respondsToSelector:@selector(payPalViewController:didFailWithError:)]) {
             [self.delegate payPalViewController:self didFailWithError:self.failureError];
         }
