@@ -11,6 +11,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setThemedPlaceholder:BTUILocalizedString(CARD_NUMBER_PLACEHOLDER)];
+        self.textField.accessibilityLabel = BTUILocalizedString(CARD_NUMBER_PLACEHOLDER);
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         _number = @"";
 

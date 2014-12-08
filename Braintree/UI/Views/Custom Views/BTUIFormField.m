@@ -33,6 +33,7 @@ const CGFloat formFieldBottomMargin = 11;
         self.textField.backgroundColor = [UIColor clearColor];
         self.textField.opaque = NO;
         self.textField.adjustsFontSizeToFitWidth = YES;
+        self.textField.returnKeyType = UIReturnKeyNext;
 
         self.floatLabel = [[BTUIFloatLabel alloc] init];
         self.floatLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -108,6 +109,10 @@ const CGFloat formFieldBottomMargin = 11;
 
 - (BOOL)becomeFirstResponder {
     return [self.textField becomeFirstResponder];
+}
+
+- (BOOL)resignFirstResponder {
+    return [super resignFirstResponder] || [self.textField resignFirstResponder];
 }
 
 #pragma mark - Theme
@@ -331,6 +336,14 @@ const CGFloat formFieldBottomMargin = 11;
 - (BOOL)textField:(__unused UITextField *)textField shouldChangeCharactersInRange:(__unused NSRange)range replacementString:(__unused NSString *)newText {
     // To be implemented by subclass
     return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(__unused UITextField *)textField {
+    if ([self.delegate respondsToSelector:@selector(formFieldShouldReturn:)]) {
+        return [self.delegate formFieldShouldReturn:self];
+    } else {
+        return YES;
+    }
 }
 
 - (void)tappedField {
