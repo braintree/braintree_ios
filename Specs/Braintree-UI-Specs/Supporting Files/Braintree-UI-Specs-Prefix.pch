@@ -13,3 +13,4 @@
 #define HC_SHORTHAND
 #import <OCHamcrest/OCHamcrest.h>
 
+#import "KIFSystemTestActor+ViewControllerActions.h"
