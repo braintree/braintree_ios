@@ -33,6 +33,7 @@ const CGFloat formFieldBottomMargin = 11;
         self.textField.backgroundColor = [UIColor clearColor];
         self.textField.opaque = NO;
         self.textField.adjustsFontSizeToFitWidth = YES;
+        self.textField.returnKeyType = UIReturnKeyNext;
 
         self.floatLabel = [[BTUIFloatLabel alloc] init];
         self.floatLabel.translatesAutoresizingMaskIntoConstraints = NO;
