@@ -125,6 +125,10 @@
     }
 }
 
+- (void)lookupHappyPathAndDo:(void (^)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController))completion {
+    [self lookupNumber:@"4000000000000002" andDo:completion didAuthenticate:nil didFail:nil didFinish:nil];
+}
+
 @end
 
 SpecBegin(BTThreeDSecureViewController_Acceptance)
@@ -135,7 +139,7 @@ describe(@"3D Secure View Controller", ^{
         helper = [BTThreeDSecureViewController_AcceptanceSpecHelper helper];
     });
 
-    context(@"developer perspective", ^{
+    describe(@"developer perspective - delegate messages", ^{
         it(@"fails to load a view controller when lookup fails", ^{
             BTThreeDSecureLookupResult *lookup = nil;
             BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
@@ -237,7 +241,7 @@ describe(@"3D Secure View Controller", ^{
         });
     });
 
-    describe(@"user flows - (enrolled, authenticated, signature verified)", ^{
+    describe(@"user flows - 3DS Statuses (enrolled, authenticated, signature verified)", ^{
         context(@"cardholder enrolled, successful authentication, successful signature verification - Y,Y,Y", ^{
             it(@"successfully authenticates a user when they enter their password", ^{
                 __block BOOL checkedNonce = NO;
@@ -429,6 +433,55 @@ describe(@"3D Secure View Controller", ^{
                     return KIFTestStepResultSuccess;
                 }];
             });
+        });
+    });
+
+    describe(@"web view interaction details", ^{
+        it(@"allows the user to go back when they click on a random link", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+                [tester tapViewWithAccessibilityLabel:@"New User / Forgot your password?"];
+                [tester waitForViewWithAccessibilityLabel:@"New User / Forgot Your Password" traits:UIAccessibilityTraitStaticText];
+                [tester tapViewWithAccessibilityLabel:@"Go Back"];
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+            }];
+        });
+
+        it(@"allows the user to go forward after going back", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester tapViewWithAccessibilityLabel:@"New User / Forgot your password?"];
+                [tester waitForViewWithAccessibilityLabel:@"New User / Forgot Your Password" traits:UIAccessibilityTraitStaticText];
+                [tester tapViewWithAccessibilityLabel:@"Go Back"];
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+                [tester tapViewWithAccessibilityLabel:@"Go Forward"];
+                [tester waitForViewWithAccessibilityLabel:@"New User / Forgot Your Password" traits:UIAccessibilityTraitStaticText];
+            }];
+        });
+
+        it(@"prevents the user from going forward or backward before navigating", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+                [tester waitForTappableViewWithAccessibilityLabel:@"New User / Forgot your password?"];
+
+                UIControl *goBack = (UIControl *)[tester waitForViewWithAccessibilityLabel:@"Go Back"];
+                UIControl *goForward = (UIControl *)[tester waitForViewWithAccessibilityLabel:@"Go Forward"];
+
+                expect(goBack.enabled).to.beFalsy();
+                expect(goForward.enabled).to.beFalsy();
+            }];
+        });
+
+        it(@"looks amazing", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+
+                [system captureScreenshotWithDescription:nil];
+            }];
         });
     });
 });

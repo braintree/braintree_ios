@@ -37,8 +37,10 @@
 
     self.goBackButton = [[UIBarButtonItem alloc] initWithTitle:@"Go Back" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoBack)];
     self.goBackButton.enabled = NO;
+    self.goBackButton.accessibilityLabel = @"Go Back";
     self.goForwardButton = [[UIBarButtonItem alloc] initWithTitle:@"Go Forward" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoForward)];
     self.goForwardButton.enabled = NO;
+    self.goBackButton.accessibilityLabel = @"Go Forward";
     self.toolbarItems = @[ self.goBackButton, self.goForwardButton, ];
     self.navigationController.toolbarHidden = NO;
 
