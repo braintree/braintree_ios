@@ -224,6 +224,22 @@
     }
 }
 
+- (void)informDelegatePaymentAuthorizationViewControllerDidSelectShippingAddress:(ABRecordRef)address completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *, NSArray *))completion {
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didSelectShippingAddress:completion:)]) {
+        [self.delegate paymentMethodCreator:self
+                   didSelectShippingAddress:address
+                                 completion:completion];
+    }
+}
+
+- (void)informDelegatePaymentAuthorizationViewControllerDidSelectShippingMethod:(PKShippingMethod *)shippingMethod completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *))completion {
+    if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didSelectShippingMethod:completion:)]) {
+        [self.delegate paymentMethodCreator:self
+                    didSelectShippingMethod:shippingMethod
+                                 completion:completion];
+    }
+}
+
 #pragma mark BTPayPalViewControllerDelegate
 
 - (void)payPalViewControllerWillCreatePayPalPaymentMethod:(__unused BTPayPalViewController *)viewController {
@@ -299,6 +315,14 @@
 
 - (void)paymentMethodCreator:(__unused id)sender didFailWithError:(NSError *)error {
     [self informDelegateDidFailWithError:error];
+}
+
+- (void)paymentMethodCreator:(__unused id)sender didSelectShippingAddress:(ABRecordRef)address completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *, NSArray *))completion {
+    [self informDelegatePaymentAuthorizationViewControllerDidSelectShippingAddress:address completion:completion];
+}
+
+- (void)paymentMethodCreator:(__unused id)sender didSelectShippingMethod:(PKShippingMethod *)shippingMethod completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *))completion {
+    [self informDelegatePaymentAuthorizationViewControllerDidSelectShippingMethod:shippingMethod completion:completion];
 }
 
 #pragma mark Payment Request Details
