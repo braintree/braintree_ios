@@ -41,13 +41,15 @@
 - (void)didCompleteAuthentication:(NSDictionary *)authResponse {
     if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
         if ([authResponse[@"success"] boolValue]) {
-            [self.delegate threeDSecureViewController:self
-                                 didAuthenticateNonce:self.lookup.nonce
-                                           completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
-                                               if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
-                                                   [self.delegate threeDSecureViewControllerDidFinish:self];
-                                               }
-                                           }];
+            if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
+                [self.delegate threeDSecureViewController:self
+                                     didAuthenticateNonce:self.lookup.nonce
+                                               completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
+                                                   if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+                                                       [self.delegate threeDSecureViewControllerDidFinish:self];
+                                                   }
+                                               }];
+            }
         } else {
             @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"NOT IMPLEMENTED" userInfo:nil];
         }

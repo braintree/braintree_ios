@@ -33,17 +33,6 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
               didAuthenticateNonce:(NSString *)nonce
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus success))completionBlock;
 
-///  The delgate will receive this message when an error occurs that cannot be handled within the 3D Secure flow
-///
-///  Example errors include network conditions, 3D Secure unavailability, etc.
-///
-///  Do *not* dismiss the view controller in this method. See threeDSecureViewControllerDidFinish:.
-///
-///  @param viewController The 3D Secure view controller
-///  @param error          An error that occured
-- (void)threeDSecureViewController:(BTThreeDSecureViewController *)viewController
-                  didFailWithError:(NSError *)error;
-
 ///  The delegate will receive this message upon completion of the 3D Secure flow, possibly including async work
 ///  that happens in your implementation of threeDSecureViewController:didAuthenticateNonce:completion:
 ///
