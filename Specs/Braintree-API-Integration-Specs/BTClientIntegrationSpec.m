@@ -721,8 +721,23 @@ describe(@"get nonce", ^{
 });
 
 describe(@"get nonce 3D Secure info", ^{
+    __block BTClient *testClient; // shadows testClient
     __block NSString *threeDSecureNonce;
     beforeEach(^{
+        waitUntil(^(DoneCallback done){
+            [BTClient testClientWithConfiguration:@{
+                                                    BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                    BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                    BTClientTestConfigurationKeyCustomer:@YES,
+                                                    BTClientTestConfigurationKeyClientTokenVersion: @2,
+                                                    BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account",
+                                                    } completion:^(BTClient *client) {
+                                                        testClient = client;
+                                                        done();
+                                                    }];
+        });
+        
+        
         waitUntil(^(DoneCallback done) {
             BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
             request.number = @"4111111111111111";
@@ -740,7 +755,17 @@ describe(@"get nonce 3D Secure info", ^{
                                     } failure:nil];
         });
     });
-    
+
+    it(@"utilizes the merchant account specified at the top level in the client token", ^{
+        waitUntil(^(DoneCallback done) {
+            [testClient fetchNonceThreeDSecureVerificationInfo:threeDSecureNonce
+                                                       success:^(NSDictionary *threeDSecureInfo){
+                                                           expect(threeDSecureInfo[@"merchantAccountId"]).to.equal(testClient.clientToken.merchantAccountId);
+                                                           done();
+                                                       } failure:nil];
+        });
+    });
+
     it(@"returns 3D Secure related info", ^{
         waitUntil(^(DoneCallback done) {
             [testClient fetchNonceThreeDSecureVerificationInfo:threeDSecureNonce

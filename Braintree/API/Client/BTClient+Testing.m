@@ -13,6 +13,7 @@ NSString *BTClientTestConfigurationKeyRevoked = @"authorizationFingerprintRevoke
 NSString *BTClientTestConfigurationKeyClientTokenVersion = @"tokenVersion";
 NSString *BTClientTestConfigurationKeyAnalytics = @"analytics";
 NSString *BTClientTestConfigurationKeyURL = @"url";
+NSString *BTClientTestConfigurationKeyMerchantAccountIdentifier = @"merchantAccountId";
 
 NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 
@@ -31,7 +32,8 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
                                  BTClientTestConfigurationKeyClientTokenVersion,
                                  BTClientTestConfigurationKeyRevoked,
                                  BTClientTestConfigurationKeySharedCustomerIdentifierType,
-                                 BTClientTestConfigurationKeySharedCustomerIdentifier ];
+                                 BTClientTestConfigurationKeySharedCustomerIdentifier,
+                                 BTClientTestConfigurationKeyMerchantAccountIdentifier, ];
 
     for (NSString *topLevelParam in topLevelParams) {
         if (configurationDictionary[topLevelParam]) {

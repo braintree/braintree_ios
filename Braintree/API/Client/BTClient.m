@@ -410,9 +410,12 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                  transactionAmount:(NSDecimalNumber *)amount
                            success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
                            failure:(BTClientFailureBlock)failureBlock {
-    NSDictionary *requestParameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                         @"payment_method_nonce": nonce,
-                                         @"amount": amount };
+    NSMutableDictionary *requestParameters = [@{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                                 @"payment_method_nonce": nonce,
+                                                 @"amount": amount } mutableCopy];
+    if (self.clientToken.merchantAccountId) {
+        requestParameters[@"merchant_account_id"] = self.clientToken.merchantAccountId;
+    }
     [self.clientApiHttp POST:@"v1/three_d_secure_verifications/lookup"
                   parameters:requestParameters
                   completion:^(BTHTTPResponse *response, NSError *error){
