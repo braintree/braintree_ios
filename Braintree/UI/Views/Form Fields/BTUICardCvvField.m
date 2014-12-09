@@ -19,6 +19,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setThemedPlaceholder:BTUILocalizedString(CVV_FIELD_PLACEHOLDER)];
+        self.textField.accessibilityLabel = BTUILocalizedString(CVV_FIELD_PLACEHOLDER);
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.textField.delegate = self;
 
