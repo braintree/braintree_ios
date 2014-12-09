@@ -10,7 +10,7 @@ NSString *const BTClientTokenKeyMerchantId = @"merchantId";
 NSString *const BTClientTokenKeyVersion = @"version";
 NSString *const BTClientTokenKeyApplePay = @"applePay";
 NSString *const BTClientTokenKeyStatus = @"status";
-
+NSString *const BTClientTokenKeyMerchantAccountId = @"merchantAccountId";
 
 NSString *const BTClientTokenKeyPayPalEnabled = @"paypalEnabled";
 NSString *const BTClientTokenKeyPayPal = @"paypal";
@@ -78,6 +78,10 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 
 - (NSString *)merchantId {
     return self.configuration[BTClientTokenKeyMerchantId];
+}
+
+- (NSString *)merchantAccountId {
+    return self.configuration[BTClientTokenKeyMerchantAccountId];
 }
 
 - (NSDictionary *)applePayConfiguration {
