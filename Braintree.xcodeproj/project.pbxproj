@@ -183,6 +183,7 @@
 		A7E5BEB119ABE5D0006AEB9B /* BTAppSwitchSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E5BEB019ABE5D0006AEB9B /* BTAppSwitchSpec.m */; };
 		A7E5BEB919ABF241006AEB9B /* BTVenmoAppSwitchReturnURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E5BEB719ABF18F006AEB9B /* BTVenmoAppSwitchReturnURLSpec.m */; };
 		A7EC136A19BA3BA800B64D19 /* BTClient+BTVenmoSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EC136919BA3BA800B64D19 /* BTClient+BTVenmoSpec.m */; };
+		A7ECE36B1A37CFAE004F8393 /* BTThreeDSecureLookupSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ECE3691A37CF90004F8393 /* BTThreeDSecureLookupSpec.m */; };
 		A7FC1CC61992B38A00636548 /* BTClientStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */; };
 		A7FF7A4E19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF7A4D19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m */; };
 		B6A81E06EEA7B8903188880B /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
@@ -713,6 +714,7 @@
 		A7EC136919BA3BA800B64D19 /* BTClient+BTVenmoSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTVenmoSpec.m"; sourceTree = "<group>"; };
 		A7EC136B19BA3D6100B64D19 /* BTClient+BTVenmo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+BTVenmo.h"; sourceTree = "<group>"; };
 		A7EC136C19BA3D6100B64D19 /* BTClient+BTVenmo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTVenmo.m"; sourceTree = "<group>"; };
+		A7ECE3691A37CF90004F8393 /* BTThreeDSecureLookupSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLookupSpec.m; sourceTree = "<group>"; };
 		A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalAppSwitchHandler.h; sourceTree = "<group>"; };
 		A7FC1CC01992B24900636548 /* BTPayPalAppSwitchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalAppSwitchHandler.m; sourceTree = "<group>"; };
 		A7FC1CC31992B37900636548 /* BTClientStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientStore.h; sourceTree = "<group>"; };
@@ -1402,6 +1404,7 @@
 				A7CCCD1319D4B8F800E54E76 /* BTClientConfigurationSpec.m */,
 				A7B7431219A2932F000A6A7A /* BTClientMetadataSpec.m */,
 				16217578192D94FB008DC35D /* BTClientSpec.m */,
+				A7ECE3691A37CF90004F8393 /* BTThreeDSecureLookupSpec.m */,
 				A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */,
 				16217579192D94FB008DC35D /* BTClientTokenSpec.m */,
 				1621757A192D94FB008DC35D /* BTHTTPResponseSpec.m */,
@@ -2805,6 +2808,7 @@
 				1637D0B319D1E23400F34F39 /* BTAPIResourceSpec.m in Sources */,
 				16217597192D94FB008DC35D /* BTOfflineClientBackendSpec.m in Sources */,
 				2DCDDFCA194F9E1400F691CF /* BTHTTPSpec.m in Sources */,
+				A7ECE36B1A37CFAE004F8393 /* BTThreeDSecureLookupSpec.m in Sources */,
 				A751C3711A2E4855001B26D3 /* BTThreeDSecureAPISpec.m in Sources */,
 				16217596192D94FB008DC35D /* BTMutablePayPalAccountSpec.m in Sources */,
 				16102A2A192DBB2C002C1B2B /* EXPMatchers+BTMatches.m in Sources */,
