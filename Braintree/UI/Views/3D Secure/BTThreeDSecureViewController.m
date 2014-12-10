@@ -8,7 +8,11 @@
 
 @implementation BTThreeDSecureViewController
 
-- (instancetype)initWithLookup:(__unused BTThreeDSecureLookup *)lookup {
+- (instancetype)initWithLookup:(BTThreeDSecureLookup *)lookup {
+    if (!lookup.requiresUserAuthentication) {
+        return nil;
+    }
+
     self = [super init];
     if (self) {
         self.lookup = lookup;
@@ -38,21 +42,15 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:0 metrics:nil views:@{ @"webView": self.webView }]];
 }
 
-- (void)didCompleteAuthentication:(NSDictionary *)authResponse {
+- (void)didCompleteAuthentication:(__unused NSDictionary *)authResponse {
     if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
-        if ([authResponse[@"success"] boolValue]) {
-            if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
-                [self.delegate threeDSecureViewController:self
-                                     didAuthenticateNonce:self.lookup.nonce
-                                               completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
-                                                   if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
-                                                       [self.delegate threeDSecureViewControllerDidFinish:self];
-                                                   }
-                                               }];
-            }
-        } else {
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"NOT IMPLEMENTED" userInfo:nil];
-        }
+        [self.delegate threeDSecureViewController:self
+                             didAuthenticateNonce:self.lookup.nonce
+                                       completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
+                                           if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+                                               [self.delegate threeDSecureViewControllerDidFinish:self];
+                                           }
+                                       }];
     }
 }
 
@@ -62,8 +60,8 @@
     if ([request.URL.path containsString:@"authentication_complete_frame"]) {
         NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
         NSDictionary *authResponse = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
-                                        options:0
-                                          error:NULL];
+                                                                     options:0
+                                                                       error:NULL];
 
         [self didCompleteAuthentication:authResponse];
         return NO;

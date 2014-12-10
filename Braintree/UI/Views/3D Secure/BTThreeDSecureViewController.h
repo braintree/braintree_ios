@@ -13,7 +13,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 
 - (instancetype)initWithLookup:(BTThreeDSecureLookup *)lookup;
 
-@property (nonatomic, weak) id <BTThreeDSecureViewControllerDelegate>delegate;
+@property (nonatomic, weak) id<BTThreeDSecureViewControllerDelegate> delegate;
 
 @end
 
@@ -29,6 +29,8 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  @param viewController  The 3D Secure view controller
 ///  @param nonce           The new payment method nonce that should be used for creating a 3D Secure transaction
 ///  @param completionBlock A required
+///
+/// @TODO: Rethink withSuccess:errors: interface
 - (void)threeDSecureViewController:(BTThreeDSecureViewController *)viewController
               didAuthenticateNonce:(NSString *)nonce
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus success))completionBlock;
