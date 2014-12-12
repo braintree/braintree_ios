@@ -18,7 +18,7 @@
   * Swedish (`sv`)
   * Turkish (`tr`)
   * Chinese (`zh-Hans`)
-* Add newlines to all files to support `GCC\_WARN\_ABOUT\_MISSING\_NEWLINE`
+* Add newlines to all files to support `GCC_WARN_ABOUT_MISSING_NEWLINE`
 
 ## 3.4.2 (2014-11-19)
 

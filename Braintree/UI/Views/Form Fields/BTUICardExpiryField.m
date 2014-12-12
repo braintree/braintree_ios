@@ -115,7 +115,9 @@
 #pragma mark Helper
 
 - (void)updatePlaceholder {
-    [self couldEndWithFourDigitYear] ? [self setThemedPlaceholder:BTUILocalizedString(EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR)] : [self setThemedPlaceholder:BTUILocalizedString(EXPIRY_PLACEHOLDER_TWO_DIGIT_YEAR)];
+    NSString *placeholder = [self couldEndWithFourDigitYear] ? BTUILocalizedString(EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR) : BTUILocalizedString(EXPIRY_PLACEHOLDER_TWO_DIGIT_YEAR);
+    [self setThemedPlaceholder:placeholder];
+    self.textField.accessibilityLabel = placeholder;
 }
 
 - (void)setThemedPlaceholder:(NSString *)placeholder {

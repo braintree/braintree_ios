@@ -87,6 +87,8 @@
 		1655099F19DF3D8200E43E2B /* BraintreeDemoDirectApplePayIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1655099E19DF3D8200E43E2B /* BraintreeDemoDirectApplePayIntegrationViewController.m */; };
 		165509A119DF3D8E00E43E2B /* BraintreeDemoDirectApplePayIntegrationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 165509A019DF3D8E00E43E2B /* BraintreeDemoDirectApplePayIntegrationViewController.xib */; };
 		167D1C7E19D0DDAD007CAE4D /* BTClientTokenSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 16217579192D94FB008DC35D /* BTClientTokenSpec.m */; };
+		168159A01A3553F60004DB59 /* BTUICardFormViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1681599F1A3553F60004DB59 /* BTUICardFormViewSpec.m */; };
+		168159A11A3555920004DB59 /* BraintreeDemoCreditCardEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968212192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m */; };
 		16968115192D98EA00120846 /* BTUICardTypeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810C192D98EA00120846 /* BTUICardTypeSpec.m */; };
 		16968116192D98EA00120846 /* BTUISpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810D192D98EA00120846 /* BTUISpec.m */; };
 		16968118192D98EA00120846 /* EXPMatchers+haveKerning.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968112192D98EA00120846 /* EXPMatchers+haveKerning.m */; };
@@ -124,8 +126,7 @@
 		16968216192D9AD900120846 /* BraintreeDemoCardHintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968203192D9AD900120846 /* BraintreeDemoCardHintViewController.m */; };
 		16968217192D9AD900120846 /* BraintreeDemoPaymentsUIComponentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968205192D9AD900120846 /* BraintreeDemoPaymentsUIComponentsViewController.m */; };
 		16968218192D9AD900120846 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16968206192D9AD900120846 /* Images.xcassets */; };
-		16968219192D9AD900120846 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16968208192D9AD900120846 /* Main_iPad.storyboard */; };
-		1696821A192D9AD900120846 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1696820A192D9AD900120846 /* Main_iPhone.storyboard */; };
+		1696821A192D9AD900120846 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1696820A192D9AD900120846 /* Main.storyboard */; };
 		1696821C192D9AD900120846 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1696820D192D9AD900120846 /* InfoPlist.strings */; };
 		1696821D192D9AD900120846 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696820E192D9AD900120846 /* main.m */; };
 		1696821E192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968212192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m */; };
@@ -449,6 +450,7 @@
 		1662191519BA4B0F00736A4D /* Braintree-Payments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-Payments.h"; sourceTree = "<group>"; };
 		16654EAF19B7CD020081965A /* BTUIHorizontalButtonStackSeparatorLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIHorizontalButtonStackSeparatorLineView.h; sourceTree = "<group>"; };
 		16654EB019B7CD020081965A /* BTUIHorizontalButtonStackSeparatorLineView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIHorizontalButtonStackSeparatorLineView.m; sourceTree = "<group>"; };
+		1681599F1A3553F60004DB59 /* BTUICardFormViewSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardFormViewSpec.m; sourceTree = "<group>"; };
 		168597B619C39648003F4D17 /* BTMockApplePayPaymentAuthorizationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTMockApplePayPaymentAuthorizationViewController.m; sourceTree = "<group>"; };
 		168597B719C39648003F4D17 /* BTMockApplePayPaymentAuthorizationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockApplePayPaymentAuthorizationViewController.h; sourceTree = "<group>"; };
 		168597B819C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockApplePayPaymentAuthorizationView.h; sourceTree = "<group>"; };
@@ -456,8 +458,8 @@
 		168792F919885B5000F3B9E3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		1696810C192D98EA00120846 /* BTUICardTypeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardTypeSpec.m; sourceTree = "<group>"; };
 		1696810D192D98EA00120846 /* BTUISpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUISpec.m; sourceTree = "<group>"; };
-		1696810E192D98EA00120846 /* Braintree-Payments-UI-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Payments-UI-Specs-Info.plist"; sourceTree = "<group>"; };
-		1696810F192D98EA00120846 /* Braintree-Payments-UI-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Payments-UI-Specs-Prefix.pch"; sourceTree = "<group>"; };
+		1696810E192D98EA00120846 /* Braintree-UI-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-UI-Specs-Info.plist"; sourceTree = "<group>"; };
+		1696810F192D98EA00120846 /* Braintree-UI-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-UI-Specs-Prefix.pch"; sourceTree = "<group>"; };
 		16968111192D98EA00120846 /* EXPMatchers+haveKerning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+haveKerning.h"; sourceTree = "<group>"; };
 		16968112192D98EA00120846 /* EXPMatchers+haveKerning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+haveKerning.m"; sourceTree = "<group>"; };
 		16968113192D98EA00120846 /* BTUICardExpirationValidatorSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpirationValidatorSpec.m; sourceTree = "<group>"; };
@@ -502,8 +504,7 @@
 		16968204192D9AD900120846 /* BraintreeDemoPaymentsUIComponentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPaymentsUIComponentsViewController.h; sourceTree = "<group>"; };
 		16968205192D9AD900120846 /* BraintreeDemoPaymentsUIComponentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPaymentsUIComponentsViewController.m; sourceTree = "<group>"; };
 		16968206192D9AD900120846 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		16968207192D9AD900120846 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		16968209192D9AD900120846 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		16968209192D9AD900120846 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1696820B192D9AD900120846 /* Braintree-Payments-UI-Demo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-Payments-UI-Demo-Info.plist"; sourceTree = "<group>"; };
 		1696820C192D9AD900120846 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1696820E192D9AD900120846 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -1458,8 +1459,8 @@
 		16968110192D98EA00120846 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1696810E192D98EA00120846 /* Braintree-Payments-UI-Specs-Info.plist */,
-				1696810F192D98EA00120846 /* Braintree-Payments-UI-Specs-Prefix.pch */,
+				1696810E192D98EA00120846 /* Braintree-UI-Specs-Info.plist */,
+				1696810F192D98EA00120846 /* Braintree-UI-Specs-Prefix.pch */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -1467,14 +1468,15 @@
 		16968114192D98EA00120846 /* Braintree-UI-Specs */ = {
 			isa = PBXGroup;
 			children = (
+				16968111192D98EA00120846 /* EXPMatchers+haveKerning.h */,
+				1681599F1A3553F60004DB59 /* BTUICardFormViewSpec.m */,
+				2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */,
 				16968113192D98EA00120846 /* BTUICardExpirationValidatorSpec.m */,
+				A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */,
 				1696810C192D98EA00120846 /* BTUICardTypeSpec.m */,
 				1696810D192D98EA00120846 /* BTUISpec.m */,
-				16968111192D98EA00120846 /* EXPMatchers+haveKerning.h */,
 				16968112192D98EA00120846 /* EXPMatchers+haveKerning.m */,
 				16968110192D98EA00120846 /* Supporting Files */,
-				2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */,
-				A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */,
 			);
 			path = "Braintree-UI-Specs";
 			sourceTree = "<group>";
@@ -1575,8 +1577,7 @@
 				16968204192D9AD900120846 /* BraintreeDemoPaymentsUIComponentsViewController.h */,
 				16968205192D9AD900120846 /* BraintreeDemoPaymentsUIComponentsViewController.m */,
 				16968206192D9AD900120846 /* Images.xcassets */,
-				16968208192D9AD900120846 /* Main_iPad.storyboard */,
-				1696820A192D9AD900120846 /* Main_iPhone.storyboard */,
+				1696820A192D9AD900120846 /* Main.storyboard */,
 				16968210192D9AD900120846 /* Supporting Files */,
 				16968211192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.h */,
 				16968212192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m */,
@@ -2501,8 +2502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16968218192D9AD900120846 /* Images.xcassets in Resources */,
-				16968219192D9AD900120846 /* Main_iPad.storyboard in Resources */,
-				1696821A192D9AD900120846 /* Main_iPhone.storyboard in Resources */,
+				1696821A192D9AD900120846 /* Main.storyboard in Resources */,
 				1696821F192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.xib in Resources */,
 				1696821C192D9AD900120846 /* InfoPlist.strings in Resources */,
 			);
@@ -2710,11 +2710,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				168159A01A3553F60004DB59 /* BTUICardFormViewSpec.m in Sources */,
 				16968115192D98EA00120846 /* BTUICardTypeSpec.m in Sources */,
 				16968118192D98EA00120846 /* EXPMatchers+haveKerning.m in Sources */,
 				16968119192D98EA00120846 /* BTUICardExpirationValidatorSpec.m in Sources */,
 				2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */,
 				A79ACA4D1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m in Sources */,
+				168159A11A3555920004DB59 /* BraintreeDemoCreditCardEntryViewController.m in Sources */,
 				16968116192D98EA00120846 /* BTUISpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3000,20 +3002,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		16968208192D9AD900120846 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				16968207192D9AD900120846 /* Base */,
-			);
-			name = Main_iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		1696820A192D9AD900120846 /* Main_iPhone.storyboard */ = {
+		1696820A192D9AD900120846 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				16968209192D9AD900120846 /* Base */,
 			);
-			name = Main_iPhone.storyboard;
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		1696820D192D9AD900120846 /* InfoPlist.strings */ = {
