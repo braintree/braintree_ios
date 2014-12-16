@@ -80,6 +80,37 @@ id<BTAPIResourceValueType> BTAPIResourceValueTypeBool(SEL setter) {
     return valueAdapter;
 }
 
+id<BTAPIResourceValueType> BTAPIResourceValueTypeURL(SEL setter) {
+    BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
+    if (error) {
+        return error;
+    }
+
+    BTAPIResourceValueAdapter *valueAdapter = [[BTAPIResourceValueAdapter alloc] initWithValidator:^BOOL(id value) {
+        return [value isKindOfClass:[NSString class]] && [NSURL URLWithString:value] != nil;
+    } transformer:^id(id rawValue, __unused NSError *__autoreleasing *error) {
+        return [NSURL URLWithString:rawValue];
+    } setter:^BOOL(id model, id value, __unused NSError *__autoreleasing*error){
+        if (!setter || ![model respondsToSelector:setter]) {
+            if (error) {
+                *error = [NSError errorWithDomain:BTAPIResourceErrorDomain
+                                             code:BTAPIResourceErrorAPIFormatInvalid
+                                         userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Model (%@) does not respond to the selector (%@) passed to BTAPIResourceValueTypeURL.", model, NSStringFromSelector(setter)] }];
+            }
+            return NO;
+        }
+
+        NSMethodSignature *signature = [model methodSignatureForSelector:setter];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        [invocation setSelector:setter];
+        [invocation setArgument:&value atIndex:2];
+        [invocation invokeWithTarget:model];
+        return YES;
+    }];
+
+    return valueAdapter;
+}
+
 id<BTAPIResourceValueType> BTAPIResourceValueTypeStringSet(SEL setter) {
     BTAPIResourceValueTypeError *error = BTAPIResourceValueTypeValidateSetter(setter);
     if (error) {

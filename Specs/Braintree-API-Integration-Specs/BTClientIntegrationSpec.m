@@ -116,16 +116,16 @@ describe(@"save card with request", ^{
     describe(@"with validation enabled", ^{
         it(@"creates an unlocked card with a nonce", ^{
             waitUntil(^(DoneCallback done){
-                    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                    request.number = @"4111111111111111";
-                    request.expirationMonth = @"12";
-                    request.expirationYear = @"2018";
-                    request.shouldValidate = YES;
-                    [testClient saveCardWithRequest:request
-                                            success:^(BTPaymentMethod *card) {
-                                                expect(card.nonce).to.beANonce();
-                                                done();
-                                            } failure:nil];
+                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+                request.number = @"4111111111111111";
+                request.expirationMonth = @"12";
+                request.expirationYear = @"2018";
+                request.shouldValidate = YES;
+                [testClient saveCardWithRequest:request
+                                        success:^(BTPaymentMethod *card) {
+                                            expect(card.nonce).to.beANonce();
+                                            done();
+                                        } failure:nil];
             });
         });
 
@@ -720,8 +720,97 @@ describe(@"get nonce", ^{
     });
 });
 
+describe(@"get nonce 3D Secure info", ^{
+    __block BTClient *testClient; // shadows testClient
+    __block NSString *threeDSecureNonce;
+    beforeEach(^{
+        waitUntil(^(DoneCallback done){
+            [BTClient testClientWithConfiguration:@{
+                                                    BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                    BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                    BTClientTestConfigurationKeyCustomer:@YES,
+                                                    BTClientTestConfigurationKeyClientTokenVersion: @2,
+                                                    BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account",
+                                                    } completion:^(BTClient *client) {
+                                                        testClient = client;
+                                                        done();
+                                                    }];
+        });
+        
+        
+        waitUntil(^(DoneCallback done) {
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2018";
+            request.shouldValidate = NO;
+            [testClient saveCardWithRequest:request
+                                    success:^(BTCardPaymentMethod *card) {
+                                        [testClient lookupNonceForThreeDSecure:card.nonce
+                                                             transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                                                       success:^(BTThreeDSecureLookup *threeDSecureLookup) {
+                                                                           threeDSecureNonce = threeDSecureLookup.nonce;
+                                                                           done();
+                                                                       } failure:nil];
+                                    } failure:nil];
+        });
+    });
+
+    it(@"utilizes the merchant account specified at the top level in the client token", ^{
+        waitUntil(^(DoneCallback done) {
+            [testClient fetchNonceThreeDSecureVerificationInfo:threeDSecureNonce
+                                                       success:^(NSDictionary *threeDSecureInfo){
+                                                           expect(threeDSecureInfo[@"merchantAccountId"]).to.equal(testClient.clientToken.merchantAccountId);
+                                                           done();
+                                                       } failure:nil];
+        });
+    });
+
+    it(@"returns 3D Secure related info", ^{
+        waitUntil(^(DoneCallback done) {
+            [testClient fetchNonceThreeDSecureVerificationInfo:threeDSecureNonce
+                                                       success:^(NSDictionary *threeDSecureInfo){
+                                                           expect(threeDSecureInfo[@"eciFlag"]).to.equal(@"07");
+                                                           expect(threeDSecureInfo[@"reportStatus"]).to.equal(@"lookup_unenrolled");
+                                                           done();
+                                                       } failure:nil];
+        });
+    });
+
+    it(@"returns empty 3D Secure info for a non-3D Secure nonce", ^{
+        waitUntil(^(DoneCallback done) {
+            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+            request.number = @"4111111111111111";
+            request.expirationMonth = @"12";
+            request.expirationYear = @"2018";
+            request.shouldValidate = NO;
+            
+            [testClient saveCardWithRequest:request success:^(BTCardPaymentMethod *card) {
+                [testClient fetchNonceThreeDSecureVerificationInfo:card.nonce
+                                                           success:^(NSDictionary *nonceInfo) {
+                                                               expect(nonceInfo).to.beKindOf([NSNull class]);
+                                                               done();
+                                                           }
+                                                           failure:nil];
+            } failure:nil];
+        });
+    });
+
+    it(@"returns an error if the nonce is not found", ^{
+        waitUntil(^(DoneCallback done) {
+            [testClient fetchNonceThreeDSecureVerificationInfo:@"bad-nonce"
+                                                       success:nil
+                                                       failure:^(NSError *error) {
+                                                           expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                           expect(error.code).to.equal(BTMerchantIntegrationErrorNonceNotFound);
+                                                           done();
+                                                       }];
+        });
+    });
+
+});
+
 describe(@"clients with Apple Pay activated", ^{
-    
     if ([PKPayment class]) {
         it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported", ^{
             waitUntil(^(DoneCallback done){
@@ -924,6 +1013,98 @@ describe(@"post analytics event", ^{
                                                                            }
                                                                            failure:nil];
                                                     }];
+        });
+    });
+});
+
+describe(@"3d secure lookup", ^{
+    describe(@"of an eligible Visa", ^{
+        __block NSString *nonce;
+        __block BTClient *client;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done){
+                [BTClient testClientWithConfiguration:@{
+                                                        BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                        BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                        BTClientTestConfigurationKeyClientTokenVersion: @2
+                                                        } completion:^(BTClient *testClient) {
+                                                            client = testClient;
+
+                                                            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                                                            r.number = @"4010000000000018";
+                                                            r.expirationDate = @"12/2015";
+
+                                                            [client saveCardWithRequest:r
+                                                                                success:^(BTCardPaymentMethod *card) {
+                                                                                    nonce = card.nonce;
+                                                                                    done();
+                                                                                }
+                                                                                failure:nil];
+                                                        }];
+            });
+        });
+
+        it(@"performs lookup to give a new nonce and other parameters that allow you to kick off a web-based auth flow", ^{
+            waitUntil(^(DoneCallback done) {
+                [client lookupNonceForThreeDSecure:nonce
+                                 transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                           success:^(BTThreeDSecureLookup *threeDSecureLookupResult) {
+                                               expect(threeDSecureLookupResult.nonce).to.beANonce();
+                                               expect(threeDSecureLookupResult.nonce).notTo.equal(nonce);
+                                               expect(threeDSecureLookupResult.acsURL).to.equal([NSURL URLWithString:@"https://testcustomer34.cardinalcommerce.com/V3DSStart?osb=visa-3&VAA=B"]);
+                                               expect(threeDSecureLookupResult.termURL).to.equal([NSURL URLWithString:@"http://localhost:3000/merchants/integration_merchant_id/three_d_secure/authenticate"]);
+                                               expect(threeDSecureLookupResult.PAReq).to.beKindOf([NSString class]);
+
+                                               done();
+                                           }
+                                           failure:nil];
+            });
+        });
+    });
+
+    describe(@"of an ineligible Visa", ^{
+        __block NSString *nonce;
+        __block BTClient *client;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done){
+                [BTClient testClientWithConfiguration:@{
+                                                        BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                                        BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                                        BTClientTestConfigurationKeyClientTokenVersion: @2
+                                                        } completion:^(BTClient *testClient) {
+                                                            client = testClient;
+
+                                                            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                                                            r.number = @"4000000000000051";
+                                                            r.expirationDate = @"01/2020";
+
+                                                            [client saveCardWithRequest:r
+                                                                                success:^(BTCardPaymentMethod *card) {
+                                                                                    nonce = card.nonce;
+                                                                                    done();
+                                                                                }
+                                                                                failure:nil];
+                                                        }];
+            });
+        });
+        
+        it(@"performs lookup to give a new nonce without other parameters since no web-based auth flow is required", ^{
+            waitUntil(^(DoneCallback done) {
+                [client lookupNonceForThreeDSecure:nonce
+                                 transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                           success:^(BTThreeDSecureLookup *threeDSecureLookupResult) {
+                                               expect(threeDSecureLookupResult.nonce).to.beANonce();
+                                               expect(threeDSecureLookupResult.nonce).notTo.equal(nonce);
+                                               expect(threeDSecureLookupResult.acsURL).to.beNil();
+                                               expect(threeDSecureLookupResult.termURL).to.beNil();
+                                               expect(threeDSecureLookupResult.PAReq).to.beNil();
+                                               
+                                               done();
+                                           }
+                                           failure:nil];
+            });
         });
     });
 });

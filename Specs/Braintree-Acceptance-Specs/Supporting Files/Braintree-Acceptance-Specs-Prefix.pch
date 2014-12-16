@@ -18,3 +18,4 @@
 #import <KIF/UIWindow-KIFAdditions.h>
 #import <KIF/UIView-KIFAdditions.h>
 #import <KIF/UITouch-KIFAdditions.h>
+#import <KIFViewControllerActions/KIFSystemTestActor+ViewControllerActions.h>

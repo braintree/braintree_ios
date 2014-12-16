@@ -43,7 +43,8 @@
                                                @"mastercard",
                                                @"amex" ]
 
-                      }
+                      },
+              @"merchantAccountId": @"some-merchant-account-id",
               } mutableCopy];
 }
 

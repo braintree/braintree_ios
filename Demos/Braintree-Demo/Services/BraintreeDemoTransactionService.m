@@ -41,6 +41,7 @@ NSString *BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey = @"B
     }
     [[NSUserDefaults standardUserDefaults] setInteger:environment forKey:BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost:3132"]];
 }
 
 - (void)fetchMerchantConfigWithCompletion:(void (^)(NSString *merchantId, NSError *error))completionBlock {
@@ -58,7 +59,7 @@ NSString *BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey = @"B
 - (void)createCustomerAndFetchClientTokenWithCompletion:(void (^)(NSString *, NSError *))completionBlock {
     NSString *customerId = [[NSUUID UUID] UUIDString];
     [self.sessionManager GET:@"/client_token"
-                  parameters:@{@"customer_id": customerId}
+                  parameters:@{@"customer_id": customerId, @"merchant_account_id": @"three_d_secure_merchant_account"}
                      success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
                          completionBlock(responseObject[@"client_token"], nil);
                      }

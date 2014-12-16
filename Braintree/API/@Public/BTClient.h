@@ -7,6 +7,7 @@
 
 #import "BTErrors.h"
 #import "BTClientCardRequest.h"
+#import "BTThreeDSecureLookup.h"
 
 #pragma mark Types
 
@@ -27,6 +28,9 @@ typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentM
 
 /// Success Block type for analytics events
 typedef void (^BTClientAnalyticsSuccessBlock)(void);
+
+/// Success Block type for 3D Secure lookups
+typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookup *threeDSecureLookup);
 
 /// Block type for handling `BTClient` errors
 typedef void (^BTClientFailureBlock)(NSError *error);
@@ -51,7 +55,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// was initialized.
 @property (nonatomic, copy, readonly) NSString *merchantId;
 
-#pragma mark API Methods
+#pragma mark - Fetch a Payment Method
 
 /// Obtain a list of payment methods saved to Braintree
 ///
@@ -67,6 +71,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)fetchPaymentMethodWithNonce:(NSString *)nonce
                             success:(BTClientPaymentMethodSuccessBlock)successBlock
                             failure:(BTClientFailureBlock)failureBlock;
+
+#pragma mark Save a New Payment Method
 
 /// Save a card to Braintree
 ///
@@ -127,6 +133,15 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                               correlationId:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
+
+#pragma mark Perform a 3D Secure Lookup
+
+- (void)lookupNonceForThreeDSecure:(NSString *)nonce
+                 transactionAmount:(NSDecimalNumber *)amount
+                           success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
+                           failure:(BTClientFailureBlock)failureBlock;
+
+#pragma mark Create a Braintree Analytics Event
 
 /// "Fire and forget analytics" - transmits an analytics event to the Braintree analytics service
 ///
