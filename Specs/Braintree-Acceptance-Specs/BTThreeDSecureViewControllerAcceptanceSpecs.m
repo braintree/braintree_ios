@@ -30,22 +30,22 @@
     return helper;
 }
 
-- (void)lookupCard:(NSString *)number completion:(void (^)(BTThreeDSecureLookup *lookup))completion {
+- (void)lookupCard:(NSString *)number completion:(void (^)(NSString *originalNonce, BTThreeDSecureLookup *lookup, NSString *lookupNonce))completion {
     BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
     request.number = number;
     request.expirationMonth = @"12";
     request.expirationYear = @"2020";
     request.shouldValidate = YES;
-
+    
     [self.client saveCardWithRequest:request
                              success:^(BTPaymentMethod *card) {
                                  [self.client lookupNonceForThreeDSecure:card.nonce
                                                        transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                                 success:^(BTThreeDSecureLookup *threeDSecureLookup) {
-                                                                     completion(threeDSecureLookup);
+                                                                 success:^(BTThreeDSecureLookup *threeDSecureLookup, NSString *nonce) {
+                                                                     completion(card.nonce, threeDSecureLookup, nonce);
                                                                  } failure:nil];
                              } failure:^(__unused NSError *error) {
-                                 completion(nil);
+                                 completion(nil, nil, nil);
                              }];
 }
 
@@ -65,7 +65,7 @@
 
     waitUntil(^(DoneCallback done) {
         [self lookupCard:number
-              completion:^(BTThreeDSecureLookup *threeDSecureLookup){
+              completion:^(NSString *originalNonce, BTThreeDSecureLookup *threeDSecureLookup, NSString *lookupNonce){
                   self.lookup = threeDSecureLookup;
                   done();
               }];
@@ -141,7 +141,7 @@ describe(@"3D Secure View Controller", ^{
                                [tester tapViewWithAccessibilityLabel:@"Submit"];
                            } didAuthenticate:^(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookup *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
                                calledDidAuthenticate = YES;
-                               expect(nonce).to.equal(lookup.nonce);
+                               expect(nonce).to.beANonce();
                            } didFinish:nil];
 
             [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
@@ -298,14 +298,14 @@ describe(@"3D Secure View Controller", ^{
                                                                       checkedNonce = YES;
                                                                   }];
                                } didFinish:nil];
-
+                
                 [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
                     KIFTestWaitCondition(checkedNonce, error, @"Did not check nonce");
                     return KIFTestStepResultSuccess;
                 }];
             });
         });
-
+        
         context(@"Signature verification fails - Y,Y,N", ^{
             it(@"accepts a password but resuts in an failed verification", ^{
                 __block BOOL checkedNonce = NO;

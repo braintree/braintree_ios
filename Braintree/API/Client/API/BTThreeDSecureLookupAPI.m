@@ -8,7 +8,7 @@
 
 + (NSDictionary *)APIFormat {
     return @{
-             @"nonce": BTAPIResourceValueTypeString(@selector(setNonce:)),
+             @"md": BTAPIResourceValueTypeString(@selector(setMD:)),
              @"pareq": BTAPIResourceValueTypeOptional(BTAPIResourceValueTypeString(@selector(setPAReq:))),
              @"acsUrl": BTAPIResourceValueTypeOptional(BTAPIResourceValueTypeURL(@selector(setAcsURL:))),
              @"termUrl": BTAPIResourceValueTypeOptional(BTAPIResourceValueTypeURL(@selector(setTermURL:))),

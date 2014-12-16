@@ -163,6 +163,7 @@
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A75DA3781921399C00D997A2 /* BraintreeSpec.m */; };
+		A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
 		A79AC9A6193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */; };
 		A79ACA4A193FB3340095D7F1 /* good_root_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = A79ACA49193FB3340095D7F1 /* good_root_cert.der */; };
 		A79ACA4D1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */; };
@@ -2853,6 +2854,7 @@
 			files = (
 				A7CED5131A2FD0EA00141197 /* KIFUITestActor+BTWebView.m in Sources */,
 				A7CED5101A2FD01A00141197 /* BTThreeDSecureViewControllerAcceptanceSpecs.m in Sources */,
+				A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

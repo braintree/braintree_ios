@@ -27,14 +27,14 @@
 
     self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     self.webView.delegate = self;
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.lookup.acsURL];
-    [request setHTTPMethod:@"POST"];
+    NSMutableURLRequest *acsRequest = [NSMutableURLRequest requestWithURL:self.lookup.acsURL];
+    [acsRequest setHTTPMethod:@"POST"];
     NSDictionary *fields = @{ @"PaReq": self.lookup.PAReq,
                               @"TermUrl": self.lookup.termURL,
-                              @"MD": self.lookup.nonce };
-    [request setHTTPBody:[[BTURLUtils queryStringWithDictionary:fields] dataUsingEncoding:NSUTF8StringEncoding]];
-    [request setAllHTTPHeaderFields:@{ @"Accept": @"text/html", @"Content-Type": @"application/x-www-form-urlencoded"}];
-    [self.webView loadRequest:request];
+                              @"MD": self.lookup.MD };
+    [acsRequest setHTTPBody:[[BTURLUtils queryStringWithDictionary:fields] dataUsingEncoding:NSUTF8StringEncoding]];
+    [acsRequest setAllHTTPHeaderFields:@{ @"Accept": @"text/html", @"Content-Type": @"application/x-www-form-urlencoded"}];
+    [self.webView loadRequest:acsRequest];
 
     [self.view addSubview:self.webView];
 
@@ -42,15 +42,21 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:0 metrics:nil views:@{ @"webView": self.webView }]];
 }
 
-- (void)didCompleteAuthentication:(__unused NSDictionary *)authResponse {
+- (void)didCompleteAuthentication:(NSDictionary *)authResponse {
     if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
-        [self.delegate threeDSecureViewController:self
-                             didAuthenticateNonce:self.lookup.nonce
-                                       completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
-                                           if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
-                                               [self.delegate threeDSecureViewControllerDidFinish:self];
-                                           }
-                                       }];
+        if ([authResponse[@"success"] boolValue]) {
+            if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
+                [self.delegate threeDSecureViewController:self
+                                     didAuthenticateNonce:authResponse[@"paymentMethodNonce"]
+                                               completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
+                                                   if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+                                                       [self.delegate threeDSecureViewControllerDidFinish:self];
+                                                   }
+                                               }];
+            }
+        } else {
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"NOT IMPLEMENTED" userInfo:nil];
+        }
     }
 }
 

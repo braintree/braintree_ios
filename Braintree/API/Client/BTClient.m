@@ -411,24 +411,33 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                            success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
                            failure:(BTClientFailureBlock)failureBlock {
     NSMutableDictionary *requestParameters = [@{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                                 @"payment_method_nonce": nonce,
                                                  @"amount": amount } mutableCopy];
     if (self.clientToken.merchantAccountId) {
         requestParameters[@"merchant_account_id"] = self.clientToken.merchantAccountId;
     }
-    [self.clientApiHttp POST:@"v1/three_d_secure_verifications/lookup"
+    NSString *urlSafeNonce = [nonce stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [self.clientApiHttp POST:[NSString stringWithFormat:@"v1/payment_methods/credit_cards/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
                   completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
                 BTThreeDSecureLookup *lookup = [BTThreeDSecureLookupAPI modelWithAPIDictionary:response.object[@"lookup"] error:NULL];
-                successBlock(lookup);
+                NSString *rawNonce = response.object[@"nonce"];
+                NSString *nonce = [rawNonce isKindOfClass:[NSString class]] ? rawNonce : nil;
+                successBlock(lookup, nonce);
             }
         } else {
             if (failureBlock) {
-                failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                 code:BTUnknownError // TODO - use a client error code
-                                             userInfo:@{NSUnderlyingErrorKey: error}]);
+                if (response.statusCode == 422) {
+                    NSString *errorMessage = response.object[@"error"][@"message"];
+                    failureBlock([NSError errorWithDomain:error.domain
+                                                     code:error.code
+                                                 userInfo:@{ NSLocalizedDescriptionKey: errorMessage }]);
+                } else {
+                    failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                     code:BTUnknownError
+                                                 userInfo:nil]);
+                }
             }
         }
     }];

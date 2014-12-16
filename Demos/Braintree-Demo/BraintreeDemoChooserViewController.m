@@ -188,11 +188,23 @@
     } else if (selectedCell == self.threeDSecureANonceCell) {
         [self.braintree.client lookupNonceForThreeDSecure:self.nonce
                                         transactionAmount:[NSDecimalNumber decimalNumberWithString:@"10"]
-                                                  success:^(BTThreeDSecureLookup *threeDSecureLookup) {
-                                                      self.threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:threeDSecureLookup];
-                                                      [self presentViewController:self.threeDSecureViewController animated:YES completion:nil];
-                                                      // TODO: Listen for completion
-                                                      // self.nonce = newNonce;
+                                                  success:^(BTThreeDSecureLookup *threeDSecureLookup, NSString *nonce) {
+                                                      if (nonce) {
+                                                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Lookup not Possible"
+                                                                                                                          message:@"Received a nonce instead"
+                                                                                                                   preferredStyle:UIAlertControllerStyleAlert];
+                                                          [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                                                                   style:UIAlertActionStyleCancel
+                                                                                                 handler:^(__unused UIAlertAction *action) {
+                                                                                                     self.nonce = nonce;
+                                                                                                 }]];
+                                                          [self presentViewController:alert animated:YES completion:nil];
+                                                      } else {
+                                                          self.threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:threeDSecureLookup];
+                                                          [self presentViewController:self.threeDSecureViewController animated:YES completion:nil];
+                                                          // TODO: Listen for completion
+                                                          // self.nonce = newNonce;
+                                                      }
                                                   }
                                                   failure:^(NSError *error) {
                                                       [self displayError:error forTask:@"3D Secure Lookup"];
