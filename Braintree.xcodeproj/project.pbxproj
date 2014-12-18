@@ -696,8 +696,8 @@
 		A7B7433E19A3E4B5000A6A7A /* BTVenmoAppSwitchReturnURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchReturnURL.m; sourceTree = "<group>"; };
 		A7B7433F19A3E4B5000A6A7A /* BTVenmoAppSwitchRequestURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchRequestURL.h; sourceTree = "<group>"; };
 		A7B7434019A3E4B5000A6A7A /* BTVenmoAppSwitchRequestURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchRequestURL.m; sourceTree = "<group>"; };
-		A7BFC5FB1A2E3D9400354401 /* BTThreeDSecureLookup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLookup.h; sourceTree = "<group>"; };
-		A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLookup.m; sourceTree = "<group>"; };
+		A7BFC5FB1A2E3D9400354401 /* BTThreeDSecureLookupResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLookupResult.h; sourceTree = "<group>"; };
+		A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookupResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLookupResult.m; sourceTree = "<group>"; };
 		A7C7F82D19B905C400493311 /* BTPaymentProviderErrors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentProviderErrors.m; sourceTree = "<group>"; };
 		A7CB617319B7B13000E972A8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A7CCCD1019D4A6E800E54E76 /* BTClientApplePayConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientApplePayConfiguration.h; sourceTree = "<group>"; };
@@ -1088,8 +1088,8 @@
 				16E7B04019E63B360057ABB7 /* BTPaymentMethod.m */,
 				16E7B04119E63B360057ABB7 /* BTPayPalPaymentMethod_Mutable.h */,
 				16E7B04219E63B360057ABB7 /* BTPayPalPaymentMethod.m */,
-				A7BFC5FB1A2E3D9400354401 /* BTThreeDSecureLookup.h */,
-				A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookup.m */,
+				A7BFC5FB1A2E3D9400354401 /* BTThreeDSecureLookupResult.h */,
+				A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookupResult.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";

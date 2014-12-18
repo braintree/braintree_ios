@@ -1,9 +1,9 @@
-#import "BTThreeDSecureLookupAPI.h"
+#import "BTThreeDSecureLookupResultAPI.h"
 
-SpecBegin(BTThreeDSecureLookupAPI)
+SpecBegin(BTThreeDSecureLookupResultAPI)
 
 describe(@"Parsing a 3D Secure Lookup", ^{
-    __block BTThreeDSecureLookup *lookup;
+    __block BTThreeDSecureLookupResult *lookup;
     __block NSError *error;
 
     beforeEach(^{
@@ -13,7 +13,7 @@ describe(@"Parsing a 3D Secure Lookup", ^{
                                         @"acsUrl": @"http://example.com/acsurl",
                                         @"termUrl": @"http://example.com/termurl",
                                         };
-        lookup = [BTThreeDSecureLookupAPI modelWithAPIDictionary:validResponse
+        lookup = [BTThreeDSecureLookupResultAPI modelWithAPIDictionary:validResponse
                                                            error:&error];
 
     });

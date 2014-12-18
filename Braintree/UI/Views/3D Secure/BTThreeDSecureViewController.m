@@ -2,13 +2,13 @@
 #import "BTURLUtils.h"
 
 @interface BTThreeDSecureViewController () <UIWebViewDelegate>
-@property (nonatomic, strong) BTThreeDSecureLookup *lookup;
+@property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
 @property (nonatomic, strong) UIWebView *webView;
 @end
 
 @implementation BTThreeDSecureViewController
 
-- (instancetype)initWithLookup:(BTThreeDSecureLookup *)lookup {
+- (instancetype)initWithLookup:(BTThreeDSecureLookupResult *)lookup {
     if (!lookup.requiresUserAuthentication) {
         return nil;
     }

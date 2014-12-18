@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface BTThreeDSecureLookup : NSObject
+@interface BTThreeDSecureLookupResult : NSObject
 @property (nonatomic, copy) NSString *PAReq;
 @property (nonatomic, copy) NSString *MD;
 @property (nonatomic, copy) NSURL *acsURL;

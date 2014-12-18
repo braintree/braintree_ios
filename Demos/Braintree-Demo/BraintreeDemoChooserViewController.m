@@ -77,7 +77,7 @@
 
 - (void)initializeBraintree {
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
+
     self.braintree = nil;
     self.merchantId = nil;
     self.nonce = nil;
@@ -188,16 +188,16 @@
     } else if (selectedCell == self.threeDSecureANonceCell) {
         [self.braintree.client lookupNonceForThreeDSecure:self.nonce
                                         transactionAmount:[NSDecimalNumber decimalNumberWithString:@"10"]
-                                                  success:^(BTThreeDSecureLookup *threeDSecureLookup, NSString *nonce) {
+                                                  success:^(BTThreeDSecureLookupResult *threeDSecureLookup, NSString *nonce) {
                                                       if (nonce) {
                                                           UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Lookup not Possible"
-                                                                                                                          message:@"Received a nonce instead"
-                                                                                                                   preferredStyle:UIAlertControllerStyleAlert];
+                                                                                                                         message:@"Received a nonce instead"
+                                                                                                                  preferredStyle:UIAlertControllerStyleAlert];
                                                           [alert addAction:[UIAlertAction actionWithTitle:@"OK"
-                                                                                                   style:UIAlertActionStyleCancel
-                                                                                                 handler:^(__unused UIAlertAction *action) {
-                                                                                                     self.nonce = nonce;
-                                                                                                 }]];
+                                                                                                    style:UIAlertActionStyleCancel
+                                                                                                  handler:^(__unused UIAlertAction *action) {
+                                                                                                      self.nonce = nonce;
+                                                                                                  }]];
                                                           [self presentViewController:alert animated:YES completion:nil];
                                                       } else {
                                                           self.threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:threeDSecureLookup];

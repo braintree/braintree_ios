@@ -13,7 +13,7 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
-#import "BTThreeDSecureLookupAPI.h"
+#import "BTThreeDSecureLookupResultAPI.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -421,7 +421,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                   completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                BTThreeDSecureLookup *lookup = [BTThreeDSecureLookupAPI modelWithAPIDictionary:response.object[@"lookup"] error:NULL];
+                BTThreeDSecureLookupResult *lookup = [BTThreeDSecureLookupResultAPI modelWithAPIDictionary:response.object[@"lookup"] error:NULL];
                 NSString *rawNonce = response.object[@"nonce"];
                 NSString *nonce = [rawNonce isKindOfClass:[NSString class]] ? rawNonce : nil;
                 successBlock(lookup, nonce);

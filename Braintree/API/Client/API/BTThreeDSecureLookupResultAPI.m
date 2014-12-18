@@ -1,9 +1,9 @@
-#import "BTThreeDSecureLookupAPI.h"
+#import "BTThreeDSecureLookupResultAPI.h"
 
-@implementation BTThreeDSecureLookupAPI
+@implementation BTThreeDSecureLookupResultAPI
 
 + (Class)resourceModelClass {
-    return [BTThreeDSecureLookup class];
+    return [BTThreeDSecureLookupResult class];
 }
 
 + (NSDictionary *)APIFormat {

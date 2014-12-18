@@ -1,10 +1,10 @@
-#import "BTThreeDSecureLookup.h"
+#import "BTThreeDSecureLookupResult.h"
 
-SpecBegin(BTThreeDSecureLookup)
+SpecBegin(BTThreeDSecureLookupResult)
 
 describe(@"requiresUserAuthentication", ^{
     it(@"returns YES when the acs url is present", ^{
-        BTThreeDSecureLookup *lookup = [[BTThreeDSecureLookup alloc] init];
+        BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.acsURL = [NSURL URLWithString:@"http://example.com"];
         lookup.termURL = [NSURL URLWithString:@"http://example.com"];
         lookup.nonce = @"a-nonce";
@@ -13,7 +13,7 @@ describe(@"requiresUserAuthentication", ^{
         expect(lookup.requiresUserAuthentication).to.beTruthy();
     });
     it(@"returns NO when the acs url is not present", ^{
-        BTThreeDSecureLookup *lookup = [[BTThreeDSecureLookup alloc] init];
+        BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.acsURL = nil;
         lookup.termURL = [NSURL URLWithString:@"http://example.com"];
         lookup.nonce = @"a-nonce";
