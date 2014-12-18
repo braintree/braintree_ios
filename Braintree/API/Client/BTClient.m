@@ -416,7 +416,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         requestParameters[@"merchant_account_id"] = self.clientToken.merchantAccountId;
     }
     NSString *urlSafeNonce = [nonce stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    [self.clientApiHttp POST:[NSString stringWithFormat:@"v1/payment_methods/credit_cards/%@/three_d_secure/lookup", urlSafeNonce]
+    [self.clientApiHttp POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
                   completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
@@ -432,7 +432,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                     NSString *errorMessage = response.object[@"error"][@"message"];
                     failureBlock([NSError errorWithDomain:error.domain
                                                      code:error.code
-                                                 userInfo:@{ NSLocalizedDescriptionKey: errorMessage }]);
+                                                 userInfo:@{ NSLocalizedDescriptionKey: errorMessage,
+                                                             BTCustomerInputBraintreeValidationErrorsKey: response.object }]);
                 } else {
                     failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                                      code:BTUnknownError

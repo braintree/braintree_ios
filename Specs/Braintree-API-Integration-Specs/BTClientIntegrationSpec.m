@@ -1059,7 +1059,7 @@ describe(@"3d secure lookup", ^{
                  success:^(BTThreeDSecureLookup *threeDSecureLookupResult, NSString *nonce) {
                      expect(threeDSecureLookupResult.MD).to.beKindOf([NSString class]);
                      expect(threeDSecureLookupResult.acsURL).to.equal([NSURL URLWithString:@"https://testcustomer34.cardinalcommerce.com/V3DSStart?osb=visa-3&VAA=B"]);
-                     expect([threeDSecureLookupResult.termURL absoluteString]).to.match(@"^http://localhost:3000/merchants/integration_merchant_id/client_api/v1/payment_methods/credit_cards/[a-fA-F0-9-]+/three_d_secure/authenticate\?.*");
+                     expect([threeDSecureLookupResult.termURL absoluteString]).to.match(@"^http://.*:3000/merchants/integration_merchant_id/client_api/v1/payment_methods/[a-fA-F0-9-]+/three_d_secure/authenticate\?.*");
                      expect(threeDSecureLookupResult.PAReq).to.beKindOf([NSString class]);
 
                      done();
@@ -1104,6 +1104,68 @@ describe(@"3d secure lookup", ^{
             });
         });
     });
+
+    pending(@"of an ineligible card type", ^{
+        __block NSString *nonce;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done){
+                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                r.number = @"6011111111111117";
+                r.expirationDate = @"01/2020";
+
+                [testThreeDSecureClient saveCardWithRequest:r
+                                                    success:^(BTCardPaymentMethod *card) {
+                                                        nonce = card.nonce;
+                                                        done();
+                                                    }
+                                                    failure:nil];
+            });
+        });
+
+        it(@"fails to perform lookup and returns an error", ^{
+            waitUntil(^(DoneCallback done) {
+                [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
+                                                 transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                                           success:nil
+                                                           failure:^(NSError *error) {
+                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                               expect(error.code).to.equal(BTCustomerInputErrorInvalid);
+                                                               expect(error.localizedDescription).to.contain(@"Unsupported card type for 3D Secure");
+                                                           }];
+            });
+        });
+    });
+
+    describe(@"of a non-card nonce", ^{
+        __block NSString *nonce;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done){
+                [testThreeDSecureClient savePaypalPaymentMethodWithAuthCode:@"fake-paypal-auth-code"
+                                                   applicationCorrelationID:nil
+                                                                    success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                                        nonce = paypalPaymentMethod.nonce;
+                                                                        done();
+                                                                    } failure:nil];
+            });
+        });
+
+        it(@"fails to perform a lookup", ^{
+            waitUntil(^(DoneCallback done) {
+                [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
+                                                 transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                                           success:nil
+                                                           failure:^(NSError *error) {
+                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                               expect(error.code).to.equal(BTCustomerInputErrorInvalid);
+                                                               expect(error.localizedDescription).to.contain(@"Cannot 3D Secure a non-credit card payment instrument");
+                                                               expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.beKindOf([NSDictionary class]);
+                                                               done();
+                                                           }];
+            });
+        });
+    });
     
     describe(@"unregistered 3DS merchant", ^{
         __block NSString *nonce;
@@ -1139,6 +1201,7 @@ describe(@"3d secure lookup", ^{
                                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
                                                                expect(error.localizedDescription).to.contain(@"Merchant not 3D Secure registered");
+                                                               expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.beKindOf([NSDictionary class]);
                                                                done();
                                                            }];
             });
@@ -1178,7 +1241,8 @@ describe(@"3d secure lookup", ^{
                                                            failure:^(NSError *error) {
                                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                                                               expect(error.localizedDescription).to.contain(@"Merchant Account not 3D Secure enabled");
+                                                               expect(error.localizedDescription).to.contain(@"Merchant account not 3D Secure enabled");
+                                                               expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.beKindOf([NSDictionary class]);
                                                                done();
                                                            }];
             });

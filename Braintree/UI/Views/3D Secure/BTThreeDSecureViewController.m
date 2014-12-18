@@ -43,19 +43,26 @@
 }
 
 - (void)didCompleteAuthentication:(NSDictionary *)authResponse {
-    if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
-        if ([authResponse[@"success"] boolValue]) {
-            if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
-                [self.delegate threeDSecureViewController:self
-                                     didAuthenticateNonce:authResponse[@"paymentMethodNonce"]
-                                               completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
-                                                   if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
-                                                       [self.delegate threeDSecureViewControllerDidFinish:self];
-                                                   }
-                                               }];
-            }
-        } else {
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"NOT IMPLEMENTED" userInfo:nil];
+    if ([authResponse[@"success"] boolValue]) {
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
+            [self.delegate threeDSecureViewController:self
+                                 didAuthenticateNonce:authResponse[@"paymentMethodNonce"]
+                                           completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
+                                               if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+                                                   [self.delegate threeDSecureViewControllerDidFinish:self];
+                                               }
+                                           }];
+        }
+    } else {
+        NSError *fieldErrors = authResponse[@"errors"];
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
+                                             code:BTThreeDSecureFailedAuthenticationErrorCode
+                                         userInfo:@{ BTThreeDSecureFieldErrorsKey: fieldErrors }];
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
+            [self.delegate threeDSecureViewController:self didFailWithError:error];
+        }
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+            [self.delegate threeDSecureViewControllerDidFinish:self];
         }
     }
 }
