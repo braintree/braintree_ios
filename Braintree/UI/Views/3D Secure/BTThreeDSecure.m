@@ -2,9 +2,6 @@
 
 #import "BTThreeDSecureAuthenticationViewController.h"
 
-// TODO: Remove me once lookup API returns a full serialized payment method
-#import "BTMutableCardPaymentMethod.h"
-
 @interface BTThreeDSecure () <BTThreeDSecureAuthenticationViewControllerDelegate>
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, strong) BTCardPaymentMethod *upgradedPaymentMethod;
@@ -34,12 +31,10 @@
 
     [self.client lookupNonceForThreeDSecure:nonce
                           transactionAmount:amount
-                                    success:^(BTThreeDSecureLookupResult *threeDSecureLookup, NSString *nonce) {
-                                        NSAssert(threeDSecureLookup.requiresUserAuthentication == (nonce == nil) , @"BTThreeDSecure verifyCardWithNonce Expect to receive either a lookup result or a nonce. Received neither or both.");
-                                        if (nonce) {
-                                            BTMutableCardPaymentMethod *paymentMethod = [[BTMutableCardPaymentMethod alloc] init];
-                                            paymentMethod.nonce = nonce;
-                                            [self informDelegateDidCreatePaymentMethod:paymentMethod];
+                                    success:^(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *card) {
+                                        NSAssert(threeDSecureLookup.requiresUserAuthentication == (card == nil) , @"BTThreeDSecure verifyCardWithNonce Expect to receive either a lookup result or a nonce. Received neither or both.");
+                                        if (card) {
+                                            [self informDelegateDidCreatePaymentMethod:card];
                                         } else {
                                             BTThreeDSecureAuthenticationViewController *authenticationViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:threeDSecureLookup];
                                             authenticationViewController.delegate = self;
@@ -67,10 +62,9 @@
 #pragma mark BTThreeDSecureAuthenticationViewControllerDelegate
 
 - (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
-              didAuthenticateNonce:(NSString *)nonce
+              didAuthenticateCard:(BTCardPaymentMethod *)card
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock {
-    self.upgradedPaymentMethod = [[BTMutableCardPaymentMethod alloc] init];
-    self.upgradedPaymentMethod.nonce = nonce;
+    self.upgradedPaymentMethod = card;
     completionBlock(BTThreeDSecureViewControllerCompletionStatusSuccess);
 }
 

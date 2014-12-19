@@ -1,5 +1,6 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTURLUtils.h"
+#import "BTClient_Internal.h"
 
 @interface BTThreeDSecureAuthenticationViewController () <UIWebViewDelegate>
 @property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
@@ -44,9 +45,11 @@
 
 - (void)didCompleteAuthentication:(NSDictionary *)authResponse {
     if ([authResponse[@"success"] boolValue]) {
-        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateCard:completion:)]) {
+            NSDictionary *creditCardResponse = authResponse[@"paymentMethod"];
+            BTCardPaymentMethod *paymentMethod = creditCardResponse ? [BTClient cardFromAPIResponseDictionary:creditCardResponse] : nil;
             [self.delegate threeDSecureViewController:self
-                                 didAuthenticateNonce:authResponse[@"paymentMethodNonce"]
+                                  didAuthenticateCard:paymentMethod
                                            completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
                                                if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
                                                    [self.delegate threeDSecureViewControllerDidFinish:self];
