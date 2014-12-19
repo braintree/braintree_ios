@@ -932,14 +932,15 @@ describe(@"3d secure lookup", ^{
 
     beforeEach(^{
         waitUntil(^(DoneCallback done) {
-            [BTClient testClientWithConfiguration:@{
-                                                    BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id", BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
-                                                    BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account",
-                                                    BTClientTestConfigurationKeyClientTokenVersion: @2
-                                                    } completion:^(BTClient *testClient) {
-                                                        testThreeDSecureClient = testClient;
-                                                        done();
-                                                    }];
+            NSDictionary *configuration = @{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
+                                             BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
+                                             BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account",
+                                             BTClientTestConfigurationKeyClientTokenVersion: @2 };
+            [BTClient testClientWithConfiguration:configuration
+                                       completion:^(BTClient *testClient) {
+                                           testThreeDSecureClient = testClient;
+                                           done();
+                                       }];
         });
     });
 
