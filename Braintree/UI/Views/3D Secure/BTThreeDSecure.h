@@ -5,12 +5,14 @@
 
 @interface BTThreeDSecure : NSObject
 
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
-
 - (instancetype)initWithClient:(BTClient *)client delegate:(id<BTPaymentMethodCreationDelegate>)delegate NS_DESIGNATED_INITIALIZER;
+
+@property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
 
 - (void)verifyCardWithNonce:(NSString *)nonce amount:(NSDecimalNumber *)amount;
 
-@property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
+- (void)verifyCard:(BTCardPaymentMethod *)card amount:(NSDecimalNumber *)amount;
+
+- (void)verifyCardWithDetails:(BTClientCardRequest *)details amount:(NSDecimalNumber *)amount;
 
 @end

@@ -14,6 +14,7 @@
 
 - (instancetype)init {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"init is not available for BTThreeDSecure, please use initWithClient" userInfo:nil];
+    return [self initWithClient:nil delegate:nil];
 }
 
 - (instancetype)initWithClient:(BTClient *)client delegate:(id<BTPaymentMethodCreationDelegate>)delegate {
@@ -26,7 +27,7 @@
 }
 
 - (void)verifyCardWithNonce:(NSString *)nonce amount:(NSDecimalNumber *)amount {
-    NSAssert(self.delegate, @"BTThreeDSecure must have a delegate before calling verifyCardWithNonce:amount: (delegate is nil)");
+    NSAssert(self.delegate, @"BTThreeDSecure must have a delegate before verifying a card (delegate is nil)");
 
     [self.client lookupNonceForThreeDSecure:nonce
                           transactionAmount:amount
@@ -45,6 +46,19 @@
                                     failure:^(NSError *error) {
                                         [self informDelegateDidFailWithError:error];
                                     }];
+}
+
+- (void)verifyCard:(BTCardPaymentMethod *)card amount:(NSDecimalNumber *)amount {
+    [self verifyCardWithNonce:card.nonce amount:amount];
+}
+
+- (void)verifyCardWithDetails:(BTClientCardRequest *)details amount:(NSDecimalNumber *)amount {
+    [self.client saveCardWithRequest:details
+                             success:^(BTCardPaymentMethod *card) {
+                                 [self verifyCard:card amount:amount];
+                             } failure:^(NSError *error) {
+                                 [self informDelegateDidFailWithError:error];
+                             }];
 }
 
 #pragma mark BTThreeDSecureAuthenticationViewControllerDelegate
