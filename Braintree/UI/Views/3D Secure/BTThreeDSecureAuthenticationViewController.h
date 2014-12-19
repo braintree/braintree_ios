@@ -10,11 +10,12 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 
 @protocol BTThreeDSecureAuthenticationViewControllerDelegate;
 
-///  A view controller that facilitates the user authentication flow for 3D Secure
+///  A view controller that facilitates user authentication for 3D Secure
 ///
-///  3D Secure is a protocol that enables cardholders and issuers to add a layer of security
-///  to e-commerce transactions via password entry at checkout. Upon successful authentication,
-///  a liability shift may take effect.
+///  @warning In most cases, merchants should utilize BTThreeDSecure, rather than
+///           initializing this view controller directly.
+///
+///  @see BTThreeDSecure
 ///
 ///  This view controller accepts a "lookup", which must be obtained via
 ///  -[BTClient lookupNonceForThreeDSecure:transactionAmount:success:failure:] and uses a web view
