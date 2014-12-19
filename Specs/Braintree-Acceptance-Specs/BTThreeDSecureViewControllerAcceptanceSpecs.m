@@ -475,6 +475,18 @@ describe(@"3D Secure View Controller", ^{
             }];
         });
 
+        it(@"displays a loading indicator during page loads", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+                [tester waitForViewWithAccessibilityLabel:@"In progress"];
+                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"In progress"];
+                [tester tapViewWithAccessibilityLabel:@"Submit"];
+                [tester waitForViewWithAccessibilityLabel:@"In progress"];
+                [tester waitForViewWithAccessibilityLabel:@"Incorrect, Please try again"];
+                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"In progress"];
+            }];
+        });
+
         it(@"looks amazing", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];

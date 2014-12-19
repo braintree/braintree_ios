@@ -1,6 +1,7 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTURLUtils.h"
 #import "BTClient_Internal.h"
+#import "UIColor+BTUI.h"
 #import "BTThreeDSecureResponse.h"
 
 @interface BTThreeDSecureAuthenticationViewController () <UIWebViewDelegate>
@@ -9,6 +10,7 @@
 
 @property (nonatomic, strong) UIBarButtonItem *goBackButton;
 @property (nonatomic, strong) UIBarButtonItem *goForwardButton;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @end
 
 @implementation BTThreeDSecureAuthenticationViewController
@@ -41,8 +43,17 @@
     self.goForwardButton = [[UIBarButtonItem alloc] initWithTitle:@"Go Forward" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoForward)];
     self.goForwardButton.enabled = NO;
     self.goBackButton.accessibilityLabel = @"Go Forward";
+
     self.toolbarItems = @[ self.goBackButton, self.goForwardButton, ];
     self.navigationController.toolbarHidden = NO;
+
+    UIActivityIndicatorViewStyle style = [self.navigationController.navigationBar.tintColor bt_contrastingActivityIndicatorStyle];
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+    self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.activityIndicatorView.hidesWhenStopped = YES;
+    self.activityIndicatorView.accessibilityLabel = @"Progress View";
+    [self.activityIndicatorView stopAnimating];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicatorView];
 
     self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     self.webView.delegate = self;
@@ -57,8 +68,9 @@
 
     [self.view addSubview:self.webView];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|" options:0 metrics:nil views:@{ @"webView": self.webView }]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:0 metrics:nil views:@{ @"webView": self.webView }]];
+    NSDictionary *views = @{ @"webView": self.webView };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|" options:0 metrics:nil views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:0 metrics:nil views:views]];
 }
 
 - (void)didCompleteAuthentication:(BTThreeDSecureResponse *)response {
@@ -119,8 +131,13 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
+    [self.activityIndicatorView startAnimating];
     self.goBackButton.enabled = webView.canGoBack;
     self.goForwardButton.enabled = webView.canGoForward;
+}
+
+- (void)webViewDidFinishLoad:(__unused UIWebView *)webView {
+    [self.activityIndicatorView stopAnimating];
 }
 
 #pragma mark User Interaction

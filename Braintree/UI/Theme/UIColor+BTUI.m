@@ -31,6 +31,13 @@
                            alpha:alpha];
 }
 
+- (UIActivityIndicatorViewStyle)bt_contrastingActivityIndicatorStyle {
+    CGFloat r, g, b;
+    [self getRed:&r green:&g blue:&b alpha:NULL];
+
+	CGFloat yiq = ((r*0.299)+(g*0.587)+(b*0.114));
+    return (yiq >= 0.5) ? UIActivityIndicatorViewStyleGray : UIActivityIndicatorViewStyleWhite;
+}
 
 
 @end
