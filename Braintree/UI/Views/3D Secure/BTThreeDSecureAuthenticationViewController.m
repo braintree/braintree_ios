@@ -6,6 +6,9 @@
 @interface BTThreeDSecureAuthenticationViewController () <UIWebViewDelegate>
 @property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
 @property (nonatomic, strong) UIWebView *webView;
+
+@property (nonatomic, strong) UIBarButtonItem *goBackButton;
+@property (nonatomic, strong) UIBarButtonItem *goForwardButton;
 @end
 
 @implementation BTThreeDSecureAuthenticationViewController
@@ -26,6 +29,18 @@
     [super viewDidLoad];
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
+
+    self.title = @"3D Secure";
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(tappedCancel)];
+
+    self.goBackButton = [[UIBarButtonItem alloc] initWithTitle:@"Go Back" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoBack)];
+    self.goBackButton.enabled = NO;
+    self.goForwardButton = [[UIBarButtonItem alloc] initWithTitle:@"Go Forward" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoForward)];
+    self.goForwardButton.enabled = NO;
+    self.toolbarItems = @[ self.goBackButton, self.goForwardButton, ];
+    self.navigationController.toolbarHidden = NO;
 
     self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     self.webView.delegate = self;
@@ -99,6 +114,27 @@
     } else {
         return YES;
     }
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    self.goBackButton.enabled = webView.canGoBack;
+    self.goForwardButton.enabled = webView.canGoForward;
+}
+
+#pragma mark User Interaction
+
+- (void)tappedCancel {
+    NSLog(@"[3DS] CANCELED");
+}
+
+- (void)tappedGoForward {
+    NSLog(@"[3DS] Go Forward");
+    [self.webView goForward];
+}
+
+- (void)tappedGoBack {
+    NSLog(@"[3DS] Go Back");
+    [self.webView goBack];
 }
 
 @end
