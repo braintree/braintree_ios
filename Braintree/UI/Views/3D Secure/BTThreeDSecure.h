@@ -19,10 +19,10 @@
 ///  may receive a request to present a view controller, as well as a success and failure messages.
 ///
 ///  Your delegate must implement, at minimum:
-///    * paymentMethodCreatior:didCreatePaymentMethod;
-///    * paymentMethodCreatior:didFailWithError;
-///    * paymentMethodCreatior:requestsPresentationOfViewController;
-///    * paymentMethodCreatior:requestsDismissalOfViewController;
+///    * paymentMethodCreator:didCreatePaymentMethod:
+///    * paymentMethodCreator:didFailWithError:
+///    * paymentMethodCreator:requestsPresentationOfViewController:
+///    * paymentMethodCreator:requestsDismissalOfViewController:
 ///
 ///  When verification succeeds, the original payment method nonce is consumed, and you will receive
 ///  a new payment method nonce, which points to the original payment method, as well as the 3D
