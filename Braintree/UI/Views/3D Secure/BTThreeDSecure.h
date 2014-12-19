@@ -3,20 +3,23 @@
 #import "BTClient.h"
 #import "BTPaymentMethodCreationDelegate.h"
 
-///  3D Secure verification manager
+///  3D Secure Verification manager
 ///
 ///  3D Secure is a protocol that enables cardholders and issuers to add a layer of security
-///  to e-commerce transactions via password entry at checkout. Upon successful authentication,
-///  a liability shift may take effect.
+///  to e-commerce transactions via password entry at checkout.
 ///
-///  There are technically two stages to 3D Secure, which this class abstracts:
-///  1. Lookup - detrmine whether the card is enrolled in 3D Secure and how to proceed with authentication
-///  2. Authenticate - a web-based user login
+///  One of the primary reasons to use 3D Secure is to benefit from a shift in liability from the
+///  merchant to the issuer, which may result in interchange savings. Please read our online
+///  documentation (https://developers.braintreepayments.com) for a full explanation of 3D Secure.
 ///
 ///  After initializing this class with a Braintree client and delegate, you may verify Braintree
 ///  payment methods via any of the three `verify…` methods. You should choose the most appropriate
 ///  method signature based on your v.zero integration approach. During verification, the delegate
 ///  may receive a request to present a view controller, as well as a success and failure messages.
+///
+///  Verification is associated with a transaction amount and your merchant account. To specify a
+///  different merchant account (or, in turn, currency), you will need to specify the merchant account id
+///  when generating a client token (See https://developers.braintreepayments.com/ios/sdk/overview/generate-client-token ).
 ///
 ///  Your delegate must implement, at minimum:
 ///    * paymentMethodCreator:didCreatePaymentMethod:
@@ -26,12 +29,12 @@
 ///
 ///  When verification succeeds, the original payment method nonce is consumed, and you will receive
 ///  a new payment method nonce, which points to the original payment method, as well as the 3D
-///  Secure verification. Transactions created with this nonce will be 3D Secure, and benefit from the
+///  Secure Verification. Transactions created with this nonce will be 3D Secure, and benefit from the
 ///  appropraite liability shift.
 ///
 ///  When verification fails, the original payment method nonce is not consumed. While you may choose
 ///  to proceed with transaction creation, using the original payment method nonce, this transaction
-///  will not receive any of the benefits of 3DS.
+///  will not be associated with a 3D Secure Verification.
 ///
 ///  @note The user authentication view controller is not always necessary to achieve the liabilty
 ///  shift. In these cases, your delegate will immediately receive paymentMethodCreator:didCreatePaymentMethod:.
@@ -53,19 +56,19 @@
 ///  Verify a card for a 3D Secure transaction, referring to the card by raw payment method nonce
 ///
 ///  This method is useful for implementations where 3D Secure verification occurs after generating
-///  a payment method nonce from a Vaulted credit card on your backend
+///  a payment method nonce from a vaulted credit card on your backend
 ///
 ///  @param nonce  A payment method nonce
-///  @param amount The decimal amount in dollars for the transaction
+///  @param amount The amount of the transaction in the current merchant account's currency
 - (void)verifyCardWithNonce:(NSString *)nonce amount:(NSDecimalNumber *)amount;
 
 ///  Verify a card for a 3D Secure transaction, referring to the card by BTCardPaymentMethod object
 ///
 ///  This method is useful for implementations where 3D Secure verification occurs after client-side
-///  tokenization or client-side Vault listing.
+///  tokenization or client-side vault listing.
 ///
 ///  @param card A object that represents a tokenized card (see BTPaymentMethodCreationDelegate)
-///  @param amount The decimal amount in dollars for the transaction
+///  @param amount The amount of the transaction in the current merchant account's currency
 - (void)verifyCard:(BTCardPaymentMethod *)card amount:(NSDecimalNumber *)amount;
 
 ///  Verify a card for a 3D Secure transaction, tokenizing the card from user-provided details
@@ -74,7 +77,7 @@
 ///  raw card details are obtained from the user.
 ///
 ///  @param details A object containing the raw credit card details obtained from the user
-///  @param amount The decimal amount in dollars for the transaction
+///  @param amount The amount of the transaction in the current merchant account's currency
 - (void)verifyCardWithDetails:(BTClientCardRequest *)details amount:(NSDecimalNumber *)amount;
 
 @end
