@@ -9,4 +9,4 @@
 
 
 // All-in-one import for Braintree 3D Secure
-#import <Braintree/BTThreeDSecureAuthenticationViewController.h>
+#import <Braintree/BTThreeDSecure.h>
