@@ -18,6 +18,9 @@
 }
 
 - (instancetype)initWithClient:(BTClient *)client delegate:(id<BTPaymentMethodCreationDelegate>)delegate {
+    if (client == nil || delegate == nil) {
+        return nil;
+    }
     self = [super init];
     if (self) {
         self.client = client;

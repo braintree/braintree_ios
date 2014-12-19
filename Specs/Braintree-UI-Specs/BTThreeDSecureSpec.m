@@ -47,6 +47,16 @@ beforeEach(^{
                                                failure:OCMOCK_ANY];
 });
 
+describe(@"initialization", ^{
+    it(@"requires a a client", ^{
+        expect([[BTThreeDSecure alloc] initWithClient:nil delegate:delegate]).to.beNil();
+    });
+
+    it(@"requires a a delegate", ^{
+        expect([[BTThreeDSecure alloc] initWithClient:client delegate:nil]).to.beNil();
+    });
+});
+
 describe(@"verifyCardWithNonce:amount:", ^{
     describe(@"for a card that requires authentication", ^{
         it(@"requests presentation of a three d secure view controller", ^{
@@ -122,9 +132,9 @@ describe(@"convenience methods", ^{
 
             OCMockObject *partialMockThreeDSecure = [OCMockObject partialMockForObject:threeDSecure];
             [[partialMockThreeDSecure expect] verifyCardWithNonce:mockCard.nonce amount:[OCMArg any]];
-
+            
             [threeDSecure verifyCardWithDetails:mockRequest amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-
+            
             [partialMockThreeDSecure verify];
         });
     });
