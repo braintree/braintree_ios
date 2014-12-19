@@ -9,6 +9,7 @@
 #import <Expecta/Expecta.h>
 
 #import <OCMock/OCMock.h>
+#import <OCMock/NSInvocation+OCMAdditions.h>
 
 #define HC_SHORTHAND
 #import <OCHamcrest/OCHamcrest.h>

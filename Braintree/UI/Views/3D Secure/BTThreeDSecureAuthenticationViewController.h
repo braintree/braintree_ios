@@ -8,7 +8,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
     BTThreeDSecureViewControllerCompletionStatusSuccess,
 };
 
-@protocol BTThreeDSecureViewControllerDelegate;
+@protocol BTThreeDSecureAuthenticationViewControllerDelegate;
 
 ///  A view controller that facilitates the user authentication flow for 3D Secure
 ///
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///
 ///  Sometimes, this view controller will not be necessary to achieve the liabilty shift. In these cases,
 ///  lookup will have already consumed the original nonce and returned a new one.
-@interface BTThreeDSecureViewController : UIViewController
+@interface BTThreeDSecureAuthenticationViewController : UIViewController
 
 ///  Initializes a 3D Secure authentication view controller
 ///
@@ -38,11 +38,11 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 - (instancetype)initWithLookup:(BTThreeDSecureLookupResult *)lookup NS_DESIGNATED_INITIALIZER;
 
 ///  The delegate is notified when the 3D Secure authentication flow completes
-@property (nonatomic, weak) id<BTThreeDSecureViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<BTThreeDSecureAuthenticationViewControllerDelegate> delegate;
 
 @end
 
-@protocol BTThreeDSecureViewControllerDelegate <NSObject>
+@protocol BTThreeDSecureAuthenticationViewControllerDelegate <NSObject>
 
 ///  The delegate will receive this message after the user has successfully authenticated with 3D Secure
 ///
@@ -56,7 +56,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  @param viewController  The 3D Secure view controller
 ///  @param nonce           The new payment method nonce that should be used for creating a 3D Secure transaction
 ///  @param completionBlock A required
-- (void)threeDSecureViewController:(BTThreeDSecureViewController *)viewController
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
               didAuthenticateNonce:(NSString *)nonce
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus success))completionBlock;
 
@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///
 ///  @param viewController  The 3D Secure view controller
 ///  @param error           The error that caused 3D Secure to fail
-- (void)threeDSecureViewController:(BTThreeDSecureViewController *)viewController
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error;
 
 ///  The delegate will receive this message upon completion of the 3D Secure flow, possibly including async work
@@ -79,6 +79,6 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  You should dismiss the provided view controller in your implementation.
 ///
 ///  @param viewController The 3D Secure view controller
-- (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureViewController *)viewController;
+- (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController;
 
 @end

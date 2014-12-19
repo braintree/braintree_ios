@@ -50,7 +50,7 @@
 
 #pragma mark -
 
-@property (nonatomic, strong) BTThreeDSecureViewController *threeDSecureViewController;
+@property (nonatomic, strong) BTThreeDSecureAuthenticationViewController *threeDSecureViewController;
 
 #pragma mark Settings
 
@@ -200,7 +200,7 @@
                                                                                                   }]];
                                                           [self presentViewController:alert animated:YES completion:nil];
                                                       } else {
-                                                          self.threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:threeDSecureLookup];
+                                                          self.threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:threeDSecureLookup];
                                                           [self presentViewController:self.threeDSecureViewController animated:YES completion:nil];
                                                           // TODO: Listen for completion
                                                           // self.nonce = newNonce;
