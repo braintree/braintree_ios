@@ -14,6 +14,8 @@
 
 #import <OHHTTPStubs/OHHTTPStubs.h>
 
+#import "EXPMatchers+BTBeANonce.h"
+
 #import <KIF/KIF.h>
 #import <KIF/UIWindow-KIFAdditions.h>
 #import <KIF/UIView-KIFAdditions.h>

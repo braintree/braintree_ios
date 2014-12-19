@@ -2,13 +2,17 @@
 #import "BTURLUtils.h"
 
 @interface BTThreeDSecureViewController () <UIWebViewDelegate>
-@property (nonatomic, strong) BTThreeDSecureLookup *lookup;
+@property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
 @property (nonatomic, strong) UIWebView *webView;
 @end
 
 @implementation BTThreeDSecureViewController
 
-- (instancetype)initWithLookup:(__unused BTThreeDSecureLookup *)lookup {
+- (instancetype)initWithLookup:(BTThreeDSecureLookupResult *)lookup {
+    if (!lookup.requiresUserAuthentication) {
+        return nil;
+    }
+
     self = [super init];
     if (self) {
         self.lookup = lookup;
@@ -23,14 +27,14 @@
 
     self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     self.webView.delegate = self;
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.lookup.acsURL];
-    [request setHTTPMethod:@"POST"];
+    NSMutableURLRequest *acsRequest = [NSMutableURLRequest requestWithURL:self.lookup.acsURL];
+    [acsRequest setHTTPMethod:@"POST"];
     NSDictionary *fields = @{ @"PaReq": self.lookup.PAReq,
                               @"TermUrl": self.lookup.termURL,
-                              @"MD": self.lookup.nonce };
-    [request setHTTPBody:[[BTURLUtils queryStringWithDictionary:fields] dataUsingEncoding:NSUTF8StringEncoding]];
-    [request setAllHTTPHeaderFields:@{ @"Accept": @"text/html", @"Content-Type": @"application/x-www-form-urlencoded"}];
-    [self.webView loadRequest:request];
+                              @"MD": self.lookup.MD };
+    [acsRequest setHTTPBody:[[BTURLUtils queryStringWithDictionary:fields] dataUsingEncoding:NSUTF8StringEncoding]];
+    [acsRequest setAllHTTPHeaderFields:@{ @"Accept": @"text/html", @"Content-Type": @"application/x-www-form-urlencoded"}];
+    [self.webView loadRequest:acsRequest];
 
     [self.view addSubview:self.webView];
 
@@ -39,19 +43,26 @@
 }
 
 - (void)didCompleteAuthentication:(NSDictionary *)authResponse {
-    if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
-        if ([authResponse[@"success"] boolValue]) {
-            if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
-                [self.delegate threeDSecureViewController:self
-                                     didAuthenticateNonce:self.lookup.nonce
-                                               completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
-                                                   if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
-                                                       [self.delegate threeDSecureViewControllerDidFinish:self];
-                                                   }
-                                               }];
-            }
-        } else {
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"NOT IMPLEMENTED" userInfo:nil];
+    if ([authResponse[@"success"] boolValue]) {
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
+            [self.delegate threeDSecureViewController:self
+                                 didAuthenticateNonce:authResponse[@"paymentMethodNonce"]
+                                           completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
+                                               if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+                                                   [self.delegate threeDSecureViewControllerDidFinish:self];
+                                               }
+                                           }];
+        }
+    } else {
+        NSError *fieldErrors = authResponse[@"errors"];
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
+                                             code:BTThreeDSecureFailedAuthenticationErrorCode
+                                         userInfo:@{ BTThreeDSecureFieldErrorsKey: fieldErrors }];
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
+            [self.delegate threeDSecureViewController:self didFailWithError:error];
+        }
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+            [self.delegate threeDSecureViewControllerDidFinish:self];
         }
     }
 }
@@ -62,8 +73,8 @@
     if ([request.URL.path containsString:@"authentication_complete_frame"]) {
         NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
         NSDictionary *authResponse = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
-                                        options:0
-                                          error:NULL];
+                                                                     options:0
+                                                                       error:NULL];
 
         [self didCompleteAuthentication:authResponse];
         return NO;

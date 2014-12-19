@@ -1,14 +1,14 @@
-#import "BTThreeDSecureLookupAPI.h"
+#import "BTThreeDSecureLookupResultAPI.h"
 
-@implementation BTThreeDSecureLookupAPI
+@implementation BTThreeDSecureLookupResultAPI
 
 + (Class)resourceModelClass {
-    return [BTThreeDSecureLookup class];
+    return [BTThreeDSecureLookupResult class];
 }
 
 + (NSDictionary *)APIFormat {
     return @{
-             @"nonce": BTAPIResourceValueTypeString(@selector(setNonce:)),
+             @"md": BTAPIResourceValueTypeString(@selector(setMD:)),
              @"pareq": BTAPIResourceValueTypeOptional(BTAPIResourceValueTypeString(@selector(setPAReq:))),
              @"acsUrl": BTAPIResourceValueTypeOptional(BTAPIResourceValueTypeURL(@selector(setAcsURL:))),
              @"termUrl": BTAPIResourceValueTypeOptional(BTAPIResourceValueTypeURL(@selector(setTermURL:))),
