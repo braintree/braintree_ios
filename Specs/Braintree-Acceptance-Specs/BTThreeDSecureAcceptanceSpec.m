@@ -47,8 +47,7 @@ withinNavigationControllerWithNavigationBarClass:nil
                                  toolbarClass:nil
                            configurationBlock:nil];
             }];
-
-            [delegateRequestPresentationExpectation paymentMethodCreator:threeDSecure requestsPresentationOfViewController:[OCMArg any]];
+            [delegateRequestPresentationExpectation paymentMethodCreator:threeDSecure requestsPresentationOfViewController:[OCMArg isNotNil]];
 
             [threeDSecure verifyCardWithNonce:nonce amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
 
@@ -71,12 +70,47 @@ withinNavigationControllerWithNavigationBarClass:nil
                 return YES;
             }]];
 
-             [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure requestsDismissalOfViewController:threeDSecureViewController];
+            [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure requestsDismissalOfViewController:[OCMArg isNotNil]];
 
             [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
             [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
             [tester enterTextIntoCurrentFirstResponder:@"1234"];
             [tester tapViewWithAccessibilityLabel:@"Submit"];
+
+            [(OCMockObject *)delegate verifyWithDelay:30];
+        });
+    });
+
+    describe(@"when the user taps cancel", ^{
+        it(@"requests dismissal and notifies the delegate of cancelation", ^{
+            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+
+            id delegateRequestPresentationExpectation = [(OCMockObject *)delegate expect];
+            __block UIViewController *threeDSecureViewController;
+            [delegateRequestPresentationExpectation andDo:^(NSInvocation *invocation) {
+                threeDSecureViewController = [invocation getArgumentAtIndexAsObject:3];
+
+                [system presentViewController:threeDSecureViewController
+withinNavigationControllerWithNavigationBarClass:nil
+                                 toolbarClass:nil
+                           configurationBlock:nil];
+            }];
+
+            [delegateRequestPresentationExpectation paymentMethodCreator:threeDSecure requestsPresentationOfViewController:[OCMArg isNotNil]];
+
+            [threeDSecure verifyCardWithNonce:nonce amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+
+            [(OCMockObject *)delegate verifyWithDelay:30];
+
+            [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
+                KIFTestWaitCondition(threeDSecureViewController != nil, error, @"Did not present 3D Secure authentication flow");
+                return KIFTestStepResultSuccess;
+            }];
+
+            [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure requestsDismissalOfViewController:[OCMArg isNotNil]];
+            [[(OCMockObject *)delegate expect] paymentMethodCreatorDidCancel:threeDSecure];
+
+            [tester tapViewWithAccessibilityLabel:@"Cancel"];
 
             [(OCMockObject *)delegate verifyWithDelay:30];
         });

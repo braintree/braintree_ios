@@ -36,7 +36,11 @@
                                                                                               action:@selector(submitForm)],
                                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks
                                                                                               target:self
-                                                                                              action:@selector(setupDemoData)]
+                                                                                              action:@selector(setupDemoData)],
+                                                [[UIBarButtonItem alloc] initWithTitle:@"3DS"
+                                                                                 style:UIBarButtonItemStylePlain
+                                                                                target:self
+                                                                                action:@selector(setup3DSDemoData)]
                                                 ];
 
     UIButton *cardIOButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -129,6 +133,12 @@
     self.cardNumberField.text = @"4111111111111111";
     self.expirationMonthField.text = @"12";
     self.expirationYearField.text = @"2038";
+}
+
+- (void)setup3DSDemoData {
+    self.cardNumberField.text = @"4000000000000002";
+    self.expirationMonthField.text = @"12";
+    self.expirationYearField.text = @"2020";
 }
 
 #pragma mark Table View Overrides

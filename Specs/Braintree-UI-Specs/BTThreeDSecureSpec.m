@@ -64,7 +64,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
 
             [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure
                                requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
-                return [obj isKindOfClass:[BTThreeDSecureAuthenticationViewController class]];
+                return [obj isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)obj visibleViewController] isKindOfClass:[BTThreeDSecureAuthenticationViewController class]];
             }]];
 
             [threeDSecure verifyCardWithNonce:originalNonce_lookupEnrolledAuthenticationRequired amount:[NSDecimalNumber decimalNumberWithString:@"1"]];

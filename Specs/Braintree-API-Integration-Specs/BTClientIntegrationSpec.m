@@ -980,7 +980,7 @@ describe(@"3D Secure", ^{
         });
     });
 
-    describe(@"of an ineligible Visa", ^{
+    pending(@"of an unenrolled Visa", ^{
         __block NSString *nonce;
 
         beforeEach(^{
@@ -998,21 +998,49 @@ describe(@"3D Secure", ^{
             });
         });
 
+        it(@"fails lookup since the card is not enrolled", ^{
+            waitUntil(^(DoneCallback done) {
+                [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
+                                                 transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                                           success:nil
+                                                           failure:^(NSError *error) {
+                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                               expect(error.code).to.equal(BTCustomerInputErrorInvalid);
+                                                               expect(error.localizedDescription).to.contain(@"Unenrolled card for 3D Secure");
+                                                           }];
+            });
+        });
+    });
+
+    pending(@"of an enrolled, issuer unavailable card", ^{
+        __block NSString *nonce;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done){
+                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                r.number = @"4000000000000069";
+                r.expirationDate = @"01/2020";
+
+                [testThreeDSecureClient saveCardWithRequest:r
+                                                    success:^(BTCardPaymentMethod *card) {
+                                                        nonce = card.nonce;
+                                                        done();
+                                                    }
+                                                    failure:nil];
+            });
+        });
+
         it(@"performs lookup to give a new nonce without other parameters since no web-based auth flow is required", ^{
             waitUntil(^(DoneCallback done) {
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult, BTCardPaymentMethod *card) {
-                                                               expect(threeDSecureLookupResult).to.beNil();
-                                                               expect(card).to.beKindOf([BTCardPaymentMethod class]);
-                                                               expect(card.nonce).to.beANonce();
-                                                               [testThreeDSecureClient fetchNonceThreeDSecureVerificationInfo:card.nonce
-                                                                                                                      success:^(NSDictionary *nonceInfo) {
-                                                                                                                          expect(nonceInfo[@"reportStatus"]).to.equal(@"lookup_unenrolled");
-                                                                                                                          done();
-                                                                                                                      } failure:nil];
-                                                           }
-                                                           failure:nil];
+                                                           success:nil
+                                                           failure:^(NSError *error) {
+                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                               expect(error.code).to.equal(BTCustomerInputErrorInvalid);
+                                                               expect(error.localizedDescription).to.contain(@"Unenrolled card for 3D Secure");
+                                                               expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.equal(@{ @"liabilityShifted": @NO });
+                                                           }];
             });
         });
     });

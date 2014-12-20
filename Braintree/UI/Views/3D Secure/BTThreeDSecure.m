@@ -38,7 +38,8 @@
                                         } else {
                                             BTThreeDSecureAuthenticationViewController *authenticationViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:threeDSecureLookup];
                                             authenticationViewController.delegate = self;
-                                            [self informDelegateRequestsPresentationOfViewController:authenticationViewController];
+                                            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authenticationViewController];
+                                            [self informDelegateRequestsPresentationOfViewController:navigationController];
                                         }
                                     }
                                     failure:^(NSError *error) {
@@ -77,8 +78,10 @@
 - (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController {
     if (self.upgradedPaymentMethod) {
         [self informDelegateDidCreatePaymentMethod:self.upgradedPaymentMethod];
-        [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+    } else {
+        [self informDelegateDidCancel];
     }
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
 }
 
 #pragma mark - Delegate Informers

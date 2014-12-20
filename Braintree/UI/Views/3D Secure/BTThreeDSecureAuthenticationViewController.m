@@ -37,15 +37,12 @@
                                                                                           target:self
                                                                                           action:@selector(tappedCancel)];
 
-    self.goBackButton = [[UIBarButtonItem alloc] initWithTitle:@"Go Back" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoBack)];
-    self.goBackButton.enabled = NO;
+    self.goBackButton = [[UIBarButtonItem alloc] initWithTitle:@"〈" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoBack)];
     self.goBackButton.accessibilityLabel = @"Go Back";
-    self.goForwardButton = [[UIBarButtonItem alloc] initWithTitle:@"Go Forward" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoForward)];
-    self.goForwardButton.enabled = NO;
-    self.goBackButton.accessibilityLabel = @"Go Forward";
-
-    self.toolbarItems = @[ self.goBackButton, self.goForwardButton, ];
-    self.navigationController.toolbarHidden = NO;
+    self.goBackButton.width = 40;
+    self.goForwardButton = [[UIBarButtonItem alloc] initWithTitle:@"〉" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoForward)];
+    self.goForwardButton.accessibilityLabel = @"Go Forward";
+    self.goForwardButton.width = 44;
 
     UIActivityIndicatorViewStyle style = [self.navigationController.navigationBar.tintColor bt_contrastingActivityIndicatorStyle];
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
@@ -132,8 +129,29 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self.activityIndicatorView startAnimating];
+
     self.goBackButton.enabled = webView.canGoBack;
-    self.goForwardButton.enabled = webView.canGoForward;
+
+    static UIBarButtonItem *spacer;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                               target:nil
+                                                               action:nil];
+    });
+
+    NSMutableArray *toolbarItems = [NSMutableArray arrayWithCapacity:3];
+    if (webView.canGoBack || webView.canGoForward) {
+        [toolbarItems addObject:self.goBackButton];
+        [toolbarItems addObject:spacer];
+    }
+    if (webView.canGoForward) {
+        [toolbarItems addObject:self.goForwardButton];
+    }
+
+    [self.navigationController setToolbarHidden:(toolbarItems.count == 0) animated:YES];
+
+    [self setToolbarItems:toolbarItems animated:YES];
 }
 
 - (void)webViewDidFinishLoad:(__unused UIWebView *)webView {
@@ -143,16 +161,16 @@
 #pragma mark User Interaction
 
 - (void)tappedCancel {
-    NSLog(@"[3DS] CANCELED");
+    if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+        [self.delegate threeDSecureViewControllerDidFinish:self];
+    }
 }
 
 - (void)tappedGoForward {
-    NSLog(@"[3DS] Go Forward");
     [self.webView goForward];
 }
 
 - (void)tappedGoBack {
-    NSLog(@"[3DS] Go Back");
     [self.webView goBack];
 }
 

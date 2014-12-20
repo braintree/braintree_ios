@@ -492,6 +492,9 @@ describe(@"3D Secure View Controller", ^{
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
                 [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
 
+                [tester tapViewWithAccessibilityLabel:@"New User / Forgot your password?"];
+                [tester tapViewWithAccessibilityLabel:@"Go Back"];
+
                 [system captureScreenshotWithDescription:nil];
             }];
         });
