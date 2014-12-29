@@ -181,7 +181,7 @@
 		A7B7433519A3E094000A6A7A /* BTVenmoAppSwitchHandlerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B7433419A3E094000A6A7A /* BTVenmoAppSwitchHandlerSpec.m */; };
 		A7C7F82C19B8C4B900493311 /* BTPaymentsSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A763BED919B8C3E90087939C /* BTPaymentsSpec.m */; };
 		A7CCCD1419D4B8F800E54E76 /* BTClientConfigurationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CCCD1319D4B8F800E54E76 /* BTClientConfigurationSpec.m */; };
-		A7CED5101A2FD01A00141197 /* BTThreeDSecureViewControllerAcceptanceSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CED50E1A2FD01500141197 /* BTThreeDSecureViewControllerAcceptanceSpecs.m */; };
+		A7CED5101A2FD01A00141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CED50E1A2FD01500141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m */; };
 		A7CED5131A2FD0EA00141197 /* KIFUITestActor+BTWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CED5121A2FD0EA00141197 /* KIFUITestActor+BTWebView.m */; };
 		A7E5BEB119ABE5D0006AEB9B /* BTAppSwitchSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E5BEB019ABE5D0006AEB9B /* BTAppSwitchSpec.m */; };
 		A7E5BEB919ABF241006AEB9B /* BTVenmoAppSwitchReturnURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E5BEB719ABF18F006AEB9B /* BTVenmoAppSwitchReturnURLSpec.m */; };
@@ -713,7 +713,7 @@
 		A7CCCD1319D4B8F800E54E76 /* BTClientConfigurationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientConfigurationSpec.m; sourceTree = "<group>"; };
 		A7CCCD1819D5E20E00E54E76 /* BTClientConfigurationAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientConfigurationAPI.h; sourceTree = "<group>"; };
 		A7CCCD1919D5E20E00E54E76 /* BTClientConfigurationAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTClientConfigurationAPI.m; sourceTree = "<group>"; };
-		A7CED50E1A2FD01500141197 /* BTThreeDSecureViewControllerAcceptanceSpecs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureViewControllerAcceptanceSpecs.m; sourceTree = "<group>"; };
+		A7CED50E1A2FD01500141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m; sourceTree = "<group>"; };
 		A7CED5111A2FD0EA00141197 /* KIFUITestActor+BTWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFUITestActor+BTWebView.h"; sourceTree = "<group>"; };
 		A7CED5121A2FD0EA00141197 /* KIFUITestActor+BTWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFUITestActor+BTWebView.m"; sourceTree = "<group>"; };
 		A7E5BEAF19ABDA59006AEB9B /* BTClient_Metadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClient_Metadata.h; sourceTree = "<group>"; };
@@ -1559,7 +1559,7 @@
 			isa = PBXGroup;
 			children = (
 				167811871A43CBF6008AC6DA /* BTThreeDSecureAcceptanceSpec.m */,
-				A7CED50E1A2FD01500141197 /* BTThreeDSecureViewControllerAcceptanceSpecs.m */,
+				A7CED50E1A2FD01500141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m */,
 				A7CED5111A2FD0EA00141197 /* KIFUITestActor+BTWebView.h */,
 				A7CED5121A2FD0EA00141197 /* KIFUITestActor+BTWebView.m */,
 				16968181192D9A3D00120846 /* Supporting Files */,
@@ -2873,7 +2873,7 @@
 			files = (
 				167811881A43CBF6008AC6DA /* BTThreeDSecureAcceptanceSpec.m in Sources */,
 				A7CED5131A2FD0EA00141197 /* KIFUITestActor+BTWebView.m in Sources */,
-				A7CED5101A2FD01A00141197 /* BTThreeDSecureViewControllerAcceptanceSpecs.m in Sources */,
+				A7CED5101A2FD01A00141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m in Sources */,
 				A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
