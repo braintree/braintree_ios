@@ -4,6 +4,8 @@
 #import "UIColor+BTUI.h"
 #import "BTThreeDSecureResponse.h"
 
+static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme = @"popup";
+
 @interface BTThreeDSecureAuthenticationViewController () <UIWebViewDelegate>
 @property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
 @property (nonatomic, strong) UIWebView *webView;
@@ -106,14 +108,15 @@
 
 #pragma mark UIWebViewDelegate
 
-- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(__unused UIWebViewNavigationType)navigationType {
-    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
-        return YES;
+- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked && [self detectPopupLinkForURL:request.URL]) {
+        [self promptToOpenURLInSafari:[self extractPopupLinkURL:request.URL]];
+        return NO;
     } else if (navigationType == UIWebViewNavigationTypeFormSubmitted && [request.URL.path containsString:@"authentication_complete_frame"]) {
         NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
         NSDictionary *authResponseDictionary = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
-                                                                     options:0
-                                                                       error:NULL];
+                                                                               options:0
+                                                                                 error:NULL];
 
         BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
         authResponse.success = [authResponseDictionary[@"success"] boolValue];
@@ -142,6 +145,8 @@
     [self.activityIndicatorView stopAnimating];
 
     [self updateWebViewNavigationButtons];
+
+    [self prepareWebViewPopupLinks];
 }
 
 - (void)updateWebViewNavigationButtons {
@@ -163,6 +168,7 @@
     [self setToolbarItems:toolbarItems animated:YES];
 }
 
+
 #pragma mark User Interaction
 
 - (void)tappedCancel {
@@ -177,6 +183,44 @@
 
 - (void)tappedGoBack {
     [self.webView goBack];
+}
+
+
+#pragma mark Web View Popup Links
+
+- (void)prepareWebViewPopupLinks {
+    NSString *js = [NSString stringWithFormat:@"var as = document.getElementsByTagName('a');\
+                    for (var i = 0; i < as.length; i++) {\
+                    if (as[i]['target'] === '_new') { as[i]['href'] = '%@+' + as[i]['href']; } \
+                    }", BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme];
+    [self.webView stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (BOOL)detectPopupLinkForURL:(NSURL *)URL {
+    NSString *schemePrefix = [[URL.scheme componentsSeparatedByString:@"+"] firstObject];
+    return [schemePrefix isEqualToString:BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme];
+}
+
+- (NSURL *)extractPopupLinkURL:(NSURL *)URL {
+    NSURLComponents *c = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
+    c.scheme = [[URL.scheme componentsSeparatedByString:@"+"] lastObject];
+
+    return c.URL;
+}
+
+- (void)promptToOpenURLInSafari:(NSURL *)URL {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Open Link in Safari?"
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Open Safari"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(__unused UIAlertAction *action) {
+                                                [[UIApplication sharedApplication] openURL:[self extractPopupLinkURL:URL]];
+                                            }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

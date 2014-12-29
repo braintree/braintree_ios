@@ -94,7 +94,7 @@
 #pragma mark ThreeDSecureViewControllerDelegate
 
 - (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
-              didAuthenticateCard:(BTCardPaymentMethod *)card
+               didAuthenticateCard:(BTCardPaymentMethod *)card
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock {
     if (self.authenticateBlock) {
         self.authenticateBlock(viewController, self.lookup, card, completionBlock);
@@ -427,7 +427,7 @@ describe(@"3D Secure View Controller", ^{
                                                                   }];
                                } didFail:nil
                            didFinish:nil];
-                
+
                 [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
                     KIFTestWaitCondition(checkedNonce, error, @"Did not check nonce");
                     return KIFTestStepResultSuccess;
@@ -462,6 +462,22 @@ describe(@"3D Secure View Controller", ^{
             }];
         });
 
+        it(@"transfers javascript popups over to Safari via app switch", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester tapViewWithAccessibilityLabel:@"Help"];
+                [tester waitForViewWithAccessibilityLabel:@"Open Link in Safari?"];
+                [tester tapViewWithAccessibilityLabel:@"Cancel"];
+                [tester tapViewWithAccessibilityLabel:@"Help"];
+                [tester waitForViewWithAccessibilityLabel:@"Open Link in Safari?"];
+                [system waitForApplicationToOpenURL:@"https://testcustomer34.cardinalcommerce.com/auth_html/default/visa/help.jsp?bankbin=visa-3"
+                                whileExecutingBlock:^{
+                                    [tester tapViewWithAccessibilityLabel:@"Open Safari"];
+                                } returning:YES];
+            }];
+        });
+
         it(@"prevents the user from going forward or backward before navigating", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
@@ -483,15 +499,15 @@ describe(@"3D Secure View Controller", ^{
                 [tester waitForAbsenceOfViewWithAccessibilityLabel:@"In progress"];
             }];
         });
-
+        
         it(@"looks amazing", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
                 [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-
+                
                 [tester tapViewWithAccessibilityLabel:@"New User / Forgot your password?"];
                 [tester tapViewWithAccessibilityLabel:@"Go Back"];
-
+                
                 [system captureScreenshotWithDescription:nil];
             }];
         });
