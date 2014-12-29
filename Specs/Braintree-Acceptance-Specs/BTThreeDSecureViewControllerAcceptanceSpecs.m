@@ -220,6 +220,8 @@ describe(@"3D Secure View Controller", ^{
                          didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                              expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                              expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
+                             expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                             expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO });
                              calledDidFail = YES;
                          }
                        didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
@@ -305,7 +307,8 @@ describe(@"3D Secure View Controller", ^{
                              didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                                  expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                                  expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
-                                 expect(error.userInfo[BTThreeDSecureFieldErrorsKey][0][@"message"]).to.equal(@"Failed to authenticate, please try a different form of payment.");
+                                 expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                                 expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO });
                                  calledDidFail = YES;
                              } didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                  calledDidFinish = YES;
@@ -360,7 +363,8 @@ describe(@"3D Secure View Controller", ^{
                              didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                                  expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                                  expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
-                                 expect(error.userInfo[BTThreeDSecureFieldErrorsKey][0][@"message"]).to.equal(@"Failed to authenticate, please try a different form of payment.");
+                                 expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                                 expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO });
                                  calledDidFail = YES;
                              }
                            didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {

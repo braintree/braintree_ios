@@ -258,6 +258,8 @@
 		16019A021964E14400010A56 /* BraintreeDataDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDataDemoViewController.h; sourceTree = "<group>"; };
 		16019A031964E14400010A56 /* BraintreeDataDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDataDemoViewController.m; sourceTree = "<group>"; };
 		16019A051964E14400010A56 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		1603E5361A51D254003A9D98 /* BTThreeDSecureResponse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureResponse.h; sourceTree = "<group>"; };
+		1603E5371A51D254003A9D98 /* BTThreeDSecureResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureResponse.m; sourceTree = "<group>"; };
 		1607FE37192D96BE0099D504 /* DESIGN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = DESIGN.md; sourceTree = "<group>"; };
 		1607FE38192D96BE0099D504 /* TLDR.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TLDR.md; sourceTree = "<group>"; };
 		1607FE48192D974C0099D504 /* Braintree-PayPal-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-PayPal-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1977,6 +1979,8 @@
 		A76E0B241A2EA0240051FDC4 /* 3D Secure */ = {
 			isa = PBXGroup;
 			children = (
+				1603E5361A51D254003A9D98 /* BTThreeDSecureResponse.h */,
+				1603E5371A51D254003A9D98 /* BTThreeDSecureResponse.m */,
 				A76E0B251A2EA04D0051FDC4 /* BTThreeDSecureAuthenticationViewController.h */,
 				A76E0B261A2EA04D0051FDC4 /* BTThreeDSecureAuthenticationViewController.m */,
 				A7AEB18E1A425B5400138C21 /* BTThreeDSecureErrors.h */,

@@ -927,7 +927,7 @@ describe(@"post analytics event", ^{
     });
 });
 
-describe(@"3d secure lookup", ^{
+describe(@"3D Secure", ^{
     __block BTClient *testThreeDSecureClient;
 
     beforeEach(^{
