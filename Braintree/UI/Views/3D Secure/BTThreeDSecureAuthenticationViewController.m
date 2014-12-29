@@ -55,6 +55,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicatorView];
 
     self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     self.webView.delegate = self;
     NSMutableURLRequest *acsRequest = [NSMutableURLRequest requestWithURL:self.lookup.acsURL];
     [acsRequest setHTTPMethod:@"POST"];
