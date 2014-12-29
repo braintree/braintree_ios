@@ -10,6 +10,7 @@
 
 @property (nonatomic, strong) UIBarButtonItem *goBackButton;
 @property (nonatomic, strong) UIBarButtonItem *goForwardButton;
+@property (nonatomic, strong) UIBarButtonItem *backForwardSpacer;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @end
 
@@ -43,6 +44,7 @@
     self.goForwardButton = [[UIBarButtonItem alloc] initWithTitle:@"〉" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoForward)];
     self.goForwardButton.accessibilityLabel = @"Go Forward";
     self.goForwardButton.width = 44;
+    self.backForwardSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 
     UIActivityIndicatorViewStyle style = [self.navigationController.navigationBar.tintColor bt_contrastingActivityIndicatorStyle];
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
@@ -104,7 +106,9 @@
 #pragma mark UIWebViewDelegate
 
 - (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(__unused UIWebViewNavigationType)navigationType {
-    if ([request.URL.path containsString:@"authentication_complete_frame"]) {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        return YES;
+    } else if (navigationType == UIWebViewNavigationTypeFormSubmitted && [request.URL.path containsString:@"authentication_complete_frame"]) {
         NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
         NSDictionary *authResponseDictionary = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
                                                                      options:0
@@ -127,35 +131,35 @@
     }
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
+- (void)webViewDidStartLoad:(__unused UIWebView *)webView {
     [self.activityIndicatorView startAnimating];
 
-    self.goBackButton.enabled = webView.canGoBack;
+    [self updateWebViewNavigationButtons];
+}
 
-    static UIBarButtonItem *spacer;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                               target:nil
-                                                               action:nil];
-    });
+- (void)webViewDidFinishLoad:(__unused UIWebView *)webView {
+    [self.activityIndicatorView stopAnimating];
+
+    [self updateWebViewNavigationButtons];
+}
+
+- (void)updateWebViewNavigationButtons {
+    UIWebView *webView = self.webView;
+    self.goForwardButton.enabled = webView.canGoForward;
+    self.goBackButton.enabled = webView.canGoBack;
 
     NSMutableArray *toolbarItems = [NSMutableArray arrayWithCapacity:3];
     if (webView.canGoBack || webView.canGoForward) {
         [toolbarItems addObject:self.goBackButton];
-        [toolbarItems addObject:spacer];
+        [toolbarItems addObject:self.backForwardSpacer];
     }
     if (webView.canGoForward) {
         [toolbarItems addObject:self.goForwardButton];
     }
 
-    [self.navigationController setToolbarHidden:(toolbarItems.count == 0) animated:YES];
-
+    BOOL shouldHideToolbar = (toolbarItems.count == 0);
+    [self.navigationController setToolbarHidden:shouldHideToolbar animated:YES];
     [self setToolbarItems:toolbarItems animated:YES];
-}
-
-- (void)webViewDidFinishLoad:(__unused UIWebView *)webView {
-    [self.activityIndicatorView stopAnimating];
 }
 
 #pragma mark User Interaction

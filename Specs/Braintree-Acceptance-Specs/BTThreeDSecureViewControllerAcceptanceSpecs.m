@@ -467,11 +467,8 @@ describe(@"3D Secure View Controller", ^{
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
                 [tester waitForTappableViewWithAccessibilityLabel:@"New User / Forgot your password?"];
 
-                UIControl *goBack = (UIControl *)[tester waitForViewWithAccessibilityLabel:@"Go Back"];
-                UIControl *goForward = (UIControl *)[tester waitForViewWithAccessibilityLabel:@"Go Forward"];
-
-                expect(goBack.enabled).to.beFalsy();
-                expect(goForward.enabled).to.beFalsy();
+                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Go Back"];
+                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Go Forward"];
             }];
         });
 
