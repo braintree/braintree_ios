@@ -7,4 +7,4 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureErrorCode) {
     BTThreeDSecureFailedAuthenticationErrorCode,
 };
 
-extern NSString *BTThreeDSecureFieldErrorsKey;
+extern NSString *BTThreeDSecureInfoKey;

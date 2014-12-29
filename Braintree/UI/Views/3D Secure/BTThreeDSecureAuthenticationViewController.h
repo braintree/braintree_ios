@@ -2,23 +2,26 @@
 
 #import "BTThreeDSecureLookupResult.h"
 #import "BTThreeDSecureErrors.h"
+#import "BTCardPaymentMethod.h"
 
 typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
     BTThreeDSecureViewControllerCompletionStatusFailure = 0,
     BTThreeDSecureViewControllerCompletionStatusSuccess,
 };
 
-@protocol BTThreeDSecureViewControllerDelegate;
+@protocol BTThreeDSecureAuthenticationViewControllerDelegate;
 
-///  A view controller that facilitates the user authentication flow for 3D Secure
+///  A view controller that facilitates user authentication for 3D Secure
 ///
-///  3D Secure is a protocol that enables cardholders and issuers to add a layer of security
-///  to e-commerce transactions via password entry at checkout. Upon successful authentication,
-///  a liability shift may take effect.
+///  @warning In most cases, merchants should utilize BTThreeDSecure, rather than
+///           initializing this view controller directly.
 ///
-///  This view controller accepts a "lookup", which must be obtained via
-///  -[BTClient lookupNonceForThreeDSecure:transactionAmount:success:failure:] and uses a web view
-///  to present the issuing bank's login form to the user.
+///  Initialize this view controller with a BTThreeDSecureLookupResult, which contains the
+///  information that is needed to obtain user authorization via the issuing bank's login
+///  within a web view for a particular card.
+///
+///  You can perform the prerequisite lookup via
+///  -[BTClient lookupNonceForThreeDSecure:transactionAmount:success:failure:].
 ///
 ///  An initialized BTThreeDSecureViewController will challenge the user as soon as it is presented
 ///  and cannot be reused.
@@ -26,9 +29,11 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  On success, the original payment method nonce is consumed, and you will receive a new payment
 ///  method nonce. Transactions created with this nonce will be 3D Secure.
 ///
-///  Sometimes, this view controller will not be necessary to achieve the liabilty shift. In these cases,
-///  lookup will have already consumed the original nonce and returned a new one.
-@interface BTThreeDSecureViewController : UIViewController
+///  This view controller is not always necessary to achieve a successful 3D Secure verification. Sometimes,
+///  lookup will have already consumed the original nonce in exchange for an ungraded, 3D Secure nonce.
+///
+///  @see BTThreeDSecure
+@interface BTThreeDSecureAuthenticationViewController : UIViewController
 
 ///  Initializes a 3D Secure authentication view controller
 ///
@@ -38,11 +43,11 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 - (instancetype)initWithLookup:(BTThreeDSecureLookupResult *)lookup NS_DESIGNATED_INITIALIZER;
 
 ///  The delegate is notified when the 3D Secure authentication flow completes
-@property (nonatomic, weak) id<BTThreeDSecureViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<BTThreeDSecureAuthenticationViewControllerDelegate> delegate;
 
 @end
 
-@protocol BTThreeDSecureViewControllerDelegate <NSObject>
+@protocol BTThreeDSecureAuthenticationViewControllerDelegate <NSObject>
 
 ///  The delegate will receive this message after the user has successfully authenticated with 3D Secure
 ///
@@ -54,10 +59,10 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  Do *not* dismiss the view controller in this method. See threeDSecureViewControllerDidFinish:.
 ///
 ///  @param viewController  The 3D Secure view controller
-///  @param nonce           The new payment method nonce that should be used for creating a 3D Secure transaction
+///  @param card            The new payment method that should be used for creating a 3D Secure transaction
 ///  @param completionBlock A required
-- (void)threeDSecureViewController:(BTThreeDSecureViewController *)viewController
-              didAuthenticateNonce:(NSString *)nonce
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
+               didAuthenticateCard:(BTCardPaymentMethod *)card
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus success))completionBlock;
 
 ///  The delegate will receive this message when 3D Secure authentication fails
@@ -68,7 +73,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///
 ///  @param viewController  The 3D Secure view controller
 ///  @param error           The error that caused 3D Secure to fail
-- (void)threeDSecureViewController:(BTThreeDSecureViewController *)viewController
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error;
 
 ///  The delegate will receive this message upon completion of the 3D Secure flow, possibly including async work
@@ -79,6 +84,6 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  You should dismiss the provided view controller in your implementation.
 ///
 ///  @param viewController The 3D Secure view controller
-- (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureViewController *)viewController;
+- (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController;
 
 @end

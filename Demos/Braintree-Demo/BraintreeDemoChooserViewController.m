@@ -12,7 +12,7 @@
 #import "BraintreeDemoTransactionService.h"
 #import "BTClient_Internal.h"
 
-@interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate>
+@interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate, BTPaymentMethodCreationDelegate>
 
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *environmentSelector;
 
@@ -50,7 +50,7 @@
 
 #pragma mark -
 
-@property (nonatomic, strong) BTThreeDSecureViewController *threeDSecureViewController;
+@property (nonatomic, strong) BTThreeDSecure *threeDSecure;
 
 #pragma mark Settings
 
@@ -186,30 +186,8 @@
              }
          }];
     } else if (selectedCell == self.threeDSecureANonceCell) {
-        [self.braintree.client lookupNonceForThreeDSecure:self.nonce
-                                        transactionAmount:[NSDecimalNumber decimalNumberWithString:@"10"]
-                                                  success:^(BTThreeDSecureLookupResult *threeDSecureLookup, NSString *nonce) {
-                                                      if (nonce) {
-                                                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Lookup not Possible"
-                                                                                                                         message:@"Received a nonce instead"
-                                                                                                                  preferredStyle:UIAlertControllerStyleAlert];
-                                                          [alert addAction:[UIAlertAction actionWithTitle:@"OK"
-                                                                                                    style:UIAlertActionStyleCancel
-                                                                                                  handler:^(__unused UIAlertAction *action) {
-                                                                                                      self.nonce = nonce;
-                                                                                                  }]];
-                                                          [self presentViewController:alert animated:YES completion:nil];
-                                                      } else {
-                                                          self.threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:threeDSecureLookup];
-                                                          [self presentViewController:self.threeDSecureViewController animated:YES completion:nil];
-                                                          // TODO: Listen for completion
-                                                          // self.nonce = newNonce;
-                                                      }
-                                                  }
-                                                  failure:^(NSError *error) {
-                                                      [self displayError:error forTask:@"3D Secure Lookup"];
-                                                      self.nonce = nil;
-                                                  }];
+        self.threeDSecure = [[BTThreeDSecure alloc] initWithClient:self.braintree.client delegate:self];
+        [self.threeDSecure verifyCardWithNonce:self.nonce amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
     } else {
         return;
     }
@@ -332,6 +310,57 @@
                                delegate:nil
                       cancelButtonTitle:@":("
                       otherButtonTitles:nil] show];
+}
+
+
+#pragma mark Payment Method Creation Delegate
+
+- (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
+    if (sender == self.threeDSecure) {
+        [self presentViewController:viewController animated:YES completion:nil];
+        self.nonce = nil;
+    }
+}
+
+- (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
+    if (sender == self.threeDSecure) {
+        [viewController dismissViewControllerAnimated:YES completion:^{
+            if (self.nonce) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"3D Secure Complete"
+                                                                               message:@"Upgraded payment method nonce"
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:^(__unused UIAlertAction *action) {
+                                                            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                                                                  atScrollPosition:UITableViewScrollPositionTop
+                                                                                          animated:YES];
+                                                        }]];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
+        }];
+    }
+}
+
+- (void)paymentMethodCreator:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    if (sender == self.threeDSecure) {
+        self.nonce = paymentMethod.nonce;
+    }
+}
+
+- (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+    if (sender == self.threeDSecure) {
+        [self displayError:error forTask:@"3D Secure"];
+    }
+}
+
+- (void)paymentMethodCreatorDidCancel:(__unused id)sender {
+}
+
+- (void)paymentMethodCreatorWillPerformAppSwitch:(__unused id)sender {
+}
+
+- (void)paymentMethodCreatorWillProcess:(__unused id)sender {
 }
 
 @end

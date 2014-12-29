@@ -8,6 +8,7 @@
 #import <Expecta/Expecta.h>
 
 #import <OCMock/OCMock.h>
+#import <OCMock/NSInvocation+OCMAdditions.h>
 
 #define HC_SHORTHAND
 #import <OCHamcrest/OCHamcrest.h>
@@ -21,3 +22,4 @@
 #import <KIF/UIView-KIFAdditions.h>
 #import <KIF/UITouch-KIFAdditions.h>
 #import <KIFViewControllerActions/KIFSystemTestActor+ViewControllerActions.h>
+#import "KIFUITestActor+BTWebView.h"

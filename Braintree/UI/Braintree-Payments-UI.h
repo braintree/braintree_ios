@@ -6,4 +6,7 @@
 #import <Braintree/BTUIPaymentMethodView.h>
 #import <Braintree/BTUIVenmoButton.h>
 #import <Braintree/BTUIPayPalButton.h>
-#import <Braintree/BTThreeDSecureViewController.h>
+
+
+// All-in-one import for Braintree 3D Secure
+#import <Braintree/BTThreeDSecure.h>

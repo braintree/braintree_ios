@@ -20,4 +20,6 @@
 // Declared here to make available for testing
 + (BTPayPalPaymentMethod *)payPalPaymentMethodFromAPIResponseDictionary:(NSDictionary *)response;
 
++ (BTCardPaymentMethod *)cardFromAPIResponseDictionary:(NSDictionary *)responseObject;
+
 @end

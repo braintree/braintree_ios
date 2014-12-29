@@ -1,4 +1,4 @@
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface BTThreeDSecureLookupResult : NSObject
 @property (nonatomic, copy) NSString *PAReq;

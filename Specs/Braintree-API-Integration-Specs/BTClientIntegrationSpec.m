@@ -720,96 +720,6 @@ describe(@"get nonce", ^{
     });
 });
 
-xdescribe(@"get nonce 3D Secure info", ^{
-    __block BTClient *testClient; // shadows testClient
-    __block NSString *threeDSecureNonce;
-    beforeEach(^{
-        waitUntil(^(DoneCallback done){
-            [BTClient testClientWithConfiguration:@{
-                                                    BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
-                                                    BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
-                                                    BTClientTestConfigurationKeyCustomer:@YES,
-                                                    BTClientTestConfigurationKeyClientTokenVersion: @2,
-                                                    BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account",
-                                                    } completion:^(BTClient *client) {
-                                                        testClient = client;
-                                                        done();
-                                                    }];
-        });
-
-
-        waitUntil(^(DoneCallback done) {
-            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-            request.number = @"4111111111111111";
-            request.expirationMonth = @"12";
-            request.expirationYear = @"2018";
-            request.shouldValidate = NO;
-            [testClient saveCardWithRequest:request
-                                    success:^(BTCardPaymentMethod *card) {
-                                        [testClient lookupNonceForThreeDSecure:card.nonce
-                                                             transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                                       success:^(BTThreeDSecureLookupResult *threeDSecureLookup, NSString *nonce) {
-                                                                           //                                                                           threeDSecureNonce = threeDSecureLookup.nonce;
-                                                                           done();
-                                                                       } failure:nil];
-                                    } failure:nil];
-        });
-    });
-
-    it(@"utilizes the merchant account specified at the top level in the client token", ^{
-        waitUntil(^(DoneCallback done) {
-            [testClient fetchNonceThreeDSecureVerificationInfo:threeDSecureNonce
-                                                       success:^(NSDictionary *threeDSecureInfo){
-                                                           expect(threeDSecureInfo[@"merchantAccountId"]).to.equal(testClient.clientToken.merchantAccountId);
-                                                           done();
-                                                       } failure:nil];
-        });
-    });
-
-    it(@"returns 3D Secure related info", ^{
-        waitUntil(^(DoneCallback done) {
-            [testClient fetchNonceThreeDSecureVerificationInfo:threeDSecureNonce
-                                                       success:^(NSDictionary *threeDSecureInfo){
-                                                           expect(threeDSecureInfo[@"eciFlag"]).to.equal(@"07");
-                                                           expect(threeDSecureInfo[@"reportStatus"]).to.equal(@"lookup_unenrolled");
-                                                           done();
-                                                       } failure:nil];
-        });
-    });
-
-    it(@"returns empty 3D Secure info for a non-3D Secure nonce", ^{
-        waitUntil(^(DoneCallback done) {
-            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-            request.number = @"4111111111111111";
-            request.expirationMonth = @"12";
-            request.expirationYear = @"2018";
-            request.shouldValidate = NO;
-
-            [testClient saveCardWithRequest:request success:^(BTCardPaymentMethod *card) {
-                [testClient fetchNonceThreeDSecureVerificationInfo:card.nonce
-                                                           success:^(NSDictionary *nonceInfo) {
-                                                               expect(nonceInfo).to.beKindOf([NSNull class]);
-                                                               done();
-                                                           }
-                                                           failure:nil];
-            } failure:nil];
-        });
-    });
-
-    it(@"returns an error if the nonce is not found", ^{
-        waitUntil(^(DoneCallback done) {
-            [testClient fetchNonceThreeDSecureVerificationInfo:@"bad-nonce"
-                                                       success:nil
-                                                       failure:^(NSError *error) {
-                                                           expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                                                           expect(error.code).to.equal(BTMerchantIntegrationErrorNonceNotFound);
-                                                           done();
-                                                       }];
-        });
-    });
-
-});
-
 describe(@"clients with Apple Pay activated", ^{
     if ([PKPayment class]) {
         it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported", ^{
@@ -1017,19 +927,20 @@ describe(@"post analytics event", ^{
     });
 });
 
-describe(@"3d secure lookup", ^{
+describe(@"3D Secure", ^{
     __block BTClient *testThreeDSecureClient;
 
     beforeEach(^{
         waitUntil(^(DoneCallback done) {
-            [BTClient testClientWithConfiguration:@{
-                                                    BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id", BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
-                                                    BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account",
-                                                    BTClientTestConfigurationKeyClientTokenVersion: @2
-                                                    } completion:^(BTClient *testClient) {
-                                                        testThreeDSecureClient = testClient;
-                                                        done();
-                                                    }];
+            NSDictionary *configuration = @{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
+                                             BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
+                                             BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account",
+                                             BTClientTestConfigurationKeyClientTokenVersion: @2 };
+            [BTClient testClientWithConfiguration:configuration
+                                       completion:^(BTClient *testClient) {
+                                           testThreeDSecureClient = testClient;
+                                           done();
+                                       }];
         });
     });
 
@@ -1056,7 +967,7 @@ describe(@"3d secure lookup", ^{
                 [testThreeDSecureClient
                  lookupNonceForThreeDSecure:nonce
                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                 success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult, NSString *nonce) {
+                 success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult, BTCardPaymentMethod *card) {
                      expect(threeDSecureLookupResult.MD).to.beKindOf([NSString class]);
                      expect(threeDSecureLookupResult.acsURL).to.equal([NSURL URLWithString:@"https://testcustomer34.cardinalcommerce.com/V3DSStart?osb=visa-3&VAA=B"]);
                      expect([threeDSecureLookupResult.termURL absoluteString]).to.match(@"^http://.*:3000/merchants/integration_merchant_id/client_api/v1/payment_methods/[a-fA-F0-9-]+/three_d_secure/authenticate\?.*");
@@ -1091,10 +1002,11 @@ describe(@"3d secure lookup", ^{
             waitUntil(^(DoneCallback done) {
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult, NSString *nonce) {
+                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult, BTCardPaymentMethod *card) {
                                                                expect(threeDSecureLookupResult).to.beNil();
-                                                               expect(nonce).to.beANonce();
-                                                               [testThreeDSecureClient fetchNonceThreeDSecureVerificationInfo:nonce
+                                                               expect(card).to.beKindOf([BTCardPaymentMethod class]);
+                                                               expect(card.nonce).to.beANonce();
+                                                               [testThreeDSecureClient fetchNonceThreeDSecureVerificationInfo:card.nonce
                                                                                                                       success:^(NSDictionary *nonceInfo) {
                                                                                                                           expect(nonceInfo[@"reportStatus"]).to.equal(@"lookup_unenrolled");
                                                                                                                           done();
@@ -1127,8 +1039,9 @@ describe(@"3d secure lookup", ^{
             waitUntil(^(DoneCallback done) {
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                           success:nil
-                                                           failure:^(NSError *error) {
+                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *card) {
+                                                               NSLog(@"%@ %@", threeDSecureLookup, card);
+                                                           } failure:^(NSError *error) {
                                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
                                                                expect(error.localizedDescription).to.contain(@"Unsupported card type for 3D Secure");

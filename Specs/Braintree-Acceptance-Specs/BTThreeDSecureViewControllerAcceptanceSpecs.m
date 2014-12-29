@@ -1,17 +1,16 @@
-#import "BTThreeDSecureViewController.h"
+#import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTClient+Testing.h"
-#import "KIFUITestActor+BTWebView.h"
 
-@interface BTThreeDSecureViewController_AcceptanceSpecHelper : NSObject <BTThreeDSecureViewControllerDelegate>
+@interface BTThreeDSecureViewController_AcceptanceSpecHelper : NSObject <BTThreeDSecureAuthenticationViewControllerDelegate>
 
 @property (nonatomic, strong) BTClient *client;
-@property (nonatomic, strong) BTThreeDSecureViewController *threeDSecureViewController;
+@property (nonatomic, strong) BTThreeDSecureAuthenticationViewController *threeDSecureViewController;
 @property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
 @property (nonatomic, copy) NSString *originalNonce;
 
-@property (nonatomic, copy) void (^authenticateBlock)(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus));
-@property (nonatomic, copy) void (^finishBlock)(BTThreeDSecureViewController *threeDSecureViewController);
-@property (nonatomic, copy) void (^failureBlock)(BTThreeDSecureViewController *threeDSecureViewController, NSError *error);
+@property (nonatomic, copy) void (^authenticateBlock)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus));
+@property (nonatomic, copy) void (^finishBlock)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController);
+@property (nonatomic, copy) void (^failureBlock)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error);
 @end
 
 @implementation BTThreeDSecureViewController_AcceptanceSpecHelper
@@ -33,7 +32,7 @@
     return helper;
 }
 
-- (void)lookupCard:(NSString *)number completion:(void (^)(BTThreeDSecureLookupResult *lookup, NSString *lookupNonce))completion {
+- (void)lookupCard:(NSString *)number completion:(void (^)(BTThreeDSecureLookupResult *, BTCardPaymentMethod *))completion {
     BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
     request.number = number;
     request.expirationMonth = @"12";
@@ -46,8 +45,8 @@
                                  self.originalNonce = originalNonce;
                                  [self.client lookupNonceForThreeDSecure:originalNonce
                                                        transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                                 success:^(BTThreeDSecureLookupResult *threeDSecureLookup, NSString *nonce) {
-                                                                     completion(threeDSecureLookup, nonce);
+                                                                 success:^(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *card) {
+                                                                     completion(threeDSecureLookup, card);
                                                                  } failure:^(NSError *error) {
                                                                      completion(nil, nil);
                                                                  }];
@@ -66,20 +65,20 @@
 }
 
 - (void)lookupNumber:(NSString *)number
-               andDo:(void (^)(BTThreeDSecureViewController *threeDSecureViewController))testBlock
-     didAuthenticate:(void (^)(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus status)))authenticateBlock
-             didFail:(void (^)(BTThreeDSecureViewController *threeDSecureViewController, NSError *error))failureBlock
-           didFinish:(void (^)(BTThreeDSecureViewController *threeDSecureViewController))finishBlock {
+               andDo:(void (^)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController))testBlock
+     didAuthenticate:(void (^)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus status)))authenticateBlock
+             didFail:(void (^)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error))failureBlock
+           didFinish:(void (^)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController))finishBlock {
 
     waitUntil(^(DoneCallback done) {
         [self lookupCard:number
-              completion:^(BTThreeDSecureLookupResult *threeDSecureLookup, NSString *lookupNonce){
+              completion:^(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *lookupCard){
                   self.lookup = threeDSecureLookup;
                   done();
               }];
     });
 
-    self.threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:self.lookup];
+    self.threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:self.lookup];
 
     self.authenticateBlock = authenticateBlock;
     self.finishBlock = finishBlock;
@@ -94,9 +93,11 @@
 
 #pragma mark ThreeDSecureViewControllerDelegate
 
-- (void)threeDSecureViewController:(BTThreeDSecureViewController *)viewController didAuthenticateNonce:(NSString *)nonce completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock {
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
+              didAuthenticateCard:(BTCardPaymentMethod *)card
+                        completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock {
     if (self.authenticateBlock) {
-        self.authenticateBlock(viewController, self.lookup, nonce, completionBlock);
+        self.authenticateBlock(viewController, self.lookup, card, completionBlock);
     } else {
         [[NSException exceptionWithName:NSInternalInconsistencyException
                                  reason:@"BTThreeDSecureViewController_AcceptanceSpecHelper received an unexpected call to threeDSecureViewController:didAuthenticateNonce:completion:"
@@ -104,7 +105,7 @@
     }
 }
 
-- (void)threeDSecureViewController:(BTThreeDSecureViewController *)viewController didFailWithError:(NSError *)error {
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController didFailWithError:(NSError *)error {
     if (self.failureBlock) {
         self.failureBlock(viewController, error);
     } else {
@@ -114,7 +115,7 @@
     }
 }
 
-- (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureViewController *)viewController {
+- (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController {
     if (self.finishBlock) {
         self.finishBlock(viewController);
     } else {
@@ -137,14 +138,14 @@ describe(@"3D Secure View Controller", ^{
     context(@"developer perspective", ^{
         it(@"fails to load a view controller when lookup fails", ^{
             BTThreeDSecureLookupResult *lookup = nil;
-            BTThreeDSecureViewController *threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:lookup];
+            BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
 
             expect(threeDSecureViewController).to.beNil();
         });
 
         it(@"fails to load a view controller when lookup does not require a user flow", ^{
             BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
-            BTThreeDSecureViewController *threeDSecureViewController = [[BTThreeDSecureViewController alloc] initWithLookup:lookup];
+            BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
 
             expect(lookup.requiresUserAuthentication).to.beFalsy();
             expect(threeDSecureViewController).to.beNil();
@@ -153,7 +154,7 @@ describe(@"3D Secure View Controller", ^{
         it(@"calls didAuthenticate with the upgraded nonce (consuming the original nonce)", ^{
             __block BOOL calledDidAuthenticate = NO;
             [helper lookupNumber:@"4000000000000002"
-                           andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                           andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
                                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
@@ -161,9 +162,10 @@ describe(@"3D Secure View Controller", ^{
 
                                [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                [tester tapViewWithAccessibilityLabel:@"Submit"];
-                           } didAuthenticate:^(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
+                           } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
                                calledDidAuthenticate = YES;
-                               expect(nonce).to.beANonce();
+                               expect(card).to.beKindOf([BTCardPaymentMethod class]);
+                               expect(card.nonce).to.beANonce();
                            } didFail:nil
                        didFinish:nil];
 
@@ -177,7 +179,7 @@ describe(@"3D Secure View Controller", ^{
             __block BOOL calledDidAuthenticate = NO;
             __block BOOL calledDidFinish = NO;
             [helper lookupNumber:@"4000000000000002"
-                           andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                           andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
                                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
@@ -185,12 +187,12 @@ describe(@"3D Secure View Controller", ^{
 
                                [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                [tester tapViewWithAccessibilityLabel:@"Submit"];
-                           } didAuthenticate:^(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
+                           } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
                                calledDidAuthenticate = YES;
                                expect(calledDidFinish).to.beFalsy();
                                completion(BTThreeDSecureViewControllerCompletionStatusSuccess);
                            } didFail:nil
-                       didFinish:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                       didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                            calledDidFinish = YES;
                            expect(calledDidAuthenticate).to.beTruthy();
                        }];
@@ -206,7 +208,7 @@ describe(@"3D Secure View Controller", ^{
             __block BOOL calledDidFail = NO;
             __block BOOL calledDidFinish = NO;
             [helper lookupNumber:@"4000000000000010"
-                           andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                           andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
                                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
@@ -215,12 +217,14 @@ describe(@"3D Secure View Controller", ^{
                                [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                [tester tapViewWithAccessibilityLabel:@"Submit"];
                            } didAuthenticate:nil
-                         didFail:^(BTThreeDSecureViewController *threeDSecureViewController, NSError *error) {
+                         didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                              expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                              expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
+                             expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                             expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO });
                              calledDidFail = YES;
                          }
-                       didFinish:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                       didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                            expect(calledDidFail).to.beTruthy();
                            calledDidFinish = YES;
                        }];
@@ -238,7 +242,7 @@ describe(@"3D Secure View Controller", ^{
             it(@"successfully authenticates a user when they enter their password", ^{
                 __block BOOL checkedNonce = NO;
                 [helper lookupNumber:@"4000000000000002"
-                               andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                               andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
                                    [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
@@ -246,8 +250,8 @@ describe(@"3D Secure View Controller", ^{
 
                                    [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                    [tester tapViewWithAccessibilityLabel:@"Submit"];
-                               } didAuthenticate:^(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
-                                   [helper fetchThreeDSecureVerificationInfo:nonce
+                               } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
+                                   [helper fetchThreeDSecureVerificationInfo:card.nonce
                                                                   completion:^(NSDictionary *response) {
                                                                       expect(response[@"reportStatus"]).to.equal(@"authenticate_successful");
                                                                       checkedNonce = YES;
@@ -265,7 +269,7 @@ describe(@"3D Secure View Controller", ^{
         context(@"issuer not enrolled - N", ^{
             it(@"bypasses the entire authentication experience", ^{
                 [helper lookupNumber:@"4000000000000051"
-                               andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                               andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    expect(threeDSecureViewController).to.beNil();
                                } didAuthenticate:nil didFail:nil didFinish:nil];
             });
@@ -274,7 +278,7 @@ describe(@"3D Secure View Controller", ^{
         context(@"simulated cardinal error on lookup - error", ^{
             it(@"bypasses the entire authentication experience", ^{
                 [helper lookupNumber:@"4000000000000077"
-                               andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                               andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    expect(threeDSecureViewController).to.beNil();
                                } didAuthenticate:nil
                              didFail:nil
@@ -288,7 +292,7 @@ describe(@"3D Secure View Controller", ^{
                 __block BOOL calledDidFinish;
 
                 [helper lookupNumber:@"4000000000000028"
-                               andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                               andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
 
                                    [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
@@ -300,12 +304,13 @@ describe(@"3D Secure View Controller", ^{
                                    [tester waitForViewWithAccessibilityLabel:@"Account Authentication Blocked"];
                                    [tester tapViewWithAccessibilityLabel:@"Continue"];
                                } didAuthenticate:nil
-                             didFail:^(BTThreeDSecureViewController *threeDSecureViewController, NSError *error) {
+                             didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                                  expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                                  expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
-                                 expect(error.userInfo[BTThreeDSecureFieldErrorsKey][0][@"message"]).to.equal(@"Failed to authenticate, please try a different form of payment.");
+                                 expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                                 expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO });
                                  calledDidFail = YES;
-                             } didFinish:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                             } didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                  calledDidFinish = YES;
                              }];
 
@@ -322,10 +327,10 @@ describe(@"3D Secure View Controller", ^{
                 __block BOOL checkedNonce;
 
                 [helper lookupNumber:@"4000000000000101"
-                               andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                               andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-                               } didAuthenticate:^(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus status)) {
-                                   [helper fetchThreeDSecureVerificationInfo:nonce
+                               } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus status)) {
+                                   [helper fetchThreeDSecureVerificationInfo:card.nonce
                                                                   completion:^(NSDictionary *response) {
                                                                       expect(response[@"reportStatus"]).to.equal(@"authenticate_successful_issuer_not_participating");
                                                                       checkedNonce = YES;
@@ -346,7 +351,7 @@ describe(@"3D Secure View Controller", ^{
                 __block BOOL calledDidFinish = NO;
 
                 [helper lookupNumber:@"4000000000000010"
-                               andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                               andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
                                    [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
@@ -355,13 +360,14 @@ describe(@"3D Secure View Controller", ^{
                                    [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                    [tester tapViewWithAccessibilityLabel:@"Submit"];
                                } didAuthenticate:nil
-                             didFail:^(BTThreeDSecureViewController *threeDSecureViewController, NSError *error) {
+                             didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                                  expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                                  expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
-                                 expect(error.userInfo[BTThreeDSecureFieldErrorsKey][0][@"message"]).to.equal(@"Failed to authenticate, please try a different form of payment.");
+                                 expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                                 expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO });
                                  calledDidFail = YES;
                              }
-                           didFinish:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                           didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                calledDidFinish = YES;
                            }];
 
@@ -378,13 +384,13 @@ describe(@"3D Secure View Controller", ^{
                 __block BOOL checkedNonce = NO;
 
                 [helper lookupNumber:@"4000000000000036"
-                               andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                               andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
                                    [tester waitForViewWithAccessibilityLabel:@"System Error" traits:UIAccessibilityTraitStaticText];
                                    [tester tapViewWithAccessibilityLabel:@"Continue"];
-                               } didAuthenticate:^(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
-                                   [helper fetchThreeDSecureVerificationInfo:nonce completion:^(NSDictionary *response) {
+                               } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
+                                   [helper fetchThreeDSecureVerificationInfo:card.nonce completion:^(NSDictionary *response) {
                                        expect(response[@"reportStatus"]).to.equal(@"authenticate_unable_to_authenticate");
                                        checkedNonce = YES;
                                    }];
@@ -401,7 +407,7 @@ describe(@"3D Secure View Controller", ^{
             it(@"accepts a password but fails to authenticate the nonce", ^{
                 __block BOOL checkedNonce = NO;
                 [helper lookupNumber:@"4000000000000093"
-                               andDo:^(BTThreeDSecureViewController *threeDSecureViewController) {
+                               andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
                                    [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
@@ -409,8 +415,8 @@ describe(@"3D Secure View Controller", ^{
 
                                    [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                    [tester tapViewWithAccessibilityLabel:@"Submit"];
-                               } didAuthenticate:^(BTThreeDSecureViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, NSString *nonce, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
-                                   [helper fetchThreeDSecureVerificationInfo:nonce
+                               } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTThreeDSecureLookupResult *lookup, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
+                                   [helper fetchThreeDSecureVerificationInfo:card.nonce
                                                                   completion:^(NSDictionary *response) {
                                                                       expect(response[@"reportStatus"]).to.equal(@"authenticate_signature_verification_failed");
                                                                       checkedNonce = YES;

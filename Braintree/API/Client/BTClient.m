@@ -422,9 +422,11 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         if (response.isSuccess) {
             if (successBlock){
                 BTThreeDSecureLookupResult *lookup = [BTThreeDSecureLookupResultAPI modelWithAPIDictionary:response.object[@"lookup"] error:NULL];
-                NSString *rawNonce = response.object[@"nonce"];
-                NSString *nonce = [rawNonce isKindOfClass:[NSString class]] ? rawNonce : nil;
-                successBlock(lookup, nonce);
+
+                NSDictionary *creditCardResponse = response.object[@"paymentMethod"];
+                BTCardPaymentMethod *paymentMethod = creditCardResponse ? [[self class] cardFromAPIResponseDictionary:creditCardResponse] : nil;
+
+                successBlock(lookup, paymentMethod);
             }
         } else {
             if (failureBlock) {

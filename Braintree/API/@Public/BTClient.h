@@ -30,7 +30,7 @@ typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentM
 typedef void (^BTClientAnalyticsSuccessBlock)(void);
 
 /// Success Block type for 3D Secure lookups
-typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup, NSString *nonce);
+typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *card);
 
 /// Block type for handling `BTClient` errors
 typedef void (^BTClientFailureBlock)(NSError *error);

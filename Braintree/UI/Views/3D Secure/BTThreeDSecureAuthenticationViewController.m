@@ -1,12 +1,14 @@
-#import "BTThreeDSecureViewController.h"
+#import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTURLUtils.h"
+#import "BTClient_Internal.h"
+#import "BTThreeDSecureResponse.h"
 
-@interface BTThreeDSecureViewController () <UIWebViewDelegate>
+@interface BTThreeDSecureAuthenticationViewController () <UIWebViewDelegate>
 @property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
 @property (nonatomic, strong) UIWebView *webView;
 @end
 
-@implementation BTThreeDSecureViewController
+@implementation BTThreeDSecureAuthenticationViewController
 
 - (instancetype)initWithLookup:(BTThreeDSecureLookupResult *)lookup {
     if (!lookup.requiresUserAuthentication) {
@@ -42,11 +44,11 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:0 metrics:nil views:@{ @"webView": self.webView }]];
 }
 
-- (void)didCompleteAuthentication:(NSDictionary *)authResponse {
-    if ([authResponse[@"success"] boolValue]) {
-        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateNonce:completion:)]) {
+- (void)didCompleteAuthentication:(BTThreeDSecureResponse *)response {
+    if (response.success) {
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateCard:completion:)]) {
             [self.delegate threeDSecureViewController:self
-                                 didAuthenticateNonce:authResponse[@"paymentMethodNonce"]
+                                  didAuthenticateCard:response.paymentMethod
                                            completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
                                                if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
                                                    [self.delegate threeDSecureViewControllerDidFinish:self];
@@ -54,10 +56,16 @@
                                            }];
         }
     } else {
-        NSError *fieldErrors = authResponse[@"errors"];
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+        if (response.threeDSecureInfo) {
+            userInfo[BTThreeDSecureInfoKey] = response.threeDSecureInfo;
+        }
+        if (response.errorMessage) {
+            userInfo[NSLocalizedDescriptionKey] = response.errorMessage;
+        }
         NSError *error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
                                              code:BTThreeDSecureFailedAuthenticationErrorCode
-                                         userInfo:@{ BTThreeDSecureFieldErrorsKey: fieldErrors }];
+                                         userInfo:userInfo];
         if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
             [self.delegate threeDSecureViewController:self didFailWithError:error];
         }
@@ -72,9 +80,19 @@
 - (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(__unused UIWebViewNavigationType)navigationType {
     if ([request.URL.path containsString:@"authentication_complete_frame"]) {
         NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
-        NSDictionary *authResponse = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
+        NSDictionary *authResponseDictionary = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
                                                                      options:0
                                                                        error:NULL];
+
+        BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
+        authResponse.success = [authResponseDictionary[@"success"] boolValue];
+        authResponse.threeDSecureInfo = authResponseDictionary[@"threeDSecureInfo"];
+
+        NSDictionary *paymentMethodDictionary = authResponseDictionary[@"paymentMethod"];
+        if ([paymentMethodDictionary isKindOfClass:[NSDictionary class]]) {
+            authResponse.paymentMethod = [BTClient cardFromAPIResponseDictionary:paymentMethodDictionary];
+        }
+        authResponse.errorMessage = authResponseDictionary[@"error"][@"message"];
 
         [self didCompleteAuthentication:authResponse];
         return NO;
