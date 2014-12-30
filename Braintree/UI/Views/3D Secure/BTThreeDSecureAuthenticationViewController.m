@@ -48,7 +48,7 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
     self.goForwardButton.width = 44;
     self.backForwardSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 
-    UIActivityIndicatorViewStyle style = [self.navigationController.navigationBar.tintColor bt_contrastingActivityIndicatorStyle];
+    UIActivityIndicatorViewStyle style = [self.navigationController.navigationBar.barTintColor bt_contrastingActivityIndicatorStyle];
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
     self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     self.activityIndicatorView.hidesWhenStopped = YES;
