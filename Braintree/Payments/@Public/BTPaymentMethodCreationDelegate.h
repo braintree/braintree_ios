@@ -4,13 +4,13 @@
 #import "BTPaymentMethod.h"
 
 /// Protocol for receiving payment method creation lifecycle messages from
-/// an object creating a payment method, such as BTPaymentButton or BTPaymentProvider.
+/// an object creating a payment method, such as BTPaymentButton, BTPaymentProvider and BTThreeDSecure.
 @protocol BTPaymentMethodCreationDelegate <NSObject>
 
 /// The payment method creator requires presentation of a view controller in order to
 /// proceed.
 ///
-/// Your implementation should ensure that this viewController is presented to the user, e.g. via
+/// Your implementation should present the viewController modally, e.g. via
 /// `presentViewController:animated:completion:`
 ///
 /// @param sender         The payment method creator
@@ -19,11 +19,11 @@
 
 /// The payment method creator requires dismissal of a view controller.
 ///
-/// Your implementation should ensure that this viewController is dismissed, e.g. via
+/// Your implementation should dismiss the viewController, e.g. via
 /// `dismissViewControllerAnimated:completion:`
 ///
 /// @param sender         The payment method creator
-/// @param viewController The view controller to be presented
+/// @param viewController The view controller to be dismissed
 - (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController;
 
 /// The payment method creator will perform an app switch in order to obtain user

@@ -83,4 +83,11 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/PayPal"
     s.dependency "Braintree/Venmo"
   end
+
+  s.subspec "3D-Secure" do |s|
+    s.source_files = "Braintree/3D-Secure/**/*.{h,m}"
+    s.public_header_files = "Braintree/3D-Secure/Public/*.h"
+    s.frameworks = "UIKit"
+    s.dependency "Braintree/API"
+  end
 end
