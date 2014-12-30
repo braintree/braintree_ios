@@ -967,7 +967,7 @@ describe(@"3D Secure", ^{
                 [testThreeDSecureClient
                  lookupNonceForThreeDSecure:nonce
                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                 success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult, BTCardPaymentMethod *card) {
+                 success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult) {
                      expect(threeDSecureLookupResult.MD).to.beKindOf([NSString class]);
                      expect(threeDSecureLookupResult.acsURL).to.equal([NSURL URLWithString:@"https://testcustomer34.cardinalcommerce.com/V3DSStart?osb=visa-3&VAA=B"]);
                      expect([threeDSecureLookupResult.termURL absoluteString]).to.match(@"^http://.*:3000/merchants/integration_merchant_id/client_api/v1/payment_methods/[a-fA-F0-9-]+/three_d_secure/authenticate\?.*");
@@ -980,7 +980,7 @@ describe(@"3D Secure", ^{
         });
     });
 
-    pending(@"of an unenrolled Visa", ^{
+    describe(@"of an unenrolled Visa", ^{
         __block NSString *nonce;
 
         beforeEach(^{
@@ -998,17 +998,15 @@ describe(@"3D Secure", ^{
             });
         });
 
-        it(@"fails lookup since the card is not enrolled", ^{
+        it(@"succeeds without further intervention, since the liability shifts without authentication ", ^{
             waitUntil(^(DoneCallback done) {
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                           success:nil
-                                                           failure:^(NSError *error) {
-                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                                                               expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                                                               expect(error.localizedDescription).to.contain(@"Unenrolled card for 3D Secure");
+                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
+                                                               expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
+                                                               expect(threeDSecureLookup.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @YES, @"liabilityShiftPossible": @YES, });
                                                                done();
-                                                           }];
+                                                           } failure:nil];
             });
         });
     });
@@ -1035,16 +1033,17 @@ describe(@"3D Secure", ^{
             waitUntil(^(DoneCallback done) {
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *card) {
-                                                               expect(threeDSecureLookup).to.beNil();
-                                                               expect(card.nonce).to.beANonce();
+                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
+                                                               expect(threeDSecureLookup.card.nonce).to.beANonce();
+                                                               expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
+                                                               expect(threeDSecureLookup.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @YES, @"liabilityShiftPossible": @YES, });
                                                                done();
                                                            } failure:nil];
             });
         });
     });
 
-    pending(@"of an ineligible card type", ^{
+    describe(@"of an ineligible card type", ^{
         __block NSString *nonce;
 
         beforeEach(^{
@@ -1062,17 +1061,17 @@ describe(@"3D Secure", ^{
             });
         });
 
-        it(@"fails to perform lookup and returns an error", ^{
+        it(@"succeeds without a liability shift", ^{
             waitUntil(^(DoneCallback done) {
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                           success:nil
-                                                           failure:^(NSError *error) {
-                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                                                               expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                                                               expect(error.localizedDescription).to.contain(@"Unsupported card type for 3D Secure");
+                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
+                                                               expect(threeDSecureLookup.card.nonce).to.beANonce();
+                                                               expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
+                                                               expect(threeDSecureLookup.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @NO, });
                                                                done();
-                                                           }];
+                                                           }
+                                                           failure:nil];
             });
         });
     });

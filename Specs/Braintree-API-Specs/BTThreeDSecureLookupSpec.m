@@ -7,7 +7,7 @@ describe(@"requiresUserAuthentication", ^{
         BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.acsURL = [NSURL URLWithString:@"http://example.com"];
         lookup.termURL = [NSURL URLWithString:@"http://example.com"];
-        lookup.nonce = @"a-nonce";
+        lookup.MD = @"an-md";
         lookup.PAReq = @"a-PAReq";
 
         expect(lookup.requiresUserAuthentication).to.beTruthy();
@@ -16,7 +16,7 @@ describe(@"requiresUserAuthentication", ^{
         BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.acsURL = nil;
         lookup.termURL = [NSURL URLWithString:@"http://example.com"];
-        lookup.nonce = @"a-nonce";
+        lookup.MD = @"an-md";
         lookup.PAReq = @"a-PAReq";
 
         expect(lookup.requiresUserAuthentication).to.beFalsy();

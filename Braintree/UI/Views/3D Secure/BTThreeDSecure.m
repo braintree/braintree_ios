@@ -31,12 +31,18 @@
 
     [self.client lookupNonceForThreeDSecure:nonce
                           transactionAmount:amount
-                                    success:^(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *card) {
-                                        NSAssert(threeDSecureLookup.requiresUserAuthentication == (card == nil) , @"BTThreeDSecure verifyCardWithNonce Expect to receive either a lookup result or a nonce. Received neither or both.");
-                                        if (card) {
-                                            [self informDelegateDidCreatePaymentMethod:card];
+                                    success:^(BTThreeDSecureLookupResult *lookup) {
+                                        if (lookup.card) {
+                                            if ([lookup.threeDSecureInfo[@"liabilityShiftPossible"] boolValue] && [lookup.threeDSecureInfo[@"liabilityShifted"] boolValue]) {
+                                                [self informDelegateDidCreatePaymentMethod:lookup.card];
+                                            } else {
+                                                [self informDelegateDidFailWithError:[NSError errorWithDomain:BTThreeDSecureErrorDomain
+                                                                                                         code:BTThreeDSecureFailedLookupErrorCode
+                                                                                                     userInfo:@{ NSLocalizedDescriptionKey: @"3D Secure authentication was attempted but liability shift is not possible",
+                                                                                                                 BTThreeDSecureInfoKey: lookup.threeDSecureInfo, }]];
+                                            }
                                         } else {
-                                            BTThreeDSecureAuthenticationViewController *authenticationViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:threeDSecureLookup];
+                                            BTThreeDSecureAuthenticationViewController *authenticationViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
                                             authenticationViewController.delegate = self;
                                             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authenticationViewController];
                                             [self informDelegateRequestsPresentationOfViewController:navigationController];

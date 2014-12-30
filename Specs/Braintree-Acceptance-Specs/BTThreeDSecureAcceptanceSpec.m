@@ -7,6 +7,8 @@ describe(@"verifyCardWithNonce:amount:", ^{
     __block BTClient *client;
     __block id<BTPaymentMethodCreationDelegate> delegate;
     __block NSString *nonce;
+    __block NSString *unenrolledNonce;
+    __block NSString *unsupportedNonce;
 
     beforeEach(^{
         waitUntil(^(DoneCallback done) {
@@ -25,7 +27,30 @@ describe(@"verifyCardWithNonce:amount:", ^{
                                            [client saveCardWithRequest:r
                                                                success:^(BTCardPaymentMethod *card) {
                                                                    nonce = card.nonce;
+
+
+                                           BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                                           r.number = @"4000000000000051";
+                                           r.expirationMonth = @"12";
+                                           r.expirationYear = @"2020";
+                                           r.shouldValidate = NO;
+                                           [client saveCardWithRequest:r
+                                                               success:^(BTCardPaymentMethod *card) {
+                                                                   unenrolledNonce = card.nonce;
+
+                                           BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                                           r.number = @"6011111111111117";
+                                           r.expirationMonth = @"12";
+                                           r.expirationYear = @"2020";
+                                           r.shouldValidate = NO;
+                                           [client saveCardWithRequest:r
+                                                               success:^(BTCardPaymentMethod *card) {
+                                                                   unsupportedNonce = card.nonce;
                                                                    done();
+                                                               } failure:nil];
+
+                                                               } failure:nil];
+                                                                   
                                                                } failure:nil];
                                        }];
         });
@@ -76,6 +101,42 @@ withinNavigationControllerWithNavigationBarClass:nil
             [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
             [tester enterTextIntoCurrentFirstResponder:@"1234"];
             [tester tapViewWithAccessibilityLabel:@"Submit"];
+
+            [(OCMockObject *)delegate verifyWithDelay:30];
+        });
+    });
+
+    describe(@"for a issuer that is not enrolled", ^{
+        it(@"returns a nonce without user authentication", ^{
+            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+
+            [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
+                return [obj isKindOfClass:[BTCardPaymentMethod class]];
+            }]];
+
+            [threeDSecure verifyCardWithNonce:unenrolledNonce
+                                       amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+
+            [(OCMockObject *)delegate verifyWithDelay:30];
+        });
+    });
+
+    describe(@"for an unsupported card type", ^{
+        it(@"fails to perform 3D Secure", ^{
+            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+
+
+            id errorMatcher = HC_allOf(
+                                       HC_hasProperty(@"domain", BTThreeDSecureErrorDomain),
+                                       HC_hasProperty(@"code", @(BTThreeDSecureFailedLookupErrorCode)),
+                                       HC_hasProperty(@"userInfo", HC_hasEntry(BTThreeDSecureInfoKey, @{@"liabilityShifted": @NO, @"liabilityShiftPossible": @NO})),
+                                       
+                                       nil);
+            [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure
+                                                   didFailWithError:errorMatcher];
+
+            [threeDSecure verifyCardWithNonce:unsupportedNonce
+                                       amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
 
             [(OCMockObject *)delegate verifyWithDelay:30];
         });

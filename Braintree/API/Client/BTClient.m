@@ -13,7 +13,6 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
-#import "BTThreeDSecureLookupResultAPI.h"
 
 NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
 NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
@@ -420,13 +419,21 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                   parameters:requestParameters
                   completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
-            if (successBlock){
-                BTThreeDSecureLookupResult *lookup = [BTThreeDSecureLookupResultAPI modelWithAPIDictionary:response.object[@"lookup"] error:NULL];
+            if (successBlock) {
+                BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
+
+                NSDictionary *lookupDictionary = response.object[@"lookup"];
+                if (lookupDictionary) {
+                    lookup.acsURL = [NSURL URLWithString:lookupDictionary[@"acsUrl"]];
+                    lookup.PAReq = lookupDictionary[@"pareq"];
+                    lookup.MD = lookupDictionary[@"md"];
+                    lookup.termURL = [NSURL URLWithString:lookupDictionary[@"termUrl"]];
+                }
 
                 NSDictionary *creditCardResponse = response.object[@"paymentMethod"];
-                BTCardPaymentMethod *paymentMethod = creditCardResponse ? [[self class] cardFromAPIResponseDictionary:creditCardResponse] : nil;
-
-                successBlock(lookup, paymentMethod);
+                lookup.card = creditCardResponse ? [[self class] cardFromAPIResponseDictionary:creditCardResponse] : nil;
+                lookup.threeDSecureInfo = response.object[@"threeDSecureInfo"];
+                successBlock(lookup);
             }
         } else {
             if (failureBlock) {
@@ -437,9 +444,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                                                  userInfo:@{ NSLocalizedDescriptionKey: errorMessage,
                                                              BTCustomerInputBraintreeValidationErrorsKey: response.object }]);
                 } else {
-                    failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                     code:BTUnknownError
-                                                 userInfo:nil]);
+                    failureBlock(error);
                 }
             }
         }
