@@ -1007,12 +1007,13 @@ describe(@"3D Secure", ^{
                                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
                                                                expect(error.localizedDescription).to.contain(@"Unenrolled card for 3D Secure");
+                                                               done();
                                                            }];
             });
         });
     });
 
-    pending(@"of an enrolled, issuer unavailable card", ^{
+    describe(@"of an enrolled, issuer unavailable card", ^{
         __block NSString *nonce;
 
         beforeEach(^{
@@ -1034,13 +1035,11 @@ describe(@"3D Secure", ^{
             waitUntil(^(DoneCallback done) {
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                           success:nil
-                                                           failure:^(NSError *error) {
-                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                                                               expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                                                               expect(error.localizedDescription).to.contain(@"Unenrolled card for 3D Secure");
-                                                               expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.equal(@{ @"liabilityShifted": @NO });
-                                                           }];
+                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *card) {
+                                                               expect(threeDSecureLookup).to.beNil();
+                                                               expect(card.nonce).to.beANonce();
+                                                               done();
+                                                           } failure:nil];
             });
         });
     });
@@ -1067,12 +1066,12 @@ describe(@"3D Secure", ^{
             waitUntil(^(DoneCallback done) {
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
-                                                           success:^(BTThreeDSecureLookupResult *threeDSecureLookup, BTCardPaymentMethod *card) {
-                                                               NSLog(@"%@ %@", threeDSecureLookup, card);
-                                                           } failure:^(NSError *error) {
+                                                           success:nil
+                                                           failure:^(NSError *error) {
                                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
                                                                expect(error.localizedDescription).to.contain(@"Unsupported card type for 3D Secure");
+                                                               done();
                                                            }];
             });
         });
