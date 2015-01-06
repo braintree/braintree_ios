@@ -439,10 +439,20 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
             if (failureBlock) {
                 if (response.statusCode == 422) {
                     NSString *errorMessage = response.object[@"error"][@"message"];
+                    NSDictionary *threeDSecureInfo = response.object[@"threeDSecureInfo"];
+                    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+                    if (errorMessage) {
+                        userInfo[NSLocalizedDescriptionKey] = errorMessage;
+                    }
+                    if (threeDSecureInfo) {
+                        userInfo[BTThreeDSecureInfoKey] = threeDSecureInfo;
+                    }
+                    if (response.object) {
+                        userInfo[BTCustomerInputBraintreeValidationErrorsKey] = response.object;
+                    }
                     failureBlock([NSError errorWithDomain:error.domain
                                                      code:error.code
-                                                 userInfo:@{ NSLocalizedDescriptionKey: errorMessage,
-                                                             BTCustomerInputBraintreeValidationErrorsKey: response.object }]);
+                                                 userInfo:userInfo]);
                 } else {
                     failureBlock(error);
                 }

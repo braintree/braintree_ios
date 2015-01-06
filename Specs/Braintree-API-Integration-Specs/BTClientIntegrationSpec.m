@@ -1076,6 +1076,41 @@ describe(@"3D Secure", ^{
         });
     });
 
+    describe(@"of an invalid card nonce", ^{
+        __block NSString *nonce;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done){
+                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                r.number = @"not a card number";
+                r.expirationDate = @"12/2020";
+
+                [testThreeDSecureClient saveCardWithRequest:r
+                                                    success:^(BTCardPaymentMethod *card) {
+                                                        nonce = card.nonce;
+                                                        done();
+                                                    }
+                                                    failure:nil];
+            });
+        });
+
+        it(@"fails to perform a lookup", ^{
+            waitUntil(^(DoneCallback done) {
+                [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
+                                                 transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
+                                                           success:nil
+                                                           failure:^(NSError *error) {
+                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                                                               expect(error.code).to.equal(BTCustomerInputErrorInvalid);
+                                                               expect(error.localizedDescription).to.contain(@"Invalid card type");
+                                                               expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.beKindOf([NSDictionary class]);
+                                                               expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShiftPossible": @0, @"liabilityShifted": @0, });
+                                                               done();
+                                                           }];
+            });
+        });
+    });
+
     describe(@"of a non-card nonce", ^{
         __block NSString *nonce;
 
