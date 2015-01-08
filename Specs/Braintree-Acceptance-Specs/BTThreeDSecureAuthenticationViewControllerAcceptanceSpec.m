@@ -437,31 +437,6 @@ describe(@"3D Secure View Controller", ^{
     });
 
     describe(@"web view interaction details", ^{
-        it(@"allows the user to go back when they click on a random link", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-
-                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-                [tester tapViewWithAccessibilityLabel:@"New User / Forgot your password?"];
-                [tester waitForViewWithAccessibilityLabel:@"New User / Forgot Your Password" traits:UIAccessibilityTraitStaticText];
-                [tester tapViewWithAccessibilityLabel:@"Go Back"];
-                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-            }];
-        });
-
-        it(@"allows the user to go forward after going back", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-
-                [tester tapViewWithAccessibilityLabel:@"New User / Forgot your password?"];
-                [tester waitForViewWithAccessibilityLabel:@"New User / Forgot Your Password" traits:UIAccessibilityTraitStaticText];
-                [tester tapViewWithAccessibilityLabel:@"Go Back"];
-                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-                [tester tapViewWithAccessibilityLabel:@"Go Forward"];
-                [tester waitForViewWithAccessibilityLabel:@"New User / Forgot Your Password" traits:UIAccessibilityTraitStaticText];
-            }];
-        });
-
         it(@"transfers javascript popups over to Safari via app switch", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
@@ -475,16 +450,6 @@ describe(@"3D Secure View Controller", ^{
                                 whileExecutingBlock:^{
                                     [tester tapViewWithAccessibilityLabel:@"Open Safari"];
                                 } returning:YES];
-            }];
-        });
-
-        it(@"prevents the user from going forward or backward before navigating", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-                [tester waitForTappableViewWithAccessibilityLabel:@"New User / Forgot your password?"];
-
-                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Go Back"];
-                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Go Forward"];
             }];
         });
 
@@ -505,10 +470,7 @@ describe(@"3D Secure View Controller", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
                 [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-                
-                [tester tapViewWithAccessibilityLabel:@"New User / Forgot your password?"];
-                [tester tapViewWithAccessibilityLabel:@"Go Back"];
-                
+
                 [system captureScreenshotWithDescription:nil];
             }];
         });

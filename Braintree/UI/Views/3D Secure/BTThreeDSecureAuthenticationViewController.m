@@ -9,10 +9,6 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
 @interface BTThreeDSecureAuthenticationViewController () <UIWebViewDelegate>
 @property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
 @property (nonatomic, strong) UIWebView *webView;
-
-@property (nonatomic, strong) UIBarButtonItem *goBackButton;
-@property (nonatomic, strong) UIBarButtonItem *goForwardButton;
-@property (nonatomic, strong) UIBarButtonItem *backForwardSpacer;
 @end
 
 @implementation BTThreeDSecureAuthenticationViewController
@@ -38,14 +34,6 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(tappedCancel)];
-
-    self.goBackButton = [[UIBarButtonItem alloc] initWithTitle:@"〈" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoBack)];
-    self.goBackButton.accessibilityLabel = @"Go Back";
-    self.goBackButton.width = 40;
-    self.goForwardButton = [[UIBarButtonItem alloc] initWithTitle:@"〉" style:UIBarButtonItemStylePlain target:self action:@selector(tappedGoForward)];
-    self.goForwardButton.accessibilityLabel = @"Go Forward";
-    self.goForwardButton.width = 44;
-    self.backForwardSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 
     self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -128,39 +116,16 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self updateNetworkActivityIndicatorForWebView:webView];
-
-    [self updateWebViewNavigationButtons];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self updateNetworkActivityIndicatorForWebView:webView];
-
-    [self updateWebViewNavigationButtons];
 
     [self prepareWebViewPopupLinks];
 }
 
 - (void)updateNetworkActivityIndicatorForWebView:(UIWebView *)webView {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:webView.isLoading];
-}
-
-- (void)updateWebViewNavigationButtons {
-    UIWebView *webView = self.webView;
-    self.goForwardButton.enabled = webView.canGoForward;
-    self.goBackButton.enabled = webView.canGoBack;
-
-    NSMutableArray *toolbarItems = [NSMutableArray arrayWithCapacity:3];
-    if (webView.canGoBack || webView.canGoForward) {
-        [toolbarItems addObject:self.goBackButton];
-        [toolbarItems addObject:self.backForwardSpacer];
-    }
-    if (webView.canGoForward) {
-        [toolbarItems addObject:self.goForwardButton];
-    }
-
-    BOOL shouldHideToolbar = (toolbarItems.count == 0);
-    [self.navigationController setToolbarHidden:shouldHideToolbar animated:YES];
-    [self setToolbarItems:toolbarItems animated:YES];
 }
 
 
@@ -170,14 +135,6 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
     if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
         [self.delegate threeDSecureViewControllerDidFinish:self];
     }
-}
-
-- (void)tappedGoForward {
-    [self.webView goForward];
-}
-
-- (void)tappedGoBack {
-    [self.webView goBack];
 }
 
 
