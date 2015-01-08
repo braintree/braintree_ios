@@ -39,6 +39,9 @@
 /// handle user input from UIAlertView.
 @property (nonatomic, strong) BTDropInErrorAlert *savePayPalAccountErrorAlert;
 
+@property (nonatomic, assign) BOOL cardEntryDidBegin;
+
+
 @end
 
 @implementation BTDropInViewController
@@ -274,11 +277,18 @@
     } else if (!self.dropInContentView.cardForm.hidden) {
         BTUICardFormView *cardForm = self.dropInContentView.cardForm;
 
+        BTClient *client = [self.client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+            metadata.source = BTClientMetadataSourceForm;
+        }];
+
         void (^cardFail)(NSError *) = ^(NSError *error) {
             [self showLoadingState:NO];
 
-            if (error && [error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
-                [self informUserDidFailWithError:error];
+            if (error) {
+                [client postAnalyticsEvent:@"dropin.ios.add-card.failed"];
+                if ([error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
+                    [self informUserDidFailWithError:error];
+                }
             } else {
                 NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
                 NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
@@ -294,10 +304,6 @@
         if (cardForm.valid) {
             [self informDelegateWillComplete];
 
-            BTClient *client = [self.client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
-                metadata.source = BTClientMetadataSourceForm;
-            }];
-
             BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
             request.number = cardForm.number;
             request.expirationMonth = cardForm.expirationMonth;
@@ -306,8 +312,10 @@
             request.postalCode = cardForm.postalCode;
             request.shouldValidate = YES;
 
+            [client postAnalyticsEvent:@"dropin.ios.add-card.save"];
             [client saveCardWithRequest:request
                                success:^(BTCardPaymentMethod *card) {
+                                   [client postAnalyticsEvent:@"dropin.ios.add-card.success"];
                                    [self showLoadingState:NO];
                                    [self informDelegateDidAddPaymentMethod:card];
                                }
@@ -351,6 +359,12 @@
 #pragma mark Card Form Delegate methods
 
 - (void)cardFormViewDidChange:(__unused BTUICardFormView *)cardFormView {
+
+    if (!self.cardEntryDidBegin) {
+        [self.client postAnalyticsEvent:@"dropin.ios.add-card.start"];
+        self.cardEntryDidBegin = YES;
+    }
+
     [self updateValidity];
 }
 
