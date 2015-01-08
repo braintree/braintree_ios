@@ -8,6 +8,4 @@
 
 - (instancetype)bt_adjustedBrightness:(CGFloat)adjustment;
 
-- (UIActivityIndicatorViewStyle)bt_contrastingActivityIndicatorStyle;
-
 @end

@@ -491,12 +491,13 @@ describe(@"3D Secure View Controller", ^{
         it(@"displays a loading indicator during page loads", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-                [tester waitForViewWithAccessibilityLabel:@"In progress"];
-                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"In progress"];
+
+                [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
+                [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
                 [tester tapViewWithAccessibilityLabel:@"Submit"];
-                [tester waitForViewWithAccessibilityLabel:@"In progress"];
+                [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
                 [tester waitForViewWithAccessibilityLabel:@"Incorrect, Please try again"];
-                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"In progress"];
+                [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
             }];
         });
         

@@ -46,25 +46,6 @@ describe(@"UIColor+BTUI", ^{
             expect(c).to.equal([UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:1.0f]);
         });
     });
-
-    describe(@"bt_contrastingActivityIndicatorStyle", ^{
-        it(@"uses white for a black background", ^{
-            expect([[UIColor blackColor] bt_contrastingActivityIndicatorStyle]).to.equal(UIActivityIndicatorViewStyleWhite);
-        });
-
-        it(@"uses gray for a white background", ^{
-            expect([[UIColor whiteColor] bt_contrastingActivityIndicatorStyle]).to.equal(UIActivityIndicatorViewStyleGray);
-        });
-
-        it(@"chooses the best style for other colors", ^{
-            expect([[UIColor colorWithRed:0.149 green:1.000 blue:0.914 alpha:1.000] bt_contrastingActivityIndicatorStyle]).to.equal(UIActivityIndicatorViewStyleGray);
-            expect([[UIColor colorWithRed:1.000 green:0.802 blue:0.390 alpha:1.000] bt_contrastingActivityIndicatorStyle]).to.equal(UIActivityIndicatorViewStyleGray);
-            expect([[UIColor colorWithRed:0.199 green:0.676 blue:1.000 alpha:1.000] bt_contrastingActivityIndicatorStyle]).to.equal(UIActivityIndicatorViewStyleGray);
-            expect([[UIColor colorWithRed:0.492 green:0.000 blue:0.132 alpha:1.000] bt_contrastingActivityIndicatorStyle]).to.equal(UIActivityIndicatorViewStyleWhite);
-            expect([[UIColor colorWithRed:0.191 green:0.372 blue:0.656 alpha:1.000] bt_contrastingActivityIndicatorStyle]).to.equal(UIActivityIndicatorViewStyleWhite);
-            expect([[UIColor colorWithRed:0.456 green:0.423 blue:0.179 alpha:1.000] bt_contrastingActivityIndicatorStyle]).to.equal(UIActivityIndicatorViewStyleWhite);
-        });
-    });
 });
 
 SpecEnd

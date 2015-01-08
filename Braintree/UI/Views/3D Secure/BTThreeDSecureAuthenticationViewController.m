@@ -13,7 +13,6 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
 @property (nonatomic, strong) UIBarButtonItem *goBackButton;
 @property (nonatomic, strong) UIBarButtonItem *goForwardButton;
 @property (nonatomic, strong) UIBarButtonItem *backForwardSpacer;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @end
 
 @implementation BTThreeDSecureAuthenticationViewController
@@ -47,14 +46,6 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
     self.goForwardButton.accessibilityLabel = @"Go Forward";
     self.goForwardButton.width = 44;
     self.backForwardSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-
-    UIActivityIndicatorViewStyle style = [self.navigationController.navigationBar.barTintColor bt_contrastingActivityIndicatorStyle];
-    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
-    self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.activityIndicatorView.hidesWhenStopped = YES;
-    self.activityIndicatorView.accessibilityLabel = @"Progress View";
-    [self.activityIndicatorView stopAnimating];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicatorView];
 
     self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -135,18 +126,22 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
     }
 }
 
-- (void)webViewDidStartLoad:(__unused UIWebView *)webView {
-    [self.activityIndicatorView startAnimating];
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [self updateNetworkActivityIndicatorForWebView:webView];
 
     [self updateWebViewNavigationButtons];
 }
 
-- (void)webViewDidFinishLoad:(__unused UIWebView *)webView {
-    [self.activityIndicatorView stopAnimating];
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [self updateNetworkActivityIndicatorForWebView:webView];
 
     [self updateWebViewNavigationButtons];
 
     [self prepareWebViewPopupLinks];
+}
+
+- (void)updateNetworkActivityIndicatorForWebView:(UIWebView *)webView {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:webView.isLoading];
 }
 
 - (void)updateWebViewNavigationButtons {

@@ -166,6 +166,7 @@
 		A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A75DA3781921399C00D997A2 /* BraintreeSpec.m */; };
 		A7669E781A43A23400FF5803 /* BTThreeDSecureSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7669E771A43A23400FF5803 /* BTThreeDSecureSpec.m */; };
 		A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
+		A79509791A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = A79509781A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m */; };
 		A79AC9A6193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */; };
 		A79ACA4A193FB3340095D7F1 /* good_root_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = A79ACA49193FB3340095D7F1 /* good_root_cert.der */; };
 		A79ACA4D1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */; };
@@ -672,6 +673,8 @@
 		A7669E7A1A43A6F500FF5803 /* BTThreeDSecure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecure.m; sourceTree = "<group>"; };
 		A76E0B251A2EA04D0051FDC4 /* BTThreeDSecureAuthenticationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureAuthenticationViewController.h; sourceTree = "<group>"; };
 		A76E0B261A2EA04D0051FDC4 /* BTThreeDSecureAuthenticationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureAuthenticationViewController.m; sourceTree = "<group>"; };
+		A79509771A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFSystemTestActor+BTNetworkActivity.h"; sourceTree = "<group>"; };
+		A79509781A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFSystemTestActor+BTNetworkActivity.m"; sourceTree = "<group>"; };
 		A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSSLPinningSpec.m; sourceTree = "<group>"; };
 		A79ACA33193FB27E0095D7F1 /* BTHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTP.h; sourceTree = "<group>"; };
 		A79ACA34193FB27E0095D7F1 /* BTHTTP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTHTTP.m; sourceTree = "<group>"; };
@@ -1560,6 +1563,8 @@
 			children = (
 				167811871A43CBF6008AC6DA /* BTThreeDSecureAcceptanceSpec.m */,
 				A7CED50E1A2FD01500141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m */,
+				A79509771A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.h */,
+				A79509781A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m */,
 				A7CED5111A2FD0EA00141197 /* KIFUITestActor+BTWebView.h */,
 				A7CED5121A2FD0EA00141197 /* KIFUITestActor+BTWebView.m */,
 				16968181192D9A3D00120846 /* Supporting Files */,
@@ -2873,6 +2878,7 @@
 			files = (
 				167811881A43CBF6008AC6DA /* BTThreeDSecureAcceptanceSpec.m in Sources */,
 				A7CED5131A2FD0EA00141197 /* KIFUITestActor+BTWebView.m in Sources */,
+				A79509791A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m in Sources */,
 				A7CED5101A2FD01A00141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m in Sources */,
 				A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */,
 			);
