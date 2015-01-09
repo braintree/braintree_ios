@@ -1,10 +1,9 @@
 #import "BTThreeDSecurePopupWebViewViewController.h"
 
-NSString *BTThreeDSecurePopupWebViewViewControllerCloseURLScheme = @"close";
+NSString *BTThreeDSecurePopupWebViewViewControllerCloseURLScheme = @"com.braintreepayments.popup.close";
 
 @interface BTThreeDSecurePopupWebViewViewController () <UIWebViewDelegate>
-@property (nonatomic, copy) NSURL *URL;
-@property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, copy) NSURLRequest *URLRequest;
 @end
 
 @implementation BTThreeDSecurePopupWebViewViewController
@@ -12,8 +11,7 @@ NSString *BTThreeDSecurePopupWebViewViewControllerCloseURLScheme = @"close";
 - (instancetype)initWithURL:(NSURL *)URL {
     self = [self init];
     if (self) {
-        self.URL = URL;
-        self.webView = [[UIWebView alloc] init];
+        self.URLRequest = [NSURLRequest requestWithURL:URL];
     }
     return self;
 }
@@ -23,45 +21,24 @@ NSString *BTThreeDSecurePopupWebViewViewControllerCloseURLScheme = @"close";
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(informDelegateDidFinish)];
 
-    self.view.backgroundColor = [UIColor whiteColor];
-
-    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.webView.delegate = self;
-    self.webView.accessibilityIdentifier = @"Popup Web View";
-    [self.webView loadRequest:self.initialURLRequest];
-    [self.view addSubview:self.webView];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:@{@"webView": self.webView}]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|" options:NSLayoutFormatDirectionLeadingToTrailing metrics:nil views:@{@"webView": self.webView}]];
+    [self loadRequest:self.URLRequest];
 }
-
-- (NSURLRequest *)initialURLRequest {
-    return [NSURLRequest requestWithURL:self.URL];
-}
-
-
-#pragma mark Delegate Informers
-
-- (void)informDelegateDidFinish {
-    if ([self.delegate respondsToSelector:@selector(popupWebViewViewControllerDidFinish:)]) {
-        [self.delegate popupWebViewViewControllerDidFinish:self];
-    }
-}
-
 
 #pragma mark UIWebViewDelegate
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self prepareWebViewPopupCloseLinks:webView];
+
+    [super webViewDidFinishLoad:webView];
 }
 
-- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(__unused UIWebViewNavigationType)navigationType {
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if ([request.URL.scheme isEqualToString:BTThreeDSecurePopupWebViewViewControllerCloseURLScheme]) {
         [self informDelegateDidFinish];
         return NO;
     }
 
-    return YES;
+    return [super webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
 }
 
 - (void)prepareWebViewPopupCloseLinks:(UIWebView *)webView {
@@ -74,6 +51,14 @@ NSString *BTThreeDSecurePopupWebViewViewControllerCloseURLScheme = @"close";
                         if (forms[i]['action'].indexOf('close_window.htm') > -1) { forms[i]['action'] = '%@://'; } \
                     }", BTThreeDSecurePopupWebViewViewControllerCloseURLScheme, BTThreeDSecurePopupWebViewViewControllerCloseURLScheme];
     [webView stringByEvaluatingJavaScriptFromString:js];
+}
+
+#pragma mark Delegate Informers
+
+- (void)informDelegateDidFinish {
+    if ([self.delegate respondsToSelector:@selector(popupWebViewViewControllerDidFinish:)]) {
+        [self.delegate popupWebViewViewControllerDidFinish:self];
+    }
 }
 
 @end

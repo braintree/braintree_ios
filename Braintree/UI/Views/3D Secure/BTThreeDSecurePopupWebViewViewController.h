@@ -1,9 +1,10 @@
-#import <UIKit/UIKit.h>
+@import UIKit;
 
+#import "BTWebViewController.h"
 
 @protocol BTThreeDSecurePopupWebViewViewControllerDelegate;
 
-@interface BTThreeDSecurePopupWebViewViewController : UIViewController
+@interface BTThreeDSecurePopupWebViewViewController : BTWebViewController
 
 - (instancetype)initWithURL:(NSURL *)URL;
 
