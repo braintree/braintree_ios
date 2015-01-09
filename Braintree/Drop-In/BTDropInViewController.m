@@ -166,6 +166,10 @@
 
     // Ensure dropInContentView is visible. See viewWillDisappear below
     self.dropInContentView.alpha = 1.0f;
+
+    if (self.fullForm) {
+        [self.client postAnalyticsEvent:@"dropin.ios.appear"];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -176,8 +180,10 @@
     [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
         self.dropInContentView.alpha = 0.0f;
     }];
+    if (self.fullForm) {
+        [self.client postAnalyticsEvent:@"dropin.ios.disappear"];
+    }
 }
-
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
