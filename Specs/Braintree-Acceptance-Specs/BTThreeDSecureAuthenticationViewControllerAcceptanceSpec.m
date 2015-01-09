@@ -496,15 +496,6 @@ describe(@"3D Secure View Controller", ^{
                 expect(threeDSecureViewController.title).to.equal(@"Authentication");
             }];
         });
-
-        it(@"looks amazing", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-
-                [system captureScreenshotWithDescription:nil];
-            }];
-        });
     });
 });
 
