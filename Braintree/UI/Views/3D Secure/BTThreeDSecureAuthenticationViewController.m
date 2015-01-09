@@ -31,7 +31,6 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
 
     [self.view setBackgroundColor:[UIColor whiteColor]];
 
-    self.title = @"3D Secure";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(tappedCancel)];
@@ -120,12 +119,15 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self updateNetworkActivityIndicatorForWebView:webView];
+    self.title = [self parseTitleFromWebView:webView];;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self updateNetworkActivityIndicatorForWebView:webView];
 
     [self prepareWebViewPopupLinks:webView];
+
+    self.title = [self parseTitleFromWebView:webView];
 }
 
 - (void)updateNetworkActivityIndicatorForWebView:(UIWebView *)webView {
@@ -139,6 +141,13 @@ static NSString *BTThreeDSecureAuthenticationViewControllerPopupDummyURLScheme =
     if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
         [self.delegate threeDSecureViewControllerDidFinish:self];
     }
+}
+
+
+#pragma mark Web View Inspection
+
+- (NSString *)parseTitleFromWebView:(UIWebView *)webView {
+    return [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
 
 
