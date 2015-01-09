@@ -675,6 +675,8 @@
 		A76E0B261A2EA04D0051FDC4 /* BTThreeDSecureAuthenticationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureAuthenticationViewController.m; sourceTree = "<group>"; };
 		A79509771A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFSystemTestActor+BTNetworkActivity.h"; sourceTree = "<group>"; };
 		A79509781A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFSystemTestActor+BTNetworkActivity.m"; sourceTree = "<group>"; };
+		A795097A1A5F419E00CAA382 /* BTThreeDSecurePopupWebViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecurePopupWebViewViewController.h; sourceTree = "<group>"; };
+		A795097B1A5F419E00CAA382 /* BTThreeDSecurePopupWebViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecurePopupWebViewViewController.m; sourceTree = "<group>"; };
 		A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSSLPinningSpec.m; sourceTree = "<group>"; };
 		A79ACA33193FB27E0095D7F1 /* BTHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTP.h; sourceTree = "<group>"; };
 		A79ACA34193FB27E0095D7F1 /* BTHTTP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTHTTP.m; sourceTree = "<group>"; };
@@ -1984,14 +1986,16 @@
 		A76E0B241A2EA0240051FDC4 /* 3D Secure */ = {
 			isa = PBXGroup;
 			children = (
-				1603E5361A51D254003A9D98 /* BTThreeDSecureResponse.h */,
-				1603E5371A51D254003A9D98 /* BTThreeDSecureResponse.m */,
+				A7669E791A43A6F500FF5803 /* BTThreeDSecure.h */,
+				A7669E7A1A43A6F500FF5803 /* BTThreeDSecure.m */,
 				A76E0B251A2EA04D0051FDC4 /* BTThreeDSecureAuthenticationViewController.h */,
 				A76E0B261A2EA04D0051FDC4 /* BTThreeDSecureAuthenticationViewController.m */,
 				A7AEB18E1A425B5400138C21 /* BTThreeDSecureErrors.h */,
 				A7AEB18F1A425B5400138C21 /* BTThreeDSecureErrors.m */,
-				A7669E791A43A6F500FF5803 /* BTThreeDSecure.h */,
-				A7669E7A1A43A6F500FF5803 /* BTThreeDSecure.m */,
+				A795097A1A5F419E00CAA382 /* BTThreeDSecurePopupWebViewViewController.h */,
+				A795097B1A5F419E00CAA382 /* BTThreeDSecurePopupWebViewViewController.m */,
+				1603E5361A51D254003A9D98 /* BTThreeDSecureResponse.h */,
+				1603E5371A51D254003A9D98 /* BTThreeDSecureResponse.m */,
 			);
 			path = "3D Secure";
 			sourceTree = "<group>";

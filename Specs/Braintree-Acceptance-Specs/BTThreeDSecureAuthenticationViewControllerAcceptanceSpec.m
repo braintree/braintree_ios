@@ -437,22 +437,6 @@ describe(@"3D Secure View Controller", ^{
     });
 
     describe(@"web view interaction details", ^{
-        it(@"transfers javascript popups over to Safari via app switch", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-
-                [tester tapViewWithAccessibilityLabel:@"Help"];
-                [tester waitForViewWithAccessibilityLabel:@"Open Link in Safari?"];
-                [tester tapViewWithAccessibilityLabel:@"Cancel"];
-                [tester tapViewWithAccessibilityLabel:@"Help"];
-                [tester waitForViewWithAccessibilityLabel:@"Open Link in Safari?"];
-                [system waitForApplicationToOpenURL:@"https://testcustomer34.cardinalcommerce.com/auth_html/default/visa/help.jsp?bankbin=visa-3"
-                                whileExecutingBlock:^{
-                                    [tester tapViewWithAccessibilityLabel:@"Open Safari"];
-                                } returning:YES];
-            }];
-        });
-
         it(@"displays a loading indicator during page loads", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
@@ -463,6 +447,43 @@ describe(@"3D Secure View Controller", ^{
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
                 [tester waitForViewWithAccessibilityLabel:@"Incorrect, Please try again"];
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
+            }];
+        });
+
+        it(@"closes the popup when the user taps Close in the nav bar", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester tapViewWithAccessibilityLabel:@"Help"];
+                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
+                [tester tapViewWithAccessibilityLabel:@"Close"];
+
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+            }];
+        });
+        
+        it(@"closes the popup when the user taps a close link", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+                
+                [tester tapViewWithAccessibilityLabel:@"Help"];
+                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
+                [tester tapUIWebviewXPathElement:@"//a[text()=\"Social Security Number\"]"];
+                [tester tapUIWebviewXPathElement:@"(//a[contains(text(), \"Return\")])[last()]"];
+
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+            }];
+        });
+        
+        it(@"closes the popup when the user tap the Close button", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester tapViewWithAccessibilityLabel:@"Help"];
+                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
+                [tester tapUIWebviewXPathElement:@"//input[@value=\"    Close    \"]"];
+
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
             }];
         });
         
