@@ -281,26 +281,6 @@
             metadata.source = BTClientMetadataSourceForm;
         }];
 
-        void (^cardFail)(NSError *) = ^(NSError *error) {
-            [self showLoadingState:NO];
-
-            if (error) {
-                [client postAnalyticsEvent:@"dropin.ios.add-card.failed"];
-                if ([error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
-                    [self informUserDidFailWithError:error];
-                }
-            } else {
-                NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
-                NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
-                NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
-                [[[UIAlertView alloc] initWithTitle:localizedAlertTitle
-                                            message:localizedAlertMessage
-                                           delegate:nil
-                                  cancelButtonTitle:localizedCancel
-                                  otherButtonTitles:nil] show];
-            }
-        };
-
         if (cardForm.valid) {
             [self informDelegateWillComplete];
 
@@ -314,14 +294,27 @@
 
             [client postAnalyticsEvent:@"dropin.ios.add-card.save"];
             [client saveCardWithRequest:request
-                               success:^(BTCardPaymentMethod *card) {
-                                   [client postAnalyticsEvent:@"dropin.ios.add-card.success"];
-                                   [self showLoadingState:NO];
-                                   [self informDelegateDidAddPaymentMethod:card];
-                               }
-                               failure:cardFail];
+                                success:^(BTCardPaymentMethod *card) {
+                                    [client postAnalyticsEvent:@"dropin.ios.add-card.success"];
+                                    [self showLoadingState:NO];
+                                    [self informDelegateDidAddPaymentMethod:card];
+                                }
+                                failure:^(NSError *error) {
+                                    [self showLoadingState:NO];
+                                    [client postAnalyticsEvent:@"dropin.ios.add-card.failed"];
+                                    if ([error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
+                                        [self informUserDidFailWithError:error];
+                                    }
+                                }];
         } else {
-            cardFail(nil);
+            NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
+            NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
+            NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
+            [[[UIAlertView alloc] initWithTitle:localizedAlertTitle
+                                        message:localizedAlertMessage
+                                       delegate:nil
+                              cancelButtonTitle:localizedCancel
+                              otherButtonTitles:nil] show];
         }
     }
 }
