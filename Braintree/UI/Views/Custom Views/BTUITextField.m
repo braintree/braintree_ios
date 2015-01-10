@@ -6,16 +6,16 @@
 
 @implementation BTUITextField
 
-- (void)deleteBackward {
+- (BOOL)keyboardInputShouldDelete:(__unused UITextField *)textField {
     if (self.delegate && [self.editDelegate respondsToSelector:@selector(textFieldWillDeleteBackward:)]) {
         [self.editDelegate textFieldWillDeleteBackward:self];
     }
     NSString *originalText = self.text;
-    [super deleteBackward];
 
     if (self.delegate && [self.editDelegate respondsToSelector:@selector(textFieldDidDeleteBackward:originalText:)]) {
         [self.editDelegate textFieldDidDeleteBackward:self originalText:originalText];
     }
+    return YES;
 }
 
 - (void)insertText:(NSString *)text {

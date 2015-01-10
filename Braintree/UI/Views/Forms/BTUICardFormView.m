@@ -241,6 +241,11 @@
     [self switchToPreviousField:formField];
 }
 
+- (BOOL)formFieldShouldReturn:(BTUIFormField *)formField {
+    [formField resignFirstResponder];
+    return NO;
+}
+
 #pragma mark - Auto-advancing
 
 - (void)advanceToNextInvalidFieldFrom:(BTUIFormField *)field {
