@@ -2883,7 +2883,6 @@
 				1674D8081A53543700B489B6 /* BTThreeDSecureAcceptanceSpec.m in Sources */,
 				A7CED5131A2FD0EA00141197 /* KIFUITestActor+BTWebView.m in Sources */,
 				A79509791A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m in Sources */,
-				A7CED5101A2FD01A00141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m in Sources */,
 				A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */,
 				1674D8091A535C9600B489B6 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m in Sources */,
 			);
