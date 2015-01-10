@@ -434,6 +434,32 @@ describe(@"3D Secure View Controller", ^{
                 }];
             });
         });
+
+        context(@"The ACS Frame fails to load", ^{
+            it(@"accepts a password but fails to authenticate the nonce", ^{
+                id<OHHTTPStubsDescriptor> stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return [request.URL.host isEqualToString:@"acs.example.com"];
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:123 userInfo:@{ NSLocalizedDescriptionKey: @"Something bad happened" }]];
+                }];
+
+                BTThreeDSecureLookupResult *r = [[BTThreeDSecureLookupResult alloc] init];
+                r.acsURL = [NSURL URLWithString:@"https://acs.example.com/"];
+                r.PAReq = @"pareq";
+                r.termURL = [NSURL URLWithString:@"https://example.com/term"];
+                r.MD = @"md";
+
+                BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:r];
+
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester waitForViewWithAccessibilityLabel:@"Something bad happened"];
+                [tester tapViewWithAccessibilityLabel:@"OK"];
+                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Something bad happened"];
+
+                [OHHTTPStubs removeStub:stub];
+            });
+        });
     });
 
     describe(@"web view interaction details", ^{

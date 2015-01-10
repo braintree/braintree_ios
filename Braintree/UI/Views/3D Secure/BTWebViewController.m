@@ -74,7 +74,26 @@ static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayment
 }
 
 - (void)webView:(__unused UIWebView *)webView didFailLoadWithError:(__unused NSError *)error {
-    // TODO: Retry/cancel
+    if ([error.domain isEqualToString:@"WebKitErrorDomain"] && error.code == 102) {
+        return;
+    }
+
+    if ([UIAlertController class]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                  style:UIAlertActionStyleCancel
+                                                handler:^(__unused UIAlertAction *action) {
+                                                }]];
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:error.localizedDescription
+                                   message:nil
+                                  delegate:nil
+                         cancelButtonTitle:@"OK"
+                         otherButtonTitles:nil, nil] show];
+    }
 }
 
 
