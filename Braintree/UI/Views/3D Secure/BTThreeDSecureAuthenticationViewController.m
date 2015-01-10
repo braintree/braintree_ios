@@ -1,11 +1,12 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTURLUtils.h"
 #import "BTClient_Internal.h"
+#import "UIColor+BTUI.h"
 #import "BTThreeDSecureResponse.h"
+#import "BTWebViewController.h"
 
-@interface BTThreeDSecureAuthenticationViewController () <UIWebViewDelegate>
+@interface BTThreeDSecureAuthenticationViewController ()
 @property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
-@property (nonatomic, strong) UIWebView *webView;
 @end
 
 @implementation BTThreeDSecureAuthenticationViewController
@@ -25,10 +26,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(tappedCancel)];
 
-    self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-    self.webView.delegate = self;
     NSMutableURLRequest *acsRequest = [NSMutableURLRequest requestWithURL:self.lookup.acsURL];
     [acsRequest setHTTPMethod:@"POST"];
     NSDictionary *fields = @{ @"PaReq": self.lookup.PAReq,
@@ -36,12 +37,7 @@
                               @"MD": self.lookup.MD };
     [acsRequest setHTTPBody:[[BTURLUtils queryStringWithDictionary:fields] dataUsingEncoding:NSUTF8StringEncoding]];
     [acsRequest setAllHTTPHeaderFields:@{ @"Accept": @"text/html", @"Content-Type": @"application/x-www-form-urlencoded"}];
-    [self.webView loadRequest:acsRequest];
-
-    [self.view addSubview:self.webView];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[webView]|" options:0 metrics:nil views:@{ @"webView": self.webView }]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[webView]|" options:0 metrics:nil views:@{ @"webView": self.webView }]];
+    [self loadRequest:acsRequest];
 }
 
 - (void)didCompleteAuthentication:(BTThreeDSecureResponse *)response {
@@ -77,17 +73,17 @@
 
 #pragma mark UIWebViewDelegate
 
-- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(__unused UIWebViewNavigationType)navigationType {
-    if ([request.URL.path containsString:@"authentication_complete_frame"]) {
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType == UIWebViewNavigationTypeFormSubmitted && [request.URL.path rangeOfString:@"authentication_complete_frame"].location != NSNotFound) {
         NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
         NSDictionary *authResponseDictionary = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
-                                                                     options:0
-                                                                       error:NULL];
-
+                                                                               options:0
+                                                                                 error:NULL];
+        
         BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
         authResponse.success = [authResponseDictionary[@"success"] boolValue];
         authResponse.threeDSecureInfo = authResponseDictionary[@"threeDSecureInfo"];
-
+        
         NSDictionary *paymentMethodDictionary = authResponseDictionary[@"paymentMethod"];
         if ([paymentMethodDictionary isKindOfClass:[NSDictionary class]]) {
             authResponse.paymentMethod = [BTClient cardFromAPIResponseDictionary:paymentMethodDictionary];
@@ -95,9 +91,18 @@
         authResponse.errorMessage = authResponseDictionary[@"error"][@"message"];
 
         [self didCompleteAuthentication:authResponse];
+
         return NO;
     } else {
-        return YES;
+        return [super webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+    }
+}
+
+#pragma mark User Interaction
+
+- (void)tappedCancel {
+    if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+        [self.delegate threeDSecureViewControllerDidFinish:self];
     }
 }
 

@@ -3,6 +3,7 @@
 #import "BTThreeDSecureLookupResult.h"
 #import "BTThreeDSecureErrors.h"
 #import "BTCardPaymentMethod.h"
+#import "BTWebViewController.h"
 
 typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
     BTThreeDSecureViewControllerCompletionStatusFailure = 0,
@@ -33,7 +34,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  lookup will have already consumed the original nonce in exchange for an ungraded, 3D Secure nonce.
 ///
 ///  @see BTThreeDSecure
-@interface BTThreeDSecureAuthenticationViewController : UIViewController
+@interface BTThreeDSecureAuthenticationViewController : BTWebViewController
 
 ///  Initializes a 3D Secure authentication view controller
 ///

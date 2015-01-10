@@ -1,7 +1,7 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTClient+Testing.h"
 
-@interface BTThreeDSecureViewController_AcceptanceSpecHelper : NSObject <BTThreeDSecureAuthenticationViewControllerDelegate>
+@interface BTThreeDSecureAuthenticationViewController_AcceptanceSpecHelper : NSObject <BTThreeDSecureAuthenticationViewControllerDelegate>
 
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, strong) BTThreeDSecureAuthenticationViewController *threeDSecureViewController;
@@ -13,10 +13,10 @@
 @property (nonatomic, copy) void (^failureBlock)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error);
 @end
 
-@implementation BTThreeDSecureViewController_AcceptanceSpecHelper
+@implementation BTThreeDSecureAuthenticationViewController_AcceptanceSpecHelper
 
 + (instancetype)helper {
-    BTThreeDSecureViewController_AcceptanceSpecHelper *helper = [[self alloc] init];
+    BTThreeDSecureAuthenticationViewController_AcceptanceSpecHelper *helper = [[self alloc] init];
     waitUntil(^(DoneCallback done) {
         [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
                                                  BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
@@ -94,7 +94,7 @@
 #pragma mark ThreeDSecureViewControllerDelegate
 
 - (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
-              didAuthenticateCard:(BTCardPaymentMethod *)card
+               didAuthenticateCard:(BTCardPaymentMethod *)card
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock {
     if (self.authenticateBlock) {
         self.authenticateBlock(viewController, self.lookup, card, completionBlock);
@@ -125,17 +125,21 @@
     }
 }
 
+- (void)lookupHappyPathAndDo:(void (^)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController))completion {
+    [self lookupNumber:@"4000000000000002" andDo:completion didAuthenticate:nil didFail:nil didFinish:nil];
+}
+
 @end
 
-SpecBegin(BTThreeDSecureViewController_Acceptance)
+SpecBegin(BTThreeDSecureAuthenticationViewController_Acceptance)
 
 describe(@"3D Secure View Controller", ^{
-    __block BTThreeDSecureViewController_AcceptanceSpecHelper *helper;
+    __block BTThreeDSecureAuthenticationViewController_AcceptanceSpecHelper *helper;
     beforeEach(^{
-        helper = [BTThreeDSecureViewController_AcceptanceSpecHelper helper];
+        helper = [BTThreeDSecureAuthenticationViewController_AcceptanceSpecHelper helper];
     });
 
-    context(@"developer perspective", ^{
+    describe(@"developer perspective - delegate messages", ^{
         it(@"fails to load a view controller when lookup fails", ^{
             BTThreeDSecureLookupResult *lookup = nil;
             BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
@@ -237,7 +241,7 @@ describe(@"3D Secure View Controller", ^{
         });
     });
 
-    describe(@"user flows - (enrolled, authenticated, signature verified)", ^{
+    describe(@"user flows - 3DS Statuses (enrolled, authenticated, signature verified)", ^{
         context(@"cardholder enrolled, successful authentication, successful signature verification - Y,Y,Y", ^{
             it(@"successfully authenticates a user when they enter their password", ^{
                 __block BOOL checkedNonce = NO;
@@ -423,12 +427,100 @@ describe(@"3D Secure View Controller", ^{
                                                                   }];
                                } didFail:nil
                            didFinish:nil];
-                
+
                 [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
                     KIFTestWaitCondition(checkedNonce, error, @"Did not check nonce");
                     return KIFTestStepResultSuccess;
                 }];
             });
+        });
+
+        context(@"The ACS Frame fails to load", ^{
+            it(@"accepts a password but fails to authenticate the nonce", ^{
+                id<OHHTTPStubsDescriptor> stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                    return [request.URL.host isEqualToString:@"acs.example.com"];
+                } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                    return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:123 userInfo:@{ NSLocalizedDescriptionKey: @"Something bad happened" }]];
+                }];
+
+                BTThreeDSecureLookupResult *r = [[BTThreeDSecureLookupResult alloc] init];
+                r.acsURL = [NSURL URLWithString:@"https://acs.example.com/"];
+                r.PAReq = @"pareq";
+                r.termURL = [NSURL URLWithString:@"https://example.com/term"];
+                r.MD = @"md";
+
+                BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:r];
+
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester waitForViewWithAccessibilityLabel:@"Something bad happened"];
+                [tester tapViewWithAccessibilityLabel:@"OK"];
+                [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Something bad happened"];
+
+                [OHHTTPStubs removeStub:stub];
+            });
+        });
+    });
+
+    describe(@"web view interaction details", ^{
+        it(@"displays a loading indicator during page loads", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
+                [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
+                [tester tapViewWithAccessibilityLabel:@"Submit"];
+                [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
+                [tester waitForViewWithAccessibilityLabel:@"Incorrect, Please try again"];
+                [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
+            }];
+        });
+
+        it(@"closes the popup when the user taps Close in the nav bar", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester tapViewWithAccessibilityLabel:@"Help"];
+                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
+                [tester tapViewWithAccessibilityLabel:@"Close"];
+
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+            }];
+        });
+        
+        it(@"closes the popup when the user taps a close link", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+                
+                [tester tapViewWithAccessibilityLabel:@"Help"];
+                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
+                [tester tapUIWebviewXPathElement:@"//a[text()=\"Social Security Number\"]"];
+                [tester tapUIWebviewXPathElement:@"(//a[contains(text(), \"Return\")])[last()]"];
+
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+            }];
+        });
+        
+        it(@"closes the popup when the user tap the Close button", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester tapViewWithAccessibilityLabel:@"Help"];
+                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
+                [tester tapUIWebviewXPathElement:@"//input[@value=\"    Close    \"]"];
+
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+            }];
+        });
+
+        it(@"uses the html title tag for the view controllers title", ^{
+            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+
+                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+
+                expect(threeDSecureViewController.title).to.equal(@"Authentication");
+            }];
         });
     });
 });
