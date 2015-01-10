@@ -109,7 +109,7 @@ static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayment
 - (void)prepareWebViewPopupLinks:(UIWebView *)webView {
     NSString *js = [NSString stringWithFormat:@"var as = document.getElementsByTagName('a');\
                     for (var i = 0; i < as.length; i++) {\
-                    if (as[i]['target'] === '_new') { as[i]['href'] = '%@+' + as[i]['href']; } \
+                    if (as[i]['target']) { as[i]['href'] = '%@+' + as[i]['href']; } \
                     }", BTWebViewControllerPopupDummyURLScheme];
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
