@@ -266,12 +266,14 @@
 }
 
 - (void)informDelegateWillProcess {
+    [self.client postAnalyticsEvent:@"ios.apple-pay-provider.will-process"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillProcess:)]) {
         [self.delegate paymentMethodCreatorWillProcess:self];
     }
 }
 
 - (void)informDelegateRequestsPresentationOfViewController:(UIViewController *)viewController {
+    [self.client postAnalyticsEvent:@"ios.apple-pay-provider.start"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:requestsPresentationOfViewController:)]) {
         [self.delegate paymentMethodCreator:self requestsPresentationOfViewController:viewController];
     }
