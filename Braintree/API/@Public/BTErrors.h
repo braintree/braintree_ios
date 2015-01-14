@@ -25,7 +25,7 @@ NS_ENUM(NSInteger, BTErrorCode) {
     BTMerchantIntegrationErrorNonceNotFound,
     /// A server-side error occured. The result of your request is not specified. Please retry your request.
     BTServerErrorUnknown,
-    /// A server-side error occured due to the Gateway being unavailable. The result of your reuqest is not specified. Please retry your request.
+    /// A server-side error occured due to the Gateway being unavailable. The result of your request is not specified. Please retry your request.
     BTServerErrorGatewayUnavailable,
     /// A server-side error occured due to a network problem. See the underlying error for more details and retry your request.
     BTServerErrorNetworkUnavailable,
