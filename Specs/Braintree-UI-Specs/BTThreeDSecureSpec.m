@@ -8,7 +8,6 @@ __block id<BTPaymentMethodCreationDelegate> delegate;
 __block NSString *originalNonce_lookupEnrolledAuthenticationNotRequired = @"some-credit-card-nonce-where-3ds-succeeds-without-user-authentication";
 __block NSString *originalNonce_lookupEnrolledAuthenticationRequired = @"some-credit-card-nonce-where-3ds-succeeds-after-user-authentication";
 __block NSString *originalNonce_lookupFails = @"some-credit-card-nonce-where-3ds-fails";
-__block NSString *upgradedNonce_lookupEnrolledThreeDSecure = @"fake-3ds-lookup-enrolled-nonce";
 
 beforeEach(^{
     client = [OCMockObject mockForClass:[BTClient class]];
@@ -19,7 +18,7 @@ beforeEach(^{
         BTClientThreeDSecureLookupSuccessBlock block = [invocation getArgumentAtIndexAsObject:4];
         BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.acsURL = [NSURL URLWithString:@"http://acs.example.com"];
-        block(lookup, nil);
+        block(lookup);
     }];
     [clientStub_lookupSucceedsAuthenticationRequired lookupNonceForThreeDSecure:originalNonce_lookupEnrolledAuthenticationRequired
                                                               transactionAmount:OCMOCK_ANY
@@ -28,8 +27,11 @@ beforeEach(^{
 
     id clientStub_lookupSucceedsAuthenticationNotRequired = [(OCMockObject *)client stub];
     [clientStub_lookupSucceedsAuthenticationNotRequired andDo:^(NSInvocation *invocation) {
+        BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
+        lookup.card = [OCMockObject mockForClass:[BTCardPaymentMethod class]];
+        lookup.threeDSecureInfo = @{ @"liabilityShiftPossible": @YES, @"liabilityShifted": @YES };
         BTClientThreeDSecureLookupSuccessBlock block = [invocation getArgumentAtIndexAsObject:4];
-        block(nil, upgradedNonce_lookupEnrolledThreeDSecure);
+        block(lookup);
     }];
     [clientStub_lookupSucceedsAuthenticationNotRequired lookupNonceForThreeDSecure:originalNonce_lookupEnrolledAuthenticationNotRequired
                                                                  transactionAmount:OCMOCK_ANY
