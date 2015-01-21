@@ -43,6 +43,7 @@ target 'Braintree-Dev' do
   pod 'UIActionSheet+Blocks'
   pod 'UIAlertView+Blocks'
   pod 'FLEX'
+  pod 'InAppSettingsKit'
 end
 
 

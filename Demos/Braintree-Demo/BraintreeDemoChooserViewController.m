@@ -3,6 +3,7 @@
 #import <HockeySDK/HockeySDK.h>
 #import <Braintree/Braintree.h>
 #import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
+#import <InAppSettingsKit/IASKAppSettingsViewController.h>
 
 #import "BraintreeDemoBraintreeInitializationDemoViewController.h"
 #import "BraintreeDemoOneTouchDemoViewController.h"
@@ -250,7 +251,9 @@
 #pragma mark UI Actions
 
 - (IBAction)tappedEnvironmentSelector:(__unused UIBarButtonItem *)sender {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+    IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] init];
+    appSettingsViewController.showDoneButton = NO;
+    [self.navigationController pushViewController:appSettingsViewController animated:YES];
 }
 
 - (IBAction)tappedGiveFeedback {
