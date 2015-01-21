@@ -1,16 +1,18 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceEnvironment) {
-    BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant,
-    BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant,
+    BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant = 0,
+    BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant = 1,
 };
+
+extern NSString *BraintreeDemoTransactionServiceEnvironmentDidChangeNotification;
 
 @interface BraintreeDemoTransactionService : NSObject
 
 + (instancetype)sharedService;
-+ (BraintreeDemoTransactionServiceEnvironment)mostRecentlyUsedEnvironment;
+- (BraintreeDemoTransactionServiceEnvironment)currentEnvironment;
 
-- (void)setEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment;
+- (BOOL)threeDSecureEnabled;
 
 - (void)fetchMerchantConfigWithCompletion:(void (^)(NSString *merchantId, NSError *error))completionBlock;
 - (void)createCustomerAndFetchClientTokenWithCompletion:(void (^)(NSString *clientToken, NSError *error))completionBlock;

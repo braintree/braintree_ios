@@ -52,18 +52,20 @@
 
 @property (nonatomic, strong) BTThreeDSecure *threeDSecure;
 
-#pragma mark Settings
-
-@property (weak, nonatomic) IBOutlet UISwitch *modalPresentationSwitch;
-
 @end
 
 @implementation BraintreeDemoChooserViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self switchToEnvironment:[BraintreeDemoTransactionService mostRecentlyUsedEnvironment]];
-    [self initializeBraintree];
+
+    [self switchToEnvironment];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToEnvironment) name:BraintreeDemoTransactionServiceEnvironmentDidChangeNotification object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BraintreeDemoTransactionServiceEnvironmentDidChangeNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -193,7 +195,7 @@
     }
 
     if (demoViewController) {
-        if (self.modalPresentationSwitch.on) {
+        if (self.useModalPresentation) {
             demoViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPresentedViewController:)];
             UINavigationController *vc = [[UINavigationController alloc] initWithRootViewController:demoViewController];
 
@@ -247,38 +249,18 @@
 
 #pragma mark UI Actions
 
-- (IBAction)tappedEnvironmentSelector:(UIBarButtonItem *)sender {
-    [UIActionSheet showFromBarButtonItem:sender
-                                animated:YES
-                               withTitle:@"Choose a Merchant Server Environment"
-                       cancelButtonTitle:@"Cancel"
-                  destructiveButtonTitle:nil
-                       otherButtonTitles:@[@"Sandbox Merchant", @"Production Merchant"]
-                                tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
-                                    if (buttonIndex == actionSheet.cancelButtonIndex) {
-                                        return;
-                                    }
-
-                                    BraintreeDemoTransactionServiceEnvironment environment;
-
-                                    if (buttonIndex == 1) {
-                                        environment = BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant;
-                                    } else {
-                                        environment = BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant;
-                                    }
-
-                                    [self switchToEnvironment:environment];
-                                }];
+- (IBAction)tappedEnvironmentSelector:(__unused UIBarButtonItem *)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 }
 
 - (IBAction)tappedGiveFeedback {
     [[[BITHockeyManager sharedHockeyManager] feedbackManager] showFeedbackListView];
 }
 
-- (void)switchToEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment {
+- (void)switchToEnvironment {
     NSString *environmentName;
 
-    switch (environment) {
+    switch ([[BraintreeDemoTransactionService sharedService] currentEnvironment]) {
         case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
             environmentName = @"Sandbox";
             break;
@@ -286,7 +268,6 @@
             environmentName = @"Production";
     }
 
-    [[BraintreeDemoTransactionService sharedService] setEnvironment:environment];
     self.environmentSelector.title = environmentName;
 
     [self initializeBraintree];
@@ -361,6 +342,12 @@
 }
 
 - (void)paymentMethodCreatorWillProcess:(__unused id)sender {
+}
+
+#pragma mark Settings
+
+- (BOOL)useModalPresentation {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"BraintreeDemoChooserViewControllerShouldUseModalPresentationDefaultsKey"];
 }
 
 @end
