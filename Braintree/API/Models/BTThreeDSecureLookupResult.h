@@ -7,8 +7,6 @@
 @property (nonatomic, copy) NSURL *acsURL;
 @property (nonatomic, copy) NSURL *termURL;
 
-@property (nonatomic, strong) NSDictionary *threeDSecureInfo;
-
 @property (nonatomic, strong) BTCardPaymentMethod *card;
 
 - (BOOL)requiresUserAuthentication;

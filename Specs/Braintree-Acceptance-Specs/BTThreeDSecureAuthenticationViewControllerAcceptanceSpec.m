@@ -387,7 +387,8 @@ describe(@"3D Secure View Controller", ^{
 
         context(@"issuer is down - Y,U", ^{
             it(@"returns a nonce without asking user for authentication", ^{
-                __block BOOL checkedNonce = NO;
+                __block BOOL calledDidFail = NO;
+                __block BOOL calledDidFinish = NO;
 
                 [helper lookupNumber:@"4000000000000036"
                                andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
@@ -395,15 +396,21 @@ describe(@"3D Secure View Controller", ^{
 
                                    [tester waitForViewWithAccessibilityLabel:@"System Error" traits:UIAccessibilityTraitStaticText];
                                    [tester tapViewWithAccessibilityLabel:@"Continue"];
-                               } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
-                                   [helper fetchThreeDSecureVerificationInfo:card.nonce completion:^(NSDictionary *response) {
-                                       expect(response[@"reportStatus"]).to.equal(@"authenticate_unable_to_authenticate");
-                                       checkedNonce = YES;
-                                   }];
-                               } didFail:nil didFinish:nil];
+                               } didAuthenticate:nil
+                             didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
+                                 calledDidFail = YES;
+                                 
+                                 expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
+                                 expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
+                                 expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @YES, });
+                             } didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                                 expect(calledDidFail).to.beTruthy();
+                                 calledDidFinish = YES;
+                             }];
 
                 [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
-                    KIFTestWaitCondition(checkedNonce, error, @"Did not check nonce");
+                    KIFTestWaitCondition(calledDidFail, error, @"Did not call didFail");
+                    KIFTestWaitCondition(calledDidFinish, error, @"Did not call didFinish");
                     return KIFTestStepResultSuccess;
                 }];
             });
@@ -411,7 +418,9 @@ describe(@"3D Secure View Controller", ^{
 
         context(@"Early termination due to cardinal error - Y, Error", ^{
             it(@"accepts a password but fails to authenticate the nonce", ^{
-                __block BOOL checkedNonce = NO;
+                __block BOOL calledDidFail = NO;
+                __block BOOL calledDidFinish = NO;
+
                 [helper lookupNumber:@"4000000000000093"
                                andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
@@ -421,17 +430,20 @@ describe(@"3D Secure View Controller", ^{
 
                                    [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                    [tester tapViewWithAccessibilityLabel:@"Submit"];
-                               } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus)) {
-                                   [helper fetchThreeDSecureVerificationInfo:card.nonce
-                                                                  completion:^(NSDictionary *response) {
-                                                                      expect(response[@"reportStatus"]).to.equal(@"authenticate_signature_verification_failed");
-                                                                      checkedNonce = YES;
-                                                                  }];
-                               } didFail:nil
-                           didFinish:nil];
+                               } didAuthenticate:nil
+                             didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
+                                 calledDidFail = YES;
+                                 expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
+                                 expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
+                                 expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShiftPossible": @YES, @"liabilityShifted": @NO, });
+                             } didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+                                 calledDidFinish = YES;
+                                 expect(calledDidFail).to.beTruthy();
+                             }];
 
                 [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
-                    KIFTestWaitCondition(checkedNonce, error, @"Did not check nonce");
+                    KIFTestWaitCondition(calledDidFail, error, @"Did not call didFail");
+                    KIFTestWaitCondition(calledDidFinish, error, @"Did not call didFinish");
                     return KIFTestStepResultSuccess;
                 }];
             });

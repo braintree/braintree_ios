@@ -423,16 +423,14 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                 BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
 
                 NSDictionary *lookupDictionary = response.object[@"lookup"];
-                if (lookupDictionary) {
-                    lookup.acsURL = [NSURL URLWithString:lookupDictionary[@"acsUrl"]];
-                    lookup.PAReq = lookupDictionary[@"pareq"];
-                    lookup.MD = lookupDictionary[@"md"];
-                    lookup.termURL = [NSURL URLWithString:lookupDictionary[@"termUrl"]];
-                }
+                lookup.acsURL = [lookupDictionary[@"acsUrl"] isKindOfClass:[NSString class]] ? [NSURL URLWithString:lookupDictionary[@"acsUrl"]] : nil;
+                lookup.PAReq = lookupDictionary[@"pareq"];
+                lookup.MD = lookupDictionary[@"md"];
+                lookup.termURL = [lookupDictionary[@"termUrl"] isKindOfClass:[NSString class]] ? [NSURL URLWithString:lookupDictionary[@"termUrl"]] : nil;
 
                 NSDictionary *creditCardResponse = response.object[@"paymentMethod"];
                 lookup.card = creditCardResponse ? [[self class] cardFromAPIResponseDictionary:creditCardResponse] : nil;
-                lookup.threeDSecureInfo = response.object[@"threeDSecureInfo"];
+                lookup.card.threeDSecureInfo = response.object[@"threeDSecureInfo"];
                 successBlock(lookup);
             }
         } else {

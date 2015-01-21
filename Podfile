@@ -12,7 +12,8 @@ target 'Tests' do
             'Braintree-PayPal-Integration-Specs',
             'Braintree-PayPal-Acceptance-Specs',
             'Braintree-Venmo-Specs',
-            'Braintree-Data-Specs'
+            'Braintree-Data-Specs',
+            'Braintree-3D-Secure-Specs'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'

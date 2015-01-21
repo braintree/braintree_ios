@@ -32,20 +32,21 @@
     [self.client lookupNonceForThreeDSecure:nonce
                           transactionAmount:amount
                                     success:^(BTThreeDSecureLookupResult *lookup) {
-                                        if (lookup.card) {
-                                            if ([lookup.threeDSecureInfo[@"liabilityShiftPossible"] boolValue] && [lookup.threeDSecureInfo[@"liabilityShifted"] boolValue]) {
+                                        if (lookup.requiresUserAuthentication) {
+                                            BTThreeDSecureAuthenticationViewController *authenticationViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
+                                            authenticationViewController.delegate = self;
+                                            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authenticationViewController];
+                                            [self informDelegateRequestsPresentationOfViewController:navigationController];
+                                        } else {
+                                            NSDictionary *threeDSecureInfo = lookup.card.threeDSecureInfo;
+                                            if ([threeDSecureInfo[@"liabilityShiftPossible"] boolValue] && [threeDSecureInfo[@"liabilityShifted"] boolValue]) {
                                                 [self informDelegateDidCreatePaymentMethod:lookup.card];
                                             } else {
                                                 [self informDelegateDidFailWithError:[NSError errorWithDomain:BTThreeDSecureErrorDomain
                                                                                                          code:BTThreeDSecureFailedLookupErrorCode
                                                                                                      userInfo:@{ NSLocalizedDescriptionKey: @"3D Secure authentication was attempted but liability shift is not possible",
-                                                                                                                 BTThreeDSecureInfoKey: lookup.threeDSecureInfo, }]];
+                                                                                                                 BTThreeDSecureInfoKey: lookup.card.threeDSecureInfo, }]];
                                             }
-                                        } else {
-                                            BTThreeDSecureAuthenticationViewController *authenticationViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
-                                            authenticationViewController.delegate = self;
-                                            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authenticationViewController];
-                                            [self informDelegateRequestsPresentationOfViewController:navigationController];
                                         }
                                     }
                                     failure:^(NSError *error) {

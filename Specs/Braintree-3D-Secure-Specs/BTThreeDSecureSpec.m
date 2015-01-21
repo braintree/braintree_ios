@@ -27,9 +27,10 @@ beforeEach(^{
 
     id clientStub_lookupSucceedsAuthenticationNotRequired = [(OCMockObject *)client stub];
     [clientStub_lookupSucceedsAuthenticationNotRequired andDo:^(NSInvocation *invocation) {
+        BTCardPaymentMethod *card = [OCMockObject mockForClass:[BTCardPaymentMethod class]];
+        [[[(OCMockObject *)card stub] andReturn:@{ @"liabilityShiftPossible": @YES, @"liabilityShifted": @YES }] threeDSecureInfo];
         BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
-        lookup.card = [OCMockObject mockForClass:[BTCardPaymentMethod class]];
-        lookup.threeDSecureInfo = @{ @"liabilityShiftPossible": @YES, @"liabilityShifted": @YES };
+        lookup.card = card;
         BTClientThreeDSecureLookupSuccessBlock block = [invocation getArgumentAtIndexAsObject:4];
         block(lookup);
     }];

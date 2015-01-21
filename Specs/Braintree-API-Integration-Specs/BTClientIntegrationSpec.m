@@ -968,6 +968,7 @@ describe(@"3D Secure", ^{
                  lookupNonceForThreeDSecure:nonce
                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                  success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult) {
+                     expect(threeDSecureLookupResult.requiresUserAuthentication).to.beTruthy();
                      expect(threeDSecureLookupResult.MD).to.beKindOf([NSString class]);
                      expect(threeDSecureLookupResult.acsURL).to.equal([NSURL URLWithString:@"https://testcustomer34.cardinalcommerce.com/V3DSStart?osb=visa-3&VAA=B"]);
                      expect([threeDSecureLookupResult.termURL absoluteString]).to.match(@"^http://.*:3000/merchants/integration_merchant_id/client_api/v1/payment_methods/[a-fA-F0-9-]+/three_d_secure/authenticate\?.*");
@@ -1004,7 +1005,8 @@ describe(@"3D Secure", ^{
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                            success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
                                                                expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
-                                                               expect(threeDSecureLookup.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @YES, @"liabilityShiftPossible": @YES, });
+                                                               expect(threeDSecureLookup.card.nonce).to.beANonce();
+                                                               expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @YES, @"liabilityShiftPossible": @YES, });
                                                                done();
                                                            } failure:nil];
             });
@@ -1034,9 +1036,9 @@ describe(@"3D Secure", ^{
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                            success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
-                                                               expect(threeDSecureLookup.card.nonce).to.beANonce();
                                                                expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
-                                                               expect(threeDSecureLookup.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @YES, @"liabilityShiftPossible": @YES, });
+                                                               expect(threeDSecureLookup.card.nonce).to.beANonce();
+                                                               expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @NO, });
                                                                done();
                                                            } failure:nil];
             });
@@ -1066,9 +1068,9 @@ describe(@"3D Secure", ^{
                 [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                  transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                            success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
-                                                               expect(threeDSecureLookup.card.nonce).to.beANonce();
                                                                expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
-                                                               expect(threeDSecureLookup.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @NO, });
+                                                               expect(threeDSecureLookup.card.nonce).to.beANonce();
+                                                               expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @NO, });
                                                                done();
                                                            }
                                                            failure:nil];
@@ -1174,7 +1176,7 @@ describe(@"3D Secure", ^{
                                                            failure:^(NSError *error) {
                                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
-                                                               expect(error.localizedDescription).to.contain(@"Merchant not 3D Secure registered");
+                                                               expect(error.localizedDescription).to.contain(@"Merchant account not 3D Secure enabled");
                                                                expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.beKindOf([NSDictionary class]);
                                                                done();
                                                            }];

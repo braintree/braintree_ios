@@ -7,8 +7,6 @@ describe(@"verifyCardWithNonce:amount:", ^{
     __block BTClient *client;
     __block id<BTPaymentMethodCreationDelegate> delegate;
     __block NSString *nonce;
-    __block NSString *unenrolledNonce;
-    __block NSString *unsupportedNonce;
 
     beforeEach(^{
         waitUntil(^(DoneCallback done) {
@@ -27,30 +25,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
                                            [client saveCardWithRequest:r
                                                                success:^(BTCardPaymentMethod *card) {
                                                                    nonce = card.nonce;
-
-
-                                           BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
-                                           r.number = @"4000000000000051";
-                                           r.expirationMonth = @"12";
-                                           r.expirationYear = @"2020";
-                                           r.shouldValidate = NO;
-                                           [client saveCardWithRequest:r
-                                                               success:^(BTCardPaymentMethod *card) {
-                                                                   unenrolledNonce = card.nonce;
-
-                                           BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
-                                           r.number = @"6011111111111117";
-                                           r.expirationMonth = @"12";
-                                           r.expirationYear = @"2020";
-                                           r.shouldValidate = NO;
-                                           [client saveCardWithRequest:r
-                                                               success:^(BTCardPaymentMethod *card) {
-                                                                   unsupportedNonce = card.nonce;
                                                                    done();
-                                                               } failure:nil];
-
-                                                               } failure:nil];
-                                                                   
                                                                } failure:nil];
                                        }];
         });
@@ -107,6 +82,23 @@ withinNavigationControllerWithNavigationBarClass:nil
     });
 
     describe(@"for a issuer that is not enrolled", ^{
+        __block NSString *unenrolledNonce;
+
+        beforeEach(^{
+            waitUntil(^(DoneCallback done) {
+                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                r.number = @"4000000000000051";
+                r.expirationMonth = @"12";
+                r.expirationYear = @"2020";
+                r.shouldValidate = NO;
+                [client saveCardWithRequest:r
+                                    success:^(BTCardPaymentMethod *card) {
+                                        unenrolledNonce = card.nonce;
+                                        done();
+                                    } failure:nil];
+            });
+        });
+
         it(@"returns a nonce without user authentication", ^{
             BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
 
@@ -122,6 +114,25 @@ withinNavigationControllerWithNavigationBarClass:nil
     });
 
     describe(@"for an unsupported card type", ^{
+        __block NSString *unsupportedNonce;
+
+        beforeEach(^{
+
+            waitUntil(^(DoneCallback done) {
+                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+                r.number = @"6011111111111117";
+                r.expirationMonth = @"12";
+                r.expirationYear = @"2020";
+                r.shouldValidate = NO;
+                [client saveCardWithRequest:r
+                                    success:^(BTCardPaymentMethod *card) {
+                                        unsupportedNonce = card.nonce;
+                                        done();
+                                    } failure:nil];
+
+            });
+        });
+
         it(@"fails to perform 3D Secure", ^{
             BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
 
@@ -130,7 +141,7 @@ withinNavigationControllerWithNavigationBarClass:nil
                                        HC_hasProperty(@"domain", BTThreeDSecureErrorDomain),
                                        HC_hasProperty(@"code", @(BTThreeDSecureFailedLookupErrorCode)),
                                        HC_hasProperty(@"userInfo", HC_hasEntry(BTThreeDSecureInfoKey, @{@"liabilityShifted": @NO, @"liabilityShiftPossible": @NO})),
-                                       
+
                                        nil);
             [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure
                                                    didFailWithError:errorMatcher];
@@ -161,18 +172,18 @@ withinNavigationControllerWithNavigationBarClass:nil
 
             [threeDSecure verifyCardWithNonce:nonce amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
 
-            [(OCMockObject *)delegate verifyWithDelay:30];
+            [(OCMockObject *)delegate verifyWithDelay:10];
 
             [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
                 KIFTestWaitCondition(threeDSecureViewController != nil, error, @"Did not present 3D Secure authentication flow");
                 return KIFTestStepResultSuccess;
             }];
-
+            
             [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure requestsDismissalOfViewController:[OCMArg isNotNil]];
             [[(OCMockObject *)delegate expect] paymentMethodCreatorDidCancel:threeDSecure];
-
+            
             [tester tapViewWithAccessibilityLabel:@"Cancel"];
-
+            
             [(OCMockObject *)delegate verifyWithDelay:30];
         });
     });
