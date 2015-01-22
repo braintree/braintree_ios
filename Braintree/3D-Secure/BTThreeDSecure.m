@@ -31,21 +31,21 @@
 
     [self.client lookupNonceForThreeDSecure:nonce
                           transactionAmount:amount
-                                    success:^(BTThreeDSecureLookupResult *lookup) {
-                                        if (lookup.requiresUserAuthentication) {
-                                            BTThreeDSecureAuthenticationViewController *authenticationViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
+                                    success:^(BTThreeDSecureLookupResult *lookupResult) {
+                                        if (lookupResult.requiresUserAuthentication) {
+                                            BTThreeDSecureAuthenticationViewController *authenticationViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookupResult:lookupResult];
                                             authenticationViewController.delegate = self;
                                             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authenticationViewController];
                                             [self informDelegateRequestsPresentationOfViewController:navigationController];
                                         } else {
-                                            NSDictionary *threeDSecureInfo = lookup.card.threeDSecureInfo;
+                                            NSDictionary *threeDSecureInfo = lookupResult.card.threeDSecureInfo;
                                             if ([threeDSecureInfo[@"liabilityShiftPossible"] boolValue] && [threeDSecureInfo[@"liabilityShifted"] boolValue]) {
-                                                [self informDelegateDidCreatePaymentMethod:lookup.card];
+                                                [self informDelegateDidCreatePaymentMethod:lookupResult.card];
                                             } else {
                                                 [self informDelegateDidFailWithError:[NSError errorWithDomain:BTThreeDSecureErrorDomain
                                                                                                          code:BTThreeDSecureFailedLookupErrorCode
                                                                                                      userInfo:@{ NSLocalizedDescriptionKey: @"3D Secure authentication was attempted but liability shift is not possible",
-                                                                                                                 BTThreeDSecureInfoKey: lookup.card.threeDSecureInfo, }]];
+                                                                                                                 BTThreeDSecureInfoKey: lookupResult.card.threeDSecureInfo, }]];
                                             }
                                         }
                                     }

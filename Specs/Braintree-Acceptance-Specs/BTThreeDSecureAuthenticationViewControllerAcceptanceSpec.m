@@ -8,7 +8,7 @@
 
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, strong) BTThreeDSecureAuthenticationViewController *threeDSecureViewController;
-@property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
+@property (nonatomic, strong) BTThreeDSecureLookupResult *lookupResult;
 @property (nonatomic, copy) NSString *originalNonce;
 
 @property (nonatomic, copy) void (^authenticateBlock)(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus));
@@ -76,12 +76,12 @@
     waitUntil(^(DoneCallback done) {
         [self lookupCard:number
               completion:^(BTThreeDSecureLookupResult *threeDSecureLookup){
-                  self.lookup = threeDSecureLookup;
+                  self.lookupResult = threeDSecureLookup;
                   done();
               }];
     });
 
-    self.threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:self.lookup];
+    self.threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookupResult:self.lookupResult];
 
     self.authenticateBlock = authenticateBlock;
     self.finishBlock = finishBlock;
@@ -144,17 +144,17 @@ describe(@"3D Secure View Controller", ^{
 
     describe(@"developer perspective - delegate messages", ^{
         it(@"fails to load a view controller when lookup fails", ^{
-            BTThreeDSecureLookupResult *lookup = nil;
-            BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
+            BTThreeDSecureLookupResult *lookupResult = nil;
+            BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookupResult:lookupResult];
 
             expect(threeDSecureViewController).to.beNil();
         });
 
         it(@"fails to load a view controller when lookup does not require a user flow", ^{
-            BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
-            BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:lookup];
+            BTThreeDSecureLookupResult *lookupResult = [[BTThreeDSecureLookupResult alloc] init];
+            BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookupResult:lookupResult];
 
-            expect(lookup.requiresUserAuthentication).to.beFalsy();
+            expect(lookupResult.requiresUserAuthentication).to.beFalsy();
             expect(threeDSecureViewController).to.beNil();
         });
 
@@ -457,13 +457,13 @@ describe(@"3D Secure View Controller", ^{
                     return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:123 userInfo:@{ NSLocalizedDescriptionKey: @"Something bad happened" }]];
                 }];
 
-                BTThreeDSecureLookupResult *r = [[BTThreeDSecureLookupResult alloc] init];
-                r.acsURL = [NSURL URLWithString:@"https://acs.example.com/"];
-                r.PAReq = @"pareq";
-                r.termURL = [NSURL URLWithString:@"https://example.com/term"];
-                r.MD = @"md";
+                BTThreeDSecureLookupResult *lookupResult = [[BTThreeDSecureLookupResult alloc] init];
+                lookupResult.acsURL = [NSURL URLWithString:@"https://acs.example.com/"];
+                lookupResult.PAReq = @"pareq";
+                lookupResult.termURL = [NSURL URLWithString:@"https://example.com/term"];
+                lookupResult.MD = @"md";
 
-                BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookup:r];
+                BTThreeDSecureAuthenticationViewController *threeDSecureViewController = [[BTThreeDSecureAuthenticationViewController alloc] initWithLookupResult:lookupResult];
 
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 

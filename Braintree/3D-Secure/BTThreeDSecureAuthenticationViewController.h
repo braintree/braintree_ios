@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  @param lookupResult Contains the result of the 3D Secure lookup
 ///
 ///  @return A view controller or nil when authentication is not possible and/or required.
-- (instancetype)initWithLookup:(BTThreeDSecureLookupResult *)lookup NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithLookupResult:(BTThreeDSecureLookupResult *)lookupResult NS_DESIGNATED_INITIALIZER;
 
 ///  The delegate is notified when the 3D Secure authentication flow completes
 @property (nonatomic, weak) id<BTThreeDSecureAuthenticationViewControllerDelegate> delegate;

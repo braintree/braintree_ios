@@ -6,19 +6,19 @@
 #import "BTWebViewController.h"
 
 @interface BTThreeDSecureAuthenticationViewController ()
-@property (nonatomic, strong) BTThreeDSecureLookupResult *lookup;
+@property (nonatomic, strong) BTThreeDSecureLookupResult *lookupResult;
 @end
 
 @implementation BTThreeDSecureAuthenticationViewController
 
-- (instancetype)initWithLookup:(BTThreeDSecureLookupResult *)lookup {
-    if (!lookup.requiresUserAuthentication) {
+- (instancetype)initWithLookupResult:(BTThreeDSecureLookupResult *)lookupResult {
+    if (!lookupResult.requiresUserAuthentication) {
         return nil;
     }
 
     self = [super init];
     if (self) {
-        self.lookup = lookup;
+        self.lookupResult = lookupResult;
     }
     return self;
 }
@@ -30,11 +30,11 @@
                                                                                           target:self
                                                                                           action:@selector(tappedCancel)];
 
-    NSMutableURLRequest *acsRequest = [NSMutableURLRequest requestWithURL:self.lookup.acsURL];
+    NSMutableURLRequest *acsRequest = [NSMutableURLRequest requestWithURL:self.lookupResult.acsURL];
     [acsRequest setHTTPMethod:@"POST"];
-    NSDictionary *fields = @{ @"PaReq": self.lookup.PAReq,
-                              @"TermUrl": self.lookup.termURL,
-                              @"MD": self.lookup.MD };
+    NSDictionary *fields = @{ @"PaReq": self.lookupResult.PAReq,
+                              @"TermUrl": self.lookupResult.termURL,
+                              @"MD": self.lookupResult.MD };
     [acsRequest setHTTPBody:[[BTURLUtils queryStringWithDictionary:fields] dataUsingEncoding:NSUTF8StringEncoding]];
     [acsRequest setAllHTTPHeaderFields:@{ @"Accept": @"text/html", @"Content-Type": @"application/x-www-form-urlencoded"}];
     [self loadRequest:acsRequest];
