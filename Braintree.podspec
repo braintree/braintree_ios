@@ -89,5 +89,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Braintree/3D-Secure/Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/API"
+    s.dependency "Braintree/UI"
+    s.dependency "Braintree/Payments"
   end
 end
