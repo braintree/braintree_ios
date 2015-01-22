@@ -5,12 +5,13 @@
 #import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
 
+#import "BraintreeDemoSettings.h"
 #import "BraintreeDemoBraintreeInitializationDemoViewController.h"
 #import "BraintreeDemoOneTouchDemoViewController.h"
 #import "BraintreeDemoTokenizationDemoViewController.h"
 #import "BraintreeDemoDirectApplePayIntegrationViewController.h"
 
-#import "BraintreeDemoTransactionService.h"
+#import "BraintreeDemoMerchantAPI.h"
 #import "BTClient_Internal.h"
 
 @interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate, BTPaymentMethodCreationDelegate>
@@ -36,7 +37,6 @@
 #pragma mark Braintree Operation Cells
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *makeATransactionCell;
-@property (nonatomic, weak) IBOutlet UITableViewCell *threeDSecureANonceCell;
 
 #pragma mark Meta Cells
 
@@ -49,7 +49,7 @@
 @property (nonatomic, copy) NSString *nonce;
 @property (nonatomic, copy) NSString *lastTransactionId;
 
-#pragma mark -
+#pragma mark ThreeDSecure
 
 @property (nonatomic, strong) BTThreeDSecure *threeDSecure;
 
@@ -62,11 +62,11 @@
 
     [self switchToEnvironment];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToEnvironment) name:BraintreeDemoTransactionServiceEnvironmentDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToEnvironment) name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:BraintreeDemoTransactionServiceEnvironmentDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,7 +87,7 @@
     self.lastTransactionId = nil;
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [[BraintreeDemoTransactionService sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error){
+    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error){
         if (error) {
             [self displayError:error forTask:@"Fetching Client Token"];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -96,7 +96,7 @@
 
         Braintree *braintree = [Braintree braintreeWithClientToken:clientToken];
 
-        [[BraintreeDemoTransactionService sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error){
+        [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error){
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             if (error) {
                 [self displayError:error forTask:@"Fetching Merchant Config"];
@@ -174,23 +174,8 @@
         }];
     } else if (selectedCell == self.makeATransactionCell) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        [[BraintreeDemoTransactionService sharedService]
-         makeTransactionWithPaymentMethodNonce:self.nonce
-         completion:^(NSString *transactionId, NSError *error){
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-             if (error) {
-                 [self displayError:error forTask:@"Creating Transation"];
-             } else {
-                 self.lastTransactionId = transactionId;
-                 NSLog(@"Created transaction: %@", transactionId);
-                 [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                                       atScrollPosition:UITableViewScrollPositionTop
-                                               animated:YES];
-             }
-         }];
-    } else if (selectedCell == self.threeDSecureANonceCell) {
-        self.threeDSecure = [[BTThreeDSecure alloc] initWithClient:self.braintree.client delegate:self];
-        [self.threeDSecure verifyCardWithNonce:self.nonce amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
+
+        [self makeATransactionWithThreeDSecure:[BraintreeDemoSettings threeDSecureEnabled]];
     } else {
         return;
     }
@@ -226,8 +211,6 @@
     } else if (cell == self.braintreeTransactionCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.lastTransactionId != nil);
         cell.detailTextLabel.text = self.lastTransactionId ?: @"(nil)";
-    } else if (cell == self.threeDSecureANonceCell) {
-        cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil && self.lastTransactionId == nil);
     } else if (cell == self.makeATransactionCell) {
         cell.userInteractionEnabled = cell.textLabel.enabled = cell.detailTextLabel.enabled = (self.nonce != nil);
     } else if (cell == self.libraryVersionCell) {
@@ -263,7 +246,7 @@
 - (void)switchToEnvironment {
     NSString *environmentName;
 
-    switch ([[BraintreeDemoTransactionService sharedService] currentEnvironment]) {
+    switch ([BraintreeDemoSettings currentEnvironment]) {
         case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
             environmentName = @"Sandbox";
             break;
@@ -276,6 +259,29 @@
     [self initializeBraintree];
 }
 
+#pragma mark -
+
+- (void)makeATransactionWithThreeDSecure:(BOOL)enableThreeDSecure {
+    if (enableThreeDSecure && [BraintreeDemoSettings threeDSecureEnabled]) {
+        NSLog(@"Verifying card with 3D Secure...");
+        self.threeDSecure = [[BTThreeDSecure alloc] initWithClient:self.braintree.client delegate:self];
+        [self.threeDSecure verifyCardWithNonce:self.nonce amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
+    } else {
+        [[BraintreeDemoMerchantAPI sharedService] makeTransactionWithPaymentMethodNonce:self.nonce
+                                                                             completion:^(NSString *transactionId, NSError *error){
+                                                                                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                                                                                 if (error) {
+                                                                                     [self displayError:error forTask:@"Creating Transation"];
+                                                                                 } else {
+                                                                                     self.lastTransactionId = transactionId;
+                                                                                     NSLog(@"Created transaction: %@", transactionId);
+                                                                                     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                                                                                           atScrollPosition:UITableViewScrollPositionTop
+                                                                                                                   animated:YES];
+                                                                                 }
+                                                                             }];
+    }
+}
 
 #pragma mark Drop In View Controller Delegate
 
@@ -307,28 +313,14 @@
 }
 
 - (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
-    if (sender == self.threeDSecure) {
-        [viewController dismissViewControllerAnimated:YES completion:^{
-            if (self.nonce) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"3D Secure Complete"
-                                                                               message:@"Upgraded payment method nonce"
-                                                                        preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:@"OK"
-                                                          style:UIAlertActionStyleCancel
-                                                        handler:^(__unused UIAlertAction *action) {
-                                                            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                                                                                  atScrollPosition:UITableViewScrollPositionTop
-                                                                                          animated:YES];
-                                                        }]];
-                [self presentViewController:alert animated:YES completion:nil];
-            }
-        }];
-    }
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)paymentMethodCreator:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     if (sender == self.threeDSecure) {
+        NSLog(@"3D Secure Completed");
         self.nonce = paymentMethod.nonce;
+        [self makeATransactionWithThreeDSecure:NO];
     }
 }
 

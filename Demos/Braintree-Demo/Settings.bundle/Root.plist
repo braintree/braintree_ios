@@ -10,7 +10,7 @@
 			<key>Title</key>
 			<string>Environment</string>
 			<key>Key</key>
-			<string>BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey</string>
+			<string>BraintreeDemoSettingsEnvironmentDefaultsKey</string>
 			<key>DefaultValue</key>
 			<integer>0</integer>
 			<key>ShortTitles</key>
@@ -41,7 +41,7 @@
 			<key>Title</key>
 			<string>Enabled - Run 3D Secure flow</string>
 			<key>Key</key>
-			<string>BraintreeDemoTransactionServiceEnableThreeDSecureDefaultsKey</string>
+			<string>BraintreeDemoSettingsThreeDSecureEnabledDefaultsKey</string>
 			<key>DefaultValue</key>
 			<false/>
 		</dict>
@@ -49,17 +49,17 @@
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-            <string>Required (3DS Transaction Option)</string>
+			<string>Required (3DS Transaction Option)</string>
 			<key>Key</key>
-			<string>BraintreeDemoTransactionServiceRequireThreeDSecureDefaultsKey</string>
+			<string>BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey</string>
 			<key>Values</key>
 			<array>
-				<real>0</real>
+				<integer>0</integer>
 				<integer>1</integer>
 				<integer>2</integer>
 			</array>
 			<key>DefaultValue</key>
-			<real>0</real>
+			<integer>0</integer>
 			<key>Titles</key>
 			<array>
 				<string>Default (Required if 3DS Verification present)</string>

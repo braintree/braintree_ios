@@ -1,27 +1,20 @@
-#import "BraintreeDemoTransactionService.h"
+#import "BraintreeDemoMerchantAPI.h"
 #import <AFNetworking/AFNetworking.h>
 
-NSString *BraintreeDemoTransactionServiceEnvironmentDidChangeNotification = @"BraintreeDemoTransactionServiceEnvironmentDidChangeNotification";
+#import "BraintreeDemoSettings.h"
 
-NSString *BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey = @"BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey";
-NSString *BraintreeDemoTransactionServiceEnableThreeDSecureDefaultsKey = @"BraintreeDemoTransactionServiceEnableThreeDSecureDefaultsKey";
-NSString *BraintreeDemoTransactionServiceRequireThreeDSecureDefaultsKey = @"BraintreeDemoTransactionServiceRequireThreeDSecureDefaultsKey";
+NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"BraintreeDemoTransactionServiceEnvironmentDidChangeNotification";
 
-typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceThreeDSecureRequiredStatus) {
-    BraintreeDemoTransactionServiceThreeDSecureRequiredStatusDefault = 0,
-    BraintreeDemoTransactionServiceThreeDSecureRequiredStatusRequired = 1,
-    BraintreeDemoTransactionServiceThreeDSecureRequiredStatusNotRequired = 2,
-};
-
-
-@interface BraintreeDemoTransactionService ()
+@interface BraintreeDemoMerchantAPI ()
 @property (nonatomic, strong) AFHTTPRequestOperationManager *sessionManager;
+@property (nonatomic, assign) BraintreeDemoTransactionServiceEnvironment currentEnvironment;
+@property (nonatomic, assign) BraintreeDemoTransactionServiceThreeDSecureRequiredStatus threeDSecureRequiredStatus;
 @end
 
-@implementation BraintreeDemoTransactionService
+@implementation BraintreeDemoMerchantAPI
 
 + (instancetype)sharedService {
-    static BraintreeDemoTransactionService *instance;
+    static BraintreeDemoMerchantAPI *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[self alloc] init];
@@ -32,6 +25,8 @@ typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceThreeDSecureRequiredSt
 - (id)init {
     self = [super init];
     if (self) {
+        self.currentEnvironment = -1;
+        self.threeDSecureRequiredStatus = -1;
         [self setupSessionManager];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupSessionManager) name:NSUserDefaultsDidChangeNotification object:nil];
     }
@@ -43,31 +38,23 @@ typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceThreeDSecureRequiredSt
 }
 
 - (void)setupSessionManager {
-    switch (self.currentEnvironment) {
-        case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
-            self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://braintree-sample-merchant.herokuapp.com"]];
-            break;
-        case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
-            self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://executive-sample-merchant.herokuapp.com"]];
-            break;
+    if (self.currentEnvironment != [BraintreeDemoSettings currentEnvironment] || self.threeDSecureRequiredStatus != [BraintreeDemoSettings threeDSecureRequiredStatus]) {
+        self.currentEnvironment = [BraintreeDemoSettings currentEnvironment];
+        self.threeDSecureRequiredStatus = [BraintreeDemoSettings threeDSecureRequiredStatus];
+        switch (self.currentEnvironment) {
+            case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
+                self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://braintree-sample-merchant.herokuapp.com"]];
+                break;
+            case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
+                self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://executive-sample-merchant.herokuapp.com"]];
+                break;
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:self];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:BraintreeDemoTransactionServiceEnvironmentDidChangeNotification object:self];
-}
-
-- (BraintreeDemoTransactionServiceEnvironment)currentEnvironment {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:BraintreeDemoTransactionServiceDefaultEnvironmentUserDefaultsKey];
-}
-
-- (BOOL)threeDSecureEnabled {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:BraintreeDemoTransactionServiceEnableThreeDSecureDefaultsKey];
-}
-
-- (BraintreeDemoTransactionServiceThreeDSecureRequiredStatus)threeDSecureRequiredStatus {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:BraintreeDemoTransactionServiceRequireThreeDSecureDefaultsKey];
 }
 
 - (NSString *)merchantAccountId {
-    if (self.currentEnvironment == BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant && self.threeDSecureEnabled) {
+    if ([BraintreeDemoSettings currentEnvironment] == BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant && [BraintreeDemoSettings threeDSecureEnabled]) {
         return @"test_AIB";
     }
 
@@ -105,17 +92,18 @@ typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceThreeDSecureRequiredSt
 }
 
 - (void)makeTransactionWithPaymentMethodNonce:(NSString *)paymentMethodNonce completion:(void (^)(NSString *transactionId, NSError *error))completionBlock {
+    NSLog(@"Creating a transaction with nonce: %@", paymentMethodNonce);
     NSDictionary *parameters;
 
-    switch (self.threeDSecureRequiredStatus) {
+    switch ([BraintreeDemoSettings threeDSecureRequiredStatus]) {
         case BraintreeDemoTransactionServiceThreeDSecureRequiredStatusDefault:
             parameters = @{ @"payment_method_nonce": paymentMethodNonce };
             break;
         case BraintreeDemoTransactionServiceThreeDSecureRequiredStatusRequired:
-            parameters = @{ @"payment_method_nonce": paymentMethodNonce, @"require_three_d_secure": @YES, };
+            parameters = @{ @"payment_method_nonce": paymentMethodNonce, @"three_d_secure_required": @YES, };
             break;
         case BraintreeDemoTransactionServiceThreeDSecureRequiredStatusNotRequired:
-            parameters = @{ @"payment_method_nonce": paymentMethodNonce, @"require_three_d_secure": @NO, };
+            parameters = @{ @"payment_method_nonce": paymentMethodNonce, @"three_d_secure_required": @NO, };
             break;
     }
 

@@ -195,30 +195,6 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Create Transaction with Nonce" id="fYo-pp-MTy">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="hOu-2P-2tW" detailTextLabel="1qg-dY-QYi" style="IBUITableViewCellStyleSubtitle" id="L2F-hV-wn1">
-                                        <rect key="frame" x="0.0" y="469" width="320" height="75"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L2F-hV-wn1" id="S7N-fz-fg5">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="74"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="3D Secure a nonce" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hOu-2P-2tW">
-                                                    <rect key="frame" x="15" y="19" width="157" height="22"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Exchange a nonce for an upgraded 3DS nonce" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" preferredMaxLayoutWidth="201" id="1qg-dY-QYi">
-                                                    <rect key="frame" x="15" y="41" width="201" height="15"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Wop-mr-JDF" detailTextLabel="2q2-ZJ-xOe" style="IBUITableViewCellStyleSubtitle" id="pFU-fh-zxH">
                                         <rect key="frame" x="0.0" y="469" width="320" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
@@ -294,7 +270,6 @@
                         <outlet property="environmentSelector" destination="U3F-pU-15a" id="zhe-Vu-NBb"/>
                         <outlet property="libraryVersionCell" destination="OIh-AA-R0X" id="hJj-G1-cS7"/>
                         <outlet property="makeATransactionCell" destination="pFU-fh-zxH" id="QKq-T9-KeU"/>
-                        <outlet property="threeDSecureANonceCell" destination="L2F-hV-wn1" id="PJ4-do-xNi"/>
                         <outlet property="tokenizationCell" destination="VEO-ur-9aJ" id="NJJ-U6-7QN"/>
                     </connections>
                 </tableViewController>
