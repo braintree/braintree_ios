@@ -60,6 +60,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(initializeBraintree) forControlEvents:UIControlEventValueChanged];
+
     [self switchToEnvironment];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToEnvironment) name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
@@ -98,6 +101,7 @@
 
         [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error){
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [self.refreshControl endRefreshing];
             if (error) {
                 [self displayError:error forTask:@"Fetching Merchant Config"];
                 return;
