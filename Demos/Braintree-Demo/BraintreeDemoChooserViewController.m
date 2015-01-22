@@ -2,6 +2,7 @@
 
 #import <HockeySDK/HockeySDK.h>
 #import <Braintree/Braintree.h>
+#import <Braintree/Braintree-3D-Secure.h>
 #import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
 
