@@ -1,7 +1,9 @@
 @import Foundation;
+
 #import "BTCardPaymentMethod.h"
 
 @interface BTThreeDSecureLookupResult : NSObject
+
 @property (nonatomic, copy) NSString *PAReq;
 @property (nonatomic, copy) NSString *MD;
 @property (nonatomic, copy) NSURL *acsURL;

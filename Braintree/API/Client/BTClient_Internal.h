@@ -3,6 +3,12 @@
 #import "BTClientToken.h"
 #import "BTClientConfiguration.h"
 
+#import "BTThreeDSecureLookupResult.h"
+#import "BTThreeDSecureErrors.h"
+
+/// Success Block type for 3D Secure lookups
+typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup);
+
 @interface BTClient ()
 @property (nonatomic, strong, readwrite) BTHTTP *clientApiHttp;
 @property (nonatomic, strong, readwrite) BTHTTP *analyticsHttp;
@@ -21,5 +27,11 @@
 + (BTPayPalPaymentMethod *)payPalPaymentMethodFromAPIResponseDictionary:(NSDictionary *)response;
 
 + (BTCardPaymentMethod *)cardFromAPIResponseDictionary:(NSDictionary *)responseObject;
+
+- (void)lookupNonceForThreeDSecure:(NSString *)nonce
+                 transactionAmount:(NSDecimalNumber *)amount
+                           success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
+                           failure:(BTClientFailureBlock)failureBlock;
+
 
 @end

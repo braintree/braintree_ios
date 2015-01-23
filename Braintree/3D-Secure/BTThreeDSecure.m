@@ -1,5 +1,6 @@
 #import "BTThreeDSecure.h"
 
+#import "BTClient_Internal.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
 
 @interface BTThreeDSecure () <BTThreeDSecureAuthenticationViewControllerDelegate>

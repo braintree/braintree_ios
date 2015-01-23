@@ -462,6 +462,7 @@
 		1637D0B219D1E13F00F34F39 /* BTAPIResourceSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAPIResourceSpec.m; sourceTree = "<group>"; };
 		1637D0B419D2268E00F34F39 /* BTAPIResourceValueAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAPIResourceValueAdapter.h; sourceTree = "<group>"; };
 		1637D0B519D2268E00F34F39 /* BTAPIResourceValueAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAPIResourceValueAdapter.m; sourceTree = "<group>"; };
+		163823211A72D4D6003D5FA4 /* BTThreeDSecureLookupResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLookupResult.h; sourceTree = "<group>"; };
 		163DB1E319FB08AE00AEB08F /* CardIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIO.h; sourceTree = "<group>"; };
 		163DB1E419FB08AE00AEB08F /* CardIOCreditCardInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIOCreditCardInfo.h; sourceTree = "<group>"; };
 		163DB1E519FB08AE00AEB08F /* CardIOPaymentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIOPaymentViewController.h; sourceTree = "<group>"; };
@@ -738,7 +739,6 @@
 		A7B7433E19A3E4B5000A6A7A /* BTVenmoAppSwitchReturnURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchReturnURL.m; sourceTree = "<group>"; };
 		A7B7433F19A3E4B5000A6A7A /* BTVenmoAppSwitchRequestURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchRequestURL.h; sourceTree = "<group>"; };
 		A7B7434019A3E4B5000A6A7A /* BTVenmoAppSwitchRequestURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchRequestURL.m; sourceTree = "<group>"; };
-		A7BFC5FB1A2E3D9400354401 /* BTThreeDSecureLookupResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLookupResult.h; sourceTree = "<group>"; };
 		A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookupResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLookupResult.m; sourceTree = "<group>"; };
 		A7C7F82D19B905C400493311 /* BTPaymentProviderErrors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentProviderErrors.m; sourceTree = "<group>"; };
 		A7CB617319B7B13000E972A8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1120,27 +1120,27 @@
 		1621743B192D85EB008DC35D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				16E20A581A61DDB4002BCC34 /* BTThreeDSecureErrors.h */,
-				16E20A591A61DDB4002BCC34 /* BTThreeDSecureErrors.m */,
 				16E7B03019E63B360057ABB7 /* BTApplePayPaymentMethod_Internal.h */,
-				16E7B03219E63B360057ABB7 /* BTCardPaymentMethod_Mutable.h */,
-				16E7B03719E63B360057ABB7 /* BTMutableApplePayPaymentMethod.h */,
-				16E7B03919E63B360057ABB7 /* BTMutableCardPaymentMethod.h */,
-				16E7B03B19E63B360057ABB7 /* BTMutablePaymentMethod.h */,
-				16E7B03D19E63B360057ABB7 /* BTMutablePayPalPaymentMethod.h */,
-				16E7B03F19E63B360057ABB7 /* BTPaymentMethod_Mutable.h */,
-				16E7B04119E63B360057ABB7 /* BTPayPalPaymentMethod_Mutable.h */,
-				A7BFC5FB1A2E3D9400354401 /* BTThreeDSecureLookupResult.h */,
 				16E7B03119E63B360057ABB7 /* BTApplePayPaymentMethod.m */,
+				16E7B03219E63B360057ABB7 /* BTCardPaymentMethod_Mutable.h */,
 				16E7B03319E63B360057ABB7 /* BTCardPaymentMethod.m */,
 				16E7B03519E63B360057ABB7 /* BTClientCardRequest.m */,
 				16E7B03619E63B360057ABB7 /* BTClientCardTokenizationRequest.m */,
+				16E7B03719E63B360057ABB7 /* BTMutableApplePayPaymentMethod.h */,
 				16E7B03819E63B360057ABB7 /* BTMutableApplePayPaymentMethod.m */,
+				16E7B03919E63B360057ABB7 /* BTMutableCardPaymentMethod.h */,
 				16E7B03A19E63B360057ABB7 /* BTMutableCardPaymentMethod.m */,
+				16E7B03B19E63B360057ABB7 /* BTMutablePaymentMethod.h */,
 				16E7B03C19E63B360057ABB7 /* BTMutablePaymentMethod.m */,
+				16E7B03D19E63B360057ABB7 /* BTMutablePayPalPaymentMethod.h */,
 				16E7B03E19E63B360057ABB7 /* BTMutablePayPalPaymentMethod.m */,
+				16E7B03F19E63B360057ABB7 /* BTPaymentMethod_Mutable.h */,
 				16E7B04019E63B360057ABB7 /* BTPaymentMethod.m */,
+				16E7B04119E63B360057ABB7 /* BTPayPalPaymentMethod_Mutable.h */,
 				16E7B04219E63B360057ABB7 /* BTPayPalPaymentMethod.m */,
+				16E20A581A61DDB4002BCC34 /* BTThreeDSecureErrors.h */,
+				16E20A591A61DDB4002BCC34 /* BTThreeDSecureErrors.m */,
+				163823211A72D4D6003D5FA4 /* BTThreeDSecureLookupResult.h */,
 				A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookupResult.m */,
 			);
 			path = Models;
