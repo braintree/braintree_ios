@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 3.6.0 (rc1: 2015-01-22)
+## 3.6.0 (rc1: 2015-01-22, rc2: 2015-01-23)
 
 * Add support for mobile 3D Secure
   * Requires additional import of a new subspec in your Podfile, `pod "Braintree/3d-secure", "3.6.0-rc1"`
