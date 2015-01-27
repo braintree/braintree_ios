@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
 
   s.default_subspecs = %w[Drop-In API PayPal Venmo UI Payments]
 
-  s.subspec "Drop-In" do |s|
+  s.subspec "Drop-In" do |ss|
     s.source_files  = "Braintree/Drop-In/**/*.{h,m}"
     s.dependency "Braintree/API"
     s.dependency "Braintree/PayPal"
@@ -36,36 +36,37 @@ Pod::Spec.new do |s|
     s.resource_bundle = { "Braintree-Drop-In-Localization" => "Braintree/Drop-In/Localization/*.lproj" }
   end
 
-  s.subspec "API" do |s|
+  s.subspec "API" do |ss|
     s.source_files  = "Braintree/API/**/*.{h,m}"
     s.public_header_files = "Braintree/API/@Public/*.h"
     s.weak_frameworks = "PassKit"
     s.frameworks = "AddressBook"
   end
 
-  s.subspec "PayPal" do |s|
-    s.source_files = "Braintree/PayPal/**/*.{h,m}"
-    s.public_header_files = "Braintree/PayPal/@Public/**/*.h", "Braintree/PayPal/mSDK/CardIO*.h"
-    s.frameworks = "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
-    s.vendored_library = "Braintree/PayPal/mSDK/libPayPalMobile.a"
-    s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES", "OTHER_LDFLAGS" => "-ObjC -lc++" }
-    s.dependency "Braintree/API"
-    s.dependency "Braintree/UI"
-  end
-
-  s.subspec "Venmo" do |s|
-    s.source_files = "Braintree/Venmo/**/*.{h,m}"
-    s.compiler_flags = "-Wall -Wextra"
-    s.dependency "Braintree/API"
-  end
-
-  s.subspec "UI" do |s|
+  s.subspec "UI" do |ss|
     s.source_files  = "Braintree/UI/**/*.{h,m}"
     s.compiler_flags = "-Wall -Wextra"
     s.frameworks = "UIKit"
     s.resource_bundle = { "Braintree-UI-Localization" => "Braintree/UI/Localization/*.lproj" }
     s.dependency "Braintree/API"
   end
+
+  s.subspec "PayPal" do |ss|
+    s.source_files = "Braintree/PayPal/**/*.{h,m}"
+    s.public_header_files = "Braintree/PayPal/@Public/**/*.h", "Braintree/PayPal/mSDK/CardIO*.h"
+    s.frameworks = "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
+    s.vendored_library = "Braintree/PayPal/mSDK/libPayPalMobile.a"
+    s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES", "OTHER_LDFLAGS" => "-ObjC -lc++" }
+    s.dependency "Braintree/UI"
+  end
+
+  s.subspec "Venmo" do |ss|
+    s.source_files = "Braintree/Venmo/**/*.{h,m}"
+    s.compiler_flags = "-Wall -Wextra"
+    s.dependency "Braintree/API"
+  end
+
+  
 
   s.subspec "Data" do |ss|
     s.source_files = "Braintree/Data/**/*.{h,m}"
@@ -75,7 +76,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/API"
   end
 
-  s.subspec "Payments" do |s|
+  s.subspec "Payments" do |ss|
     s.source_files = "Braintree/Payments/**/*.{h,m}"
     s.public_header_files = "Braintree/Payments/Public/*.h"
     s.frameworks = "UIKit"
