@@ -67,7 +67,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/API"
   end
 
-  s.subspec "Data" do |s|
+  s.subspec "Data" do |ss|
     s.source_files = "Braintree/Data/**/*.{h,m}"
     s.vendored_library = "Braintree/Data/libDeviceCollectorLibrary.a"
     s.frameworks = "UIKit", "SystemConfiguration"
