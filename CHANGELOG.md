@@ -5,6 +5,7 @@
 * Make Apple Pay a build option, enabled via `Braintree/Apple-Pay` subspec, 
   which adds a `BT_ENABLE_APPLE_PAY=1` preprocesor macro.
   * Addresses an issue [reported by developers attempting to submit v.zero integrations without Apple Pay to the app store](https://github.com/braintree/braintree_ios/issues/60).
+* Internal simplifications to API response parsing logic
 
 ## 3.5.0 (2014-12-03)
 

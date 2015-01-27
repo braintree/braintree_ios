@@ -2,6 +2,12 @@
 
 #import "BTErrors.h"
 
+typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
+    BTClientApplePayStatusOff = 0,
+    BTClientApplePayStatusMock = 1,
+    BTClientApplePayStatusProduction = 2,
+};
+
 extern NSString *const BTClientTokenKeyAuthorizationFingerprint;
 extern NSString *const BTClientTokenKeyClientApiURL;
 extern NSString *const BTClientTokenKeyConfigURL;
@@ -90,7 +96,13 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 
 #pragma mark Apple Pay
 
-@property (nonatomic, readonly, strong) NSDictionary *applePayConfiguration;
+@property (nonatomic, readonly, strong) NSDictionary *applePayConfiguration DEPRECATED_MSG_ATTRIBUTE("");
+
+- (BTClientApplePayStatus)applePayStatus;
+- (NSString *)applePayCountryCode;
+- (NSString *)applePayCurrencyCode;
+- (NSString *)applePayMerchantIdentifier;
+- (NSArray *)applePaySupportedNetworks;
 
 #pragma mark -
 

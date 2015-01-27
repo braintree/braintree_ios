@@ -7,7 +7,6 @@
 
 #import "BTClient_Internal.h"
 #import "BTClient+BTPayPal.h"
-#import "BTClientApplePayConfiguration.h"
 
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler.h"

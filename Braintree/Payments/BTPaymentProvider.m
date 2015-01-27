@@ -9,7 +9,6 @@
 #import "BTPayPalViewController.h"
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTClient+BTPayPal.h"
-#import "BTClientApplePayConfiguration.h"
 #import "BTPaymentApplePayProvider.h"
 #import "BTLogger_Internal.h"
 
