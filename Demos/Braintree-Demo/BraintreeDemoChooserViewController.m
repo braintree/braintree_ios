@@ -336,6 +336,7 @@
 }
 
 - (void)paymentMethodCreatorDidCancel:(__unused id)sender {
+    NSLog(@"3D Secure Canceled");
 }
 
 - (void)paymentMethodCreatorWillPerformAppSwitch:(__unused id)sender {

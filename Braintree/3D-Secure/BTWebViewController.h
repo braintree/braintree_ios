@@ -2,7 +2,7 @@
 
 @interface BTWebViewController : UIViewController
 
-- (void)loadRequest:(NSURLRequest *)request;
+- (instancetype)initWithRequest:(NSURLRequest *)request NS_DESIGNATED_INITIALIZER;
 
 #pragma mark Override Points for Subclasses
 

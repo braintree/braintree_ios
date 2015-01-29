@@ -6,7 +6,6 @@
 #import "BTWebViewController.h"
 
 @interface BTThreeDSecureAuthenticationViewController ()
-@property (nonatomic, strong) BTThreeDSecureLookupResult *lookupResult;
 @end
 
 @implementation BTThreeDSecureAuthenticationViewController
@@ -16,11 +15,12 @@
         return nil;
     }
 
-    self = [super init];
-    if (self) {
-        self.lookupResult = lookupResult;
-    }
-    return self;
+    NSURLRequest *acsRequest = [self acsRequestForLookupResult:lookupResult];
+    return [super initWithRequest:acsRequest];
+}
+
+- (instancetype)initWithRequest:(NSURLRequest *)request {
+    return [self initWithRequest:request];
 }
 
 - (void)viewDidLoad {
@@ -29,15 +29,17 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(tappedCancel)];
+}
 
-    NSMutableURLRequest *acsRequest = [NSMutableURLRequest requestWithURL:self.lookupResult.acsURL];
+- (NSURLRequest *)acsRequestForLookupResult:(BTThreeDSecureLookupResult *)lookupResult {
+    NSMutableURLRequest *acsRequest = [NSMutableURLRequest requestWithURL:lookupResult.acsURL];
     [acsRequest setHTTPMethod:@"POST"];
-    NSDictionary *fields = @{ @"PaReq": self.lookupResult.PAReq,
-                              @"TermUrl": self.lookupResult.termURL,
-                              @"MD": self.lookupResult.MD };
+    NSDictionary *fields = @{ @"PaReq": lookupResult.PAReq,
+                              @"TermUrl": lookupResult.termURL,
+                              @"MD": lookupResult.MD };
     [acsRequest setHTTPBody:[[BTURLUtils queryStringWithDictionary:fields] dataUsingEncoding:NSUTF8StringEncoding]];
     [acsRequest setAllHTTPHeaderFields:@{ @"Accept": @"text/html", @"Content-Type": @"application/x-www-form-urlencoded"}];
-    [self loadRequest:acsRequest];
+    return acsRequest;
 }
 
 - (void)didCompleteAuthentication:(BTThreeDSecureResponse *)response {

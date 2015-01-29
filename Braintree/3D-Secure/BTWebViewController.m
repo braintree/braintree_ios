@@ -1,23 +1,46 @@
 #import "BTWebViewController.h"
-#import "BTThreeDSecurePopupWebViewViewController.h"
 
-static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayments.popup.open";
+static NSString *BTWebViewControllerPopupOpenDummyURLScheme = @"com.braintreepayments.popup.open";
+static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepayments.popup.close";
 
-@interface BTWebViewController () <UIWebViewDelegate, BTThreeDSecurePopupWebViewViewControllerDelegate>
+@protocol BTThreeDSecurePopupDelegate <NSObject>
+
+- (void)popupWebViewViewControllerDidFinish:(BTWebViewController *)viewController;
+
+@end
+
+@interface BTWebViewController () <UIWebViewDelegate, BTThreeDSecurePopupDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 
+@property (nonatomic, weak) id<BTThreeDSecurePopupDelegate> delegate;
 @end
 
 @implementation BTWebViewController
 
-- (instancetype)init {
+- (instancetype)initWithRequest:(NSURLRequest *)request {
     self = [super init];
     if (self) {
         self.webView = [[UIWebView alloc] init];
         self.webView.accessibilityIdentifier = @"Web View";
+        [self.webView loadRequest:request];
     }
     return self;
+}
+
+- (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id<BTThreeDSecurePopupDelegate>)delegate {
+    self = [self initWithRequest:request];
+    if (self) {
+        self.delegate = delegate;
+    }
+    return self;
+}
+
+- (void)setDelegate:(id<BTThreeDSecurePopupDelegate>)delegate {
+    _delegate = delegate;
+    if (delegate) {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(informDelegateDidFinish)];
+    }
 }
 
 - (void)loadView {
@@ -42,20 +65,29 @@ static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayment
     [self updateNetworkActivityIndicatorForWebView:self.webView];
 }
 
-- (void)loadRequest:(NSURLRequest *)request {
-    [self.webView loadRequest:request];
-}
-
 - (void)updateNetworkActivityIndicatorForWebView:(UIWebView *)webView {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:webView.isLoading];
 }
 
 
+#pragma mark Delegate Informers
+
+- (void)informDelegateDidFinish {
+    if ([self.delegate respondsToSelector:@selector(popupWebViewViewControllerDidFinish:)]) {
+        [self.delegate popupWebViewViewControllerDidFinish:self];
+    }
+}
+
+
 #pragma mark UIWebViewDelegate
 
-- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    if (navigationType == UIWebViewNavigationTypeLinkClicked && [self detectPopupLinkForURL:request.URL]) {
-        [self openPopupWithURL:[self extractPopupLinkURL:request.URL]];
+- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(__unused UIWebViewNavigationType)navigationType {
+    NSURL *requestURL = request.URL;
+    if ([self isURLPopupOpenLink:requestURL]) {
+        [self openPopupWithURLRequest:request];
+        return NO;
+    } else if ([self isURLPopupCloseLink:requestURL]) {
+        [self informDelegateDidFinish];
         return NO;
     }
 
@@ -69,7 +101,8 @@ static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayment
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self updateNetworkActivityIndicatorForWebView:webView];
-    [self prepareWebViewPopupLinks:webView];
+    [self prepareTargetLinks:webView];
+    [self prepareWindowOpenAndClosePopupLinks:webView];
     self.title = [self parseTitleFromWebView:webView];
 }
 
@@ -80,8 +113,8 @@ static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayment
 
     if ([UIAlertController class]) {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
-                                                                   message:nil
-                                                            preferredStyle:UIAlertControllerStyleAlert];
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"OK"
                                                   style:UIAlertActionStyleCancel
                                                 handler:^(__unused UIAlertAction *action) {
@@ -89,10 +122,10 @@ static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayment
         [self presentViewController:alert animated:YES completion:nil];
     } else {
         [[[UIAlertView alloc] initWithTitle:error.localizedDescription
-                                   message:nil
-                                  delegate:nil
-                         cancelButtonTitle:@"OK"
-                         otherButtonTitles:nil, nil] show];
+                                    message:nil
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil, nil] show];
     }
 }
 
@@ -106,17 +139,41 @@ static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayment
 
 #pragma mark Web View Popup Links
 
-- (void)prepareWebViewPopupLinks:(UIWebView *)webView {
+- (void)prepareTargetLinks:(UIWebView *)webView {
     NSString *js = [NSString stringWithFormat:@"var as = document.getElementsByTagName('a');\
                     for (var i = 0; i < as.length; i++) {\
-                    if (as[i]['target']) { as[i]['href'] = '%@+' + as[i]['href']; } \
-                    }", BTWebViewControllerPopupDummyURLScheme];
+                    if (as[i]['target']) { as[i]['href'] = '%@+' + as[i]['href']; }\
+                    }\
+                    true;", BTWebViewControllerPopupOpenDummyURLScheme];
     [webView stringByEvaluatingJavaScriptFromString:js];
 }
 
-- (BOOL)detectPopupLinkForURL:(NSURL *)URL {
+- (void)prepareWindowOpenAndClosePopupLinks:(UIWebView *)webView {
+    NSString *js = [NSString stringWithFormat:@"(function(window) {\
+                    function FakeWindow () {\
+                    var fakeWindow = {};\
+                    for (key in window) {\
+                    if (typeof window[key] == 'function') {\
+                    fakeWindow[key] = function() { console.log(\"FakeWindow received method call: \", key); };\
+                    }\
+                    }\
+                    return fakeWindow;\
+                    }\
+                    function absoluteUrl (relativeUrl) { var a = document.createElement('a'); a.href = relativeUrl; return a.href; }\
+                    window.open = function (url) { window.location = '%@+' + absoluteUrl(url); return new FakeWindow(); };\
+                    window.close = function () { window.location = '%@://'; };\
+                    })(window)", BTWebViewControllerPopupOpenDummyURLScheme, BTWebViewControllerPopupCloseDummyURLScheme];
+    [webView stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (BOOL)isURLPopupOpenLink:(NSURL *)URL {
     NSString *schemePrefix = [[URL.scheme componentsSeparatedByString:@"+"] firstObject];
-    return [schemePrefix isEqualToString:BTWebViewControllerPopupDummyURLScheme];
+    return [schemePrefix isEqualToString:BTWebViewControllerPopupOpenDummyURLScheme];
+}
+
+- (BOOL)isURLPopupCloseLink:(NSURL *)URL {
+    NSString *schemePrefix = [[URL.scheme componentsSeparatedByString:@"+"] firstObject];
+    return [schemePrefix isEqualToString:BTWebViewControllerPopupCloseDummyURLScheme];
 }
 
 - (NSURL *)extractPopupLinkURL:(NSURL *)URL {
@@ -126,19 +183,19 @@ static NSString *BTWebViewControllerPopupDummyURLScheme = @"com.braintreepayment
     return c.URL;
 }
 
-- (void)openPopupWithURL:(NSURL *)URL {
-    BTThreeDSecurePopupWebViewViewController *popup = [[BTThreeDSecurePopupWebViewViewController alloc] initWithURL:URL];
+- (void)openPopupWithURLRequest:(NSURLRequest *)request {
+    NSMutableURLRequest *mutableRequest = request.mutableCopy;
+    mutableRequest.URL = [self extractPopupLinkURL:request.URL];
+    request = mutableRequest.copy;
+    BTWebViewController *popup = [[BTWebViewController alloc] initWithRequest:request delegate:self];
     UINavigationController *navigationViewController = [[UINavigationController alloc] initWithRootViewController:popup];
-
-    popup.delegate = self;
-
     [self presentViewController:navigationViewController animated:YES completion:nil];
 }
 
 
-#pragma mark BTThreeDSecurePopupWebViewViewControllerDelegate
+#pragma mark delegate
 
-- (void)popupWebViewViewControllerDidFinish:(BTThreeDSecurePopupWebViewViewController *)viewController {
+- (void)popupWebViewViewControllerDidFinish:(BTWebViewController *)viewController {
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

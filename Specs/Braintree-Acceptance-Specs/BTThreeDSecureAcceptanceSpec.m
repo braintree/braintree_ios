@@ -1,4 +1,4 @@
-#import "BTThreedSecure.h"
+#import "BTThreeDSecure.h"
 #import "BTClient+Testing.h"
 
 SpecBegin(BTThreeDSecure)

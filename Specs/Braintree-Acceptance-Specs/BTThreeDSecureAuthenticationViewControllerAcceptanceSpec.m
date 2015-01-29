@@ -1,5 +1,6 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTClient+Testing.h"
+#import "BTClient_Internal.h"
 
 #import "KIFUITestActor+BTWebView.h"
 #import "EXPMatchers+BTBeANonce.h"
@@ -510,18 +511,6 @@ describe(@"3D Secure View Controller", ^{
                 [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
                 [tester tapUIWebviewXPathElement:@"//a[text()=\"Social Security Number\"]"];
                 [tester tapUIWebviewXPathElement:@"(//a[contains(text(), \"Return\")])[last()]"];
-
-                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-            }];
-        });
-        
-        it(@"closes the popup when the user tap the Close button", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-
-                [tester tapViewWithAccessibilityLabel:@"Help"];
-                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
-                [tester tapUIWebviewXPathElement:@"//input[@value=\"    Close    \"]"];
 
                 [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
             }];

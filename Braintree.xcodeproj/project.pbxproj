@@ -563,8 +563,6 @@
 		16E20A481A61D58A002BCC34 /* BTThreeDSecure.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecure.m; sourceTree = "<group>"; };
 		16E20A491A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureAuthenticationViewController.h; sourceTree = "<group>"; };
 		16E20A4A1A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureAuthenticationViewController.m; sourceTree = "<group>"; };
-		16E20A4D1A61D58A002BCC34 /* BTThreeDSecurePopupWebViewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecurePopupWebViewViewController.h; sourceTree = "<group>"; };
-		16E20A4E1A61D58A002BCC34 /* BTThreeDSecurePopupWebViewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecurePopupWebViewViewController.m; sourceTree = "<group>"; };
 		16E20A501A61D58A002BCC34 /* BTThreeDSecureResponse.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureResponse.m; sourceTree = "<group>"; };
 		16E20A511A61D58A002BCC34 /* BTWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTWebViewController.h; sourceTree = "<group>"; };
 		16E20A521A61D58A002BCC34 /* BTWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTWebViewController.m; sourceTree = "<group>"; };
@@ -1746,8 +1744,6 @@
 				16E20A481A61D58A002BCC34 /* BTThreeDSecure.m */,
 				16E20A491A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.h */,
 				16E20A4A1A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.m */,
-				16E20A4D1A61D58A002BCC34 /* BTThreeDSecurePopupWebViewViewController.h */,
-				16E20A4E1A61D58A002BCC34 /* BTThreeDSecurePopupWebViewViewController.m */,
 				16E20A501A61D58A002BCC34 /* BTThreeDSecureResponse.m */,
 				16E20A511A61D58A002BCC34 /* BTWebViewController.h */,
 				16E20A521A61D58A002BCC34 /* BTWebViewController.m */,
