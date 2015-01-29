@@ -41,3 +41,6 @@ NS_ENUM(NSInteger, BTErrorCode) {
 
 /// NSError userInfo key for validation errors, present in errors with code BTCustomerInputErrorInvalid.
 extern NSString *const BTCustomerInputBraintreeValidationErrorsKey;
+
+/// NSError userInfo key for 3D Secure liability shift information, present in errors related to 3D Secure
+extern NSString *BTThreeDSecureInfoKey;
