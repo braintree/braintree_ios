@@ -1,4 +1,5 @@
 #import "BTWebViewController.h"
+#import "BTThreeDSecureLocalizedString.h"
 
 static NSString *BTWebViewControllerPopupOpenDummyURLScheme = @"com.braintreepayments.popup.open";
 static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepayments.popup.close";
@@ -39,7 +40,7 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 - (void)setDelegate:(id<BTThreeDSecurePopupDelegate>)delegate {
     _delegate = delegate;
     if (delegate) {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleDone target:self action:@selector(informDelegateDidFinish)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_CANCEL_BUTTON_TEXT) style:UIBarButtonItemStyleDone target:self action:@selector(informDelegateDidFinish)];
     }
 }
 
@@ -115,7 +116,7 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
                                                                        message:nil
                                                                 preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+        [alert addAction:[UIAlertAction actionWithTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
                                                   style:UIAlertActionStyleCancel
                                                 handler:^(__unused UIAlertAction *action) {
                                                 }]];
@@ -124,7 +125,7 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         [[[UIAlertView alloc] initWithTitle:error.localizedDescription
                                     message:nil
                                    delegate:nil
-                          cancelButtonTitle:@"OK"
+                          cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
                           otherButtonTitles:nil, nil] show];
     }
 }

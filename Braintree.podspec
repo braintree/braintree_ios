@@ -91,5 +91,6 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/API"
     s.dependency "Braintree/UI"
     s.dependency "Braintree/Payments"
+    s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree/3D-Secure/Localization/*.lproj" }
   end
 end

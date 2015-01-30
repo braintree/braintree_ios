@@ -557,6 +557,29 @@
 		16A750AB1A706DED00C8FAE4 /* BraintreeDemoSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSettings.h; sourceTree = "<group>"; };
 		16A750AC1A706DED00C8FAE4 /* BraintreeDemoSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoSettings.m; sourceTree = "<group>"; };
 		16A91AA71A70923500767B92 /* Braintree-3D-Secure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-3D-Secure.h"; sourceTree = "<group>"; };
+		16B3D53F1A7C2B77005531DE /* BTThreeDSecureLocalizedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLocalizedString.h; sourceTree = "<group>"; };
+		16B3D5401A7C2B77005531DE /* BTThreeDSecureLocalizedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLocalizedString.m; sourceTree = "<group>"; };
+		16B3D5421A7C2B77005531DE /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = "da.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5431A7C2B77005531DE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "de.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5441A7C2B77005531DE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5451A7C2B77005531DE /* en_AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_AU; path = "en_AU.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5461A7C2B77005531DE /* en_CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_CA; path = "en_CA.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5471A7C2B77005531DE /* en_GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_GB; path = "en_GB.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5481A7C2B77005531DE /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "es.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5491A7C2B77005531DE /* es_ES */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es_ES; path = "es_ES.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D54A1A7C2B77005531DE /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = "fr.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D54B1A7C2B77005531DE /* fr_CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr_CA; path = "fr_CA.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D54C1A7C2B77005531DE /* fr_FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr_FR; path = "fr_FR.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D54D1A7C2B77005531DE /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = "he.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D54E1A7C2B77005531DE /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = "it.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D54F1A7C2B77005531DE /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = "nb.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5501A7C2B77005531DE /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "nl.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5511A7C2B77005531DE /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "pl.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5521A7C2B77005531DE /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = "pt.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5531A7C2B77005531DE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "ru.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5541A7C2B77005531DE /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "sv.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5551A7C2B77005531DE /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "tr.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		16B3D5561A7C2B77005531DE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
 		16B8DF361A7AD1F100A070AA /* BTThreeDSecureErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureErrors.h; sourceTree = "<group>"; };
 		16B8DF371A7AD1FC00A070AA /* BTThreeDSecureErrors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureErrors.m; sourceTree = "<group>"; };
 		16BAFCAE194BB89E0047E96B /* BTUICardExpiryFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardExpiryFormat.m; sourceTree = "<group>"; };
@@ -1672,6 +1695,16 @@
 			path = "Braintree-UI-Demo";
 			sourceTree = "<group>";
 		};
+		16B3D53E1A7C2B77005531DE /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				16B3D53F1A7C2B77005531DE /* BTThreeDSecureLocalizedString.h */,
+				16B3D5401A7C2B77005531DE /* BTThreeDSecureLocalizedString.m */,
+				16B3D5411A7C2B77005531DE /* Three-D-Secure.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		16BAFCAA194BB7CC0047E96B /* Forms */ = {
 			isa = PBXGroup;
 			children = (
@@ -1739,6 +1772,7 @@
 			isa = PBXGroup;
 			children = (
 				16E20A541A61D5A3002BCC34 /* README.md */,
+				16B3D53E1A7C2B77005531DE /* Localization */,
 				16E20A531A61D58A002BCC34 /* @Public */,
 				16E20A481A61D58A002BCC34 /* BTThreeDSecure.m */,
 				16E20A491A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.h */,
@@ -2557,6 +2591,20 @@
 				sv_SE,
 				tr_TR,
 				zh_XC,
+				da,
+				de,
+				es,
+				fr,
+				he,
+				it,
+				nb,
+				nl,
+				pl,
+				pt,
+				ru,
+				sv,
+				tr,
+				"zh-Hans",
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
@@ -3260,6 +3308,34 @@
 				1696820C192D9AD900120846 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		16B3D5411A7C2B77005531DE /* Three-D-Secure.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16B3D5421A7C2B77005531DE /* da */,
+				16B3D5431A7C2B77005531DE /* de */,
+				16B3D5441A7C2B77005531DE /* en */,
+				16B3D5451A7C2B77005531DE /* en_AU */,
+				16B3D5461A7C2B77005531DE /* en_CA */,
+				16B3D5471A7C2B77005531DE /* en_GB */,
+				16B3D5481A7C2B77005531DE /* es */,
+				16B3D5491A7C2B77005531DE /* es_ES */,
+				16B3D54A1A7C2B77005531DE /* fr */,
+				16B3D54B1A7C2B77005531DE /* fr_CA */,
+				16B3D54C1A7C2B77005531DE /* fr_FR */,
+				16B3D54D1A7C2B77005531DE /* he */,
+				16B3D54E1A7C2B77005531DE /* it */,
+				16B3D54F1A7C2B77005531DE /* nb */,
+				16B3D5501A7C2B77005531DE /* nl */,
+				16B3D5511A7C2B77005531DE /* pl */,
+				16B3D5521A7C2B77005531DE /* pt */,
+				16B3D5531A7C2B77005531DE /* ru */,
+				16B3D5541A7C2B77005531DE /* sv */,
+				16B3D5551A7C2B77005531DE /* tr */,
+				16B3D5561A7C2B77005531DE /* zh-Hans */,
+			);
+			name = "Three-D-Secure.strings";
 			sourceTree = "<group>";
 		};
 		A7B7433119A3E094000A6A7A /* InfoPlist.strings */ = {
