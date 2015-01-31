@@ -4,7 +4,6 @@
 #import "BTClientConfiguration.h"
 
 #import "BTThreeDSecureLookupResult.h"
-#import "BTThreeDSecureErrors.h"
 
 /// Success Block type for 3D Secure lookups
 typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup);
