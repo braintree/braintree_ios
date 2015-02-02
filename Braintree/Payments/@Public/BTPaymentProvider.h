@@ -95,6 +95,8 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type;
 
 
+#if BT_ENABLE_APPLE_PAY
+
 #pragma mark Payment Request Details
 
 /// An array of PKPaymentSummaryItems
@@ -131,5 +133,7 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 ///
 /// Currently only affects Apple Pay payments.
 @property (nonatomic, copy) NSArray *supportedNetworks;
+
+#endif
 
 @end

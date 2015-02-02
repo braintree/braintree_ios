@@ -18,6 +18,8 @@ typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
 @property (nonatomic, copy) NSString *merchantIdentifier;
 @property (nonatomic, copy) NSArray *supportedNetworks;
 
+#if BT_ENABLE_APPLE_PAY
 - (PKPaymentRequest *)paymentRequest;
+#endif
 
 @end

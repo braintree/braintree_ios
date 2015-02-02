@@ -213,6 +213,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                       failure:failureBlock];
 }
 
+#if BT_ENABLE_APPLE_PAY
 - (void)saveApplePayPayment:(PKPayment *)payment
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
@@ -319,6 +320,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         }
     }];
 }
+#endif
 
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
                    applicationCorrelationID:(NSString *)correlationId

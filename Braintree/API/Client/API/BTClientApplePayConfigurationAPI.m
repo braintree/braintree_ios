@@ -10,6 +10,7 @@
 }
 
 + (NSDictionary *)APIFormat {
+#if BT_ENABLE_APPLE_PAY
     if (![PKPayment class]) {
         return @{};
     }
@@ -29,6 +30,9 @@
                                                                                                                                     @"mastercard": PKPaymentNetworkMasterCard,
                                                                                                                                     }),
              };
+#else
+    return @{};
+#endif
 }
 
 @end

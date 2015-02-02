@@ -7,7 +7,12 @@
 #import "BTPaymentProviderErrors.h"
 #import "BTLogger_Internal.h"
 
+#if BT_ENABLE_APPLE_PAY
 @interface BTPaymentApplePayProvider () <BTMockApplePayPaymentAuthorizationViewControllerDelegate, PKPaymentAuthorizationViewControllerDelegate>
+#else
+@interface BTPaymentApplePayProvider ()
+#endif
+
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, strong) NSError *applePayError;
 @property (nonatomic, strong) BTPaymentMethod *applePayPaymentMethod;
@@ -32,6 +37,7 @@
 }
 
 - (BOOL)canAuthorizeApplePayPaymentWithoutAnalytics {
+#if BT_ENABLE_APPLE_PAY
     if (![PKPayment class]) {
         return NO;
     }
@@ -45,9 +51,13 @@
     }
 
     return YES;
+#else
+    return NO;
+#endif
 }
 
 - (void)authorizeApplePay {
+#if BT_ENABLE_APPLE_PAY
     if (![PKPayment class]) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
@@ -122,8 +132,20 @@
     }
 
     [self informDelegateRequestsPresentationOfViewController:paymentAuthorizationViewController];
+#else
+    NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                         code:BTPaymentProviderErrorInitialization
+                                     userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled in this build. Please use the Braintree/Enable-Apple-Pay CocoaPod subspec and set the BT_ENABLE_APPLE_PAY preprocessor macro." }];
+    [self informDelegateDidFailWithError:error];
+#if DEBUG
+    @throw [NSException exceptionWithName:@"Apple Pay not enabled" reason:error.localizedDescription userInfo:nil];
+#else
+    [[BTLogger sharedLogger] error:error.localizedDescription];
+#endif
+#endif
 }
 
+#if BT_ENABLE_APPLE_PAY
 - (PKPaymentRequest *)paymentRequest {
     if (![PKPaymentRequest class]) {
         return nil;
@@ -178,6 +200,7 @@
         CFRelease(_shippingAddress);
     }
 }
+#endif
 
 #pragma mark Internal Helpers - Exposed for Testing
 
@@ -190,6 +213,7 @@
 }
 
 - (BOOL)paymentAuthorizationViewControllerCanMakePayments {
+#if BT_ENABLE_APPLE_PAY
     if (![PKPaymentAuthorizationViewController class]) {
         return NO;
     }
@@ -198,10 +222,14 @@
     } else {
         return [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:self.paymentRequest.supportedNetworks];
     }
+#else
+    return NO;
+#endif
 }
 
 #pragma mark PKPaymentAuthorizationViewController Delegate
 
+#if BT_ENABLE_APPLE_PAY
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment
                                 completion:(void (^)(PKPaymentAuthorizationStatus))completion {
@@ -212,9 +240,11 @@
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [self applePayPaymentAuthorizationViewControllerDidFinish:controller];
 }
+#endif
 
 #pragma mark MockApplePayPaymentAuthorizationViewController Delegate
 
+#if BT_ENABLE_APPLE_PAY
 - (void)mockApplePayPaymentAuthorizationViewController:(__unused BTMockApplePayPaymentAuthorizationViewController *)viewController
                                    didAuthorizePayment:(PKPayment *)payment
                                             completion:(void (^)(PKPaymentAuthorizationStatus))completion {
@@ -225,9 +255,11 @@
 - (void)mockApplePayPaymentAuthorizationViewControllerDidFinish:(BTMockApplePayPaymentAuthorizationViewController *)viewController {
     [self applePayPaymentAuthorizationViewControllerDidFinish:viewController];
 }
+#endif
 
 #pragma mark Payment Authorization
 
+#if BT_ENABLE_APPLE_PAY
 - (void)applePayPaymentAuthorizationViewControllerDidAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     [self.client saveApplePayPayment:payment
                              success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
@@ -241,6 +273,7 @@
                                  completion(PKPaymentAuthorizationStatusFailure);
                              }];
 }
+#endif
 
 - (void)applePayPaymentAuthorizationViewControllerDidFinish:(UIViewController *)viewController {
     if (self.applePayError) {

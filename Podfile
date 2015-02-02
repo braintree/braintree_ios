@@ -14,6 +14,7 @@ target 'Tests' do
             'Braintree-Venmo-Specs',
             'Braintree-Data-Specs'
   pod 'Braintree', :path => '.'
+  pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
   pod 'Expecta', '~> 0.3.0'
@@ -32,6 +33,7 @@ target 'Braintree-Dev' do
             'Braintree-Data-Demo',
             'Braintree-UI-Demo'
   pod 'Braintree', :path => '.'
+  pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.2'
@@ -42,6 +44,18 @@ target 'Braintree-Dev' do
   pod 'FLEX'
 end
 
+target 'Braintree-Apple-Pay-Excluded' do
+  link_with 'Braintree-Apple-Pay-Excluded-Build-Specs'
+  pod 'Braintree'
+  pod 'OCMock', '~> 2.2.3'
+end
+
+target 'Braintree-Apple-Pay' do
+  link_with 'Braintree-Apple-Pay-Build-Specs'
+  pod 'Braintree'
+  pod 'Braintree/Apple-Pay'
+  pod 'OCMock', '~> 2.2.3'
+end
 
 post_install do |installer|
     targets = installer.project.targets.select{ |t| t.to_s.end_with? "-Braintree" }

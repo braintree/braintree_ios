@@ -1,3 +1,4 @@
+#if BT_ENABLE_APPLE_PAY
 @import UIKit;
 @import PassKit;
 
@@ -22,3 +23,4 @@
 - (void)mockApplePayPaymentAuthorizationViewControllerDidFinish:(BTMockApplePayPaymentAuthorizationViewController *)viewController;
 
 @end
+#endif

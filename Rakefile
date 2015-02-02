@@ -28,7 +28,15 @@ PUBLIC_REMOTE_NAME = "public"
 class << self
   def run cmd
     say(HighLine.color("$ #{cmd}", :debug))
-    File.popen(cmd) { |file| puts file.gets until file.eof? }
+    File.popen(cmd) { |file|
+      if block_given?
+        result = ''
+        result << file.gets until file.eof?
+        yield result
+      else
+        puts file.gets until file.eof?
+      end
+    }
     $? == 0
   end
 
@@ -132,8 +140,35 @@ namespace :spec do
     end
   end
 
+  namespace :applepay do
+    desc 'Run Apple Pay enabled build test'
+    task :included do
+      run! "xctool test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace  -sdk iphonesimulator -configuration Debug"
+      run "xctool build-tests -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace  -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
+        build_dir = result.split("=")[-1].strip
+        run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Braintree.a | grep PKPay" do |result|
+          fail("Missing expected Apple Pay symbols") if result.strip.empty?
+        end
+      end
+    end
+
+    desc 'Run Apple Pay disabled build test'
+    task :excluded do
+      run! "xctool test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace  -sdk iphonesimulator -configuration Debug"
+      run "xctool build-tests -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace  -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
+        build_dir = result.split("=")[-1].strip
+        run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Excluded-Braintree.a | grep PKPay" do |result|
+          fail("Contains verboten Apple Pay symbols!") unless result.strip.empty?
+        end
+      end
+    end
+
+    desc 'Run all Apple Pay tests'
+    task :all => %w[spec:applepay:included spec:applepay:excluded]
+  end
+
   desc 'Run all spec schemes'
-  task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:api:integration spec:paypal:integration spec:paypal:acceptance spec:payments spec:data]
+  task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:api:integration spec:paypal:integration spec:paypal:acceptance spec:payments spec:data spec:applepay:all]
 end
 
 namespace :demo do
@@ -356,8 +391,8 @@ end
 namespace :gen do
   task :strings do
     ["Drop-In", "UI"].each do |subspec|
-      run! "genstrings -o Braintree/#{subspec}/Localization/en.lproj Braintree/#{subspec}/**/*.m && " + 
-           "iconv -f utf-16 -t utf-8 Braintree/#{subspec}/Localization/en.lproj/Localizable.strings > Braintree/#{subspec}/Localization/en.lproj/#{subspec}.strings && " + 
+      run! "genstrings -o Braintree/#{subspec}/Localization/en.lproj Braintree/#{subspec}/**/*.m && " +
+           "iconv -f utf-16 -t utf-8 Braintree/#{subspec}/Localization/en.lproj/Localizable.strings > Braintree/#{subspec}/Localization/en.lproj/#{subspec}.strings && " +
            "rm -f Braintree/#{subspec}/Localization/en.lproj/Localizable.strings"
     end
   end

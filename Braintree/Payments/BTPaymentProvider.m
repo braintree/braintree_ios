@@ -301,6 +301,8 @@
     [self informDelegateDidFailWithError:error];
 }
 
+#if BT_ENABLE_APPLE_PAY
+
 #pragma mark Payment Request Details
 
 - (void)setPaymentSummaryItems:(NSArray *)paymentSummaryItems {
@@ -348,5 +350,7 @@
         CFRelease(_billingAddress);
     }
 }
+
+#endif
 
 @end

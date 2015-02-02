@@ -11,6 +11,7 @@
     return self;
 }
 
+#if BT_ENABLE_APPLE_PAY
 - (PKPaymentRequest *)paymentRequest {
     PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
     paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
@@ -20,5 +21,6 @@
     paymentRequest.supportedNetworks = self.supportedNetworks;
     return paymentRequest;
 }
+#endif
 
 @end
