@@ -12,6 +12,6 @@
 /// @param offline    Whether the Venmo app should be in "offline" mode, useful for testing/development
 ///
 /// @return The resulting URL
-+ (NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID returnURLScheme:(NSString *)scheme offline:(BOOL)offline;
++ (NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID returnURLScheme:(NSString *)scheme offline:(BOOL)offline error:(NSError * __autoreleasing *)error;
 
 @end
