@@ -90,8 +90,8 @@
         authResponse.success = [authResponseParser boolForKey:@"success" withValueTransformer:NSStringFromClass([BTClientTokenBooleanValueTransformer class])];
         authResponse.threeDSecureInfo = [authResponseParser dictionaryForKey:@"threeDSecureInfo"];
 
-        authResponse.paymentMethod = [authResponseParser[@"paymentMethod"] objectForKey:@"paymentMethod"
-                                                                       withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
+        authResponse.paymentMethod = [authResponseParser objectForKey:@"paymentMethod"
+                                                 withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
         authResponse.errorMessage = [authResponseDictionary[@"error"] stringForKey:@"message"];
         [self didCompleteAuthentication:authResponse];
 

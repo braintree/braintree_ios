@@ -72,7 +72,7 @@
 
 - (id)objectForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName {
     NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:valueTransformerName];
-    NSArray *originalValue = [self arrayForKey:key];
+    NSDictionary *originalValue = [self dictionaryForKey:key];
     return [valueTransformer transformedValue:originalValue];
 }
 

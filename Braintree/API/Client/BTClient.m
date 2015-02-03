@@ -410,8 +410,8 @@
 
                 BTAPIResponseParser *lookupResponse = response.object[@"lookup"];
                 lookup.acsURL = [lookupResponse URLForKey:@"acsUrl"];
-                lookup.PAReq = lookupResponse[@"pareq"];
-                lookup.MD = lookupResponse[@"md"];
+                lookup.PAReq = [lookupResponse stringForKey:@"pareq"];
+                lookup.MD = [lookupResponse stringForKey:@"md"];
                 lookup.termURL = [lookupResponse URLForKey:@"termUrl"];
                 BTPaymentMethod *paymentMethod = [response.object objectForKey:@"paymentMethod"
                                                           withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
