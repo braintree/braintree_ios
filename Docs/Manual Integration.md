@@ -45,6 +45,8 @@ your Base SDK.
 8. Remove the `Braintree SDK` scheme
   - In Xcode, select `Product` > `Scheme` > `Manage Schemes...`
   - Delete `Braintree SDK`
-9. Build and Run your app to test out the integration
-10. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
+9. Optionally, to include Apple Pay in your app:
+  - Add `BT_ENABLE_APPLE_PAY=1` to `Preprocessor Macros` in both the `Braintree SDK` > `Build Settings` and in your target's `Build Settings`.
+10. Build and Run your app to test out the integration
+11. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
 
