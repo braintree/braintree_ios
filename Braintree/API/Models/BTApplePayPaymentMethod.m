@@ -1,3 +1,4 @@
+#if BT_ENABLE_APPLE_PAY
 #import "BTApplePayPaymentMethod_Internal.h"
 #import "BTMutableApplePayPaymentMethod.h"
 
@@ -49,3 +50,4 @@
 }
 
 @end
+#endif

@@ -1,3 +1,5 @@
+@import PassKit;
+
 #import "BTClientToken.h"
 #import "BTTestClientTokenFactory.h"
 
@@ -20,11 +22,20 @@ context(@"v1 raw JSON client tokens", ^{
         expect(clientToken.merchantId).to.equal(@"a_merchant_id");
         expect(clientToken.challenges).to.equal([NSSet setWithArray:@[@"cvv"]]);
         expect(clientToken.analyticsEnabled).to.equal(@YES);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock",
                                                               @"countryCode": @"US",
                                                               @"currencyCode": @"USD",
                                                               @"merchantIdentifier": @"apple-pay-merchant-id",
-                                                              @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ] });
+                                                              @"supportedNetworks": @[ @"visa", @"mastercard", @"amex", ] });
+#pragma clang diagnostic pop
+
+        expect(clientToken.applePayStatus).to.equal(BTClientApplePayStatusMock);
+        expect(clientToken.applePayCountryCode).to.equal(@"US");
+        expect(clientToken.applePayCurrencyCode).to.equal(@"USD");
+        expect(clientToken.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
+        expect(clientToken.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
     });
 });
 
@@ -39,11 +50,19 @@ context(@"v2 base64 encoded client tokens", ^{
         expect(clientToken.challenges).to.equal([NSSet setWithArray:@[@"cvv"]]);
         expect(clientToken.analyticsEnabled).to.equal(@YES);
         expect(clientToken.merchantAccountId).to.equal(@"some-merchant-account-id");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock",
                                                               @"countryCode": @"US",
                                                               @"currencyCode": @"USD",
                                                               @"merchantIdentifier": @"apple-pay-merchant-id",
                                                               @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ] });
+#pragma clang diagnostic pop
+        expect(clientToken.applePayStatus).to.equal(BTClientApplePayStatusMock);
+        expect(clientToken.applePayCountryCode).to.equal(@"US");
+        expect(clientToken.applePayCurrencyCode).to.equal(@"USD");
+        expect(clientToken.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
+        expect(clientToken.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
     });
 
     it(@"must contain a client api url", ^{
@@ -188,7 +207,15 @@ describe(@"copy", ^{
         expect(copiedClientToken.clientApiURL).to.equal(clientToken.clientApiURL);
         expect(copiedClientToken.analyticsURL).to.equal(clientToken.analyticsURL);
         expect(copiedClientToken.authorizationFingerprint).to.equal(clientToken.authorizationFingerprint);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         expect(copiedClientToken.applePayConfiguration).to.equal(clientToken.applePayConfiguration);
+#pragma clang diagnostic pop
+        expect(copiedClientToken.applePayStatus).to.equal(BTClientApplePayStatusMock);
+        expect(copiedClientToken.applePayCountryCode).to.equal(@"US");
+        expect(copiedClientToken.applePayCurrencyCode).to.equal(@"USD");
+        expect(copiedClientToken.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
+        expect(copiedClientToken.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
     });
 });
 

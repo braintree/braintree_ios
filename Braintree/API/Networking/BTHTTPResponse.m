@@ -2,7 +2,8 @@
 
 @interface BTHTTPResponse ()
 
-@property (nonatomic, readwrite, strong) NSDictionary *object;
+@property (nonatomic, readwrite, strong) BTAPIResponseParser *object;
+@property (nonatomic, readwrite, strong) NSDictionary *rawObject;
 @property (nonatomic, readwrite, assign) NSInteger statusCode;
 @end
 
@@ -12,7 +13,8 @@
     self = [self init];
     if (self) {
         self.statusCode = statusCode;
-        self.object = object;
+        self.rawObject = object;
+        self.object = [BTAPIResponseParser parserWithDictionary:object];
     }
     return self;
 }
@@ -23,6 +25,10 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<BTHTTPResponse statusCode:%d body:%@>", (int)self.statusCode, self.object];
+}
+
+- (NSString *)debugDescription {
+    return [NSString stringWithFormat:@"<BTHTTPResponse statusCode:%d body:%@>", (int)self.statusCode, [self.object debugDescription]];
 }
 
 @end

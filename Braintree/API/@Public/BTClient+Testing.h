@@ -1,5 +1,4 @@
 #import "BTClient.h"
-#import "BTClientToken.h"
 
 extern NSString *BTClientTestConfigurationKeyMerchantIdentifier;
 extern NSString *BTClientTestConfigurationKeyPublicKey;

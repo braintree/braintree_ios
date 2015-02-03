@@ -107,6 +107,7 @@
             completion:completionBlock];
 }
 
+#if BT_ENABLE_APPLE_PAY
 - (void)tokenizeApplePayPayment:(PKPayment *)payment
                      completion:(void (^)(NSString *, NSError *))completionBlock {
     [self.client postAnalyticsEvent:@"custom.ios.tokenize.apple-pay"];
@@ -123,6 +124,7 @@
                                  }
                              }];
 }
+#endif
 
 - (BTPaymentProvider *)paymentProviderWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate {
     BTPaymentProvider *paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];

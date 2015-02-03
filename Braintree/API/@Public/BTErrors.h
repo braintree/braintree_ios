@@ -15,23 +15,23 @@ NS_ENUM(NSInteger, BTErrorCode) {
     BTCustomerInputErrorUnknown,
     /// An error occurred due to invalid user input.
     BTCustomerInputErrorInvalid,
-    /// An error occured due to an authorization problem with SDK integration.
+    /// An error occurred due to an authorization problem with SDK integration.
     BTMerchantIntegrationErrorUnauthorized,
-    /// An error occured due to a remove resource not found.
+    /// An error occurred due to a remove resource not found.
     BTMerchantIntegrationErrorNotFound,
-    /// An error occured due to a problem with the client token value.
+    /// An error occurred due to a problem with the client token value.
     BTMerchantIntegrationErrorInvalidClientToken,
     /// The specified nonce was not found when querying information about it.
     BTMerchantIntegrationErrorNonceNotFound,
-    /// A server-side error occured. The result of your request is not specified. Please retry your request.
+    /// A server-side error occurred. The result of your request is not specified. Please retry your request.
     BTServerErrorUnknown,
-    /// A server-side error occured due to the Gateway being unavailable. The result of your reuqest is not specified. Please retry your request.
+    /// A server-side error occurred due to the Gateway being unavailable. The result of your request is not specified. Please retry your request.
     BTServerErrorGatewayUnavailable,
-    /// A server-side error occured due to a network problem. See the underlying error for more details and retry your request.
+    /// A server-side error occurred due to a network problem. See the underlying error for more details and retry your request.
     BTServerErrorNetworkUnavailable,
-    /// An SSL error occured.
+    /// An SSL error occurred.
     BTServerErrorSSL,
-    /// A error occured interpreting the server's response. Please retry your request.
+    /// A error occurred interpreting the server's response. Please retry your request.
     BTServerErrorUnexpectedError,
     /// The requested operation is not supported for this merchant or integration
     BTErrorUnsupported,

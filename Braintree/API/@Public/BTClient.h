@@ -19,8 +19,10 @@ typedef void (^BTClientPaymentMethodSuccessBlock)(BTPaymentMethod *paymentMethod
 /// Block type that takes a `BTCardPaymentMethod`
 typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 
+#if BT_ENABLE_APPLE_PAY
 /// Success Block type for the Save Apple Pay call
 typedef void (^BTClientApplePaySuccessBlock)(BTApplePayPaymentMethod *applePayPaymentMethod);
+#endif
 
 /// Success Block type for the Save Paypal call
 typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentMethod);
@@ -81,8 +83,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                     success:(BTClientCardSuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;
 
-
-
+#if BT_ENABLE_APPLE_PAY
 /// Save a payment method created via Apple Pay
 ///
 /// @param applePayRequest A BTClientApplePayRequest
@@ -91,6 +92,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)saveApplePayPayment:(PKPayment *)payment
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;
+#endif
 
 /// Save a paypal payment method to Braintree
 ///

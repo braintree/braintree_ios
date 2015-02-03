@@ -1,3 +1,4 @@
+#if BT_ENABLE_APPLE_PAY
 @import PassKit;
 
 #import "BTPaymentMethod.h"
@@ -10,3 +11,4 @@
 @property (nonatomic, strong, readonly) PKShippingMethod *shippingMethod;
 
 @end
+#endif

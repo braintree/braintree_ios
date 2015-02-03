@@ -26,6 +26,10 @@ Pod::Spec.new do |s|
 
   s.default_subspecs = %w[Drop-In API PayPal Venmo UI Payments]
 
+  s.subspec "Apple-Pay" do |s|
+    s.xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => "BT_ENABLE_APPLE_PAY=1" }
+  end
+
   s.subspec "Drop-In" do |s|
     s.source_files  = "Braintree/Drop-In/**/*.{h,m}"
     s.dependency "Braintree/API"
@@ -48,7 +52,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Braintree/PayPal/@Public/**/*.h", "Braintree/PayPal/mSDK/CardIO*.h"
     s.frameworks = "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
     s.vendored_library = "Braintree/PayPal/mSDK/libPayPalMobile.a"
-    s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES", "OTHER_LDFLAGS" => "-ObjC -lc++" }
+    s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
     s.dependency "Braintree/API"
     s.dependency "Braintree/UI"
   end

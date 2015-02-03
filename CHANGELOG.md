@@ -2,14 +2,17 @@
 
 ## 3.6.0 (rc1: 2015-01-22, rc2: 2015-01-23)
 
-* Add support for mobile 3D Secure
-  * Requires additional import of a new subspec in your Podfile, `pod "Braintree/3d-secure", "3.6.0-rc1"`
-  * See `BTThreeDSecure` for full more details
-
+* Features
+  * Add support for mobile 3D Secure
+    * Requires additional import of a new subspec in your Podfile, `pod "Braintree/3d-secure", "3.6.0-rc1"`
+    * See `BTThreeDSecure` for full more details
 * Enhancements
   * Minor updates to UK localization
-
-
+  * Make Apple Pay a build option, enabled via `Braintree/Apple-Pay` subspec, 
+    which adds a `BT_ENABLE_APPLE_PAY=1` preprocesor macro.
+    * Addresses an issue [reported by developers attempting to submit v.zero integrations without Apple Pay to the app store](https://github.com/braintree/braintree_ios/issues/60).
+* Internal Changes
+  * Simplifications to API response parsing logic
 
 ## 3.5.0 (2014-12-03)
 

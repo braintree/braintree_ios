@@ -4,6 +4,9 @@
 #import "UIColor+BTUI.h"
 #import "BTThreeDSecureResponse.h"
 #import "BTWebViewController.h"
+#import "BTAPIResponseParser.h"
+#import "BTClientTokenBooleanValueTransformer.h"
+#import "BTClientPaymentMethodValueTransformer.h"
 
 @interface BTThreeDSecureAuthenticationViewController ()
 @end
@@ -81,17 +84,15 @@
         NSDictionary *authResponseDictionary = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
                                                                                options:0
                                                                                  error:NULL];
-        
-        BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
-        authResponse.success = [authResponseDictionary[@"success"] boolValue];
-        authResponse.threeDSecureInfo = authResponseDictionary[@"threeDSecureInfo"];
-        
-        NSDictionary *paymentMethodDictionary = authResponseDictionary[@"paymentMethod"];
-        if ([paymentMethodDictionary isKindOfClass:[NSDictionary class]]) {
-            authResponse.paymentMethod = [BTClient cardFromAPIResponseDictionary:paymentMethodDictionary];
-        }
-        authResponse.errorMessage = authResponseDictionary[@"error"][@"message"];
+        BTAPIResponseParser *authResponseParser = [BTAPIResponseParser parserWithDictionary:authResponseDictionary];
 
+        BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
+        authResponse.success = [authResponseParser boolForKey:@"success" withValueTransformer:NSStringFromClass([BTClientTokenBooleanValueTransformer class])];
+        authResponse.threeDSecureInfo = [authResponseParser dictionaryForKey:@"threeDSecureInfo"];
+
+        authResponse.paymentMethod = [authResponseParser[@"paymentMethod"] objectForKey:@"paymentMethod"
+                                                                       withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
+        authResponse.errorMessage = [authResponseDictionary[@"error"] stringForKey:@"message"];
         [self didCompleteAuthentication:authResponse];
 
         return NO;

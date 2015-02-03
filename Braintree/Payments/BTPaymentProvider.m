@@ -9,7 +9,6 @@
 #import "BTPayPalViewController.h"
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTClient+BTPayPal.h"
-#import "BTClientApplePayConfiguration.h"
 #import "BTPaymentApplePayProvider.h"
 #import "BTLogger_Internal.h"
 
@@ -301,6 +300,8 @@
     [self informDelegateDidFailWithError:error];
 }
 
+#if BT_ENABLE_APPLE_PAY
+
 #pragma mark Payment Request Details
 
 - (void)setPaymentSummaryItems:(NSArray *)paymentSummaryItems {
@@ -348,5 +349,7 @@
         CFRelease(_billingAddress);
     }
 }
+
+#endif
 
 @end

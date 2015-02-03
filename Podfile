@@ -15,6 +15,7 @@ target 'Tests' do
             'Braintree-Data-Specs',
             'Braintree-3D-Secure-Specs'
   pod 'Braintree', :path => '.'
+  pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
   pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
@@ -34,6 +35,7 @@ target 'Braintree-Dev' do
             'Braintree-Data-Demo',
             'Braintree-UI-Demo'
   pod 'Braintree', :path => '.'
+  pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
   pod 'HockeySDK'
@@ -46,6 +48,18 @@ target 'Braintree-Dev' do
   pod 'InAppSettingsKit'
 end
 
+target 'Braintree-Apple-Pay-Excluded' do
+  link_with 'Braintree-Apple-Pay-Excluded-Build-Specs'
+  pod 'Braintree'
+  pod 'OCMock', '~> 2.2.3'
+end
+
+target 'Braintree-Apple-Pay' do
+  link_with 'Braintree-Apple-Pay-Build-Specs'
+  pod 'Braintree'
+  pod 'Braintree/Apple-Pay'
+  pod 'OCMock', '~> 2.2.3'
+end
 
 post_install do |installer|
     targets = installer.project.targets.select{ |t| t.to_s.end_with? "-Braintree" }

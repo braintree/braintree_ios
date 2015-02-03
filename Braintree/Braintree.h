@@ -97,6 +97,7 @@
 - (void)tokenizeCard:(BTClientCardTokenizationRequest *)cardDetails
           completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
+#if BT_ENABLE_APPLE_PAY
 /// Creates and returns a payment method nonce for the given Apple Pay payment details
 ///
 /// @note You should use this method if you have implemented Apple Pay directly with PassKit (PKPaymentRequest,
@@ -106,6 +107,7 @@
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
 - (void)tokenizeApplePayPayment:(PKPayment *)applePayPayment
                      completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
+#endif
 
 /// Initializes a provider that can initiate various payment method creation flows.
 ///
