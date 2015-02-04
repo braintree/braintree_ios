@@ -9,6 +9,7 @@ extern NSString *BTClientTestConfigurationKeyRevoked;
 extern NSString *BTClientTestConfigurationKeyClientTokenVersion;
 extern NSString *BTClientTestConfigurationKeyAnalytics;
 extern NSString *BTClientTestConfigurationKeyURL;
+extern NSString *BTClientTestConfigurationKeyMerchantAccountIdentifier;
 
 /// Block type that takes an `NSDictionary` that will contain `nonce` info.
 typedef void (^BTClientNonceInfoSuccessBlock)(NSDictionary *nonceInfo);
@@ -27,5 +28,8 @@ typedef void (^BTClientNonceInfoSuccessBlock)(NSDictionary *nonceInfo);
 
 /// Invokes Success block with Nonce Info if a Nonce is found.
 - (void)fetchNonceInfo:(NSString *)nonce success:(BTClientNonceInfoSuccessBlock)successBlock failure:(BTClientFailureBlock)failureBlock;
+
+/// Invokes Success block with Nonce Info if a Nonce is found.
+- (void)fetchNonceThreeDSecureVerificationInfo:(NSString *)nonce success:(BTClientNonceInfoSuccessBlock)successBlock failure:(BTClientFailureBlock)failureBlock;
 
 @end

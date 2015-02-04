@@ -1,5 +1,9 @@
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-@interface BTClientTokenBooleanValueTransformer : NSValueTransformer
+#import "BTAPIResponseParser.h"
+
+@interface BTClientTokenBooleanValueTransformer : NSObject <BTValueTransforming>
+
++ (instancetype)sharedInstance;
 
 @end

@@ -7,12 +7,13 @@
 
 @implementation BTClientPaymentMethodValueTransformer
 
-+ (Class)transformedValueClass {
-    return [BTPaymentMethod class];
-}
-
-+ (BOOL)allowsReverseTransformation {
-    return NO;
++ (instancetype)sharedInstance {
+    static BTClientPaymentMethodValueTransformer *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
 }
 
 - (id)transformedValue:(id)value {
@@ -29,8 +30,8 @@
         BTMutableCardPaymentMethod *card = [[BTMutableCardPaymentMethod alloc] init];
 
         card.description = [responseParser stringForKey:@"description"];
-        card.typeString = [responseParser[@"details"] stringForKey:@"cardType"];
-        card.lastTwo = [responseParser[@"details"] stringForKey:@"lastTwo"];
+        card.typeString = [[responseParser responseParserForKey:@"details"] stringForKey:@"cardType"];
+        card.lastTwo = [[responseParser responseParserForKey:@"details"] stringForKey:@"lastTwo"];
         card.challengeQuestions = [responseParser setForKey:@"securityQuestions"];
         card.nonce = [responseParser stringForKey:@"nonce"];
 
@@ -39,7 +40,7 @@
         BTMutablePayPalPaymentMethod *payPal = [[BTMutablePayPalPaymentMethod alloc] init];
 
         payPal.nonce = [responseParser stringForKey:@"nonce"];
-        payPal.email = [responseParser[@"details"] stringForKey:@"email"];
+        payPal.email = [[responseParser responseParserForKey:@"details"] stringForKey:@"email"];
 
         // Braintree gateway has some inconsistent behavior depending on
         // the type of nonce, and sometimes returns "PayPal" for description,
@@ -53,7 +54,7 @@
 
         paymentMethod = payPal;
 #ifdef BT_ENABLE_APPLE_PAY
-    } else if ([type isEqualToString:@"ApplePayPayment"]) {
+    } else if ([type isEqualToString:@"ApplePayCard"]) {
         BTMutableApplePayPaymentMethod *card = [[BTMutableApplePayPaymentMethod alloc] init];
 
         card.nonce = [responseParser stringForKey:@"nonce"];

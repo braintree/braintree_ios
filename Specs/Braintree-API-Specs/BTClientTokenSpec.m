@@ -49,6 +49,7 @@ context(@"v2 base64 encoded client tokens", ^{
         expect(clientToken.merchantId).to.equal(@"a_merchant_id");
         expect(clientToken.challenges).to.equal([NSSet setWithArray:@[@"cvv"]]);
         expect(clientToken.analyticsEnabled).to.equal(@YES);
+        expect(clientToken.merchantAccountId).to.equal(@"some-merchant-account-id");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
         expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock",
@@ -73,7 +74,7 @@ context(@"v2 base64 encoded client tokens", ^{
         expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
         expect([error localizedDescription]).to.contain(@"client api url");
     });
-
+    
 });
 
 context(@"edge cases", ^{
@@ -215,6 +216,15 @@ describe(@"copy", ^{
         expect(copiedClientToken.applePayCurrencyCode).to.equal(@"USD");
         expect(copiedClientToken.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
         expect(copiedClientToken.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
+    });
+});
+
+describe(@"merchant account id", ^{
+    it(@"is optional", ^{
+        NSString *merchantAccountIDNotPresentClaims = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyMerchantAccountId: NSNull.null }];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:merchantAccountIDNotPresentClaims error:NULL];
+        expect(clientToken).to.beKindOf([BTClientToken class]);
+        expect(clientToken.merchantAccountId).to.beNil();
     });
 });
 

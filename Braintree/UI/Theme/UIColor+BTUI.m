@@ -31,6 +31,4 @@
                            alpha:alpha];
 }
 
-
-
 @end

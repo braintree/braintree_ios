@@ -261,7 +261,7 @@ static BTOfflineClientBackend *backend;
 - (NSDictionary *)responseDictionaryForApplePayPayment {
     return @{
              @"nonce": [self generateNonce],
-             @"type": @"ApplePayPayment"
+             @"type": @"ApplePayCard"
              };
 }
 

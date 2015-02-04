@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0600"
+   LastUpgradeVersion = "0610"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "16E20A651A703F86002BCC34"
+               BuildableName = "Braintree-3D-Secure-Specs.xctest"
+               BlueprintName = "Braintree-3D-Secure-Specs"
+               ReferencedContainer = "container:Braintree.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
    </BuildAction>
    <TestAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -16,13 +32,22 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "16968169192D9A3200120846"
-               BuildableName = "Braintree-PayPal-Acceptance-Specs.xctest"
-               BlueprintName = "Braintree-PayPal-Acceptance-Specs"
+               BlueprintIdentifier = "16E20A651A703F86002BCC34"
+               BuildableName = "Braintree-3D-Secure-Specs.xctest"
+               BlueprintName = "Braintree-3D-Secure-Specs"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "16E20A651A703F86002BCC34"
+            BuildableName = "Braintree-3D-Secure-Specs.xctest"
+            BlueprintName = "Braintree-3D-Secure-Specs"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"

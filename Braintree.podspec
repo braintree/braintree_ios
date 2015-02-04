@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "3.5.0"
+  s.version          = "3.6.0-rc3"
   s.summary          = "Braintree v.zero: A modern foundation for accepting payments"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -86,5 +86,15 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/API"
     s.dependency "Braintree/PayPal"
     s.dependency "Braintree/Venmo"
+  end
+
+  s.subspec "3D-Secure" do |s|
+    s.source_files = "Braintree/3D-Secure/**/*.{h,m}"
+    s.public_header_files = "Braintree/3D-Secure/Public/*.h"
+    s.frameworks = "UIKit"
+    s.dependency "Braintree/API"
+    s.dependency "Braintree/UI"
+    s.dependency "Braintree/Payments"
+    s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree/3D-Secure/Localization/*.lproj" }
   end
 end

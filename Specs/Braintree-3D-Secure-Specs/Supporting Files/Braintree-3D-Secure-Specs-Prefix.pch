@@ -1,5 +1,6 @@
 @import Foundation;
 @import XCTest;
+@import UIKit;
 
 #define SPT_SHORTHAND
 #import <Specta/Specta.h>
@@ -8,13 +9,9 @@
 #import <Expecta/Expecta.h>
 
 #import <OCMock/OCMock.h>
+#import <OCMock/NSInvocation+OCMAdditions.h>
 
 #define HC_SHORTHAND
 #import <OCHamcrest/OCHamcrest.h>
 
-#import <OHHTTPStubs/OHHTTPStubs.h>
-
-#import <KIF/KIF.h>
-#import <KIF/UIWindow-KIFAdditions.h>
-#import <KIF/UIView-KIFAdditions.h>
-#import <KIF/UITouch-KIFAdditions.h>
+#import "KIFSystemTestActor+ViewControllerActions.h"

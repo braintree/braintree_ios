@@ -4,6 +4,8 @@
 #import <Braintree/CardIO.h>
 #import <UIAlertView+Blocks/UIAlertView+Blocks.h>
 
+#import "BraintreeDemoSettings.h"
+
 @interface BraintreeDemoTokenizationDemoViewController () <CardIOPaymentViewControllerDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
@@ -36,7 +38,7 @@
                                                                                               action:@selector(submitForm)],
                                                 [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks
                                                                                               target:self
-                                                                                              action:@selector(setupDemoData)]
+                                                                                              action:@selector(setupDemoData)],
                                                 ];
 
     UIButton *cardIOButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -46,13 +48,13 @@
     [self.view addSubview:cardIOButton];
     NSDictionary *views = @{ @"expirationYearField": self.expirationYearField, @"cardIOButton": cardIOButton };
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[expirationYearField]-[cardIOButton]"
-                                                                        options:0
-                                                                        metrics:nil
-                                                                          views:views]];
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[cardIOButton]|"
-                                                                        options:0
-                                                                        metrics:nil
-                                                                          views:views]];
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
 
     [CardIOPaymentViewController preload];
 
@@ -126,9 +128,15 @@
 }
 
 - (void)setupDemoData {
-    self.cardNumberField.text = @"4111111111111111";
-    self.expirationMonthField.text = @"12";
-    self.expirationYearField.text = @"2038";
+    if ([BraintreeDemoSettings threeDSecureEnabled]) {
+        self.cardNumberField.text = @"4000000000000002";
+        self.expirationMonthField.text = @"12";
+        self.expirationYearField.text = @"2020";
+    } else {
+        self.cardNumberField.text = @"4111111111111111";
+        self.expirationMonthField.text = @"12";
+        self.expirationYearField.text = @"2038";
+    }
 }
 
 #pragma mark Table View Overrides

@@ -53,7 +53,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// was initialized.
 @property (nonatomic, copy, readonly) NSString *merchantId;
 
-#pragma mark API Methods
+#pragma mark - Fetch a Payment Method
 
 /// Obtain a list of payment methods saved to Braintree
 ///
@@ -69,6 +69,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)fetchPaymentMethodWithNonce:(NSString *)nonce
                             success:(BTClientPaymentMethodSuccessBlock)successBlock
                             failure:(BTClientFailureBlock)failureBlock;
+
+#pragma mark Save a New Payment Method
 
 /// Save a card to Braintree
 ///
@@ -129,6 +131,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                               correlationId:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
+
+#pragma mark Create a Braintree Analytics Event
 
 /// "Fire and forget analytics" - transmits an analytics event to the Braintree analytics service
 ///

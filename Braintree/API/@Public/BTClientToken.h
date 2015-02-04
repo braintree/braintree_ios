@@ -18,6 +18,7 @@ extern NSString *const BTClientTokenKeyMerchantId;
 extern NSString *const BTClientTokenKeyVersion;
 extern NSString *const BTClientTokenKeyApplePay;
 extern NSString *const BTClientTokenKeyStatus;
+extern NSString *const BTClientTokenKeyMerchantAccountId;
 
 extern NSString *const BTClientTokenKeyPayPal;
 extern NSString *const BTClientTokenKeyPayPalClientId;
@@ -55,6 +56,7 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 @property (nonatomic, readonly, strong) NSURL *analyticsURL;
 @property (nonatomic, readonly, strong) NSURL *configURL;
 @property (nonatomic, readonly, copy) NSString *merchantId;
+@property (nonatomic, readonly, copy) NSString *merchantAccountId;
 
 -(BOOL)analyticsEnabled;
 

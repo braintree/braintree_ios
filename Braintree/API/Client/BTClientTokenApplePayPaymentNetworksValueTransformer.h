@@ -1,5 +1,12 @@
+#if BT_ENABLE_APPLE_PAY
 @import Foundation;
 @import PassKit;
 
-@interface BTClientTokenApplePayPaymentNetworksValueTransformer : NSValueTransformer
+#import "BTAPIResponseParser.h"
+
+@interface BTClientTokenApplePayPaymentNetworksValueTransformer : NSObject <BTValueTransforming>
+
++ (instancetype)sharedInstance;
+
 @end
+#endif

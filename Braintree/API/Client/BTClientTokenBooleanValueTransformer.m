@@ -2,13 +2,13 @@
 
 @implementation BTClientTokenBooleanValueTransformer
 
-+ (Class)transformedValueClass {
-    return [NSNumber class];
-}
-
-
-+ (BOOL)allowsReverseTransformation {
-    return NO;
++ (instancetype)sharedInstance {
+    static BTClientTokenBooleanValueTransformer *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
 }
 
 - (id)transformedValue:(id)value {

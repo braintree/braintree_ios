@@ -2,7 +2,7 @@
 
 #import <Braintree/Braintree.h>
 
-#import "BraintreeDemoTransactionService.h"
+#import "BraintreeDemoMerchantAPI.h"
 
 @interface BraintreeDemoBraintreeInitializationDemoViewController ()
 @property (nonatomic, copy) void (^completionBlock)(Braintree *braintree, NSString *merchantName, NSError *error);
