@@ -138,7 +138,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (BOOL)analyticsEnabled {
-    return [[self.configuration responseParserForKey:BTClientTokenKeyAnalytics] stringForKey:BTClientTokenKeyURL];
+    return self.analyticsURL != nil;
 }
 
 - (NSURL *)analyticsURL {
