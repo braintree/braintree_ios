@@ -81,7 +81,7 @@ Pod::Spec.new do |s|
 
   s.subspec "Payments" do |s|
     s.source_files = "Braintree/Payments/**/*.{h,m}"
-    s.public_header_files = "Braintree/Payments/Public/*.h"
+    s.public_header_files = "Braintree/Payments/@Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/API"
     s.dependency "Braintree/PayPal"
@@ -90,7 +90,7 @@ Pod::Spec.new do |s|
 
   s.subspec "3D-Secure" do |s|
     s.source_files = "Braintree/3D-Secure/**/*.{h,m}"
-    s.public_header_files = "Braintree/3D-Secure/Public/*.h"
+    s.public_header_files = "Braintree/3D-Secure/@Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/API"
     s.dependency "Braintree/UI"
