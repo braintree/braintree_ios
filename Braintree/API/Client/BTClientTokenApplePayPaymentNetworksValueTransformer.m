@@ -1,13 +1,15 @@
+#if BT_ENABLE_APPLE_PAY
 #import "BTClientTokenApplePayPaymentNetworksValueTransformer.h"
 
 @implementation BTClientTokenApplePayPaymentNetworksValueTransformer
 
-+ (Class)transformedValueClass {
-    return [NSString class];
-}
-
-+ (BOOL)allowsReverseTransformation {
-    return NO;
++ (instancetype)sharedInstance {
+    static BTClientTokenApplePayPaymentNetworksValueTransformer *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
 }
 
 - (id)transformedValue:(id)value {
@@ -25,4 +27,5 @@
 }
 
 @end
+#endif
 

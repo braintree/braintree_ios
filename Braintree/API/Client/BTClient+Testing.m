@@ -47,7 +47,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
     parameters:parameters
     completion:^(BTHTTPResponse *response, __unused NSError *error) {
         NSAssert(error == nil, @"testing/client_token failed or responded with an error: %@", error);
-        NSString *clientTokenString = response.object[@"clientToken"];
+        NSString *clientTokenString = [response.object stringForKey:@"clientToken"];
 
         block([(BTClient *)[BTClient alloc] initWithClientToken:clientTokenString]);
     }];
@@ -62,7 +62,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
     [self.clientApiHttp GET:path parameters:[self defaultRequestParameters] completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             if (successBlock != nil) {
-                successBlock(response.object[@"nonce"]);
+                successBlock([response.object dictionaryForKey:@"nonce"]);
             }
         } else {
             NSError *returnedError = error;
@@ -90,7 +90,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
     [self.clientApiHttp GET:path parameters:params completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             if (successBlock != nil) {
-                successBlock(response.object[@"threeDSecureVerification"]);
+                successBlock([response.object dictionaryForKey:@"threeDSecureVerification"]);
             }
         } else {
             NSError *returnedError = error;

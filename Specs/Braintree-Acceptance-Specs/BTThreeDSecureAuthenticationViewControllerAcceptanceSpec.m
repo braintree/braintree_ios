@@ -214,6 +214,7 @@ describe(@"3D Secure View Controller", ^{
         it(@"calls didFail when authentication fails (leaving the original nonce transactable)", ^{
             __block BOOL calledDidFail = NO;
             __block BOOL calledDidFinish = NO;
+
             [helper lookupNumber:@"4000000000000010"
                            andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
@@ -339,7 +340,7 @@ describe(@"3D Secure View Controller", ^{
                                } didAuthenticate:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, BTCardPaymentMethod *card, void (^completion)(BTThreeDSecureViewControllerCompletionStatus status)) {
                                    [helper fetchThreeDSecureVerificationInfo:card.nonce
                                                                   completion:^(NSDictionary *response) {
-                                                                      expect(response[@"reportStatus"]).to.equal(@"authenticate_successful_issuer_not_participating");
+                                                                      expect(response[@"reportStatus"]).to.equal(@"authenticate_attempt_successful");
                                                                       checkedNonce = YES;
                                                                   }];
                                } didFail:nil
@@ -491,13 +492,13 @@ describe(@"3D Secure View Controller", ^{
             }];
         });
 
-        it(@"closes the popup when the user taps Close in the nav bar", ^{
+        it(@"closes the popup when the user taps Cancel in the nav bar", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
                 [tester tapViewWithAccessibilityLabel:@"Help"];
                 [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
-                [tester tapViewWithAccessibilityLabel:@"Close"];
+                [tester tapViewWithAccessibilityLabel:@"Cancel"];
 
                 [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
             }];

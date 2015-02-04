@@ -97,7 +97,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (NSString *)merchantAccountId {
-    return self.configuration[BTClientTokenKeyMerchantAccountId];
+    return [self.configuration stringForKey:BTClientTokenKeyMerchantAccountId];
 }
 
 - (NSDictionary *)applePayConfiguration {
@@ -105,23 +105,24 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (BTClientApplePayStatus)applePayStatus {
-    return [self.configuration[BTClientTokenKeyApplePay] integerForKey:@"status" withValueTransformer:NSStringFromClass([BTClientTokenApplePayStatusValueTransformer class])];
+    return [[self.configuration responseParserForKey:BTClientTokenKeyApplePay] integerForKey:@"status" withValueTransformer:[BTClientTokenApplePayStatusValueTransformer sharedInstance]];
 }
 
 - (NSString *)applePayCurrencyCode {
-    return [self.configuration[BTClientTokenKeyApplePay] stringForKey:@"currencyCode"];
+    return [[self.configuration responseParserForKey:BTClientTokenKeyApplePay] stringForKey:@"currencyCode"];
 }
 
 - (NSString *)applePayCountryCode {
-    return [self.configuration[BTClientTokenKeyApplePay] stringForKey:@"countryCode"];
+    return [[self.configuration responseParserForKey:BTClientTokenKeyApplePay] stringForKey:@"countryCode"];
 }
 
 - (NSString *)applePayMerchantIdentifier {
-    return [self.configuration[BTClientTokenKeyApplePay] stringForKey:@"merchantIdentifier"];
+    return [[self.configuration responseParserForKey:BTClientTokenKeyApplePay] stringForKey:@"merchantIdentifier"];
 }
 
 - (NSArray *)applePaySupportedNetworks {
-    return [self.configuration[BTClientTokenKeyApplePay] arrayForKey:@"supportedNetworks" withValueTransformer:NSStringFromClass([BTClientTokenApplePayPaymentNetworksValueTransformer class])];
+    return [[self.configuration responseParserForKey:BTClientTokenKeyApplePay] arrayForKey:@"supportedNetworks"
+                                                withValueTransformer:[BTClientTokenApplePayPaymentNetworksValueTransformer sharedInstance]];
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {
@@ -137,11 +138,11 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (BOOL)analyticsEnabled {
-    return [self.configuration[BTClientTokenKeyAnalytics] stringForKey:BTClientTokenKeyURL];
+    return [[self.configuration responseParserForKey:BTClientTokenKeyAnalytics] stringForKey:BTClientTokenKeyURL];
 }
 
 - (NSURL *)analyticsURL {
-    return [self.configuration[BTClientTokenKeyAnalytics] URLForKey:BTClientTokenKeyURL];
+    return [[self.configuration responseParserForKey:BTClientTokenKeyAnalytics] URLForKey:BTClientTokenKeyURL];
 }
 
 - (NSURL *)configURL {
@@ -278,7 +279,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 #pragma mark PayPal
 
 -(BTAPIResponseParser *)btPayPal_claims {
-    return self.configuration[BTClientTokenKeyPayPal];
+    return [self.configuration responseParserForKey:BTClientTokenKeyPayPal];
 }
 
 - (NSString *)btPayPal_clientId {
@@ -302,11 +303,13 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (BOOL) btPayPal_isPayPalEnabled {
-    return [self.configuration boolForKey:BTClientTokenKeyPayPalEnabled withValueTransformer:NSStringFromClass([BTClientTokenBooleanValueTransformer class])];
+    return [self.configuration boolForKey:BTClientTokenKeyPayPalEnabled
+                     withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
 }
 
 - (BOOL)btPayPal_isTouchDisabled {
-    return [self.btPayPal_claims boolForKey:BTClientTokenKeyPayPalDisableAppSwitch withValueTransformer:NSStringFromClass([BTClientTokenBooleanValueTransformer class])];
+    return [self.btPayPal_claims boolForKey:BTClientTokenKeyPayPalDisableAppSwitch
+                       withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
 }
 
 - (BOOL)btPayPal_isLive {

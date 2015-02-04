@@ -81,18 +81,21 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeFormSubmitted && [request.URL.path rangeOfString:@"authentication_complete_frame"].location != NSNotFound) {
         NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
-        NSDictionary *authResponseDictionary = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
-                                                                               options:0
-                                                                                 error:NULL];
-        BTAPIResponseParser *authResponseParser = [BTAPIResponseParser parserWithDictionary:authResponseDictionary];
+        BTAPIResponseParser *authResponseParser = ({
+            NSDictionary *authResponseDictionary = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                   options:0
+                                                                                     error:NULL];
+            [BTAPIResponseParser parserWithDictionary:authResponseDictionary];
+        });
 
         BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
-        authResponse.success = [authResponseParser boolForKey:@"success" withValueTransformer:NSStringFromClass([BTClientTokenBooleanValueTransformer class])];
+        authResponse.success = [authResponseParser boolForKey:@"success"
+                                         withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
         authResponse.threeDSecureInfo = [authResponseParser dictionaryForKey:@"threeDSecureInfo"];
 
         authResponse.paymentMethod = [authResponseParser objectForKey:@"paymentMethod"
-                                                 withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
-        authResponse.errorMessage = [authResponseDictionary[@"error"] stringForKey:@"message"];
+                                                 withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
+        authResponse.errorMessage = [[authResponseParser responseParserForKey:@"error"] stringForKey:@"message"];
         [self didCompleteAuthentication:authResponse];
 
         return NO;

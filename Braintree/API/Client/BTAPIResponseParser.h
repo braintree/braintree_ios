@@ -1,5 +1,9 @@
 @import Foundation;
 
+@protocol BTValueTransforming <NSObject>
+- (id)transformedValue:(id)value;
+@end
+
 @interface BTAPIResponseParser : NSObject <NSCopying, NSCoding>
 
 + (instancetype)parserWithDictionary:(NSDictionary *)dictionary;
@@ -17,14 +21,13 @@
 #pragma mark - Accessors for Nested Resources
 
 - (BTAPIResponseParser *)responseParserForKey:(NSString *)key;
-- (id)objectForKeyedSubscript:(id)key;
 
 #pragma mark - Accessors with Transformed Values
 
-- (id)objectForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName;
-- (NSArray *)arrayForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName;
-- (NSInteger)integerForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName;
-- (BOOL)boolForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName;
+- (id)objectForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer;
+- (NSArray *)arrayForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer;
+- (NSInteger)integerForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer;
+- (BOOL)boolForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer;
 
 @end
 

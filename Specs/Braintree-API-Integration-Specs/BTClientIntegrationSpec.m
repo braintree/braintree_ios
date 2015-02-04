@@ -1105,7 +1105,7 @@ describe(@"3D Secure", ^{
                                                                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                                expect(error.code).to.equal(BTCustomerInputErrorInvalid);
                                                                expect(error.localizedDescription).to.contain(@"Credit card number is invalid");
-                                                               expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.beKindOf([NSDictionary class]);
+                                                               expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.equal(@{ @"message": @"Credit card number is invalid" });
                                                                expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShiftPossible": @0, @"liabilityShifted": @0, });
                                                                done();
                                                            }];

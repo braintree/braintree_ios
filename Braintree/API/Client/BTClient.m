@@ -1,5 +1,3 @@
-@import PassKit;
-
 #import "BTClient.h"
 #import "BTClient_Metadata.h"
 #import "BTClient_Internal.h"
@@ -109,7 +107,7 @@
         if (response.isSuccess) {
             if (successBlock) {
                 NSArray *paymentMethods = [response.object arrayForKey:@"paymentMethods"
-                                                  withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
+                                                  withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
 
                 successBlock(paymentMethods);
             }
@@ -132,7 +130,7 @@
                  completion:^(BTHTTPResponse *response, NSError *error) {
                      if (response.isSuccess) {
                          if (successBlock) {
-                             NSArray *paymentMethods = [response.object arrayForKey:@"paymentMethods" withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
+                             NSArray *paymentMethods = [response.object arrayForKey:@"paymentMethods" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
 
                              successBlock([paymentMethods firstObject]);
                          }
@@ -159,7 +157,7 @@
         if (response.isSuccess) {
             if (successBlock) {
                 NSArray *paymentMethods = [response.object arrayForKey:@"creditCards"
-                                                  withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
+                                                  withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
                 successBlock([paymentMethods firstObject]);
             }
         } else {
@@ -286,7 +284,7 @@
     [self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSArray *applePayCards = [response.object arrayForKey:@"applePayCards" withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
+                NSArray *applePayCards = [response.object arrayForKey:@"applePayCards" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
 
                 BTMutableApplePayPaymentMethod *paymentMethod = [applePayCards firstObject];
 
@@ -321,7 +319,7 @@
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSArray *payPalPaymentMethods = [response.object arrayForKey:@"paypalAccounts" withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
+                NSArray *payPalPaymentMethods = [response.object arrayForKey:@"paypalAccounts" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
                 BTPayPalPaymentMethod *payPalPaymentMethod = [payPalPaymentMethods firstObject];
                 
                 successBlock(payPalPaymentMethod);
@@ -408,13 +406,13 @@
             if (successBlock) {
                 BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
 
-                BTAPIResponseParser *lookupResponse = response.object[@"lookup"];
+                BTAPIResponseParser *lookupResponse = [response.object responseParserForKey:@"lookup"];
                 lookup.acsURL = [lookupResponse URLForKey:@"acsUrl"];
                 lookup.PAReq = [lookupResponse stringForKey:@"pareq"];
                 lookup.MD = [lookupResponse stringForKey:@"md"];
                 lookup.termURL = [lookupResponse URLForKey:@"termUrl"];
                 BTPaymentMethod *paymentMethod = [response.object objectForKey:@"paymentMethod"
-                                                          withValueTransformer:NSStringFromClass([BTClientPaymentMethodValueTransformer class])];
+                                                          withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
                 if ([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
                     lookup.card = (BTCardPaymentMethod *)paymentMethod;
                     lookup.card.threeDSecureInfo = [response.object dictionaryForKey:@"threeDSecureInfo"];
@@ -424,8 +422,8 @@
         } else {
             if (failureBlock) {
                 if (response.statusCode == 422) {
-                    NSString *errorMessage = response.object[@"error"][@"message"];
-                    NSDictionary *threeDSecureInfo = response.object[@"threeDSecureInfo"];
+                    NSString *errorMessage = [[response.object responseParserForKey:@"error"] stringForKey:@"message"];
+                    NSDictionary *threeDSecureInfo = [response.object dictionaryForKey:@"threeDSecureInfo"];
                     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
                     if (errorMessage) {
                         userInfo[NSLocalizedDescriptionKey] = errorMessage;
@@ -433,8 +431,9 @@
                     if (threeDSecureInfo) {
                         userInfo[BTThreeDSecureInfoKey] = threeDSecureInfo;
                     }
-                    if (response.object) {
-                        userInfo[BTCustomerInputBraintreeValidationErrorsKey] = response.object;
+                    NSDictionary *errors = [response.object dictionaryForKey:@"error"];
+                    if (errors) {
+                        userInfo[BTCustomerInputBraintreeValidationErrorsKey] = errors;
                     }
                     failureBlock([NSError errorWithDomain:error.domain
                                                      code:error.code

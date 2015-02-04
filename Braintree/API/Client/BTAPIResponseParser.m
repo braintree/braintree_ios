@@ -2,7 +2,6 @@
 
 #import "BTAPIResponseParser.h"
 
-
 @interface BTAPIResponseParser ()
 @property (nonatomic, strong) NSDictionary *apiDictionary;
 @end
@@ -61,23 +60,19 @@
 }
 
 - (BTAPIResponseParser *)responseParserForKey:(NSString *)key {
+
     return [BTAPIResponseParser parserWithDictionary:[self dictionaryForKey:key]];
 }
 
-- (id)objectForKeyedSubscript:(id)key {
-    return [self responseParserForKey:key];
-}
 
 #pragma mark - Transformed Values
 
-- (id)objectForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName {
-    NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:valueTransformerName];
-    NSDictionary *originalValue = [self dictionaryForKey:key];
+- (id)objectForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer {
+    id originalValue = self.apiDictionary[key];
     return [valueTransformer transformedValue:originalValue];
 }
 
-- (NSArray *)arrayForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName {
-    NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:valueTransformerName];
+- (NSArray *)arrayForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer {
     NSArray *originalValue = [self arrayForKey:key];
     NSMutableArray *value = [NSMutableArray arrayWithCapacity:originalValue.count];
     for (id obj in originalValue) {
@@ -86,15 +81,13 @@
     return [value copy];
 }
 
-- (NSInteger)integerForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName {
-    NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:valueTransformerName];
+- (NSInteger)integerForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer {
     id originalValue = self.apiDictionary[key];
     id transformedValue = [valueTransformer transformedValue:originalValue];
     return [transformedValue isKindOfClass:[NSNumber class]] ? [transformedValue integerValue] : 0;
 }
 
-- (BOOL)boolForKey:(NSString *)key withValueTransformer:(NSString *)valueTransformerName {
-    NSValueTransformer *valueTransformer = [NSValueTransformer valueTransformerForName:valueTransformerName];
+- (BOOL)boolForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer {
     id originalValue = self.apiDictionary[key];
     id transformedValue = [valueTransformer transformedValue:originalValue];
     return [transformedValue isKindOfClass:[NSNumber class]] ? [transformedValue boolValue] : NO;

@@ -1,5 +1,6 @@
 #import "BTThreeDSecure.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
+#import "BTClient_Internal.h"
 
 SpecBegin(BTThreeDSecure)
 
@@ -18,6 +19,9 @@ beforeEach(^{
         BTClientThreeDSecureLookupSuccessBlock block = [invocation getArgumentAtIndexAsObject:4];
         BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.acsURL = [NSURL URLWithString:@"http://acs.example.com"];
+        lookup.PAReq = @"some-pareq";
+        lookup.termURL = [NSURL URLWithString:@"http://gateway.example.com/term"];
+        lookup.MD = @"some-md";
         block(lookup);
     }];
     [clientStub_lookupSucceedsAuthenticationRequired lookupNonceForThreeDSecure:originalNonce_lookupEnrolledAuthenticationRequired
