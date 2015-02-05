@@ -18,7 +18,7 @@ Apple Pay is a build option. To include Apple Pay support in your build, use the
 
 ```
 pod "Braintree"
-pod "Braintree/Enable-Apple-Pay"
+pod "Braintree/Apple-Pay"
 ```
 
 Then ensure `BT_ENABLE_APPLE_PAY=1` is present in your target's "Preprocessor Macros" settings.
