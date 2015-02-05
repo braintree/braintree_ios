@@ -137,7 +137,7 @@
 #else
     NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                          code:BTPaymentProviderErrorInitialization
-                                     userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled in this build. Please use the Braintree/Enable-Apple-Pay CocoaPod subspec and set the BT_ENABLE_APPLE_PAY preprocessor macro." }];
+                                     userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled in this build. Please use the Braintree/Apple-Pay CocoaPod subspec and ensure you have a BT_ENABLE_APPLE_PAY=1 preprocessor macro in your build settings." }];
     [self informDelegateDidFailWithError:error];
 #if DEBUG
     @throw [NSException exceptionWithName:@"Apple Pay not enabled" reason:error.localizedDescription userInfo:nil];
