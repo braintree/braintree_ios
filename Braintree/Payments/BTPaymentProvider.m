@@ -241,8 +241,8 @@
 }
 
 - (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
     [self informDelegateDidCancel];
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
 }
 
 #pragma mark BTAppSwitchingDelegate
