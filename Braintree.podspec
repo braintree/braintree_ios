@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
 
   s.subspec "API" do |s|
     s.source_files  = "Braintree/API/**/*.{h,m}"
-    s.public_header_files = "Braintree/API/@Public/*.h"
+    s.public_header_files = "Braintree/API/@Public/*.h", "Braintree/API/Client/BTClientMetadata.h"
     s.weak_frameworks = "PassKit"
     s.frameworks = "AddressBook"
   end
