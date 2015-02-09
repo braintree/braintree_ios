@@ -10,7 +10,7 @@
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
 #import "BTPaymentMethodCreationDelegate.h"
-#import "BTClient_Metadata.h"
+#import "BTClient_Internal.h"
 #import "BTLogger_Internal.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>

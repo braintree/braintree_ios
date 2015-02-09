@@ -1,7 +1,5 @@
 @import PassKit;
 
-#import "BTClient.h"
-#import "BTClient_Metadata.h"
 #import "BTClient_Internal.h"
 #import "BTClientToken.h"
 #import "BTLogger_Internal.h"

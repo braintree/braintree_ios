@@ -5,7 +5,6 @@
 #import "BTClient+Testing.h"
 #import "BTTestClientTokenFactory.h"
 #import "BTAnalyticsMetadata.h"
-#import "BTClient_Metadata.h"
 
 #import "BTLogger_Internal.h"
 
