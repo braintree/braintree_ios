@@ -49,7 +49,13 @@
 
     BOOL offline = client.btVenmo_status == BTVenmoStatusOffline;
 
-    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:client.merchantId returnURLScheme:self.returnURLScheme offline:offline];
+    NSURL *venmoAppSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:client.merchantId
+                                                                     returnURLScheme:self.returnURLScheme
+                                                                             offline:offline
+                                                                               error:error];
+    if (*error) {
+        return NO;
+    }
 
     BOOL success = [[UIApplication sharedApplication] openURL:venmoAppSwitchURL];
     if (success) {

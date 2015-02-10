@@ -17,8 +17,8 @@ NS_ENUM(NSInteger, BTAppSwitchErrorCode) {
     /// cases (see BTPaymentProviderType.)
     BTAppSwitchErrorDisabled = 2,
 
-    /// Venmo app switch is not configured appropriately. You must specify a
-    /// returnURLScheme via Braintree before attempting an app switch to Venmo.
+    /// App switch is not configured appropriately. You must specify a
+    /// returnURLScheme via Braintree before attempting an app switch.
     BTAppSwitchErrorIntegrationReturnURLScheme = 3,
 
     /// The merchant ID field was not valid or present in the client token.
@@ -36,4 +36,7 @@ NS_ENUM(NSInteger, BTAppSwitchErrorCode) {
 
     /// Parameters used to initiate app switch are invalid
     BTAppSwitchErrorIntegrationInvalidParameters = 7,
+
+    /// Invalid CFBundleDisplayName
+    BTAppSwitchErrorIntegrationInvalidBundleDisplayName = 8,
 };

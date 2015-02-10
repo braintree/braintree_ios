@@ -183,7 +183,7 @@ describe(@"An instance", ^{
                 beforeEach(^{
                     handler.returnURLScheme = @"a-scheme";
                     [[[client stub] andReturn:@"a-merchant-id"] merchantId];
-                    [[[venmoRequestURL stub] andReturn:url] appSwitchURLForMerchantID:@"a-merchant-id" returnURLScheme:@"a-scheme" offline:NO];
+                    [[[venmoRequestURL stub] andReturn:url] appSwitchURLForMerchantID:@"a-merchant-id" returnURLScheme:@"a-scheme" offline:NO error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
                 });
 
                 it(@"returns nil if successfully app switches", ^{
