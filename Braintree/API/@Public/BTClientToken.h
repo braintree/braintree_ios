@@ -96,6 +96,8 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 
 - (NSString *)btVenmo_status;
 
+#if BT_ENABLE_APPLE_PAY
+
 #pragma mark Apple Pay
 
 @property (nonatomic, readonly, strong) NSDictionary *applePayConfiguration DEPRECATED_MSG_ATTRIBUTE("");
@@ -105,6 +107,8 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 - (NSString *)applePayCurrencyCode;
 - (NSString *)applePayMerchantIdentifier;
 - (NSArray *)applePaySupportedNetworks;
+
+#endif
 
 #pragma mark -
 

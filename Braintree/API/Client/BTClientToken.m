@@ -100,6 +100,8 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
     return [self.configuration stringForKey:BTClientTokenKeyMerchantAccountId];
 }
 
+#if BT_ENABLE_APPLE_PAY
+
 - (NSDictionary *)applePayConfiguration {
     return [self.configuration dictionaryForKey:BTClientTokenKeyApplePay];
 }
@@ -124,6 +126,8 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
     return [[self.configuration responseParserForKey:BTClientTokenKeyApplePay] arrayForKey:@"supportedNetworks"
                                                 withValueTransformer:[BTClientTokenApplePayPaymentNetworksValueTransformer sharedInstance]];
 }
+
+#endif
 
 - (instancetype)copyWithZone:(NSZone *)zone {
     BTClientToken *copiedClientToken = [[[self class] allocWithZone:zone] init];
