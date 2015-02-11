@@ -9,6 +9,7 @@
 #import "BTPayPalViewController.h"
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTClient+BTPayPal.h"
+#import "BTClientApplePayConfiguration.h"
 #import "BTPaymentApplePayProvider.h"
 #import "BTLogger_Internal.h"
 
@@ -39,6 +40,8 @@
 }
 
 - (void)createPaymentMethod:(BTPaymentProviderType)type options:(BTPaymentMethodCreationOptions)options {
+    [self setStatus:BTPaymentProviderStatusInitialized];
+
     switch (type) {
         case BTPaymentProviderTypePayPal:
             [self authorizePayPal:options];
@@ -88,7 +91,7 @@
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
                                          userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay requires option BTPaymentAuthorizationOptionMechanismViewController"}];
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
+        [self informDelegateDidFailWithError:error];
         return;
     }
 
@@ -101,7 +104,7 @@
     
     if ((options & BTPaymentAuthorizationOptionMechanismAppSwitch) == 0) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:nil];
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
+        [self informDelegateDidFailWithError:error];
         return;
     }
     
@@ -126,7 +129,7 @@
     
     if (!appSwitchOptionEnabled && !viewControllerOptionEnabled) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:@{ NSLocalizedDescriptionKey: @"At least one of BTPaymentAuthorizationOptionMechanismAppSwitch or BTPaymentAuthorizationOptionMechanismViewController must be enabled in options" }];
-        [self.delegate paymentMethodCreator:self didFailWithError:error];
+        [self informDelegateDidFailWithError:error];
         return;
     }
     
@@ -182,6 +185,8 @@
 }
 
 - (void)informDelegateWillProcess {
+    [self setStatus:BTPaymentProviderStatusProcessing];
+
     [self.client postAnalyticsEvent:@"ios.authorizer.will-process-authorization-response"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillProcess:)]) {
         [self.delegate paymentMethodCreatorWillProcess:self];
@@ -203,6 +208,8 @@
 }
 
 - (void)informDelegateDidCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [self setStatus:BTPaymentProviderStatusSuccees];
+
     [self.client postAnalyticsEvent:@"ios.authorizer.did-create-payment-method"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didCreatePaymentMethod:)]) {
         [self.delegate paymentMethodCreator:self didCreatePaymentMethod:paymentMethod];
@@ -210,6 +217,8 @@
 }
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
+    [self setStatus:BTPaymentProviderStatusError];
+
     [self.client postAnalyticsEvent:@"ios.authorizer.did-fail-with-error"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didFailWithError:)]) {
         [self.delegate paymentMethodCreator:self didFailWithError:error];
@@ -217,6 +226,8 @@
 }
 
 - (void)informDelegateDidCancel {
+    [self setStatus:BTPaymentProviderStatusCancelled];
+
     [self.client postAnalyticsEvent:@"ios.authorizer.did-cancel"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorDidCancel:)]) {
         [self.delegate paymentMethodCreatorDidCancel:self];
