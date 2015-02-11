@@ -1,7 +1,7 @@
 #import "BTPayPalViewController_Internal.h"
 
 #import "BTClient+BTPayPal.h"
-#import "BTClient_Metadata.h"
+#import "BTClient_Internal.h"
 #import "BTErrors+BTPayPal.h"
 
 #import "BTMutablePayPalPaymentMethod.h"
