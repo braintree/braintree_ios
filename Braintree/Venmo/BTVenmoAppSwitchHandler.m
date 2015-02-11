@@ -3,7 +3,7 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTClient+BTVenmo.h"
-#import "BTClient_Metadata.h"
+#import "BTClient_Internal.h"
 #import "BTMutableCardPaymentMethod.h"
 
 @implementation BTVenmoAppSwitchHandler

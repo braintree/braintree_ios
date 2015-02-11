@@ -1,6 +1,7 @@
 #import "BTClient.h"
 #import "BTHTTP.h"
 #import "BTClientToken.h"
+#import "BTClientMetadata.h"
 
 #import "BTThreeDSecureLookupResult.h"
 
@@ -19,5 +20,13 @@ typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResul
                            success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
                            failure:(BTClientFailureBlock)failureBlock;
 
+@property (nonatomic, copy, readonly) BTClientMetadata *metadata;
+
+///  Copy of the instance, but with different metadata
+///
+///  Useful for temporary metadata overrides.
+///
+///  @param metadataBlock block for customizing metadata
+- (instancetype)copyWithMetadata:(void (^)(BTClientMutableMetadata *metadata))metadataBlock;
 
 @end
