@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderType) {
 
 /// Status of the last (or ongoing) transaction
 typedef NS_ENUM(NSInteger, BTPaymentProviderStatus) {
-    /// First status: The payment method was not created yet
+    /// The payment method was not created yet (default status)
     BTPaymentProviderStatusUninitialized = 0,
 
     /// Payment method created (either PayPal, Venmo or ApplePay)
@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderStatus) {
     BTPaymentProviderStatusError,
 
     /// Payment method creation is complete with success
-    BTPaymentProviderStatusSuccees,
+    BTPaymentProviderStatusSuccess,
 
     /// The payment method creator has cancelled
     BTPaymentProviderStatusCancelled

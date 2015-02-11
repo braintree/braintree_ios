@@ -207,7 +207,7 @@
 }
 
 - (void)informDelegateDidCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
-    [self setStatus:BTPaymentProviderStatusSuccees];
+    [self setStatus:BTPaymentProviderStatusSuccess];
 
     [self.client postAnalyticsEvent:@"ios.authorizer.did-create-payment-method"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didCreatePaymentMethod:)]) {
