@@ -7,6 +7,8 @@
 /// an object creating a payment method, such as BTPaymentButton, BTPaymentProvider and BTThreeDSecure.
 @protocol BTPaymentMethodCreationDelegate <NSObject>
 
+@optional
+
 /// The payment method creator requires presentation of a view controller in order to
 /// proceed.
 ///

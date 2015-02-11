@@ -230,8 +230,8 @@
 }
 
 - (void)payPalViewController:(BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
     [self informDelegateDidCreatePaymentMethod:payPalPaymentMethod];
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
 }
 
 - (void)payPalViewController:(__unused BTPayPalViewController *)viewController didFailWithError:(NSError *)error {
@@ -240,8 +240,8 @@
 }
 
 - (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
     [self informDelegateDidCancel];
+    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
 }
 
 #pragma mark BTAppSwitchingDelegate
