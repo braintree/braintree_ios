@@ -50,14 +50,14 @@ end
 
 target 'Braintree-Apple-Pay-Excluded' do
   link_with 'Braintree-Apple-Pay-Excluded-Build-Specs'
-  pod 'Braintree'
+  pod 'Braintree', :path => '.'
   pod 'OCMock', '~> 2.2.3'
 end
 
 target 'Braintree-Apple-Pay' do
   link_with 'Braintree-Apple-Pay-Build-Specs'
-  pod 'Braintree'
-  pod 'Braintree/Apple-Pay'
+  pod 'Braintree', :path => '.'
+  pod 'Braintree/Apple-Pay', :path => '.'
   pod 'OCMock', '~> 2.2.3'
 end
 
