@@ -14,7 +14,7 @@ Finally, [**cocoadocs.org/docsets/Braintree**](http://cocoadocs.org/docsets/Brai
 
 ### Special note on preprocessor macros
 
-Apple Pay is a build option. To include Apple Pay support in your build, use the `Enable-Apple-Pay` subspec in your Podfile:
+Apple Pay is a build option. To include Apple Pay support in your build, use the `Apple-Pay` subspec in your Podfile:
 
 ```
 pod "Braintree"
