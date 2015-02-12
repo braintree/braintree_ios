@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderType) {
     BTPaymentProviderTypeApplePay
 };
 
-/// Status of the last (or ongoing) transaction
+/// Status of the last (or ongoing) payment method creation
 typedef NS_ENUM(NSInteger, BTPaymentProviderStatus) {
     /// The payment method was not created yet (default status)
     BTPaymentProviderStatusUninitialized = 0,
@@ -118,7 +118,7 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type;
 
 
-/// Status of the last (or ongoing) transaction 
+/// Status of the last (or ongoing) payment method creation 
 @property (nonatomic, assign) BTPaymentProviderStatus status;
 
 #if BT_ENABLE_APPLE_PAY
