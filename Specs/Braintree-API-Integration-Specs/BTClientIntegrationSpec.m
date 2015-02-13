@@ -971,7 +971,7 @@ describe(@"3D Secure", ^{
                      expect(threeDSecureLookupResult.requiresUserAuthentication).to.beTruthy();
                      expect(threeDSecureLookupResult.MD).to.beKindOf([NSString class]);
                      expect(threeDSecureLookupResult.acsURL).to.equal([NSURL URLWithString:@"https://testcustomer34.cardinalcommerce.com/V3DSStart?osb=visa-3&VAA=B"]);
-                     expect([threeDSecureLookupResult.termURL absoluteString]).to.match(@"^http://.*:3000/merchants/integration_merchant_id/client_api/v1/payment_methods/[a-fA-F0-9-]+/three_d_secure/authenticate\?.*");
+                     expect([threeDSecureLookupResult.termURL absoluteString]).to.match(@"/merchants/integration_merchant_id/client_api/v1/payment_methods/[a-fA-F0-9-]+/three_d_secure/authenticate\?.*");
                      expect(threeDSecureLookupResult.PAReq).to.beKindOf([NSString class]);
 
                      done();
