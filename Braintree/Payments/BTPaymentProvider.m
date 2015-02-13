@@ -90,7 +90,7 @@
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
                                          userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay requires option BTPaymentAuthorizationOptionMechanismViewController"}];
-        [self informDelegateDidFailWithError:error];
+        [self informDelegateDidFailWithError:error andPostAnalyticsEvent:NO];
         return;
     }
 
@@ -103,7 +103,7 @@
     
     if ((options & BTPaymentAuthorizationOptionMechanismAppSwitch) == 0) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:nil];
-        [self informDelegateDidFailWithError:error];
+        [self informDelegateDidFailWithError:error andPostAnalyticsEvent:NO];
         return;
     }
     
@@ -115,7 +115,7 @@
         if (!error) {
             error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorUnknown userInfo:@{NSLocalizedDescriptionKey: @"App Switch did not initiate, but did not return an error"}];
         }
-        [self informDelegateDidFailWithError:error];
+        [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
     }
 }
 
@@ -128,7 +128,7 @@
     
     if (!appSwitchOptionEnabled && !viewControllerOptionEnabled) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:@{ NSLocalizedDescriptionKey: @"At least one of BTPaymentAuthorizationOptionMechanismAppSwitch or BTPaymentAuthorizationOptionMechanismViewController must be enabled in options" }];
-        [self informDelegateDidFailWithError:error];
+        [self informDelegateDidFailWithError:error andPostAnalyticsEvent:NO];
         return;
     }
     
@@ -160,7 +160,7 @@
             NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                                  code:BTPaymentProviderErrorInitialization
                                              userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize BTPayPalViewController" }];
-            [self informDelegateDidFailWithError:error];
+            [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
         }
     }
     
@@ -170,7 +170,7 @@
             userInfo[NSUnderlyingErrorKey] = error;
         }
         [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorUnknown userInfo:userInfo];
-        [self informDelegateDidFailWithError:error];
+        [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
     }
 }
 
@@ -215,10 +215,13 @@
     }
 }
 
-- (void)informDelegateDidFailWithError:(NSError *)error {
+- (void)informDelegateDidFailWithError:(NSError *)error andPostAnalyticsEvent:(BOOL)postAnalyticsEvent {
     [self setStatus:BTPaymentProviderStatusError];
 
-    [self.client postAnalyticsEvent:@"ios.authorizer.did-fail-with-error"];
+    if (postAnalyticsEvent) {
+        [self.client postAnalyticsEvent:@"ios.authorizer.did-fail-with-error"];
+    }
+
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreator:didFailWithError:)]) {
         [self.delegate paymentMethodCreator:self didFailWithError:error];
     }
@@ -250,7 +253,7 @@
     [self setStatus:BTPaymentProviderStatusError];
 
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
-    [self informDelegateDidFailWithError:error];
+    [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
 }
 
 - (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
@@ -279,7 +282,7 @@
 }
 
 - (void)appSwitcher:(__unused id<BTAppSwitching>)switcher didFailWithError:(NSError *)error {
-    [self informDelegateDidFailWithError:error];
+    [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
 }
 
 - (void)appSwitcherDidCancel:(__unused id<BTAppSwitching>)switcher {
@@ -313,7 +316,7 @@
 }
 
 - (void)paymentMethodCreator:(__unused id)sender didFailWithError:(NSError *)error {
-    [self informDelegateDidFailWithError:error];
+    [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
 }
 
 #if BT_ENABLE_APPLE_PAY
