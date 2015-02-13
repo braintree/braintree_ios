@@ -228,7 +228,7 @@
 }
 
 - (void)informDelegateDidCancel {
-    [self setStatus:BTPaymentProviderStatusCancelled];
+    [self setStatus:BTPaymentProviderStatusCanceled];
 
     [self.client postAnalyticsEvent:@"ios.authorizer.did-cancel"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorDidCancel:)]) {
@@ -257,7 +257,7 @@
 }
 
 - (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
-    [self setStatus:BTPaymentProviderStatusCancelled];
+    [self setStatus:BTPaymentProviderStatusCanceled];
 
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
     [self informDelegateDidCancel];

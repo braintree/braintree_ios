@@ -141,7 +141,7 @@ describe(@"createPaymentMethod:", ^{
                 [[delegate expect] paymentMethodCreatorDidCancel:provider];
                 provider.delegate = delegate;
                 [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreatorDidCancel:nil];
-                expect([provider status]).to.equal(BTPaymentProviderStatusCancelled);
+                expect([provider status]).to.equal(BTPaymentProviderStatusCanceled);
             });
 
             it(@"invokes error delegate method", ^{
@@ -187,7 +187,7 @@ describe(@"createPaymentMethod:", ^{
                 }]];
                 [[delegate expect] paymentMethodCreatorDidCancel:[OCMArg isNotNil]];
                 [[delegate expect] paymentMethodCreator:[OCMArg checkWithBlock:^BOOL(id obj) {
-                    return [(BTPaymentProvider *)obj status] == BTPaymentProviderStatusCancelled;
+                    return [(BTPaymentProvider *)obj status] == BTPaymentProviderStatusCanceled;
                 }]
                       requestsDismissalOfViewController:nil];
                 provider.delegate = delegate;

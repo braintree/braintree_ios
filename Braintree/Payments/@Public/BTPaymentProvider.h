@@ -36,8 +36,8 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderStatus) {
     /// Payment method creation is complete with success
     BTPaymentProviderStatusSuccess,
 
-    /// The payment method creator has cancelled
-    BTPaymentProviderStatusCancelled
+    /// The payment method creator has canceled
+    BTPaymentProviderStatusCanceled
 };
 
 
