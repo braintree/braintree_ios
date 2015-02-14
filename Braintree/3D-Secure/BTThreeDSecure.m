@@ -81,13 +81,14 @@
 
 - (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error {
-    self.upgradedPaymentMethod = nil;
-    [self informDelegateDidFailWithError:error];
-    
     if ([error.domain isEqualToString:BTThreeDSecureErrorDomain] && error.code == BTThreeDSecureFailedAuthenticationErrorCode) {
+        // This error should be handled by the BTPaymentMethodCreationDelegate
+        self.upgradedPaymentMethod = nil;
+        [self informDelegateDidFailWithError:error];
         [self.client postAnalyticsEvent:@"ios.threedsecure.error.auth.failure"];
     } else {
-        
+        // This error is presented to the user because it's unrecognized and may not be a catastrophic failure.
+        // If it is catastrophic, the user will tap UIBarButtonSystemItemCancel
         if ([UIAlertController class]) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
                                                                            message:nil
