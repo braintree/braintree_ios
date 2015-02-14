@@ -107,8 +107,9 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
     self.title = [self parseTitleFromWebView:webView];
 }
 
-- (void)webView:(__unused UIWebView *)webView didFailLoadWithError:(__unused NSError *)error {
+- (void)webView:(__unused UIWebView *)webView didFailLoadWithError:(NSError *)error {
     if ([error.domain isEqualToString:@"WebKitErrorDomain"] && error.code == 102) {
+        // Not a real error; occurs when we return NO from webView:shouldStartLoadWithRequest:navigationType:
         return;
     }
 

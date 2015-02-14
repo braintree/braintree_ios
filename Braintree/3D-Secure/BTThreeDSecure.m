@@ -75,12 +75,19 @@
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock {
     self.upgradedPaymentMethod = card;
     completionBlock(BTThreeDSecureViewControllerCompletionStatusSuccess);
+    [self.client postAnalyticsEvent:@"ios.threedsecure.authenticated"];
 }
 
 - (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error {
     self.upgradedPaymentMethod = nil;
     [self informDelegateDidFailWithError:error];
+    
+    if ([error.domain isEqualToString:BTThreeDSecureErrorDomain] && error.code == BTThreeDSecureFailedAuthenticationErrorCode) {
+        [self.client postAnalyticsEvent:@"ios.threedsecure.error.auth.failure"];
+    } else {
+        [self.client postAnalyticsEvent:@"ios.threedsecure.error.unrecognized-error"];
+    }
 }
 
 - (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController {
@@ -90,6 +97,7 @@
         [self informDelegateDidCancel];
     }
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+    [self.client postAnalyticsEvent:@"ios.threedsecure.finished"];
 }
 
 #pragma mark - Delegate Informers
