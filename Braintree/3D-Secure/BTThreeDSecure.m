@@ -2,6 +2,7 @@
 
 #import "BTClient_Internal.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
+#import "BTThreeDSecureLocalizedString.h"
 
 @interface BTThreeDSecure () <BTThreeDSecureAuthenticationViewControllerDelegate>
 @property (nonatomic, strong) BTClient *client;
@@ -78,7 +79,7 @@
     [self.client postAnalyticsEvent:@"ios.threedsecure.authenticated"];
 }
 
-- (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error {
     self.upgradedPaymentMethod = nil;
     [self informDelegateDidFailWithError:error];
@@ -86,6 +87,24 @@
     if ([error.domain isEqualToString:BTThreeDSecureErrorDomain] && error.code == BTThreeDSecureFailedAuthenticationErrorCode) {
         [self.client postAnalyticsEvent:@"ios.threedsecure.error.auth.failure"];
     } else {
+        
+        if ([UIAlertController class]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
+                                                                           message:nil
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:^(__unused UIAlertAction *action) {
+                                                    }]];
+            [viewController presentViewController:alert animated:YES completion:nil];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:error.localizedDescription
+                                        message:nil
+                                       delegate:nil
+                              cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
+                              otherButtonTitles:nil, nil] show];
+        }
+        
         [self.client postAnalyticsEvent:@"ios.threedsecure.error.unrecognized-error"];
     }
 }
@@ -95,9 +114,9 @@
         [self informDelegateDidCreatePaymentMethod:self.upgradedPaymentMethod];
     } else {
         [self informDelegateDidCancel];
+        [self.client postAnalyticsEvent:@"ios.threedsecure.canceled"];
     }
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
-    [self.client postAnalyticsEvent:@"ios.threedsecure.finished"];
 }
 
 #pragma mark - Delegate Informers
