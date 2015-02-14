@@ -105,7 +105,11 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (BTClientApplePayStatus)applePayStatus {
+#if BT_ENABLE_APPLE_PAY
     return [[self.configuration responseParserForKey:BTClientTokenKeyApplePay] integerForKey:@"status" withValueTransformer:[BTClientTokenApplePayStatusValueTransformer sharedInstance]];
+#else
+    return BTClientApplePayStatusOff;
+#endif
 }
 
 - (NSString *)applePayCurrencyCode {
@@ -121,8 +125,12 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 }
 
 - (NSArray *)applePaySupportedNetworks {
+#if BT_ENABLE_APPLE_PAY
     return [[self.configuration responseParserForKey:BTClientTokenKeyApplePay] arrayForKey:@"supportedNetworks"
                                                 withValueTransformer:[BTClientTokenApplePayPaymentNetworksValueTransformer sharedInstance]];
+#else
+    return @[];
+#endif
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {

@@ -75,10 +75,8 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
-  - Braintree
   - Braintree (from `.`)
   - Braintree/3D-Secure (from `.`)
-  - Braintree/Apple-Pay
   - Braintree/Apple-Pay (from `.`)
   - Braintree/Data (from `.`)
   - Expecta (~> 0.3.0)

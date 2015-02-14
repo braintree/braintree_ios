@@ -1,6 +1,6 @@
 #import "BTPayPalAppSwitchHandler_Internal.h"
 #import "BTClient+BTPayPal.h"
-#import "BTClient_Metadata.h"
+#import "BTClient_Internal.h"
 #import "PayPalMobile.h"
 #import "BTClientToken.h"
 

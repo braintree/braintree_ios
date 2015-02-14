@@ -18,6 +18,29 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderType) {
     BTPaymentProviderTypeApplePay
 };
 
+/// Status of the last (or ongoing) payment method creation
+typedef NS_ENUM(NSInteger, BTPaymentProviderStatus) {
+    /// The payment method was not created yet (default status)
+    BTPaymentProviderStatusUninitialized = 0,
+
+    /// Payment method created (either PayPal, Venmo or ApplePay)
+    BTPaymentProviderStatusInitialized,
+
+    /// The payment method creator, having obtained user payment details and/or user
+    /// authorization, is now processing the results
+    BTPaymentProviderStatusProcessing,
+
+    /// Payment method failed with error
+    BTPaymentProviderStatusError,
+
+    /// Payment method creation is complete with success
+    BTPaymentProviderStatusSuccess,
+
+    /// The payment method creator has canceled
+    BTPaymentProviderStatusCanceled
+};
+
+
 /// Options for payment method creation
 typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 
@@ -94,6 +117,9 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 /// @return YES if this payment provider could create a payment method of the specified type
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type;
 
+
+/// Status of the last (or ongoing) payment method creation 
+@property (nonatomic, assign) BTPaymentProviderStatus status;
 
 #if BT_ENABLE_APPLE_PAY
 

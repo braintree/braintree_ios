@@ -11,9 +11,7 @@
     * Addresses an issue [reported by developers attempting to submit v.zero integrations without Apple Pay to the app store](https://github.com/braintree/braintree_ios/issues/60).
 * Enhancements
   * Minor updates to UK localization
-  * Make Apple Pay a build option, enabled via `Braintree/Apple-Pay` subspec, 
-    which adds a `BT_ENABLE_APPLE_PAY=1` preprocesor macro.
-    * Addresses an issue [reported by developers attempting to submit v.zero integrations without Apple Pay to the app store](https://github.com/braintree/braintree_ios/issues/60).
+  * Expose a new `status` property on `BTPaymentProvider`, which exposes the current status of payment method creation (Thanks, @Reflejo!)
 * Bug fixes
   * Fix swift build by making BTClient_Metadata.h private (https://github.com/braintree/braintree_ios/pull/84 and https://github.com/braintree/braintree_ios/pull/85)
 * Internal changes
