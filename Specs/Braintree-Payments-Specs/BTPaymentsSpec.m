@@ -10,6 +10,7 @@
 
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler.h"
+#import "BTPayPalViewController.h"
 
 @interface BTPaymentProvider () <PKPaymentAuthorizationViewControllerDelegate>
 @end
@@ -125,10 +126,43 @@ describe(@"createPaymentMethod:", ^{
                 [[[payPalAppSwitchHandler stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
             });
 
+            it(@"status is uninitialized", ^{
+                expect([provider status]).to.equal(BTPaymentProviderStatusUninitialized);
+            });
+
             it(@"invokes an app switch delegate method", ^{
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
                 provider.delegate = delegate;
                 [provider createPaymentMethod:BTPaymentProviderTypePayPal];
+                expect([provider status]).to.equal(BTPaymentProviderStatusInitialized);
+            });
+
+            it(@"invokes didcancel delegate method", ^{
+                [[delegate expect] paymentMethodCreatorDidCancel:provider];
+                provider.delegate = delegate;
+                [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreatorDidCancel:nil];
+                expect([provider status]).to.equal(BTPaymentProviderStatusCanceled);
+            });
+
+            it(@"invokes error delegate method", ^{
+                [[delegate expect] paymentMethodCreator:provider didFailWithError:nil];
+                provider.delegate = delegate;
+                [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreator:provider didFailWithError:nil];
+                expect([provider status]).to.equal(BTPaymentProviderStatusError);
+            });
+
+            it(@"invokes success delegate method", ^{
+                [[delegate expect] paymentMethodCreator:provider didCreatePaymentMethod:nil];
+                provider.delegate = delegate;
+                [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreator:provider didCreatePaymentMethod:nil];
+                expect([provider status]).to.equal(BTPaymentProviderStatusSuccess);
+            });
+
+            it(@"invokes willprocess delegate method", ^{
+                [[delegate expect] paymentMethodCreatorWillProcess:provider];
+                provider.delegate = delegate;
+                [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreatorWillProcess:provider];
+                expect([provider status]).to.equal(BTPaymentProviderStatusProcessing);
             });
         });
 
@@ -145,6 +179,20 @@ describe(@"createPaymentMethod:", ^{
                 provider.delegate = delegate;
 
                 [provider createPaymentMethod:BTPaymentProviderTypePayPal];
+            });
+
+            it(@"provider has the right state and cancels view controller", ^{
+                [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    return [obj isKindOfClass:[UIViewController class]];
+                }]];
+                [[delegate expect] paymentMethodCreatorDidCancel:[OCMArg isNotNil]];
+                [[delegate expect] paymentMethodCreator:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    return [(BTPaymentProvider *)obj status] == BTPaymentProviderStatusCanceled;
+                }]
+                      requestsDismissalOfViewController:nil];
+                provider.delegate = delegate;
+                [provider createPaymentMethod:BTPaymentProviderTypePayPal];
+                [(id<BTPayPalViewControllerDelegate>)provider payPalViewControllerDidCancel:nil];
             });
         });
     });
