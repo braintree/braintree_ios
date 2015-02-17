@@ -103,7 +103,7 @@
                                         message:nil
                                        delegate:nil
                               cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
-                              otherButtonTitles:nil, nil] show];
+                              otherButtonTitles:nil] show];
         }
         
         [self.client postAnalyticsEvent:@"ios.threedsecure.error.unrecognized-error"];
