@@ -20,38 +20,44 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.5.0):
+  - Braintree (3.6.0-rc3):
     - Braintree/API
     - Braintree/Drop-In
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/API (3.5.0)
-  - Braintree/Data (3.5.0):
+  - Braintree/3D-Secure (3.6.0-rc3):
+    - Braintree/API
+    - Braintree/Payments
+    - Braintree/UI
+  - Braintree/API (3.6.0-rc3)
+  - Braintree/Apple-Pay (3.6.0-rc3)
+  - Braintree/Data (3.6.0-rc3):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (3.5.0):
+  - Braintree/Drop-In (3.6.0-rc3):
     - Braintree/API
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (3.5.0):
+  - Braintree/Payments (3.6.0-rc3):
     - Braintree/API
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (3.5.0):
+  - Braintree/PayPal (3.6.0-rc3):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.5.0):
+  - Braintree/UI (3.6.0-rc3):
     - Braintree/API
-  - Braintree/Venmo (3.5.0):
+  - Braintree/Venmo (3.6.0-rc3):
     - Braintree/API
   - CardIO (4.0.0)
   - Expecta (0.3.1)
   - FLEX (1.1.1)
   - HockeySDK (3.5.6)
+  - InAppSettingsKit (2.3.3)
   - KIF (3.0.8):
     - KIF/XCTest
   - KIF/XCTest (3.0.8)
@@ -71,11 +77,14 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
   - Braintree (from `.`)
+  - Braintree/3D-Secure (from `.`)
+  - Braintree/Apple-Pay (from `.`)
   - Braintree/Data (from `.`)
   - CardIO
   - Expecta (~> 0.3.0)
   - FLEX
   - HockeySDK
+  - InAppSettingsKit
   - KIF (~> 3.0)
   - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
   - NSURL+QueryDictionary (~> 1.0)
@@ -99,10 +108,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   Braintree: fa2c52a21f5ceb50945acb34765ee1245a92bf51
-  CardIO: 06ed3e3c13a5eebdb3db9916e894ed6168718ac2
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
+  InAppSettingsKit: c870cb6095a85656ff4df42845af5c26eede4c8d
   KIF: 2db5e8cf59136dd1267d49cca0d55883389b09d3
   KIFViewControllerActions: 6d680038a329864d62526928dd89556c0177bc55
   NSURL+QueryDictionary: 1ad81be60c10e3f4d80c5c4beb7125de96aaec5e

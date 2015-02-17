@@ -10,7 +10,7 @@
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
 #import "BTPaymentMethodCreationDelegate.h"
-#import "BTClient_Metadata.h"
+#import "BTClient_Internal.h"
 #import "BTLogger_Internal.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>
@@ -38,6 +38,9 @@
 /// Strong reference to  BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
 @property (nonatomic, strong) BTDropInErrorAlert *savePayPalAccountErrorAlert;
+
+@property (nonatomic, assign) BOOL cardEntryDidBegin;
+
 
 @end
 
@@ -163,6 +166,10 @@
 
     // Ensure dropInContentView is visible. See viewWillDisappear below
     self.dropInContentView.alpha = 1.0f;
+
+    if (self.fullForm) {
+        [self.client postAnalyticsEvent:@"dropin.ios.appear"];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -173,8 +180,10 @@
     [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
         self.dropInContentView.alpha = 0.0f;
     }];
+    if (self.fullForm) {
+        [self.client postAnalyticsEvent:@"dropin.ios.disappear"];
+    }
 }
-
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -274,29 +283,12 @@
     } else if (!self.dropInContentView.cardForm.hidden) {
         BTUICardFormView *cardForm = self.dropInContentView.cardForm;
 
-        void (^cardFail)(NSError *) = ^(NSError *error) {
-            [self showLoadingState:NO];
-
-            if (error && [error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
-                [self informUserDidFailWithError:error];
-            } else {
-                NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
-                NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
-                NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
-                [[[UIAlertView alloc] initWithTitle:localizedAlertTitle
-                                            message:localizedAlertMessage
-                                           delegate:nil
-                                  cancelButtonTitle:localizedCancel
-                                  otherButtonTitles:nil] show];
-            }
-        };
+        BTClient *client = [self.client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+            metadata.source = BTClientMetadataSourceForm;
+        }];
 
         if (cardForm.valid) {
             [self informDelegateWillComplete];
-
-            BTClient *client = [self.client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
-                metadata.source = BTClientMetadataSourceForm;
-            }];
 
             BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
             request.number = cardForm.number;
@@ -306,14 +298,29 @@
             request.postalCode = cardForm.postalCode;
             request.shouldValidate = YES;
 
+            [client postAnalyticsEvent:@"dropin.ios.add-card.save"];
             [client saveCardWithRequest:request
-                               success:^(BTCardPaymentMethod *card) {
-                                   [self showLoadingState:NO];
-                                   [self informDelegateDidAddPaymentMethod:card];
-                               }
-                               failure:cardFail];
+                                success:^(BTCardPaymentMethod *card) {
+                                    [client postAnalyticsEvent:@"dropin.ios.add-card.success"];
+                                    [self showLoadingState:NO];
+                                    [self informDelegateDidAddPaymentMethod:card];
+                                }
+                                failure:^(NSError *error) {
+                                    [self showLoadingState:NO];
+                                    [client postAnalyticsEvent:@"dropin.ios.add-card.failed"];
+                                    if ([error.domain isEqualToString:BTBraintreeAPIErrorDomain] && error.code == BTCustomerInputErrorInvalid) {
+                                        [self informUserDidFailWithError:error];
+                                    }
+                                }];
         } else {
-            cardFail(nil);
+            NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
+            NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
+            NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
+            [[[UIAlertView alloc] initWithTitle:localizedAlertTitle
+                                        message:localizedAlertMessage
+                                       delegate:nil
+                              cancelButtonTitle:localizedCancel
+                              otherButtonTitles:nil] show];
         }
     }
 }
@@ -351,6 +358,12 @@
 #pragma mark Card Form Delegate methods
 
 - (void)cardFormViewDidChange:(__unused BTUICardFormView *)cardFormView {
+
+    if (!self.cardEntryDidBegin) {
+        [self.client postAnalyticsEvent:@"dropin.ios.add-card.start"];
+        self.cardEntryDidBegin = YES;
+    }
+
     [self updateValidity];
 }
 

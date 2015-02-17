@@ -1,7 +1,5 @@
 @import PassKit;
 
-#import "BTClient.h"
-#import "BTClient_Metadata.h"
 #import "BTClient_Internal.h"
 #import "BTClientToken.h"
 #import "BTLogger_Internal.h"
@@ -13,9 +11,8 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTAnalyticsMetadata.h"
 #import "Braintree-Version.h"
-
-NSString *const BTClientChallengeResponseKeyPostalCode = @"postal_code";
-NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
+#import "BTAPIResponseParser.h"
+#import "BTClientPaymentMethodValueTransformer.h"
 
 @interface BTClient ()
 - (void)setMetadata:(BTClientMetadata *)metadata;
@@ -44,8 +41,6 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 #endif
             return nil;
         }
-
-        self.configuration = [[BTClientConfiguration alloc] initWithClientToken:self.clientToken];
 
         self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
@@ -111,17 +106,8 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self.clientApiHttp GET:@"v1/payment_methods" parameters:parameters completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             if (successBlock) {
-                NSArray *responsePaymentMethods = response.object[@"paymentMethods"];
-
-                NSMutableArray *paymentMethods = [NSMutableArray array];
-                for (NSDictionary *paymentMethodDictionary in responsePaymentMethods) {
-                    BTPaymentMethod *paymentMethod = [[self class] paymentMethodFromAPIResponseDictionary:paymentMethodDictionary];
-                    if (paymentMethod == nil) {
-                        NSLog(@"Unable to create payment method from %@", paymentMethodDictionary);
-                    } else {
-                        [paymentMethods addObject:paymentMethod];
-                    }
-                }
+                NSArray *paymentMethods = [response.object arrayForKey:@"paymentMethods"
+                                                  withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
 
                 successBlock(paymentMethods);
             }
@@ -144,10 +130,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                  completion:^(BTHTTPResponse *response, NSError *error) {
                      if (response.isSuccess) {
                          if (successBlock) {
-                             NSArray *paymentMethods = response.object[@"paymentMethods"];
+                             NSArray *paymentMethods = [response.object arrayForKey:@"paymentMethods" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
 
-                             BTPaymentMethod *paymentMethod = [[self class] paymentMethodFromAPIResponseDictionary:[paymentMethods firstObject]];
-                             successBlock(paymentMethod);
+                             successBlock([paymentMethods firstObject]);
                          }
                      } else {
                          if (failureBlock) {
@@ -170,18 +155,17 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
     [self.clientApiHttp POST:@"v1/payment_methods/credit_cards" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
-            NSDictionary *creditCardResponse = [response.object[@"creditCards"] firstObject];
-            BTCardPaymentMethod *paymentMethod = [[self class] cardFromAPIResponseDictionary:creditCardResponse];
-
             if (successBlock) {
-                successBlock(paymentMethod);
+                NSArray *paymentMethods = [response.object arrayForKey:@"creditCards"
+                                                  withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
+                successBlock([paymentMethods firstObject]);
             }
         } else {
             NSError *returnedError = error;
             if (error.domain == BTBraintreeAPIErrorDomain && error.code == BTCustomerInputErrorInvalid) {
                 returnedError = [NSError errorWithDomain:error.domain
                                                     code:error.code
-                                                userInfo:@{BTCustomerInputBraintreeValidationErrorsKey: response.object}];
+                                                userInfo:@{BTCustomerInputBraintreeValidationErrorsKey: response.rawObject}];
             }
             if (failureBlock) {
                 failureBlock(returnedError);
@@ -213,6 +197,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
                       failure:failureBlock];
 }
 
+#if BT_ENABLE_APPLE_PAY
 - (void)saveApplePayPayment:(PKPayment *)payment
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
@@ -229,7 +214,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
 
     NSString *encodedPaymentData;
     NSError *error;
-    switch (self.configuration.applePayConfiguration.status) {
+    switch (self.clientToken.applePayStatus) {
         case BTClientApplePayStatusOff:
             error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                         code:BTErrorUnsupported
@@ -299,18 +284,15 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSDictionary *applePayPaymentMethodResponse = [response.object[@"applePayCards"] firstObject];
-                BTMutableApplePayPaymentMethod *paymentMethod = [[BTMutableApplePayPaymentMethod alloc] init];
-                paymentMethod.nonce = applePayPaymentMethodResponse[@"nonce"];
-                paymentMethod.description = applePayPaymentMethodResponse[@"description"];
+                NSArray *applePayCards = [response.object arrayForKey:@"applePayCards" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
+
+                BTMutableApplePayPaymentMethod *paymentMethod = [applePayCards firstObject];
 
                 paymentMethod.shippingAddress = payment.shippingAddress;
                 paymentMethod.shippingMethod = payment.shippingMethod;
                 paymentMethod.billingAddress = payment.billingAddress;
 
-                if (successBlock) {
-                    successBlock([paymentMethod copy]);
-                }
+                successBlock([paymentMethod copy]);
             }
         } else {
             if (failureBlock) {
@@ -319,6 +301,7 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
         }
     }];
 }
+#endif
 
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
                    applicationCorrelationID:(NSString *)correlationId
@@ -336,8 +319,9 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
-                NSDictionary *paypalPaymentMethodResponse = response.object[@"paypalAccounts"][0];
-                BTPayPalPaymentMethod *payPalPaymentMethod = [[self class] payPalPaymentMethodFromAPIResponseDictionary:paypalPaymentMethodResponse];
+                NSArray *payPalPaymentMethods = [response.object arrayForKey:@"paypalAccounts" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
+                BTPayPalPaymentMethod *payPalPaymentMethod = [payPalPaymentMethods firstObject];
+                
                 successBlock(payPalPaymentMethod);
             }
         } else {
@@ -403,58 +387,74 @@ NSString *const BTClientChallengeResponseKeyCVV = @"cvv";
     }
 }
 
+#pragma mark 3D Secure Lookup
+
+- (void)lookupNonceForThreeDSecure:(NSString *)nonce
+                 transactionAmount:(NSDecimalNumber *)amount
+                           success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
+                           failure:(BTClientFailureBlock)failureBlock {
+    NSMutableDictionary *requestParameters = [@{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                                 @"amount": amount } mutableCopy];
+    if (self.clientToken.merchantAccountId) {
+        requestParameters[@"merchant_account_id"] = self.clientToken.merchantAccountId;
+    }
+    NSString *urlSafeNonce = [nonce stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    [self.clientApiHttp POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
+                  parameters:requestParameters
+                  completion:^(BTHTTPResponse *response, NSError *error){
+        if (response.isSuccess) {
+            if (successBlock) {
+                BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
+
+                BTAPIResponseParser *lookupResponse = [response.object responseParserForKey:@"lookup"];
+                lookup.acsURL = [lookupResponse URLForKey:@"acsUrl"];
+                lookup.PAReq = [lookupResponse stringForKey:@"pareq"];
+                lookup.MD = [lookupResponse stringForKey:@"md"];
+                lookup.termURL = [lookupResponse URLForKey:@"termUrl"];
+                BTPaymentMethod *paymentMethod = [response.object objectForKey:@"paymentMethod"
+                                                          withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
+                if ([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
+                    lookup.card = (BTCardPaymentMethod *)paymentMethod;
+                    lookup.card.threeDSecureInfo = [response.object dictionaryForKey:@"threeDSecureInfo"];
+                }
+                successBlock(lookup);
+            }
+        } else {
+            if (failureBlock) {
+                if (response.statusCode == 422) {
+                    NSString *errorMessage = [[response.object responseParserForKey:@"error"] stringForKey:@"message"];
+                    NSDictionary *threeDSecureInfo = [response.object dictionaryForKey:@"threeDSecureInfo"];
+                    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+                    if (errorMessage) {
+                        userInfo[NSLocalizedDescriptionKey] = errorMessage;
+                    }
+                    if (threeDSecureInfo) {
+                        userInfo[BTThreeDSecureInfoKey] = threeDSecureInfo;
+                    }
+                    NSDictionary *errors = [response.object dictionaryForKey:@"error"];
+                    if (errors) {
+                        userInfo[BTCustomerInputBraintreeValidationErrorsKey] = errors;
+                    }
+                    failureBlock([NSError errorWithDomain:error.domain
+                                                     code:error.code
+                                                 userInfo:userInfo]);
+                } else {
+                    failureBlock(error);
+                }
+            }
+        }
+    }];
+
+}
+
+#pragma mark Braintree Analytics
+
 - (void)postAnalyticsEvent:(NSString *)eventKind {
     [self postAnalyticsEvent:eventKind success:nil failure:nil];
 }
 
 
-#pragma mark - Response Parsing
-
-+ (BTPaymentMethod *)paymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
-    if ([response[@"type"] isEqual:@"CreditCard"]) {
-        return [self cardFromAPIResponseDictionary:response];
-    } else if ([response[@"type"] isEqual:@"PayPalAccount"]) {
-        return [self payPalPaymentMethodFromAPIResponseDictionary:response];
-    } else {
-        return nil;
-    }
-}
-
-+ (BTPayPalPaymentMethod *)payPalPaymentMethodFromAPIResponseDictionary:(NSDictionary *)response {
-    BTMutablePayPalPaymentMethod *payPalPaymentMethod;
-    if ([response respondsToSelector:@selector(objectForKeyedSubscript:)]) {
-        payPalPaymentMethod             = [BTMutablePayPalPaymentMethod new];
-        payPalPaymentMethod.nonce       = response[@"nonce"];
-        payPalPaymentMethod.locked      = [response[@"isLocked"] boolValue];
-        id email = response[@"details"][@"email"];
-        payPalPaymentMethod.email = [email isKindOfClass:[NSString class]] ? email : nil;
-        id description = response[@"description"];
-        if ([description isKindOfClass:[NSString class]]) {
-            // Braintree gateway has some inconsistent behavior depending on
-            // the type of nonce, and sometimes returns "PayPal" for description,
-            // and sometimes returns a real identifying string. The former is not
-            // desirable for display. The latter is.
-            // As a workaround, we ignore descriptions that look like "PayPal".
-            if (![[description lowercaseString] isEqualToString:@"paypal"]) {
-                payPalPaymentMethod.description = description;
-            }
-        }
-    }
-    return payPalPaymentMethod;
-}
-
-+ (BTCardPaymentMethod *)cardFromAPIResponseDictionary:(NSDictionary *)responseObject {
-    BTMutableCardPaymentMethod *card = [[BTMutableCardPaymentMethod alloc] init];
-
-    card.description        = responseObject[@"description"];
-    card.typeString         = responseObject[@"details"][@"cardType"];
-    card.lastTwo            = responseObject[@"details"][@"lastTwo"];
-    card.locked             = [responseObject[@"isLocked"] boolValue];
-    card.nonce              = responseObject[@"nonce"];
-    card.challengeQuestions = [NSSet setWithArray:responseObject[@"securityQuestions"]];
-
-    return card;
-}
+#pragma mark -
 
 - (NSMutableDictionary *)metaPostParameters {
     return [self mutableDictionaryCopyWithClientMetadata:nil];

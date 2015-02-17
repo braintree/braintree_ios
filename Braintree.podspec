@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "3.5.0"
+  s.version          = "3.6.0-rc3"
   s.summary          = "Braintree v.zero: A modern foundation for accepting payments"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -26,6 +26,10 @@ Pod::Spec.new do |s|
 
   s.default_subspecs = %w[Drop-In API PayPal Venmo UI Payments]
 
+  s.subspec "Apple-Pay" do |s|
+    s.xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => "BT_ENABLE_APPLE_PAY=1" }
+  end
+
   s.subspec "Drop-In" do |s|
     s.source_files  = "Braintree/Drop-In/**/*.{h,m}"
     s.dependency "Braintree/API"
@@ -48,7 +52,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Braintree/PayPal/@Public/**/*.h"
     s.frameworks = "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
     s.vendored_library = "Braintree/PayPal/mSDK/libPayPalMobile-BT.a"
-    s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES", "OTHER_LDFLAGS" => "-ObjC -lc++" }
+    s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
     s.dependency "Braintree/API"
     s.dependency "Braintree/UI"
   end
@@ -77,10 +81,20 @@ Pod::Spec.new do |s|
 
   s.subspec "Payments" do |s|
     s.source_files = "Braintree/Payments/**/*.{h,m}"
-    s.public_header_files = "Braintree/Payments/Public/*.h"
+    s.public_header_files = "Braintree/Payments/@Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/API"
     s.dependency "Braintree/PayPal"
     s.dependency "Braintree/Venmo"
+  end
+
+  s.subspec "3D-Secure" do |s|
+    s.source_files = "Braintree/3D-Secure/**/*.{h,m}"
+    s.public_header_files = "Braintree/3D-Secure/@Public/*.h"
+    s.frameworks = "UIKit"
+    s.dependency "Braintree/API"
+    s.dependency "Braintree/UI"
+    s.dependency "Braintree/Payments"
+    s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree/3D-Secure/Localization/*.lproj" }
   end
 end

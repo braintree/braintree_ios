@@ -76,11 +76,11 @@
 }
 
 + (NSURLRequest *)parseRequestFromTestResponse:(BTHTTPResponse *)response {
-    return [NSKeyedUnarchiver unarchiveObjectWithData:[[NSData alloc] initWithBase64EncodedString:response.object[@"request"] options:0]];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:[[NSData alloc] initWithBase64EncodedString:response.rawObject[@"request"] options:0]];
 }
 
 + (NSString *)parseRequestBodyFromTestResponse:(BTHTTPResponse *)response {
-    return response.object[@"requestBody"];
+    return response.rawObject[@"requestBody"];
 }
 
 @end
@@ -503,7 +503,8 @@ describe(@"interpreting responses", ^{
                 }];
 
                 [http GET:@"200.json" completion:^(BTHTTPResponse *response, NSError *error){
-                    expect(response.object).to.equal(@{@"status": @"OK"});
+                    expect(response.rawObject).to.equal(@{@"status": @"OK"});
+                    expect([response.object stringForKey:@"status"]).to.equal(@"OK");
 
                     [OHHTTPStubs removeStub:stub];
                     done();
@@ -520,7 +521,8 @@ describe(@"interpreting responses", ^{
                 }];
 
                 [http GET:@"422.json" completion:^(BTHTTPResponse *response, NSError *error){
-                    expect(response.object).to.equal(@{@"status": @"ERROR"});
+                    expect(response.rawObject).to.equal(@{@"status": @"ERROR"});
+                    expect([response.object stringForKey:@"status"]).to.equal(@"ERROR");
 
                     [OHHTTPStubs removeStub:stub];
                     done();

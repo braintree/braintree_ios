@@ -1,7 +1,12 @@
 #import "BTClient.h"
 #import "BTHTTP.h"
 #import "BTClientToken.h"
-#import "BTClientConfiguration.h"
+#import "BTClientMetadata.h"
+
+#import "BTThreeDSecureLookupResult.h"
+
+/// Success Block type for 3D Secure lookups
+typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup);
 
 @interface BTClient ()
 @property (nonatomic, strong, readwrite) BTHTTP *clientApiHttp;
@@ -10,14 +15,18 @@
 /// Models the contents of the client token, as it is received from the merchant server
 @property (nonatomic, strong) BTClientToken *clientToken;
 
-/// Models the current client configuration
-///
-/// 1) First, configuration is bootstrapped based on the clientToken
-/// 2) In the future, full configuration details will be fetched asynchronously via the Client API
-@property (nonatomic, strong) BTClientConfiguration *configuration;
+- (void)lookupNonceForThreeDSecure:(NSString *)nonce
+                 transactionAmount:(NSDecimalNumber *)amount
+                           success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
+                           failure:(BTClientFailureBlock)failureBlock;
 
-// Internal helpers
-// Declared here to make available for testing
-+ (BTPayPalPaymentMethod *)payPalPaymentMethodFromAPIResponseDictionary:(NSDictionary *)response;
+@property (nonatomic, copy, readonly) BTClientMetadata *metadata;
+
+///  Copy of the instance, but with different metadata
+///
+///  Useful for temporary metadata overrides.
+///
+///  @param metadataBlock block for customizing metadata
+- (instancetype)copyWithMetadata:(void (^)(BTClientMutableMetadata *metadata))metadataBlock;
 
 @end

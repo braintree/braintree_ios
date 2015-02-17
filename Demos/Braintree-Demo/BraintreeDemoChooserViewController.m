@@ -2,17 +2,20 @@
 
 #import <HockeySDK/HockeySDK.h>
 #import <Braintree/Braintree.h>
+#import <Braintree/Braintree-3D-Secure.h>
 #import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
+#import <InAppSettingsKit/IASKAppSettingsViewController.h>
 
+#import "BraintreeDemoSettings.h"
 #import "BraintreeDemoBraintreeInitializationDemoViewController.h"
 #import "BraintreeDemoOneTouchDemoViewController.h"
 #import "BraintreeDemoTokenizationDemoViewController.h"
 #import "BraintreeDemoDirectApplePayIntegrationViewController.h"
 
-#import "BraintreeDemoTransactionService.h"
+#import "BraintreeDemoMerchantAPI.h"
 #import "BTClient_Internal.h"
 
-@interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate>
+@interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate, BTPaymentMethodCreationDelegate>
 
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *environmentSelector;
 
@@ -47,9 +50,9 @@
 @property (nonatomic, copy) NSString *nonce;
 @property (nonatomic, copy) NSString *lastTransactionId;
 
-#pragma mark Settings
+#pragma mark ThreeDSecure
 
-@property (weak, nonatomic) IBOutlet UISwitch *modalPresentationSwitch;
+@property (nonatomic, strong) BTThreeDSecure *threeDSecure;
 
 @end
 
@@ -57,8 +60,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self switchToEnvironment:[BraintreeDemoTransactionService mostRecentlyUsedEnvironment]];
-    [self initializeBraintree];
+
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(initializeBraintree) forControlEvents:UIControlEventValueChanged];
+
+    [self switchToEnvironment];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToEnvironment) name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -72,14 +84,14 @@
 
 - (void)initializeBraintree {
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
+
     self.braintree = nil;
     self.merchantId = nil;
     self.nonce = nil;
     self.lastTransactionId = nil;
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [[BraintreeDemoTransactionService sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error){
+    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error){
         if (error) {
             [self displayError:error forTask:@"Fetching Client Token"];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -88,8 +100,9 @@
 
         Braintree *braintree = [Braintree braintreeWithClientToken:clientToken];
 
-        [[BraintreeDemoTransactionService sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error){
+        [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error){
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [self.refreshControl endRefreshing];
             if (error) {
                 [self displayError:error forTask:@"Fetching Merchant Config"];
                 return;
@@ -166,26 +179,14 @@
         }];
     } else if (selectedCell == self.makeATransactionCell) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        [[BraintreeDemoTransactionService sharedService]
-         makeTransactionWithPaymentMethodNonce:self.nonce
-         completion:^(NSString *transactionId, NSError *error){
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-             if (error) {
-                 [self displayError:error forTask:@"Creating Transation"];
-             } else {
-                 self.lastTransactionId = transactionId;
-                 NSLog(@"Created transaction: %@", transactionId);
-                 [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                                       atScrollPosition:UITableViewScrollPositionTop
-                                               animated:YES];
-             }
-         }];
+
+        [self makeATransactionWithThreeDSecure:[BraintreeDemoSettings threeDSecureEnabled]];
     } else {
         return;
     }
 
     if (demoViewController) {
-        if (self.modalPresentationSwitch.on) {
+        if (self.useModalPresentation) {
             demoViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPresentedViewController:)];
             UINavigationController *vc = [[UINavigationController alloc] initWithRootViewController:demoViewController];
 
@@ -237,38 +238,20 @@
 
 #pragma mark UI Actions
 
-- (IBAction)tappedEnvironmentSelector:(UIBarButtonItem *)sender {
-    [UIActionSheet showFromBarButtonItem:sender
-                                animated:YES
-                               withTitle:@"Choose a Merchant Server Environment"
-                       cancelButtonTitle:@"Cancel"
-                  destructiveButtonTitle:nil
-                       otherButtonTitles:@[@"Sandbox Merchant", @"Production Merchant"]
-                                tapBlock:^(UIActionSheet *actionSheet, NSInteger buttonIndex) {
-                                    if (buttonIndex == actionSheet.cancelButtonIndex) {
-                                        return;
-                                    }
-
-                                    BraintreeDemoTransactionServiceEnvironment environment;
-
-                                    if (buttonIndex == 1) {
-                                        environment = BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant;
-                                    } else {
-                                        environment = BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant;
-                                    }
-
-                                    [self switchToEnvironment:environment];
-                                }];
+- (IBAction)tappedEnvironmentSelector:(__unused UIBarButtonItem *)sender {
+    IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] init];
+    appSettingsViewController.showDoneButton = NO;
+    [self.navigationController pushViewController:appSettingsViewController animated:YES];
 }
 
 - (IBAction)tappedGiveFeedback {
     [[[BITHockeyManager sharedHockeyManager] feedbackManager] showFeedbackListView];
 }
 
-- (void)switchToEnvironment:(BraintreeDemoTransactionServiceEnvironment)environment {
+- (void)switchToEnvironment {
     NSString *environmentName;
 
-    switch (environment) {
+    switch ([BraintreeDemoSettings currentEnvironment]) {
         case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
             environmentName = @"Sandbox";
             break;
@@ -276,12 +259,34 @@
             environmentName = @"Production";
     }
 
-    [[BraintreeDemoTransactionService sharedService] setEnvironment:environment];
     self.environmentSelector.title = environmentName;
 
     [self initializeBraintree];
 }
 
+#pragma mark -
+
+- (void)makeATransactionWithThreeDSecure:(BOOL)enableThreeDSecure {
+    if (enableThreeDSecure && [BraintreeDemoSettings threeDSecureEnabled]) {
+        NSLog(@"Verifying card with 3D Secure...");
+        self.threeDSecure = [[BTThreeDSecure alloc] initWithClient:self.braintree.client delegate:self];
+        [self.threeDSecure verifyCardWithNonce:self.nonce amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
+    } else {
+        [[BraintreeDemoMerchantAPI sharedService] makeTransactionWithPaymentMethodNonce:self.nonce
+                                                                             completion:^(NSString *transactionId, NSError *error){
+                                                                                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                                                                                 if (error) {
+                                                                                     [self displayError:error forTask:@"Creating Transation"];
+                                                                                 } else {
+                                                                                     self.lastTransactionId = transactionId;
+                                                                                     NSLog(@"Created transaction: %@", transactionId);
+                                                                                     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                                                                                           atScrollPosition:UITableViewScrollPositionTop
+                                                                                                                   animated:YES];
+                                                                                 }
+                                                                             }];
+    }
+}
 
 #pragma mark Drop In View Controller Delegate
 
@@ -300,6 +305,50 @@
                                delegate:nil
                       cancelButtonTitle:@":("
                       otherButtonTitles:nil] show];
+}
+
+
+#pragma mark Payment Method Creation Delegate
+
+- (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
+    if (sender == self.threeDSecure) {
+        [self presentViewController:viewController animated:YES completion:nil];
+        self.nonce = nil;
+    }
+}
+
+- (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)paymentMethodCreator:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    if (sender == self.threeDSecure) {
+        NSLog(@"3D Secure Completed");
+        self.nonce = paymentMethod.nonce;
+        [self makeATransactionWithThreeDSecure:NO];
+    }
+}
+
+- (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+    if (sender == self.threeDSecure) {
+        [self displayError:error forTask:@"3D Secure"];
+    }
+}
+
+- (void)paymentMethodCreatorDidCancel:(__unused id)sender {
+    NSLog(@"3D Secure Canceled");
+}
+
+- (void)paymentMethodCreatorWillPerformAppSwitch:(__unused id)sender {
+}
+
+- (void)paymentMethodCreatorWillProcess:(__unused id)sender {
+}
+
+#pragma mark Settings
+
+- (BOOL)useModalPresentation {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"BraintreeDemoChooserViewControllerShouldUseModalPresentationDefaultsKey"];
 }
 
 @end

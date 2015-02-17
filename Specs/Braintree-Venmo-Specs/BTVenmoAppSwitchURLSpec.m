@@ -1,4 +1,5 @@
 #import "BTVenmoAppSwitchRequestURL.h"
+#import "BTAppSwitchErrors.h"
 #import <NSURL+QueryDictionary.h>
 #import <UIKit/UIKit.h>
 
@@ -31,32 +32,58 @@ describe(@"isAppSwitchAvailable", ^{
 
 describe(@"appSwitchURLForMerchantID:returnURLScheme:offline:", ^{
 
-    __block NSString *bundleDisplayName = @"Your App";
+    __block id mockBundle;
+    __block NSError *error;
 
     beforeEach(^{
-        id nsBundle = [OCMockObject mockForClass:[NSBundle class]];
-        [[[nsBundle stub] andReturn:nsBundle] mainBundle];
-        [[[nsBundle stub] andReturn:bundleDisplayName] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+        mockBundle = [OCMockObject mockForClass:[NSBundle class]];
+        [[[mockBundle stub] andReturn:mockBundle] mainBundle];
     });
 
-    it(@"returns a URL that does not indicate offline mode", ^{
+    afterEach(^{
+        [mockBundle stopMocking];
+    });
+
+    context(@"with valid CFBundleDisplayName", ^{
+
+        beforeEach(^{
+            [[[mockBundle stub] andReturn:@"Your App"] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+        });
+
+        it(@"returns a URL that does not indicate offline mode", ^{
+            NSURL *url = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:@"merchant-id"
+                                                               returnURLScheme:@"a.scheme"
+                                                                       offline:NO
+                                                                         error:&error];
+
+            expect(url.uq_queryDictionary[@"offline"]).to.beNil();
+            expect(error).to.beNil();
+        });
+
+        it(@"returns a URL indicating offline mode", ^{
+            NSURL *url = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:@"merchant-id"
+                                                               returnURLScheme:@"a.scheme"
+                                                                       offline:YES
+                                                                         error:&error];
+
+            expect([url.uq_queryDictionary[@"offline"] integerValue]).to.equal(1);
+            expect(error).to.beNil();
+        });
+
+    });
+
+    it(@"returns an error if CFBundleDisplayName is not set", ^{
+        [[[mockBundle stub] andReturn:nil] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
         NSURL *url = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:@"merchant-id"
                                                            returnURLScheme:@"a.scheme"
-                                                                   offline:NO];
+                                                                   offline:NO
+                                                                     error:&error];
 
-        expect(url.uq_queryDictionary[@"offline"]).to.beNil();
+        expect(url).to.beNil();
+        expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+        expect(error.code).to.equal(BTAppSwitchErrorIntegrationInvalidBundleDisplayName);
     });
-
-    it(@"returns a URL indicating offline mode", ^{
-        NSURL *url = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:@"merchant-id"
-                                                           returnURLScheme:@"a.scheme"
-                                                                   offline:YES];
-
-        expect([url.uq_queryDictionary[@"offline"] integerValue]).to.equal(1);
-    });
-
 
 });
-
 
 SpecEnd

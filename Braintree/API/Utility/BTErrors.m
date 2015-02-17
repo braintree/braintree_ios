@@ -7,3 +7,5 @@ NSString *const BTBraintreeAPIErrorDomain = @"BTBraintreeAPIErrorDomain";
 #pragma mark Error userInfo Keys
 
 NSString *const BTCustomerInputBraintreeValidationErrorsKey = @"BTCustomerInputBraintreeValidationErrorsKey";
+
+NSString *BTThreeDSecureInfoKey = @"BTThreeDSecureInfoKey";

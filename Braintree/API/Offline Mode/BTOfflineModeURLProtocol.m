@@ -91,10 +91,10 @@ static BTOfflineClientBackend *backend;
             responseData = nil;
         }
     } else if ([request.HTTPMethod isEqualToString:@"POST"] && [request.URL.path isEqualToString:@"/v1/payment_methods/apple_payment_tokens"]) {
-
         NSDictionary *requestObject = [self queryDictionaryFromRequest:request];
         NSDictionary *payment = requestObject[@"applePaymentToken"];
         if (payment) {
+#if BT_ENABLE_APPLE_PAY
             BTMutableApplePayPaymentMethod *apple = [[BTMutableApplePayPaymentMethod alloc] init];
             [[[self class] backend] addPaymentMethod:apple];
 
@@ -110,6 +110,13 @@ static BTOfflineClientBackend *backend;
                 NSAssert(error == nil, @"Error writing offline mode JSON response: %@", error);
                 data;
             });
+#else
+            response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
+                                                   statusCode:501
+                                                  HTTPVersion:BTOfflineModeHTTPVersionString
+                                                 headerFields:@{}];
+            responseData = nil;
+#endif
         } else {
             response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
                                                    statusCode:501
@@ -117,6 +124,7 @@ static BTOfflineClientBackend *backend;
                                                  headerFields:@{}];
             responseData = nil;
         }
+
     } else if ([request.HTTPMethod isEqualToString:@"POST"] && [request.URL.path isEqualToString:@"/v1/payment_methods/paypal_accounts"]) {
         BTMutablePayPalPaymentMethod *payPalPaymentMethod = [BTMutablePayPalPaymentMethod new];
         payPalPaymentMethod.email = @"fake.paypal.customer@example.com";
@@ -253,7 +261,7 @@ static BTOfflineClientBackend *backend;
 - (NSDictionary *)responseDictionaryForApplePayPayment {
     return @{
              @"nonce": [self generateNonce],
-             @"type": @"ApplePayPayment"
+             @"type": @"ApplePayCard"
              };
 }
 

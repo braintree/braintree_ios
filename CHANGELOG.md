@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 3.6.0 (forthcoming)
+## 3.6.1 (forthcoming)
 
 * Update PayPal Mobile SDK to new version that does not include card.io.
   * :rotating_light: Please note! :rotating_light:  
@@ -16,6 +16,24 @@
       And adjust your card.io imports to:
 
           #import <CardIO/CardIO.h>
+
+## 3.6.0
+
+* Features
+  * Add support for mobile 3D Secure
+    * Requires additional import of a new subspec in your Podfile, `pod "Braintree/3d-secure", "3.6.0-rc1"`
+    * See `BTThreeDSecure` for full more details
+  * Make Apple Pay a build option, enabled via `Braintree/Apple-Pay` subspec, 
+    which adds a `BT_ENABLE_APPLE_PAY=1` preprocessor macro.
+    * Addresses an issue [reported by developers attempting to submit v.zero integrations without Apple Pay to the App Store](https://github.com/braintree/braintree_ios/issues/60).
+* Enhancements
+  * Minor updates to UK localization
+  * Expose a new `status` property on `BTPaymentProvider`, which exposes the current status of payment method creation (Thanks, @Reflejo!)
+* Bug fixes
+  * Fix swift build by making BTClient_Metadata.h private (https://github.com/braintree/braintree_ios/pull/84 and https://github.com/braintree/braintree_ios/pull/85)
+  * Drop In - Auto-correction and auto-capitalization improvements for postal code field in BTUICardFormView
+* Internal changes
+  * Simplifications to API response parsing logic
 
 ## 3.5.0 (2014-12-03)
 
@@ -263,3 +281,4 @@ Thanks for the feedback so far. Keep it coming!
     * Incomplete / unpolished UI
         * Minor UX card validation issues in the card form
         * Drop-In UX flow issues and unaddressed edge cases
+

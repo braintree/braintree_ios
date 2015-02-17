@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ZzJ-LX-Zzh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6249" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="ZzJ-LX-Zzh">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--v.zero-->
@@ -243,35 +242,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Settings" id="KwA-0b-tYi" userLabel="Settings">
-                                <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="TlO-ft-YDg">
-                                        <rect key="frame" x="0.0" y="574" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TlO-ft-YDg" id="hat-k8-Wz8">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4DQ-a3-r69">
-                                                    <rect key="frame" x="255" y="6" width="51" height="31"/>
-                                                </switch>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modal Presentation" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Sm-9J-W2Y">
-                                                    <rect key="frame" x="16" y="11.5" width="149" height="20.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="centerY" secondItem="3Sm-9J-W2Y" secondAttribute="centerY" constant="0.25" id="0Xd-3Q-WD1"/>
-                                                <constraint firstItem="3Sm-9J-W2Y" firstAttribute="centerY" secondItem="4DQ-a3-r69" secondAttribute="centerY" id="LV8-SX-HEq"/>
-                                                <constraint firstItem="3Sm-9J-W2Y" firstAttribute="leading" secondItem="hat-k8-Wz8" secondAttribute="leadingMargin" constant="8" id="kZf-S4-Ly4"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="4DQ-a3-r69" secondAttribute="trailing" constant="8" id="vJp-jf-w1A"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="OhD-eg-98w" id="CDx-tX-5r0"/>
@@ -300,7 +270,6 @@
                         <outlet property="environmentSelector" destination="U3F-pU-15a" id="zhe-Vu-NBb"/>
                         <outlet property="libraryVersionCell" destination="OIh-AA-R0X" id="hJj-G1-cS7"/>
                         <outlet property="makeATransactionCell" destination="pFU-fh-zxH" id="QKq-T9-KeU"/>
-                        <outlet property="modalPresentationSwitch" destination="4DQ-a3-r69" id="NXg-Ch-jkl"/>
                         <outlet property="tokenizationCell" destination="VEO-ur-9aJ" id="NJJ-U6-7QN"/>
                     </connections>
                 </tableViewController>

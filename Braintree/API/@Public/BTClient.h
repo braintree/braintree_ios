@@ -19,8 +19,10 @@ typedef void (^BTClientPaymentMethodSuccessBlock)(BTPaymentMethod *paymentMethod
 /// Block type that takes a `BTCardPaymentMethod`
 typedef void (^BTClientCardSuccessBlock)(BTCardPaymentMethod *card);
 
+#if BT_ENABLE_APPLE_PAY
 /// Success Block type for the Save Apple Pay call
 typedef void (^BTClientApplePaySuccessBlock)(BTApplePayPaymentMethod *applePayPaymentMethod);
+#endif
 
 /// Success Block type for the Save Paypal call
 typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentMethod);
@@ -51,7 +53,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// was initialized.
 @property (nonatomic, copy, readonly) NSString *merchantId;
 
-#pragma mark API Methods
+#pragma mark - Fetch a Payment Method
 
 /// Obtain a list of payment methods saved to Braintree
 ///
@@ -68,6 +70,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                             success:(BTClientPaymentMethodSuccessBlock)successBlock
                             failure:(BTClientFailureBlock)failureBlock;
 
+#pragma mark Save a New Payment Method
+
 /// Save a card to Braintree
 ///
 /// @param request an object that includes the raw card details
@@ -79,8 +83,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                     success:(BTClientCardSuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;
 
-
-
+#if BT_ENABLE_APPLE_PAY
 /// Save a payment method created via Apple Pay
 ///
 /// @param applePayRequest A BTClientApplePayRequest
@@ -89,6 +92,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)saveApplePayPayment:(PKPayment *)payment
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;
+#endif
 
 /// Save a paypal payment method to Braintree
 ///
@@ -127,6 +131,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                               correlationId:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
+
+#pragma mark Create a Braintree Analytics Event
 
 /// "Fire and forget analytics" - transmits an analytics event to the Braintree analytics service
 ///

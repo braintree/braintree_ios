@@ -12,6 +12,18 @@ Next, read the [**full documentation**](https://developers.braintreepayments.com
 
 Finally, [**cocoadocs.org/docsets/Braintree**](http://cocoadocs.org/docsets/Braintree) hosts the complete, up-to-date API documentation generated straight from the header files.
 
+### Special note on preprocessor macros
+
+Apple Pay is a build option. To include Apple Pay support in your build, use the `Apple-Pay` subspec in your Podfile:
+
+```
+pod "Braintree"
+pod "Braintree/Apple-Pay"
+```
+
+Then ensure `BT_ENABLE_APPLE_PAY=1` is present in your target's "Preprocessor Macros" settings.
+By default, this should happen automatically if you have a Preprocessor Macro entry for `$(inherited)`.
+
 ## Help
 
 * [Read the headers](Braintree/Braintree.h)

@@ -19,6 +19,8 @@
 
 - (void)setNonDigitsSupported:(BOOL)nonDigitsSupported {
     _nonDigitsSupported = nonDigitsSupported;
+    self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
     self.textField.keyboardType = _nonDigitsSupported ? UIKeyboardTypeNumbersAndPunctuation : UIKeyboardTypeNumberPad;
 }
 

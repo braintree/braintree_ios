@@ -5,7 +5,7 @@
 #import "BTVenmoAppSwitchReturnURL.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTClient+BTVenmo.h"
-#import "BTClient_Metadata.h"
+#import "BTClient_Internal.h"
 
 SpecBegin(BTVenmoAppSwitchHandler)
 
@@ -59,25 +59,25 @@ describe(@"An instance", ^{
             });
 
             it(@"returns YES if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] and venmo status is production", ^{
-                [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
+                [(BTClient *)[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
                 expect([handler appSwitchAvailableForClient:client]).to.beTruthy();
             });
 
             it(@"returns YES if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] and venmo status is offline", ^{
-                [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOffline)] btVenmo_status];
+                [(BTClient *)[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOffline)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
                 expect([handler appSwitchAvailableForClient:client]).to.beTruthy();
             });
 
             it(@"returns NO if venmo status is off", ^{
-                [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
+                [(BTClient *)[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
                 expect([handler appSwitchAvailableForClient:client]).to.beFalsy();
             });
 
             it(@"returns NO if [BTVenmoAppSwitchRequestURL isAppSwitchAvailable] returns NO", ^{
-                [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
+                [(BTClient *)[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@NO] isAppSwitchAvailable];
                 expect([handler appSwitchAvailableForClient:client]).to.beFalsy();
             });
@@ -85,7 +85,7 @@ describe(@"An instance", ^{
 
         context(@"available venmo status and app switch", ^{
             beforeEach(^{
-                [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
+                [(BTClient *)[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
                 [[[venmoAppSwitchRequestURL stub] andReturnValue:@YES] isAppSwitchAvailable];
             });
 
@@ -145,7 +145,7 @@ describe(@"An instance", ^{
 
         it(@"returns BTAppSwitchErrorDisabled error if client has `btVenmo_status` BTVenmoStatusOff", ^{
 
-            [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
+            [(BTClient *)[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusOff)] btVenmo_status];
 
             NSError *error;
             BOOL handled = [handler initiateAppSwitchWithClient:client delegate:delegate error:&error];
@@ -176,14 +176,14 @@ describe(@"An instance", ^{
             });
 
             beforeEach(^{
-                [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
+                [(BTClient *)[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
             });
 
             context(@"with valid setup", ^{
                 beforeEach(^{
                     handler.returnURLScheme = @"a-scheme";
                     [[[client stub] andReturn:@"a-merchant-id"] merchantId];
-                    [[[venmoRequestURL stub] andReturn:url] appSwitchURLForMerchantID:@"a-merchant-id" returnURLScheme:@"a-scheme" offline:NO];
+                    [[[venmoRequestURL stub] andReturn:url] appSwitchURLForMerchantID:@"a-merchant-id" returnURLScheme:@"a-scheme" offline:NO error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
                 });
 
                 it(@"returns nil if successfully app switches", ^{
@@ -242,7 +242,7 @@ describe(@"An instance", ^{
 
             beforeEach(^{
                 [[[appSwitchReturnURL stub] andReturnValue:OCMOCK_VALUE(BTVenmoAppSwitchReturnURLStateSucceeded)] state];
-                [[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
+                [(BTClient *)[[client stub] andReturnValue:OCMOCK_VALUE(BTVenmoStatusProduction)] btVenmo_status];
             });
 
             it(@"performs fetchPaymentMethodWithNonce:success:failure:", ^{

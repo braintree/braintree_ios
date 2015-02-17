@@ -2,6 +2,12 @@
 
 #import "BTErrors.h"
 
+typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
+    BTClientApplePayStatusOff = 0,
+    BTClientApplePayStatusMock = 1,
+    BTClientApplePayStatusProduction = 2,
+};
+
 extern NSString *const BTClientTokenKeyAuthorizationFingerprint;
 extern NSString *const BTClientTokenKeyClientApiURL;
 extern NSString *const BTClientTokenKeyConfigURL;
@@ -12,6 +18,7 @@ extern NSString *const BTClientTokenKeyMerchantId;
 extern NSString *const BTClientTokenKeyVersion;
 extern NSString *const BTClientTokenKeyApplePay;
 extern NSString *const BTClientTokenKeyStatus;
+extern NSString *const BTClientTokenKeyMerchantAccountId;
 
 extern NSString *const BTClientTokenKeyPayPal;
 extern NSString *const BTClientTokenKeyPayPalClientId;
@@ -49,6 +56,7 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 @property (nonatomic, readonly, strong) NSURL *analyticsURL;
 @property (nonatomic, readonly, strong) NSURL *configURL;
 @property (nonatomic, readonly, copy) NSString *merchantId;
+@property (nonatomic, readonly, copy) NSString *merchantAccountId;
 
 -(BOOL)analyticsEnabled;
 
@@ -90,7 +98,13 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 
 #pragma mark Apple Pay
 
-@property (nonatomic, readonly, strong) NSDictionary *applePayConfiguration;
+@property (nonatomic, readonly, strong) NSDictionary *applePayConfiguration DEPRECATED_MSG_ATTRIBUTE("");
+
+- (BTClientApplePayStatus)applePayStatus;
+- (NSString *)applePayCountryCode;
+- (NSString *)applePayCurrencyCode;
+- (NSString *)applePayMerchantIdentifier;
+- (NSArray *)applePaySupportedNetworks;
 
 #pragma mark -
 

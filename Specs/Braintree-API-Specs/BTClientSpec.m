@@ -5,8 +5,6 @@
 #import "BTClient+Testing.h"
 #import "BTTestClientTokenFactory.h"
 #import "BTAnalyticsMetadata.h"
-#import "BTClient_Metadata.h"
-#import "BTClientApplePayConfiguration.h"
 
 #import "BTLogger_Internal.h"
 
@@ -61,22 +59,18 @@ describe(@"BTClient", ^{
         });
     });
 
-    describe(@"configuration", ^{
+    describe(@"Apple Pay configuration", ^{
         it(@"parses Apple Pay configuration from the client token", ^{
             BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil]];
 
             if ([PKPaymentRequest class]) {
-                expect(client.configuration.applePayConfiguration.status).to.equal(BTClientApplePayStatusMock);
-                expect(client.configuration.applePayConfiguration.paymentRequest.countryCode).to.equal(@"US");
-                expect(client.configuration.applePayConfiguration.paymentRequest.currencyCode).to.equal(@"USD");
-                expect(client.configuration.applePayConfiguration.paymentRequest.merchantIdentifier).to.equal(@"apple-pay-merchant-id");
-                expect(client.configuration.applePayConfiguration.paymentRequest.merchantCapabilities).to.equal(PKMerchantCapability3DS);
-                expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkAmex);
-                expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkMasterCard);
-                expect(client.configuration.applePayConfiguration.paymentRequest.supportedNetworks).to.contain(PKPaymentNetworkVisa);
-            } else {
-                expect(client.configuration.applePayConfiguration).to.beKindOf([BTClientApplePayConfiguration class]);
-                expect(client.configuration.applePayConfiguration.paymentRequest).to.beNil();
+                expect(client.clientToken.applePayStatus).to.equal(BTClientApplePayStatusMock);
+                expect(client.clientToken.applePayCountryCode).to.equal(@"US");
+                expect(client.clientToken.applePayCurrencyCode).to.equal(@"USD");
+                expect(client.clientToken.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
+                expect(client.clientToken.applePaySupportedNetworks).to.contain(PKPaymentNetworkAmex);
+                expect(client.clientToken.applePaySupportedNetworks).to.contain(PKPaymentNetworkMasterCard);
+                expect(client.clientToken.applePaySupportedNetworks).to.contain(PKPaymentNetworkVisa);
             }
         });
     });
@@ -636,41 +630,13 @@ describe(@"copy", ^{
     });
 });
 
-describe(@"Internal helper", ^{
-    describe(@"payPalPaymentMethodFromAPIResponseDictionary:", ^{
-        __block NSMutableDictionary *responseDictionary;
-        beforeEach(^{
-            responseDictionary = [NSMutableDictionary dictionaryWithDictionary:@{@"nonce": @"a-nonce-value",
-                                                                                 @"details": @{@"email": @"email@foo.bar"}}];
-        });
-
-        it(@"returns a PayPal payment method with nil description if description is null", ^{
-            responseDictionary[@"description"] = [NSNull null];
-            BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
-            expect(paymentMethod.description).to.beNil();
-        });
-
-        it(@"returns a PayPal payment method with nil description if description is 'PayPal'", ^{
-            responseDictionary[@"description"] = @"PayPal";
-            BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
-            expect(paymentMethod.description).to.beNil();
-        });
-        
-        it(@"returns a PayPal payment method with the description if description is not 'PayPal' and non-nil", ^{
-            responseDictionary[@"description"] = @"foo";
-            BTPayPalPaymentMethod *paymentMethod = [BTClient payPalPaymentMethodFromAPIResponseDictionary:responseDictionary];
-            expect(paymentMethod.description).equal(@"foo");
-        });
-    });
-});
-
 
 describe(@"merchantId", ^{
     it(@"can be nil (for old client tokens)", ^{
         BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyMerchantId: NSNull.null }]];
         expect(client.merchantId).to.beNil();
     });
-    
+
     it(@"returns the merchant id from the client token", ^{
         BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyMerchantId: @"merchant-id" }]];
         expect(client.merchantId).to.equal(@"merchant-id");

@@ -1,3 +1,4 @@
+#if BT_ENABLE_APPLE_PAY
 @import UIKit;
 
 @protocol BTMockApplePayPaymentAuthorizationViewDelegate;
@@ -14,3 +15,4 @@
 - (void)mockApplePayPaymentAuthorizationViewDidCancel:(BTMockApplePayPaymentAuthorizationView *)view;
 
 @end
+#endif

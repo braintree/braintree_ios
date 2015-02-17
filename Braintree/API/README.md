@@ -89,7 +89,7 @@ BTClient *braintree = [[BTClient alloc] initWithClientToken:CLIENT_TOKEN_FROM_SE
 
 #### "Offline Test" Client Token
 
-We realize that you may want to try out our library without a server integration. To this end, we provide an offline mode, which utilizes emulates the actual API's behavior. Most of the library's semantics are identical in offline mode.
+You may want to try out our library without a server integration. To this end, we provide an offline mode, which emulates the actual API's behavior. Most of the library's semantics are identical in offline mode.
 
 Each time you invoke `[BTClient offlineTestClientToken]`, the offline client's persistent data are reset.
 
