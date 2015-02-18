@@ -2,11 +2,8 @@
 
 SpecBegin(BTHTTPSSLPinning)
 
-
 describe(@"SSL Pinning", ^{
-#ifdef SKIP_SSL_PINNING_SPECS
-    pending(@"specs only pass when run in Xcode");
-#else
+#ifdef RUN_SSL_PINNING_SPECS
     it(@"trusts pinned root certificates", ^{
         waitUntil(^(DoneCallback done){
             NSURL *url = [NSURL URLWithString:@"https://localhost:9443"];
@@ -20,7 +17,6 @@ describe(@"SSL Pinning", ^{
             }];
         });
     });
-#endif
 
     it(@"rejects an untrusted (unpinned) root certificates from otherwise legitimate hosts", ^{
         waitUntil(^(DoneCallback done){
@@ -55,34 +51,35 @@ describe(@"SSL Pinning", ^{
             }];
         });
     });
+#else
+    pending(@"specs only pass when run in Xcode");
+#endif
 
-    pending(@"gateway changes to support JSON heartbeats", ^{
-        describe(@"the default installed certificates", ^{
-            it(@"trusts the production ssl certificates", ^{
-                waitUntil(^(DoneCallback done){
-                    NSURL *url   = [NSURL URLWithString:@"https://api.braintreegateway.com"];
-                    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url];
+    it(@"trusts the production ssl certificates", ^{
+        waitUntil(^(DoneCallback done){
+            NSURL *url   = [NSURL URLWithString:@"https://api.braintreegateway.com"];
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url];
 
-                    [http GET:@"/heartbeat" completion:^(BTHTTPResponse *response, NSError *error) {
-                        expect(response.isSuccess).to.beTruthy();
-                        expect(error).to.beNil();
-                        done();
-                    }];
-                });
-            });
+            [http GET:@"/heartbeat.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response.isSuccess).to.beTruthy();
+                expect([response.object stringForKey:@"heartbeat"]).to.equal(@"d2765eaa0dad9b300b971f074-production");
+                expect(error).to.beNil();
+                done();
+            }];
+        });
+    });
 
-            it(@"trusts the sandbox ssl certificates", ^{
-                waitUntil(^(DoneCallback done){
-                    NSURL *url   = [NSURL URLWithString:@"https://api.sandbox.braintreegateway.com"];
-                    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url];
+    it(@"trusts the sandbox ssl certificates", ^{
+        waitUntil(^(DoneCallback done){
+            NSURL *url   = [NSURL URLWithString:@"https://api.sandbox.braintreegateway.com"];
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url];
 
-                    [http GET:@"/heartbeat" completion:^(BTHTTPResponse *response, NSError *error) {
-                        expect(response.isSuccess).to.beTruthy();
-                        expect(error).to.beNil();
-                        done();
-                    }];
-                });
-            });
+            [http GET:@"/heartbeat.json" completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response.isSuccess).to.beTruthy();
+                expect([response.object stringForKey:@"heartbeat"]).to.equal(@"d2765eaa0dad9b300b971f074-sandbox");
+                expect(error).to.beNil();
+                done();
+            }];
         });
     });
 });
