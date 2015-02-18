@@ -179,7 +179,6 @@
         BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:httpResponse.statusCode responseObject:responseObject];
         NSError *returnedError = [self defaultDomainErrorForStatusCode:httpResponse.statusCode error:error];
         [self callCompletionBlock:completionBlock response:btHTTPResponse error:returnedError];
-
     } else {
         // Return error for unsupported response type
         NSError *returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
@@ -376,7 +375,6 @@
 
 - (void)URLSession:(__unused NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler{
     if ([[[challenge protectionSpace] authenticationMethod] isEqualToString: NSURLAuthenticationMethodServerTrust]) {
-
         SecTrustRef serverTrust = [[challenge protectionSpace] serverTrust];
 
         BOOL ok = [self evaluateServerTrust:serverTrust forDomain:challenge.protectionSpace.host];
@@ -386,6 +384,8 @@
         } else {
             completionHandler(NSURLSessionAuthChallengeRejectProtectionSpace, nil);
         }
+    } else {
+        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, NULL);
     }
 }
 
