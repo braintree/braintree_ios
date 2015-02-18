@@ -74,7 +74,7 @@ t1 = Thread.new do
 end
 
 t2 = Thread.new do
-  log 'Starting good server on :9444'
+  log 'Starting evil server on :9444'
   $stdout.flush
   evil_server.start
 end
