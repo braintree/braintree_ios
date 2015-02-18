@@ -52,7 +52,7 @@ describe(@"SSL Pinning", ^{
         });
     });
 #else
-    pending(@"specs only pass when run in Xcode");
+    pending(@"specs only pass when the test https server (https_server.rb) is running");
 #endif
 
     it(@"trusts the production ssl certificates", ^{
