@@ -7,6 +7,8 @@
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
 
+@import UIKit;
+
 #ifdef __IPHONE_8_0
 #define kBTCLAuthorizationStatusAuthorized kCLAuthorizationStatusAuthorizedAlways
 #else
