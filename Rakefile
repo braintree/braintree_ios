@@ -94,7 +94,7 @@ namespace :spec do
     desc 'Run api integration tests'
     task :integration do
       with_https_server do
-        run! xctool('Braintree-API-Integration-Specs', 'test', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => 'SKIP_SSL_PINNING_SPECS=1'})
+        run! xctool('Braintree-API-Integration-Specs', 'test', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => 'RUN_SSL_PINNING_SPECS=1'})
       end
     end
   end
