@@ -2,6 +2,7 @@
 
 #import "BTClient_Internal.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
+#import "BTThreeDSecureLocalizedString.h"
 
 @interface BTThreeDSecure () <BTThreeDSecureAuthenticationViewControllerDelegate>
 @property (nonatomic, strong) BTClient *client;
@@ -75,12 +76,38 @@
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock {
     self.upgradedPaymentMethod = card;
     completionBlock(BTThreeDSecureViewControllerCompletionStatusSuccess);
+    [self.client postAnalyticsEvent:@"ios.threedsecure.authenticated"];
 }
 
-- (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error {
-    self.upgradedPaymentMethod = nil;
-    [self informDelegateDidFailWithError:error];
+    if ([error.domain isEqualToString:BTThreeDSecureErrorDomain] && error.code == BTThreeDSecureFailedAuthenticationErrorCode) {
+        // This error should be handled by the BTPaymentMethodCreationDelegate
+        self.upgradedPaymentMethod = nil;
+        [self informDelegateDidFailWithError:error];
+        [self.client postAnalyticsEvent:@"ios.threedsecure.error.auth.failure"];
+    } else {
+        // This error is presented to the user because it's unrecognized and may not be a catastrophic failure.
+        // If it is catastrophic, the user will tap UIBarButtonSystemItemCancel
+        if ([UIAlertController class]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
+                                                                           message:nil
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:^(__unused UIAlertAction *action) {
+                                                    }]];
+            [viewController presentViewController:alert animated:YES completion:nil];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:error.localizedDescription
+                                        message:nil
+                                       delegate:nil
+                              cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
+                              otherButtonTitles:nil] show];
+        }
+        
+        [self.client postAnalyticsEvent:@"ios.threedsecure.error.unrecognized-error"];
+    }
 }
 
 - (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController {
@@ -88,6 +115,7 @@
         [self informDelegateDidCreatePaymentMethod:self.upgradedPaymentMethod];
     } else {
         [self informDelegateDidCancel];
+        [self.client postAnalyticsEvent:@"ios.threedsecure.canceled"];
     }
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
 }

@@ -104,6 +104,21 @@
     }
 }
 
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [super webView:webView didFailLoadWithError:error];
+    
+    if ([error.domain isEqualToString:@"WebKitErrorDomain"] && error.code == 102) {
+        // Not a real error; occurs when we return NO from webView:shouldStartLoadWithRequest:navigationType:
+        return;
+    }
+    
+    // An error occurred, but this BTThreeDSecureAuthenticationViewController has *not* yet finished,
+    // which is why we do not call threeDSecureViewControllerDidFinish:
+    if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
+        [self.delegate threeDSecureViewController:self didFailWithError:error];
+    }
+}
+
 #pragma mark User Interaction
 
 - (void)tappedCancel {
