@@ -39,6 +39,7 @@
                                             authenticationViewController.delegate = self;
                                             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authenticationViewController];
                                             [self informDelegateRequestsPresentationOfViewController:navigationController];
+                                            [self.client postAnalyticsEvent:@"ios.threedsecure.authentication-start"];
                                         } else {
                                             NSDictionary *threeDSecureInfo = lookupResult.card.threeDSecureInfo;
                                             if ([threeDSecureInfo[@"liabilityShiftPossible"] boolValue] && [threeDSecureInfo[@"liabilityShifted"] boolValue]) {
