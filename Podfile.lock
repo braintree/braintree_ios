@@ -32,7 +32,8 @@ PODS:
     - Braintree/Payments
     - Braintree/UI
   - Braintree/API (3.6.0)
-  - Braintree/Apple-Pay (3.6.0)
+  - Braintree/Apple-Pay (3.6.0):
+    - Braintree/Payments
   - Braintree/Data (3.6.0):
     - Braintree/API
     - Braintree/PayPal
@@ -105,7 +106,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: 4aa7fe70b24debbafe2bc35d6409120be130715b
+  Braintree: 6116cc3efb3ed4d65ae02a1af45ca53850c03ca8
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721

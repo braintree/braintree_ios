@@ -27,6 +27,7 @@ Pod::Spec.new do |s|
   s.default_subspecs = %w[Drop-In API PayPal Venmo UI Payments]
 
   s.subspec "Apple-Pay" do |s|
+    s.dependency "Braintree/Payments"
     s.xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => "BT_ENABLE_APPLE_PAY=1" }
   end
 
