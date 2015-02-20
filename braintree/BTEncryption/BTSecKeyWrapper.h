@@ -1,4 +1,5 @@
 #import <CommonCrypto/CommonCryptor.h>
+#import <Foundation/Foundation.h>
 
 @interface BTSecKeyWrapper : NSObject {
 	CCOptions typeOfSymmetricOpts;
