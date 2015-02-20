@@ -14,6 +14,8 @@ beforeEach(^{
     client = [OCMockObject mockForClass:[BTClient class]];
     delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
+    [[(OCMockObject *)client stub] postAnalyticsEvent:OCMOCK_ANY];
+
     id clientStub_lookupSucceedsAuthenticationRequired = [(OCMockObject *)client stub];
     [clientStub_lookupSucceedsAuthenticationRequired andDo:^(NSInvocation *invocation) {
         BTClientThreeDSecureLookupSuccessBlock block = [invocation getArgumentAtIndexAsObject:4];
