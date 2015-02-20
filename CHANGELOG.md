@@ -1,3 +1,7 @@
+## 2.3.1
+
+* Minor updates to fix iOS 8 deprecation warnings
+
 ## 2.3.0
 
 * Ensure compliance with Apple's new IDFA policies.
