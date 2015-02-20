@@ -14,13 +14,13 @@
 +(NSData*) encrypt:(NSData *) data withKey:(NSData *) key Iv:(NSData *) iv {
   char keyPtr[kCCKeySizeAES256 + 1];
   bzero( keyPtr, sizeof( keyPtr ) );
-  [key getBytes:keyPtr];
+  [key getBytes:keyPtr length:sizeof(keyPtr)];
 
   size_t ivSize = 4*sizeof(uint32_t);
   char ivBuffer[ivSize + 1];
   void * ivPtr = (void*)&ivBuffer[0];
   bzero( ivPtr, sizeof( ivPtr ) );
-  [iv getBytes:ivPtr];
+  [iv getBytes:ivPtr length:sizeof(keyPtr)];
 
   NSUInteger dataLength = [data length];
 
