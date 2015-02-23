@@ -22,7 +22,6 @@ Pod::Spec.new do |s|
   s.source_files     = "Braintree/*.{m,h}"
 
   s.compiler_flags = "-Wall -Werror -Wextra"
-  s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES", "GCC_WARN_ABOUT_MISSING_NEWLINE" => "YES" }
 
   s.default_subspecs = %w[Drop-In API PayPal Venmo UI Payments]
 
