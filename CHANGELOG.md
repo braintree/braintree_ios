@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Next Release
+## 3.6.1 (2014-02-24) 
 
 * Fixes
   * Remove `GCC_TREAT_WARNINGS_AS_ERRORS` and `GCC_WARN_ABOUT_MISSING_NEWLINE` config from podspec.
