@@ -2,6 +2,7 @@
 
 #import "BTClient_Internal.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
+#import "BTThreeDSecureLocalizedString.h"
 
 @interface BTThreeDSecure () <BTThreeDSecureAuthenticationViewControllerDelegate>
 @property (nonatomic, strong) BTClient *client;
@@ -38,6 +39,7 @@
                                             authenticationViewController.delegate = self;
                                             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authenticationViewController];
                                             [self informDelegateRequestsPresentationOfViewController:navigationController];
+                                            [self.client postAnalyticsEvent:@"ios.threedsecure.authentication-start"];
                                         } else {
                                             NSDictionary *threeDSecureInfo = lookupResult.card.threeDSecureInfo;
                                             if ([threeDSecureInfo[@"liabilityShiftPossible"] boolValue] && [threeDSecureInfo[@"liabilityShifted"] boolValue]) {
@@ -75,10 +77,17 @@
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock {
     self.upgradedPaymentMethod = card;
     completionBlock(BTThreeDSecureViewControllerCompletionStatusSuccess);
+    [self.client postAnalyticsEvent:@"ios.threedsecure.authenticated"];
 }
 
 - (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error {
+    if ([error.domain isEqualToString:BTThreeDSecureErrorDomain] && error.code == BTThreeDSecureFailedAuthenticationErrorCode) {
+        [self.client postAnalyticsEvent:@"ios.threedsecure.error.auth-failure"];
+    } else {
+        [self.client postAnalyticsEvent:@"ios.threedsecure.error.unrecognized-error"];
+    }
+
     self.upgradedPaymentMethod = nil;
     [self informDelegateDidFailWithError:error];
 }
@@ -88,8 +97,14 @@
         [self informDelegateDidCreatePaymentMethod:self.upgradedPaymentMethod];
     } else {
         [self informDelegateDidCancel];
+        [self.client postAnalyticsEvent:@"ios.threedsecure.canceled"];
     }
     [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
+}
+
+- (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
+      didPresentErrorForURLRequest:(NSURLRequest *)request {
+    [self.client postAnalyticsEvent:[NSString stringWithFormat:@"ios.threedsecure.error.webview-error.%@", request.URL.host]];
 }
 
 #pragma mark - Delegate Informers

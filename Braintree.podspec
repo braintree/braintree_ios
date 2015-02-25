@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "3.6.0-rc3"
+  s.version          = "3.6.0"
   s.summary          = "Braintree v.zero: A modern foundation for accepting payments"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -22,11 +22,11 @@ Pod::Spec.new do |s|
   s.source_files     = "Braintree/*.{m,h}"
 
   s.compiler_flags = "-Wall -Werror -Wextra"
-  s.xcconfig = { "GCC_TREAT_WARNINGS_AS_ERRORS" => "YES", "GCC_WARN_ABOUT_MISSING_NEWLINE" => "YES" }
 
   s.default_subspecs = %w[Drop-In API PayPal Venmo UI Payments]
 
   s.subspec "Apple-Pay" do |s|
+    s.dependency "Braintree/Payments"
     s.xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => "BT_ENABLE_APPLE_PAY=1" }
   end
 

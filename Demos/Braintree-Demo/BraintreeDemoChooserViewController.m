@@ -292,10 +292,19 @@
 
 - (void)dropInViewController:(__unused BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
     self.nonce = paymentMethod.nonce;
-    [self.navigationController popViewControllerAnimated:YES];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                          atScrollPosition:UITableViewScrollPositionTop
-                                  animated:YES];
+    if (self.useModalPresentation) {
+        [viewController dismissViewControllerAnimated:YES completion:^{
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                                  atScrollPosition:UITableViewScrollPositionTop
+                                          animated:YES];
+        }];
+        
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+                              atScrollPosition:UITableViewScrollPositionTop
+                                      animated:YES];
+    }
 }
 
 - (void)dropInViewControllerDidCancel:(__unused BTDropInViewController *)viewController {

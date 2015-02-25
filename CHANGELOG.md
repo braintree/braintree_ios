@@ -17,21 +17,22 @@
 
           #import <CardIO/CardIO.h>
 
-## 3.6.0
+## 3.6.0 (2014-02-20)
 
 * Features
-  * Add support for mobile 3D Secure
-    * Requires additional import of a new subspec in your Podfile, `pod "Braintree/3d-secure", "3.6.0-rc1"`
+  * Beta support for native mobile 3D Secure
+    * Requires additional import of a new subspec in your Podfile, `pod "Braintree/3d-secure"`
     * See `BTThreeDSecure` for full more details
-  * Make Apple Pay a build option, enabled via `Braintree/Apple-Pay` subspec, 
-    which adds a `BT_ENABLE_APPLE_PAY=1` preprocessor macro.
-    * Addresses an issue [reported by developers attempting to submit v.zero integrations without Apple Pay to the App Store](https://github.com/braintree/braintree_ios/issues/60).
+  * Make Apple Pay a build option, enabled via `Braintree/Apple-Pay` subspec,
+    which adds a `BT_ENABLE_APPLE_PAY=1` preprocesor macro.
+    * Addresses an issue [reported by developers attempting to submit v.zero integrations without Apple Pay to the app store](https://github.com/braintree/braintree_ios/issues/60).
 * Enhancements
   * Minor updates to UK localization
   * Expose a new `status` property on `BTPaymentProvider`, which exposes the current status of payment method creation (Thanks, @Reflejo!)
 * Bug fixes
   * Fix swift build by making BTClient_Metadata.h private (https://github.com/braintree/braintree_ios/pull/84 and https://github.com/braintree/braintree_ios/pull/85)
   * Drop In - Auto-correction and auto-capitalization improvements for postal code field in BTUICardFormView
+  * Remove private header `BTClient_Metadata.h` from public headers
 * Internal changes
   * Simplifications to API response parsing logic
 

@@ -87,4 +87,8 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  @param viewController The 3D Secure view controller
 - (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController;
 
+@optional
+
+- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController didPresentErrorToUserForURLRequest:(NSURLRequest *)request;
+
 @end

@@ -104,6 +104,22 @@
     }
 }
 
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    if ([error.domain isEqualToString:@"WebKitErrorDomain"] && error.code == 102) {
+        // Not a real error; occurs when we return NO from webView:shouldStartLoadWithRequest:navigationType:
+        return;
+    } else if ([error.domain isEqualToString:BTThreeDSecureErrorDomain]) {
+        // Allow delegate to handle 3D Secure authentication errors
+        [self.delegate threeDSecureViewController:self didFailWithError:error];
+    } else {
+        // Otherwise, allow the WebViewController to display the error to the user
+        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didPresentErrorToUserForURLRequest:)]) {
+            [self.delegate threeDSecureViewController:self didPresentErrorToUserForURLRequest:webView.request];
+        }
+        [super webView:webView didFailLoadWithError:error];
+    }
+}
+
 #pragma mark User Interaction
 
 - (void)tappedCancel {

@@ -6,6 +6,8 @@
 #import "BTClient_Internal.h"
 #import "BTMutableCardPaymentMethod.h"
 
+@import UIKit;
+
 @implementation BTVenmoAppSwitchHandler
 
 @synthesize returnURLScheme = _returnURLScheme;

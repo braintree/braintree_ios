@@ -68,6 +68,8 @@ post_install do |installer|
         targets.each do |target|
             target.build_configurations.each do |config|
                 config.build_settings['RUN_CLANG_STATIC_ANALYZER'] = 'YES'
+                config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] ||= 'YES'
+                config.build_settings['GCC_WARN_ABOUT_MISSING_NEWLINE'] ||= 'YES'
             end
         end
     else

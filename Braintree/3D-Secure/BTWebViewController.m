@@ -109,24 +109,25 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 
 - (void)webView:(__unused UIWebView *)webView didFailLoadWithError:(__unused NSError *)error {
     if ([error.domain isEqualToString:@"WebKitErrorDomain"] && error.code == 102) {
+        // Not a real error; occurs when webView:shouldStartLoadWithRequest:navigationType: returns NO
         return;
-    }
-
-    if ([UIAlertController class]) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
-                                                                       message:nil
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
-                                                  style:UIAlertActionStyleCancel
-                                                handler:^(__unused UIAlertAction *action) {
-                                                }]];
-        [self presentViewController:alert animated:YES completion:nil];
     } else {
-        [[[UIAlertView alloc] initWithTitle:error.localizedDescription
-                                    message:nil
-                                   delegate:nil
-                          cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
-                          otherButtonTitles:nil, nil] show];
+        if ([UIAlertController class]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
+                                                                           message:nil
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:^(__unused UIAlertAction *action) {
+                                                    }]];
+            [self presentViewController:alert animated:YES completion:nil];
+        } else {
+            [[[UIAlertView alloc] initWithTitle:error.localizedDescription
+                                        message:nil
+                                       delegate:nil
+                              cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
+                              otherButtonTitles:nil] show];
+        }
     }
 }
 
