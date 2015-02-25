@@ -13,6 +13,7 @@
 #import "Braintree-Version.h"
 #import "BTAPIResponseParser.h"
 #import "BTClientPaymentMethodValueTransformer.h"
+#import "BTCoinbasePaymentMethod_Internal.h"
 
 @interface BTClient ()
 - (void)setMetadata:(BTClientMetadata *)metadata;
@@ -445,6 +446,42 @@
         }
     }];
 
+}
+
+- (void)saveCoinbaseAccount:(id)coinbaseAuthResponse
+                    success:(BTClientCoinbaseSuccessBlock)successBlock
+                    failure:(BTClientFailureBlock)failureBlock {
+    if (![coinbaseAuthResponse isKindOfClass:[NSDictionary class]]) {
+        if (failureBlock) {
+            failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain code:BTCustomerInputErrorInvalid userInfo:@{NSLocalizedDescriptionKey: @"Received an invalid Coinbase response for tokenization, expected an NSDictionary"}]);
+        }
+        return;
+    }
+
+    NSDictionary *parameters = @{ @"coinbase_account": coinbaseAuthResponse,
+                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint, };
+    [self.clientApiHttp POST:@"v1/payment_methods/coinbase_accounts"
+                  parameters:parameters
+                  completion:^(BTHTTPResponse *response, NSError *error){
+                      if (response.isSuccess) {
+                          if (successBlock) {
+                              BTCoinbasePaymentMethod *paymentMethod = [[response.object arrayForKey:@"coinbaseAccounts"
+                                                                                withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]] firstObject];
+                              
+                              successBlock(paymentMethod);
+                          }
+                      } else {
+                          if (failureBlock) {
+                              NSError *returnedError = error;
+                              if (error.domain == BTBraintreeAPIErrorDomain && error.code == BTCustomerInputErrorInvalid) {
+                                  returnedError = [NSError errorWithDomain:error.domain
+                                                                      code:error.code
+                                                                  userInfo:@{BTCustomerInputBraintreeValidationErrorsKey: response.rawObject}];
+                              }
+                              failureBlock(returnedError);
+                          }
+                      }
+                  }];
 }
 
 #pragma mark Braintree Analytics

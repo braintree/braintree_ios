@@ -4,6 +4,7 @@
 #import "BTMutableCardPaymentMethod.h"
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTMutableApplePayPaymentMethod.h"
+#import "BTCoinbasePaymentMethod_Internal.h"
 
 @implementation BTClientPaymentMethodValueTransformer
 
@@ -63,6 +64,13 @@
 
         paymentMethod = card;
 #endif
+    } else if ([type isEqualToString:@"CoinbaseAccount"]) {
+        BTCoinbasePaymentMethod *coinbaseAccount = [[BTCoinbasePaymentMethod alloc] init];
+        coinbaseAccount.nonce = [responseParser stringForKey:@"nonce"];
+        coinbaseAccount.description = [responseParser stringForKey:@"description"];
+        coinbaseAccount.userIdentifier = [[responseParser responseParserForKey:@"details"] stringForKey:@"email"];
+
+        paymentMethod = coinbaseAccount;
     } else {
         BTMutablePaymentMethod *genericPaymentMethod = [[BTMutablePaymentMethod alloc] init];
 

@@ -89,6 +89,7 @@
 		167D1C7E19D0DDAD007CAE4D /* BTClientTokenSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 16217579192D94FB008DC35D /* BTClientTokenSpec.m */; };
 		168159A01A3553F60004DB59 /* BTUICardFormViewSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1681599F1A3553F60004DB59 /* BTUICardFormViewSpec.m */; };
 		168159A11A3555920004DB59 /* BraintreeDemoCreditCardEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968212192D9AD900120846 /* BraintreeDemoCreditCardEntryViewController.m */; };
+		1690C96C1A9CFCC7002302E4 /* BTClientCoinbaseIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1690C96A1A9CFC8B002302E4 /* BTClientCoinbaseIntegrationSpec.m */; };
 		16968115192D98EA00120846 /* BTUICardTypeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810C192D98EA00120846 /* BTUICardTypeSpec.m */; };
 		16968116192D98EA00120846 /* BTUISpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1696810D192D98EA00120846 /* BTUISpec.m */; };
 		16968118192D98EA00120846 /* EXPMatchers+haveKerning.m in Sources */ = {isa = PBXBuildFile; fileRef = 16968112192D98EA00120846 /* EXPMatchers+haveKerning.m */; };
@@ -467,6 +468,10 @@
 		168597B819C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockApplePayPaymentAuthorizationView.h; sourceTree = "<group>"; };
 		168597B919C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTMockApplePayPaymentAuthorizationView.m; sourceTree = "<group>"; };
 		168792F919885B5000F3B9E3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		1690C96A1A9CFC8B002302E4 /* BTClientCoinbaseIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientCoinbaseIntegrationSpec.m; sourceTree = "<group>"; };
+		1690C96D1A9D0690002302E4 /* BTCoinbasePaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCoinbasePaymentMethod.h; sourceTree = "<group>"; };
+		1690C96E1A9D06B5002302E4 /* BTCoinbasePaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCoinbasePaymentMethod.m; sourceTree = "<group>"; };
+		1690C96F1A9D0737002302E4 /* BTCoinbasePaymentMethod_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCoinbasePaymentMethod_Internal.h; sourceTree = "<group>"; };
 		1696810C192D98EA00120846 /* BTUICardTypeSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardTypeSpec.m; sourceTree = "<group>"; };
 		1696810D192D98EA00120846 /* BTUISpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUISpec.m; sourceTree = "<group>"; };
 		1696810E192D98EA00120846 /* Braintree-UI-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-UI-Specs-Info.plist"; sourceTree = "<group>"; };
@@ -1097,6 +1102,7 @@
 				1621741F192D85EB008DC35D /* Braintree-API.h */,
 				161CB1BD19B13DDC00C5A411 /* Braintree-Version.h */,
 				2D70E0F819C2232B00456723 /* BTApplePayPaymentMethod.h */,
+				1690C96D1A9D0690002302E4 /* BTCoinbasePaymentMethod.h */,
 				2DBFFA6419BD564000F3D9B1 /* BTAppSwitchErrors.h */,
 				A7E5BEB519ABE5F3006AEB9B /* BTAppSwitching.h */,
 				77037AD319B0112A0097DADE /* BTAppSwitchingDelegate.h */,
@@ -1164,6 +1170,8 @@
 				16E7B04219E63B360057ABB7 /* BTPayPalPaymentMethod.m */,
 				163823211A72D4D6003D5FA4 /* BTThreeDSecureLookupResult.h */,
 				A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookupResult.m */,
+				1690C96E1A9D06B5002302E4 /* BTCoinbasePaymentMethod.m */,
+				1690C96F1A9D0737002302E4 /* BTCoinbasePaymentMethod_Internal.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1516,6 +1524,7 @@
 				A79ACA49193FB3340095D7F1 /* good_root_cert.der */,
 				A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */,
 				1621759F192D9505008DC35D /* BTClientIntegrationSpec.m */,
+				1690C96A1A9CFC8B002302E4 /* BTClientCoinbaseIntegrationSpec.m */,
 				162175A0192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m */,
 				162175A5192D9505008DC35D /* Supporting Files */,
 			);
@@ -3181,6 +3190,7 @@
 				162175A7192D9505008DC35D /* BTClientIntegrationSpec.m in Sources */,
 				16102A25192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m in Sources */,
 				16102A28192DBB2C002C1B2B /* EXPMatchers+BTDeepEquals.m in Sources */,
+				1690C96C1A9CFCC7002302E4 /* BTClientCoinbaseIntegrationSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

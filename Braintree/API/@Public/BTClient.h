@@ -4,9 +4,12 @@
 #import "BTPayPalPaymentMethod.h"
 
 #import "BTApplePayPaymentMethod.h"
+#import "BTCoinbasePaymentMethod.h"
 
 #import "BTErrors.h"
 #import "BTClientCardRequest.h"
+
+@class BTCoinbasePaymentMethod;
 
 #pragma mark Types
 
@@ -26,6 +29,9 @@ typedef void (^BTClientApplePaySuccessBlock)(BTApplePayPaymentMethod *applePayPa
 
 /// Success Block type for the Save Paypal call
 typedef void (^BTClientPaypalSuccessBlock)(BTPayPalPaymentMethod *paypalPaymentMethod);
+
+/// Success Block type for the Save Coinbase call
+typedef void (^BTClientCoinbaseSuccessBlock)(BTCoinbasePaymentMethod *coinbasePaymentMethod);
 
 /// Success Block type for analytics events
 typedef void (^BTClientAnalyticsSuccessBlock)(void);
@@ -131,6 +137,12 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                               correlationId:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
+
+#pragma mark - Coinbase
+
+- (void)saveCoinbaseAccount:(id)coinbaseAuthResponse
+                    success:(BTClientCoinbaseSuccessBlock)successBlock
+                    failure:(BTClientFailureBlock)failureBlock;
 
 #pragma mark Create a Braintree Analytics Event
 
