@@ -1,13 +1,13 @@
 # Braintree iOS SDK Release Notes
 
-## 3.6.1 (forthcoming)
+## 3.6.2 (forthcoming)
 
 * Update PayPal Mobile SDK to new version that does not include card.io.
   * :rotating_light: Please note! :rotating_light:  
 
       This change breaks builds that depend on a workaround introduced in 3.4.0 that added card.io headers to fix [card.io duplicate symbol issues](https://github.com/braintree/braintree_ios/issues/53). 
 
-      Since card.io is not officially part of the Braintree API, and since the headers were only included as part of a workaround for use by a small group of developers, this breaking change is not accompanied by a major version release. 
+      Since card.io is not officially part of the Braintree API, and since the headers were only included as part of a workaround for use by a small group of developers, this potentially-breaking change is not accompanied by a major version release. 
 
       If your build breaks due to this change, you can re-add card.io to your project's Podfile: 
 
@@ -16,6 +16,11 @@
       And adjust your card.io imports to:
 
           #import <CardIO/CardIO.h>
+
+## 3.6.1 (2014-02-24) 
+
+* Fixes
+  * Remove `GCC_TREAT_WARNINGS_AS_ERRORS` and `GCC_WARN_ABOUT_MISSING_NEWLINE` config from podspec.
 
 ## 3.6.0 (2014-02-20)
 
