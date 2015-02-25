@@ -21,7 +21,7 @@
 @property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;
 @property (nonatomic, strong) UIBarButtonItem *submitBarButtonItem;
 
-/// Whether current visible.
+/// Whether currently visible.
 @property (nonatomic, assign) BOOL visible;
 @property (nonatomic, assign) NSTimeInterval visibleStartTime;
 

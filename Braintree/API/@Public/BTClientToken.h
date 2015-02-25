@@ -58,7 +58,7 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 @property (nonatomic, readonly, copy) NSString *merchantId;
 @property (nonatomic, readonly, copy) NSString *merchantAccountId;
 
--(BOOL)analyticsEnabled;
+- (BOOL)analyticsEnabled;
 
 #pragma mark Credit Card Processing
 
@@ -91,6 +91,15 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 //
 // @return the PayPal stage URL, including a version path appropriate for the vendored PayPal mSDK, or `nil` if mock mode should be used
 - (NSURL *)btPayPal_directBaseURL;
+
+
+#pragma mark Coinbase
+
+- (NSString *)coinbaseClientId;
+- (NSString *)coinbaseMerchantAccount;
+- (NSString *)coinbaseScopes;
+- (NSURL *)coinbaseRedirectUri;
+
 
 #pragma mark Venmo
 

@@ -44,6 +44,12 @@
                                                @"amex" ]
 
                       },
+              @"coinbase": @{
+                      @"clientId": @"a_coinbase_client_id",
+                      @"merchantAccount": @"coinbase-account@example.com",
+                      @"scopes": @"authorizations:braintree user",
+                      @"redirectUrl": @"https://assets.example.com/coinbase/oauth/redirect"
+                      },
               @"merchantAccountId": @"some-merchant-account-id",
               } mutableCopy];
 }
@@ -79,7 +85,13 @@
                       },
               @"merchantId": @"a_merchant_id",
               @"venmo": @"offline",
-              @"applePay": @{ @"status": @"mock" }
+              @"applePay": @{ @"status": @"mock" },
+              @"coinbase": @{
+                      @"clientId": @"a_coinbase_client_id",
+                      @"merchantAccount": @"coinbase-account@example.com",
+                      @"scopes": @"authorizations:braintree user",
+                      @"redirectUrl": @"https://assets.example.com/coinbase/oauth/redirect"
+                      },
               } mutableCopy];
 }
 

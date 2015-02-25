@@ -457,4 +457,28 @@ describe(@"PayPal", ^{
     
 });
 
+describe(@"coinbase", ^{
+    __block BTClientToken *clientToken;
+    beforeEach(^{
+        clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2] error:NULL];
+    });
+
+    describe(@"coinbaseClientId", ^{
+
+        expect(clientToken.coinbaseClientId).to.equal(@"a_coinbase_client_id");
+    });
+
+    describe(@"coinbaseMerchantAccount", ^{
+        expect(clientToken.coinbaseMerchantAccount).to.equal(@"coinbase-account@example.com");
+    });
+
+    describe(@"coinbaseScopes", ^{
+        expect(clientToken.coinbaseScopes).to.equal(@"authorizations:braintree user");
+    });
+
+    describe(@"coinbaseRedirectUrl", ^{
+        expect(clientToken.coinbaseRedirectUri).to.equal([NSURL URLWithString:@"https://assets.example.com/coinbase/oauth/redirect"]);
+    });
+});
+
 SpecEnd

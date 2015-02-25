@@ -12,6 +12,7 @@ NSString *const BTClientTokenKeyAnalytics = @"analytics";
 NSString *const BTClientTokenKeyURL = @"url";
 NSString *const BTClientTokenKeyMerchantId = @"merchantId";
 NSString *const BTClientTokenKeyVersion = @"version";
+NSString *const BTClientTokenKeyCoinbase = @"coinbase";
 NSString *const BTClientTokenKeyApplePay = @"applePay";
 NSString *const BTClientTokenKeyStatus = @"status";
 NSString *const BTClientTokenKeyMerchantAccountId = @"merchantAccountId";
@@ -33,6 +34,11 @@ NSString *const BTClientTokenPayPalEnvironmentOffline = @"offline";
 NSString *const BTClientTokenKeyPayPalDisableAppSwitch = @"touchDisabled";
 
 NSString *const BTClientTokenKeyVenmo = @"venmo";
+
+NSString *const BTClientTokenKeyCoinbaseClientId = @"clientId";
+NSString *const BTClientTokenKeyCoinbaseMerchantAccount = @"merchantAccount";
+NSString *const BTClientTokenKeyCoinbaseScopes = @"scopes";
+NSString *const BTClientTokenKeyCoinbaseRedirectUri = @"redirectUrl";
 
 NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantName = @"Offline Test Merchant";
 NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantPrivacyPolicyUrl = @"http://example.com/privacy";
@@ -286,7 +292,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 
 #pragma mark PayPal
 
--(BTAPIResponseParser *)btPayPal_claims {
+- (BTAPIResponseParser *)btPayPal_claims {
     return [self.configuration responseParserForKey:BTClientTokenKeyPayPal];
 }
 
@@ -345,6 +351,27 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
     return url ?: defaultURL;
 }
 
+#pragma mark Coinbase
+
+- (BTAPIResponseParser *)coinbaseConfiguration {
+    return [self.configuration responseParserForKey:BTClientTokenKeyCoinbase];
+}
+
+- (NSString *)coinbaseClientId {
+    return [self.coinbaseConfiguration stringForKey:BTClientTokenKeyCoinbaseClientId];
+}
+
+- (NSString *)coinbaseMerchantAccount {
+    return [self.coinbaseConfiguration stringForKey:BTClientTokenKeyCoinbaseMerchantAccount];
+}
+
+- (NSString *)coinbaseScopes {
+    return [self.coinbaseConfiguration stringForKey:BTClientTokenKeyCoinbaseScopes];
+}
+
+- (NSURL *)coinbaseRedirectUri {
+    return [self.coinbaseConfiguration URLForKey:BTClientTokenKeyCoinbaseRedirectUri];
+}
 
 #pragma mark Venmo
 
