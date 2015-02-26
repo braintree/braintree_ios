@@ -12,6 +12,7 @@ NSString *const BTClientTokenKeyAnalytics = @"analytics";
 NSString *const BTClientTokenKeyURL = @"url";
 NSString *const BTClientTokenKeyMerchantId = @"merchantId";
 NSString *const BTClientTokenKeyVersion = @"version";
+NSString *const BTClientTokenKeyCoinbaseEnabled = @"coinbaseEnabled";
 NSString *const BTClientTokenKeyCoinbase = @"coinbase";
 NSString *const BTClientTokenKeyApplePay = @"applePay";
 NSString *const BTClientTokenKeyStatus = @"status";
@@ -355,6 +356,11 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 
 - (BTAPIResponseParser *)coinbaseConfiguration {
     return [self.configuration responseParserForKey:BTClientTokenKeyCoinbase];
+}
+
+- (BOOL)coinbaseEnabled {
+    return [self.configuration boolForKey:BTClientTokenKeyCoinbaseEnabled
+                     withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
 }
 
 - (NSString *)coinbaseClientId {

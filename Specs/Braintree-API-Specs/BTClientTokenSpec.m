@@ -463,8 +463,11 @@ describe(@"coinbase", ^{
         clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2] error:NULL];
     });
 
-    describe(@"coinbaseClientId", ^{
+    describe(@"coinbaseEnabled", ^{
+        expect(clientToken.coinbaseEnabled).to.beTruthy();
+    });
 
+    describe(@"coinbaseClientId", ^{
         expect(clientToken.coinbaseClientId).to.equal(@"a_coinbase_client_id");
     });
 
@@ -473,11 +476,7 @@ describe(@"coinbase", ^{
     });
 
     describe(@"coinbaseScopes", ^{
-        expect(clientToken.coinbaseScopes).to.equal(@"authorizations:braintree user");
-    });
-
-    describe(@"coinbaseRedirectUrl", ^{
-        expect(clientToken.coinbaseRedirectUri).to.equal([NSURL URLWithString:@"https://assets.example.com/coinbase/oauth/redirect"]);
+        expect(clientToken.coinbaseScope).to.equal(@"authorizations:braintree user");
     });
 });
 

@@ -44,6 +44,7 @@
                                                @"amex" ]
 
                       },
+              @"coinbaseEnabled": @YES,
               @"coinbase": @{
                       @"clientId": @"a_coinbase_client_id",
                       @"merchantAccount": @"coinbase-account@example.com",
@@ -86,6 +87,7 @@
               @"merchantId": @"a_merchant_id",
               @"venmo": @"offline",
               @"applePay": @{ @"status": @"mock" },
+              @"coinbaseEnabled": @YES,
               @"coinbase": @{
                       @"clientId": @"a_coinbase_client_id",
                       @"merchantAccount": @"coinbase-account@example.com",

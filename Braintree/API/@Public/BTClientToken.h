@@ -95,6 +95,7 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 
 #pragma mark Coinbase
 
+- (BOOL)coinbaseEnabled;
 - (NSString *)coinbaseClientId;
 - (NSString *)coinbaseMerchantAccount;
 - (NSString *)coinbaseScopes;
