@@ -76,7 +76,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
         return nil;
     }
 
-    return [PayPalMobile applicationCorrelationIDForEnvironment:self.clientToken.btPayPal_environment];
+    return [PayPalMobile clientMetadataID];
 }
 
 - (PayPalConfiguration *)btPayPal_configuration {

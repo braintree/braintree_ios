@@ -445,10 +445,6 @@
 		163823211A72D4D6003D5FA4 /* BTThreeDSecureLookupResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLookupResult.h; sourceTree = "<group>"; };
 		163DB1E319FB08AE00AEB08F /* CardIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIO.h; sourceTree = "<group>"; };
 		163DB1E419FB08AE00AEB08F /* CardIOCreditCardInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIOCreditCardInfo.h; sourceTree = "<group>"; };
-		163DB1E519FB08AE00AEB08F /* CardIOPaymentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIOPaymentViewController.h; sourceTree = "<group>"; };
-		163DB1E619FB08AE00AEB08F /* CardIOPaymentViewControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIOPaymentViewControllerDelegate.h; sourceTree = "<group>"; };
-		163DB1E719FB08AE00AEB08F /* CardIOView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIOView.h; sourceTree = "<group>"; };
-		163DB1E819FB08AE00AEB08F /* CardIOViewDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIOViewDelegate.h; sourceTree = "<group>"; };
 		164A13EB1966237E009FAAEA /* BTKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTKeychain.h; sourceTree = "<group>"; };
 		164A13EC1966237E009FAAEA /* BTKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTKeychain.m; sourceTree = "<group>"; };
 		164A13ED19662D42009FAAEA /* BTReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTReachability.h; sourceTree = "<group>"; };
@@ -1854,10 +1850,6 @@
 				16E7B05019E644700057ABB7 /* libPayPalMobile.a */,
 				163DB1E319FB08AE00AEB08F /* CardIO.h */,
 				163DB1E419FB08AE00AEB08F /* CardIOCreditCardInfo.h */,
-				163DB1E519FB08AE00AEB08F /* CardIOPaymentViewController.h */,
-				163DB1E619FB08AE00AEB08F /* CardIOPaymentViewControllerDelegate.h */,
-				163DB1E719FB08AE00AEB08F /* CardIOView.h */,
-				163DB1E819FB08AE00AEB08F /* CardIOViewDelegate.h */,
 				16E7B05119E644700057ABB7 /* PayPalConfiguration.h */,
 				16E7B05219E644700057ABB7 /* PayPalFuturePaymentViewController.h */,
 				16E7B05319E644700057ABB7 /* PayPalMobile.h */,

@@ -40,6 +40,7 @@ target 'Braintree-Dev' do
   pod 'Braintree/3D-Secure', :path => '.'
   pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.2'
+  pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
   pod 'UIActionSheet+Blocks'
