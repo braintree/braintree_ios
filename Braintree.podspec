@@ -97,4 +97,10 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Payments"
     s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree/3D-Secure/Localization/*.lproj" }
   end
+
+  s.subspec "Coinbase" do |s|
+    s.source_files = "Braintree/Coinbase/**/*.{h,m}"
+    s.public_header_files = "Braintree/Coinbase/@Public/*.h"
+    s.dependency "coinbase-official", "~> 2.0"
+  end
 end

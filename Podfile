@@ -13,11 +13,13 @@ target 'Tests' do
             'Braintree-PayPal-Acceptance-Specs',
             'Braintree-Venmo-Specs',
             'Braintree-Data-Specs',
-            'Braintree-3D-Secure-Specs'
+            'Braintree-3D-Secure-Specs',
+            'Braintree-Coinbase-Integration-Specs'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
+  pod 'Braintree/Coinbase', :path => '.'
   pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
   pod 'Expecta', '~> 0.3.0'
   pod 'OCMock', '~> 2.2.3'
@@ -38,6 +40,7 @@ target 'Braintree-Dev' do
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
+  pod 'Braintree/Coinbase', :path => '.'
   pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.2'
   pod 'NSURL+QueryDictionary', '~> 1.0'

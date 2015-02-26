@@ -34,6 +34,8 @@ PODS:
   - Braintree/API (3.6.0)
   - Braintree/Apple-Pay (3.6.0):
     - Braintree/Payments
+  - Braintree/Coinbase (3.6.0):
+    - coinbase-official (~> 2.0)
   - Braintree/Data (3.6.0):
     - Braintree/API
     - Braintree/PayPal
@@ -54,6 +56,7 @@ PODS:
     - Braintree/API
   - Braintree/Venmo (3.6.0):
     - Braintree/API
+  - coinbase-official (2.0.1)
   - Expecta (0.3.1)
   - FLEX (1.1.1)
   - HockeySDK (3.5.6)
@@ -79,6 +82,7 @@ DEPENDENCIES:
   - Braintree (from `.`)
   - Braintree/3D-Secure (from `.`)
   - Braintree/Apple-Pay (from `.`)
+  - Braintree/Coinbase (from `.`)
   - Braintree/Data (from `.`)
   - Expecta (~> 0.3.0)
   - FLEX
@@ -106,7 +110,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: f6e080ce8e66a111d15f4c16513d25ee7e3a82bf
+  Braintree: 2f6824772bf5c7e4cd0cd5b7404537a09a0c9c12
+  coinbase-official: 0f96cd3211d5234ee07c8d7741f694fed6d2574b
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
