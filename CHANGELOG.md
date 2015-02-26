@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 3.6.2 (forthcoming)
+## 3.6.2 (2015-02-25)
 
 * Update PayPal Mobile SDK to new version that does not include card.io.
   * :rotating_light: Please note! :rotating_light:  
@@ -17,12 +17,12 @@
 
           #import <CardIO/CardIO.h>
 
-## 3.6.1 (2014-02-24) 
+## 3.6.1 (2015-02-24)
 
 * Fixes
   * Remove `GCC_TREAT_WARNINGS_AS_ERRORS` and `GCC_WARN_ABOUT_MISSING_NEWLINE` config from podspec.
 
-## 3.6.0 (2014-02-20)
+## 3.6.0 (2015-02-20)
 
 * Features
   * Beta support for native mobile 3D Secure
