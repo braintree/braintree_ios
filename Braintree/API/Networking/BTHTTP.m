@@ -5,6 +5,7 @@
 #import "BTClient.h"
 #import "BTAPIPinnedCertificates.h"
 #import "BTURLUtils.h"
+#import "BTLogger_Internal.h"
 
 @interface BTHTTP ()<NSURLSessionDelegate>
 
@@ -338,47 +339,28 @@
 
 #pragma mark - Helpers
 
-+ (BOOL)serverTrustIsValid:(SecTrustRef)serverTrust {
-    BOOL isValid = NO;
-    SecTrustResultType result;
-
-    OSStatus errorCode = SecTrustEvaluate(serverTrust, &result);
-    isValid = errorCode != 0 && (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed);
-    return isValid;
-}
-
-- (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust forDomain:(NSString *)domain {
-    NSArray *policies = @[(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)domain)];
-
-    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
-
-    CFIndex certificateCount = SecTrustGetCertificateCount(serverTrust);
-    if (certificateCount == 0) {
-        return NO;
-    }
-
-    NSData *serverRootCertificate = (__bridge_transfer NSData *)SecCertificateCopyData(SecTrustGetCertificateAtIndex(serverTrust, certificateCount-1));
-
+- (NSArray *)pinnedCertificateData {
     NSMutableArray *pinnedCertificates = [NSMutableArray array];
     for (NSData *certificateData in self.pinnedCertificates) {
         [pinnedCertificates addObject:(__bridge_transfer id)SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData)];
     }
-    SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)pinnedCertificates);
-
-    if (![[self class] serverTrustIsValid:serverTrust]) {
-        return NO;
-    }
-
-    return [self.pinnedCertificates containsObject:serverRootCertificate];
+    return pinnedCertificates;
 }
-
 
 - (void)URLSession:(__unused NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *))completionHandler {
     if ([[[challenge protectionSpace] authenticationMethod] isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        NSString *domain = challenge.protectionSpace.host;
         SecTrustRef serverTrust = [[challenge protectionSpace] serverTrust];
 
-        BOOL ok = [self evaluateServerTrust:serverTrust forDomain:challenge.protectionSpace.host];
-        if (ok) {
+        NSArray *policies = @[(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)domain)];
+        SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
+        SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)self.pinnedCertificateData);
+        SecTrustResultType result;
+
+        OSStatus errorCode = SecTrustEvaluate(serverTrust, &result);
+
+        BOOL evaluatesAsTrusted = (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed);
+        if (errorCode == errSecSuccess && evaluatesAsTrusted) {
             NSURLCredential *credential = [NSURLCredential credentialForTrust:serverTrust];
             completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
         } else {

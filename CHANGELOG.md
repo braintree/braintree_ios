@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## master
+
+* Refactor and improve SSL Pinning code
+
 ## 3.6.2 (2015-02-26)
 
 * Update PayPal Mobile SDK to new version that does not include card.io.
