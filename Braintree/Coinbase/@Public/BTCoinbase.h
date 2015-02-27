@@ -1,5 +1,10 @@
 @import Foundation;
 
-@interface BTCoinbase : NSObject
+#import "BTAppSwitching.h"
+#import "BTAppSwitchErrors.h"
+
+@interface BTCoinbase : NSObject <BTAppSwitching>
+
++ (instancetype)sharedCoinbase;
 
 @end

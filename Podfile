@@ -2,6 +2,11 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 workspace 'Braintree.xcworkspace'
 
+def coinbase_dev
+  # Temporary, pending PRs into coinbase/coinbase-ios-sdk
+  pod 'coinbase-official', :git => 'https://github.com/mickeyreiss/coinbase-ios-sdk.git', :branch => :master
+end
+
 target 'Tests' do
   link_with 'Braintree-Specs',
             'Braintree-API-Specs',
@@ -14,7 +19,7 @@ target 'Tests' do
             'Braintree-Venmo-Specs',
             'Braintree-Data-Specs',
             'Braintree-3D-Secure-Specs',
-            'Braintree-Coinbase-Integration-Specs'
+            'Braintree-Coinbase-Specs'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
@@ -28,6 +33,7 @@ target 'Tests' do
   pod 'KIF', '~> 3.0'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'KIFViewControllerActions', :git => 'https://github.com/mickeyreiss/KIFViewControllerActions.git'
+  coinbase_dev
 end
 
 target 'Braintree-Dev' do
@@ -49,6 +55,7 @@ target 'Braintree-Dev' do
   pod 'UIAlertView+Blocks'
   pod 'FLEX'
   pod 'InAppSettingsKit'
+  coinbase_dev
 end
 
 target 'Braintree-Apple-Pay-Excluded' do

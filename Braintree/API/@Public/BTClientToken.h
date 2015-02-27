@@ -98,8 +98,7 @@ extern NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreeme
 - (BOOL)coinbaseEnabled;
 - (NSString *)coinbaseClientId;
 - (NSString *)coinbaseMerchantAccount;
-- (NSString *)coinbaseScopes;
-- (NSURL *)coinbaseRedirectUri;
+- (NSString *)coinbaseScope;
 
 
 #pragma mark Venmo

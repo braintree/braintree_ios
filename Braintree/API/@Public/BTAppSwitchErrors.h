@@ -4,17 +4,13 @@
 extern NSString *const BTAppSwitchErrorDomain;
 
 /// App Switch NSError Codes
-NS_ENUM(NSInteger, BTAppSwitchErrorCode) {
+typedef NS_ENUM(NSInteger, BTAppSwitchErrorCode) {
     BTAppSwitchErrorUnknown = 0,
 
-    /// A compatible version of the Venmo App is not available on this device.
+    /// A compatible version of the target app is not available on this device.
     BTAppSwitchErrorAppNotAvailable = 1,
 
-    /// Venmo app switch is not enabled.
-    ///
-    /// This flag is set via the client token and can be configured
-    /// in the Braintree control panel. It can also be overridden in certain
-    /// cases (see BTPaymentProviderType.)
+    /// App switch is not enabled.
     BTAppSwitchErrorDisabled = 2,
 
     /// App switch is not configured appropriately. You must specify a
@@ -24,7 +20,7 @@ NS_ENUM(NSInteger, BTAppSwitchErrorCode) {
     /// The merchant ID field was not valid or present in the client token.
     BTAppSwitchErrorIntegrationMerchantId = 4,
 
-    /// UIApplication failed to switch to Venmo despite it being available.
+    /// UIApplication failed to switch despite it being available.
     /// `[UIApplication openURL:]` returned `NO` when `YES` was expected.
     BTAppSwitchErrorFailed = 5,
 

@@ -38,7 +38,7 @@ NSString *const BTClientTokenKeyVenmo = @"venmo";
 
 NSString *const BTClientTokenKeyCoinbaseClientId = @"clientId";
 NSString *const BTClientTokenKeyCoinbaseMerchantAccount = @"merchantAccount";
-NSString *const BTClientTokenKeyCoinbaseScopes = @"scopes";
+NSString *const BTClientTokenKeyCoinbaseScope = @"scopes";
 NSString *const BTClientTokenKeyCoinbaseRedirectUri = @"redirectUrl";
 
 NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantName = @"Offline Test Merchant";
@@ -371,8 +371,8 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
     return [self.coinbaseConfiguration stringForKey:BTClientTokenKeyCoinbaseMerchantAccount];
 }
 
-- (NSString *)coinbaseScopes {
-    return [self.coinbaseConfiguration stringForKey:BTClientTokenKeyCoinbaseScopes];
+- (NSString *)coinbaseScope {
+    return [self.coinbaseConfiguration stringForKey:BTClientTokenKeyCoinbaseScope];
 }
 
 - (NSURL *)coinbaseRedirectUri {

@@ -56,7 +56,9 @@ PODS:
     - Braintree/API
   - Braintree/Venmo (3.6.0):
     - Braintree/API
-  - coinbase-official (2.0.1)
+  - coinbase-official (2.0.1):
+    - coinbase-official/OAuth
+  - coinbase-official/OAuth (2.0.1)
   - Expecta (0.3.1)
   - FLEX (1.1.1)
   - HockeySDK (3.5.6)
@@ -84,6 +86,7 @@ DEPENDENCIES:
   - Braintree/Apple-Pay (from `.`)
   - Braintree/Coinbase (from `.`)
   - Braintree/Data (from `.`)
+  - coinbase-official (from `https://github.com/mickeyreiss/coinbase-ios-sdk.git`, branch `master`)
   - Expecta (~> 0.3.0)
   - FLEX
   - HockeySDK
@@ -102,6 +105,9 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Braintree:
     :path: .
+  coinbase-official:
+    :branch: :master
+    :git: https://github.com/mickeyreiss/coinbase-ios-sdk.git
   KIFViewControllerActions:
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
   Specta:
@@ -110,8 +116,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: 2f6824772bf5c7e4cd0cd5b7404537a09a0c9c12
-  coinbase-official: 0f96cd3211d5234ee07c8d7741f694fed6d2574b
+  Braintree: a1a6681113f3d34f34d5f286ce4bc457ea388b89
+  coinbase-official: ecdacb74e2c8265a1607cd2d4ec89b856eff7c2d
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721

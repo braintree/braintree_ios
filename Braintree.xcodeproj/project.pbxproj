@@ -206,6 +206,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		161E0C8D1A9FAAB400D7285A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 162174DE192D9220008DC35D;
+			remoteInfo = "Braintree-Demo";
+		};
 		167BDAC319FF24960002BF8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -2393,6 +2400,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				161E0C8E1A9FAAB400D7285A /* PBXTargetDependency */,
 			);
 			name = "Braintree-Coinbase-Integration-Specs";
 			productName = "Braintree-Coinbase-Integration-Specs";
@@ -2668,6 +2676,7 @@
 					};
 					161E0C7B1A9EA83400D7285A = {
 						CreatedOnToolsVersion = 6.1;
+						TestTargetID = 162174DE192D9220008DC35D;
 					};
 					162174DE192D9220008DC35D = {
 						DevelopmentTeam = QK3APTBF2M;
@@ -3435,6 +3444,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		161E0C8E1A9FAAB400D7285A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
+			targetProxy = 161E0C8D1A9FAAB400D7285A /* PBXContainerItemProxy */;
+		};
 		167BDAC419FF24960002BF8A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 169681D5192D9AC700120846 /* Braintree-UI-Demo */;
@@ -4040,6 +4054,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 			};
 			name = Debug;
 		};
@@ -4080,6 +4095,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
