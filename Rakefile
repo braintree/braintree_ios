@@ -52,21 +52,20 @@ class << self
     %x{git describe}.strip
   end
 
-  def xctool(scheme, command, options={})
+  def xcodebuild(scheme, command, options={})
     default_options = {
       :build_settings => {}
     }
     options = default_options.merge(options)
     build_settings = options[:build_settings].map{|k,v| "#{k}='#{v}'"}.join(" ")
-
-    return "xctool -reporter 'pretty' -workspace 'Braintree.xcworkspace' -scheme '#{scheme}' -sdk 'iphonesimulator8.1' -destination='platform=iOS Simulator,name=iPhone,0S=8.1' -configuration 'Release' #{build_settings} #{command}"
+    return "xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator8.1' -configuration 'Release' -scheme '#{scheme}' -destination 'OS=8.1,name=iPhone 6,platform=iOS Simulator' #{build_settings} #{command} | xcpretty -t"
   end
 
 end
 
 namespace :spec do
   def run_test_scheme! scheme
-    run! xctool(scheme, 'test')
+    run! xcodebuild(scheme, 'test')
   end
 
   desc 'Run unit tests'
@@ -94,7 +93,7 @@ namespace :spec do
     desc 'Run api integration tests'
     task :integration do
       with_https_server do
-        run! xctool('Braintree-API-Integration-Specs', 'test', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
+        run! xcodebuild('Braintree-API-Integration-Specs', 'test', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
       end
     end
   end
@@ -173,7 +172,7 @@ end
 
 namespace :demo do
   def build_demo! scheme
-    run! xctool(scheme, 'build')
+    run! xcodebuild(scheme, 'build')
   end
 
   task :build do
