@@ -222,7 +222,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
             [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
             break;
         case BTPaymentProviderTypeVenmo:
-        [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
+            [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
+            break;
         default:
             NSLog(@"BTPaymentButton collection view received didSelectItemAtIndexPath for unknown indexPath. This should never happen.");
             break;
