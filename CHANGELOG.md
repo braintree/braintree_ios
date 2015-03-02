@@ -1,11 +1,8 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.7.0 (2015-03-02)
 
 * Refactor and improve SSL Pinning code
-
-## 3.6.2 (2015-02-26)
-
 * Update PayPal Mobile SDK to new version that does not include card.io.
   * :rotating_light: Please note! :rotating_light:  
 
