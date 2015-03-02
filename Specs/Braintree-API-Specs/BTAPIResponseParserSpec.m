@@ -196,7 +196,7 @@ describe(@"isEqual:", ^{
         expect(parser1).to.equal(parser2);
     });
 
-    fit(@"returns false for distinct parsers", ^{
+    it(@"returns false for distinct parsers", ^{
         BTAPIResponseParser *parser1 = [BTAPIResponseParser parserWithDictionary:@{ @"name": @"parser1" }];
         BTAPIResponseParser *parser2 = [BTAPIResponseParser parserWithDictionary:@{ @"name": @"parser2" }];
 
