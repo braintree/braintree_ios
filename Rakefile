@@ -204,7 +204,8 @@ task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_all_de
 namespace :sanity_checks do
   desc 'Check for pending tests'
   task :pending_specs do
-    run "ack 'fit\\(|fdescribe\\(' Specs" and fail "Please do not commit pending specs."
+    # ack returns 1 if no match is found, which is our success case
+    run! "! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
   end
 
   desc 'Verify that all demo apps Build successfully'
@@ -396,3 +397,4 @@ namespace :gen do
     end
   end
 end
+
