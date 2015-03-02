@@ -6,7 +6,7 @@
 
 By default, we suggest you utilize the default merchant credentials embedded in `[[BTData alloc] initWithClient:client environment:BTDataEnvironmentProduction]`.
 
-For direct Fraud Integration, please see [our documentation](https://www.braintreepayments.com/docs/general/fraud_tools#direct_fraud_tool_integration) or [contact our accounts team](accounts@braintreepayments.com).
+For direct Fraud Integration, please see [our documentation](https://developers.braintreepayments.com/ios/guides/fraud-tools#direct-fraud-tool-integration) or [contact our accounts team](accounts@braintreepayments.com).
 
 **Note:** Use of `Braintree/Data` and `BTData` is optional. 
 
