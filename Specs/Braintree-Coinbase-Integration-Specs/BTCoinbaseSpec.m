@@ -301,8 +301,6 @@ describe(@"BTAppSwitching", ^{
 
             NSURL *testURL = [NSURL URLWithString:@"com.example.random-app://some/unrelated/url"];
             [coinbase handleReturnURL:testURL];
-
-            [mockDelegate verifyWithDelay:10];
         });
 
         it(@"tokenizes the code returned by coinbase", ^{
@@ -374,10 +372,14 @@ describe(@"BTAppSwitching", ^{
             [[[mockClient stub] andReturn:mockClientToken] clientToken];
             NSError *mockError = [OCMockObject mockForClass:[NSError class]];
 
-            [[[mockClient stub] andDo:^(NSInvocation *invocation){
+            id clientStub = [mockClient stub];
+            [clientStub andDo:^(NSInvocation *invocation){
                 BTClientFailureBlock failureBlock = [invocation getArgumentAtIndexAsObject:4];
                 failureBlock(mockError);
-            }] saveCoinbaseAccount:HC_hasEntry(@"code", @"1234") success:[OCMArg isNotNil] failure:[OCMArg any]];
+            }];
+            [clientStub saveCoinbaseAccount:HC_hasEntry(@"code", @"1234")
+                                    success:[OCMArg isNotNil]
+                                    failure:[OCMArg any]];
             
             id mockDelegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
             
