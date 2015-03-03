@@ -101,6 +101,7 @@ Pod::Spec.new do |s|
   s.subspec "Coinbase" do |s|
     s.source_files = "Braintree/Coinbase/**/*.{h,m}"
     s.public_header_files = "Braintree/Coinbase/@Public/*.h"
+    # Temporary, pending coinbase release
     # s.dependency "coinbase-official/OAuth", "~> 2.0"
     s.dependency "coinbase-official", "~> 2.0"
   end

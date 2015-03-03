@@ -3,8 +3,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 workspace 'Braintree.xcworkspace'
 
 def coinbase_dev
-  # Temporary, pending PRs into coinbase/coinbase-ios-sdk
-  pod 'coinbase-official', :git => 'https://github.com/mickeyreiss/coinbase-ios-sdk.git', :branch => :master
+  # Temporary, pending coinbase release
+  pod 'coinbase-official', :head
 end
 
 target 'Tests' do
