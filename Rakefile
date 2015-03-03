@@ -142,8 +142,8 @@ namespace :spec do
   namespace :applepay do
     desc 'Run Apple Pay enabled build test'
     task :included do
-      run! "xctool test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace  -sdk iphonesimulator -configuration Debug"
-      run "xctool build-tests -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace  -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
+      run! "xcodebuild test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug"
+      run "xcodebuild test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
         build_dir = result.split("=")[-1].strip
         run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Braintree.a | grep PKPay" do |result|
           fail("Missing expected Apple Pay symbols") if result.strip.empty?
@@ -153,8 +153,8 @@ namespace :spec do
 
     desc 'Run Apple Pay disabled build test'
     task :excluded do
-      run! "xctool test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace  -sdk iphonesimulator -configuration Debug"
-      run "xctool build-tests -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace  -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
+      run! "xcodebuild test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug"
+      run "xcodebuild test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
         build_dir = result.split("=")[-1].strip
         run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Excluded-Braintree.a | grep PKPay" do |result|
           fail("Contains verboten Apple Pay symbols!") unless result.strip.empty?
