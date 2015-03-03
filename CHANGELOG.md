@@ -3,7 +3,7 @@
 ## 3.7.0 (2015-03-02)
 
 * Refactor and improve SSL Pinning code
-* Update PayPal Mobile SDK to new version that does not include card.io.
+* Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.4-bt1) that does not include card.io.
   * :rotating_light: Please note! :rotating_light:  
 
       This change breaks builds that depend on a workaround introduced in 3.4.0 that added card.io headers to fix [card.io duplicate symbol issues](https://github.com/braintree/braintree_ios/issues/53). 
