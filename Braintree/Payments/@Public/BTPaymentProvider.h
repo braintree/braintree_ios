@@ -9,13 +9,42 @@
 /// Type of payment method creation
 typedef NS_ENUM(NSInteger, BTPaymentProviderType) {
     /// Authorize via PayPal
+    ///
+    /// Supports BTPaymentAuthorizationOptionMechanismAppSwitch and BTPaymentAuthorizationOptionMechanismViewController.
     BTPaymentProviderTypePayPal = 0,
 
     /// Authorize via Venmo
+    ///
+    /// Supports BTPaymentAuthorizationOptionMechanismAppSwitch only.
     BTPaymentProviderTypeVenmo,
 
     /// Authorize via Apple Pay
-    BTPaymentProviderTypeApplePay
+    ///
+    /// Supports BTPaymentAuthorizationOptionMechanismViewController only.
+    BTPaymentProviderTypeApplePay,
+
+    /// Authorize via Coinbase
+    ///
+    /// Supports BTPaymentAuthorizationOptionMechanismBrowserSwitch and BTPaymentAuthorizationOptionMechanismViewController.
+    BTPaymentProviderTypeCoinbase,
+};
+
+
+/// Options for payment method creation
+///
+/// These options designate how to authorize the user for the given payment option (BTPaymentProviderType). Each payment option supports a subset of these, as specified above.
+typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
+
+    /// Authorize via an app-switch to the provider's app if the app is already installed.
+    ///
+    /// If the target app is not installed, this mechanism will fail.
+    BTPaymentAuthorizationOptionMechanismAppSwitch = 1 << 0,
+
+    /// Authorize via in-app view controller presentation.
+    BTPaymentAuthorizationOptionMechanismViewController = 1 << 1,
+
+    /// Authorize via the best possible mechanism.
+    BTPaymentAuthorizationOptionMechanismAny =  BTPaymentAuthorizationOptionMechanismAppSwitch | BTPaymentAuthorizationOptionMechanismViewController
 };
 
 /// Status of the last (or ongoing) payment method creation
@@ -38,22 +67,6 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderStatus) {
 
     /// The payment method creator has canceled
     BTPaymentProviderStatusCanceled
-};
-
-
-/// Options for payment method creation
-typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
-
-    /// Enable app-switch authorization if available.
-    /// This is the highest priority mechanism option.
-    BTPaymentAuthorizationOptionMechanismAppSwitch = 1 << 0,
-
-    /// Authorize via in-app view controller presentation, if available for authorization type.
-    /// BTPaymentAuthorizationOptionMechanismAppSwitch takes precedence.
-    BTPaymentAuthorizationOptionMechanismViewController = 1 << 1,
-
-    /// Authorize via any available mechanism
-    BTPaymentAuthorizationOptionMechanismAny = BTPaymentAuthorizationOptionMechanismViewController | BTPaymentAuthorizationOptionMechanismAppSwitch
 };
 
 /// The BTPaymentProvider enables you to collect payment information from the user.
@@ -117,8 +130,7 @@ typedef NS_OPTIONS(NSInteger, BTPaymentMethodCreationOptions) {
 /// @return YES if this payment provider could create a payment method of the specified type
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type;
 
-
-/// Status of the last (or ongoing) payment method creation 
+/// Status of the last (or ongoing) payment method creation
 @property (nonatomic, assign) BTPaymentProviderStatus status;
 
 #if BT_ENABLE_APPLE_PAY

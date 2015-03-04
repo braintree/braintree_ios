@@ -66,7 +66,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                                                                   delegate:delegate];
 }
 
-- (BOOL) btPayPal_isPayPalEnabled {
+- (BOOL)btPayPal_isPayPalEnabled {
     return self.clientToken.btPayPal_isPayPalEnabled;
 }
 

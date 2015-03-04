@@ -241,6 +241,13 @@
 			remoteGlobalIDString = 160199EE1964E14400010A56;
 			remoteInfo = "Braintree-Data-Demo";
 		};
+		A773C1B41AA64B3D00FB67BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 162174DE192D9220008DC35D;
+			remoteInfo = "Braintree-Demo";
+		};
 		A7CED50C1A2FCFF600141197 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -2585,6 +2592,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A773C1B51AA64B3D00FB67BD /* PBXTargetDependency */,
 			);
 			name = "Braintree-Payments-Specs";
 			productName = "Braintree-Payment-Authorization-Specs";
@@ -2697,6 +2705,9 @@
 					};
 					2D30F1301A7C49E2004BA8C3 = {
 						CreatedOnToolsVersion = 6.1.1;
+					};
+					2D9DDB3419B8171800C53140 = {
+						TestTargetID = 162174DE192D9220008DC35D;
 					};
 					2DCFAA671A800ACB00FA2ECC = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -3468,6 +3479,11 @@
 			isa = PBXTargetDependency;
 			target = 160199EE1964E14400010A56 /* Braintree-Data-Demo */;
 			targetProxy = A7120C391A81A148006E7254 /* PBXContainerItemProxy */;
+		};
+		A773C1B51AA64B3D00FB67BD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
+			targetProxy = A773C1B41AA64B3D00FB67BD /* PBXContainerItemProxy */;
 		};
 		A7CED50D1A2FCFF600141197 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5015,6 +5031,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -5054,6 +5071,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = xctest;
 			};

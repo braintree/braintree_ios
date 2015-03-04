@@ -398,6 +398,60 @@ describe(@"BTAppSwitching", ^{
             [mockDelegate verifyWithDelay:10];
         });
     });
+
+    describe(@"providerAppSwitchAvailableForClient:", ^{
+        __block id clientToken, client, coinbaseOAuth;
+
+        beforeEach(^{
+            clientToken = [OCMockObject mockForClass:[BTClientToken class]];
+            client = [OCMockObject mockForClass:[BTClient class]];
+            coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
+        });
+
+        it(@"returns YES if the app is installed and coinbase is enabled", ^{
+            [[[clientToken expect] andReturnValue:@YES] coinbaseEnabled];
+            [[[client expect] andReturn:clientToken] clientToken];
+            [[[[coinbaseOAuth expect] andReturnValue:@YES] classMethod] isAppOAuthAuthenticationAvailable];
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            [coinbase setReturnURLScheme:@"com.example.app.payments"];
+            expect([coinbase providerAppSwitchAvailableForClient:client]).to.beTruthy();
+        });
+
+        it(@"returns NO if the returnURLScheme is not set", ^{
+            [[[clientToken expect] andReturnValue:@YES] coinbaseEnabled];
+            [[[client expect] andReturn:clientToken] clientToken];
+            [[[[coinbaseOAuth expect] andReturnValue:@YES] classMethod] isAppOAuthAuthenticationAvailable];
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            expect([coinbase providerAppSwitchAvailableForClient:client]).to.beFalsy();
+        });
+
+        it(@"returns NO if the app is installed but coinbase is NOT enabled", ^{
+            [[[clientToken expect] andReturnValue:@NO] coinbaseEnabled];
+            [[[client expect] andReturn:clientToken] clientToken];
+            [[[[coinbaseOAuth expect] andReturnValue:@YES] classMethod] isAppOAuthAuthenticationAvailable];
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            [coinbase setReturnURLScheme:@"com.example.app.payments"];
+            expect([coinbase providerAppSwitchAvailableForClient:client]).to.beFalsy();
+        });
+
+        it(@"returns NO if the app is NOT installed and coinbase is enabled", ^{
+            [[[clientToken expect] andReturnValue:@YES] coinbaseEnabled];
+            [[[client expect] andReturn:clientToken] clientToken];
+            [[[[coinbaseOAuth expect] andReturnValue:@NO] classMethod] isAppOAuthAuthenticationAvailable];
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            [coinbase setReturnURLScheme:@"com.example.app.payments"];
+            expect([coinbase providerAppSwitchAvailableForClient:client]).to.beFalsy();
+        });
+
+        it(@"returns NO if the app is NOT installed and coinbase is NOT enabled", ^{
+            [[[clientToken expect] andReturnValue:@NO] coinbaseEnabled];
+            [[[client expect] andReturn:clientToken] clientToken];
+            [[[[coinbaseOAuth expect] andReturnValue:@NO] classMethod] isAppOAuthAuthenticationAvailable];
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            [coinbase setReturnURLScheme:@"com.example.app.payments"];
+            expect([coinbase providerAppSwitchAvailableForClient:client]).to.beFalsy();
+        });
+    });
 });
 
 SpecEnd

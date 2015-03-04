@@ -32,7 +32,7 @@
 
 /// Returns an instance of `Braintree`, the public interface of Braintree-iOS.
 ///
-/// @param clientToken value that is generated on your sever using a Braintree server-side
+/// @param clientToken value that is generated on your server using a Braintree server-side
 ///  client library that contains all necessary configuration to setup the client SDKs. It also
 ///  authenticates the application to communicate directly to Braintree.
 ///

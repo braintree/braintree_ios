@@ -12,21 +12,39 @@
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTPayPalViewController.h"
 
+#import "BTCoinbase.h"
+#import "CoinbaseOAuth.h"
+
 @interface BTPaymentProvider () <PKPaymentAuthorizationViewControllerDelegate>
 @end
 
 SpecBegin(BTPaymentProvider)
 
+__block BTPaymentProviderType providerType;
+__block BTPaymentProvider *provider;
 __block id client;
+__block id clientToken;
 __block id delegate;
 
 beforeEach(^{
+    clientToken = [OCMockObject mockForClass:[BTClientToken class]];
+
     client = [OCMockObject mockForClass:[BTClient class]];
     [[client stub] btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)[OCMArg anyPointer]];
     [[client stub] postAnalyticsEvent:OCMOCK_ANY];
-    [[[client stub] andReturnValue:@YES] btPayPal_isPayPalEnabled];
+
+    // Use `expect` because we change the value of `btPayPal_isPayPalEnabled` depending on the test.
+    [[[client expect] andReturnValue:@YES] btPayPal_isPayPalEnabled];
+    // Code within this `beforeEach` block will call `btPayPal_isPayPalEnabled` twice.
+    [[[client expect] andReturnValue:@YES] btPayPal_isPayPalEnabled];
+
+    [[[client stub] andReturn:clientToken] clientToken];
 
     delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
+
+    provider = [[BTPaymentProvider alloc] initWithClient:client];
+    provider.client = client;
+    provider.delegate = delegate;
 });
 
 afterEach(^{
@@ -38,16 +56,6 @@ afterEach(^{
 });
 
 describe(@"createPaymentMethod:", ^{
-
-    __block BTPaymentProviderType providerType;
-    __block BTPaymentProvider *provider;
-
-    beforeEach(^{
-        provider = [[BTPaymentProvider alloc] initWithClient:client];
-        provider.client = client;
-        provider.delegate = delegate;
-    });
-
     context(@"when type is BTPaymentProviderTypeApplePay", ^{
         __block id applePayProvider;
 
@@ -97,7 +105,7 @@ describe(@"createPaymentMethod:", ^{
                 [provider setSupportedNetworks:supportedNetworks];
 
                 [applePayProvider verify];
-                
+
                 CFRelease(shippingAddress);
                 CFRelease(billingAddress);
             });
@@ -239,6 +247,118 @@ describe(@"createPaymentMethod:", ^{
                     return NO;
                 }]];
                 [provider createPaymentMethod:BTPaymentProviderTypeVenmo];
+            });
+        });
+    });
+
+    fcontext(@"when type is BTPaymentProviderTypeCoinbase", ^{
+        __block id stubCoinbase;
+
+        beforeEach(^{
+            stubCoinbase = [OCMockObject mockForClass:[BTCoinbase class]];
+            [[[[stubCoinbase stub] andReturn:stubCoinbase] classMethod] sharedCoinbase];
+        });
+
+        afterEach(^{
+            [stubCoinbase verify];
+            [stubCoinbase stopMocking];
+        });
+
+        describe(@"create payment method with default options", ^{
+            it(@"performs an app switch or browser switch to coinbase", ^{
+                [[[stubCoinbase expect] andReturnValue:@(YES)] initiateAppSwitchWithClient:OCMOCK_ANY
+                                                                                  delegate:OCMOCK_ANY
+                                                                                     error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
+
+                [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
+
+                provider.delegate = delegate;
+                [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
+            });
+
+            it(@"performs an app switch regardless of the payment authorization options", ^{
+                [[[stubCoinbase expect] andReturnValue:@(YES)] initiateAppSwitchWithClient:OCMOCK_ANY
+                                                                                  delegate:OCMOCK_ANY
+                                                                                     error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
+
+                [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
+
+                provider.delegate = delegate;
+                [provider createPaymentMethod:BTPaymentProviderTypeCoinbase options:BTPaymentAuthorizationOptionMechanismViewController];
+            });
+
+            it(@"returns the error when BTCoinbase returns an error", ^{
+                NSError *error = [OCMockObject mockForClass:[NSError class]];
+                id coinbaseInitiationExpectation = [stubCoinbase expect];
+                [coinbaseInitiationExpectation andReturnValue:@(NO)];
+                [coinbaseInitiationExpectation andDo:^(NSInvocation *invocation){
+                    NSError *__autoreleasing*errorPtr;
+                    [invocation getArgument:&errorPtr atIndex:4];
+                    *errorPtr = error;
+                }];
+                [coinbaseInitiationExpectation initiateAppSwitchWithClient:OCMOCK_ANY
+                                                                  delegate:OCMOCK_ANY
+                                                                     error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
+
+                [[delegate expect] paymentMethodCreator:provider didFailWithError:error];
+
+                provider.delegate = delegate;
+                [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
+            });
+        });
+    });
+});
+
+describe(@"canCreatePaymentMethodWithProviderType:", ^{
+    context(@"paypal", ^{
+        it(@"always returns YES when the client (token) enables paypal", ^{
+            [[[client stub] andReturnValue:@YES] btPayPal_isPayPalEnabled];
+            BOOL canCreatePayPal = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal];
+            expect(canCreatePayPal).to.beTruthy();
+        });
+
+        it(@"returns NO when the client (token) does not enable paypal", ^{
+            [[[client expect] andReturnValue:@(NO)] btPayPal_isPayPalEnabled];
+            BOOL canCreatePayPal = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal];
+            expect(canCreatePayPal).to.beFalsy();
+        });
+    });
+
+    context(@"coinbase", ^{
+        __block id coinbaseOAuth;
+
+        beforeEach(^{
+            coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
+        });
+
+        context(@"with coinbase enabled", ^{
+            it(@"returns YES when the coinbase app is installed", ^{
+                [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
+                [[[clientToken stub] andReturnValue:@(YES)] coinbaseEnabled];
+                BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
+                expect(canCreateCoinbase).to.beTruthy();
+            });
+
+            it(@"still returns YES when coinbase app is NOT installed", ^{
+                [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(NO)] isAppOAuthAuthenticationAvailable];
+                [[[clientToken stub] andReturnValue:@(YES)] coinbaseEnabled];
+                BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
+                expect(canCreateCoinbase).to.beTruthy();
+            });
+        });
+
+        context(@"with coinbase disabled", ^{
+            it(@"returns NO", ^{
+                [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
+                BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
+                expect(canCreateCoinbase).to.beFalsy();
+            });
+
+            it(@"returns NO even if the coinbase app is installed", ^{
+                [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
+                [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
+                BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
+                expect(canCreateCoinbase).to.beFalsy();
             });
         });
     });

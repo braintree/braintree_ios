@@ -22,6 +22,9 @@
     return coinbase;
 }
 
+- (BOOL)providerAppSwitchAvailableForClient:(BTClient *)client {
+    return self.returnURLScheme && [self appSwitchAvailableForClient:client] && [CoinbaseOAuth isAppOAuthAuthenticationAvailable];
+}
 
 #pragma mark Helpers
 

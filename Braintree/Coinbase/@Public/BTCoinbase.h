@@ -7,4 +7,11 @@
 
 + (instancetype)sharedCoinbase;
 
+/// Checks whether the Coinbase app is installed and accepting app switch authorization
+///
+/// @param client A BTClient
+///
+/// @return YES if the Coinbase native app is installed.
+- (BOOL)providerAppSwitchAvailableForClient:(BTClient *)client;
+
 @end
