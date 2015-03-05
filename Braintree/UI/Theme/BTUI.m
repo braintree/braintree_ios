@@ -114,8 +114,7 @@
 #pragma mark Coinbase Color
 
 - (UIColor *)coinbasePrimaryBlue {
-    // TODO: use actual Coinbase blue
-    return [UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f];
+    return [UIColor colorWithRed: 0.053 green: 0.433 blue: 0.7 alpha: 1];
 }
 
 #pragma mark Adjustments

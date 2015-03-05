@@ -273,9 +273,8 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="e2L-Un-U1f" id="sgG-FR-fEp">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cP7-HG-aSw" customClass="BTUICoinbaseWordmarkVectorArtView">
+                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="49" placeholderIntrinsicHeight="39" translatesAutoresizingMaskIntoConstraints="NO" id="cP7-HG-aSw" customClass="BTUICoinbaseWordmarkVectorArtView">
                                                     <rect key="frame" x="136" y="43" width="49" height="39"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" red="0.98620854589999996" green="0.95368425769999998" blue="0.86758184719999998" alpha="1" colorSpace="calibratedRGB"/>

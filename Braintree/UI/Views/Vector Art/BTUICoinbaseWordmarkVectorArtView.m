@@ -19,17 +19,10 @@
     return self;
 }
 
-- (CGSize)intrinsicContentSize {
-    return CGSizeMake(self.artDimensions.width, self.artDimensions.height);
-}
-
 - (void)doSetup {
-    // 243, 132
     self.artDimensions = CGSizeMake(162, 88);
     self.opaque = NO;
-
-    // TODO: use theme color?
-    self.color = [UIColor colorWithRed: 0.053 green: 0.433 blue: 0.7 alpha: 1];
+    self.color = [UIColor colorWithRed: 0.053 green: 0.433 blue: 0.7 alpha: 1]; // Default color
 }
 
 - (void)setColor:(UIColor *)color {
@@ -176,23 +169,32 @@
     }
 }
 
-//- (void)updateConstraints {
-//    NSLayoutConstraint *aspectRatioConstraint = [NSLayoutConstraint constraintWithItem:self
-//                                                                             attribute:NSLayoutAttributeWidth
-//                                                                             relatedBy:NSLayoutRelationEqual
-//                                                                                toItem:self
-//                                                                             attribute:NSLayoutAttributeHeight
-//                                                                            multiplier:(self.artDimensions.width / self.artDimensions.height)
-//                                                                              constant:0.0f];
-//    aspectRatioConstraint.priority = UILayoutPriorityRequired;
-//
-//    [self addConstraint:aspectRatioConstraint];
-//
-//    [super updateConstraints];
-//}
-//
-//- (UILayoutPriority)contentCompressionResistancePriorityForAxis:(__unused UILayoutConstraintAxis)axis {
-//    return UILayoutPriorityRequired;
-//}
+- (void)updateConstraints {
+    NSLayoutConstraint *aspectRatioConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                             attribute:NSLayoutAttributeWidth
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self
+                                                                             attribute:NSLayoutAttributeHeight
+                                                                            multiplier:(self.artDimensions.width / self.artDimensions.height)
+                                                                              constant:0.0f];
+    aspectRatioConstraint.priority = UILayoutPriorityRequired;
+
+    NSLayoutConstraint *minimumHeightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                              attribute:NSLayoutAttributeHeight
+                                                                              relatedBy:NSLayoutRelationEqual
+                                                                                 toItem:nil
+                                                                              attribute:NSLayoutAttributeNotAnAttribute
+                                                                             multiplier:1.0
+                                                                               constant:self.artDimensions.height];
+
+
+    [self addConstraints:@[aspectRatioConstraint, minimumHeightConstraint]];
+
+    [super updateConstraints];
+}
+
+- (UILayoutPriority)contentCompressionResistancePriorityForAxis:(__unused UILayoutConstraintAxis)axis {
+    return UILayoutPriorityRequired;
+}
 
 @end
