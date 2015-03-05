@@ -105,9 +105,16 @@
     return [UIColor bt_colorWithBytesR:1 G:156 B:222];
 }
 
-#pragma mark Venmo Colors
+#pragma mark Venmo Color
 
 - (UIColor *)venmoPrimaryBlue {
+    return [UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f];
+}
+
+#pragma mark Coinbase Color
+
+- (UIColor *)coinbasePrimaryBlue {
+    // TODO: use actual Coinbase blue
     return [UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f];
 }
 

@@ -4,6 +4,7 @@
 #import "BTLogger_Internal.h"
 #import "BTUIVenmoButton.h"
 #import "BTUIPayPalButton.h"
+#import "BTUICoinbaseButton.h"
 
 #import "BTPaymentProvider.h"
 #import "BTUIHorizontalButtonStackCollectionViewFlowLayout.h"

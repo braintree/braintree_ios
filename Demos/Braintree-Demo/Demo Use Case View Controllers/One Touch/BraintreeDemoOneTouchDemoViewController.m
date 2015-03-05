@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, BraintreeDemoOneTouchIntegrationTechnique) {
     BraintreeDemoOneTouchIntegrationTechniqueBTPaymentButton,
     BraintreeDemoOneTouchIntegrationTechniqueBTPayPalButton,
     BraintreeDemoOneTouchIntegrationTechniqueBTVenmoButton,
+    BraintreeDemoOneTouchIntegrationTechniqueBTCoinbaseButton,
     BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal,
     BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo,
     BraintreeDemoOneTouchIntegrationTechniqueCustomApplePay,
@@ -49,6 +50,8 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 @property (nonatomic, strong) BTUIVenmoButton *btVenmoButton;
 @property (nonatomic, strong) BraintreeDemoCustomVenmoButtonManager *customVenmoButtonManager;
+
+@property (nonatomic, strong) BTUICoinbaseButton *btCoinbaseButton;
 
 @property (nonatomic, strong) BraintreeDemoCustomApplePayButtonManager *customApplePayButtonManager;
 
@@ -185,6 +188,8 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
             return @"BTUIVenmoButton";
         case BraintreeDemoOneTouchIntegrationTechniqueBTPayPalButton:
             return @"BTUIPayPalButton";
+        case BraintreeDemoOneTouchIntegrationTechniqueBTCoinbaseButton:
+            return @"BTUICoinbaseButton";
         case BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton:
             return @"Custom Multi-Pay";
     }
@@ -210,6 +215,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueBTPayPalButton:
             paymentButton = self.btPayPalButton;
+            break;
+        case BraintreeDemoOneTouchIntegrationTechniqueBTCoinbaseButton:
+            paymentButton = self.btCoinbaseButton;
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton:
             paymentButton = self.customPaymentButtonManager.view;

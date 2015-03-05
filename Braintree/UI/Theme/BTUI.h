@@ -51,9 +51,13 @@
 - (UIColor *)payPalButtonBlue;
 - (UIColor *)payPalButtonActiveBlue;
 
-#pragma mark Venmo Colors
+#pragma mark Venmo Color
 
 - (UIColor *)venmoPrimaryBlue;
+
+#pragma mark Coinbase Color
+
+- (UIColor *)coinbasePrimaryBlue;
 
 #pragma mark Typography
 

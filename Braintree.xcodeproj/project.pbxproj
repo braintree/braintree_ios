@@ -715,6 +715,10 @@
 		99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0D18A73520462F8D2FB1CD /* libPods-Braintree-API-Public-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Public-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7021B071921631C0090CE8F /* Braintree_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree_Internal.h; sourceTree = "<group>"; };
+		A70A52D01AA7DECF00CA2AC9 /* BTUICoinbaseWordmarkVectorArtView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUICoinbaseWordmarkVectorArtView.h; sourceTree = "<group>"; };
+		A70A52D11AA7DECF00CA2AC9 /* BTUICoinbaseWordmarkVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICoinbaseWordmarkVectorArtView.m; sourceTree = "<group>"; };
+		A70A52D21AA8D2DC00CA2AC9 /* BTUICoinbaseButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUICoinbaseButton.h; sourceTree = "<group>"; };
+		A70A52D31AA8D2DC00CA2AC9 /* BTUICoinbaseButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICoinbaseButton.m; sourceTree = "<group>"; };
 		A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorAlert.h; sourceTree = "<group>"; };
 		A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorAlert.m; sourceTree = "<group>"; };
 		A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorStateSpec.m; sourceTree = "<group>"; };
@@ -1394,6 +1398,8 @@
 				16A2EA3619AEC40000093EB5 /* BTUIVenmoWordmarkVectorArtView.m */,
 				162174CA192D8746008DC35D /* BTUIVisaVectorArtView.h */,
 				162174CB192D8746008DC35D /* BTUIVisaVectorArtView.m */,
+				A70A52D01AA7DECF00CA2AC9 /* BTUICoinbaseWordmarkVectorArtView.h */,
+				A70A52D11AA7DECF00CA2AC9 /* BTUICoinbaseWordmarkVectorArtView.m */,
 			);
 			path = "Vector Art";
 			sourceTree = "<group>";
@@ -1804,6 +1810,8 @@
 				16A2EA3419AEB8B100093EB5 /* BTUIVenmoButton.m */,
 				16F5AF3B19B68F640043A412 /* BTUIPayPalButton.h */,
 				16F5AF3C19B68F640043A412 /* BTUIPayPalButton.m */,
+				A70A52D21AA8D2DC00CA2AC9 /* BTUICoinbaseButton.h */,
+				A70A52D31AA8D2DC00CA2AC9 /* BTUICoinbaseButton.m */,
 			);
 			path = "Payments Components";
 			sourceTree = "<group>";
