@@ -25,6 +25,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
     return @[ @(BraintreeDemoOneTouchIntegrationTechniqueBTPaymentButton),
               @(BraintreeDemoOneTouchIntegrationTechniqueBTPayPalButton),
               @(BraintreeDemoOneTouchIntegrationTechniqueBTVenmoButton),
+              @(BraintreeDemoOneTouchIntegrationTechniqueBTCoinbaseButton),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomApplePay),
@@ -141,6 +142,17 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         [self.btVenmoButton autoSetDimension:ALDimensionHeight toSize:44];
         [self.btVenmoButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
         [self.btVenmoButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+    }
+
+    // Setup btCoinbaseButton
+    self.btCoinbaseButton = [[BTUICoinbaseButton alloc] initWithFrame:CGRectZero];
+    if (self.btCoinbaseButton && [self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase]) {
+        [self.btCoinbaseButton addTarget:self action:@selector(tappedCoinbaseButton:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:self.btCoinbaseButton];
+        [self.btCoinbaseButton autoCenterInSuperview];
+        [self.btCoinbaseButton autoSetDimension:ALDimensionHeight toSize:44];
+        [self.btCoinbaseButton autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
+        [self.btCoinbaseButton autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
     }
 
     // Setup customVenmoButton
@@ -279,6 +291,11 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 - (void)tappedPayPalButton:(__unused id)sender {
     [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
 }
+
+- (void)tappedCoinbaseButton:(__unused id)sender {
+    [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeCoinbase];
+}
+
 
 #pragma mark -
 

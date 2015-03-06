@@ -60,7 +60,10 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 - (void)setupViews {
     self.clipsToBounds = YES;
-    self.enabledPaymentProviderTypes = [NSOrderedSet orderedSetWithObjects:@(BTPaymentProviderTypePayPal), @(BTPaymentProviderTypeVenmo), nil];
+    self.enabledPaymentProviderTypes = [NSOrderedSet orderedSetWithObjects:
+                                        @(BTPaymentProviderTypePayPal),
+                                        @(BTPaymentProviderTypeVenmo),
+                                        @(BTPaymentProviderTypeCoinbase), nil];
 
     BTUIHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTUIHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;
@@ -160,6 +163,9 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal]) {
         [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypePayPal)];
     }
+    if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase]) {
+        [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypeCoinbase)];
+    }
     return filteredEnabledPaymentMethods;
 }
 
@@ -190,6 +196,9 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
             break;
         case BTPaymentProviderTypeVenmo:
             paymentButton = [[BTUIVenmoButton alloc] initWithFrame:cell.bounds];
+            break;
+        case BTPaymentProviderTypeCoinbase:
+            paymentButton = [[BTUICoinbaseButton alloc] initWithFrame:cell.bounds];
             break;
         default:
             [[BTLogger sharedLogger] warning:@"BTPaymentButton encountered an unexpected BTPaymentProviderType value: %@", @(paymentMethod)];
@@ -223,7 +232,11 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
             [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
             break;
         case BTPaymentProviderTypeVenmo:
-        [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
+            [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
+            break;
+        case BTPaymentProviderTypeCoinbase:
+            [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeCoinbase];
+            break;
         default:
             NSLog(@"BTPaymentButton collection view received didSelectItemAtIndexPath for unknown indexPath. This should never happen.");
             break;

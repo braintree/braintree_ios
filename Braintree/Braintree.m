@@ -13,6 +13,8 @@
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTPayPalAppSwitchHandler.h"
 
+#import "BTCoinbase.h"
+
 @interface Braintree ()
 @property (nonatomic, strong) BTClient *client;
 
@@ -182,6 +184,7 @@
 + (void)initAppSwitchingOptions {
     [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler]];
     [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler]];
+    [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase]];
 }
 
 @end

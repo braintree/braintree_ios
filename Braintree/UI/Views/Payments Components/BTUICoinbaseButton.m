@@ -46,7 +46,6 @@
 - (void)updateConstraints {
     NSDictionary *metrics = @{ @"minHeight": @([self.theme paymentButtonMinHeight]),
                                @"maxHeight": @([self.theme paymentButtonMaxHeight]),
-                               @"wordMarkHeight": @([self.theme paymentButtonWordMarkHeight]),
                                @"minWidth": @(200),
                                @"required": @(UILayoutPriorityRequired),
                                @"high": @(UILayoutPriorityDefaultHigh),
@@ -54,7 +53,7 @@
     NSDictionary *views = @{ @"self": self ,
                              @"coinbaseWordmark": self.coinbaseWordmark };
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[coinbaseWordmark(wordMarkHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[coinbaseWordmark]|"
                                             options:0
                                             metrics:metrics
                                               views:views]];
@@ -66,14 +65,6 @@
                                                     attribute:NSLayoutAttributeCenterX
                                                    multiplier:1.0f
                                                       constant:0.0f]];
-
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.coinbaseWordmark
-                                                     attribute:NSLayoutAttributeCenterY
-                                                    multiplier:1.0f
-                                                      constant:-1.5f]];
 
     [super updateConstraints];
 }

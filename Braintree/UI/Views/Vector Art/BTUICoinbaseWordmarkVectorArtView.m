@@ -179,16 +179,7 @@
                                                                               constant:0.0f];
     aspectRatioConstraint.priority = UILayoutPriorityRequired;
 
-    NSLayoutConstraint *minimumHeightConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                              attribute:NSLayoutAttributeHeight
-                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                 toItem:nil
-                                                                              attribute:NSLayoutAttributeNotAnAttribute
-                                                                             multiplier:1.0
-                                                                               constant:self.artDimensions.height];
-
-
-    [self addConstraints:@[aspectRatioConstraint, minimumHeightConstraint]];
+    [self addConstraints:@[aspectRatioConstraint]];
 
     [super updateConstraints];
 }

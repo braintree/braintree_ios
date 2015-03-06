@@ -81,7 +81,7 @@
 - (CGFloat)horizontalMargin;
 - (CGFloat)paymentButtonMinHeight;
 - (CGFloat)paymentButtonMaxHeight;
-- (CGFloat)paymentButtonWordMarkHeight;
+- (CGFloat)paymentButtonWordMarkHeight DEPRECATED_ATTRIBUTE;
 
 #pragma mark Transitions
 
