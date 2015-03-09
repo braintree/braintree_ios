@@ -5,6 +5,7 @@
 * Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.5-bt1)
   * Changes "Send Payment" button to simply "Pay"
   * Minor fixes
+* Remove `en_UK` from Braintree-Demo-Info.plist (while keeping `en_GB`)
 
 ## 3.7.0 (2015-03-02)
 
