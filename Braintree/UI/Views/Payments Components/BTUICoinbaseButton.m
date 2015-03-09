@@ -4,6 +4,7 @@
 #import "UIColor+BTUI.h"
 
 #import "BTUICoinbaseWordmarkVectorArtView.h"
+#import "BTUILocalizedString.h"
 
 @interface BTUICoinbaseButton ()
 @property (nonatomic, strong) BTUICoinbaseWordmarkVectorArtView *coinbaseWordmark;
@@ -34,6 +35,7 @@
     self.clipsToBounds = YES;
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];
+    self.accessibilityLabel = [BTUILocalizedString PAYMENT_METHOD_TYPE_COINBASE];
 
     self.coinbaseWordmark = [[BTUICoinbaseWordmarkVectorArtView alloc] init];
     self.coinbaseWordmark.userInteractionEnabled = NO;

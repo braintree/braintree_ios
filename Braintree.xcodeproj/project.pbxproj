@@ -172,6 +172,7 @@
 		A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A72B38191963590E009AD2F5 /* BraintreeDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */; };
 		A7303CC11AA939A700D6A7B1 /* BraintreeDemoCustomCoinbaseButtonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7303CC01AA9368900D6A7B1 /* BraintreeDemoCustomCoinbaseButtonManager.m */; };
+		A7303CC31AAE3EC600D6A7B1 /* BTCoinbaseAcceptanceSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7303CC21AAE3EC600D6A7B1 /* BTCoinbaseAcceptanceSpec.m */; };
 		A75C5B6219E88FFC00832A47 /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
 		A75C5B6319E8900000832A47 /* EXPMatchers+BTMatches.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */; };
 		A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
@@ -735,6 +736,7 @@
 		A72B381E196367BF009AD2F5 /* BTData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTData.m; sourceTree = "<group>"; };
 		A7303CBF1AA9368900D6A7B1 /* BraintreeDemoCustomCoinbaseButtonManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomCoinbaseButtonManager.h; sourceTree = "<group>"; };
 		A7303CC01AA9368900D6A7B1 /* BraintreeDemoCustomCoinbaseButtonManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomCoinbaseButtonManager.m; sourceTree = "<group>"; };
+		A7303CC21AAE3EC600D6A7B1 /* BTCoinbaseAcceptanceSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCoinbaseAcceptanceSpec.m; sourceTree = "<group>"; };
 		A744BEFD1963805900B61C23 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A74E2E711953690A004DFF73 /* BTDropInErrorState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorState.h; sourceTree = "<group>"; };
 		A74E2E721953690A004DFF73 /* BTDropInErrorState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorState.m; sourceTree = "<group>"; };
@@ -1703,6 +1705,7 @@
 				A7CED5111A2FD0EA00141197 /* KIFUITestActor+BTWebView.h */,
 				A7CED5121A2FD0EA00141197 /* KIFUITestActor+BTWebView.m */,
 				16968181192D9A3D00120846 /* Supporting Files */,
+				A7303CC21AAE3EC600D6A7B1 /* BTCoinbaseAcceptanceSpec.m */,
 			);
 			path = "Braintree-Acceptance-Specs";
 			sourceTree = "<group>";
@@ -3376,6 +3379,7 @@
 				1674D8081A53543700B489B6 /* BTThreeDSecureAcceptanceSpec.m in Sources */,
 				A7CED5131A2FD0EA00141197 /* KIFUITestActor+BTWebView.m in Sources */,
 				A79509791A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m in Sources */,
+				A7303CC31AAE3EC600D6A7B1 /* BTCoinbaseAcceptanceSpec.m in Sources */,
 				A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */,
 				1674D8091A535C9600B489B6 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m in Sources */,
 			);

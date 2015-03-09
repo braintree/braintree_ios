@@ -30,7 +30,7 @@ target 'Tests' do
   pod 'OCMock', '~> 2.2.3'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
-  pod 'KIF', '~> 3.0'
+  pod 'KIF', :git => 'https://github.com/mickeyreiss/KIF.git', :commit => '1702bb14dc1070650816e9a26ee5a03d6bdba41e'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'KIFViewControllerActions', :git => 'https://github.com/mickeyreiss/KIFViewControllerActions.git'
   coinbase_dev

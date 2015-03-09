@@ -362,6 +362,33 @@ describe(@"BTAppSwitching", ^{
             [mockDelegate verifyWithDelay:10];
         });
 
+        it(@"returns a Braintree app switch error when the coinbase response cannot be parsed", ^{
+            id mockClientToken = [OCMockObject mockForClass:[BTClientToken class]];
+            [[[mockClientToken stub] andReturnValue:@(YES)] coinbaseEnabled];
+            [[[mockClientToken stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
+            [[[mockClientToken stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
+            [[[mockClientToken stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+            id mockClient = [OCMockObject mockForClass:[BTClient class]];
+            [[[mockClient stub] andReturn:mockClientToken] clientToken];
+            id mockDelegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
+
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            [coinbase setReturnURLScheme:@"com.example.app.payments"];
+            coinbase.delegate = mockDelegate;
+
+            [[mockDelegate expect] appSwitcher:coinbase
+                              didFailWithError:HC_allOf(
+                                                        HC_hasProperty(@"domain", CoinbaseErrorDomain),
+                                                        HC_hasProperty(@"code", HC_equalToInteger(CoinbaseOAuthError)),
+                                                        HC_hasProperty(@"localizedDescription", @"Malformed URL."),
+                                                        nil)];
+
+            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?something=unexpected"];
+            [coinbase handleReturnURL:testURL];
+
+            [mockDelegate verifyWithDelay:10];
+        });
+
         it(@"returns the error returned by BTClient when tokenization fails", ^{
             id mockClientToken = [OCMockObject mockForClass:[BTClientToken class]];
             [[[mockClientToken stub] andReturnValue:@(YES)] coinbaseEnabled];

@@ -200,7 +200,6 @@
 - (void)informDelegateWillPerformAppSwitch {
     [self.client postAnalyticsEvent:@"ios.authorizer.will-app-switch"];
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorWillPerformAppSwitch:)]) {
-        NSLog(@"%p %p", self.delegate, self);
         [self.delegate paymentMethodCreatorWillPerformAppSwitch:self];
     }
 }

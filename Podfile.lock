@@ -61,9 +61,9 @@ PODS:
   - FLEX (1.1.1)
   - HockeySDK (3.5.6)
   - InAppSettingsKit (2.3.3)
-  - KIF (3.0.8):
+  - KIF (3.1.2):
     - KIF/XCTest
-  - KIF/XCTest (3.0.8)
+  - KIF/XCTest (3.1.2)
   - KIFViewControllerActions (1.0.0):
     - KIF (>= 2.0.0)
   - NSURL+QueryDictionary (1.0.3)
@@ -89,7 +89,7 @@ DEPENDENCIES:
   - FLEX
   - HockeySDK
   - InAppSettingsKit
-  - KIF (~> 3.0)
+  - KIF (from `https://github.com/mickeyreiss/KIF.git`, commit `1702bb14dc1070650816e9a26ee5a03d6bdba41e`)
   - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
   - NSURL+QueryDictionary (~> 1.0)
   - OCHamcrest (~> 3.0.1)
@@ -103,6 +103,9 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Braintree:
     :path: .
+  KIF:
+    :commit: 1702bb14dc1070650816e9a26ee5a03d6bdba41e
+    :git: https://github.com/mickeyreiss/KIF.git
   KIFViewControllerActions:
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
   Specta:
@@ -117,7 +120,7 @@ SPEC CHECKSUMS:
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
   InAppSettingsKit: c870cb6095a85656ff4df42845af5c26eede4c8d
-  KIF: 2db5e8cf59136dd1267d49cca0d55883389b09d3
+  KIF: 7e4728ac18b68da59ccef73ff5d1284b77533fc3
   KIFViewControllerActions: 6d680038a329864d62526928dd89556c0177bc55
   NSURL+QueryDictionary: 1ad81be60c10e3f4d80c5c4beb7125de96aaec5e
   OCHamcrest: 207233b7d7a44dadd66aca398947cc7e029c9be5

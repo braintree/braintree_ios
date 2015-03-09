@@ -92,10 +92,12 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Integration"
+    UIBarButtonItem *integrationChooserButton = [[UIBarButtonItem alloc] initWithTitle:@"Integration"
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
-                                                                             action:@selector(showIntegrationChooser:)];
+                                                                     action:@selector(showIntegrationChooser:)];
+    integrationChooserButton.accessibilityLabel = @"Choose Integration Technique";
+    self.navigationItem.rightBarButtonItem = integrationChooserButton;
 
     // Setup btPaymentButton
     self.btPaymentButton = [self.braintree paymentButtonWithDelegate:self];
@@ -338,6 +340,8 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     [self.activityIndicator stopAnimating];
     if ([paymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
         self.emailLabel.text = [NSString stringWithFormat:@"Got a nonce 💎! %@", [(BTPayPalPaymentMethod *)paymentMethod email]];
+    } else if ([paymentMethod isKindOfClass:[BTCoinbasePaymentMethod class]]) {
+        self.emailLabel.text = [NSString stringWithFormat:@"Got a ฿ nonce! %@", [(BTCoinbasePaymentMethod *)paymentMethod userIdentifier]];
     } else if ([paymentMethod isKindOfClass:[BTApplePayPaymentMethod class]]) {
         self.emailLabel.text = [NSString stringWithFormat:@"Got a nonce via !"];
     } else {
