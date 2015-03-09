@@ -30,7 +30,7 @@
 
 - (NSURL *)redirectUri {
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = [self returnURLScheme] ;
+    components.scheme = [self returnURLScheme];
     components.path = @"/vzero/auth/coinbase/redirect";
     components.host = @"x-callback-url";
     return [components URL];
@@ -86,7 +86,7 @@
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(__unused NSString *)sourceApplication {
     NSURL *redirectURL = self.redirectUri;
-    BOOL schemeMatches = [url.scheme isEqualToString:redirectURL.scheme];
+    BOOL schemeMatches = [[url.scheme lowercaseString] isEqualToString:[redirectURL.scheme lowercaseString]];
     BOOL hostMatches = [url.host isEqualToString:redirectURL.host];
     BOOL pathMatches = [url.path isEqualToString:redirectURL.path];
     return schemeMatches && hostMatches && pathMatches;

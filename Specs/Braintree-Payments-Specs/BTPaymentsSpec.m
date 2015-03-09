@@ -20,7 +20,6 @@
 
 SpecBegin(BTPaymentProvider)
 
-__block BTPaymentProviderType providerType;
 __block BTPaymentProvider *provider;
 __block id client;
 __block id clientToken;
@@ -117,8 +116,6 @@ describe(@"createPaymentMethod:", ^{
         __block id payPalAppSwitchHandler;
 
         beforeEach(^{
-            providerType = BTPaymentProviderTypePayPal;
-
             payPalAppSwitchHandler = [OCMockObject mockForClass:[BTPayPalAppSwitchHandler class]];
             [[[payPalAppSwitchHandler stub] andReturn:payPalAppSwitchHandler] sharedHandler];
         });
@@ -235,7 +232,6 @@ describe(@"createPaymentMethod:", ^{
                 [[[venmoAppSwitchHandler stub] andReturnValue:@NO] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
             });
 
-
             it(@"returns NO and does not invoke a willAppSwitch delegate method", ^{
                 [[delegate expect] paymentMethodCreator:provider didFailWithError:[OCMArg checkWithBlock:^BOOL(id obj) {
                     if ([obj isKindOfClass:[NSError class]]) {
@@ -251,7 +247,7 @@ describe(@"createPaymentMethod:", ^{
         });
     });
 
-    fcontext(@"when type is BTPaymentProviderTypeCoinbase", ^{
+    context(@"when type is BTPaymentProviderTypeCoinbase", ^{
         __block id stubCoinbase;
 
         beforeEach(^{
@@ -305,6 +301,53 @@ describe(@"createPaymentMethod:", ^{
                 provider.delegate = delegate;
                 [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
             });
+
+            context(@"and app switch is available", ^{
+                beforeEach(^{
+                    [[[stubCoinbase stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
+                });
+
+                it(@"starts with uninitialized status", ^{
+                    expect([provider status]).to.equal(BTPaymentProviderStatusUninitialized);
+                });
+
+                it(@"invokes an app switch delegate method", ^{
+                    [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
+                    provider.delegate = delegate;
+                    [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
+                    expect([provider status]).to.equal(BTPaymentProviderStatusInitialized);
+                });
+
+                it(@"invokes didCancel delegate method", ^{
+                    [[delegate expect] paymentMethodCreatorDidCancel:provider];
+                    provider.delegate = delegate;
+                    [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreatorDidCancel:nil];
+                    expect([provider status]).to.equal(BTPaymentProviderStatusCanceled);
+                });
+
+                it(@"invokes error delegate method", ^{
+                    NSError *error = [OCMockObject mockForClass:[NSError class]];
+                    [[delegate expect] paymentMethodCreator:provider didFailWithError:error];
+                    provider.delegate = delegate;
+                    [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreator:provider didFailWithError:error];
+                    expect([provider status]).to.equal(BTPaymentProviderStatusError);
+                });
+
+                it(@"invokes success delegate method", ^{
+                    id paymentMethod = [OCMockObject mockForClass:[BTCoinbasePaymentMethod class]];
+                    [[delegate expect] paymentMethodCreator:provider didCreatePaymentMethod:paymentMethod];
+                    provider.delegate = delegate;
+                    [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreator:provider didCreatePaymentMethod:paymentMethod];
+                    expect([provider status]).to.equal(BTPaymentProviderStatusSuccess);
+                });
+
+                it(@"invokes willProcess delegate method", ^{
+                    [[delegate expect] paymentMethodCreatorWillProcess:provider];
+                    provider.delegate = delegate;
+                    [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreatorWillProcess:provider];
+                    expect([provider status]).to.equal(BTPaymentProviderStatusProcessing);
+                });
+            });
         });
     });
 });
@@ -353,7 +396,7 @@ describe(@"canCreatePaymentMethodWithProviderType:", ^{
                 BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
                 expect(canCreateCoinbase).to.beFalsy();
             });
-
+            
             it(@"returns NO even if the coinbase app is installed", ^{
                 [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
                 [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
