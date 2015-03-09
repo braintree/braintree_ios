@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+# master
+
+* Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.5-bt1)
+  * Changes "Send Payment" button to simply "Pay"
+  * Minor fixes
+
 ## 3.7.0 (2015-03-02)
 
 * Refactor and improve SSL Pinning code
