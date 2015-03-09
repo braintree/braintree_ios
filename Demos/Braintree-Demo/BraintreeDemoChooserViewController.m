@@ -8,7 +8,7 @@
 
 #import "BraintreeDemoSettings.h"
 #import "BraintreeDemoBraintreeInitializationDemoViewController.h"
-#import "BraintreeDemoOneTouchDemoViewController.h"
+#import "BraintreeDemoPaymentButtonDemoViewController.h"
 #import "BraintreeDemoTokenizationDemoViewController.h"
 #import "BraintreeDemoDirectApplePayIntegrationViewController.h"
 
@@ -163,7 +163,7 @@
         demoViewController = [self configuredDropInViewController];
     } else if (selectedCell == self.customPayPalCell) {
         // Custom usage of PayPal Button
-        demoViewController = [[BraintreeDemoOneTouchDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
+        demoViewController = [[BraintreeDemoPaymentButtonDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
             self.nonce = nonce;
         }];
     } else if (selectedCell == self.tokenizationCell) {

@@ -1,4 +1,4 @@
-#import "BraintreeDemoOneTouchDemoViewController.h"
+#import "BraintreeDemoPaymentButtonDemoViewController.h"
 
 #import <Braintree/Braintree.h>
 
@@ -9,6 +9,7 @@
 #import "BraintreeDemoCustomPayPalButtonManager.h"
 #import "BraintreeDemoCustomVenmoButtonManager.h"
 #import "BraintreeDemoCustomApplePayButtonManager.h"
+#import "BraintreeDemoCustomCoinbaseButtonManager.h"
 
 typedef NS_ENUM(NSInteger, BraintreeDemoOneTouchIntegrationTechnique) {
     BraintreeDemoOneTouchIntegrationTechniqueBTPaymentButton,
@@ -17,6 +18,7 @@ typedef NS_ENUM(NSInteger, BraintreeDemoOneTouchIntegrationTechnique) {
     BraintreeDemoOneTouchIntegrationTechniqueBTCoinbaseButton,
     BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal,
     BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo,
+    BraintreeDemoOneTouchIntegrationTechniqueCustomCoinbase,
     BraintreeDemoOneTouchIntegrationTechniqueCustomApplePay,
     BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton,
 };
@@ -28,6 +30,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
               @(BraintreeDemoOneTouchIntegrationTechniqueBTCoinbaseButton),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomPayPal),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomVenmo),
+              @(BraintreeDemoOneTouchIntegrationTechniqueCustomCoinbase),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomApplePay),
               @(BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton) ];
 }
@@ -35,7 +38,7 @@ NSArray *BraintreeDemoOneTouchAllIntegrationTechniques() {
 NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey";
 
 
-@interface BraintreeDemoOneTouchDemoViewController () <BTPaymentMethodCreationDelegate>
+@interface BraintreeDemoPaymentButtonDemoViewController () <BTPaymentMethodCreationDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
 @property (nonatomic, strong) BTPaymentProvider *paymentProvider;
@@ -53,6 +56,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 @property (nonatomic, strong) BraintreeDemoCustomVenmoButtonManager *customVenmoButtonManager;
 
 @property (nonatomic, strong) BTUICoinbaseButton *btCoinbaseButton;
+@property (nonatomic, strong) BraintreeDemoCustomCoinbaseButtonManager *customCoinbaseButtonManager;
 
 @property (nonatomic, strong) BraintreeDemoCustomApplePayButtonManager *customApplePayButtonManager;
 
@@ -61,8 +65,10 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 @property (nonatomic, weak) IBOutlet UILabel *venmoPaymentMethodSwitchLabel;
 @property (nonatomic, weak) IBOutlet UILabel *payPalPaymentMethodSwitchLabel;
+@property (weak, nonatomic) IBOutlet UILabel *coinbasePaymentMethodSwitchLabel;
 @property (nonatomic, weak) IBOutlet UISwitch *venmoPaymentMethodSwitch;
 @property (nonatomic, weak) IBOutlet UISwitch *payPalPaymentMethodSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *coinbasePaymentMethodSwitch;
 
 #pragma mark UI Results
 
@@ -71,7 +77,7 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 
 @end
 
-@implementation BraintreeDemoOneTouchDemoViewController
+@implementation BraintreeDemoPaymentButtonDemoViewController
 
 - (instancetype)initWithBraintree:(Braintree *)braintree completion:(void (^)(NSString *))completionBlock {
     self = [self init];
@@ -169,7 +175,12 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         [self.customApplePayButtonManager.button autoCenterInSuperview];
     }
 
-    
+    self.customCoinbaseButtonManager = [[BraintreeDemoCustomCoinbaseButtonManager alloc] initWithClient:self.braintree.client delegate:self];
+    if (self.customCoinbaseButtonManager) {
+        [self.view addSubview:self.customCoinbaseButtonManager.button];
+        [self.customCoinbaseButtonManager.button autoCenterInSuperview];
+    }
+
     [self switchToIntegration:self.defaultIntegration animated:NO];
 }
 
@@ -202,6 +213,8 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
             return @"BTUIPayPalButton";
         case BraintreeDemoOneTouchIntegrationTechniqueBTCoinbaseButton:
             return @"BTUICoinbaseButton";
+        case BraintreeDemoOneTouchIntegrationTechniqueCustomCoinbase:
+            return @"Custom Coinbase button";
         case BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton:
             return @"Custom Multi-Pay";
     }
@@ -230,6 +243,9 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueBTCoinbaseButton:
             paymentButton = self.btCoinbaseButton;
+            break;
+        case BraintreeDemoOneTouchIntegrationTechniqueCustomCoinbase:
+            paymentButton = self.customCoinbaseButtonManager.button;
             break;
         case BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton:
             paymentButton = self.customPaymentButtonManager.view;
@@ -277,8 +293,10 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
                          CGFloat switchesAlpha = [self shouldShowPaymentProviderSwitchForTechnique:selectedIntegrationTechnique] ? 1.0f : 0.0f;
                          self.venmoPaymentMethodSwitch.alpha = switchesAlpha;
                          self.payPalPaymentMethodSwitch.alpha = switchesAlpha;
+                         self.coinbasePaymentMethodSwitch.alpha = switchesAlpha;
                          self.venmoPaymentMethodSwitchLabel.alpha = switchesAlpha;
                          self.payPalPaymentMethodSwitchLabel.alpha = switchesAlpha;
+                         self.coinbasePaymentMethodSwitchLabel.alpha = switchesAlpha;
                      }];
     self.emailLabel.text = [self integrationNameForTechnique:selectedIntegrationTechnique];
     [self setDefaultIntegration:selectedIntegrationTechnique];
@@ -385,12 +403,18 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
         [enabledPaymentProviderTypes addObject:@(BTPaymentProviderTypeVenmo)];
     }
 
+    if (self.coinbasePaymentMethodSwitch.on) {
+        [enabledPaymentProviderTypes addObject:@(BTPaymentProviderTypeCoinbase)];
+    }
+
     self.btPaymentButton.enabledPaymentProviderTypes = enabledPaymentProviderTypes;
 
     NSOrderedSet *actualEnabledPaymentProviderTypes = self.btPaymentButton.enabledPaymentProviderTypes;
     [self.payPalPaymentMethodSwitch setOn:[actualEnabledPaymentProviderTypes containsObject:@(BTPaymentProviderTypePayPal)]
                                  animated:YES];
     [self.venmoPaymentMethodSwitch setOn:[actualEnabledPaymentProviderTypes containsObject:@(BTPaymentProviderTypeVenmo)]
+                                 animated:YES];
+    [self.coinbasePaymentMethodSwitch setOn:[actualEnabledPaymentProviderTypes containsObject:@(BTPaymentProviderTypeCoinbase)]
                                  animated:YES];
 }
 
