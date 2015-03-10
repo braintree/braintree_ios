@@ -84,6 +84,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Braintree/Payments/@Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/API"
+    s.dependency "Braintree/Coinbase"
     s.dependency "Braintree/PayPal"
     s.dependency "Braintree/Venmo"
   end
