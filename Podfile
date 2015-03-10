@@ -2,11 +2,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 workspace 'Braintree.xcworkspace'
 
-def coinbase_dev
-  # Temporary, pending coinbase release
-  pod 'coinbase-official', :head
-end
-
 target 'Tests' do
   link_with 'Braintree-Specs',
             'Braintree-API-Specs',
@@ -33,7 +28,6 @@ target 'Tests' do
   pod 'KIF', :git => 'https://github.com/mickeyreiss/KIF.git', :commit => '1702bb14dc1070650816e9a26ee5a03d6bdba41e'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'KIFViewControllerActions', :git => 'https://github.com/mickeyreiss/KIFViewControllerActions.git'
-  coinbase_dev
 end
 
 target 'Braintree-Dev' do
@@ -56,7 +50,6 @@ target 'Braintree-Dev' do
   pod 'UIAlertView+Blocks'
   pod 'FLEX'
   pod 'InAppSettingsKit'
-  coinbase_dev
 end
 
 target 'Braintree-Apple-Pay-Excluded' do
@@ -86,3 +79,4 @@ post_install do |installer|
         puts "WARNING: Braintree targets not found"
     end
 end
+

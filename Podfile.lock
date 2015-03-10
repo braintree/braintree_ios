@@ -35,7 +35,8 @@ PODS:
   - Braintree/Apple-Pay (3.7.0):
     - Braintree/Payments
   - Braintree/Coinbase (3.7.0):
-    - coinbase-official (~> 2.0)
+    - Braintree/API
+    - coinbase-official/OAuth (~> 2.1)
   - Braintree/Data (3.7.0):
     - Braintree/API
     - Braintree/PayPal
@@ -58,7 +59,7 @@ PODS:
   - Braintree/Venmo (3.7.0):
     - Braintree/API
   - CardIO (4.0.0)
-  - coinbase-official (HEAD based on 2.0.1)
+  - coinbase-official/OAuth (2.1)
   - Expecta (0.3.1)
   - FLEX (1.1.1)
   - HockeySDK (3.5.6)
@@ -87,7 +88,6 @@ DEPENDENCIES:
   - Braintree/Coinbase (from `.`)
   - Braintree/Data (from `.`)
   - CardIO
-  - coinbase-official (HEAD)
   - Expecta (~> 0.3.0)
   - FLEX
   - HockeySDK
@@ -116,6 +116,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/specta/specta.git
 
 CHECKOUT OPTIONS:
+  KIF:
+    :commit: 1702bb14dc1070650816e9a26ee5a03d6bdba41e
+    :git: https://github.com/mickeyreiss/KIF.git
   KIFViewControllerActions:
     :commit: 10d8d3a7bac839d75b8cec894326eae957372245
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
@@ -125,9 +128,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: be0a7d556e487e7b23abf598828139a46eae0904
+  Braintree: ff3cdcb0e7424ee5846b4a73beb6543a2e7cb50a
   CardIO: 06ed3e3c13a5eebdb3db9916e894ed6168718ac2
-  coinbase-official: 0f96cd3211d5234ee07c8d7741f694fed6d2574b
+  coinbase-official: 3b28f6c0cfd6881f0793a5f1ad9167773a16a2a4
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
