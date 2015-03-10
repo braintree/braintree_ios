@@ -323,7 +323,7 @@ namespace :release do
     version_header.gsub!(SEMVER, version)
     File.open(VERSION_FILE, "w") { |f| f.puts version_header }
 
-    run! "pod update Braintree Braintree/Apple-Pay Braintree/Data Braintree/3D-Secure"
+    run! "pod update Braintree Braintree/Apple-Pay Braintree/Data Braintree/3D-Secure Braintree/Coinbase"
     run! "plutil -replace CFBundleVersion -string #{current_version} -- '#{DEMO_PLIST}'"
     run! "plutil -replace CFBundleShortVersionString -string #{current_version} -- '#{DEMO_PLIST}'"
     run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' #{VERSION_FILE}"
