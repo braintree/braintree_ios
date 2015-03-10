@@ -302,6 +302,40 @@ describe(@"createPaymentMethod:", ^{
                 [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
             });
 
+            describe(@"when Coinbase is not enabled", ^{
+                beforeEach(^{
+                    NSError *error = [OCMockObject mockForClass:[NSError class]];
+                    id coinbaseInitiationExpectation = [stubCoinbase expect];
+                    [coinbaseInitiationExpectation andReturnValue:@(NO)];
+                    [coinbaseInitiationExpectation andDo:^(NSInvocation *invocation){
+                        NSError *__autoreleasing*errorPtr;
+                        [invocation getArgument:&errorPtr atIndex:4];
+                        *errorPtr = error;
+                    }];
+                    [coinbaseInitiationExpectation initiateAppSwitchWithClient:OCMOCK_ANY
+                                                                      delegate:OCMOCK_ANY
+                                                                         error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
+                    
+                    [[delegate expect] paymentMethodCreator:provider didFailWithError:error];
+                    
+                    provider.delegate = delegate;
+                });
+                
+                it(@"returns NO", ^{
+                    [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
+                    [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
+                });
+                
+                it(@"returns NO even if the coinbase app is installed", ^{
+                    id coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
+                    [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
+                    [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
+                    
+                    [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
+                });
+            });
+            
+
             context(@"and app switch is available", ^{
                 beforeEach(^{
                     [[[stubCoinbase stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:(NSError *__autoreleasing *)[OCMArg anyPointer]];

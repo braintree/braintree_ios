@@ -190,6 +190,33 @@ describe(@"BTAppSwitching", ^{
             [sharedApplicationStub verify];
         });
 
+        it(@"fails when coinbase is not yet enabled", ^{
+            id clientToken = [OCMockObject mockForClass:[BTClientToken class]];
+            [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
+
+            id client = [OCMockObject mockForClass:[BTClient class]];
+            [[[client stub] andReturn:clientToken] clientToken];
+
+            id<BTAppSwitchingDelegate> delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
+
+            id sharedApplicationStub = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+            [[[sharedApplicationStub stub] andReturnValue:@(YES)] canOpenURL:[OCMArg any]];
+            [[[sharedApplicationStub stub] andReturnValue:@(NO)] openURL:[OCMArg any]];
+
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            [coinbase setReturnURLScheme:@"com.example.app.payments"];
+
+            NSError *error;
+            BOOL appSwitchInitiated = [coinbase initiateAppSwitchWithClient:client
+                                                                   delegate:delegate
+                                                                      error:&error];
+            expect(appSwitchInitiated).to.beFalsy();
+            expect(error.domain).to.equal(BTAppSwitchErrorDomain);
+            expect(error.code).to.equal(BTAppSwitchErrorDisabled);
+            expect(error.localizedDescription).to.contain(@"Coinbase is not available");
+            [sharedApplicationStub verify];
+        });
+
         it(@"accepts a NULL error even on failures", ^{
             id clientToken = [OCMockObject mockForClass:[BTClientToken class]];
             [[[clientToken stub] andReturnValue:@(YES)] coinbaseEnabled];
