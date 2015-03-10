@@ -105,5 +105,6 @@ Pod::Spec.new do |s|
     # Temporary, pending coinbase release
     # s.dependency "coinbase-official/OAuth", "~> 2.0"
     s.dependency "coinbase-official", "~> 2.0"
+    s.dependency "Braintree/API"
   end
 end
