@@ -1,7 +1,7 @@
 //
 //  PayPalTouch.h
 //
-//  Version 2.7.1-bt1
+//  Version 2.8.5-bt1
 //
 //  Copyright (c) 2014, PayPal
 //  All rights reserved.
@@ -61,6 +61,7 @@ typedef NS_ENUM(NSUInteger, PayPalTouchResultType) {
 /// @param scopeValues Set of requested scope-values. Each scope-value is defined in PayPalOAuthScopes.h.
 /// @param configuration The configuration to be used for the app switch
 /// @return YES if app switch was successful
+/// @note Given limitations in the Wallet app, the only scopes allowed are: https://uri.../futurepayments, email, address, phone, openid
 + (BOOL)authorizeScopeValues:(NSSet *)scopeValues configuration:(PayPalConfiguration *)configuration;
 
 /// Process a URL request.
