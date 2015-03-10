@@ -2,6 +2,10 @@
 
 # master
 
+* Coinbase
+  * Coinbase is now available in this release
+  * Coinbase UI is integrated into Drop In and BTPaymentButton
+
 * Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.5-bt1)
   * Changes "Send Payment" button to simply "Pay"
   * Minor fixes
