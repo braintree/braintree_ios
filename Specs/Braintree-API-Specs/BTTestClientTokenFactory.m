@@ -86,13 +86,23 @@
                       },
               @"merchantId": @"a_merchant_id",
               @"venmo": @"offline",
-              @"applePay": @{ @"status": @"mock" },
               @"coinbaseEnabled": @YES,
               @"coinbase": @{
                       @"clientId": @"a_coinbase_client_id",
                       @"merchantAccount": @"coinbase-account@example.com",
                       @"scopes": @"authorizations:braintree user",
                       @"redirectUrl": @"https://assets.example.com/coinbase/oauth/redirect"
+                      },
+              @"applePay": @{
+                      @"status": @"mock",
+                      @"countryCode": @"US",
+                      @"currencyCode": @"USD",
+                      @"merchantIdentifier": @"merchant.com.braintreepayments.test",
+                      @"supportedNetworks": @[
+                                  @"visa",
+                                  @"mastercard",
+                                  @"amex"
+                                  ],
                       },
               } mutableCopy];
 }

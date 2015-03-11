@@ -54,7 +54,7 @@ describe(@"BTClient", ^{
                 NSData *invalidStringData = [invalidString dataUsingEncoding:NSUTF8StringEncoding];
                 BTClient *client = [[BTClient alloc] initWithClientToken:(NSString *)invalidStringData];
                 [[mockLogger expect] log:containsString(@"BTClient could not initialize because the provided clientToken was invalid")];
-                expect(client).to.beNil;
+                expect(client).to.beNil();
             });
         });
     });
