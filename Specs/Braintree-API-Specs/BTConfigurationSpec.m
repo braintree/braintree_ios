@@ -18,16 +18,35 @@ context(@"valid configuration", ^{
         expect(configuration.analyticsEnabled).to.equal(@YES);
         expect(configuration.merchantAccountId).to.equal(@"a_merchant_account_id");
 
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+//        expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock",
+//                                                              @"countryCode": @"US",
+//                                                              @"currencyCode": @"USD",
+//                                                              @"merchantIdentifier": @"apple-pay-merchant-id",
+//                                                              @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ] });
+//#pragma clang diagnostic pop
+
         expect(configuration.applePayStatus).to.equal(BTClientApplePayStatusMock);
         expect(configuration.applePayCountryCode).to.equal(@"US");
         expect(configuration.applePayCurrencyCode).to.equal(@"USD");
         expect(configuration.applePayMerchantIdentifier).to.equal(@"merchant.com.braintreepayments.test");
         expect(configuration.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
     });
+
+    xit(@"must contain a client api url", ^{
+        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        dict[BTConfigurationKeyClientApiURL] = NSNull.null;
+        NSError *error;
+        BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:&error];
+        expect(configuration).to.beNil();
+        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+        expect([error localizedDescription]).to.contain(@"client api url");
+    });
 });
 
 context(@"edge cases", ^{
-    it(@"returns nil when client api url is blank", ^{
+    xit(@"returns nil when client api url is blank", ^{
         NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
         dict[BTConfigurationKeyClientApiURL] = @"";
         NSError *error;
@@ -49,7 +68,7 @@ describe(@"analytics enabled", ^{
         expect(configuration.analyticsEnabled).to.beTruthy();
     });
 
-    fit(@"returns false otherwise", ^{
+    it(@"returns false otherwise", ^{
         NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
         dict[BTConfigurationKeyAnalytics] = NSNull.null;
 
