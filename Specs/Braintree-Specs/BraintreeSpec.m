@@ -115,20 +115,21 @@ describe(@"dropInViewControllerWithCustomization:completion: Drop-In factory met
 describe(@"payPalButtonWithCompletion:", ^{
     __block Braintree *braintreeWithPayPalEnabled;
 
-    describe(@"with PayPal enabled", ^{
-        beforeEach(^{
-            NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTClientTokenKeyPayPalEnabled: @YES}];
-            braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken];
-
-        });
-        it(@"should return a payPalButton", ^{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            BTPayPalButton *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil];
-#pragma clang diagnostic pop
-            expect(control).to.beKindOf([BTPayPalButton class]);
-        });
-    });
+    // BTClient doesn't work this way anymore.
+//    describe(@"with PayPal enabled", ^{
+//        beforeEach(^{
+//            NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTClientTokenKeyPayPalEnabled: @YES}];
+//            braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken];
+//
+//        });
+//        it(@"should return a payPalButton", ^{
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+//            BTPayPalButton *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil];
+//#pragma clang diagnostic pop
+//            expect(control).to.beKindOf([BTPayPalButton class]);
+//        });
+//    });
 
     describe(@"with PayPal disabled", ^{
         it(@"should not return a payPalButton", ^{

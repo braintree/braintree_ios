@@ -16,18 +16,18 @@ __block NSMutableDictionary *mutableClaims;
 beforeEach(^{
 
     NSDictionary *paypalClaims = @{
-                                   BTClientTokenKeyPayPalClientId: @"PayPal-Test-Merchant-ClientId",
-                                   BTClientTokenKeyPayPalMerchantName: @"PayPal Merchant",
-                                   BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
-                                   BTClientTokenKeyPayPalMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
-                                   BTClientTokenKeyPayPalEnvironment: BTClientTokenPayPalEnvironmentCustom,
-                                   BTClientTokenKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com" };
+                                   BTConfigurationKeyPayPalClientId: @"PayPal-Test-Merchant-ClientId",
+                                   BTConfigurationKeyPayPalMerchantName: @"PayPal Merchant",
+                                   BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
+                                   BTConfigurationKeyPayPalMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
+                                   BTConfigurationKeyPayPalEnvironment: BTConfigurationPayPalEnvironmentCustom,
+                                   BTConfigurationKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com" };
 
-    NSDictionary *baseClaims = @{ BTClientTokenKeyVersion: @2,
-                                  BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                  BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                  BTClientTokenKeyPayPalEnabled: @YES,
-                                  BTClientTokenKeyPayPal: [paypalClaims mutableCopy] };
+    NSDictionary *baseClaims = @{ BTConfigurationKeyVersion: @2,
+                                  BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint", // Note: BTConfiguration should not contain authorization fingerprint
+                                  BTConfigurationKeyClientApiURL: @"http://gateway.example.com/client_api",
+                                  BTConfigurationKeyPayPalEnabled: @YES,
+                                  BTConfigurationKeyPayPal: [paypalClaims mutableCopy] };
 
 
     mutableClaims = [baseClaims mutableCopy];
@@ -39,7 +39,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
     describe(@"in Live PayPal environment", ^{
         describe(@"btPayPal_payPalEnvironment", ^{
             it(@"returns PayPal mSDK notion of Live", ^{
-                mutableClaims[@"paypal"][@"environment"] = BTClientTokenPayPalEnvironmentLive;
+                mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
                 BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(mutableClaims)];
                 expect([client btPayPal_environment]).to.equal(PayPalEnvironmentProduction);
             });
@@ -83,7 +83,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
 
         describe(@"btPayPal_payPalEnvironment", ^{
             it(@"returns a pretty custom environment name", ^{
-                mutableClaims[@"paypal"][@"environment"] = BTClientTokenPayPalEnvironmentCustom;
+                mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
                 BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(mutableClaims)];
                 expect([client btPayPal_environment]).to.equal(BTClientPayPalMobileEnvironmentName);
             });
@@ -93,10 +93,10 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
     describe(@"when the environment is not production", ^{
         describe(@"if the merchant privacy policy URL, merchant agreement URL, merchant name, and client ID are missing", ^{
             it(@"does not return an error", ^{
-                [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl];
-                [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantUserAgreementUrl];
-                [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantName];
-                mutableClaims[@"paypal"][@"environment"] = BTClientTokenPayPalEnvironmentCustom;
+                [mutableClaims[@"paypal"] removeObjectForKey:BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl];
+                [mutableClaims[@"paypal"] removeObjectForKey:BTConfigurationKeyPayPalMerchantUserAgreementUrl];
+                [mutableClaims[@"paypal"] removeObjectForKey:BTConfigurationKeyPayPalMerchantName];
+                mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
 
                 NSString* clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
                 NSError *error;

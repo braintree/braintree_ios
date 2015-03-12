@@ -8,20 +8,21 @@
 + (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)configuration {
     NSMutableDictionary *clientTokenDataDictionary =
     [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
-                                                     BTClientTokenKeyClientApiURL: BTOfflineModeClientApiBaseURL,
+//                                                     BTClientTokenKeyClientApiURL: BTOfflineModeClientApiBaseURL,
                                                      BTClientTokenKeyConfigURL: [BTOfflineModeClientApiBaseURL stringByAppendingString:@"/configuration"],
                                                      BTClientTokenKeyVersion: @2,
-                                                     BTClientTokenKeyApplePay: @{
-                                                             BTClientTokenKeyStatus: @"mock",
-                                                             @"countryCode": @"US",
-                                                             @"currencyCode": @"USD",
-                                                             @"merchantIdentifier": @"merchant-id-apple-pay",
-                                                             @"supportedNetworks": @[
-                                                                     @"visa",
-                                                                     @"mastercard",
-                                                                     @"amex"
-                                                                     ]
-                                                             } }];
+//                                                     BTClientTokenKeyApplePay: @{
+//                                                             BTClientTokenKeyStatus: @"mock",
+//                                                             @"countryCode": @"US",
+//                                                             @"currencyCode": @"USD",
+//                                                             @"merchantIdentifier": @"merchant-id-apple-pay",
+//                                                             @"supportedNetworks": @[
+//                                                                     @"visa",
+//                                                                     @"mastercard",
+//                                                                     @"amex"
+//                                                                     ]
+//                                                             }
+                                                     }];
 
     [clientTokenDataDictionary addEntriesFromDictionary:configuration];
 

@@ -48,7 +48,7 @@
 #pragma mark BTAppSwitching
 
 - (BOOL)appSwitchAvailableForClient:(BTClient *)client {
-    return client.clientToken.coinbaseEnabled;
+    return client.configuration.coinbaseEnabled;
 }
 
 - (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate error:(NSError *__autoreleasing *)error {
@@ -69,11 +69,10 @@
     self.client = client;
     self.delegate = delegate;
 
-    BTClientToken *clientToken = client.clientToken;
-    BOOL startSuccessful = [CoinbaseOAuth startOAuthAuthenticationWithClientId:clientToken.coinbaseClientId
-                                                  scope:clientToken.coinbaseScope
+    BOOL startSuccessful = [CoinbaseOAuth startOAuthAuthenticationWithClientId:client.configuration.coinbaseClientId
+                                                  scope:client.configuration.coinbaseScope
                                             redirectUri:[self.redirectUri absoluteString]
-                                                   meta:@{ @"authorizations_merchant_account": clientToken.coinbaseMerchantAccount }];
+                                                   meta:@{ @"authorizations_merchant_account": client.configuration.coinbaseMerchantAccount }];
 
     if (!startSuccessful) {
         if (error != NULL) {
@@ -98,7 +97,7 @@
     }
 
     [CoinbaseOAuth finishOAuthAuthenticationForUrl:url
-                                          clientId:self.client.clientToken.coinbaseClientId
+                                          clientId:self.client.configuration.coinbaseClientId
                                       clientSecret:nil
                                         completion:^(id response, NSError *error) {
                                             if (error) {

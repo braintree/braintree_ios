@@ -9,9 +9,12 @@
 #import "BTErrors.h"
 #import "BTClientCardRequest.h"
 
-@class BTCoinbasePaymentMethod;
+@class BTClient, BTCoinbasePaymentMethod;
 
 #pragma mark Types
+
+/// Block type that takes a `BTClient` or an error
+typedef void (^BTClientCompletionBlock)(BTClient *client, NSError *error);
 
 /// Block type that takes an `NSArray` of `BTPaymentMethod`s
 typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray *paymentMethods);
@@ -50,14 +53,21 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param clientTokenString Braintree client token
 - (instancetype)initWithClientToken:(NSString *)clientTokenString;
 
+/// Fetches Configuration and calls the completionBlock when this succeeds.
+///
+/// @param completionBlock callback with an instance of BTConfiguration or error.
+- (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock;
+
 /// The set of challenges that need to be provided to `saveCardWithNumber`
 /// in order to save a card. This is dependent upon on your Gateway settings
 /// (potentially among other factors).
-@property (nonatomic, readonly) NSSet *challenges;
+// This property is used by Drop-In and may be deprecated when that usage is changed.
+@property (nonatomic, readonly) NSSet *challenges; // DEPRECATED_MSG_ATTRIBUTE("Your challenges should be hardcoded or fetched from your own server")
 
 /// The public Braintree Merchant ID for which this client
 /// was initialized.
-@property (nonatomic, copy, readonly) NSString *merchantId;
+// This property is used by BTVenmoAppSwitchHandler and may be deprecated when that usage is changed.
+@property (nonatomic, copy, readonly) NSString *merchantId; // DEPRECATED_MSG_ATTRIBUTE("You should not use merchantId")
 
 #pragma mark - Fetch a Payment Method
 

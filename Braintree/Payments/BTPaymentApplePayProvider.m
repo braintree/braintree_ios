@@ -44,7 +44,7 @@
         return NO;
     }
 
-    if (self.client.clientToken.applePayStatus == BTClientApplePayStatusOff) {
+    if (self.client.configuration.applePayStatus == BTClientApplePayStatusOff) {
         return NO;
     }
 
@@ -76,7 +76,7 @@
         return;
     }
 
-    if (self.client.clientToken.applePayStatus == BTClientApplePayStatusOff) {
+    if (self.client.configuration.applePayStatus == BTClientApplePayStatusOff) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
                                              code:BTPaymentProviderErrorOptionNotSupported
                                          userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant account" }];
@@ -155,10 +155,10 @@
 
     PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
     paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
-    paymentRequest.currencyCode = self.client.clientToken.applePayCurrencyCode;
-    paymentRequest.countryCode = self.client.clientToken.applePayCountryCode;
-    paymentRequest.merchantIdentifier = self.client.clientToken.applePayMerchantIdentifier;
-    paymentRequest.supportedNetworks = self.client.clientToken.applePaySupportedNetworks;
+    paymentRequest.currencyCode = self.client.configuration.applePayCurrencyCode;
+    paymentRequest.countryCode = self.client.configuration.applePayCountryCode;
+    paymentRequest.merchantIdentifier = self.client.configuration.applePayMerchantIdentifier;
+    paymentRequest.supportedNetworks = self.client.configuration.applePaySupportedNetworks;
 
     if (self.paymentSummaryItems) {
         paymentRequest.paymentSummaryItems = self.paymentSummaryItems;

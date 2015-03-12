@@ -10,6 +10,10 @@
 #import <Braintree/BTPaymentButton.h>
 #import <Braintree/BTClientCardTokenizationRequest.h>
 
+@class Braintree;
+
+typedef void (^BraintreeCompletionBlock)(Braintree *braintree, NSError *error);
+
 /// The `Braintree` class is the front door to the Braintree SDK for iOS. It contains
 /// everything you need to easily start accepting payments in your mobile app.
 ///
@@ -30,19 +34,19 @@
 /// For advanced integrations, you can use BTClient, BTPaymentButton, BTDropInViewController, etc. directly.
 @interface Braintree : NSObject
 
-/// Returns an instance of `Braintree`, the public interface of Braintree-iOS.
+/// Begins the setup of Braintree-iOS. Once setup is complete, the supplied completionBlock
+/// will be called with either an instance of Braintree or an error.
 ///
 /// @param clientToken value that is generated on your server using a Braintree server-side
-///  client library that contains all necessary configuration to setup the client SDKs. It also
-///  authenticates the application to communicate directly to Braintree.
+///  client library that authenticates this application to communicate directly to Braintree.
 ///
 /// @see BTClient+Offline.h for offline client tokens that make it easy to test out the SDK without a
+///  server-side integration. This is for testing only; production always requires a
 ///  server-side integration.
 ///
 /// @note You should generate a new client token before each checkout to ensure it has not expired.
-///
-/// @return An instance of the Braintree Library to perform payment operations.
-+ (Braintree *)braintreeWithClientToken:(NSString *)clientToken;
++ (void)setupWithClientToken:(NSString *)clientToken
+                  completion:(BraintreeCompletionBlock)completionBlock;
 
 
 #pragma mark UI
@@ -169,6 +173,20 @@
 @end
 
 @interface Braintree (Deprecated)
+
+/// Returns an instance of `Braintree`, the public interface of Braintree-iOS.
+///
+/// @param clientToken value that is generated on your server using a Braintree server-side
+///  client library that contains all necessary configuration to setup the client SDKs. It also
+///  authenticates the application to communicate directly to Braintree.
+///
+/// @see BTClient+Offline.h for offline client tokens that make it easy to test out the SDK without a
+///  server-side integration.
+///
+/// @note You should generate a new client token before each checkout to ensure it has not expired.
+///
+/// @return An instance of the Braintree Library to perform payment operations.
++ (Braintree *)braintreeWithClientToken:(NSString *)clientToken DEPRECATED_MSG_ATTRIBUTE("Please use +[Braintree setupWithClientToken:completionBlock:]");
 
 /// Creates and returns a nonce for the given credit card details.
 ///
