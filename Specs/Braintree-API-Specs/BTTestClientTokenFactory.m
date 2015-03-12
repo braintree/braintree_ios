@@ -77,7 +77,12 @@
                       @"userAgreementUrl": @"http://example.com/tos",
                       @"baseUrl": @"https://assets.example.com",
                       @"assetsUrl": @"https://checkout.paypal.example.com",
-                      @"directBaseUrl": [NSNull null],
+
+                      // Why was this null?
+                      //@"directBaseUrl": [NSNull null],
+
+                      @"directBaseUrl": @"http://api.paypal.example.com",
+
                       @"allowHttp": @YES,
                       @"environmentNoNetwork": @YES,
                       @"environment": @"offline",
@@ -107,6 +112,12 @@
               } mutableCopy];
 }
 
++ (NSMutableDictionary *)configurationWithOverrides:(NSDictionary *)overrides {
+    NSMutableDictionary *configurationDict = [self configuration];
+    [self applyOverrides:overrides toMutableDictionary:&configurationDict];
+    return configurationDict;
+}
+
 + (NSMutableDictionary *)tokenDataWithoutConfiguration {
     return [@{
               @"authorizationFingerprint": @"an_authorization_fingerprint",
@@ -123,10 +134,6 @@
     NSMutableDictionary *baseTokenData;
 
     switch (version) {
-        case 3:
-            base64Encoded = YES;
-            baseTokenData = [self tokenDataWithoutConfiguration];
-            break;
         case 2:
             base64Encoded = YES;
             baseTokenData = [self tokenDataWithConfiguration];
@@ -142,13 +149,7 @@
 
     baseTokenData[@"version"] = @(version);
 
-    [overrides enumerateKeysAndObjectsUsingBlock:^(id key, id obj, __unused BOOL *stop){
-        if([obj isKindOfClass:[NSNull class]]) {
-            [baseTokenData removeObjectForKey:key];
-        } else {
-            [baseTokenData setObject:obj forKey:key];
-        }
-    }];
+    [self applyOverrides:overrides toMutableDictionary:&baseTokenData];
 
     NSError *jsonSerializationError;
     NSData *configurationData = [NSJSONSerialization dataWithJSONObject:baseTokenData
@@ -162,6 +163,23 @@
         return [[NSString alloc] initWithData:configurationData
                                      encoding:NSUTF8StringEncoding];
     }
+}
+
++ (void)applyOverrides:(NSDictionary *)overrides toMutableDictionary:(NSMutableDictionary * __autoreleasing *)dictionary {
+    [overrides enumerateKeysAndObjectsUsingBlock:^(id key, id obj, __unused BOOL *stop){
+        if([obj isKindOfClass:[NSNull class]]) {
+            [*dictionary removeObjectForKey:key];
+        } else {
+            if ([obj isKindOfClass:[NSDictionary class]] && [[*dictionary objectForKey:key] isKindOfClass:[NSDictionary class]]) {
+                // Overriding values nested inside a dictionary
+                NSMutableDictionary *dictToModify = [[*dictionary objectForKey:key] mutableCopy];
+                [self applyOverrides:obj toMutableDictionary:&dictToModify];
+                [*dictionary setObject:dictToModify forKey:key];
+            } else {
+                [*dictionary setObject:obj forKey:key];
+            }
+        }
+    }];
 }
 
 @end

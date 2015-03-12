@@ -13,7 +13,7 @@ context(@"unsupported versions", ^{
 });
 
 context(@"v1 raw JSON client tokens", ^{
-    fit(@"can be parsed", ^{
+    it(@"can be parsed", ^{
         BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:1 overrides:nil] error:NULL];
         expect(clientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint");
         expect(clientToken.configURL).to.equal([NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"]);

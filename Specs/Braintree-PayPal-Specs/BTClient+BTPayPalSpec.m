@@ -16,12 +16,15 @@ __block NSMutableDictionary *mutableClaims;
 beforeEach(^{
 
     NSDictionary *paypalClaims = @{
-                                   BTConfigurationKeyPayPalClientId: @"PayPal-Test-Merchant-ClientId",
                                    BTConfigurationKeyPayPalMerchantName: @"PayPal Merchant",
                                    BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl: @"http://merchant.example.com/privacy",
                                    BTConfigurationKeyPayPalMerchantUserAgreementUrl: @"http://merchant.example.com/tos",
-                                   BTConfigurationKeyPayPalEnvironment: BTConfigurationPayPalEnvironmentCustom,
-                                   BTConfigurationKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com" };
+
+                                   // Not used in these tests.
+                                   //BTConfigurationKeyPayPalClientId: @"PayPal-Test-Merchant-ClientId",
+                                   //BTConfigurationKeyPayPalEnvironment: BTConfigurationPayPalEnvironmentCustom,
+                                   //BTConfigurationKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com"
+                                   };
 
     NSDictionary *baseClaims = @{ BTConfigurationKeyVersion: @2,
                                   BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint", // Note: BTConfiguration should not contain authorization fingerprint

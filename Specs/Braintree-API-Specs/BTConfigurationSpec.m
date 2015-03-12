@@ -7,8 +7,10 @@ SpecBegin(BTConfiguration)
 
 context(@"valid configuration", ^{
     it(@"can be parsed", ^{
+        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        dict[@"merchantAccountId"] = @"a_merchant_account_id";
         NSError *error;
-        BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:[BTTestClientTokenFactory configuration]] error:&error];
+        BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:&error];
         expect(error).to.beNil();
 
         expect(configuration.clientApiURL).to.equal([NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api"]);
@@ -34,7 +36,7 @@ context(@"valid configuration", ^{
         expect(configuration.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
     });
 
-    xit(@"must contain a client api url", ^{
+    it(@"must contain a client api url", ^{
         NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
         dict[BTConfigurationKeyClientApiURL] = NSNull.null;
         NSError *error;
@@ -46,7 +48,7 @@ context(@"valid configuration", ^{
 });
 
 context(@"edge cases", ^{
-    xit(@"returns nil when client api url is blank", ^{
+    it(@"returns nil when client api url is blank", ^{
         NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
         dict[BTConfigurationKeyClientApiURL] = @"";
         NSError *error;
@@ -150,14 +152,14 @@ describe(@"PayPal", ^{
     });
 
     describe(@"btPayPal_payPalClientIdentifier", ^{
-        it(@"returns the client id as specified by the client token", ^{
-            expect(configuration.btPayPal_clientId).to.equal(@"PayPal-Test-Merchant-ClientId");
+        it(@"returns the client id as specified by the configuration", ^{
+            expect(configuration.btPayPal_clientId).to.equal(@"a_paypal_client_id");
         });
     });
 
     describe(@"btPayPal_environment", ^{
-        it(@"returns the PayPal environment as specified by the client token", ^{
-            expect(configuration.btPayPal_environment).to.equal(@"PayPalEnvironmentName");
+        it(@"returns the PayPal environment as specified by the configuration", ^{
+            expect(configuration.btPayPal_environment).to.equal(@"offline");
         });
     });
 
@@ -165,115 +167,114 @@ describe(@"PayPal", ^{
         __block BTConfiguration *configurationPayPalDisabled;
         beforeEach(^{
             NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
-            [dict setValuesForKeysWithDictionary:@{ //BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint", // BTConfiguration should not contain authorization fingerprint.
-                                                    BTConfigurationKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                                    BTConfigurationKeyPayPalEnabled: @NO }];
+            [dict setValuesForKeysWithDictionary:@{
+                                                   // BTConfiguration should not contain authorization fingerprint.
+                                                   //BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
+                                                   BTConfigurationKeyClientApiURL: @"http://gateway.example.com/client_api",
+                                                   BTConfigurationKeyPayPalEnabled: @NO }];
             configurationPayPalDisabled = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
         });
 
-        it(@"returns false if the paypalEnabled flag is set to False in the client Token", ^{
+        it(@"returns false if the paypalEnabled flag is set to False in the configuration", ^{
             expect(configurationPayPalDisabled.btPayPal_isPayPalEnabled).to.beFalsy();
         });
 
-        it(@"returns true if the paypalEnabled flag is set to True in the client Token", ^{
+        it(@"returns true if the paypalEnabled flag is set to True in the configuration", ^{
             expect(configuration.btPayPal_isPayPalEnabled).to.beTruthy();
         });
 
     });
 
     describe(@"btPayPal_merchantName", ^{
-        it(@"returns the merchant name specified by the client token", ^{
-            expect(configuration.btPayPal_merchantName).to.equal(@"PayPal Merchant");
+        it(@"returns the merchant name specified by the configuration", ^{
+            expect(configuration.btPayPal_merchantName).to.equal(@"Acme Widgets, Ltd. (Sandbox)");
         });
     });
 
     describe(@"btPayPal_merchantUserAgreementURL", ^{
-        it(@"returns the merchant user agreement URL specified by the client token", ^{
-            expect(configuration.btPayPal_merchantUserAgreementURL).to.equal([NSURL URLWithString:@"http://merchant.example.com/tos"]);
+        it(@"returns the merchant user agreement URL specified by the configuration", ^{
+            expect(configuration.btPayPal_merchantUserAgreementURL).to.equal([NSURL URLWithString:@"http://example.com/tos"]);
         });
     });
 
     describe(@"btPayPal_privacyPolicyURL", ^{
-        it(@"returns the merchant privacy policy specified by the client token", ^{
-            expect(configuration.btPayPal_privacyPolicyURL).to.equal([NSURL URLWithString:@"http://merchant.example.com/privacy"]);
+        it(@"returns the merchant privacy policy specified by the configuration", ^{
+            expect(configuration.btPayPal_privacyPolicyURL).to.equal([NSURL URLWithString:@"http://example.com/pp"]);
         });
 
         describe(@"with missing fields", ^{
             __block BTConfiguration *configurationMissingFields;
+            __block NSMutableDictionary *configurationDict;
             __block NSMutableDictionary *payPalDict;
             __block NSURL *defaultUserAgreementURL, *defaultPrivacyPolicyURL;
             beforeEach(^{
-                NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+                configurationDict = [BTTestClientTokenFactory configuration];
 
-                payPalDict = [dict[BTConfigurationKeyPayPal] mutableCopy];
+                payPalDict = [configurationDict[BTConfigurationKeyPayPal] mutableCopy];
                 payPalDict[BTConfigurationKeyPayPalEnvironment] = BTConfigurationPayPalEnvironmentLive;
-                [payPalDict[BTConfigurationKeyPayPal] removeObjectForKey:BTConfigurationKeyPayPalMerchantName];
-                [payPalDict[BTConfigurationKeyPayPal] removeObjectForKey:BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl];
-                [payPalDict[BTConfigurationKeyPayPal] removeObjectForKey:BTConfigurationKeyPayPalMerchantUserAgreementUrl];
-                dict[BTConfigurationKeyPayPal] = payPalDict;
+                [payPalDict removeObjectForKey:BTConfigurationKeyPayPalMerchantName];
+                [payPalDict removeObjectForKey:BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl];
+                [payPalDict removeObjectForKey:BTConfigurationKeyPayPalMerchantUserAgreementUrl];
+                configurationDict[BTConfigurationKeyPayPal] = payPalDict;
 
-                [dict setValuesForKeysWithDictionary:@{ BTConfigurationKeyClientApiURL: @"http://gateway.example.com/client_api",
+                [configurationDict setValuesForKeysWithDictionary:@{ BTConfigurationKeyClientApiURL: @"http://gateway.example.com/client_api",
                                                         BTConfigurationKeyPayPalEnabled: @NO }];
-                configurationMissingFields = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
+                configurationMissingFields = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:configurationDict] error:NULL];
 
                 defaultUserAgreementURL = [NSURL URLWithString:BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl];
                 defaultPrivacyPolicyURL = [NSURL URLWithString:BTConfigurationPayPalNonLiveDefaultValueMerchantPrivacyPolicyUrl];
             });
 
             describe(@"live environment", ^{
-                it(@"returns a PayPal configuration object with a nil merchant name if not specified in the client tokent", ^{
+                it(@"returns a PayPal configuration object with a nil merchant name if not specified in the configuration", ^{
                     expect(configurationMissingFields.btPayPal_merchantName).to.beNil();
                 });
 
-                it(@"returns a PayPal configuration object with a nil merchant user agreement url if not specified by the client token", ^{
+                it(@"returns a PayPal configuration object with a nil merchant user agreement url if not specified by the configuration", ^{
                     expect(configurationMissingFields.btPayPal_merchantUserAgreementURL).to.beNil();
                 });
 
-                it(@"returns a PayPal configuration object with a nil privacy policy URL if not specified in the client tokent", ^{
+                it(@"returns a PayPal configuration object with a nil privacy policy URL if not specified in the configuration", ^{
                     expect(configurationMissingFields.btPayPal_privacyPolicyURL).to.beNil();
                 });
             });
 
             describe(@"offline environment", ^{
                 beforeEach(^{
-                    NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
-                    payPalDict = [dict[BTConfigurationKeyPayPal] mutableCopy];
                     payPalDict[BTConfigurationKeyPayPalEnvironment] = BTConfigurationPayPalEnvironmentOffline;
-                    dict[BTConfigurationKeyPayPal] = payPalDict;
-                    configurationMissingFields = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
+                    configurationDict[BTConfigurationKeyPayPal] = payPalDict;
+                    configurationMissingFields = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:configurationDict] error:NULL];
                 });
 
-                it(@"returns a PayPal configuration object with an offline default merchant name if not specified in the client token", ^{
+                it(@"returns a PayPal configuration object with an offline default merchant name if not specified in the configuration", ^{
                     expect(configurationMissingFields.btPayPal_merchantName).to.equal(BTConfigurationPayPalNonLiveDefaultValueMerchantName);
                 });
 
-                it(@"returns a PayPal configuration object with an offline default merchant user agreement url if not specified by the client token", ^{
+                it(@"returns a PayPal configuration object with an offline default merchant user agreement url if not specified by the configuration", ^{
                     expect(configurationMissingFields.btPayPal_merchantUserAgreementURL).to.equal(defaultUserAgreementURL);
                 });
 
-                it(@"returns a PayPal configuration object with an offline default privacy policy URL if not specified in the client tokent", ^{
+                it(@"returns a PayPal configuration object with an offline default privacy policy URL if not specified in the configurationt", ^{
                     expect(configurationMissingFields.btPayPal_privacyPolicyURL).to.equal(defaultPrivacyPolicyURL);
                 });
             });
 
             describe(@"custom environment", ^{
                 beforeEach(^{
-                    NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
-                    payPalDict = [dict[BTConfigurationKeyPayPal] mutableCopy];
                     payPalDict[BTConfigurationKeyPayPalEnvironment] = BTConfigurationPayPalEnvironmentCustom;
-                    dict[BTConfigurationKeyPayPal] = payPalDict;
-                    configurationMissingFields = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
+                    configurationDict[BTConfigurationKeyPayPal] = payPalDict;
+                    configurationMissingFields = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:configurationDict] error:NULL];
                 });
 
-                it(@"returns a PayPal configuration object with an offline default merchant name if not specified in the client tokent", ^{
+                it(@"returns a PayPal configuration object with an offline default merchant name if not specified in the configuration", ^{
                     expect(configurationMissingFields.btPayPal_merchantName).to.equal(BTConfigurationPayPalNonLiveDefaultValueMerchantName);
                 });
 
-                it(@"returns a PayPal configuration object with an offline default merchant user agreement url if not specified by the client token", ^{
+                it(@"returns a PayPal configuration object with an offline default merchant user agreement url if not specified by the configuration", ^{
                     expect(configurationMissingFields.btPayPal_merchantUserAgreementURL).to.equal(defaultUserAgreementURL);
                 });
 
-                it(@"returns a PayPal configuration object with an offline default privacy policy URL if not specified in the client token", ^{
+                it(@"returns a PayPal configuration object with an offline default privacy policy URL if not specified in the configuration", ^{
                     expect(configurationMissingFields.btPayPal_privacyPolicyURL).to.equal(defaultPrivacyPolicyURL);
                 });
             });
@@ -281,7 +282,8 @@ describe(@"PayPal", ^{
     });
 
     describe(@"btPayPal_directBaseURL", ^{
-        it(@"returns the directBaseURL specified by the client token", ^{
+        it(@"returns the directBaseURL specified by the configuration", ^{
+            // Why does /v1/ get appended?
             expect(configuration.btPayPal_directBaseURL).to.equal([NSURL URLWithString:@"http://api.paypal.example.com/v1/"]);
         });
     });
@@ -299,36 +301,45 @@ describe(@"PayPal", ^{
         });
 
         it(@"returns that app switch is not disabled when there is a claim that is false", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
-            dict[BTConfigurationKeyPayPal][BTConfigurationKeyPayPalDisableAppSwitch] = @NO;
+            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{
+                                                                                               BTConfigurationKeyPayPal: @{
+                                                                                                       BTConfigurationKeyPayPalDisableAppSwitch: @NO
+                                                                                                       }
+                                                                                               }];
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.btPayPal_isTouchDisabled).to.equal(NO);
         });
 
         it(@"returns that app switch is disabled when there is a claim that is true", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
-            dict[BTConfigurationKeyPayPal][BTConfigurationKeyPayPalDisableAppSwitch] = @YES;
+            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{
+                                                                                               BTConfigurationKeyPayPal: @{
+                                                                                                       BTConfigurationKeyPayPalDisableAppSwitch: @YES
+                                                                                                       }
+                                                                                               }];
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.btPayPal_isTouchDisabled).to.equal(YES);
         });
 
         it(@"returns that app switch is disabled when there is a claim that is 'TRUEDAT'", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
-            dict[BTConfigurationKeyPayPal][BTConfigurationKeyPayPalDisableAppSwitch] = @"TRUEDAT";
+            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{
+                                                                                               BTConfigurationKeyPayPal: @{
+                                                                                                       BTConfigurationKeyPayPalDisableAppSwitch: @"TRUEDAT"
+                                                                                                       }
+                                                                                               }];
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.btPayPal_isTouchDisabled).to.equal(YES);
         });
     });
     
     describe(@"btPayPal_privacyPolicyURL", ^{
-        it(@"returns the privacy policy URL specified by the client token as a URL", ^{
-            expect(configuration.btPayPal_privacyPolicyURL).to.equal([NSURL URLWithString:@"http://merchant.example.com/privacy"]);
+        it(@"returns the privacy policy URL specified by the configuration as a URL", ^{
+            expect(configuration.btPayPal_privacyPolicyURL).to.equal([NSURL URLWithString:@"http://example.com/pp"]);
         });
     });
     
     describe(@"btPayPal_merchantUserAgreementURL", ^{
-        it(@"returns the merchant user agreement URL specified by the client token as a URL", ^{
-            expect(configuration.btPayPal_merchantUserAgreementURL).to.equal([NSURL URLWithString:@"http://merchant.example.com/tos"]);
+        it(@"returns the merchant user agreement URL specified by the configuration as a URL", ^{
+            expect(configuration.btPayPal_merchantUserAgreementURL).to.equal([NSURL URLWithString:@"http://example.com/tos"]);
         });
     });
     
