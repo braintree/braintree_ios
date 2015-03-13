@@ -4,7 +4,11 @@
 #import "BTAPIResponseParser.h"
 #import "BTErrors.h"
 
-// TODO: move BTClientApplePayStatus from BTClientToken ?
+typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
+    BTClientApplePayStatusOff = 0,
+    BTClientApplePayStatusMock = 1,
+    BTClientApplePayStatusProduction = 2,
+};
 
 extern NSString *const BTConfigurationKeyClientApiURL;
 extern NSString *const BTConfigurationKeyChallenges;

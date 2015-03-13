@@ -3,12 +3,6 @@
 
 @class BTAPIResponseParser;
 
-typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
-    BTClientApplePayStatusOff = 0,
-    BTClientApplePayStatusMock = 1,
-    BTClientApplePayStatusProduction = 2,
-};
-
 extern NSString *const BTClientTokenKeyVersion;
 extern NSString *const BTClientTokenKeyAuthorizationFingerprint;
 extern NSString *const BTClientTokenKeyConfigURL;
