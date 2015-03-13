@@ -4,7 +4,7 @@
 #import "BTAPIResponseParser.h"
 #import "BTErrors.h"
 
-// Note: We continue to use BTClientToken's BTClientApplePayStatus
+// TODO: move BTClientApplePayStatus from BTClientToken ?
 
 extern NSString *const BTConfigurationKeyClientApiURL;
 extern NSString *const BTConfigurationKeyChallenges;
@@ -32,6 +32,14 @@ extern NSString *const BTConfigurationPayPalEnvironmentOffline;
 extern NSString *const BTConfigurationKeyPayPalDisableAppSwitch;
 
 extern NSString *const BTConfigurationKeyVenmo;
+
+// For testing
+extern NSString *const BTConfigurationKeyCoinbaseEnabled;
+extern NSString *const BTConfigurationKeyCoinbase;
+extern NSString *const BTConfigurationKeyCoinbaseClientId;
+extern NSString *const BTConfigurationKeyCoinbaseMerchantAccount;
+extern NSString *const BTConfigurationKeyCoinbaseScope;
+extern NSString *const BTConfigurationKeyCoinbaseRedirectUri;
 
 // Default PayPal merchant name in offline mode
 extern NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantName;

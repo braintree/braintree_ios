@@ -328,8 +328,14 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
     NSLog(@"%@", error);
     [self.activityIndicator stopAnimating];
     self.emailLabel.text = @"An error occurred";
+    NSString *message;
+    if (error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"error"][@"message"]) {
+        message = error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"error"][@"message"];
+    } else {
+        message = [error localizedDescription];
+    }
     [[[UIAlertView alloc] initWithTitle:@"Error"
-                                message:[error localizedDescription]
+                                message:message
                                delegate:nil
                       cancelButtonTitle:@"OK"
                       otherButtonTitles:nil] show];

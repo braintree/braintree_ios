@@ -10,8 +10,6 @@ NSString *const BTConfigurationKeyAnalytics = @"analytics";
 NSString *const BTConfigurationKeyURL = @"url";
 NSString *const BTConfigurationKeyMerchantId = @"merchantId";
 
-NSString *const BTConfigurationKeyCoinbaseEnabled = @"coinbaseEnabled";
-NSString *const BTConfigurationKeyCoinbase = @"coinbase";
 NSString *const BTConfigurationKeyApplePay = @"applePay";
 NSString *const BTConfigurationKeyStatus = @"status";
 NSString *const BTConfigurationKeyMerchantAccountId = @"merchantAccountId";
@@ -34,6 +32,8 @@ NSString *const BTConfigurationKeyPayPalDisableAppSwitch = @"touchDisabled";
 
 NSString *const BTConfigurationKeyVenmo = @"venmo";
 
+NSString *const BTConfigurationKeyCoinbaseEnabled = @"coinbaseEnabled";
+NSString *const BTConfigurationKeyCoinbase = @"coinbase";
 NSString *const BTConfigurationKeyCoinbaseClientId = @"clientId";
 NSString *const BTConfigurationKeyCoinbaseMerchantAccount = @"merchantAccount";
 NSString *const BTConfigurationKeyCoinbaseScope = @"scopes";
@@ -282,8 +282,15 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 }
 
 - (BOOL)coinbaseEnabled {
-    return [self.configurationParser boolForKey:BTConfigurationKeyCoinbaseEnabled
-                     withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
+    return ([self coinbaseConfiguration] &&
+            [self coinbaseClientId] &&
+            // We don't check for coinbaseMerchantAccount because it may not always be required,
+            // i.e. Coinbase could actually know what the coinbaseMerchantAccount should be by
+            // looking it up with the coinbaseClientId. We also don't check for coinbaseRedirectUri
+            // because we don't use it.
+            [self coinbaseScope] &&
+            [self.configurationParser boolForKey:BTConfigurationKeyCoinbaseEnabled
+                            withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]]);
 }
 
 - (NSString *)coinbaseClientId {

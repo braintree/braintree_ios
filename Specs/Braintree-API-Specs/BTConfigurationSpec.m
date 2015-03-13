@@ -353,7 +353,24 @@ describe(@"coinbase", ^{
     });
 
     describe(@"coinbaseEnabled", ^{
-        expect(configuration.coinbaseEnabled).to.beTruthy();
+        it(@"is YES when coinbaseEnabled is 1", ^{
+            expect(configuration.coinbaseEnabled).to.beTruthy();
+        });
+        it(@"is NO when coinbaseConfiguration is missing", ^{
+            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{BTConfigurationKeyCoinbase: NSNull.null}];
+            configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
+            expect(configuration.coinbaseEnabled).to.equal(NO);
+        });
+        it(@"is NO when coinbaseClientId is missing", ^{
+            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{BTConfigurationKeyCoinbase: @{BTConfigurationKeyCoinbaseClientId: NSNull.null}}];
+            configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
+            expect(configuration.coinbaseEnabled).to.equal(NO);
+        });
+        it(@"is NO when coinbaseScope is missing", ^{
+            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{BTConfigurationKeyCoinbase: @{BTConfigurationKeyCoinbaseScope: NSNull.null}}];
+            configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
+            expect(configuration.coinbaseEnabled).to.equal(NO);
+        });
     });
 
     describe(@"coinbaseClientId", ^{

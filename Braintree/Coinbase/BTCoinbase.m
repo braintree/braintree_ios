@@ -70,9 +70,9 @@
     self.delegate = delegate;
 
     BOOL startSuccessful = [CoinbaseOAuth startOAuthAuthenticationWithClientId:client.configuration.coinbaseClientId
-                                                  scope:client.configuration.coinbaseScope
-                                            redirectUri:[self.redirectUri absoluteString]
-                                                   meta:@{ @"authorizations_merchant_account": client.configuration.coinbaseMerchantAccount }];
+                                                                         scope:client.configuration.coinbaseScope
+                                                                   redirectUri:[self.redirectUri absoluteString]
+                                                                          meta:(client.configuration.coinbaseMerchantAccount ? @{ @"authorizations_merchant_account": client.configuration.coinbaseMerchantAccount } : nil)];
 
     if (!startSuccessful) {
         if (error != NULL) {
