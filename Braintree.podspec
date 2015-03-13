@@ -49,9 +49,9 @@ Pod::Spec.new do |s|
 
   s.subspec "PayPal" do |s|
     s.source_files = "Braintree/PayPal/**/*.{h,m}"
-    s.public_header_files = "Braintree/PayPal/@Public/**/*.h", "Braintree/PayPal/mSDK/CardIO*.h"
+    s.public_header_files = "Braintree/PayPal/@Public/**/*.h"
     s.frameworks = "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
-    s.vendored_library = "Braintree/PayPal/mSDK/libPayPalMobile.a"
+    s.vendored_library = "Braintree/PayPal/mSDK/libPayPalMobile-BT.a"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
     s.dependency "Braintree/API"
     s.dependency "Braintree/UI"
@@ -84,6 +84,7 @@ Pod::Spec.new do |s|
     s.public_header_files = "Braintree/Payments/@Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/API"
+    s.dependency "Braintree/Coinbase"
     s.dependency "Braintree/PayPal"
     s.dependency "Braintree/Venmo"
   end
@@ -101,8 +102,8 @@ Pod::Spec.new do |s|
   s.subspec "Coinbase" do |s|
     s.source_files = "Braintree/Coinbase/**/*.{h,m}"
     s.public_header_files = "Braintree/Coinbase/@Public/*.h"
-    # Temporary, pending coinbase release
-    # s.dependency "coinbase-official/OAuth", "~> 2.0"
-    s.dependency "coinbase-official", "~> 2.0"
+    s.dependency "coinbase-official/OAuth", "~> 2.1"
+    s.dependency "Braintree/API"
   end
 end
+

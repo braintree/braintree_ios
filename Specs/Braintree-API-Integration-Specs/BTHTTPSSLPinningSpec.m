@@ -82,6 +82,20 @@ describe(@"SSL Pinning", ^{
             }];
         });
     });
+
+    it(@"does not trust a valid certificate chain with a root ca we do not explicitly trust", ^{
+        waitUntil(^(DoneCallback done){
+            NSURL *url   = [NSURL URLWithString:@"https://www.digicert.com"];
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url];
+
+            [http GET:@"/" parameters:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response).to.beNil();
+                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                expect(error.code).to.equal(BTServerErrorSSL);
+                done();
+            }];
+        });
+    });
 });
 
 SpecEnd

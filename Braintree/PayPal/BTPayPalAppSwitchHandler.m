@@ -190,7 +190,7 @@
     if (self.returnURLScheme == nil) {
         return [NSError errorWithDomain:BTAppSwitchErrorDomain
                                    code:BTAppSwitchErrorIntegrationReturnURLScheme
-                               userInfo:@{ NSLocalizedDescriptionKey: @"PayPal app switch is missing a returnURLScheme (See +[Braintree setReturnURLScheme:]." }];
+                               userInfo:@{ NSLocalizedDescriptionKey: @"PayPal app switch is missing a returnURLScheme. See +[Braintree setReturnURLScheme:]." }];
     }
 
     if (![PayPalTouch canAppSwitchForUrlScheme:self.returnURLScheme]) {

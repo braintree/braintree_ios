@@ -5,24 +5,33 @@
 #import "BTClient+BTPayPal.h"
 
 @interface TestDataDelegate : NSObject <BTDataDelegate>
-@property (nonatomic, assign) BOOL didStart;
-@property (nonatomic, assign) BOOL didComplete;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) int errorCode;
+@property (nonatomic, copy) void (^didStartBlock)(void);
+@property (nonatomic, copy) void (^didCompleteBlock)(void);
 @end
 
 @implementation TestDataDelegate
+
+- (instancetype)initWithDidStart:(void (^)(void))didStartBlock
+                     didComplete:(void (^)(void))didCompleteBlock {
+    if ((self = [super init])) {
+        self.didStartBlock = didStartBlock;
+        self.didCompleteBlock = didCompleteBlock;
+    }
+    return self;
+}
 
 - (void)btData:(BTData *)data didFailWithErrorCode:(int)errorCode error:(NSError *)error {
     @throw error;
 }
 
 - (void)btDataDidStartCollectingData:(BTData *)data {
-    self.didStart = YES;
+    if (self.didStartBlock) self.didStartBlock();
 }
 
 - (void)btDataDidComplete:(BTData *)data {
-    self.didComplete = YES;
+    if (self.didCompleteBlock) self.didCompleteBlock();
 }
 @end
 
@@ -35,25 +44,11 @@ NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
 SpecBegin(BraintreeData)
 
 __block NSMutableDictionary *baseClientTokenClaims;
-__block void (^waitForAssertion)(BOOL (^assertion)(void));
 
 beforeEach(^{
     baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyVersion: @2,
                                                                              BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
                                                                              BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api" }];
-
-
-    waitForAssertion = ^(BOOL (^assertion)(void)){
-        for (NSInteger count  = 0; count < 100; count++) {
-            if (assertion()) {
-                break;
-            }
-            [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-        }
-
-        expect(assertion()).to.beTruthy();
-    };
-
 });
 
 __block id mockCLLocationManager;
@@ -76,11 +71,6 @@ describe(@"Kount DeviceCollectorSDK", ^{
 });
 
 describe(@"defaultDataForEnvironment:delegate:", ^{
-    __block NSMutableArray *arrayToRetainBTDataInstanceDuringAsyncAssertion;
-    beforeAll(^{
-        arrayToRetainBTDataInstanceDuringAsyncAssertion = [NSMutableArray array];
-    });
-
     sharedExamplesFor(@"a no-op data collector", ^(NSDictionary *testData) {
         it(@"successfully starts and completes", ^{
 
@@ -100,7 +90,15 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
         it([NSString stringWithFormat:@"successfully starts and completes in %@ environment", testData[@"environmentName"]], ^{
             BTDataEnvironment env = [testData[@"environment"] integerValue];
 
-            TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
+            XCTestExpectation *didStartExpectation = [self expectationWithDescription:@"didStart"];
+            XCTestExpectation *didCompleteExpectation = [self expectationWithDescription:@"didComplete"];
+            
+            TestDataDelegate *delegate = [[TestDataDelegate alloc] initWithDidStart:^{
+                [didStartExpectation fulfill];
+            } didComplete:^{
+                [didCompleteExpectation fulfill];
+            }];
+            
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             BTData *data = [BTData defaultDataForEnvironment:env delegate:delegate];
@@ -108,54 +106,47 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
             [data collect];
 #pragma clang diagnostic pop
 
-            [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
-            expect(delegate.didStart).to.beTruthy();
-            expect(delegate.didComplete).will.beTruthy();
+            [self waitForExpectationsWithTimeout:10 handler:nil];
         });
     });
 
     sharedExamplesFor(@"a successful data collector", ^(NSDictionary *testData){
         it([NSString stringWithFormat:@"successfully starts and completes in %@ environment", testData[@"environmentName"]], ^{
-            waitUntil(^(DoneCallback done) {
-                BTDataEnvironment env = [testData[@"environment"] integerValue];
-                
-                baseClientTokenClaims[@"paypal"] = testData[@"paypalConfiguration"];
-                baseClientTokenClaims[@"paypalEnabled"] = @YES;
-                
-                BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(baseClientTokenClaims)];
-                
-                TestDataDelegate *delegate = [[TestDataDelegate alloc] init];
-                BTData *data = [[BTData alloc] initWithClient:client environment:env];
-                data.delegate = delegate;
-                [data setFraudMerchantId:@"600000"];
-                
-                NSString *deviceDataString = [data collectDeviceData];
-                
-                NSDictionary *deviceDataDictionary = [NSJSONSerialization JSONObjectWithData:[deviceDataString dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                     options:0
-                                                                                       error:NULL];
-                
-                expect(deviceDataDictionary[@"fraud_merchant_id"]).to.equal(@"600000");
-                expect(deviceDataDictionary[@"device_session_id"]).to.haveCountOf(32);
-                
-                if ([testData[@"shouldIncludeCorrelationId"] boolValue]) {
-                    expect(deviceDataDictionary[@"correlation_id"]).to.haveCountOf(32);
-                } else {
-                    expect(deviceDataDictionary[@"correlation_id"]).to.beNil();
-                }
-                
-                [arrayToRetainBTDataInstanceDuringAsyncAssertion addObject:data];
-                
-                waitForAssertion(^BOOL{
-                    return delegate.didStart;
-                });
-                
-                waitForAssertion(^BOOL{
-                    return delegate.didComplete;
-                });
-                
-                done();
-            });
+            BTDataEnvironment env = [testData[@"environment"] integerValue];
+            
+            baseClientTokenClaims[@"paypal"] = testData[@"paypalConfiguration"];
+            baseClientTokenClaims[@"paypalEnabled"] = @YES;
+            
+            BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(baseClientTokenClaims)];
+            
+            XCTestExpectation *didStartExpectation = [self expectationWithDescription:@"didStart"];
+            XCTestExpectation *didCompleteExpectation = [self expectationWithDescription:@"didComplete"];
+            
+            TestDataDelegate *delegate = [[TestDataDelegate alloc] initWithDidStart:^{
+                [didStartExpectation fulfill];
+            } didComplete:^{
+                [didCompleteExpectation fulfill];
+            }];
+            BTData *data = [[BTData alloc] initWithClient:client environment:env];
+            data.delegate = delegate;
+            [data setFraudMerchantId:@"600000"];
+            
+            NSString *deviceDataString = [data collectDeviceData];
+            
+            NSDictionary *deviceDataDictionary = [NSJSONSerialization JSONObjectWithData:[deviceDataString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                 options:0
+                                                                                   error:NULL];
+            
+            expect(deviceDataDictionary[@"fraud_merchant_id"]).to.equal(@"600000");
+            expect(deviceDataDictionary[@"device_session_id"]).to.haveCountOf(32);
+            
+            if ([testData[@"shouldIncludeCorrelationId"] boolValue]) {
+                expect(deviceDataDictionary[@"correlation_id"]).to.haveCountOf(32);
+            } else {
+                expect(deviceDataDictionary[@"correlation_id"]).to.beNil();
+            }
+            
+            [self waitForExpectationsWithTimeout:10 handler:nil];
         });
 
         it(@"ignores application correlation id if PayPal is disabled", ^{

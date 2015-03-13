@@ -25,7 +25,7 @@ Use [CocoaPods](https://cocoapods.com) and add the following to your `Podfile`:
 pod 'Braintree/PayPal'
 ```
 
-CocoaPods automatically vendors the PayPal Mobile SDK, `libPayPalMobile.a`, which is included. Braintree-PayPal-iOS is not compatible with the PayPal Mobile SDK.
+CocoaPods automatically vendors the PayPal Mobile SDK, `libPayPalMobile-BT.a`, which is included. Braintree-PayPal-iOS is not compatible with the PayPal Mobile SDK.
 
 ## Integration
 

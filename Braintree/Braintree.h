@@ -185,7 +185,7 @@
 - (void)tokenizeCardWithNumber:(NSString *)cardNumber
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
-                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Please use -[braintree tokenizeCardWithComponents:completion:]");
+                    completion:(void (^)(NSString *nonce, NSError *error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Please use -[Braintree tokenizeCardWithComponents:completion:]");
 
 
 /// Creates and returns a PayPal button that can be added to the UI. When tapped, this button will initiate the PayPal authorization flow.
@@ -193,6 +193,6 @@
 /// @param delegate Delegate that is notified of completion, receiving either a payment method with a nonce (upon user agreement and success) or an error (upon failure).
 ///
 /// @return A PayPal button to be added as a subview in your UI.
-- (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate DEPRECATED_MSG_ATTRIBUTE("Please use -[braintree paymentButtonWithDelegate:]");
+- (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate DEPRECATED_MSG_ATTRIBUTE("Please use -[Braintree paymentButtonWithDelegate:]");
 
 @end

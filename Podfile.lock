@@ -1,11 +1,11 @@
 PODS:
   - AFNetworking (2.3.1):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
+    - AFNetworking/NSURLConnection (= 2.3.1)
+    - AFNetworking/NSURLSession (= 2.3.1)
+    - AFNetworking/Reachability (= 2.3.1)
+    - AFNetworking/Security (= 2.3.1)
+    - AFNetworking/Serialization (= 2.3.1)
+    - AFNetworking/UIKit (= 2.3.1)
   - AFNetworking/NSURLConnection (2.3.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -21,12 +21,12 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Braintree (3.8.0-pre1):
-    - Braintree/API
-    - Braintree/Drop-In
-    - Braintree/Payments
-    - Braintree/PayPal
-    - Braintree/UI
-    - Braintree/Venmo
+    - Braintree/API (= 3.8.0-pre1)
+    - Braintree/Drop-In (= 3.8.0-pre1)
+    - Braintree/Payments (= 3.8.0-pre1)
+    - Braintree/PayPal (= 3.8.0-pre1)
+    - Braintree/UI (= 3.8.0-pre1)
+    - Braintree/Venmo (= 3.8.0-pre1)
   - Braintree/3D-Secure (3.8.0-pre1):
     - Braintree/API
     - Braintree/Payments
@@ -35,7 +35,8 @@ PODS:
   - Braintree/Apple-Pay (3.8.0-pre1):
     - Braintree/Payments
   - Braintree/Coinbase (3.8.0-pre1):
-    - coinbase-official (~> 2.0)
+    - Braintree/API
+    - coinbase-official/OAuth (~> 2.1)
   - Braintree/Data (3.8.0-pre1):
     - Braintree/API
     - Braintree/PayPal
@@ -47,6 +48,7 @@ PODS:
     - Braintree/Venmo
   - Braintree/Payments (3.8.0-pre1):
     - Braintree/API
+    - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
   - Braintree/PayPal (3.8.0-pre1):
@@ -56,13 +58,14 @@ PODS:
     - Braintree/API
   - Braintree/Venmo (3.8.0-pre1):
     - Braintree/API
-  - coinbase-official (HEAD based on 2.0.1)
+  - CardIO (4.0.0)
+  - coinbase-official/OAuth (2.1)
   - Expecta (0.3.1)
   - FLEX (1.1.1)
   - HockeySDK (3.5.6)
   - InAppSettingsKit (2.3.3)
   - KIF (3.1.2):
-    - KIF/XCTest
+    - KIF/XCTest (= 3.1.2)
   - KIF/XCTest (3.1.2)
   - KIFViewControllerActions (1.0.0):
     - KIF (>= 2.0.0)
@@ -70,7 +73,7 @@ PODS:
   - OCHamcrest (3.0.1)
   - OCMock (2.2.4)
   - OHHTTPStubs (3.1.5):
-    - OHHTTPStubs/Core
+    - OHHTTPStubs/Core (= 3.1.5)
   - OHHTTPStubs/Core (3.1.5)
   - PureLayout (1.0.1)
   - Specta (0.3.0.beta1)
@@ -84,7 +87,7 @@ DEPENDENCIES:
   - Braintree/Apple-Pay (from `.`)
   - Braintree/Coinbase (from `.`)
   - Braintree/Data (from `.`)
-  - coinbase-official (HEAD)
+  - CardIO
   - Expecta (~> 0.3.0)
   - FLEX
   - HockeySDK
@@ -112,10 +115,22 @@ EXTERNAL SOURCES:
     :commit: v0.3.0.beta1
     :git: https://github.com/specta/specta.git
 
+CHECKOUT OPTIONS:
+  KIF:
+    :commit: 1702bb14dc1070650816e9a26ee5a03d6bdba41e
+    :git: https://github.com/mickeyreiss/KIF.git
+  KIFViewControllerActions:
+    :commit: 10d8d3a7bac839d75b8cec894326eae957372245
+    :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
+  Specta:
+    :commit: v0.3.0.beta1
+    :git: https://github.com/specta/specta.git
+
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  Braintree: f825028da17fb3880dee278e1fd5b5dfe3352336
-  coinbase-official: 0f96cd3211d5234ee07c8d7741f694fed6d2574b
+  Braintree: 5d03987d6c4e8c42a2d589068a6cff364f8b9e7f
+  CardIO: 06ed3e3c13a5eebdb3db9916e894ed6168718ac2
+  coinbase-official: 3b28f6c0cfd6881f0793a5f1ad9167773a16a2a4
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
@@ -131,4 +146,4 @@ SPEC CHECKSUMS:
   UIActionSheet+Blocks: c8b9c02f3d08964e8f7a4202f004a639c15eab80
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.35.0

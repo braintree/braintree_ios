@@ -90,7 +90,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
             *error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                          code:BTMerchantIntegrationErrorInvalidClientToken
                                      userInfo:@{
-                                                NSLocalizedDescriptionKey: @"Invalid client token: client api url was not present or invalid. Please ensure your server is generating a valid Braintree ClientToken."
+                                                NSLocalizedDescriptionKey: @"Invalid client token: client api url was missing or invalid. Please ensure your server is generating a valid Braintree ClientToken."
                                                 }];
         }
         return NO;
@@ -176,13 +176,13 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
 
 #pragma mark NSCoding 
 
-- (void)encodeWithCoder:(NSCoder *)coder{
+- (void)encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:self.authorizationFingerprint forKey:@"authorizationFingerprint"];
     [coder encodeObject:self.clientApiURL forKey:@"clientApiURL"];
     [coder encodeObject:self.configuration forKey:@"claims"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder{
+- (id)initWithCoder:(NSCoder *)decoder {
     self = [self init];
     if (self){
         self.authorizationFingerprint = [decoder decodeObjectForKey:@"authorizationFingerprint"];
@@ -317,7 +317,7 @@ NSString *const BTClientTokenPayPalNonLiveDefaultValueMerchantUserAgreementUrl =
     return directBaseURL;
 }
 
-- (BOOL) btPayPal_isPayPalEnabled {
+- (BOOL)btPayPal_isPayPalEnabled {
     return [self.configuration boolForKey:BTClientTokenKeyPayPalEnabled
                      withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
 }

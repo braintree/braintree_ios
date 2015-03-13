@@ -65,7 +65,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
 
             expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
-            expect(error.userInfo).notTo.beNil;
+            expect(error.userInfo).notTo.beNil();
             expect(success).to.beFalsy();
         });
 
@@ -78,7 +78,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             [client btPayPal_preparePayPalMobileWithError:&error];
 
             expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
-            expect(error.userInfo).notTo.beNil;
+            expect(error.userInfo).notTo.beNil();
         });
 
         describe(@"btPayPal_payPalEnvironment", ^{

@@ -1,6 +1,40 @@
 # Braintree iOS SDK Release Notes
 
-## 3.6.0 (2014-02-20)
+# master
+
+* Coinbase
+  * Coinbase is now available in this release
+  * Coinbase UI is integrated into Drop In and BTPaymentButton
+
+* Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.5-bt1)
+  * Changes "Send Payment" button to simply "Pay"
+  * Minor fixes
+* Remove `en_UK` from Braintree-Demo-Info.plist (while keeping `en_GB`)
+
+## 3.7.0 (2015-03-02)
+
+* Refactor and improve SSL Pinning code
+* Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.4-bt1) that does not include card.io.
+  * :rotating_light: Please note! :rotating_light:  
+
+      This change breaks builds that depend on a workaround introduced in 3.4.0 that added card.io headers to fix [card.io duplicate symbol issues](https://github.com/braintree/braintree_ios/issues/53). 
+
+      Since card.io is not officially part of the Braintree API, and since the headers were only included as part of a workaround for use by a small group of developers, this potentially-breaking change is not accompanied by a major version release. 
+
+      If your build breaks due to this change, you can re-add card.io to your project's Podfile: 
+
+          pod 'CardIO', '~> 4.0'`
+
+      And adjust your card.io imports to:
+
+          #import <CardIO/CardIO.h>
+
+## 3.6.1 (2015-02-24)
+
+* Fixes
+  * Remove `GCC_TREAT_WARNINGS_AS_ERRORS` and `GCC_WARN_ABOUT_MISSING_NEWLINE` config from podspec.
+
+## 3.6.0 (2015-02-20)
 
 * Features
   * Beta support for native mobile 3D Secure
@@ -265,3 +299,4 @@ Thanks for the feedback so far. Keep it coming!
     * Incomplete / unpolished UI
         * Minor UX card validation issues in the card form
         * Drop-In UX flow issues and unaddressed edge cases
+

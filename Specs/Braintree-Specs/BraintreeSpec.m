@@ -136,7 +136,7 @@ describe(@"payPalButtonWithCompletion:", ^{
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             UIControl *control = [braintree payPalButtonWithDelegate:nil];
 #pragma clang diagnostic pop
-            expect(control).to.beNil;
+            expect(control).to.beNil();
         });
     });
 });

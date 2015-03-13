@@ -185,7 +185,7 @@ describe(@"isEqual:", ^{
     });
 });
 
-describe(@"copy", ^{
+fdescribe(@"copy", ^{
     __block BTClientToken *clientToken;
     beforeEach(^{
         NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithVersion:2];
@@ -196,10 +196,8 @@ describe(@"copy", ^{
         expect([clientToken copy]).notTo.beIdenticalTo(clientToken);
     });
 
-    pending(@"BTClientToken implementing isEqual:", ^{
-        it(@"returns an equal instance", ^{
-            expect([clientToken copy]).to.equal(clientToken);
-        });
+    it(@"returns an equal instance", ^{
+        expect([clientToken copy]).to.equal(clientToken);
     });
 
     it(@"returned instance has equal values", ^{
@@ -281,9 +279,7 @@ describe(@"PayPal", ^{
                                           BTClientTokenKeyPayPal: paypalClaims};
             
             mutableClaims = [baseClaims mutableCopy];
-            
-            
-            
+
             clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:baseClaims] error:NULL];
             done();
         });
