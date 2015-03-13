@@ -24,8 +24,6 @@ NSString *const BTClientTokenKeyConfigURL = @"configUrl";
         // Client token must be decoded first because the other values are retrieved from it
         self.clientTokenParser = [self decodeClientToken:JSONString error:error];
         self.authorizationFingerprint = [self.clientTokenParser stringForKey:BTClientTokenKeyAuthorizationFingerprint];
-
-        // TODO: make sure this is implemented everywhere
         self.configURL = [self.clientTokenParser URLForKey:BTClientTokenKeyConfigURL];
 
         if (![self validateClientToken:error]) {
@@ -47,6 +45,17 @@ NSString *const BTClientTokenKeyConfigURL = @"configUrl";
                                      userInfo:@{
                                                 NSLocalizedDescriptionKey: @"Invalid client token. Please ensure your server is generating a valid Braintree ClientToken.",
                                                 NSLocalizedFailureReasonErrorKey: @"Authorization fingerprint was not present or invalid." }];
+        }
+        return NO;
+    }
+
+    if (![self.configURL isKindOfClass:[NSURL class]] || self.configURL.absoluteString.length == 0) {
+        if (error != NULL) {
+            *error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                         code:BTMerchantIntegrationErrorInvalidClientToken
+                                     userInfo:@{
+                                                NSLocalizedDescriptionKey: @"Invalid client token: config url was missing or invalid. Please ensure your server is generating a valid Braintree ClientToken."
+                                                }];
         }
         return NO;
     }
@@ -75,6 +84,7 @@ NSString *const BTClientTokenKeyConfigURL = @"configUrl";
 #pragma mark NSCoding 
 
 - (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.configURL forKey:@"configURL"];
     [coder encodeObject:self.authorizationFingerprint forKey:@"authorizationFingerprint"];
     [coder encodeObject:self.clientTokenParser forKey:@"claims"];
 }
@@ -82,6 +92,7 @@ NSString *const BTClientTokenKeyConfigURL = @"configUrl";
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [self init];
     if (self){
+        self.configURL = [decoder decodeObjectForKey:@"configURL"];
         self.authorizationFingerprint = [decoder decodeObjectForKey:@"authorizationFingerprint"];
         self.clientTokenParser = [decoder decodeObjectForKey:@"claims"];
     }

@@ -41,6 +41,17 @@ context(@"edge cases", ^{
         expect([error.userInfo[NSUnderlyingErrorKey] debugDescription]).to.contain(@"JSON");
     });
 
+    it(@"returns nil when config url is blank", ^{
+        NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyConfigURL: @"" }];
+        NSError *error;
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:&error];
+
+        expect(clientToken).to.beNil();
+        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+        expect(error.code).to.equal(BTMerchantIntegrationErrorInvalidClientToken);
+        expect([error localizedDescription]).to.contain(@"config url");
+    });
+
     it(@"returns nil when authorization fingerprint is omitted", ^{
         NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: NSNull.null }];
 
@@ -53,17 +64,6 @@ context(@"edge cases", ^{
         expect([error localizedDescription]).to.contain(@"Invalid client token.");
         expect([error localizedFailureReason]).to.contain(@"Authorization fingerprint");
     });
-
-//    it(@"returns nil when client api url is blank", ^{
-//        NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyClientApiURL: @"" }];
-//        NSError *error;
-//        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenRawJSON error:&error];
-//
-//        expect(clientToken).to.beNil();
-//        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-//        expect(error.code).to.equal(BTMerchantIntegrationErrorInvalidClientToken);
-//        expect([error localizedDescription]).to.contain(@"client api url");
-//    });
 
     it(@"returns nil when authorization fingerprint is blank", ^{
         NSString *clientTokenRawJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"" }];
@@ -79,25 +79,26 @@ context(@"edge cases", ^{
     });
 });
 
-//describe(@"coding", ^{
-//    xit(@"roundtrips the clientToken", ^{
-//        NSString *clientTokenEncodedJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyClientApiURL: @"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api",
-//                                                                                                     BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key" }];
-//        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenEncodedJSON error:NULL];
-//
-//        NSMutableData *data = [NSMutableData data];
-//        NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-//        [clientToken encodeWithCoder:coder];
-//        [coder finishEncoding];
-//
-//        NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-//        BTClientToken *returnedClientToken = [[BTClientToken alloc] initWithCoder:decoder];
-//        [decoder finishDecoding];
-//
-////        expect(returnedClientToken.clientApiURL).to.equal([NSURL URLWithString:@"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api"]);
-//        expect(returnedClientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key");
-//    });
-//});
+describe(@"coding", ^{
+    it(@"roundtrips the clientToken", ^{
+        NSString *clientTokenEncodedJSON = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{
+                                                                                                    BTClientTokenKeyConfigURL: @"https://api.example.com/client_api/v1/configuration",
+                                                                                                    BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key" }];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenEncodedJSON error:NULL];
+
+        NSMutableData *data = [NSMutableData data];
+        NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+        [clientToken encodeWithCoder:coder];
+        [coder finishEncoding];
+
+        NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        BTClientToken *returnedClientToken = [[BTClientToken alloc] initWithCoder:decoder];
+        [decoder finishDecoding];
+
+        expect(returnedClientToken.configURL).to.equal([NSURL URLWithString:@"https://api.example.com/client_api/v1/configuration"]);
+        expect(returnedClientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=1234567&public_key=integration_public_key");
+    });
+});
 
 describe(@"isEqual:", ^{
     it(@"returns YES when tokens are identical", ^{
