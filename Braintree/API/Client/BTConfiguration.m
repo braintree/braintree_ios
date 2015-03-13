@@ -92,9 +92,9 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
     return [self.configurationParser stringForKey:BTConfigurationKeyMerchantAccountId];
 }
 
-- (NSDictionary *)applePayConfiguration {
-    return [self.configurationParser dictionaryForKey:BTConfigurationKeyApplePay];
-}
+//- (NSDictionary *)applePayConfiguration {
+//    return [self.configurationParser dictionaryForKey:BTConfigurationKeyApplePay];
+//}
 
 - (BTClientApplePayStatus)applePayStatus {
 #if BT_ENABLE_APPLE_PAY

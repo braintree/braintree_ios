@@ -111,16 +111,14 @@ describe(@"isEqual:", ^{
         expect(clientToken).to.equal(clientToken2);
     });
 
-//    it(@"returns NO when tokens are different in meaningful ways", ^{
-//        NSString *clientTokenString1 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyAnalytics: @{ BTClientTokenKeyURL: @"http://some-url" } }];
-//        NSString *clientTokenString2 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyAnalytics: @{ BTClientTokenKeyURL: @"http://a-different-url" } }];
-//        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenString1 error:nil];
-//        BTClientToken *clientToken2 = [[BTClientToken alloc] initWithClientTokenString:clientTokenString2 error:nil];
-//
-//        expect(clientToken).notTo.beNil();
-//
-//        expect(clientToken).notTo.equal(clientToken2);
-//    });
+    it(@"returns NO when tokens are different in meaningful ways", ^{
+        NSString *clientTokenString1 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"one_auth_fingerprint" }];
+        NSString *clientTokenString2 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"different_auth_fingerprint" }];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenString1 error:nil];
+        BTClientToken *clientToken2 = [[BTClientToken alloc] initWithClientTokenString:clientTokenString2 error:nil];
+        expect(clientToken).notTo.beNil();
+        expect(clientToken).notTo.equal(clientToken2);
+    });
 });
 
 describe(@"copy", ^{
@@ -140,21 +138,9 @@ describe(@"copy", ^{
 
     it(@"returned instance has equal values", ^{
         BTClientToken *copiedClientToken = [clientToken copy];
-//        expect(copiedClientToken.clientApiURL).to.equal(clientToken.clientApiURL);
-//        expect(copiedClientToken.analyticsURL).to.equal(clientToken.analyticsURL);
+        expect(copiedClientToken.configURL).to.equal(clientToken.configURL);
+        expect(copiedClientToken.clientTokenParser).to.equal(clientToken.clientTokenParser);
         expect(copiedClientToken.authorizationFingerprint).to.equal(clientToken.authorizationFingerprint);
-
-        // TODO: compare configUrl
-
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-//        expect(copiedClientToken.applePayConfiguration).to.equal(clientToken.applePayConfiguration);
-//#pragma clang diagnostic pop
-//        expect(copiedClientToken.applePayStatus).to.equal(BTClientApplePayStatusMock);
-//        expect(copiedClientToken.applePayCountryCode).to.equal(@"US");
-//        expect(copiedClientToken.applePayCurrencyCode).to.equal(@"USD");
-//        expect(copiedClientToken.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
-//        expect(copiedClientToken.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
     });
 });
 

@@ -67,6 +67,7 @@ NSString *const BTClientTokenKeyConfigURL = @"configUrl";
 - (instancetype)copyWithZone:(NSZone *)zone {
     BTClientToken *copiedClientToken = [[[self class] allocWithZone:zone] init];
     copiedClientToken.authorizationFingerprint = [_authorizationFingerprint copy];
+    copiedClientToken.configURL = [_configURL copy];
     copiedClientToken.clientTokenParser = [self.clientTokenParser copy];
     return copiedClientToken;
 }
