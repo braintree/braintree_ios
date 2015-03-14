@@ -22,13 +22,25 @@
 
 @implementation BTClient
 
++ (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock {
+    BTClient *client = [[self alloc] initSyncWithClientTokenString:clientTokenString];
+    [client fetchConfigurationWithCompletion:^(BTClient *client, NSError *error) {
+        completionBlock(client, error);
+    }];
+}
+
 - (instancetype)initWithClientToken:(NSString *)clientTokenString {
+    return [self initSyncWithClientTokenString:clientTokenString];
+}
+
+- (instancetype)initSyncWithClientTokenString:(NSString *)clientTokenString {
     if(![clientTokenString isKindOfClass:[NSString class]]){
         NSString *reason = @"BTClient could not initialize because the provided clientToken was of an invalid type";
         [[BTLogger sharedLogger] error:reason];
 
         return nil;
     }
+
     self = [self init];
     if (self) {
         NSError *error;
@@ -67,7 +79,6 @@
     return self;
 }
 
-// TODO: merge into a new initializer
 - (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock {
     NSDictionary *parameters = @{
                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
@@ -75,24 +86,22 @@
     [self.configHttp GET:nil
               parameters:parameters
               completion:^(BTHTTPResponse *response, NSError *error) {
-                  if (!response.isSuccess) {
+                  if (response.isSuccess) {
+                      NSError *configurationError;
+                      self.configuration = [[BTConfiguration alloc] initWithResponseParser:response.object error:&configurationError];
+                      if (completionBlock) {
+                          completionBlock(self, configurationError);
+                      }
+                  } else {
                       if (!error) {
                           error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                                       code:BTServerErrorGatewayUnavailable
                                                   userInfo:@{NSLocalizedDescriptionKey:
                                                                  @"Braintree did not return a successful response, and no underlying error was provided."}];
                       }
-                  }
-                  if (error) {
                       if (completionBlock) {
                           completionBlock(nil, error);
                       }
-                      return;
-                  }
-                  NSError *configurationError;
-                  self.configuration = [[BTConfiguration alloc] initWithResponseParser:response.object error:&configurationError];
-                  if (completionBlock) {
-                      completionBlock(self, error);
                   }
               }];
 }

@@ -47,16 +47,13 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// communication with Braintree.
 @interface BTClient : NSObject <NSCoding, NSCopying>
 
-/// Initialize and configure a `BTClient` with a client token.
+/// Begins the setup of `BTClient` with a client token.
 /// The client token dictates the behavior of subsequent operations.
 ///
 /// @param clientTokenString Braintree client token
-- (instancetype)initWithClientToken:(NSString *)clientTokenString;
+/// @param completionBlock callback will be called exactly once asynchronously, providing either an instance of BTClient upon success or an error upon failure.
++ (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock;
 
-/// Fetches Configuration and calls the completionBlock when this succeeds.
-///
-/// @param completionBlock callback with an instance of BTConfiguration or error.
-- (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock;
 
 /// The set of challenges that need to be provided to `saveCardWithNumber`
 /// in order to save a card. This is dependent upon on your Gateway settings
@@ -175,6 +172,13 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 @end
 
 @interface BTClient (Deprecated)
+
+/// Initialize and configure a `BTClient` with a client token.
+/// The client token dictates the behavior of subsequent operations.
+///
+/// @param clientTokenString Braintree client token
+- (instancetype)initWithClientToken:(NSString *)clientTokenString DEPRECATED_MSG_ATTRIBUTE("Please use asynchronous initializer +setupWithClientToken:completion:");
+
 
 /// Save a card to Braintree
 ///

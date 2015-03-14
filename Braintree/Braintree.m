@@ -25,14 +25,13 @@
 
 + (void)setupWithClientToken:(NSString *)clientToken
                   completion:(BraintreeCompletionBlock)completionBlock {
-    Braintree *braintree = [(Braintree *)[self alloc] initWithClientToken:clientToken];
-    // BTConfiguration
-    [braintree.client fetchConfigurationWithCompletion:^(__unused id configuration, NSError *error)
-    {
-        if (completionBlock) {
-            completionBlock(braintree, error);
-        }
-    }];
+    
+    [BTClient setupWithClientToken:clientToken
+                        completion:^(BTClient *client, NSError *error)
+     {
+         Braintree *braintree = [[self alloc] initWithClient:client];
+         completionBlock(braintree, error);
+     }];
 }
 
 - (id)init {
@@ -44,12 +43,17 @@
 }
 
 - (instancetype)initWithClientToken:(NSString *)clientToken {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    return [self initWithClient:[[BTClient alloc] initWithClientToken:clientToken]];
+#pragma clang diagnostic pop
+}
+
+- (instancetype)initWithClient:(BTClient *)client {
     self = [self init];
     if (self) {
-        self.client = [[BTClient alloc] initWithClientToken:clientToken];
-        [self.client postAnalyticsEvent:@"sdk.ios.braintree.init"
-                                success:nil
-                                failure:nil];
+        self.client = client;
+        [self.client postAnalyticsEvent:@"sdk.ios.braintree.init"];
     }
     return self;
 }
