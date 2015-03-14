@@ -262,7 +262,7 @@
 }
 
 - (NSArray*) evaluateVisualFormat{
-    NSString *summaryViewVisualFormat = self.summaryView.hidden ? @"" : @"[summaryView(==60)]";
+    NSString *summaryViewVisualFormat = self.summaryView.hidden ? @"" : @"[summaryView(>=60)]";
     NSString *ctaControlVisualFormat = self.ctaControl.hidden ? @"" : @"[ctaControl(==50)]";
 
     if (self.state == BTDropInContentViewStateActivity) {
