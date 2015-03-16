@@ -371,6 +371,10 @@ describe(@"coinbase", ^{
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.coinbaseEnabled).to.equal(NO);
         });
+        // We don't check for coinbaseMerchantAccount because it may not always be required,
+        // i.e. Coinbase could actually know what the coinbaseMerchantAccount should be by
+        // looking it up with the coinbaseClientId. We also don't check for coinbaseRedirectUri
+        // because we don't use it.
     });
 
     describe(@"coinbaseClientId", ^{

@@ -25,6 +25,9 @@
 + (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock {
     BTClient *client = [[self alloc] initSyncWithClientTokenString:clientTokenString];
     [client fetchConfigurationWithCompletion:^(BTClient *client, NSError *error) {
+        if (client && !error) {
+            client.hasConfiguration = YES;
+        }
         completionBlock(client, error);
     }];
 }
@@ -59,7 +62,6 @@
         }
 
         // For older integrations
-        // TODO: add indication of the configuration's source
         self.configuration = [[BTConfiguration alloc] initWithResponseParser:[self.clientToken clientTokenParser] error:&error];
         if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
 
@@ -80,9 +82,7 @@
 }
 
 - (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock {
-    NSDictionary *parameters = @{
-                                 @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                 };
+    NSDictionary *parameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
     [self.configHttp GET:nil
               parameters:parameters
               completion:^(BTHTTPResponse *response, NSError *error) {

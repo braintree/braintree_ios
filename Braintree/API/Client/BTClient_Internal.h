@@ -17,6 +17,7 @@ typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResul
 /// Models the contents of the client token, as it is received from the merchant server
 @property (nonatomic, strong) BTClientToken *clientToken;
 @property (nonatomic, strong) BTConfiguration *configuration;
+@property (nonatomic) BOOL hasConfiguration; // YES if configuration was retrieved directly from Braintree, rather than from the client token
 
 - (void)lookupNonceForThreeDSecure:(NSString *)nonce
                  transactionAmount:(NSDecimalNumber *)amount

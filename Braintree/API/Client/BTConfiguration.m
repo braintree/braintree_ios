@@ -92,10 +92,6 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
     return [self.configurationParser stringForKey:BTConfigurationKeyMerchantAccountId];
 }
 
-//- (NSDictionary *)applePayConfiguration {
-//    return [self.configurationParser dictionaryForKey:BTConfigurationKeyApplePay];
-//}
-
 - (BTClientApplePayStatus)applePayStatus {
 #if BT_ENABLE_APPLE_PAY
     return [[self.configurationParser responseParserForKey:BTConfigurationKeyApplePay] integerForKey:@"status" withValueTransformer:[BTClientTokenApplePayStatusValueTransformer sharedInstance]];
@@ -284,10 +280,6 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 - (BOOL)coinbaseEnabled {
     return ([self coinbaseConfiguration] &&
             [self coinbaseClientId] &&
-            // We don't check for coinbaseMerchantAccount because it may not always be required,
-            // i.e. Coinbase could actually know what the coinbaseMerchantAccount should be by
-            // looking it up with the coinbaseClientId. We also don't check for coinbaseRedirectUri
-            // because we don't use it.
             [self coinbaseScope] &&
             [self.configurationParser boolForKey:BTConfigurationKeyCoinbaseEnabled
                             withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]]);
