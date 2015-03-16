@@ -30,9 +30,17 @@
 
     // Create subviews
     self.slugLabel = [[UILabel alloc] init];
+    self.slugLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.slugLabel.numberOfLines = 0;
+    
     self.summaryLabel = [[UILabel alloc] init];
+    self.summaryLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.summaryLabel.numberOfLines = 0;
+    
     self.amountLabel = [[UILabel alloc] init];
-
+    [self.amountLabel setContentCompressionResistancePriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
+    [self.amountLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
+    
     [self setTheme:self.theme];
 
     // Configure subviews
@@ -67,31 +75,25 @@
                               @"horizontalMargin": @(self.theme.horizontalMargin)};
 
     // View Constraints
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[view(>=height)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[view(>=height)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    // Slug Label Constraints
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[slugLabel]"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-
-    // Amount Label Constraints
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[amountLabel]-(horizontalMargin)-|"
+    // Slug and Amount Label Constraints
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[slugLabel]-[amountLabel]-(horizontalMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
     // Summary Label Constraints
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[summaryLabel]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[summaryLabel]-(horizontalMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
     // Vertical Constraints
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(topPadding)-[slugLabel]-(middlePadding)-[summaryLabel]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(topPadding)-[slugLabel]-(middlePadding)-[summaryLabel]-(topPadding)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
