@@ -6,7 +6,7 @@
 
 @implementation BTClient (Offline)
 
-+ (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)configuration {
++ (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)overrides {
     NSMutableDictionary *clientTokenDataDictionary =
     [NSMutableDictionary dictionaryWithDictionary:@{BTClientTokenKeyVersion: @2,
                                                     BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
@@ -27,7 +27,7 @@
                                                             }
                                                     }];
 
-    [clientTokenDataDictionary addEntriesFromDictionary:configuration];
+    [clientTokenDataDictionary addEntriesFromDictionary:overrides];
 
     NSData *clientTokenData = [NSJSONSerialization dataWithJSONObject:clientTokenDataDictionary
                                                               options:0
