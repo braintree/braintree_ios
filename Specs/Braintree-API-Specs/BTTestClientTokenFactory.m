@@ -77,12 +77,7 @@
                       @"userAgreementUrl": @"http://example.com/tos",
                       @"baseUrl": @"https://assets.example.com",
                       @"assetsUrl": @"https://checkout.paypal.example.com",
-
-                      // Why was this null?
-                      //@"directBaseUrl": [NSNull null],
-
-                      @"directBaseUrl": @"http://api.paypal.example.com",
-
+                      @"directBaseUrl": [NSNull null],
                       @"allowHttp": @YES,
                       @"environmentNoNetwork": @YES,
                       @"environment": @"offline",

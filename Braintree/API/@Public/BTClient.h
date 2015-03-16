@@ -58,13 +58,11 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// The set of challenges that need to be provided to `saveCardWithNumber`
 /// in order to save a card. This is dependent upon on your Gateway settings
 /// (potentially among other factors).
-// This property is used by Drop-In and may be deprecated when that usage is changed.
-@property (nonatomic, readonly) NSSet *challenges; // DEPRECATED_MSG_ATTRIBUTE("Your challenges should be hardcoded or fetched from your own server")
+@property (nonatomic, readonly) NSSet *challenges;
 
 /// The public Braintree Merchant ID for which this client
 /// was initialized.
-// This property is used by BTVenmoAppSwitchHandler and may be deprecated when that usage is changed.
-@property (nonatomic, copy, readonly) NSString *merchantId; // DEPRECATED_MSG_ATTRIBUTE("You should not use merchantId")
+@property (nonatomic, copy, readonly) NSString *merchantId;
 
 #pragma mark - Fetch a Payment Method
 

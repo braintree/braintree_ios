@@ -283,8 +283,7 @@ describe(@"PayPal", ^{
 
     describe(@"btPayPal_directBaseURL", ^{
         it(@"returns the directBaseURL specified by the configuration", ^{
-            // Why does /v1/ get appended?
-            expect(configuration.btPayPal_directBaseURL).to.equal([NSURL URLWithString:@"http://api.paypal.example.com/v1/"]);
+            expect(configuration.btPayPal_directBaseURL).to.beNil();
         });
     });
 
