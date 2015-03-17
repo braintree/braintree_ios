@@ -11,7 +11,37 @@ beforeEach(^{
 });
 
 describe(@"copyWithMetadata:", ^{
+    __block BTClient *client;
+    beforeEach(^{
+        XCTestExpectation *clientExpectation = [self expectationWithDescription:@"Setup client"];
+        [BTClient setupWithClientToken:clientToken completion:^(BTClient *_client, NSError *error) {
+            expect(_client).toNot.beNil();
+            client = _client;
+            [clientExpectation fulfill];
+        }];
+        [self waitForExpectationsWithTimeout:3 handler:nil];
+    });
+    it(@"returns a copy of the client with new metadata", ^{
+        BTClient *copied = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+            metadata.integration = BTClientMetadataIntegrationDropIn;
+            metadata.source = BTClientMetadataSourcePayPalSDK;
+        }];
+        expect(copied).toNot.beIdenticalTo(client);
+        expect(copied.metadata.integration).to.equal(BTClientMetadataIntegrationDropIn);
+        expect(copied.metadata.source).to.equal(BTClientMetadataSourcePayPalSDK);
+    });
+    it(@"does not fail if block is nil", ^{
+        BTClient *copied = [client copyWithMetadata:nil];
+        expect(copied).toNot.beIdenticalTo(client);
+        expect(copied.metadata.integration).to.equal(client.metadata.integration);
+        expect(copied.metadata.source).to.equal(client.metadata.source);
+    });
+});
 
+// Test deprecated behavior
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+describe(@"copyWithMetadata:", ^{
     __block BTClient *client;
     beforeEach(^{
         client = [[BTClient alloc] initWithClientToken:clientToken];
@@ -34,6 +64,7 @@ describe(@"copyWithMetadata:", ^{
         expect(copied.metadata.source).to.equal(client.metadata.source);
     });
 });
+#pragma clang diagnostic pop
 
 describe(@"BTClient POST _meta param", ^{
 
