@@ -7,7 +7,7 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
 
 @interface BraintreeDemoMerchantAPI ()
 @property (nonatomic, strong) AFHTTPRequestOperationManager *sessionManager;
-@property (nonatomic, assign) BraintreeDemoTransactionServiceEnvironment currentEnvironment;
+@property (nonatomic, assign) NSString *currentEnvironmentURLString;
 @property (nonatomic, assign) BraintreeDemoTransactionServiceThreeDSecureRequiredStatus threeDSecureRequiredStatus;
 @end
 
@@ -25,39 +25,44 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
 - (id)init {
     self = [super init];
     if (self) {
-        self.currentEnvironment = -1;
         self.threeDSecureRequiredStatus = -1;
-        [self setupSessionManager];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupSessionManager) name:NSUserDefaultsDidChangeNotification object:nil];
+        [self setupSessionManager:nil];
+        
+        // Use KVO because we don't want to be notified while the user types each character of a Custom URL
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:BraintreeDemoSettingsEnvironmentDefaultsKey options:NSKeyValueObservingOptionNew context:NULL];
+        [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey options:NSKeyValueObservingOptionNew context:NULL];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupSessionManager:) name:UITextFieldTextDidEndEditingNotification object:nil];
     }
     return self;
 }
 
 - (void)dealloc {
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:BraintreeDemoSettingsEnvironmentDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUserDefaultsDidChangeNotification object:nil];
 }
 
-- (void)setupSessionManager {
-    if (self.currentEnvironment != [BraintreeDemoSettings currentEnvironment] || self.threeDSecureRequiredStatus != [BraintreeDemoSettings threeDSecureRequiredStatus]) {
-        self.currentEnvironment = [BraintreeDemoSettings currentEnvironment];
+- (void)observeValueForKeyPath:(__unused NSString *)keyPath ofObject:(__unused id)object change:(__unused NSDictionary *)change context:(__unused void *)context {
+    [self setupSessionManager:nil];
+}
+
+- (void)setupSessionManager:(__unused NSNotification *)notif {
+    if (![self.currentEnvironmentURLString isEqualToString:[BraintreeDemoSettings currentEnvironmentURLString]] ||
+        self.threeDSecureRequiredStatus != [BraintreeDemoSettings threeDSecureRequiredStatus])
+    {
+        self.currentEnvironmentURLString = [BraintreeDemoSettings currentEnvironmentURLString];
         self.threeDSecureRequiredStatus = [BraintreeDemoSettings threeDSecureRequiredStatus];
-        switch (self.currentEnvironment) {
-            case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
-                self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://braintree-sample-merchant.herokuapp.com"]];
-                break;
-            case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
-                self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://executive-sample-merchant.herokuapp.com"]];
-                break;
-        }
+        self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:[BraintreeDemoSettings currentEnvironmentURLString]]];
         [[NSNotificationCenter defaultCenter] postNotificationName:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:self];
     }
 }
 
 - (NSString *)merchantAccountId {
-    if ([BraintreeDemoSettings currentEnvironment] == BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant && [BraintreeDemoSettings threeDSecureEnabled]) {
+    if ([[BraintreeDemoSettings currentEnvironmentName] isEqualToString:@"Production"] &&
+        [BraintreeDemoSettings threeDSecureEnabled])
+    {
         return @"test_AIB";
     }
-
     return nil;
 }
 

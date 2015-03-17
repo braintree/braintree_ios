@@ -2,6 +2,7 @@
 
 #import "BTClient_Internal.h"
 #import "BTClientToken.h"
+#import "BTConfiguration.h"
 #import "BTLogger_Internal.h"
 #import "BTMutablePaymentMethod.h"
 #import "BTMutablePayPalPaymentMethod.h"
@@ -21,17 +22,34 @@
 
 @implementation BTClient
 
++ (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock {
+    BTClient *client = [[self alloc] initSyncWithClientTokenString:clientTokenString];
+    [client fetchConfigurationWithCompletion:^(BTClient *client, NSError *error) {
+        if (client && !error) {
+            client.hasConfiguration = YES;
+        }
+        completionBlock(client, error);
+    }];
+}
+
 - (instancetype)initWithClientToken:(NSString *)clientTokenString {
+    return [self initSyncWithClientTokenString:clientTokenString];
+}
+
+- (instancetype)initSyncWithClientTokenString:(NSString *)clientTokenString {
     if(![clientTokenString isKindOfClass:[NSString class]]){
         NSString *reason = @"BTClient could not initialize because the provided clientToken was of an invalid type";
         [[BTLogger sharedLogger] error:reason];
 
         return nil;
     }
+
     self = [self init];
     if (self) {
         NSError *error;
         self.clientToken = [[BTClientToken alloc] initWithClientTokenString:clientTokenString error:&error];
+        // Previously, error was ignored. Now, we at least log it
+        if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
         if (!self.clientToken) {
             NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
             [[BTLogger sharedLogger] error:reason];
@@ -43,11 +61,18 @@
             return nil;
         }
 
-        self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
+        // For older integrations
+        self.configuration = [[BTConfiguration alloc] initWithResponseParser:[self.clientToken clientTokenParser] error:&error];
+        if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
+
+        self.configHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.configURL];
+        [self.configHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+
+        self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
 
-        if (self.clientToken.analyticsEnabled) {
-            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.analyticsURL];
+        if (self.configuration.analyticsEnabled) {
+            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
             [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         }
 
@@ -56,9 +81,35 @@
     return self;
 }
 
+- (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock {
+    NSDictionary *parameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
+    [self.configHttp GET:nil
+              parameters:parameters
+              completion:^(BTHTTPResponse *response, NSError *error) {
+                  if (response.isSuccess) {
+                      NSError *configurationError;
+                      self.configuration = [[BTConfiguration alloc] initWithResponseParser:response.object error:&configurationError];
+                      if (completionBlock) {
+                          completionBlock(self, configurationError);
+                      }
+                  } else {
+                      if (!error) {
+                          error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
+                                                      code:BTServerErrorGatewayUnavailable
+                                                  userInfo:@{NSLocalizedDescriptionKey:
+                                                                 @"Braintree did not return a successful response, and no underlying error was provided."}];
+                      }
+                      if (completionBlock) {
+                          completionBlock(nil, error);
+                      }
+                  }
+              }];
+}
+
 - (id)copyWithZone:(NSZone *)zone {
     BTClient *copiedClient = [[BTClient allocWithZone:zone] init];
     copiedClient.clientToken = [_clientToken copy];
+    copiedClient.configuration = [_configuration copy];
     copiedClient.clientApiHttp = [_clientApiHttp copy];
     copiedClient.analyticsHttp = [_analyticsHttp copy];
     copiedClient.metadata = [self.metadata copy];
@@ -68,29 +119,31 @@
 #pragma mark - Configuration
 
 - (NSSet *)challenges {
-    return self.clientToken.challenges;
+    return self.configuration.challenges;
 }
 
 - (NSString *)merchantId {
-    return self.clientToken.merchantId;
+    return self.configuration.merchantId;
 }
 
 #pragma mark - NSCoding methods
 
 - (void)encodeWithCoder:(NSCoder *)coder{
     [coder encodeObject:self.clientToken forKey:@"clientToken"];
+    [coder encodeObject:self.configuration forKey:@"configuration"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder{
     self = [super init];
     if (self){
         self.clientToken = [decoder decodeObjectForKey:@"clientToken"];
+        self.configuration = [decoder decodeObjectForKey:@"configuration"];
 
-        self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.clientApiURL];
+        self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
 
-        if (self.clientToken.analyticsEnabled) {
-            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.analyticsURL];
+        if (self.configuration.analyticsEnabled) {
+            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
         }
     }
     return self;
@@ -215,7 +268,7 @@
 
     NSString *encodedPaymentData;
     NSError *error;
-    switch (self.clientToken.applePayStatus) {
+    switch (self.configuration.applePayStatus) {
         case BTClientApplePayStatusOff:
             error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                         code:BTErrorUnsupported
@@ -360,7 +413,7 @@
                    success:(BTClientAnalyticsSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
 
-    if (self.clientToken.analyticsEnabled) {
+    if (self.configuration.analyticsEnabled) {
         NSMutableDictionary *requestParameters = [self metaAnalyticsParameters];
         [requestParameters addEntriesFromDictionary:@{ @"analytics": @[@{ @"kind": eventKind }],
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
@@ -396,8 +449,8 @@
                            failure:(BTClientFailureBlock)failureBlock {
     NSMutableDictionary *requestParameters = [@{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                                  @"amount": amount } mutableCopy];
-    if (self.clientToken.merchantAccountId) {
-        requestParameters[@"merchant_account_id"] = self.clientToken.merchantAccountId;
+    if (self.configuration.merchantAccountId) {
+        requestParameters[@"merchant_account_id"] = self.configuration.merchantAccountId;
     }
     NSString *urlSafeNonce = [nonce stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [self.clientApiHttp POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
@@ -529,7 +582,8 @@
 }
 
 - (BOOL)isEqualToClient:(BTClient *)client {
-    return (self.clientToken == client.clientToken) || [self.clientToken isEqual:client.clientToken];
+    return ((self.clientToken == client.clientToken) || [self.clientToken isEqual:client.clientToken]) &&
+           ((self.configuration == client.configuration) || [self.configuration isEqual:client.configuration]);
 }
 
 - (BOOL)isEqual:(id)object {

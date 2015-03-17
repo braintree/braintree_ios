@@ -49,7 +49,10 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
         NSAssert(error == nil, @"testing/client_token failed or responded with an error: %@", error);
         NSString *clientTokenString = [response.object stringForKey:@"clientToken"];
 
-        block([(BTClient *)[BTClient alloc] initWithClientToken:clientTokenString]);
+        [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *client, NSError *error) {
+            NSAssert(client != nil, @"BTClient setup failed with error %@", error);
+            block(client);
+        }];
     }];
 }
 
