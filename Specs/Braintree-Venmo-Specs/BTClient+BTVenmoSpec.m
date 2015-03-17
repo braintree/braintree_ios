@@ -15,7 +15,7 @@ __block NSMutableDictionary *baseClientTokenClaims;
 beforeEach(^{
 
     baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                                                             BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api",
+                                                                             BTClientTokenKeyConfigURL: @"https://api.example.com/client_api/v1/configuration",
                                                                              BTClientTokenKeyVersion: @2 }];
 
 });

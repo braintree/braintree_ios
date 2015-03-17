@@ -91,24 +91,29 @@
     self.lastTransactionId = nil;
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error){
+    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
         if (error) {
             [self displayError:error forTask:@"Fetching Client Token"];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             return;
         }
 
-        Braintree *braintree = [Braintree braintreeWithClientToken:clientToken];
-
-        [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error){
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            [self.refreshControl endRefreshing];
+        [Braintree setupWithClientToken:clientToken completion:^(Braintree *braintree, NSError *error) {
             if (error) {
-                [self displayError:error forTask:@"Fetching Merchant Config"];
+                [self displayError:error forTask:@"Fetching Braintree Config"];
                 return;
             }
 
-            [self resetWithBraintree:braintree merchantId:merchantId];
+            [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error) {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                [self.refreshControl endRefreshing];
+                if (error) {
+                    [self displayError:error forTask:@"Fetching Merchant Config"];
+                    return;
+                }
+
+                [self resetWithBraintree:braintree merchantId:merchantId];
+            }];
         }];
     }];
 }
@@ -249,18 +254,7 @@
 }
 
 - (void)switchToEnvironment {
-    NSString *environmentName;
-
-    switch ([BraintreeDemoSettings currentEnvironment]) {
-        case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
-            environmentName = @"Sandbox";
-            break;
-        case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
-            environmentName = @"Production";
-    }
-
-    self.environmentSelector.title = environmentName;
-
+    self.environmentSelector.title = [BraintreeDemoSettings currentEnvironmentName];
     [self initializeBraintree];
 }
 

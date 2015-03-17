@@ -170,14 +170,15 @@ static BTOfflineClientBackend *backend;
                                                statusCode:200
                                               HTTPVersion:BTOfflineModeHTTPVersionString
                                              headerFields:@{@"Content-Type": @"application/json" }];
-
-        NSDictionary *testConfiguration = @{
-                                            @"applePay": @{ @"status": @"mock",
-                                                            @"countryCode": @"US",
-                                                            @"currencyCode": @"USD",
-                                                            @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ],
-                                                            @"merchantIdentifier": @"offline-mode-apple-merchant-identifier" }
-                                            };
+        Class TestConfigurationFactoryClass = [NSClassFromString(@"BTTestClientTokenFactory") class];
+        NSDictionary *testConfiguration = TestConfigurationFactoryClass ? (NSDictionary *)[TestConfigurationFactoryClass performSelector:@selector(configuration)] :
+        @{
+          @"applePay": @{ @"status": @"mock",
+                          @"countryCode": @"US",
+                          @"currencyCode": @"USD",
+                          @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ],
+                          @"merchantIdentifier": @"offline-mode-apple-merchant-identifier" }
+          };
         responseData = ({
             NSError *error;
             NSData *data = [NSJSONSerialization dataWithJSONObject:testConfiguration

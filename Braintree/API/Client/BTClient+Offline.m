@@ -2,28 +2,32 @@
 #import "BTClientToken.h"
 #import "BTOfflineModeURLProtocol.h"
 #import "BTOfflineClientBackend.h"
+#import "BTConfiguration.h"
 
 @implementation BTClient (Offline)
 
-+ (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)configuration {
++ (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)overrides {
     NSMutableDictionary *clientTokenDataDictionary =
-    [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
-                                                     BTClientTokenKeyClientApiURL: BTOfflineModeClientApiBaseURL,
-                                                     BTClientTokenKeyConfigURL: [BTOfflineModeClientApiBaseURL stringByAppendingString:@"/configuration"],
-                                                     BTClientTokenKeyVersion: @2,
-                                                     BTClientTokenKeyApplePay: @{
-                                                             BTClientTokenKeyStatus: @"mock",
-                                                             @"countryCode": @"US",
-                                                             @"currencyCode": @"USD",
-                                                             @"merchantIdentifier": @"merchant-id-apple-pay",
-                                                             @"supportedNetworks": @[
-                                                                     @"visa",
-                                                                     @"mastercard",
-                                                                     @"amex"
-                                                                     ]
-                                                             } }];
+    [NSMutableDictionary dictionaryWithDictionary:@{BTClientTokenKeyVersion: @2,
+                                                    BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
+                                                    BTClientTokenKeyConfigURL: [BTOfflineModeClientApiBaseURL stringByAppendingString:@"/configuration"],
+                                                    // New BTConfiguration constants are the same as the BTClientToken ones were;
+                                                    // Ensure that old behavior still works.
+                                                    BTConfigurationKeyClientApiURL: BTOfflineModeClientApiBaseURL,
+                                                    BTConfigurationKeyApplePay: @{
+                                                            BTConfigurationKeyStatus: @"mock",
+                                                            @"countryCode": @"US",
+                                                            @"currencyCode": @"USD",
+                                                            @"merchantIdentifier": @"merchant-id-apple-pay",
+                                                            @"supportedNetworks": @[
+                                                                    @"visa",
+                                                                    @"mastercard",
+                                                                    @"amex"
+                                                                    ]
+                                                            }
+                                                    }];
 
-    [clientTokenDataDictionary addEntriesFromDictionary:configuration];
+    [clientTokenDataDictionary addEntriesFromDictionary:overrides];
 
     NSData *clientTokenData = [NSJSONSerialization dataWithJSONObject:clientTokenDataDictionary
                                                               options:0

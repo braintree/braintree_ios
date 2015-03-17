@@ -1,6 +1,7 @@
 #if BT_ENABLE_APPLE_PAY
 #import "BTClientTokenApplePayStatusValueTransformer.h"
 #import "BTClientToken.h"
+#import "BTConfiguration.h" // For BTClientApplePayStatus* enums
 
 @implementation BTClientTokenApplePayStatusValueTransformer
 

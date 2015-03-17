@@ -48,7 +48,7 @@ __block NSMutableDictionary *baseClientTokenClaims;
 beforeEach(^{
     baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyVersion: @2,
                                                                              BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                                                             BTClientTokenKeyClientApiURL: @"http://gateway.example.com/client_api" }];
+                                                                             BTClientTokenKeyConfigURL: @"http://api.example.com/client_api/v1/configuration" }];
 });
 
 __block id mockCLLocationManager;
@@ -204,7 +204,7 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
                                                      @"environment": @(BTDataEnvironmentSandbox),
                                                      @"paypalConfiguration": @{
                                                              @"clientId": NSNull.null,
-                                                             @"environment": BTClientTokenPayPalEnvironmentOffline
+                                                             @"environment": BTConfigurationPayPalEnvironmentOffline
                                                              },
                                                      @"shouldIncludeCorrelationId": @NO
                                                      });

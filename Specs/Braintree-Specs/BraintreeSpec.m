@@ -1,7 +1,7 @@
 #import "Braintree.h"
 #import "Braintree_Internal.h"
-
 #import "BTLogger.h"
+#import "BTConfiguration.h"
 
 #import <Braintree/BTClient+Offline.h>
 #import <Braintree/BTPayPalButton.h>
@@ -13,8 +13,10 @@ __block Braintree *braintree;
 
 beforeEach(^{
     NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:nil];
-    braintree = [Braintree braintreeWithClientToken:clientToken];
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    braintree = [Braintree braintreeWithClientToken:clientToken]; // deprecated
+#pragma clang diagnostic pop
 });
 
 describe(@"tokenizeCardWithNumber:expirationMonth:expirationYear:completion:", ^{
@@ -112,19 +114,18 @@ describe(@"dropInViewControllerWithCustomization:completion: Drop-In factory met
     });
 });
 
-describe(@"payPalButtonWithCompletion:", ^{
+describe(@"payPalButtonWithDelegate:", ^{
     __block Braintree *braintreeWithPayPalEnabled;
 
     describe(@"with PayPal enabled", ^{
         beforeEach(^{
-            NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTClientTokenKeyPayPalEnabled: @YES}];
-            braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken];
-
-        });
-        it(@"should return a payPalButton", ^{
+            NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTConfigurationKeyPayPalEnabled: @YES}];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            BTPayPalButton *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil];
+            braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken]; // deprecated
+        });
+        it(@"should return a payPalButton", ^{
+            BTPayPalButton *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil]; // deprecated
 #pragma clang diagnostic pop
             expect(control).to.beKindOf([BTPayPalButton class]);
         });

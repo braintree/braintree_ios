@@ -15,6 +15,51 @@
 #import "BTCoinbase.h"
 #import "CoinbaseOAuth.h"
 
+typedef void (^BTPaymentsSpecHelperBlock)(id, NSError *);
+
+@interface BTPaymentsSpecHelper : NSObject <BTPaymentMethodCreationDelegate>
+@end
+
+@implementation BTPaymentsSpecHelper {
+    BTPaymentsSpecHelperBlock _block;
+}
+
++ (id)delegateWithErrorBlock:(BTPaymentsSpecHelperBlock)block {
+    BTPaymentsSpecHelper *helper = [[self alloc] init];
+    helper->_block = [block copy];
+    return helper;
+}
+
+- (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+    if (_block) { _block(sender, error); }
+}
+
+- (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
+    if (_block) { _block(sender, nil); }
+}
+
+- (void)paymentMethodCreator:(id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
+    if (_block) { _block(sender, nil); }
+}
+
+- (void)paymentMethodCreatorDidCancel:(id)sender {
+    if (_block) { _block(sender, nil); }
+}
+
+- (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
+    if (_block) { _block(sender, nil); }
+}
+
+- (void)paymentMethodCreator:(id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    if (_block) { _block(sender, nil); }
+}
+
+- (void)paymentMethodCreatorWillProcess:(id)sender {
+    if (_block) { _block(sender, nil); }
+}
+
+@end
+
 @interface BTPaymentProvider () <PKPaymentAuthorizationViewControllerDelegate>
 @end
 
@@ -22,11 +67,11 @@ SpecBegin(BTPaymentProvider)
 
 __block BTPaymentProvider *provider;
 __block id client;
-__block id clientToken;
+__block id configuration;
 __block id delegate;
 
 beforeEach(^{
-    clientToken = [OCMockObject mockForClass:[BTClientToken class]];
+    configuration = [OCMockObject mockForClass:[BTConfiguration class]];
 
     client = [OCMockObject mockForClass:[BTClient class]];
     [[client stub] btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)[OCMArg anyPointer]];
@@ -37,7 +82,7 @@ beforeEach(^{
     // Code within this `beforeEach` block will call `btPayPal_isPayPalEnabled` twice.
     [[[client expect] andReturnValue:@YES] btPayPal_isPayPalEnabled];
 
-    [[[client stub] andReturn:clientToken] clientToken];
+    [[[client stub] andReturn:configuration] configuration];
 
     delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
 
@@ -269,6 +314,7 @@ describe(@"createPaymentMethod:", ^{
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
 
                 provider.delegate = delegate;
+                [[[client expect] andReturnValue:@YES] hasConfiguration];
                 [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
             });
 
@@ -280,6 +326,7 @@ describe(@"createPaymentMethod:", ^{
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
 
                 provider.delegate = delegate;
+                [[[client expect] andReturnValue:@YES] hasConfiguration];
                 [provider createPaymentMethod:BTPaymentProviderTypeCoinbase options:BTPaymentAuthorizationOptionMechanismViewController];
             });
 
@@ -299,46 +346,62 @@ describe(@"createPaymentMethod:", ^{
                 [[delegate expect] paymentMethodCreator:provider didFailWithError:error];
 
                 provider.delegate = delegate;
+                [[[client expect] andReturnValue:@YES] hasConfiguration];
                 [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
             });
 
             describe(@"when Coinbase is not enabled", ^{
+                __block NSError *initiationError;
+
                 beforeEach(^{
-                    NSError *error = [OCMockObject mockForClass:[NSError class]];
                     id coinbaseInitiationExpectation = [stubCoinbase expect];
                     [coinbaseInitiationExpectation andReturnValue:@(NO)];
                     [coinbaseInitiationExpectation andDo:^(NSInvocation *invocation){
                         NSError *__autoreleasing*errorPtr;
                         [invocation getArgument:&errorPtr atIndex:4];
-                        *errorPtr = error;
+                        *errorPtr = initiationError;
                     }];
                     [coinbaseInitiationExpectation initiateAppSwitchWithClient:OCMOCK_ANY
                                                                       delegate:OCMOCK_ANY
                                                                          error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
-                    
-                    [[delegate expect] paymentMethodCreator:provider didFailWithError:error];
-                    
                     provider.delegate = delegate;
                 });
                 
                 it(@"returns NO", ^{
-                    [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
+                    [[delegate expect] paymentMethodCreator:provider didFailWithError:initiationError];
+                    [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
+                    [[[client expect] andReturnValue:@YES] hasConfiguration];
                     [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
                 });
                 
                 it(@"returns NO even if the coinbase app is installed", ^{
+                    [[delegate expect] paymentMethodCreator:provider didFailWithError:initiationError];
                     id coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
                     [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
-                    [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
-                    
+                    [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
+                    [[[client expect] andReturnValue:@YES] hasConfiguration];
                     [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
                 });
             });
             
+            it(@"returns a descriptive error when BTClient was created with the deprecated initializer", ^{
+                [[[client expect] andReturnValue:@NO] hasConfiguration];
+                waitUntil(^(DoneCallback done) {
+                    id delegateToReceiveError = [BTPaymentsSpecHelper delegateWithErrorBlock:^(BTPaymentProvider *provider, NSError *error) {
+                        expect(error.domain).to.equal(BTPaymentProviderErrorDomain);
+                        expect(error.code).to.equal(BTPaymentProviderErrorOptionNotSupported);
+                        expect(error.localizedDescription).to.equal(@"To use Coinbase, you must use the async initializer for Braintree or BTClient");
+                        done();
+                    }];
+                    provider.delegate = delegateToReceiveError;
+                    [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
+                });
+            });
 
             context(@"and app switch is available", ^{
                 beforeEach(^{
                     [[[stubCoinbase stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
+                    [[[client stub] andReturnValue:@YES] hasConfiguration];
                 });
 
                 it(@"starts with uninitialized status", ^{
@@ -411,14 +474,14 @@ describe(@"canCreatePaymentMethodWithProviderType:", ^{
         context(@"with coinbase enabled", ^{
             it(@"returns YES when the coinbase app is installed", ^{
                 [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
-                [[[clientToken stub] andReturnValue:@(YES)] coinbaseEnabled];
+                [[[configuration stub] andReturnValue:@(YES)] coinbaseEnabled];
                 BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
                 expect(canCreateCoinbase).to.beTruthy();
             });
 
             it(@"still returns YES when coinbase app is NOT installed", ^{
                 [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(NO)] isAppOAuthAuthenticationAvailable];
-                [[[clientToken stub] andReturnValue:@(YES)] coinbaseEnabled];
+                [[[configuration stub] andReturnValue:@(YES)] coinbaseEnabled];
                 BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
                 expect(canCreateCoinbase).to.beTruthy();
             });
@@ -426,14 +489,14 @@ describe(@"canCreatePaymentMethodWithProviderType:", ^{
 
         context(@"with coinbase disabled", ^{
             it(@"returns NO", ^{
-                [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
+                [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
                 BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
                 expect(canCreateCoinbase).to.beFalsy();
             });
             
             it(@"returns NO even if the coinbase app is installed", ^{
                 [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
-                [[[clientToken stub] andReturnValue:@(NO)] coinbaseEnabled];
+                [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
                 BOOL canCreateCoinbase = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase];
                 expect(canCreateCoinbase).to.beFalsy();
             });

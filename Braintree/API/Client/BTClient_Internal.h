@@ -1,6 +1,7 @@
 #import "BTClient.h"
 #import "BTHTTP.h"
 #import "BTClientToken.h"
+#import "BTConfiguration.h"
 #import "BTClientMetadata.h"
 
 #import "BTThreeDSecureLookupResult.h"
@@ -9,11 +10,14 @@
 typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup);
 
 @interface BTClient ()
+@property (nonatomic, strong, readwrite) BTHTTP *configHttp;
 @property (nonatomic, strong, readwrite) BTHTTP *clientApiHttp;
 @property (nonatomic, strong, readwrite) BTHTTP *analyticsHttp;
 
 /// Models the contents of the client token, as it is received from the merchant server
 @property (nonatomic, strong) BTClientToken *clientToken;
+@property (nonatomic, strong) BTConfiguration *configuration;
+@property (nonatomic) BOOL hasConfiguration; // YES if configuration was retrieved directly from Braintree, rather than from the client token
 
 - (void)lookupNonceForThreeDSecure:(NSString *)nonce
                  transactionAmount:(NSDecimalNumber *)amount
