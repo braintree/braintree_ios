@@ -70,10 +70,10 @@
         coinbaseAccount.userIdentifier = [[responseParser responseParserForKey:@"details"] stringForKey:@"email"];
         // Support the use of the description if it doesn't return "Coinbase"
         // Otherwise fallback and set it to the userIdentifier (current behaviour)
-        id description = [responseParser stringForKey:@"description"];
+        NSString *description = [responseParser stringForKey:@"description"];
         if (![[description lowercaseString] isEqualToString:@"coinbase"]) {
             coinbaseAccount.description = description;
-        }else{
+        } else {
             coinbaseAccount.description = coinbaseAccount.userIdentifier;
         }
         paymentMethod = coinbaseAccount;
