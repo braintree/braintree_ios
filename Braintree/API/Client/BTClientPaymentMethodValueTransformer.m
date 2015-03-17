@@ -67,9 +67,15 @@
     } else if ([type isEqualToString:@"CoinbaseAccount"]) {
         BTCoinbasePaymentMethod *coinbaseAccount = [[BTCoinbasePaymentMethod alloc] init];
         coinbaseAccount.nonce = [responseParser stringForKey:@"nonce"];
-        coinbaseAccount.description = [responseParser stringForKey:@"description"];
         coinbaseAccount.userIdentifier = [[responseParser responseParserForKey:@"details"] stringForKey:@"email"];
-
+        // Support the use of the description if it doesn't return "Coinbase"
+        // Otherwise fallback and set it to the userIdentifier (current behaviour)
+        id description = [responseParser stringForKey:@"description"];
+        if (![[description lowercaseString] isEqualToString:@"coinbase"]) {
+            coinbaseAccount.description = description;
+        }else{
+            coinbaseAccount.description = coinbaseAccount.userIdentifier;
+        }
         paymentMethod = coinbaseAccount;
     } else {
         BTMutablePaymentMethod *genericPaymentMethod = [[BTMutablePaymentMethod alloc] init];

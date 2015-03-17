@@ -11,6 +11,7 @@
 #import "BTUIDinersClubVectorArtView.h"
 #import "BTUIAmExVectorArtView.h"
 #import "BTUIPayPalMonogramCardView.h"
+#import "BTUICoinbaseMonogramCardView.h"
 
 @implementation BTUI
 
@@ -214,6 +215,8 @@
             return [BTUIVisaVectorArtView new];
         case BTUIPaymentMethodTypeMasterCard:
             return [BTUIMasterCardVectorArtView new];
+        case BTUIPaymentMethodTypeCoinbase:
+            return [BTUICoinbaseMonogramCardView new];
         case BTUIPaymentMethodTypePayPal:
             return [BTUIPayPalMonogramCardView new];
         case BTUIPaymentMethodTypeDinersClub:

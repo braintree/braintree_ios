@@ -575,7 +575,9 @@
             self.dropInContentView.selectedPaymentMethodView.type =  uiPaymentMethodType;
         } else if ([defaultPaymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
             self.dropInContentView.selectedPaymentMethodView.type = BTUIPaymentMethodTypePayPal;
-        } else {
+        }else if ([defaultPaymentMethod isKindOfClass:[BTCoinbasePaymentMethod class]]) {
+            self.dropInContentView.selectedPaymentMethodView.type = BTUIPaymentMethodTypeCoinbase;
+        }else {
             self.dropInContentView.selectedPaymentMethodView.type = BTUIPaymentMethodTypeUnknown;
         }
         self.dropInContentView.selectedPaymentMethodView.detailDescription = defaultPaymentMethod.description;
