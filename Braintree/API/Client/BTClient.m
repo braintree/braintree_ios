@@ -116,7 +116,8 @@
     copiedClient.clientApiHttp = [_clientApiHttp copy];
     copiedClient.analyticsHttp = [_analyticsHttp copy];
     copiedClient.metadata = [self.metadata copy];
-    copiedClient.hasConfiguration = _hasConfiguration; // TODO: add test
+    copiedClient.configHttp = [_configHttp copy];
+    copiedClient.hasConfiguration = _hasConfiguration;
     return copiedClient;
 }
 
@@ -132,9 +133,12 @@
 
 #pragma mark - NSCoding methods
 
+// NB: This is not yet used and has not been tested.
+
 - (void)encodeWithCoder:(NSCoder *)coder{
     [coder encodeObject:self.clientToken forKey:@"clientToken"];
     [coder encodeObject:self.configuration forKey:@"configuration"];
+    [coder encodeObject:@(self.hasConfiguration) forKey:@"hasConfiguration"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder{
@@ -143,12 +147,18 @@
         self.clientToken = [decoder decodeObjectForKey:@"clientToken"];
         self.configuration = [decoder decodeObjectForKey:@"configuration"];
 
+        self.configHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.configURL];
+        [self.configHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+
         self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
 
         if (self.configuration.analyticsEnabled) {
             self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
+            [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         }
+
+        self.hasConfiguration = [[decoder decodeObjectForKey:@"hasConfiguration"] boolValue];
     }
     return self;
 }

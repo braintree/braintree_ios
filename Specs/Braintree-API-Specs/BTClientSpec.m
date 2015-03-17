@@ -5,7 +5,7 @@
 #import "BTClient+Testing.h"
 #import "BTTestClientTokenFactory.h"
 #import "BTAnalyticsMetadata.h"
-
+#import "BTClientToken.h"
 #import "BTLogger_Internal.h"
 
 SpecBegin(BTClient)
@@ -601,12 +601,20 @@ describe(@"isEqual:", ^{
     });
 });
 
-describe(@"copy", ^{
+describe(@"copy of client created with async initializer", ^{
     __block BTClient *client;
     beforeEach(^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
         NSDictionary *additionalParameters = @{BTConfigurationKeyAnalytics: @{BTConfigurationKeyURL: analyticsUrl}};
-        client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:additionalParameters]];
+        NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:additionalParameters];
+        XCTestExpectation *clientExpectation = [self expectationWithDescription:@"Setup client"];
+        [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *_client, NSError *error) {
+            expect(_client).notTo.beNil();
+            expect(error).to.beNil();
+            client = _client;
+            [clientExpectation fulfill];
+        }];
+        [self waitForExpectationsWithTimeout:3 handler:nil];
     });
 
     it(@"returns a different instance", ^{
@@ -623,10 +631,56 @@ describe(@"copy", ^{
         BTClient *copiedClient = [client copy];
         expect(copiedClient.clientToken).notTo.beNil();
         expect(copiedClient.clientToken).notTo.beIdenticalTo(client.clientToken);
+        expect(copiedClient.configHttp).notTo.beNil();
+        expect(copiedClient.configHttp).notTo.beIdenticalTo(client.configHttp);
         expect(copiedClient.clientApiHttp).notTo.beNil();
         expect(copiedClient.clientApiHttp).notTo.beIdenticalTo(client.clientApiHttp);
         expect(copiedClient.analyticsHttp).notTo.beNil();
         expect(copiedClient.analyticsHttp).notTo.beIdenticalTo(client.analyticsHttp);
+    });
+
+    it(@"returns an instance with a copy of configHttp and hasConfiguration", ^{
+        BTClient *copiedClient = [client copy];
+        expect(copiedClient.configHttp).to.equal(client.configHttp);
+        expect(copiedClient.hasConfiguration).to.equal(client.hasConfiguration);
+    });
+});
+
+describe(@"copy of client created with deprecated initializer", ^{
+    __block BTClient *client;
+    beforeEach(^{
+        NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
+        NSDictionary *additionalParameters = @{BTConfigurationKeyAnalytics: @{BTConfigurationKeyURL: analyticsUrl}};
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:additionalParameters]];
+#pragma clang diagnostic pop
+    });
+
+    it(@"returns a different instance", ^{
+        expect([client copy]).toNot.beIdenticalTo(client);
+    });
+
+    it(@"implements isEqual:", ^{
+        it(@"returns an equal instance", ^{
+            expect([client copy]).to.equal(client);
+        });
+    });
+
+    it(@"returns an instance with different properties", ^{
+        BTClient *copiedClient = [client copy];
+        expect(copiedClient.clientToken).notTo.beNil();
+        expect(copiedClient.clientToken).notTo.beIdenticalTo(client.clientToken);
+        expect(copiedClient.clientApiHttp).notTo.beNil();
+        expect(copiedClient.clientApiHttp).notTo.beIdenticalTo(client.clientApiHttp);
+        expect(copiedClient.analyticsHttp).notTo.beNil();
+        expect(copiedClient.analyticsHttp).notTo.beIdenticalTo(client.analyticsHttp);
+    });
+
+    it(@"returns an instance with a copy of configHttp and hasConfiguration", ^{
+        BTClient *copiedClient = [client copy];
+        expect(copiedClient.configHttp).to.equal(client.configHttp);
+        expect(copiedClient.hasConfiguration).to.equal(client.hasConfiguration);
     });
 });
 
