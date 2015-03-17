@@ -25,6 +25,9 @@
 + (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock {
     BTClient *client = [[self alloc] initSyncWithClientTokenString:clientTokenString];
     [client fetchConfigurationWithCompletion:^(BTClient *client, NSError *error) {
+#if DEBUG
+        if (error) { NSLog(@"error = %@", error); }
+#endif
         if (client && !error) {
             client.hasConfiguration = YES;
         }
@@ -32,7 +35,7 @@
     }];
 }
 
-- (instancetype)initWithClientToken:(NSString *)clientTokenString {
+- (instancetype)initWithClientToken:(NSString *)clientTokenString DEPRECATED_MSG_ATTRIBUTE("Please use asynchronous initializer +setupWithClientToken:completion:") {
     return [self initSyncWithClientTokenString:clientTokenString];
 }
 
@@ -113,6 +116,8 @@
     copiedClient.clientApiHttp = [_clientApiHttp copy];
     copiedClient.analyticsHttp = [_analyticsHttp copy];
     copiedClient.metadata = [self.metadata copy];
+    copiedClient.configHttp = [_configHttp copy];
+    copiedClient.hasConfiguration = _hasConfiguration;
     return copiedClient;
 }
 
@@ -128,9 +133,12 @@
 
 #pragma mark - NSCoding methods
 
+// NB: This is not yet used and has not been tested.
+
 - (void)encodeWithCoder:(NSCoder *)coder{
     [coder encodeObject:self.clientToken forKey:@"clientToken"];
     [coder encodeObject:self.configuration forKey:@"configuration"];
+    [coder encodeObject:@(self.hasConfiguration) forKey:@"hasConfiguration"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder{
@@ -139,12 +147,18 @@
         self.clientToken = [decoder decodeObjectForKey:@"clientToken"];
         self.configuration = [decoder decodeObjectForKey:@"configuration"];
 
+        self.configHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.configURL];
+        [self.configHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+
         self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
 
         if (self.configuration.analyticsEnabled) {
             self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
+            [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         }
+
+        self.hasConfiguration = [[decoder decodeObjectForKey:@"hasConfiguration"] boolValue];
     }
     return self;
 }
