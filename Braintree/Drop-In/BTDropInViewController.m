@@ -438,8 +438,13 @@
     self.addPaymentMethodDropInViewController = nil;
 }
 
-- (void)paymentMethodCreator:(id)sender didFailWithError:(__unused NSError *)error {
-    NSString *savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
+- (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+    NSString *savePaymentMethodErrorAlertTitle;
+    if ([error localizedDescription]) {
+        savePaymentMethodErrorAlertTitle = [error localizedDescription];
+    } else {
+        savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
+    }
 
     if (sender != self.dropInContentView.paymentButton) {
 
@@ -449,7 +454,6 @@
             self.savePayPalAccountErrorAlert = nil;
         } retry:nil];
         self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
-        self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
         [self.savePayPalAccountErrorAlert show];
     } else {
         self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{

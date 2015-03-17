@@ -25,6 +25,9 @@
 + (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock {
     BTClient *client = [[self alloc] initSyncWithClientTokenString:clientTokenString];
     [client fetchConfigurationWithCompletion:^(BTClient *client, NSError *error) {
+#if DEBUG
+        if (error) { NSLog(@"error = %@", error); }
+#endif
         if (client && !error) {
             client.hasConfiguration = YES;
         }
@@ -32,7 +35,7 @@
     }];
 }
 
-- (instancetype)initWithClientToken:(NSString *)clientTokenString {
+- (instancetype)initWithClientToken:(NSString *)clientTokenString DEPRECATED_MSG_ATTRIBUTE("Please use asynchronous initializer +setupWithClientToken:completion:") {
     return [self initSyncWithClientTokenString:clientTokenString];
 }
 
@@ -113,6 +116,7 @@
     copiedClient.clientApiHttp = [_clientApiHttp copy];
     copiedClient.analyticsHttp = [_analyticsHttp copy];
     copiedClient.metadata = [self.metadata copy];
+    copiedClient.hasConfiguration = _hasConfiguration; // TODO: add test
     return copiedClient;
 }
 
