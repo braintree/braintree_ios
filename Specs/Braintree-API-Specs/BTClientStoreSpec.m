@@ -1,5 +1,5 @@
 #import "BTClientStore.h"
-
+#import "BTClient+Offline.h"
 #import "BTClient_Internal.h"
 #import "BTKeychain.h"
 #import "BTTestClientTokenFactory.h"
@@ -45,15 +45,75 @@ describe(@"fetchClient:", ^{
 
     __block NSString *tokenString;
     __block NSString *altTokenString;
+    __block BTClient *client1;
+    __block BTClient *client2;
     beforeEach(^{
-        tokenString = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorization_fingerprint": @"authorizationFingerprint1" }];
-        altTokenString = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorization_fingerprint": @"authorizationFingerprint2" }];
+        tokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ @"authorization_fingerprint": @"authorizationFingerprint1" }];
+        altTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ @"authorization_fingerprint": @"authorizationFingerprint2" }];
+        XCTestExpectation *client1Expectation = [self expectationWithDescription:@"Setup client1"];
+        [BTClient setupWithClientToken:tokenString completion:^(BTClient *_client, NSError *error) {
+            client1 = _client;
+            [client1Expectation fulfill];
+        }];
+        XCTestExpectation *client2Expectation = [self expectationWithDescription:@"Setup client2"];
+        [BTClient setupWithClientToken:altTokenString completion:^(BTClient *_client, NSError *error) {
+            client2 = _client;
+            [client2Expectation fulfill];
+        }];
+        [self waitForExpectationsWithTimeout:3 handler:nil];
     });
 
     it(@"returns nil if no client has been stored", ^{
         BTClientStore *clientStore = [[BTClientStore alloc] initWithIdentifier:[[NSUUID UUID] UUIDString]];
         expect([clientStore fetchClient]).to.beNil();
     });
+
+    it(@"returns a client if one has been stored", ^{
+        BTClientStore *clientStore = [[BTClientStore alloc] initWithIdentifier:[[NSUUID UUID] UUIDString]];
+        [clientStore storeClient:client1];
+        BTClient *fetchedClient = [clientStore fetchClient];
+        expect(fetchedClient).to.equal(client1);
+    });
+
+    it(@"returns the same persisted client across different instances with the same identifier", ^{
+        NSString *storeIdentifier = [[NSUUID UUID] UUIDString];
+        BTClientStore *clientStore1 = [[BTClientStore alloc] initWithIdentifier:storeIdentifier];
+
+        [clientStore1 storeClient:client1];
+        BTClient *store1Client = [clientStore1 fetchClient];
+
+        BTClientStore *clientStore2 = [[BTClientStore alloc] initWithIdentifier:storeIdentifier];
+        BTClient *store2Client = [clientStore2 fetchClient];
+
+        expect(store1Client).notTo.beIdenticalTo(store2Client);
+        expect(store1Client.clientToken).to.equal(store2Client.clientToken);
+        expect(store1Client).to.equal(store2Client);
+    });
+
+    it(@"returns different clients from instances with different identifiers", ^{
+        BTClientStore *clientStore1 = [[BTClientStore alloc] initWithIdentifier:[[NSUUID UUID] UUIDString]];
+        [clientStore1 storeClient:client1];
+        BTClient *store1Client = [clientStore1 fetchClient];
+
+        BTClientStore *clientStore2 = [[BTClientStore alloc] initWithIdentifier:[[NSUUID UUID] UUIDString]];
+        [clientStore2 storeClient:client2];
+        BTClient *store2Client = [clientStore2 fetchClient];
+
+        expect(store1Client).notTo.equal(store2Client);
+    });
+});
+
+describe(@"fetchClient: using deprecated initializer", ^{
+
+    __block NSString *tokenString;
+    __block NSString *altTokenString;
+    beforeEach(^{
+        tokenString = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorization_fingerprint": @"authorizationFingerprint1" }];
+        altTokenString = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ @"authorization_fingerprint": @"authorizationFingerprint2" }];
+    });
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
     it(@"returns a client if one has been stored", ^{
         BTClientStore *clientStore = [[BTClientStore alloc] initWithIdentifier:[[NSUUID UUID] UUIDString]];
@@ -89,6 +149,8 @@ describe(@"fetchClient:", ^{
 
         expect(store1Client).notTo.equal(store2Client);
     });
+
+#pragma clang diagnostic pop
 
 });
 

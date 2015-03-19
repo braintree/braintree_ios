@@ -53,6 +53,7 @@
 
 - (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate error:(NSError *__autoreleasing *)error {
     if (!self.returnURLScheme) {
+        [self.client postAnalyticsEvent:@"ios.coinbase.initiate.failed"];
         if (error != NULL) {
             *error = [self errorWithCode:BTAppSwitchErrorIntegrationReturnURLScheme localizedDescription:@"Coinbase is not available"];
         }
@@ -60,6 +61,7 @@
     }
 
     if (![self appSwitchAvailableForClient:client]) {
+        [self.client postAnalyticsEvent:@"ios.coinbase.initiate.failed"]; //we should distinguish between errors here
         if (error != NULL) {
             *error = [self errorWithCode:BTAppSwitchErrorDisabled localizedDescription:@"Coinbase is not available"];
         }
@@ -69,15 +71,19 @@
     self.client = client;
     self.delegate = delegate;
 
+    [self postAnalyticsSwitchEventWithString:@"started"];
     BOOL startSuccessful = [CoinbaseOAuth startOAuthAuthenticationWithClientId:client.configuration.coinbaseClientId
                                                                          scope:client.configuration.coinbaseScope
                                                                    redirectUri:[self.redirectUri absoluteString]
                                                                           meta:(client.configuration.coinbaseMerchantAccount ? @{ @"authorizations_merchant_account": client.configuration.coinbaseMerchantAccount } : nil)];
 
     if (!startSuccessful) {
+        [self postAnalyticsSwitchEventWithString:@"failed"];
         if (error != NULL) {
             *error = [self errorWithCode:BTAppSwitchErrorFailed localizedDescription:@"Coinbase is not available"];
         }
+    } else {
+        [self postAnalyticsSwitchEventWithString:@"succeeded"];
     }
 
     return startSuccessful;
@@ -95,14 +101,15 @@
     if (![self canHandleReturnURL:url sourceApplication:nil]) {
         return;
     }
-
     [CoinbaseOAuth finishOAuthAuthenticationForUrl:url
                                           clientId:self.client.configuration.coinbaseClientId
                                       clientSecret:nil
                                         completion:^(id response, NSError *error) {
                                             if (error) {
+                                                [self postAnalyticsSwitchEventWithString:@"denied"];
                                                 [self informDelegateDidFailWithError:error];
                                             } else {
+                                                [self postAnalyticsSwitchEventWithString:@"authorized"];
                                                 [self.client saveCoinbaseAccount:response
                                                                          success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod) {
                                                                              [self informDelegateDidCreatePaymentMethod:coinbasePaymentMethod];
@@ -117,14 +124,27 @@
 #pragma mark Delegate Informers
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
+    [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.failed"];
     if ([self.delegate respondsToSelector:@selector(appSwitcher:didFailWithError:)]) {
         [self.delegate appSwitcher:self didFailWithError:error];
     }
 }
 
 - (void)informDelegateDidCreatePaymentMethod:(BTCoinbasePaymentMethod *)paymentMethod {
+    [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
     if ([self.delegate respondsToSelector:@selector(appSwitcher:didCreatePaymentMethod:)]) {
         [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
+    }
+}
+
+
+#pragma mark Analytics Helpers
+
+- (void)postAnalyticsSwitchEventWithString:(NSString *)event {
+    if (event) {
+        NSString *defaultSwitch = [CoinbaseOAuth isAppOAuthAuthenticationAvailable] ? @"appswitch" : @"webswitch";
+        NSString *switchEvent = [NSString stringWithFormat:@"ios.coinbase.%@.%@", defaultSwitch , event];
+        [self.client postAnalyticsEvent:switchEvent];
     }
 }
 

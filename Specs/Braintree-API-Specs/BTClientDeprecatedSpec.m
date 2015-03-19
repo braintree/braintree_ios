@@ -8,28 +8,10 @@
 #import "BTClientToken.h"
 #import "BTLogger_Internal.h"
 
-@interface BTClientSpecHelper : NSObject
-@end
-@implementation BTClientSpecHelper
-+ (BTClient *)blockTestCase:(XCTestCase *)testCase forClientWithClientToken:(NSString *)clientToken {
-    XCTestExpectation *expectation = [testCase expectationWithDescription:@"Setup client"];
-    __block BTClient *client;
-    [BTClient setupWithClientToken:clientToken completion:^(BTClient *_client, NSError *error) {
-        client = _client;
-        [expectation fulfill];
-    }];
+SpecBegin(BTClientDeprecatedInitializer)
 
-    [testCase waitForExpectationsWithTimeout:10 handler:nil];
-    return client;
-}
-+ (BTClient *)blockTestCase:(XCTestCase *)testCase forOfflineClientWithOverrides:(NSDictionary *)overrides {
-    NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:overrides];
-    BTClient *client = [self blockTestCase:testCase forClientWithClientToken:clientToken];
-    return client;
-}
-@end
-
-SpecBegin(BTClient)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 describe(@"BTClient", ^{
     __block OCMockObject *mockLogger;
@@ -44,13 +26,14 @@ describe(@"BTClient", ^{
 
     describe(@"initialization", ^{
         it(@"constructs a client when given a valid client token", ^{
-            BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:nil];
+            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil]];
+
             expect(client).to.beKindOf([BTClient class]);
         });
 
         it(@"returns nil and logs an error when given an invalid client token", ^{ // NB: no longer throws an exception in DEBUG
             [[mockLogger expect] error:containsString(@"clientToken was invalid")];
-            BTClient *client = [BTClientSpecHelper blockTestCase:self forClientWithClientToken:@"invalid token"];
+            BTClient *client = [[BTClient alloc] initWithClientToken:@"invalid token"];
             expect(client).to.beNil();
             [mockLogger verify];
         });
@@ -59,36 +42,36 @@ describe(@"BTClient", ^{
             it(@"should return nil when initialized with NSData instead of a string", ^{
                 NSString *invalidString = @"invalidString";
                 NSData *invalidStringData = [invalidString dataUsingEncoding:NSUTF8StringEncoding];
-                [[mockLogger expect] error:@"BTClient could not initialize because the provided clientToken was invalid"]; // (Note that it must be checking against 'error' not 'log')
-                BTClient *client = [BTClientSpecHelper blockTestCase:self forClientWithClientToken:(NSString *)invalidStringData];
+                BTClient *client = [[BTClient alloc] initWithClientToken:(NSString *)invalidStringData];
+                [[mockLogger expect] log:containsString(@"BTClient could not initialize because the provided clientToken was invalid")];
                 expect(client).to.beNil();
-                [mockLogger verify];
             });
         });
     });
-});
 
-describe(@"Apple Pay configuration", ^{
-    it(@"parses Apple Pay configuration from the client token", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:nil];
+    describe(@"Apple Pay configuration", ^{
+        it(@"parses Apple Pay configuration from the client token", ^{
+            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil]];
 
-        if ([PKPaymentRequest class]) {
-            expect(client.configuration.applePayStatus).to.equal(BTClientApplePayStatusMock);
-            expect(client.configuration.applePayCountryCode).to.equal(@"US");
-            expect(client.configuration.applePayCurrencyCode).to.equal(@"USD");
-            expect(client.configuration.applePayMerchantIdentifier).to.equal(@"merchant-id-apple-pay");
-            expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkAmex);
-            expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkMasterCard);
-            expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkVisa);
-        }
+            if ([PKPaymentRequest class]) {
+                expect(client.configuration.applePayStatus).to.equal(BTClientApplePayStatusMock);
+                expect(client.configuration.applePayCountryCode).to.equal(@"US");
+                expect(client.configuration.applePayCurrencyCode).to.equal(@"USD");
+                expect(client.configuration.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
+                expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkAmex);
+                expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkMasterCard);
+                expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkVisa);
+            }
+        });
     });
 });
 
 describe(@"post analytics event", ^{
     it(@"sends events to the specified URL", ^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyAnalytics:@{
-                                                                                                           BTConfigurationKeyURL:analyticsUrl } }];
+        BTClient *client = [[BTClient alloc]
+                            initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyAnalytics:@{
+                                                                                                                  BTConfigurationKeyURL:analyticsUrl } }]];
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp expect] POST:@"/" parameters:[OCMArg any] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
@@ -98,8 +81,7 @@ describe(@"post analytics event", ^{
     });
 
     it(@"does not send the event if the analytics url is nil", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyAnalytics: @{
-                                                                                                           BTConfigurationKeyURL: NSNull.null } }];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyAnalytics: @{ BTConfigurationKeyURL: NSNull.null } }]];
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp reject] POST:[OCMArg any] parameters:[OCMArg any] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
@@ -111,8 +93,9 @@ describe(@"post analytics event", ^{
     it(@"includes the metadata", ^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
         __block NSString *expectedSource, *expectedIntegration;
-        BTClient *client = [[BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyAnalytics:@{
-                                                                                                                     BTConfigurationKeyURL:analyticsUrl } }]
+        BTClient *client = [[[BTClient alloc]
+                             initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{ BTConfigurationKeyAnalytics:@{
+                                                                                                                     BTConfigurationKeyURL:analyticsUrl } }]]
                             copyWithMetadata:^(BTClientMutableMetadata *metadata) {
                                 expectedIntegration = [metadata integrationString];
                                 expectedSource = [metadata sourceString];
@@ -141,7 +124,7 @@ describe(@"offline clients", ^{
     __block BTClient *offlineClient;
 
     beforeEach(^{
-        offlineClient = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:nil];
+        offlineClient = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:nil]];
     });
 
     describe(@"initialization", ^{
@@ -163,9 +146,7 @@ describe(@"offline clients", ^{
                                                expect(card.type).to.equal(BTCardTypeVisa);
                                                expect(card.lastTwo).to.equal(@"11");
                                                done();
-                                           } failure:^(NSError *error){
-                                               NSLog(@"error = %@", error);
-                                           }];
+                                           } failure:nil];
             });
         });
 
@@ -563,8 +544,7 @@ describe(@"offline clients", ^{
 
 describe(@"coding", ^{
     it(@"roundtrips the client", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyClientApiURL: @"http://example.com/api",
-                                                                                                   BTClientTokenKeyVersion: @2 }];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyClientApiURL: @"http://example.com/api" }]];
         NSMutableData *data = [NSMutableData data];
         NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
         [client encodeWithCoder:coder];
@@ -582,10 +562,9 @@ describe(@"coding", ^{
 
 describe(@"isEqual:", ^{
     it(@"returns YES if client tokens are equal", ^{
-        NSDictionary *overrides = @{ BTConfigurationKeyClientApiURL: @"http://example.com/api",
-                                     BTClientTokenKeyVersion: @2 };
-        BTClient *client1 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides];
-        BTClient *client2 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides];
+        NSString *sampleClientTokenString = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyClientApiURL: @"http://example.com/api" }];
+        BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString];
+        BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString];
         expect(client1).to.equal(client2);
     });
 
@@ -596,57 +575,44 @@ describe(@"isEqual:", ^{
     });
 
     it(@"returns NO if client tokens are not equal", ^{
-        NSDictionary *overrides1 = @{ BTConfigurationKeyClientApiURL: @"a-scheme://yo",
-                                      BTClientTokenKeyVersion: @2};
-        NSDictionary *overrides2 = @{ BTConfigurationKeyClientApiURL: @"another-scheme://yo",
-                                      BTClientTokenKeyVersion: @2};
-        BTClient *client1 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides1];
-        BTClient *client2 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides2];
+        NSString *sampleClientTokenString1 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyClientApiURL: @"a-scheme://yo" }];
+        NSString *sampleClientTokenString2 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyClientApiURL: @"another-scheme://yo" }];
+        BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString1];
+        BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString2];
         expect(client1).notTo.equal(client2);
     });
 
     it(@"returns NO if client tokens differ by authorization fingerprint", ^{
-        NSDictionary *overrides1 = @{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
-                                      BTClientTokenKeyVersion: @2 };
-        NSDictionary *overrides2 = @{ BTClientTokenKeyAuthorizationFingerprint: @"another_authorization_fingerprint",
-                                      BTClientTokenKeyVersion: @2 };
-
-        BTClient *client1 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides1];
-        BTClient *client2 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides2];
+        NSString *sampleClientTokenString1 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint" }];
+        NSString *sampleClientTokenString2 = [BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyAuthorizationFingerprint: @"another_authorization_fingerprint" }];
+        BTClient *client1 = [[BTClient alloc] initWithClientToken:sampleClientTokenString1];
+        BTClient *client2 = [[BTClient alloc] initWithClientToken:sampleClientTokenString2];
         expect(client1).notTo.equal(client2);
     });
 });
 
-describe(@"copy of client", ^{
+describe(@"copy of client created with deprecated initializer", ^{
     __block BTClient *client;
     beforeEach(^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
         NSDictionary *additionalParameters = @{BTConfigurationKeyAnalytics: @{BTConfigurationKeyURL: analyticsUrl}};
-        NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:additionalParameters];
-        XCTestExpectation *clientExpectation = [self expectationWithDescription:@"Setup client"];
-        [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *_client, NSError *error) {
-            expect(_client).notTo.beNil();
-            expect(error).to.beNil();
-            client = _client;
-            [clientExpectation fulfill];
-        }];
-        [self waitForExpectationsWithTimeout:3 handler:nil];
+        client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:additionalParameters]];
     });
 
     it(@"returns a different instance", ^{
         expect([client copy]).toNot.beIdenticalTo(client);
     });
 
-    it(@"returns an equal instance", ^{
-        expect([client copy]).to.equal(client);
+    it(@"implements isEqual:", ^{
+        it(@"returns an equal instance", ^{
+            expect([client copy]).to.equal(client);
+        });
     });
 
     it(@"returns an instance with different properties", ^{
         BTClient *copiedClient = [client copy];
         expect(copiedClient.clientToken).notTo.beNil();
         expect(copiedClient.clientToken).notTo.beIdenticalTo(client.clientToken);
-        expect(copiedClient.configHttp).notTo.beNil();
-        expect(copiedClient.configHttp).notTo.beIdenticalTo(client.configHttp);
         expect(copiedClient.clientApiHttp).notTo.beNil();
         expect(copiedClient.clientApiHttp).notTo.beIdenticalTo(client.clientApiHttp);
         expect(copiedClient.analyticsHttp).notTo.beNil();
@@ -660,16 +626,19 @@ describe(@"copy of client", ^{
     });
 });
 
+
 describe(@"merchantId", ^{
     it(@"can be nil (for old client tokens)", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyMerchantId: NSNull.null }];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyMerchantId: NSNull.null }]];
         expect(client.merchantId).to.beNil();
     });
 
     it(@"returns the merchant id from the client token", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyMerchantId: @"merchant-id" }];
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTConfigurationKeyMerchantId: @"merchant-id" }]];
         expect(client.merchantId).to.equal(@"merchant-id");
     });
 });
+
+#pragma clang diagnostic pop
 
 SpecEnd

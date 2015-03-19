@@ -35,6 +35,14 @@
     NSString *clientToken = [clientTokenData base64EncodedStringWithOptions:0];
     [BTOfflineModeURLProtocol setBackend:[BTOfflineClientBackend new]];
 
+    Class TestConfigurationFactoryClass = [NSClassFromString(@"BTTestClientTokenFactory") class];
+    if (TestConfigurationFactoryClass) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+        [TestConfigurationFactoryClass performSelector:@selector(setOneTimeOverrides:) withObject:clientTokenDataDictionary]; // should this be all of the offline overrides? overrides vs clientTokenDataDictionary
+#pragma clang diagnostic pop
+    }
+    
     return clientToken;
 }
 

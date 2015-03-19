@@ -7,6 +7,13 @@ SpecBegin(BTConfiguration)
 
 context(@"valid configuration", ^{
     it(@"can be parsed", ^{
+        Class TestConfigurationFactoryClass = [NSClassFromString(@"BTTestClientTokenFactory") class];
+        if (TestConfigurationFactoryClass) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+            [TestConfigurationFactoryClass performSelector:@selector(setOneTimeOverrides:) withObject:nil]; // should this be all of the offline overrides?
+#pragma clang diagnostic pop
+        }
         NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
         dict[@"merchantAccountId"] = @"a_merchant_account_id";
         NSError *error;

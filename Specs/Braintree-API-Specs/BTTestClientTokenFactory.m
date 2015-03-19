@@ -2,6 +2,12 @@
 
 @implementation BTTestClientTokenFactory
 
+static NSDictionary *oneTimeOverrides;
+
++ (void)setOneTimeOverrides:(NSDictionary *)overrides {
+    oneTimeOverrides = overrides;
+}
+
 + (NSMutableDictionary *)tokenDataWithConfiguration {
     return [@{
               @"authorizationFingerprint": @"an_authorization_fingerprint",
@@ -56,55 +62,60 @@
 }
 
 + (NSMutableDictionary *)configuration {
-    return [@{
-              @"version": @3,
-              @"challenges": @[
-                      @"cvv"
-                      ],
-              @"paymentApps": @[],
-              @"clientApiUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api",
-              @"assetsUrl": @"https://assets.example.com",
-              @"authUrl": @"https://auth.venmo.example.com",
-              @"analytics": @{
-                      @"url": @"https://client-analytics.example.com"
-                      },
-              @"threeDSecureEnabled": @NO,
-              @"paypalEnabled": @YES,
-              @"paypal": @{
-                      @"displayName": @"Acme Widgets, Ltd. (Sandbox)",
-                      @"clientId": @"a_paypal_client_id",
-                      @"privacyUrl": @"http://example.com/pp",
-                      @"userAgreementUrl": @"http://example.com/tos",
-                      @"baseUrl": @"https://assets.example.com",
-                      @"assetsUrl": @"https://checkout.paypal.example.com",
-                      @"directBaseUrl": [NSNull null],
-                      @"allowHttp": @YES,
-                      @"environmentNoNetwork": @YES,
-                      @"environment": @"offline",
-                      @"merchantAccountId": @"a_merchant_account_id",
-                      @"currencyIsoCode": @"USD"
-                      },
-              @"merchantId": @"a_merchant_id",
-              @"venmo": @"offline",
-              @"coinbaseEnabled": @YES,
-              @"coinbase": @{
-                      @"clientId": @"a_coinbase_client_id",
-                      @"merchantAccount": @"coinbase-account@example.com",
-                      @"scopes": @"authorizations:braintree user",
-                      @"redirectUrl": @"https://assets.example.com/coinbase/oauth/redirect"
-                      },
-              @"applePay": @{
-                      @"status": @"mock",
-                      @"countryCode": @"US",
-                      @"currencyCode": @"USD",
-                      @"merchantIdentifier": @"merchant.com.braintreepayments.test",
-                      @"supportedNetworks": @[
-                                  @"visa",
-                                  @"mastercard",
-                                  @"amex"
-                                  ],
-                      },
-              } mutableCopy];
+    NSMutableDictionary *configurationDict = [@{
+                                                @"version": @3,
+                                                @"challenges": @[
+                                                        @"cvv"
+                                                        ],
+                                                @"paymentApps": @[],
+                                                @"clientApiUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api",
+                                                @"assetsUrl": @"https://assets.example.com",
+                                                @"authUrl": @"https://auth.venmo.example.com",
+                                                @"analytics": @{
+                                                        @"url": @"https://client-analytics.example.com"
+                                                        },
+                                                @"threeDSecureEnabled": @NO,
+                                                @"paypalEnabled": @YES,
+                                                @"paypal": @{
+                                                        @"displayName": @"Acme Widgets, Ltd. (Sandbox)",
+                                                        @"clientId": @"a_paypal_client_id",
+                                                        @"privacyUrl": @"http://example.com/pp",
+                                                        @"userAgreementUrl": @"http://example.com/tos",
+                                                        @"baseUrl": @"https://assets.example.com",
+                                                        @"assetsUrl": @"https://checkout.paypal.example.com",
+                                                        @"directBaseUrl": [NSNull null],
+                                                        @"allowHttp": @YES,
+                                                        @"environmentNoNetwork": @YES,
+                                                        @"environment": @"offline",
+                                                        @"merchantAccountId": @"a_merchant_account_id",
+                                                        @"currencyIsoCode": @"USD"
+                                                        },
+                                                @"merchantId": @"a_merchant_id",
+                                                @"venmo": @"offline",
+                                                @"coinbaseEnabled": @YES,
+                                                @"coinbase": @{
+                                                        @"clientId": @"a_coinbase_client_id",
+                                                        @"merchantAccount": @"coinbase-account@example.com",
+                                                        @"scopes": @"authorizations:braintree user",
+                                                        @"redirectUrl": @"https://assets.example.com/coinbase/oauth/redirect"
+                                                        },
+                                                @"applePay": @{
+                                                        @"status": @"mock",
+                                                        @"countryCode": @"US",
+                                                        @"currencyCode": @"USD",
+                                                        @"merchantIdentifier": @"merchant.com.braintreepayments.test",
+                                                        @"supportedNetworks": @[
+                                                                @"visa",
+                                                                @"mastercard",
+                                                                @"amex"
+                                                                ],
+                                                        },
+                                                } mutableCopy];
+    if (oneTimeOverrides) {
+        [self applyOverrides:oneTimeOverrides toMutableDictionary:&configurationDict];
+        oneTimeOverrides = nil;
+    }
+    return configurationDict;
 }
 
 + (NSMutableDictionary *)configurationWithOverrides:(NSDictionary *)overrides {
