@@ -24,15 +24,17 @@
 
 + (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock {
     BTClient *client = [[self alloc] initSyncWithClientTokenString:clientTokenString];
-    [client fetchConfigurationWithCompletion:^(BTClient *client, NSError *error) {
-#if DEBUG
-        if (error) { NSLog(@"error = %@", error); }
-#endif
-        if (client && !error) {
-            client.hasConfiguration = YES;
-        }
-        completionBlock(client, error);
-    }];
+
+    if (client) {
+        [client fetchConfigurationWithCompletion:^(BTClient *client, NSError *error) {
+            if (client && !error) {
+                client.hasConfiguration = YES;
+            }
+            completionBlock(client, error);
+        }];
+    } else {
+        completionBlock(nil, [NSError errorWithDomain:BTBraintreeAPIErrorDomain code:BTMerchantIntegrationErrorInvalidClientToken userInfo:@{NSLocalizedDescriptionKey: @"BTClient could not initialize because the provided clientToken was invalid"}]);
+    }
 }
 
 - (instancetype)initWithClientToken:(NSString *)clientTokenString DEPRECATED_MSG_ATTRIBUTE("Please use asynchronous initializer +setupWithClientToken:completion:") {
@@ -41,9 +43,8 @@
 
 - (instancetype)initSyncWithClientTokenString:(NSString *)clientTokenString {
     if(![clientTokenString isKindOfClass:[NSString class]]){
-        NSString *reason = @"BTClient could not initialize because the provided clientToken was of an invalid type";
+        NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
         [[BTLogger sharedLogger] error:reason];
-
         return nil;
     }
 
@@ -56,11 +57,6 @@
         if (!self.clientToken) {
             NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
             [[BTLogger sharedLogger] error:reason];
-#ifdef DEBUG
-            @throw [NSException exceptionWithName:NSInvalidArgumentException
-                                           reason:reason
-                                         userInfo:nil];
-#endif
             return nil;
         }
 
@@ -71,17 +67,21 @@
         self.configHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.configURL];
         [self.configHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
 
-        self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
-        [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-
-        if (self.configuration.analyticsEnabled) {
-            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
-            [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-        }
+        [self prepareHttpFromConfiguration];
 
         self.metadata = [[BTClientMetadata alloc] init];
     }
     return self;
+}
+
+- (void)prepareHttpFromConfiguration {
+    self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
+    [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+
+    if (self.configuration.analyticsEnabled) {
+        self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
+        [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+    }
 }
 
 - (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock {
@@ -92,6 +92,9 @@
                   if (response.isSuccess) {
                       NSError *configurationError;
                       self.configuration = [[BTConfiguration alloc] initWithResponseParser:response.object error:&configurationError];
+
+                      [self prepareHttpFromConfiguration];
+
                       if (completionBlock) {
                           completionBlock(self, configurationError);
                       }
@@ -133,7 +136,7 @@
 
 #pragma mark - NSCoding methods
 
-// NB: This is not yet used and has not been tested.
+// NB: This is not yet used and has not been fully tested.
 
 - (void)encodeWithCoder:(NSCoder *)coder{
     [coder encodeObject:self.clientToken forKey:@"clientToken"];
