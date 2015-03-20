@@ -50,6 +50,8 @@ target 'Braintree-Dev' do
   pod 'UIAlertView+Blocks'
   pod 'FLEX'
   pod 'InAppSettingsKit'
+
+pod 'coinbase-official', :git => 'https://github.com/braintreeps/coinbase-ios-sdk.git'
 end
 
 target 'Braintree-Apple-Pay-Excluded' do
