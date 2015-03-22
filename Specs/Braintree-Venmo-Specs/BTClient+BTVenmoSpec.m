@@ -1,6 +1,7 @@
 #import "BTClientToken.h"
 #import "BTClient+BTVenmo.h"
 #import <UIKit/UIKit.h>
+#import "BTClient+Offline.h"
 
 NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
     NSError *error;
@@ -23,35 +24,35 @@ beforeEach(^{
 describe(@"btVenmo_status", ^{
 
     it(@"returns BTVenmoStatusOff if no key is present", ^{
-        NSString *clientTokenString = clientTokenStringFromNSDictionary(baseClientTokenClaims);
+        NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
         expect(client.btVenmo_status).to.equal(BTVenmoStatusOff);
     });
 
     it(@"returns BTVenmoStatusOff if key is unrecognized", ^{
         baseClientTokenClaims[@"venmo"] = @{@"yo": @"yoyo"};
-        NSString *clientTokenString = clientTokenStringFromNSDictionary(baseClientTokenClaims);
+        NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
         expect(client.btVenmo_status).to.equal(BTVenmoStatusOff);
     });
 
     it(@"returns BTVenmoStatusOff if key is 'off'", ^{
         baseClientTokenClaims[@"venmo"] = @"off";
-        NSString *clientTokenString = clientTokenStringFromNSDictionary(baseClientTokenClaims);
+        NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
         expect(client.btVenmo_status).to.equal(BTVenmoStatusOff);
     });
 
     it(@"returns BTVenmoStatusProduction if key is 'production'", ^{
         baseClientTokenClaims[@"venmo"] = @"production";
-        NSString *clientTokenString = clientTokenStringFromNSDictionary(baseClientTokenClaims);
+        NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
         expect(client.btVenmo_status).to.equal(BTVenmoStatusProduction);
     });
 
     it(@"returns BTVenmoStatusProduction if key is 'offline'", ^{
         baseClientTokenClaims[@"venmo"] = @"offline";
-        NSString *clientTokenString = clientTokenStringFromNSDictionary(baseClientTokenClaims);
+        NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:baseClientTokenClaims];
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
         expect(client.btVenmo_status).to.equal(BTVenmoStatusOffline);
     });
