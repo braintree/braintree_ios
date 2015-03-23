@@ -2,8 +2,8 @@
 #import "BTClient+BTPayPal.h"
 #import "PayPalMobile.h"
 #import "BTErrors+BTPayPal.h"
+#import "BTTestClientTokenFactory.h"
 #import "BTConfiguration.h"
-#import "BTClient+Offline.h"
 
 NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
     NSError *error;
@@ -25,10 +25,10 @@ beforeEach(^{
                                    BTConfigurationKeyPayPalDirectBaseUrl: @"http://api.paypal.example.com"
                                    };
 
-  NSDictionary *baseClaims = @{                                     BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint", // Note: BTConfiguration should not contain authorization fingerprint
-                                  BTConfigurationKeyClientApiURL: @"http://gateway.example.com/client_api",
-                                  BTConfigurationKeyPayPalEnabled: @YES,
-                                  BTConfigurationKeyPayPal: [paypalClaims mutableCopy] };
+    NSDictionary *baseClaims = @{
+                                    BTConfigurationKeyClientApiURL: @"http://gateway.example.com/client_api",
+                                    BTConfigurationKeyPayPalEnabled: @YES,
+                                    BTConfigurationKeyPayPal: [paypalClaims mutableCopy] };
 
 
     mutableClaims = [baseClaims mutableCopy];
@@ -41,7 +41,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
         describe(@"btPayPal_payPalEnvironment", ^{
             it(@"returns PayPal mSDK notion of Live", ^{
                 mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
-                BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:mutableClaims]];
+                BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
               
               
                 expect([client btPayPal_environment]).to.equal(PayPalEnvironmentProduction);
@@ -54,7 +54,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
 //            mutableClaims[@"paypal"][@"clientId"] = @"a_paypal_client_id";
  //           mutableClaims[@"paypal"][@"directBaseU"] = @"http://api.paypal.example.com";
-            NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:mutableClaims];
+            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
             NSError *error;
             BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
             BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
@@ -64,10 +64,9 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
 
         it(@"returns an error if the client ID is present but the Base URL is missing", ^{
             [mutableClaims[@"paypal"] removeObjectForKey:@"directBaseUrl"];
-          mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-          NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:mutableClaims];
-          NSError *error;
-          BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+            mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
+            NSError *error;
+            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
 
             BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
 
@@ -78,10 +77,9 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
 
         it(@"returns an error if the PayPal Base URL is present but the client ID is missing", ^{
             [mutableClaims[@"paypal"] removeObjectForKey:@"clientId"];
-          mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-          NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:mutableClaims];
-          NSError *error;
-            BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+            mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
+            NSError *error;
+            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
 
             [client btPayPal_preparePayPalMobileWithError:&error];
 
@@ -92,7 +90,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
         describe(@"btPayPal_payPalEnvironment", ^{
             it(@"returns a pretty custom environment name", ^{
                 mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-              BTClient *client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:mutableClaims]];
+                BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
                 expect([client btPayPal_environment]).to.equal(BTClientPayPalMobileEnvironmentName);
             });
         });
@@ -106,9 +104,8 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
                 [mutableClaims[@"paypal"] removeObjectForKey:BTConfigurationKeyPayPalMerchantName];
                 mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
 
-                NSString* clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
                 NSError *error;
-                BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+                BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
 
                 [client btPayPal_preparePayPalMobileWithError:&error];
 
@@ -121,9 +118,8 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
 
 describe(@"scopes", ^{
     it(@"includes email and future payments", ^{
-      mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
-      NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:mutableClaims];
-      BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+        mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
+        BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
 
         NSSet *scopes = [client btPayPal_scopes];
         expect(scopes).to.contain(kPayPalOAuth2ScopeEmail);
