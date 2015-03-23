@@ -42,28 +42,23 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
             it(@"returns PayPal mSDK notion of Live", ^{
                 mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
                 BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
-              
-              
                 expect([client btPayPal_environment]).to.equal(PayPalEnvironmentProduction);
             });
         });
     });
 
-    fdescribe(@"with custom PayPal environment", ^{
+    describe(@"with custom PayPal environment", ^{
         it(@"does not return an error with the valid set of claims", ^{
             mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-//            mutableClaims[@"paypal"][@"clientId"] = @"a_paypal_client_id";
- //           mutableClaims[@"paypal"][@"directBaseU"] = @"http://api.paypal.example.com";
             BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
             NSError *error;
-            BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
             BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
             expect(error).to.beNil();
             expect(success).to.beTruthy();
         });
 
         it(@"returns an error if the client ID is present but the Base URL is missing", ^{
-            [mutableClaims[@"paypal"] removeObjectForKey:@"directBaseUrl"];
+            mutableClaims[@"paypal"][@"directBaseUrl"] = [NSNull null];
             mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
             NSError *error;
             BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
@@ -76,7 +71,7 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
         });
 
         it(@"returns an error if the PayPal Base URL is present but the client ID is missing", ^{
-            [mutableClaims[@"paypal"] removeObjectForKey:@"clientId"];
+            mutableClaims[@"paypal"][@"clientId"] = [NSNull null];
             mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
             NSError *error;
             BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
@@ -99,9 +94,10 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
     describe(@"when the environment is not production", ^{
         describe(@"if the merchant privacy policy URL, merchant agreement URL, merchant name, and client ID are missing", ^{
             it(@"does not return an error", ^{
-                [mutableClaims[@"paypal"] removeObjectForKey:BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl];
-                [mutableClaims[@"paypal"] removeObjectForKey:BTConfigurationKeyPayPalMerchantUserAgreementUrl];
-                [mutableClaims[@"paypal"] removeObjectForKey:BTConfigurationKeyPayPalMerchantName];
+                mutableClaims[@"paypal"][BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl] = [NSNull null];
+                mutableClaims[@"paypal"][BTConfigurationKeyPayPalMerchantUserAgreementUrl] = [NSNull null];
+                mutableClaims[@"paypal"][BTConfigurationKeyPayPalMerchantName] = [NSNull null];
+
                 mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
 
                 NSError *error;
