@@ -344,7 +344,7 @@ describe(@"BTAppSwitching", ^{
             [[[mockClient stub] andReturn:configuration] configuration];
             BTCoinbasePaymentMethod *mockPaymentMethod = [OCMockObject mockForClass:[BTCoinbasePaymentMethod class]];
             [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.unknown.authorized"];
-            [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.tokenize.succeed"];
+            [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
 
             [[[mockClient stub] andDo:^(NSInvocation *invocation){
                 BTClientCoinbaseSuccessBlock successBlock = [invocation getArgumentAtIndexAsObject:3];
@@ -366,6 +366,7 @@ describe(@"BTAppSwitching", ^{
             [coinbase handleReturnURL:testURL];
 
             [mockDelegate verifyWithDelay:10];
+            [mockClient verify];
         });
 
         it(@"returns the error returned by coinbase", ^{
@@ -393,6 +394,7 @@ describe(@"BTAppSwitching", ^{
             [coinbase handleReturnURL:testURL];
 
             [mockDelegate verifyWithDelay:10];
+            [mockClient verify];
         });
 
         it(@"returns a Braintree app switch error when the coinbase response cannot be parsed", ^{

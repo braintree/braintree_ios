@@ -134,14 +134,14 @@
 #pragma mark Delegate Informers
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
-    [self postAnalyticsEventWithName:@"tokenize" status:@"failed"];
+    [self postAnalyticsEventWithName:@"tokenize" status:@"failed"]; // postAnalyticsEvent:@"ios.coinbase.tokenize.failed"
     if ([self.delegate respondsToSelector:@selector(appSwitcher:didFailWithError:)]) {
         [self.delegate appSwitcher:self didFailWithError:error];
     }
 }
 
 - (void)informDelegateDidCreatePaymentMethod:(BTCoinbasePaymentMethod *)paymentMethod {
-    [self postAnalyticsEventWithName:@"tokenize" status:@"succeed"];
+    [self postAnalyticsEventWithName:@"tokenize" status:@"succeeded"]; // postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"
     if ([self.delegate respondsToSelector:@selector(appSwitcher:didCreatePaymentMethod:)]) {
         [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
     }
