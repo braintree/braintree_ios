@@ -19,7 +19,10 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                                                      BTConfigurationKeyPayPalMerchantUserAgreementUrl: @"http://example.com/tos" }
                                              };
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     return [self offlineTestClientTokenWithAdditionalParameters:payPalClientTokenData];
+#pragma clang diagnostic pop
 }
 
 - (BOOL)btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)error {

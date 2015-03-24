@@ -14,7 +14,7 @@ context(@"unsupported versions", ^{
 
 context(@"v1 raw JSON client tokens", ^{
     it(@"can be parsed", ^{
-        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:1 overrides:nil] error:NULL];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:1 overrides:@{ BTClientTokenKeyConfigURL: @"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"}] error:NULL];
         expect(clientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint");
         expect(clientToken.configURL).to.equal([NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"]);
     });
@@ -22,7 +22,7 @@ context(@"v1 raw JSON client tokens", ^{
 
 context(@"v2 base64 encoded client tokens", ^{
     it(@"can be parsed", ^{
-        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:nil] error:NULL];
+        BTClientToken *clientToken = [[BTClientToken alloc] initWithClientTokenString:[BTTestClientTokenFactory tokenWithVersion:2 overrides:@{ BTClientTokenKeyConfigURL: @"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration" }] error:NULL];
         expect(clientToken.authorizationFingerprint).to.equal(@"an_authorization_fingerprint");
         expect(clientToken.configURL).to.equal([NSURL URLWithString:@"https://api.example.com:443/merchants/a_merchant_id/client_api/v1/configuration"]);
     });

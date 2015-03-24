@@ -4,12 +4,9 @@
 #import "BTErrors+BTPayPal.h"
 #import "BTTestClientTokenFactory.h"
 #import "BTConfiguration.h"
+#import "BTClient+Offline.h"
 
-NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
-    NSError *error;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
-    return [data base64EncodedStringWithOptions:0];
-}
+#import "BTClient_Internal.h"
 
 SpecBegin(BTClient_BTPayPal)
 
@@ -41,8 +38,10 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
         describe(@"btPayPal_payPalEnvironment", ^{
             it(@"returns PayPal mSDK notion of Live", ^{
                 mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
-                BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
-                expect([client btPayPal_environment]).to.equal(PayPalEnvironmentProduction);
+                NSArray *clientsArray = [BTClientSpecHelper clientsForTestCase:self withOverrides:mutableClaims];
+                for(BTClient* client in clientsArray){
+                    expect([client btPayPal_environment]).to.equal(PayPalEnvironmentProduction);
+                }
             });
         });
     });
@@ -50,43 +49,47 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
     describe(@"with custom PayPal environment", ^{
         it(@"does not return an error with the valid set of claims", ^{
             mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
-            NSError *error;
-            BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
-            expect(error).to.beNil();
-            expect(success).to.beTruthy();
+            NSArray *clientsArray = [BTClientSpecHelper clientsForTestCase:self withOverrides:mutableClaims];
+            for(BTClient* client in clientsArray){
+                NSError *error;
+                BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
+                expect(error).to.beNil();
+                expect(success).to.beTruthy();
+            }
         });
 
         it(@"returns an error if the client ID is present but the Base URL is missing", ^{
             mutableClaims[@"paypal"][@"directBaseUrl"] = [NSNull null];
             mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-            NSError *error;
-            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
-
-            BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
-
-            expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
-            expect(error.userInfo).notTo.beNil();
-            expect(success).to.beFalsy();
+            NSArray *clientsArray = [BTClientSpecHelper clientsForTestCase:self withOverrides:mutableClaims];
+            for(BTClient* client in clientsArray){
+                NSError *error;
+                BOOL success = [client btPayPal_preparePayPalMobileWithError:&error];
+                expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
+                expect(error.userInfo).notTo.beNil();
+                expect(success).to.beFalsy();
+            }
         });
 
         it(@"returns an error if the PayPal Base URL is present but the client ID is missing", ^{
             mutableClaims[@"paypal"][@"clientId"] = [NSNull null];
             mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-            NSError *error;
-            BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
-
-            [client btPayPal_preparePayPalMobileWithError:&error];
-
-            expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
-            expect(error.userInfo).notTo.beNil();
+            NSArray *clientsArray = [BTClientSpecHelper clientsForTestCase:self withOverrides:mutableClaims];
+            for(BTClient* client in clientsArray){
+                NSError *error;
+                [client btPayPal_preparePayPalMobileWithError:&error];
+                expect(error.code).to.equal(BTMerchantIntegrationErrorPayPalConfiguration);
+                expect(error.userInfo).notTo.beNil();
+            }
         });
 
         describe(@"btPayPal_payPalEnvironment", ^{
             it(@"returns a pretty custom environment name", ^{
                 mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-                BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
-                expect([client btPayPal_environment]).to.equal(BTClientPayPalMobileEnvironmentName);
+                NSArray *clientsArray = [BTClientSpecHelper clientsForTestCase:self withOverrides:mutableClaims];
+                for(BTClient* client in clientsArray){
+                    expect([client btPayPal_environment]).to.equal(BTClientPayPalMobileEnvironmentName);
+                }
             });
         });
     });
@@ -97,15 +100,13 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
                 mutableClaims[@"paypal"][BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl] = [NSNull null];
                 mutableClaims[@"paypal"][BTConfigurationKeyPayPalMerchantUserAgreementUrl] = [NSNull null];
                 mutableClaims[@"paypal"][BTConfigurationKeyPayPalMerchantName] = [NSNull null];
-
                 mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentCustom;
-
-                NSError *error;
-                BTClient *client = [[BTClient alloc] initWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2 overrides:mutableClaims]];
-
-                [client btPayPal_preparePayPalMobileWithError:&error];
-
-                expect(error).to.beNil();
+                NSArray *clientsArray = [BTClientSpecHelper clientsForTestCase:self withOverrides:mutableClaims];
+                for(BTClient* client in clientsArray){
+                    NSError *error;
+                    [client btPayPal_preparePayPalMobileWithError:&error];
+                    expect(error).to.beNil();
+                }
             });
         });
 

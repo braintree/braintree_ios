@@ -3,18 +3,61 @@
 #import "BTConfiguration.h"
 #import "BTTestClientTokenFactory.h"
 
+NSDictionary *BTConfigurationSpecTestConfiguration() {
+    return @{
+             @"challenges": @[
+                     @"cvv"
+                     ],
+             @"clientApiUrl": @"https://api.example.com:443/merchants/a_merchant_id/client_api",
+             @"assetsUrl": @"https://assets.example.com",
+             @"authUrl": @"https://auth.venmo.example.com",
+             @"analytics": @{
+                     @"url": @"https://client-analytics.example.com"
+                     },
+             @"threeDSecureEnabled": @NO,
+             @"paypalEnabled": @YES,
+             @"paypal": @{
+                     @"displayName": @"Acme Widgets, Ltd. (Sandbox)",
+                     @"clientId": @"a_paypal_client_id",
+                     @"privacyUrl": @"http://example.com/pp",
+                     @"userAgreementUrl": @"http://example.com/tos",
+                     @"baseUrl": @"https://assets.example.com",
+                     @"assetsUrl": @"https://checkout.paypal.example.com",
+                     @"directBaseUrl": [NSNull null],
+                     @"allowHttp": @YES,
+                     @"environmentNoNetwork": @YES,
+                     @"environment": @"offline",
+                     @"merchantAccountId": @"a_merchant_account_id",
+                     @"currencyIsoCode": @"USD"
+                     },
+             @"merchantId": @"a_merchant_id",
+             @"venmo": @"offline",
+             @"applePay": @{
+                     @"status": @"mock",
+                     @"countryCode": @"US",
+                     @"currencyCode": @"USD",
+                     @"merchantIdentifier": @"apple-pay-merchant-id",
+                     @"supportedNetworks": @[ @"visa",
+                                              @"mastercard",
+                                              @"amex" ]
+                     
+                     },
+             @"coinbaseEnabled": @YES,
+             @"coinbase": @{
+                     @"clientId": @"a_coinbase_client_id",
+                     @"merchantAccount": @"coinbase-account@example.com",
+                     @"scopes": @"authorizations:braintree user",
+                     @"redirectUrl": @"https://assets.example.com/coinbase/oauth/redirect"
+                     },
+             @"merchantAccountId": @"some-merchant-account-id",
+             };
+}
+
 SpecBegin(BTConfiguration)
 
 context(@"valid configuration", ^{
     it(@"can be parsed", ^{
-        Class TestConfigurationFactoryClass = [NSClassFromString(@"BTTestClientTokenFactory") class];
-        if (TestConfigurationFactoryClass) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-            [TestConfigurationFactoryClass performSelector:@selector(setOneTimeOverrides:) withObject:nil]; // should this be all of the offline overrides?
-#pragma clang diagnostic pop
-        }
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         dict[@"merchantAccountId"] = @"a_merchant_account_id";
         NSError *error;
         BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:&error];
@@ -26,25 +69,15 @@ context(@"valid configuration", ^{
         expect(configuration.challenges).to.equal([NSSet setWithArray:@[@"cvv"]]);
         expect(configuration.analyticsEnabled).to.equal(@YES);
         expect(configuration.merchantAccountId).to.equal(@"a_merchant_account_id");
-
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-//        expect(clientToken.applePayConfiguration).to.equal(@{ @"status": @"mock",
-//                                                              @"countryCode": @"US",
-//                                                              @"currencyCode": @"USD",
-//                                                              @"merchantIdentifier": @"apple-pay-merchant-id",
-//                                                              @"supportedNetworks": @[ @"visa", @"mastercard", @"amex" ] });
-//#pragma clang diagnostic pop
-
         expect(configuration.applePayStatus).to.equal(BTClientApplePayStatusMock);
         expect(configuration.applePayCountryCode).to.equal(@"US");
         expect(configuration.applePayCurrencyCode).to.equal(@"USD");
-        expect(configuration.applePayMerchantIdentifier).to.equal(@"merchant.com.braintreepayments.test");
+        expect(configuration.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
         expect(configuration.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
     });
 
     it(@"must contain a client api url", ^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         dict[BTConfigurationKeyClientApiURL] = NSNull.null;
         NSError *error;
         BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:&error];
@@ -56,7 +89,7 @@ context(@"valid configuration", ^{
 
 context(@"edge cases", ^{
     it(@"returns nil when client api url is blank", ^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         dict[BTConfigurationKeyClientApiURL] = @"";
         NSError *error;
         BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:&error];
@@ -71,14 +104,14 @@ context(@"edge cases", ^{
 describe(@"analytics enabled", ^{
     it(@"returns true when a valid analytics URL is included in configuration", ^{
         NSError *error;
-        BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:[BTTestClientTokenFactory configuration]] error:&error];
+        BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:BTConfigurationSpecTestConfiguration()] error:&error];
 
         expect(error).to.beNil();
         expect(configuration.analyticsEnabled).to.beTruthy();
     });
 
     it(@"returns false otherwise", ^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         dict[BTConfigurationKeyAnalytics] = NSNull.null;
 
         NSError *error;
@@ -91,7 +124,7 @@ describe(@"analytics enabled", ^{
 
 describe(@"coding", ^{
     it(@"roundtrips the configuration", ^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         dict[BTConfigurationKeyClientApiURL] = @"https://client.api.example.com:6789/merchants/MERCHANT_ID/client_api";
         BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
 
@@ -109,7 +142,7 @@ describe(@"coding", ^{
 
 describe(@"isEqual:", ^{
     it(@"returns YES when configurations are identical", ^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         dict[BTConfigurationKeyClientApiURL] = @"https://test.api.url/for_testing";
         BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
         BTConfiguration *configuration2 = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
@@ -118,10 +151,10 @@ describe(@"isEqual:", ^{
     });
 
     it(@"returns NO when tokens are different in meaningful ways", ^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         dict[BTConfigurationKeyClientApiURL] = @"https://test.api.url/for_testing";
         BTConfiguration *configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
-        NSMutableDictionary *dict2 = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict2 = [BTConfigurationSpecTestConfiguration() mutableCopy];
         dict2[BTConfigurationKeyClientApiURL] = @"https://different.test.url/for_different_testing";
         BTConfiguration *configuration2 = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict2] error:NULL];
         expect(configuration).notTo.beNil();
@@ -141,7 +174,7 @@ describe(@"isEqual:", ^{
 describe(@"copy", ^{
     __block BTConfiguration *configuration;
     beforeEach(^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
     });
 
@@ -154,7 +187,7 @@ describe(@"PayPal", ^{
     __block BTConfiguration *configuration;
 
     beforeEach(^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
     });
 
@@ -173,7 +206,7 @@ describe(@"PayPal", ^{
     describe(@"btPayPal_isPayPalEnabled", ^{
         __block BTConfiguration *configurationPayPalDisabled;
         beforeEach(^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+            NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
             [dict setValuesForKeysWithDictionary:@{
                                                    // BTConfiguration should not contain authorization fingerprint.
                                                    //BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
@@ -215,7 +248,7 @@ describe(@"PayPal", ^{
             __block NSMutableDictionary *payPalDict;
             __block NSURL *defaultUserAgreementURL, *defaultPrivacyPolicyURL;
             beforeEach(^{
-                configurationDict = [BTTestClientTokenFactory configuration];
+                configurationDict = [BTConfigurationSpecTestConfiguration() mutableCopy];
 
                 payPalDict = [configurationDict[BTConfigurationKeyPayPal] mutableCopy];
                 payPalDict[BTConfigurationKeyPayPalEnvironment] = BTConfigurationPayPalEnvironmentLive;
@@ -300,38 +333,30 @@ describe(@"PayPal", ^{
         });
 
         it(@"returns that app switch is not disabled when there is no PayPal configuration", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+            NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
             [dict removeObjectForKey:BTConfigurationKeyPayPal];
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.btPayPal_isTouchDisabled).to.equal(NO);
         });
 
         it(@"returns that app switch is not disabled when there is a claim that is false", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{
-                                                                                               BTConfigurationKeyPayPal: @{
-                                                                                                       BTConfigurationKeyPayPalDisableAppSwitch: @NO
-                                                                                                       }
-                                                                                               }];
+            NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
+            dict[BTConfigurationKeyPayPal] = @{ BTConfigurationKeyPayPalDisableAppSwitch: @NO };
+
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.btPayPal_isTouchDisabled).to.equal(NO);
         });
 
         it(@"returns that app switch is disabled when there is a claim that is true", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{
-                                                                                               BTConfigurationKeyPayPal: @{
-                                                                                                       BTConfigurationKeyPayPalDisableAppSwitch: @YES
-                                                                                                       }
-                                                                                               }];
+            NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
+            dict[BTConfigurationKeyPayPal] = @{ BTConfigurationKeyPayPalDisableAppSwitch: @YES };
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.btPayPal_isTouchDisabled).to.equal(YES);
         });
 
         it(@"returns that app switch is disabled when there is a claim that is 'TRUEDAT'", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{
-                                                                                               BTConfigurationKeyPayPal: @{
-                                                                                                       BTConfigurationKeyPayPalDisableAppSwitch: @"TRUEDAT"
-                                                                                                       }
-                                                                                               }];
+            NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
+            dict[BTConfigurationKeyPayPal] = @{ BTConfigurationKeyPayPalDisableAppSwitch: @"TRUEDAT" };
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.btPayPal_isTouchDisabled).to.equal(YES);
         });
@@ -348,13 +373,13 @@ describe(@"PayPal", ^{
             expect(configuration.btPayPal_merchantUserAgreementURL).to.equal([NSURL URLWithString:@"http://example.com/tos"]);
         });
     });
-    
+
 });
 
 describe(@"coinbase", ^{
     __block BTConfiguration *configuration;
     beforeEach(^{
-        NSMutableDictionary *dict = [BTTestClientTokenFactory configuration];
+        NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
         configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
     });
 
@@ -363,17 +388,24 @@ describe(@"coinbase", ^{
             expect(configuration.coinbaseEnabled).to.beTruthy();
         });
         it(@"is NO when coinbaseConfiguration is missing", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{BTConfigurationKeyCoinbase: NSNull.null}];
+            NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
+            [dict removeObjectForKey:BTConfigurationKeyCoinbase];
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.coinbaseEnabled).to.equal(NO);
         });
         it(@"is NO when coinbaseClientId is missing", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{BTConfigurationKeyCoinbase: @{BTConfigurationKeyCoinbaseClientId: NSNull.null}}];
+            NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
+            NSMutableDictionary *coinbaseDict = [dict[BTConfigurationKeyCoinbase] mutableCopy];
+            [coinbaseDict removeObjectForKey:BTConfigurationKeyCoinbaseClientId];
+            dict[BTConfigurationKeyCoinbase] = coinbaseDict;
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.coinbaseEnabled).to.equal(NO);
         });
         it(@"is NO when coinbaseScope is missing", ^{
-            NSMutableDictionary *dict = [BTTestClientTokenFactory configurationWithOverrides:@{BTConfigurationKeyCoinbase: @{BTConfigurationKeyCoinbaseScope: NSNull.null}}];
+            NSMutableDictionary *dict = [BTConfigurationSpecTestConfiguration() mutableCopy];
+            NSMutableDictionary *coinbaseDict = [dict[BTConfigurationKeyCoinbase] mutableCopy];
+            [coinbaseDict removeObjectForKey:BTConfigurationKeyCoinbaseScope];
+            dict[BTConfigurationKeyCoinbase] = coinbaseDict;
             configuration = [[BTConfiguration alloc] initWithResponseParser:[BTAPIResponseParser parserWithDictionary:dict] error:NULL];
             expect(configuration.coinbaseEnabled).to.equal(NO);
         });

@@ -141,6 +141,121 @@ describe(@"performing a request", ^{
         });
     });
 
+    describe(@"data base URLs", ^{
+        __block NSURL *validDataURL;
+
+        beforeEach(^{
+            NSDictionary *validObject = @{@"clientId":@"a-client-id", @"nest": @{@"nested":@"nested-value"}};
+            NSError *jsonSerializationError;
+            NSData *configurationData = [NSJSONSerialization dataWithJSONObject:validObject
+                                                                        options:0
+                                                                          error:&jsonSerializationError];
+            NSString *base64EncodedConfigurationData = [configurationData base64EncodedStringWithOptions:0];
+            NSString *dataURLString = [NSString stringWithFormat:@"data:application/json;base64,%@", base64EncodedConfigurationData];
+            validDataURL = [NSURL URLWithString:dataURLString];
+        });
+
+        it(@"returns the data", ^{
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
+
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:validDataURL];
+
+            [http GET:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                expect([response.object stringForKey:@"clientId"]).to.equal(@"a-client-id");
+                expect([[response.object responseParserForKey:@"nest"] stringForKey:@"nested"]).to.equal(@"nested-value");
+                [expectation fulfill];
+            }];
+
+            [self waitForExpectationsWithTimeout:10 handler:nil];
+        });
+        
+        it(@"ignores POST data", ^{
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
+
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:validDataURL];
+
+            [http POST:nil parameters:@{@"a-post-param":@"POST"} completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response.isSuccess).to.beTruthy();
+                expect(error).to.beNil();
+                [expectation fulfill];
+            }];
+
+            [self waitForExpectationsWithTimeout:10 handler:nil];
+        });
+
+        it(@"ignores GET parameters", ^{
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
+
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:validDataURL];
+
+            [http GET:nil parameters:@{@"a-get-param":@"GET"} completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response.isSuccess).to.beTruthy();
+                expect(error).to.beNil();
+                [expectation fulfill];
+            }];
+
+            [self waitForExpectationsWithTimeout:10 handler:nil];
+        });
+
+        it(@"ignores the specified path", ^{
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
+
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:validDataURL];
+
+            [http GET:@"/resource" completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response.isSuccess).to.beTruthy();
+                expect(error).to.beNil();
+                [expectation fulfill];
+            }];
+
+            [self waitForExpectationsWithTimeout:10 handler:nil];
+        });
+
+        it(@"sets the Content-Type header", ^{
+            NSURL *dataURL = [NSURL URLWithString:@"data:text/plain;base64,SGVsbG8sIFdvcmxkIQo="];
+
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
+
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:dataURL];
+
+            [http GET:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                expect(error.code).to.equal(BTServerErrorUnexpectedError);
+                [expectation fulfill];
+            }];
+
+            [self waitForExpectationsWithTimeout:10 handler:nil];
+        });
+
+        it(@"sets the response status code", ^{
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
+
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:validDataURL];
+
+            [http GET:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response.statusCode).notTo.beNil();
+                [expectation fulfill];
+            }];
+
+            [self waitForExpectationsWithTimeout:10 handler:nil];
+        });
+
+        it(@"fails like an HTTP 500 when the base64 encoded data is invalid", ^{
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Perform request"];
+
+            NSString *dataURLString = [NSString stringWithFormat:@"data:application/json;base64,%@", @"BAD-BASE-64-STRING"];
+
+            BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:dataURLString]];
+            [http GET:nil completion:^(BTHTTPResponse *response, NSError *error) {
+                expect(response).to.beNil();
+                expect(error).notTo.beNil();
+                [expectation fulfill];
+            }];
+
+            [self waitForExpectationsWithTimeout:10 handler:nil];
+        });
+    });
+
     describe(@"HTTP methods", ^{
         it(@"sends a GET request", ^{
             waitUntil(^(DoneCallback done){

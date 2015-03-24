@@ -1,82 +1,74 @@
 @import PassKit;
 
 #import "BTClient_Internal.h"
-#import "BTClient+Offline.h"
 #import "BTClient+Testing.h"
 #import "BTTestClientTokenFactory.h"
 #import "BTAnalyticsMetadata.h"
 #import "BTClientToken.h"
 #import "BTLogger_Internal.h"
-
-@interface BTClientSpecHelper : NSObject
-@end
-@implementation BTClientSpecHelper
-+ (BTClient *)blockTestCase:(XCTestCase *)testCase forClientWithClientToken:(NSString *)clientToken {
-    XCTestExpectation *expectation = [testCase expectationWithDescription:@"Setup client"];
-    __block BTClient *client;
-    [BTClient setupWithClientToken:clientToken completion:^(BTClient *_client, NSError *error) {
-        client = _client;
-        [expectation fulfill];
-    }];
-
-    [testCase waitForExpectationsWithTimeout:10 handler:nil];
-    return client;
-}
-+ (BTClient *)blockTestCase:(XCTestCase *)testCase forOfflineClientWithOverrides:(NSDictionary *)overrides {
-    NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:overrides];
-    BTClient *client = [self blockTestCase:testCase forClientWithClientToken:clientToken];
-    return client;
-}
-@end
+#import "BTClientSpecHelper.h"
 
 SpecBegin(BTClient)
 
 describe(@"BTClient", ^{
     __block OCMockObject *mockLogger;
-
+    
     beforeEach(^{
         mockLogger = [OCMockObject partialMockForObject:[BTLogger sharedLogger]];
     });
-
+    
     afterEach(^{
         [mockLogger stopMocking];
     });
-
+    
     describe(@"initialization", ^{
         it(@"constructs a client when given a valid client token", ^{
-            BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:nil];
+            BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:nil];
             expect(client).to.beKindOf([BTClient class]);
         });
-
-        it(@"returns nil and logs an error when given an invalid client token", ^{ // NB: no longer throws an exception in DEBUG
+        
+        it(@"returns nil and logs an error when given an invalid client token", ^{
             [[mockLogger expect] error:containsString(@"clientToken was invalid")];
-            BTClient *client = [BTClientSpecHelper blockTestCase:self forClientWithClientToken:@"invalid token"];
-            expect(client).to.beNil();
-            [mockLogger verify];
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Create client token"];
+            [BTClient setupWithClientToken:@"invalid token"
+                                completion:^(BTClient *client, NSError *error) {
+                                    expect(client).to.beNil();
+                                    expect(error.localizedDescription).to.contain(@"invalid");
+                                    [mockLogger verify];
+                                    [expectation fulfill];
+                                }];
+            
+            [self waitForExpectationsWithTimeout:10 handler:nil];
         });
-
-        describe(@"initialize With Invalid Data", ^{
-            it(@"should return nil when initialized with NSData instead of a string", ^{
-                NSString *invalidString = @"invalidString";
-                NSData *invalidStringData = [invalidString dataUsingEncoding:NSUTF8StringEncoding];
-                [[mockLogger expect] error:@"BTClient could not initialize because the provided clientToken was invalid"]; // (Note that it must be checking against 'error' not 'log')
-                BTClient *client = [BTClientSpecHelper blockTestCase:self forClientWithClientToken:(NSString *)invalidStringData];
-                expect(client).to.beNil();
-                [mockLogger verify];
-            });
+        
+        it(@"should return nil when initialized with NSData instead of a string", ^{
+            NSString *invalidString = @"invalidString";
+            NSData *invalidStringData = [invalidString dataUsingEncoding:NSUTF8StringEncoding];
+            [[mockLogger expect] error:@"BTClient could not initialize because the provided clientToken was invalid"];
+            
+            XCTestExpectation *expectation = [self expectationWithDescription:@"Create client token"];
+            [BTClient setupWithClientToken:(NSString *)invalidStringData
+                                completion:^(BTClient *client, NSError *error) {
+                                    expect(client).to.beNil();
+                                    expect(error.localizedDescription).to.contain(@"invalid");
+                                    [mockLogger verify];
+                                    [expectation fulfill];
+                                }];
+            
+            [self waitForExpectationsWithTimeout:10 handler:nil];
         });
     });
 });
 
 describe(@"Apple Pay configuration", ^{
     it(@"parses Apple Pay configuration from the client token", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:nil];
-
+        BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:nil];
+        
         if ([PKPaymentRequest class]) {
             expect(client.configuration.applePayStatus).to.equal(BTClientApplePayStatusMock);
             expect(client.configuration.applePayCountryCode).to.equal(@"US");
             expect(client.configuration.applePayCurrencyCode).to.equal(@"USD");
-            expect(client.configuration.applePayMerchantIdentifier).to.equal(@"merchant-id-apple-pay");
+            expect(client.configuration.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
             expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkAmex);
             expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkMasterCard);
             expect(client.configuration.applePaySupportedNetworks).to.contain(PKPaymentNetworkVisa);
@@ -87,37 +79,37 @@ describe(@"Apple Pay configuration", ^{
 describe(@"post analytics event", ^{
     it(@"sends events to the specified URL", ^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyAnalytics:@{
-                                                                                                           BTConfigurationKeyURL:analyticsUrl } }];
+        BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyAnalytics:@{
+                                                                                                    BTConfigurationKeyURL:analyticsUrl } }];
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp expect] POST:@"/" parameters:[OCMArg any] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
-
+        
         [client postAnalyticsEvent:@"An Event" success:nil failure:nil];
         [mockHttp verify];
     });
-
+    
     it(@"does not send the event if the analytics url is nil", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyAnalytics: @{
-                                                                                                           BTConfigurationKeyURL: NSNull.null } }];
+        BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyAnalytics: @{
+                                                                                                    BTConfigurationKeyURL: NSNull.null } }];
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp reject] POST:[OCMArg any] parameters:[OCMArg any] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
-
+        
         [client postAnalyticsEvent:@"An Event" success:nil failure:nil];
         [mockHttp verify];
     });
-
+    
     it(@"includes the metadata", ^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
         __block NSString *expectedSource, *expectedIntegration;
-        BTClient *client = [[BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyAnalytics:@{
-                                                                                                                     BTConfigurationKeyURL:analyticsUrl } }]
+        BTClient *client = [[BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyAnalytics:@{
+                                                                                                     BTConfigurationKeyURL:analyticsUrl } }]
                             copyWithMetadata:^(BTClientMutableMetadata *metadata) {
                                 expectedIntegration = [metadata integrationString];
                                 expectedSource = [metadata sourceString];
                             }];
-
+        
         OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
         [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(id obj) {
             NSDictionary *expectedMetadata = ({
@@ -130,441 +122,16 @@ describe(@"post analytics event", ^{
             return [obj[@"_meta"] isEqual:expectedMetadata];
         }] completion:[OCMArg any]];
         client.analyticsHttp = (id)mockHttp;
-
+        
         [client postAnalyticsEvent:@"An Event" success:nil failure:nil];
         [mockHttp verify];
-    });
-
-});
-
-describe(@"offline clients", ^{
-    __block BTClient *offlineClient;
-
-    beforeEach(^{
-        offlineClient = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:nil];
-    });
-
-    describe(@"initialization", ^{
-        it(@"constructs a client when given the offline test client token", ^{
-            expect(offlineClient).to.beKindOf([BTClient class]);
-        });
-    });
-
-    describe(@"save card", ^{
-        it(@"returns the newly saved card", ^{
-            waitUntil(^(DoneCallback done){
-                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                request.number = @"4111111111111111";
-                request.expirationMonth = @"12";
-                request.expirationYear = @"2038";
-                [offlineClient saveCardWithRequest:request
-                                           success:^(BTCardPaymentMethod *card) {
-                                               expect(card.nonce).to.beANonce();
-                                               expect(card.type).to.equal(BTCardTypeVisa);
-                                               expect(card.lastTwo).to.equal(@"11");
-                                               done();
-                                           } failure:^(NSError *error){
-                                               NSLog(@"error = %@", error);
-                                           }];
-            });
-        });
-
-        it(@"saves cards with the correct card types", ^{
-            waitUntil(^(DoneCallback done){
-                NSDictionary *cardTypesAndNumbers = @{ @"American Express": @"378282246310005",
-                                                       @"Discover": @"6011111111111117",
-                                                       @"MasterCard": @"5555555555554444",
-                                                       @"Visa": @"4012000077777777",
-                                                       @"JCB": @"3530111333300000",
-                                                       @"Card": @"1234" };
-
-                [cardTypesAndNumbers enumerateKeysAndObjectsUsingBlock:^(NSString *typeString, NSString *number, BOOL *stop) {
-                    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                    request.number = number;
-                    request.expirationMonth = @"12";
-                    request.expirationYear = @"2038";
-                    request.shouldValidate = YES;
-                    [offlineClient saveCardWithRequest:request
-                                               success:^(BTCardPaymentMethod *card) {
-                                                   expect(card.typeString).to.equal(typeString);
-                                                   done();
-                                               }
-                                               failure:nil];
-                }];
-            });
-        });
-
-        it(@"assigns new cards a nonce", ^{
-            waitUntil(^(DoneCallback done){
-                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                request.number = @"4111111111111111";
-                request.expirationMonth = @"12";
-                request.expirationYear = @"2038";
-                request.shouldValidate = YES;
-
-                [offlineClient saveCardWithRequest:request
-                                           success:^(BTPaymentMethod *card) {
-                                               expect(card.nonce).to.beANonce();
-
-                                               done();
-                                           } failure:nil];
-            });
-        });
-
-        it(@"assigns each card a unique nonce", ^{
-            waitUntil(^(DoneCallback done){
-                NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
-
-                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                request.number = @"4111111111111111";
-                request.expirationMonth = @"12";
-                request.expirationYear = @"2038";
-
-                [offlineClient saveCardWithRequest:request
-                                           success:^(BTPaymentMethod *card) {
-                                               [uniqueNoncesReturned addObject:card.nonce];
-                                               [offlineClient saveCardWithRequest:request
-                                                                          success:^(BTPaymentMethod *card) {
-                                                                              [uniqueNoncesReturned addObject:card.nonce];
-                                                                              [offlineClient saveCardWithRequest:request
-                                                                                                         success:^(BTPaymentMethod *card){
-                                                                                                             [uniqueNoncesReturned addObject:card.nonce];
-
-                                                                                                             expect(uniqueNoncesReturned).to.haveCountOf(3);
-
-                                                                                                             done();
-                                                                                                         }
-                                                                                                         failure:nil];
-                                                                          }
-                                                                          failure:nil];
-                                           }
-                                           failure:nil];
-            });
-        });
-
-        it(@"accepts a nil success block", ^{
-            waitUntil(^(DoneCallback done){
-                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                request.number = @"4111111111111111";
-                request.expirationMonth = @"12";
-                request.expirationYear = @"2038";
-                request.shouldValidate = YES;
-
-                [offlineClient saveCardWithRequest:request
-                                           success:nil
-                                           failure:nil];
-
-                wait_for_potential_async_exceptions(done);
-            });
-        });
-
-        it(@"accepts a nil failure block", ^{
-            waitUntil(^(DoneCallback done){
-                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                request.number = @"4111111111111112";
-                request.expirationMonth = @"12";
-                request.expirationYear = @"2038";
-                request.shouldValidate = YES;
-
-                [offlineClient saveCardWithRequest:request
-                                           success:nil
-                                           failure:nil];
-
-                wait_for_potential_async_exceptions(done);
-            });
-        });
-
-        it(@"exhibits identical behavior when tokenizing a card", ^{
-
-            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-            request.number = @"4111111111111111";
-            request.shouldValidate = NO;
-
-            [offlineClient saveCardWithRequest:request
-                                       success:^(BTCardPaymentMethod *card){
-
-                                           expect(card.lastTwo).to.equal(@"11");
-                                       }
-                                       failure:nil];
-        });
-    });
-
-    describe(@"save Paypal account", ^{
-        it(@"returns the newly saved account", ^{
-            waitUntil(^(DoneCallback done){
-                [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                          applicationCorrelationID:@"correlationId"
-                                                           success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                               expect(paypalPaymentMethod.nonce).to.beANonce();
-                                                               expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
-                                                               done();
-                                                           } failure:nil];
-            });
-        });
-    });
-
-    describe(@"save Apple Pay payments", ^{
-        it(@"succeeds if payment is nil in mock mode", ^{
-            waitUntil(^(DoneCallback done){
-                [offlineClient saveApplePayPayment:nil success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                    if ([PKPayment class]) {
-                        expect(applePayPaymentMethod.nonce).to.beANonce();
-                        done();
-                    }
-                } failure:^(NSError *error) {
-                    if (![PKPayment class]) {
-                        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                        expect(error.code).to.equal(BTErrorUnsupported);
-                        done();
-                    }
-                }];
-            });
-        });
-
-        it(@"returns the newly saved account with SDK support for Apple Pay, or calls the failure block if there is no SDK support", ^{
-            waitUntil(^(DoneCallback done){
-                if ([PKPayment class] && [PKPaymentToken class]) {
-                    id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
-                    id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
-
-                    [[[payment stub] andReturn:paymentToken] token];
-                    [[[paymentToken stub] andReturn:[NSData data]] paymentData];
-
-
-                    [offlineClient saveApplePayPayment:payment
-                                               success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                                                   expect(applePayPaymentMethod.nonce).to.beANonce();
-                                                   done();
-                                               } failure:nil];
-                } else {
-                    [offlineClient saveApplePayPayment:nil success:nil failure:^(NSError *error) {
-                        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
-                        expect(error.code).to.equal(BTErrorUnsupported);
-                        done();
-                    }];
-                }
-            });
-        });
-    });
-
-    describe(@"fetch payment methods", ^{
-        it(@"initialy retrieves an empty list", ^{
-            waitUntil(^(DoneCallback done){
-                [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
-                    expect(paymentMethods).to.haveCountOf(0);
-                    done();
-                } failure:nil];
-            });
-        });
-
-        describe(@"deprecated signature", ^{
-            __block NSArray *paymentMethods;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            it(@"returns the newly saved card", ^{
-                waitUntil(^(DoneCallback done) {
-                    [offlineClient saveCardWithNumber:@"4111111111111111"
-                                      expirationMonth:@"12"
-                                       expirationYear:@"2038"
-                                                  cvv:nil
-                                           postalCode:nil
-                                             validate:YES
-                                              success:^(BTCardPaymentMethod *card) {
-                                                  expect(card.nonce).to.beANonce();
-                                                  expect(card.type).to.equal(BTCardTypeVisa);
-                                                  expect(card.lastTwo).to.equal(@"11");
-                                                  done();
-                                              } failure:nil];
-                });
-            });
-
-            it(@"saves a cards with the correct card types", ^{
-                waitUntil(^(DoneCallback done) {
-                    NSDictionary *cardTypesAndNumbers = @{ @"American Express": @"378282246310005",
-                                                           @"Discover": @"6011111111111117",
-                                                           @"MasterCard": @"5555555555554444",
-                                                           @"Visa": @"4012000077777777",
-                                                           @"JCB": @"3530111333300000",
-                                                           @"Card": @"1234" };
-
-                    [cardTypesAndNumbers enumerateKeysAndObjectsUsingBlock:^(NSString *typeString, NSString *number, BOOL *stop) {
-                        [offlineClient saveCardWithNumber:number
-                                          expirationMonth:@"12"
-                                           expirationYear:@"2038"
-                                                      cvv:nil
-                                               postalCode:nil
-                                                 validate:YES
-                                                  success:^(BTCardPaymentMethod *card) {
-                                                      expect(card.typeString).to.equal(typeString);
-                                                      done();
-                                                  }
-                                                  failure:nil];
-                    }];
-                });
-            });
-
-            beforeEach(^{
-                waitUntil(^(DoneCallback done){
-                    [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                           postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                               [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                                                         applicationCorrelationID:nil
-                                                                                          success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                                                              [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
-                                                                                                  paymentMethods = fetchedPaymentMethods;
-                                                                                                  done();
-                                                                                              } failure:nil];
-                                                                                          } failure:nil];
-                                           } failure:nil];
-                });
-            });
-
-            it(@"assigns new cards a nonce", ^{
-                waitUntil(^(DoneCallback done){
-                    [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                           postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                               expect(card.nonce).to.beANonce();
-
-                                               done();
-                                           } failure:nil];
-                });
-            });
-
-            it(@"assigns each card a unique nonce", ^{
-                waitUntil(^(DoneCallback done) {
-                    NSMutableSet *uniqueNoncesReturned = [NSMutableSet set];
-
-                    [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038"
-                                                  cvv:nil
-                                           postalCode:nil
-                                             validate:YES success:^(BTPaymentMethod *card) {
-                                                 [uniqueNoncesReturned addObject:card.nonce];
-                                                 [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                                                        postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                                                            [uniqueNoncesReturned addObject:card.nonce];
-                                                                            [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                                                                                   postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
-                                                                                                       [uniqueNoncesReturned addObject:card.nonce];
-
-                                                                                                       expect(uniqueNoncesReturned).to.haveCountOf(3);
-
-                                                                                                       done();
-                                                                                                   } failure:nil];
-                                                                        } failure:nil];
-                                             } failure:nil];
-                });
-            });
-
-            it(@"accepts a nil success block", ^{
-                waitUntil(^(DoneCallback done) {
-                    [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                           postalCode:nil validate:YES success:nil failure:nil];
-
-                    wait_for_potential_async_exceptions(done);
-                });
-            });
-
-            it(@"accepts a nil failure block", ^{
-                waitUntil(^(DoneCallback done) {
-                    [offlineClient saveCardWithNumber:@"4111111111111112" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
-                                           postalCode:nil validate:YES success:nil failure:nil];
-
-                    wait_for_potential_async_exceptions(done);
-                });
-            });
-
-            it(@"assigns distinct nonces for each payment method", ^{
-                expect([paymentMethods[0] nonce]).notTo.equal([paymentMethods[1] nonce]);
-            });
-#pragma clang diagnostic pop
-        });
-
-        describe(@"save Paypal account", ^{
-            it(@"returns the newly saved account", ^{
-                waitUntil(^(DoneCallback done) {
-                    [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                              applicationCorrelationID:@"correlationId"
-                                                               success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                                   expect(paypalPaymentMethod.nonce).to.beANonce();
-                                                                   expect(paypalPaymentMethod.email).to.endWith(@"@example.com");
-                                                                   done();
-                                                               } failure:nil];
-                });
-            });
-        });
-
-
-        describe(@"fetch payment methods", ^{
-            it(@"initialy retrieves an empty list", ^{
-                waitUntil(^(DoneCallback done) {
-                    [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
-                        expect(paymentMethods).to.haveCountOf(0);
-                        done();
-                    } failure:nil];
-                });
-            });
-
-            describe(@"with two payment methods on file", ^{
-                __block NSArray *paymentMethods;
-
-                beforeEach(^{
-                    waitUntil(^(DoneCallback done) {
-                        BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                        request.number = @"4111111111111111";
-                        request.expirationMonth = @"12";
-                        request.expirationYear = @"2038";
-                        request.shouldValidate = YES;
-                        [offlineClient saveCardWithRequest:request
-                                                   success:^(BTPaymentMethod *card){
-                                                       [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                                                                 applicationCorrelationID:nil
-                                                                                                  success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                                                                      [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
-                                                                                                          paymentMethods = fetchedPaymentMethods;
-                                                                                                          done();
-                                                                                                      } failure:nil];
-                                                                                                  } failure:nil];
-                                                   }
-                                                   failure:nil];
-                    });
-                });
-
-                it(@"returns the list of payment methods", ^{
-                    expect(paymentMethods).to.haveCountOf(2);
-                    expect([paymentMethods[0] nonce]).to.beANonce();
-                    expect([paymentMethods[1] nonce]).to.beANonce();
-                });
-
-                it(@"includes saved cards", ^{
-                    expect(paymentMethods[1]).to.beKindOf([BTCardPaymentMethod class]);
-                    expect([paymentMethods[1] lastTwo]).to.equal(@"11");
-                });
-
-                it(@"includes saved PayPal accounts", ^{
-                    expect(paymentMethods[0]).to.beKindOf([BTPayPalPaymentMethod class]);
-                    expect([paymentMethods[0] email]).to.endWith(@"@example.com");
-                });
-
-                it(@"assigns distinct nonces for each payment method", ^{
-                    expect([paymentMethods[0] nonce]).notTo.equal([paymentMethods[1] nonce]);
-                });
-            });
-
-            it(@"accepts a nil success block", ^{
-                waitUntil(^(DoneCallback done) {
-                    [offlineClient fetchPaymentMethodsWithSuccess:nil failure:nil];
-
-                    wait_for_potential_async_exceptions(done);
-                });
-            });
-        });
     });
 });
 
 describe(@"coding", ^{
     it(@"roundtrips the client", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyClientApiURL: @"http://example.com/api",
-                                                                                                   BTClientTokenKeyVersion: @2 }];
+        BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyClientApiURL: @"http://example.com/api",
+                                                                                            BTClientTokenKeyVersion: @2 }];
         NSMutableData *data = [NSMutableData data];
         NSKeyedArchiver *coder = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
         [client encodeWithCoder:coder];
@@ -572,7 +139,7 @@ describe(@"coding", ^{
         NSKeyedUnarchiver *decoder = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         BTClient *returnedClient = [[BTClient alloc] initWithCoder:decoder];
         [decoder finishDecoding];
-
+        
         expect(returnedClient.clientToken.authorizationFingerprint).to.equal(client.clientToken.authorizationFingerprint);
         expect(returnedClient.clientApiHttp).to.equal(client.clientApiHttp);
         expect(returnedClient.analyticsHttp).to.equal(client.analyticsHttp);
@@ -584,35 +151,35 @@ describe(@"isEqual:", ^{
     it(@"returns YES if client tokens are equal", ^{
         NSDictionary *overrides = @{ BTConfigurationKeyClientApiURL: @"http://example.com/api",
                                      BTClientTokenKeyVersion: @2 };
-        BTClient *client1 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides];
-        BTClient *client2 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides];
+        BTClient *client1 = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:overrides];
+        BTClient *client2 = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:overrides];
         expect(client1).to.equal(client2);
     });
-
+    
     it(@"returns YES if client tokens are not defined", ^{
         BTClient *client1 = [[BTClient alloc] init];
         BTClient *client2 = [[BTClient alloc] init];
         expect(client1).to.equal(client2);
     });
-
+    
     it(@"returns NO if client tokens are not equal", ^{
         NSDictionary *overrides1 = @{ BTConfigurationKeyClientApiURL: @"a-scheme://yo",
                                       BTClientTokenKeyVersion: @2};
         NSDictionary *overrides2 = @{ BTConfigurationKeyClientApiURL: @"another-scheme://yo",
                                       BTClientTokenKeyVersion: @2};
-        BTClient *client1 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides1];
-        BTClient *client2 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides2];
+        BTClient *client1 = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:overrides1];
+        BTClient *client2 = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:overrides2];
         expect(client1).notTo.equal(client2);
     });
-
+    
     it(@"returns NO if client tokens differ by authorization fingerprint", ^{
         NSDictionary *overrides1 = @{ BTClientTokenKeyAuthorizationFingerprint: @"an_authorization_fingerprint",
                                       BTClientTokenKeyVersion: @2 };
         NSDictionary *overrides2 = @{ BTClientTokenKeyAuthorizationFingerprint: @"another_authorization_fingerprint",
                                       BTClientTokenKeyVersion: @2 };
-
-        BTClient *client1 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides1];
-        BTClient *client2 = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:overrides2];
+        
+        BTClient *client1 = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:overrides1];
+        BTClient *client2 = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:overrides2];
         expect(client1).notTo.equal(client2);
     });
 });
@@ -621,8 +188,8 @@ describe(@"copy of client", ^{
     __block BTClient *client;
     beforeEach(^{
         NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
-        NSDictionary *additionalParameters = @{BTConfigurationKeyAnalytics: @{BTConfigurationKeyURL: analyticsUrl}};
-        NSString *clientTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:additionalParameters];
+        NSString *clientTokenString = [BTTestClientTokenFactory tokenWithVersion:2
+                                                                       overrides:@{BTConfigurationKeyAnalytics: @{BTConfigurationKeyURL: analyticsUrl}}];
         XCTestExpectation *clientExpectation = [self expectationWithDescription:@"Setup client"];
         [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *_client, NSError *error) {
             expect(_client).notTo.beNil();
@@ -632,15 +199,15 @@ describe(@"copy of client", ^{
         }];
         [self waitForExpectationsWithTimeout:3 handler:nil];
     });
-
+    
     it(@"returns a different instance", ^{
         expect([client copy]).toNot.beIdenticalTo(client);
     });
-
+    
     it(@"returns an equal instance", ^{
         expect([client copy]).to.equal(client);
     });
-
+    
     it(@"returns an instance with different properties", ^{
         BTClient *copiedClient = [client copy];
         expect(copiedClient.clientToken).notTo.beNil();
@@ -652,7 +219,7 @@ describe(@"copy of client", ^{
         expect(copiedClient.analyticsHttp).notTo.beNil();
         expect(copiedClient.analyticsHttp).notTo.beIdenticalTo(client.analyticsHttp);
     });
-
+    
     it(@"returns an instance with a copy of configHttp and hasConfiguration", ^{
         BTClient *copiedClient = [client copy];
         expect(copiedClient.configHttp).to.equal(client.configHttp);
@@ -662,12 +229,12 @@ describe(@"copy of client", ^{
 
 describe(@"merchantId", ^{
     it(@"can be nil (for old client tokens)", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyMerchantId: NSNull.null }];
+        BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyMerchantId: NSNull.null }];
         expect(client.merchantId).to.beNil();
     });
-
+    
     it(@"returns the merchant id from the client token", ^{
-        BTClient *client = [BTClientSpecHelper blockTestCase:self forOfflineClientWithOverrides:@{ BTConfigurationKeyMerchantId: @"merchant-id" }];
+        BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyMerchantId: @"merchant-id" }];
         expect(client.merchantId).to.equal(@"merchant-id");
     });
 });

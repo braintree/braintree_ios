@@ -30,4 +30,3 @@
 - (BOOL)boolForKey:(NSString *)key withValueTransformer:(id<BTValueTransforming>)valueTransformer;
 
 @end
-
