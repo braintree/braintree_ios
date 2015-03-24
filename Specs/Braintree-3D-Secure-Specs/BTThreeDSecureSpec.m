@@ -18,7 +18,8 @@ beforeEach(^{
 
     id clientStub_lookupSucceedsAuthenticationRequired = [(OCMockObject *)client stub];
     [clientStub_lookupSucceedsAuthenticationRequired andDo:^(NSInvocation *invocation) {
-        BTClientThreeDSecureLookupSuccessBlock block = [invocation getArgumentAtIndexAsObject:4];
+        BTClientThreeDSecureLookupSuccessBlock block;
+        [invocation getArgument:&block atIndex:4];
         BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.acsURL = [NSURL URLWithString:@"http://acs.example.com"];
         lookup.PAReq = @"some-pareq";
@@ -37,7 +38,8 @@ beforeEach(^{
         [[[(OCMockObject *)card stub] andReturn:@{ @"liabilityShiftPossible": @YES, @"liabilityShifted": @YES }] threeDSecureInfo];
         BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.card = card;
-        BTClientThreeDSecureLookupSuccessBlock block = [invocation getArgumentAtIndexAsObject:4];
+        BTClientThreeDSecureLookupSuccessBlock block;
+        [invocation getArgument:&block atIndex:4];
         block(lookup);
     }];
     [clientStub_lookupSucceedsAuthenticationNotRequired lookupNonceForThreeDSecure:originalNonce_lookupEnrolledAuthenticationNotRequired
@@ -47,7 +49,8 @@ beforeEach(^{
 
     id clientStub_lookupFails = [(OCMockObject *)client stub];
     [clientStub_lookupFails andDo:^(NSInvocation *invocation) {
-        BTClientFailureBlock block = [invocation getArgumentAtIndexAsObject:5];
+        BTClientFailureBlock block;
+        [invocation getArgument:&block atIndex:5];
         block([NSError errorWithDomain:BTBraintreeAPIErrorDomain code:BTServerErrorUnexpectedError userInfo:nil]);
     }];
     [clientStub_lookupFails lookupNonceForThreeDSecure:originalNonce_lookupFails
@@ -133,7 +136,8 @@ describe(@"convenience methods", ^{
             [[[(OCMockObject *)mockCard stub] andReturn:@"some-nonce"] nonce];
 
             [[[(OCMockObject *)client stub] andDo:^(NSInvocation *invocation) {
-                BTClientCardSuccessBlock successBlock = [invocation getArgumentAtIndexAsObject:3];
+                BTClientCardSuccessBlock successBlock;
+                [invocation getArgument:&successBlock atIndex:3];
                 successBlock(mockCard);
             }] saveCardWithRequest:mockRequest success:OCMOCK_ANY failure:OCMOCK_ANY];
 

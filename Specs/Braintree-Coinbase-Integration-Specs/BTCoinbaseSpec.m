@@ -366,7 +366,8 @@ describe(@"BTAppSwitching", ^{
             [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
 
             [[[mockClient stub] andDo:^(NSInvocation *invocation){
-                BTClientCoinbaseSuccessBlock successBlock = [invocation getArgumentAtIndexAsObject:3];
+                BTClientCoinbaseSuccessBlock successBlock;
+                [invocation getArgument:&successBlock atIndex:3];
                 successBlock(mockPaymentMethod);
             }] saveCoinbaseAccount:HC_hasEntry(@"code", @"1234") success:[OCMArg isNotNil] failure:[OCMArg any]];
 
@@ -457,7 +458,8 @@ describe(@"BTAppSwitching", ^{
           
             id clientStub = [mockClient stub];
             [clientStub andDo:^(NSInvocation *invocation){
-                BTClientFailureBlock failureBlock = [invocation getArgumentAtIndexAsObject:4];
+                BTClientFailureBlock failureBlock;
+                [invocation getArgument:&failureBlock atIndex:4];
                 failureBlock(mockError);
             }];
             [clientStub saveCoinbaseAccount:HC_hasEntry(@"code", @"1234")

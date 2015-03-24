@@ -22,7 +22,7 @@ target 'Tests' do
   pod 'Braintree/Coinbase', :path => '.'
   pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
   pod 'Expecta', '~> 0.3.0'
-  pod 'OCMock', '~> 2.2.3'
+  pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
   pod 'KIF', :git => 'https://github.com/mickeyreiss/KIF.git', :commit => '1702bb14dc1070650816e9a26ee5a03d6bdba41e'
@@ -57,14 +57,14 @@ end
 target 'Braintree-Apple-Pay-Excluded' do
   link_with 'Braintree-Apple-Pay-Excluded-Build-Specs'
   pod 'Braintree', :path => '.'
-  pod 'OCMock', '~> 2.2.3'
+  pod 'OCMock', '~> 3.1'
 end
 
 target 'Braintree-Apple-Pay' do
   link_with 'Braintree-Apple-Pay-Build-Specs'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
-  pod 'OCMock', '~> 2.2.3'
+  pod 'OCMock', '~> 3.1'
 end
 
 post_install do |installer|

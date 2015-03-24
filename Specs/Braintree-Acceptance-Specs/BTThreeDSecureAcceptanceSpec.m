@@ -41,7 +41,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
             id delegateRequestPresentationExpectation = [(OCMockObject *)delegate expect];
             __block UIViewController *threeDSecureViewController;
             [delegateRequestPresentationExpectation andDo:^(NSInvocation *invocation) {
-                threeDSecureViewController = [invocation getArgumentAtIndexAsObject:3];
+                [invocation getArgument:&threeDSecureViewController atIndex:3];
 
                 [system presentViewController:threeDSecureViewController
 withinNavigationControllerWithNavigationBarClass:nil
@@ -161,7 +161,7 @@ withinNavigationControllerWithNavigationBarClass:nil
             id delegateRequestPresentationExpectation = [(OCMockObject *)delegate expect];
             __block UIViewController *threeDSecureViewController;
             [delegateRequestPresentationExpectation andDo:^(NSInvocation *invocation) {
-                threeDSecureViewController = [invocation getArgumentAtIndexAsObject:3];
+                [invocation getArgument:&threeDSecureViewController atIndex:3];
 
                 [system presentViewController:threeDSecureViewController
 withinNavigationControllerWithNavigationBarClass:nil

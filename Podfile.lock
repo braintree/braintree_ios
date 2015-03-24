@@ -73,7 +73,7 @@ PODS:
     - KIF (>= 2.0.0)
   - NSURL+QueryDictionary (1.1.0)
   - OCHamcrest (3.0.1)
-  - OCMock (2.2.4)
+  - OCMock (3.1.2)
   - OHHTTPStubs (3.1.11):
     - OHHTTPStubs/Core (= 3.1.11)
   - OHHTTPStubs/Core (3.1.11)
@@ -99,7 +99,7 @@ DEPENDENCIES:
   - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
   - NSURL+QueryDictionary (~> 1.0)
   - OCHamcrest (~> 3.0.1)
-  - OCMock (~> 2.2.3)
+  - OCMock (~> 3.1)
   - OHHTTPStubs (~> 3.1.0)
   - PureLayout
   - Specta (from `https://github.com/specta/specta.git`, commit `v0.3.0.beta1`)
@@ -147,7 +147,7 @@ SPEC CHECKSUMS:
   KIFViewControllerActions: 6d680038a329864d62526928dd89556c0177bc55
   NSURL+QueryDictionary: 14fc00cab003a53230ec4bef6a5e2d28ce777614
   OCHamcrest: 207233b7d7a44dadd66aca398947cc7e029c9be5
-  OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
+  OCMock: ecdd510b73ef397f2f97274785c1e87fd147c49f
   OHHTTPStubs: e6ecc3fd4fa11b2cfb5f4823421bddc95a82913d
   PureLayout: 63a3257320223e8edddcd3afb407445f85a6bf74
   Specta: 63e8ac8e07db6675c7096d37f77a266a1be4c02d

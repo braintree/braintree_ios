@@ -92,7 +92,8 @@ describe(@"saveCoinbaseAccount:success:failure:", ^{
         
         id stub = [mockClient expect];
         [stub andDo:^(NSInvocation *invocation) {
-            BTHTTPCompletionBlock completionBlock = [invocation getArgumentAtIndexAsObject:4];
+            BTHTTPCompletionBlock completionBlock;
+            [invocation getArgument:&completionBlock atIndex:4];
             id response = [OCMockObject mockForClass:[BTHTTPResponse class]];
             [[[response stub] andReturnValue:@(YES)] isSuccess];
             [[[response stub] andReturn:[BTAPIResponseParser parserWithDictionary:@{}]] object];
@@ -120,7 +121,8 @@ describe(@"saveCoinbaseAccount:success:failure:", ^{
         
         id stub = [mockClient expect];
         [stub andDo:^(NSInvocation *invocation) {
-            BTHTTPCompletionBlock completionBlock = [invocation getArgumentAtIndexAsObject:4];
+            BTHTTPCompletionBlock completionBlock;
+            [invocation getArgument:&completionBlock atIndex:4];
             NSError *error = [OCMockObject mockForClass:[NSError class]];
             completionBlock(nil, error);
             [completionExpectation fulfill];
