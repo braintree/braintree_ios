@@ -89,6 +89,7 @@ describe(@"BTAppSwitching", ^{
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
             [[client expect] postAnalyticsEvent:@"ios.coinbase.appswitch.succeeded"];
 
             id<BTAppSwitchingDelegate> delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
@@ -105,6 +106,7 @@ describe(@"BTAppSwitching", ^{
                                                                       error:NULL];
             expect(appSwitchInitiated).to.beTruthy();
             [sharedApplicationStub verify];
+            [client verify]; // important
         });
 
         it(@"falls back to switching to Safari when the coinbase app is not available", ^{
@@ -116,6 +118,7 @@ describe(@"BTAppSwitching", ^{
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
             [[client expect] postAnalyticsEvent:@"ios.coinbase.webswitch.succeeded"];
 
             id<BTAppSwitchingDelegate> delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
@@ -132,6 +135,7 @@ describe(@"BTAppSwitching", ^{
                                                                       error:NULL];
             expect(appSwitchInitiated).to.beTruthy();
             [sharedApplicationStub verify];
+            [client verify]; // important
         });
 
         it(@"fails when the developer has not yet provided a return url scheme", ^{
@@ -143,6 +147,9 @@ describe(@"BTAppSwitching", ^{
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
+
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.invalid-return-url-scheme"];
 
             id<BTAppSwitchingDelegate> delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
 
@@ -171,6 +178,7 @@ describe(@"BTAppSwitching", ^{
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
             [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.failed"];
 
             id<BTAppSwitchingDelegate> delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
@@ -200,6 +208,9 @@ describe(@"BTAppSwitching", ^{
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
 
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.unavailable"];
+
             id<BTAppSwitchingDelegate> delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
 
             id sharedApplicationStub = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
@@ -218,6 +229,7 @@ describe(@"BTAppSwitching", ^{
             expect(error.code).to.equal(BTAppSwitchErrorDisabled);
             expect(error.localizedDescription).to.contain(@"Coinbase is not available");
             [sharedApplicationStub verify];
+            [client verify];
         });
 
         it(@"accepts a NULL error even on failures", ^{
@@ -229,6 +241,9 @@ describe(@"BTAppSwitching", ^{
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
+
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.invalid-return-url-scheme"];
 
             id<BTAppSwitchingDelegate> delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
 
@@ -242,6 +257,7 @@ describe(@"BTAppSwitching", ^{
                                                                       error:NULL];
             expect(appSwitchInitiated).to.beFalsy();
             [sharedApplicationStub verify];
+            [client verify];
         });
 
         it(@"does not set an error on success", ^{
@@ -253,6 +269,8 @@ describe(@"BTAppSwitching", ^{
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
+
+            [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
             [[client expect] postAnalyticsEvent:@"ios.coinbase.appswitch.succeeded"];
 
             id<BTAppSwitchingDelegate> delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
@@ -271,6 +289,7 @@ describe(@"BTAppSwitching", ^{
             expect(appSwitchInitiated).to.beTruthy();
             expect(error).to.beNil();
             [sharedApplicationStub verify];
+            [client verify];
         });
     });
 
