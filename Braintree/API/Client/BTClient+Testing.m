@@ -19,8 +19,8 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 
 @implementation BTClient (Testing)
 
-+ (void)testClientWithConfiguration:(NSDictionary *)configurationDictionary completion:(void (^)(BTClient *client))block {
-    NSAssert(block != nil, @"Completion is required in %s", __FUNCTION__);
++ (void)testClientWithConfiguration:(NSDictionary *)configurationDictionary completion:(void (^)(BTClient *client))completionBlock {
+    NSAssert(completionBlock != nil, @"Completion is required in %s", __FUNCTION__);
 
     BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:[[self class] testClientApiURLForMerchant:configurationDictionary[BTClientTestConfigurationKeyMerchantIdentifier]]];
 
@@ -52,7 +52,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
         [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *client, NSError *error) {
             NSAssert(client != nil, @"BTClient setup failed with error = %@", error);
             if (client == nil) { NSLog(@"BTClient setup failed with error = %@", error); }
-            block(client);
+            completionBlock(client);
         }];
     }];
 }
@@ -108,6 +108,42 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
             }
         }
     }];
+}
+
+- (void)revokeAuthorizationFingerprintForTestingWithSuccess:(void (^)(void))successBlock
+                                               failure:(BTClientFailureBlock)failureBlock {
+    [self.clientApiHttp DELETE:@"testing/authorization_fingerprints"
+                    parameters:[self defaultRequestParameters]
+                    completion:^(BTHTTPResponse *response, NSError *error) {
+                        if (response.isSuccess) {
+                            if (successBlock) {
+                            successBlock();
+                            }
+                        } else {
+                            if (failureBlock) {
+                                failureBlock(error);
+                            }
+                        }
+                    }];
+}
+
+- (void)updateCoinbaseMerchantOptions:(NSDictionary *)dictionary
+                         success:(void (^)(void))successBlock
+                              failure:(BTClientFailureBlock)failureBlock {
+   [self.clientApiHttp PUT:@"testing/mock_coinbase_merchant_options"
+                parameters:@{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                              @"coinbase_merchant_options": dictionary }
+                completion:^(BTHTTPResponse *response, NSError *error) {
+                    if (response.isSuccess) {
+                        if (successBlock) {
+                            successBlock();
+                        }
+                    } else {
+                        if (failureBlock) {
+                            failureBlock(error);
+                        }
+                    }
+                }];
 }
 
 - (NSDictionary *)defaultRequestParameters {

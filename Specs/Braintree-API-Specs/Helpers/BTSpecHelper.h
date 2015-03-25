@@ -1,4 +1,5 @@
-#import <Foundation/Foundation.h>
+@import Foundation;
+@import XCTest;
 
 #import "EXPMatchers+BTMatches.h"
 #import "EXPMatchers+BTDeepEquals.h"

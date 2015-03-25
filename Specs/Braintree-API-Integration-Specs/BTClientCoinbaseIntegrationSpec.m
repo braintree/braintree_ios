@@ -7,15 +7,31 @@ __block BTClient *testClient;
 
 beforeEach(^{
     XCTestExpectation *fetchTestClientTokenExpectation = [self expectationWithDescription:@"Fetch test client"];
-        [BTClient testClientWithConfiguration:@{
-                                                BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
-                                                BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
-                                                BTClientTestConfigurationKeyCustomer:@YES,
-                                                BTClientTestConfigurationKeyClientTokenVersion: @2
-                                                } completion:^(BTClient *client) {
-                                                    testClient = client;
-                                                    [fetchTestClientTokenExpectation fulfill];
-                                                }];
+    [BTClient testClientWithConfiguration:@{
+                                            BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                            BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                            BTClientTestConfigurationKeyCustomer:@YES,
+                                            BTClientTestConfigurationKeyClientTokenVersion: @2
+                                            } completion:^(BTClient *client) {
+                                                testClient = client;
+                                                
+
+                                                [testClient updateCoinbaseMerchantOptions:@{ @"enabled": @YES }
+                                                                                  success:^{
+                                                                                      [fetchTestClientTokenExpectation fulfill];
+                                                                                  } failure:^(NSError *error) {
+                                                                                      XCTFail(@"HI");
+                                                                                  }];
+                                            }];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+});
+
+afterEach(^{
+    XCTestExpectation *fetchTestClientTokenExpectation = [self expectationWithDescription:@"Fetch test client"];
+    [testClient updateCoinbaseMerchantOptions:@{ @"enabled": @NO }
+                                      success:^{
+                                          [fetchTestClientTokenExpectation fulfill];
+                                      } failure:nil];
     [self waitForExpectationsWithTimeout:10 handler:nil];
 });
 
