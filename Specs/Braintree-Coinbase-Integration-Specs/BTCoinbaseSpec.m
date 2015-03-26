@@ -357,80 +357,74 @@ describe(@"BTAppSwitching", ^{
             [coinbase handleReturnURL:testURL];
         });
 
-        describe(@"tokenizes the code returned by coinbase and sends analytics", ^{
+        describe(@"initiateAppSwitchWithClient:delegate: followed by handleReturnURL:", ^{
+            sharedExamplesFor(@"a coinbase authorization", ^(NSDictionary *data) {
+                it(@"tokenizes the code and sends analytics", ^{
+                    id mockClient;
+                    id mockDelegate;
+                    BTCoinbasePaymentMethod *mockPaymentMethod;
+                    BTCoinbase *coinbase;
+                    NSURL *testURL;
+                    id coinbaseOAuth;
 
-            __block id mockClient;
-            __block id mockDelegate;
-            __block BTCoinbasePaymentMethod *mockPaymentMethod;
-            __block BTCoinbase *coinbase;
-            __block NSURL *testURL;
-            __block id coinbaseOAuth;
+                    id configuration = [OCMockObject mockForClass:[BTConfiguration class]];
+                    [[[configuration stub] andReturnValue:@(YES)] coinbaseEnabled];
+                    [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
+                    [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
+                    [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+                    mockClient = [OCMockObject mockForClass:[BTClient class]];
+                    [[[mockClient stub] andReturn:configuration] configuration];
+                    mockPaymentMethod = [OCMockObject mockForClass:[BTCoinbasePaymentMethod class]];
 
-            beforeEach(^{
-                id configuration = [OCMockObject mockForClass:[BTConfiguration class]];
-                [[[configuration stub] andReturnValue:@(YES)] coinbaseEnabled];
-                [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
-                [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
-                [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
-                mockClient = [OCMockObject mockForClass:[BTClient class]];
-                [[[mockClient stub] andReturn:configuration] configuration];
-                mockPaymentMethod = [OCMockObject mockForClass:[BTCoinbasePaymentMethod class]];
+                    [[[mockClient stub] andDo:^(NSInvocation *invocation){
+                        BTClientCoinbaseSuccessBlock successBlock;
+                        [invocation getArgument:&successBlock atIndex:3];
+                        successBlock(mockPaymentMethod);
+                    }] saveCoinbaseAccount:HC_hasEntry(@"code", @"1234") success:[OCMArg isNotNil] failure:[OCMArg any]];
 
-                [[[mockClient stub] andDo:^(NSInvocation *invocation){
-                    BTClientCoinbaseSuccessBlock successBlock;
-                    [invocation getArgument:&successBlock atIndex:3];
-                    successBlock(mockPaymentMethod);
-                }] saveCoinbaseAccount:HC_hasEntry(@"code", @"1234") success:[OCMArg isNotNil] failure:[OCMArg any]];
+                    mockDelegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
 
-                mockDelegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
+                    coinbase = [[BTCoinbase alloc] init];
+                    [coinbase setReturnURLScheme:@"com.example.app.payments"];
+                    coinbase.delegate = mockDelegate;
 
-                coinbase = [[BTCoinbase alloc] init];
-                [coinbase setReturnURLScheme:@"com.example.app.payments"];
-                coinbase.delegate = mockDelegate;
+                    id partialCoinbaseMock = [OCMockObject partialMockForObject:coinbase];
+                    [[[partialCoinbaseMock stub] andReturn:mockClient] client];
 
-                id partialCoinbaseMock = [OCMockObject partialMockForObject:coinbase];
-                [[[partialCoinbaseMock stub] andReturn:mockClient] client];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
 
-                [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
-                [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
+                    testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=1234"];
 
-                testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=1234"];
+                    coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
 
-                coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
+                    [[mockClient expect] postAnalyticsEvent:[NSString stringWithFormat:@"ios.coinbase.%@.succeeded", data[@"analyticsAction"]]];
+                    [[mockClient expect] postAnalyticsEvent:[NSString stringWithFormat:@"ios.coinbase.%@.authorized", data[@"analyticsAction"]]];
+
+                    [[[[coinbaseOAuth expect] classMethod] andReturnValue:data[@"coinbaseOAuthReturnValue"]] startOAuthAuthenticationWithClientId:OCMOCK_ANY
+                                                                                                                                            scope:OCMOCK_ANY
+                                                                                                                                      redirectUri:OCMOCK_ANY
+                                                                                                                                             meta:OCMOCK_ANY];
+                    [[mockDelegate expect] appSwitcher:coinbase didCreatePaymentMethod:mockPaymentMethod];
+
+                    [coinbase initiateAppSwitchWithClient:mockClient delegate:mockDelegate error:nil];
+
+                    [coinbase handleReturnURL:testURL];
+
+                    [mockDelegate verifyWithDelay:10];
+                    [mockClient verify];
+                });
             });
 
             // NOTE: postAnalyticsEvent:@"ios.coinbase.unknown.authorized" should not happen during normal use.
             // If this event occurs in production, it may indicate a bug.
 
-            it(@"provider app switch", ^{
-                [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.succeeded"];
-                [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.authorized"];
-
-                [[[[coinbaseOAuth expect] classMethod] andReturnValue:@(CoinbaseOAuthMechanismApp)] startOAuthAuthenticationWithClientId:OCMOCK_ANY
-                                                                                                                                   scope:OCMOCK_ANY
-                                                                                                                             redirectUri:OCMOCK_ANY
-                                                                                                                                    meta:OCMOCK_ANY];
+            describe(@"provider app switch", ^{
+                itBehavesLike(@"a coinbase authorization", @{ @"analyticsAction": @"appswitch", @"coinbaseOAuthReturnValue": @(CoinbaseOAuthMechanismApp) });
             });
 
-            it(@"web browser switch", ^{
-                [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.webswitch.succeeded"];
-                [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"];
-
-                [[[[coinbaseOAuth expect] classMethod] andReturnValue:@(CoinbaseOAuthMechanismBrowser)] startOAuthAuthenticationWithClientId:OCMOCK_ANY
-                                                                                                                                       scope:OCMOCK_ANY
-                                                                                                                                 redirectUri:OCMOCK_ANY
-                                                                                                                                        meta:OCMOCK_ANY];
-            });
-
-            afterEach(^{
-                [[mockDelegate expect] appSwitcher:coinbase didCreatePaymentMethod:mockPaymentMethod];
-
-                [coinbase initiateAppSwitchWithClient:mockClient delegate:mockDelegate error:nil];
-
-                [coinbase handleReturnURL:testURL];
-
-                [mockDelegate verifyWithDelay:10];
-                [mockClient verify];
+            describe(@"web browser switch", ^{
+                itBehavesLike(@"a coinbase authorization", @{ @"analyticsAction": @"webswitch", @"coinbaseOAuthReturnValue": @(CoinbaseOAuthMechanismBrowser) });
             });
         });
 
