@@ -9,7 +9,7 @@ SharedExamplesBegin(BTClient_Integration)
 sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
   __block BTClient *testClient;
-  __block BOOL asyncClient = (BOOL)data[@"asyncClient"];
+  __block BOOL asyncClient = [data[@"asyncClient"] boolValue];
 
   beforeEach(^{
     XCTestExpectation *expectation = [self expectationWithDescription:@"Load test client token"];

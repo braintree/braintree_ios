@@ -13,7 +13,7 @@ SharedExamplesBegin(BTClient_BTPayPalSpec)
 
 sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
   
-  __block BOOL asyncClient = (BOOL)data[@"asyncClient"];
+  __block BOOL asyncClient = [data[@"asyncClient"] boolValue];
   __block NSMutableDictionary *mutableClaims;
   
   beforeEach(^{
