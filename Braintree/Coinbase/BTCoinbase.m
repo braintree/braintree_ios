@@ -124,6 +124,8 @@
              [self postAnalyticsEventForAuthenticationMechanism:self.authenticationMechanism status:@"failed"];
              [self informDelegateDidFailWithError:error];
          } else {
+             // postAnalyticsEvent:@"ios.coinbase.appswitch.authorized"
+             // postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"
              [self postAnalyticsEventForAuthenticationMechanism:self.authenticationMechanism status:@"authorized"];
              [self.client saveCoinbaseAccount:response
                                       success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod)
