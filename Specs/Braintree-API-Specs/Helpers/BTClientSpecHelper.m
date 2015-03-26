@@ -23,10 +23,12 @@
     return client;
 }
 
-+ (NSArray *)clientsForTestCase:(XCTestCase *)testCase withOverrides:(NSDictionary *)overrides {
-    BTClient *deprecatedClient = [self deprecatedClientForTestCase:testCase withOverrides:overrides];
-    BTClient *asyncClient = [self asyncClientForTestCase:testCase withOverrides:overrides];
-    return @[deprecatedClient, asyncClient];
++ (BTClient *)clientForTestCase:(XCTestCase *)testCase withOverrides:(NSDictionary *)overrides async:(BOOL)async {
+  if (async) {
+    return [self asyncClientForTestCase:testCase withOverrides:overrides];
+  } else {
+    return [self deprecatedClientForTestCase:testCase withOverrides:overrides];
+  }
 }
 
 @end

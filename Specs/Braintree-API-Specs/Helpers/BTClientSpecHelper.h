@@ -1,4 +1,5 @@
 @import Foundation;
+
 @class BTClient;
 
 @interface BTClientSpecHelper : NSObject
@@ -7,6 +8,6 @@
 
 + (BTClient *)deprecatedClientForTestCase:(XCTestCase *)testCase withOverrides:(NSDictionary *)overrides;
 
-+ (NSArray *)clientsForTestCase:(XCTestCase *)testCase withOverrides:(NSDictionary *)overrides;
++ (BTClient *)clientForTestCase:(XCTestCase *)testCase withOverrides:(NSDictionary *)overrides async:(BOOL)async;
 
 @end
