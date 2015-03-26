@@ -19,6 +19,7 @@ describe(@"preparePayPalMobile", ^{
                     [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier:@"altpay_merchant",
                                                              BTClientTestConfigurationKeyPublicKey:@"altpay_merchant_public_key",
                                                              BTClientTestConfigurationKeyCustomer:@YES }
+                                               async:@YES
                                                completion:^(BTClient *client) {
                                                    testClient = client;
                                                    done();
@@ -71,6 +72,7 @@ describe(@"preparePayPalMobile", ^{
                     [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: merchantIdWithPayPalDisabled,
                                                              BTClientTestConfigurationKeyPublicKey:merchantKeyWithPayPalDisabled,
                                                              BTClientTestConfigurationKeyCustomer: @YES }
+                                               async:@YES
                                                completion:^(BTClient *client) {
                                                    testClient = client;
                                                    done();

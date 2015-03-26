@@ -15,6 +15,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
                                                      BTClientTestConfigurationKeyCustomer:@YES,
                                                      BTClientTestConfigurationKeyClientTokenVersion: @2,
                                                      BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account", }
+                                       async:@YES
                                        completion:^(BTClient *aClient) {
                                            client = aClient;
                                            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];

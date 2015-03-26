@@ -19,7 +19,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
 
 @implementation BTClient (Testing)
 
-+ (void)testClientWithConfiguration:(NSDictionary *)configurationDictionary completion:(void (^)(BTClient *client))completionBlock {
++ (void)testClientWithConfiguration:(NSDictionary *)configurationDictionary async:(BOOL)async completion:(void (^)(BTClient *client))completionBlock {
     NSAssert(completionBlock != nil, @"Completion is required in %s", __FUNCTION__);
 
     BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:[[self class] testClientApiURLForMerchant:configurationDictionary[BTClientTestConfigurationKeyMerchantIdentifier]]];
@@ -48,12 +48,19 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
     completion:^(BTHTTPResponse *response, __unused NSError *error) {
         NSAssert(error == nil, @"testing/client_token failed or responded with an error: %@", error);
         NSString *clientTokenString = [response.object stringForKey:@"clientToken"];
-
-        [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *client, NSError *error) {
+        if (async) {
+          [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *client, NSError *error) {
             NSAssert(client != nil, @"BTClient setup failed with error = %@", error);
             if (client == nil) { NSLog(@"BTClient setup failed with error = %@", error); }
             completionBlock(client);
-        }];
+          }];
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+          completionBlock([(BTClient *)[BTClient alloc] initWithClientToken:clientTokenString]);
+#pragma clang diagnostic pop
+        }
+
     }];
 }
 

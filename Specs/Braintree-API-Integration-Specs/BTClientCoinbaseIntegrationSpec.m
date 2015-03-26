@@ -12,7 +12,7 @@ beforeEach(^{
                                             BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
                                             BTClientTestConfigurationKeyCustomer:@YES,
                                             BTClientTestConfigurationKeyClientTokenVersion: @2
-                                            } completion:^(BTClient *client) {
+                                            } async:@YES completion:^(BTClient *client) {
                                                 testClient = client;
                                                 
 

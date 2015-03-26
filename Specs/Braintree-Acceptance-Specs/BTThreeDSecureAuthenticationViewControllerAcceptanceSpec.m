@@ -27,10 +27,11 @@
                                                  BTClientTestConfigurationKeyCustomer:@YES,
                                                  BTClientTestConfigurationKeyClientTokenVersion: @2,
                                                  BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account", }
-                                   completion:^(BTClient *client) {
-                                       helper.client = client;
-                                       done();
-                                   }];
+                                         async:@YES
+                                         completion:^(BTClient *client) {
+                                             helper.client = client;
+                                             done();
+                                         }];
     });
 
     return helper;

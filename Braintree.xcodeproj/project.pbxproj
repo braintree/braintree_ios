@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		034EF7CE1AC367EB00CC25D8 /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CB211AC08234007AD979 /* BTTestClientTokenFactory.m */; };
+		0370DD631AC32AEC0051C461 /* BTClientSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7293F2A1AC0ED0B00FBD6FD /* BTClientSpecHelper.m */; };
 		0B9C2085FC524408B405FCA2 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		160199F01964E14400010A56 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		160199F11964E14400010A56 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 162174E1192D9220008DC35D /* CoreGraphics.framework */; };
@@ -3271,6 +3273,7 @@
 				2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */,
 				1607FE79192D97CD0099D504 /* BTPayPalViewControllerSpec.m in Sources */,
 				A7F6CB241AC083E0007AD979 /* BTTestClientTokenFactory.m in Sources */,
+				0370DD631AC32AEC0051C461 /* BTClientSpecHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3478,6 +3481,7 @@
 				161029FB192DB613002C1B2B /* BraintreeVersionSpec.m in Sources */,
 				A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */,
 				A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */,
+				034EF7CE1AC367EB00CC25D8 /* BTTestClientTokenFactory.m in Sources */,
 				A75C5B6319E8900000832A47 /* EXPMatchers+BTMatches.m in Sources */,
 				A75C5B6219E88FFC00832A47 /* EXPMatchers+BTBeANonce.m in Sources */,
 			);

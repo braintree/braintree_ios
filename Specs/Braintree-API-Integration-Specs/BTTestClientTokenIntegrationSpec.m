@@ -13,7 +13,9 @@ describe(@"initForTestingWithConfiguration:", ^{
                                                     BTClientTestConfigurationKeySharedCustomerIdentifierType: @"testing",
                                                     BTClientTestConfigurationKeyClientTokenVersion: @2,
                                                     BTClientTestConfigurationKeyAnalytics: @{ BTClientTestConfigurationKeyURL: @"http://analytics.example.com" }
-                                                    } completion:^(BTClient *client) {
+                                                    }
+                                                    async:@YES
+                                                    completion:^(BTClient *client) {
                                                         expect(client).to.beKindOf([BTClient class]);
                                                         expect(client.challenges).to.equal([NSSet setWithArray:@[]]);
                                                         done();
@@ -30,7 +32,9 @@ describe(@"initForTestingWithConfiguration:", ^{
                                                     BTClientTestConfigurationKeySharedCustomerIdentifier: @"testing",
                                                     BTClientTestConfigurationKeySharedCustomerIdentifierType: @"testing",
                                                     BTClientTestConfigurationKeyClientTokenVersion: @1,
-                                                    } completion:^(BTClient *client) {
+                                                    }
+                                                    async:@YES
+                                                    completion:^(BTClient *client) {
                                                         expect(client).to.beKindOf([BTClient class]);
                                                         expect(client.challenges).to.equal([NSSet setWithArray:@[]]);
                                                         done();
