@@ -58,7 +58,7 @@ class << self
     }
     options = default_options.merge(options)
     build_settings = options[:build_settings].map{|k,v| "#{k}='#{v}'"}.join(" ")
-    return "xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator8.1' -configuration 'Release' -scheme '#{scheme}' -destination 'OS=8.1,name=iPhone 6,platform=iOS Simulator' #{build_settings} #{command} | xcpretty -t"
+    return "set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator8.2' -configuration 'Release' -scheme '#{scheme}' -destination 'OS=8.2,name=iPhone 6,platform=iOS Simulator' #{build_settings} #{command} | xcpretty -t"
   end
 
 end
@@ -142,7 +142,7 @@ namespace :spec do
   namespace :applepay do
     desc 'Run Apple Pay enabled build test'
     task :included do
-      run! "xcodebuild test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug"
+      run! xcodebuild('Braintree-Apple-Pay-Build-Specs', 'test')
       run "xcodebuild test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
         build_dir = result.split("=")[-1].strip
         run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Braintree.a | grep PKPay" do |result|
@@ -153,7 +153,7 @@ namespace :spec do
 
     desc 'Run Apple Pay disabled build test'
     task :excluded do
-      run! "xcodebuild test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug"
+      run! xcodebuild('Braintree-Apple-Pay-Excluded-Build-Specs', 'test')
       run "xcodebuild test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
         build_dir = result.split("=")[-1].strip
         run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Excluded-Braintree.a | grep PKPay" do |result|
