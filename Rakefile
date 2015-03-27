@@ -374,7 +374,7 @@ namespace :publish do
 
   desc "Force CocoaDocs reparse"
   task :cocoadocs do
-    run! "curl --silent --show-error http://199.229.252.196:4567/redeploy/Braintree/latest"
+    run! "curl --silent --show-error http://api.cocoadocs.org:4567/redeploy/Braintree/latest"
   end
 
 end
