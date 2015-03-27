@@ -5,6 +5,8 @@
 #import "KIFUITestActor+BTWebView.h"
 #import "EXPMatchers+BTBeANonce.h"
 
+#define TIME_TO_WAIT_FOR_KEYBOARD 1.5
+
 @interface BTThreeDSecureAuthenticationViewController_AcceptanceSpecHelper : NSObject <BTThreeDSecureAuthenticationViewControllerDelegate>
 
 @property (nonatomic, strong) BTClient *client;
@@ -167,6 +169,7 @@ describe(@"3D Secure View Controller", ^{
 
                                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
                                [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
+                               [tester waitForTimeInterval:TIME_TO_WAIT_FOR_KEYBOARD];
 
                                [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                [tester tapViewWithAccessibilityLabel:@"Submit"];
@@ -191,6 +194,7 @@ describe(@"3D Secure View Controller", ^{
 
                                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
                                [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
+                               [tester waitForTimeInterval:TIME_TO_WAIT_FOR_KEYBOARD];
 
                                [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                [tester tapViewWithAccessibilityLabel:@"Submit"];
@@ -221,6 +225,7 @@ describe(@"3D Secure View Controller", ^{
 
                                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
                                [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
+                               [tester waitForTimeInterval:TIME_TO_WAIT_FOR_KEYBOARD];
 
                                [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                [tester tapViewWithAccessibilityLabel:@"Submit"];
@@ -255,6 +260,7 @@ describe(@"3D Secure View Controller", ^{
 
                                    [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
                                    [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
+                                   [tester waitForTimeInterval:TIME_TO_WAIT_FOR_KEYBOARD];
 
                                    [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                    [tester tapViewWithAccessibilityLabel:@"Submit"];
@@ -364,6 +370,7 @@ describe(@"3D Secure View Controller", ^{
 
                                    [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
                                    [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
+                                   [tester waitForTimeInterval:TIME_TO_WAIT_FOR_KEYBOARD];
 
                                    [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                    [tester tapViewWithAccessibilityLabel:@"Submit"];
@@ -429,6 +436,7 @@ describe(@"3D Secure View Controller", ^{
 
                                    [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
                                    [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
+                                   [tester waitForTimeInterval:TIME_TO_WAIT_FOR_KEYBOARD];
 
                                    [tester enterTextIntoCurrentFirstResponder:@"1234"];
                                    [tester tapViewWithAccessibilityLabel:@"Submit"];

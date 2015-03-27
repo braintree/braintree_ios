@@ -59,9 +59,9 @@ PODS:
   - FLEX (1.1.1)
   - HockeySDK (3.5.6)
   - InAppSettingsKit (2.3.3)
-  - KIF (3.0.8):
-    - KIF/XCTest (= 3.0.8)
-  - KIF/XCTest (3.0.8)
+  - KIF (3.2.0):
+    - KIF/XCTest (= 3.2.0)
+  - KIF/XCTest (3.2.0)
   - KIFViewControllerActions (1.0.0):
     - KIF (>= 2.0.0)
   - NSURL+QueryDictionary (1.0.3)
@@ -86,7 +86,7 @@ DEPENDENCIES:
   - FLEX
   - HockeySDK
   - InAppSettingsKit
-  - KIF (~> 3.0)
+  - KIF (~> 3.2)
   - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
   - NSURL+QueryDictionary (~> 1.0)
   - OCHamcrest (~> 3.0.1)
@@ -122,14 +122,14 @@ SPEC CHECKSUMS:
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   HockeySDK: 27d8b411208f9d3f70c8f6695a8defa2a3465721
   InAppSettingsKit: c870cb6095a85656ff4df42845af5c26eede4c8d
-  KIF: 2db5e8cf59136dd1267d49cca0d55883389b09d3
-  KIFViewControllerActions: 6d680038a329864d62526928dd89556c0177bc55
+  KIF: 6f94a23566fd05b809f5d3bc5231a965b51121b9
+  KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: 1ad81be60c10e3f4d80c5c4beb7125de96aaec5e
   OCHamcrest: 207233b7d7a44dadd66aca398947cc7e029c9be5
   OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
   OHHTTPStubs: c1e362552b71b81e1deb7a80f44c51585b946c43
   PureLayout: 972964b21dbcbc5cc36785aed16aba03176f057d
-  Specta: 63e8ac8e07db6675c7096d37f77a266a1be4c02d
+  Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
   UIActionSheet+Blocks: c8b9c02f3d08964e8f7a4202f004a639c15eab80
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
 
