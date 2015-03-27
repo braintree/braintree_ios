@@ -36,7 +36,7 @@ PODS:
     - Braintree/Payments
   - Braintree/Coinbase (3.8.0-pre1):
     - Braintree/API
-    - coinbase-official/OAuth (~> 2.1)
+    - coinbase-official/OAuth (~> 2.1.1)
   - Braintree/Data (3.8.0-pre1):
     - Braintree/API
     - Braintree/PayPal
@@ -59,9 +59,7 @@ PODS:
   - Braintree/Venmo (3.8.0-pre1):
     - Braintree/API
   - CardIO (5.0.3)
-  - coinbase-official (2.1):
-    - coinbase-official/OAuth (= 2.1)
-  - coinbase-official/OAuth (2.1)
+  - coinbase-official/OAuth (2.1.1)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
   - HockeySDK (3.6.2)
@@ -90,7 +88,6 @@ DEPENDENCIES:
   - Braintree/Coinbase (from `.`)
   - Braintree/Data (from `.`)
   - CardIO
-  - coinbase-official (from `https://github.com/braintreeps/coinbase-ios-sdk.git`)
   - Expecta (~> 0.3.0)
   - FLEX
   - HockeySDK
@@ -109,8 +106,6 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Braintree:
     :path: .
-  coinbase-official:
-    :git: https://github.com/braintreeps/coinbase-ios-sdk.git
   KIF:
     :commit: 1702bb14dc1070650816e9a26ee5a03d6bdba41e
     :git: https://github.com/mickeyreiss/KIF.git
@@ -121,9 +116,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/specta/specta.git
 
 CHECKOUT OPTIONS:
-  coinbase-official:
-    :commit: a1897b4a654b8bf05bc7cc75b878cdf4519b393d
-    :git: https://github.com/braintreeps/coinbase-ios-sdk.git
   KIF:
     :commit: 1702bb14dc1070650816e9a26ee5a03d6bdba41e
     :git: https://github.com/mickeyreiss/KIF.git
@@ -136,21 +128,21 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
-  Braintree: 5d03987d6c4e8c42a2d589068a6cff364f8b9e7f
+  Braintree: 109d7442666758fd3ed5de526a754322835e0581
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
-  coinbase-official: 18e19a9fe9a944e65fdfd24ab7d5437b80f4330d
+  coinbase-official: 558251781ac5ee223126effc4ac20c797bb1e7d7
   Expecta: ee641011fe10aa1855d487b40e4976dac50ec342
   FLEX: ca8700d0a703cb8828d55d689e7e86841dc51e5a
   HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
   InAppSettingsKit: e78aee9fc41b44bcc5c70d7abd79cff730a0a0d3
   KIF: 7e4728ac18b68da59ccef73ff5d1284b77533fc3
-  KIFViewControllerActions: 6d680038a329864d62526928dd89556c0177bc55
+  KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: 14fc00cab003a53230ec4bef6a5e2d28ce777614
   OCHamcrest: 207233b7d7a44dadd66aca398947cc7e029c9be5
   OCMock: ecdd510b73ef397f2f97274785c1e87fd147c49f
   OHHTTPStubs: e6ecc3fd4fa11b2cfb5f4823421bddc95a82913d
   PureLayout: 63a3257320223e8edddcd3afb407445f85a6bf74
-  Specta: 63e8ac8e07db6675c7096d37f77a266a1be4c02d
+  Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
   UIActionSheet+Blocks: c8b9c02f3d08964e8f7a4202f004a639c15eab80
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
 
