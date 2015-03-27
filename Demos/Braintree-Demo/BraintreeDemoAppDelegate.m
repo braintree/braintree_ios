@@ -15,10 +15,9 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"7134982f3df6419a0eb52b16e7d6d175"];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-#if DEBUG
-    [[[BITHockeyManager sharedHockeyManager] updateManager] setCheckForUpdateOnLaunch:NO];
-#endif
-
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-disableUpdateCheck"]) {
+      [[BITHockeyManager sharedHockeyManager] updateManager].checkForUpdateOnLaunch = NO;
+    }
     [self setupAppearance];
 
     NSString *paymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";

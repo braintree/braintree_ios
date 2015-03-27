@@ -52,20 +52,20 @@ class << self
     %x{git describe}.strip
   end
 
-  def xcodebuild(scheme, command, options={})
+  def xcodebuild(scheme, command, configuration, options={})
     default_options = {
       :build_settings => {}
     }
     options = default_options.merge(options)
     build_settings = options[:build_settings].map{|k,v| "#{k}='#{v}'"}.join(" ")
-    return "set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator8.2' -configuration 'Release' -scheme '#{scheme}' -destination 'OS=8.2,name=iPhone 6,platform=iOS Simulator' #{build_settings} #{command} | xcpretty -t"
+    return "set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator8.2' -configuration '#{configuration}' -scheme '#{scheme}' -destination 'OS=8.2,name=iPhone 6,platform=iOS Simulator' #{build_settings} #{command} | xcpretty -t"
   end
 
 end
 
 namespace :spec do
   def run_test_scheme! scheme
-    run! xcodebuild(scheme, 'test')
+    run! xcodebuild(scheme, 'test', 'Release')
   end
 
   desc 'Run unit tests'
@@ -93,7 +93,7 @@ namespace :spec do
     desc 'Run api integration tests'
     task :integration do
       with_https_server do
-        run! xcodebuild('Braintree-API-Integration-Specs', 'test', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
+        run! xcodebuild('Braintree-API-Integration-Specs', 'test', 'Release', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
       end
     end
   end
@@ -111,6 +111,11 @@ namespace :spec do
   desc 'Run Data tests'
   task :data do
     run_test_scheme! 'Braintree-Data-Specs'
+  end
+
+  desc 'Run Acceptance tests'
+  task :acceptance do
+    run_test_scheme! 'Braintree-Acceptance-Specs'
   end
 
   namespace :paypal do
@@ -142,7 +147,7 @@ namespace :spec do
   namespace :applepay do
     desc 'Run Apple Pay enabled build test'
     task :included do
-      run! xcodebuild('Braintree-Apple-Pay-Build-Specs', 'test')
+      run! xcodebuild('Braintree-Apple-Pay-Build-Specs', 'test', 'Debug')
       run "xcodebuild test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
         build_dir = result.split("=")[-1].strip
         run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Braintree.a | grep PKPay" do |result|
@@ -153,7 +158,7 @@ namespace :spec do
 
     desc 'Run Apple Pay disabled build test'
     task :excluded do
-      run! xcodebuild('Braintree-Apple-Pay-Excluded-Build-Specs', 'test')
+      run! xcodebuild('Braintree-Apple-Pay-Excluded-Build-Specs', 'test', 'Debug')
       run "xcodebuild test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
         build_dir = result.split("=")[-1].strip
         run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Excluded-Braintree.a | grep PKPay" do |result|
@@ -172,7 +177,7 @@ end
 
 namespace :demo do
   def build_demo! scheme
-    run! xcodebuild(scheme, 'build')
+    run! xcodebuild(scheme, 'build', 'Release')
   end
 
   task :build do
@@ -211,7 +216,7 @@ namespace :sanity_checks do
   desc 'Check for pending tests'
   task :pending_specs do
     # ack returns 1 if no match is found, which is our success case
-    run! "! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
+    run! "which -s ack && ! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
   end
 
   desc 'Verify that all demo apps Build successfully'
