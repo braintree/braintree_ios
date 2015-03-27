@@ -1,11 +1,14 @@
 # Braintree iOS SDK Release Notes
 
-# master
+# 3.7.1 (2015-03-27)
 
 * Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.5-bt1)
   * Changes "Send Payment" button to simply "Pay"
   * Minor fixes
 * Remove `en_UK` from Braintree-Demo-Info.plist (while keeping `en_GB`)
+* Fix for Venmo button in BTPaymentButton
+* Fixed issue with wrapping text in Drop In ([thanks nirinchev](https://github.com/braintree/braintree_ios/pull/107))
+* Updated manual installation docs
 
 ## 3.7.0 (2015-03-02)
 
