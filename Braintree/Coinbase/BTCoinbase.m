@@ -69,7 +69,7 @@
     }
 
     if (![self appSwitchAvailableForClient:client]) {
-        [self postAnalyticsEventWithName:@"initiate" status:@"unavailable"];
+        [self postAnalyticsEventWithName:@"initiate" status:@"unavailable"]; // postAnalyticsEvent:@"ios.coinbase.initiate.unavailable"
         if (error != NULL) {
             *error = [self errorWithCode:BTAppSwitchErrorDisabled localizedDescription:@"Coinbase is not available due to Configuration"];
         }
@@ -83,7 +83,7 @@
 
     switch (self.authenticationMechanism) {
         case CoinbaseOAuthMechanismNone:
-            [self postAnalyticsEventWithName:@"initiate" status:@"failed"];
+            [self postAnalyticsEventWithName:@"initiate" status:@"failed"]; // postAnalyticsEvent:@"ios.coinbase.initiate.failed"
             if (error != NULL) {
                 *error = [self errorWithCode:BTAppSwitchErrorFailed localizedDescription:@"Coinbase is not available"];
             }
@@ -122,6 +122,7 @@
                  // postAnalyticsEvent:@"ios.coinbase.appswitch.denied", postAnalyticsEvent:@"ios.coinbase.webswitch.denied"
                  [self postAnalyticsEventForAuthenticationMechanism:self.authenticationMechanism status:@"denied"];
              } else {
+                 // postAnalyticsEvent:@"ios.coinbase.appswitch.failed", postAnalyticsEvent:@"ios.coinbase.webswitch.failed"
                  [self postAnalyticsEventForAuthenticationMechanism:self.authenticationMechanism status:@"failed"];
              }
              [self informDelegateDidFailWithError:error];

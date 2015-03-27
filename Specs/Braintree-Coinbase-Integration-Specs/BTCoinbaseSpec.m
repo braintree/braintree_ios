@@ -168,7 +168,7 @@ describe(@"BTAppSwitching", ^{
             expect(error.code).to.equal(BTAppSwitchErrorIntegrationReturnURLScheme);
             expect(error.localizedDescription).to.contain(@"Coinbase is not available");
             [sharedApplicationStub verify];
-            [client verify]; // TODO: test
+            [client verify];
         });
 
         it(@"fails when the app switch fails", ^{
@@ -188,6 +188,8 @@ describe(@"BTAppSwitching", ^{
 
             id sharedApplicationStub = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
             [[[sharedApplicationStub stub] andReturnValue:@(YES)] canOpenURL:[OCMArg any]];
+
+            // This indicates that app switch failed:
             [[[sharedApplicationStub stub] andReturnValue:@(NO)] openURL:[OCMArg any]];
 
             BTCoinbase *coinbase = [[BTCoinbase alloc] init];
@@ -202,7 +204,7 @@ describe(@"BTAppSwitching", ^{
             expect(error.code).to.equal(BTAppSwitchErrorFailed);
             expect(error.localizedDescription).to.contain(@"Coinbase is not available");
             [sharedApplicationStub verify];
-            [client verify]; // TODO: test
+            [client verify];
         });
 
         it(@"fails when coinbase is not yet enabled", ^{
@@ -451,6 +453,32 @@ describe(@"BTAppSwitching", ^{
                                       didFailWithError:HC_allOf(HC_hasProperty(@"domain", CoinbaseErrorDomain),
                                                                 HC_hasProperty(@"code", HC_equalToInteger(CoinbaseOAuthError)),
                                                                 HC_hasProperty(@"localizedDescription", @"This is a test error"),
+                                                                nil)];
+                });
+
+                it(@"informs delegate when buyer Denies authorization in provider app", ^{
+                    testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?error_description=This%20is%20a%20test%20error&error=access_denied"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.started"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.denied"];
+                    [[[[coinbaseOAuth expect] classMethod] andReturnValue:@(CoinbaseOAuthMechanismApp)] startOAuthAuthenticationWithClientId:OCMOCK_ANY scope:OCMOCK_ANY redirectUri:OCMOCK_ANY meta:OCMOCK_ANY];
+                    [[mockDelegate expect] appSwitcher:coinbase
+                                      didFailWithError:HC_allOf(HC_hasProperty(@"domain", CoinbaseErrorDomain),
+                                                                HC_hasProperty(@"code", HC_equalToInteger(CoinbaseOAuthError)),
+                                                                HC_hasProperty(@"localizedDescription", @"This is a test error"),
+                                                                HC_hasProperty(@"userInfo", @{CoinbaseOAuthErrorUserInfoKey: @"access_denied", NSLocalizedDescriptionKey: @"This is a test error"}),
+                                                                nil)];
+                });
+
+                it(@"informs delegate when buyer Denies authorization in web browser", ^{
+                    testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?error_description=This%20is%20a%20test%20error&error=access_denied"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.webswitch.started"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.webswitch.denied"];
+                    [[[[coinbaseOAuth expect] classMethod] andReturnValue:@(CoinbaseOAuthMechanismBrowser)] startOAuthAuthenticationWithClientId:OCMOCK_ANY scope:OCMOCK_ANY redirectUri:OCMOCK_ANY meta:OCMOCK_ANY];
+                    [[mockDelegate expect] appSwitcher:coinbase
+                                      didFailWithError:HC_allOf(HC_hasProperty(@"domain", CoinbaseErrorDomain),
+                                                                HC_hasProperty(@"code", HC_equalToInteger(CoinbaseOAuthError)),
+                                                                HC_hasProperty(@"localizedDescription", @"This is a test error"),
+                                                                HC_hasProperty(@"userInfo", @{CoinbaseOAuthErrorUserInfoKey: @"access_denied", NSLocalizedDescriptionKey: @"This is a test error"}),
                                                                 nil)];
                 });
             });
