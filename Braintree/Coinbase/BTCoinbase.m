@@ -37,14 +37,6 @@
     return [components URL];
 }
 
-- (NSError *)errorWithCode:(BTAppSwitchErrorCode)code localizedDescription:(NSString *)localizedDescription {
-    NSDictionary *userInfo;
-    if (localizedDescription) {
-        userInfo = @{NSLocalizedDescriptionKey: localizedDescription };
-    }
-    return [NSError errorWithDomain:BTAppSwitchErrorDomain code:code userInfo:userInfo];
-}
-
 
 #pragma mark BTAppSwitching
 
@@ -61,17 +53,23 @@
     [self.client postAnalyticsEvent:@"ios.coinbase.initiate.started"];
 
     if (!self.returnURLScheme) {
-        [self postAnalyticsEventWithName:@"initiate" status:@"invalid-return-url-scheme"];
+        [self.client postAnalyticsEvent:@"ios.coinbase.initiate.invalid-return-url-scheme"];
         if (error != NULL) {
-            *error = [self errorWithCode:BTAppSwitchErrorIntegrationReturnURLScheme localizedDescription:@"Coinbase is not available due to invalid return URL scheme"];
+            *error = [NSError errorWithDomain:BTAppSwitchErrorDomain code:BTAppSwitchErrorIntegrationReturnURLScheme
+                                     userInfo:@{NSLocalizedDescriptionKey: @"Coinbase is not available",
+                                                NSLocalizedFailureReasonErrorKey: @"Invalid return URL scheme",
+                                                NSLocalizedRecoverySuggestionErrorKey: @"Add scheme to Info.plist and use +[Braintree setReturnURLScheme:]"}];
         }
         return NO;
     }
 
     if (![self appSwitchAvailableForClient:client]) {
-        [self postAnalyticsEventWithName:@"initiate" status:@"unavailable"]; // postAnalyticsEvent:@"ios.coinbase.initiate.unavailable"
+        [self.client postAnalyticsEvent:@"ios.coinbase.initiate.unavailable"];
         if (error != NULL) {
-            *error = [self errorWithCode:BTAppSwitchErrorDisabled localizedDescription:@"Coinbase is not available due to Configuration"];
+            *error = [NSError errorWithDomain:BTAppSwitchErrorDomain code:BTAppSwitchErrorDisabled
+                                     userInfo:@{NSLocalizedDescriptionKey: @"Coinbase is not available",
+                                                NSLocalizedFailureReasonErrorKey: @"Configuration does not enable Coinbase",
+                                                NSLocalizedRecoverySuggestionErrorKey: @"Enable Coinbase in your Braintree Control Panel"}];
         }
         return NO;
     }
@@ -83,16 +81,18 @@
 
     switch (self.authenticationMechanism) {
         case CoinbaseOAuthMechanismNone:
-            [self postAnalyticsEventWithName:@"initiate" status:@"failed"]; // postAnalyticsEvent:@"ios.coinbase.initiate.failed"
+            [self.client postAnalyticsEvent:@"ios.coinbase.initiate.failed"];
             if (error != NULL) {
-                *error = [self errorWithCode:BTAppSwitchErrorFailed localizedDescription:@"Coinbase is not available"];
+                *error = [NSError errorWithDomain:BTAppSwitchErrorDomain code:BTAppSwitchErrorFailed
+                                         userInfo:@{NSLocalizedDescriptionKey: @"Coinbase is not available",
+                                                    NSLocalizedFailureReasonErrorKey: @"Unable to perform app switch"}];
             }
             break;
         case CoinbaseOAuthMechanismApp:
-            [self postAnalyticsEventWithName:@"appswitch" status:@"started"]; // postAnalyticsEvent:@"ios.coinbase.appswitch.started"
+            [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.started"];
             break;
         case CoinbaseOAuthMechanismBrowser:
-            [self postAnalyticsEventWithName:@"webswitch" status:@"started"]; // postAnalyticsEvent:@"ios.coinbase.webswitch.started"
+            [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.started"];
             break;
     }
 
@@ -119,26 +119,32 @@
      {
          if (error) {
              if ([error.domain isEqualToString:CoinbaseErrorDomain] && error.code == CoinbaseOAuthError && [error.userInfo[CoinbaseOAuthErrorUserInfoKey] isEqual:@"access_denied"]) {
-                 // postAnalyticsEvent:@"ios.coinbase.appswitch.denied", postAnalyticsEvent:@"ios.coinbase.webswitch.denied"
-                 [self postAnalyticsEventForAuthenticationMechanism:self.authenticationMechanism status:@"denied"];
+                 switch(self.authenticationMechanism) {
+                     case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.denied"]; break;
+                     case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.denied"]; break;
+                     case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.denied"]; break;
+                 }
              } else {
-                 // postAnalyticsEvent:@"ios.coinbase.appswitch.failed", postAnalyticsEvent:@"ios.coinbase.webswitch.failed"
-                 [self postAnalyticsEventForAuthenticationMechanism:self.authenticationMechanism status:@"failed"];
+                 switch(self.authenticationMechanism) {
+                     case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.failed"]; break;
+                     case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.failed"]; break;
+                     case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.failed"]; break;
+                 }
              }
              [self informDelegateDidFailWithError:error];
          } else {
-             // postAnalyticsEvent:@"ios.coinbase.appswitch.authorized", postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"
-             [self postAnalyticsEventForAuthenticationMechanism:self.authenticationMechanism status:@"authorized"];
+             switch(self.authenticationMechanism) {
+                 case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.authorized"]; break;
+                 case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"]; break;
+                 case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.authorized"]; break;
+             }
              [self.client saveCoinbaseAccount:response
                                       success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod)
               {
-                  // postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"
-                  [self postAnalyticsEventWithName:@"tokenize" status:@"succeeded"];
+                  [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
                   [self informDelegateDidCreatePaymentMethod:coinbasePaymentMethod];
               } failure:^(NSError *error) {
-                  // Should not be posted if Coinbase fails to authorize, i.e. (web|app)switch.denied or (web|app)switch.failed
-                  // postAnalyticsEvent:@"ios.coinbase.tokenize.failed"
-                  [self postAnalyticsEventWithName:@"tokenize" status:@"failed"];
+                  [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.failed"];
                   [self informDelegateDidFailWithError:error];
               }];
          }
@@ -158,26 +164,6 @@
     if ([self.delegate respondsToSelector:@selector(appSwitcher:didCreatePaymentMethod:)]) {
         [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
     }
-}
-
-
-#pragma mark Analytics Helpers
-
-- (void)postAnalyticsEventWithName:(NSString *)name status:(NSString *)status {
-    NSString *eventName = [NSString stringWithFormat:@"ios.coinbase.%@.%@", name, status];
-    [self.client postAnalyticsEvent:eventName];
-}
-
-- (void)postAnalyticsEventForAuthenticationMechanism:(CoinbaseOAuthAuthenticationMechanism)mechanism status:(NSString *)status {
-    NSString *name;
-    switch (mechanism) {
-        case CoinbaseOAuthMechanismNone: name = @"unknown"; break; // postAnalyticsEvent:@"ios.coinbase.unknown.authorized" should not happen during normal use
-        case CoinbaseOAuthMechanismBrowser: name = @"webswitch"; break;
-        case CoinbaseOAuthMechanismApp: name = @"appswitch"; break;
-    }
-    
-    NSString *eventName = [NSString stringWithFormat:@"ios.coinbase.%@.%@", name, status];
-    [self.client postAnalyticsEvent:eventName];
 }
 
 @end
