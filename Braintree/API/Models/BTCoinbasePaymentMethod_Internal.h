@@ -4,6 +4,6 @@
 
 - (void)setNonce:(NSString *)nonce;
 - (void)setDescription:(NSString *)description;
-- (void)setUserIdentifier:(NSString *)userIdentifier;
+- (void)setEmail:(NSString *)email;
 
 @end

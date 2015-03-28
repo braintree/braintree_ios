@@ -43,7 +43,7 @@ describe(@"saveCoinbaseAccount:success:failure:", ^{
                                 success:^(BTCoinbasePaymentMethod *coinbase){
                                     XCTAssertTrue([coinbase isKindOfClass:[BTCoinbasePaymentMethod class]]);
                                     expect(coinbase.nonce).to.beANonce();
-                                    XCTAssertNotNil(coinbase.userIdentifier);
+                                    XCTAssertNotNil(coinbase.email);
                                     XCTAssertNotNil(coinbase.description);
                                     [tokenizationExpectation fulfill];
                                 } failure:^(NSError *error){

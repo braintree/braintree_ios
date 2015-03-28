@@ -4,6 +4,6 @@
 
 @interface BTCoinbasePaymentMethod : BTPaymentMethod
 
-@property (nonatomic, readonly, copy) NSString *userIdentifier;
+@property (nonatomic, readonly, copy) NSString *email;
 
 @end

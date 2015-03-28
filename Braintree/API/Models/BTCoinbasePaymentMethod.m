@@ -2,10 +2,10 @@
 
 @implementation BTCoinbasePaymentMethod
 
-@synthesize userIdentifier = _userIdentifier;
+@synthesize email = _email;
 
-- (void)setUserIdentifier:(NSString *)userIdentifier {
-    _userIdentifier = userIdentifier;
+- (void)setEmail:(NSString *)email {
+    _email = email;
 }
 
 @end

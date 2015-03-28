@@ -71,14 +71,14 @@ context(@"Coinbase", ^{
         responseDictionary[@"details"] = @{@"email": [NSNull null]};
         BTCoinbasePaymentMethod *paymentMethod = [valueTransformer transformedValue:responseDictionary];
         expect(paymentMethod.description).to.beNil();
-        expect(paymentMethod.userIdentifier).to.beNil();
+        expect(paymentMethod.email).to.beNil();
     });
 
     it(@"returns a payment method with email as description if description is 'Coinbase'", ^{
         responseDictionary[@"description"] = @"Coinbase";
         BTCoinbasePaymentMethod *paymentMethod = [valueTransformer transformedValue:responseDictionary];
         expect(paymentMethod.description).to.equal(@"email@foo.bar");
-        expect(paymentMethod.userIdentifier).to.equal(@"email@foo.bar");
+        expect(paymentMethod.email).to.equal(@"email@foo.bar");
     });
 
     // (Not currently used by the gateway, which returns "Coinbase" for all CoinbaseAccounts)
@@ -86,7 +86,7 @@ context(@"Coinbase", ^{
         responseDictionary[@"description"] = @"Satoshi Nakamoto";
         BTCoinbasePaymentMethod *paymentMethod = [valueTransformer transformedValue:responseDictionary];
         expect(paymentMethod.description).to.equal(@"Satoshi Nakamoto");
-        expect(paymentMethod.userIdentifier).to.equal(@"email@foo.bar");
+        expect(paymentMethod.email).to.equal(@"email@foo.bar");
     });
 });
 
