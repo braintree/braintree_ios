@@ -8,8 +8,11 @@ describe(@"offline clients", ^{
     __block BTClient *offlineClient;
     
     beforeEach(^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:nil];
         offlineClient = [[BTClient alloc] initWithClientToken:clientToken];
+#pragma clang diagnostic pop
     });
     
     describe(@"initialization", ^{

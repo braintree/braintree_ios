@@ -48,8 +48,11 @@ describe(@"fetchClient:", ^{
     __block BTClient *client1;
     __block BTClient *client2;
     beforeEach(^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         tokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ @"authorization_fingerprint": @"authorizationFingerprint1" }];
         altTokenString = [BTClient offlineTestClientTokenWithAdditionalParameters:@{ @"authorization_fingerprint": @"authorizationFingerprint2" }];
+#pragma clang diagnostic pop
         XCTestExpectation *client1Expectation = [self expectationWithDescription:@"Setup client1"];
         [BTClient setupWithClientToken:tokenString completion:^(BTClient *_client, NSError *error) {
             client1 = _client;

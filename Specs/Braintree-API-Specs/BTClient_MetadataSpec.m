@@ -7,7 +7,10 @@ SpecBegin(BTClient_Metadata)
 
 __block NSString *clientToken;
 beforeEach(^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:nil];
+#pragma clang diagnostic pop
 });
 
 describe(@"copyWithMetadata:", ^{

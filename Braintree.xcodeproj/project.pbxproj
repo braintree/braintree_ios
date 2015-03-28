@@ -138,6 +138,7 @@
 		169F54B51AC6336C0092C383 /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CB211AC08234007AD979 /* BTTestClientTokenFactory.m */; };
 		169F54B81AC634210092C383 /* BTClientSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F54B71AC634210092C383 /* BTClientSpecHelper.m */; };
 		169F54B91AC634210092C383 /* BTClientSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F54B71AC634210092C383 /* BTClientSpecHelper.m */; };
+		169F54BB1AC647CC0092C383 /* BTClientSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 169F54B71AC634210092C383 /* BTClientSpecHelper.m */; };
 		16A456CB1A7761B1002E6896 /* BTClientPaymentMethodValueTransformerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A456CA1A7761B1002E6896 /* BTClientPaymentMethodValueTransformerSpec.m */; };
 		16A750AA1A7053CE00C8FAE4 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 16A750A91A7053CE00C8FAE4 /* Settings.bundle */; };
 		16A750AD1A706E2200C8FAE4 /* BraintreeDemoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 16A750AC1A706DED00C8FAE4 /* BraintreeDemoSettings.m */; };
@@ -3276,6 +3277,7 @@
 				2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */,
 				1607FE79192D97CD0099D504 /* BTPayPalViewControllerSpec.m in Sources */,
 				A7F6CB241AC083E0007AD979 /* BTTestClientTokenFactory.m in Sources */,
+				169F54BB1AC647CC0092C383 /* BTClientSpecHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -105,7 +105,10 @@ describe(@"preparePayPalMobile", ^{
         __block BTClient *client;
 
         beforeEach(^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             client = [[BTClient alloc] initWithClientToken:[BTClient btPayPal_offlineTestClientToken]];
+#pragma clang diagnostic pop
         });
 
         it(@"defaults to PayPal mock mode in BTClient offline mode", ^{

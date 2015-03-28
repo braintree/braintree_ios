@@ -19,7 +19,10 @@
     [self.view setTranslatesAutoresizingMaskIntoConstraints:YES];
     [self.payPalButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.payPalButton.client = [[BTClient alloc] initWithClientToken:[BTClient btPayPal_offlineTestClientToken]];
+#pragma clang diagnostic pop
     self.payPalButton.presentationDelegate = nil;
     self.payPalButton.delegate = self;
 }

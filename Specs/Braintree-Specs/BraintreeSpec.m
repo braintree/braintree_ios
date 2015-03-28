@@ -12,9 +12,9 @@ SpecBegin(Braintree)
 __block Braintree *braintree;
 
 beforeEach(^{
-    NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:nil];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:nil];
     braintree = [Braintree braintreeWithClientToken:clientToken]; // deprecated
 #pragma clang diagnostic pop
 });
@@ -119,9 +119,9 @@ describe(@"payPalButtonWithDelegate:", ^{
 
     describe(@"with PayPal enabled", ^{
         beforeEach(^{
-            NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTConfigurationKeyPayPalEnabled: @YES}];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTConfigurationKeyPayPalEnabled: @YES}];
             braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken]; // deprecated
         });
         it(@"should return a payPalButton", ^{
