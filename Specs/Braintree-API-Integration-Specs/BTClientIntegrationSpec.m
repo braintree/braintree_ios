@@ -31,7 +31,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
   describe(@"challenges", ^{
       it(@"returns a set of Gateway specified challenge questions for the merchant", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch test client"];
           [BTClient testClientWithConfiguration:@{
                                                   BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
                                                   BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
@@ -43,7 +43,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           [self waitForExpectationsWithTimeout:10 handler:nil];
       });
       it(@"returns a set of Gateway specified challenge questions for the merchant", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch test client"];
           [BTClient testClientWithConfiguration:@{
                                                   BTClientTestConfigurationKeyMerchantIdentifier:@"client_api_cvv_verification_merchant_id",
                                                   BTClientTestConfigurationKeyPublicKey:@"client_api_cvv_verification_public_key",
@@ -56,7 +56,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           [self waitForExpectationsWithTimeout:10 handler:nil];
       });
       it(@"returns a set of Gateway specified challenge questions for the merchant", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch test client"];
           [BTClient testClientWithConfiguration:@{
                                                   BTClientTestConfigurationKeyMerchantIdentifier:@"client_api_postal_code_verification_merchant_id",
                                                   BTClientTestConfigurationKeyPublicKey:@"client_api_postal_code_verification_public_key",
@@ -69,7 +69,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           [self waitForExpectationsWithTimeout:10 handler:nil];
       });
       it(@"returns a set of Gateway specified challenge questions for the merchant", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch test client"];
           [BTClient testClientWithConfiguration:@{
                                                   BTClientTestConfigurationKeyMerchantIdentifier:@"client_api_cvv_and_postal_code_verification_merchant_id",
                                                   BTClientTestConfigurationKeyPublicKey:@"client_api_cvv_and_postal_code_verification_public_key",
@@ -87,7 +87,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
   describe(@"save card with request", ^{
       describe(@"with validation disabled", ^{
           it(@"creates an unlocked card with a nonce using an invalid card", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"INVALID_CARD";
               request.expirationMonth = @"XX";
@@ -101,7 +101,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"creates an unlocked card with a nonce using a valid card", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"4111111111111111";
               request.expirationMonth = @"12";
@@ -117,7 +117,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
       describe(@"with validation enabled", ^{
           it(@"creates an unlocked card with a nonce", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"4111111111111111";
               request.expirationMonth = @"12";
@@ -132,7 +132,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"populates card details based on the server-side response", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
 
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"5555555555554444";
@@ -149,7 +149,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails when the provided card number is not valid", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"4111111111111112";
               request.expirationMonth = @"12";
@@ -166,7 +166,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails and provides all braintree validation errors when user input is invalid", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"4111111111111112";
               request.expirationMonth = @"82";
@@ -202,7 +202,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"saves a transactable credit card nonce", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"4111111111111111";
               request.expirationMonth = @"12";
@@ -226,7 +226,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       describe(@"for a merchant with payment method verification enabled", ^{
           __block BTClient *cvvAndZipClient;
           beforeEach(^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client"];
               [BTClient testClientWithConfiguration:@{
                                                       BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_cvv_and_postal_code_verification_merchant_id",
                                                       BTClientTestConfigurationKeyPublicKey: @"client_api_cvv_and_postal_code_verification_public_key",
@@ -239,7 +239,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"saves a card when the challenges are provided", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"4111111111111111";
               request.expirationMonth = @"12";
@@ -256,7 +256,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails to save a card when a cvv response is incorrect", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client and save card"];
               [BTClient testClientWithConfiguration:@{
                                                       BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_cvv_verification_merchant_id",
                                                       BTClientTestConfigurationKeyPublicKey: @"client_api_cvv_verification_public_key",
@@ -284,7 +284,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails to save a card when a postal code response is incorrect", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client and save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               [BTClient testClientWithConfiguration:@{
                                                       BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_postal_code_verification_merchant_id",
@@ -312,7 +312,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails to save a card when cvv and postal code responses are both incorrect", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to save card"];
               BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
               request.number = @"4111111111111111";
               request.expirationMonth = @"12";
@@ -341,7 +341,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
   describe(@"save card (deprecated signature)", ^{
       describe(@"with validation disabled", ^{
           it(@"creates an unlocked card with a nonce using an invalid card", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               [testClient saveCardWithNumber:@"INVALID_CARD"
                              expirationMonth:@"XX"
                               expirationYear:@"YYYY"
@@ -356,7 +356,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"creates an unlocked card with a nonce using a valid card", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               [testClient saveCardWithNumber:@"4111111111111111"
                              expirationMonth:@"12"
                               expirationYear:@"2018"
@@ -373,7 +373,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
       describe(@"with validation enabled", ^{
           it(@"creates an unlocked card with a nonce", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               [testClient saveCardWithNumber:@"4111111111111111"
                              expirationMonth:@"12"
                               expirationYear:@"2018"
@@ -388,7 +388,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"populates card details based on the server-side response", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               [testClient saveCardWithNumber:@"5555555555554444"
                              expirationMonth:@"12"
                               expirationYear:@"2018"
@@ -405,7 +405,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails when the provided card number is not valid", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to save card"];
               [testClient saveCardWithNumber:@"4111111111111112"
                              expirationMonth:@"12"
                               expirationYear:@"2018"
@@ -422,7 +422,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails and provides all braintree validation errors when user input is invalid", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to save card"];
               [testClient saveCardWithNumber:@"4111111111111112"
                              expirationMonth:@"82"
                               expirationYear:@"2"
@@ -457,7 +457,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"saves a transactable credit card nonce", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               [testClient saveCardWithNumber:@"4111111111111111"
                              expirationMonth:@"12"
                               expirationYear:@"2018"
@@ -479,7 +479,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           describe(@"for a merchant with payment method verification enabled", ^{
               __block BTClient *cvvAndZipClient;
               beforeEach(^{
-                  XCTestExpectation *expectation = [self expectationWithDescription:@""];
+                  XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
                   [BTClient testClientWithConfiguration:@{
                                                           BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_cvv_and_postal_code_verification_merchant_id",
                                                           BTClientTestConfigurationKeyPublicKey: @"client_api_cvv_and_postal_code_verification_public_key",
@@ -492,7 +492,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
               });
 
               it(@"saves a card when the challenges are provided", ^{
-                  XCTestExpectation *expectation = [self expectationWithDescription:@""];
+                  XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
                   [cvvAndZipClient saveCardWithNumber:@"4111111111111111"
                                       expirationMonth:@"12"
                                        expirationYear:@"38"
@@ -507,7 +507,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
               });
 
               it(@"fails to save a card when a cvv response is incorrect", ^{
-                  XCTestExpectation *expectation = [self expectationWithDescription:@""];
+                  XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to save card"];
                   [BTClient testClientWithConfiguration:@{
                                                           BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_cvv_verification_merchant_id",
                                                           BTClientTestConfigurationKeyPublicKey: @"client_api_cvv_verification_public_key",
@@ -533,7 +533,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
               });
 
               it(@"fails to save a card when a postal code response is incorrect", ^{
-                  XCTestExpectation *expectation = [self expectationWithDescription:@""];
+                  XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to save card"];
                   [BTClient testClientWithConfiguration:@{
                                                           BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_postal_code_verification_merchant_id",
                                                           BTClientTestConfigurationKeyPublicKey: @"client_api_postal_code_verification_public_key",
@@ -559,7 +559,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
               });
 
               it(@"fails to save a card when cvv and postal code responses are both incorrect", ^{
-                  XCTestExpectation *expectation = [self expectationWithDescription:@""];
+                  XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to save card"];
                   [cvvAndZipClient saveCardWithNumber:@"4111111111111111"
                                       expirationMonth:@"12"
                                        expirationYear:@"38"
@@ -586,7 +586,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       __block BTPaymentMethod *card1, *card2;
 
       beforeEach(^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Save cards"];
           BTClientCardRequest *request1 = [[BTClientCardRequest alloc] init];
           request1.number = @"4111111111111111";
           request1.expirationMonth = @"12";
@@ -612,19 +612,18 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       });
 
       it(@"fetches a list of payment methods", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch payment methods"];
           [testClient fetchPaymentMethodsWithSuccess:^(NSArray *paymentMethods) {
               expect(paymentMethods).to.haveCountOf(2);
-              [paymentMethods enumerateObjectsUsingBlock:^(BTPaymentMethod *card, NSUInteger idx, BOOL *stop) {
-                  expect(card.nonce).to.beANonce();
-              }];
+              expect([paymentMethods[0] nonce]).to.beANonce();
+              expect([paymentMethods[1] nonce]).to.beANonce();
               [expectation fulfill];
           } failure:nil];
           [self waitForExpectationsWithTimeout:10 handler:nil];
       });
 
       it(@"saves two cards and returns them in subsequent calls to list cards", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Save two cards"];
           BTClientCardRequest *request1 = [[BTClientCardRequest alloc] init];
           request1.number = @"4111111111111111";
           request1.expirationMonth = @"12";
@@ -654,7 +653,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
   describe(@"show payment method", ^{
       it(@"gets a full representation of a payment method based on a nonce", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Save and fetch payment method"];
           BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
           request.number = @"4111111111111111";
           request.expirationMonth = @"12";
@@ -683,7 +682,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
   describe(@"get nonce", ^{
       it(@"gets an info dictionary about a nonce", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
           BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
           request.number = @"4111111111111111";
           request.expirationMonth = @"12";
@@ -703,7 +702,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       });
 
       it(@"fails to get information about a non-existent nonce", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to fetch info"];
           [testClient fetchNonceInfo:@"non-existent-nonce" success:nil failure:^(NSError *error) {
               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
               expect(error.code).to.equal(BTMerchantIntegrationErrorNonceNotFound);
@@ -713,7 +712,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       });
 
       it(@"fails to get information about a poorly formatted nonce", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to fetch info"];
           [testClient fetchNonceInfo:@"?strange/nonce&private_key=foo&stuff%20more" success:nil failure:^(NSError *error) {
               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
               expect(error.code).to.equal(BTMerchantIntegrationErrorNonceNotFound);
@@ -726,7 +725,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
   describe(@"clients with Apple Pay activated", ^{
       if ([PKPayment class]) {
           it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save Apple Pay card"];
 
               id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
               id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
@@ -751,7 +750,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"can save an Apple Pay payment based on a PKPayment if Apple Pay is supported and return address information alongside the nonce", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save apple pay card"];
               id payment = [OCMockObject partialMockForObject:[[PKPayment alloc] init]];
               id paymentToken = [OCMockObject partialMockForObject:[[PKPaymentToken alloc] init]];
 
@@ -789,7 +788,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
   describe(@"clients with PayPal activated", ^{
       __block BTClient *testClient;
       beforeEach(^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client"];
           [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
                                                    BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
                                                    BTClientTestConfigurationKeyCustomer: @YES }
@@ -801,7 +800,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       });
 
       it(@"can save a PayPal payment method based on an auth code", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Save payment method"];
           [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode"
                                  applicationCorrelationID:@"testCorrelationId"
                                                   success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
@@ -813,7 +812,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       });
 
       it(@"can save a PayPal payment method based on an auth code without a correlation id", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Save payment method"];
           [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode"
                                  applicationCorrelationID:nil
                                                   success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
@@ -835,7 +834,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       });
 
       it(@"invokes the failure block for list payment methods", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch payment methods"];
           [testClient fetchPaymentMethodsWithSuccess:nil failure:^(NSError *error) {
               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
               expect(error.code).to.equal(BTMerchantIntegrationErrorUnauthorized);
@@ -855,7 +854,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       });
 
       it(@"invokes the failure block for save card", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fails to save card"];
           BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
           request.number = @"4111111111111111";
           request.expirationMonth = @"12";
@@ -891,7 +890,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
   describe(@"post analytics event", ^{
       it(@"sends an analytics event", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Post analytics event"];
           [BTClient testClientWithConfiguration:@{
                                                   BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
                                                   BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
@@ -910,7 +909,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       });
 
       it(@"is successful but does not send the event when analytics URL is omitted from the client token", ^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Post analytics event"];
           [BTClient testClientWithConfiguration:@{
                                                   BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
                                                   BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
@@ -933,7 +932,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       __block BTClient *testThreeDSecureClient;
 
       beforeEach(^{
-          XCTestExpectation *expectation = [self expectationWithDescription:@""];
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client"];
           NSDictionary *configuration = @{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
                                            BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
                                            BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account",
@@ -950,7 +949,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           __block NSString *nonce;
 
           beforeEach(^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
               r.number = @"4010000000000018";
               r.expirationDate = @"12/2015";
@@ -965,7 +964,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"performs lookup to give a new nonce and other parameters that allow you to kick off a web-based auth flow", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Perform lookup"];
               [testThreeDSecureClient
                lookupNonceForThreeDSecure:nonce
                transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
@@ -987,7 +986,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           __block NSString *nonce;
 
           beforeEach(^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
               r.number = @"4000000000000051";
               r.expirationDate = @"01/2020";
@@ -1002,7 +1001,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"succeeds without further intervention, since the liability shifts without authentication ", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Perform lookup"];
               [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
@@ -1019,7 +1018,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           __block NSString *nonce;
 
           beforeEach(^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
               r.number = @"4000000000000069";
               r.expirationDate = @"01/2020";
@@ -1034,7 +1033,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"performs lookup to give a new nonce without other parameters since no web-based auth flow is required", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Perform lookup"];
               [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
@@ -1051,7 +1050,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           __block NSString *nonce;
 
           beforeEach(^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
               r.number = @"6011111111111117";
               r.expirationDate = @"01/2020";
@@ -1066,7 +1065,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"succeeds without a liability shift", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Perform lookup"];
               [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
@@ -1083,7 +1082,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
               __block NSString *nonce;
 
               beforeEach(^{
-                  XCTestExpectation *expectation = [self expectationWithDescription:@""];
+                  XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
                   BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
                   r.number = @"not a card number";
                   r.expirationDate = @"12/2020";
@@ -1098,7 +1097,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
               });
 
               it(@"fails to perform a lookup", ^{
-                  XCTestExpectation *expectation = [self expectationWithDescription:@""];
+                  XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to perform lookup"];
                   [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                    transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                              success:nil
@@ -1119,7 +1118,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           __block NSString *nonce;
 
           beforeEach(^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client"];
               [testThreeDSecureClient savePaypalPaymentMethodWithAuthCode:@"fake-paypal-auth-code"
                                                  applicationCorrelationID:nil
                                                                   success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
@@ -1130,7 +1129,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails to perform a lookup", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to perform lookup"];
               [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                          success:nil
@@ -1149,7 +1148,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           __block NSString *nonce;
 
           beforeEach(^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client and save card"];
               [BTClient testClientWithConfiguration:@{
                                                       BTClientTestConfigurationKeyMerchantIdentifier: @"altpay_merchant",
                                                       BTClientTestConfigurationKeyPublicKey: @"altpay_merchant_public_key",
@@ -1171,7 +1170,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
 
           it(@"fails to lookup", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to perform lookup"];
               [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                          success:nil
@@ -1190,7 +1189,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           __block NSString *nonce;
 
           beforeEach(^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client and save card"];
               [BTClient testClientWithConfiguration:@{
                                                       BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
                                                       BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
@@ -1212,7 +1211,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           });
           
           it(@"fails to lookup", ^{
-              XCTestExpectation *expectation = [self expectationWithDescription:@""];
+              XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to lookup"];
               [testThreeDSecureClient lookupNonceForThreeDSecure:nonce
                                                transactionAmount:[NSDecimalNumber decimalNumberWithString:@"1"]
                                                          success:nil
