@@ -19,7 +19,10 @@
 
 + (BTClient *)deprecatedClientForTestCase:(XCTestCase *)testCase withOverrides:(NSDictionary *)overrides {
     NSString *clientToken = [BTTestClientTokenFactory tokenWithVersion:2 overrides:overrides];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     BTClient *client = [[BTClient alloc] initWithClientToken:clientToken];
+#pragma clang diagnostic pop
     return client;
 }
 

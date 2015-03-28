@@ -8,7 +8,7 @@ HighLine.color_scheme = HighLine::SampleColorScheme.new
 task :default => %w[sanity_checks spec]
 
 desc "Run default set of tasks"
-task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:payments]
+task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:payments spec:data]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
 task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
@@ -196,6 +196,12 @@ namespace :demo do
       build_demo! 'Braintree-PayPal-Demo'
     end
   end
+
+  namespace :data do
+    task :build do
+      build_demo! 'Braintree-Data-Demo'
+    end
+  end
 end
 
 desc 'Run all sanity checks'
@@ -209,7 +215,7 @@ namespace :sanity_checks do
   end
 
   desc 'Verify that all demo apps Build successfully'
-  task :build_all_demos => %w[demo:build demo:api:build demo:ui:build demo:paypal:build]
+  task :build_all_demos => %w[demo:build demo:api:build demo:ui:build demo:paypal:build demo:data:build]
 end
 
 

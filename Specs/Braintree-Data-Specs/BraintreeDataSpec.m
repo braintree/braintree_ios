@@ -1,7 +1,9 @@
 #import "DeviceCollectorSDK.h"
 #import "BTData.h"
+#import "BTClientSpecHelper.h"
 #import "BTTestClientTokenFactory.h"
 #import "BTClientToken.h"
+#import "BTConfiguration.h"
 #import "BTClient+BTPayPal.h"
 
 @interface TestDataDelegate : NSObject <BTDataDelegate>
@@ -42,14 +44,6 @@ NSString *clientTokenStringFromNSDictionary(NSDictionary *dictionary) {
 }
 
 SpecBegin(BraintreeData)
-
-__block NSMutableDictionary *baseClientTokenClaims;
-
-beforeEach(^{
-    baseClientTokenClaims = [NSMutableDictionary dictionaryWithDictionary:@{ BTClientTokenKeyVersion: @2,
-                                                                             BTClientTokenKeyAuthorizationFingerprint: @"auth_fingerprint",
-                                                                             BTClientTokenKeyConfigURL: @"http://api.example.com/client_api/v1/configuration" }];
-});
 
 __block id mockCLLocationManager;
 
@@ -114,11 +108,8 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
         it([NSString stringWithFormat:@"successfully starts and completes in %@ environment", testData[@"environmentName"]], ^{
             BTDataEnvironment env = [testData[@"environment"] integerValue];
             
-            baseClientTokenClaims[@"paypal"] = testData[@"paypalConfiguration"];
-            baseClientTokenClaims[@"paypalEnabled"] = @YES;
-            
-            BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(baseClientTokenClaims)];
-            
+            BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyPayPal: testData[@"paypalConfiguration"], BTConfigurationKeyPayPalEnabled: @YES }];
+
             XCTestExpectation *didStartExpectation = [self expectationWithDescription:@"didStart"];
             XCTestExpectation *didCompleteExpectation = [self expectationWithDescription:@"didComplete"];
             
@@ -152,9 +143,7 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
         it(@"ignores application correlation id if PayPal is disabled", ^{
             BTDataEnvironment env = [testData[@"environment"] integerValue];
 
-            baseClientTokenClaims[@"paypalEnabled"] = @NO;
-
-            BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(baseClientTokenClaims)];
+            BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyPayPalEnabled: @NO, BTConfigurationKeyPayPal: [NSNull null] }];
 
             BTData *data = [[BTData alloc] initWithClient:client environment:env];
             [data setFraudMerchantId:@"600000"];
@@ -171,9 +160,7 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
         it(@"ignores application correlation id if PayPal preconnect fails", ^{
             BTDataEnvironment env = [testData[@"environment"] integerValue];
 
-            baseClientTokenClaims[@"paypalEnabled"] = @NO;
-
-            BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(baseClientTokenClaims)];
+            BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyPayPalEnabled: @NO, BTConfigurationKeyPayPal: [NSNull null] }];
 
             id stubClient = [OCMockObject partialMockForObject:client];
             [[[stubClient stub] andReturnValue:@NO] btPayPal_preparePayPalMobileWithError:NULL];
