@@ -11,14 +11,12 @@ describe(@"Coinbase authorization", ^{
     });
 
     it(@"authorizes the user in the coinbase app and returns a nonce when the app is available", ^{
-        id mockSharedApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-        [[[mockSharedApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", @"com.coinbase.oauth-authorize")];
-
         [system waitForApplicationToOpenURLWithScheme:@"com.coinbase.oauth-authorize"
                                   whileExecutingBlock:^{
                                       [tester tapViewWithAccessibilityLabel:@"Coinbase"];
                                   } returning:YES];
 
+        // Simulate Response: Success
         NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/coinbase/redirect?code=fake-coinbase-auth-code"];
         [[UIApplication sharedApplication] openURL:returnURL];
 
@@ -34,6 +32,7 @@ describe(@"Coinbase authorization", ^{
                                       [tester tapViewWithAccessibilityLabel:@"Coinbase"];
                                   } returning:YES];
 
+        // Simulate Response: Error
         NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/coinbase/redirect?error=access_denied&error_description=The+resource+owner+or+authorization+server+denied+the+request."];
         [[UIApplication sharedApplication] openURL:returnURL];
 
@@ -46,9 +45,17 @@ describe(@"Coinbase authorization", ^{
     it(@"authorizes the user in the browser and returns a nonce when the app is not available", ^{
         [system waitForApplicationToOpenURLWithScheme:@"https"
                                   whileExecutingBlock:^{
+                                      // Inside of `executionBlock` to avoid unintended interactions with KIF's Swizzling
+                                      OCMockObject *applicationPartialStub = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+                                      [[[applicationPartialStub expect] andReturnValue:@NO] canOpenURL:HC_hasProperty(@"scheme", @"com.coinbase.oauth-authorize")];
+
                                       [tester tapViewWithAccessibilityLabel:@"Coinbase"];
+
+                                      [applicationPartialStub verify];
+                                      [applicationPartialStub stopMocking];
                                   } returning:YES];
 
+        // Simulate Response: Success
         NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/coinbase/redirect?code=fake-coinbase-auth-code"];
         [[UIApplication sharedApplication] openURL:returnURL];
 
