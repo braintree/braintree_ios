@@ -46,7 +46,12 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
     [http POST:@"testing/client_token"
     parameters:parameters
     completion:^(BTHTTPResponse *response, __unused NSError *error) {
-        NSAssert(error == nil, @"testing/client_token failed or responded with an error: %@", error);
+        if (error != nil) {
+            NSLog(@"testing/client_token failed or responded with an error: %@", error);
+            NSLog(@"\n\n=========================================================\n=      ARE YOU RUNNING THE GATEWAY ON http://localhost:3000?       =\n=========================================================\n\n");
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:nil userInfo:nil];
+        }
+        
         NSString *clientTokenString = [response.object stringForKey:@"clientToken"];
         if (async) {
           [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *client, NSError *error) {
