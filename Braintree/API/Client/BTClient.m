@@ -85,7 +85,7 @@
 }
 
 - (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock {
-    NSDictionary *parameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
+    NSDictionary *parameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint, @"config_version": @3 };
     [self.configHttp GET:nil
               parameters:parameters
               completion:^(BTHTTPResponse *response, NSError *error) {
