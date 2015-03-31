@@ -502,6 +502,7 @@
 		168597B819C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTMockApplePayPaymentAuthorizationView.h; sourceTree = "<group>"; };
 		168597B919C3A15F003F4D17 /* BTMockApplePayPaymentAuthorizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTMockApplePayPaymentAuthorizationView.m; sourceTree = "<group>"; };
 		168792F919885B5000F3B9E3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		168816E01ACA351C00430BAF /* Braintree-Coinbase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-Coinbase.h"; sourceTree = "<group>"; };
 		1690C96A1A9CFC8B002302E4 /* BTClientCoinbaseIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientCoinbaseIntegrationSpec.m; sourceTree = "<group>"; };
 		1690C96D1A9D0690002302E4 /* BTCoinbasePaymentMethod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTCoinbasePaymentMethod.h; sourceTree = "<group>"; };
 		1690C96E1A9D06B5002302E4 /* BTCoinbasePaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTCoinbasePaymentMethod.m; sourceTree = "<group>"; };
@@ -1172,6 +1173,7 @@
 			isa = PBXGroup;
 			children = (
 				161E0C761A9EA7CB00D7285A /* BTCoinbase.h */,
+				168816E01ACA351C00430BAF /* Braintree-Coinbase.h */,
 			);
 			path = "@Public";
 			sourceTree = "<group>";
