@@ -10,6 +10,8 @@
 #import "BTUIHorizontalButtonStackCollectionViewFlowLayout.h"
 #import "BTUIPaymentButtonCollectionViewCell.h"
 
+#import "BTCoinbase.h"
+
 NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentButtonCellIdentifier";
 
 @interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPaymentMethodCreationDelegate>
@@ -63,7 +65,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     self.enabledPaymentProviderTypes = [NSOrderedSet orderedSetWithObjects:
                                         @(BTPaymentProviderTypePayPal),
                                         @(BTPaymentProviderTypeVenmo),
-                                        @(BTPaymentProviderTypeCoinbase), nil];
+                                        @(BTPaymentProviderTypeCoinbase),
+                                        nil];
 
     BTUIHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTUIHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;

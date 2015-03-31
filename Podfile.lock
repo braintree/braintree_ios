@@ -22,6 +22,7 @@ PODS:
     - AFNetworking/NSURLSession
   - Braintree (3.8.0-pre1):
     - Braintree/API (= 3.8.0-pre1)
+    - Braintree/Coinbase (= 3.8.0-pre1)
     - Braintree/Drop-In (= 3.8.0-pre1)
     - Braintree/Payments (= 3.8.0-pre1)
     - Braintree/PayPal (= 3.8.0-pre1)
@@ -48,7 +49,6 @@ PODS:
     - Braintree/Venmo
   - Braintree/Payments (3.8.0-pre1):
     - Braintree/API
-    - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
   - Braintree/PayPal (3.8.0-pre1):
@@ -128,7 +128,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 10e85a00bb0f475124e4ff2677bf15693b2c1523
-  Braintree: 7b633ddb10132f72c9744fefd2c8ce7d686a8cdd
+  Braintree: 8a41537f82bb7700bc2c283a395824863da8d139
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
   coinbase-official: 558251781ac5ee223126effc4ac20c797bb1e7d7
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15

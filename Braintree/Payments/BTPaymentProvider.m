@@ -13,6 +13,7 @@
 #import "BTLogger_Internal.h"
 #import "BTCoinbase.h"
 
+
 @interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate, BTPaymentMethodCreationDelegate>
 @property (nonatomic, strong) BTPaymentApplePayProvider *applePayPaymentProvider;
 @end
