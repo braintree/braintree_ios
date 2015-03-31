@@ -24,12 +24,12 @@ your Base SDK.
   - Select `braintree-ios/Braintree`
   - Add to targets: `Braintree` (your newly created framework target)
   - Optionally check `Copy items if needed`
-5. Remove .md files from Braintree build
-  - Select on your project file in the project navigator
-  - Under `Targets`, select the `Braintree` target.
-  - Under `Build Phases` > `Compile Sources`, remove all .md files
-6. Link system frameworks for  `Braintree`
-  - Under `Braintree` > `Build Phases` > `Link Binary With Libraries`, add the following system frameworks:
+5. Modify `Braintree` build phases (select the `Braintree` target, then `Build Phases`). 
+  - Under `Compile Sources`, delete all .md files
+  - Update `Headers`
+    - Under `Headers` > `Public`, delete `Braintree.h`
+    - Select all files in `Headers` > `Private` and drag them to `Headers` > `Public`
+  - Under `Link Binary With Libraries`, add the following system frameworks:
     - `AVFoundation.framework`
     - `AudioToolbox.framework`
     - `CoreLocation.framework`
@@ -40,14 +40,15 @@ your Base SDK.
     - `PassKit.framework`
     - `SystemConfiguration.framework`
     - `UIKit.framework`
-  - Weak link `PassKit.framework` by changing its Status from `Required` to `Optional`.
-7. Modify `Braintree` build settings
-  - Under `Braintree` > `Build Settings`, add `-lc++ -ObjC` to `Other Linker Flags`
-8. Remove the `Braintree` scheme
+  - Also be sure to weak link `PassKit.framework` by changing its Status from `Required` to `Optional`.
+6. Modify `Braintree` build settings (select the `Braintree` target, then `Build Settings`)
+  - Edit `Public Headers Folder Path` by appending `/Braintree` (e.g. `$(CONTENTS_FOLDER_PATH)/Headers/Braintree`)
+  - Edit `Other Linker Flags` by adding `-lc++ -ObjC`
+7. Remove the `Braintree` scheme
   - In Xcode, select `Product` > `Scheme` > `Manage Schemes...`
   - Delete `Braintree`
-9. Optionally, to include Apple Pay in your app:
+8. Optionally, to include Apple Pay in your app:
   - Add `BT_ENABLE_APPLE_PAY=1` to `Preprocessor Macros` in both the `Braintree` > `Build Settings` and in your target's `Build Settings`.
-10. Build and Run your app to test out the integration
-11. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
+9. Build and Run your app to test out the integration
+10. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
 
