@@ -1,10 +1,12 @@
 # Braintree iOS SDK Release Notes
 
-## 3.7.1 (2015-03-27)
+## master
 
 * Coinbase
   * Coinbase is now available in this release
   * Coinbase UI is integrated into Drop In and BTPaymentButton
+
+## 3.7.1 (2015-03-27)
 
 * Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.5-bt1)
   * Change "Send Payment" button to simply "Pay"
