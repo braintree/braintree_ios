@@ -390,7 +390,7 @@ describe(@"createPaymentMethod:", ^{
                     id delegateToReceiveError = [BTPaymentsSpecHelper delegateWithErrorBlock:^(BTPaymentProvider *provider, NSError *error) {
                         expect(error.domain).to.equal(BTPaymentProviderErrorDomain);
                         expect(error.code).to.equal(BTPaymentProviderErrorOptionNotSupported);
-                        expect(error.localizedDescription).to.equal(@"To use Coinbase, you must use the async initializer for Braintree or BTClient");
+                        expect(error.localizedDescription).to.equal(@"To use Coinbase, you must use the async initializer for Braintree or BTClient, setupWithClientToken:completion:");
                         done();
                     }];
                     provider.delegate = delegateToReceiveError;
