@@ -17,18 +17,22 @@ your Base SDK.
   - Product Name: `Braintree`
   - Language: `Objective C`
   - Embed in Application: `[your app target]`
+  - Click `Finish`
   - You will now see a new `Braintree` Target Dependency in your main app target (in the first section of `Build Phases`).
 4. Add the Braintree code to project
   - The code is located in `braintree-ios/Braintree`
   - In Xcode, select `File` > `Add Files to [...]...`
   - Select `braintree-ios/Braintree`
   - Add to targets: `Braintree` (your newly created framework target)
+  - Uncheck `[your app target]` from the targets list
   - Optionally check `Copy items if needed`
+  - Click `Add`
+  - ![Screenshot of adding the Braintree files to Braintree target](screenshot_add_files.png)
 5. Modify `Braintree` build phases (select the `Braintree` target, then `Build Phases`). 
-  - In `Compile Sources`, delete all .md files
+  - In `Compile Sources`, delete all .md files (hint: search for *.md*)
   - In `Headers`
     - Under `Headers` > `Public`, delete `Braintree.h`
-    - Select all files in `Headers` > `Private` and drag them to `Headers` > `Public`
+    - Select all files in `Headers` > `Project` and drag them to `Headers` > `Public`
   - In `Link Binary With Libraries`, add the following system frameworks:
     - `AVFoundation.framework`
     - `AudioToolbox.framework`
@@ -45,11 +49,13 @@ your Base SDK.
 6. Modify `Braintree` build settings (select the `Braintree` target, then `Build Settings`)
   - Edit `Public Headers Folder Path` by appending `/Braintree` (e.g. `$(CONTENTS_FOLDER_PATH)/Headers/Braintree`)
   - Edit `Other Linker Flags` by adding `-lc++ -ObjC`
-7. Remove the `Braintree` scheme
+7. Modify `[your app target]` build settings (select the `[your app]` target, then `Build Settings`)
+  - Set `Always Search User Paths` to `Yes`
+8. Remove the `Braintree` scheme
   - In Xcode, select `Product` > `Scheme` > `Manage Schemes...`
   - Delete `Braintree`
-8. Optionally, to include Apple Pay in your app:
+9. Optionally, to include Apple Pay in your app:
   - Add `BT_ENABLE_APPLE_PAY=1` to `Preprocessor Macros` in both the `Braintree` > `Build Settings` and in your target's `Build Settings`.
-9. Build and Run your app to test out the integration
-10. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
+10. Build and Run your app to test out the integration
+11. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
 
