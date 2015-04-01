@@ -9,8 +9,11 @@ extern NSString *const BTClientTokenKeyConfigURL;
 
 @interface BTClientToken : NSObject <NSCoding, NSCopying>
 
+/// Parser to digest the token data
 @property (nonatomic, readonly, strong) BTAPIResponseParser *clientTokenParser;
+/// The extracted authorization fingerprint
 @property (nonatomic, readonly, copy) NSString *authorizationFingerprint;
+/// The extracted configURL
 @property (nonatomic, readonly, strong) NSURL *configURL;
 
 #pragma mark -

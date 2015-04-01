@@ -1,5 +1,7 @@
 #import "BTClient.h"
 
+/// BTClient test configuration keys
+/// To be used in testing and customizing Braintree configuration
 extern NSString *BTClientTestConfigurationKeyMerchantIdentifier;
 extern NSString *BTClientTestConfigurationKeyPublicKey;
 extern NSString *BTClientTestConfigurationKeyCustomer;
@@ -32,15 +34,15 @@ typedef void (^BTClientNonceInfoSuccessBlock)(NSDictionary *nonceInfo);
 /// Invokes Success block with Nonce Info if a Nonce is found.
 - (void)fetchNonceThreeDSecureVerificationInfo:(NSString *)nonce success:(BTClientNonceInfoSuccessBlock)successBlock failure:(BTClientFailureBlock)failureBlock;
 
-///  Ask the gateway to revoke the current authorization fingerprint
+/// Ask the gateway to revoke the current authorization fingerprint
 ///
-///  Available internally at Braintree for testing only
+/// Available internally at Braintree for testing only
 - (void)revokeAuthorizationFingerprintForTestingWithSuccess:(void (^)(void))successBlock
                                                     failure:(BTClientFailureBlock)failureBlock;
 
 /// Update coinbase merchant options for testing
 ///
-///  Available internally at Braintree for testing only
+/// Available internally at Braintree for testing only
 - (void)updateCoinbaseMerchantOptions:(NSDictionary *)dictionary
                          success:(void (^)(void))successBlock
                          failure:(BTClientFailureBlock)failureBlock;

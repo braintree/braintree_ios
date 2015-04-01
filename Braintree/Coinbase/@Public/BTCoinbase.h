@@ -3,6 +3,9 @@
 #import "BTAppSwitching.h"
 #import "BTAppSwitchErrors.h"
 
+/// Manages the communication with the Coinbase app or browser for authorization
+///
+/// @see BTAppSwitching
 @interface BTCoinbase : NSObject <BTAppSwitching>
 
 + (instancetype)sharedCoinbase;

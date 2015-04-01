@@ -145,6 +145,11 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 
 #pragma mark - Coinbase
 
+/// Save a coinbase payment method to Braintree
+///
+/// @param coinbaseAuthResponse A Coinbase authorization response of type NSDictionary
+/// @param successBlock success callback for handling the resulting new Coinbase account payment method
+/// @param failureBlock failure callback for handling errors
 - (void)saveCoinbaseAccount:(id)coinbaseAuthResponse
                     success:(BTClientCoinbaseSuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;
