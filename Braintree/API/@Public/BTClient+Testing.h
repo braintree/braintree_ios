@@ -5,6 +5,7 @@
 extern NSString *BTClientTestConfigurationKeyMerchantIdentifier;
 extern NSString *BTClientTestConfigurationKeyPublicKey;
 extern NSString *BTClientTestConfigurationKeyCustomer;
+extern NSString *BTClientTestConfigurationKeyNoCustomer;
 extern NSString *BTClientTestConfigurationKeySharedCustomerIdentifier;
 extern NSString *BTClientTestConfigurationKeySharedCustomerIdentifierType;
 extern NSString *BTClientTestConfigurationKeyRevoked;

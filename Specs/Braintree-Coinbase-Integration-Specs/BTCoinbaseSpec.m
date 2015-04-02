@@ -380,9 +380,10 @@ describe(@"BTAppSwitching", ^{
 
                 [[[mockClient stub] andDo:^(NSInvocation *invocation){
                     BTClientCoinbaseSuccessBlock successBlock;
-                    [invocation getArgument:&successBlock atIndex:3];
+                    [invocation retainArguments];
+                    [invocation getArgument:&successBlock atIndex:4];
                     successBlock(mockPaymentMethod);
-                }] saveCoinbaseAccount:HC_hasEntry(@"code", @"1234") success:[OCMArg isNotNil] failure:[OCMArg any]];
+                }] saveCoinbaseAccount:HC_hasEntry(@"code", @"1234") storeInVault:NO success:[OCMArg isNotNil] failure:[OCMArg any]];
 
                 mockDelegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
 
@@ -439,7 +440,6 @@ describe(@"BTAppSwitching", ^{
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.started"];
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.failed"];
                     [[[[coinbaseOAuth expect] classMethod] andReturnValue:@(CoinbaseOAuthMechanismApp)] startOAuthAuthenticationWithClientId:OCMOCK_ANY scope:OCMOCK_ANY redirectUri:OCMOCK_ANY meta:OCMOCK_ANY];
-                    [[mockDelegate expect] appSwitcherWillCreatePaymentMethod:coinbase];
                     [[mockDelegate expect] appSwitcher:coinbase
                                       didFailWithError:HC_allOf(HC_hasProperty(@"domain", CoinbaseErrorDomain),
                                                                 HC_hasProperty(@"code", HC_equalToInteger(CoinbaseOAuthError)),
@@ -520,10 +520,12 @@ describe(@"BTAppSwitching", ^{
             id clientStub = [mockClient stub];
             [clientStub andDo:^(NSInvocation *invocation){
                 BTClientFailureBlock failureBlock;
-                [invocation getArgument:&failureBlock atIndex:4];
+                [invocation retainArguments];
+                [invocation getArgument:&failureBlock atIndex:5];
                 failureBlock(mockError);
             }];
             [clientStub saveCoinbaseAccount:HC_hasEntry(@"code", @"1234")
+                               storeInVault:NO
                                     success:[OCMArg isNotNil]
                                     failure:[OCMArg any]];
             

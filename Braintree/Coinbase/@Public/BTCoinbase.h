@@ -8,6 +8,8 @@
 /// @see BTAppSwitching
 @interface BTCoinbase : NSObject <BTAppSwitching>
 
+@property (nonatomic, assign) BOOL storeInVault;
+
 + (instancetype)sharedCoinbase;
 
 /// Checks whether the Coinbase app is installed and accepting app switch authorization

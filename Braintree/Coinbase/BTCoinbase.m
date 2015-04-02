@@ -141,14 +141,14 @@
              }
              [self informDelegateWillCreatePaymentMethod];
              [self.client saveCoinbaseAccount:response
-                                      success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod)
-              {
-                  [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
-                  [self informDelegateDidCreatePaymentMethod:coinbasePaymentMethod];
-              } failure:^(NSError *error) {
-                  [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.failed"];
-                  [self informDelegateDidFailWithError:error];
-              }];
+                                 storeInVault:self.storeInVault
+                                      success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod) {
+                                          [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
+                                          [self informDelegateDidCreatePaymentMethod:coinbasePaymentMethod];
+                                      } failure:^(NSError *error) {
+                                          [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.failed"];
+                                          [self informDelegateDidFailWithError:error];
+                                      }];
          }
      }];
 }
@@ -157,7 +157,7 @@
 #pragma mark Delegate Informers
 
 - (void)informDelegateWillCreatePaymentMethod {
-    if ([self respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {
+    if ([self.delegate respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {
         [self.delegate appSwitcherWillCreatePaymentMethod:self];
     }
 }

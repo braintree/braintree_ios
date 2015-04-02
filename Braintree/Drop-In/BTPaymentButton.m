@@ -10,8 +10,6 @@
 #import "BTUIHorizontalButtonStackCollectionViewFlowLayout.h"
 #import "BTUIPaymentButtonCollectionViewCell.h"
 
-#import "BTCoinbase.h"
-
 NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentButtonCellIdentifier";
 
 @interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, BTPaymentMethodCreationDelegate>

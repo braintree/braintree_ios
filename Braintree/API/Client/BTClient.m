@@ -519,6 +519,7 @@
 }
 
 - (void)saveCoinbaseAccount:(id)coinbaseAuthResponse
+               storeInVault:(BOOL)storeInVault
                     success:(BTClientCoinbaseSuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
     if (![coinbaseAuthResponse isKindOfClass:[NSDictionary class]]) {
@@ -528,8 +529,15 @@
         return;
     }
 
-    NSDictionary *parameters = @{ @"coinbase_account": coinbaseAuthResponse,
-                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint, };
+    if (storeInVault) {
+        NSMutableDictionary *mutableCoinbaseAuthResponse = [coinbaseAuthResponse mutableCopy];
+        mutableCoinbaseAuthResponse[@"options"] = @{ @"store_in_vault": @YES };
+        coinbaseAuthResponse = mutableCoinbaseAuthResponse;
+    }
+
+    NSDictionary *parameters = [@{ @"coinbase_account": coinbaseAuthResponse,
+                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint } mutableCopy];
+
     [self.clientApiHttp POST:@"v1/payment_methods/coinbase_accounts"
                   parameters:parameters
                   completion:^(BTHTTPResponse *response, NSError *error){

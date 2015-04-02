@@ -6,6 +6,7 @@
 NSString *BTClientTestConfigurationKeyMerchantIdentifier = @"merchant_id";
 NSString *BTClientTestConfigurationKeyPublicKey = @"publicKey";
 NSString *BTClientTestConfigurationKeyCustomer = @"customer";
+NSString *BTClientTestConfigurationKeyNoCustomer = @"no_customer";
 NSString *BTClientTestConfigurationKeySharedCustomerIdentifier = @"sharedCustomerIdentifier";
 NSString *BTClientTestConfigurationKeySharedCustomerIdentifierType = @"sharedCustomerIdentifierType";
 NSString *BTClientTestConfigurationKeyPayPalClientId = @"paypalClientId";
@@ -29,6 +30,7 @@ NSString *BTClientTestDefaultMerchantIdentifier = @"integration_merchant_id";
     NSArray *topLevelParams = @[ BTClientTestConfigurationKeyMerchantIdentifier,
                                  BTClientTestConfigurationKeyPublicKey,
                                  BTClientTestConfigurationKeyCustomer,
+                                 BTClientTestConfigurationKeyNoCustomer,
                                  BTClientTestConfigurationKeyClientTokenVersion,
                                  BTClientTestConfigurationKeyRevoked,
                                  BTClientTestConfigurationKeySharedCustomerIdentifierType,

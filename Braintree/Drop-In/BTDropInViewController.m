@@ -12,6 +12,7 @@
 #import "BTPaymentMethodCreationDelegate.h"
 #import "BTClient_Internal.h"
 #import "BTLogger_Internal.h"
+#import "BTCoinbase.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>
 
@@ -41,6 +42,7 @@
 
 @property (nonatomic, assign) BOOL cardEntryDidBegin;
 
+@property (nonatomic, assign) BOOL originalCoinbaseStoreInVault;
 
 @end
 
@@ -393,7 +395,7 @@
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark Payment Method Authorizer Delegate methods
+#pragma mark BTPaymentMethodCreationDelegate
 
 - (void)paymentMethodCreator:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
     // In order to modally present PayPal on top of a nested Drop In, we need to first dismiss the
@@ -415,9 +417,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
-    [[BTLogger sharedLogger] debug:@"DropIn paymentAuthorizerWillRequestAuthorizationWithAppSwitch:%@", sender];
-
+- (void)paymentMethodCreatorWillPerformAppSwitch:(__unused id)sender {
     // If there is a presented view controller, dismiss it before app switch
     // so that the result of the app switch can be shown in this view controller.
     if ([self presentedViewController]) {
@@ -427,9 +427,14 @@
 
 - (void)paymentMethodCreatorWillProcess:(__unused id)sender {
     self.dropInContentView.state = BTDropInContentViewStateActivity;
+
+    self.originalCoinbaseStoreInVault = [[BTCoinbase sharedCoinbase] storeInVault];
+    [[BTCoinbase sharedCoinbase] setStoreInVault:YES];
 }
 
 - (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
+
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
@@ -439,6 +444,8 @@
 }
 
 - (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
+
     NSString *savePaymentMethodErrorAlertTitle;
     if ([error localizedDescription]) {
         savePaymentMethodErrorAlertTitle = [error localizedDescription];
@@ -470,6 +477,8 @@
 }
 
 - (void)paymentMethodCreatorDidCancel:(__unused id)sender {
+    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
+
     // Refresh payment methods display
     self.paymentMethods = self.paymentMethods;
 

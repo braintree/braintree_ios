@@ -151,6 +151,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param successBlock success callback for handling the resulting new Coinbase account payment method
 /// @param failureBlock failure callback for handling errors
 - (void)saveCoinbaseAccount:(id)coinbaseAuthResponse
+               storeInVault:(BOOL)storeInVault
                     success:(BTClientCoinbaseSuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock;
 

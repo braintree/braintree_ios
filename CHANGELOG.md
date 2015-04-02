@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## master
+
+* Coinbase improvements
+  * Resolved: Drop-In will now automatically save Coinbase accounts in the vault
+
 ## 3.8.0-rc1 (2015-04-03)
 
 * Coinbase integration - beta release
