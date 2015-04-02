@@ -420,12 +420,14 @@ describe(@"BTAppSwitching", ^{
                 it(@"successfully tokenizes code from provider app switch", ^{
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.started"];
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.authorized"];
+                    [[mockDelegate expect] appSwitcherWillCreatePaymentMethod:coinbase];
                     [[[[coinbaseOAuth expect] classMethod] andReturnValue:@(CoinbaseOAuthMechanismApp)] startOAuthAuthenticationWithClientId:OCMOCK_ANY scope:OCMOCK_ANY redirectUri:OCMOCK_ANY meta:OCMOCK_ANY];
                 });
 
                 it(@"successfully tokenizes code from web browser switch", ^{
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.webswitch.started"];
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"];
+                    [[mockDelegate expect] appSwitcherWillCreatePaymentMethod:coinbase];
                     [[[[coinbaseOAuth expect] classMethod] andReturnValue:@(CoinbaseOAuthMechanismBrowser)] startOAuthAuthenticationWithClientId:OCMOCK_ANY scope:OCMOCK_ANY redirectUri:OCMOCK_ANY meta:OCMOCK_ANY];
                 });
             });
@@ -437,6 +439,7 @@ describe(@"BTAppSwitching", ^{
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.started"];
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.appswitch.failed"];
                     [[[[coinbaseOAuth expect] classMethod] andReturnValue:@(CoinbaseOAuthMechanismApp)] startOAuthAuthenticationWithClientId:OCMOCK_ANY scope:OCMOCK_ANY redirectUri:OCMOCK_ANY meta:OCMOCK_ANY];
+                    [[mockDelegate expect] appSwitcherWillCreatePaymentMethod:coinbase];
                     [[mockDelegate expect] appSwitcher:coinbase
                                       didFailWithError:HC_allOf(HC_hasProperty(@"domain", CoinbaseErrorDomain),
                                                                 HC_hasProperty(@"code", HC_equalToInteger(CoinbaseOAuthError)),

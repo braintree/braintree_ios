@@ -139,6 +139,7 @@
                  case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"]; break;
                  case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.authorized"]; break;
              }
+             [self informDelegateWillCreatePaymentMethod];
              [self.client saveCoinbaseAccount:response
                                       success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod)
               {
@@ -154,6 +155,12 @@
 
 
 #pragma mark Delegate Informers
+
+- (void)informDelegateWillCreatePaymentMethod {
+    if ([self respondsToSelector:@selector(appSwitcherWillCreatePaymentMethod:)]) {
+        [self.delegate appSwitcherWillCreatePaymentMethod:self];
+    }
+}
 
 - (void)informDelegateDidFailWithError:(NSError *)error {
     if ([self.delegate respondsToSelector:@selector(appSwitcher:didFailWithError:)]) {
