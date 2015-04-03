@@ -6,8 +6,9 @@
   * Coinbase is now available in closed beta. See [the Coinbase page on our website](https://www.braintreepayments.com/features/coinbase) to join the beta.
   * Coinbase UI is integrated into Drop-In and BTPaymentButton
   * Known issue: Drop-In vaulting behavior for Coinbase accounts
+* Introduced a new asynchronous initilaizer for creating the `Braintree` object
+  * Deprecated `initWithClientToken:`
 
-To integrate Coinbase, use the new asynchronous initializer to create a `Braintree` object:
 ```objectivec
 [Braintree setupWithClientToken:clientToken completion:^(Braintree *braintree, NSError *error) {
     if (error) {
