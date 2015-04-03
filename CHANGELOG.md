@@ -7,6 +7,20 @@
   * Coinbase UI is integrated into Drop-In and BTPaymentButton
   * Known issue: Drop-In vaulting behavior for Coinbase accounts
 
+To integrate Coinbase, use the new asynchronous initializer to create a `Braintree` object:
+```objectivec
+[Braintree setupWithClientToken:clientToken completion:^(Braintree *braintree, NSError *error) {
+    if (error) {
+        // TODO: Display error
+        // ...
+        return;
+    }
+
+    // Store and use `braintree`
+    self.braintree = braintree;
+}];
+```
+
 ## 3.7.1 (2015-03-27)
 
 * Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.5-bt1)
