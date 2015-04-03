@@ -1,10 +1,11 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.8.0-rc2 (2015-04-03)
 
-* Coinbase
-  * Coinbase is now available in this release
-  * Coinbase UI is integrated into Drop In and BTPaymentButton
+* Coinbase integration - beta release
+  * Coinbase is now available in closed beta. See [the Coinbase page on our website](https://www.braintreepayments.com/features/coinbase) to join the beta.
+  * Coinbase UI is integrated into Drop-In and BTPaymentButton
+  * Known issue: Drop-In vaulting behavior for Coinbase accounts
 
 ## 3.7.1 (2015-03-27)
 
