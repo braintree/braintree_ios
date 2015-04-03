@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 3.8.0-rc2 (2015-04-03)
+## 3.8.0-rc1 (2015-04-03)
 
 * Coinbase integration - beta release
   * Coinbase is now available in closed beta. See [the Coinbase page on our website](https://www.braintreepayments.com/features/coinbase) to join the beta.
