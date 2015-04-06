@@ -10,15 +10,16 @@ SpecBegin(DropIn_Acceptance)
 __block BTClient *testClient;
 __block BOOL testShouldEnableCoinbase;
 __block BOOL testShouldHaveCoinbaseAccountInVault;
+__block BOOL testShouldHaveCardInVault;
 
 afterEach(^{
     testClient = nil;
     testShouldEnableCoinbase = NO;
     testShouldHaveCoinbaseAccountInVault = NO;
+    testShouldHaveCardInVault = NO;
 });
 
 describe(@"Drop In view controller", ^{
-
     beforeEach(^{
         XCTestExpectation *initializeClientExpectation = [self expectationWithDescription:@"initialize client"];
         [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
@@ -51,6 +52,7 @@ describe(@"Drop In view controller", ^{
                                                      BTClientTestConfigurationKeyClientTokenVersion: @2 }
                                             async:YES
                                        completion:^(BTClient *client) {
+                                           XCTAssertNotNil(client);
                                            testClient = client;
                                            [reinitializeClientExpectation fulfill];
                                        }];
@@ -65,6 +67,21 @@ describe(@"Drop In view controller", ^{
                                         [expectation fulfill];
                                     } failure:^(NSError *error) {
                                         XCTFail(@"Should not call failure block of saveCoinbaseAccount:success:failure:");
+                                    }];
+            [self waitForExpectationsWithTimeout:10 handler:nil];
+        }
+
+        if (testShouldHaveCardInVault) {
+            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+            r.number = @"4111111111111111";
+            r.expirationDate = @"12/38";
+            r.shouldValidate = YES;
+            XCTestExpectation *saveCardExpectation = [self expectationWithDescription:@"Save card in vault"];
+            [testClient saveCardWithRequest:r
+                                    success:^(BTCardPaymentMethod *card) {
+                                        [saveCardExpectation fulfill];
+                                    } failure:^(NSError *error) {
+                                        XCTFail(@"Should not receive failure block of saveCardWithRequest:success:failure:");
                                     }];
             [self waitForExpectationsWithTimeout:10 handler:nil];
         }
@@ -131,6 +148,31 @@ describe(@"Drop In view controller", ^{
                 [tester waitForTappableViewWithAccessibilityLabel:@"Change payment method"];
                 [tester waitForTappableViewWithAccessibilityLabel:@"Pay"];
             });
+        });
+    });
+
+    describe(@"multiple payment methods on file", ^{
+        beforeAll(^{
+            testShouldEnableCoinbase = YES;
+            testShouldHaveCoinbaseAccountInVault = YES;
+            testShouldHaveCardInVault = YES;
+        });
+
+        it(@"should all the user to switch to a different payment method", ^{
+            [tester waitForViewWithAccessibilityLabel:@"Visa"];
+
+            [tester tapViewWithAccessibilityLabel:@"Change payment method"];
+
+            [tester waitForViewWithAccessibilityLabel:@"Visa ending in 11"];
+
+            [tester waitForViewWithAccessibilityLabel:@"satoshi@example.com"];
+
+            [tester tapViewWithAccessibilityLabel:@"satoshi@example.com"];
+            [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] inTableViewWithAccessibilityIdentifier:@"Payment Methods Table"];
+
+            [tester waitForViewWithAccessibilityLabel:@"Change payment method"];
+            [tester waitForViewWithAccessibilityLabel:@"Coinbase"];
+            [tester waitForAbsenceOfViewWithAccessibilityLabel:@"Visa"];
         });
     });
 });

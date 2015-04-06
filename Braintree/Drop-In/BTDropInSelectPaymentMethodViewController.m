@@ -21,6 +21,7 @@
     self = [super initWithStyle:style];
     if (self) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(didTapAdd)];
+        self.tableView.accessibilityIdentifier = @"Payment Methods Table";
     }
     return self;
 }
