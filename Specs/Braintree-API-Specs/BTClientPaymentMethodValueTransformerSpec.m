@@ -48,45 +48,29 @@ context(@"PayPal", ^{
 });
 
 context(@"Coinbase", ^{
-
     beforeEach(^{
         responseDictionary[@"type"] = @"CoinbaseAccount";
     });
 
-    it(@"returns a payment method with a nonce even if description is null", ^{
-        responseDictionary[@"description"] = [NSNull null];
+    it(@"returns a payment method with a nonce, an email and a description matching the email", ^{
         BTCoinbasePaymentMethod *paymentMethod = [valueTransformer transformedValue:responseDictionary];
         expect(paymentMethod).to.beKindOf([BTCoinbasePaymentMethod class]);
         expect(paymentMethod.nonce).to.equal(@"a-nonce-value");
+        expect(paymentMethod.email).to.equal(@"email@foo.bar");
+        expect(paymentMethod.description).to.equal(paymentMethod.email);
     });
 
-    it(@"returns a payment method with nil description if description is null", ^{
-        responseDictionary[@"description"] = [NSNull null];
-        BTCoinbasePaymentMethod *paymentMethod = [valueTransformer transformedValue:responseDictionary];
-        expect(paymentMethod.description).to.beNil();
-    });
-
-    it(@"returns a payment method with nil description if description is 'Coinbase' and email is null", ^{
-        responseDictionary[@"description"] = @"Coinbase";
+    it(@"returns a payment method with nil description and email if email is null", ^{
         responseDictionary[@"details"] = @{@"email": [NSNull null]};
         BTCoinbasePaymentMethod *paymentMethod = [valueTransformer transformedValue:responseDictionary];
         expect(paymentMethod.description).to.beNil();
         expect(paymentMethod.email).to.beNil();
     });
 
-    it(@"returns a payment method with email as description if description is 'Coinbase'", ^{
-        responseDictionary[@"description"] = @"Coinbase";
+    it(@"ignores the description field", ^{
+        responseDictionary[@"description"] = @"Some description";
         BTCoinbasePaymentMethod *paymentMethod = [valueTransformer transformedValue:responseDictionary];
         expect(paymentMethod.description).to.equal(@"email@foo.bar");
-        expect(paymentMethod.email).to.equal(@"email@foo.bar");
-    });
-
-    // (Not currently used by the gateway, which returns "Coinbase" for all CoinbaseAccounts)
-    it(@"returns a payment method with description as description if description is not 'Coinbase' and non-nil", ^{
-        responseDictionary[@"description"] = @"Satoshi Nakamoto";
-        BTCoinbasePaymentMethod *paymentMethod = [valueTransformer transformedValue:responseDictionary];
-        expect(paymentMethod.description).to.equal(@"Satoshi Nakamoto");
-        expect(paymentMethod.email).to.equal(@"email@foo.bar");
     });
 });
 
