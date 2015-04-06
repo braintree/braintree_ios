@@ -51,11 +51,14 @@ your Base SDK.
   - Edit `Other Linker Flags` by adding `-lc++ -ObjC`
 7. Modify `[your app target]` build settings (select the `[your app]` target, then `Build Settings`)
   - Set `Always Search User Paths` to `Yes`
-8. Remove the `Braintree` scheme
+8. Modify `[your app target]` build phases (select the `[your app]` target, then `Build Phases`)
+  - In `Copy Bundle Resources`
+    - Add `Drop-In.strings`, `UI.strings` and `Three-D-Secure.strings` from the Braintree framework target (hint: search for *.strings*)
+    - ![Screenshot of copying bundle resources for i18n](screenshot_copy_bundles.png)
+9. Remove the `Braintree` scheme
   - In Xcode, select `Product` > `Scheme` > `Manage Schemes...`
   - Delete `Braintree`
-9. Optionally, to include Apple Pay in your app:
+10. Optionally, to include Apple Pay in your app:
   - Add `BT_ENABLE_APPLE_PAY=1` to `Preprocessor Macros` in both the `Braintree` > `Build Settings` and in your target's `Build Settings`.
-10. Build and Run your app to test out the integration
-11. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
-
+11. Build and Run your app to test out the integration
+12. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
