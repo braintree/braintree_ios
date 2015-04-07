@@ -4,13 +4,13 @@ workspace 'Braintree.xcworkspace'
 
 target 'Tests' do
   link_with 'Braintree-Specs',
+            'Braintree-Acceptance-Specs',
             'Braintree-API-Specs',
             'Braintree-API-Integration-Specs',
             'Braintree-Payments-Specs',
             'Braintree-Payments-UI-Specs',
             'Braintree-PayPal-Specs',
             'Braintree-PayPal-Integration-Specs',
-            'Braintree-PayPal-Acceptance-Specs',
             'Braintree-Venmo-Specs',
             'Braintree-Data-Specs',
             'Braintree-3D-Secure-Specs',
