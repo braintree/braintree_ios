@@ -109,8 +109,8 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
       BTClient * client = [BTClientSpecHelper clientForTestCase:self withOverrides:mutableClaims async:asyncClient];
       NSSet *scopes = [client btPayPal_scopes];
-      expect(scopes).to.contain(kPayPalOAuth2ScopeEmail);
-      expect(scopes).to.contain(kPayPalOAuth2ScopeFuturePayments);
+      expect(scopes).to.contain(@"email");
+      expect(scopes).to.contain(@"https://uri.paypal.com/services/payments/futurepayments");
     });
   });
 

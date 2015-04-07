@@ -124,7 +124,10 @@ describe(@"metadata", ^{
     });
     describe(@"deviceScreenOrientation", ^{
         it(@"returns the screen orientation, e.g. Portrait or FaceUp", ^{
-            expect([BTAnalyticsMetadata metadata][@"deviceScreenOrientation"]).to.equal(@"Unknown");
+            id mockDevice = OCMPartialMock([UIDevice currentDevice]);
+            OCMStub([mockDevice orientation]).andReturn(UIDeviceOrientationFaceUp);
+            expect([BTAnalyticsMetadata metadata][@"deviceScreenOrientation"]).to.equal(@"FaceUp");
+            [mockDevice stopMocking];
         });
     });
     describe(@"userInterfaceOrientation", ^{

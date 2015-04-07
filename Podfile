@@ -3,11 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 workspace 'Braintree.xcworkspace'
 
 target 'Tests' do
-  link_with 'Braintree-Specs',
-            'Braintree-Acceptance-Specs',
-            'Braintree-API-Specs',
-            'Braintree-API-Integration-Specs',
-            'Braintree-Payments-Specs',
+  link_with 'Braintree-Acceptance-Specs',
             'Braintree-Payments-UI-Specs',
             'Braintree-PayPal-Specs',
             'Braintree-PayPal-Integration-Specs',
@@ -15,11 +11,6 @@ target 'Tests' do
             'Braintree-Data-Specs',
             'Braintree-3D-Secure-Specs',
             'Braintree-Coinbase-Specs'
-  pod 'Braintree', :path => '.'
-  pod 'Braintree/Apple-Pay', :path => '.'
-  pod 'Braintree/Data', :path => '.'
-  pod 'Braintree/3D-Secure', :path => '.'
-  pod 'Braintree/Coinbase', :path => '.'
   pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
   pod 'Expecta', '~> 0.3.0'
   pod 'OCMock', '~> 3.1'
@@ -51,6 +42,25 @@ target 'Braintree-Dev' do
   pod 'FLEX'
   pod 'InAppSettingsKit'
 end
+
+target 'Logic-Tests' do
+  link_with 'Braintree-API-Specs',
+            'Braintree-API-Integration-Specs',
+            'Braintree-Payments-Specs',
+            'Braintree-Specs'
+  pod 'Braintree', :path => '.'
+  pod 'Braintree/Apple-Pay', :path => '.'
+  pod 'Braintree/Data', :path => '.'
+  pod 'Braintree/3D-Secure', :path => '.'
+  pod 'Braintree/Coinbase', :path => '.'
+  pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
+  pod 'Expecta', '~> 0.3.0'
+  pod 'OCMock', '~> 3.1'
+  pod 'OCHamcrest', '~> 3.0.1'
+  pod 'OHHTTPStubs', '~> 3.1.0'
+  pod 'NSURL+QueryDictionary', '~> 1.0'
+end
+
 
 target 'Braintree-Apple-Pay-Excluded' do
   link_with 'Braintree-Apple-Pay-Excluded-Build-Specs'

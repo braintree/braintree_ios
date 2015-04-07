@@ -194,7 +194,7 @@
 }
 
 - (NSString *)deviceScreenOrientation {
-    if ([UIApplication class] == nil) {
+    if ([UIDevice class] == nil) {
         return nil;
     }
 
