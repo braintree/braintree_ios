@@ -71,6 +71,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
     self.paymentButtonsCollectionView = [[UICollectionView alloc] initWithFrame:self.bounds
                                                            collectionViewLayout:layout];
+    self.paymentButtonsCollectionView.accessibilityIdentifier = @"Payment Options";
     self.paymentButtonsCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
     self.paymentButtonsCollectionView.allowsSelection = YES;
     self.paymentButtonsCollectionView.delaysContentTouches = NO;
