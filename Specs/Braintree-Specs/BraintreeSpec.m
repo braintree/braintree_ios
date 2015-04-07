@@ -1,3 +1,5 @@
+@import PassKit;
+
 #import "Braintree.h"
 #import "Braintree_Internal.h"
 

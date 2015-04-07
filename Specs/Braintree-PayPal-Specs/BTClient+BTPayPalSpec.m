@@ -88,34 +88,44 @@ describe(@"btPayPal_preparePayPalMobileWithError", ^{
                 expect([client btPayPal_environment]).to.equal(BTClientPayPalMobileEnvironmentName);
             });
         });
+      });
+});
+  
+describe(@"scopes", ^{
+    it(@"includes email and future payments", ^{
+        mutableClaims[@"paypal"][@"environment"] = @"live";
+        BTClient * client = [[BTClient alloc] initWithClientToken:clientTokenStringFromNSDictionary(mutableClaims)];
+        NSSet *scopes = [client btPayPal_scopes];
+        expect(scopes).to.contain(@"email");
+        expect(scopes).to.contain(@"https://uri.paypal.com/services/payments/futurepayments");
     });
+});
 
-    describe(@"when the environment is not production", ^{
-        describe(@"if the merchant privacy policy URL, merchant agreement URL, merchant name, and client ID are missing", ^{
-            it(@"does not return an error", ^{
-                [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl];
-                [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantUserAgreementUrl];
-                [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantName];
-                mutableClaims[@"paypal"][@"environment"] = BTClientTokenPayPalEnvironmentCustom;
-
-                NSString* clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
-                NSError *error;
-                BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-
-                [client btPayPal_preparePayPalMobileWithError:&error];
-
-                expect(error).to.beNil();
-            });
+describe(@"when the environment is not production", ^{
+    describe(@"if the merchant privacy policy URL, merchant agreement URL, merchant name, and client ID are missing", ^{
+        it(@"does not return an error", ^{
+            [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantPrivacyPolicyUrl];
+            [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantUserAgreementUrl];
+            [mutableClaims[@"paypal"] removeObjectForKey:BTClientTokenKeyPayPalMerchantName];
+            mutableClaims[@"paypal"][@"environment"] = BTClientTokenPayPalEnvironmentCustom;
+            
+            NSString* clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
+            NSError *error;
+            BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
+            
+            [client btPayPal_preparePayPalMobileWithError:&error];
+            
+            expect(error).to.beNil();
         });
-
     });
+    
 });
 
 describe(@"scopes", ^{
     it(@"includes email and future payments", ^{
         NSString *clientTokenString = clientTokenStringFromNSDictionary(mutableClaims);
         BTClient *client = [[BTClient alloc] initWithClientToken:clientTokenString];
-
+        
         NSSet *scopes = [client btPayPal_scopes];
         expect(scopes).to.contain(kPayPalOAuth2ScopeEmail);
         expect(scopes).to.contain(kPayPalOAuth2ScopeFuturePayments);
