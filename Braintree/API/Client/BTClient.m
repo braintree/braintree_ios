@@ -296,7 +296,11 @@
             }
         } else {
             if (failureBlock) {
-                failureBlock([NSError errorWithDomain:error.domain code:BTUnknownError userInfo:nil]);
+                NSDictionary *userInfo;
+                if (error) {
+                    userInfo = @{NSUnderlyingErrorKey: error};
+                }
+                failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain code:BTUnknownError userInfo:userInfo]);
             }
         }
     }];
