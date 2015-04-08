@@ -336,6 +336,30 @@ describe(@"offline clients", ^{
                 }
             });
         });
+
+        it(@"if supported, on failure, includes the underlying error", ^{
+            if (![PKPayment class] || ![PKPaymentToken class]) {
+                return;
+            }
+            waitUntil(^(DoneCallback done){
+                NSError *mockUnderlyingError = [NSError errorWithDomain:@"Foo" code:666 userInfo:nil];
+                id mockClientApiHttp = [OCMockObject partialMockForObject:offlineClient.clientApiHttp];
+                [[mockClientApiHttp stub] POST:OCMOCK_ANY
+                                    parameters:OCMOCK_ANY
+                                    completion:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    void (^callback)(BTHTTPResponse *, NSError *) = (void (^)(BTHTTPResponse *, NSError *))obj;
+                    callback(nil, mockUnderlyingError);
+                    return YES;
+                }]];
+
+                [offlineClient saveApplePayPayment:nil success:nil failure:^(NSError *error) {
+                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
+                    expect(error.code).to.equal(BTUnknownError);
+                    expect(error.userInfo[NSUnderlyingErrorKey]).to.equal(mockUnderlyingError);
+                    done();
+                }];
+            });
+        });
     });
 
     describe(@"fetch payment methods", ^{
