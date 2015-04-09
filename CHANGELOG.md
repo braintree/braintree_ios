@@ -4,6 +4,8 @@
 
 * Coinbase improvements
   * Resolved: Drop-In will now automatically save Coinbase accounts in the vault
+  * Coinbase accounts now appear correctly in Drop-In
+* Fixed a bug in Drop-In that prevented Venmo/Coinbase from appearing if PayPal was disabled
 
 ## 3.8.0-rc1 (2015-04-03)
 

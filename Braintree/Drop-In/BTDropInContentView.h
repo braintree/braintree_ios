@@ -32,8 +32,8 @@ typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
 /// The current state
 @property (nonatomic, assign) BTDropInContentViewStateType state;
 
-///  Whether the PayPal control is hidden
-@property (nonatomic, assign) BOOL hidePayPal;
+///  Whether the paymentButton control is hidden
+@property (nonatomic, assign) BOOL hidePaymentButton;
 
 - (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate;
 

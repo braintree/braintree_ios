@@ -60,7 +60,8 @@
         self.dropInContentView.paymentButton.client = self.client;
         self.dropInContentView.paymentButton.delegate = self;
 
-        self.dropInContentView.hidePayPal =  !self.client.btPayPal_isPayPalEnabled;
+        self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
+
         self.selectedPaymentMethodIndex = NSNotFound;
         self.dropInContentView.state = BTDropInContentViewStateActivity;
         self.fullForm = YES;

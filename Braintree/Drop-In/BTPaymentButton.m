@@ -170,6 +170,10 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     return filteredEnabledPaymentMethods;
 }
 
+- (BOOL)hasAvailablePaymentMethod {
+    return [self filteredEnabledPaymentProviderTypes].count > 0 ? YES : NO;
+}
+
 - (BTPaymentProviderType)paymentProviderForIndexPath:(NSIndexPath *)indexPath {
     NSInteger index = indexPath.row;
     NSNumber *paymentProviderTypeNumber = self.filteredEnabledPaymentProviderTypes[index];
