@@ -117,38 +117,41 @@
                                       clientSecret:nil
                                         completion:^(id response, NSError *error)
      {
+
+         CoinbaseOAuthAuthenticationMechanism mechanism = self.authenticationMechanism;
          if (error) {
              if ([error.domain isEqualToString:CoinbaseErrorDomain] && error.code == CoinbaseOAuthError && [error.userInfo[CoinbaseOAuthErrorUserInfoKey] isEqual:@"access_denied"]) {
-                 switch(self.authenticationMechanism) {
+                 switch(mechanism) {
                      case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.denied"]; break;
                      case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.denied"]; break;
                      case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.denied"]; break;
                  }
-               [self informDelegateDidCancel];
+                 [self informDelegateDidCancel];
              } else {
-                 switch(self.authenticationMechanism) {
+                 switch(mechanism) {
                      case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.failed"]; break;
                      case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.failed"]; break;
                      case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.failed"]; break;
                  }
-               [self informDelegateDidFailWithError:error];
+                 [self informDelegateDidFailWithError:error];
              }
          } else {
-             switch(self.authenticationMechanism) {
+             switch(mechanism) {
                  case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.authorized"]; break;
                  case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"]; break;
                  case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.authorized"]; break;
              }
              [self informDelegateWillCreatePaymentMethod];
-             [self.client saveCoinbaseAccount:response
-                                 storeInVault:self.storeInVault
-                                      success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod) {
-                                          [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
-                                          [self informDelegateDidCreatePaymentMethod:coinbasePaymentMethod];
-                                      } failure:^(NSError *error) {
-                                          [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.failed"];
-                                          [self informDelegateDidFailWithError:error];
-                                      }];
+
+             [[self clientWithMetadataForAuthenticationMechanism:mechanism] saveCoinbaseAccount:response
+                                                                                   storeInVault:self.storeInVault
+                                                                                        success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod) {
+                                                                                            [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
+                                                                                            [self informDelegateDidCreatePaymentMethod:coinbasePaymentMethod];
+                                                                                        } failure:^(NSError *error) {
+                                                                                            [self.client postAnalyticsEvent:@"ios.coinbase.tokenize.failed"];
+                                                                                            [self informDelegateDidFailWithError:error];
+                                                                                        }];
          }
      }];
 }
@@ -169,15 +172,33 @@
 }
 
 - (void)informDelegateDidCancel {
-  if ([self.delegate respondsToSelector:@selector(appSwitcherDidCancel:)]) {
-    [self.delegate appSwitcherDidCancel:self];
-  }
+    if ([self.delegate respondsToSelector:@selector(appSwitcherDidCancel:)]) {
+        [self.delegate appSwitcherDidCancel:self];
+    }
 }
 
 - (void)informDelegateDidCreatePaymentMethod:(BTCoinbasePaymentMethod *)paymentMethod {
     if ([self.delegate respondsToSelector:@selector(appSwitcher:didCreatePaymentMethod:)]) {
         [self.delegate appSwitcher:self didCreatePaymentMethod:paymentMethod];
     }
+}
+
+#pragma mark Helpers
+
+- (BTClient *)clientWithMetadataForAuthenticationMechanism:(CoinbaseOAuthAuthenticationMechanism)authenticationMechanism {
+    return [self.client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+        switch (authenticationMechanism) {
+            case CoinbaseOAuthMechanismApp:
+                metadata.source = BTClientMetadataSourceCoinbaseApp;
+                break;
+            case CoinbaseOAuthMechanismBrowser:
+                metadata.source = BTClientMetadataSourceCoinbaseBrowser;
+                break;
+            default:
+                metadata.source = BTClientMetadataSourceUnknown;
+                break;
+        }
+    }];
 }
 
 @end

@@ -5,7 +5,9 @@ typedef NS_ENUM(NSInteger, BTClientMetadataSourceType) {
     BTClientMetadataSourcePayPalApp,
     BTClientMetadataSourceVenmoApp,
     BTClientMetadataSourceForm,
-    BTClientMetadataSourceUnknown
+    BTClientMetadataSourceUnknown,
+    BTClientMetadataSourceCoinbaseApp,
+    BTClientMetadataSourceCoinbaseBrowser,
 };
 
 typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
