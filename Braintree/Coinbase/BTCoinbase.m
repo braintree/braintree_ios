@@ -41,7 +41,7 @@
 #pragma mark BTAppSwitching
 
 - (BOOL)appSwitchAvailableForClient:(BTClient *)client {
-    return client.configuration.coinbaseEnabled;
+    return client.configuration.coinbaseEnabled == YES && self.disabled == NO;
 }
 
 // In this context, "AppSwitch" includes both browser switch and provider app switch

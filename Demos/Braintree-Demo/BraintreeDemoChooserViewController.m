@@ -14,6 +14,7 @@
 
 #import "BraintreeDemoMerchantAPI.h"
 #import "BTClient_Internal.h"
+#import "BTCoinbase.h"
 
 @interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate, BTPaymentMethodCreationDelegate>
 
@@ -67,10 +68,16 @@
     [self switchToEnvironment];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToEnvironment) name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
+    [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"BraintreeDemoCoinbaseDisabledDefaultsKey" options:NSKeyValueObservingOptionNew context:NULL];
 }
 
 - (void)dealloc {
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"BraintreeDemoCoinbaseDisabledDefaultsKey"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
+}
+
+- (void)observeValueForKeyPath:(__unused NSString *)keyPath ofObject:(__unused id)object change:(__unused NSDictionary *)change context:(__unused void *)context {
+    [BTCoinbase sharedCoinbase].disabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"BraintreeDemoCoinbaseDisabledDefaultsKey"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

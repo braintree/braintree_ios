@@ -77,6 +77,32 @@ describe(@"BTAppSwitching", ^{
 
             expect([coinbase appSwitchAvailableForClient:client]).to.beFalsy();
         });
+
+        it(@"returns NO if coinbase is enabled in the client configuration but disabled locally", ^{
+            id configuration = [OCMockObject mockForClass:[BTConfiguration class]];
+            [[[configuration stub] andReturnValue:@(YES)] coinbaseEnabled];
+
+            id client = [OCMockObject mockForClass:[BTClient class]];
+            [[[client stub] andReturn:configuration] configuration];
+
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            coinbase.disabled = YES;
+
+            expect([coinbase appSwitchAvailableForClient:client]).to.beFalsy();
+        });
+
+        it(@"returns NO if coinbase is disabled in the client configuration and disabled locally", ^{
+            id configuration = [OCMockObject mockForClass:[BTConfiguration class]];
+            [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
+
+            id client = [OCMockObject mockForClass:[BTClient class]];
+            [[[client stub] andReturn:configuration] configuration];
+
+            BTCoinbase *coinbase = [[BTCoinbase alloc] init];
+            coinbase.disabled = YES;
+
+            expect([coinbase appSwitchAvailableForClient:client]).to.beFalsy();
+        });
     });
 
     describe(@"initiateAppSwitchWithClient:", ^{
@@ -534,6 +560,8 @@ describe(@"BTAppSwitching", ^{
             BTCoinbase *coinbase = [[BTCoinbase alloc] init];
             [coinbase setReturnURLScheme:@"com.example.app.payments"];
             coinbase.delegate = mockDelegate;
+
+            [[mockDelegate expect] appSwitcherWillCreatePaymentMethod:coinbase]; // Why wasn't this here before?
             
             id partialCoinbaseMock = [OCMockObject partialMockForObject:coinbase];
             [[[partialCoinbaseMock stub] andReturn:mockClient] client];

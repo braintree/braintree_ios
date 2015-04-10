@@ -102,6 +102,22 @@
                 <key>Key</key>
                 <string>BraintreeDemoChooserViewControllerShouldUseModalPresentationDefaultsKey</string>
             </dict>
+            <dict>
+                <key>Type</key>
+                <string>PSGroupSpecifier</string>
+                <key>Title</key>
+                <string>Client-Side</string>
+            </dict>
+            <dict>
+                <key>Type</key>
+                <string>PSToggleSwitchSpecifier</string>
+                <key>DefaultValue</key>
+                <false/>
+                <key>Title</key>
+                <string>Coinbase Disabled</string>
+                <key>Key</key>
+                <string>BraintreeDemoCoinbaseDisabledDefaultsKey</string>
+            </dict>
         </array>
     </dict>
 </plist>
