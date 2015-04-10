@@ -561,7 +561,7 @@ describe(@"BTAppSwitching", ^{
             [coinbase setReturnURLScheme:@"com.example.app.payments"];
             coinbase.delegate = mockDelegate;
 
-            [[mockDelegate expect] appSwitcherWillCreatePaymentMethod:coinbase]; // Why wasn't this here before?
+            [[mockDelegate expect] appSwitcherWillCreatePaymentMethod:coinbase];
             
             id partialCoinbaseMock = [OCMockObject partialMockForObject:coinbase];
             [[[partialCoinbaseMock stub] andReturn:mockClient] client];
