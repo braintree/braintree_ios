@@ -10,6 +10,13 @@
 
 @property (nonatomic, assign) BOOL storeInVault;
 
+/// Dynamically disable Coinbase support on the client-side,
+/// e.g. for certain customers, geographies, devices, etc.
+///
+/// Example:
+/// `[BTCoinbase sharedCoinbase].disabled = [CoinbaseOAuth isAppOAuthAuthenticationAvailable] ? NO : YES;`
+@property (nonatomic, assign) BOOL disabled;
+
 + (instancetype)sharedCoinbase;
 
 /// Checks whether the Coinbase app is installed and accepting app switch authorization
