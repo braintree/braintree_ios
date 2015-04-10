@@ -1,17 +1,59 @@
-#import "BTCoinbase.h"
+#import "BTClient+Testing.h"
+#import "BTCoinbaseAcceptanceSpecViewController.h"
 
 SpecBegin(BTCoinbaseAcceptance)
 
+beforeAll(^{
+    XCTestExpectation *updateCoinbaseMerchantOptionsExpectation = [self expectationWithDescription:@"update merchant options for coinbase"];
+    [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                             BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                             BTClientTestConfigurationKeyCustomer:@YES,
+                                             BTClientTestConfigurationKeyClientTokenVersion: @2 }
+                                    async:YES
+                               completion:^(BTClient *client) {
+                                   [client updateCoinbaseMerchantOptions:@{ @"enabled": @YES }
+                                                                 success:^{
+                                                                     [updateCoinbaseMerchantOptionsExpectation fulfill];
+                                                                 }
+                                                                 failure:^(NSError *error) {
+                                                                     XCTFail(@"Should not call failure block of updateCoinbaseMerchantOptions:success:failure:");
+                                                                 }];
+                               }];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+});
+
+afterAll(^{
+    XCTestExpectation *updateCoinbaseMerchantOptionsExpectation = [self expectationWithDescription:@"update merchant options for coinbase"];
+    [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier:@"integration_merchant_id",
+                                             BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
+                                             BTClientTestConfigurationKeyCustomer:@YES,
+                                             BTClientTestConfigurationKeyClientTokenVersion: @2 }
+                                    async:YES
+                               completion:^(BTClient *client) {
+                                   [client updateCoinbaseMerchantOptions:@{ @"enabled": @NO }
+                                                                 success:^{
+                                                                     [updateCoinbaseMerchantOptionsExpectation fulfill];
+                                                                 }
+                                                                 failure:^(NSError *error) {
+                                                                     XCTFail(@"Should not call failure block of updateCoinbaseMerchantOptions:success:failure:");
+                                                                 }];
+                               }];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+});
+
 describe(@"Coinbase authorization", ^{
-    beforeAll(^{
-        [tester waitForViewWithAccessibilityLabel:@"dcpspy2brwdjr3qn"];
-        [tester tapViewWithAccessibilityLabel:@"Payment Buttons"];
-        [tester tapViewWithAccessibilityLabel:@"Choose Integration Technique"];
-        [tester tapViewWithAccessibilityLabel:@"BTUICoinbaseButton"];
+    beforeEach(^{
+        BTCoinbaseAcceptanceSpecViewController *vc = [[BTCoinbaseAcceptanceSpecViewController alloc] init];
+        [system presentViewController:vc
+withinNavigationControllerWithNavigationBarClass:nil
+                         toolbarClass:nil
+                   configurationBlock:nil];
+        [tester waitForTimeInterval:1]; // Wait for preparePayPalMobile to finish
+        [tester waitForViewWithAccessibilityLabel:vc.title];
     });
 
     it(@"authorizes the user in the coinbase app and returns a nonce when the app is available", ^{
-        [system waitForApplicationToOpenURLWithScheme:@"com.coinbase.oauth-authorize"
+        [system waitForApplicationToOpenURLWithScheme:BTCoinbaseAcceptanceSpecCoinbaseScheme
                                   whileExecutingBlock:^{
                                       [tester tapViewWithAccessibilityLabel:@"Coinbase"];
                                   } returning:YES];
@@ -25,9 +67,9 @@ describe(@"Coinbase authorization", ^{
 
     it(@"shows the error when the coinbase flow results in an error", ^{
         id mockSharedApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-        [[[mockSharedApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", @"com.coinbase.oauth-authorize")];
+        [[[mockSharedApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", BTCoinbaseAcceptanceSpecCoinbaseScheme)];
 
-        [system waitForApplicationToOpenURLWithScheme:@"com.coinbase.oauth-authorize"
+        [system waitForApplicationToOpenURLWithScheme:BTCoinbaseAcceptanceSpecCoinbaseScheme
                                   whileExecutingBlock:^{
                                       [tester tapViewWithAccessibilityLabel:@"Coinbase"];
                                   } returning:YES];
@@ -36,34 +78,31 @@ describe(@"Coinbase authorization", ^{
         NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/coinbase/redirect?error=some_error&error_description=The+error."];
         [[UIApplication sharedApplication] openURL:returnURL];
 
-        [tester waitForViewWithAccessibilityLabel:@"Error"];
-        [tester waitForViewWithAccessibilityLabel:@"The error."];
-        [tester tapViewWithAccessibilityLabel:@"OK"];
-        [tester waitForViewWithAccessibilityLabel:@"An error occurred"];
+        [tester waitForViewWithAccessibilityLabel:@"Failed with error. The error."];
     });
-  
-  it(@"distinguishes the canceled/denied flow from other errors flows", ^{
-    id mockSharedApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-    [[[mockSharedApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", @"com.coinbase.oauth-authorize")];
-    
-    [system waitForApplicationToOpenURLWithScheme:@"com.coinbase.oauth-authorize"
-                              whileExecutingBlock:^{
-                                [tester tapViewWithAccessibilityLabel:@"Coinbase"];
-                              } returning:YES];
-    
-    // Simulate Response: Error
-    NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/coinbase/redirect?error=access_denied&error_description=The+resource+owner+or+authorization+server+denied+the+request."];
-    [[UIApplication sharedApplication] openURL:returnURL];
-    
-    [tester waitForViewWithAccessibilityLabel:@"Canceled 🔰"];
-  });
+
+    it(@"distinguishes the canceled/denied flow from other errors flows", ^{
+        id mockSharedApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+        [[[mockSharedApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", BTCoinbaseAcceptanceSpecCoinbaseScheme)];
+
+        [system waitForApplicationToOpenURLWithScheme:BTCoinbaseAcceptanceSpecCoinbaseScheme
+                                  whileExecutingBlock:^{
+                                      [tester tapViewWithAccessibilityLabel:@"Coinbase"];
+                                  } returning:YES];
+
+        // Simulate Response: Error
+        NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/coinbase/redirect?error=access_denied&error_description=The+resource+owner+or+authorization+server+denied+the+request."];
+        [[UIApplication sharedApplication] openURL:returnURL];
+
+        [tester waitForViewWithAccessibilityLabel:@"Canceled"];
+    });
 
     it(@"authorizes the user in the browser and returns a nonce when the app is not available", ^{
         [system waitForApplicationToOpenURLWithScheme:@"https"
                                   whileExecutingBlock:^{
                                       // Inside of `executionBlock` to avoid unintended interactions with KIF's Swizzling
                                       OCMockObject *applicationPartialStub = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-                                      [[[applicationPartialStub expect] andReturnValue:@NO] canOpenURL:HC_hasProperty(@"scheme", @"com.coinbase.oauth-authorize")];
+                                      [[[applicationPartialStub expect] andReturnValue:@NO] canOpenURL:HC_hasProperty(@"scheme", BTCoinbaseAcceptanceSpecCoinbaseScheme)];
 
                                       [tester tapViewWithAccessibilityLabel:@"Coinbase"];
 
@@ -74,7 +113,7 @@ describe(@"Coinbase authorization", ^{
         // Simulate Response: Success
         NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Braintree-Demo.payments://x-callback-url/vzero/auth/coinbase/redirect?code=fake-coinbase-auth-code"];
         [[UIApplication sharedApplication] openURL:returnURL];
-
+        
         [tester waitForViewWithAccessibilityLabel:@"Got a ฿ nonce! satoshi@example.com"];
     });
 });
