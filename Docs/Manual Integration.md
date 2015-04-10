@@ -3,7 +3,7 @@ Manual Integration Without CocoaPods
 
 Please follow these instructions to integrate Braintree iOS into your app without CocoaPods.
 
-> Note: We assume that you are using Xcode 6.1 and iOS 8 as
+> Note: We assume that you are using Xcode 6.2 and iOS 8.x as
 your Base SDK.
 
 1. Add the Braintree iOS SDK code to your repository
@@ -48,6 +48,9 @@ your Base SDK.
   - Delete `Braintree`
 9. Optionally, to include Apple Pay in your app:
   - Add `BT_ENABLE_APPLE_PAY=1` to `Preprocessor Macros` in both the `Braintree` > `Build Settings` and in your target's `Build Settings`.
-10. Build and Run your app to test out the integration
-11. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
+10. Optionally: If you intend to use Coinbase, please integrate [`coinbase-ios-sdk`](https://github.com/coinbase/coinbase-ios-sdk)
+  - The Coinbase SDK code is located on [github](https://github.com/coinbase/coinbase-ios-sdk)
+  - The correct version is specified in [Braintree.podspec](../Braintree.podspec)
+11. Build and Run your app to test out the integration
+12. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
 
