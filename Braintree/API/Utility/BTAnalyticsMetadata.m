@@ -38,6 +38,10 @@
         [self setObject:@([m deviceLocationLatitude]) forKey:@"deviceLocationLatitude" inDictionary:data];
         [self setObject:@([m deviceLocationLongitude]) forKey:@"deviceLocationLongitude" inDictionary:data];
     }
+    [self setObject:[m iosDeviceName] forKey:@"iosDeviceName" inDictionary:data];
+    [self setObject:[m iosSystemName] forKey:@"iosSystemName" inDictionary:data];
+    [self setObject:[m iosBaseSDK] forKey:@"iosBaseSDK" inDictionary:data];
+    [self setObject:[m iosDeploymentTarget] forKey:@"iosDeploymentTarget" inDictionary:data];
     [self setObject:[m iosIdentifierForVendor] forKey:@"iosIdentifierForVendor" inDictionary:data];
     [self setObject:@([m iosIsCocoapods]) forKey:@"iosIsCocoapods" inDictionary:data];
     [self setObject:[m deviceAppGeneratedPersistentUuid] forKey:@"deviceAppGeneratedPersistentUuid" inDictionary:data];
@@ -135,6 +139,22 @@
 
 - (NSString *)iosIdentifierForVendor {
     return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+}
+
+- (NSString *)iosDeploymentTarget {
+    return [@(__IPHONE_OS_VERSION_MIN_REQUIRED) stringValue];
+}
+
+- (NSString *)iosBaseSDK {
+    return [@(__IPHONE_OS_VERSION_MAX_ALLOWED) stringValue];
+}
+
+- (NSString *)iosDeviceName {
+    return [[UIDevice currentDevice] name];
+}
+
+- (NSString *)iosSystemName {
+    return [[UIDevice currentDevice] systemName];
 }
 
 - (BOOL)iosIsCocoapods {
