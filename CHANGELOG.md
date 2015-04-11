@@ -6,6 +6,8 @@
   * Resolved: Drop-In will now automatically save Coinbase accounts in the vault
   * Coinbase accounts now appear correctly in Drop-In
 * Fixed a bug in Drop-In that prevented Venmo/Coinbase from appearing if PayPal was disabled
+* Modified `BTUIPayPalWordmarkVectorArtView`, `BTUIVenmoWordmarkVectorArtView` slightly to
+  help logo alignment in `BTPaymentButton` and your payment buttons
 
 ## 3.8.0-rc1 (2015-04-03)
 
