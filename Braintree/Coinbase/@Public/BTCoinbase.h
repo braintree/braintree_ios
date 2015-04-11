@@ -19,11 +19,15 @@
 
 + (instancetype)sharedCoinbase;
 
-/// Checks whether the Coinbase app is installed and accepting app switch authorization
+/// Checks whether the Coinbase app is installed (and accepting app switch authorization)
+/// and Braintree is configured for Coinbase app switch. This requires a returnURLScheme
+/// to be set and for Coinbase to be enabled in your Braintree Control Panel.
 ///
 /// @param client A BTClient
 ///
-/// @return YES if the Coinbase native app is installed.
+/// @return YES if the Coinbase native app is available for app switch.
+///
+/// @see `+[Braintree setReturnURLScheme:]`
 - (BOOL)providerAppSwitchAvailableForClient:(BTClient *)client;
 
 @end
