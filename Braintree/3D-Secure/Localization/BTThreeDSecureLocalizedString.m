@@ -10,7 +10,7 @@
         localizationBundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:bundleName ofType:@"bundle"];
     }
     
-    return [NSBundle bundleWithPath:localizationBundlePath];
+    return localizationBundlePath ? [NSBundle bundleWithPath:localizationBundlePath] : [NSBundle mainBundle];
 }
 
 + (NSString *)localizationTable {
