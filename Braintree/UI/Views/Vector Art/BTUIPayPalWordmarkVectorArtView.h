@@ -7,4 +7,6 @@
 
 @property (nonatomic, strong) BTUI *theme;
 
+- (instancetype)initWithPadding;
+
 @end
