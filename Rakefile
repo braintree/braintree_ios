@@ -58,7 +58,7 @@ class << self
     }
     options = default_options.merge(options)
     build_settings = options[:build_settings].map{|k,v| "#{k}='#{v}'"}.join(" ")
-    return "set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator8.2' -configuration '#{configuration}' -scheme '#{scheme}' -destination 'OS=8.2,name=iPhone 6,platform=iOS Simulator' #{build_settings} #{command} | xcpretty -t"
+    return "set -o pipefail && xcodebuild -workspace 'Braintree.xcworkspace' -sdk 'iphonesimulator' -configuration '#{configuration}' -scheme '#{scheme}' -destination 'name=iPhone 6,platform=iOS Simulator' #{build_settings} #{command} | xcpretty -t"
   end
 
 end
