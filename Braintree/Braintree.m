@@ -124,6 +124,18 @@
                                  }
                              }];
 }
+#else
+- (void)tokenizeApplePayPayment:(id)payment
+                     completion:(void (^)(NSString *, NSError *))completionBlock {
+    NSString *message = @"Apple Pay is not compiled into this integration of Braintree. Please ensure that BT_ENABLE_APPLE_PAY=1 in your framework and app targets.";
+    [[BTLogger sharedLogger] warning:message];
+#if DEBUG
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:message
+                                 userInfo:nil];
+    return;
+#endif
+}
 #endif
 
 - (BTPaymentProvider *)paymentProviderWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate {
