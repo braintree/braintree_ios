@@ -136,6 +136,7 @@
     return;
 #endif
 }
+#endif
 
 - (BTPaymentProvider *)paymentProviderWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate {
     BTPaymentProvider *paymentProvider = [[BTPaymentProvider alloc] initWithClient:self.client];
