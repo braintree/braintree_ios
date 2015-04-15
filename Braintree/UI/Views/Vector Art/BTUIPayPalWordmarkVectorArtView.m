@@ -1,21 +1,22 @@
 #import "BTUIPayPalWordmarkVectorArtView.h"
 #import "BTUI.h"
 
-@implementation BTUIPayPalWordmarkVectorArtView
-{
-    BOOL includePadding;
-}
+@interface BTUIPayPalWordmarkVectorArtView ()
+@property (nonatomic, assign) BOOL includePadding;
+@end
 
-- (instancetype)initWithPadding {
+@implementation BTUIPayPalWordmarkVectorArtView
+
+- (BTUIPayPalWordmarkVectorArtView *)initWithPadding {
     self = [super init];
     if (self) {
-        includePadding = YES;
+        self.includePadding = YES;
         [self setupWithArtDimensions:CGSizeMake(158, 88)];
     }
     return self;
 }
 
-- (instancetype)init {
+- (BTUIPayPalWordmarkVectorArtView *)init {
     self = [super init];
     if (self) {
         [self setupWithArtDimensions:CGSizeMake(284.0f, 80.0f)];
@@ -31,7 +32,7 @@
 
 - (void)drawArt
 {
-    if (includePadding) {
+    if (self.includePadding) {
         //// Color Declarations
         UIColor* payColor = [self.theme payBlue]; //[UIColor colorWithRed: 0.005 green: 0.123 blue: 0.454 alpha: 1];
         UIColor* palColor = [self.theme palBlue]; //[UIColor colorWithRed: 0.066 green: 0.536 blue: 0.839 alpha: 1];
