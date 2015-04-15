@@ -34,7 +34,7 @@
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];
 
-    self.payPalWordmark = [[BTUIPayPalWordmarkVectorArtView alloc] init];
+    self.payPalWordmark = [[BTUIPayPalWordmarkVectorArtView alloc] initWithPadding];
     self.payPalWordmark.userInteractionEnabled = NO;
     self.payPalWordmark.translatesAutoresizingMaskIntoConstraints = NO;
 
