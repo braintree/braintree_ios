@@ -4,7 +4,7 @@
 extern NSString *const BTBraintreePayPalErrorDomain;
 
 /// Errors codes
-NS_ENUM(NSInteger, BTPayPalErrorCode) {
+typedef NS_ENUM(NSInteger, BTPayPalErrorCode) {
     BTPayPalUnknownError = 0,
     BTMerchantIntegrationErrorPayPalConfiguration = 1,
 
