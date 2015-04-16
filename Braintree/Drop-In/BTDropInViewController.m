@@ -451,7 +451,7 @@
     if ([error localizedDescription]) {
         savePaymentMethodErrorAlertTitle = [error localizedDescription];
     } else {
-        savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
+        savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
     }
 
     if (sender != self.dropInContentView.paymentButton) {
