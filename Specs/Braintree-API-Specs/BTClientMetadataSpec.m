@@ -19,6 +19,12 @@ describe(@"string values", ^{
         m.source = BTClientMetadataSourcePayPalApp;
         expect(m.sourceString).to.equal(@"paypal-app");
 
+        m.source = BTClientMetadataSourceCoinbaseApp;
+        expect(m.sourceString).to.equal(@"coinbase-app");
+
+        m.source = BTClientMetadataSourceCoinbaseBrowser;
+        expect(m.sourceString).to.equal(@"coinbase-browser");
+
         m.source = BTClientMetadataSourceVenmoApp;
         expect(m.sourceString).to.equal(@"venmo-app");
 

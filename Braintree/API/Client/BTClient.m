@@ -535,8 +535,9 @@
         coinbaseAuthResponse = mutableCoinbaseAuthResponse;
     }
 
-    NSDictionary *parameters = [@{ @"coinbase_account": coinbaseAuthResponse,
-                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint } mutableCopy];
+    NSMutableDictionary *parameters = [self metaPostParameters];
+    parameters[@"coinbase_account"] = coinbaseAuthResponse;
+    parameters[@"authorization_fingerprint"] = self.clientToken.authorizationFingerprint;
 
     [self.clientApiHttp POST:@"v1/payment_methods/coinbase_accounts"
                   parameters:parameters
