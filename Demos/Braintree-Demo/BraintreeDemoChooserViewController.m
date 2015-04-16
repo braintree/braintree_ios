@@ -69,6 +69,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToEnvironment) name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
     [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"BraintreeDemoCoinbaseDisabledDefaultsKey" options:NSKeyValueObservingOptionNew context:NULL];
+    [self observeValueForKeyPath:@"BraintreeDemoCoinbaseDisabledDefaultsKey" ofObject:[NSUserDefaults standardUserDefaults] change:nil context:NULL]; // set initial value
 }
 
 - (void)dealloc {
