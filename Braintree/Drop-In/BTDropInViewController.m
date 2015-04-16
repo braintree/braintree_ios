@@ -58,7 +58,8 @@
         self.dropInContentView.paymentButton.client = self.client;
         self.dropInContentView.paymentButton.delegate = self;
 
-        self.dropInContentView.hidePayPal =  !self.client.btPayPal_isPayPalEnabled;
+        self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
+
         self.selectedPaymentMethodIndex = NSNotFound;
         self.dropInContentView.state = BTDropInContentViewStateActivity;
         self.fullForm = YES;
@@ -438,8 +439,13 @@
     self.addPaymentMethodDropInViewController = nil;
 }
 
-- (void)paymentMethodCreator:(id)sender didFailWithError:(__unused NSError *)error {
-    NSString *savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
+- (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+    NSString *savePaymentMethodErrorAlertTitle;
+    if ([error localizedDescription]) {
+        savePaymentMethodErrorAlertTitle = [error localizedDescription];
+    } else {
+        savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
+    }
 
     if (sender != self.dropInContentView.paymentButton) {
 

@@ -4,6 +4,8 @@
 
 * Bugfix
   * Fix recognition of Discover, JCB, Maestro and Diners Club in certain cases ([Thanks, @RyPoints!](https://github.com/braintree/braintree_ios/pull/117))
+  * Fix a bug in Drop-In that prevented Venmo from appearing if PayPal was disabled
+  * Revise text for certain Venmo One Touch errors in Drop-In
 
 ## 3.7.1 (2015-03-27)
 

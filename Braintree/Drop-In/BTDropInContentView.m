@@ -200,9 +200,9 @@
     }
 }
 
-- (void) setHidePayPal:(BOOL)payPalButtonHidden{
-    _hidePayPal = payPalButtonHidden;
-    self.paymentButton.hidden = payPalButtonHidden;
+- (void)setHidePaymentButton:(BOOL)hidePaymentButton {
+    _hidePaymentButton = hidePaymentButton;
+    self.paymentButton.hidden = hidePaymentButton;
     [self updateLayout];
 }
 
@@ -223,7 +223,7 @@
             self.activityView.hidden = YES;
             [self.activityView stopAnimating];
             self.ctaControl.hidden = self.hideCTA;
-            self.paymentButton.hidden = self.hidePayPal ;
+            self.paymentButton.hidden = self.hidePaymentButton;
             self.cardFormSectionHeader.hidden = NO;
             self.cardForm.hidden = NO;
             break;
@@ -272,7 +272,7 @@
         if (!self.ctaControl.hidden) {
             ctaControlVisualFormat = [NSString stringWithFormat:@"-(15)-%@-(>=0)-", ctaControlVisualFormat];
         }
-        if (self.hidePayPal){
+        if (self.hidePaymentButton){
             return @[[NSString stringWithFormat:@"V:|%@-(35)-[cardFormSectionHeader]-(7)-[cardForm]%@|", summaryViewVisualFormat, ctaControlVisualFormat]];
         } else {
             summaryViewVisualFormat = [NSString stringWithFormat:@"%@-(35)-", summaryViewVisualFormat];

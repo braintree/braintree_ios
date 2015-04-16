@@ -17,4 +17,6 @@
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
 
+@property (nonatomic, readonly) BOOL hasAvailablePaymentMethod;
+
 @end
