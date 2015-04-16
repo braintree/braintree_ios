@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## master
+
+* Bugfix
+  * Fix recognition of Discover, JCB, Maestro and Diners Club in certain cases ([Thanks, @RyPoints!](https://github.com/braintree/braintree_ios/pull/117))
+
 ## 3.7.1 (2015-03-27)
 
 * Update PayPal Mobile SDK to new version (PayPal-iOS-SDK 2.8.5-bt1)
