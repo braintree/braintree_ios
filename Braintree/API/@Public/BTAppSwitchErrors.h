@@ -4,7 +4,7 @@
 extern NSString *const BTAppSwitchErrorDomain;
 
 /// App Switch NSError Codes
-NS_ENUM(NSInteger, BTAppSwitchErrorCode) {
+typedef NS_ENUM(NSInteger, BTAppSwitchErrorCode) {
     BTAppSwitchErrorUnknown = 0,
 
     /// A compatible version of the Venmo App is not available on this device.

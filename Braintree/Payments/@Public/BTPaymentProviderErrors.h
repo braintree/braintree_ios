@@ -6,7 +6,7 @@
 extern NSString *const BTPaymentProviderErrorDomain;
 
 /// BTPaymentAuthorization NSError Codes
-NS_ENUM(NSInteger, BTPaymentProviderErrorCode) {
+typedef NS_ENUM(NSInteger, BTPaymentProviderErrorCode) {
     /// An unknown error related to creatingi a Braintree Payment Method
     BTPaymentProviderErrorUnknown = 0,
 
