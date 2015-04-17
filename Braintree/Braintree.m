@@ -133,7 +133,6 @@
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:message
                                  userInfo:nil];
-    return;
 #endif
 }
 #endif
