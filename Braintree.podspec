@@ -36,6 +36,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/PayPal"
     s.dependency "Braintree/UI"
     s.dependency "Braintree/Venmo"
+    s.dependency "Braintree/Coinbase"
     s.dependency "Braintree/Payments"
     s.resource_bundle = { "Braintree-Drop-In-Localization" => "Braintree/Drop-In/Localization/*.lproj" }
   end
@@ -86,6 +87,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/API"
     s.dependency "Braintree/PayPal"
     s.dependency "Braintree/Venmo"
+    s.dependency "Braintree/Coinbase"
   end
 
   s.subspec "3D-Secure" do |s|
