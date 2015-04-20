@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.8.0-rc2 (2015-04-20)
 
 * Coinbase improvements
   * Resolved: Drop-In will now automatically save Coinbase accounts in the vault
@@ -9,6 +9,7 @@
   * Fix recognition of Discover, JCB, Maestro and Diners Club in certain cases ([Thanks, @RyPoints!](https://github.com/braintree/braintree_ios/pull/117))
   * Fix a bug in Drop-In that prevented Venmo from appearing if PayPal was disabled
   * Revise text for certain Venmo One Touch errors in Drop-In
+  * Expose method to disable Coinbase in Drop In
 * Demo app: Look sharp on iPhone 6 hi-res displays
 * Modified `BTUIPayPalWordmarkVectorArtView`, `BTUIVenmoWordmarkVectorArtView` slightly to
   help logo alignment in `BTPaymentButton` and your payment buttons
