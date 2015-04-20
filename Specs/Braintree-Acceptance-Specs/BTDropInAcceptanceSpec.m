@@ -165,9 +165,9 @@ describe(@"Drop In view controller", ^{
 
             [tester waitForViewWithAccessibilityLabel:@"Visa ending in 11"];
 
-            [tester waitForViewWithAccessibilityLabel:@"satoshi@example.com"];
+            [tester waitForViewWithAccessibilityLabel:@"Coinbase satoshi@example.com"];
 
-            [tester tapViewWithAccessibilityLabel:@"satoshi@example.com"];
+            [tester tapViewWithAccessibilityLabel:@"Coinbase satoshi@example.com"];
             [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] inTableViewWithAccessibilityIdentifier:@"Payment Methods Table"];
 
             [tester waitForViewWithAccessibilityLabel:@"Change payment method"];
