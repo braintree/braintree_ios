@@ -8,7 +8,7 @@ extern NSString *const BTBraintreeAPIErrorDomain;
 #pragma mark Braintree NSError Codes
 
 /// Error codes found in NSError objects returned in Braintree API.
-NS_ENUM(NSInteger, BTErrorCode) {
+typedef NS_ENUM(NSInteger, BTErrorCode) {
     /// An error occurred, but the exact cause was not determined.
     BTUnknownError = 0,
     /// A client error occurred for an undetermined reason.

@@ -60,7 +60,7 @@ GEM
     i18n (0.7.0)
     json (1.8.2)
     mini_portile (0.6.1)
-    minitest (5.5.1)
+    minitest (5.6.0)
     molinillo (0.2.3)
     multipart-post (1.2.0)
     nap (0.8.0)

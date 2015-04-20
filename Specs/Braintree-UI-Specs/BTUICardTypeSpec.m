@@ -1,5 +1,6 @@
 #import "BTUICardType.h"
 #import "EXPMatchers+haveKerning.h"
+#import "BTUIViewUtil.h"
 
 SpecBegin(BTUICardType)
 
@@ -48,6 +49,48 @@ describe(@"BTUICardType", ^{
             NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"4111111111111111"];
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_VISA)]);
             expect(possibleCardTypes.count).to.equal(1);
+        });
+    });
+
+    describe(@"payment method type for card type", ^{
+        it(@"recognizes Visa", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Visa"];
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeVisa);
+        });
+
+        it(@"recognizes MasterCard", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"MasterCard"];
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeMasterCard);
+        });
+
+        it(@"recognizes Amex", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"American Express"];
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeAMEX);
+        });
+
+        it(@"recognizes Discover", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Discover"];
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeDiscover);
+        });
+
+        it(@"recognizes JCB", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"JCB"];
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeJCB);
+        });
+
+        it(@"recognizes Maestro", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Maestro"];
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeMaestro);
+        });
+
+        it(@"recognizes Diners Club", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Diners Club"];
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeDinersClub);
+        });
+
+        it(@"ignores unknown card brands", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Unknown Card Brand"];
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeUnknown);
         });
     });
 

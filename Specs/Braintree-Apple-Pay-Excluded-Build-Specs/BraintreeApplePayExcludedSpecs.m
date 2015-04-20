@@ -7,15 +7,33 @@
 #import <Braintree/BTClient.h>
 
 #import "BTTestClientTokenFactory.h"
+#import <Braintree/BTClient+Offline.h>
+#import "BTLogger_Internal.h"
+
+@interface Braintree (BraintreeApplePayExcludedSpecsTestAddition)
+- (void)tokenizeApplePayPayment:(id)payment
+                     completion:(void (^)(NSString *, NSError *))completionBlock;
+@end
 
 @interface BraintreeApplePayExcludedSpecs : XCTestCase
-
 @end
 
 @implementation BraintreeApplePayExcludedSpecs
 
 - (void)testBraintreeExcludesApplePay {
-    XCTAssertFalse([Braintree instancesRespondToSelector:NSSelectorFromString(@"tokenizeApplePayPayment:completion:")]);
+    OCMockObject *mockLogger = [OCMockObject partialMockForObject:[BTLogger sharedLogger]];
+    [[mockLogger expect] warning:@"Apple Pay is not compiled into this integration of Braintree. Please ensure that BT_ENABLE_APPLE_PAY=1 in your framework and app targets."];
+#if DEBUG
+    XCTAssertThrowsSpecificNamed([self tokenizeApplePay], NSException, NSInternalInconsistencyException);
+#else
+    [self tokenizeApplePay];
+#endif
+    [mockLogger verify];
+}
+
+- (void)tokenizeApplePay {
+    Braintree *bt = [Braintree braintreeWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{}]];
+    [bt tokenizeApplePayPayment:nil completion:nil];
 }
 
 - (void)testBTPaymentProviderExcludesApplePay {

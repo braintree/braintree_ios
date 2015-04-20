@@ -71,7 +71,10 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
                     [self waitForExpectationsWithTimeout:10 handler:nil];
                 } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                     client = [[BTClient alloc] initWithClientToken:(NSString *)invalidStringData];
+#pragma clang diagnostic pop
                 }
                 expect(client).to.beNil();
                 [mockLogger verify];
@@ -209,7 +212,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
             NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
             NSString *clientTokenString = [BTTestClientTokenFactory tokenWithVersion:2
                                                                            overrides:@{BTConfigurationKeyAnalytics: @{BTConfigurationKeyURL: analyticsUrl}}];
-            if(asyncClient){
+            if (asyncClient) {
                 XCTestExpectation *clientExpectation = [self expectationWithDescription:@"Setup client"];
                 [BTClient setupWithClientToken:clientTokenString completion:^(BTClient *_client, NSError *error) {
                     expect(_client).notTo.beNil();
@@ -218,10 +221,12 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                     [clientExpectation fulfill];
                 }];
                 [self waitForExpectationsWithTimeout:3 handler:nil];
-            }else{
+            } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 client = [[BTClient alloc] initWithClientToken:clientTokenString];
+#pragma clang diagnostic pop
             }
-
         });
 
         it(@"returns a different instance", ^{
