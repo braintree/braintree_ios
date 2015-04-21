@@ -38,7 +38,13 @@
 }
 
 - (NSArray *)supportedNetworks {
-    return @[ PKPaymentNetworkAmex ];
+    
+    // If you use BTPaymentProvider, the Braintree iOS SDK automatically uses the supportedNetworks
+    // determined by the Braintree Gateway for your account.
+    //
+    // In this Demo, we set these supportedNetworks in -tappedButton:
+    // `request.supportedNetworks = self.supportedNetworks;`
+    return @[ PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa ];
 }
 
 - (IBAction)tappedButton:(__unused id)sender {
@@ -52,9 +58,16 @@
 
         return;
     }
+    
+    self.nonce = nil;
 
     PKPaymentRequest *request = [[PKPaymentRequest alloc] init];
+    
+    // If you use BTPaymentProvider, the Braintree iOS SDK may automatically use the Merchant ID
+    // of the latest Apple Pay Certificate uploaded via your Braintree Control Panel.
+    // However, with a Direct (or "Manual") Integration, you must set your Apple Merchant ID.
     request.merchantIdentifier = @"merchant.com.braintreepayments.dev-dcopeland";
+    
     request.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"An Item"
                                                                          amount:[NSDecimalNumber decimalNumberWithString:@"0.5"]],
                                      [PKPaymentSummaryItem summaryItemWithLabel:@"An add-on"
@@ -99,8 +112,13 @@
 }
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
+    
+    // Important: You must dismiss `controller` to prevent your app from hanging
     [controller dismissViewControllerAnimated:YES completion:^{
-        self.completionBlock(self.nonce);
+        // If the buyer cancelled, self.nonce will still be nil
+        if (self.nonce) {
+            self.completionBlock(self.nonce);
+        }
     }];
 }
 

@@ -176,6 +176,9 @@
         demoViewController = [[BraintreeDemoDirectApplePayIntegrationViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
             [self.navigationController popViewControllerAnimated:YES];
             self.nonce = nonce;
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:(nonce ? @"Got a nonce via !" : @"Error: missing nonce") message:nil preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            [self presentViewController:alert animated:YES completion:nil];
         }];
     } else if (selectedCell == self.makeATransactionCell) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
