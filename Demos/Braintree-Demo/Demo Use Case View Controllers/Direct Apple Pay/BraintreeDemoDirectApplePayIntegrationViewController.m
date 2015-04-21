@@ -6,7 +6,7 @@
 @interface BraintreeDemoDirectApplePayIntegrationViewController () <PKPaymentAuthorizationViewControllerDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
-@property (nonatomic, strong) BTApplePayPaymentMethod *applePayPaymentMethod;
+@property (nonatomic, copy) NSString *nonce;
 @property (nonatomic, copy) void (^completionBlock)(NSString *nonce);
 
 @property (nonatomic, weak) IBOutlet UIButton *applePayButton;
@@ -85,20 +85,22 @@
 
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
-    [self.braintree.client saveApplePayPayment:payment
-                                       success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
-                                           NSLog(@"Apple Pay Success! Got a nonce: %@", applePayPaymentMethod.nonce);
-                                           self.applePayPaymentMethod = applePayPaymentMethod;
-                                           completion(PKPaymentAuthorizationStatusSuccess);
-                                       } failure:^(NSError *error) {
-                                           NSLog(@"Error: %@", error);
-                                           completion(PKPaymentAuthorizationStatusFailure);
-                                       }];
+    
+    [self.braintree tokenizeApplePayPayment:payment completion:^(NSString *nonce, NSError *error) {
+        if (!error) {
+            NSLog(@"Apple Pay Success! Got a nonce: %@", nonce);
+            self.nonce = nonce;
+            completion(PKPaymentAuthorizationStatusSuccess);
+        } else {
+            NSLog(@"Error: %@", error);
+            completion(PKPaymentAuthorizationStatusFailure);
+        }
+    }];
 }
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [controller dismissViewControllerAnimated:YES completion:^{
-        self.completionBlock(self.applePayPaymentMethod.nonce);
+        self.completionBlock(self.nonce);
     }];
 }
 
