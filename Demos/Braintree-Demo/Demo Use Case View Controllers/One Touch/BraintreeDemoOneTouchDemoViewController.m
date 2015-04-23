@@ -161,7 +161,12 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
 #pragma mark Default Integration Technique Persistence
 
 - (BraintreeDemoOneTouchIntegrationTechnique)defaultIntegration {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey];
+    NSInteger techniqueInteger = [[NSUserDefaults standardUserDefaults] integerForKey:BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey];
+    if ([self integrationNameForTechnique:techniqueInteger] == nil) {
+        // integrationTechnique does not exist. This occurs if it was added in a later version of Braintree-Demo
+        techniqueInteger = 0; // default to 0
+    }
+    return techniqueInteger;
 }
 
 - (void)setDefaultIntegration:(BraintreeDemoOneTouchIntegrationTechnique)integrationTechnique {
@@ -187,11 +192,13 @@ NSString *BraintreeDemoOneTouchDefaultIntegrationTechniqueUserDefaultsKey = @"Br
             return @"BTUIPayPalButton";
         case BraintreeDemoOneTouchIntegrationTechniqueCustomMultiPaymentButton:
             return @"Custom Multi-Pay";
+        default:
+            return @"Unknown";
     }
 }
 
 - (UIView *)integrationButtonForTechnique:(BraintreeDemoOneTouchIntegrationTechnique)integrationTechnique {
-    UIView *paymentButton;
+    UIView *paymentButton = nil;
     switch (integrationTechnique) {
         case BraintreeDemoOneTouchIntegrationTechniqueBTPaymentButton:
             paymentButton = self.btPaymentButton;
