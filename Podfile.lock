@@ -20,39 +20,39 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.7.1):
-    - Braintree/API (= 3.7.1)
-    - Braintree/Drop-In (= 3.7.1)
-    - Braintree/Payments (= 3.7.1)
-    - Braintree/PayPal (= 3.7.1)
-    - Braintree/UI (= 3.7.1)
-    - Braintree/Venmo (= 3.7.1)
-  - Braintree/3D-Secure (3.7.1):
+  - Braintree (3.7.2):
+    - Braintree/API (= 3.7.2)
+    - Braintree/Drop-In (= 3.7.2)
+    - Braintree/Payments (= 3.7.2)
+    - Braintree/PayPal (= 3.7.2)
+    - Braintree/UI (= 3.7.2)
+    - Braintree/Venmo (= 3.7.2)
+  - Braintree/3D-Secure (3.7.2):
     - Braintree/API
     - Braintree/Payments
     - Braintree/UI
-  - Braintree/API (3.7.1)
-  - Braintree/Apple-Pay (3.7.1):
+  - Braintree/API (3.7.2)
+  - Braintree/Apple-Pay (3.7.2):
     - Braintree/Payments
-  - Braintree/Data (3.7.1):
+  - Braintree/Data (3.7.2):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (3.7.1):
+  - Braintree/Drop-In (3.7.2):
     - Braintree/API
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (3.7.1):
+  - Braintree/Payments (3.7.2):
     - Braintree/API
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (3.7.1):
+  - Braintree/PayPal (3.7.2):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.7.1):
+  - Braintree/UI (3.7.2):
     - Braintree/API
-  - Braintree/Venmo (3.7.1):
+  - Braintree/Venmo (3.7.2):
     - Braintree/API
   - CardIO (4.0.0)
   - Expecta (0.3.1)
@@ -116,7 +116,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 05b9f6e3aa5ac45bc383b4bb108ef338080a26c7
-  Braintree: 3919426c18f95396e1d35102a7b74b07c90aba49
+  Braintree: cfbd7da2d3935811bd4cf93a1bab5864dfa32050
   CardIO: 4c441cc8e63547fb282d64c2b77d4b40e04b030a
   Expecta: a354d4633409dd9fe8c4f5ff5130426adbe31628
   FLEX: a58e34e78f83547b9aceedd53a8e8f85286682ec
