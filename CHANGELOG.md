@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## master
+
+* Upgrade PayPal mSDK to 2.10.1
+
 ## 3.7.2 (2015-04-23)
 
 * Bugfix
