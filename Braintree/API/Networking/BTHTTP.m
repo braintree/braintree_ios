@@ -169,7 +169,8 @@
     if (data.length == 0) {
         // Accept empty responses
         BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:statusCode responseObject:nil];
-        NSError *returnedError = [self defaultDomainErrorForStatusCode:statusCode error:error];
+        NSDictionary *userInfoDictionary = error ? @{NSUnderlyingErrorKey: error} : nil;
+        NSError *returnedError = [self defaultDomainErrorForStatusCode:statusCode userInfo:userInfoDictionary];
         [self callCompletionBlock:completionBlock response:btHTTPResponse error:returnedError];
     } else if ([responseContentType isEqualToString:@"application/json"]) {
         // Attempt to parse json, and return an error if parsing fails
@@ -184,7 +185,21 @@
         }
 
         BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:statusCode responseObject:responseObject];
-        NSError *returnedError = [self defaultDomainErrorForStatusCode:statusCode error:error];
+        NSMutableDictionary *userInfoDictionary = nil;
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            userInfoDictionary = [responseObject mutableCopy];
+        }
+        if (error) {
+            if (userInfoDictionary) {
+                userInfoDictionary[NSUnderlyingErrorKey] = error;
+            } else {
+                userInfoDictionary = [@{NSUnderlyingErrorKey: error} mutableCopy];
+            }
+        }
+        if (userInfoDictionary && userInfoDictionary[@"error"] && userInfoDictionary[@"error"][@"message"]) {
+            userInfoDictionary[NSLocalizedDescriptionKey] = userInfoDictionary[@"error"][@"message"];
+        }
+        NSError *returnedError = [self defaultDomainErrorForStatusCode:statusCode userInfo:userInfoDictionary];
         [self callCompletionBlock:completionBlock response:btHTTPResponse error:returnedError];
     } else {
         // Return error for unsupported response type
@@ -254,8 +269,7 @@
     return returnedError;
 }
 
-+ (NSError *)defaultDomainErrorForStatusCode:(NSInteger)statusCode error:(NSError *)error {
-    NSDictionary *userInfoDictionary = error ? @{NSUnderlyingErrorKey: error} : nil;
++ (NSError *)defaultDomainErrorForStatusCode:(NSInteger)statusCode userInfo:(NSDictionary *)userInfoDictionary {
     switch (statusCode) {
         case 200 ... 299:
             return nil;

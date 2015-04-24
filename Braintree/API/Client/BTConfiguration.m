@@ -37,7 +37,7 @@ NSString *const BTConfigurationKeyCoinbase = @"coinbase";
 NSString *const BTConfigurationKeyCoinbaseClientId = @"clientId";
 NSString *const BTConfigurationKeyCoinbaseMerchantAccount = @"merchantAccount";
 NSString *const BTConfigurationKeyCoinbaseScope = @"scopes";
-NSString *const BTConfigurationKeyCoinbaseRedirectUri = @"redirectUrl";
+NSString *const BTConfigurationKeyCoinbaseEnvironment = @"environment";
 
 NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantName = @"Offline Test Merchant";
 NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantPrivacyPolicyUrl = @"http://example.com/privacy";
@@ -297,8 +297,8 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
     return [self.coinbaseConfiguration stringForKey:BTConfigurationKeyCoinbaseScope];
 }
 
-- (NSURL *)coinbaseRedirectUri {
-    return [self.coinbaseConfiguration URLForKey:BTConfigurationKeyCoinbaseRedirectUri];
+- (NSString *)coinbaseEnvironment {
+    return [self.coinbaseConfiguration stringForKey:BTConfigurationKeyCoinbaseEnvironment];
 }
 
 #pragma mark Venmo
