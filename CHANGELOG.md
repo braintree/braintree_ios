@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.7.2 (2015-04-23)
 
 * Bugfix
   * Fix recognition of Discover, JCB, Maestro and Diners Club in certain cases ([Thanks, @RyPoints!](https://github.com/braintree/braintree_ios/pull/117))
