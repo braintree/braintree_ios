@@ -6,11 +6,20 @@ SpecBegin(BTUICardFormView)
 describe(@"Card Form", ^{
     describe(@"accepting and validating credit card details", ^{
         it(@"accepts a number, an expiry, a cvv and a postal code", ^{
-            BraintreeDemoCreditCardEntryViewController *vc = [[BraintreeDemoCreditCardEntryViewController alloc] init];
-            [system presentViewController:vc
-withinNavigationControllerWithNavigationBarClass:nil
-                             toolbarClass:nil
-                       configurationBlock:nil];
+            BraintreeDemoCreditCardEntryViewController *viewController = [[BraintreeDemoCreditCardEntryViewController alloc] init];
+
+            [system runBlock:^KIFTestStepResult(NSError **error) {
+                UIViewController *viewControllerToPresent = viewController;
+                KIFTestCondition(viewControllerToPresent != nil, error, @"Expected a view controller, but got nil");
+                
+                Class navigationBarClassToUse = system.defaultNavigationBarClass;
+                Class toolbarClassToUse = system.defaultToolbarClass;
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithNavigationBarClass:navigationBarClassToUse toolbarClass:toolbarClassToUse];
+                navigationController.viewControllers = @[viewControllerToPresent];
+                [UIApplication sharedApplication].keyWindow.rootViewController = navigationController;
+                
+                return KIFTestStepResultSuccess;
+            }];
 
             [tester enterText:@"4111111111111111" intoViewWithAccessibilityLabel:@"Card Number"];
             [tester tapViewWithAccessibilityLabel:@"MM/YY"];
@@ -18,7 +27,7 @@ withinNavigationControllerWithNavigationBarClass:nil
             [tester enterText:@"100" intoViewWithAccessibilityLabel:@"CVV"];
             [tester enterText:@"60606" intoViewWithAccessibilityLabel:@"Postal Code"];
 
-            expect(vc.cardFormView.valid).to.beTruthy();
+            expect(viewController.cardFormView.valid).to.beTruthy();
         });
     });
 
