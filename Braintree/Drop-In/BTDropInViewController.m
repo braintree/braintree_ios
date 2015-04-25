@@ -38,7 +38,7 @@
 
 /// Strong reference to  BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
-@property (nonatomic, strong) BTDropInErrorAlert *savePayPalAccountErrorAlert;
+@property (nonatomic, strong) BTDropInErrorAlert *saveAccountErrorAlert;
 
 @property (nonatomic, assign) BOOL cardEntryDidBegin;
 
@@ -456,21 +456,21 @@
 
     if (sender != self.dropInContentView.paymentButton) {
 
-        self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
+        self.saveAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
-            self.savePayPalAccountErrorAlert = nil;
+            self.saveAccountErrorAlert = nil;
         } retry:nil];
-        self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
-        [self.savePayPalAccountErrorAlert show];
+        self.saveAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
+        [self.saveAccountErrorAlert show];
     } else {
-        self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
+        self.saveAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
-            self.savePayPalAccountErrorAlert = nil;
+            self.saveAccountErrorAlert = nil;
         } retry:nil];
-        self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
-        [self.savePayPalAccountErrorAlert show];
+        self.saveAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
+        [self.saveAccountErrorAlert show];
     }
 
     // Let the addPaymentMethodDropInViewController release
