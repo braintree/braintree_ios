@@ -1,23 +1,23 @@
 PODS:
-  - AFNetworking (2.3.1):
-    - AFNetworking/NSURLConnection (= 2.3.1)
-    - AFNetworking/NSURLSession (= 2.3.1)
-    - AFNetworking/Reachability (= 2.3.1)
-    - AFNetworking/Security (= 2.3.1)
-    - AFNetworking/Serialization (= 2.3.1)
-    - AFNetworking/UIKit (= 2.3.1)
-  - AFNetworking/NSURLConnection (2.3.1):
+  - AFNetworking (2.5.3):
+    - AFNetworking/NSURLConnection (= 2.5.3)
+    - AFNetworking/NSURLSession (= 2.5.3)
+    - AFNetworking/Reachability (= 2.5.3)
+    - AFNetworking/Security (= 2.5.3)
+    - AFNetworking/Serialization (= 2.5.3)
+    - AFNetworking/UIKit (= 2.5.3)
+  - AFNetworking/NSURLConnection (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.3.1):
+  - AFNetworking/NSURLSession (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.3.1)
-  - AFNetworking/Security (2.3.1)
-  - AFNetworking/Serialization (2.3.1)
-  - AFNetworking/UIKit (2.3.1):
+  - AFNetworking/Reachability (2.5.3)
+  - AFNetworking/Security (2.5.3)
+  - AFNetworking/Serialization (2.5.3)
+  - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Braintree (3.7.2):
@@ -56,9 +56,9 @@ PODS:
     - Braintree/API
   - CardIO (4.0.0)
   - Expecta (0.3.1)
-  - FLEX (1.1.1)
-  - HockeySDK (3.5.6)
-  - InAppSettingsKit (2.3.3)
+  - FLEX (2.0.2)
+  - HockeySDK (3.6.4)
+  - InAppSettingsKit (2.5.2)
   - KIF (3.2.0):
     - KIF/XCTest (= 3.2.0)
   - KIF/XCTest (3.2.0)
@@ -115,13 +115,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/specta/specta.git
 
 SPEC CHECKSUMS:
-  AFNetworking: 05b9f6e3aa5ac45bc383b4bb108ef338080a26c7
+  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   Braintree: cfbd7da2d3935811bd4cf93a1bab5864dfa32050
   CardIO: 4c441cc8e63547fb282d64c2b77d4b40e04b030a
   Expecta: a354d4633409dd9fe8c4f5ff5130426adbe31628
-  FLEX: a58e34e78f83547b9aceedd53a8e8f85286682ec
-  HockeySDK: c2978a9bbde8519e8976779e8c0a474a22b9cfc5
-  InAppSettingsKit: 4c7de2320f6f252b0348ae9d3ea86048071094d6
+  FLEX: 321e6150cbababb76aaadde355dfce2ee1cac2d8
+  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
+  InAppSettingsKit: 90b3f9b99d857f95fd1422467d857de143cac099
   KIF: 958b7b47bf36c72711cb5c9260542a522a5892b1
   KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: 06f93589c2948128321ea562592ed6bf1c84d070
