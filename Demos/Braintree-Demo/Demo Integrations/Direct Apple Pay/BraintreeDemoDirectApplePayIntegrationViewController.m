@@ -1,5 +1,4 @@
 @import PassKit;
-#import <UIAlertView+Blocks.h>
 
 #import "BraintreeDemoDirectApplePayIntegrationViewController.h"
 
@@ -28,12 +27,13 @@
     [super viewDidLoad];
     if (![PKPaymentAuthorizationViewController class]) {
         self.applePayButton.hidden = YES;
-        [UIAlertView showWithTitle:@"Apple Pay Error"
-                           message:@"Apple Pay is not available on this version of iOS"
-                             style:UIAlertViewStyleDefault
-                 cancelButtonTitle:@"OK"
-                 otherButtonTitles:nil
-                          tapBlock:nil];
+#warning FIXME
+//        [UIAlertView showWithTitle:@"Apple Pay Error"
+//                           message:@"Apple Pay is not available on this version of iOS"
+//                             style:UIAlertViewStyleDefault
+//                 cancelButtonTitle:@"OK"
+//                 otherButtonTitles:nil
+//                          tapBlock:nil];
     }
 }
 
@@ -49,12 +49,13 @@
 
 - (IBAction)tappedButton:(__unused id)sender {
     if (![PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:self.supportedNetworks]) {
-        [UIAlertView showWithTitle:@"Apple Pay Error"
-                           message:@"canMakePayments returns NO"
-                             style:UIAlertViewStyleDefault
-                 cancelButtonTitle:@"OK"
-                 otherButtonTitles:nil
-                          tapBlock:nil];
+#warning FIXME
+//        [UIAlertView showWithTitle:@"Apple Pay Error"
+//                           message:@"canMakePayments returns NO"
+//                             style:UIAlertViewStyleDefault
+//                 cancelButtonTitle:@"OK"
+//                 otherButtonTitles:nil
+//                          tapBlock:nil];
 
         return;
     }
@@ -84,12 +85,13 @@
     if (vc) {
         [self presentViewController:vc animated:YES completion:nil];
     } else {
-        [UIAlertView showWithTitle:@"Apple Pay Error"
-                           message:@"Failed to initialize an Apple Pay authorization view controller"
-                             style:UIAlertViewStyleDefault
-                 cancelButtonTitle:@"OK"
-                 otherButtonTitles:nil
-                          tapBlock:nil];
+#warning FIXME
+//        [UIAlertView showWithTitle:@"Apple Pay Error"
+//                           message:@"Failed to initialize an Apple Pay authorization view controller"
+//                             style:UIAlertViewStyleDefault
+//                 cancelButtonTitle:@"OK"
+//                 otherButtonTitles:nil
+//                          tapBlock:nil];
     }
 }
 

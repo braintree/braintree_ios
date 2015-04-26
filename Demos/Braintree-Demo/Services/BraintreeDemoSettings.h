@@ -17,5 +17,8 @@ typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceThreeDSecureRequiredSt
 + (BraintreeDemoTransactionServiceEnvironment)currentEnvironment;
 + (BOOL)threeDSecureEnabled;
 + (BraintreeDemoTransactionServiceThreeDSecureRequiredStatus)threeDSecureRequiredStatus;
++ (BOOL)useModalPresentation;
++ (BOOL)customerPresent;
++ (NSString *)customerIdentifier;
 
 @end

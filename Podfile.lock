@@ -70,10 +70,8 @@ PODS:
   - OHHTTPStubs (3.1.5):
     - OHHTTPStubs/Core (= 3.1.5)
   - OHHTTPStubs/Core (3.1.5)
-  - PureLayout (1.0.1)
+  - PureLayout (2.0.6)
   - Specta (0.3.0.beta1)
-  - UIActionSheet+Blocks (0.8.1)
-  - UIAlertView+Blocks (0.8.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
@@ -94,8 +92,6 @@ DEPENDENCIES:
   - OHHTTPStubs (~> 3.1.0)
   - PureLayout
   - Specta (from `https://github.com/specta/specta.git`, commit `v0.3.0.beta1`)
-  - UIActionSheet+Blocks
-  - UIAlertView+Blocks
 
 EXTERNAL SOURCES:
   Braintree:
@@ -128,9 +124,7 @@ SPEC CHECKSUMS:
   OCHamcrest: e19857683e4eefab64b878668eac04c2f4567118
   OCMock: a6a7dc0e3997fb9f35d99f72528698ebf60d64f2
   OHHTTPStubs: 5cb8c4e590851d42cfb02fb6269d5404cfa2e9c3
-  PureLayout: 27e15b149da0e66de4a8b7d6561ba2828806256a
+  PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
-  UIActionSheet+Blocks: 7fdab45fc8f15ac2dc1cd65af1470746600b5f46
-  UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
 
 COCOAPODS: 0.36.3

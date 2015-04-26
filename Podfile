@@ -43,8 +43,6 @@ target 'Braintree-Dev' do
   pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
-  pod 'UIActionSheet+Blocks'
-  pod 'UIAlertView+Blocks'
   pod 'FLEX'
   pod 'InAppSettingsKit'
 end

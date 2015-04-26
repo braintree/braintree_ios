@@ -18,6 +18,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
       [[BITHockeyManager sharedHockeyManager] updateManager].checkForUpdateOnLaunch = NO;
     }
     [self setupAppearance];
+    [self registerDefaultsFromSettings];
 
     NSString *paymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
     [Braintree setReturnURLScheme:paymentsURLScheme];
@@ -26,7 +27,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
 }
 
 
-- (BOOL)application:(UIApplication *)__unused application openURL:(NSURL *)url  sourceApplication:(NSString *)sourceApplication annotation:(id)__unused annotation{
+- (BOOL)application:(UIApplication *)__unused application openURL:(NSURL *)url  sourceApplication:(NSString *)sourceApplication annotation:(id)__unused annotation {
     if ([url.scheme isEqualToString:BraintreeDemoAppDelegatePaymentsURLScheme]) {
         return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
     }
@@ -38,8 +39,34 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
 
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setBarTintColor:pleasantGray];
-    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlack];
+    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
+
+    [[UIToolbar appearance] setTintColor:[UIColor whiteColor]];
+    [[UIToolbar appearance] setBarTintColor:pleasantGray];
+    [[UIToolbar appearance] setBarStyle:UIBarStyleBlackTranslucent];
 }
+
+- (void)registerDefaultsFromSettings {
+    NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
+    if(!settingsBundle) {
+        NSLog(@"Could not find Settings.bundle");
+        return;
+    }
+    
+    NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:[settingsBundle stringByAppendingPathComponent:@"Root.plist"]];
+    NSArray *preferences = [settings objectForKey:@"PreferenceSpecifiers"];
+    
+    NSMutableDictionary *defaultsToRegister = [[NSMutableDictionary alloc] initWithCapacity:[preferences count]];
+    for (NSDictionary *prefSpecification in preferences) {
+        NSString *key = [prefSpecification objectForKey:@"Key"];
+        if(key && [[prefSpecification allKeys] containsObject:@"DefaultValue"]) {
+            [defaultsToRegister setObject:[prefSpecification objectForKey:@"DefaultValue"] forKey:key];
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsToRegister];
+}
+
 
 #if DEBUG
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

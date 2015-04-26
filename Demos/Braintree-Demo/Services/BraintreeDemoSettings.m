@@ -18,4 +18,17 @@ NSString *BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey = @"BraintreeDemo
     return [[NSUserDefaults standardUserDefaults] integerForKey:BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey];
 }
 
++ (BOOL)useModalPresentation {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"BraintreeDemoChooserViewControllerShouldUseModalPresentationDefaultsKey"];
+}
+
+
++ (BOOL)customerPresent {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"BraintreeDemoCustomerPresent"];
+}
+
++ (NSString *)customerIdentifier {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoCustomerIdentifier"];
+}
+
 @end

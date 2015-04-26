@@ -3,13 +3,11 @@
 #import <HockeySDK/HockeySDK.h>
 #import <Braintree/Braintree.h>
 #import <Braintree/Braintree-3D-Secure.h>
-#import <UIActionSheet+Blocks/UIActionSheet+Blocks.h>
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
 
 #import "BraintreeDemoSettings.h"
-#import "BraintreeDemoBraintreeInitializationDemoViewController.h"
-#import "BraintreeDemoOneTouchDemoViewController.h"
-#import "BraintreeDemoTokenizationDemoViewController.h"
+#import "BraintreeDemoCustomDemoViewController.h"
+#import "BraintreeDemoCreditCardFormViewController.h"
 #import "BraintreeDemoDirectApplePayIntegrationViewController.h"
 
 #import "BraintreeDemoMerchantAPI.h"
@@ -25,17 +23,7 @@
 @property (nonatomic, weak) IBOutlet UITableViewCell *braintreePaymentMethodNonceCell;
 @property (nonatomic, weak) IBOutlet UITableViewCell *braintreeTransactionCell;
 
-#pragma mark Drop-In Use Case Cells
-
-@property (nonatomic, weak) IBOutlet UITableViewCell *dropInPaymentViewControllerCell;
-@property (nonatomic, weak) IBOutlet UITableViewCell *customPayPalCell;
-
-#pragma mark Custom Use Case Cells
-
-@property (nonatomic, weak) IBOutlet UITableViewCell *tokenizationCell;
-@property (nonatomic, weak) IBOutlet UITableViewCell *directApplePayCell;
-
-#pragma mark Braintree Operation Cells
+#pragma mark Server Operation Cells
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *makeATransactionCell;
 
@@ -158,35 +146,9 @@
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     UIViewController *demoViewController;
 
-    if (selectedCell == self.dropInPaymentViewControllerCell) {
-        // Drop-In (vanilla, no customization)
-        demoViewController = [self configuredDropInViewController];
-    } else if (selectedCell == self.customPayPalCell) {
-        // Custom usage of PayPal Button
-        demoViewController = [[BraintreeDemoOneTouchDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
-            self.nonce = nonce;
-        }];
-    } else if (selectedCell == self.tokenizationCell) {
-        // Custom card Tokenization
-        demoViewController = [[BraintreeDemoTokenizationDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
-            [self.navigationController popViewControllerAnimated:YES];
-            self.nonce = nonce;
-        }];
-    } else if (selectedCell == self.directApplePayCell) {
-        demoViewController = [[BraintreeDemoDirectApplePayIntegrationViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
-            [self.navigationController popViewControllerAnimated:YES];
-            self.nonce = nonce;
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:(nonce ? @"Got a nonce via !" : @"Error: missing nonce") message:nil preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
-            [self presentViewController:alert animated:YES completion:nil];
-        }];
-    } else if (selectedCell == self.makeATransactionCell) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
         [self makeATransactionWithThreeDSecure:[BraintreeDemoSettings threeDSecureEnabled]];
-    } else {
-        return;
-    }
 
     if (demoViewController) {
         if (self.useModalPresentation) {

@@ -2,6 +2,8 @@
 
 @class Braintree;
 
-@interface BraintreeDemoTokenizationDemoViewController : UIViewController
+@interface BraintreeDemoCustomDemoViewController : UIViewController
+
 - (instancetype)initWithBraintree:(Braintree *)braintree completion:(void (^)(NSString *nonce))completionBlock;
+
 @end
