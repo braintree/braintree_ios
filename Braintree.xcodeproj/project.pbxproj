@@ -188,6 +188,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		163357981AEEA6A800794AAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 162174DE192D9220008DC35D;
+			remoteInfo = "Braintree-Demo";
+		};
 		16FDE95019C240F8007718D2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -2301,6 +2308,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				163357991AEEA6A800794AAA /* PBXTargetDependency */,
 			);
 			name = "Braintree-UI-Specs";
 			productName = "Braintree-Payments-UI-Specs";
@@ -2534,7 +2542,7 @@
 				LastUpgradeCheck = 0600;
 				TargetAttributes = {
 					1607FE89192D97FF0099D504 = {
-						TestTargetID = 169681D5192D9AC700120846;
+						TestTargetID = 162174DE192D9220008DC35D;
 					};
 					162174DE192D9220008DC35D = {
 						DevelopmentTeam = QK3APTBF2M;
@@ -3158,6 +3166,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		163357991AEEA6A800794AAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
+			targetProxy = 163357981AEEA6A800794AAA /* PBXContainerItemProxy */;
+		};
 		16FDE95119C240F8007718D2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
@@ -3645,7 +3658,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-UI-Demo.app/Braintree-UI-Demo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -3684,7 +3697,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-UI-Demo.app/Braintree-UI-Demo";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = xctest;
 			};

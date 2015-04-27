@@ -1,12 +1,32 @@
 #import <KIF/KIF.h>
-#import "BraintreeDemoCreditCardEntryViewController.h"
+#import <PureLayout/PureLayout.h>
+#import <Braintree/BTUICardFormView.h>
+
+@interface BTUICardFormViewSpecCardEntryViewController : UIViewController
+@property (nonatomic, strong) BTUICardFormView *cardFormView;
+@end
+
+@implementation BTUICardFormViewSpecCardEntryViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.cardFormView = [[BTUICardFormView alloc] initWithFrame:self.view.frame];
+
+    [self.view addSubview:self.cardFormView];
+
+    [self.cardFormView autoPinEdgeToSuperviewMargin:ALEdgeLeading];
+    [self.cardFormView autoPinEdgeToSuperviewMargin:ALEdgeTrailing];
+    [self.cardFormView autoPinToTopLayoutGuideOfViewController:self withInset:10];
+}
+
+@end
 
 SpecBegin(BTUICardFormView)
 
 describe(@"Card Form", ^{
     describe(@"accepting and validating credit card details", ^{
         it(@"accepts a number, an expiry, a cvv and a postal code", ^{
-            BraintreeDemoCreditCardEntryViewController *viewController = [[BraintreeDemoCreditCardEntryViewController alloc] init];
+            BTUICardFormViewSpecCardEntryViewController *viewController = [[BTUICardFormViewSpecCardEntryViewController alloc] init];
 
             [system runBlock:^KIFTestStepResult(NSError **error) {
                 UIViewController *viewControllerToPresent = viewController;
@@ -33,7 +53,7 @@ describe(@"Card Form", ^{
 
     describe(@"auto advancing", ^{
         it(@"auto advances from field to field", ^{
-            [system presentViewControllerWithClass:[BraintreeDemoCreditCardEntryViewController class]
+            [system presentViewControllerWithClass:[BTUICardFormViewSpecCardEntryViewController class]
   withinNavigationControllerWithNavigationBarClass:nil
                                       toolbarClass:nil
                                 configurationBlock:nil];
@@ -46,7 +66,7 @@ describe(@"Card Form", ^{
 
     describe(@"retreat on backspace", ^{
         it(@"retreats on backspace", ^{
-            [system presentViewControllerWithClass:[BraintreeDemoCreditCardEntryViewController class]
+            [system presentViewControllerWithClass:[BTUICardFormViewSpecCardEntryViewController class]
   withinNavigationControllerWithNavigationBarClass:nil
                                       toolbarClass:nil
                                 configurationBlock:nil];
