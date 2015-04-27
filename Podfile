@@ -32,8 +32,7 @@ target 'Braintree-Dev' do
   link_with 'Braintree-Demo',
             'Braintree-API-Demo',
             'Braintree-PayPal-Demo',
-            'Braintree-Data-Demo',
-            'Braintree-UI-Demo'
+            'Braintree-Data-Demo'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
