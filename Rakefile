@@ -175,31 +175,14 @@ namespace :demo do
     run! xcodebuild(scheme, 'build', 'Release')
   end
 
+  desc 'Verify that the demo app builds successfully'
   task :build do
     build_demo! 'Braintree-Demo'
-  end
-
-  namespace :api do
-    task :build do
-      build_demo! 'Braintree-API-Demo'
-    end
-  end
-
-  namespace :ui do
-    task :build do
-      build_demo! 'Braintree-UI-Demo'
-    end
-  end
-
-  namespace :paypal do
-    task :build do
-      build_demo! 'Braintree-PayPal-Demo'
-    end
   end
 end
 
 desc 'Run all sanity checks'
-task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_all_demos]
+task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo]
 
 namespace :sanity_checks do
   desc 'Check for pending tests'
@@ -208,8 +191,7 @@ namespace :sanity_checks do
     run! "which -s ack && ! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
   end
 
-  desc 'Verify that all demo apps Build successfully'
-  task :build_all_demos => %w[demo:build demo:api:build demo:ui:build demo:paypal:build]
+  task :build_demo => 'demo:build'
 end
 
 
