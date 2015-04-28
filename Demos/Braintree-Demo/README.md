@@ -18,17 +18,17 @@ The current status is shown on the bottom toolbar. If you've created a payment m
 
 This codebase has three primary sections:
 
-* **Demo Framework** - contains boilerplate code that facilitates switching between demo integrations.
+* **Demo Base** - contains boilerplate code that facilitates switching between demo integrations.
 * **Merchant API Client** - contains an API client that might be similar to one found in a real app; note that it consumes a _hypothetical merchant_ API, not Braintree's API.
 * **Features** - contains a number of Braintree iOS demo integrations.
 
 Each demo integration must provide a `BraintreeDemoBaseViewController` subclass. Most importantly, the demo provides a `paymentButton`, which is presented to the user when the demo is selected.
 
-To add a new demo, you will additionally need to register the demo in the [Settings bundle](./Demo Framework/Settings/Settings.bundle/Root.plist), identifying the view controller by class name.
+To add a new demo, you will additionally need to register the demo in the [Settings bundle](./Demo Base/Settings/Settings.bundle/Root.plist), identifying the view controller by class name.
 
 The most common class of integration, which involves presenting the user with a single button—to trigger whatever type of payment experience you choose—can be powered by another base class, `BraintreeDemoPaymentButtonBaseViewController`.
 
-Your demo view controller may call its `progressBlock` or `completionBlock` in order to update the demo framework (and the user) about the payment method creation lifecycle.
+Your demo view controller may call its `progressBlock` or `completionBlock` in order to update the rest of the app (and the user) about the payment method creation lifecycle.
 
 ### Steps to Add a New Demo
 

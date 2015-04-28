@@ -1362,7 +1362,7 @@
 			isa = PBXGroup;
 			children = (
 				163357971AEE23EA00794AAA /* README.md */,
-				1633578C1AEE1AD300794AAA /* Demo Framework */,
+				1633578C1AEE1AD300794AAA /* Demo Base */,
 				1621750C192D922F008DC35D /* Merchant API Client */,
 				16217528192D922F008DC35D /* Supporting Files */,
 				16F9996819AE7287007ADA2C /* Features */,
@@ -1567,7 +1567,7 @@
 			path = "Base View Controllers";
 			sourceTree = "<group>";
 		};
-		1633578C1AEE1AD300794AAA /* Demo Framework */ = {
+		1633578C1AEE1AD300794AAA /* Demo Base */ = {
 			isa = PBXGroup;
 			children = (
 				1633578B1AEE1AA900794AAA /* Base View Controllers */,
@@ -1579,7 +1579,7 @@
 				16F3A7E11AEC8BE100628DBF /* Launch Screen.storyboard */,
 				16217522192D922F008DC35D /* Main.storyboard */,
 			);
-			path = "Demo Framework";
+			path = "Demo Base";
 			sourceTree = "<group>";
 		};
 		168597B319C39616003F4D17 /* Apple Pay */ = {
