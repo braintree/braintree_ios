@@ -3,6 +3,7 @@
 ## master
 
 * Upgrade PayPal mSDK to 2.10.1
+* Revamp Demo app
 
 ## 3.7.2 (2015-04-23)
 
