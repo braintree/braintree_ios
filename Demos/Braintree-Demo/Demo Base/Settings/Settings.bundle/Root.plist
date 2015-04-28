@@ -27,15 +27,16 @@
 				<string>BTPaymentButton</string>
 				<string>BTUIPayPalButton</string>
 				<string>BTUIVenmoButton</string>
-                <string>Custom Venmo Button</string>
-                <string>Custom PayPal Button</string>
+				<string>Custom Venmo Button</string>
+				<string>Custom PayPal Button</string>
 				<string>Apple Pay via BTPaymentProvider</string>
-                <string>Apple Pay Direct via PassKit</string>
-                <string>PayPal Direct via BTPayPal</string>
+				<string>Apple Pay Direct via PassKit</string>
+				<string>PayPal Direct via BTPayPal</string>
 				<string>Drop In</string>
 				<string>UI Widgets</string>
 				<string>3D Secure</string>
-                <string>Custom Multipay</string>
+				<string>Custom Multipay</string>
+				<string>BTData</string>
 			</array>
 			<key>Titles</key>
 			<array>
@@ -43,15 +44,16 @@
 				<string>BTPaymentButton</string>
 				<string>BTUIPayPalButton</string>
 				<string>BTUIVenmoButton</string>
-                <string>Custom Venmo Button</string>
-                <string>Custom Venmo Button</string>
-                <string>Apple Pay via BTPaymentProvider</string>
+				<string>Custom Venmo Button</string>
+				<string>Custom Venmo Button</string>
+				<string>Apple Pay via BTPaymentProvider</string>
 				<string>Apple Pay Direct via PassKit</string>
-                <string>PayPal Direct via BTPayPal</string>
+				<string>PayPal Direct via BTPayPal</string>
 				<string>Drop In</string>
 				<string>Braintree UI Widgets</string>
 				<string>3D Secure</string>
-                <string>Custom Multipay with Payment Provider</string>
+				<string>Custom Multipay with Payment Provider</string>
+				<string>BTData - Fraud</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -59,15 +61,16 @@
 				<string>BraintreeDemoBTPaymentButtonViewController</string>
 				<string>BraintreeDemoBTUIPayPalButtonViewController</string>
 				<string>BraintreeDemoBTUIVenmoButtonViewController</string>
-                <string>BraintreeDemoCustomPayPalButtonViewController</string>
-                <string>BraintreeDemoCustomVenmoButtonViewController</string>
-                <string>BraintreeDemoApplePayPaymentProviderViewController</string>
+				<string>BraintreeDemoCustomPayPalButtonViewController</string>
+				<string>BraintreeDemoCustomVenmoButtonViewController</string>
+				<string>BraintreeDemoApplePayPaymentProviderViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
-                <string>BraintreeDemoDeprecatedBTPayPalViewController</string>
+				<string>BraintreeDemoDeprecatedBTPayPalViewController</string>
 				<string>BraintreeDemoDropInViewController</string>
 				<string>BraintreeDemoUIWidgetsViewController</string>
 				<string>BraintreeDemoThreeDSecureViewController</string>
-                <string>BraintreeDemoCustomMultiPayViewController</string>
+				<string>BraintreeDemoCustomMultiPayViewController</string>
+				<string>BraintreeDemoBraintreeDataViewController</string>
 			</array>
 		</dict>
 		<dict>
