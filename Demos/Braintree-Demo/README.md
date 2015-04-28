@@ -14,6 +14,10 @@ You can reload the current integration by tapping on the the reload button on th
 
 The current status is shown on the bottom toolbar. If you've created a payment method nonce, you tap on the status toolbar to create a transaction.
 
+### Compatibility
+
+This app should be compiled with a 8.x Base SDK (Xcode 6.x) and has a deployment target of iOS 7.0.
+
 ## Implementation
 
 This codebase has three primary sections:
