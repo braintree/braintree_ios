@@ -106,22 +106,16 @@
             return;
         }
 
-        [Braintree setupWithClientToken:clientToken completion:^(Braintree *braintree, NSError *error) {
+        Braintree *braintree = [Braintree braintreeWithClientToken:clientToken];
+        [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [self.refreshControl endRefreshing];
             if (error) {
-                [self displayError:error forTask:@"Fetching Braintree Config"];
+                [self displayError:error forTask:@"Fetching Merchant Config"];
                 return;
             }
 
-            [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error) {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                [self.refreshControl endRefreshing];
-                if (error) {
-                    [self displayError:error forTask:@"Fetching Merchant Config"];
-                    return;
-                }
-
-                [self resetWithBraintree:braintree merchantId:merchantId];
-            }];
+            [self resetWithBraintree:braintree merchantId:merchantId];
         }];
     }];
 }

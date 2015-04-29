@@ -33,4 +33,13 @@ typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResul
 ///  @param metadataBlock block for customizing metadata
 - (instancetype)copyWithMetadata:(void (^)(BTClientMutableMetadata *metadata))metadataBlock;
 
+/// Begins the setup of `BTClient` with a client token.
+/// The client token dictates the behavior of subsequent operations.
+///
+/// *Not used at this time.* Use -initWithClientToken: instead.
+///
+/// @param clientTokenString Braintree client token
+/// @param completionBlock callback will be called exactly once asynchronously, providing either an instance of BTClient upon success or an error upon failure.
++ (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock;
+
 @end
