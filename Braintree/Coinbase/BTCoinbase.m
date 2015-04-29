@@ -47,6 +47,8 @@
 // In this context, "AppSwitch" includes both browser switch and provider app switch
 - (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate error:(NSError *__autoreleasing *)error {
 
+    [CoinbaseOAuth setBaseURL:[client.configuration.coinbaseEnvironment isEqualToString:@"shared_sandbox"] ? [NSURL URLWithString:@"https://sandbox.coinbase.com/"] : nil];
+
     self.client = client;
     self.delegate = delegate;
 
@@ -117,7 +119,6 @@
                                       clientSecret:nil
                                         completion:^(id response, NSError *error)
      {
-
          CoinbaseOAuthAuthenticationMechanism mechanism = self.authenticationMechanism;
          if (error) {
              if ([error.domain isEqualToString:CoinbaseErrorDomain] && error.code == CoinbaseOAuthError && [error.userInfo[CoinbaseOAuthErrorUserInfoKey] isEqual:@"access_denied"]) {
@@ -143,6 +144,9 @@
              }
              [self informDelegateWillCreatePaymentMethod];
 
+             NSMutableDictionary *mutableResponse = [response mutableCopy];
+             mutableResponse[@"redirect_uri"] = [self.redirectUri absoluteString];
+             response = mutableResponse;
              [[self clientWithMetadataForAuthenticationMechanism:mechanism] saveCoinbaseAccount:response
                                                                                    storeInVault:self.storeInVault
                                                                                         success:^(BTCoinbasePaymentMethod *coinbasePaymentMethod) {
