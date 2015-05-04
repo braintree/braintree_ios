@@ -1,5 +1,6 @@
 #import <coinbase-official/CoinbaseOAuth.h>
 
+#import <UIKit/UIKit.h>
 #import "BTCoinbase.h"
 #import "BTClient_Internal.h"
 
@@ -112,7 +113,10 @@ describe(@"BTAppSwitching", ^{
             [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
             [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
             [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
-
+            
+            // "shared_sandbox" does not support coinbase app switch
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
+            
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
             [[client expect] postAnalyticsEvent:@"ios.coinbase.initiate.started"];
@@ -133,6 +137,8 @@ describe(@"BTAppSwitching", ^{
             expect(appSwitchInitiated).to.beTruthy();
             [sharedApplicationStub verify];
             [client verify];
+            
+            [sharedApplicationStub stopMocking];
         });
 
         it(@"falls back to switching to Safari when the coinbase app is not available", ^{
@@ -141,6 +147,7 @@ describe(@"BTAppSwitching", ^{
             [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
             [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
             [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
@@ -163,6 +170,8 @@ describe(@"BTAppSwitching", ^{
             expect(appSwitchInitiated).to.beTruthy();
             [sharedApplicationStub verify];
             [client verify];
+            
+            [sharedApplicationStub stopMocking];
         });
 
         it(@"fails when the developer has not yet provided a return url scheme", ^{
@@ -171,6 +180,7 @@ describe(@"BTAppSwitching", ^{
             [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
             [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
             [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
@@ -195,6 +205,8 @@ describe(@"BTAppSwitching", ^{
             expect(error.localizedDescription).to.contain(@"Coinbase is not available");
             [sharedApplicationStub verify];
             [client verify];
+            
+            [sharedApplicationStub stopMocking];
         });
 
         it(@"fails when the app switch fails", ^{
@@ -203,6 +215,7 @@ describe(@"BTAppSwitching", ^{
             [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
             [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
             [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
@@ -231,11 +244,14 @@ describe(@"BTAppSwitching", ^{
             expect(error.localizedDescription).to.contain(@"Coinbase is not available");
             [sharedApplicationStub verify];
             [client verify];
+            
+            [sharedApplicationStub stopMocking];
         });
 
         it(@"fails when coinbase is not yet enabled", ^{
             id configuration = [OCMockObject mockForClass:[BTConfiguration class]];
             [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
@@ -262,6 +278,8 @@ describe(@"BTAppSwitching", ^{
             expect(error.localizedDescription).to.contain(@"Coinbase is not available");
             [sharedApplicationStub verify];
             [client verify];
+            
+            [sharedApplicationStub stopMocking];
         });
 
         it(@"accepts a NULL error even on failures", ^{
@@ -270,6 +288,7 @@ describe(@"BTAppSwitching", ^{
             [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
             [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
             [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
@@ -290,6 +309,8 @@ describe(@"BTAppSwitching", ^{
             expect(appSwitchInitiated).to.beFalsy();
             [sharedApplicationStub verify];
             [client verify];
+            
+            [sharedApplicationStub stopMocking];
         });
 
         it(@"does not set an error on success", ^{
@@ -298,6 +319,7 @@ describe(@"BTAppSwitching", ^{
             [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
             [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
             [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
 
             id client = [OCMockObject mockForClass:[BTClient class]];
             [[[client stub] andReturn:configuration] configuration];
@@ -322,6 +344,8 @@ describe(@"BTAppSwitching", ^{
             expect(error).to.beNil();
             [sharedApplicationStub verify];
             [client verify];
+            
+            [sharedApplicationStub stopMocking];
         });
     });
 
@@ -330,7 +354,7 @@ describe(@"BTAppSwitching", ^{
             BTCoinbase *coinbase = [[BTCoinbase alloc] init];
             [coinbase setReturnURLScheme:@"com.example.app.payments"];
 
-            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=1234"];
+            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=fake_coinbase_auth_code"];
             BOOL canHandleURL = [coinbase canHandleReturnURL:testURL sourceApplication:@"any source application"];
 
             expect(canHandleURL).to.beTruthy();
@@ -340,7 +364,7 @@ describe(@"BTAppSwitching", ^{
             BTCoinbase *coinbase = [[BTCoinbase alloc] init];
             [coinbase setReturnURLScheme:@"com.example.app.payments"];
 
-            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?error_message=1234&random=thing"];
+            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?error_message=some_test_error_message&random=thing"];
             BOOL canHandleURL = [coinbase canHandleReturnURL:testURL sourceApplication:@"any source application"];
 
             expect(canHandleURL).to.beTruthy();
@@ -349,7 +373,7 @@ describe(@"BTAppSwitching", ^{
         it(@"returns NO when the return url scheme has not been set", ^{
             BTCoinbase *coinbase = [[BTCoinbase alloc] init];
 
-            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=1234"];
+            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=fake_coinbase_auth_code"];
             BOOL canHandleURL = [coinbase canHandleReturnURL:testURL sourceApplication:@"any source application"];
             expect(canHandleURL).to.beFalsy();
         });
@@ -358,7 +382,7 @@ describe(@"BTAppSwitching", ^{
             BTCoinbase *coinbase = [[BTCoinbase alloc] init];
             [coinbase setReturnURLScheme:@"com.example.other-app.payments"];
 
-            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=1234"];
+            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=fake_coinbase_auth_code"];
             BOOL canHandleURL = [coinbase canHandleReturnURL:testURL sourceApplication:@"any source application"];
             expect(canHandleURL).to.beFalsy();
         });
@@ -400,6 +424,8 @@ describe(@"BTAppSwitching", ^{
                 [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
                 [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
                 [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+                [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
+                
                 mockClient = [OCMockObject mockForClass:[BTClient class]];
                 [[[mockClient stub] andReturn:configuration] configuration];
                 mockPaymentMethod = [OCMockObject mockForClass:[BTCoinbasePaymentMethod class]];
@@ -409,8 +435,8 @@ describe(@"BTAppSwitching", ^{
                     [invocation retainArguments];
                     [invocation getArgument:&successBlock atIndex:4];
                     successBlock(mockPaymentMethod);
-                }] saveCoinbaseAccount:HC_hasEntry(@"code", @"1234") storeInVault:NO success:[OCMArg isNotNil] failure:[OCMArg any]];
-
+                }] saveCoinbaseAccount:HC_hasEntry(@"code", @"fake_coinbase_auth_code") storeInVault:NO success:[OCMArg isNotNil] failure:[OCMArg any]];
+                
                 mockDelegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
 
                 coinbase = [[BTCoinbase alloc] init];
@@ -436,8 +462,11 @@ describe(@"BTAppSwitching", ^{
             describe(@"happy path", ^{
 
                 beforeEach(^{
-                    testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=1234"];
+                    testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=fake_coinbase_auth_code"];
                     [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.tokenize.succeeded"];
+                    
+                    // with a non-mock BTClient, this is used to set metadata.source
+                    [[[mockClient stub] andReturn:mockClient] copyWithMetadata:[OCMArg isNotNil]];
                 });
 
                 afterEach(^{
@@ -510,6 +539,8 @@ describe(@"BTAppSwitching", ^{
             [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
             [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
             [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
+            
             id mockClient = [OCMockObject mockForClass:[BTClient class]];
             [[[mockClient stub] andReturn:configuration] configuration];
             id mockDelegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
@@ -537,12 +568,14 @@ describe(@"BTAppSwitching", ^{
             [[[configuration stub] andReturn:@"test-coinbase-scopes"] coinbaseScope];
             [[[configuration stub] andReturn:@"test-coinbase-client-id"] coinbaseClientId];
             [[[configuration stub] andReturn:@"coinbase-merchant-account@test.example.com"] coinbaseMerchantAccount];
+            [[[configuration stub] andReturn:@"mock"] coinbaseEnvironment];
+            
             id mockClient = [OCMockObject mockForClass:[BTClient class]];
             [[[mockClient stub] andReturn:configuration] configuration];
             NSError *mockError = [OCMockObject mockForClass:[NSError class]];
             [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.unknown.authorized"];
             [[mockClient expect] postAnalyticsEvent:@"ios.coinbase.tokenize.failed"];
-          
+
             id clientStub = [mockClient stub];
             [clientStub andDo:^(NSInvocation *invocation){
                 BTClientFailureBlock failureBlock;
@@ -550,10 +583,13 @@ describe(@"BTAppSwitching", ^{
                 [invocation getArgument:&failureBlock atIndex:5];
                 failureBlock(mockError);
             }];
-            [clientStub saveCoinbaseAccount:HC_hasEntry(@"code", @"1234")
+            [clientStub saveCoinbaseAccount:HC_hasEntry(@"code", @"fake_coinbase_auth_code")
                                storeInVault:NO
                                     success:[OCMArg isNotNil]
                                     failure:[OCMArg any]];
+            
+            // with a non-mock BTClient, this is used to set metadata.source
+            [[[mockClient stub] andReturn:mockClient] copyWithMetadata:[OCMArg isNotNil]];
             
             id mockDelegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
             
@@ -568,7 +604,7 @@ describe(@"BTAppSwitching", ^{
             
             [[mockDelegate expect] appSwitcher:coinbase didFailWithError:mockError];
             
-            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=1234"];
+            NSURL *testURL = [NSURL URLWithString:@"com.example.app.payments://x-callback-url/vzero/auth/coinbase/redirect?code=fake_coinbase_auth_code"];
             [coinbase handleReturnURL:testURL];
             
             [mockDelegate verifyWithDelay:10];
