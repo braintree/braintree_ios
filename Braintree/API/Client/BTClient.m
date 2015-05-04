@@ -37,7 +37,7 @@
     }
 }
 
-- (instancetype)initWithClientToken:(NSString *)clientTokenString DEPRECATED_MSG_ATTRIBUTE("Please use asynchronous initializer +setupWithClientToken:completion:") {
+- (instancetype)initWithClientToken:(NSString *)clientTokenString {
     return [self initSyncWithClientTokenString:clientTokenString];
 }
 

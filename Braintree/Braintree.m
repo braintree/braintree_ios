@@ -2,6 +2,7 @@
 
 #import "BTClient.h"
 #import "BTClient+BTPayPal.h"
+#import "BTClient_Internal.h"
 #import "BTLogger_Internal.h"
 
 #import "BTPayPalButton.h"
@@ -43,10 +44,7 @@
 }
 
 - (instancetype)initWithClientToken:(NSString *)clientToken {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     return [self initWithClient:[[BTClient alloc] initWithClientToken:clientToken]];
-#pragma clang diagnostic pop
 }
 
 - (instancetype)initWithClient:(BTClient *)client {

@@ -187,13 +187,6 @@
 
 - (void)authorizeCoinbase {
     NSError *error;
-    if (!self.client.hasConfiguration) {
-        error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:@{NSLocalizedDescriptionKey: @"To use Coinbase, you must use the async initializer for Braintree or BTClient, setupWithClientToken:completion:"}];
-        [self.client postAnalyticsEvent:@"ios.authorizer.did-fail-with-error.deprecated-init"];
-        [self informDelegateDidFailWithError:error andPostAnalyticsEvent:NO];
-        return;
-    }
-
     BOOL appSwitchSuccess = [[BTCoinbase sharedCoinbase] initiateAppSwitchWithClient:self.client delegate:self error:&error];
     if (appSwitchSuccess) {
         [self informDelegateWillPerformAppSwitch];
