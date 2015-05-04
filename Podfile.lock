@@ -61,7 +61,7 @@ PODS:
   - Braintree/Venmo (3.8.0-rc2):
     - Braintree/API
   - CardIO (5.0.3)
-  - coinbase-official/OAuth (2.1.2)
+  - coinbase-official/OAuth (2.1.4)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
   - HockeySDK (3.6.2)
@@ -132,7 +132,7 @@ SPEC CHECKSUMS:
   AFNetworking: 10e85a00bb0f475124e4ff2677bf15693b2c1523
   Braintree: cf8e30a29b98cf41507885c1d0fcadcec64ae1d3
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
-  coinbase-official: 36eb1ed3f43e8a5597ce89eac1e53f1a6d5a1af0
+  coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 321e6150cbababb76aaadde355dfce2ee1cac2d8
   HockeySDK: 51ade1aff04463137e852797d2eb4dfb2511d6a9
