@@ -60,7 +60,6 @@
 }
 
 - (BTAPIResponseParser *)responseParserForKey:(NSString *)key {
-
     return [BTAPIResponseParser parserWithDictionary:[self dictionaryForKey:key]];
 }
 

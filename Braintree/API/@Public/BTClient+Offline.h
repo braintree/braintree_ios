@@ -15,6 +15,6 @@
 ///        `BTClient` that rely on the contents of the client token)
 ///
 /// @return client token string
-+ (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)configuration;
++ (NSString *)offlineTestClientTokenWithAdditionalParameters:(NSDictionary *)configuration DEPRECATED_MSG_ATTRIBUTE("Offline BTClient is no longer supported. Please use a real client token by on your server. (See https://developers.braintreepayments.com/ios/sdk/overview/generate-client-token)");
 
 @end

@@ -29,10 +29,11 @@
                                                  BTClientTestConfigurationKeyCustomer:@YES,
                                                  BTClientTestConfigurationKeyClientTokenVersion: @2,
                                                  BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account", }
-                                   completion:^(BTClient *client) {
-                                       helper.client = client;
-                                       done();
-                                   }];
+                                         async:@YES
+                                         completion:^(BTClient *client) {
+                                             helper.client = client;
+                                             done();
+                                         }];
     });
 
     return helper;
@@ -322,7 +323,7 @@ describe(@"3D Secure View Controller", ^{
                                  expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                                  expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
                                  expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
-                                 expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @YES, });
+                                 expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @YES});
                                  calledDidFail = YES;
                              } didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                  calledDidFinish = YES;

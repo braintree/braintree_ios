@@ -1,0 +1,16 @@
+@import Foundation;
+@import XCTest;
+
+#define SPT_SHORTHAND
+#import <Specta/Specta.h>
+
+#define EXP_SHORTHAND
+#import <Expecta/Expecta.h>
+
+#import "EXPMatchers+BTMatches.h"
+#import "EXPMatchers+BTBeANonce.h"
+
+#import <OCMock/OCMock.h>
+
+#define HC_SHORTHAND
+#import <OCHamcrest/OCHamcrest.h>

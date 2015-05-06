@@ -8,12 +8,13 @@
 
 #import "BraintreeDemoSettings.h"
 #import "BraintreeDemoBraintreeInitializationDemoViewController.h"
-#import "BraintreeDemoOneTouchDemoViewController.h"
+#import "BraintreeDemoPaymentButtonDemoViewController.h"
 #import "BraintreeDemoTokenizationDemoViewController.h"
 #import "BraintreeDemoDirectApplePayIntegrationViewController.h"
 
 #import "BraintreeDemoMerchantAPI.h"
 #import "BTClient_Internal.h"
+#import "BTCoinbase.h"
 
 @interface BraintreeDemoChooserViewController () <BTDropInViewControllerDelegate, BTPaymentMethodCreationDelegate>
 
@@ -67,10 +68,17 @@
     [self switchToEnvironment];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToEnvironment) name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
+    [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:@"BraintreeDemoCoinbaseDisabledDefaultsKey" options:NSKeyValueObservingOptionNew context:NULL];
+    [self observeValueForKeyPath:@"BraintreeDemoCoinbaseDisabledDefaultsKey" ofObject:[NSUserDefaults standardUserDefaults] change:nil context:NULL]; // set initial value
 }
 
 - (void)dealloc {
+    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"BraintreeDemoCoinbaseDisabledDefaultsKey"];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:nil];
+}
+
+- (void)observeValueForKeyPath:(__unused NSString *)keyPath ofObject:(__unused id)object change:(__unused NSDictionary *)change context:(__unused void *)context {
+    [BTCoinbase sharedCoinbase].disabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"BraintreeDemoCoinbaseDisabledDefaultsKey"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -91,7 +99,7 @@
     self.lastTransactionId = nil;
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error){
+    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
         if (error) {
             [self displayError:error forTask:@"Fetching Client Token"];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -99,8 +107,7 @@
         }
 
         Braintree *braintree = [Braintree braintreeWithClientToken:clientToken];
-
-        [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error){
+        [[BraintreeDemoMerchantAPI sharedService] fetchMerchantConfigWithCompletion:^(NSString *merchantId, NSError *error) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             [self.refreshControl endRefreshing];
             if (error) {
@@ -163,7 +170,7 @@
         demoViewController = [self configuredDropInViewController];
     } else if (selectedCell == self.customPayPalCell) {
         // Custom usage of PayPal Button
-        demoViewController = [[BraintreeDemoOneTouchDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
+        demoViewController = [[BraintreeDemoPaymentButtonDemoViewController alloc] initWithBraintree:self.braintree completion:^(NSString *nonce) {
             self.nonce = nonce;
         }];
     } else if (selectedCell == self.tokenizationCell) {
@@ -252,18 +259,7 @@
 }
 
 - (void)switchToEnvironment {
-    NSString *environmentName;
-
-    switch ([BraintreeDemoSettings currentEnvironment]) {
-        case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
-            environmentName = @"Sandbox";
-            break;
-        case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
-            environmentName = @"Production";
-    }
-
-    self.environmentSelector.title = environmentName;
-
+    self.environmentSelector.title = [BraintreeDemoSettings currentEnvironmentName];
     [self initializeBraintree];
 }
 

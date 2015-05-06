@@ -1,5 +1,6 @@
 #import "BraintreeDemoAppDelegate.h"
 #import <HockeySDK/HockeySDK.h>
+#import <HockeySDK/HockeySDK.h>
 #import "Braintree.h"
 
 #if DEBUG
@@ -27,7 +28,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
 
 
 - (BOOL)application:(UIApplication *)__unused application openURL:(NSURL *)url  sourceApplication:(NSString *)sourceApplication annotation:(id)__unused annotation{
-    if ([url.scheme isEqualToString:BraintreeDemoAppDelegatePaymentsURLScheme]) {
+    if ([[url.scheme lowercaseString] isEqualToString:[BraintreeDemoAppDelegatePaymentsURLScheme lowercaseString]]) {
         return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
     }
     return YES;

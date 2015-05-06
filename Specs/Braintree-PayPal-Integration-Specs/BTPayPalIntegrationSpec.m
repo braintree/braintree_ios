@@ -19,6 +19,7 @@ describe(@"preparePayPalMobile", ^{
                     [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier:@"altpay_merchant",
                                                              BTClientTestConfigurationKeyPublicKey:@"altpay_merchant_public_key",
                                                              BTClientTestConfigurationKeyCustomer:@YES }
+                                               async:@YES
                                                completion:^(BTClient *client) {
                                                    testClient = client;
                                                    done();
@@ -71,6 +72,7 @@ describe(@"preparePayPalMobile", ^{
                     [BTClient testClientWithConfiguration:@{ BTClientTestConfigurationKeyMerchantIdentifier: merchantIdWithPayPalDisabled,
                                                              BTClientTestConfigurationKeyPublicKey:merchantKeyWithPayPalDisabled,
                                                              BTClientTestConfigurationKeyCustomer: @YES }
+                                               async:@YES
                                                completion:^(BTClient *client) {
                                                    testClient = client;
                                                    done();
@@ -103,7 +105,10 @@ describe(@"preparePayPalMobile", ^{
         __block BTClient *client;
 
         beforeEach(^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             client = [[BTClient alloc] initWithClientToken:[BTClient btPayPal_offlineTestClientToken]];
+#pragma clang diagnostic pop
         });
 
         it(@"defaults to PayPal mock mode in BTClient offline mode", ^{

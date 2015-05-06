@@ -34,7 +34,7 @@
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];
 
-    self.payPalWordmark = [[BTUIPayPalWordmarkVectorArtView alloc] init];
+    self.payPalWordmark = [[BTUIPayPalWordmarkVectorArtView alloc] initWithPadding];
     self.payPalWordmark.userInteractionEnabled = NO;
     self.payPalWordmark.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -44,7 +44,6 @@
 - (void)updateConstraints {
     NSDictionary *metrics = @{ @"minHeight": @([self.theme paymentButtonMinHeight]),
                                @"maxHeight": @([self.theme paymentButtonMaxHeight]),
-                               @"wordMarkHeight": @([self.theme paymentButtonWordMarkHeight]),
                                @"minWidth": @(200),
                                @"required": @(UILayoutPriorityRequired),
                                @"high": @(UILayoutPriorityDefaultHigh),
@@ -52,7 +51,7 @@
     NSDictionary *views = @{ @"self": self ,
                              @"payPalWordmark": self.payPalWordmark };
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[payPalWordmark(wordMarkHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[payPalWordmark]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -64,14 +63,6 @@
                                                     attribute:NSLayoutAttributeCenterX
                                                    multiplier:1.0f
                                                       constant:0.0f]];
-
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self.payPalWordmark
-                                                     attribute:NSLayoutAttributeCenterY
-                                                    multiplier:1.0f
-                                                      constant:-1.0f]];
 
     [super updateConstraints];
 }

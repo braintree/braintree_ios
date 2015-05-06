@@ -87,8 +87,9 @@
 
 - (void)httpRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(BTHTTPCompletionBlock)completionBlock {
 
+    BOOL isNotDataURL = ![self.baseURL.scheme isEqualToString:@"data"];
     NSURL *fullPathURL;
-    if (aPath) {
+    if (aPath && isNotDataURL) {
         fullPathURL = [self.baseURL URLByAppendingPathComponent:aPath];
     } else {
         fullPathURL = self.baseURL;
@@ -101,8 +102,10 @@
     NSMutableURLRequest *request;
 
     if ([method isEqualToString:@"GET"] || [method isEqualToString:@"DELETE"]) {
-        NSString *encodedParametersString = [BTURLUtils queryStringWithDictionary:parameters];
-        components.percentEncodedQuery = encodedParametersString;
+        if (isNotDataURL) {
+            NSString *encodedParametersString = [BTURLUtils queryStringWithDictionary:parameters];
+            components.percentEncodedQuery = encodedParametersString;
+        }
         request = [NSMutableURLRequest requestWithURL:components.URL];
     } else {
         request = [NSMutableURLRequest requestWithURL:components.URL];
@@ -146,8 +149,13 @@
         return;
     }
 
+    NSInteger statusCode;
     // Handle nil or non-HTTP requests, which are an unknown type of error
-    if (![response isKindOfClass:[NSHTTPURLResponse class]]) {
+    if ([response.URL.scheme isEqualToString:@"data"]) {
+        statusCode = 200;
+    } else if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+        statusCode = [(NSHTTPURLResponse *)response statusCode];
+    } else {
         NSDictionary *userInfoDictionary = error ? @{NSUnderlyingErrorKey: error} : nil;
         NSError *returnedError = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
                                                      code:BTServerErrorUnknown
@@ -156,14 +164,13 @@
         return;
     }
 
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-
-    NSString *responseContentType = [httpResponse MIMEType];
+    NSString *responseContentType = [response MIMEType];
 
     if (data.length == 0) {
         // Accept empty responses
-        BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:httpResponse.statusCode responseObject:nil];
-        NSError *returnedError = [self defaultDomainErrorForStatusCode:httpResponse.statusCode error:error];
+        BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:statusCode responseObject:nil];
+        NSDictionary *userInfoDictionary = error ? @{NSUnderlyingErrorKey: error} : nil;
+        NSError *returnedError = [self defaultDomainErrorForStatusCode:statusCode userInfo:userInfoDictionary];
         [self callCompletionBlock:completionBlock response:btHTTPResponse error:returnedError];
     } else if ([responseContentType isEqualToString:@"application/json"]) {
         // Attempt to parse json, and return an error if parsing fails
@@ -177,8 +184,22 @@
             return;
         }
 
-        BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:httpResponse.statusCode responseObject:responseObject];
-        NSError *returnedError = [self defaultDomainErrorForStatusCode:httpResponse.statusCode error:error];
+        BTHTTPResponse *btHTTPResponse = [[BTHTTPResponse alloc] initWithStatusCode:statusCode responseObject:responseObject];
+        NSMutableDictionary *userInfoDictionary = nil;
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            userInfoDictionary = [responseObject mutableCopy];
+        }
+        if (error) {
+            if (userInfoDictionary) {
+                userInfoDictionary[NSUnderlyingErrorKey] = error;
+            } else {
+                userInfoDictionary = [@{NSUnderlyingErrorKey: error} mutableCopy];
+            }
+        }
+        if (userInfoDictionary && userInfoDictionary[@"error"] && userInfoDictionary[@"error"][@"message"]) {
+            userInfoDictionary[NSLocalizedDescriptionKey] = userInfoDictionary[@"error"][@"message"];
+        }
+        NSError *returnedError = [self defaultDomainErrorForStatusCode:statusCode userInfo:userInfoDictionary];
         [self callCompletionBlock:completionBlock response:btHTTPResponse error:returnedError];
     } else {
         // Return error for unsupported response type
@@ -248,8 +269,7 @@
     return returnedError;
 }
 
-+ (NSError *)defaultDomainErrorForStatusCode:(NSInteger)statusCode error:(NSError *)error {
-    NSDictionary *userInfoDictionary = error ? @{NSUnderlyingErrorKey: error} : nil;
++ (NSError *)defaultDomainErrorForStatusCode:(NSInteger)statusCode userInfo:(NSDictionary *)userInfoDictionary {
     switch (statusCode) {
         case 200 ... 299:
             return nil;

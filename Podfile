@@ -7,16 +7,16 @@ target 'Tests' do
             'Braintree-Payments-UI-Specs',
             'Braintree-PayPal-Specs',
             'Braintree-PayPal-Integration-Specs',
-            'Braintree-PayPal-Acceptance-Specs',
             'Braintree-Venmo-Specs',
             'Braintree-Data-Specs',
-            'Braintree-3D-Secure-Specs'
+            'Braintree-3D-Secure-Specs',
+            'Braintree-Coinbase-Specs'
   pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
   pod 'Expecta', '~> 0.3.0'
-  pod 'OCMock', '~> 2.2.3'
+  pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
-  pod 'KIF', '~> 3.2'
+  pod 'KIF', :git => 'https://github.com/kif-framework/KIF.git', :branch => 'master'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'KIFViewControllerActions', :git => 'https://github.com/mickeyreiss/KIFViewControllerActions.git'
 end
@@ -31,6 +31,7 @@ target 'Braintree-Dev' do
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
+  pod 'Braintree/Coinbase', :path => '.'
   pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.2'
   pod 'CardIO'
@@ -51,9 +52,10 @@ target 'Logic-Tests' do
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
+  pod 'Braintree/Coinbase', :path => '.'
   pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
   pod 'Expecta', '~> 0.3.0'
-  pod 'OCMock', '~> 2.2.3'
+  pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
   pod 'NSURL+QueryDictionary', '~> 1.0'
@@ -63,14 +65,14 @@ end
 target 'Braintree-Apple-Pay-Excluded' do
   link_with 'Braintree-Apple-Pay-Excluded-Build-Specs'
   pod 'Braintree', :path => '.'
-  pod 'OCMock', '~> 2.2.3'
+  pod 'OCMock', '~> 3.1'
 end
 
 target 'Braintree-Apple-Pay' do
   link_with 'Braintree-Apple-Pay-Build-Specs'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
-  pod 'OCMock', '~> 2.2.3'
+  pod 'OCMock', '~> 3.1'
 end
 
 post_install do |installer|
@@ -87,3 +89,4 @@ post_install do |installer|
         puts "WARNING: Braintree targets not found"
     end
 end
+

@@ -21,6 +21,7 @@
     self = [super initWithStyle:style];
     if (self) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(didTapAdd)];
+        self.tableView.accessibilityIdentifier = @"Payment Methods Table";
     }
     return self;
 }
@@ -84,6 +85,20 @@
         UIImage *icon = [iconArt imageOfSize:CGSizeMake(42, 23)];
         cell.imageView.contentMode = UIViewContentModeCenter;
         cell.imageView.image = icon;
+    } else if ([paymentMethod isKindOfClass:[BTCoinbasePaymentMethod class]]) {
+        BTCoinbasePaymentMethod *coinbasePaymentMethod = (BTCoinbasePaymentMethod *)paymentMethod;
+        NSString *typeString = BTUILocalizedString(PAYMENT_METHOD_TYPE_COINBASE);
+        NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, (coinbasePaymentMethod.description ?: @"")]];
+        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
+        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [coinbasePaymentMethod.description length])];
+        cell.textLabel.attributedText = typeWithDescription;
+
+
+        BTUIVectorArtView *iconArt = [[BTUI braintreeTheme] vectorArtViewForPaymentMethodType:BTUIPaymentMethodTypeCoinbase];
+        UIImage *icon = [iconArt imageOfSize:CGSizeMake(42, 23)];
+        cell.imageView.contentMode = UIViewContentModeCenter;
+        cell.imageView.image = icon;
+
     } else {
         cell.textLabel.text = [paymentMethod description];
         cell.imageView.image = nil;

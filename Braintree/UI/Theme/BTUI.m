@@ -11,6 +11,7 @@
 #import "BTUIDinersClubVectorArtView.h"
 #import "BTUIAmExVectorArtView.h"
 #import "BTUIPayPalMonogramCardView.h"
+#import "BTUICoinbaseMonogramCardView.h"
 
 @implementation BTUI
 
@@ -105,10 +106,16 @@
     return [UIColor bt_colorWithBytesR:1 G:156 B:222];
 }
 
-#pragma mark Venmo Colors
+#pragma mark Venmo Color
 
 - (UIColor *)venmoPrimaryBlue {
     return [UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f];
+}
+
+#pragma mark Coinbase Color
+
+- (UIColor *)coinbasePrimaryBlue {
+    return [UIColor colorWithRed: 0.053 green: 0.433 blue: 0.7 alpha: 1];
 }
 
 #pragma mark Adjustments
@@ -208,6 +215,8 @@
             return [BTUIVisaVectorArtView new];
         case BTUIPaymentMethodTypeMasterCard:
             return [BTUIMasterCardVectorArtView new];
+        case BTUIPaymentMethodTypeCoinbase:
+            return [BTUICoinbaseMonogramCardView new];
         case BTUIPaymentMethodTypePayPal:
             return [BTUIPayPalMonogramCardView new];
         case BTUIPaymentMethodTypeDinersClub:

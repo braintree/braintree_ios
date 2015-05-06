@@ -23,7 +23,7 @@
     [self.paymentButton removeFromSuperview];
 
     _paymentButton = paymentButton;
-    [self addSubview:paymentButton];
+    [self.contentView addSubview:paymentButton];
 
     paymentButton.userInteractionEnabled = NO;
 

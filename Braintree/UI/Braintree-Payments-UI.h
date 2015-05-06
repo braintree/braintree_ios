@@ -6,3 +6,4 @@
 #import <Braintree/BTUIPaymentMethodView.h>
 #import <Braintree/BTUIVenmoButton.h>
 #import <Braintree/BTUIPayPalButton.h>
+#import <Braintree/BTUICoinbaseButton.h>

@@ -11,6 +11,8 @@
 #import "BTClient+BTPayPal.h"
 #import "BTPaymentApplePayProvider.h"
 #import "BTLogger_Internal.h"
+#import "BTCoinbase.h"
+
 
 @interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate, BTPaymentMethodCreationDelegate>
 @property (nonatomic, strong) BTPaymentApplePayProvider *applePayPaymentProvider;
@@ -51,6 +53,9 @@
         case BTPaymentProviderTypeApplePay:
             [self authorizeApplePay:options];
             break;
+        case BTPaymentProviderTypeCoinbase:
+            [self authorizeCoinbase];
+            break;
         default:
             break;
     }
@@ -58,7 +63,7 @@
 
 - (void)setClient:(BTClient *)client {
     _client = client;
-    
+
     // If PayPal is a possibility with this client, prepare.
     if ([self.client btPayPal_isPayPalEnabled]) {
         NSError *error;
@@ -78,10 +83,13 @@
             return [self.client btPayPal_isPayPalEnabled];
         case BTPaymentProviderTypeVenmo:
             return [[BTVenmoAppSwitchHandler sharedHandler] appSwitchAvailableForClient:self.client];
+        case BTPaymentProviderTypeCoinbase:
+            return [[BTCoinbase sharedCoinbase] appSwitchAvailableForClient:self.client];
         default:
             return NO;
     }
 }
+
 
 #pragma mark Apple Pay
 
@@ -100,13 +108,13 @@
 #pragma mark Venmo
 
 - (void)authorizeVenmo:(BTPaymentMethodCreationOptions)options {
-    
+
     if ((options & BTPaymentAuthorizationOptionMechanismAppSwitch) == 0) {
         NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:nil];
         [self informDelegateDidFailWithError:error andPostAnalyticsEvent:NO];
         return;
     }
-    
+
     NSError *error;
     BOOL appSwitchSuccess = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
     if (appSwitchSuccess) {
@@ -173,6 +181,20 @@
         [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
     }
 }
+
+
+#pragma mark Coinbase
+
+- (void)authorizeCoinbase {
+    NSError *error;
+    BOOL appSwitchSuccess = [[BTCoinbase sharedCoinbase] initiateAppSwitchWithClient:self.client delegate:self error:&error];
+    if (appSwitchSuccess) {
+        [self informDelegateWillPerformAppSwitch];
+    } else {
+        [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
+    }
+}
+
 
 #pragma mark Inform Delegate
 
@@ -264,14 +286,6 @@
 }
 
 #pragma mark BTAppSwitchingDelegate
-
-- (void)appSwitcherWillInitiate:(__unused id<BTAppSwitching>)switcher {
-    [self informDelegateWillPerformAppSwitch];
-}
-
-- (void)appSwitcherWillSwitch:(__unused id<BTAppSwitching>)switcher {
-    [self informDelegateWillPerformAppSwitch];
-}
 
 - (void)appSwitcherWillCreatePaymentMethod:(__unused id<BTAppSwitching>)switcher {
     [self informDelegateWillProcess];

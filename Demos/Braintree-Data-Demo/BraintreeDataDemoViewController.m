@@ -17,7 +17,10 @@
 {
     [super viewDidLoad];
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.client = [[BTClient alloc] initWithClientToken:[BTClient offlineTestClientTokenWithAdditionalParameters:@{}]];
+#pragma clang diagnostic pop
 }
 
 - (IBAction)tappedInitialize

@@ -2,8 +2,8 @@
 
 #import "Braintree.h"
 #import "Braintree_Internal.h"
-
 #import "BTLogger.h"
+#import "BTConfiguration.h"
 
 #import <Braintree/BTClient+Offline.h>
 #import <Braintree/BTPayPalButton.h>
@@ -14,9 +14,11 @@ SpecBegin(Braintree)
 __block Braintree *braintree;
 
 beforeEach(^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:nil];
-    braintree = [Braintree braintreeWithClientToken:clientToken];
-
+    braintree = [Braintree braintreeWithClientToken:clientToken]; // deprecated
+#pragma clang diagnostic pop
 });
 
 describe(@"tokenizeCardWithNumber:expirationMonth:expirationYear:completion:", ^{
@@ -114,19 +116,18 @@ describe(@"dropInViewControllerWithCustomization:completion: Drop-In factory met
     });
 });
 
-describe(@"payPalButtonWithCompletion:", ^{
+describe(@"payPalButtonWithDelegate:", ^{
     __block Braintree *braintreeWithPayPalEnabled;
 
     describe(@"with PayPal enabled", ^{
         beforeEach(^{
-            NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTClientTokenKeyPayPalEnabled: @YES}];
-            braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken];
-
-        });
-        it(@"should return a payPalButton", ^{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            BTPayPalButton *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil];
+            NSString *clientToken = [BTClient offlineTestClientTokenWithAdditionalParameters:@{BTConfigurationKeyPayPalEnabled: @YES}];
+            braintreeWithPayPalEnabled = [Braintree braintreeWithClientToken:clientToken]; // deprecated
+        });
+        it(@"should return a payPalButton", ^{
+            BTPayPalButton *control = [braintreeWithPayPalEnabled payPalButtonWithDelegate:nil]; // deprecated
 #pragma clang diagnostic pop
             expect(control).to.beKindOf([BTPayPalButton class]);
         });
@@ -138,7 +139,7 @@ describe(@"payPalButtonWithCompletion:", ^{
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             UIControl *control = [braintree payPalButtonWithDelegate:nil];
 #pragma clang diagnostic pop
-            expect(control).to.beNil;
+            expect(control).to.beNil();
         });
     });
 });

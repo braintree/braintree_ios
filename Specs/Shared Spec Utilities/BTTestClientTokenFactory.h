@@ -6,6 +6,4 @@
 + (NSString *)tokenWithVersion:(NSInteger)version
                      overrides:(NSDictionary *)dictionary;
 
-+ (NSMutableDictionary *)configuration;
-
 @end

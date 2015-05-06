@@ -59,7 +59,10 @@
           return BTUILocalizedString(CARD_TYPE_MAESTRO);
     case BTUIPaymentMethodTypePayPal:
           return BTUILocalizedString(PAYPAL_CARD_BRAND);
+    case BTUIPaymentMethodTypeCoinbase:
+          return BTUILocalizedString(PAYMENT_METHOD_TYPE_COINBASE);
     }
+    
 }
 
 + (void)vibrate {

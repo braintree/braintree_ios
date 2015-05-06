@@ -15,7 +15,7 @@
 "LJb-7g-SHk.headerTitle" = "Create a Payment Method";
 
 /* Class = "IBUILabel"; text = "One Touch"; ObjectID = "PaT-fr-JHw"; */
-"PaT-fr-JHw.text" = "One Touch for Venmo & PayPal";
+"PaT-fr-JHw.text" = "Payment Buttons & One Touch";
 
 /* Class = "IBUILabel"; text = "[braintree tokenizeCardWithNumber:…];"; ObjectID = "Rp4-mk-GPh"; */
 "Rp4-mk-GPh.text" = "[braintree tokenizeCardWithNumber:…];";

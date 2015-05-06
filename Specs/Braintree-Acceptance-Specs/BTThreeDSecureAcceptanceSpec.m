@@ -15,6 +15,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
                                                      BTClientTestConfigurationKeyCustomer:@YES,
                                                      BTClientTestConfigurationKeyClientTokenVersion: @2,
                                                      BTClientTestConfigurationKeyMerchantAccountIdentifier: @"three_d_secure_merchant_account", }
+                                       async:@YES
                                        completion:^(BTClient *aClient) {
                                            client = aClient;
                                            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
@@ -40,8 +41,8 @@ describe(@"verifyCardWithNonce:amount:", ^{
             id delegateRequestPresentationExpectation = [(OCMockObject *)delegate expect];
             __block UIViewController *threeDSecureViewController;
             [delegateRequestPresentationExpectation andDo:^(NSInvocation *invocation) {
-                threeDSecureViewController = [invocation getArgumentAtIndexAsObject:3];
-
+                [invocation retainArguments];
+                [invocation getArgument:&threeDSecureViewController atIndex:3];
                 [system presentViewController:threeDSecureViewController
 withinNavigationControllerWithNavigationBarClass:nil
                                  toolbarClass:nil
@@ -74,6 +75,7 @@ withinNavigationControllerWithNavigationBarClass:nil
 
             [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
             [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
+            [tester waitForTimeInterval:1.5];
             [tester enterTextIntoCurrentFirstResponder:@"1234"];
             [tester tapViewWithAccessibilityLabel:@"Submit"];
 
@@ -156,24 +158,24 @@ withinNavigationControllerWithNavigationBarClass:nil
     describe(@"when the user taps cancel", ^{
         it(@"requests dismissal and notifies the delegate of cancelation", ^{
             BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
-
+            
             id delegateRequestPresentationExpectation = [(OCMockObject *)delegate expect];
             __block UIViewController *threeDSecureViewController;
             [delegateRequestPresentationExpectation andDo:^(NSInvocation *invocation) {
-                threeDSecureViewController = [invocation getArgumentAtIndexAsObject:3];
-
+                [invocation retainArguments];
+                [invocation getArgument:&threeDSecureViewController atIndex:3];
                 [system presentViewController:threeDSecureViewController
-withinNavigationControllerWithNavigationBarClass:nil
+    withinNavigationControllerWithNavigationBarClass:nil
                                  toolbarClass:nil
                            configurationBlock:nil];
             }];
-
+            
             [delegateRequestPresentationExpectation paymentMethodCreator:threeDSecure requestsPresentationOfViewController:[OCMArg isNotNil]];
-
+            
             [threeDSecure verifyCardWithNonce:nonce amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-
+            
             [(OCMockObject *)delegate verifyWithDelay:10];
-
+            
             [system runBlock:^KIFTestStepResult(NSError *__autoreleasing *error) {
                 KIFTestWaitCondition(threeDSecureViewController != nil, error, @"Did not present 3D Secure authentication flow");
                 return KIFTestStepResultSuccess;

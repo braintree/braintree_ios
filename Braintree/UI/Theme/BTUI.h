@@ -51,9 +51,13 @@
 - (UIColor *)payPalButtonBlue;
 - (UIColor *)payPalButtonActiveBlue;
 
-#pragma mark Venmo Colors
+#pragma mark Venmo Color
 
 - (UIColor *)venmoPrimaryBlue;
+
+#pragma mark Coinbase Color
+
+- (UIColor *)coinbasePrimaryBlue;
 
 #pragma mark Typography
 
@@ -77,7 +81,7 @@
 - (CGFloat)horizontalMargin;
 - (CGFloat)paymentButtonMinHeight;
 - (CGFloat)paymentButtonMaxHeight;
-- (CGFloat)paymentButtonWordMarkHeight;
+- (CGFloat)paymentButtonWordMarkHeight DEPRECATED_ATTRIBUTE;
 
 #pragma mark Transitions
 

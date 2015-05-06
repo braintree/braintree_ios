@@ -4,9 +4,41 @@
 
 * Upgrade PayPal mSDK to 2.10.1
 
+## 3.8.0-rc2 (2015-04-20)
+
+* Coinbase improvements
+  * Resolved: Drop-In will now automatically save Coinbase accounts in the vault
+  * Coinbase accounts now appear correctly in Drop-In
+  * Expose method to disable Coinbase in Drop In
+* Demo app: Look sharp on iPhone 6 hi-res displays
+* Modified `BTUIPayPalWordmarkVectorArtView`, `BTUIVenmoWordmarkVectorArtView` slightly to
+  help logo alignment in `BTPaymentButton` and your payment buttons
+
+## 3.8.0-rc1 (2015-04-03)
+
+* Coinbase integration - beta release
+  * Coinbase is now available in closed beta. See [the Coinbase page on our website](https://www.braintreepayments.com/features/coinbase) to join the beta.
+  * Coinbase UI is integrated with Drop-In and BTPaymentButton
+  * Known issue: Drop-In vaulting behavior for Coinbase accounts
+* Introduced a new asynchronous initializer for creating the `Braintree` object
+  * Deprecated `+braintreeWithClientToken:`. Instead, use `+setupWithClientToken:completionBlock:`. Example:
+
+```objectivec
+[Braintree setupWithClientToken:clientToken completion:^(Braintree *braintree, NSError *error) {
+    if (error) {
+        // TODO: Display error
+        // ...
+        return;
+    }
+
+    // Store and use `braintree`
+    self.braintree = braintree;
+}];
+```
+
 ## 3.7.2 (2015-04-23)
 
-* Bugfix
+* Bugfixes
   * Fix recognition of Discover, JCB, Maestro and Diners Club in certain cases ([Thanks, @RyPoints!](https://github.com/braintree/braintree_ios/pull/117))
   * Fix a bug in Drop-In that prevented Venmo from appearing if PayPal was disabled
   * Revise text for certain Venmo One Touch errors in Drop-In

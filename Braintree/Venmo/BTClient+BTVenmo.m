@@ -7,7 +7,7 @@ NSString *const BTVenmoStatusValueOffline = @"offline";
 @implementation BTClient (BTVenmo)
 
 - (BTVenmoStatus)btVenmo_status {
-    NSString *status = self.clientToken.btVenmo_status;
+    NSString *status = self.configuration.btVenmo_status;
     if ([status isEqualToString:BTVenmoStatusValueProduction]) {
         return BTVenmoStatusProduction;
     } else if([status isEqualToString:BTVenmoStatusValueOffline]) {

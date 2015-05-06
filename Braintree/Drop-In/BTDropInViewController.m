@@ -12,6 +12,7 @@
 #import "BTPaymentMethodCreationDelegate.h"
 #import "BTClient_Internal.h"
 #import "BTLogger_Internal.h"
+#import "BTCoinbase.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>
 
@@ -21,7 +22,7 @@
 @property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;
 @property (nonatomic, strong) UIBarButtonItem *submitBarButtonItem;
 
-/// Whether current visible.
+/// Whether currently visible.
 @property (nonatomic, assign) BOOL visible;
 @property (nonatomic, assign) NSTimeInterval visibleStartTime;
 
@@ -37,10 +38,11 @@
 
 /// Strong reference to  BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
-@property (nonatomic, strong) BTDropInErrorAlert *savePayPalAccountErrorAlert;
+@property (nonatomic, strong) BTDropInErrorAlert *saveAccountErrorAlert;
 
 @property (nonatomic, assign) BOOL cardEntryDidBegin;
 
+@property (nonatomic, assign) BOOL originalCoinbaseStoreInVault;
 
 @end
 
@@ -394,7 +396,7 @@
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark Payment Method Authorizer Delegate methods
+#pragma mark BTPaymentMethodCreationDelegate
 
 - (void)paymentMethodCreator:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
     // In order to modally present PayPal on top of a nested Drop In, we need to first dismiss the
@@ -416,9 +418,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)paymentMethodCreatorWillPerformAppSwitch:(id)sender {
-    [[BTLogger sharedLogger] debug:@"DropIn paymentAuthorizerWillRequestAuthorizationWithAppSwitch:%@", sender];
-
+- (void)paymentMethodCreatorWillPerformAppSwitch:(__unused id)sender {
     // If there is a presented view controller, dismiss it before app switch
     // so that the result of the app switch can be shown in this view controller.
     if ([self presentedViewController]) {
@@ -428,9 +428,14 @@
 
 - (void)paymentMethodCreatorWillProcess:(__unused id)sender {
     self.dropInContentView.state = BTDropInContentViewStateActivity;
+
+    self.originalCoinbaseStoreInVault = [[BTCoinbase sharedCoinbase] storeInVault];
+    [[BTCoinbase sharedCoinbase] setStoreInVault:YES];
 }
 
 - (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
+
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethods];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
     self.paymentMethods = newPaymentMethods;
@@ -440,6 +445,8 @@
 }
 
 - (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
+
     NSString *savePaymentMethodErrorAlertTitle;
     if ([error localizedDescription]) {
         savePaymentMethodErrorAlertTitle = [error localizedDescription];
@@ -449,22 +456,21 @@
 
     if (sender != self.dropInContentView.paymentButton) {
 
-        self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
+        self.saveAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
-            self.savePayPalAccountErrorAlert = nil;
+            self.saveAccountErrorAlert = nil;
         } retry:nil];
-        self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
-        self.savePayPalAccountErrorAlert.message = BTDropInLocalizedString(ERROR_SAVING_PAYMENT_METHOD_ALERT_TITLE);
-        [self.savePayPalAccountErrorAlert show];
+        self.saveAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
+        [self.saveAccountErrorAlert show];
     } else {
-        self.savePayPalAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
+        self.saveAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
             // Use the paymentMethods setter to update state
             [self setPaymentMethods:_paymentMethods];
-            self.savePayPalAccountErrorAlert = nil;
+            self.saveAccountErrorAlert = nil;
         } retry:nil];
-        self.savePayPalAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
-        [self.savePayPalAccountErrorAlert show];
+        self.saveAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
+        [self.saveAccountErrorAlert show];
     }
 
     // Let the addPaymentMethodDropInViewController release
@@ -472,6 +478,8 @@
 }
 
 - (void)paymentMethodCreatorDidCancel:(__unused id)sender {
+    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
+
     // Refresh payment methods display
     self.paymentMethods = self.paymentMethods;
 
@@ -581,6 +589,8 @@
             self.dropInContentView.selectedPaymentMethodView.type =  uiPaymentMethodType;
         } else if ([defaultPaymentMethod isKindOfClass:[BTPayPalPaymentMethod class]]) {
             self.dropInContentView.selectedPaymentMethodView.type = BTUIPaymentMethodTypePayPal;
+        } else if ([defaultPaymentMethod isKindOfClass:[BTCoinbasePaymentMethod class]]) {
+            self.dropInContentView.selectedPaymentMethodView.type = BTUIPaymentMethodTypeCoinbase;
         } else {
             self.dropInContentView.selectedPaymentMethodView.type = BTUIPaymentMethodTypeUnknown;
         }
