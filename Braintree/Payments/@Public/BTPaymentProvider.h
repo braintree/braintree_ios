@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderType) {
     /// Supports BTPaymentAuthorizationOptionMechanismViewController only.
     BTPaymentProviderTypeApplePay,
 
-    /// Authorize via Coinbase
+    /// Authorize via Coinbase (beta)
     ///
     /// Supports BTPaymentAuthorizationOptionMechanismBrowserSwitch and BTPaymentAuthorizationOptionMechanismViewController.
     BTPaymentProviderTypeCoinbase,

@@ -5,6 +5,8 @@
 
 /// Manages the communication with the Coinbase app or browser for authorization
 ///
+/// This is a beta integration option. For details, see https://www.braintreepayments.com/features/coinbase
+///
 /// @see BTAppSwitching
 @interface BTCoinbase : NSObject <BTAppSwitching>
 

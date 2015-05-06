@@ -5,6 +5,8 @@
 /// A payment method returned by the Client API that represents a Coinbase account associated with
 /// a particular Braintree customer.
 ///
+/// This is a beta integration option. For details, see https://www.braintreepayments.com/features/coinbase
+///
 /// @see BTPaymentMethod
 /// @see BTMutablePayPalPaymentMethod
 @interface BTCoinbasePaymentMethod : BTPaymentMethod
