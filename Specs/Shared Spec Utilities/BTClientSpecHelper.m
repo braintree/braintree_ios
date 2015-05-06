@@ -2,6 +2,7 @@
 
 #import "BTClientSpecHelper.h"
 #import "BTTestClientTokenFactory.h"
+#import "BTClient_Internal.h"
 
 @implementation BTClientSpecHelper
 

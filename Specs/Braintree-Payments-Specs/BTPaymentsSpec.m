@@ -314,7 +314,7 @@ describe(@"createPaymentMethod:", ^{
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
 
                 provider.delegate = delegate;
-                [[[client expect] andReturnValue:@YES] hasConfiguration];
+                
                 [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
             });
 
@@ -326,7 +326,7 @@ describe(@"createPaymentMethod:", ^{
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
 
                 provider.delegate = delegate;
-                [[[client expect] andReturnValue:@YES] hasConfiguration];
+                
                 [provider createPaymentMethod:BTPaymentProviderTypeCoinbase options:BTPaymentAuthorizationOptionMechanismViewController];
             });
 
@@ -346,7 +346,7 @@ describe(@"createPaymentMethod:", ^{
                 [[delegate expect] paymentMethodCreator:provider didFailWithError:error];
 
                 provider.delegate = delegate;
-                [[[client expect] andReturnValue:@YES] hasConfiguration];
+                
                 [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
             });
 
@@ -370,7 +370,7 @@ describe(@"createPaymentMethod:", ^{
                 it(@"returns NO", ^{
                     [[delegate expect] paymentMethodCreator:provider didFailWithError:initiationError];
                     [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
-                    [[[client expect] andReturnValue:@YES] hasConfiguration];
+                    
                     [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
                 });
                 
@@ -379,25 +379,11 @@ describe(@"createPaymentMethod:", ^{
                     id coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
                     [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
                     [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
-                    [[[client expect] andReturnValue:@YES] hasConfiguration];
+                    
                     [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
                 });
             });
             
-            it(@"returns a descriptive error when BTClient was created with the deprecated initializer", ^{
-                [[[client expect] andReturnValue:@NO] hasConfiguration];
-                waitUntil(^(DoneCallback done) {
-                    id delegateToReceiveError = [BTPaymentsSpecHelper delegateWithErrorBlock:^(BTPaymentProvider *provider, NSError *error) {
-                        expect(error.domain).to.equal(BTPaymentProviderErrorDomain);
-                        expect(error.code).to.equal(BTPaymentProviderErrorOptionNotSupported);
-                        expect(error.localizedDescription).to.equal(@"To use Coinbase, you must use the async initializer for Braintree or BTClient, setupWithClientToken:completion:");
-                        done();
-                    }];
-                    provider.delegate = delegateToReceiveError;
-                    [provider createPaymentMethod:BTPaymentProviderTypeCoinbase];
-                });
-            });
-
             context(@"and app switch is available", ^{
                 beforeEach(^{
                     [[[stubCoinbase stub] andReturnValue:@YES] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
