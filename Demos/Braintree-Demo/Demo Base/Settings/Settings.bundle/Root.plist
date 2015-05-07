@@ -6,12 +6,6 @@
 	<array>
 		<dict>
 			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>Demo Setup</string>
-		</dict>
-		<dict>
-			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>DisplaySortedByTitle</key>
 			<true/>
@@ -45,7 +39,7 @@
 				<string>BTUIPayPalButton</string>
 				<string>BTUIVenmoButton</string>
 				<string>Custom Venmo Button</string>
-				<string>Custom Venmo Button</string>
+				<string>Custom PayPal Button</string>
 				<string>Apple Pay via BTPaymentProvider</string>
 				<string>Apple Pay Direct via PassKit</string>
 				<string>PayPal Direct via BTPayPal</string>
@@ -61,8 +55,8 @@
 				<string>BraintreeDemoBTPaymentButtonViewController</string>
 				<string>BraintreeDemoBTUIPayPalButtonViewController</string>
 				<string>BraintreeDemoBTUIVenmoButtonViewController</string>
-				<string>BraintreeDemoCustomPayPalButtonViewController</string>
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
+				<string>BraintreeDemoCustomPayPalButtonViewController</string>
 				<string>BraintreeDemoApplePayPaymentProviderViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
 				<string>BraintreeDemoDeprecatedBTPayPalViewController</string>
@@ -86,17 +80,30 @@
 			<array>
 				<string>Sandbox</string>
 				<string>Production</string>
+				<string>Custom (enter below)</string>
 			</array>
 			<key>Titles</key>
 			<array>
 				<string>Sandbox (braintree-sample-merchant)</string>
 				<string>Production (executive-sample-merchant)</string>
+				<string>Custom (URL on previous screen)</string>
 			</array>
 			<key>Values</key>
 			<array>
 				<integer>0</integer>
 				<integer>1</integer>
+				<integer>2</integer>
 			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Custom Base URL</string>
+			<key>Key</key>
+			<string>BraintreeDemoSettingsCustomEnvironmentURLDefaultsKey</string>
+			<key>IASKTextAlignment</key>
+			<string>IASKUITextAlignmentRight</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -171,6 +178,16 @@
 			<string>Modal Presentation</string>
 			<key>Key</key>
 			<string>BraintreeDemoChooserViewControllerShouldUseModalPresentationDefaultsKey</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Coinbase Disabled</string>
+			<key>Key</key>
+			<string>BraintreeDemoCoinbaseDisabledDefaultsKey</string>
+			<key>DefaultValue</key>
+			<false/>
 		</dict>
 	</array>
 </dict>
