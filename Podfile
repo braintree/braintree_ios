@@ -28,11 +28,7 @@ target 'Tests' do
   pod 'KIFViewControllerActions', :git => 'https://github.com/mickeyreiss/KIFViewControllerActions.git'
 end
 
-target 'Braintree-Dev' do
-  link_with 'Braintree-Demo',
-            'Braintree-API-Demo',
-            'Braintree-PayPal-Demo',
-            'Braintree-Data-Demo'
+target 'Braintree-Demo' do
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
