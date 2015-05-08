@@ -21,11 +21,13 @@
 				<string>BTPaymentButton</string>
 				<string>BTUIPayPalButton</string>
 				<string>BTUIVenmoButton</string>
+				<string>BTUICoinbaseButton</string>
 				<string>Custom Venmo Button</string>
 				<string>Custom PayPal Button</string>
+				<string>Custom Coinbase Button</string>
 				<string>Apple Pay via BTPaymentProvider</string>
 				<string>Apple Pay Direct via PassKit</string>
-				<string>PayPal Direct via BTPayPal</string>
+				<string>Deprecated BTPayPalButton</string>
 				<string>Drop In</string>
 				<string>UI Widgets</string>
 				<string>3D Secure</string>
@@ -38,11 +40,13 @@
 				<string>BTPaymentButton</string>
 				<string>BTUIPayPalButton</string>
 				<string>BTUIVenmoButton</string>
+				<string>BTUICoinbaseButton</string>
 				<string>Custom Venmo Button</string>
 				<string>Custom PayPal Button</string>
+				<string>Custom Coinbase Button</string>
 				<string>Apple Pay via BTPaymentProvider</string>
 				<string>Apple Pay Direct via PassKit</string>
-				<string>PayPal Direct via BTPayPal</string>
+				<string>Deprecated BTPayPalButton</string>
 				<string>Drop In</string>
 				<string>Braintree UI Widgets</string>
 				<string>3D Secure</string>
@@ -55,11 +59,13 @@
 				<string>BraintreeDemoBTPaymentButtonViewController</string>
 				<string>BraintreeDemoBTUIPayPalButtonViewController</string>
 				<string>BraintreeDemoBTUIVenmoButtonViewController</string>
+				<string>BraintreeDemoBTUICoinbaseButtonViewController</string>
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
 				<string>BraintreeDemoCustomPayPalButtonViewController</string>
+				<string>BraintreeDemoCustomCoinbaseButtonViewController</string>
 				<string>BraintreeDemoApplePayPaymentProviderViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
-				<string>BraintreeDemoDeprecatedBTPayPalViewController</string>
+				<string>BraintreeDemoDeprecatedBTPayPalButtonViewController</string>
 				<string>BraintreeDemoDropInViewController</string>
 				<string>BraintreeDemoUIWidgetsViewController</string>
 				<string>BraintreeDemoThreeDSecureViewController</string>

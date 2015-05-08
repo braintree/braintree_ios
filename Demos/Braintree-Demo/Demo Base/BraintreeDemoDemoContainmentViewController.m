@@ -1,6 +1,7 @@
 #import "BraintreeDemoDemoContainmentViewController.h"
 
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
+#import <InAppSettingsKit/IASKSettingsReader.h>
 #import <PureLayout/PureLayout.h>
 #import <Braintree/BTPaymentMethod.h>
 

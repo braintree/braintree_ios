@@ -42,16 +42,20 @@
         [customButton autoPinEdgeToSuperviewMargin:ALEdgeTop];
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80300
-        UIButton *officialButton = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
-        [officialButton addTarget:self action:@selector(tappedApplePayButton) forControlEvents:UIControlEventTouchUpInside];
-        [applePayButtonsContainer addSubview:officialButton];
-        [officialButton autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
-        [officialButton autoPinEdgeToSuperviewMargin:ALEdgeBottom];
-
-        [customButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:officialButton withOffset:-50];
+        if ([PKPaymentButton class]) {
+            UIButton *officialButton = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
+            [officialButton addTarget:self action:@selector(tappedApplePayButton) forControlEvents:UIControlEventTouchUpInside];
+            [applePayButtonsContainer addSubview:officialButton];
+            [officialButton autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
+            [officialButton autoPinEdgeToSuperviewMargin:ALEdgeBottom];
+            
+            [customButton autoPinEdge:ALEdgeBottom toEdge:ALEdgeTop ofView:officialButton withOffset:-50];
+        } else {
 #else
-        [customButton autoPinEdgeToSuperviewMargin:ALEdgeBottom];
+        if (false) {
 #endif
+            [customButton autoPinEdgeToSuperviewMargin:ALEdgeBottom];
+        }
 
         return applePayButtonsContainer;
     } else {
@@ -61,11 +65,7 @@
 }
 
 - (void)tappedApplePayButton {
-    [self.paymentProvider setRequiredBillingAddressFields:PKAddressFieldName|PKAddressFieldPostalAddress];
-    [self.paymentProvider setShippingMethods:@[[PKShippingMethod summaryItemWithLabel:@"Fast Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"1.25"]]]];
-    [self.paymentProvider setRequiredShippingAddressFields:PKAddressFieldAll];
-
-    PKPaymentSummaryItem *testTotal = [PKPaymentSummaryItem summaryItemWithLabel:@"TEST" amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
+    PKPaymentSummaryItem *testTotal = [PKPaymentSummaryItem summaryItemWithLabel:@"BRAINTREE" amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
     [self.paymentProvider setPaymentSummaryItems:@[testTotal]];
 
     [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeApplePay];
