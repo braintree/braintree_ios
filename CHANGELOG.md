@@ -8,9 +8,9 @@
 ## 3.8.0-rc2 (2015-04-20)
 
 * Coinbase improvements
-  * Resolved: Drop-In will now automatically save Coinbase accounts in the vault
-  * Coinbase accounts now appear correctly in Drop-In
-  * Expose method to disable Coinbase in Drop In
+  * Resolved: Drop-in will now automatically save Coinbase accounts in the vault
+  * Coinbase accounts now appear correctly in Drop-in
+  * Expose method to disable Coinbase in Drop-in
 * Demo app: Look sharp on iPhone 6 hi-res displays
 * Modified `BTUIPayPalWordmarkVectorArtView`, `BTUIVenmoWordmarkVectorArtView` slightly to
   help logo alignment in `BTPaymentButton` and your payment buttons
@@ -19,8 +19,8 @@
 
 * Coinbase integration - beta release
   * Coinbase is now available in closed beta. See [the Coinbase page on our website](https://www.braintreepayments.com/features/coinbase) to join the beta.
-  * Coinbase UI is integrated with Drop-In and BTPaymentButton
-  * Known issue: Drop-In vaulting behavior for Coinbase accounts
+  * Coinbase UI is integrated with Drop-in and BTPaymentButton
+  * Known issue: Drop-in vaulting behavior for Coinbase accounts
 * Introduced a new asynchronous initializer for creating the `Braintree` object
   * Deprecated `+braintreeWithClientToken:`. Instead, use `+setupWithClientToken:completionBlock:`. Example:
 
@@ -41,8 +41,8 @@
 
 * Bugfixes
   * Fix recognition of Discover, JCB, Maestro and Diners Club in certain cases ([Thanks, @RyPoints!](https://github.com/braintree/braintree_ios/pull/117))
-  * Fix a bug in Drop-In that prevented Venmo from appearing if PayPal was disabled
-  * Revise text for certain Venmo One Touch errors in Drop-In
+  * Fix a bug in Drop-in that prevented Venmo from appearing if PayPal was disabled
+  * Revise text for certain Venmo One Touch errors in Drop-in
   * Fix [compile error](https://github.com/braintree/braintree_ios/issues/106) that could occur when 'No Common Blocks' is Yes
 * Demo app
   * Look sharp on iPhone 6 hi-res displays
@@ -58,7 +58,7 @@
   * Minor fixes
 * Remove `en_UK` from Braintree-Demo-Info.plist (while keeping `en_GB`)
 * Fix for Venmo button in BTPaymentButton [#103](https://github.com/braintree/braintree_ios/issues/103)
-* Fix issue with wrapping text in Drop In ([thanks nirinchev](https://github.com/braintree/braintree_ios/pull/107))
+* Fix issue with wrapping text in Drop-in ([thanks nirinchev](https://github.com/braintree/braintree_ios/pull/107))
 * Update [manual integration doc](Docs/Manual%20Integration.md)
 
 ## 3.7.0 (2015-03-02)
@@ -98,14 +98,14 @@
   * Expose a new `status` property on `BTPaymentProvider`, which exposes the current status of payment method creation (Thanks, @Reflejo!)
 * Bug fixes
   * Fix swift build by making BTClient_Metadata.h private (https://github.com/braintree/braintree_ios/pull/84 and https://github.com/braintree/braintree_ios/pull/85)
-  * Drop In - Auto-correction and auto-capitalization improvements for postal code field in BTUICardFormView
+  * Drop-in - Auto-correction and auto-capitalization improvements for postal code field in BTUICardFormView
   * Remove private header `BTClient_Metadata.h` from public headers
 * Internal changes
   * Simplifications to API response parsing logic
 
 ## 3.5.0 (2014-12-03)
 
-* Add localizations to UI and Drop-In subspecs:
+* Add localizations to UI and Drop-in subspecs:
   * Danish (`da`)
   * German (`de`)
   * Additional English locales (`en_AU`, `en_CA`, `en_UK`, `en_GB`)
@@ -162,7 +162,7 @@
   * Fix a number of minor static analysis recommendations
   * Avoid potential nil-block crasher
   * Fix iOS 8 `CoreLocation` deprecation in `BTData`
-  * Fix double-dismisal bug in presentation of in-app PayPal login in Drop In
+  * Fix double-dismisal bug in presentation of in-app PayPal login in Drop-in
 
 * New minimum requirements
   * Xcode 6+
@@ -174,7 +174,7 @@
   * Update Kount library to 2.5.3, which removes use of IDFA
   * Use @import for system frameworks
 * Fixes
-  * Crasher in Drop-In that treats BTPaymentButton like a UIControl
+  * Crasher in Drop-in that treats BTPaymentButton like a UIControl
   * Xcode 6 and iOS 8 deprecations
   * Bug in BTPaymentButton intrinsic size height calculation
   * Autolayout ambiguity in demo app
@@ -218,13 +218,13 @@
 
 ## 3.1.3 (2014-08-22)
 
-* Fix another PayPal payment method display issue in Drop In UI
+* Fix another PayPal payment method display issue in Drop-in UI
 
 ## 3.1.2 (2014-08-21)
 
 * Fixes
   * Minor internationalization issue
-  * PayPal payment method display issue in Drop In UI
+  * PayPal payment method display issue in Drop-in UI
 
 ## 3.1.1 (2014-08-17)
 
@@ -262,7 +262,7 @@ https://www.braintreepayments.com/v.zero
 
 * Breaking Change
   * Renamed a method in `BTDropInViewControllerDelegate` to send
-    cancelation messages to user. All errors within Drop In are now
+    cancelation messages to user. All errors within Drop-in are now
     handled internally with user interaction.
   * Removed completion block interface on `BTDropInViewController`
   * Removed crufty `BTMerchantIntegrationErrorUnknown` which was unused
@@ -287,14 +287,14 @@ https://www.braintreepayments.com/v.zero
 
 * Bug fixes:
   * Fix issue with incorrect nesting of credit-card params in API requests, which caused
-    incorrect behavior while validating credit cards in custom and Drop-In.
+    incorrect behavior while validating credit cards in custom and Drop-in.
   * Bugfixes and improvements to demo app
   * Fix crasher in demo app when PayPal is not enabled
   * Demo App now points to a publicly accessible merchant server
 
 * Enhancements:
-  * Drop-In now supports server-side validation, including CVV/AVS verification failure
-  * Drop-In's customer-facing error handling is now consistent and allows for retry
+  * Drop-in now supports server-side validation, including CVV/AVS verification failure
+  * Drop-in's customer-facing error handling is now consistent and allows for retry
   * Increased robustness of API layer
 
 * Features:
@@ -305,7 +305,7 @@ https://www.braintreepayments.com/v.zero
 * :rotating_light: Remove dependency on AFNetworking!
 * :rotating_light: Rename `BTPayPalControl` -> `BTPayPalButton`.
 * Security - Enforce SSL Pinning against a set of vendored SSL certificates
-* Drop-In
+* Drop-in
   * Improve visual customizability and respect tint color
   * UI and Layout improvements
   * Detailing and polish
@@ -317,7 +317,7 @@ Thanks for the feedback so far. Keep it coming!
 
 ## 3.0.0-rc4
 
-* UX/UI improvements in card form and Drop In
+* UX/UI improvements in card form and Drop-in
   * PayPal button and payment method view are full width
   * Vibration on invalid entry
   * Improved spinners and loading states
@@ -332,7 +332,7 @@ Thanks for the feedback so far. Keep it coming!
 * Add `dropInViewControllerWillComplete` delegate method.
 * Add transitions, activity indicators, and streamline some parts of UI.
 * Simplify implementation of `BTPayPalButton`.
-* :rotating_light: Remove `BTDropinViewController shouldDisplayPaymentMethodsOnFile` property.
+* :rotating_light: Remove `BTDropInViewController shouldDisplayPaymentMethodsOnFile` property.
 
 ## 3.0.0-rc2
 
@@ -348,5 +348,5 @@ Thanks for the feedback so far. Keep it coming!
     * SSL pinning not yet added
     * Incomplete / unpolished UI
         * Minor UX card validation issues in the card form
-        * Drop-In UX flow issues and unaddressed edge cases
+        * Drop-in UX flow issues and unaddressed edge cases
 
