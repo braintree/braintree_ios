@@ -109,7 +109,6 @@
 		30E5F597C1A4B1B04605CFC9 /* libPods-Braintree-Apple-Pay-Excluded.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9DFAAB1262EEC2079633CE3 /* libPods-Braintree-Apple-Pay-Excluded.a */; };
 		3A55D79CE7284DBEA25D9B29 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		48D55941EDDF41E4A8CAE86E /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		544AF280327190DD3B4660FA /* libPods-Braintree-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */; };
 		5B8A96B1E7B997433E77AE87 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */; };
 		5C19DC17F86C859B0FA340B1 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		6280948B11CC4C92A0822D21 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
@@ -222,7 +221,7 @@
 		161029E9192DAFC3002C1B2B /* DEVELOPMENT.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DEVELOPMENT.md; sourceTree = "<group>"; };
 		161029EA192DAFC3002C1B2B /* Braintree.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Braintree.podspec; sourceTree = "<group>"; };
 		161029EE192DAFD4002C1B2B /* Rakefile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; indentWidth = 2; path = Rakefile; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
-		161029EF192DAFD4002C1B2B /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		161029EF192DAFD4002C1B2B /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		161029F0192DAFD4002C1B2B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		161029F1192DAFD4002C1B2B /* Gemfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
 		161029F2192DAFD4002C1B2B /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
@@ -753,7 +752,6 @@
 				162174E2192D9220008DC35D /* CoreGraphics.framework in Frameworks */,
 				162174E3192D9220008DC35D /* UIKit.framework in Frameworks */,
 				162174E0192D9220008DC35D /* Foundation.framework in Frameworks */,
-				544AF280327190DD3B4660FA /* libPods-Braintree-Dev.a in Frameworks */,
 				5B8A96B1E7B997433E77AE87 /* libPods-Braintree-Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1449,13 +1447,13 @@
 			path = "Venmo - Custom Button";
 			sourceTree = "<group>";
 		};
-		1633578A1AEE1A6400794AAA /* PayPal - Deprecated BTPayPal Button */ = {
+		1633578A1AEE1A6400794AAA /* PayPal - Deprecated BTPayPalButton */ = {
 			isa = PBXGroup;
 			children = (
 				CD9ED07B6BCD0ED391970071 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.h */,
 				CD9EDB10AC950DAC619E8437 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m */,
 			);
-			path = "PayPal - Deprecated BTPayPal Button";
+			path = "PayPal - Deprecated BTPayPalButton";
 			sourceTree = "<group>";
 		};
 		1633578B1AEE1AA900794AAA /* Base View Controllers */ = {
@@ -1814,7 +1812,7 @@
 				CD9EDBDBB78156000A9ADDAA /* Fraud Protection - BTData */,
 				163357851AEE1A1A00794AAA /* PayPal - BTUIPayPalButton */,
 				163357881AEE1A5600794AAA /* PayPal - Custom Button */,
-				1633578A1AEE1A6400794AAA /* PayPal - Deprecated BTPayPal Button */,
+				1633578A1AEE1A6400794AAA /* PayPal - Deprecated BTPayPalButton */,
 				163357751AEE102000794AAA /* UI Components */,
 				163357861AEE1A2100794AAA /* Venmo - BTUIVenmoButton */,
 				163357891AEE1A5D00794AAA /* Venmo - Custom Button */,

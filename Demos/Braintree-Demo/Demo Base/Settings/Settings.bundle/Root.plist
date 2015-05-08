@@ -15,43 +15,24 @@
 			<string>BraintreeDemoSettingsIntegration</string>
 			<key>DefaultValue</key>
 			<string>BraintreeDemoDropInViewController</string>
-			<key>ShortTitles</key>
-			<array>
-				<string>Card Tokenization</string>
-				<string>BTPaymentButton</string>
-				<string>BTUIPayPalButton</string>
-				<string>BTUIVenmoButton</string>
-				<string>BTUICoinbaseButton</string>
-				<string>Custom Venmo Button</string>
-				<string>Custom PayPal Button</string>
-				<string>Custom Coinbase Button</string>
-				<string>Apple Pay via BTPaymentProvider</string>
-				<string>Apple Pay Direct via PassKit</string>
-				<string>Deprecated BTPayPalButton</string>
-				<string>Drop In</string>
-				<string>UI Widgets</string>
-				<string>3D Secure</string>
-				<string>Custom Multipay</string>
-				<string>BTData</string>
-			</array>
 			<key>Titles</key>
 			<array>
-				<string>Card Tokenization</string>
-				<string>BTPaymentButton</string>
-				<string>BTUIPayPalButton</string>
-				<string>BTUIVenmoButton</string>
-				<string>BTUICoinbaseButton</string>
-				<string>Custom Venmo Button</string>
-				<string>Custom PayPal Button</string>
-				<string>Custom Coinbase Button</string>
-				<string>Apple Pay via BTPaymentProvider</string>
-				<string>Apple Pay Direct via PassKit</string>
-				<string>Deprecated BTPayPalButton</string>
+				<string>Credit Card Tokenization</string>
+				<string>Combined Button - BTPaymentButton</string>
+				<string>PayPal - BTUIPayPalButton</string>
+				<string>Venmo - BTUIVenmoButton</string>
+				<string>Coinbase - BTUICoinbaseButton</string>
+				<string>Venmo - Custom Button</string>
+				<string>PayPal - Custom Button</string>
+				<string>Coinbase - Custom Button</string>
+				<string>Apple Pay - BTPaymentProvider</string>
+				<string>Apple Pay - PassKit</string>
+				<string>PayPal - Deprecated BTPayPalButton</string>
 				<string>Drop In</string>
-				<string>Braintree UI Widgets</string>
-				<string>3D Secure</string>
-				<string>Custom Multipay with Payment Provider</string>
-				<string>BTData - Fraud</string>
+				<string>UI Components</string>
+				<string>Credit Cards - 3D Secure</string>
+				<string>Combined Button - Custom Multi-Pay Button</string>
+				<string>Fraud Protection - BTData</string>
 			</array>
 			<key>Values</key>
 			<array>
