@@ -162,7 +162,7 @@ describe(@"Drop In view controller", ^{
             testShouldHaveCardInVault = YES;
         });
 
-        it(@"should all the user to switch to a different payment method", ^{
+        it(@"should allow the user to switch to a different payment method", ^{
             [tester waitForViewWithAccessibilityLabel:@"Visa"];
 
             [tester tapViewWithAccessibilityLabel:@"Change payment method"];
@@ -172,7 +172,6 @@ describe(@"Drop In view controller", ^{
             [tester waitForViewWithAccessibilityLabel:@"Coinbase satoshi@example.com"];
 
             [tester tapViewWithAccessibilityLabel:@"Coinbase satoshi@example.com"];
-            [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] inTableViewWithAccessibilityIdentifier:@"Payment Methods Table"];
 
             [tester waitForViewWithAccessibilityLabel:@"Change payment method"];
             [tester waitForViewWithAccessibilityLabel:@"Coinbase"];
