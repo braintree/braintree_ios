@@ -95,6 +95,35 @@ describe(@"BTUICardType", ^{
 
     });
 
+    describe(@"validNumber", ^{
+        NSArray *braintreeTestCardNumbers =
+        @[
+          @[@"378282246310005", BTUILocalizedString(CARD_TYPE_AMERICAN_EXPRESS)],
+          @[@"371449635398431", BTUILocalizedString(CARD_TYPE_AMERICAN_EXPRESS)],
+          @[@"6011111111111117", BTUILocalizedString(CARD_TYPE_DISCOVER)],
+          @[@"3530111333300000", BTUILocalizedString(CARD_TYPE_JCB)],
+          @[@"6304000000000000", BTUILocalizedString(CARD_TYPE_MAESTRO)],
+          @[@"5555555555554444", BTUILocalizedString(CARD_TYPE_MASTER_CARD)],
+          @[@"4111111111111111", BTUILocalizedString(CARD_TYPE_VISA)],
+          @[@"4005519200000004", BTUILocalizedString(CARD_TYPE_VISA)],
+          @[@"4009348888881881", BTUILocalizedString(CARD_TYPE_VISA)],
+          @[@"4012000033330026", BTUILocalizedString(CARD_TYPE_VISA)],
+          @[@"4012000077777777", BTUILocalizedString(CARD_TYPE_VISA)],
+          @[@"4012888888881881", BTUILocalizedString(CARD_TYPE_VISA)],
+          @[@"4217651111111119", BTUILocalizedString(CARD_TYPE_VISA)],
+          @[@"4500600000000061", BTUILocalizedString(CARD_TYPE_VISA)]
+          ];
+
+        for (NSArray *testCase in braintreeTestCardNumbers) {
+            NSString *testNumber = testCase[0];
+            NSString *cardBrand = testCase[1];
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:cardBrand];
+            it([NSString stringWithFormat:@"should recognize %@ as a valid %@", testNumber, cardBrand], ^{
+                expect([cardType validNumber:testNumber]).to.beTruthy();
+            });
+        }
+    });
+
     describe(@"validAndNecessarilyCompleteNumber", ^{
 
         it(@"should return NO for short Maestro", ^{
