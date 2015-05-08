@@ -79,10 +79,6 @@
     return self.cardType != nil || _number.length == 0;
 }
 
-- (BOOL)completedCardNumberValid {
-    return self.cardType != nil && (self.cardType.maxNumberLength < _number.length || self.valid);
-}
-
 - (BOOL)isPotentiallyValid {
     return [BTUICardType possibleCardTypesForNumber:self.number].count > 0;
 }
