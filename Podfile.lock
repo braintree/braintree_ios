@@ -77,10 +77,8 @@ PODS:
   - OHHTTPStubs (3.1.11):
     - OHHTTPStubs/Core (= 3.1.11)
   - OHHTTPStubs/Core (3.1.11)
-  - PureLayout (2.0.5)
-  - Specta (0.3.0.beta1)
-  - UIActionSheet+Blocks (0.8.1)
-  - UIAlertView+Blocks (0.8.1)
+  - PureLayout (2.0.6)
+  - Specta (1.0.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
@@ -101,21 +99,16 @@ DEPENDENCIES:
   - OCMock (~> 3.1)
   - OHHTTPStubs (~> 3.1.0)
   - PureLayout
-  - Specta (from `https://github.com/specta/specta.git`, commit `v0.3.0.beta1`)
-  - UIActionSheet+Blocks
-  - UIAlertView+Blocks
+  - Specta
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: "."
+    :path: .
   KIF:
     :branch: master
     :git: https://github.com/kif-framework/KIF.git
   KIFViewControllerActions:
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
-  Specta:
-    :commit: v0.3.0.beta1
-    :git: https://github.com/specta/specta.git
 
 CHECKOUT OPTIONS:
   KIF:
@@ -124,9 +117,6 @@ CHECKOUT OPTIONS:
   KIFViewControllerActions:
     :commit: 10d8d3a7bac839d75b8cec894326eae957372245
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
-  Specta:
-    :commit: v0.3.0.beta1
-    :git: https://github.com/specta/specta.git
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
@@ -143,9 +133,7 @@ SPEC CHECKSUMS:
   OCHamcrest: e19857683e4eefab64b878668eac04c2f4567118
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: 5624a5d20d97d46d47e15a68ca8808b59ccf0512
-  PureLayout: a0fe75f1cf485801e7e00b723b8a3c32dca558e2
-  Specta: d2158a483ad179e5f8d3a29f75ff4fc0ff6fab16
-  UIActionSheet+Blocks: 7fdab45fc8f15ac2dc1cd65af1470746600b5f46
-  UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
+  PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
+  Specta: 96fe05fe5c7348b5223f85e862904f6e832abb14
 
 COCOAPODS: 0.36.3

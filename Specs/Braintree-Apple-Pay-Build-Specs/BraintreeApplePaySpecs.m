@@ -19,20 +19,13 @@
 }
 
 - (void)testBTPaymentProviderIncludesApplePay {
-    XCTestExpectation *setupExpectation = [self expectationWithDescription:@"Setup Braintree"];
     NSString *clientToken = [BTTestClientTokenFactory tokenWithVersion:2];
-    __block Braintree *bt;
-    [Braintree setupWithClientToken:clientToken
-                                         completion:^(Braintree *braintree, NSError *error) {
-                                             bt = braintree;
-                                             [setupExpectation fulfill];
-                                         }];
-    [self waitForExpectationsWithTimeout:10 handler:nil];
+    Braintree *braintree = [Braintree braintreeWithClientToken:clientToken];
 
     id mockDelegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
     [[mockDelegate expect] paymentMethodCreator:OCMOCK_ANY requestsPresentationOfViewController:OCMOCK_ANY];
 
-    BTPaymentProvider *paymentProvider = [bt paymentProviderWithDelegate:mockDelegate];
+    BTPaymentProvider *paymentProvider = [braintree paymentProviderWithDelegate:mockDelegate];
     paymentProvider.paymentSummaryItems = @[[PKPaymentSummaryItem summaryItemWithLabel:@"A" amount:[NSDecimalNumber decimalNumberWithString:@"1"]]];
     [paymentProvider createPaymentMethod:BTPaymentProviderTypeApplePay];
 

@@ -4,14 +4,14 @@ workspace 'Braintree.xcworkspace'
 
 target 'Tests' do
   link_with 'Braintree-Acceptance-Specs',
-            'Braintree-Payments-UI-Specs',
+            'Braintree-UI-Specs',
             'Braintree-PayPal-Specs',
             'Braintree-PayPal-Integration-Specs',
             'Braintree-Venmo-Specs',
             'Braintree-Data-Specs',
             'Braintree-3D-Secure-Specs',
-            'Braintree-Coinbase-Specs'
-  pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
+            'Braintree-Coinbase-Integration-Specs'
+  pod 'Specta'
   pod 'Expecta', '~> 0.3.0'
   pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
@@ -21,12 +21,7 @@ target 'Tests' do
   pod 'KIFViewControllerActions', :git => 'https://github.com/mickeyreiss/KIFViewControllerActions.git'
 end
 
-target 'Braintree-Dev' do
-  link_with 'Braintree-Demo',
-            'Braintree-API-Demo',
-            'Braintree-PayPal-Demo',
-            'Braintree-Data-Demo',
-            'Braintree-UI-Demo'
+target 'Braintree-Demo' do
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
@@ -37,8 +32,6 @@ target 'Braintree-Dev' do
   pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
-  pod 'UIActionSheet+Blocks'
-  pod 'UIAlertView+Blocks'
   pod 'FLEX'
   pod 'InAppSettingsKit'
 end
@@ -53,7 +46,7 @@ target 'Logic-Tests' do
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
   pod 'Braintree/Coinbase', :path => '.'
-  pod 'Specta', :git => 'https://github.com/specta/specta.git', :commit => 'v0.3.0.beta1'
+  pod 'Specta'
   pod 'Expecta', '~> 0.3.0'
   pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'

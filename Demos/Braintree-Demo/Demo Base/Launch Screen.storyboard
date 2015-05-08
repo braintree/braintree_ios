@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BkA-Xn-wNH">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+    </dependencies>
+    <scenes>
+        <!--Braintree-->
+        <scene sceneID="iYx-hh-PdP">
+            <objects>
+                <viewController id="Clw-eZ-Tmq" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="IDZ-3b-c6o"/>
+                        <viewControllerLayoutGuide type="bottom" id="b6W-xC-S35"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aS1-sP-ZGF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Braintree" id="g2U-tE-kMU"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E1V-2u-4pD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="632" y="248"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="aDe-aQ-DBn">
+            <objects>
+                <navigationController id="BkA-Xn-wNH" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="gSe-lC-fLB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.18431372549019609" green="0.18431372549019609" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Clw-eZ-Tmq" kind="relationship" relationship="rootViewController" id="VCQ-8b-Jhj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eTm-0A-vEq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-86" y="248"/>
+        </scene>
+    </scenes>
+</document>
