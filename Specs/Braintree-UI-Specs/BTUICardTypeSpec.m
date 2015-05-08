@@ -95,6 +95,20 @@ describe(@"BTUICardType", ^{
 
     });
 
+    describe(@"validAndNecessarilyCompleteNumber", ^{
+
+        it(@"should return NO for short Maestro", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)];
+            expect([cardType validAndNecessarilyCompleteNumber:@"630400000000"]).to.beFalsy();
+            expect([cardType validAndNecessarilyCompleteNumber:@"6304000000000000"]).to.beFalsy();
+        });
+
+        it(@"should return YES for full-length Maestro", ^{
+            BTUICardType *cardType = [BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)];
+            expect([cardType validAndNecessarilyCompleteNumber:@"6304000000000000000"]).to.beTruthy();
+        });
+
+    });
 
     describe(@"card number formatting", ^{
 

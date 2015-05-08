@@ -208,6 +208,10 @@
 
 #pragma mark - Validation
 
+- (BOOL)validAndNecessarilyCompleteNumber:(NSString *)number {
+    return (number.length == self.validNumberLengths.lastIndex && [BTUIUtil luhnValid:number]);
+}
+
 - (BOOL)validNumber:(NSString *)number {
     return ([self completeNumber:number] && [BTUIUtil luhnValid:number]);
 }

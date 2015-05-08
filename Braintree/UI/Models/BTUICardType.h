@@ -20,6 +20,10 @@
 /// Check if a number is complete
 - (BOOL)completeNumber:(NSString *)number;
 
+/// Check is a number is valid and necessarily complete
+/// (i.e. it can't get any longer)
+- (BOOL)validAndNecessarilyCompleteNumber:(NSString *)number;
+
 /// Check if the CVV is valid for a `BTCardType`
 - (BOOL)validCvv:(NSString *)cvv;
 
