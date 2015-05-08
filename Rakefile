@@ -113,11 +113,6 @@ namespace :spec do
     run_test_scheme! 'Braintree-Data-Specs'
   end
 
-  desc 'Run Acceptance tests'
-  task :acceptance do
-    run_test_scheme! 'Braintree-Acceptance-Specs'
-  end
-
   namespace :paypal do
     desc 'Run PayPal unit tests'
     task :unit do

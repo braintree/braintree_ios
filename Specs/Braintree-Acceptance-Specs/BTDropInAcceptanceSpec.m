@@ -7,10 +7,14 @@
 
 SpecBegin(DropIn_Acceptance)
 
-__block BTClient *testClient;
-__block BOOL testShouldEnableCoinbase;
-__block BOOL testShouldHaveCoinbaseAccountInVault;
-__block BOOL testShouldHaveCardInVault;
+// IMPORTANT:
+// When running the tests with Xcode, these values do not need
+// to be set to nil/NO here; but with xcodebuild test, they do.
+// The tests fail otherwise!
+__block BTClient *testClient = nil;
+__block BOOL testShouldEnableCoinbase = NO;
+__block BOOL testShouldHaveCoinbaseAccountInVault = NO;
+__block BOOL testShouldHaveCardInVault = NO;
 
 afterEach(^{
     testClient = nil;
@@ -158,7 +162,7 @@ describe(@"Drop In view controller", ^{
             testShouldHaveCardInVault = YES;
         });
 
-        it(@"should all the user to switch to a different payment method", ^{
+        it(@"should allow the user to switch to a different payment method", ^{
             [tester waitForViewWithAccessibilityLabel:@"Visa"];
 
             [tester tapViewWithAccessibilityLabel:@"Change payment method"];
@@ -168,7 +172,6 @@ describe(@"Drop In view controller", ^{
             [tester waitForViewWithAccessibilityLabel:@"Coinbase satoshi@example.com"];
 
             [tester tapViewWithAccessibilityLabel:@"Coinbase satoshi@example.com"];
-            [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] inTableViewWithAccessibilityIdentifier:@"Payment Methods Table"];
 
             [tester waitForViewWithAccessibilityLabel:@"Change payment method"];
             [tester waitForViewWithAccessibilityLabel:@"Coinbase"];
