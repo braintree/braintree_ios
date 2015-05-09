@@ -65,7 +65,7 @@ PODS:
   - Expecta (0.3.2)
   - FLEX (2.0.2)
   - HockeySDK (3.6.4)
-  - InAppSettingsKit (2.4.4)
+  - InAppSettingsKit (2.5.2)
   - KIF (3.2.1):
     - KIF/XCTest (= 3.2.1)
   - KIF/XCTest (3.2.1)
@@ -126,7 +126,7 @@ SPEC CHECKSUMS:
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 321e6150cbababb76aaadde355dfce2ee1cac2d8
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
-  InAppSettingsKit: df2c0b0cafd5c6f375f4d792eef8cbcdf63ae5ed
+  InAppSettingsKit: 90b3f9b99d857f95fd1422467d857de143cac099
   KIF: ef1691e54e1d969c3b4fd0b5b56a3d7ddf37f216
   KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
