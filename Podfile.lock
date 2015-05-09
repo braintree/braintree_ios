@@ -64,7 +64,7 @@ PODS:
   - coinbase-official/OAuth (2.1.4)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
-  - HockeySDK (3.6.2)
+  - HockeySDK (3.6.4)
   - InAppSettingsKit (2.4.4)
   - KIF (3.2.1):
     - KIF/XCTest (= 3.2.1)
@@ -103,7 +103,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: .
+    :path: "."
   KIF:
     :branch: master
     :git: https://github.com/kif-framework/KIF.git
@@ -125,7 +125,7 @@ SPEC CHECKSUMS:
   coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 321e6150cbababb76aaadde355dfce2ee1cac2d8
-  HockeySDK: 51ade1aff04463137e852797d2eb4dfb2511d6a9
+  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   InAppSettingsKit: df2c0b0cafd5c6f375f4d792eef8cbcdf63ae5ed
   KIF: ef1691e54e1d969c3b4fd0b5b56a3d7ddf37f216
   KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
