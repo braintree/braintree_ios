@@ -20,45 +20,45 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.8.0-rc2):
-    - Braintree/API (= 3.8.0-rc2)
-    - Braintree/Coinbase (= 3.8.0-rc2)
-    - Braintree/Drop-In (= 3.8.0-rc2)
-    - Braintree/Payments (= 3.8.0-rc2)
-    - Braintree/PayPal (= 3.8.0-rc2)
-    - Braintree/UI (= 3.8.0-rc2)
-    - Braintree/Venmo (= 3.8.0-rc2)
-  - Braintree/3D-Secure (3.8.0-rc2):
+  - Braintree (3.8.0-rc3):
+    - Braintree/API (= 3.8.0-rc3)
+    - Braintree/Coinbase (= 3.8.0-rc3)
+    - Braintree/Drop-In (= 3.8.0-rc3)
+    - Braintree/Payments (= 3.8.0-rc3)
+    - Braintree/PayPal (= 3.8.0-rc3)
+    - Braintree/UI (= 3.8.0-rc3)
+    - Braintree/Venmo (= 3.8.0-rc3)
+  - Braintree/3D-Secure (3.8.0-rc3):
     - Braintree/API
     - Braintree/Payments
     - Braintree/UI
-  - Braintree/API (3.8.0-rc2)
-  - Braintree/Apple-Pay (3.8.0-rc2):
+  - Braintree/API (3.8.0-rc3)
+  - Braintree/Apple-Pay (3.8.0-rc3):
     - Braintree/Payments
-  - Braintree/Coinbase (3.8.0-rc2):
+  - Braintree/Coinbase (3.8.0-rc3):
     - Braintree/API
     - coinbase-official/OAuth (~> 2.1.1)
-  - Braintree/Data (3.8.0-rc2):
+  - Braintree/Data (3.8.0-rc3):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (3.8.0-rc2):
+  - Braintree/Drop-In (3.8.0-rc3):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (3.8.0-rc2):
+  - Braintree/Payments (3.8.0-rc3):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (3.8.0-rc2):
+  - Braintree/PayPal (3.8.0-rc3):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.8.0-rc2):
+  - Braintree/UI (3.8.0-rc3):
     - Braintree/API
-  - Braintree/Venmo (3.8.0-rc2):
+  - Braintree/Venmo (3.8.0-rc3):
     - Braintree/API
   - CardIO (5.0.3)
   - coinbase-official/OAuth (2.1.4)
@@ -120,7 +120,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Braintree: cf8e30a29b98cf41507885c1d0fcadcec64ae1d3
+  Braintree: 9f1c3f40e3708ad4aade52c94dc7cc1dadfaa968
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
   coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
