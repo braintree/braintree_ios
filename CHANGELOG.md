@@ -1,9 +1,10 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.8.0-rc3 (2015-05-11)
 
 * Upgrade PayPal mSDK to 2.10.1
 * Revamp Demo app
+* Merge with 3.7.x changes
 
 ## 3.8.0-rc2 (2015-04-20)
 
