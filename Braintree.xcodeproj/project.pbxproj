@@ -125,6 +125,8 @@
 		3A55D79CE7284DBEA25D9B29 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		40657CDB6E4B27A121FC1EBB /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
 		5B8A96B1E7B997433E77AE87 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */; };
+		842E21C81B02708E0036DA66 /* BraintreeDemoBTUICoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962A71AFC26DD00FB3459 /* BraintreeDemoBTUICoinbaseButtonViewController.m */; };
+		842E21C91B0270C90036DA66 /* BraintreeDemoCustomCoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962AA1AFC26DD00FB3459 /* BraintreeDemoCustomCoinbaseButtonViewController.m */; };
 		9DC66F2E589CBC80041A9191 /* libPods-Braintree-Apple-Pay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */; };
 		9FC026317803AE8F059D786A /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		A6A89E1C8FF46AAD2FF8C515 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
@@ -1409,8 +1411,8 @@
 		1621751D192D922F008DC35D /* Credit Cards - 3D Secure */ = {
 			isa = PBXGroup;
 			children = (
-				CD9EDA35D1E4BEF54D070806 /* BraintreeDemoThreeDSecureViewController.m */,
 				CD9EDC4FC3A237614C231605 /* BraintreeDemoThreeDSecureViewController.h */,
+				CD9EDA35D1E4BEF54D070806 /* BraintreeDemoThreeDSecureViewController.m */,
 			);
 			path = "Credit Cards - 3D Secure";
 			sourceTree = "<group>";
@@ -3181,6 +3183,7 @@
 			files = (
 				1621752B192D922F008DC35D /* BraintreeDemoAppDelegate.m in Sources */,
 				16F3A7E51AEC909800628DBF /* BraintreeDemoDemoContainmentViewController.m in Sources */,
+				842E21C81B02708E0036DA66 /* BraintreeDemoBTUICoinbaseButtonViewController.m in Sources */,
 				16217531192D922F008DC35D /* BraintreeDemoCardTokenizationViewController.m in Sources */,
 				16D464521AECA5FB00177B0C /* BraintreeDemoDropInViewController.m in Sources */,
 				16D4644B1AECA24500177B0C /* BraintreeDemoBaseViewController.m in Sources */,
@@ -3197,6 +3200,7 @@
 				CD9EDCC2C746987970624D05 /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */,
 				CD9ED8935FEC23086262CB85 /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */,
 				CD9ED4A9AD99B6130D0499E4 /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
+				842E21C91B0270C90036DA66 /* BraintreeDemoCustomCoinbaseButtonViewController.m in Sources */,
 				CD9ED8C5A85D7AF64C4F2340 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m in Sources */,
 				16C402B91AEF3906004E6881 /* BraintreeDemoBraintreeDataViewController.m in Sources */,
 				1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */,
