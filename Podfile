@@ -34,6 +34,7 @@ target 'Braintree-Demo' do
   pod 'PureLayout'
   pod 'FLEX'
   pod 'InAppSettingsKit'
+  pod 'iOS-Slide-Menu'
 end
 
 target 'Logic-Tests' do
