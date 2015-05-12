@@ -369,7 +369,8 @@
             if (failureBlock) {
                 NSDictionary *userInfo;
                 if (error) {
-                    userInfo = @{NSUnderlyingErrorKey: error};
+                    userInfo = @{NSUnderlyingErrorKey: error,
+                                 @"statusCode": @(response.statusCode)};
                 }
                 failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain code:BTUnknownError userInfo:userInfo]);
             }
