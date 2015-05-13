@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"BTUICoinbaseButton+BTPyamentProvider";
+    self.title = @"BTUICoinbaseButton+BTPaymentProvider";
 }
 
 - (UIView *)paymentButton {
@@ -26,7 +26,7 @@
         [payPalButton addTarget:self action:@selector(tappedCoinbaseButton) forControlEvents:UIControlEventTouchUpInside];
         return payPalButton;
     } else {
-        self.progressBlock(@"canCreatePaymentMethodWithProviderType returns NO, hiding Coinbase button");
+        self.progressBlock(@"canCreatePaymentMethodWithProviderType: returns NO, hiding Coinbase button");
         return nil;
     }
 }

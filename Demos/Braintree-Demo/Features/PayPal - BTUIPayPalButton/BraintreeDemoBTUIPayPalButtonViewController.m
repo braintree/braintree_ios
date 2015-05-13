@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"BTUIPayPalButton+BTPyamentProvider";
+    self.title = @"BTUIPayPalButton+BTPaymentProvider";
 }
 
 - (UIView *)paymentButton {
@@ -26,7 +26,7 @@
         [payPalButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
         return payPalButton;
     } else {
-        self.progressBlock(@"canCreatePaymentMethodWithProviderType returns NO, hiding PayPal button");
+        self.progressBlock(@"canCreatePaymentMethodWithProviderType: returns NO, hiding PayPal button");
         return nil;
     }
 }
