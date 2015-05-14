@@ -2,16 +2,19 @@
 
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
 #import <InAppSettingsKit/IASKSettingsReader.h>
+#import <iOS-Slide-Menu/SlideNavigationController.h>
 #import <PureLayout/PureLayout.h>
 #import <Braintree/BTPaymentMethod.h>
 
 #import "BraintreeDemoMerchantAPI.h"
 #import "BraintreeDemoBaseViewController.h"
+#import "BraintreeDemoIntegrationViewController.h"
 
-@interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate>
+@interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, SlideNavigationControllerDelegate, IntegrationViewControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
 @property (nonatomic, strong) id latestPaymentMethodOrNonce;
 @property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
+@property (nonatomic, strong) UIViewController *rightMenu;
 @end
 
 @implementation BraintreeDemoDemoContainmentViewController
@@ -20,6 +23,7 @@
     [super viewDidLoad];
     [self setupToolbar];
     [self reloadIntegration];
+    [self setupRightMenu];
 }
 
 - (void)setupToolbar {
@@ -35,6 +39,18 @@
                                                       action:@selector(tappedStatus)];
     self.statusItem.enabled = NO;
     self.toolbarItems = @[flexSpaceLeft, self.statusItem, flexSpaceRight];
+}
+
+- (void)setupRightMenu {
+    BraintreeDemoIntegrationViewController *ivc = [[BraintreeDemoIntegrationViewController alloc] init];
+    ivc.delegate = self;
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:ivc];
+    self.rightMenu = nc;
+    [SlideNavigationController sharedInstance].rightMenu = self.rightMenu;
+}
+
+- (BOOL)slideNavigationControllerShouldDisplayRightMenu {
+    return YES;
 }
 
 
@@ -175,6 +191,23 @@
 - (void)settingsViewControllerDidEnd:(IASKAppSettingsViewController *)sender {
     [sender dismissViewControllerAnimated:YES completion:nil];
     [self reloadIntegration];
+}
+
+#pragma mark IntegrationViewControllerDelegate
+
+- (void)integrationViewController:(__unused BraintreeDemoIntegrationViewController *)integrationViewController didChangeAppSetting:(__unused NSDictionary *)appSetting {
+    [self reloadIntegration];
+}
+
+@end
+
+@implementation SlideNavigationController (BraintreeDemoCustomization)
+
+- (void)navigationController:(__unused UINavigationController *)navigationController
+      willShowViewController:(__unused UIViewController *)viewController
+                    animated:(__unused BOOL)animated
+{
+    // do nothing so that the Settings button remains on the nav bar
 }
 
 @end

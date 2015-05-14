@@ -66,6 +66,7 @@ PODS:
   - FLEX (2.0.2)
   - HockeySDK (3.6.4)
   - InAppSettingsKit (2.6)
+  - iOS-Slide-Menu (1.4.6)
   - KIF (3.2.1):
     - KIF/XCTest (= 3.2.1)
   - KIF/XCTest (3.2.1)
@@ -92,6 +93,7 @@ DEPENDENCIES:
   - FLEX
   - HockeySDK
   - InAppSettingsKit
+  - iOS-Slide-Menu
   - KIF (from `https://github.com/kif-framework/KIF.git`, branch `master`)
   - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
   - NSURL+QueryDictionary (~> 1.0)
@@ -127,6 +129,7 @@ SPEC CHECKSUMS:
   FLEX: 321e6150cbababb76aaadde355dfce2ee1cac2d8
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
+  iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
   KIF: ef1691e54e1d969c3b4fd0b5b56a3d7ddf37f216
   KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
