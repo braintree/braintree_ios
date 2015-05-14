@@ -125,7 +125,7 @@
 		3A55D79CE7284DBEA25D9B29 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		40657CDB6E4B27A121FC1EBB /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
 		5B8A96B1E7B997433E77AE87 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */; };
-		842E21C71B0190D80036DA66 /* IntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E21C61B0190D80036DA66 /* IntegrationViewController.m */; };
+		842E21C71B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E21C61B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m */; };
 		842E21C81B02708E0036DA66 /* BraintreeDemoBTUICoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962A71AFC26DD00FB3459 /* BraintreeDemoBTUICoinbaseButtonViewController.m */; };
 		842E21C91B0270C90036DA66 /* BraintreeDemoCustomCoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962AA1AFC26DD00FB3459 /* BraintreeDemoCustomCoinbaseButtonViewController.m */; };
 		9DC66F2E589CBC80041A9191 /* libPods-Braintree-Apple-Pay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */; };
@@ -681,8 +681,8 @@
 		77037AD319B0112A0097DADE /* BTAppSwitchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchingDelegate.h; sourceTree = "<group>"; };
 		77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Acceptance-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		842E21C51B0190D80036DA66 /* IntegrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntegrationViewController.h; sourceTree = "<group>"; };
-		842E21C61B0190D80036DA66 /* IntegrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegrationViewController.m; sourceTree = "<group>"; };
+		842E21C51B0190D80036DA66 /* BraintreeDemoIntegrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoIntegrationViewController.h; sourceTree = "<group>"; };
+		842E21C61B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoIntegrationViewController.m; sourceTree = "<group>"; };
 		8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9270469696964D9BABE95E62 /* libPods-TestWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1654,8 +1654,8 @@
 				16F3A7E41AEC909800628DBF /* BraintreeDemoDemoContainmentViewController.m */,
 				16F3A7E11AEC8BE100628DBF /* Launch Screen.storyboard */,
 				16217522192D922F008DC35D /* Main.storyboard */,
-				842E21C51B0190D80036DA66 /* IntegrationViewController.h */,
-				842E21C61B0190D80036DA66 /* IntegrationViewController.m */,
+				842E21C51B0190D80036DA66 /* BraintreeDemoIntegrationViewController.h */,
+				842E21C61B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m */,
 			);
 			path = "Demo Base";
 			sourceTree = "<group>";
@@ -3211,7 +3211,7 @@
 				1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */,
 				CD9ED53E9C13C386FFF05FC2 /* BraintreeDemoThreeDSecureViewController.m in Sources */,
 				163357801AEE103000794AAA /* BraintreeDemoPaymentsUIComponentsViewController.m in Sources */,
-				842E21C71B0190D80036DA66 /* IntegrationViewController.m in Sources */,
+				842E21C71B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m in Sources */,
 				CD9ED3FEF7FF8E133BBF4960 /* BraintreeDemoUIWidgetsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

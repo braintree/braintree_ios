@@ -8,7 +8,7 @@
 
 #import "BraintreeDemoMerchantAPI.h"
 #import "BraintreeDemoBaseViewController.h"
-#import "IntegrationViewController.h"
+#import "BraintreeDemoIntegrationViewController.h"
 
 @interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, SlideNavigationControllerDelegate, IntegrationViewControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
@@ -42,7 +42,7 @@
 }
 
 - (void)setupRightMenu {
-    IntegrationViewController *ivc = [[IntegrationViewController alloc] init];
+    BraintreeDemoIntegrationViewController *ivc = [[BraintreeDemoIntegrationViewController alloc] init];
     ivc.delegate = self;
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:ivc];
     self.rightMenu = nc;
@@ -195,7 +195,7 @@
 
 #pragma mark IntegrationViewControllerDelegate
 
-- (void)integrationViewController:(__unused IntegrationViewController *)integrationViewController didChangeAppSetting:(__unused NSDictionary *)appSetting {
+- (void)integrationViewController:(__unused BraintreeDemoIntegrationViewController *)integrationViewController didChangeAppSetting:(__unused NSDictionary *)appSetting {
     [self reloadIntegration];
 }
 

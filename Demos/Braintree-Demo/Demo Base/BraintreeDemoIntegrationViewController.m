@@ -1,17 +1,17 @@
-#import "IntegrationViewController.h"
+#import "BraintreeDemoIntegrationViewController.h"
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
 #import <InAppSettingsKit/IASKSpecifierValuesViewController.h>
 #import <InAppSettingsKit/IASKViewController.h>
 #import <InAppSettingsKit/IASKSettingsReader.h>
 #import <iOS-Slide-Menu/SlideNavigationController.h>
 
-@interface IntegrationViewController ()
+@interface BraintreeDemoIntegrationViewController ()
 @property (nonatomic, strong) IASKSpecifierValuesViewController *targetViewController;
 @property (nonatomic, strong) IASKAppSettingsViewController *appSettingsViewController;
 @property (nonatomic, strong) IASKSpecifier *specifier;
 @end
 
-@implementation IntegrationViewController
+@implementation BraintreeDemoIntegrationViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
