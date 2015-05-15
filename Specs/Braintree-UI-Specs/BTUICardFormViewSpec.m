@@ -1,6 +1,7 @@
+#import <Braintree/BTUICardFormView.h>
+#import "BTUICardType.h"
 #import <KIF/KIF.h>
 #import <PureLayout/PureLayout.h>
-#import <Braintree/BTUICardFormView.h>
 
 @interface BTUICardFormViewSpecCardEntryViewController : UIViewController
 @property (nonatomic, strong) BTUICardFormView *cardFormView;
@@ -79,12 +80,38 @@ describe(@"Card Form", ^{
     });
 
     describe(@"setting the form programmatically", ^{
+        __block BTUICardFormView *cardFormView = [[BTUICardFormView alloc] init];
+        
         describe(@"card number", ^{
             it(@"sets the field text", ^{
-                BTUICardFormView *cardFormView = [[BTUICardFormView alloc] init];
                 [cardFormView setNumber:@"411111"];
                 [system presentView:cardFormView];
                 [tester waitForViewWithAccessibilityLabel:@"Card Number" value:@"411111" traits:0];
+            });
+            
+            describe(@"truncation", ^{
+                context(@"when card type is known", ^{
+                    it(@"uses card type max digits", ^{
+                        [cardFormView setNumber:@"411111111111111111111111"];
+                        [system presentView:cardFormView];
+                        [tester waitForViewWithAccessibilityLabel:@"Card Number" value:@"4111111111111111" traits:0];
+                    });
+                });
+                
+                context(@"when card type is unknown", ^{
+                    it(@"uses max digits for all cards", ^{
+                        [cardFormView setNumber:@"00000000000000000000000000000"];
+
+                        [system presentView:cardFormView];
+                        
+                        NSUInteger maxLength = [BTUICardType maxNumberLength];
+                        NSMutableString *expectedCardNumber = [NSMutableString new];
+                        for (int i = 0; i < maxLength; i++) {
+                            [expectedCardNumber appendString:@"0"];
+                        }
+                        [tester waitForViewWithAccessibilityLabel:@"Card Number" value:expectedCardNumber traits:0];
+                    });
+                });
             });
         });
     });
