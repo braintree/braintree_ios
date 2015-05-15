@@ -271,7 +271,7 @@ const CGFloat formFieldBottomMargin = 11;
     [self updateFloatLabelTextColor];
 }
 
-#pragma mark - BTUITextFieldEditDelegate methods
+#pragma mark - UITextFieldDelegate methods
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
     [self updateFloatLabelTextColor];
@@ -281,16 +281,14 @@ const CGFloat formFieldBottomMargin = 11;
     [self updateFloatLabelTextColor];
 }
 
-- (void)textFieldWillDeleteBackward:(__unused BTUITextField *)textField {
-    _backspace = YES;
-}
+#pragma mark - BTUITextFieldEditDelegate methods
 
-- (void)textFieldDidDeleteBackward:(__unused BTUITextField *)textField originalText:(NSString *)originalText {
-    if (originalText.length == 0) {
-        [self.delegate formFieldDidDeleteWhileEmpty:self];
-    }
+- (void)textFieldWillDeleteBackward:(BTUITextField *)textField {
+    _backspace = YES;
 
     if (textField.text.length == 0) {
+        [self.delegate formFieldDidDeleteWhileEmpty:self];
+    } else if (textField.text.length == 1) {
         [self.floatLabel hideWithAnimation:YES];
     }
 }
