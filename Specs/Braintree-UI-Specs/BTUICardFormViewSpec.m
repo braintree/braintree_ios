@@ -65,7 +65,7 @@ describe(@"Card Form", ^{
     });
 
     describe(@"retreat on backspace", ^{
-        it(@"retreats on backspace", ^{
+        it(@"retreats on backspace and deletes one digit", ^{
             [system presentViewControllerWithClass:[BTUICardFormViewSpecCardEntryViewController class]
   withinNavigationControllerWithNavigationBarClass:nil
                                       toolbarClass:nil
@@ -74,6 +74,18 @@ describe(@"Card Form", ^{
             [tester enterTextIntoCurrentFirstResponder:@"4111111111111111"];
             [tester enterTextIntoCurrentFirstResponder:@"\b"];
             [tester waitForFirstResponderWithAccessibilityLabel:@"Card Number"];
+            [tester waitForViewWithAccessibilityLabel:@"Card Number" value:@"411111111111111" traits:0];
+        });
+    });
+
+    describe(@"setting the form programmatically", ^{
+        describe(@"card number", ^{
+            it(@"sets the field text", ^{
+                BTUICardFormView *cardFormView = [[BTUICardFormView alloc] init];
+                [cardFormView setNumber:@"411111"];
+                [system presentView:cardFormView];
+                [tester waitForViewWithAccessibilityLabel:@"Card Number" value:@"411111" traits:0];
+            });
         });
     });
 });

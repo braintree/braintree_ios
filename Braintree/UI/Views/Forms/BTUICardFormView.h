@@ -21,7 +21,13 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 @property (nonatomic, weak) IBOutlet id<BTUICardFormViewDelegate> delegate;
 
 @property (nonatomic, assign, readonly) BOOL valid;
-@property (nonatomic, copy, readonly) NSString *number;
+
+/// The card number.
+///
+/// If you set a card number longer than is allowed by the card type,
+/// it will be truncated.
+@property (nonatomic, copy) NSString *number;
+
 @property (nonatomic, copy, readonly) NSString *cvv;
 @property (nonatomic, copy, readonly) NSString *expirationMonth;
 @property (nonatomic, copy, readonly) NSString *expirationYear;

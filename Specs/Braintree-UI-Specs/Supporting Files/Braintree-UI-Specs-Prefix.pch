@@ -14,3 +14,4 @@
 #import <OCHamcrest/OCHamcrest.h>
 
 #import "KIFSystemTestActor+ViewControllerActions.h"
+#import "KIFSystemTestActor+BTViewPresentation.h"

@@ -4,6 +4,6 @@
 @interface BTUICardNumberField : BTUIFormField
 
 @property (nonatomic, strong, readonly) BTUICardType *cardType;
-@property (nonatomic, strong, readonly) NSString *number;
+@property (nonatomic, strong) NSString *number;
 
 @end

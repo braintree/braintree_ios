@@ -211,6 +211,10 @@
     return self.numberField.number;
 }
 
+- (void)setNumber:(NSString *)number {
+  self.numberField.number = number;
+}
+
 - (NSString *)expirationMonth {
     return self.expiryField.expirationMonth;
 }
