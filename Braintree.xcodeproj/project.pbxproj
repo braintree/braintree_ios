@@ -139,6 +139,7 @@
 		A72B37FF19633826009AD2F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A72B38191963590E009AD2F5 /* BraintreeDataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A72B3814196339C7009AD2F5 /* BraintreeDataSpec.m */; };
+		A74A08E01B056FBD00C42BD9 /* KIFSystemTestActor+BTViewPresentation.m in Sources */ = {isa = PBXBuildFile; fileRef = A74A08DF1B056FBD00C42BD9 /* KIFSystemTestActor+BTViewPresentation.m */; };
 		A75C5B6219E88FFC00832A47 /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
 		A75C5B6319E8900000832A47 /* EXPMatchers+BTMatches.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */; };
 		A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
@@ -711,6 +712,8 @@
 		A733806A1AB0DD7600EBE2BF /* BTConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTConfiguration.h; sourceTree = "<group>"; };
 		A733806B1AB0DD7600EBE2BF /* BTConfiguration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTConfiguration.m; sourceTree = "<group>"; };
 		A744BEFD1963805900B61C23 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A74A08DE1B056FBD00C42BD9 /* KIFSystemTestActor+BTViewPresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFSystemTestActor+BTViewPresentation.h"; sourceTree = "<group>"; };
+		A74A08DF1B056FBD00C42BD9 /* KIFSystemTestActor+BTViewPresentation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFSystemTestActor+BTViewPresentation.m"; sourceTree = "<group>"; };
 		A74E2E711953690A004DFF73 /* BTDropInErrorState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorState.h; sourceTree = "<group>"; };
 		A74E2E721953690A004DFF73 /* BTDropInErrorState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorState.m; sourceTree = "<group>"; };
 		A7529C76192AB6BA00B2E1B2 /* BTDropInContentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTDropInContentView.h; sourceTree = "<group>"; };
@@ -1058,6 +1061,8 @@
 				169F54B71AC634210092C383 /* BTClientSpecHelper.m */,
 				A7F6CB201AC08234007AD979 /* BTTestClientTokenFactory.h */,
 				A7F6CB211AC08234007AD979 /* BTTestClientTokenFactory.m */,
+				A74A08DE1B056FBD00C42BD9 /* KIFSystemTestActor+BTViewPresentation.h */,
+				A74A08DF1B056FBD00C42BD9 /* KIFSystemTestActor+BTViewPresentation.m */,
 				16102A1C192DBB2C002C1B2B /* Custom Expecta Matchers */,
 			);
 			path = "Shared Spec Utilities";
@@ -3166,6 +3171,7 @@
 			files = (
 				168159A01A3553F60004DB59 /* BTUICardFormViewSpec.m in Sources */,
 				16968115192D98EA00120846 /* BTUICardTypeSpec.m in Sources */,
+				A74A08E01B056FBD00C42BD9 /* KIFSystemTestActor+BTViewPresentation.m in Sources */,
 				16968118192D98EA00120846 /* EXPMatchers+haveKerning.m in Sources */,
 				16968119192D98EA00120846 /* BTUICardExpirationValidatorSpec.m in Sources */,
 				2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */,
