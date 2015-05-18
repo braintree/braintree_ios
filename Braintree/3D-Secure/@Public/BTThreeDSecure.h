@@ -62,8 +62,8 @@
 ///  a payment method nonce from a vaulted credit card on your backend
 ///
 ///  @note This method performs an asynchronous operation and may request presentation of a view
-///        controller via the delegate. It is the callers responsibility to present an activity
-///        indication to the user during this activity.
+///        controller via the delegate. It is the caller's responsibility to present an activity
+///        indication to the user in the meantime.
 ///
 ///  @param nonce  A payment method nonce
 ///  @param amount The amount of the transaction in the current merchant account's currency
@@ -75,10 +75,10 @@
 ///  tokenization or client-side vault listing.
 ///
 ///  @note This method performs an asynchronous operation and may request presentation of a view
-///        controller via the delegate. It is the callers responsibility to present an activity
-///        indication to the user during this activity.
+///        controller via the delegate. It is the caller's responsibility to present an activity
+///        indication to the user in the meantime.
 ///
-///  @param card A object that represents a tokenized card (see BTPaymentMethodCreationDelegate)
+///  @param card   An object that represents a tokenized card (see BTPaymentMethodCreationDelegate)
 ///  @param amount The amount of the transaction in the current merchant account's currency
 - (void)verifyCard:(BTCardPaymentMethod *)card amount:(NSDecimalNumber *)amount;
 
@@ -88,11 +88,11 @@
 ///  raw card details are obtained from the user.
 ///
 ///  @note This method performs an asynchronous operation and may request presentation of a view
-///        controller via the delegate. It is the callers responsibility to present an activity
-///        indication to the user during this activity.
+///        controller via the delegate. It is the caller's responsibility to present an activity
+///        indication to the user in the meantime.
 ///
-///  @param details A object containing the raw credit card details obtained from the user
-///  @param amount The amount of the transaction in the current merchant account's currency
+///  @param details An object containing the raw credit card details obtained from the user
+///  @param amount  The amount of the transaction in the current merchant account's currency
 - (void)verifyCardWithDetails:(BTClientCardRequest *)details amount:(NSDecimalNumber *)amount;
 
 @end

@@ -12,7 +12,7 @@
 @implementation BTThreeDSecure
 
 - (instancetype)init {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"init is not available for BTThreeDSecure, please use initWithClient" userInfo:nil];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"-init is not available for BTThreeDSecure. Use -initWithClient:delegate: instead." userInfo:nil];
     return [self initWithClient:nil delegate:nil];
 }
 
