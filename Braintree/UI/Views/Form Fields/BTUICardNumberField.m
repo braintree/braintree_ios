@@ -28,6 +28,10 @@
     return [self.cardType validNumber:self.number];
 }
 
+- (BOOL)entryComplete {
+    return [super entryComplete] && [self.cardType validAndNecessarilyCompleteNumber:self.number];
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSUInteger newLength = textField.text.length - range.length + string.length;
     NSUInteger maxLength = self.cardType == nil ? [BTUICardType maxNumberLength] : self.cardType.maxNumberLength;
@@ -73,10 +77,6 @@
 
 - (BOOL)isValidCardType {
     return self.cardType != nil || _number.length == 0;
-}
-
-- (BOOL)completedCardNumberValid {
-    return self.cardType != nil && (self.cardType.maxNumberLength < _number.length || self.valid);
 }
 
 - (BOOL)isPotentiallyValid {
