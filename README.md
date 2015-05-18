@@ -42,8 +42,7 @@ Braintree v.zero is in active development. We appreciate the time you take to tr
 Here are a few ways to get in touch:
 
 * [GitHub Issues](https://github.com/braintree/braintree_ios/issues) - For generally applicable issues and feedback
-* support@braintreepayments.com - for personal support at any phase of integration
-* [877.511.5036](tel:+18775115036) - for personal support in real time (Real people answer our phones)
+* [Braintree Support](https://articles.braintreepayments.com/) / support@braintreepayments.com - for personal support at any phase of integration
 
 ### License
 
