@@ -298,11 +298,13 @@ const CGFloat formFieldBottomMargin = 11;
 }
 
 - (void)textField:(__unused BTUITextField *)textField willInsertText:(__unused NSString *)text {
-    if (textField.text.length == 0 && text.length > 0) {
+    _backspace = NO;
+}
+
+- (void)textField:(BTUITextField *)textField didInsertText:(__unused NSString *)text {
+    if (textField.text.length > 0) {
         [self.floatLabel showWithAnimation:YES];
     }
-
-    _backspace = NO;
 }
 
 - (void)setAccessoryHighlighted:(BOOL)highlight {
