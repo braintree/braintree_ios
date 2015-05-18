@@ -105,7 +105,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: .
+    :path: "."
   KIF:
     :branch: master
     :git: https://github.com/kif-framework/KIF.git

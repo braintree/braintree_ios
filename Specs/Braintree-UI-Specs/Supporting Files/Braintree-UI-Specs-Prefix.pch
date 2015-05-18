@@ -2,6 +2,8 @@
 @import XCTest;
 @import UIKit;
 
+#import <KIF/KIF.h>
+
 #define SPT_SHORTHAND
 #import <Specta/Specta.h>
 

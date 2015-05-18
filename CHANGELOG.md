@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## master
+
+* Work around iOS 8.0-8.2 bug in UITextField
+  * Fixes subtle bug in Drop In and BTUICardFormView float label behavior
+
 ## 3.8.0-rc3 (2015-05-11)
 
 * Upgrade PayPal mSDK to 2.10.1
