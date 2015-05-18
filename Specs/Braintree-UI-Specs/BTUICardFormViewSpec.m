@@ -28,19 +28,8 @@ describe(@"Card Form", ^{
     describe(@"accepting and validating credit card details", ^{
         it(@"accepts a number, an expiry, a cvv and a postal code", ^{
             BTUICardFormViewSpecCardEntryViewController *viewController = [[BTUICardFormViewSpecCardEntryViewController alloc] init];
-
-            [system runBlock:^KIFTestStepResult(NSError **error) {
-                UIViewController *viewControllerToPresent = viewController;
-                KIFTestCondition(viewControllerToPresent != nil, error, @"Expected a view controller, but got nil");
-                
-                Class navigationBarClassToUse = system.defaultNavigationBarClass;
-                Class toolbarClassToUse = system.defaultToolbarClass;
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithNavigationBarClass:navigationBarClassToUse toolbarClass:toolbarClassToUse];
-                navigationController.viewControllers = @[viewControllerToPresent];
-                [UIApplication sharedApplication].keyWindow.rootViewController = navigationController;
-                
-                return KIFTestStepResultSuccess;
-            }];
+            
+            [system presentViewController:viewController];
 
             [tester enterText:@"4111111111111111" intoViewWithAccessibilityLabel:@"Card Number"];
             [tester tapViewWithAccessibilityLabel:@"MM/YY"];
@@ -54,10 +43,7 @@ describe(@"Card Form", ^{
 
     describe(@"auto advancing", ^{
         it(@"auto advances from field to field", ^{
-            [system presentViewControllerWithClass:[BTUICardFormViewSpecCardEntryViewController class]
-  withinNavigationControllerWithNavigationBarClass:nil
-                                      toolbarClass:nil
-                                configurationBlock:nil];
+            [system presentViewController:[[BTUICardFormViewSpecCardEntryViewController alloc] init]];
             [tester tapViewWithAccessibilityLabel:@"Card Number"];
             [tester enterTextIntoCurrentFirstResponder:@"4111111111111111"];
             [tester waitForFirstResponderWithAccessibilityLabel:@"MM/YY"];
@@ -67,10 +53,7 @@ describe(@"Card Form", ^{
 
     describe(@"retreat on backspace", ^{
         it(@"retreats on backspace and deletes one digit", ^{
-            [system presentViewControllerWithClass:[BTUICardFormViewSpecCardEntryViewController class]
-  withinNavigationControllerWithNavigationBarClass:nil
-                                      toolbarClass:nil
-                                configurationBlock:nil];
+            [system presentViewController:[[BTUICardFormViewSpecCardEntryViewController alloc] init]];
             [tester tapViewWithAccessibilityLabel:@"Card Number"];
             [tester enterTextIntoCurrentFirstResponder:@"4111111111111111"];
             [tester enterTextIntoCurrentFirstResponder:@"\b"];
@@ -84,7 +67,7 @@ describe(@"Card Form", ^{
         
         describe(@"card number", ^{
             it(@"sets the field text", ^{
-                [cardFormView setNumber:@"411111"];
+                cardFormView.number = @"411111";
                 [system presentView:cardFormView];
                 [tester waitForViewWithAccessibilityLabel:@"Card Number" value:@"411111" traits:0];
             });
@@ -92,7 +75,7 @@ describe(@"Card Form", ^{
             describe(@"truncation", ^{
                 context(@"when card type is known", ^{
                     it(@"uses card type max digits", ^{
-                        [cardFormView setNumber:@"411111111111111111111111"];
+                        cardFormView.number = @"411111111111111111111111";
                         [system presentView:cardFormView];
                         [tester waitForViewWithAccessibilityLabel:@"Card Number" value:@"4111111111111111" traits:0];
                     });
@@ -100,15 +83,11 @@ describe(@"Card Form", ^{
                 
                 context(@"when card type is unknown", ^{
                     it(@"uses max digits for all cards", ^{
-                        [cardFormView setNumber:@"00000000000000000000000000000"];
+                        cardFormView.number = @"00000000000000000000000000000";
 
                         [system presentView:cardFormView];
                         
-                        NSUInteger maxLength = [BTUICardType maxNumberLength];
-                        NSMutableString *expectedCardNumber = [NSMutableString new];
-                        for (int i = 0; i < maxLength; i++) {
-                            [expectedCardNumber appendString:@"0"];
-                        }
+                        NSString *expectedCardNumber = [@"" stringByPaddingToLength:[BTUICardType maxNumberLength] withString:@"0" startingAtIndex:0];
                         [tester waitForViewWithAccessibilityLabel:@"Card Number" value:expectedCardNumber traits:0];
                     });
                 });
