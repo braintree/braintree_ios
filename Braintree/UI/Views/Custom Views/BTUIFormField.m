@@ -288,7 +288,11 @@ const CGFloat formFieldBottomMargin = 11;
 
     if (textField.text.length == 0) {
         [self.delegate formFieldDidDeleteWhileEmpty:self];
-    } else if (textField.text.length == 1) {
+    }
+}
+
+- (void)textFieldDidDeleteBackward:(BTUITextField *)textField originalText:(__unused NSString *)originalText {
+    if (textField.text.length == 0) {
         [self.floatLabel hideWithAnimation:YES];
     }
 }
