@@ -4,6 +4,8 @@
 
 * Work around iOS 8.0-8.2 bug in UITextField
   * Fixes subtle bug in Drop In and BTUICardFormView float label behavior
+* It is now possible to set number, expiry, cvv and postal code field values programmatically in BTUICardFormView
+  * This is useful for making the card form compatible with Card.IO
 
 ## 3.8.0-rc3 (2015-05-11)
 
