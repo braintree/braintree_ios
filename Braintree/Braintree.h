@@ -11,6 +11,7 @@
 #import <Braintree/BTClientCardTokenizationRequest.h>
 
 @class Braintree;
+@class PKPayment;
 
 typedef void (^BraintreeCompletionBlock)(Braintree *braintree, NSError *error);
 
@@ -100,7 +101,6 @@ typedef void (^BraintreeCompletionBlock)(Braintree *braintree, NSError *error);
 - (void)tokenizeCard:(BTClientCardTokenizationRequest *)cardDetails
           completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
 
-#if BT_ENABLE_APPLE_PAY
 /// Creates and returns a payment method nonce for the given Apple Pay payment details
 ///
 /// @note You should use this method if you have implemented Apple Pay directly with PassKit (PKPaymentRequest,
@@ -110,7 +110,6 @@ typedef void (^BraintreeCompletionBlock)(Braintree *braintree, NSError *error);
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
 - (void)tokenizeApplePayPayment:(PKPayment *)applePayPayment
                      completion:(void (^)(NSString *nonce, NSError *error))completionBlock;
-#endif
 
 /// Initializes a provider that can initiate various payment method creation flows.
 ///
