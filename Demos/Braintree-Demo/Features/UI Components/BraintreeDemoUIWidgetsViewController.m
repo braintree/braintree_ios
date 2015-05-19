@@ -8,7 +8,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"UI Widgets";
+    self.title = @"UI Components";
 
     UIStoryboard *uiStoryboard = [UIStoryboard storyboardWithName:@"UI" bundle:nil];
 

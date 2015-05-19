@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6249" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6243"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -54,6 +54,15 @@
                         <outlet property="delegate" destination="-1" id="VBX-5V-Joj"/>
                     </connections>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PLQ-ad-FEz">
+                    <rect key="frame" x="230" y="254" width="47" height="30"/>
+                    <state key="normal" title="card.io">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="cardIoPressed:" destination="-1" eventType="touchUpInside" id="CjM-EU-I80"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.98431372549019602" green="0.98431372549019602" blue="0.98431372549019602" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -64,10 +73,12 @@
                 <constraint firstItem="ssp-nb-1hs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" symbolic="YES" id="Djy-2o-xau"/>
                 <constraint firstItem="Uhq-46-uCm" firstAttribute="leading" secondItem="ssp-nb-1hs" secondAttribute="trailing" constant="8" id="GQN-PM-D3Z"/>
                 <constraint firstItem="wrR-Pd-byr" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" constant="46" id="IFc-mT-MGP"/>
+                <constraint firstItem="mG0-zR-vbU" firstAttribute="leading" secondItem="PLQ-ad-FEz" secondAttribute="leading" id="SPU-aC-6q1"/>
                 <constraint firstItem="ssp-nb-1hs" firstAttribute="top" secondItem="Uhq-46-uCm" secondAttribute="top" id="UUE-dI-4JA"/>
                 <constraint firstItem="Uhq-46-uCm" firstAttribute="top" secondItem="mG0-zR-vbU" secondAttribute="top" id="VCH-Bk-gFr"/>
                 <constraint firstItem="wrR-Pd-byr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="c3c-gp-vkh"/>
                 <constraint firstItem="mG0-zR-vbU" firstAttribute="leading" secondItem="Uhq-46-uCm" secondAttribute="trailing" constant="8" symbolic="YES" id="fj7-4T-RjX"/>
+                <constraint firstItem="9V1-DW-068" firstAttribute="centerY" secondItem="PLQ-ad-FEz" secondAttribute="centerY" id="gy7-pA-Muh"/>
             </constraints>
         </view>
     </objects>
