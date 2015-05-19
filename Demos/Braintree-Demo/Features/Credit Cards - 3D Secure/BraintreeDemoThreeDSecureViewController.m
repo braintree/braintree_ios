@@ -4,6 +4,7 @@
 #import <Braintree/Braintree-3D-Secure.h>
 #import <Braintree/BTThreeDSecure.h>
 
+#import <Braintree/BTCardPaymentMethod.h>
 
 @interface BraintreeDemoThreeDSecureViewController ()
 @property(nonatomic, strong) BTThreeDSecure *threeDSecure;
@@ -102,6 +103,22 @@
                                                              amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
                          }
                      }];
+}
+
+- (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+    
+    if ([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
+        BTCardPaymentMethod *cardPaymentMethod = (BTCardPaymentMethod *)paymentMethod;
+        if ([cardPaymentMethod.threeDSecureInfo[@"liabilityShiftPossible"] boolValue] && [cardPaymentMethod.threeDSecureInfo[@"liabilityShifted"] boolValue]) {
+            NSLog(@"liability shift possible and liability shifted");
+            
+        } else {
+            NSLog(@"3D Secure authentication was attempted but liability shift is not possible");
+            
+        }
+    }
+    
+    [super paymentMethodCreator:sender didCreatePaymentMethod:paymentMethod];
 }
 
 @end
