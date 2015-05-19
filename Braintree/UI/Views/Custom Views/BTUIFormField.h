@@ -22,6 +22,9 @@
 @property (nonatomic, assign) BOOL bottomBorder;
 @property (nonatomic, assign, readonly) BOOL backspace;
 
+/// The text displayed by the field
+@property (nonatomic, copy) NSString *text;
+
 @end
 
 

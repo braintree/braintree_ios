@@ -322,6 +322,27 @@ const CGFloat formFieldBottomMargin = 11;
     }
 }
 
+#pragma mark - Custom accessors
+
+- (void)setText:(NSString *)text {
+    BOOL shouldChange = [self.textField.delegate textField:self.textField
+                             shouldChangeCharactersInRange:NSMakeRange(0, self.textField.text.length)
+                                         replacementString:text];
+    if (shouldChange) {
+        [self.textField.delegate textFieldDidBeginEditing:self.textField];
+        [self.textField.editDelegate textField:self.textField willInsertText:text];
+        self.textField.text = text;
+        [self fieldContentDidChange];
+        [self.textField.editDelegate textField:self.textField didInsertText:text];
+        [self.textField.delegate textFieldDidEndEditing:self.textField];
+
+    }
+}
+
+- (NSString *)text {
+    return self.textField.text;
+}
+
 #pragma mark - Delegate methods and handlers
 
 - (void)fieldContentDidChange {

@@ -1,10 +1,11 @@
 @import UIKit;
 #import "BTUIFormField.h"
+#import "BTUITextField.h"
 
 /// Private class extension for implementors of BTUIFormField subclasses.
 @interface BTUIFormField () 
 
-@property (nonatomic, strong, readonly) UITextField *textField;
+@property (nonatomic, strong, readonly) BTUITextField *textField;
 
 @property (nonatomic, strong) UIView *accessoryView;
 

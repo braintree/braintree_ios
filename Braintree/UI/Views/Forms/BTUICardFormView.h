@@ -33,6 +33,12 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 @property (nonatomic, copy, readonly) NSString *expirationYear;
 @property (nonatomic, copy, readonly) NSString *postalCode;
 
+/// Sets the card form view's expiration date
+///
+/// @param expirationDate The expiration date. Passing in `nil` will clear the
+/// card form's expiry field.
+- (void)setExpirationDate:(NSDate *)expirationDate;
+
 /// Immediately present a top level error message to the user.
 ///
 /// @param field Field to mark invalid.

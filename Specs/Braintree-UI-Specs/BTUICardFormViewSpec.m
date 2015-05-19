@@ -47,7 +47,6 @@ describe(@"Card Form", ^{
             [tester tapViewWithAccessibilityLabel:@"Card Number"];
             [tester enterTextIntoCurrentFirstResponder:@"4111111111111111"];
             [tester waitForFirstResponderWithAccessibilityLabel:@"MM/YY"];
-
         });
     });
 
@@ -63,9 +62,13 @@ describe(@"Card Form", ^{
     });
 
     describe(@"setting the form programmatically", ^{
-        __block BTUICardFormView *cardFormView = [[BTUICardFormView alloc] init];
+        __block BTUICardFormView *cardFormView;
+
+        beforeEach(^{
+            cardFormView = [[BTUICardFormView alloc] init];
+        });
         
-        describe(@"card number", ^{
+        describe(@"card number field", ^{
             it(@"sets the field text", ^{
                 cardFormView.number = @"411111";
                 [system presentView:cardFormView];
@@ -91,6 +94,32 @@ describe(@"Card Form", ^{
                         [tester waitForViewWithAccessibilityLabel:@"Card Number" value:expectedCardNumber traits:0];
                     });
                 });
+            });
+        });
+
+        describe(@"expiry field", ^{
+            it(@"accepts a date", ^{
+                NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+                dateComponents.month = 1;
+                dateComponents.year = 2016;
+                dateComponents.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+
+                NSDate *date = [dateComponents date];
+                [cardFormView setExpirationDate:date];
+                [system presentView:cardFormView];
+                [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"01/2016"];
+            });
+
+            it(@"can be set when visible", ^{
+                NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+                dateComponents.month = 1;
+                dateComponents.year = 2016;
+                dateComponents.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+                NSDate *date = [dateComponents date];
+
+                [system presentView:cardFormView];
+                [cardFormView setExpirationDate:date];
+                [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"01/2016"];
             });
         });
     });

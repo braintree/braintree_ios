@@ -106,6 +106,18 @@
     [self invalidateIntrinsicContentSize];
 }
 
+- (void)setExpirationDate:(NSDate *)expirationDate {
+    static NSDateFormatter *dateFormatter;
+    if (!dateFormatter) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        // The expiry field only allows digit chars to be entered
+        dateFormatter.dateFormat = @"MMyyyy";
+    }
+
+    NSString *expirationDateString = [dateFormatter stringFromDate:expirationDate];
+    [self.expiryField setText:expirationDateString];
+}
+
 - (void)setup {
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];

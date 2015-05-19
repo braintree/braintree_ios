@@ -32,6 +32,8 @@
 }
 
 + (NSString *)stripPattern:(NSString *)pattern input:(NSString *)input {
+    if (!input) return nil;
+
     NSError *error;
     NSRegularExpression *re = [NSRegularExpression regularExpressionWithPattern:pattern
                                                                         options:0
