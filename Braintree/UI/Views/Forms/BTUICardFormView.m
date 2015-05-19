@@ -239,8 +239,16 @@
     return self.optionalFields & BTUICardFormOptionalFieldsCvv ? self.cvvField.cvv : nil;
 }
 
+- (void)setCvv:(NSString *)cvv {
+    self.cvvField.cvv = cvv;
+}
+
 - (NSString *)postalCode {
     return self.optionalFields & BTUICardFormOptionalFieldsPostalCode ? self.postalCodeField.postalCode : nil;
+}
+
+- (void)setPostalCode:(NSString *)postalCode {
+    self.postalCodeField.postalCode = postalCode;
 }
 
 #pragma mark - Field delegate implementations
@@ -290,6 +298,9 @@
     }
     BTUIFormField *previousField = self.fields[previousIndex];
     [previousField becomeFirstResponder];
+    if (previousField.text.length > 0) {
+        [previousField deleteBackward];
+    }
 }
 
 

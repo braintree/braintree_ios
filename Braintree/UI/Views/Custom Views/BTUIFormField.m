@@ -283,15 +283,16 @@ const CGFloat formFieldBottomMargin = 11;
 
 #pragma mark - BTUITextFieldEditDelegate methods
 
-- (void)textFieldWillDeleteBackward:(BTUITextField *)textField {
+- (void)textFieldWillDeleteBackward:(__unused BTUITextField *)textField {
     _backspace = YES;
 
-    if (textField.text.length == 0) {
-        [self.delegate formFieldDidDeleteWhileEmpty:self];
-    }
 }
 
 - (void)textFieldDidDeleteBackward:(BTUITextField *)textField originalText:(__unused NSString *)originalText {
+    if (originalText.length == 0) {
+        [self.delegate formFieldDidDeleteWhileEmpty:self];
+    }
+
     if (textField.text.length == 0) {
         [self.floatLabel hideWithAnimation:YES];
     }
@@ -373,6 +374,20 @@ const CGFloat formFieldBottomMargin = 11;
 
 - (void)tappedField {
     [self.textField becomeFirstResponder];
+}
+
+#pragma mark UIKeyInput
+
+- (void)insertText:(NSString *)text {
+    [self.textField insertText:text];
+}
+
+- (void)deleteBackward {
+    [self.textField deleteBackward];
+}
+
+- (BOOL)hasText {
+    return [self.textField hasText];
 }
 
 @end

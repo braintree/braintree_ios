@@ -2,7 +2,7 @@
 
 @interface BTUICardPostalCodeField : BTUIFormField
 
-@property (nonatomic, strong, readonly) NSString *postalCode;
+@property (nonatomic, strong) NSString *postalCode;
 @property (nonatomic, assign) BOOL nonDigitsSupported;
 
 @end

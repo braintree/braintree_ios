@@ -25,13 +25,21 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 /// The card number.
 ///
 /// If you set a card number longer than is allowed by the card type,
-/// it will be truncated.
+/// it will not be set.
 @property (nonatomic, copy) NSString *number;
 
-@property (nonatomic, copy, readonly) NSString *cvv;
+/// The card CVV
+///
+/// @note this field is only visible when specified in `optionalFields`
+@property (nonatomic, copy) NSString *cvv;
+
+/// The card billing address postal code for AVS verifications
+///
+/// @note this field is only visible when specified in `optionalFields`
+@property (nonatomic, copy) NSString *postalCode;
+
 @property (nonatomic, copy, readonly) NSString *expirationMonth;
 @property (nonatomic, copy, readonly) NSString *expirationYear;
-@property (nonatomic, copy, readonly) NSString *postalCode;
 
 /// Sets the card form view's expiration date
 ///

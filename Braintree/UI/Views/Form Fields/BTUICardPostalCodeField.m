@@ -17,6 +17,11 @@
     return self;
 }
 
+- (void)setPostalCode:(NSString *)postalCode {
+    _postalCode = postalCode;
+    self.text = postalCode;
+}
+
 - (void)setNonDigitsSupported:(BOOL)nonDigitsSupported {
     _nonDigitsSupported = nonDigitsSupported;
     self.textField.autocorrectionType = UITextAutocorrectionTypeNo;

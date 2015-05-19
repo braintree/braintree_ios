@@ -5,6 +5,6 @@
 
 @property (nonatomic, strong) BTUICardType *cardType;
 
-@property (nonatomic, strong, readonly) NSString *cvv;
+@property (nonatomic, copy) NSString *cvv;
 
 @end

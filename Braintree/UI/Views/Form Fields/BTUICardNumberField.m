@@ -7,6 +7,8 @@
 
 @implementation BTUICardNumberField
 
+@synthesize number = _number;
+
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -32,31 +34,27 @@
     return [super entryComplete] && [self.cardType validAndNecessarilyCompleteNumber:self.number];
 }
 
+- (void)setNumber:(NSString *)number {
+    self.text = number;
+    _number = self.textField.text;
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSUInteger newLength = textField.text.length - range.length + string.length;
     NSUInteger maxLength = self.cardType == nil ? [BTUICardType maxNumberLength] : self.cardType.maxNumberLength;
     return newLength <= maxLength;
 }
 
-- (void)setNumber:(NSString *)number {
-    _number = [BTUIUtil stripNonDigits:number];
-
+- (void)fieldContentDidChange {
+    _number = [BTUIUtil stripNonDigits:self.textField.text];
     BTUICardType *oldCardType = _cardType;
     _cardType = [BTUICardType cardTypeForNumber:_number];
-
-    NSUInteger maxLength = self.cardType == nil ? [BTUICardType maxNumberLength] : self.cardType.maxNumberLength;
-    if (_number.length > maxLength) {
-        _number = [_number substringToIndex:maxLength];
-    }
-
     if (self.cardType != nil) {
         UITextRange *r = self.textField.selectedTextRange;
         NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:[self.cardType formatNumber:_number kerning:self.theme.formattedEntryKerning]];
         [text addAttributes:self.theme.textFieldTextAttributes range:NSMakeRange(0, text.length)];
         self.textField.attributedText = text;
         self.textField.selectedTextRange = r;
-    } else {
-        self.textField.text = _number;
     }
     if (self.cardType != oldCardType) {
         [self updateCardHint];
@@ -68,10 +66,6 @@
     [self setNeedsDisplay];
 
     [self.delegate formFieldDidChange:self];
-}
-
-- (void)fieldContentDidChange {
-    self.number = self.textField.text;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {

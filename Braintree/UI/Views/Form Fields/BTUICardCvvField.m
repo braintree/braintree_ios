@@ -65,6 +65,11 @@
     return self.cardType == nil ? kMaximumCvvLength : self.cardType.validCvvLength;
 }
 
+- (void)setCvv:(NSString *)cvv {
+    _cvv = cvv;
+    self.text = cvv;
+}
+
 #pragma mark - Handlers
 
 - (void)fieldContentDidChange {
