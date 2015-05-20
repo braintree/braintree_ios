@@ -1,6 +1,8 @@
 #import <Braintree/BTUICardFormView.h>
 #import "BTUICardType.h"
+#import "BTUIFormField.h"
 #import <KIF/KIF.h>
+#import <KIF/UIAccessibilityElement-KIFAdditions.h>
 #import <PureLayout/PureLayout.h>
 
 @interface BTUICardFormViewSpecCardEntryViewController : UIViewController
@@ -117,7 +119,7 @@ describe(@"Card Form", ^{
         });
 
         describe(@"expiry field", ^{
-            it(@"accepts a date", ^{
+            it(@"accepts a date and displays as valid", ^{
                 NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
                 dateComponents.month = 1;
                 dateComponents.year = 2016;
@@ -127,9 +129,13 @@ describe(@"Card Form", ^{
                 [cardFormView setExpirationDate:date];
                 [system presentView:cardFormView];
                 [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"01/2016"];
+
+                UIAccessibilityElement *element = [[[UIApplication sharedApplication] keyWindow] accessibilityElementWithLabel:@"01/2016"];
+                BTUIFormField *expiryField = (BTUIFormField *)([UIAccessibilityElement viewContainingAccessibilityElement:element].superview.superview);
+                expect(expiryField.displayAsValid).to.beTruthy();
             });
 
-            it(@"accepts a well-formed invalid date", ^{
+            it(@"accepts a well-formed invalid date and displays as invalid", ^{
                 NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
                 dateComponents.month = 2;
                 dateComponents.year = 2000;
@@ -139,6 +145,10 @@ describe(@"Card Form", ^{
                 [cardFormView setExpirationDate:date];
                 [system presentView:cardFormView];
                 [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"02/2000"];
+
+                UIAccessibilityElement *element = [[[UIApplication sharedApplication] keyWindow] accessibilityElementWithLabel:@"02/2000"];
+                BTUIFormField *expiryField = (BTUIFormField *)([UIAccessibilityElement viewContainingAccessibilityElement:element].superview.superview);
+                expect(expiryField.displayAsValid).to.beFalsy();
             });
 
             it(@"can be set when visible", ^{
@@ -182,7 +192,7 @@ describe(@"Card Form", ^{
                 [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"WC2E 9RZ"];
             });
 
-            fit(@"won't accept an alphanumeric string if alphanumericPostalCode is NO", ^{
+            it(@"won't accept an alphanumeric string if alphanumericPostalCode is NO", ^{
                 cardFormView.postalCode = @"123";
                 cardFormView.alphaNumericPostalCode = NO;
                 cardFormView.postalCode = @"WC2E 9RZ";
