@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.8.0 (2015-05-20)
 
 * Work around iOS 8.0-8.2 bug in UITextField
   * Fixes subtle bug in Drop In and BTUICardFormView float label behavior
