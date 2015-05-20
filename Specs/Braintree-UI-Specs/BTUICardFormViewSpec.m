@@ -182,6 +182,15 @@ describe(@"Card Form", ^{
                 [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"WC2E 9RZ"];
             });
 
+            fit(@"won't accept an alphanumeric string if alphanumericPostalCode is NO", ^{
+                cardFormView.postalCode = @"123";
+                cardFormView.alphaNumericPostalCode = NO;
+                cardFormView.postalCode = @"WC2E 9RZ";
+                
+                [system presentView:cardFormView];
+                
+                [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"123"];
+            });
         });
     });
 });

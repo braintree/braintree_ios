@@ -1,6 +1,7 @@
 #import "BTUICardPostalCodeField.h"
 #import "BTUIFormField_Protected.h"
 #import "BTUILocalizedString.h"
+#import "BTUIUtil.h"
 
 @implementation BTUICardPostalCodeField
 
@@ -18,6 +19,10 @@
 }
 
 - (void)setPostalCode:(NSString *)postalCode {
+    if (!self.nonDigitsSupported) {
+        NSString *numericPostalCode = [BTUIUtil stripNonDigits:postalCode];
+        if (![numericPostalCode isEqualToString:postalCode]) return;
+    }
     _postalCode = postalCode;
     self.text = postalCode;
 }
