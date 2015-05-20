@@ -146,6 +146,7 @@
 		A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A75DA3791921399C00D997A2 /* BraintreeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A75DA3781921399C00D997A2 /* BraintreeSpec.m */; };
+		A76819A61B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76819A51B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m */; };
 		A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
 		A79509791A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = A79509781A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m */; };
 		A79AC9A6193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */; };
@@ -731,6 +732,8 @@
 		A763BED719B8C3D90087939C /* BTPaymentProviderErrors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentProviderErrors.h; sourceTree = "<group>"; };
 		A763BED819B8C3D90087939C /* BTPaymentProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentProvider.h; sourceTree = "<group>"; };
 		A763BED919B8C3E90087939C /* BTPaymentsSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentsSpec.m; sourceTree = "<group>"; };
+		A76819A41B0D12B900736F52 /* BraintreeDemoSlideNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSlideNavigationController.h; sourceTree = "<group>"; };
+		A76819A51B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoSlideNavigationController.m; sourceTree = "<group>"; };
 		A79509771A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFSystemTestActor+BTNetworkActivity.h"; sourceTree = "<group>"; };
 		A79509781A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFSystemTestActor+BTNetworkActivity.m"; sourceTree = "<group>"; };
 		A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSSLPinningSpec.m; sourceTree = "<group>"; };
@@ -1663,6 +1666,8 @@
 				16217522192D922F008DC35D /* Main.storyboard */,
 				842E21C51B0190D80036DA66 /* BraintreeDemoIntegrationViewController.h */,
 				842E21C61B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m */,
+				A76819A41B0D12B900736F52 /* BraintreeDemoSlideNavigationController.h */,
+				A76819A51B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m */,
 			);
 			path = "Demo Base";
 			sourceTree = "<group>";
@@ -3221,6 +3226,7 @@
 				1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */,
 				CD9ED53E9C13C386FFF05FC2 /* BraintreeDemoThreeDSecureViewController.m in Sources */,
 				163357801AEE103000794AAA /* BraintreeDemoPaymentsUIComponentsViewController.m in Sources */,
+				A76819A61B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m in Sources */,
 				842E21C71B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m in Sources */,
 				CD9ED3FEF7FF8E133BBF4960 /* BraintreeDemoUIWidgetsViewController.m in Sources */,
 			);
