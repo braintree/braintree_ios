@@ -109,7 +109,12 @@
     
     if ([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
         BTCardPaymentMethod *cardPaymentMethod = (BTCardPaymentMethod *)paymentMethod;
-        if ([cardPaymentMethod.threeDSecureInfo[@"liabilityShiftPossible"] boolValue] && [cardPaymentMethod.threeDSecureInfo[@"liabilityShifted"] boolValue]) {
+        
+        // 3.8.1 changed:
+        // [cardPaymentMethod.threeDSecureInfo[@"liabilityShiftPossible"] boolValue] -> cardPaymentMethod.threeDSecureInfo.liabilityShiftPossible
+        // [cardPaymentMethod.threeDSecureInfo[@"liabilityShifted"] boolValue] -> cardPaymentMethod.threeDSecureInfo.liabilityShifted
+        
+        if (cardPaymentMethod.threeDSecureInfo.liabilityShiftPossible && cardPaymentMethod.threeDSecureInfo.liabilityShifted) {
             NSLog(@"liability shift possible and liability shifted");
             
         } else {

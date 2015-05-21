@@ -1007,7 +1007,8 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
                                                              expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
                                                              expect(threeDSecureLookup.card.nonce).to.beANonce();
-                                                             expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @YES, @"liabilityShiftPossible": @YES, });
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShifted).to.beTruthy();
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShiftPossible).to.beTruthy();
                                                              [expectation fulfill];
                                                          } failure:nil];
               [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -1039,7 +1040,8 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
                                                              expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
                                                              expect(threeDSecureLookup.card.nonce).to.beANonce();
-                                                             expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @NO, });
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShifted).to.beFalsy();
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
                                                              [expectation fulfill];
                                                          } failure:nil];
               [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -1071,7 +1073,8 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
                                                              expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
                                                              expect(threeDSecureLookup.card.nonce).to.beANonce();
-                                                             expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @NO, });
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShifted).to.beFalsy();
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
                                                              [expectation fulfill];
                                                          }
                                                          failure:nil];

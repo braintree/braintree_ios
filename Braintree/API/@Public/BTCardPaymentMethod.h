@@ -1,5 +1,6 @@
 @import Foundation;
 #import "BTPaymentMethod.h"
+#import "BTThreeDSecureInfo.h"
 
 /// Card type
 typedef NS_ENUM(NSInteger, BTCardType) {
@@ -36,6 +37,6 @@ typedef NS_ENUM(NSInteger, BTCardType) {
 #pragma mark 3D Secure
 
 /// Information about the 3D Secure liability shift (present only if applicable)
-@property (nonatomic, readonly, copy) NSDictionary *threeDSecureInfo;
+@property (nonatomic, readonly, copy) BTThreeDSecureInfo *threeDSecureInfo;
 
 @end
