@@ -59,6 +59,7 @@ describe(@"editDelegate", ^{
         textField.accessibilityLabel = @"Some Field";
         [system presentView:textField];
         [tester tapViewWithAccessibilityLabel:@"Some Field"];
+        [tester waitForTimeInterval:1];
     });
 
     describe(@"delegate method protocol", ^{
@@ -88,6 +89,7 @@ describe(@"editDelegate", ^{
 
         it(@"textField:willDeleteBackward: and textField:didDeleteBackward:originalText: are called when user backspaces beyond the first character", ^{
             textField.text = @"AB";
+
             [(OCMockObject *)editDelegate setExpectationOrderMatters:YES];
             OCMExpect([editDelegate textFieldWillDeleteBackward:textField]).andForwardToRealObject();
             OCMExpect([editDelegate textFieldDidDeleteBackward:textField originalText:@"AB"]).andForwardToRealObject();
