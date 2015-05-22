@@ -135,22 +135,27 @@ withinNavigationControllerWithNavigationBarClass:nil
             });
         });
 
-        it(@"fails to perform 3D Secure", ^{
+        it(@"returns a card with a new nonce and appropriate threeDSecureInfo", ^{
             BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
-
-
-            id errorMatcher = HC_allOf(
-                                       HC_hasProperty(@"domain", BTThreeDSecureErrorDomain),
-                                       HC_hasProperty(@"code", @(BTThreeDSecureFailedLookupErrorCode)),
-                                       HC_hasProperty(@"userInfo", HC_hasEntry(BTThreeDSecureInfoKey, @{@"liabilityShifted": @NO, @"liabilityShiftPossible": @NO})),
-
-                                       nil);
+            
             [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure
-                                                   didFailWithError:errorMatcher];
-
+                                             didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
+                if (![obj isKindOfClass:[BTCardPaymentMethod class]]) {
+                    return NO;
+                }
+                BTCardPaymentMethod *card = (BTCardPaymentMethod *)obj;
+                if ([card.nonce isEqualToString:unsupportedNonce] || !card.nonce || [card.nonce isEqualToString:@""]) {
+                    return NO;
+                }
+                if (card.threeDSecureInfo.liabilityShiftPossible || card.threeDSecureInfo.liabilityShifted) {
+                    return NO;
+                }
+                return YES;
+            }]];
+            
             [threeDSecure verifyCardWithNonce:unsupportedNonce
                                        amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-
+            
             [(OCMockObject *)delegate verifyWithDelay:30];
         });
     });
