@@ -8,7 +8,7 @@
 ///  then the user failed 3D Secure authentication.
 ///
 ///  @since 3.8.1
-- (BOOL)liabilityShiftPossible;
+@property (nonatomic, readonly, assign) BOOL liabilityShiftPossible;
 
 ///  Indicates that the 3D Secure process worked and authentication was successful
 ///
@@ -18,8 +18,8 @@
 ///        set the `required` option to `true` in your server integration.
 ///
 ///  @since 3.8.1
-- (BOOL)liabilityShifted;
+@property (nonatomic, readonly, assign) BOOL liabilityShifted;
 
-- (instancetype)initWithDictionary:(NSDictionary *)otherDictionary;
++ (BTThreeDSecureInfo *)infoWithLiabilityShiftPossible:(BOOL)liabilityShiftPossible liabilityShifted:(BOOL)liabilityShifted;
 
 @end

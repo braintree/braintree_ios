@@ -491,7 +491,6 @@
                                                           withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
                 if ([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
                     lookup.card = (BTCardPaymentMethod *)paymentMethod;
-                    lookup.card.threeDSecureInfo = [[BTThreeDSecureInfo alloc] initWithDictionary:[response.object dictionaryForKey:@"threeDSecureInfo"]];
                 }
                 successBlock(lookup);
             }

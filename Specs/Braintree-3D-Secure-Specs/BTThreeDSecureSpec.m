@@ -37,7 +37,7 @@ beforeEach(^{
     [clientStub_lookupSucceedsAuthenticationNotRequired andDo:^(NSInvocation *invocation) {
         BTCardPaymentMethod *card = [OCMockObject mockForClass:[BTCardPaymentMethod class]];
         [[[(OCMockObject *)card stub] andReturn:@"valid_new_test_nonce"] nonce];
-        [[[(OCMockObject *)card stub] andReturn:[[BTThreeDSecureInfo alloc] initWithDictionary:@{ @"liabilityShiftPossible": @YES, @"liabilityShifted": @YES }]] threeDSecureInfo];
+        [[[(OCMockObject *)card stub] andReturn:[BTThreeDSecureInfo infoWithLiabilityShiftPossible:YES liabilityShifted:YES]] threeDSecureInfo];
         BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
         lookup.card = card;
         BTClientThreeDSecureLookupSuccessBlock block;
@@ -119,7 +119,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
             [clientStub_lookupSucceedsCardNotEnrolled andDo:^(NSInvocation *invocation) {
                 BTCardPaymentMethod *card = [OCMockObject mockForClass:[BTCardPaymentMethod class]];
                 [[[(OCMockObject *)card stub] andReturn:@"valid_new_test_nonce"] nonce];
-                [[[(OCMockObject *)card stub] andReturn:[[BTThreeDSecureInfo alloc] initWithDictionary:@{ @"liabilityShiftPossible": @NO, @"liabilityShifted": @NO }]] threeDSecureInfo];
+                [[[(OCMockObject *)card stub] andReturn:[BTThreeDSecureInfo infoWithLiabilityShiftPossible:NO liabilityShifted:NO]] threeDSecureInfo];
                 BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
                 lookup.card = card;
                 BTClientThreeDSecureLookupSuccessBlock block;

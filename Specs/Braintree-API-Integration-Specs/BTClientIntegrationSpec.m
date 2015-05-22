@@ -25,8 +25,6 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                               [expectation fulfill];
                                             }];
     [self waitForExpectationsWithTimeout:10 handler:nil];
-
-
   });
 
   describe(@"challenges", ^{
@@ -745,7 +743,12 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                   expect(applePayPaymentMethod.billingAddress).to.beNil();
                   expect(applePayPaymentMethod.shippingMethod).to.beNil();
                   [expectation fulfill];
-              } failure:nil];
+              } failure:^(NSError *error) {
+                  if (error) {
+                      NSLog(@"ERROR: Make sure Apple Pay is enabled for integration_merchant_id in the Gateway.");
+                      XCTFail(@"error = %@", error);
+                  }
+              }];
               [self waitForExpectationsWithTimeout:10 handler:nil];
           });
 

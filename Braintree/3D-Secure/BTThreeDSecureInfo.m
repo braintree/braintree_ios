@@ -1,24 +1,17 @@
 #import "BTThreeDSecureInfo.h"
 
 @interface BTThreeDSecureInfo ()
-@property (nonatomic, strong) NSDictionary *dictionary;
+@property (nonatomic, readwrite, assign) BOOL liabilityShiftPossible;
+@property (nonatomic, readwrite, assign) BOOL liabilityShifted;
 @end
 
 @implementation BTThreeDSecureInfo
 
-- (instancetype)initWithDictionary:(NSDictionary *)otherDictionary {
-    if ((self = [super init])) {
-        self.dictionary = otherDictionary;
-    }
-    return self;
-}
-
-- (BOOL)liabilityShiftPossible {
-    return [self.dictionary[@"liabilityShiftPossible"] boolValue];
-}
-
-- (BOOL)liabilityShifted {
-    return [self.dictionary[@"liabilityShifted"] boolValue];
++ (BTThreeDSecureInfo *)infoWithLiabilityShiftPossible:(BOOL)liabilityShiftPossible liabilityShifted:(BOOL)liabilityShifted {
+    BTThreeDSecureInfo *info = [[BTThreeDSecureInfo alloc] init];
+    info.liabilityShiftPossible = liabilityShiftPossible;
+    info.liabilityShifted = liabilityShifted;
+    return info;
 }
 
 @end

@@ -37,6 +37,6 @@ typedef NS_ENUM(NSInteger, BTCardType) {
 #pragma mark 3D Secure
 
 /// Information about the 3D Secure liability shift (present only if applicable)
-@property (nonatomic, readonly, copy) BTThreeDSecureInfo *threeDSecureInfo;
+@property (nonatomic, readonly, strong) BTThreeDSecureInfo *threeDSecureInfo;
 
 @end
