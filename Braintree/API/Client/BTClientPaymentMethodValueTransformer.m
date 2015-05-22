@@ -37,7 +37,7 @@
         card.nonce = [responseParser stringForKey:@"nonce"];
         NSDictionary *threeDSecureInfoDict = [responseParser dictionaryForKey:@"threeDSecureInfo"];
         if (threeDSecureInfoDict) {
-            card.threeDSecureInfo = [BTThreeDSecureInfo infoWithLiabilityShiftPossible:[threeDSecureInfoDict[@"liabilityShiftPossible"] boolValue] liabilityShifted:[threeDSecureInfoDict[@"liabilityShifted"] boolValue]];
+            card.threeDSecureInfoDictionary = threeDSecureInfoDict;
         }
         paymentMethod = card;
     } else if ([type isEqualToString:@"PayPalAccount"]) {

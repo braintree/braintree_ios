@@ -767,6 +767,8 @@
 		A7B7433F19A3E4B5000A6A7A /* BTVenmoAppSwitchRequestURL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchRequestURL.h; sourceTree = "<group>"; };
 		A7B7434019A3E4B5000A6A7A /* BTVenmoAppSwitchRequestURL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchRequestURL.m; sourceTree = "<group>"; };
 		A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookupResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLookupResult.m; sourceTree = "<group>"; };
+		A7C2B9CB1B0FA99B00E45C7A /* BTCardPaymentMethod+BTThreeDSecureInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTCardPaymentMethod+BTThreeDSecureInfo.h"; sourceTree = "<group>"; };
+		A7C2B9CC1B0FA99B00E45C7A /* BTCardPaymentMethod+BTThreeDSecureInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTCardPaymentMethod+BTThreeDSecureInfo.m"; sourceTree = "<group>"; };
 		A7C7F82D19B905C400493311 /* BTPaymentProviderErrors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentProviderErrors.m; sourceTree = "<group>"; };
 		A7CB617319B7B13000E972A8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A7CED50E1A2FD01500141197 /* BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureAuthenticationViewControllerAcceptanceSpec.m; sourceTree = "<group>"; };
@@ -1845,6 +1847,7 @@
 			isa = PBXGroup;
 			children = (
 				16E20A531A61D58A002BCC34 /* @Public */,
+				A7C2B9CC1B0FA99B00E45C7A /* BTCardPaymentMethod+BTThreeDSecureInfo.m */,
 				16E20A481A61D58A002BCC34 /* BTThreeDSecure.m */,
 				16E20A491A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.h */,
 				16E20A4A1A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.m */,
@@ -1863,6 +1866,7 @@
 			isa = PBXGroup;
 			children = (
 				8488D4311B0E5966004DCAE4 /* Braintree-3D-Secure.h */,
+				A7C2B9CB1B0FA99B00E45C7A /* BTCardPaymentMethod+BTThreeDSecureInfo.h */,
 				16E20A551A61D5DC002BCC34 /* BTThreeDSecure.h */,
 				16B8DF361A7AD1F100A070AA /* BTThreeDSecureErrors.h */,
 				8488D4321B0E597B004DCAE4 /* BTThreeDSecureInfo.h */,

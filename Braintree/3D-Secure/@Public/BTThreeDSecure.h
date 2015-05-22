@@ -5,6 +5,7 @@
 #import "BTClient.h"
 #import "BTPaymentMethodCreationDelegate.h"
 #import "BTThreeDSecureErrors.h"
+#import "BTCardPaymentMethod+BTThreeDSecureInfo.h"
 
 ///  3D Secure Verification manager
 ///

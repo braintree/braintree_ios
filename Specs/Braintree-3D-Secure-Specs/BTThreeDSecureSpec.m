@@ -1,6 +1,7 @@
 #import "BTThreeDSecure.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTClient_Internal.h"
+#import "BTCardPaymentMethod_Mutable.h"
 
 SpecBegin(BTThreeDSecure)
 
@@ -68,6 +69,20 @@ describe(@"initialization", ^{
 
     it(@"requires a a delegate", ^{
         expect([[BTThreeDSecure alloc] initWithClient:client delegate:nil]).to.beNil();
+    });
+});
+
+describe(@"BTCardPaymentMethod+BTThreeDSecureInfo category method", ^{
+    it(@"returns a BTThreeDSecureInfo that reflects the values in the threeDSecureInfoDictionary property", ^{
+        BTCardPaymentMethod *card = [BTCardPaymentMethod new];
+
+        card.threeDSecureInfoDictionary = @{@"liabilityShifted": @YES, @"liabilityShiftPossible": @YES};
+        expect(card.threeDSecureInfo.liabilityShifted).to.beTruthy();
+        expect(card.threeDSecureInfo.liabilityShiftPossible).to.beTruthy();
+
+        card.threeDSecureInfoDictionary = @{@"liabilityShifted": @NO, @"liabilityShiftPossible": @NO};
+        expect(card.threeDSecureInfo.liabilityShifted).to.beFalsy();
+        expect(card.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
     });
 });
 
