@@ -64,8 +64,8 @@
 
 - (void)fetchThreeDSecureVerificationInfo:(NSString *)nonce completion:(void (^)(NSDictionary *response))completion {
     [self.client fetchNonceThreeDSecureVerificationInfo:nonce
-                                                success:^(NSDictionary *threeDSecureInfo){
-                                                    completion(threeDSecureInfo);
+                                                success:^(NSDictionary *threeDSecureVerificationInfo){
+                                                    completion(threeDSecureVerificationInfo);
                                                 } failure:^(__unused NSError *error){
                                                     completion(nil);
                                                 }];

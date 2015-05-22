@@ -25,8 +25,6 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                               [expectation fulfill];
                                             }];
     [self waitForExpectationsWithTimeout:10 handler:nil];
-
-
   });
 
   describe(@"challenges", ^{
@@ -745,7 +743,12 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                   expect(applePayPaymentMethod.billingAddress).to.beNil();
                   expect(applePayPaymentMethod.shippingMethod).to.beNil();
                   [expectation fulfill];
-              } failure:nil];
+              } failure:^(NSError *error) {
+                  if (error) {
+                      NSLog(@"ERROR: Make sure Apple Pay is enabled for integration_merchant_id in the Gateway.");
+                      XCTFail(@"error = %@", error);
+                  }
+              }];
               [self waitForExpectationsWithTimeout:10 handler:nil];
           });
 
@@ -1007,7 +1010,8 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
                                                              expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
                                                              expect(threeDSecureLookup.card.nonce).to.beANonce();
-                                                             expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @YES, @"liabilityShiftPossible": @YES, });
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShifted).to.beTruthy();
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShiftPossible).to.beTruthy();
                                                              [expectation fulfill];
                                                          } failure:nil];
               [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -1039,7 +1043,8 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
                                                              expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
                                                              expect(threeDSecureLookup.card.nonce).to.beANonce();
-                                                             expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @NO, });
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShifted).to.beFalsy();
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
                                                              [expectation fulfill];
                                                          } failure:nil];
               [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -1071,7 +1076,8 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
                                                              expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
                                                              expect(threeDSecureLookup.card.nonce).to.beANonce();
-                                                             expect(threeDSecureLookup.card.threeDSecureInfo).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @NO, });
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShifted).to.beFalsy();
+                                                             expect(threeDSecureLookup.card.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
                                                              [expectation fulfill];
                                                          }
                                                          failure:nil];

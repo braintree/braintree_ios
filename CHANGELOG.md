@@ -1,9 +1,37 @@
 # Braintree iOS SDK Release Notes
 
+## 3.8.1 (2015-05-21)
+
+* 3D Secure only: :rotating_light: Breaking API Changes for 3D Secure :rotating_light:
+  * Fix a bug in native mobile 3D Secure that, in some cases, prevented access to the new nonce.
+  * Your delegate will now receive `-paymentMethodCreator:didCreatePaymentMethod:` even when liability shift is not possible and/or liability was not shifted.
+  * You must check `threeDSecureInfo` to determine whether liability shift is possible and liability was shifted. This property is now of type `BTThreeDSecureInfo`. Example:
+
+```objectivec
+- (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+
+    if ([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
+        BTCardPaymentMethod *cardPaymentMethod = (BTCardPaymentMethod *)paymentMethod;
+        if (cardPaymentMethod.threeDSecureInfo.liabilityShiftPossible &&
+            cardPaymentMethod.threeDSecureInfo.liabilityShifted) {
+
+            NSLog(@"liability shift possible and liability shifted");
+
+        } else {
+
+            NSLog(@"3D Secure authentication was attempted but liability shift is not possible");
+
+        }
+    }
+}
+```
+
+* Important: Since `cardPaymentMethod.threeDSecureInfo.liabilityShiftPossible` and `cardPaymentMethod.threeDSecureInfo.liabilityShifted` are client-side values, they should be used for UI flow only. They should not be trusted for your server-side risk assessment. To require 3D Secure in cases where the buyer's card is enrolled for 3D Secure, set the `required` option to `true` in your server integration. [See our 3D Secure docs for more details.](https://developers.braintreepayments.com/guides/3d-secure)
+
 ## 3.8.0 (2015-05-21)
 
 * Work around iOS 8.0-8.2 bug in UITextField
-  * Fixes subtle bug in Drop In and BTUICardFormView float label behavior
+  * Fix subtle bug in Drop-in and BTUICardFormView float label behavior
 * It is now possible to set number, expiry, cvv and postal code field values programmatically in BTUICardFormView
   * This is useful for making the card form compatible with Card.IO
 
@@ -29,21 +57,7 @@
   * Coinbase is now available in closed beta. See [the Coinbase page on our website](https://www.braintreepayments.com/features/coinbase) to join the beta.
   * Coinbase UI is integrated with Drop-in and BTPaymentButton
   * Known issue: Drop-in vaulting behavior for Coinbase accounts
-* Introduced a new asynchronous initializer for creating the `Braintree` object
-  * Deprecated `+braintreeWithClientToken:`. Instead, use `+setupWithClientToken:completionBlock:`. Example:
-
-```objectivec
-[Braintree setupWithClientToken:clientToken completion:^(Braintree *braintree, NSError *error) {
-    if (error) {
-        // TODO: Display error
-        // ...
-        return;
-    }
-
-    // Store and use `braintree`
-    self.braintree = braintree;
-}];
-```
+* [Internal only] Introduced a new asynchronous initializer for creating the `Braintree` object
 
 ## 3.7.2 (2015-04-23)
 

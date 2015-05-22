@@ -544,7 +544,6 @@
 		16A750A91A7053CE00C8FAE4 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		16A750AB1A706DED00C8FAE4 /* BraintreeDemoSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSettings.h; sourceTree = "<group>"; };
 		16A750AC1A706DED00C8FAE4 /* BraintreeDemoSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoSettings.m; sourceTree = "<group>"; };
-		16A91AA71A70923500767B92 /* Braintree-3D-Secure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-3D-Secure.h"; sourceTree = "<group>"; };
 		16B3D53F1A7C2B77005531DE /* BTThreeDSecureLocalizedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLocalizedString.h; sourceTree = "<group>"; };
 		16B3D5401A7C2B77005531DE /* BTThreeDSecureLocalizedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLocalizedString.m; sourceTree = "<group>"; };
 		16B3D5421A7C2B77005531DE /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = "da.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
@@ -686,6 +685,9 @@
 		7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		842E21C51B0190D80036DA66 /* BraintreeDemoIntegrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoIntegrationViewController.h; sourceTree = "<group>"; };
 		842E21C61B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoIntegrationViewController.m; sourceTree = "<group>"; };
+		8488D42E1B0E5956004DCAE4 /* BTThreeDSecureInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureInfo.m; sourceTree = "<group>"; };
+		8488D4311B0E5966004DCAE4 /* Braintree-3D-Secure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-3D-Secure.h"; sourceTree = "<group>"; };
+		8488D4321B0E597B004DCAE4 /* BTThreeDSecureInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureInfo.h; sourceTree = "<group>"; };
 		8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9270469696964D9BABE95E62 /* libPods-TestWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1842,16 +1844,17 @@
 		16E20A461A61D58A002BCC34 /* 3D-Secure */ = {
 			isa = PBXGroup;
 			children = (
-				16E20A541A61D5A3002BCC34 /* README.md */,
-				16B3D53E1A7C2B77005531DE /* Localization */,
 				16E20A531A61D58A002BCC34 /* @Public */,
 				16E20A481A61D58A002BCC34 /* BTThreeDSecure.m */,
 				16E20A491A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.h */,
 				16E20A4A1A61D58A002BCC34 /* BTThreeDSecureAuthenticationViewController.m */,
 				16B8DF371A7AD1FC00A070AA /* BTThreeDSecureErrors.m */,
+				8488D42E1B0E5956004DCAE4 /* BTThreeDSecureInfo.m */,
 				16E20A501A61D58A002BCC34 /* BTThreeDSecureResponse.m */,
 				16E20A511A61D58A002BCC34 /* BTWebViewController.h */,
 				16E20A521A61D58A002BCC34 /* BTWebViewController.m */,
+				16B3D53E1A7C2B77005531DE /* Localization */,
+				16E20A541A61D5A3002BCC34 /* README.md */,
 			);
 			path = "3D-Secure";
 			sourceTree = "<group>";
@@ -1859,10 +1862,11 @@
 		16E20A531A61D58A002BCC34 /* @Public */ = {
 			isa = PBXGroup;
 			children = (
-				16B8DF361A7AD1F100A070AA /* BTThreeDSecureErrors.h */,
+				8488D4311B0E5966004DCAE4 /* Braintree-3D-Secure.h */,
 				16E20A551A61D5DC002BCC34 /* BTThreeDSecure.h */,
+				16B8DF361A7AD1F100A070AA /* BTThreeDSecureErrors.h */,
+				8488D4321B0E597B004DCAE4 /* BTThreeDSecureInfo.h */,
 				16E20A571A61D5DC002BCC34 /* BTThreeDSecureResponse.h */,
-				16A91AA71A70923500767B92 /* Braintree-3D-Secure.h */,
 			);
 			path = "@Public";
 			sourceTree = "<group>";

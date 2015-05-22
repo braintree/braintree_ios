@@ -35,7 +35,10 @@
         card.lastTwo = [[responseParser responseParserForKey:@"details"] stringForKey:@"lastTwo"];
         card.challengeQuestions = [responseParser setForKey:@"securityQuestions"];
         card.nonce = [responseParser stringForKey:@"nonce"];
-
+        NSDictionary *threeDSecureInfoDict = [responseParser dictionaryForKey:@"threeDSecureInfo"];
+        if (threeDSecureInfoDict) {
+            card.threeDSecureInfo = [BTThreeDSecureInfo infoWithLiabilityShiftPossible:[threeDSecureInfoDict[@"liabilityShiftPossible"] boolValue] liabilityShifted:[threeDSecureInfoDict[@"liabilityShifted"] boolValue]];
+        }
         paymentMethod = card;
     } else if ([type isEqualToString:@"PayPalAccount"]) {
         BTMutablePayPalPaymentMethod *payPal = [[BTMutablePayPalPaymentMethod alloc] init];
