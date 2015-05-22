@@ -20,45 +20,45 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.8.0):
-    - Braintree/API (= 3.8.0)
-    - Braintree/Coinbase (= 3.8.0)
-    - Braintree/Drop-In (= 3.8.0)
-    - Braintree/Payments (= 3.8.0)
-    - Braintree/PayPal (= 3.8.0)
-    - Braintree/UI (= 3.8.0)
-    - Braintree/Venmo (= 3.8.0)
-  - Braintree/3D-Secure (3.8.0):
+  - Braintree (3.8.1):
+    - Braintree/API (= 3.8.1)
+    - Braintree/Coinbase (= 3.8.1)
+    - Braintree/Drop-In (= 3.8.1)
+    - Braintree/Payments (= 3.8.1)
+    - Braintree/PayPal (= 3.8.1)
+    - Braintree/UI (= 3.8.1)
+    - Braintree/Venmo (= 3.8.1)
+  - Braintree/3D-Secure (3.8.1):
     - Braintree/API
     - Braintree/Payments
     - Braintree/UI
-  - Braintree/API (3.8.0)
-  - Braintree/Apple-Pay (3.8.0):
+  - Braintree/API (3.8.1)
+  - Braintree/Apple-Pay (3.8.1):
     - Braintree/Payments
-  - Braintree/Coinbase (3.8.0):
+  - Braintree/Coinbase (3.8.1):
     - Braintree/API
     - coinbase-official/OAuth (~> 2.1.1)
-  - Braintree/Data (3.8.0):
+  - Braintree/Data (3.8.1):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (3.8.0):
+  - Braintree/Drop-In (3.8.1):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (3.8.0):
+  - Braintree/Payments (3.8.1):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (3.8.0):
+  - Braintree/PayPal (3.8.1):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.8.0):
+  - Braintree/UI (3.8.1):
     - Braintree/API
-  - Braintree/Venmo (3.8.0):
+  - Braintree/Venmo (3.8.1):
     - Braintree/API
   - CardIO (5.0.3)
   - coinbase-official/OAuth (2.1.4)
@@ -122,7 +122,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Braintree: 417f7c62c0a4e06169da95529eeb92aced4d148a
+  Braintree: 6c27eb7ad730538a5cc7f6c48ac4d07a42227603
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
   coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
