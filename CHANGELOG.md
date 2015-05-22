@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 3.8.1 (2015-05-21)
+## 3.8.1 (2015-05-22)
 
 * 3D Secure only: :rotating_light: Breaking API Changes for 3D Secure :rotating_light:
   * Fix a bug in native mobile 3D Secure that, in some cases, prevented access to the new nonce.
@@ -33,7 +33,7 @@
 * Work around iOS 8.0-8.2 bug in UITextField
   * Fix subtle bug in Drop-in and BTUICardFormView float label behavior
 * It is now possible to set number, expiry, cvv and postal code field values programmatically in BTUICardFormView
-  * This is useful for making the card form compatible with Card.IO
+  * This is useful for making the card form compatible with card.io
 
 ## 3.8.0-rc3 (2015-05-11)
 
