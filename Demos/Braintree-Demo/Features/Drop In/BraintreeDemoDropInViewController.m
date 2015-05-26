@@ -13,14 +13,6 @@
 
 @implementation BraintreeDemoDropInViewController
 
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
-    if (self) {
-        self.braintree = [Braintree braintreeWithClientToken:clientToken];
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
