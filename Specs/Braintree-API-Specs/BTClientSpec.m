@@ -124,12 +124,13 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
 
         it(@"includes the metadata", ^{
             NSString *analyticsUrl = @"http://analytics.example.com/path/to/analytics";
-            __block NSString *expectedSource, *expectedIntegration;
+            __block NSString *expectedSource, *expectedIntegration, *expectedSessionId;
             BTClient *client = [[BTClientSpecHelper clientForTestCase:self withOverrides:@{ BTConfigurationKeyAnalytics:@{
                                                                                                     BTConfigurationKeyURL:analyticsUrl } } async:asyncClient]
                                 copyWithMetadata:^(BTClientMutableMetadata *metadata) {
                                     expectedIntegration = [metadata integrationString];
                                     expectedSource = [metadata sourceString];
+                                    expectedSessionId = [metadata sessionId];
                                 }];
 
             OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
@@ -138,9 +139,9 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                     NSMutableDictionary *metadata = [NSMutableDictionary dictionaryWithDictionary:[BTAnalyticsMetadata metadata]];
                     metadata[@"source"] = expectedSource;
                     metadata[@"integration"] = expectedIntegration;
+                    metadata[@"sessionId"] = expectedSessionId;
                     [metadata copy];
                 });
-                expect(obj[@"_meta"]).to.equal(expectedMetadata);
                 return [obj[@"_meta"] isEqual:expectedMetadata];
             }] completion:[OCMArg any]];
             client.analyticsHttp = (id)mockHttp;

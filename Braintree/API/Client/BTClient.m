@@ -598,6 +598,7 @@
     NSMutableDictionary *mutableMetaValue = [metaValue mutableCopy];
     mutableMetaValue[@"integration"] = self.metadata.integrationString;
     mutableMetaValue[@"source"] = self.metadata.sourceString;
+    mutableMetaValue[@"sessionId"] = self.metadata.sessionId;
 
     result[@"_meta"] = mutableMetaValue;
     return result;

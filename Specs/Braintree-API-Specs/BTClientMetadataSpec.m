@@ -41,6 +41,15 @@ describe(@"string values", ^{
         expect(m.integrationString).to.equal(@"unknown");
     });
 
+    it(@"sessionId returns a 32 character UUID string", ^{
+        expect(m.sessionId.length).to.equal(32);
+    });
+
+    it(@"sessionId should be different than a different instance's sessionId", ^{
+        BTClientMutableMetadata *m2 = [BTClientMutableMetadata new];
+        expect(m.sessionId).notTo.equal(m2.sessionId);
+    });
+
 });
 
 
