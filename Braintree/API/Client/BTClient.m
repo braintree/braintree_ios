@@ -446,7 +446,7 @@
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                        }];
 
-        [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@", eventKind];
+        [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@ session:%@", eventKind, self.metadata.sessionId];
 
         [self.analyticsHttp POST:@"/"
                       parameters:requestParameters
