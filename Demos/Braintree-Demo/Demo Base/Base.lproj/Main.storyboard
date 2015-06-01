@@ -39,10 +39,10 @@
             </objects>
             <point key="canvasLocation" x="714.375" y="294.71830985915489"/>
         </scene>
-        <!--Slide Navigation Controller-->
+        <!--Braintree Demo Slide Navigation Controller-->
         <scene sceneID="mdj-RQ-xTd">
             <objects>
-                <navigationController extendedLayoutIncludesOpaqueBars="YES" definesPresentationContext="YES" toolbarHidden="NO" id="ZzJ-LX-Zzh" customClass="SlideNavigationController" sceneMemberID="viewController">
+                <navigationController extendedLayoutIncludesOpaqueBars="YES" definesPresentationContext="YES" toolbarHidden="NO" id="ZzJ-LX-Zzh" customClass="BraintreeDemoSlideNavigationController" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="oRT-4o-upp">
                         <autoresizingMask key="autoresizingMask"/>
