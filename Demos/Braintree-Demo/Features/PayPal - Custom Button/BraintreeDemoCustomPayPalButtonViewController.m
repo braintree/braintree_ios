@@ -2,6 +2,7 @@
 
 #import <Braintree/Braintree-Payments.h>
 #import <Braintree/UIColor+BTUI.h>
+#import "PayPalMobile.h"
 
 @interface BraintreeDemoCustomPayPalButtonViewController ()
 @property(nonatomic, strong) BTPaymentProvider *paymentProvider;
@@ -32,6 +33,7 @@
 
 - (void)tappedCustomPayPal {
     self.progressBlock(@"Tapped PayPal - initiating PayPal auth using BTPaymentProvider");
+    self.braintree.client.additionalPayPalScopes = [NSSet setWithObjects:kPayPalOAuth2ScopeAddress, nil];
     [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
 }
 

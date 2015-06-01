@@ -62,6 +62,9 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// was initialized.
 @property (nonatomic, copy, readonly) NSString *merchantId;
 
+// TODO
+@property (nonatomic, copy) NSSet *additionalPayPalScopes;
+
 #pragma mark - Fetch a Payment Method
 
 /// Obtain a list of payment methods saved to Braintree
