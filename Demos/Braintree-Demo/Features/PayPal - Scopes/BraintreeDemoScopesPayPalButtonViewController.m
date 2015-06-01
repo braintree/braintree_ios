@@ -1,14 +1,14 @@
-#import "BraintreeDemoCustomPayPalButtonViewController.h"
+#import "BraintreeDemoScopesPayPalButtonViewController.h"
 
 #import <Braintree/Braintree-Payments.h>
 #import <Braintree/UIColor+BTUI.h>
 #import "PayPalMobile.h"
 
-@interface BraintreeDemoCustomPayPalButtonViewController ()
+@interface BraintreeDemoScopesPayPalButtonViewController ()
 @property(nonatomic, strong) BTPaymentProvider *paymentProvider;
 @end
 
-@implementation BraintreeDemoCustomPayPalButtonViewController
+@implementation BraintreeDemoScopesPayPalButtonViewController
 
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
@@ -33,6 +33,7 @@
 
 - (void)tappedCustomPayPal {
     self.progressBlock(@"Tapped PayPal - initiating PayPal auth using BTPaymentProvider");
+    self.braintree.client.additionalPayPalScopes = [NSSet setWithObjects:kPayPalOAuth2ScopeAddress, nil];
     [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
 }
 

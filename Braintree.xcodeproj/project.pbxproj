@@ -131,6 +131,7 @@
 		9DC66F2E589CBC80041A9191 /* libPods-Braintree-Apple-Pay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */; };
 		9FC026317803AE8F059D786A /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		A6A89E1C8FF46AAD2FF8C515 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		A71B43D31B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */; };
 		A71EC4551ABA156100B2F8E2 /* BTClientDeprecatedSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A71EC4541ABA156100B2F8E2 /* BTClientDeprecatedSpec.m */; };
 		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
 		A7281C5819A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */; };
@@ -700,6 +701,8 @@
 		A70A52D31AA8D2DC00CA2AC9 /* BTUICoinbaseButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICoinbaseButton.m; sourceTree = "<group>"; };
 		A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorAlert.h; sourceTree = "<group>"; };
 		A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorAlert.m; sourceTree = "<group>"; };
+		A71B43D11B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BraintreeDemoScopesPayPalButtonViewController.h; path = "PayPal - Scopes/BraintreeDemoScopesPayPalButtonViewController.h"; sourceTree = "<group>"; };
+		A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoScopesPayPalButtonViewController.m; path = "PayPal - Scopes/BraintreeDemoScopesPayPalButtonViewController.m"; sourceTree = "<group>"; };
 		A71EC4541ABA156100B2F8E2 /* BTClientDeprecatedSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientDeprecatedSpec.m; sourceTree = "<group>"; };
 		A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorStateSpec.m; sourceTree = "<group>"; };
 		A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchURLSpec.m; sourceTree = "<group>"; };
@@ -2023,6 +2026,7 @@
 				163357751AEE102000794AAA /* UI Components */,
 				163357861AEE1A2100794AAA /* Venmo - BTUIVenmoButton */,
 				163357891AEE1A5D00794AAA /* Venmo - Custom Button */,
+				A71B43D41B1CDD3E006B9C2A /* PayPal - Scopes */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -2116,6 +2120,15 @@
 				0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		A71B43D41B1CDD3E006B9C2A /* PayPal - Scopes */ = {
+			isa = PBXGroup;
+			children = (
+				A71B43D11B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.h */,
+				A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */,
+			);
+			name = "PayPal - Scopes";
 			sourceTree = "<group>";
 		};
 		A72B380E196339C7009AD2F5 /* Data */ = {
@@ -3232,6 +3245,7 @@
 				CD9ED8C5A85D7AF64C4F2340 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m in Sources */,
 				16C402B91AEF3906004E6881 /* BraintreeDemoBraintreeDataViewController.m in Sources */,
 				1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */,
+				A71B43D31B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */,
 				CD9ED53E9C13C386FFF05FC2 /* BraintreeDemoThreeDSecureViewController.m in Sources */,
 				163357801AEE103000794AAA /* BraintreeDemoPaymentsUIComponentsViewController.m in Sources */,
 				A76819A61B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m in Sources */,
