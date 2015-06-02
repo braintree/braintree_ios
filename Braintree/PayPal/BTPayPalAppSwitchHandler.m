@@ -151,7 +151,7 @@
                                          code:BTAppSwitchErrorFailed
                                      userInfo:@{NSLocalizedDescriptionKey:@"Failed to initiate PayPal app switch."}];
         }
-        return NO;
+        return YES; //return YES because we can't trust the response of the wallet app
     }
 }
 
