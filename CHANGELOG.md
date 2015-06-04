@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## 3.8.2 (2015-06-04)
+
+* Fix bug in Demo app
+  * Menu button now works correctly
+* Fix bug with PayPal app switching
+  * The bug occurred when installing a new app after the Braintree SDK had been initialized. When attempting to authorize with PayPal in this scenario, the SDK would switch to the `wallet` and launch the `in-app` authorization. 
+
 ## 3.8.1 (2015-05-22)
 
 * 3D Secure only: :rotating_light: Breaking API Changes for 3D Secure :rotating_light:
