@@ -241,7 +241,7 @@ describe(@"usage of meta by BTClient", ^{
                 customMetadata.source = BTClientMetadataSourceForm;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                BTClient *originalClient = [[BTClient alloc] initWithClientToken:clientToken];
+                originalClient = [[BTClient alloc] initWithClientToken:clientToken];
                 customMetadataClient = [originalClient copyWithMetadata:^(BTClientMutableMetadata *metadata) {
                     metadata.integration = customMetadata.integration;
                     metadata.source = customMetadata.source;
