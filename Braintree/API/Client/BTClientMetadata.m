@@ -8,12 +8,6 @@
 }
 @end
 
-@interface BTClientMutableMetadata ()
-
-@property (nonatomic, copy) NSString *sessionId;
-
-@end
-
 @implementation BTClientMetadata
 
 - (instancetype)init {
@@ -26,19 +20,19 @@
     return self;
 }
 
-- (instancetype)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone {
     BTClientMetadata *copiedMetadata = [[BTClientMetadata allocWithZone:zone] init];
     copiedMetadata->_integration = _integration;
     copiedMetadata->_source = _source;
-    copiedMetadata->_sessionId = _sessionId;
+    copiedMetadata->_sessionId = [_sessionId copyWithZone:zone];
     return copiedMetadata;
 }
 
-- (instancetype)mutableCopyWithZone:(NSZone *)zone {
+- (id)mutableCopyWithZone:(NSZone *)zone {
     BTClientMutableMetadata *mutableMetadata = [[BTClientMutableMetadata allocWithZone:zone] init];
     mutableMetadata.integration = _integration;
     mutableMetadata.source = _source;
-    mutableMetadata.sessionId = _sessionId;
+    mutableMetadata.sessionId = [_sessionId copyWithZone:zone];
     return mutableMetadata;
 }
 
@@ -86,8 +80,6 @@
 
 
 @implementation BTClientMutableMetadata
-
-@dynamic sessionId;
 
 - (void)setIntegration:(BTClientMetadataIntegrationType)integration {
     _integration = integration;

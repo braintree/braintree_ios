@@ -33,5 +33,6 @@ typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
 
 - (void)setIntegration:(BTClientMetadataIntegrationType)integration;
 - (void)setSource:(BTClientMetadataSourceType)source;
+- (void)setSessionId:(NSString *)sessionId;
 
 @end
