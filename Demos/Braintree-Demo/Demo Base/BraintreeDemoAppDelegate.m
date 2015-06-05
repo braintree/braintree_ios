@@ -22,8 +22,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
     [self setupAppearance];
     [self registerDefaultsFromSettings];
 
-    NSString *paymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
-    [Braintree setReturnURLScheme:paymentsURLScheme];
+    [Braintree setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
 
     return YES;
 }
