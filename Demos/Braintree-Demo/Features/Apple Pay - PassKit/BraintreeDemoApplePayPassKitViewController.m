@@ -9,6 +9,14 @@
 
 @implementation BraintreeDemoApplePayPassKitViewController
 
+- (instancetype)initWithClientToken:(NSString *)clientToken {
+    self = [super initWithClientToken:clientToken];
+    if (self) {
+        self.braintree = [Braintree braintreeWithClientToken:clientToken];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Apple Pay via PassKit";

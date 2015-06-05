@@ -9,6 +9,7 @@
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
+        self.braintree = [Braintree braintreeWithClientToken:clientToken];
         self.paymentProvider = [self.braintree paymentProviderWithDelegate:self];
     }
     return self;
