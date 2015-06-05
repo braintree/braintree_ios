@@ -52,6 +52,21 @@ describe(@"string values", ^{
 
 });
 
+sharedExamplesFor(@"a copied metadata instance", ^(NSDictionary *data) {
+    __block BTClientMetadata *original, *copied;
+    
+    beforeEach(^{
+        original = data[@"original"];
+        copied = data[@"copy"];
+    });
+    
+    it(@"has the same values", ^{
+        expect(copied.integration).to.equal(original.integration);
+        expect(copied.source).to.equal(original.source);
+        expect(copied.sessionId).to.equal(original.sessionId);
+    });
+});
+
 
 describe(@"mutableMetadata", ^{
 
@@ -79,16 +94,16 @@ describe(@"mutableMetadata", ^{
             beforeEach(^{
                 copied = [mutableMetadata copy];
             });
+            
+            itBehavesLike(@"a copied metadata instance", ^{
+                return @{@"original" : mutableMetadata,
+                         @"copy" : copied};
+            });
 
             it(@"returns a different, immutable instance", ^{
                 expect(mutableMetadata).toNot.beIdenticalTo(copied);
                 expect([copied isKindOfClass:[BTClientMetadata class]]).to.beTruthy();
                 expect([copied isKindOfClass:[BTClientMutableMetadata class]]).to.beFalsy();
-            });
-
-            it(@"returns an instance with the same values", ^{
-                expect(copied.integration).to.equal(mutableMetadata.integration);
-                expect(copied.source).to.equal(mutableMetadata.source);
             });
         });
 
@@ -97,16 +112,16 @@ describe(@"mutableMetadata", ^{
             beforeEach(^{
                 copied = [mutableMetadata mutableCopy];
             });
+            
+            itBehavesLike(@"a copied metadata instance", ^{
+                return @{@"original" : mutableMetadata,
+                         @"copy" : copied};
+            });
 
             it(@"returns a different, immutable instance", ^{
                 expect(mutableMetadata).toNot.beIdenticalTo(copied);
                 expect([copied isKindOfClass:[BTClientMetadata class]]).to.beTruthy();
                 expect([copied isKindOfClass:[BTClientMutableMetadata class]]).to.beTruthy();
-            });
-
-            it(@"returns an instance with the same values", ^{
-                expect(copied.integration).to.equal(mutableMetadata.integration);
-                expect(copied.source).to.equal(mutableMetadata.source);
             });
         });
     });
@@ -142,16 +157,16 @@ describe(@"metadata", ^{
             beforeEach(^{
                 copied = [metadata copy];
             });
+            
+            itBehavesLike(@"a copied metadata instance", ^{
+                return @{@"original" : metadata,
+                         @"copy" : copied};
+            });
 
             it(@"returns a different, immutable instance", ^{
                 expect(metadata).toNot.beIdenticalTo(copied);
                 expect([copied isKindOfClass:[BTClientMetadata class]]).to.beTruthy();
                 expect([copied isKindOfClass:[BTClientMutableMetadata class]]).to.beFalsy();
-            });
-
-            it(@"returns an instance with the same values", ^{
-                expect(copied.integration).to.equal(metadata.integration);
-                expect(copied.source).to.equal(metadata.source);
             });
         });
 
@@ -160,16 +175,16 @@ describe(@"metadata", ^{
             beforeEach(^{
                 copied = [metadata mutableCopy];
             });
+            
+            itBehavesLike(@"a copied metadata instance", ^{
+                return @{@"original" : metadata,
+                         @"copy" : copied};
+            });
 
             it(@"returns a different, immutable instance", ^{
                 expect(copied).toNot.beIdenticalTo(metadata);
                 expect([copied isKindOfClass:[BTClientMetadata class]]).to.beTruthy();
                 expect([copied isKindOfClass:[BTClientMutableMetadata class]]).to.beTruthy();
-            });
-
-            it(@"returns an instance with the same values", ^{
-                expect(copied.integration).to.equal(metadata.integration);
-                expect(copied.source).to.equal(metadata.source);
             });
         });
     });
