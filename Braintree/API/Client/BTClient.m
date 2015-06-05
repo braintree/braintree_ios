@@ -114,6 +114,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
     BTClient *copiedClient = [[BTClient allocWithZone:zone] init];
+    copiedClient.additionalPayPalScopes = [_additionalPayPalScopes copy];
     copiedClient.clientToken = [_clientToken copy];
     copiedClient.configuration = [_configuration copy];
     copiedClient.clientApiHttp = [_clientApiHttp copy];
