@@ -29,6 +29,8 @@ NSString *const BTCoinbaseAcceptanceSpecCoinbaseScheme = @"com.coinbase.oauth-au
                                    [button addTarget:self action:@selector(tappedCoinbase) forControlEvents:UIControlEventTouchUpInside];
                                    [self.view addSubview:button];
                                    [button autoCenterInSuperviewMargins];
+                                   
+                                   [mockApplication stopMocking];
                                }];
 
     self.statusLabel = [[UILabel alloc] initForAutoLayout];

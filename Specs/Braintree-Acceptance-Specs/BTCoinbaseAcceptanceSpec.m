@@ -66,9 +66,6 @@ withinNavigationControllerWithNavigationBarClass:nil
     });
 
     it(@"shows the error when the coinbase flow results in an error", ^{
-        id mockSharedApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-        [[[mockSharedApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", BTCoinbaseAcceptanceSpecCoinbaseScheme)];
-
         [system waitForApplicationToOpenURLWithScheme:BTCoinbaseAcceptanceSpecCoinbaseScheme
                                   whileExecutingBlock:^{
                                       [tester tapViewWithAccessibilityLabel:@"Coinbase"];
@@ -82,9 +79,6 @@ withinNavigationControllerWithNavigationBarClass:nil
     });
 
     it(@"distinguishes the canceled/denied flow from other errors flows", ^{
-        id mockSharedApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-        [[[mockSharedApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", BTCoinbaseAcceptanceSpecCoinbaseScheme)];
-
         [system waitForApplicationToOpenURLWithScheme:BTCoinbaseAcceptanceSpecCoinbaseScheme
                                   whileExecutingBlock:^{
                                       [tester tapViewWithAccessibilityLabel:@"Coinbase"];
