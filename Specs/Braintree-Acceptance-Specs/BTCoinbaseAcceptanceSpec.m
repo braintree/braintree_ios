@@ -48,7 +48,7 @@ describe(@"Coinbase authorization", ^{
 withinNavigationControllerWithNavigationBarClass:nil
                          toolbarClass:nil
                    configurationBlock:nil];
-        [tester waitForTimeInterval:1]; // Wait for preparePayPalMobile to finish
+        [tester waitForTimeInterval:2]; // Wait for preparePayPalMobile to finish
         [tester waitForViewWithAccessibilityLabel:vc.title];
     });
 
