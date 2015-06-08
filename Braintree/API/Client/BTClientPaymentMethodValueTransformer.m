@@ -45,7 +45,11 @@
 
         payPal.nonce = [responseParser stringForKey:@"nonce"];
         payPal.email = [[responseParser responseParserForKey:@"details"] stringForKey:@"email"];
-
+        NSDictionary *payerInfoDict = [[responseParser responseParserForKey:@"details"] dictionaryForKey:@"payerInfo"];
+        if (payerInfoDict) {
+            payPal.additionalInformation = payerInfoDict;
+        }
+        
         // Braintree gateway has some inconsistent behavior depending on
         // the type of nonce, and sometimes returns "PayPal" for description,
         // and sometimes returns a real identifying string. The former is not

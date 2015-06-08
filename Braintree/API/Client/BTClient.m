@@ -388,9 +388,13 @@
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     [requestParameters addEntriesFromDictionary:@{ @"paypal_account": @{
                                                            @"consent_code": authCode ?: NSNull.null,
-                                                           @"correlation_id": correlationId ?: NSNull.null
+                                                           @"correlation_id": correlationId ?: NSNull.null,
+                                                           // Is this safe for all current merchants to use?
+                                                           // Backwards-compatible
+                                                           @"options": @{@"validate": @NO} //TODO
                                                            },
-                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                   
                                                    }];
 
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
