@@ -114,14 +114,13 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 [[[payPalTouch stub] andReturnValue:@YES] canAppSwitchForUrlScheme:OCMOCK_ANY];
             });
 
-            it(@"returns a BTAppSwitchErrorFailed error if PayPalTouch fails to app switch", ^{
+            it(@"returns nil and posts possible-error if PayPalTouch reports possible app switch failure", ^{
                 [[[payPalTouch stub] andReturnValue:@NO] authorizeScopeValues:OCMOCK_ANY configuration:OCMOCK_ANY];
-                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.failed"];
-                NSError *error;
+                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.possible-error"];
+                NSError *error = nil;
                 BOOL handled = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate error:&error];
-                expect(handled).to.beFalsy();
-                expect(error.domain).to.equal(BTAppSwitchErrorDomain);
-                expect(error.code).to.equal(BTAppSwitchErrorFailed);
+                expect(handled).to.beTruthy();
+                expect(error).to.beNil();
             });
 
             it(@"returns nil when PayPalTouch can and does app switch", ^{

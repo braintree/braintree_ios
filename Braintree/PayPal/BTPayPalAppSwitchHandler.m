@@ -143,16 +143,12 @@
     BOOL payPalTouchDidAuthorize = [PayPalTouch authorizeScopeValues:self.client.btPayPal_scopes configuration:configuration];
     if (payPalTouchDidAuthorize) {
         [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.success"];
-        return YES;
     } else {
-        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.error.failed"];
-        if (error) {
-            *error = [NSError errorWithDomain:BTAppSwitchErrorDomain
-                                         code:BTAppSwitchErrorFailed
-                                     userInfo:@{NSLocalizedDescriptionKey:@"Failed to initiate PayPal app switch."}];
-        }
-        return YES; //return YES because we can't trust the response of the wallet app
+        // Until 3.8.2, this event was "ios.paypal.appswitch.initiate.error.failed" and returned NO
+        [self.client postAnalyticsEvent:@"ios.paypal.appswitch.initiate.possible-error"];
     }
+    // Work around an iOS bug that causes -openURL: to return NO after a new app is installed
+    return YES;
 }
 
 - (BOOL)appSwitchAvailableForClient:(BTClient *)client {
