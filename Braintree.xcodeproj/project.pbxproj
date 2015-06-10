@@ -134,7 +134,6 @@
 		A71B43D31B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */; };
 		A71EC4551ABA156100B2F8E2 /* BTClientDeprecatedSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A71EC4541ABA156100B2F8E2 /* BTClientDeprecatedSpec.m */; };
 		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
-		A72473AF1B28B9FB009179DF /* BTPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = A72473AE1B28B9FB009179DF /* BTPostalAddress.m */; };
 		A7281C5819A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */; };
 		A7293F2D1AC0F05800FBD6FD /* BTOfflineClientSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7293F2C1AC0F05800FBD6FD /* BTOfflineClientSpec.m */; };
 		A72B37FE19633826009AD2F5 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
@@ -706,7 +705,7 @@
 		A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoScopesPayPalButtonViewController.m; path = "PayPal - Scopes/BraintreeDemoScopesPayPalButtonViewController.m"; sourceTree = "<group>"; };
 		A71EC4541ABA156100B2F8E2 /* BTClientDeprecatedSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientDeprecatedSpec.m; sourceTree = "<group>"; };
 		A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorStateSpec.m; sourceTree = "<group>"; };
-		A72473AD1B28B9FB009179DF /* BTPostalAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTPostalAddress.h; path = Models/BTPostalAddress.h; sourceTree = "<group>"; };
+		A72473AD1B28B9FB009179DF /* BTPostalAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTPostalAddress.h; path = ../Models/BTPostalAddress.h; sourceTree = "<group>"; };
 		A72473AE1B28B9FB009179DF /* BTPostalAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPostalAddress.m; sourceTree = "<group>"; };
 		A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchURLSpec.m; sourceTree = "<group>"; };
 		A7293F2C1AC0F05800FBD6FD /* BTOfflineClientSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTOfflineClientSpec.m; sourceTree = "<group>"; };
@@ -1274,6 +1273,7 @@
 		1621747F192D8725008DC35D /* @Public */ = {
 			isa = PBXGroup;
 			children = (
+				A72473AD1B28B9FB009179DF /* BTPostalAddress.h */,
 				1621747B192D8725008DC35D /* Braintree-PayPal.h */,
 				16217484192D8725008DC35D /* BTClient+BTPayPal.h */,
 				1621747C192D8725008DC35D /* BTErrors+BTPayPal.h */,
@@ -1304,7 +1304,6 @@
 		16217492192D8725008DC35D /* PayPal */ = {
 			isa = PBXGroup;
 			children = (
-				A72473AD1B28B9FB009179DF /* BTPostalAddress.h */,
 				A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */,
 				A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */,
 				16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */,
@@ -3232,7 +3231,6 @@
 				842E21C81B02708E0036DA66 /* BraintreeDemoBTUICoinbaseButtonViewController.m in Sources */,
 				16217531192D922F008DC35D /* BraintreeDemoCardTokenizationViewController.m in Sources */,
 				16D464521AECA5FB00177B0C /* BraintreeDemoDropInViewController.m in Sources */,
-				A72473AF1B28B9FB009179DF /* BTPostalAddress.m in Sources */,
 				16D4644B1AECA24500177B0C /* BraintreeDemoBaseViewController.m in Sources */,
 				16A750AD1A706E2200C8FAE4 /* BraintreeDemoSettings.m in Sources */,
 				1621752A192D922F008DC35D /* BraintreeDemoMerchantAPI.m in Sources */,

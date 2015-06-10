@@ -44,4 +44,8 @@ NSString *const BTPostalAddressKeyStreet2 = @"street2";
     return self.rawDictionary[BTPostalAddressKeyState];
 }
 
+- (id)copyWithZone:(__unused NSZone *)zone {
+    return [BTPostalAddress addressWithDictionary:self.rawDictionary];
+}
+
 @end

@@ -5,7 +5,7 @@
 
 - (id)mutableCopyWithZone:(__unused NSZone *)zone {
     BTMutablePayPalPaymentMethod *mutablePayPalPaymentMethod = [[BTMutablePayPalPaymentMethod alloc] init];
-    mutablePayPalPaymentMethod.additionalInformation = self.additionalInformation;
+    mutablePayPalPaymentMethod.billingAddress = self.billingAddress;
     mutablePayPalPaymentMethod.email = self.email;
     mutablePayPalPaymentMethod.locked = self.locked;
     mutablePayPalPaymentMethod.nonce = self.nonce;
@@ -16,7 +16,7 @@
 }
 
 - (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"<%@:%p \"%@\" email:%@ nonce:%@ additionalInformation:%@>", NSStringFromClass([self class]), self, self.email, [self description], self.nonce, self.additionalInformation];
+    return [NSString stringWithFormat:@"<%@:%p \"%@\" email:%@ nonce:%@ billingAddress:%@>", NSStringFromClass([self class]), self, self.email, [self description], self.nonce, self.billingAddress];
 }
 
 @end

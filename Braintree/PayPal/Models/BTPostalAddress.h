@@ -9,7 +9,7 @@ extern NSString *const BTPostalAddressKeyState;
 extern NSString *const BTPostalAddressKeyStreet1;
 extern NSString *const BTPostalAddressKeyStreet2;
 
-@interface BTPostalAddress : NSObject
+@interface BTPostalAddress : NSObject <NSCopying>
 
 /// Create a postal address object from a dictionary.
 + (instancetype)addressWithDictionary:(NSDictionary *)rawDictionary;
