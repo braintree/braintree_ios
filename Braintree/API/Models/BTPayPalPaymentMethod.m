@@ -1,14 +1,6 @@
 #import "BTPayPalPaymentMethod_Mutable.h"
 #import "BTMutablePayPalPaymentMethod.h"
 
-NSString *const kBTAdditionalInformationKeyAccountAddress = @"accountAddress";
-NSString *const kBTAdditionalInformationKeyCity = @"city";
-NSString *const kBTAdditionalInformationKeyCounty = @"country";
-NSString *const kBTAdditionalInformationKeyPostalCode = @"postalCode";
-NSString *const kBTAdditionalInformationKeyState = @"state";
-NSString *const kBTAdditionalInformationKeyStreet1 = @"street1";
-NSString *const kBTAdditionalInformationKeyStreet2 = @"street2";
-
 @implementation BTPayPalPaymentMethod
 
 - (id)mutableCopyWithZone:(__unused NSZone *)zone {
