@@ -803,14 +803,13 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           [self waitForExpectationsWithTimeout:10 handler:nil];
       });
 
-      fit(@"can save a PayPal payment method based on an auth code", ^{
+      it(@"can save a PayPal payment method based on an auth code", ^{
           XCTestExpectation *expectation = [self expectationWithDescription:@"Save payment method"];
           [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode"
                                  applicationCorrelationID:@"testCorrelationId"
                                                   success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
                                                       expect(payPalPaymentMethod.nonce).to.beANonce();
                                                       expect(payPalPaymentMethod.email).to.beKindOf([NSString class]);
-                                                      expect(payPalPaymentMethod.billingAddress).toNot.beNil();
                                                       [expectation fulfill];
                                                   } failure:nil];
           [self waitForExpectationsWithTimeout:10 handler:nil];

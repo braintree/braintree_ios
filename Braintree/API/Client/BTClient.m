@@ -386,12 +386,12 @@
                                     failure:(BTClientFailureBlock)failureBlock {
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];
+    // To preserve backwards compatibility - only set shouldValidate to FALSE when requesting additional scopes
+    BOOL shouldValidate = [self.additionalPayPalScopes count] == 0;
     [requestParameters addEntriesFromDictionary:@{ @"paypal_account": @{
                                                            @"consent_code": authCode ?: NSNull.null,
                                                            @"correlation_id": correlationId ?: NSNull.null,
-                                                           // Is this safe for all current merchants to use?
-                                                           // Backwards-compatible
-                                                           @"options": @{@"validate": @NO}
+                                                           @"options": @{@"validate": @(shouldValidate)}
                                                            },
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                    

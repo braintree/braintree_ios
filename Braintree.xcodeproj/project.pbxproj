@@ -298,7 +298,7 @@
 		1607FE38192D96BE0099D504 /* TLDR.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TLDR.md; sourceTree = "<group>"; };
 		1607FE48192D974C0099D504 /* Braintree-PayPal-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-PayPal-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1607FE5E192D97570099D504 /* Braintree-PayPal-Integration-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-PayPal-Integration-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		1607FE6E192D97CD0099D504 /* BTClient+BTPayPalSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTPayPalSpec.m"; sourceTree = "<group>"; };
+		1607FE6E192D97CD0099D504 /* BTClient+BTPayPalSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTPayPalSpec.m"; sourceTree = "<group>"; tabWidth = 2; };
 		1607FE70192D97CD0099D504 /* BTPayPalViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalViewControllerSpec.m; sourceTree = "<group>"; };
 		1607FE71192D97CD0099D504 /* Braintree-PayPal-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-PayPal-Specs-Info.plist"; sourceTree = "<group>"; };
 		1607FE72192D97CD0099D504 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };

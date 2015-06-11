@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.0 (2015-06-12)
+
+* Add support for additional scopes during PayPal authorization
+  * Specifically supporting the `address` scope
+  * BTPayPalPaymentMethod now has a `billingAddress` property that is set when an address is present. This property is of type `BTPostalAddress`.
+
 ## 3.8.2 (2015-06-04)
 
 * Fix bug in Demo app

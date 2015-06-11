@@ -112,6 +112,58 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
       expect(scopes).to.contain(@"email");
       expect(scopes).to.contain(@"https://uri.paypal.com/services/payments/futurepayments");
     });
+    
+    it(@"does not contain address scope by default", ^{
+      mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
+      BTClient * client = [BTClientSpecHelper clientForTestCase:self withOverrides:mutableClaims async:asyncClient];
+      NSSet *scopes = [client btPayPal_scopes];
+      expect(scopes).toNot.contain(@"address");
+    });
+    
+    it(@"includes additional scopes and default scopes (email and future payments)", ^{
+      mutableClaims[@"paypal"][@"environment"] = BTConfigurationPayPalEnvironmentLive;
+      BTClient * client = [BTClientSpecHelper clientForTestCase:self withOverrides:mutableClaims async:asyncClient];
+      client.additionalPayPalScopes = [NSSet setWithObjects:@"address", nil];
+      NSSet *scopes = [client btPayPal_scopes];
+      expect(scopes).to.contain(@"address");
+      expect(scopes).to.contain(@"email");
+      expect(scopes).to.contain(@"https://uri.paypal.com/services/payments/futurepayments");
+    });
+    
+  });
+  
+  describe(@"BTPostalAddress", ^{
+    
+    it(@"is created from a valid dictionary", ^{
+      NSDictionary *addressDictionary = @{ @"city" : @"Chicago",
+                                           @"country" : @"US",
+                                           @"postalCode" : @"60606",
+                                           @"state" : @"IL",
+                                           @"street1" : @"123 Fake St.",
+                                           @"street2" : @"Apt 3"
+                                          };
+      BTPostalAddress* postalAddress = [BTPostalAddress addressWithDictionary:addressDictionary];
+      expect(postalAddress).toNot.beNil();
+      expect([postalAddress streetAddress]).to.equal(@"123 Fake St.");
+      expect([postalAddress extendedAddress]).to.equal(@"Apt 3");
+      expect([postalAddress locality]).to.equal(@"Chicago");
+      expect([postalAddress region]).to.equal(@"IL");
+      expect([postalAddress postalCode]).to.equal(@"60606");
+      expect([postalAddress countryCodeAlpha2]).to.equal(@"US");
+    });
+    
+    it(@"handles a malformed dictionary", ^{
+      BTPostalAddress* postalAddress = [BTPostalAddress addressWithDictionary:@{@"bad":@"data"}];
+      expect(postalAddress).toNot.beNil();
+      expect([postalAddress streetAddress]).toNot.equal(@"123 Fake St.");
+    });
+    
+    it(@"handles a nil dictionary", ^{
+      BTPostalAddress* postalAddress = [BTPostalAddress addressWithDictionary:nil];
+      expect(postalAddress).toNot.beNil();
+      expect([postalAddress streetAddress]).toNot.equal(@"123 Fake St.");
+    });
+    
   });
 
 });
