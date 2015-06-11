@@ -15,22 +15,22 @@ extern NSString *const BTPostalAddressKeyStreet2;
 + (instancetype)addressWithDictionary:(NSDictionary *)rawDictionary;
 
 /// Line 1 of the Address (eg. number, street, etc).
-- (NSString *)street1;
+- (NSString *)streetAddress;
 
 /// Optional line 2 of the Address (eg. suite, apt #, etc.).
-- (NSString *)street2;
+- (NSString *)extendedAddress;
 
 /// City name.
-- (NSString *)city;
+- (NSString *)locality;
 
 /// 2 letter country code.
-- (NSString *)country;
+- (NSString *)countryCodeAlpha2;
 
 /// Zip code or equivalent is usually required for countries that have them. For list of countries that do not have postal codes please refer to http://en.wikipedia.org/wiki/Postal_code.
 - (NSString *)postalCode;
 
 /// 2 letter code for US states, and the equivalent for other countries.
-- (NSString *)state;
+- (NSString *)region;
 
 /// Raw data dictionary.
 - (NSDictionary *)rawDictionary;

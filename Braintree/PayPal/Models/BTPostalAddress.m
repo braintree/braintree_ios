@@ -20,19 +20,22 @@ NSString *const BTPostalAddressKeyStreet2 = @"street2";
     return address;
 }
 
-- (NSString *)street1 {
+// Method names follow the `Braintree_Address` convention as documented at:
+// https://developers.braintreepayments.com/ios+php/reference/response/address
+
+- (NSString *)streetAddress {
     return self.rawDictionary[BTPostalAddressKeyStreet1];
 }
 
-- (NSString *)street2 {
+- (NSString *)extendedAddress {
     return self.rawDictionary[BTPostalAddressKeyStreet2];
 }
 
-- (NSString *)city {
+- (NSString *)locality {
     return self.rawDictionary[BTPostalAddressKeyCity];
 }
 
-- (NSString *)country {
+- (NSString *)countryCodeAlpha2 {
     return self.rawDictionary[BTPostalAddressKeyCounty];
 }
 
@@ -40,7 +43,7 @@ NSString *const BTPostalAddressKeyStreet2 = @"street2";
     return self.rawDictionary[BTPostalAddressKeyPostalCode];
 }
 
-- (NSString *)state {
+- (NSString *)region {
     return self.rawDictionary[BTPostalAddressKeyState];
 }
 

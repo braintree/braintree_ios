@@ -391,7 +391,7 @@
                                                            @"correlation_id": correlationId ?: NSNull.null,
                                                            // Is this safe for all current merchants to use?
                                                            // Backwards-compatible
-                                                           @"options": @{@"validate": @NO} //TODO
+                                                           @"options": @{@"validate": @NO}
                                                            },
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                    

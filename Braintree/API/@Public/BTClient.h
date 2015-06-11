@@ -62,7 +62,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// was initialized.
 @property (nonatomic, copy, readonly) NSString *merchantId;
 
-// TODO
+/// A set of strings denoting additional scopes to use when authorizing a PayPal account.
+/// See PayPalOAuthScopes.h for a list of available scopes.
 @property (nonatomic, copy) NSSet *additionalPayPalScopes;
 
 #pragma mark - Fetch a Payment Method
