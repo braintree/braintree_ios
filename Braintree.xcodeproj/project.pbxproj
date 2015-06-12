@@ -287,6 +287,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03473FDC1B2B99C200F87C06 /* BTPostalAddress_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPostalAddress_Internal.h; sourceTree = "<group>"; };
 		03A388561B2B8F6F009940FC /* BTPostalAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPostalAddress.h; sourceTree = "<group>"; };
 		056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0952D25AC13D43208F8288B6 /* libPods-Braintree-AppSwitch-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-AppSwitch-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1304,17 +1305,18 @@
 		16217492192D8725008DC35D /* PayPal */ = {
 			isa = PBXGroup;
 			children = (
+				1621747F192D8725008DC35D /* @Public */,
+				16217491192D8725008DC35D /* BTErrors+BTPayPal.m */,
 				A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */,
 				A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */,
-				16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */,
-				16217491192D8725008DC35D /* BTErrors+BTPayPal.m */,
 				A7FC1CC01992B24900636548 /* BTPayPalAppSwitchHandler.m */,
 				16217480192D8725008DC35D /* BTPayPalButton.m */,
+				16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */,
 				16217481192D8725008DC35D /* BTPayPalViewController.m */,
-				16217493192D872E008DC35D /* README.md */,
-				1621747F192D8725008DC35D /* @Public */,
+				03473FDC1B2B99C200F87C06 /* BTPostalAddress_Internal.h */,
 				16217488192D8725008DC35D /* Models */,
 				16E7B04F19E644700057ABB7 /* mSDK */,
+				16217493192D872E008DC35D /* README.md */,
 				1621748E192D8725008DC35D /* Views */,
 			);
 			path = PayPal;

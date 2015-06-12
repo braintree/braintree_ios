@@ -1,54 +1,28 @@
+#import "BTPostalAddress_Internal.h"
 #import "BTPostalAddress.h"
 
 NSString *const BTPostalAddressKeyAccountAddress = @"accountAddress";
-NSString *const BTPostalAddressKeyCity = @"city";
-NSString *const BTPostalAddressKeyCounty = @"country";
+NSString *const BTPostalAddressKeyLocality = @"city";
+NSString *const BTPostalAddressKeyCountry = @"country";
 NSString *const BTPostalAddressKeyPostalCode = @"postalCode";
-NSString *const BTPostalAddressKeyState = @"state";
-NSString *const BTPostalAddressKeyStreet1 = @"street1";
-NSString *const BTPostalAddressKeyStreet2 = @"street2";
-
-@interface BTPostalAddress ()
-@property (nonatomic, copy) NSDictionary *rawDictionary;
-@end
+NSString *const BTPostalAddressKeyRegion= @"state";
+NSString *const BTPostalAddressKeyStreetAddress = @"street1";
+NSString *const BTPostalAddressKeyExtendedAddress = @"street2";
 
 @implementation BTPostalAddress
 
-+ (instancetype)addressWithDictionary:(NSDictionary *)rawDictionary {
-    BTPostalAddress *address = [[BTPostalAddress alloc] init];
-    address.rawDictionary = rawDictionary;
-    return address;
-}
-
-// Method names follow the `Braintree_Address` convention as documented at:
+// Property names follow the `Braintree_Address` convention as documented at:
 // https://developers.braintreepayments.com/ios+php/reference/response/address
 
-- (NSString *)streetAddress {
-    return self.rawDictionary[BTPostalAddressKeyStreet1];
-}
-
-- (NSString *)extendedAddress {
-    return self.rawDictionary[BTPostalAddressKeyStreet2];
-}
-
-- (NSString *)locality {
-    return self.rawDictionary[BTPostalAddressKeyCity];
-}
-
-- (NSString *)countryCodeAlpha2 {
-    return self.rawDictionary[BTPostalAddressKeyCounty];
-}
-
-- (NSString *)postalCode {
-    return self.rawDictionary[BTPostalAddressKeyPostalCode];
-}
-
-- (NSString *)region {
-    return self.rawDictionary[BTPostalAddressKeyState];
-}
-
 - (id)copyWithZone:(__unused NSZone *)zone {
-    return [BTPostalAddress addressWithDictionary:self.rawDictionary];
+    BTPostalAddress *address = [[BTPostalAddress alloc] init];
+    address.streetAddress = self.streetAddress;
+    address.extendedAddress = self.extendedAddress;
+    address.locality = self.locality;
+    address.countryCodeAlpha2 = self.countryCodeAlpha2;
+    address.postalCode = self.postalCode;
+    address.region = self.region;
+    return address;
 }
 
 @end

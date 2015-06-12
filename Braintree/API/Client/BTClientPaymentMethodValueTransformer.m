@@ -6,6 +6,7 @@
 #import "BTMutableApplePayPaymentMethod.h"
 #import "BTCoinbasePaymentMethod_Internal.h"
 #import "BTPostalAddress.h"
+#import "BTPostalAddress_Internal.h"
 
 @implementation BTClientPaymentMethodValueTransformer
 
@@ -49,8 +50,15 @@
         BTAPIResponseParser *detailsParser = [responseParser responseParserForKey:@"details"];
         payPal.email = [detailsParser stringForKey:@"email"];
         NSDictionary *payerInfoDict = [detailsParser dictionaryForKey:@"payerInfo"];
-        if (payerInfoDict && payerInfoDict[@"accountAddress"]) {
-            payPal.billingAddress = [BTPostalAddress addressWithDictionary:payerInfoDict[@"accountAddress"]];
+        if (payerInfoDict && payerInfoDict[BTPostalAddressKeyAccountAddress]) {
+            NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyAccountAddress];
+            payPal.billingAddress = [[BTPostalAddress alloc] init];
+            payPal.billingAddress.streetAddress = addressDictionary[BTPostalAddressKeyStreetAddress];
+            payPal.billingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyExtendedAddress];
+            payPal.billingAddress.locality = addressDictionary[BTPostalAddressKeyLocality];
+            payPal.billingAddress.region = addressDictionary[BTPostalAddressKeyRegion];
+            payPal.billingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
+            payPal.billingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountry];
         }
         
         // Braintree gateway has some inconsistent behavior depending on
