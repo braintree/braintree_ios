@@ -1,14 +1,5 @@
 #import <Foundation/Foundation.h>
 
-/// Keys for PostalAddress
-extern NSString *const BTPostalAddressKeyAccountAddress;
-extern NSString *const BTPostalAddressKeyCity;
-extern NSString *const BTPostalAddressKeyCounty;
-extern NSString *const BTPostalAddressKeyPostalCode;
-extern NSString *const BTPostalAddressKeyState;
-extern NSString *const BTPostalAddressKeyStreet1;
-extern NSString *const BTPostalAddressKeyStreet2;
-
 @interface BTPostalAddress : NSObject <NSCopying>
 
 /// Create a postal address object from a dictionary.
@@ -31,8 +22,5 @@ extern NSString *const BTPostalAddressKeyStreet2;
 
 /// 2 letter code for US states, and the equivalent for other countries.
 - (NSString *)region;
-
-/// Raw data dictionary.
-- (NSDictionary *)rawDictionary;
 
 @end

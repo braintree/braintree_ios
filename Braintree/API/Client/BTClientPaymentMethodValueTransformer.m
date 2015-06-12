@@ -49,8 +49,8 @@
         BTAPIResponseParser *detailsParser = [responseParser responseParserForKey:@"details"];
         payPal.email = [detailsParser stringForKey:@"email"];
         NSDictionary *payerInfoDict = [detailsParser dictionaryForKey:@"payerInfo"];
-        if (payerInfoDict && payerInfoDict[BTPostalAddressKeyAccountAddress]) {
-            payPal.billingAddress = [BTPostalAddress addressWithDictionary:payerInfoDict[BTPostalAddressKeyAccountAddress]];
+        if (payerInfoDict && payerInfoDict[@"accountAddress"]) {
+            payPal.billingAddress = [BTPostalAddress addressWithDictionary:payerInfoDict[@"accountAddress"]];
         }
         
         // Braintree gateway has some inconsistent behavior depending on

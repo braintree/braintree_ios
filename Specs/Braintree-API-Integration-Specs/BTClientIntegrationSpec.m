@@ -826,6 +826,26 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                   } failure:nil];
           [self waitForExpectationsWithTimeout:10 handler:nil];
       });
+      
+      it(@"can save a PayPal payment method that includes address information when an additional address scope is set", ^{
+          XCTestExpectation *expectation = [self expectationWithDescription:@"Save payment method"];
+          testClient.additionalPayPalScopes = [NSSet setWithObject:@"address"];
+          [testClient savePaypalPaymentMethodWithAuthCode:@"testAuthCode"
+                                 applicationCorrelationID:@"testCorrelationId"
+                                                  success:^(BTPayPalPaymentMethod *payPalPaymentMethod){
+                                                      expect(payPalPaymentMethod.nonce).to.beANonce();
+                                                      expect(payPalPaymentMethod.email).to.beKindOf([NSString class]);
+                                                      expect(payPalPaymentMethod.billingAddress).toNot.beNil();
+                                                      expect(payPalPaymentMethod.billingAddress.streetAddress).to.beKindOf([NSString class]);
+                                                      expect(payPalPaymentMethod.billingAddress.extendedAddress).to.beKindOf([NSString class]);
+                                                      expect(payPalPaymentMethod.billingAddress.locality).to.beKindOf([NSString class]);
+                                                      expect(payPalPaymentMethod.billingAddress.region).to.beKindOf([NSString class]);
+                                                      expect(payPalPaymentMethod.billingAddress.postalCode).to.beKindOf([NSString class]);
+                                                      expect(payPalPaymentMethod.billingAddress.countryCodeAlpha2).to.beKindOf([NSString class]);
+                                                      [expectation fulfill];
+                                                  } failure:nil];
+          [self waitForExpectationsWithTimeout:10 handler:nil];
+      });
   });
 
   describe(@"a client initialized with a revoked authorization fingerprint", ^{
