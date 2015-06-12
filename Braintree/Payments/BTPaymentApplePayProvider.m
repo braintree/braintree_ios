@@ -18,11 +18,19 @@
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, strong) NSError *applePayError;
 @property (nonatomic, strong) BTPaymentMethod *applePayPaymentMethod;
+
+- (instancetype)init NS_DESIGNATED_INITIALIZER DEPRECATED_ATTRIBUTE;
+
 @end
 
 @implementation BTPaymentApplePayProvider
 
+- (instancetype)init {
+    return [super init];
+}
+
 - (instancetype)initWithClient:(BTClient *)client {
+    self = [super init];
     if (self) {
         self.client = client;
     }

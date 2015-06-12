@@ -18,6 +18,10 @@ NSString *const BTClientTokenKeyConfigURL = @"configUrl";
 
 @implementation BTClientToken
 
+- (instancetype)init {
+    return [self initWithClientTokenString:nil error:nil];;
+}
+
 - (instancetype)initWithClientTokenString:(NSString *)JSONString error:(NSError * __autoreleasing *)error {
     self = [super init];
     if (self) {

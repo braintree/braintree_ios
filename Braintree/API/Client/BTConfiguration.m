@@ -52,6 +52,10 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 
 @implementation BTConfiguration
 
+- (instancetype)init {
+    return [self initWithResponseParser:nil error:nil];
+}
+
 - (instancetype)initWithResponseParser:(BTAPIResponseParser *)responseParser error:(NSError **)error {
     self = [super init];
     if (self) {
