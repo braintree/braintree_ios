@@ -60,7 +60,11 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
 }
 
 - (NSSet *)btPayPal_scopes {
-    return [NSSet setWithObjects:kPayPalOAuth2ScopeFuturePayments, kPayPalOAuth2ScopeEmail, nil];
+    NSSet *defaultScopes = [NSSet setWithObjects:kPayPalOAuth2ScopeFuturePayments, kPayPalOAuth2ScopeEmail, nil];
+    if (self.additionalPayPalScopes != nil) {
+        return [self.additionalPayPalScopes setByAddingObjectsFromSet:defaultScopes];
+    }
+    return defaultScopes;
 }
 
 - (PayPalProfileSharingViewController *)btPayPal_profileSharingViewControllerWithDelegate:(id<PayPalProfileSharingDelegate>)delegate {

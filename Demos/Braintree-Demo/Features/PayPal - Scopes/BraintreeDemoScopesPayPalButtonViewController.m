@@ -1,14 +1,14 @@
-#import "BraintreeDemoCustomPayPalButtonViewController.h"
+#import "BraintreeDemoScopesPayPalButtonViewController.h"
 
 #import <Braintree/Braintree-Payments.h>
 #import <Braintree/UIColor+BTUI.h>
 #import "PayPalMobile.h"
 
-@interface BraintreeDemoCustomPayPalButtonViewController ()
+@interface BraintreeDemoScopesPayPalButtonViewController ()
 @property(nonatomic, strong) BTPaymentProvider *paymentProvider;
 @end
 
-@implementation BraintreeDemoCustomPayPalButtonViewController
+@implementation BraintreeDemoScopesPayPalButtonViewController
 
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
@@ -21,7 +21,7 @@
 - (UIView *)paymentButton {
     if ([self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal]) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setTitle:@"PayPal (custom button)" forState:UIControlStateNormal];
+        [button setTitle:@"PayPal (Address Scope)" forState:UIControlStateNormal];
         [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [button setTitleColor:[[UIColor blueColor] bt_adjustedBrightness:0.5] forState:UIControlStateHighlighted];
         [button addTarget:self action:@selector(tappedCustomPayPal) forControlEvents:UIControlEventTouchUpInside];
@@ -33,6 +33,7 @@
 
 - (void)tappedCustomPayPal {
     self.progressBlock(@"Tapped PayPal - initiating PayPal auth using BTPaymentProvider");
+    self.braintree.client.additionalPayPalScopes = [NSSet setWithObjects:kPayPalOAuth2ScopeAddress, nil];
     [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
 }
 

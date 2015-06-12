@@ -114,6 +114,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
     BTClient *copiedClient = [[BTClient allocWithZone:zone] init];
+    copiedClient.additionalPayPalScopes = [_additionalPayPalScopes copy];
     copiedClient.clientToken = [_clientToken copy];
     copiedClient.configuration = [_configuration copy];
     copiedClient.clientApiHttp = [_clientApiHttp copy];
@@ -385,11 +386,15 @@
                                     failure:(BTClientFailureBlock)failureBlock {
 
     NSMutableDictionary *requestParameters = [self metaPostParameters];
+    // To preserve backwards compatibility - only set shouldValidate to FALSE when requesting additional scopes
+    BOOL shouldValidate = [self.additionalPayPalScopes count] == 0;
     [requestParameters addEntriesFromDictionary:@{ @"paypal_account": @{
                                                            @"consent_code": authCode ?: NSNull.null,
-                                                           @"correlation_id": correlationId ?: NSNull.null
+                                                           @"correlation_id": correlationId ?: NSNull.null,
+                                                           @"options": @{@"validate": @(shouldValidate)}
                                                            },
-                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                   
                                                    }];
 
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
