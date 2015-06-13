@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.1 (2015-06-12)
+
+* Merge public master
+
 ## 3.9.0 (2015-06-12)
 
 * Add support for additional scopes during PayPal authorization
