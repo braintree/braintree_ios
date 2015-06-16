@@ -101,7 +101,7 @@ typedef void (^BraintreeCompletionBlock)(Braintree *__nullable braintree, NSErro
 /// @param cardDetails a tokenization request object containing the raw card details
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
 - (void)tokenizeCard:(BTClientCardTokenizationRequest *)cardDetails
-          completion:(void (^)(NSString __nullable *nonce, NSError __nullable *error))completionBlock;
+          completion:(void (^)(NSString * __nullable nonce, NSError __nullable *error))completionBlock;
 
 /// Creates and returns a payment method nonce for the given Apple Pay payment details
 ///
@@ -111,7 +111,7 @@ typedef void (^BraintreeCompletionBlock)(Braintree *__nullable braintree, NSErro
 /// @param applePayPayment a PKPayment you receive from a PKPaymentAuthorizationViewControllerDelegate
 /// @param completionBlock Completion block that is called exactly once asynchronously, providing either a nonce upon success or an error upon failure.
 - (void)tokenizeApplePayPayment:(PKPayment *)applePayPayment
-                     completion:(void (^)(NSString __nullable *nonce, NSError __nullable *error))completionBlock;
+                     completion:(void (^)(NSString * __nullable nonce, NSError __nullable *error))completionBlock;
 
 /// Initializes a provider that can initiate various payment method creation flows.
 ///
@@ -189,7 +189,7 @@ typedef void (^BraintreeCompletionBlock)(Braintree *__nullable braintree, NSErro
 - (void)tokenizeCardWithNumber:(NSString *)cardNumber
                expirationMonth:(NSString *)expirationMonth
                 expirationYear:(NSString *)expirationYear
-                    completion:(void (^)(NSString __nullable *nonce, NSError __nullable *error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Please use -[Braintree tokenizeCardWithComponents:completion:]");
+                    completion:(void (^)(NSString * __nullable nonce, NSError __nullable *error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Please use -[Braintree tokenizeCardWithComponents:completion:]");
 
 
 /// Creates and returns a PayPal button that can be added to the UI. When tapped, this button will initiate the PayPal authorization flow.
