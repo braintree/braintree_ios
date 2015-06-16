@@ -38,12 +38,8 @@
     }
 
     UIButton *button;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80300
     if ([PKPaymentButton class]) {
         button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
-#else
-    if (false) {
-#endif
     } else {
         button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setTintColor:[UIColor blackColor]];
@@ -78,7 +74,7 @@
                                            [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod1.amount],
                                            [PKPaymentSummaryItem summaryItemWithLabel:@"BRAINTREE" amount:[NSDecimalNumber decimalNumberWithString:@"14.99"]]
                                            ];
-    paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex];
+    paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover];
     paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
     paymentRequest.currencyCode = @"USD";
     paymentRequest.countryCode = @"US";
@@ -108,9 +104,8 @@
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
-                   didSelectShippingMethod:(PKShippingMethod *)shippingMethod
-                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *))completion {
+- (void)paymentAuthorizationViewController:(nonnull __unused PKPaymentAuthorizationViewController *)controller didSelectShippingMethod:(nonnull PKShippingMethod *)shippingMethod
+                                completion:(nonnull void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * __nonnull))completion {
     PKPaymentSummaryItem *testItem = [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
     if ([shippingMethod.identifier isEqualToString:@"fast"]) {
         completion(PKPaymentAuthorizationStatusSuccess,

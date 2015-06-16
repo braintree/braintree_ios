@@ -380,11 +380,21 @@
 }
 #endif
 
-- (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
+- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
                    applicationCorrelationID:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
+    return [self savePaypalPaymentMethodWithAuthCode:authCode
+                    optionalApplicationCorrelationID:correlationId
+                                             success:successBlock
+                                             failure:failureBlock];
+}
 
+// Required since correlationId in the signature above is __nonnull
+- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
+           optionalApplicationCorrelationID:(NSString *)correlationId
+                                    success:(BTClientPaypalSuccessBlock)successBlock
+                                    failure:(BTClientFailureBlock)failureBlock {
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     // To preserve backwards compatibility - only set shouldValidate to FALSE when requesting additional scopes
     BOOL shouldValidate = [self.additionalPayPalScopes count] == 0;
@@ -420,7 +430,7 @@
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
     [self savePaypalPaymentMethodWithAuthCode:authCode
-                     applicationCorrelationID:nil
+             optionalApplicationCorrelationID:nil
                                       success:successBlock
                                       failure:failureBlock];
 }

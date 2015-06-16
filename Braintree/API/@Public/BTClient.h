@@ -9,15 +9,14 @@
 #import "BTErrors.h"
 #import "BTClientCardRequest.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class BTClient, BTCoinbasePaymentMethod;
 
 #pragma mark Types
 
-/// Block type that takes a `BTClient` or an error
-typedef void (^BTClientCompletionBlock)(BTClient *client, NSError *error);
-
 /// Block type that takes an `NSArray` of `BTPaymentMethod`s
-typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray *paymentMethods);
+typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray<__kindof BTPaymentMethod *> *paymentMethods);
 
 /// Block type that takes a single `BTPaymentMethod`
 typedef void (^BTClientPaymentMethodSuccessBlock)(BTPaymentMethod *paymentMethod);
@@ -51,20 +50,20 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// The client token dictates the behavior of subsequent operations.
 ///
 /// @param clientTokenString Braintree client token
-- (instancetype)initWithClientToken:(NSString *)clientTokenString;
+- (nullable instancetype)initWithClientToken:(NSString *)clientTokenString;
 
 /// The set of challenges that need to be provided to `saveCardWithNumber`
 /// in order to save a card. This is dependent upon on your Gateway settings
 /// (potentially among other factors).
-@property (nonatomic, readonly) NSSet *challenges;
+@property (nonatomic, nullable, readonly) NSSet *challenges;
 
 /// The public Braintree Merchant ID for which this client
 /// was initialized.
-@property (nonatomic, copy, readonly) NSString *merchantId;
+@property (nonatomic, nullable, copy, readonly) NSString *merchantId;
 
 /// A set of strings denoting additional scopes to use when authorizing a PayPal account.
 /// See PayPalOAuthScopes.h for a list of available scopes.
-@property (nonatomic, copy) NSSet *additionalPayPalScopes;
+@property (nonatomic, nullable, copy) NSSet<NSString *> *additionalPayPalScopes;
 
 #pragma mark - Fetch a Payment Method
 
@@ -72,16 +71,16 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 ///
 /// @param successBlock success callback for handling the returned list of payment methods
 /// @param failureBlock failure callback for handling errors
-- (void)fetchPaymentMethodsWithSuccess:(BTClientPaymentMethodListSuccessBlock)successBlock
-                               failure:(BTClientFailureBlock)failureBlock;
+- (void)fetchPaymentMethodsWithSuccess:(nullable BTClientPaymentMethodListSuccessBlock)successBlock
+                               failure:(nullable BTClientFailureBlock)failureBlock;
 
 /// Obtain information about a payment method based on a nonce
 ///
 /// @param successBlock success callback for handling the retrieved payment methods
 /// @param failureBlock failure callback for handling errors
 - (void)fetchPaymentMethodWithNonce:(NSString *)nonce
-                            success:(BTClientPaymentMethodSuccessBlock)successBlock
-                            failure:(BTClientFailureBlock)failureBlock;
+                            success:(nullable BTClientPaymentMethodSuccessBlock)successBlock
+                            failure:(nullable BTClientFailureBlock)failureBlock;
 
 #pragma mark Save a New Payment Method
 
@@ -93,8 +92,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 ///
 /// @see challenges
 - (void)saveCardWithRequest:(BTClientCardRequest *)request
-                    success:(BTClientCardSuccessBlock)successBlock
-                    failure:(BTClientFailureBlock)failureBlock;
+                    success:(nullable BTClientCardSuccessBlock)successBlock
+                    failure:(nullable BTClientFailureBlock)failureBlock;
 
 #if BT_ENABLE_APPLE_PAY
 /// Save a payment method created via Apple Pay
@@ -103,8 +102,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param successBlock success callback for handling the resulting payment method
 /// @param failureBlock failure callback for handling errors
 - (void)saveApplePayPayment:(PKPayment *)payment
-                    success:(BTClientApplePaySuccessBlock)successBlock
-                    failure:(BTClientFailureBlock)failureBlock;
+                    success:(nullable BTClientApplePaySuccessBlock)successBlock
+                    failure:(nullable BTClientFailureBlock)failureBlock;
 #endif
 
 /// Save a paypal payment method to Braintree
@@ -115,8 +114,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param failureBlock failure callback for handling errors
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
                    applicationCorrelationID:(NSString *)applicationCorrelationId
-                                    success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock;
+                                    success:(nullable BTClientPaypalSuccessBlock)successBlock
+                                    failure:(nullable BTClientFailureBlock)failureBlock;
 
 /// Save a paypal payment method to Braintree without a PayPal App Correlation ID
 ///
@@ -128,8 +127,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param successBlock success callback for handling the resulting new PayPal account payment method
 /// @param failureBlock failure callback for handling errors
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
-                                    success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
+                                    success:(nullable BTClientPaypalSuccessBlock)successBlock
+                                    failure:(nullable BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
 
 /// Save a paypal payment method to Braintree
 ///
@@ -142,8 +141,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param failureBlock failure callback for handling errors
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
                               correlationId:(NSString *)correlationId
-                                    success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
+                                    success:(nullable BTClientPaypalSuccessBlock)successBlock
+                                    failure:(nullable BTClientFailureBlock)failureBlock DEPRECATED_ATTRIBUTE;
 
 #pragma mark - Coinbase
 
@@ -154,8 +153,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param failureBlock failure callback for handling errors
 - (void)saveCoinbaseAccount:(id)coinbaseAuthResponse
                storeInVault:(BOOL)storeInVault
-                    success:(BTClientCoinbaseSuccessBlock)successBlock
-                    failure:(BTClientFailureBlock)failureBlock;
+                    success:(nullable BTClientCoinbaseSuccessBlock)successBlock
+                    failure:(nullable BTClientFailureBlock)failureBlock;
 
 #pragma mark Create a Braintree Analytics Event
 
@@ -163,8 +162,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 ///
 /// @param eventKind The analytics event name
 - (void)postAnalyticsEvent:(NSString *)eventKind
-                   success:(BTClientAnalyticsSuccessBlock)successBlock
-                   failure:(BTClientFailureBlock)failureBlock;
+                   success:(nullable BTClientAnalyticsSuccessBlock)successBlock
+                   failure:(nullable BTClientFailureBlock)failureBlock;
 
 - (void)postAnalyticsEvent:(NSString *)eventKind;
 
@@ -200,7 +199,9 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                        cvv:(NSString *)cvv
                 postalCode:(NSString *)postalCode
                   validate:(BOOL)shouldValidate
-                   success:(BTClientCardSuccessBlock)successBlock
-                   failure:(BTClientFailureBlock)failureBlock DEPRECATED_MSG_ATTRIBUTE("Please use BTClientCardRequest and saveCardWithRequest:validate:success:failure:");
+                   success:(nullable BTClientCardSuccessBlock)successBlock
+                   failure:(nullable BTClientFailureBlock)failureBlock DEPRECATED_MSG_ATTRIBUTE("Please use BTClientCardRequest and saveCardWithRequest:validate:success:failure:");
 
 @end
+
+NS_ASSUME_NONNULL_END

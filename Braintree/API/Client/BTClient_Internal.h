@@ -9,6 +9,9 @@
 /// Success Block type for 3D Secure lookups
 typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup);
 
+/// Block type that takes a `BTClient` or an error
+typedef void (^BTClientCompletionBlock)(BTClient *client, NSError *error);
+
 @interface BTClient ()
 @property (nonatomic, strong, readwrite) BTHTTP *configHttp;
 @property (nonatomic, strong, readwrite) BTHTTP *clientApiHttp;

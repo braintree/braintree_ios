@@ -105,7 +105,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: .
+    :path: "."
   FLEX:
     :git: https://github.com/intelliot/FLEX.git
   KIF:
