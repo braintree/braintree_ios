@@ -22,9 +22,9 @@
 
 - (UIControl *)paymentButton {
     if ([self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeVenmo]) {
-        BTUIPayPalButton *payPalButton = [[BTUIPayPalButton alloc] init];
-        [payPalButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
-        return payPalButton;
+        BTUIVenmoButton *venmoButton = [[BTUIVenmoButton alloc] init];
+        [venmoButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
+        return venmoButton;
     } else {
         self.progressBlock(@"canCreatePaymentMethodWithProviderType returns NO, hiding Venmo button");
         return nil;
