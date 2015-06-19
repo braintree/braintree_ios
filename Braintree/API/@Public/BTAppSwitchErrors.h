@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 /// App Switch NSError Domain
 extern NSString *const BTAppSwitchErrorDomain;

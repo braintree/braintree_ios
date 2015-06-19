@@ -1,4 +1,5 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
+
 #import "BTPaymentMethod.h"
 
 /// Card type

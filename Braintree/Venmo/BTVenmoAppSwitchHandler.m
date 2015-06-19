@@ -6,7 +6,7 @@
 #import "BTClient_Internal.h"
 #import "BTMutableCardPaymentMethod.h"
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 @implementation BTVenmoAppSwitchHandler
 

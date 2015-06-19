@@ -1,4 +1,4 @@
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 #import "BTThreeDSecureLookupResult.h"
 #import "BTThreeDSecureErrors.h"

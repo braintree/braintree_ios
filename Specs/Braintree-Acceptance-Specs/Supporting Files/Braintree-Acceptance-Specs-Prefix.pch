@@ -1,5 +1,5 @@
-@import Foundation;
-@import XCTest;
+#import <Foundation/Foundation.h>
+#import <XCTest/XCTest.h>
 
 #define SPT_SHORTHAND
 #import <Specta/Specta.h>
