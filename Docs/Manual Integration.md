@@ -11,7 +11,7 @@ your Base SDK.
   - Alternatively, you can [download braintree_ios from Github](https://github.com/braintree/braintree_ios/archive/master.zip) and unzip it into your app's root directory in Finder
 2. Open up your app in Xcode
 3. Create a a new framework target called `Braintree` (please use this exact name)
-  - In Xcode, select `File > New > Target`
+  - In Xcode, select `File` > `New` > `Target`
   - Click `Framework & Library`
   - Click `Cocoa Touch Framework` and `Next`
   - Product Name: `Braintree`
@@ -20,48 +20,44 @@ your Base SDK.
   - Click `Finish`
   - You will now see a new `Braintree` Target Dependency in your main app target (in the first section of `Build Phases`).
 4. Add the Braintree code to project
-  - The code is located in `braintree-ios/Braintree`
   - In Xcode, select `File` > `Add Files to [...]...`
-  - Select `braintree-ios/Braintree`
-  - Add to targets: `Braintree` (your newly created framework target)
-  - Uncheck `[your app target]` from the targets list
+  - Navigate to `[Your app project root]/braintree-ios` and select the `Braintree` directory
+  - Under `Add to targets`, make sure your newly-created framework target `Braintree` is checked and that `[your app target]` is unchecked
   - Optionally check `Copy items if needed`
   - Click `Add`
-  - ![Screenshot of adding the Braintree files to Braintree target](screenshot_add_files.png)
-5. Modify `Braintree` build phases (select the `Braintree` target, then `Build Phases`). 
-  - In `Compile Sources`, delete all .md files (hint: search for *.md*)
+    ![Screenshot of adding the Braintree files to Braintree target](screenshot_add_files.png)
+5. Modify the `Braintree` target's build phases (`Project` > `Braintree` > `Build Phases`)
+  - In `Compile Sources`, delete all `.md` files (tip: search for *.md*)
   - In `Headers`
-    - Under `Headers` > `Public`, delete `Braintree.h`
-    - Select all files in `Headers` > `Project` and drag them to `Headers` > `Public`
-  - In `Link Binary With Libraries`, add the following system frameworks:
-    - `AVFoundation.framework`
-    - `AudioToolbox.framework`
-    - `CoreLocation.framework`
-    - `CoreMedia.framework`
-    - `Foundation.framework`
-    - `MessageUI.framework`
-    - `MobileCoreServices.framework`
-    - `PassKit.framework`
-    - `SystemConfiguration.framework`
-    - `UIKit.framework`
-  - Then, also in `Link Binary With Libraries`, be sure to weak link `PassKit.framework` by changing its Status from `Required` to `Optional`.
-  - In `Copy Bundle Resources`, remove the `.gitignore` entries.
-6. Modify `Braintree` build settings (select the `Braintree` target, then `Build Settings`)
+    - Under `Public`, delete `Braintree.h`
+    - Select all files under `Project` and drag them to `Public`
+  - In `Link Binary With Libraries`
+    - Add the following system frameworks:
+      - `AudioToolbox`
+      - `AVFoundation`
+      - `CoreLocation`
+      - `CoreMedia`
+      - `Foundation`
+      - `MessageUI`
+      - `MobileCoreServices`
+      - `PassKit`
+      - `SystemConfiguration`
+      - `UIKit`
+    - Weak link to `PassKit` by changing its status from `Required` to `Optional`.
+  - In `Copy Bundle Resources`, remove the `.gitignore` entries
+6. Modify `Braintree` build settings (`Project` > `Braintree` > `Build Settings`)
   - Edit `Public Headers Folder Path` by appending `/Braintree` (e.g. `$(CONTENTS_FOLDER_PATH)/Headers/Braintree`)
   - Edit `Other Linker Flags` by adding `-lc++ -ObjC`
-7. Modify `[your app target]` build settings (select the `[your app]` target, then `Build Settings`)
+7. Modify `[your app target]` build settings (`Project` > `[your app]` > `Build Settings`)
   - Set `Always Search User Paths` to `Yes`
 8. Modify `[your app target]` build phases (select the `[your app]` target, then `Build Phases`)
-  - In `Copy Bundle Resources`
-    - Add `Drop-In.strings`, `UI.strings` and `Three-D-Secure.strings` from the Braintree framework target (hint: search for *.strings*)
-    - ![Screenshot of copying bundle resources for i18n](screenshot_copy_bundles.png)
+  - In `Copy Bundle Resources`, add `Drop-In.strings`, `UI.strings` and `Three-D-Secure.strings` from the Braintree framework target (tip: search for *.strings*)
+  ![Screenshot of copying bundle resources for i18n](screenshot_copy_bundles.png)
 9. Remove the `Braintree` scheme
   - In Xcode, select `Product` > `Scheme` > `Manage Schemes...`
-  - Delete `Braintree`
+  - Select the `Braintree` scheme and press the `-` button
 10. Optionally, to include Apple Pay in your app:
-  - Add `BT_ENABLE_APPLE_PAY=1` to `Preprocessor Macros` in both the `Braintree` > `Build Settings` and in your target's `Build Settings`.
-11. Optionally: If you intend to use Coinbase, please integrate [`coinbase-ios-sdk`](https://github.com/coinbase/coinbase-ios-sdk)
-  - The Coinbase SDK code is located on [github](https://github.com/coinbase/coinbase-ios-sdk)
-  - The correct version is specified in [Braintree.podspec](../Braintree.podspec)
-12. Build and Run your app to test out the integration
-13. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
+  - Add `BT_ENABLE_APPLE_PAY=1` to `Preprocessor Macros` in both `Braintree` > `Build Settings` and in your app target's `Build Settings`.
+    ![Screenshot of adding the Apple Pay enabled preprocessor macro](screenshot_add_apple_pay.png)
+11. Build and Run your app to test out the integration
+12. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
