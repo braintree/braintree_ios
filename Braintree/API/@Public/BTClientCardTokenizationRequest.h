@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 /// Representation of a card that should be uploaded to Braintree for payment method tokenization.
 @interface BTClientCardTokenizationRequest : NSObject

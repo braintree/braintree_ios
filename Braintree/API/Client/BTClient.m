@@ -1,4 +1,4 @@
-@import PassKit;
+#import <PassKit/PassKit.h>
 
 #import "BTClient_Internal.h"
 #import "BTClientToken.h"

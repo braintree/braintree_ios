@@ -1,4 +1,4 @@
-@import UIKit;
+#import <UIKit/UIKit.h>
 #import "BTUI.h"
 
 /// The Call To Action control is A button that is intended to be used as the submit button

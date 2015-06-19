@@ -1,5 +1,5 @@
 #if BT_ENABLE_APPLE_PAY
-@import UIKit;
+#import <UIKit/UIKit.h>
 @import PassKit;
 
 @protocol BTMockApplePayPaymentAuthorizationViewControllerDelegate;
