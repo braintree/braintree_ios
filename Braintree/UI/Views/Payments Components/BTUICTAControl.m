@@ -47,6 +47,9 @@
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0f constant:0.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicator attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0f constant:0.0f]];
 
+    self.isAccessibilityElement = YES;
+    self.accessibilityTraits = UIAccessibilityTraitButton;
+    
     [self updateText];
 }
 
@@ -135,6 +138,7 @@
     } else {
         self.label.text = [NSString stringWithFormat:@"%@", self.callToAction];
     }
+    self.accessibilityLabel = self.label.text;
 }
 
 #pragma mark - Theme
