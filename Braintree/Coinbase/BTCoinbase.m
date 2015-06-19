@@ -1,9 +1,8 @@
-#import <coinbase-official/CoinbaseOAuth.h>
-
 #import "BTAppSwitch.h"
 #import "BTCoinbase.h"
 #import "BTClient_Internal.h"
 #import "BTAppSwitchErrors.h"
+#import "CoinbaseOAuth.h"
 
 @interface BTCoinbase ()
 @property (nonatomic, strong) BTClient *client;
