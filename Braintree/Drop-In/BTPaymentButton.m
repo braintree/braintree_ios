@@ -24,9 +24,6 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 - (id)init {
     self = [super init];
-    if (self) {
-        [self setupViews];
-    }
     return self;
 }
 
