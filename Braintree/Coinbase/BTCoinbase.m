@@ -1,5 +1,6 @@
 #import <coinbase-official/CoinbaseOAuth.h>
 
+#import "BTAppSwitch.h"
 #import "BTCoinbase.h"
 #import "BTClient_Internal.h"
 #import "BTAppSwitchErrors.h"
@@ -13,6 +14,12 @@
 
 @synthesize returnURLScheme = _returnURLScheme;
 @synthesize delegate = _delegate;
+
++ (void)load {
+    if (self == [BTCoinbase class]) {
+        [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase] forPaymentProvider:BTPaymentProviderTypeCoinbase];
+    }
+}
 
 + (instancetype)sharedCoinbase {
     static BTCoinbase *coinbase;

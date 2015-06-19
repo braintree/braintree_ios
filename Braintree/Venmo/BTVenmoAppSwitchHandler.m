@@ -5,6 +5,7 @@
 #import "BTClient+BTVenmo.h"
 #import "BTClient_Internal.h"
 #import "BTMutableCardPaymentMethod.h"
+#import "BTAppSwitch.h"
 
 @import UIKit;
 
@@ -12,6 +13,12 @@
 
 @synthesize returnURLScheme = _returnURLScheme;
 @synthesize delegate = _delegate;
+
++ (void)load {
+    if (self == [BTVenmoAppSwitchHandler class]) {
+        [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler] forPaymentProvider:BTPaymentProviderTypeVenmo];
+    }
+}
 
 - (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate error:(NSError *__autoreleasing *)error {
 
