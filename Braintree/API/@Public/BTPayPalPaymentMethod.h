@@ -9,9 +9,27 @@
 @interface BTPayPalPaymentMethod : BTPaymentMethod
 
 /// Email address associated with the PayPal Account.
-@property (nonatomic, readonly, copy) NSString *email;
+@property (nonatomic, copy) NSString *email;
 
-/// The billing address.
+/// Optional. Payer's first name.
+/// Will be provided if you use -[PayPalDriver startCheckout:completion:]
+@property (nonatomic, copy) NSString *firstName;
+
+/// Optional. Payer's last name.
+/// Will be provided if you use -[PayPalDriver startCheckout:completion:]
+@property (nonatomic, copy) NSString *lastName;
+
+/// Optional. Payer's phone number.
+/// Will be provided if you use -[PayPalDriver startCheckout:completion:]
+@property (nonatomic, copy) NSString *phone;
+
+/// Optional. The billing address.
+/// Will be provided if you request "address" scope when using -[PayPalDriver startAuthorizationWithAdditionalScopes:completion:]
+/// Will be provided if you use -[PayPalDriver startCheckout:completion:]
 @property (nonatomic, copy) BTPostalAddress *billingAddress;
+
+/// Optional. The shipping address.
+/// Will be provided if you use -[PayPalDriver startCheckout:completion:]
+@property (nonatomic, copy) BTPostalAddress *shippingAddress;
 
 @end

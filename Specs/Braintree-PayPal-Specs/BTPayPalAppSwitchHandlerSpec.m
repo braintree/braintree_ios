@@ -124,14 +124,14 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 [[[authorizationRequestStub stub] andReturn:authorizationRequestStub] alloc];
             });
 
-            it(@"returns a BTAppSwitchErrorFailed error if PayPalOneTouchCore fails to app switch", ^{
+            it(@"returns a BTAppSwitchErrorFailed error if PayPalOneTouchCore fails to switch", ^{
                 [[[authorizationRequestStub stub] andDo:^(NSInvocation *invocation) {
                     [invocation retainArguments];
                     PayPalOneTouchRequestCompletionBlock completionBlock;
                     [invocation getArgument:&completionBlock atIndex:2];
                     completionBlock(NO, PayPalOneTouchRequestTargetNone, nil);
                 }] performWithCompletionBlock:OCMOCK_ANY];
-                [[client expect] postAnalyticsEvent:@"ios.paypal-otc.none.initiate.failed"];
+                [[client expect] postAnalyticsEvent:@"ios.paypal-future-payments.none.initiate.failed"];
 
                 NSError *error;
                 BOOL handled = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate error:&error];
@@ -141,14 +141,14 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 expect(error.code).to.equal(BTAppSwitchErrorFailed);
             });
 
-            it(@"returns nil when PayPalOneTouchCore can and does app switch", ^{
+            it(@"returns nil when PayPalOneTouchCore can and does web browser switch", ^{
                 [[[authorizationRequestStub stub] andDo:^(NSInvocation *invocation) {
                     [invocation retainArguments];
                     PayPalOneTouchRequestCompletionBlock completionBlock;
                     [invocation getArgument:&completionBlock atIndex:2];
                     completionBlock(YES, PayPalOneTouchRequestTargetBrowser, nil);
                 }] performWithCompletionBlock:OCMOCK_ANY];
-                [[client expect] postAnalyticsEvent:@"ios.paypal-otc.webswitch.initiate.started"];
+                [[client expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
 
                 NSError *error;
                 BOOL handled = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate error:&error];

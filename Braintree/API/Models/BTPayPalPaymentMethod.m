@@ -10,7 +10,11 @@
 - (id)mutableCopyWithZone:(__unused NSZone *)zone {
     BTMutablePayPalPaymentMethod *mutablePayPalPaymentMethod = [[BTMutablePayPalPaymentMethod alloc] init];
     mutablePayPalPaymentMethod.billingAddress = self.billingAddress;
+    mutablePayPalPaymentMethod.shippingAddress = self.shippingAddress;
     mutablePayPalPaymentMethod.email = self.email;
+    mutablePayPalPaymentMethod.firstName = self.firstName;
+    mutablePayPalPaymentMethod.lastName = self.lastName;
+    mutablePayPalPaymentMethod.phone = self.phone;
     mutablePayPalPaymentMethod.locked = self.locked;
     mutablePayPalPaymentMethod.nonce = self.nonce;
     mutablePayPalPaymentMethod.challengeQuestions = [self.challengeQuestions copy];
@@ -20,7 +24,7 @@
 }
 
 - (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"<%@:%p \"%@\" email:%@ nonce:%@ billingAddress:%@>", NSStringFromClass([self class]), self, self.email, [self description], self.nonce, self.billingAddress];
+    return [NSString stringWithFormat:@"<%@:%p \"%@\" email:%@ nonce:%@ billingAddress:%@>", NSStringFromClass([self class]), self, [self description], self.email, self.nonce, self.billingAddress];
 }
 
 @end

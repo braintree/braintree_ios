@@ -5,6 +5,4 @@
 
 - (void)setEmail:(NSString *)email;
 
-@property (nonatomic, readwrite, strong) NSDictionary *additionalInfo;
-
 @end

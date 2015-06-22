@@ -2,6 +2,9 @@
 
 @interface BTPostalAddress : NSObject <NSCopying>
 
+/// Optional. Recipient name for shipping address.
+@property (nonatomic, copy) NSString *recipientName;
+
 /// Line 1 of the Address (eg. number, street, etc).
 @property (nonatomic, copy) NSString *streetAddress;
 
