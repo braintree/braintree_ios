@@ -28,6 +28,7 @@ extern NSString *const BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl;
 extern NSString *const BTConfigurationKeyPayPalMerchantUserAgreementUrl;
 extern NSString *const BTConfigurationKeyPayPalEnvironment;
 extern NSString *const BTConfigurationKeyPayPalEnabled;
+extern NSString *const BTConfigurationKeyPayPalCurrencyCode;
 
 extern NSString *const BTConfigurationPayPalEnvironmentCustom;
 extern NSString *const BTConfigurationPayPalEnvironmentLive;
@@ -37,7 +38,6 @@ extern NSString *const BTConfigurationKeyPayPalDisableAppSwitch;
 
 extern NSString *const BTConfigurationKeyVenmo;
 
-// For testing
 extern NSString *const BTConfigurationKeyCoinbaseEnabled;
 extern NSString *const BTConfigurationKeyCoinbase;
 extern NSString *const BTConfigurationKeyCoinbaseClientId;
@@ -71,32 +71,19 @@ extern NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgree
 
 #pragma mark PayPal
 
-// Returns the PayPal client id determined by Braintree that
-// can be used when initializing `PayPalMobile`.
-//
-// `nil` if PayPal is not enabled for the merchant.
-- (NSString *)btPayPal_clientId;
+// Returns the PayPal client id determined by Braintree control panel settings
+- (NSString *)payPalClientId;
 
 // Returns a boolean if PayPal is enabled.
-- (BOOL) btPayPal_isPayPalEnabled;
+- (BOOL)payPalEnabled;
 
 // Returns the PayPal environment name
-- (NSString *)btPayPal_environment;
+- (NSString *)payPalEnvironment;
 
-- (BOOL)btPayPal_isTouchDisabled;
-
-- (NSString *)btPayPal_merchantName;
-- (NSURL *)btPayPal_merchantUserAgreementURL;
-- (NSURL *)btPayPal_privacyPolicyURL;
-
-// Returns the base URL determined by Braintree that points
-// to a PayPal stage to be used in when configuring `PayPalMobile`.
-//
-// @see PayPalMobile.h
-//
-// @return the PayPal stage URL, including a version path appropriate for the vendored PayPal mSDK, or `nil` if mock mode should be used
-- (NSURL *)btPayPal_directBaseURL;
-
+- (NSString *)payPalMerchantName;
+- (NSURL *)payPalMerchantUserAgreementURL;
+- (NSURL *)payPalPrivacyPolicyURL;
+- (NSString *)payPalCurrencyCode;
 
 #pragma mark Coinbase
 

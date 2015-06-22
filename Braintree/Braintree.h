@@ -6,6 +6,7 @@
 #import <Braintree/Braintree-Payments-UI.h>
 #import <Braintree/Braintree-Payments.h>
 
+#import <Braintree/BTPaypalButton.h>
 #import <Braintree/BTDropInViewController.h>
 #import <Braintree/BTPaymentButton.h>
 #import <Braintree/BTClientCardTokenizationRequest.h>

@@ -107,6 +107,12 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                     failure:(BTClientFailureBlock)failureBlock;
 #endif
 
+
+- (void)savePaypalAccount:(NSDictionary *)paypalResponse
+         clientMetadataID:(NSString *)applicationCorrelationId
+                  success:(BTClientPaypalSuccessBlock)successBlock
+                  failure:(BTClientFailureBlock)failureBlock;
+
 /// Save a paypal payment method to Braintree
 ///
 /// @param authCode Authorization Code
@@ -116,7 +122,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
                    applicationCorrelationID:(NSString *)applicationCorrelationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock;
+                                    failure:(BTClientFailureBlock)failureBlock DEPRECATED_MSG_ATTRIBUTE("Please use savePayPalAccount:success:failure:");
 
 /// Save a paypal payment method to Braintree without a PayPal App Correlation ID
 ///
@@ -167,6 +173,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
                    failure:(BTClientFailureBlock)failureBlock;
 
 - (void)postAnalyticsEvent:(NSString *)eventKind;
+
 
 #pragma mark - Library Metadata
 

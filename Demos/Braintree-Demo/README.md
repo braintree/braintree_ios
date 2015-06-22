@@ -38,6 +38,6 @@ Your demo view controller may call its `progressBlock` or `completionBlock` in o
 
 1. Create a new `BraintreeDemoBaseViewController` subclass in a new directory under Features.
 2. Utilize `self.braintree` to implement a Braintree integration, and call `completionBlock` upon successfully creating a payment method.
-3. Register this class in the Settings bundle, by adding new items in the `Integration` multi value item, under `titles`, `shortTitles` and `values`.
+3. Register this class in the Settings bundle, by adding new items in the `Integration` multi value item, under `titles` and `values`.
 
 💸👍🏻

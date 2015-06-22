@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 4.0.0-pre1
+
+* Replace mSDK with One Touch Core
+  * This replaces PayPal in-app login with browser switch for future payments consent
+  * This adds the capability to perform checkout (single payments) with One Touch
+
 ## 3.9.1 (2015-06-12)
 
 * Merge public master

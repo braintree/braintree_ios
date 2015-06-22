@@ -2,9 +2,8 @@
 #import "BTData.h"
 #import "BTClientSpecHelper.h"
 #import "BTTestClientTokenFactory.h"
-#import "BTClientToken.h"
 #import "BTConfiguration.h"
-#import "BTClient+BTPayPal.h"
+#import "PayPalOneTouchCore.h"
 
 @interface TestDataDelegate : NSObject <BTDataDelegate>
 @property (nonatomic, strong) NSError *error;
@@ -131,11 +130,7 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
             expect(deviceDataDictionary[@"fraud_merchant_id"]).to.equal(@"600000");
             expect(deviceDataDictionary[@"device_session_id"]).to.haveCountOf(32);
             
-            if ([testData[@"shouldIncludeCorrelationId"] boolValue]) {
-                expect(deviceDataDictionary[@"correlation_id"]).to.haveCountOf(32);
-            } else {
-                expect(deviceDataDictionary[@"correlation_id"]).to.beNil();
-            }
+            expect(deviceDataDictionary[@"correlation_id"]).to.haveCountOf(32);
             
             [self waitForExpectationsWithTimeout:10 handler:nil];
         });
@@ -162,9 +157,8 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
 
             BTClient *client = [BTClientSpecHelper asyncClientForTestCase:self withOverrides:@{ BTConfigurationKeyPayPalEnabled: @NO, BTConfigurationKeyPayPal: [NSNull null] }];
 
-            id stubClient = [OCMockObject partialMockForObject:client];
-            [[[stubClient stub] andReturnValue:@NO] btPayPal_preparePayPalMobileWithError:NULL];
-            [[[stubClient stub] andReturn:nil] btPayPal_applicationCorrelationId];
+            id stubClient = [OCMockObject mockForClass:[PayPalOneTouchCore class]];
+            [[[stubClient stub] classMethod] clientMetadataID];
 
             BTData *data = [[BTData alloc] initWithClient:client environment:env];
             [data setFraudMerchantId:@"600000"];
@@ -192,16 +186,14 @@ describe(@"defaultDataForEnvironment:delegate:", ^{
                                                      @"paypalConfiguration": @{
                                                              @"clientId": NSNull.null,
                                                              @"environment": BTConfigurationPayPalEnvironmentOffline
-                                                             },
-                                                     @"shouldIncludeCorrelationId": @NO
+                                                             }
                                                      });
     itBehavesLike(@"a successful data collector", @{@"environmentName": @"Production",
                                                     @"environment": @(BTDataEnvironmentProduction),
                                                     @"paypalConfiguration": @{
                                                             @"clientId": @"ARKrYRDh3AGXDzW7sO_3bSkq-U1C7HG_uWNC-z57LjYSDNUOSaOtIa9q6VpW",
                                                             @"environment": @"live"
-                                                            },
-                                                    @"shouldIncludeCorrelationId": @YES
+                                                            }
                                                     });
     itBehavesLike(@"a no-op data collector", @{@"environmentName": @"Development", @"environment": @(BTDataEnvironmentDevelopment)});
 });

@@ -5,7 +5,6 @@
 #import "BTUIScrollView.h"
 #import "BTDropInUtil.h"
 #import "Braintree-API.h"
-#import "BTClient+BTPayPal.h"
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"

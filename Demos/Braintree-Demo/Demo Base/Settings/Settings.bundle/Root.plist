@@ -18,6 +18,7 @@
 			<key>Titles</key>
 			<array>
 				<string>PayPal - Scopes</string>
+				<string>PayPal - Checkout</string>
 				<string>Credit Card Tokenization</string>
 				<string>Combined Button - BTPaymentButton</string>
 				<string>PayPal - BTUIPayPalButton</string>
@@ -37,7 +38,8 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>BraintreeDemoScopesPayPalButtonViewController</string>
+				<string>BraintreeDemoPayPalScopesViewController</string>
+				<string>BraintreeDemoPayPalCheckoutViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>
 				<string>BraintreeDemoBTPaymentButtonViewController</string>
 				<string>BraintreeDemoBTUIPayPalButtonViewController</string>

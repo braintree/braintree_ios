@@ -56,22 +56,6 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         expect(payPalButtonDelegate).to.respondTo(@selector(payPalButtonWillCreatePayPalPaymentMethod:));
     });
 
-    it(@"includes BTPayPalViewController", ^{
-        BTPayPalViewController *payPalViewController = [OCMockObject mockForClass:[BTPayPalViewController class]];
-        expect(payPalViewController).to.respondTo(@selector(delegate));
-        expect(payPalViewController).to.respondTo(@selector(initWithClient:));
-        expect(payPalViewController).to.respondTo(@selector(client));
-        expect(payPalViewController).to.respondTo(@selector(setClient:));
-    });
-
-    it(@"includes BTPayPalViewControllerDelegate", ^{
-        id<BTPayPalViewControllerDelegate> payPalViewControllerDelegate = [OCMockObject niceMockForProtocol:@protocol(BTPayPalViewControllerDelegate)];
-        expect(payPalViewControllerDelegate).to.respondTo(@selector(payPalViewControllerWillCreatePayPalPaymentMethod:));
-        expect(payPalViewControllerDelegate).to.respondTo(@selector(payPalViewController:didCreatePayPalPaymentMethod:));
-        expect(payPalViewControllerDelegate).to.respondTo(@selector(payPalViewController:didFailWithError:));
-        expect(payPalViewControllerDelegate).to.respondTo(@selector(payPalViewControllerDidCancel:));
-    });
-
     it(@"includes BTCardPaymentMethod", ^{
         BTCardPaymentMethod *cardPaymentMethod = [OCMockObject mockForClass:[BTCardPaymentMethod class]];
         expect(cardPaymentMethod).to.respondTo(@selector(type));

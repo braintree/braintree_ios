@@ -1,8 +1,8 @@
 #import "BTData.h"
 #import "DeviceCollectorSDK.h"
-#import "PayPalMobile.h"
-#import "BTClient+BTPayPal.h"
+#import "PayPalOneTouchCore.h"
 #import "BTLogger_Internal.h"
+#import "BTClient_Internal.h"
 
 static NSString *BTDataSharedMerchantId = @"600000";
 
@@ -35,15 +35,6 @@ static NSString *BTDataSharedMerchantId = @"600000";
 
     if (!client) {
         return nil;
-    }
-
-    if ([client btPayPal_isPayPalEnabled]) {
-        NSError *error;
-        if (![client btPayPal_preparePayPalMobileWithError:&error]) {
-            if (error) {
-                [[BTLogger sharedLogger] log:@"BTData could not initialize underlying PayPal SDK. BTData device data will not include PayPal application correlation id."];
-            }
-        }
     }
 
     self = [super init];
@@ -117,8 +108,9 @@ static NSString *BTDataSharedMerchantId = @"600000";
 
     NSMutableDictionary *dataDictionary = [NSMutableDictionary dictionaryWithDictionary:@{ @"device_session_id": deviceSessionId,
                                                                                            @"fraud_merchant_id": self.fraudMerchantId}];
-    if (self.client.btPayPal_applicationCorrelationId) {
-        dataDictionary[@"correlation_id"] = self.client.btPayPal_applicationCorrelationId;
+    
+    if([self.client.configuration payPalEnabled]) {
+        dataDictionary[@"correlation_id"] = [PayPalOneTouchCore clientMetadataID];
     }
 
     NSError *error;

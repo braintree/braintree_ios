@@ -33,7 +33,7 @@
     return [BTUICardExpirationValidator month:self.expirationMonth.intValue year:self.expirationYear.intValue validForDate:[NSDate date]];
 }
 
-- (void)setExpirationDate:(NSString *)expirationDate { 
+- (void)setExpirationDate:(NSString *)expirationDate {
     [self setText:expirationDate];
  }
 

@@ -63,6 +63,7 @@
 
 - (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     self.progressBlock(@"Got a nonce 💎!");
+    NSLog(@"%@", [paymentMethod debugDescription]);
     self.completionBlock(paymentMethod);
 }
 

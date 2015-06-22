@@ -16,10 +16,8 @@
 		1607FE5F192D97570099D504 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		1607FE60192D97570099D504 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		1607FE61192D97570099D504 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
-		1607FE77192D97CD0099D504 /* BTClient+BTPayPalSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1607FE6E192D97CD0099D504 /* BTClient+BTPayPalSpec.m */; };
-		1607FE79192D97CD0099D504 /* BTPayPalViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1607FE70192D97CD0099D504 /* BTPayPalViewControllerSpec.m */; };
 		1607FE7B192D97CD0099D504 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE73192D97CD0099D504 /* InfoPlist.strings */; };
-		1607FE83192D97D60099D504 /* BTPayPalIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1607FE7C192D97D60099D504 /* BTPayPalIntegrationSpec.m */; };
+		1607FE83192D97D60099D504 /* BTPayPalDriverSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1607FE7C192D97D60099D504 /* BTPayPalDriverSpec.m */; };
 		1607FE85192D97D60099D504 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE7F192D97D60099D504 /* InfoPlist.strings */; };
 		1607FE8B192D97FF0099D504 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
 		1607FE8C192D97FF0099D504 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
@@ -131,7 +129,7 @@
 		9DC66F2E589CBC80041A9191 /* libPods-Braintree-Apple-Pay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */; };
 		9FC026317803AE8F059D786A /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		A6A89E1C8FF46AAD2FF8C515 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		A71B43D31B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */; };
+		A711877D1B1E215400AD9865 /* BraintreeDemoPayPalScopesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A711877C1B1E215400AD9865 /* BraintreeDemoPayPalScopesViewController.m */; };
 		A71EC4551ABA156100B2F8E2 /* BTClientDeprecatedSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A71EC4541ABA156100B2F8E2 /* BTClientDeprecatedSpec.m */; };
 		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
 		A7281C5819A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */; };
@@ -150,6 +148,8 @@
 		A76819A61B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76819A51B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m */; };
 		A79053F81A40F2A100235624 /* EXPMatchers+BTBeANonce.m in Sources */ = {isa = PBXBuildFile; fileRef = 16102A1E192DBB2C002C1B2B /* EXPMatchers+BTBeANonce.m */; };
 		A79509791A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = A79509781A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m */; };
+		A795EE001B0166BF00AD28CF /* BTPayPalCheckoutSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A795EDFF1B0166BF00AD28CF /* BTPayPalCheckoutSpec.m */; };
+		A795EE091B0179A400AD28CF /* BraintreeDemoPayPalCheckoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A795EE081B0179A400AD28CF /* BraintreeDemoPayPalCheckoutViewController.m */; };
 		A79AC9A6193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */; };
 		A79ACA4A193FB3340095D7F1 /* good_root_cert.der in Resources */ = {isa = PBXBuildFile; fileRef = A79ACA49193FB3340095D7F1 /* good_root_cert.der */; };
 		A79ACA4D1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79ACA4C1940D8550095D7F1 /* BTUICardExpiryFormatterSpec.m */; };
@@ -193,14 +193,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		163357981AEEA6A800794AAA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A75DA344192138F000D997A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 162174DE192D9220008DC35D;
-			remoteInfo = "Braintree-Demo";
-		};
-		1696A37F1AD490C800BCC5E4 /* PBXContainerItemProxy */ = {
+		1633579B1AEF031400794AAA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
@@ -208,13 +201,6 @@
 			remoteInfo = "Braintree-Demo";
 		};
 		1696A3811AD490CB00BCC5E4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A75DA344192138F000D997A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 162174DE192D9220008DC35D;
-			remoteInfo = "Braintree-Demo";
-		};
-		1696A3831AD490CF00BCC5E4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
@@ -263,6 +249,13 @@
 			remoteGlobalIDString = 162174DE192D9220008DC35D;
 			remoteInfo = "Braintree-Demo";
 		};
+		16D962AD1AFD8FE300FB3459 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 162174DE192D9220008DC35D;
+			remoteInfo = "Braintree-Demo";
+		};
 		A7CED50C1A2FCFF600141197 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -299,11 +292,10 @@
 		1607FE48192D974C0099D504 /* Braintree-PayPal-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-PayPal-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1607FE5E192D97570099D504 /* Braintree-PayPal-Integration-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-PayPal-Integration-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1607FE6E192D97CD0099D504 /* BTClient+BTPayPalSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTPayPalSpec.m"; sourceTree = "<group>"; tabWidth = 4; };
-		1607FE70192D97CD0099D504 /* BTPayPalViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalViewControllerSpec.m; sourceTree = "<group>"; };
 		1607FE71192D97CD0099D504 /* Braintree-PayPal-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-PayPal-Specs-Info.plist"; sourceTree = "<group>"; };
 		1607FE72192D97CD0099D504 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1607FE74192D97CD0099D504 /* Braintree-PayPal-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-PayPal-Specs-Prefix.pch"; sourceTree = "<group>"; };
-		1607FE7C192D97D60099D504 /* BTPayPalIntegrationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalIntegrationSpec.m; sourceTree = "<group>"; };
+		1607FE7C192D97D60099D504 /* BTPayPalDriverSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalDriverSpec.m; sourceTree = "<group>"; };
 		1607FE7D192D97D60099D504 /* Braintree-PayPal-Integration-Specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Braintree-PayPal-Integration-Specs-Info.plist"; sourceTree = "<group>"; };
 		1607FE7E192D97D60099D504 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1607FE80192D97D60099D504 /* Braintree-PayPal-Integration-Specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-PayPal-Integration-Specs-Prefix.pch"; sourceTree = "<group>"; };
@@ -324,6 +316,9 @@
 		16102A20192DBB2C002C1B2B /* EXPMatchers+BTDeepEquals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+BTDeepEquals.m"; sourceTree = "<group>"; };
 		16102A21192DBB2C002C1B2B /* EXPMatchers+BTMatches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+BTMatches.h"; sourceTree = "<group>"; };
 		16102A22192DBB2C002C1B2B /* EXPMatchers+BTMatches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+BTMatches.m"; sourceTree = "<group>"; };
+		1610D6BE1ACE07F300907E47 /* libPayPalOneTouchCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalOneTouchCore.a; sourceTree = "<group>"; };
+		1610D6BF1ACE07F300907E47 /* PayPalOneTouchCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalOneTouchCore.h; sourceTree = "<group>"; };
+		1610D6C01ACE07F300907E47 /* PayPalOneTouchRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayPalOneTouchRequest.h; sourceTree = "<group>"; };
 		1610D6C11AD319CD00907E47 /* BTDropInAcceptanceSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInAcceptanceSpec.m; sourceTree = "<group>"; };
 		1613815D1923074000C3B5BE /* BTDropInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInViewController.h; sourceTree = "<group>"; };
 		1613815E1923074000C3B5BE /* BTDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInViewController.m; sourceTree = "<group>"; };
@@ -362,12 +357,7 @@
 		1621747B192D8725008DC35D /* Braintree-PayPal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-PayPal.h"; sourceTree = "<group>"; };
 		1621747C192D8725008DC35D /* BTErrors+BTPayPal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTErrors+BTPayPal.h"; sourceTree = "<group>"; };
 		1621747D192D8725008DC35D /* BTPayPalButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalButton.h; sourceTree = "<group>"; };
-		1621747E192D8725008DC35D /* BTPayPalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController.h; sourceTree = "<group>"; };
 		16217480192D8725008DC35D /* BTPayPalButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalButton.m; sourceTree = "<group>"; };
-		16217481192D8725008DC35D /* BTPayPalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTPayPalViewController.m; sourceTree = "<group>"; };
-		16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalViewController_Internal.h; sourceTree = "<group>"; };
-		16217484192D8725008DC35D /* BTClient+BTPayPal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTClient+BTPayPal.h"; sourceTree = "<group>"; };
-		16217485192D8725008DC35D /* BTClient+BTPayPal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTClient+BTPayPal.m"; sourceTree = "<group>"; };
 		16217491192D8725008DC35D /* BTErrors+BTPayPal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BTErrors+BTPayPal.m"; sourceTree = "<group>"; };
 		16217493192D872E008DC35D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		16217494192D8746008DC35D /* BTUICardType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUICardType.h; sourceTree = "<group>"; };
@@ -486,14 +476,14 @@
 		163357901AEE1E5D00794AAA /* BraintreeDemoPaymentButtonBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPaymentButtonBaseViewController.m; sourceTree = "<group>"; };
 		163357971AEE23EA00794AAA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		163823211A72D4D6003D5FA4 /* BTThreeDSecureLookupResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLookupResult.h; sourceTree = "<group>"; };
-		163DB1E319FB08AE00AEB08F /* CardIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIO.h; sourceTree = "<group>"; };
-		163DB1E419FB08AE00AEB08F /* CardIOCreditCardInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CardIOCreditCardInfo.h; sourceTree = "<group>"; };
 		164A13EB1966237E009FAAEA /* BTKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTKeychain.h; sourceTree = "<group>"; };
 		164A13EC1966237E009FAAEA /* BTKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTKeychain.m; sourceTree = "<group>"; };
 		164A13ED19662D42009FAAEA /* BTReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTReachability.h; sourceTree = "<group>"; };
 		164A13EE19662D42009FAAEA /* BTReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTReachability.m; sourceTree = "<group>"; };
 		164F0C7019C24CAD00AA329F /* BTClientCardRequestSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientCardRequestSpec.m; sourceTree = "<group>"; };
 		1662191519BA4B0F00736A4D /* Braintree-Payments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree-Payments.h"; sourceTree = "<group>"; };
+		166307AB1AEB29900029176C /* BTPayPalDriver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalDriver.h; sourceTree = "<group>"; };
+		166307AC1AEB29900029176C /* BTPayPalDriver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalDriver.m; sourceTree = "<group>"; };
 		166329031AD8564A00DE0BD2 /* BTCoinbaseAcceptanceSpecViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCoinbaseAcceptanceSpecViewController.h; sourceTree = "<group>"; };
 		166329041AD8564A00DE0BD2 /* BTCoinbaseAcceptanceSpecViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCoinbaseAcceptanceSpecViewController.m; sourceTree = "<group>"; };
 		16654EAF19B7CD020081965A /* BTUIHorizontalButtonStackSeparatorLineView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIHorizontalButtonStackSeparatorLineView.h; sourceTree = "<group>"; };
@@ -612,15 +602,6 @@
 		16E7B04019E63B360057ABB7 /* BTPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentMethod.m; sourceTree = "<group>"; };
 		16E7B04119E63B360057ABB7 /* BTPayPalPaymentMethod_Mutable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalPaymentMethod_Mutable.h; sourceTree = "<group>"; };
 		16E7B04219E63B360057ABB7 /* BTPayPalPaymentMethod.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalPaymentMethod.m; sourceTree = "<group>"; };
-		16E7B05019E644700057ABB7 /* libPayPalMobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPayPalMobile.a; sourceTree = "<group>"; };
-		16E7B05119E644700057ABB7 /* PayPalConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalConfiguration.h; sourceTree = "<group>"; };
-		16E7B05219E644700057ABB7 /* PayPalFuturePaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalFuturePaymentViewController.h; sourceTree = "<group>"; };
-		16E7B05319E644700057ABB7 /* PayPalMobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalMobile.h; sourceTree = "<group>"; };
-		16E7B05419E644700057ABB7 /* PayPalOAuthScopes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalOAuthScopes.h; sourceTree = "<group>"; };
-		16E7B05519E644700057ABB7 /* PayPalPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalPayment.h; sourceTree = "<group>"; };
-		16E7B05619E644700057ABB7 /* PayPalPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalPaymentViewController.h; sourceTree = "<group>"; };
-		16E7B05719E644700057ABB7 /* PayPalProfileSharingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalProfileSharingViewController.h; sourceTree = "<group>"; };
-		16E7B05819E644700057ABB7 /* PayPalTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PayPalTouch.h; sourceTree = "<group>"; };
 		16E7B05A19E674B10057ABB7 /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
 		16E7B05C19E674BC0057ABB7 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		16F3A7E11AEC8BE100628DBF /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -702,10 +683,11 @@
 		A70A52D11AA7DECF00CA2AC9 /* BTUICoinbaseWordmarkVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICoinbaseWordmarkVectorArtView.m; sourceTree = "<group>"; };
 		A70A52D21AA8D2DC00CA2AC9 /* BTUICoinbaseButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUICoinbaseButton.h; sourceTree = "<group>"; };
 		A70A52D31AA8D2DC00CA2AC9 /* BTUICoinbaseButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICoinbaseButton.m; sourceTree = "<group>"; };
+		A711877B1B1E215400AD9865 /* BraintreeDemoPayPalScopesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BraintreeDemoPayPalScopesViewController.h; path = "PayPal - Scopes/BraintreeDemoPayPalScopesViewController.h"; sourceTree = "<group>"; };
+		A711877C1B1E215400AD9865 /* BraintreeDemoPayPalScopesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoPayPalScopesViewController.m; path = "PayPal - Scopes/BraintreeDemoPayPalScopesViewController.m"; sourceTree = "<group>"; };
 		A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorAlert.h; sourceTree = "<group>"; };
 		A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorAlert.m; sourceTree = "<group>"; };
 		A71B43D11B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BraintreeDemoScopesPayPalButtonViewController.h; path = "PayPal - Scopes/BraintreeDemoScopesPayPalButtonViewController.h"; sourceTree = "<group>"; };
-		A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoScopesPayPalButtonViewController.m; path = "PayPal - Scopes/BraintreeDemoScopesPayPalButtonViewController.m"; sourceTree = "<group>"; };
 		A71EC4541ABA156100B2F8E2 /* BTClientDeprecatedSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientDeprecatedSpec.m; sourceTree = "<group>"; };
 		A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorStateSpec.m; sourceTree = "<group>"; };
 		A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchURLSpec.m; sourceTree = "<group>"; };
@@ -742,8 +724,21 @@
 		A763BED919B8C3E90087939C /* BTPaymentsSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentsSpec.m; sourceTree = "<group>"; };
 		A76819A41B0D12B900736F52 /* BraintreeDemoSlideNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoSlideNavigationController.h; sourceTree = "<group>"; };
 		A76819A51B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoSlideNavigationController.m; sourceTree = "<group>"; };
+		A78C7BA41B30B45C00BE125B /* BTPostalAddress_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPostalAddress_Internal.h; sourceTree = "<group>"; };
+		A78C7BA51B30B45C00BE125B /* BTPostalAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPostalAddress.m; sourceTree = "<group>"; };
+		A78C7BA71B30B49100BE125B /* BTPostalAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPostalAddress.h; sourceTree = "<group>"; };
+		A78E8C4A1B0162B700EFA390 /* BTPayPalCheckout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPayPalCheckout.m; sourceTree = "<group>"; };
+		A78E8C4B1B0162CE00EFA390 /* BTPayPalCheckout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalCheckout.h; sourceTree = "<group>"; };
 		A79509771A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KIFSystemTestActor+BTNetworkActivity.h"; sourceTree = "<group>"; };
 		A79509781A5F0C1200CAA382 /* KIFSystemTestActor+BTNetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KIFSystemTestActor+BTNetworkActivity.m"; sourceTree = "<group>"; };
+		A795EDFF1B0166BF00AD28CF /* BTPayPalCheckoutSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalCheckoutSpec.m; sourceTree = "<group>"; };
+		A795EE071B0179A400AD28CF /* BraintreeDemoPayPalCheckoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalCheckoutViewController.h; sourceTree = "<group>"; };
+		A795EE081B0179A400AD28CF /* BraintreeDemoPayPalCheckoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalCheckoutViewController.m; sourceTree = "<group>"; };
+		A795EE0A1B0184DC00AD28CF /* BTClientPayPalPaymentResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientPayPalPaymentResource.h; sourceTree = "<group>"; };
+		A795EE0B1B0184DC00AD28CF /* BTClientPayPalPaymentResource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTClientPayPalPaymentResource.m; sourceTree = "<group>"; };
+		A795EE0C1B01859300AD28CF /* BTClientPayPalPaymentResourceValueTransformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientPayPalPaymentResourceValueTransformer.h; sourceTree = "<group>"; };
+		A795EE0D1B01859300AD28CF /* BTClientPayPalPaymentResourceValueTransformer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTClientPayPalPaymentResourceValueTransformer.m; sourceTree = "<group>"; };
+		A795EE0E1B01987000AD28CF /* BTPayPalDriver_Compatibility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalDriver_Compatibility.h; sourceTree = "<group>"; };
 		A79AC9A5193E6F7E0095D7F1 /* BTHTTPSSLPinningSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSSLPinningSpec.m; sourceTree = "<group>"; };
 		A79ACA33193FB27E0095D7F1 /* BTHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTHTTP.h; sourceTree = "<group>"; };
 		A79ACA34193FB27E0095D7F1 /* BTHTTP.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTHTTP.m; sourceTree = "<group>"; };
@@ -1026,9 +1021,8 @@
 		1607FE76192D97CD0099D504 /* Braintree-PayPal-Specs */ = {
 			isa = PBXGroup;
 			children = (
-				1607FE6E192D97CD0099D504 /* BTClient+BTPayPalSpec.m */,
 				2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */,
-				1607FE70192D97CD0099D504 /* BTPayPalViewControllerSpec.m */,
+				A795EDFF1B0166BF00AD28CF /* BTPayPalCheckoutSpec.m */,
 				1607FE75192D97CD0099D504 /* Supporting Files */,
 			);
 			path = "Braintree-PayPal-Specs";
@@ -1047,7 +1041,7 @@
 		1607FE82192D97D60099D504 /* Braintree-PayPal-Integration-Specs */ = {
 			isa = PBXGroup;
 			children = (
-				1607FE7C192D97D60099D504 /* BTPayPalIntegrationSpec.m */,
+				1607FE7C192D97D60099D504 /* BTPayPalDriverSpec.m */,
 				1607FE81192D97D60099D504 /* Supporting Files */,
 			);
 			path = "Braintree-PayPal-Integration-Specs";
@@ -1096,6 +1090,16 @@
 			path = "Custom Expecta Matchers";
 			sourceTree = "<group>";
 		};
+		1610D6BD1ACE07F300907E47 /* PayPalOneTouchCore */ = {
+			isa = PBXGroup;
+			children = (
+				1610D6BE1ACE07F300907E47 /* libPayPalOneTouchCore.a */,
+				1610D6BF1ACE07F300907E47 /* PayPalOneTouchCore.h */,
+				1610D6C01ACE07F300907E47 /* PayPalOneTouchRequest.h */,
+			);
+			path = PayPalOneTouchCore;
+			sourceTree = "<group>";
+		};
 		161E0C741A9EA7CB00D7285A /* Coinbase */ = {
 			isa = PBXGroup;
 			children = (
@@ -1138,7 +1142,6 @@
 				1621741F192D85EB008DC35D /* Braintree-API.h */,
 				161CB1BD19B13DDC00C5A411 /* Braintree-Version.h */,
 				2D70E0F819C2232B00456723 /* BTApplePayPaymentMethod.h */,
-				1690C96D1A9D0690002302E4 /* BTCoinbasePaymentMethod.h */,
 				2DBFFA6419BD564000F3D9B1 /* BTAppSwitchErrors.h */,
 				A7E5BEB519ABE5F3006AEB9B /* BTAppSwitching.h */,
 				77037AD319B0112A0097DADE /* BTAppSwitchingDelegate.h */,
@@ -1149,11 +1152,12 @@
 				16FDE94F19C24029007718D2 /* BTClientCardRequest.h */,
 				161ABA9619D9C9CD006C0A43 /* BTClientCardTokenizationRequest.h */,
 				16217424192D85EB008DC35D /* BTClientToken.h */,
+				1690C96D1A9D0690002302E4 /* BTCoinbasePaymentMethod.h */,
 				16217425192D85EB008DC35D /* BTErrors.h */,
 				2DD0202119D4A0D600F9313F /* BTLogger.h */,
 				16217426192D85EB008DC35D /* BTPaymentMethod.h */,
 				16217427192D85EB008DC35D /* BTPayPalPaymentMethod.h */,
-				41930BE81B337ABA000A75BF /* BTPostalAddress.h */,
+				A78C7BA71B30B49100BE125B /* BTPostalAddress.h */,
 			);
 			path = "@Public";
 			sourceTree = "<group>";
@@ -1171,6 +1175,8 @@
 				A7B7431119A29201000A6A7A /* BTClientMetadata.m */,
 				16A456C81A773CD9002E6896 /* BTClientPaymentMethodValueTransformer.h */,
 				16A456C91A773CD9002E6896 /* BTClientPaymentMethodValueTransformer.m */,
+				A795EE0C1B01859300AD28CF /* BTClientPayPalPaymentResourceValueTransformer.h */,
+				A795EE0D1B01859300AD28CF /* BTClientPayPalPaymentResourceValueTransformer.m */,
 				A7FC1CC31992B37900636548 /* BTClientStore.h */,
 				A7FC1CC41992B37900636548 /* BTClientStore.m */,
 				1621742D192D85EB008DC35D /* BTClientToken.m */,
@@ -1195,8 +1201,10 @@
 				16E7B03319E63B360057ABB7 /* BTCardPaymentMethod.m */,
 				16E7B03519E63B360057ABB7 /* BTClientCardRequest.m */,
 				16E7B03619E63B360057ABB7 /* BTClientCardTokenizationRequest.m */,
-				1690C96E1A9D06B5002302E4 /* BTCoinbasePaymentMethod.m */,
+				A795EE0A1B0184DC00AD28CF /* BTClientPayPalPaymentResource.h */,
+				A795EE0B1B0184DC00AD28CF /* BTClientPayPalPaymentResource.m */,
 				1690C96F1A9D0737002302E4 /* BTCoinbasePaymentMethod_Internal.h */,
+				1690C96E1A9D06B5002302E4 /* BTCoinbasePaymentMethod.m */,
 				16E7B03719E63B360057ABB7 /* BTMutableApplePayPaymentMethod.h */,
 				16E7B03819E63B360057ABB7 /* BTMutableApplePayPaymentMethod.m */,
 				16E7B03919E63B360057ABB7 /* BTMutableCardPaymentMethod.h */,
@@ -1209,8 +1217,8 @@
 				16E7B04019E63B360057ABB7 /* BTPaymentMethod.m */,
 				16E7B04119E63B360057ABB7 /* BTPayPalPaymentMethod_Mutable.h */,
 				16E7B04219E63B360057ABB7 /* BTPayPalPaymentMethod.m */,
-				41930BE91B337ADF000A75BF /* BTPostalAddress_Internal.h */,
-				41930BEA1B337ADF000A75BF /* BTPostalAddress.m */,
+				A78C7BA41B30B45C00BE125B /* BTPostalAddress_Internal.h */,
+				A78C7BA51B30B45C00BE125B /* BTPostalAddress.m */,
 				163823211A72D4D6003D5FA4 /* BTThreeDSecureLookupResult.h */,
 				A7BFC5FC1A2E3D9400354401 /* BTThreeDSecureLookupResult.m */,
 			);
@@ -1278,10 +1286,8 @@
 			isa = PBXGroup;
 			children = (
 				1621747B192D8725008DC35D /* Braintree-PayPal.h */,
-				16217484192D8725008DC35D /* BTClient+BTPayPal.h */,
 				1621747C192D8725008DC35D /* BTErrors+BTPayPal.h */,
 				1621747D192D8725008DC35D /* BTPayPalButton.h */,
-				1621747E192D8725008DC35D /* BTPayPalViewController.h */,
 			);
 			path = "@Public";
 			sourceTree = "<group>";
@@ -1289,7 +1295,11 @@
 		16217488192D8725008DC35D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				16217485192D8725008DC35D /* BTClient+BTPayPal.m */,
+				166307AB1AEB29900029176C /* BTPayPalDriver.h */,
+				A795EE0E1B01987000AD28CF /* BTPayPalDriver_Compatibility.h */,
+				166307AC1AEB29900029176C /* BTPayPalDriver.m */,
+				A78E8C4A1B0162B700EFA390 /* BTPayPalCheckout.m */,
+				A78E8C4B1B0162CE00EFA390 /* BTPayPalCheckout.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1307,17 +1317,15 @@
 			isa = PBXGroup;
 			children = (
 				1621747F192D8725008DC35D /* @Public */,
+				16217488192D8725008DC35D /* Models */,
+				1610D6BD1ACE07F300907E47 /* PayPalOneTouchCore */,
+				1621748E192D8725008DC35D /* Views */,
 				16217491192D8725008DC35D /* BTErrors+BTPayPal.m */,
 				A7AD08A4199BDAA700377DA2 /* BTPayPalAppSwitchHandler_Internal.h */,
 				A7FC1CBF1992B24900636548 /* BTPayPalAppSwitchHandler.h */,
 				A7FC1CC01992B24900636548 /* BTPayPalAppSwitchHandler.m */,
 				16217480192D8725008DC35D /* BTPayPalButton.m */,
-				16217482192D8725008DC35D /* BTPayPalViewController_Internal.h */,
-				16217481192D8725008DC35D /* BTPayPalViewController.m */,
-				16217488192D8725008DC35D /* Models */,
-				16E7B04F19E644700057ABB7 /* mSDK */,
 				16217493192D872E008DC35D /* README.md */,
-				1621748E192D8725008DC35D /* Views */,
 			);
 			path = PayPal;
 			sourceTree = "<group>";
@@ -1951,24 +1959,6 @@
 			path = Braintree;
 			sourceTree = "<group>";
 		};
-		16E7B04F19E644700057ABB7 /* mSDK */ = {
-			isa = PBXGroup;
-			children = (
-				16E7B05019E644700057ABB7 /* libPayPalMobile.a */,
-				163DB1E319FB08AE00AEB08F /* CardIO.h */,
-				163DB1E419FB08AE00AEB08F /* CardIOCreditCardInfo.h */,
-				16E7B05119E644700057ABB7 /* PayPalConfiguration.h */,
-				16E7B05219E644700057ABB7 /* PayPalFuturePaymentViewController.h */,
-				16E7B05319E644700057ABB7 /* PayPalMobile.h */,
-				16E7B05419E644700057ABB7 /* PayPalOAuthScopes.h */,
-				16E7B05519E644700057ABB7 /* PayPalPayment.h */,
-				16E7B05619E644700057ABB7 /* PayPalPaymentViewController.h */,
-				16E7B05719E644700057ABB7 /* PayPalProfileSharingViewController.h */,
-				16E7B05819E644700057ABB7 /* PayPalTouch.h */,
-			);
-			path = mSDK;
-			sourceTree = "<group>";
-		};
 		16E7B05E19E6798E0057ABB7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -2027,12 +2017,13 @@
 				16D4644F1AECA57900177B0C /* Drop In */,
 				CD9EDBDBB78156000A9ADDAA /* Fraud Protection - BTData */,
 				163357851AEE1A1A00794AAA /* PayPal - BTUIPayPalButton */,
+				A795EE061B0179A400AD28CF /* PayPal - Checkout */,
 				163357881AEE1A5600794AAA /* PayPal - Custom Button */,
 				1633578A1AEE1A6400794AAA /* PayPal - Deprecated BTPayPalButton */,
 				163357751AEE102000794AAA /* UI Components */,
 				163357861AEE1A2100794AAA /* Venmo - BTUIVenmoButton */,
 				163357891AEE1A5D00794AAA /* Venmo - Custom Button */,
-				A71B43D41B1CDD3E006B9C2A /* PayPal - Scopes */,
+				A711877E1B1E215F00AD9865 /* PayPal - Scopes */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -2128,11 +2119,11 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		A71B43D41B1CDD3E006B9C2A /* PayPal - Scopes */ = {
+		A711877E1B1E215F00AD9865 /* PayPal - Scopes */ = {
 			isa = PBXGroup;
 			children = (
-				A71B43D11B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.h */,
-				A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */,
+				A711877B1B1E215400AD9865 /* BraintreeDemoPayPalScopesViewController.h */,
+				A711877C1B1E215400AD9865 /* BraintreeDemoPayPalScopesViewController.m */,
 			);
 			name = "PayPal - Scopes";
 			sourceTree = "<group>";
@@ -2265,6 +2256,15 @@
 				1662191519BA4B0F00736A4D /* Braintree-Payments.h */,
 			);
 			path = "@Public";
+			sourceTree = "<group>";
+		};
+		A795EE061B0179A400AD28CF /* PayPal - Checkout */ = {
+			isa = PBXGroup;
+			children = (
+				A795EE071B0179A400AD28CF /* BraintreeDemoPayPalCheckoutViewController.h */,
+				A795EE081B0179A400AD28CF /* BraintreeDemoPayPalCheckoutViewController.m */,
+			);
+			path = "PayPal - Checkout";
 			sourceTree = "<group>";
 		};
 		A79ACA35193FB27E0095D7F1 /* Certificates */ = {
@@ -2400,7 +2400,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				1696A3841AD490CF00BCC5E4 /* PBXTargetDependency */,
+				1633579C1AEF031400794AAA /* PBXTargetDependency */,
 			);
 			name = "Braintree-PayPal-Integration-Specs";
 			productName = "Braintree-PayPal-Integration-Specs";
@@ -2418,7 +2418,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				163357991AEEA6A800794AAA /* PBXTargetDependency */,
+				16D962AE1AFD8FE300FB3459 /* PBXTargetDependency */,
 			);
 			name = "Braintree-UI-Specs";
 			productName = "Braintree-Payments-UI-Specs";
@@ -2497,7 +2497,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				1696A3801AD490C800BCC5E4 /* PBXTargetDependency */,
 			);
 			name = "Braintree-API-Integration-Specs";
 			productName = "Braintree-Integration-Specs";
@@ -3184,11 +3183,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1607FE77192D97CD0099D504 /* BTClient+BTPayPalSpec.m in Sources */,
 				2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */,
-				1607FE79192D97CD0099D504 /* BTPayPalViewControllerSpec.m in Sources */,
 				A7F6CB241AC083E0007AD979 /* BTTestClientTokenFactory.m in Sources */,
 				169F54BB1AC647CC0092C383 /* BTClientSpecHelper.m in Sources */,
+				A795EE001B0166BF00AD28CF /* BTPayPalCheckoutSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3196,7 +3194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1607FE83192D97D60099D504 /* BTPayPalIntegrationSpec.m in Sources */,
+				1607FE83192D97D60099D504 /* BTPayPalDriverSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3240,18 +3238,19 @@
 				CD9EDC3A622EF8D5E829AF4F /* BraintreeDemoBTPaymentButtonViewController.m in Sources */,
 				CD9ED01B5D4C252AB05947DF /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */,
 				1633577E1AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.m in Sources */,
+				A795EE091B0179A400AD28CF /* BraintreeDemoPayPalCheckoutViewController.m in Sources */,
 				CD9ED3C05BDBA0AD69EEEF08 /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */,
 				CD9ED837ABFD9D75B936957D /* BraintreeDemoCustomMultiPayViewController.m in Sources */,
 				163357911AEE1E5D00794AAA /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				CD9ED61B36AD616A658CB48F /* BraintreeDemoApplePayPaymentProviderViewController.m in Sources */,
 				CD9EDCC2C746987970624D05 /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */,
+				A711877D1B1E215400AD9865 /* BraintreeDemoPayPalScopesViewController.m in Sources */,
 				CD9ED8935FEC23086262CB85 /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */,
 				CD9ED4A9AD99B6130D0499E4 /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
 				842E21C91B0270C90036DA66 /* BraintreeDemoCustomCoinbaseButtonViewController.m in Sources */,
 				CD9ED8C5A85D7AF64C4F2340 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m in Sources */,
 				16C402B91AEF3906004E6881 /* BraintreeDemoBraintreeDataViewController.m in Sources */,
 				1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */,
-				A71B43D31B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */,
 				CD9ED53E9C13C386FFF05FC2 /* BraintreeDemoThreeDSecureViewController.m in Sources */,
 				163357801AEE103000794AAA /* BraintreeDemoPaymentsUIComponentsViewController.m in Sources */,
 				A76819A61B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m in Sources */,
@@ -3404,25 +3403,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		163357991AEEA6A800794AAA /* PBXTargetDependency */ = {
+		1633579C1AEF031400794AAA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
-			targetProxy = 163357981AEEA6A800794AAA /* PBXContainerItemProxy */;
-		};
-		1696A3801AD490C800BCC5E4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
-			targetProxy = 1696A37F1AD490C800BCC5E4 /* PBXContainerItemProxy */;
+			targetProxy = 1633579B1AEF031400794AAA /* PBXContainerItemProxy */;
 		};
 		1696A3821AD490CB00BCC5E4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
 			targetProxy = 1696A3811AD490CB00BCC5E4 /* PBXContainerItemProxy */;
-		};
-		1696A3841AD490CF00BCC5E4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
-			targetProxy = 1696A3831AD490CF00BCC5E4 /* PBXContainerItemProxy */;
 		};
 		1696A3861AD491D100BCC5E4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3453,6 +3442,11 @@
 			isa = PBXTargetDependency;
 			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
 			targetProxy = 1696A38F1AD4920B00BCC5E4 /* PBXContainerItemProxy */;
+		};
+		16D962AE1AFD8FE300FB3459 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 162174DE192D9220008DC35D /* Braintree-Demo */;
+			targetProxy = 16D962AD1AFD8FE300FB3459 /* PBXContainerItemProxy */;
 		};
 		A7CED50D1A2FCFF600141197 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3665,6 +3659,7 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = "$(inherited)";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3672,6 +3667,32 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Braintree\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Expecta\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/HockeySDK\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/KIF\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OCHamcrest\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OCMock\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Specta\"",
+					"-Wall",
+					"-Wextra",
+				);
 				SDKROOT = iphoneos;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Braintree-Demo.app/Braintree-Demo";
 				VALIDATE_PRODUCT = YES;

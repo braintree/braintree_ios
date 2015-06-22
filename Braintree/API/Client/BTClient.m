@@ -14,7 +14,10 @@
 #import "Braintree-Version.h"
 #import "BTAPIResponseParser.h"
 #import "BTClientPaymentMethodValueTransformer.h"
+#import "BTClientPayPalPaymentResourceValueTransformer.h"
 #import "BTCoinbasePaymentMethod_Internal.h"
+
+NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be initialized. Perhaps client token did not contain a valid PayPal configuration.";
 
 @interface BTClient ()
 - (void)setMetadata:(BTClientMetadata *)metadata;
@@ -24,7 +27,7 @@
 
 + (void)setupWithClientToken:(NSString *)clientTokenString completion:(BTClientCompletionBlock)completionBlock {
     BTClient *client = [[self alloc] initSyncWithClientTokenString:clientTokenString];
-
+    
     if (client) {
         [client fetchConfigurationWithCompletion:^(BTClient *client, NSError *error) {
             if (client && !error) {
@@ -47,7 +50,7 @@
         [[BTLogger sharedLogger] error:reason];
         return nil;
     }
-
+    
     self = [self init];
     if (self) {
         NSError *error;
@@ -59,16 +62,16 @@
             [[BTLogger sharedLogger] error:reason];
             return nil;
         }
-
+        
         // For older integrations
         self.configuration = [[BTConfiguration alloc] initWithResponseParser:[self.clientToken clientTokenParser] error:&error];
         if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
-
+        
         self.configHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.configURL];
         [self.configHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-
+        
         [self prepareHttpFromConfiguration];
-
+        
         self.metadata = [[BTClientMetadata alloc] init];
     }
     return self;
@@ -77,7 +80,7 @@
 - (void)prepareHttpFromConfiguration {
     self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
     [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-
+    
     if (self.configuration.analyticsEnabled) {
         self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
         [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
@@ -92,9 +95,9 @@
                   if (response.isSuccess) {
                       NSError *configurationError;
                       self.configuration = [[BTConfiguration alloc] initWithResponseParser:response.object error:&configurationError];
-
+                      
                       [self prepareHttpFromConfiguration];
-
+                      
                       if (completionBlock) {
                           completionBlock(self, configurationError);
                       }
@@ -150,18 +153,18 @@
     if (self){
         self.clientToken = [decoder decodeObjectForKey:@"clientToken"];
         self.configuration = [decoder decodeObjectForKey:@"configuration"];
-
+        
         self.configHttp = [[BTHTTP alloc] initWithBaseURL:self.clientToken.configURL];
         [self.configHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-
+        
         self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-
+        
         if (self.configuration.analyticsEnabled) {
             self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
             [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         }
-
+        
         self.hasConfiguration = [[decoder decodeObjectForKey:@"hasConfiguration"] boolValue];
     }
     return self;
@@ -174,13 +177,13 @@
     NSDictionary *parameters = @{
                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                  };
-
+    
     [self.clientApiHttp GET:@"v1/payment_methods" parameters:parameters completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             if (successBlock) {
                 NSArray *paymentMethods = [response.object arrayForKey:@"paymentMethods"
                                                   withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
-
+                
                 successBlock(paymentMethods);
             }
         } else {
@@ -203,7 +206,7 @@
                      if (response.isSuccess) {
                          if (successBlock) {
                              NSArray *paymentMethods = [response.object arrayForKey:@"paymentMethods" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
-
+                             
                              successBlock([paymentMethods firstObject]);
                          }
                      } else {
@@ -217,14 +220,14 @@
 - (void)saveCardWithRequest:(BTClientCardRequest *)request
                     success:(BTClientCardSuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
-
+    
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     NSMutableDictionary *creditCardParams = [request.parameters mutableCopy];
-
+    
     [requestParameters addEntriesFromDictionary:@{ @"credit_card": creditCardParams,
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                    }];
-
+    
     [self.clientApiHttp POST:@"v1/payment_methods/credit_cards" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error) {
         if (response.isSuccess) {
             if (successBlock) {
@@ -255,7 +258,7 @@
                   validate:(BOOL)shouldValidate
                    success:(BTClientCardSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
-
+    
     BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
     request.number = creditCardNumber;
     request.expirationMonth = expirationMonth;
@@ -263,7 +266,7 @@
     request.cvv = cvv;
     request.postalCode = postalCode;
     request.shouldValidate = shouldValidate;
-
+    
     [self saveCardWithRequest:request
                       success:successBlock
                       failure:failureBlock];
@@ -273,7 +276,7 @@
 - (void)saveApplePayPayment:(PKPayment *)payment
                     success:(BTClientApplePaySuccessBlock)successBlock
                     failure:(BTClientFailureBlock)failureBlock {
-
+    
     if (![PKPayment class]) {
         if (failureBlock) {
             failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
@@ -281,9 +284,9 @@
                                          userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not supported on this device"}]);
         }
         return;
-
+        
     }
-
+    
     NSString *encodedPaymentData;
     NSError *error;
     switch (self.configuration.applePayStatus) {
@@ -308,7 +311,7 @@
             encodedPaymentData = [paymentData base64EncodedStringWithOptions:0];
             break;
         }
-
+            
         case BTClientApplePayStatusProduction:
             if (!payment) {
                 [[BTLogger sharedLogger] warning:@"-[BTClient saveApplePayPayment:success:failure:] received nil payment."];
@@ -320,20 +323,20 @@
                 }
                 return;
             }
-
+            
             encodedPaymentData = [payment.token.paymentData base64EncodedStringWithOptions:0];
             break;
         default:
             return;
     }
-
+    
     if (error) {
         if (failureBlock) {
             failureBlock(error);
         }
         return;
     }
-
+    
     NSMutableDictionary *tokenParameterValue = [NSMutableDictionary dictionary];
     if (encodedPaymentData) {
         tokenParameterValue[@"paymentData"] = encodedPaymentData;
@@ -347,23 +350,23 @@
     if (payment.token.paymentNetwork) {
         tokenParameterValue[@"paymentNetwork"] = payment.token.paymentNetwork;
     }
-
+    
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     [requestParameters addEntriesFromDictionary:@{ @"applePaymentToken": tokenParameterValue,
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
                                                    }];
-
+    
     [self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
                 NSArray *applePayCards = [response.object arrayForKey:@"applePayCards" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
-
+                
                 BTMutableApplePayPaymentMethod *paymentMethod = [applePayCards firstObject];
-
+                
                 paymentMethod.shippingAddress = payment.shippingAddress;
                 paymentMethod.shippingMethod = payment.shippingMethod;
                 paymentMethod.billingAddress = payment.billingAddress;
-
+                
                 successBlock([paymentMethod copy]);
             }
         } else {
@@ -380,11 +383,67 @@
 }
 #endif
 
+- (void)createPayPalPaymentResourceWithAmount:(NSDecimalNumber *)amount
+                                 currencyCode:(NSString *)currencyCode
+                                  redirectUri:(NSString *)redirectUri
+                                    cancelUri:(NSString *)cancelUri
+                             clientMetadataID:(NSString *)clientMetadataID
+                                      success:(BTClientPayPalPaymentResourceBlock)successBlock
+                                      failure:(BTClientFailureBlock)failureBlock {
+
+    NSDictionary *parameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
+                                  @"amount": [amount stringValue],
+                                  @"currency_iso_code": currencyCode,
+                                  @"return_url": redirectUri,
+                                  @"cancel_url": cancelUri,
+                                  @"correlation_id": clientMetadataID };
+    [self.clientApiHttp POST:@"v1/paypal_hermes/create_payment_resource"
+                  parameters:parameters
+                  completion:^(BTHTTPResponse *response, NSError *error) {
+                      if (response.isSuccess) {
+                          if (successBlock) {
+                              successBlock([response.object objectForKey:@"paymentResource" withValueTransformer:[BTClientPayPalPaymentResourceValueTransformer sharedInstance]]);
+                          }
+                      } else {
+                          if (failureBlock) {
+                              failureBlock(error);
+                          }
+                      }
+                  }];
+}
+
+- (void)savePaypalAccount:(NSDictionary *)paypalResponse
+         clientMetadataID:(NSString *)clientMetadataID
+                  success:(BTClientPaypalSuccessBlock)successBlock
+                  failure:(BTClientFailureBlock)failureBlock {
+    
+    NSMutableDictionary *mutablePaypalResponse = [paypalResponse mutableCopy];
+    mutablePaypalResponse[@"options"] = @{@"validate": @NO};
+    
+    NSDictionary *parameters = @{ @"paypal_account": mutablePaypalResponse,
+                                  @"correlation_id": clientMetadataID,
+                                  @"authorization_fingerprint": self.clientToken.authorizationFingerprint };
+    [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts"
+                  parameters:parameters
+                  completion:^(BTHTTPResponse *response, NSError *error) {
+                      if (response.isSuccess) {
+                          if (successBlock) {
+                              NSArray *payPalPaymentMethods = [response.object arrayForKey:@"paypalAccounts" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
+                              successBlock([payPalPaymentMethods firstObject]);
+                          }
+                      } else {
+                          if (failureBlock) {
+                              failureBlock(error);
+                          }
+                      }
+                  }];
+}
+
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
                    applicationCorrelationID:(NSString *)correlationId
                                     success:(BTClientPaypalSuccessBlock)successBlock
                                     failure:(BTClientFailureBlock)failureBlock {
-
+    
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     // To preserve backwards compatibility - only set shouldValidate to FALSE when requesting additional scopes
     BOOL shouldValidate = [self.additionalPayPalScopes count] == 0;
@@ -396,7 +455,7 @@
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                    
                                                    }];
-
+    
     [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
         if (response.isSuccess) {
             if (successBlock){
@@ -439,15 +498,15 @@
 - (void)postAnalyticsEvent:(NSString *)eventKind
                    success:(BTClientAnalyticsSuccessBlock)successBlock
                    failure:(BTClientFailureBlock)failureBlock {
-
+    
     if (self.configuration.analyticsEnabled) {
         NSMutableDictionary *requestParameters = [self metaAnalyticsParameters];
         [requestParameters addEntriesFromDictionary:@{ @"analytics": @[@{ @"kind": eventKind }],
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                        }];
-
+        
         [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@", eventKind];
-
+        
         [self.analyticsHttp POST:@"/"
                       parameters:requestParameters
                       completion:^(BTHTTPResponse *response, NSError *error) {
@@ -482,7 +541,9 @@
     NSString *urlSafeNonce = [nonce stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [self.clientApiHttp POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
-                  completion:^(BTHTTPResponse *response, NSError *error){
+                  completion:^(BTHTTPResponse *response, NSError *error)
+    {
+        // Handle 3D Secure lookup response
         if (response.isSuccess) {
             if (successBlock) {
                 BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
@@ -524,7 +585,6 @@
             }
         }
     }];
-
 }
 
 - (void)saveCoinbaseAccount:(id)coinbaseAuthResponse
@@ -537,17 +597,17 @@
         }
         return;
     }
-
+    
     if (storeInVault) {
         NSMutableDictionary *mutableCoinbaseAuthResponse = [coinbaseAuthResponse mutableCopy];
         mutableCoinbaseAuthResponse[@"options"] = @{ @"store_in_vault": @YES };
         coinbaseAuthResponse = mutableCoinbaseAuthResponse;
     }
-
+    
     NSMutableDictionary *parameters = [self metaPostParameters];
     parameters[@"coinbase_account"] = coinbaseAuthResponse;
     parameters[@"authorization_fingerprint"] = self.clientToken.authorizationFingerprint;
-
+    
     [self.clientApiHttp POST:@"v1/payment_methods/coinbase_accounts"
                   parameters:parameters
                   completion:^(BTHTTPResponse *response, NSError *error){
@@ -598,7 +658,7 @@
     NSMutableDictionary *mutableMetaValue = [metaValue mutableCopy];
     mutableMetaValue[@"integration"] = self.metadata.integrationString;
     mutableMetaValue[@"source"] = self.metadata.sourceString;
-
+    
     result[@"_meta"] = mutableMetaValue;
     return result;
 }
@@ -618,18 +678,18 @@
 
 - (BOOL)isEqualToClient:(BTClient *)client {
     return ((self.clientToken == client.clientToken) || [self.clientToken isEqual:client.clientToken]) &&
-           ((self.configuration == client.configuration) || [self.configuration isEqual:client.configuration]);
+    ((self.configuration == client.configuration) || [self.configuration isEqual:client.configuration]);
 }
 
 - (BOOL)isEqual:(id)object {
     if (self == object) {
         return YES;
     }
-
+    
     if ([object isKindOfClass:[BTClient class]]) {
         return [self isEqualToClient:object];
     }
-
+    
     return NO;
 }
 

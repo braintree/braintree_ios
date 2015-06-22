@@ -2,7 +2,6 @@
 
 #import <Braintree/Braintree-Payments.h>
 #import <Braintree/UIColor+BTUI.h>
-#import "PayPalMobile.h"
 
 @interface BraintreeDemoCustomPayPalButtonViewController ()
 @property(nonatomic, strong) BTPaymentProvider *paymentProvider;

@@ -2,5 +2,9 @@
 #import "BTPaymentMethod_Mutable.h"
 
 @interface BTPayPalPaymentMethod ()
-@property (nonatomic, readwrite, copy) NSString *email;
+
+- (void)setEmail:(NSString *)email;
+
+@property (nonatomic, readwrite, strong) NSDictionary *additionalInfo;
+
 @end

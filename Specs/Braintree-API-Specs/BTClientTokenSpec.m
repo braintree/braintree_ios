@@ -141,6 +141,7 @@ describe(@"copy", ^{
         expect(copiedClientToken.configURL).to.equal(clientToken.configURL);
         expect(copiedClientToken.clientTokenParser).to.equal(clientToken.clientTokenParser);
         expect(copiedClientToken.authorizationFingerprint).to.equal(clientToken.authorizationFingerprint);
+        expect(copiedClientToken.originalValue).to.equal(clientToken.originalValue);
     });
 });
 

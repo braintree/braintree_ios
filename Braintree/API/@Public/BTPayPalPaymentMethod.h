@@ -6,7 +6,7 @@
 ///
 /// @see BTPaymentMethod
 /// @see BTMutablePayPalPaymentMethod
-@interface BTPayPalPaymentMethod : BTPaymentMethod <NSMutableCopying>
+@interface BTPayPalPaymentMethod : BTPaymentMethod
 
 /// Email address associated with the PayPal Account.
 @property (nonatomic, readonly, copy) NSString *email;

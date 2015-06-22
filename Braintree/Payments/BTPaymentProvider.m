@@ -6,15 +6,13 @@
 
 #import "BTVenmoAppSwitchHandler.h"
 
-#import "BTPayPalViewController.h"
 #import "BTPayPalAppSwitchHandler.h"
-#import "BTClient+BTPayPal.h"
 #import "BTPaymentApplePayProvider.h"
 #import "BTLogger_Internal.h"
 #import "BTCoinbase.h"
 
 
-@interface BTPaymentProvider () <BTPayPalViewControllerDelegate, BTAppSwitchingDelegate, BTPaymentMethodCreationDelegate>
+@interface BTPaymentProvider () <BTAppSwitchingDelegate, BTPaymentMethodCreationDelegate>
 @property (nonatomic, strong) BTPaymentApplePayProvider *applePayPaymentProvider;
 @end
 
@@ -61,26 +59,12 @@
     }
 }
 
-- (void)setClient:(BTClient *)client {
-    _client = client;
-
-    // If PayPal is a possibility with this client, prepare.
-    if ([self.client btPayPal_isPayPalEnabled]) {
-        NSError *error;
-        [self.client btPayPal_preparePayPalMobileWithError:&error];
-        if (error) {
-            [self.client postAnalyticsEvent:@"ios.authorizer.init.paypal-error"];
-            [[BTLogger sharedLogger] error:@"PayPal is unavailable: %@", [error localizedDescription]];
-        }
-    }
-}
-
 - (BOOL)canCreatePaymentMethodWithProviderType:(BTPaymentProviderType)type {
     switch (type) {
         case BTPaymentProviderTypeApplePay:
             return [self.applePayPaymentProvider canAuthorizeApplePayPayment];
         case BTPaymentProviderTypePayPal:
-            return [self.client btPayPal_isPayPalEnabled];
+            return [[BTPayPalAppSwitchHandler sharedHandler] appSwitchAvailableForClient:self.client];
         case BTPaymentProviderTypeVenmo:
             return [[BTVenmoAppSwitchHandler sharedHandler] appSwitchAvailableForClient:self.client];
         case BTPaymentProviderTypeCoinbase:
@@ -132,52 +116,26 @@
 - (void)authorizePayPal:(BTPaymentMethodCreationOptions)options {
     
     BOOL appSwitchOptionEnabled = (options & BTPaymentAuthorizationOptionMechanismAppSwitch) == BTPaymentAuthorizationOptionMechanismAppSwitch;
-    BOOL viewControllerOptionEnabled = (options & BTPaymentAuthorizationOptionMechanismViewController) == BTPaymentAuthorizationOptionMechanismViewController;
-    
-    if (!appSwitchOptionEnabled && !viewControllerOptionEnabled) {
-        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorOptionNotSupported userInfo:@{ NSLocalizedDescriptionKey: @"At least one of BTPaymentAuthorizationOptionMechanismAppSwitch or BTPaymentAuthorizationOptionMechanismViewController must be enabled in options" }];
+
+    if (!appSwitchOptionEnabled) {
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
+                                             code:BTPaymentProviderErrorOptionNotSupported
+                                         userInfo:@{ NSLocalizedDescriptionKey: @"At least BTPaymentAuthorizationOptionMechanismAppSwitch must be enabled in options to start PayPal" }];
         [self informDelegateDidFailWithError:error andPostAnalyticsEvent:NO];
         return;
     }
     
     NSError *error;
-    BOOL initiated = NO;
-    if (appSwitchOptionEnabled) {
-        
-        BOOL appSwitchSuccess = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
-        if (appSwitchSuccess) {
-            initiated = YES;
-            [self informDelegateWillPerformAppSwitch];
-        } else {
-            NSMutableString *message = [@"PayPal Touch is not available." mutableCopy];
-            if (error.userInfo[NSLocalizedDescriptionKey]) {
-                [message appendFormat:@" Reason: \"%@\"", error.userInfo[NSLocalizedDescriptionKey]];
-            }
-            [[BTLogger sharedLogger] log:message];
-        }
-    }
     
-    if(!initiated && viewControllerOptionEnabled) {
-        
-        BTPayPalViewController *braintreePayPalViewController = [[BTPayPalViewController alloc] initWithClient:self.client];
-        if (braintreePayPalViewController) {
-            braintreePayPalViewController.delegate = self;
-            [self informDelegateRequestsPresentationOfViewController:braintreePayPalViewController];
-            initiated = YES;
-        } else {
-            NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain
-                                                 code:BTPaymentProviderErrorInitialization
-                                             userInfo:@{ NSLocalizedDescriptionKey: @"Failed to initialize BTPayPalViewController" }];
-            [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
-        }
-    }
-    
-    if (!initiated) {
+    BOOL appSwitchSuccess = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
+    if (appSwitchSuccess) {
+        [self informDelegateWillPerformAppSwitch];
+    } else {
         NSMutableDictionary *userInfo = [@{ NSLocalizedDescriptionKey: @"PayPal authorization failed" } mutableCopy];
         if (error != nil) {
             userInfo[NSUnderlyingErrorKey] = error;
         }
-        [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorUnknown userInfo:userInfo];
+        NSError *error = [NSError errorWithDomain:BTPaymentProviderErrorDomain code:BTPaymentProviderErrorUnknown userInfo:userInfo];
         [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
     }
 }
@@ -256,33 +214,6 @@
     if ([self.delegate respondsToSelector:@selector(paymentMethodCreatorDidCancel:)]) {
         [self.delegate paymentMethodCreatorDidCancel:self];
     }
-}
-
-#pragma mark BTPayPalViewControllerDelegate
-
-- (void)payPalViewControllerWillCreatePayPalPaymentMethod:(__unused BTPayPalViewController *)viewController {
-    [self informDelegateWillProcess];
-}
-
-- (void)payPalViewController:(BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod {
-    [self setStatus:BTPaymentProviderStatusSuccess];
-
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
-    [self informDelegateDidCreatePaymentMethod:payPalPaymentMethod];
-}
-
-- (void)payPalViewController:(__unused BTPayPalViewController *)viewController didFailWithError:(NSError *)error {
-    [self setStatus:BTPaymentProviderStatusError];
-
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
-    [self informDelegateDidFailWithError:error andPostAnalyticsEvent:YES];
-}
-
-- (void)payPalViewControllerDidCancel:(BTPayPalViewController *)viewController {
-    [self setStatus:BTPaymentProviderStatusCanceled];
-
-    [self informDelegateRequestsDismissalOfAuthorizationViewController:viewController];
-    [self informDelegateDidCancel];
 }
 
 #pragma mark BTAppSwitchingDelegate

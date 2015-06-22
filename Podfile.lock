@@ -1,85 +1,84 @@
 PODS:
-  - AFNetworking (2.5.3):
-    - AFNetworking/NSURLConnection (= 2.5.3)
-    - AFNetworking/NSURLSession (= 2.5.3)
-    - AFNetworking/Reachability (= 2.5.3)
-    - AFNetworking/Security (= 2.5.3)
-    - AFNetworking/Serialization (= 2.5.3)
-    - AFNetworking/UIKit (= 2.5.3)
-  - AFNetworking/NSURLConnection (2.5.3):
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.3):
+  - AFNetworking/NSURLSession (2.5.4):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.3)
-  - AFNetworking/Security (2.5.3)
-  - AFNetworking/Serialization (2.5.3)
-  - AFNetworking/UIKit (2.5.3):
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.9.1):
-    - Braintree/API (= 3.9.1)
-    - Braintree/Coinbase (= 3.9.1)
-    - Braintree/Drop-In (= 3.9.1)
-    - Braintree/Payments (= 3.9.1)
-    - Braintree/PayPal (= 3.9.1)
-    - Braintree/UI (= 3.9.1)
-    - Braintree/Venmo (= 3.9.1)
-  - Braintree/3D-Secure (3.9.1):
+  - Braintree (4.0.0-pre1):
+    - Braintree/API (= 4.0.0-pre1)
+    - Braintree/Coinbase (= 4.0.0-pre1)
+    - Braintree/Drop-In (= 4.0.0-pre1)
+    - Braintree/Payments (= 4.0.0-pre1)
+    - Braintree/PayPal (= 4.0.0-pre1)
+    - Braintree/UI (= 4.0.0-pre1)
+    - Braintree/Venmo (= 4.0.0-pre1)
+  - Braintree/3D-Secure (4.0.0-pre1):
     - Braintree/API
     - Braintree/Payments
     - Braintree/UI
-  - Braintree/API (3.9.1)
-  - Braintree/Apple-Pay (3.9.1):
+  - Braintree/API (4.0.0-pre1)
+  - Braintree/Apple-Pay (4.0.0-pre1):
     - Braintree/Payments
-  - Braintree/Coinbase (3.9.1):
+  - Braintree/Coinbase (4.0.0-pre1):
     - Braintree/API
     - coinbase-official/OAuth (~> 2.1.1)
-  - Braintree/Data (3.9.1):
+  - Braintree/Data (4.0.0-pre1):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (3.9.1):
+  - Braintree/Drop-In (4.0.0-pre1):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (3.9.1):
+  - Braintree/Payments (4.0.0-pre1):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (3.9.1):
+  - Braintree/PayPal (4.0.0-pre1):
     - Braintree/API
-    - Braintree/UI
-  - Braintree/UI (3.9.1):
+  - Braintree/UI (4.0.0-pre1):
     - Braintree/API
-  - Braintree/Venmo (3.9.1):
+  - Braintree/Venmo (4.0.0-pre1):
     - Braintree/API
-  - CardIO (5.0.3)
+  - CardIO (5.0.6)
   - coinbase-official/OAuth (2.1.4)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
   - HockeySDK (3.6.4)
   - InAppSettingsKit (2.6)
   - iOS-Slide-Menu (1.4.6)
-  - KIF (3.2.1):
-    - KIF/XCTest (= 3.2.1)
-  - KIF/XCTest (3.2.1)
+  - KIF (3.2.3):
+    - KIF/XCTest (= 3.2.3)
+  - KIF/XCTest (3.2.3)
   - KIFViewControllerActions (1.0.0):
     - KIF (>= 2.0.0)
   - NSURL+QueryDictionary (1.1.0)
   - OCHamcrest (3.0.1)
   - OCMock (3.1.2)
-  - OHHTTPStubs (3.1.11):
-    - OHHTTPStubs/Core (= 3.1.11)
-  - OHHTTPStubs/Core (3.1.11)
+  - OHHTTPStubs (3.1.12):
+    - OHHTTPStubs/Core (= 3.1.12)
+  - OHHTTPStubs/Core (3.1.12)
   - PureLayout (2.0.6)
-  - Specta (1.0.0)
+  - Specta (1.0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
@@ -119,29 +118,29 @@ CHECKOUT OPTIONS:
     :commit: b797baa3efeffe73ab1d6ea6aaeb55cc05ff6422
     :git: https://github.com/intelliot/FLEX.git
   KIF:
-    :commit: 63d20ad162e36248de4f183c0bfd7d6822b39573
+    :commit: 4a5dc492f87952309cab29756c334c04e6517561
     :git: https://github.com/kif-framework/KIF.git
   KIFViewControllerActions:
     :commit: 10d8d3a7bac839d75b8cec894326eae957372245
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
 SPEC CHECKSUMS:
-  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Braintree: 1796b67efcf832019d1da1b8a1d779e202e3796f
-  CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  Braintree: 067590715fc361704f9c2f22e84593088eae8eb9
+  CardIO: 3fb62d56651d80e8f98e9572bfbe589ebf13d706
   coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
-  KIF: ef1691e54e1d969c3b4fd0b5b56a3d7ddf37f216
+  KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
   KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
   OCHamcrest: e19857683e4eefab64b878668eac04c2f4567118
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  OHHTTPStubs: 5624a5d20d97d46d47e15a68ca8808b59ccf0512
+  OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
-  Specta: 96fe05fe5c7348b5223f85e862904f6e832abb14
+  Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
 
 COCOAPODS: 0.36.3

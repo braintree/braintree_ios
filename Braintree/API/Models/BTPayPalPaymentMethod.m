@@ -3,6 +3,10 @@
 
 @implementation BTPayPalPaymentMethod
 
+- (void)setEmail:(NSString *)email {
+    _email = [email copy];
+}
+
 - (id)mutableCopyWithZone:(__unused NSZone *)zone {
     BTMutablePayPalPaymentMethod *mutablePayPalPaymentMethod = [[BTMutablePayPalPaymentMethod alloc] init];
     mutablePayPalPaymentMethod.billingAddress = self.billingAddress;

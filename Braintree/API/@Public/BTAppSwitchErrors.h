@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchErrorCode) {
     BTAppSwitchErrorDisabled = 2,
 
     /// App switch is not configured appropriately. You must specify a
-    /// returnURLScheme via Braintree before attempting an app switch.
+    /// valid returnURLScheme via Braintree before attempting an app switch.
     BTAppSwitchErrorIntegrationReturnURLScheme = 3,
 
     /// The merchant ID field was not valid or present in the client token.
