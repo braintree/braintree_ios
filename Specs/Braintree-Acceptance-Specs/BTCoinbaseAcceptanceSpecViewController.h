@@ -1,4 +1,4 @@
-@import UIKit;
+#import <UIKit/UIKit.h>
 #import "BTPaymentProvider.h"
 
 extern NSString *const BTCoinbaseAcceptanceSpecCoinbaseScheme;

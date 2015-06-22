@@ -1,4 +1,4 @@
-@import UIKit;
+#import <UIKit/UIKit.h>
 #import "BTUIThemedView.h"
 
 /// Informational view that displays a summary of the shopping cart or other relevant data for

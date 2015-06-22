@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 #import "BTAPIResponseParser.h"
 #import "BTPaymentMethod.h"

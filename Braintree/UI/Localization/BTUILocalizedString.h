@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 #define BTUILocalizedString(KEY) [BTUILocalizedString KEY]
 

@@ -1,4 +1,5 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
+
 #import "BTClient.h"
 #import "BTAppSwitchingDelegate.h"
 

@@ -1,4 +1,4 @@
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 /// Subclassed to easily draw vector art into a scaled UIView.
 /// Useful for using generated UIBezierPath code from
