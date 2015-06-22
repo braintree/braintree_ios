@@ -99,7 +99,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
 
         });
 
-        context(@"PayPalTouch canAppSwitchForUrlScheme returns YES", ^{
+        context(@"PayPalOneTouchCore canAppSwitchForUrlScheme returns YES", ^{
             __block id authorizationRequestStub;
 
             beforeEach(^{
@@ -124,8 +124,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 [[[authorizationRequestStub stub] andReturn:authorizationRequestStub] alloc];
             });
 
-<<<<<<< HEAD
-            it(@"returns a BTAppSwitchErrorFailed error if PayPalTouch fails to app switch", ^{
+            it(@"returns a BTAppSwitchErrorFailed error if PayPalOneTouchCore fails to app switch", ^{
                 [[[authorizationRequestStub stub] andDo:^(NSInvocation *invocation) {
                     [invocation retainArguments];
                     PayPalOneTouchRequestCompletionBlock completionBlock;
@@ -140,18 +139,9 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 expect(handled).to.beFalsy();
                 expect(error.domain).to.equal(BTAppSwitchErrorDomain);
                 expect(error.code).to.equal(BTAppSwitchErrorFailed);
-=======
-            it(@"returns nil and posts possible-error if PayPalTouch reports possible app switch failure", ^{
-                [[[payPalTouch stub] andReturnValue:@NO] authorizeScopeValues:OCMOCK_ANY configuration:OCMOCK_ANY];
-                [[client expect] postAnalyticsEvent:@"ios.paypal.appswitch.initiate.possible-error"];
-                NSError *error = nil;
-                BOOL handled = [appSwitchHandler initiateAppSwitchWithClient:client delegate:delegate error:&error];
-                expect(handled).to.beTruthy();
-                expect(error).to.beNil();
->>>>>>> origin/master
             });
 
-            it(@"returns nil when PayPalTouch can and does app switch", ^{
+            it(@"returns nil when PayPalOneTouchCore can and does app switch", ^{
                 [[[authorizationRequestStub stub] andDo:^(NSInvocation *invocation) {
                     [invocation retainArguments];
                     PayPalOneTouchRequestCompletionBlock completionBlock;
