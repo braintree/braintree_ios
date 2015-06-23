@@ -679,10 +679,10 @@
 		312C642A816448F6A6B7D69B /* libPods-Common.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37EBD49E76CC2F7CE2E729DE /* Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig"; sourceTree = "<group>"; };
 		3E30C5FE1F5450A242279524 /* libPods-Braintree-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		410C0F311B34DAA40057C444 /* CoinbaseDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinbaseDefines.h; sourceTree = "<group>"; };
-		410C0F321B34DAA40057C444 /* CoinbaseDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoinbaseDefines.m; sourceTree = "<group>"; };
-		410C0F341B34DAA40057C444 /* CoinbaseOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoinbaseOAuth.m; sourceTree = "<group>"; };
-		410C0F381B34DC420057C444 /* CoinbaseOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinbaseOAuth.h; sourceTree = "<group>"; };
+		410C0F311B34DAA40057C444 /* BTCoinbaseDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCoinbaseDefines.h; sourceTree = "<group>"; };
+		410C0F321B34DAA40057C444 /* BTCoinbaseDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCoinbaseDefines.m; sourceTree = "<group>"; };
+		410C0F341B34DAA40057C444 /* BTCoinbaseOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCoinbaseOAuth.m; sourceTree = "<group>"; };
+		410C0F381B34DC420057C444 /* BTCoinbaseOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCoinbaseOAuth.h; sourceTree = "<group>"; };
 		41930BE81B337ABA000A75BF /* BTPostalAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPostalAddress.h; sourceTree = "<group>"; };
 		41930BE91B337ADF000A75BF /* BTPostalAddress_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPostalAddress_Internal.h; sourceTree = "<group>"; };
 		41930BEA1B337ADF000A75BF /* BTPostalAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPostalAddress.m; sourceTree = "<group>"; };
@@ -2119,10 +2119,10 @@
 		410C0F301B34DA840057C444 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				410C0F311B34DAA40057C444 /* CoinbaseDefines.h */,
-				410C0F321B34DAA40057C444 /* CoinbaseDefines.m */,
-				410C0F381B34DC420057C444 /* CoinbaseOAuth.h */,
-				410C0F341B34DAA40057C444 /* CoinbaseOAuth.m */,
+				410C0F311B34DAA40057C444 /* BTCoinbaseDefines.h */,
+				410C0F321B34DAA40057C444 /* BTCoinbaseDefines.m */,
+				410C0F381B34DC420057C444 /* BTCoinbaseOAuth.h */,
+				410C0F341B34DAA40057C444 /* BTCoinbaseOAuth.m */,
 			);
 			name = Vendor;
 			path = Braintree/Coinbase/Vendor;

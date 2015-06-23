@@ -1,14 +1,21 @@
+//
+// BTCoinbaseOAuth.h
+//
+// Vendored from the official Coinbase iOS SDK version 3.0:
+// https://github.com/coinbase/coinbase-ios-sdk
+//
+
 #import <UIKit/UIKit.h>
-#import "CoinbaseDefines.h"
+#import "BTCoinbaseDefines.h"
 
 ///  Indicates where user authentication takes place
-typedef NS_ENUM(NSInteger, CoinbaseOAuthAuthenticationMechanism){
+typedef NS_ENUM(NSInteger, BTCoinbaseOAuthAuthenticationMechanism){
     ///  Neither app switch nor authentication occured
-    CoinbaseOAuthMechanismNone = NO,
+    BTCoinbaseOAuthMechanismNone = NO,
     ///  The user authenticated with Coinbase in Mobile Safari
-    CoinbaseOAuthMechanismBrowser,
+    BTCoinbaseOAuthMechanismBrowser,
     /// The user authenticated with Coinbase in the Coinbase app
-    CoinbaseOAuthMechanismApp,
+    BTCoinbaseOAuthMechanismApp,
 };
 
 ///  The key in an NSError userInfo dictionary where the coinbase specific error code is returned.
@@ -16,12 +23,12 @@ typedef NS_ENUM(NSInteger, CoinbaseOAuthAuthenticationMechanism){
 ///  For example, when the return URL contains error=acccess_denied, the error you receive in
 ///  finishOAuthAuthenticationForUrl:clientId:clientSecret:completion: will contain @"access_denied"
 ///  in the userInfo dictionary.
-extern NSString *const CoinbaseOAuthErrorUserInfoKey;
+extern NSString *const BTCoinbaseOAuthErrorUserInfoKey;
 
 /// `CoinbaseOAuth` contains methods to authenticate users through OAuth2. After obtaining an
 /// access token using this class, you can call Coinbase API methods
 /// using `[Coinbase coinbaseWithOAuthAccessToken:]`.
-@interface CoinbaseOAuth : NSObject
+@interface BTCoinbaseOAuth : NSObject
 
 /// Test if the Coinbase app is installed and if the OAuth authentication process will use the Coinbase
 /// app to offer an easier authentication process. Can be used to make the Coinbase OAuth sign in action
@@ -34,7 +41,7 @@ extern NSString *const CoinbaseOAuthErrorUserInfoKey;
 /// authentication flow.
 ///
 /// @return the mechanism of authentication. Example: CoinbaseOAuthMechanismApp
-+ (CoinbaseOAuthAuthenticationMechanism)startOAuthAuthenticationWithClientId:(NSString *)clientId
++ (BTCoinbaseOAuthAuthenticationMechanism)startOAuthAuthenticationWithClientId:(NSString *)clientId
                                                                        scope:(NSString *)scope
                                                                  redirectUri:(NSString *)redirectUri
                                                                         meta:(NSDictionary *)meta;
@@ -50,25 +57,25 @@ extern NSString *const CoinbaseOAuthErrorUserInfoKey;
 + (void)finishOAuthAuthenticationForUrl:(NSURL *)url
                                clientId:(NSString *)clientId
                            clientSecret:(NSString *)clientSecret
-                             completion:(CoinbaseCompletionBlock)completion;
+                             completion:(BTCoinbaseCompletionBlock)completion;
 
 /// Get new tokens using a refresh token.
 + (void)getOAuthTokensForRefreshToken:(NSString *)refreshToken
                              clientId:(NSString *)clientId
                          clientSecret:(NSString *)clientSecret
-                           completion:(CoinbaseCompletionBlock)completion;
+                           completion:(BTCoinbaseCompletionBlock)completion;
 
 /// Get new tokens using an authorization code.
 + (void)getOAuthTokensForCode:(NSString *)code
                   redirectUri:(NSString *)redirectUri
                      clientId:(NSString *)clientId
                  clientSecret:(NSString *)clientSecret
-                   completion:(CoinbaseCompletionBlock)completion;
+                   completion:(BTCoinbaseCompletionBlock)completion;
 
 /// Make a request to a Coinbase OAuth API.
 + (void)doOAuthPostToPath:(NSString *)path
                withParams:(NSDictionary *)params
-               completion:(CoinbaseCompletionBlock)completion;
+               completion:(BTCoinbaseCompletionBlock)completion;
 
 /// Set the base URL that will be used when making API requests. Defaults to "https://api.coinbase.com/"
 + (void)setBaseURL:(NSURL *)URL;

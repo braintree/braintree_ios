@@ -1,16 +1,19 @@
 //
-//  CoinbaseOAuth.m
-//  Pods
+// BTCoinbaseOAuth.m
+// Pods
 //
-//  Created by Isaac Waller on 10/28/14.
+// Created by Isaac Waller on 10/28/14.
 //
+//
+// Vendored from the official Coinbase iOS SDK version 3.0:
+// https://github.com/coinbase/coinbase-ios-sdk
 //
 
-#import "CoinbaseOAuth.h"
+#import "BTCoinbaseOAuth.h"
 
-NSString *const CoinbaseOAuthErrorUserInfoKey = @"CoinbaseOAuthError";
+NSString *const BTCoinbaseOAuthErrorUserInfoKey = @"CoinbaseOAuthError";
 
-@implementation CoinbaseOAuth
+@implementation BTCoinbaseOAuth
 
 static NSURL * __strong baseURL;
 
@@ -18,7 +21,7 @@ static NSURL * __strong baseURL;
     return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"com.coinbase.oauth-authorize://authorize"]];
 }
 
-+ (CoinbaseOAuthAuthenticationMechanism)startOAuthAuthenticationWithClientId:(NSString *)clientId
++ (BTCoinbaseOAuthAuthenticationMechanism)startOAuthAuthenticationWithClientId:(NSString *)clientId
                                                                        scope:(NSString *)scope
                                                                  redirectUri:(NSString *)redirectUri
                                                                         meta:(NSDictionary *)meta {
@@ -35,13 +38,13 @@ static NSURL * __strong baseURL;
         }
     }
 
-    CoinbaseOAuthAuthenticationMechanism mechanism = CoinbaseOAuthMechanismNone;
+    BTCoinbaseOAuthAuthenticationMechanism mechanism = BTCoinbaseOAuthMechanismNone;
     NSURL *coinbaseAppUrl = [NSURL URLWithString:[NSString stringWithFormat:@"com.coinbase.oauth-authorize:%@", path]];
     BOOL appSwitchSuccessful = NO;
     if ([[UIApplication sharedApplication] canOpenURL:coinbaseAppUrl] && baseURL == nil) {
         appSwitchSuccessful = [[UIApplication sharedApplication] openURL:coinbaseAppUrl];
         if (appSwitchSuccessful) {
-            mechanism = CoinbaseOAuthMechanismApp;
+            mechanism = BTCoinbaseOAuthMechanismApp;
         }
     }
 
@@ -50,7 +53,7 @@ static NSURL * __strong baseURL;
         NSURL *webUrl = [[NSURL URLWithString:path relativeToURL:base] absoluteURL];
         BOOL browserSwitchSuccessful = [[UIApplication sharedApplication] openURL:webUrl];
         if (browserSwitchSuccessful) {
-            mechanism = CoinbaseOAuthMechanismBrowser;
+            mechanism = BTCoinbaseOAuthMechanismBrowser;
         }
     }
 
@@ -60,7 +63,7 @@ static NSURL * __strong baseURL;
 + (void)finishOAuthAuthenticationForUrl:(NSURL *)url
                                clientId:(NSString *)clientId
                            clientSecret:(NSString *)clientSecret
-                             completion:(CoinbaseCompletionBlock)completion {
+                             completion:(BTCoinbaseCompletionBlock)completion {
     // Parse params from URL's query string
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     for (NSString *param in [url.query componentsSeparatedByString:@"&"]) {
@@ -77,16 +80,16 @@ static NSURL * __strong baseURL;
     if (params[@"error_description"] != nil) {
         NSString *errorDescription = [[params[@"error_description"] stringByReplacingOccurrencesOfString:@"+" withString:@" "]
                                       stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: errorDescription, CoinbaseOAuthErrorUserInfoKey: (params[@"error"] ?: [NSNull null]) };
-        NSError *error = [NSError errorWithDomain:CoinbaseErrorDomain
-                                             code:CoinbaseOAuthError
+        NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: errorDescription, BTCoinbaseOAuthErrorUserInfoKey: (params[@"error"] ?: [NSNull null]) };
+        NSError *error = [NSError errorWithDomain:BTCoinbaseErrorDomain
+                                             code:BTCoinbaseOAuthError
                                          userInfo:userInfo];
         completion(nil, error);
         return;
     } else if (!code) {
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: @"Malformed URL." };
-        NSError *error = [NSError errorWithDomain:CoinbaseErrorDomain
-                                             code:CoinbaseOAuthError
+        NSError *error = [NSError errorWithDomain:BTCoinbaseErrorDomain
+                                             code:BTCoinbaseOAuthError
                                          userInfo:userInfo];
         completion(nil, error);
         return;
@@ -100,11 +103,11 @@ static NSURL * __strong baseURL;
     // Obtain original redirect URI by removing 'code' parameter from URI
     NSString *redirectUri = [[url absoluteString] stringByReplacingOccurrencesOfString:[url query] withString:@""];
     redirectUri = [redirectUri substringToIndex:redirectUri.length - 1]; // Strip off trailing '?'
-    [CoinbaseOAuth getOAuthTokensForCode:code
-                             redirectUri:redirectUri
-                                clientId:clientId
-                            clientSecret:clientSecret
-                              completion:completion];
+    [BTCoinbaseOAuth getOAuthTokensForCode:code
+                               redirectUri:redirectUri
+                                  clientId:clientId
+                              clientSecret:clientSecret
+                                completion:completion];
     return;
 }
 
@@ -112,29 +115,29 @@ static NSURL * __strong baseURL;
                   redirectUri:(NSString *)redirectUri
                      clientId:(NSString *)clientId
                  clientSecret:(NSString *)clientSecret
-                   completion:(CoinbaseCompletionBlock)completion {
+                   completion:(BTCoinbaseCompletionBlock)completion {
     NSDictionary *params = @{ @"grant_type": @"authorization_code",
                               @"code": code,
                               @"redirect_uri": redirectUri,
                               @"client_id": clientId,
                               @"client_secret": clientSecret };
-    [CoinbaseOAuth doOAuthPostToPath:@"token" withParams:params completion:completion];
+    [BTCoinbaseOAuth doOAuthPostToPath:@"token" withParams:params completion:completion];
 }
 
 + (void)getOAuthTokensForRefreshToken:(NSString *)refreshToken
                              clientId:(NSString *)clientId
                          clientSecret:(NSString *)clientSecret
-                           completion:(CoinbaseCompletionBlock)completion {
+                           completion:(BTCoinbaseCompletionBlock)completion {
     NSDictionary *params = @{ @"grant_type": @"refresh_token",
                               @"refresh_token": refreshToken,
                               @"client_id": clientId,
                               @"client_secret": clientSecret };
-    [CoinbaseOAuth doOAuthPostToPath:@"token" withParams:params completion:completion];
+    [BTCoinbaseOAuth doOAuthPostToPath:@"token" withParams:params completion:completion];
 }
 
 + (void)doOAuthPostToPath:(NSString *)path
                withParams:(NSDictionary *)params
-               completion:(CoinbaseCompletionBlock)completion {
+               completion:(BTCoinbaseCompletionBlock)completion {
 
     NSURL *base = [NSURL URLWithString:@"oauth/" relativeToURL:(baseURL == nil ? [NSURL URLWithString:@"https://www.coinbase.com/"] : baseURL)];
     NSURL *url = [[NSURL URLWithString:path relativeToURL:base] absoluteURL];
@@ -145,8 +148,8 @@ static NSURL * __strong baseURL;
     NSMutableArray *components = [NSMutableArray new];
     NSString *encodedKey, *encodedValue;
     for (NSString *key in params) {
-        encodedKey = [CoinbaseOAuth URLEncodedStringFromString:key];
-        encodedValue = [CoinbaseOAuth URLEncodedStringFromString:[params objectForKey:key]];
+        encodedKey = [BTCoinbaseOAuth URLEncodedStringFromString:key];
+        encodedValue = [BTCoinbaseOAuth URLEncodedStringFromString:[params objectForKey:key]];
         [components addObject:[NSString stringWithFormat:@"%@=%@", encodedKey, encodedValue]];
     }
 
@@ -168,8 +171,8 @@ static NSURL * __strong baseURL;
                                 if (!error) {
                                     if ([parsedBody objectForKey:@"error"] || [httpResponse statusCode] > 300) {
                                         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: [parsedBody objectForKey:@"error"] };
-                                        error = [NSError errorWithDomain:CoinbaseErrorDomain
-                                                                    code:CoinbaseOAuthError
+                                        error = [NSError errorWithDomain:BTCoinbaseErrorDomain
+                                                                    code:BTCoinbaseOAuthError
                                                                 userInfo:userInfo];
                                     } else {
                                         dispatch_async(dispatch_get_main_queue(), ^{
