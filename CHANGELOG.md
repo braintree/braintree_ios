@@ -1,5 +1,14 @@
 # Braintree iOS SDK Release Notes
 
+## 4.0.0-pre2 (2015-06-23)
+
+* PayPal
+  * For single payments, `BTPayPalPaymentMethod` now provides `firstName`, `lastName`, `phone`, `billingAddress`, and `shippingAddress` properties.
+  * For future payments, add support for additional scopes.
+  * Add demo for PayPal Checkout and scopes.
+* Change @import to #import (#124).
+* Add accessibility label to BTUICTAControl.
+
 ## 4.0.0-pre1
 
 * Replace mSDK with One Touch Core
