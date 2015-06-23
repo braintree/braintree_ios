@@ -256,7 +256,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-otc.appswitch.initiate.started"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.appswitch.initiate.started"];
 
                     [payPalDriver startAuthorizationWithCompletion:nil];
                     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -276,7 +276,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-otc.webswitch.initiate.started"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
 
                     [payPalDriver startAuthorizationWithCompletion:nil];
                     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -296,7 +296,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-otc.webswitch.initiate.started"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
 
                     [payPalDriver startAuthorizationWithCompletion:nil];
                     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -336,7 +336,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-otc.unknown.canceled"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.unknown.canceled"];
                     [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
 
                     XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Received call to completion block"];
@@ -377,7 +377,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-otc.tokenize.succeeded"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.tokenize.succeeded"];
                     [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
 
                     XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Received call to completion block"];
@@ -418,7 +418,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-otc.tokenize.failed"];
+                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.tokenize.failed"];
                     [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
 
                     XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Received call to completion block"];
