@@ -37,6 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// Your URL scheme must be registered as a URL Type in your info.plist, and it must start with your app's bundle identifier.
 @interface BTPayPalDriver : NSObject
 
+/// Convenience constructor for PayPal app switch driver
+///
+/// Note: BTPayPalDriver will fail to initialize if PayPal is not enabled in the control panel or the app is not set up correctly for app switch.
+///
+/// @param client An instance of BTClient for communicating with Braintree
+///
+/// @return An instance that is ready to perform authorization or checkout; or nil if the client or URL Scheme are invalid
++ (nullable instancetype)driverWithClient:(BTClient *)client;
+
 /// Initializes a PayPal app switch
 ///
 /// Note: BTPayPalDriver will fail to initialize if PayPal is not enabled in the control panel or the app is not set up correctly for app switch.
@@ -44,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param client An instance of BTClient for communicating with Braintree
 /// @param returnURLScheme Your app's URL Scheme
 ///
-/// @return A instance that is ready to perform authorization or checkout or nil if the client or URL Scheme are invalid
+/// @return An instance that is ready to perform authorization or checkout; or nil if the client or URL Scheme are invalid
 - (nullable instancetype)initWithClient:(BTClient *)client
                         returnURLScheme:(NSString *)returnURLScheme NS_DESIGNATED_INITIALIZER;
 
