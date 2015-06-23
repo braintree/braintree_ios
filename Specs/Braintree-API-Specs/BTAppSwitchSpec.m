@@ -30,7 +30,7 @@ describe(@"handleReturnURL:sourceApplication:", ^{
         it(@"should return YES", ^{
             BTAppSwitch *appSwitch;
             appSwitch = [[BTAppSwitch alloc] init];
-            [appSwitch addAppSwitching:happyAppSwitcher];
+            [appSwitch addAppSwitching:happyAppSwitcher forPaymentProvider:0];
             BOOL handled = [appSwitch handleReturnURL:[NSURL new] sourceApplication:@""];
             expect(handled).to.beTruthy();
         });
@@ -52,7 +52,7 @@ describe(@"handleReturnURL:sourceApplication:", ^{
         it(@"should return NO", ^{
             BTAppSwitch *appSwitch;
             appSwitch = [[BTAppSwitch alloc] init];
-            [appSwitch addAppSwitching:sadAppSwitcher];
+            [appSwitch addAppSwitching:sadAppSwitcher forPaymentProvider:0];
             BOOL handled = [appSwitch handleReturnURL:[NSURL new] sourceApplication:@""];
             expect(handled).to.beFalsy();
         });
