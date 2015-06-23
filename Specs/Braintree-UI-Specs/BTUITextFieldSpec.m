@@ -99,7 +99,10 @@ describe(@"editDelegate", ^{
 
             OCMVerify(editDelegate);
             expect(editDelegate.textAtTimeOfWillDeleteBackward).to.equal(@"AB");
-            [tester waitForTimeInterval:1];
+
+            // Reduce likelihood of failure: expected: A, got: nil/null
+            [tester waitForTimeInterval:0.1];
+
             expect(editDelegate.textAtTimeOfDidDeleteBackward).to.equal(@"A");
 
             // Delete "A"
