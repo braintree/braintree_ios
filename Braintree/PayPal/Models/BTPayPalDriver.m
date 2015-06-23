@@ -227,8 +227,13 @@ NS_ASSUME_NONNULL_BEGIN
                                                                        }];
                                               };
                                               
+                                              NSString *payPalClientId = client.configuration.payPalClientId;
+                                              if (!payPalClientId && [self payPalEnvironmentForClient:client] == PayPalEnvironmentMock) {
+                                                  payPalClientId = @"FAKE-PAYPAL-CLIENT-ID";
+                                              }
+                                              
                                               PayPalOneTouchCheckoutRequest *request = [PayPalOneTouchCheckoutRequest requestWithApprovalURL:paymentResource.redirectURL
-                                                                                                                                    clientID:client.configuration.payPalClientId
+                                                                                                                                    clientID:payPalClientId
                                                                                                                                  environment:[self payPalEnvironmentForClient:client]
                                                                                                                            callbackURLScheme:self.returnURLScheme];
                                               [self informDelegateWillPerformAppSwitch];
