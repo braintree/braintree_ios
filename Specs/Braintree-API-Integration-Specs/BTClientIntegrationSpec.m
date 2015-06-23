@@ -1144,16 +1144,31 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
         
         describe(@"of a non-card nonce", ^{
             __block NSString *nonce;
+            __block BTClient *testPayPalClient;
             
             beforeEach(^{
-                XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client"];
-                [testThreeDSecureClient savePaypalPaymentMethodWithAuthCode:@"fake-paypal-auth-code"
-                                                   applicationCorrelationID:nil
-                                                                    success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
-                                                                        nonce = paypalPaymentMethod.nonce;
-                                                                        [expectation fulfill];
-                                                                    } failure:nil];
-                [self waitForExpectationsWithTimeout:10 handler:nil];
+                XCTestExpectation *clientExpectation = [self expectationWithDescription:@"Fetch client that supports PayPal"];
+                NSDictionary *configuration = @{ BTClientTestConfigurationKeyMerchantIdentifier: @"integration_merchant_id",
+                                                 BTClientTestConfigurationKeyPublicKey: @"integration_public_key",
+                                                 BTClientTestConfigurationKeyMerchantAccountIdentifier: @"sandbox_credit_card",
+                                                 BTClientTestConfigurationKeyClientTokenVersion: @2 };
+                [BTClient testClientWithConfiguration:configuration
+                                                async:asyncClient completion:^(BTClient *testClient) {
+                                                    testPayPalClient = testClient;
+                                                    [clientExpectation fulfill];
+                                                }];
+                [self waitForExpectationsWithTimeout:5 handler:nil];
+                
+                XCTestExpectation *expectation = [self expectationWithDescription:@"Get PayPal nonce"];
+                [testPayPalClient savePaypalPaymentMethodWithAuthCode:@"fake-paypal-auth-code"
+                                             applicationCorrelationID:nil
+                                                              success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
+                                                                  nonce = paypalPaymentMethod.nonce;
+                                                                  [expectation fulfill];
+                                                              } failure:^(NSError *error) {
+                                                                  XCTFail(@"Unexpected error: %@", error);
+                                                              }];
+                [self waitForExpectationsWithTimeout:5 handler:nil];
             });
             
             it(@"fails to perform a lookup", ^{
