@@ -33,6 +33,10 @@
     return self.returnURLScheme && [self appSwitchAvailableForClient:client] && [BTCoinbaseOAuth isAppOAuthAuthenticationAvailable];
 }
 
+- (BOOL)isProviderAppInstalled {
+    return [BTCoinbaseOAuth isAppOAuthAuthenticationAvailable];
+}
+
 #pragma mark Helpers
 
 - (NSURL *)redirectUri {

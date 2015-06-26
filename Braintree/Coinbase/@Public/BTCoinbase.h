@@ -19,6 +19,17 @@
 /// `[BTCoinbase sharedCoinbase].disabled = [CoinbaseOAuth isAppOAuthAuthenticationAvailable] ? NO : YES;`
 @property (nonatomic, assign) BOOL disabled;
 
+///
+/// Returns `YES` if the Coinbase iOS app is installed on the device.
+///
+/// @note This flag does not consider cases where `BTCoinbase` has been
+/// disabled, or the gateway configuration has not enabled Coinbase as a
+/// payment option, or when `returnURLScheme` is invalid. To check for those
+/// conditions, use `providerAppSwitchAvailableForClient:`.
+///
+/// @see `providerAppSwitchAvailableForClient:`
+@property (nonatomic, assign, readonly) BOOL isProviderAppInstalled;
+
 + (instancetype)sharedCoinbase;
 
 /// Checks whether the Coinbase app is installed (and accepting app switch authorization)
