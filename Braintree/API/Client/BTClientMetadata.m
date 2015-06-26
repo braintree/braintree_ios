@@ -4,8 +4,8 @@
     @protected
     BTClientMetadataIntegrationType _integration;
     BTClientMetadataSourceType _source;
+    NSString *_sessionId;
 }
-
 @end
 
 @implementation BTClientMetadata
@@ -15,21 +15,24 @@
     if (self) {
         _integration = BTClientMetadataIntegrationCustom;
         _source = BTClientMetadataSourceUnknown;
+        _sessionId = [[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
     }
     return self;
 }
 
-- (instancetype)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone {
     BTClientMetadata *copiedMetadata = [[BTClientMetadata allocWithZone:zone] init];
     copiedMetadata->_integration = _integration;
     copiedMetadata->_source = _source;
+    copiedMetadata->_sessionId = [_sessionId copyWithZone:zone];
     return copiedMetadata;
 }
 
-- (instancetype)mutableCopyWithZone:(NSZone *)zone {
+- (id)mutableCopyWithZone:(NSZone *)zone {
     BTClientMutableMetadata *mutableMetadata = [[BTClientMutableMetadata allocWithZone:zone] init];
     mutableMetadata.integration = _integration;
     mutableMetadata.source = _source;
+    mutableMetadata.sessionId = [_sessionId copyWithZone:zone];
     return mutableMetadata;
 }
 
@@ -84,6 +87,10 @@
 
 - (void)setSource:(BTClientMetadataSourceType)source {
     _source = source;
+}
+
+- (void)setSessionId:(NSString *)sessionId {
+    _sessionId = sessionId;
 }
 
 @end
