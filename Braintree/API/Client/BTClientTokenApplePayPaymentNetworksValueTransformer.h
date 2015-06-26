@@ -1,5 +1,5 @@
 #if BT_ENABLE_APPLE_PAY
-@import Foundation;
+#import <Foundation/Foundation.h>
 @import PassKit;
 
 #import "BTAPIResponseParser.h"

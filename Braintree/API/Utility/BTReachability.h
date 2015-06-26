@@ -46,7 +46,7 @@
  */
 // From https://developer.apple.com/library/ios/samplecode/Reachability/Listings/ReadMe_txt.html#//apple_ref/doc/uid/DTS40007324-ReadMe_txt-DontLinkElementID_10
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 @import SystemConfiguration;
 #import <netinet/in.h>
 

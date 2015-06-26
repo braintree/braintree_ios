@@ -4739,6 +4739,7 @@
 		A75DA348192138F000D997A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(TARGET_TYPE)/$(PRODUCT_NAME)/Supporting Files/$(PRODUCT_NAME)-Prefix.pch";
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -4747,6 +4748,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGET_TYPE = Specs;
 			};
 			name = Debug;
@@ -4754,6 +4756,7 @@
 		A75DA349192138F000D997A2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(TARGET_TYPE)/$(PRODUCT_NAME)/Supporting Files/$(PRODUCT_NAME)-Prefix.pch";
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -4761,6 +4764,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos;
 				TARGET_TYPE = Specs;
 			};
 			name = Release;

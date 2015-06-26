@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 #import "BraintreeDemoBaseViewController.h"
 #import "BraintreeDemoPaymentButtonBaseViewController.h"

@@ -7,7 +7,7 @@
 #import "BTMutableCardPaymentMethod.h"
 #import "BTAppSwitch.h"
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 @implementation BTVenmoAppSwitchHandler
 

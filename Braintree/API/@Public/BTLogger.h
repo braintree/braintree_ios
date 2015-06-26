@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 /// Braintree SDK Logging Levels
 typedef NS_ENUM(NSUInteger, BTLogLevel) {

@@ -1,4 +1,4 @@
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 #import "BTVenmoAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler_Internal.h"

@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 #define BTDropInLocalizedString(KEY) [BTDropInLocalizedString KEY]
 
