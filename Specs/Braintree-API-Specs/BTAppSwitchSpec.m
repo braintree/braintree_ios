@@ -30,7 +30,7 @@ describe(@"handleReturnURL:sourceApplication:", ^{
         it(@"should return YES", ^{
             BTAppSwitch *appSwitch;
             appSwitch = [[BTAppSwitch alloc] init];
-            [appSwitch addAppSwitching:happyAppSwitcher forPaymentProvider:0];
+            [appSwitch addAppSwitching:happyAppSwitcher forPaymentType:0];
             BOOL handled = [appSwitch handleReturnURL:[NSURL new] sourceApplication:@""];
             expect(handled).to.beTruthy();
         });

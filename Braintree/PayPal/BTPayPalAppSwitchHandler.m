@@ -17,7 +17,7 @@
 
 + (void)load {
     if (self == [BTPayPalAppSwitchHandler class]) {
-        [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler] forPaymentProvider:BTPaymentProviderTypePayPal];
+        [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler] forApp:BTAppTypePayPal];
     }
 }
 

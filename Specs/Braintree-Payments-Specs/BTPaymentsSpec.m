@@ -163,12 +163,12 @@ describe(@"createPaymentMethod:", ^{
 
         beforeEach(^{
             payPalAppSwitchHandler = [OCMockObject mockForClass:[BTPayPalAppSwitchHandler class]];
-            [[BTAppSwitch sharedInstance] addAppSwitching:payPalAppSwitchHandler forPaymentProvider:BTPaymentProviderTypePayPal];
+            [[BTAppSwitch sharedInstance] addAppSwitching:payPalAppSwitchHandler forApp:BTAppTypePayPal];
         });
 
         afterEach(^{
             [payPalAppSwitchHandler verify];
-            [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler] forPaymentProvider:BTPaymentProviderTypePayPal];
+            [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler] forApp:BTAppTypePayPal];
         });
 
         context(@"and app switch is available", ^{
@@ -255,12 +255,12 @@ describe(@"createPaymentMethod:", ^{
 
         beforeEach(^{
             venmoAppSwitchHandler = [OCMockObject mockForClass:[BTVenmoAppSwitchHandler class]];
-            [[BTAppSwitch sharedInstance] addAppSwitching:venmoAppSwitchHandler forPaymentProvider:BTPaymentProviderTypeVenmo];
+            [[BTAppSwitch sharedInstance] addAppSwitching:venmoAppSwitchHandler forApp:BTAppTypeVenmo];
             provider.delegate = delegate;
         });
         
         afterEach(^{
-            [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler] forPaymentProvider:BTPaymentProviderTypeVenmo];
+            [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler] forApp:BTAppTypeVenmo];
         });
 
         context(@"and app switch is available", ^{
@@ -301,12 +301,12 @@ describe(@"createPaymentMethod:", ^{
 
         beforeEach(^{
             stubCoinbase = [OCMockObject mockForClass:[BTCoinbase class]];
-            [[BTAppSwitch sharedInstance] addAppSwitching:stubCoinbase forPaymentProvider:BTPaymentProviderTypeCoinbase];
+            [[BTAppSwitch sharedInstance] addAppSwitching:stubCoinbase forApp:BTAppTypeCoinbase];
         });
 
         afterEach(^{
             [stubCoinbase verify];
-            [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase] forPaymentProvider:BTPaymentProviderTypeCoinbase];
+            [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase] forApp:BTAppTypeCoinbase];
         });
 
         describe(@"create payment method with default options", ^{

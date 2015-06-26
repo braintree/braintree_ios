@@ -37,7 +37,6 @@ PODS:
     - Braintree/Payments
   - Braintree/Coinbase (3.9.1):
     - Braintree/API
-    - coinbase-official/OAuth (~> 2.1.1)
   - Braintree/Data (3.9.1):
     - Braintree/API
     - Braintree/PayPal
@@ -61,7 +60,6 @@ PODS:
   - Braintree/Venmo (3.9.1):
     - Braintree/API
   - CardIO (5.0.3)
-  - coinbase-official/OAuth (2.1.4)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
   - HockeySDK (3.6.4)
@@ -105,7 +103,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: .
+    :path: "."
   FLEX:
     :git: https://github.com/intelliot/FLEX.git
   KIF:
@@ -127,9 +125,8 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Braintree: 1796b67efcf832019d1da1b8a1d779e202e3796f
+  Braintree: 370c1240779559955b42642e41cb9d592c5e6bba
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
-  coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563

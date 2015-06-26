@@ -1,6 +1,13 @@
 @import Foundation;
 #import "BTAppSwitching.h"
-#import "BTPaymentProvider.h"
+
+/// Type of payment app
+typedef NS_ENUM(NSInteger, BTAppType) {
+    BTAppTypePayPal = 0,
+    BTAppTypeVenmo,
+    BTAppTypeApplePay,
+    BTAppTypeCoinbase,
+};
 
 @interface BTAppSwitch : NSObject
 
@@ -10,8 +17,8 @@
 
 - (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
-- (void)addAppSwitching:(id<BTAppSwitching>)appSwitching forPaymentProvider:(BTPaymentProviderType)type;
-- (void)removeAppSwitchingForPaymentProvider:(BTPaymentProviderType)type;
-- (id <BTAppSwitching>)appSwitchingForPaymentProvider:(BTPaymentProviderType)type;
+- (void)addAppSwitching:(id<BTAppSwitching>)appSwitching forApp:(BTAppType)type;
+- (void)removeAppSwitchingForApp:(BTAppType)type;
+- (id <BTAppSwitching>)appSwitchingForApp:(BTAppType)type;
 
 @end

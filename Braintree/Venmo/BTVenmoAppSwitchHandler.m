@@ -16,7 +16,7 @@
 
 + (void)load {
     if (self == [BTVenmoAppSwitchHandler class]) {
-        [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler] forPaymentProvider:BTPaymentProviderTypeVenmo];
+        [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler] forApp:BTAppTypeVenmo];
     }
 }
 

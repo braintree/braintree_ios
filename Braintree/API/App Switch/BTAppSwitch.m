@@ -2,7 +2,7 @@
 
 @interface BTAppSwitch ()
 
-// Dictionary of id <AppSwitching> keyed by @(BTPaymentProviderType)
+// Dictionary of id <AppSwitching> keyed by @(BTPaymentAppSwitchType)
 @property (nonatomic, strong) NSMutableDictionary *appSwitchingInstances;
 
 @end
@@ -47,15 +47,15 @@
     return NO;
 }
 
-- (void)addAppSwitching:(id<BTAppSwitching>)appSwitching forPaymentProvider:(BTPaymentProviderType)type {
+- (void)addAppSwitching:(id<BTAppSwitching>)appSwitching forApp:(BTAppType)type {
     self.appSwitchingInstances[@(type)] = appSwitching;
 }
 
-- (void)removeAppSwitchingForPaymentProvider:(BTPaymentProviderType)type {
+- (void)removeAppSwitchingForApp:(BTAppType)type {
     [self.appSwitchingInstances removeObjectForKey:@(type)];
 }
 
-- (id <BTAppSwitching>)appSwitchingForPaymentProvider:(BTPaymentProviderType)type {
+- (id <BTAppSwitching>)appSwitchingForApp:(BTAppType)type {
     return self.appSwitchingInstances[@(type)];
 }
 

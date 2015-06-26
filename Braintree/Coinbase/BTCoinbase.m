@@ -16,7 +16,7 @@
 
 + (void)load {
     if (self == [BTCoinbase class]) {
-        [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase] forPaymentProvider:BTPaymentProviderTypeCoinbase];
+        [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase] forApp:BTAppTypeCoinbase];
     }
 }
 
