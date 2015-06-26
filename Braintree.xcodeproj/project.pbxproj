@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		006DF886AA8467222145BEE3 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		034EF7CE1AC367EB00CC25D8 /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CB211AC08234007AD979 /* BTTestClientTokenFactory.m */; };
+		0D9D2B8667235033E88D7A23 /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
+		137D150CAF78BC9B8B08D9FF /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		14635ACA2F22A649D38DF214 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		1607FE3B192D96BE0099D504 /* DESIGN.md in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE37192D96BE0099D504 /* DESIGN.md */; };
 		1607FE3E192D96BE0099D504 /* TLDR.md in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE38192D96BE0099D504 /* TLDR.md */; };
 		1607FE49192D974C0099D504 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
@@ -68,6 +72,7 @@
 		162175A8192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 162175A0192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m */; };
 		162175AA192D9505008DC35D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 162175A4192D9505008DC35D /* InfoPlist.strings */; };
 		162D8DAF199B2D070040B1A4 /* BTURLUtilsSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 162D8DAE199B2D070040B1A4 /* BTURLUtilsSpecs.m */; };
+		162DEF31261EADD377B7424A /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
 		1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 163357771AEE103000794AAA /* BraintreeDemoCardHintViewController.m */; };
 		1633577E1AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 163357791AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.m */; };
 		1633577F1AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1633577A1AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.xib */; };
@@ -106,12 +111,8 @@
 		16F3A7E21AEC8BE100628DBF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16F3A7E11AEC8BE100628DBF /* Launch Screen.storyboard */; };
 		16F3A7E51AEC909800628DBF /* BraintreeDemoDemoContainmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F3A7E41AEC909800628DBF /* BraintreeDemoDemoContainmentViewController.m */; };
 		16F3A7E61AEC984D00628DBF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 16A750A91A7053CE00C8FAE4 /* Settings.bundle */; };
-		1D000F14F6D8F06966EFD95C /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		1EFB0A0363CB44C1BBC839D9 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		201549FD3C2DF267C0F2E8ED /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
 		2D30F1361A7C49E2004BA8C3 /* BraintreeApplePaySpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D30F1351A7C49E2004BA8C3 /* BraintreeApplePaySpecs.m */; };
 		2D30F13E1A7C4B54004BA8C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D30F13C1A7C4B54004BA8C3 /* InfoPlist.strings */; };
-		2D479982C817470684206F4B /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */; };
 		2D70E0FA19C2238300456723 /* BTApplePayPaymentMethodSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D70E0F919C2238300456723 /* BTApplePayPaymentMethodSpec.m */; };
 		2D92BC6919BADB01009663B2 /* Braintree-Payments-Specs-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2D92BC6719BADB01009663B2 /* Braintree-Payments-Specs-Info.plist */; };
@@ -120,17 +121,13 @@
 		2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */; };
 		2DCDDFCA194F9E1400F691CF /* BTHTTPSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCDDFC9194F9E1400F691CF /* BTHTTPSpec.m */; };
 		2DCFAA6D1A800ACB00FA2ECC /* BraintreeApplePayExcludedSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCFAA6C1A800ACB00FA2ECC /* BraintreeApplePayExcludedSpecs.m */; };
-		30E5F597C1A4B1B04605CFC9 /* libPods-Braintree-Apple-Pay-Excluded.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9DFAAB1262EEC2079633CE3 /* libPods-Braintree-Apple-Pay-Excluded.a */; };
-		348998F2A8B8C3DF8791CC4F /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
-		3A55D79CE7284DBEA25D9B29 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		40657CDB6E4B27A121FC1EBB /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
-		5B8A96B1E7B997433E77AE87 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */; };
+		4D6E3718C43FFC0A67DB16DD /* libPods-Braintree-Apple-Pay-Excluded.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9DFAAB1262EEC2079633CE3 /* libPods-Braintree-Apple-Pay-Excluded.a */; };
+		694DC76AACE9C9D40FD48593 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		757CF1B2CA5360CBF5F25DDE /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		842E21C71B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E21C61B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m */; };
 		842E21C81B02708E0036DA66 /* BraintreeDemoBTUICoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962A71AFC26DD00FB3459 /* BraintreeDemoBTUICoinbaseButtonViewController.m */; };
 		842E21C91B0270C90036DA66 /* BraintreeDemoCustomCoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962AA1AFC26DD00FB3459 /* BraintreeDemoCustomCoinbaseButtonViewController.m */; };
-		9DC66F2E589CBC80041A9191 /* libPods-Braintree-Apple-Pay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */; };
-		9FC026317803AE8F059D786A /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		A6A89E1C8FF46AAD2FF8C515 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		99750FDC809F68C4246BF88E /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
 		A7281C5819A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */; };
 		A7293F2D1AC0F05800FBD6FD /* BTOfflineClientSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7293F2C1AC0F05800FBD6FD /* BTOfflineClientSpec.m */; };
@@ -173,7 +170,8 @@
 		A7F6CB241AC083E0007AD979 /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CB211AC08234007AD979 /* BTTestClientTokenFactory.m */; };
 		A7FC1CC61992B38A00636548 /* BTClientStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */; };
 		A7FF7A4E19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF7A4D19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m */; };
-		B6A81E06EEA7B8903188880B /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		AB3A0C96632B07668A8A011A /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
+		BB05EBCD58F647B9EA04C57E /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
 		CD9ED01B5D4C252AB05947DF /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9ED118397E68366E74F1A8 /* BraintreeDemoBTUIPayPalButtonViewController.m */; };
 		CD9ED3C05BDBA0AD69EEEF08 /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9EDBF566D50C40623E6F89 /* BraintreeDemoBTUIVenmoButtonViewController.m */; };
 		CD9ED3FEF7FF8E133BBF4960 /* BraintreeDemoUIWidgetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9ED247C1B306573CF4AAB2 /* BraintreeDemoUIWidgetsViewController.m */; };
@@ -186,8 +184,10 @@
 		CD9ED8C5A85D7AF64C4F2340 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9EDB10AC950DAC619E8437 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m */; };
 		CD9EDC3A622EF8D5E829AF4F /* BraintreeDemoBTPaymentButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9ED5EA53A73C612F6D0C19 /* BraintreeDemoBTPaymentButtonViewController.m */; };
 		CD9EDCC2C746987970624D05 /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9ED3C234F6BB9612478007 /* BraintreeDemoCustomPayPalButtonViewController.m */; };
-		CE819730B14F49C1AE0EC896 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		D6516797C3BA06EA8325AC3A /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
+		D0311966487F62264418B390 /* libPods-Braintree-Apple-Pay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */; };
+		D5FD96A6B8703344CB77B1B0 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */; };
+		FA3D6AAEF7256ABB037A0C9C /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		FF778C892A565D2A5757976C /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -854,7 +854,7 @@
 				1607FE49192D974C0099D504 /* XCTest.framework in Frameworks */,
 				1607FE4B192D974C0099D504 /* UIKit.framework in Frameworks */,
 				1607FE4A192D974C0099D504 /* Foundation.framework in Frameworks */,
-				3A55D79CE7284DBEA25D9B29 /* libPods-Tests.a in Frameworks */,
+				757CF1B2CA5360CBF5F25DDE /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -865,7 +865,7 @@
 				1607FE5F192D97570099D504 /* XCTest.framework in Frameworks */,
 				1607FE61192D97570099D504 /* UIKit.framework in Frameworks */,
 				1607FE60192D97570099D504 /* Foundation.framework in Frameworks */,
-				A6A89E1C8FF46AAD2FF8C515 /* libPods-Tests.a in Frameworks */,
+				137D150CAF78BC9B8B08D9FF /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -876,7 +876,7 @@
 				1607FE8B192D97FF0099D504 /* XCTest.framework in Frameworks */,
 				1607FE8D192D97FF0099D504 /* UIKit.framework in Frameworks */,
 				1607FE8C192D97FF0099D504 /* Foundation.framework in Frameworks */,
-				1EFB0A0363CB44C1BBC839D9 /* libPods-Tests.a in Frameworks */,
+				FF778C892A565D2A5757976C /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -884,7 +884,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D000F14F6D8F06966EFD95C /* libPods-Tests.a in Frameworks */,
+				FA3D6AAEF7256ABB037A0C9C /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -895,7 +895,7 @@
 				162174E2192D9220008DC35D /* CoreGraphics.framework in Frameworks */,
 				162174E3192D9220008DC35D /* UIKit.framework in Frameworks */,
 				162174E0192D9220008DC35D /* Foundation.framework in Frameworks */,
-				5B8A96B1E7B997433E77AE87 /* libPods-Braintree-Demo.a in Frameworks */,
+				D5FD96A6B8703344CB77B1B0 /* libPods-Braintree-Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -907,7 +907,7 @@
 				16217540192D94BB008DC35D /* XCTest.framework in Frameworks */,
 				16217542192D94BB008DC35D /* UIKit.framework in Frameworks */,
 				16217541192D94BB008DC35D /* Foundation.framework in Frameworks */,
-				201549FD3C2DF267C0F2E8ED /* libPods-Logic-Tests.a in Frameworks */,
+				162DEF31261EADD377B7424A /* libPods-Logic-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -918,7 +918,7 @@
 				16217554192D94C7008DC35D /* XCTest.framework in Frameworks */,
 				16217556192D94C7008DC35D /* UIKit.framework in Frameworks */,
 				16217555192D94C7008DC35D /* Foundation.framework in Frameworks */,
-				D6516797C3BA06EA8325AC3A /* libPods-Logic-Tests.a in Frameworks */,
+				BB05EBCD58F647B9EA04C57E /* libPods-Logic-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -929,7 +929,7 @@
 				1696816B192D9A3200120846 /* XCTest.framework in Frameworks */,
 				1696816D192D9A3200120846 /* UIKit.framework in Frameworks */,
 				1696816C192D9A3200120846 /* Foundation.framework in Frameworks */,
-				CE819730B14F49C1AE0EC896 /* libPods-Tests.a in Frameworks */,
+				694DC76AACE9C9D40FD48593 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -937,7 +937,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FC026317803AE8F059D786A /* libPods-Tests.a in Frameworks */,
+				006DF886AA8467222145BEE3 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -945,7 +945,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DC66F2E589CBC80041A9191 /* libPods-Braintree-Apple-Pay.a in Frameworks */,
+				D0311966487F62264418B390 /* libPods-Braintree-Apple-Pay.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -955,7 +955,7 @@
 			files = (
 				2D9DDB3619B8171900C53140 /* XCTest.framework in Frameworks */,
 				2D9DDB3719B8171900C53140 /* Foundation.framework in Frameworks */,
-				348998F2A8B8C3DF8791CC4F /* libPods-Logic-Tests.a in Frameworks */,
+				AB3A0C96632B07668A8A011A /* libPods-Logic-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -963,7 +963,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				30E5F597C1A4B1B04605CFC9 /* libPods-Braintree-Apple-Pay-Excluded.a in Frameworks */,
+				4D6E3718C43FFC0A67DB16DD /* libPods-Braintree-Apple-Pay-Excluded.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -974,7 +974,7 @@
 				A72B37FE19633826009AD2F5 /* XCTest.framework in Frameworks */,
 				A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */,
 				A72B37FF19633826009AD2F5 /* Foundation.framework in Frameworks */,
-				B6A81E06EEA7B8903188880B /* libPods-Tests.a in Frameworks */,
+				14635ACA2F22A649D38DF214 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -985,7 +985,7 @@
 				A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */,
 				A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */,
 				A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */,
-				40657CDB6E4B27A121FC1EBB /* libPods-Logic-Tests.a in Frameworks */,
+				0D9D2B8667235033E88D7A23 /* libPods-Logic-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -996,7 +996,7 @@
 				A7B7432B19A3E093000A6A7A /* XCTest.framework in Frameworks */,
 				A7B7432D19A3E094000A6A7A /* UIKit.framework in Frameworks */,
 				A7B7432C19A3E093000A6A7A /* Foundation.framework in Frameworks */,
-				2D479982C817470684206F4B /* libPods-Tests.a in Frameworks */,
+				99750FDC809F68C4246BF88E /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2142,8 +2142,6 @@
 		A71B43D41B1CDD3E006B9C2A /* PayPal - Scopes */ = {
 			isa = PBXGroup;
 			children = (
-				A71B43D11B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.h */,
-				A71B43D21B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m */,
 			);
 			name = "PayPal - Scopes";
 			sourceTree = "<group>";
@@ -2384,9 +2382,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1607FE57192D974C0099D504 /* Build configuration list for PBXNativeTarget "Braintree-PayPal-Specs" */;
 			buildPhases = (
+				0005583A9FBE0A24A1CC060C /* Check Pods Manifest.lock */,
 				1607FE44192D974C0099D504 /* Sources */,
 				1607FE45192D974C0099D504 /* Frameworks */,
 				1607FE46192D974C0099D504 /* Resources */,
+				593DDE3B11878DB424A88119 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2422,9 +2422,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1607FE97192D98000099D504 /* Build configuration list for PBXNativeTarget "Braintree-UI-Specs" */;
 			buildPhases = (
+				D61C524A6964B52441884F59 /* Check Pods Manifest.lock */,
 				1607FE86192D97FF0099D504 /* Sources */,
 				1607FE87192D97FF0099D504 /* Frameworks */,
 				1607FE88192D97FF0099D504 /* Resources */,
+				9C168C064D258912AFE1A536 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2519,9 +2521,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16968179192D9A3200120846 /* Build configuration list for PBXNativeTarget "Braintree-Acceptance-Specs" */;
 			buildPhases = (
+				E47E6953D33EF5CA37B07AE8 /* Check Pods Manifest.lock */,
 				16968166192D9A3200120846 /* Sources */,
 				16968167192D9A3200120846 /* Frameworks */,
 				16968168192D9A3200120846 /* Resources */,
+				E14CF77FB583573B70B93F4A /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2577,9 +2581,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D9DDB4219B8171A00C53140 /* Build configuration list for PBXNativeTarget "Braintree-Payments-Specs" */;
 			buildPhases = (
+				9E53CB7A187AE8DB023D3ED3 /* Check Pods Manifest.lock */,
 				2D9DDB3119B8171800C53140 /* Sources */,
 				2D9DDB3219B8171800C53140 /* Frameworks */,
 				2D9DDB3319B8171800C53140 /* Resources */,
+				D40E1564F8F9C439088367B7 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2614,9 +2620,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A72B380C19633826009AD2F5 /* Build configuration list for PBXNativeTarget "Braintree-Data-Specs" */;
 			buildPhases = (
+				168C1BC99BE3B4D5D473D2B3 /* Check Pods Manifest.lock */,
 				A72B37F919633826009AD2F5 /* Sources */,
 				A72B37FA19633826009AD2F5 /* Frameworks */,
 				A72B37FB19633826009AD2F5 /* Resources */,
+				093E5187EAF481983CF87500 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2652,9 +2660,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7B7433719A3E094000A6A7A /* Build configuration list for PBXNativeTarget "Braintree-Venmo-Specs" */;
 			buildPhases = (
+				150CCDBC28B2D428844FA42A /* Check Pods Manifest.lock */,
 				A7B7432619A3E093000A6A7A /* Sources */,
 				A7B7432719A3E093000A6A7A /* Frameworks */,
 				A7B7432819A3E093000A6A7A /* Resources */,
+				E37B16244F22151178046A57 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2918,6 +2928,66 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0005583A9FBE0A24A1CC060C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		093E5187EAF481983CF87500 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		150CCDBC28B2D428844FA42A /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		168C1BC99BE3B4D5D473D2B3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		1F2BDC4AAD5713D9AE616542 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2976,6 +3046,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		593DDE3B11878DB424A88119 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		608A0D5DC2863A57A0E75CB5 /* Check Pods Manifest.lock */ = {
@@ -3083,6 +3168,36 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9C168C064D258912AFE1A536 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9E53CB7A187AE8DB023D3ED3 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		AAA84B4804905878C01A4C43 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3128,6 +3243,36 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D40E1564F8F9C439088367B7 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D61C524A6964B52441884F59 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		DB3E31C1E61AACFEE18986B2 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3144,6 +3289,51 @@
 			showEnvVarsInLog = 0;
 		};
 		E13119870ECDBE8C03E64829 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E14CF77FB583573B70B93F4A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E37B16244F22151178046A57 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E47E6953D33EF5CA37B07AE8 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3262,7 +3452,6 @@
 				CD9ED8C5A85D7AF64C4F2340 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m in Sources */,
 				16C402B91AEF3906004E6881 /* BraintreeDemoBraintreeDataViewController.m in Sources */,
 				1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */,
-				A71B43D31B1CDD37006B9C2A /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */,
 				CD9ED53E9C13C386FFF05FC2 /* BraintreeDemoThreeDSecureViewController.m in Sources */,
 				163357801AEE103000794AAA /* BraintreeDemoPaymentsUIComponentsViewController.m in Sources */,
 				A76819A61B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m in Sources */,
