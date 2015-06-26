@@ -1,5 +1,5 @@
-@import UIKit;
-@import Foundation;
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 #import "BTPaymentProviderErrors.h"
 #import "BTClient.h"

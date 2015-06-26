@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 /// Interprets NSError objects of domainBTBraintreeAPIErrorDomain, code
 /// BTCustomerInputErrorInvalid for Drop-In UI Components.

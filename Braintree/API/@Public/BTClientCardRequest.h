@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 #import "BTClientCardTokenizationRequest.h"
 
 /// Representation of a card that should be uploaded to Braintree for payment method creation.

@@ -1,4 +1,4 @@
-@import UIKit;
+#import <UIKit/UIKit.h>
 #import "BTUIFormField.h"
 #import "BTUITextField.h"
 

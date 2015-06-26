@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 extern NSString *BraintreeDemoSettingsEnvironmentDefaultsKey;
 extern NSString *BraintreeDemoSettingsCustomEnvironmentURLDefaultsKey;

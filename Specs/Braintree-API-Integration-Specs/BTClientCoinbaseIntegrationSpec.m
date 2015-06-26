@@ -12,7 +12,7 @@ beforeEach(^{
                                             BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
                                             BTClientTestConfigurationKeyCustomer:@YES,
                                             BTClientTestConfigurationKeyClientTokenVersion: @2
-                                            } async:@YES completion:^(BTClient *client) {
+                                            } async:YES completion:^(BTClient *client) {
                                                 testClient = client;
                                                 [testClient updateCoinbaseMerchantOptions:@{ @"enabled": @YES }
                                                                                   success:^{
@@ -203,7 +203,7 @@ describe(@"saveCoinbaseAccount:storeInVault:success:failure:", ^{
                                                     BTClientTestConfigurationKeyPublicKey:@"integration_public_key",
                                                     BTClientTestConfigurationKeyNoCustomer: @YES,
                                                     BTClientTestConfigurationKeyClientTokenVersion: @2
-                                                    } async:@YES completion:^(BTClient *client) {
+                                                    } async:YES completion:^(BTClient *client) {
                                                         testClient = client;
                                                         [testClient updateCoinbaseMerchantOptions:@{ @"enabled": @YES }
                                                                                           success:^{

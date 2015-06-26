@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 #define BTThreeDSecureLocalizedString(KEY) [BTThreeDSecureLocalizedString KEY]
 

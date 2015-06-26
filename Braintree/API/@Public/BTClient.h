@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 #import "BTCardPaymentMethod.h"
 #import "BTPayPalPaymentMethod.h"

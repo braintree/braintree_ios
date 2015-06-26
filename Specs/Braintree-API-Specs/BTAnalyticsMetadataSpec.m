@@ -1,6 +1,6 @@
 #import "BTAnalyticsMetadata.h"
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 SpecBegin(BTAnalyticsMetadata)
 

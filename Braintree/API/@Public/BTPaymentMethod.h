@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 /// A payment method returned by the Client API that represents a payment method associated with
 /// a particular Braintree customer.

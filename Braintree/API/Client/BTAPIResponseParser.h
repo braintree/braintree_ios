@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 @protocol BTValueTransforming <NSObject>
 - (id)transformedValue:(id)value;

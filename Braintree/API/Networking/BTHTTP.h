@@ -1,4 +1,4 @@
-@import Foundation;
+#import <Foundation/Foundation.h>
 
 #import "BTHTTPResponse.h"
 #import "BTErrors.h"
