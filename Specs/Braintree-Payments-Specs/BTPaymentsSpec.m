@@ -10,7 +10,7 @@
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler.h"
 
-#import "BTCoinbase.h"
+#import "BTCoinbaseDriver.h"
 #import "CoinbaseOAuth.h"
 
 typedef void (^BTPaymentsSpecHelperBlock)(id, NSError *);
@@ -261,7 +261,7 @@ describe(@"createPaymentMethod:", ^{
         __block id stubCoinbase;
 
         beforeEach(^{
-            stubCoinbase = [OCMockObject mockForClass:[BTCoinbase class]];
+            stubCoinbase = [OCMockObject mockForClass:[BTCoinbaseDriver class]];
             [[[[stubCoinbase stub] andReturn:stubCoinbase] classMethod] sharedCoinbase];
         });
 

@@ -81,7 +81,7 @@
     __block BOOL returnValue = YES;
     __block BOOL didReturn = NO;
     
-    [payPalDriver startAuthorizationWithCompletion:^(BTPayPalPaymentMethod * __nullable paymentMethod, NSError * __nullable error) {
+    [payPalDriver startAuthorizationWithCompletion:^(BTPayPalPaymentMethod * BT_NULLABLE paymentMethod, NSError * BT_NULLABLE error) {
         if (didReturn) {
             if (paymentMethod) {
                 [self informDelegateDidCreatePayPalPaymentMethod:paymentMethod];

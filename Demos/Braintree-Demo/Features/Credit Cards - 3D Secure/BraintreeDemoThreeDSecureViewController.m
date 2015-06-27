@@ -2,12 +2,12 @@
 #import "ALView+PureLayout.h"
 
 #import <Braintree/Braintree-3D-Secure.h>
-#import <Braintree/BTThreeDSecure.h>
+#import <Braintree/BTThreeDSecureDriver.h>
 
 #import <Braintree/BTCardPaymentMethod.h>
 
 @interface BraintreeDemoThreeDSecureViewController ()
-@property(nonatomic, strong) BTThreeDSecure *threeDSecure;
+@property(nonatomic, strong) BTThreeDSecureDriver *threeDSecure;
 @property(nonatomic, strong) BTUICardFormView *cardFormView;
 @end
 
@@ -16,7 +16,7 @@
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
-        self.threeDSecure = [[BTThreeDSecure alloc] initWithClient:self.braintree.client
+        self.threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:self.braintree.client
                                                           delegate:self];
     }
     return self;

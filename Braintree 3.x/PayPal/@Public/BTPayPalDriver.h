@@ -4,7 +4,7 @@
 #import "BTPayPalCheckout.h"
 #import "BTClient.h"
 
-NS_ASSUME_NONNULL_BEGIN
+BT_ASSUME_NONNULL_BEGIN
 
 @protocol BTPayPalDriverDelegate;
 
@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Note that during the app switch authorization, the user may switch back to your app manually. In this case, the caller will not receive a cancelation via the completionBlock. Rather, it is the caller's responsibility to observe `UIApplicationDidBecomeActiveNotification` and `UIApplicationWillResignActiveNotification` using `NSNotificationCenter` if necessary.
 ///
 /// @param completionBlock This completion will be invoked exactly once when authorization is complete or an error occurs.
-- (void)startAuthorizationWithCompletion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock;
+- (void)startAuthorizationWithCompletion:(nullable void (^)(BTPayPalPaymentMethod *BT_NULLABLE paymentMethod, NSError *BT_NULLABLE error))completionBlock;
 
 /// Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser with
 /// additional scopes (Ex: 'address').
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param additionalScopes Set of requested scope-values.
 ///        Available scope-values are listed at https://developer.paypal.com/webapps/developer/docs/integration/direct/identity/attributes/
 /// @param completionBlock This completion will be invoked exactly once when authorization is complete or an error occurs.
-- (void)startAuthorizationWithAdditionalScopes:(NSSet * __nullable)additionalScopes completion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock;
+- (void)startAuthorizationWithAdditionalScopes:(NSSet * BT_NULLABLE)additionalScopes completion:(nullable void (^)(BTPayPalPaymentMethod *BT_NULLABLE paymentMethod, NSError *BT_NULLABLE error))completionBlock;
 
 /// Checkout with PayPal for creating a single-use PayPal payment method nonce.
 ///
@@ -87,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note This method is mutually exclusive with startAuthorizationWithCompletion:. In either case, you need to create a Braintree transaction from your server in order to actually move money!
 ///
 /// @param completionBlock This completion will be invoked when authorization is complete.
-- (void)startCheckout:(BTPayPalCheckout *)checkout completion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock;
+- (void)startCheckout:(BTPayPalCheckout *)checkout completion:(nullable void (^)(BTPayPalPaymentMethod *BT_NULLABLE paymentMethod, NSError *BT_NULLABLE error))completionBlock;
 
 
 #pragma mark - App Switch
@@ -155,4 +155,4 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverAppSwitchTarget){
 
 @end
 
-NS_ASSUME_NONNULL_END
+BT_ASSUME_NONNULL_END

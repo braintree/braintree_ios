@@ -14,7 +14,7 @@
 
 static void (^BTPayPalHandleURLContinuation)(NSURL *url);
 
-NS_ASSUME_NONNULL_BEGIN
+BT_ASSUME_NONNULL_BEGIN
 
 @interface BTPayPalDriver ()
 @property (nonatomic, strong) BTClient *client;
@@ -61,11 +61,11 @@ NS_ASSUME_NONNULL_BEGIN
     return client;
 }
 
-- (void)startAuthorizationWithCompletion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock {
+- (void)startAuthorizationWithCompletion:(nullable void (^)(BTPayPalPaymentMethod *BT_NULLABLE paymentMethod, NSError *BT_NULLABLE error))completionBlock {
     [self startAuthorizationWithAdditionalScopes:nil completion:completionBlock];
 }
 
-- (void)startAuthorizationWithAdditionalScopes:(NSSet * __nullable)additionalScopes completion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock {
+- (void)startAuthorizationWithAdditionalScopes:(NSSet * BT_NULLABLE)additionalScopes completion:(nullable void (^)(BTPayPalPaymentMethod *BT_NULLABLE paymentMethod, NSError *BT_NULLABLE error))completionBlock {
     NSError *error;
     BTClient *client = [self copyClientForPayPal:self.client error:&error];
 
@@ -156,7 +156,7 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 }
 
-- (void)startCheckout:(__unused BTPayPalCheckout * __nonnull)checkout completion:(nullable __unused void (^)(BTPayPalPaymentMethod * __nullable paymentMethod, NSError * __nullable error))completionBlock {
+- (void)startCheckout:(__unused BTPayPalCheckout * __nonnull)checkout completion:(nullable __unused void (^)(BTPayPalPaymentMethod * BT_NULLABLE paymentMethod, NSError * BT_NULLABLE error))completionBlock {
     NSError *error;
     BTClient *client = [self copyClientForPayPal:self.client error:&error];
     
@@ -553,4 +553,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+BT_ASSUME_NONNULL_END

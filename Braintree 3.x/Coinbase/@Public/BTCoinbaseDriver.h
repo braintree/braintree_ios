@@ -8,7 +8,7 @@
 /// This is a beta integration option. For details, see https://www.braintreepayments.com/features/coinbase
 ///
 /// @see BTAppSwitching
-@interface BTCoinbase : NSObject <BTAppSwitching>
+@interface BTCoinbaseDriver : NSObject <BTAppSwitching>
 
 @property (nonatomic, assign) BOOL storeInVault;
 

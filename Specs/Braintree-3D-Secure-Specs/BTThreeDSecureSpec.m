@@ -1,4 +1,4 @@
-#import "BTThreeDSecure.h"
+#import "BTThreeDSecureDriver.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTClient_Internal.h"
 #import "BTCardPaymentMethod_Mutable.h"
@@ -64,11 +64,11 @@ beforeEach(^{
 
 describe(@"initialization", ^{
     it(@"requires a a client", ^{
-        expect([[BTThreeDSecure alloc] initWithClient:nil delegate:delegate]).to.beNil();
+        expect([[BTThreeDSecureDriver alloc] initWithClient:nil delegate:delegate]).to.beNil();
     });
 
     it(@"requires a a delegate", ^{
-        expect([[BTThreeDSecure alloc] initWithClient:client delegate:nil]).to.beNil();
+        expect([[BTThreeDSecureDriver alloc] initWithClient:client delegate:nil]).to.beNil();
     });
 });
 
@@ -89,7 +89,7 @@ describe(@"BTCardPaymentMethod+BTThreeDSecureInfo category method", ^{
 describe(@"verifyCardWithNonce:amount:", ^{
     describe(@"for a card that requires authentication", ^{
         it(@"requests presentation of a three d secure view controller", ^{
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 
             [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure
                                requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -104,7 +104,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
 
     describe(@"for a card that does not require authentication", ^{
         it(@"returns a nonce without any view controller interaction", ^{
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 
             [[(OCMockObject *)delegate expect] paymentMethodCreator:[OCMArg any] didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
                 if (![obj isKindOfClass:[BTCardPaymentMethod class]]) {
@@ -146,7 +146,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
                                                                          success:[OCMArg isNotNil]
                                                                          failure:OCMOCK_ANY];
             
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
             
             [[(OCMockObject *)delegate expect] paymentMethodCreator:[OCMArg any] didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
                 if (![obj isKindOfClass:[BTCardPaymentMethod class]]) {
@@ -171,7 +171,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
 
     describe(@"when lookup fails due to server error", ^{
         it(@"passes the error back to the caller", ^{
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 
             [[(OCMockObject *)delegate expect] paymentMethodCreator:[OCMArg any] didFailWithError:[OCMArg isNotNil]];
 
@@ -188,7 +188,7 @@ describe(@"convenience methods", ^{
             BTCardPaymentMethod *mockCard = [OCMockObject mockForClass:[BTCardPaymentMethod class]];
             [[[(OCMockObject *)mockCard stub] andReturn:@"some-nonce"] nonce];
 
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 
             OCMockObject *partialMockThreeDSecure = [OCMockObject partialMockForObject:threeDSecure];
             [[partialMockThreeDSecure expect] verifyCardWithNonce:mockCard.nonce amount:[OCMArg any]];
@@ -211,7 +211,7 @@ describe(@"convenience methods", ^{
                 successBlock(mockCard);
             }] saveCardWithRequest:mockRequest success:OCMOCK_ANY failure:OCMOCK_ANY];
 
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 
             OCMockObject *partialMockThreeDSecure = [OCMockObject partialMockForObject:threeDSecure];
             [[partialMockThreeDSecure expect] verifyCardWithNonce:mockCard.nonce amount:[OCMArg any]];
