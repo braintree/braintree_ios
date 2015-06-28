@@ -9,7 +9,9 @@ BT_ASSUME_NONNULL_BEGIN
 
 @interface BTCheckoutButton : UIView
 
-- (instancetype)initWithCheckoutRequest:(BTCheckoutRequest *)checkoutRequest NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCheckoutRequest:(BTCheckoutRequest *)checkoutRequest;
+
+@property (nonatomic, nullable, strong) BTCheckoutRequest *checkoutRequest;
 
 @property (nonatomic, weak, nullable) id<BTCheckoutButtonDelegate> delegate;
 

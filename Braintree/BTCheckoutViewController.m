@@ -6,6 +6,10 @@
 
 @implementation BTCheckoutViewController
 
+- (nonnull instancetype)initWithCheckoutRequest:(nonnull BTCheckoutRequest *)checkoutRequest {
+    return [self init];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

@@ -10,6 +10,8 @@ BT_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithCheckoutRequest:(BTCheckoutRequest *)checkoutRequest;
 
+@property (nonatomic, nullable, strong) BTCheckoutRequest *checkoutRequest;
+
 @property (nonatomic, nullable, weak) id<BTCheckoutViewControllerDelegate> delegate;
 
 @end

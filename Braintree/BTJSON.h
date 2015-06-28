@@ -44,7 +44,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithData:(NSData *)data;
 
-- (instancetype)initWithValue:(id)value;
+- (instancetype)initWithValue:(id)value NS_DESIGNATED_INITIALIZER;
 
 // @name Subscripting
 

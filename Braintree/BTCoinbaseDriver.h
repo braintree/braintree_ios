@@ -7,7 +7,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 @interface BTCoinbaseDriver : NSObject
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(BTConfiguration *)configuration;
 
 - (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedCoinbaseAccount __BT_NULLABLE *coinbaseAccount, NSError __BT_NULLABLE *error))completionBlock;
 

@@ -15,7 +15,7 @@ BT_ASSUME_NONNULL_BEGIN
 + (instancetype)payPalAuthoriztion;
 + (instancetype)applePay;
 
-- (instancetype)initWithLabel:(NSString *)label action:(void (^)(id<BTTokenized> tokenizedPaymentMethod, NSError *error))actionBlock NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithLabel:(NSString *)label action:(void (^)(id<BTTokenized> __BT_NULLABLE tokenizedPaymentMethod, NSError __BT_NULLABLE *error))actionBlock NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, strong) NSURL *logoImageURL;
 @property (nonatomic, strong) NSArray *mutuallyExclusivePaymentOptions;

@@ -8,7 +8,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 @interface BTCardTokenizationClient : NSObject
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(BTConfiguration *)configuration;
 
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTTokenizedCard __BT_NULLABLE *card, NSError __BT_NULLABLE *error))completionBlock;
 
