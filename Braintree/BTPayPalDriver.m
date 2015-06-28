@@ -15,4 +15,8 @@
     // TODO
 }
 
+- (void)checkoutWithCheckoutRequest:(nonnull BTPayPalCheckoutRequest *)checkoutRequest completion:(nonnull void (^)(BTTokenizedPayPalCheckout * __nonnull, NSError * __nonnull))completionBlock {
+    // TODO
+}
+
 @end
