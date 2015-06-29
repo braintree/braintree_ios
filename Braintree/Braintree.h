@@ -23,7 +23,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeVersionString[];
 // Venmo
 
 #import <Braintree/BTVenmoDriver.h>
-#import <Braintree/BTTokenizedVenmoAccount.h>
 
 // Apple-Pay
 

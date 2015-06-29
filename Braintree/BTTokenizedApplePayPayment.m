@@ -1,6 +1,6 @@
-#import "BTTokenizedApplePayPaymentMethod.h"
+#import "BTTokenizedApplePayPayment.h"
 
-@implementation BTTokenizedApplePayPaymentMethod
+@implementation BTTokenizedApplePayPayment
 
 @synthesize paymentMethodNonce = _paymentMethodNonce;
 @synthesize localizedDescription = _localizedDescription;

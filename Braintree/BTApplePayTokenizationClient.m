@@ -9,7 +9,7 @@ BT_ASSUME_NONNULL_BEGIN
     return [super init];
 }
 
-- (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTTokenizedApplePayPaymentMethod * __BT_NULLABLE, NSError * __BT_NULLABLE))completionBlock {
+- (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTTokenizedApplePayPayment * __BT_NULLABLE, NSError * __BT_NULLABLE))completionBlock {
     // TODO
 }
 

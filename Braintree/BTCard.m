@@ -2,7 +2,7 @@
 #import "BTJSON.h"
 
 @interface BTCard ()
-@property (nonatomic, nonnull, strong) BTJSON *parameters;
+@property (nonatomic, nonnull, strong) NSMutableDictionary *parameters;
 @end
 
 @implementation BTCard
@@ -10,7 +10,7 @@
 - (nonnull instancetype)initWithNumber:(nullable NSString *)number expirationDate:(nullable NSString *)expirationDate cvv:(nullable NSString *)cvv {
     self = [self init];
     if (self) {
-        self.parameters = [BTJSON empty];
+        self.parameters = [[NSMutableDictionary alloc] init];
         self.parameters[@"number"] = number;
         self.parameters[@"expirationDate"] = expirationDate;
         self.parameters[@"cvv"] = cvv;

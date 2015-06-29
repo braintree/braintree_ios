@@ -3,6 +3,14 @@
 
 BT_ASSUME_NONNULL_BEGIN
 
+extern NSString * const BTJSONErrorDomain;
+
+typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
+    BTJSONErrorValueUnknown = 0,
+    BTJSONErrorValueInvalid = 1,
+    BTJSONErrorAccessInvalid = 2,
+};
+
 /// A basic wrapper around JSON objects that make it run-time type safety more natural
 ///
 /// The primary goal of this class is to two-fold: (1) prevent bugs by staying true to JSON (json.org)
@@ -34,33 +42,38 @@ BT_ASSUME_NONNULL_BEGIN
 ///    json["baz"][0].asInteger //
 ///    json["random"]["nested"]["things"][3].isError // true
 ///
-///     let json : BTJSON = BTJSON.empty // json.asJson => {}
+///     let json : BTJSON = BTJSON() // json.asJson => {}
 ///     json["foo"][0] = "bar" // json.asJSON => { "foo": ["bar"]
 ///     json["baz"] = [ 1, 2, 3 ] // json.asJSON => { "foo": ["bar"], "baz": [1,2,3] }
 ///     json["quux"] = NSSet() // json.isError => true, json.asJSON => throws NSError(domain: BTJSONErrorDomain, code: BTJSONErrorInvalidData)
 @interface BTJSON : NSObject
 
-+ (instancetype)empty;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithValue:(id)value;
 
 - (instancetype)initWithData:(NSData *)data;
-
-- (instancetype)initWithValue:(id)value NS_DESIGNATED_INITIALIZER;
 
 // @name Subscripting
 
 /// Indexes into the JSON as if the current value is an object
 ///
 /// Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
-- (BTJSON *)objectForKeyedSubscript:(NSString *)key;
+- (id)objectForKeyedSubscript:(NSString *)key;
+
+- (BTJSON *)JSONForKey:(NSString *)key;
 
 /// Indexes into the JSON as if the current value is an array
 ///
 /// Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.
-- (BTJSON *)objectAtIndexedSubscript:(NSUInteger)idx;
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+
+- (BTJSON *)JSONAtIndex:(NSUInteger)idx;
 
 // @name Validity Checks
 
-- (BOOL)isError;
+@property (nonatomic, assign, readonly) BOOL isError;
+
 - (BT_NULLABLE NSError *)asError;
 
 // @name Generating JSON
@@ -71,47 +84,62 @@ BT_ASSUME_NONNULL_BEGIN
 // @name JSON Type Casts
 
 - (BT_NULLABLE NSString *)asString;
+
 - (BT_NULLABLE BT_GENERICS(NSArray, BTJSON *) *)asArray;
+
 - (BT_NULLABLE NSDecimalNumber *)asNumber;
 
 // @name JSON Extension Type Casts
 
 - (BOOL)asTruthy;
+
 - (BT_NULLABLE NSURL *)asURL;
+
 - (BT_NULLABLE BT_GENERICS(NSArray, NSString *) *)asStringArray;
+
 - (BT_NULLABLE BT_GENERICS(NSDictionary, NSString *, BTJSON *) *)asDictionary;
+
 - (NSInteger)asIntegerOrZero;
+
 - (BT_NULLABLE id)asAnyValue;
 
 // @name JSON Type Checks
 
-- (BOOL)isString;
-- (BOOL)isNumber;
-- (BOOL)isArray;
-- (BOOL)isObject;
-- (BOOL)isTrue;
-- (BOOL)isFalse;
-- (BOOL)isNull;
+@property (nonatomic, assign, readonly) BOOL isString;
+
+@property (nonatomic, assign, readonly) BOOL isNumber;
+
+@property (nonatomic, assign, readonly) BOOL isArray;
+
+@property (nonatomic, assign, readonly) BOOL isObject;
+
+@property (nonatomic, assign, readonly) BOOL isTrue;
+
+@property (nonatomic, assign, readonly) BOOL isFalse;
+
+@property (nonatomic, assign, readonly) BOOL isNull;
+
 
 // @name JSON Extension Type Checks
 
-- (BOOL)isURL;
-- (BOOL)isBOOL;
+@property (nonatomic, assign, readonly) BOOL isURL;
 
-// @name Setters
+@property (nonatomic, assign, readonly) BOOL isBOOL;
 
-/// Sets the given value of the JSON object in a null safe manner
-///
-/// When `nil` is received, the given value is omitted or removed.
-///
-/// As it is the uncommon case, use `NSNull.null` to insert JSON `null`.
-///
-/// If the current value is not an object, isError will begin to return true, and asError will return the relevant error.
-- (void)setObject:(id)value forKeyedSubscript:(NSString *)key;
-
-- (void)setObject:(id)value atIndexedSubscript:(NSUInteger)idx;
-
-- (void)setValue:(id)value;
+//// @name Setters
+//
+///// Sets the given value of the JSON object in a null safe manner
+/////
+///// When `nil` is received, the given value is omitted or removed.
+/////
+///// As it is the uncommon case, use `NSNull.null` to insert JSON `null`.
+/////
+///// If the current value is not an object, isError will begin to return true, and asError will return the relevant error.
+//- (void)setObject:(id)value forKeyedSubscript:(NSString *)key;
+//
+//- (void)setObject:(id)value atIndexedSubscript:(NSUInteger)idx;
+//
+//- (void)setValue:(id)value;
 
 @end
 

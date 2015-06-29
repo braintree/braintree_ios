@@ -3,7 +3,7 @@
 
 @interface BTThreeDSecureVerification ()
 
-@property (nonatomic, strong) BTJSON *parameters;
+@property (nonatomic, strong) NSMutableDictionary *parameters;
 
 @end
 
@@ -18,7 +18,7 @@
 - (nonnull instancetype)initWithCard:(nonnull BTCard *)card {
     self = [super init];
     if (self) {
-        self.parameters = [BTJSON empty];
+        self.parameters = [NSMutableDictionary dictionary];
         // TODO: self.parameters = card.parameters;
     }
     return self;
@@ -27,7 +27,7 @@
 - (nonnull instancetype)initWithPaymentMethodNonce:(nonnull NSString *)paymentMethodNonce {
     self = [super init];
     if (self) {
-        self.parameters = [BTJSON empty];
+        self.parameters = [NSMutableDictionary dictionary];
         self.parameters[@"payment_method_nonce"] = paymentMethodNonce;
     }
     return self;

@@ -2,7 +2,7 @@
 
 #import "BTNullability.h"
 #import "BTConfiguration.h"
-#import "BTTokenizedApplePayPaymentMethod.h"
+#import "BTTokenizedApplePayPayment.h"
 
 BT_ASSUME_NONNULL_BEGIN
 
@@ -10,7 +10,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithConfiguration:(BTConfiguration *)configuration;
 
-- (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTTokenizedApplePayPaymentMethod __BT_NULLABLE *tokenizedApplePayPayment, NSError __BT_NULLABLE *error))completionBlock;
+- (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTTokenizedApplePayPayment __BT_NULLABLE *tokenizedApplePayPayment, NSError __BT_NULLABLE *error))completionBlock;
 
 @end
 

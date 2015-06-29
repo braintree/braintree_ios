@@ -4,7 +4,7 @@
 
 BT_ASSUME_NONNULL_BEGIN
 
-@interface BTTokenizedApplePayPaymentMethod : NSObject <BTTokenized>
+@interface BTTokenizedApplePayPayment : NSObject <BTTokenized>
 
 @end
 
