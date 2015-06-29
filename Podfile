@@ -16,7 +16,7 @@ target 'Tests' do
   pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
-  pod 'KIF', :git => 'https://github.com/kif-framework/KIF.git', :branch => 'master'
+  pod 'KIF'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'KIFViewControllerActions', :git => 'https://github.com/mickeyreiss/KIFViewControllerActions.git'
 end

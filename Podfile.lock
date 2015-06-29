@@ -94,7 +94,7 @@ DEPENDENCIES:
   - HockeySDK
   - InAppSettingsKit
   - iOS-Slide-Menu
-  - KIF (from `https://github.com/kif-framework/KIF.git`, branch `master`)
+  - KIF
   - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
   - NSURL+QueryDictionary (~> 1.0)
   - OCHamcrest (~> 3.0.1)
@@ -108,9 +108,6 @@ EXTERNAL SOURCES:
     :path: "."
   FLEX:
     :git: https://github.com/intelliot/FLEX.git
-  KIF:
-    :branch: master
-    :git: https://github.com/kif-framework/KIF.git
   KIFViewControllerActions:
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
@@ -118,9 +115,6 @@ CHECKOUT OPTIONS:
   FLEX:
     :commit: b797baa3efeffe73ab1d6ea6aaeb55cc05ff6422
     :git: https://github.com/intelliot/FLEX.git
-  KIF:
-    :commit: 4a5dc492f87952309cab29756c334c04e6517561
-    :git: https://github.com/kif-framework/KIF.git
   KIFViewControllerActions:
     :commit: 10d8d3a7bac839d75b8cec894326eae957372245
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
