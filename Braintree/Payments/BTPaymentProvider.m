@@ -2,14 +2,13 @@
 
 #import "BTPaymentProvider.h"
 #import "BTClient_Internal.h"
+#import "BTAppSwitch.h"
 #import "BTAppSwitching.h"
 
-#import "BTVenmoAppSwitchHandler.h"
-
-#import "BTPayPalAppSwitchHandler.h"
 #import "BTPaymentApplePayProvider.h"
 #import "BTLogger_Internal.h"
-#import "BTCoinbase.h"
+
+#import "BTPayPalAppSwitchHandler.h"
 
 
 @interface BTPaymentProvider () <BTAppSwitchingDelegate, BTPaymentMethodCreationDelegate>
@@ -65,12 +64,15 @@
             return [self.applePayPaymentProvider canAuthorizeApplePayPayment];
         case BTPaymentProviderTypePayPal:
             return [[BTPayPalAppSwitchHandler sharedHandler] appSwitchAvailableForClient:self.client];
-        case BTPaymentProviderTypeVenmo:
-            return [[BTVenmoAppSwitchHandler sharedHandler] appSwitchAvailableForClient:self.client];
-        case BTPaymentProviderTypeCoinbase:
-            return [[BTCoinbase sharedCoinbase] appSwitchAvailableForClient:self.client];
-        default:
-            return NO;
+        case BTPaymentProviderTypeVenmo: {
+            id <BTAppSwitching> appSwitching = [[BTAppSwitch sharedInstance] appSwitchingForApp:BTAppTypeVenmo];
+            return [appSwitching appSwitchAvailableForClient:self.client];
+        }
+        case BTPaymentProviderTypeCoinbase: {
+            id <BTAppSwitching> appSwitching = [[BTAppSwitch sharedInstance] appSwitchingForApp:BTAppTypeCoinbase];
+            return [appSwitching appSwitchAvailableForClient:self.client];
+        }
+        default: return NO;
     }
 }
 
@@ -100,7 +102,7 @@
     }
 
     NSError *error;
-    BOOL appSwitchSuccess = [[BTVenmoAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
+    BOOL appSwitchSuccess = [[[BTAppSwitch sharedInstance] appSwitchingForApp:BTAppTypeVenmo] initiateAppSwitchWithClient:self.client delegate:self error:&error];
     if (appSwitchSuccess) {
         [self informDelegateWillPerformAppSwitch];
     } else {
@@ -145,7 +147,7 @@
 
 - (void)authorizeCoinbase {
     NSError *error;
-    BOOL appSwitchSuccess = [[BTCoinbase sharedCoinbase] initiateAppSwitchWithClient:self.client delegate:self error:&error];
+    BOOL appSwitchSuccess = [[[BTAppSwitch sharedInstance] appSwitchingForApp:BTAppTypeCoinbase] initiateAppSwitchWithClient:self.client delegate:self error:&error];
     if (appSwitchSuccess) {
         [self informDelegateWillPerformAppSwitch];
     } else {

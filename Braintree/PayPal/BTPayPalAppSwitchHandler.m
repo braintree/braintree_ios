@@ -1,5 +1,6 @@
 #import "BTPayPalAppSwitchHandler_Internal.h"
 
+#import "BTAppSwitch.h"
 #import "BTClient_Internal.h"
 #import "BTMutablePayPalPaymentMethod.h"
 #import "BTLogger_Internal.h"
@@ -18,6 +19,12 @@
 
 @synthesize returnURLScheme = _returnURLScheme;
 @synthesize delegate = _delegate;
+
++ (void)load {
+    if (self == [BTPayPalAppSwitchHandler class]) {
+        [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler] forApp:BTAppTypePayPal];
+    }
+}
 
 + (instancetype)sharedHandler {
     static BTPayPalAppSwitchHandler *instance;

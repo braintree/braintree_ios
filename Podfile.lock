@@ -37,7 +37,6 @@ PODS:
     - Braintree/Payments
   - Braintree/Coinbase (4.0.0-pre2):
     - Braintree/API
-    - coinbase-official/OAuth (~> 2.1.1)
   - Braintree/Data (4.0.0-pre2):
     - Braintree/API
     - Braintree/PayPal
@@ -61,7 +60,6 @@ PODS:
   - Braintree/Venmo (4.0.0-pre2):
     - Braintree/API
   - CardIO (5.0.6)
-  - coinbase-official/OAuth (2.1.4)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
   - HockeySDK (3.6.4)
@@ -129,7 +127,6 @@ SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   Braintree: 383d3976fcdcd5c86c18d02de676e460d2a52139
   CardIO: 3fb62d56651d80e8f98e9572bfbe589ebf13d706
-  coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
@@ -144,4 +141,4 @@ SPEC CHECKSUMS:
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
 
-COCOAPODS: 0.36.3
+COCOAPODS: 0.37.2
