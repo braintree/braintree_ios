@@ -70,7 +70,7 @@ target 'Braintree-Apple-Pay' do
 end
 
 post_install do |installer|
-    targets = installer.project.targets.select{ |t| t.to_s.end_with? "-Braintree" }
+    targets = installer.pods_project.targets.select{ |t| t.to_s.end_with? "-Braintree" }
     if (targets.count > 0)
         targets.each do |target|
             target.build_configurations.each do |config|

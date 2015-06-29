@@ -62,7 +62,9 @@ PODS:
   - CardIO (5.0.6)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
-  - HockeySDK (3.6.4)
+  - HockeySDK (3.7.1):
+    - HockeySDK/AllFeaturesLib (= 3.7.1)
+  - HockeySDK/AllFeaturesLib (3.7.1)
   - InAppSettingsKit (2.6)
   - iOS-Slide-Menu (1.4.6)
   - KIF (3.2.3):
@@ -129,7 +131,7 @@ SPEC CHECKSUMS:
   CardIO: 3fb62d56651d80e8f98e9572bfbe589ebf13d706
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
-  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
+  HockeySDK: 77bb90b6484a3b742ccf32bcae247c0a0051a962
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
@@ -141,4 +143,4 @@ SPEC CHECKSUMS:
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0.beta.1
