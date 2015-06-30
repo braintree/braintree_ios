@@ -1,6 +1,7 @@
 @import PassKit;
 @import AddressBook;
 
+#import "BTAppSwitch.h"
 #import "BTPaymentProvider.h"
 #import "BTPaymentApplePayProvider_Internal.h"
 #import "BTMockApplePayPaymentAuthorizationViewController.h"
@@ -11,7 +12,7 @@
 #import "BTVenmoAppSwitchHandler.h"
 
 #import "BTCoinbaseDriver.h"
-#import "CoinbaseOAuth.h"
+#import "BTCoinbaseOAuth.h"
 
 typedef void (^BTPaymentsSpecHelperBlock)(id, NSError *);
 
@@ -157,12 +158,12 @@ describe(@"createPaymentMethod:", ^{
 
         beforeEach(^{
             payPalAppSwitchHandler = [OCMockObject mockForClass:[BTPayPalAppSwitchHandler class]];
-            [[[payPalAppSwitchHandler stub] andReturn:payPalAppSwitchHandler] sharedHandler];
+            [[BTAppSwitch sharedInstance] addAppSwitching:payPalAppSwitchHandler forApp:BTAppTypePayPal];
         });
 
         afterEach(^{
             [payPalAppSwitchHandler verify];
-            [payPalAppSwitchHandler stopMocking];
+            [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler] forApp:BTAppTypePayPal];
         });
 
         context(@"and app switch is available", ^{
@@ -219,9 +220,12 @@ describe(@"createPaymentMethod:", ^{
 
         beforeEach(^{
             venmoAppSwitchHandler = [OCMockObject mockForClass:[BTVenmoAppSwitchHandler class]];
-            [[[venmoAppSwitchHandler stub] andReturn:venmoAppSwitchHandler] sharedHandler];
-
+            [[BTAppSwitch sharedInstance] addAppSwitching:venmoAppSwitchHandler forApp:BTAppTypeVenmo];
             provider.delegate = delegate;
+        });
+        
+        afterEach(^{
+            [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler] forApp:BTAppTypeVenmo];
         });
 
         context(@"and app switch is available", ^{
@@ -262,12 +266,12 @@ describe(@"createPaymentMethod:", ^{
 
         beforeEach(^{
             stubCoinbase = [OCMockObject mockForClass:[BTCoinbaseDriver class]];
-            [[[[stubCoinbase stub] andReturn:stubCoinbase] classMethod] sharedCoinbase];
+            [[BTAppSwitch sharedInstance] addAppSwitching:stubCoinbase forApp:BTAppTypeCoinbase];
         });
 
         afterEach(^{
             [stubCoinbase verify];
-            [stubCoinbase stopMocking];
+            [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase] forApp:BTAppTypeCoinbase];
         });
 
         describe(@"create payment method with default options", ^{
@@ -341,7 +345,7 @@ describe(@"createPaymentMethod:", ^{
                 
                 it(@"returns NO even if the coinbase app is installed", ^{
                     [[delegate expect] paymentMethodCreator:provider didFailWithError:initiationError];
-                    id coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
+                    id coinbaseOAuth = [OCMockObject mockForClass:[BTCoinbaseOAuth class]];
                     [[[[coinbaseOAuth stub] classMethod] andReturnValue:@(YES)] isAppOAuthAuthenticationAvailable];
                     [[[configuration stub] andReturnValue:@(NO)] coinbaseEnabled];
                     
@@ -419,7 +423,7 @@ describe(@"canCreatePaymentMethodWithProviderType:", ^{
         __block id coinbaseOAuth;
 
         beforeEach(^{
-            coinbaseOAuth = [OCMockObject mockForClass:[CoinbaseOAuth class]];
+            coinbaseOAuth = [OCMockObject mockForClass:[BTCoinbaseOAuth class]];
         });
 
         context(@"with coinbase enabled", ^{

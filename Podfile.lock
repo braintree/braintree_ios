@@ -37,7 +37,6 @@ PODS:
     - Braintree/Payments
   - Braintree/Coinbase (4.0.0-pre2):
     - Braintree/API
-    - coinbase-official/OAuth (~> 2.1.1)
   - Braintree/Data (4.0.0-pre2):
     - Braintree/API
     - Braintree/PayPal
@@ -61,10 +60,11 @@ PODS:
   - Braintree/Venmo (4.0.0-pre2):
     - Braintree/API
   - CardIO (5.0.6)
-  - coinbase-official/OAuth (2.1.4)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
-  - HockeySDK (3.6.4)
+  - HockeySDK (3.7.1):
+    - HockeySDK/AllFeaturesLib (= 3.7.1)
+  - HockeySDK/AllFeaturesLib (3.7.1)
   - InAppSettingsKit (2.6)
   - iOS-Slide-Menu (1.4.6)
   - KIF (3.2.3):
@@ -94,7 +94,7 @@ DEPENDENCIES:
   - HockeySDK
   - InAppSettingsKit
   - iOS-Slide-Menu
-  - KIF (from `https://github.com/kif-framework/KIF.git`, branch `master`)
+  - KIF
   - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
   - NSURL+QueryDictionary (~> 1.0)
   - OCHamcrest (~> 3.0.1)
@@ -108,9 +108,6 @@ EXTERNAL SOURCES:
     :path: "."
   FLEX:
     :git: https://github.com/intelliot/FLEX.git
-  KIF:
-    :branch: master
-    :git: https://github.com/kif-framework/KIF.git
   KIFViewControllerActions:
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
@@ -118,21 +115,17 @@ CHECKOUT OPTIONS:
   FLEX:
     :commit: b797baa3efeffe73ab1d6ea6aaeb55cc05ff6422
     :git: https://github.com/intelliot/FLEX.git
-  KIF:
-    :commit: 4a5dc492f87952309cab29756c334c04e6517561
-    :git: https://github.com/kif-framework/KIF.git
   KIFViewControllerActions:
     :commit: 10d8d3a7bac839d75b8cec894326eae957372245
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  Braintree: 383d3976fcdcd5c86c18d02de676e460d2a52139
+  Braintree: 0ee1262f011ad66c218c70f892189bf165f19662
   CardIO: 3fb62d56651d80e8f98e9572bfbe589ebf13d706
-  coinbase-official: 4ad3ac862840657b4184345eb84af8166ab2b04e
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
-  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
+  HockeySDK: 77bb90b6484a3b742ccf32bcae247c0a0051a962
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
@@ -144,4 +137,4 @@ SPEC CHECKSUMS:
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0.beta.1

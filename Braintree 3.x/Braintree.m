@@ -9,11 +9,6 @@
 #import "BTDropInViewController.h"
 
 #import "BTAppSwitch.h"
-#import "BTVenmoAppSwitchHandler.h"
-#import "BTPayPalAppSwitchHandler.h"
-#import "BTPayPalDriver.h"
-
-#import "BTCoinbase.h"
 
 @interface Braintree ()
 @property (nonatomic, strong) BTClient *client;
@@ -197,25 +192,10 @@
 
 + (void)setReturnURLScheme:(NSString *)scheme {
     [BTAppSwitch sharedInstance].returnURLScheme = scheme;
-    [self initAppSwitchingOptions];
 }
 
 + (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    [self initAppSwitchingOptions];
-    if ([[BTAppSwitch sharedInstance] handleReturnURL:url sourceApplication:sourceApplication]) {
-        return YES;
-    } else if ([BTPayPalDriver canHandleAppSwitchReturnURL:url sourceApplication:sourceApplication]) {
-        [BTPayPalDriver handleAppSwitchReturnURL:url];
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
-+ (void)initAppSwitchingOptions {
-    [[BTAppSwitch sharedInstance] addAppSwitching:[BTVenmoAppSwitchHandler sharedHandler]];
-    [[BTAppSwitch sharedInstance] addAppSwitching:[BTPayPalAppSwitchHandler sharedHandler]];
-    [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase]];
+    return [[BTAppSwitch sharedInstance] handleReturnURL:url sourceApplication:sourceApplication];
 }
 
 @end

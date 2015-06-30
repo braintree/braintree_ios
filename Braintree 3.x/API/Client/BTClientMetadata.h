@@ -25,11 +25,15 @@ typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
 @property (nonatomic, copy, readonly) NSString *integrationString;
 @property (nonatomic, copy, readonly) NSString *sourceString;
 
+/// Auto-generated UUID
+@property (nonatomic, copy, readonly) NSString *sessionId;
+
 @end
 
 @interface BTClientMutableMetadata : BTClientMetadata
 
 - (void)setIntegration:(BTClientMetadataIntegrationType)integration;
 - (void)setSource:(BTClientMetadataSourceType)source;
+- (void)setSessionId:(NSString *)sessionId;
 
 @end

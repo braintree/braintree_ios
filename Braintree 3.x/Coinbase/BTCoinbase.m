@@ -1,18 +1,24 @@
-#import <coinbase-official/CoinbaseOAuth.h>
-
+#import "BTAppSwitch.h"
 #import "BTCoinbase.h"
 #import "BTClient_Internal.h"
 #import "BTAppSwitchErrors.h"
+#import "BTCoinbaseOAuth.h"
 
 @interface BTCoinbase ()
 @property (nonatomic, strong) BTClient *client;
-@property (nonatomic, assign) CoinbaseOAuthAuthenticationMechanism authenticationMechanism;
+@property (nonatomic, assign) BTCoinbaseOAuthAuthenticationMechanism authenticationMechanism;
 @end
 
 @implementation BTCoinbase
 
 @synthesize returnURLScheme = _returnURLScheme;
 @synthesize delegate = _delegate;
+
++ (void)load {
+    if (self == [BTCoinbase class]) {
+        [[BTAppSwitch sharedInstance] addAppSwitching:[BTCoinbase sharedCoinbase] forApp:BTAppTypeCoinbase];
+    }
+}
 
 + (instancetype)sharedCoinbase {
     static BTCoinbase *coinbase;
@@ -24,7 +30,11 @@
 }
 
 - (BOOL)providerAppSwitchAvailableForClient:(BTClient *)client {
-    return self.returnURLScheme && [self appSwitchAvailableForClient:client] && [CoinbaseOAuth isAppOAuthAuthenticationAvailable];
+    return self.returnURLScheme && [self appSwitchAvailableForClient:client] && [BTCoinbaseOAuth isAppOAuthAuthenticationAvailable];
+}
+
+- (BOOL)isProviderAppInstalled {
+    return [BTCoinbaseOAuth isAppOAuthAuthenticationAvailable];
 }
 
 #pragma mark Helpers
@@ -47,7 +57,7 @@
 // In this context, "AppSwitch" includes both browser switch and provider app switch
 - (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate error:(NSError *__autoreleasing *)error {
 
-    [CoinbaseOAuth setBaseURL:[client.configuration.coinbaseEnvironment isEqualToString:@"shared_sandbox"] ? [NSURL URLWithString:@"https://sandbox.coinbase.com/"] : nil];
+    [BTCoinbaseOAuth setBaseURL:[client.configuration.coinbaseEnvironment isEqualToString:@"shared_sandbox"] ? [NSURL URLWithString:@"https://sandbox.coinbase.com/"] : nil];
 
     self.client = client;
     self.delegate = delegate;
@@ -76,13 +86,13 @@
         return NO;
     }
 
-    self.authenticationMechanism = [CoinbaseOAuth startOAuthAuthenticationWithClientId:client.configuration.coinbaseClientId
+    self.authenticationMechanism = [BTCoinbaseOAuth startOAuthAuthenticationWithClientId:client.configuration.coinbaseClientId
                                                                                  scope:client.configuration.coinbaseScope
                                                                            redirectUri:[self.redirectUri absoluteString]
                                                                                   meta:(client.configuration.coinbaseMerchantAccount ? @{ @"authorizations_merchant_account": client.configuration.coinbaseMerchantAccount } : nil)];
 
     switch (self.authenticationMechanism) {
-        case CoinbaseOAuthMechanismNone:
+        case BTCoinbaseOAuthMechanismNone:
             [self.client postAnalyticsEvent:@"ios.coinbase.initiate.failed"];
             if (error != NULL) {
                 *error = [NSError errorWithDomain:BTAppSwitchErrorDomain code:BTAppSwitchErrorFailed
@@ -90,15 +100,15 @@
                                                     NSLocalizedFailureReasonErrorKey: @"Unable to perform app switch"}];
             }
             break;
-        case CoinbaseOAuthMechanismApp:
+        case BTCoinbaseOAuthMechanismApp:
             [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.started"];
             break;
-        case CoinbaseOAuthMechanismBrowser:
+        case BTCoinbaseOAuthMechanismBrowser:
             [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.started"];
             break;
     }
 
-    return self.authenticationMechanism != CoinbaseOAuthMechanismNone;
+    return self.authenticationMechanism != BTCoinbaseOAuthMechanismNone;
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(__unused NSString *)sourceApplication {
@@ -114,33 +124,33 @@
         return;
     }
 
-    [CoinbaseOAuth finishOAuthAuthenticationForUrl:url
+    [BTCoinbaseOAuth finishOAuthAuthenticationForUrl:url
                                           clientId:self.client.configuration.coinbaseClientId
                                       clientSecret:nil
                                         completion:^(id response, NSError *error)
      {
-         CoinbaseOAuthAuthenticationMechanism mechanism = self.authenticationMechanism;
+         BTCoinbaseOAuthAuthenticationMechanism mechanism = self.authenticationMechanism;
          if (error) {
-             if ([error.domain isEqualToString:CoinbaseErrorDomain] && error.code == CoinbaseOAuthError && [error.userInfo[CoinbaseOAuthErrorUserInfoKey] isEqual:@"access_denied"]) {
+             if ([error.domain isEqualToString:BTCoinbaseErrorDomain] && error.code == BTCoinbaseOAuthError && [error.userInfo[BTCoinbaseOAuthErrorUserInfoKey] isEqual:@"access_denied"]) {
                  switch(mechanism) {
-                     case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.denied"]; break;
-                     case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.denied"]; break;
-                     case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.denied"]; break;
+                     case BTCoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.denied"]; break;
+                     case BTCoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.denied"]; break;
+                     case BTCoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.denied"]; break;
                  }
                  [self informDelegateDidCancel];
              } else {
                  switch(mechanism) {
-                     case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.failed"]; break;
-                     case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.failed"]; break;
-                     case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.failed"]; break;
+                     case BTCoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.failed"]; break;
+                     case BTCoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.failed"]; break;
+                     case BTCoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.failed"]; break;
                  }
                  [self informDelegateDidFailWithError:error];
              }
          } else {
              switch(mechanism) {
-                 case CoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.authorized"]; break;
-                 case CoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"]; break;
-                 case CoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.authorized"]; break;
+                 case BTCoinbaseOAuthMechanismApp: [self.client postAnalyticsEvent:@"ios.coinbase.appswitch.authorized"]; break;
+                 case BTCoinbaseOAuthMechanismBrowser: [self.client postAnalyticsEvent:@"ios.coinbase.webswitch.authorized"]; break;
+                 case BTCoinbaseOAuthMechanismNone: [self.client postAnalyticsEvent:@"ios.coinbase.unknown.authorized"]; break;
              }
              [self informDelegateWillCreatePaymentMethod];
 
@@ -189,13 +199,13 @@
 
 #pragma mark Helpers
 
-- (BTClient *)clientWithMetadataForAuthenticationMechanism:(CoinbaseOAuthAuthenticationMechanism)authenticationMechanism {
+- (BTClient *)clientWithMetadataForAuthenticationMechanism:(BTCoinbaseOAuthAuthenticationMechanism)authenticationMechanism {
     return [self.client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
         switch (authenticationMechanism) {
-            case CoinbaseOAuthMechanismApp:
+            case BTCoinbaseOAuthMechanismApp:
                 metadata.source = BTClientMetadataSourceCoinbaseApp;
                 break;
-            case CoinbaseOAuthMechanismBrowser:
+            case BTCoinbaseOAuthMechanismBrowser:
                 metadata.source = BTClientMetadataSourceCoinbaseBrowser;
                 break;
             default:

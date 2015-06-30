@@ -504,9 +504,9 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
         [requestParameters addEntriesFromDictionary:@{ @"analytics": @[@{ @"kind": eventKind }],
                                                        @"authorization_fingerprint": self.clientToken.authorizationFingerprint
                                                        }];
-        
-        [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@", eventKind];
-        
+
+        [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@ session:%@", eventKind, self.metadata.sessionId];
+
         [self.analyticsHttp POST:@"/"
                       parameters:requestParameters
                       completion:^(BTHTTPResponse *response, NSError *error) {
@@ -658,7 +658,8 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     NSMutableDictionary *mutableMetaValue = [metaValue mutableCopy];
     mutableMetaValue[@"integration"] = self.metadata.integrationString;
     mutableMetaValue[@"source"] = self.metadata.sourceString;
-    
+    mutableMetaValue[@"sessionId"] = self.metadata.sessionId;
+
     result[@"_meta"] = mutableMetaValue;
     return result;
 }
