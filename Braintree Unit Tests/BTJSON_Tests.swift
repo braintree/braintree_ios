@@ -7,7 +7,6 @@ class BTJSON_Tests: XCTestCase {
 
         XCTAssertNotNil(empty)
 
-        XCTAssertEqual(empty.asAnyValue() as! NSDictionary, [:])
         XCTAssertTrue(empty.isObject)
 
         XCTAssertNil(empty.asString())
@@ -23,12 +22,34 @@ class BTJSON_Tests: XCTestCase {
         XCTAssertFalse(empty.isTrue)
         XCTAssertFalse(empty.isFalse)
         XCTAssertFalse(empty.isNull)
-        XCTAssertFalse(empty.isURL)
-        XCTAssertFalse(empty.isBOOL)
     }
 
     func testInitializationFromValue() {
-        // TODO
+        let string = BTJSON(value: "")
+        XCTAssertTrue(string.isString)
+
+        let truth = BTJSON(value: true)
+        XCTAssertTrue(truth.isTrue)
+
+        let falsehood = BTJSON(value: false)
+        XCTAssertTrue(falsehood.isFalse)
+
+        let number = BTJSON(value: 42)
+        XCTAssertTrue(number.isNumber)
+
+        let ary = BTJSON(value: [1,2,3])
+        XCTAssertTrue(ary.isArray)
+
+        let obj = BTJSON(value: ["one": 1, "two": 2])
+        XCTAssertTrue(obj.isObject)
+
+        let null = BTJSON(value: NSNull())
+        XCTAssertTrue(null.isNull)
+    }
+
+    func testInitializationFromEmptyData() {
+        let emptyDataJSON = BTJSON(data: NSData())
+        XCTAssertTrue(emptyDataJSON.isError)
     }
 
     func testStringJSON() {
@@ -51,13 +72,13 @@ class BTJSON_Tests: XCTestCase {
         let JSON = "[\"One\", \"Two\", \"Three\"]".dataUsingEncoding(NSUTF8StringEncoding)!
         let array = BTJSON(data: JSON)
 
-        XCTAssertTrue(array[0].isString!)
+        XCTAssertTrue(array[0].isString)
         XCTAssertEqual(array[0].asString()!, "One")
         XCTAssertEqual(array[1].asString()!, "Two")
         XCTAssertEqual(array[2].asString()!, "Three")
 
         XCTAssertNil(array[3].asString())
-        XCTAssertFalse(array[3].isString!)
+        XCTAssertFalse(array[3].isString)
 
         XCTAssertNil(array["hello"].asString())
     }
@@ -71,13 +92,13 @@ class BTJSON_Tests: XCTestCase {
         XCTAssertNil(obj["not present"].asString())
         XCTAssertNil(obj[0].asString())
 
-        XCTAssertFalse(obj["not present"].isError!)
+        XCTAssertFalse(obj["not present"].isError)
 
-        XCTAssertTrue(obj[0].isError!)
+        XCTAssertTrue(obj[0].isError)
     }
 
     func testParsingError() {
-        let JSON = "INVALID JSEqualON".dataUsingEncoding(NSUTF8StringEncoding)!
+        let JSON = "INVALID JSON".dataUsingEncoding(NSUTF8StringEncoding)!
         let obj = BTJSON(data: JSON)
 
         XCTAssertTrue(obj.isError)
@@ -89,7 +110,7 @@ class BTJSON_Tests: XCTestCase {
         let JSON = "INVALID JSON".dataUsingEncoding(NSUTF8StringEncoding)!
         let string = BTJSON(data: JSON)
 
-        let error = string.JSONAtIndex(0).JSONForKey("key").JSONAtIndex(0)
+        let error = string[0]["key"][0]
 
         XCTAssertTrue(error.isError)
         XCTAssertEqual((error.asError()?.domain)!, NSCocoaErrorDomain)
@@ -103,15 +124,14 @@ class BTJSON_Tests: XCTestCase {
 
         XCTAssertEqual(nested["numbers"][0].asString()!, "one")
         XCTAssertEqual(nested["numbers"][1].asString()!, "two")
-        XCTAssertEqual(nested["numbers"][2].JSONForKey("tens").asNumber()!.integerValue, 0)
-        XCTAssertEqual(nested["numbers"][2].JSONForKey("ones").asNumber()!.integerValue, 1)
-        XCTAssertTrue(nested.JSONForKey("truthy").isTrue)
+        XCTAssertEqual(nested["numbers"][2]["tens"].asNumber()!, NSDecimalNumber.zero())
+        XCTAssertEqual(nested["numbers"][2]["ones"].asNumber()!, NSDecimalNumber.one())
+        XCTAssertTrue(nested["truthy"].isTrue)
     }
 
     func testTrueBoolInterpretation() {
         let JSON = "true".dataUsingEncoding(NSUTF8StringEncoding)!
         let truthy = BTJSON(data: JSON)
-        XCTAssertTrue(truthy.isBOOL)
         XCTAssertTrue(truthy.isTrue)
         XCTAssertFalse(truthy.isFalse)
     }
@@ -119,17 +139,120 @@ class BTJSON_Tests: XCTestCase {
     func testFalseBoolInterpretation() {
         let JSON = "false".dataUsingEncoding(NSUTF8StringEncoding)!
         let truthy = BTJSON(data: JSON)
-        XCTAssertTrue(truthy.isBOOL)
         XCTAssertFalse(truthy.isTrue)
         XCTAssertTrue(truthy.isFalse)
     }
 
+    func testAsURL() {
+        let JSON = "{ \"url\": \"http://example.com\" }".dataUsingEncoding(NSUTF8StringEncoding)!
+        let url = BTJSON(data: JSON)
+        XCTAssertEqual(url["url"].asURL()!, NSURL(string: "http://example.com")!)
+    }
+
+    func testAsURLForInvalidValue() {
+        let JSON = "{ \"url\": 42 }".dataUsingEncoding(NSUTF8StringEncoding)!
+        let url = BTJSON(data: JSON)
+        XCTAssertNil(url["url"].asURL())
+    }
+
+    func testAsStringArray() {
+        let JSON = "[\"one\", \"two\", \"three\"]".dataUsingEncoding(NSUTF8StringEncoding)!
+        let stringArray = BTJSON(data: JSON)
+        XCTAssertEqual(stringArray.asStringArray()!, ["one", "two", "three"])
+    }
+
+    func testAsStringArrayForInvalidValue() {
+        let JSON = "[1, 2, false]".dataUsingEncoding(NSUTF8StringEncoding)!
+        let stringArray = BTJSON(data: JSON)
+        XCTAssertNil(stringArray.asStringArray())
+    }
+
+    func testAsStringArrayForHeterogeneousValue() {
+        let JSON = "[\"string\", false]".dataUsingEncoding(NSUTF8StringEncoding)!
+        let stringArray = BTJSON(data: JSON)
+        XCTAssertNil(stringArray.asStringArray())
+    }
+
+    func testAsStringArrayForEmptyArray() {
+        let JSON = "[]".dataUsingEncoding(NSUTF8StringEncoding)!
+        let stringArray = BTJSON(data: JSON)
+        XCTAssertEqual(stringArray.asStringArray()!, [])
+    }
+
+    func testAsDictionary() {
+        let JSON = "{ \"key\": \"value\" }".dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertEqual(obj.asDictionary()!, ["key":"value"] as NSDictionary)
+    }
+
+    func testAsDictionaryInvalidValue() {
+        let JSON = "[]".dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertNil(obj.asDictionary())
+    }
+
+    func testAsIntegerOrZero() {
+        let cases = [
+            "1": 1,
+            "1.2": 1,
+            "1.5": 1,
+            "1.9": 1,
+            "-4": -4,
+            "0": 0,
+            "\"Hello\"": 0,
+        ]
+        for (k,v) in cases {
+            let JSON = BTJSON(data: k.dataUsingEncoding(NSUTF8StringEncoding)!)
+            XCTAssertEqual(JSON.asIntegerOrZero(), v)
+        }
+    }
+
+    func testAsEnumOrDefault() {
+        let JSON = "\"enum one\"".dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertEqual(obj.asEnum(["enum one" : 1], orDefault: 0), 1)
+    }
+
+    func testAsEnumOrDefaultWhenMappingNotPresentReturnsDefault() {
+        let JSON = "\"enum one\"".dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertEqual(obj.asEnum(["enum two" : 2], orDefault: 1000), 1000)
+    }
+
+    func testAsEnumOrDefaultWhenMapValueIsNotNumberReturnsDefault() {
+        let JSON = "\"enum one\"".dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertEqual(obj.asEnum(["enum one" : "one"], orDefault: 1000), 1000)
+    }
+
+    func testIsNull() {
+        let JSON = "null".dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertTrue(obj.isNull);
+    }
+
+    func testIsObject() {
+        let JSON = "{}".dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertTrue(obj.isObject);
+    }
+    func testIsObjectForNonObject() {
+        let JSON = "[]".dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertFalse(obj.isObject);
+    }
+
+
 //    func testMutation() {
-//        let obj = BTJSON(value: "value")
-//
-//        obj.setValue(NSDictionary())
-//
-//        XCTAssertEqual(try! obj.asJSON(), "{}".dataUsingEncoding(NSUTF8StringEncoding)!)
+//        var obj = BTJSON()
 //
 //        obj["string"] = "Hello, World!"
 //        XCTAssertEqual(obj["string"].asString()!, "Hello, World!")
@@ -140,7 +263,7 @@ class BTJSON_Tests: XCTestCase {
 //        obj["secondString"] = "Hello, again!"
 //        XCTAssertEqual(obj["string"].asString()!, "Goodbye, World!")
 //        XCTAssertEqual(obj["secondString"].asString()!, "Hello, again!")
-//
+
 //        obj["array"] = []
 //        obj.JSONForKey("array")[0] = "One";
 //        obj.JSONForKey("array")[1] = "Two"
@@ -148,8 +271,8 @@ class BTJSON_Tests: XCTestCase {
 //        XCTAssertEqual(obj["string"].asString()!, "Hello, World!")
 //        XCTAssertEqual(obj["secondString"].asString()!, "Hello, again!")
 //        XCTAssertEqual(obj["array"].asArray()!, ["One", "Two", "Three"])
-//
-////        XCTAssertEqual(try! obj.asJSON(), "{\"string\":\"Hello, World!\"}".dataUsingEncoding(NSUTF8StringEncoding)!)
+
+//        XCTAssertEqual(try! obj.asJSON(), "{\"string\":\"Hello, World!\"}".dataUsingEncoding(NSUTF8StringEncoding)!)
 //    }
 
 //    func testSerializationAsJSON() {

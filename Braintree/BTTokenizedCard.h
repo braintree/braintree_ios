@@ -24,10 +24,10 @@ BT_ASSUME_NONNULL_BEGIN
 
 @interface BTTokenizedCard : NSObject <BTTokenized>
 
-@property (nonatomic, assign) BTCardNetwork cardNetwork;
-@property (nonatomic, copy) NSString *lastTwo;
+@property (nonatomic, readonly, assign) BTCardNetwork cardNetwork;
+@property (nonatomic, nullable, readonly, copy) NSString *lastTwo;
 
-@property (nonatomic, nullable, strong) BTThreeDSecureInfo *threeDSecureInfo;
+@property (nonatomic, nullable, readonly, strong) BTThreeDSecureInfo *threeDSecureInfo;
 
 @end
 

@@ -13,6 +13,8 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 
 /// A basic wrapper around JSON objects that make it run-time type safety more natural
 ///
+/// http://www.json.org/
+///
 /// The primary goal of this class is to two-fold: (1) prevent bugs by staying true to JSON (json.org)
 /// rather than interpreting it in mysterious ways; (2) prevent bugs by making JSON interpretation
 /// as un-surprising as possible.
@@ -43,7 +45,7 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 ///    json["random"]["nested"]["things"][3].isError // true
 ///
 ///     let json : BTJSON = BTJSON() // json.asJson => {}
-///     json["foo"][0] = "bar" // json.asJSON => { "foo": ["bar"]
+///     json["foo"][0] = "bar" // json.asJSON => { "foo": ["bar"] }
 ///     json["baz"] = [ 1, 2, 3 ] // json.asJSON => { "foo": ["bar"], "baz": [1,2,3] }
 ///     json["quux"] = NSSet() // json.isError => true, json.asJSON => throws NSError(domain: BTJSONErrorDomain, code: BTJSONErrorInvalidData)
 @interface BTJSON : NSObject
@@ -59,16 +61,12 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 /// Indexes into the JSON as if the current value is an object
 ///
 /// Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
-- (id)objectForKeyedSubscript:(NSString *)key;
-
-- (BTJSON *)JSONForKey:(NSString *)key;
+- (BTJSON *)objectForKeyedSubscript:(NSString *)key;
 
 /// Indexes into the JSON as if the current value is an array
 ///
 /// Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.
-- (id)objectAtIndexedSubscript:(NSUInteger)idx;
-
-- (BTJSON *)JSONAtIndex:(NSUInteger)idx;
+- (BTJSON *)objectAtIndexedSubscript:(NSUInteger)idx;
 
 // @name Validity Checks
 
@@ -91,17 +89,15 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 
 // @name JSON Extension Type Casts
 
-- (BOOL)asTruthy;
-
 - (BT_NULLABLE NSURL *)asURL;
 
 - (BT_NULLABLE BT_GENERICS(NSArray, NSString *) *)asStringArray;
 
-- (BT_NULLABLE BT_GENERICS(NSDictionary, NSString *, BTJSON *) *)asDictionary;
+- (BT_NULLABLE NSDictionary *)asDictionary;
 
 - (NSInteger)asIntegerOrZero;
 
-- (BT_NULLABLE id)asAnyValue;
+- (NSInteger)asEnum:(NSDictionary *)mapping orDefault:(NSInteger)defaultValue;
 
 // @name JSON Type Checks
 
@@ -118,13 +114,6 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 @property (nonatomic, assign, readonly) BOOL isFalse;
 
 @property (nonatomic, assign, readonly) BOOL isNull;
-
-
-// @name JSON Extension Type Checks
-
-@property (nonatomic, assign, readonly) BOOL isURL;
-
-@property (nonatomic, assign, readonly) BOOL isBOOL;
 
 //// @name Setters
 //

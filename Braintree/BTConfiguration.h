@@ -7,6 +7,8 @@ BT_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithKey:(NSString *)key;
 
+@property (nonatomic, readonly, copy) NSString *key;
+
 /// The GCD dispatch queue to which completion handlers will be dispatched.
 ///
 /// By default, the application's main queue will be used.

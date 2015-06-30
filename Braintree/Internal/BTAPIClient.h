@@ -1,12 +1,12 @@
 #import <Foundation/Foundation.h>
-#import "BTJSON.h"
+@class BTJSON;
 
-typedef void (^BTAPIClientCompletionBlock)(BTJSON *body, NSURLResponse *response, NSError *error);
+typedef void (^BTAPIClientCompletionBlock)(BTJSON *body, NSHTTPURLResponse *response, NSError *error);
 
 /// An internal class that encapsulates stateless communication with the client api
 @interface BTAPIClient : NSObject
 
-- (instancetype)initWithBaseURL:(NSURL *)baseURL NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBaseURL:(NSURL *)baseURL authorizationFingerprint:(NSString *)authorizationFingerprint NS_DESIGNATED_INITIALIZER;
 
 - (void)GET:(NSString *)endpoint parameters:(BTJSON *)parameters completion:(BTAPIClientCompletionBlock)completionBlock;
 

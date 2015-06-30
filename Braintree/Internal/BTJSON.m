@@ -23,10 +23,6 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 }
 
 - (instancetype)initWithData:(NSData *)data {
-    if (data == nil) {
-        return self = [self initWithValue:@{}];
-    }
-
     NSError *error;
     id value = [NSJSONSerialization JSONObjectWithData:data
                                                options:NSJSONReadingAllowFragments
@@ -50,10 +46,6 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 #pragma mark Subscripting
 
 - (id)objectForKeyedSubscript:(NSString *)key {
-    return [self JSONForKey:key];
-}
-
-- (BTJSON *)JSONForKey:(NSString *)key {
     BTJSON *json = [[BTJSON alloc] initWithValue:_value];
     json.subscripts = [self.subscripts arrayByAddingObject:key];
 
@@ -61,10 +53,6 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx {
-    return [self JSONAtIndex:idx];
-}
-
-- (BTJSON *)JSONAtIndex:(NSUInteger)idx {
     BTJSON *json = [[BTJSON alloc] initWithValue:_value];
     json.subscripts = [self.subscripts arrayByAddingObject:@(idx)];
 
@@ -108,15 +96,57 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 //    _value = newValue;
 //}
 //
-//- (void)setObject:(id)value forKeyedSubscript:(NSString *)key {
-//    if ([self.value isKindOfClass:[NSDictionary class]]) {
+//- (void)setObject:(BTJSON *)value forKeyedSubscript:(NSString *)key {
+//    // Subscript into _value while current subscript is valid, and its value is appropriate for next subscript
+//    __block id rootValue = _value;
+//    __block NSUInteger lastIdx = 0;
+//    [self.subscripts enumerateObjectsUsingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {
+//        if (([key isKindOfClass:[NSString class]] && [rootValue isKindOfClass:[NSDictionary class]]) ||
+//            ([key isKindOfClass:[NSNumber class]] && [rootValue isKindOfClass:[NSArray class]])) {
+//            rootValue = obj;
+//            lastIdx = idx;
+//            *stop = YES;
+//        }
+//    }];
+//
+//    // Create new nested objects for remaining subscripts (right to left), use raw value if no remaining subscripts
+//    __block id valueToInsert = value;
+//    [[self.subscripts subarrayWithRange:NSMakeRange(lastIdx+1, self.subscripts.count-lastIdx-1)]
+//     enumerateObjectsWithOptions:NSEnumerationReverse
+//     usingBlock:^(id  __nonnull obj, NSUInteger idx, BOOL * __nonnull stop) {
+//         if ([obj isKindOfClass:[NSString class]]) {
+//             valueToInsert = @{ obj: valueToInsert };
+//         } else if ([obj isKindOfClass:[NSNumber class]]) {
+//             // Pad array if necessary
+//             NSUInteger idx = [obj unsignedIntegerValue];
+//             NSMutableArray *ary = [NSMutableArray arrayWithCapacity:idx];
+//             for (NSUInteger i = 0; i < idx-1; i++) {
+//                 [ary addObject:[NSNull null]];
+//             }
+//             [ary addObject:valueToInsert];
+//
+//             valueToInsert = [ary copy];
+//         } else {
+//             NSAssert([obj isKindOfClass:[NSString class]] || [obj isKindOfClass:[NSNumber class]], @"Unexpected value encountered in in subscripts");
+//         }
+//     }];
+//
+//    // Insert new object/value into object
+//    if ([rootValue[key] isKindOfClass:[NSDictionary class]]) {
+//        // merge
 //        NSMutableDictionary *mutableValueCopy = [_value mutableCopy];
 //        mutableValueCopy[key] = value;
 //        self.value = [mutableValueCopy copy];
+//
+//    } else {
+//        // override
+//        rootValue[key] = value;
 //    }
 //}
+//}
 //
-//- (void)setObject:(id)value atIndexedSubscript:(NSUInteger)idx {
+//
+//- (void)setObject:(BTJSON *)value atIndexedSubscript:(NSUInteger)idx {
 //    if ([self.value isKindOfClass:[NSArray class]]) {
 //        NSMutableArray *mutableValueCopy = [self.value mutableCopy];
 //        mutableValueCopy[idx] = value;
@@ -183,33 +213,57 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 
 #pragma mark JSON Extension Type Casts
 
-- (BOOL)asTruthy {
-    // TODO
-    return NO;
-}
-
 - (BT_NULLABLE NSURL *)asURL {
-    // TODO
-    return nil;
+    NSString *urlString = self.asString;
+
+    if (urlString == nil) {
+        return nil;
+    }
+
+    return [NSURL URLWithString:urlString];
 }
 
 - (BT_NULLABLE BT_GENERICS(NSArray, NSString *) *)asStringArray {
-    // TODO
-    return nil;
+    NSArray *array = self.asArray;
+
+    for (id obj in array) {
+        if (![obj isKindOfClass:[NSString class]]) {
+            return nil;
+        }
+    }
+
+    return array;
 }
 
 - (BT_NULLABLE BT_GENERICS(NSDictionary, NSString *, BTJSON *) *)asDictionary {
-    // TODO
-    return nil;
+    NSDictionary *dictionary = self.value;
+
+    if (![dictionary isKindOfClass:[NSDictionary class]]) {
+        return nil;
+    }
+
+    return dictionary;
 }
 
 - (NSInteger)asIntegerOrZero {
-    // TODO
-    return 0;
+    NSNumber *number = self.value;
+
+    if (![number isKindOfClass:[NSNumber class]]) {
+        return 0;
+    }
+
+    return number.integerValue;
 }
 
-- (BT_NULLABLE id)asAnyValue {
-    return self.value;
+- (NSInteger)asEnum:(nonnull NSDictionary *)mapping orDefault:(NSInteger)defaultValue {
+    id key = self.value;
+    NSNumber *value = mapping[key];
+
+    if (!value || ![value isKindOfClass:[NSNumber class]]) {
+        return defaultValue;
+    }
+
+    return value.integerValue;
 }
 
 // @name JSON Type Checks
@@ -227,7 +281,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 }
 
 - (BOOL)isObject {
-    return [self.value isKindOfClass:[NSObject class]];
+    return [self.value isKindOfClass:[NSDictionary class]];
 }
 
 - (BOOL)isTrue {
@@ -239,19 +293,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 }
 
 - (BOOL)isNull {
-    // TODO
-    return NO;
-}
-
-#pragma mark JSON Extension Type Checks
-
-- (BOOL)isURL {
-    // TODO
-    return NO;
-}
-
-- (BOOL)isBOOL {
-    return [self.value isEqual:@YES] || [self.value isEqual:@NO];
+    return [self.value isKindOfClass:[NSNull class]];
 }
 
 #pragma mark Error Handling
