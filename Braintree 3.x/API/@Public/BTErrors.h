@@ -1,10 +1,5 @@
 #import <Foundation/Foundation.h>
 
-#pragma mark Braintree NSError Domain
-
-/// Braintree NSError Domain
-extern NSString *const BTBraintreeAPIErrorDomain;
-
 #pragma mark Braintree NSError Codes
 
 /// Error codes found in NSError objects returned in Braintree API.

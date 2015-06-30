@@ -1,4 +1,4 @@
-#import "BTPayPalDriver.h"
+#import "BTPayPalDriver3.h"
 
 #import "PayPalOneTouchRequest.h"
 #import "PayPalOneTouchCore.h"
@@ -7,32 +7,29 @@
 #import "BTClient_Internal.h"
 #import "BTLogger_Internal.h"
 
-#import "BTAppSwitchErrors.h"
-#import "BTErrors+BTPayPal.h"
-
 #import "BTAppSwitch.h"
 
 static void (^BTPayPalHandleURLContinuation)(NSURL *url);
 
-BT_ASSUME_NONNULL_BEGIN
+NSString *const BTPayPalDriver3ErrorDomain = @"com.braintreepayments.BTPayPalDriver3ErrorDomain";
 
-@interface BTPayPalDriver ()
+@interface BTPayPalDriver3 ()
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, copy) NSString *returnURLScheme;
 @end
 
-@implementation BTPayPalDriver
+@implementation BTPayPalDriver3
 
-+ (nullable instancetype)driverWithClient:(BTClient * __nonnull)client {
++ (instancetype)driverWithClient:(BTClient * __nonnull)client {
     return [[self alloc] initWithClient:client returnURLScheme:[BTAppSwitch sharedInstance].returnURLScheme];
 }
 
-- (nullable instancetype)initWithClient:(BTClient * __nonnull)client returnURLScheme:(NSString * __nonnull)returnURLScheme {
+- (instancetype)initWithClient:(BTClient * __nonnull)client returnURLScheme:(NSString * __nonnull)returnURLScheme {
     NSError *initializationError;
-    if (![BTPayPalDriver verifyAppSwitchConfigurationForClient:client
+    if (![BTPayPalDriver3 verifyAppSwitchConfigurationForClient:client
                                                returnURLScheme:returnURLScheme
                                                          error:&initializationError]) {
-        [[BTLogger sharedLogger] log:@"Failed to initialize BTPayPalDriver: %@", initializationError];
+        [[BTLogger sharedLogger] log:@"Failed to initialize BTPayPalDriver3: %@", initializationError];
         return nil;
     }
     
@@ -55,17 +52,17 @@ BT_ASSUME_NONNULL_BEGIN
         }
     }];
     
-    if (![BTPayPalDriver verifyAppSwitchConfigurationForClient:client returnURLScheme:self.returnURLScheme error:error]) {
+    if (![BTPayPalDriver3 verifyAppSwitchConfigurationForClient:client returnURLScheme:self.returnURLScheme error:error]) {
         return nil;
     }
     return client;
 }
 
-- (void)startAuthorizationWithCompletion:(nullable void (^)(BTPayPalPaymentMethod *BT_NULLABLE paymentMethod, NSError *BT_NULLABLE error))completionBlock {
+- (void)startAuthorizationWithCompletion:(void (^)(BTPayPalPaymentMethod *paymentMethod, NSError *error))completionBlock {
     [self startAuthorizationWithAdditionalScopes:nil completion:completionBlock];
 }
 
-- (void)startAuthorizationWithAdditionalScopes:(NSSet * BT_NULLABLE)additionalScopes completion:(nullable void (^)(BTPayPalPaymentMethod *BT_NULLABLE paymentMethod, NSError *BT_NULLABLE error))completionBlock {
+- (void)startAuthorizationWithAdditionalScopes:(NSSet *)additionalScopes completion:(void (^)(BTPayPalPaymentMethod *paymentMethod, NSError *error))completionBlock {
     NSError *error;
     BTClient *client = [self copyClientForPayPal:self.client error:&error];
 
@@ -156,7 +153,7 @@ BT_ASSUME_NONNULL_BEGIN
     }];
 }
 
-- (void)startCheckout:(__unused BTPayPalCheckout * __nonnull)checkout completion:(nullable __unused void (^)(BTPayPalPaymentMethod * BT_NULLABLE paymentMethod, NSError * BT_NULLABLE error))completionBlock {
+- (void)startCheckout:(__unused BTPayPalCheckout *)checkout completion:(__unused void (^)(BTPayPalPaymentMethod *paymentMethod, NSError *error))completionBlock {
     NSError *error;
     BTClient *client = [self copyClientForPayPal:self.client error:&error];
     
@@ -168,7 +165,7 @@ BT_ASSUME_NONNULL_BEGIN
     }
     
     if (checkout == nil) {
-        [[BTLogger sharedLogger] log:@"BTPayPalDriver failed to start checkout - checkout must not be nil."];
+        [[BTLogger sharedLogger] log:@"BTPayPalDriver3 failed to start checkout - checkout must not be nil."];
         return;
     }
     
@@ -257,11 +254,11 @@ BT_ASSUME_NONNULL_BEGIN
                                           }];
 }
 
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL * __nonnull)url sourceApplication:(NSString * __nonnull)sourceApplication {
++ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
     return BTPayPalHandleURLContinuation != nil && [PayPalOneTouchCore canParseURL:url sourceApplication:sourceApplication];
 }
 
-+ (void)handleAppSwitchReturnURL:(NSURL * __nonnull)url {
++ (void)handleAppSwitchReturnURL:(NSURL *)url {
     if (BTPayPalHandleURLContinuation) {
         BTPayPalHandleURLContinuation(url);
     }
@@ -280,10 +277,10 @@ BT_ASSUME_NONNULL_BEGIN
     if ([self.delegate respondsToSelector:@selector(payPalDriver:didPerformAppSwitchToTarget:)]) {
         switch (target) {
             case PayPalOneTouchRequestTargetBrowser:
-                [self.delegate payPalDriver:self didPerformAppSwitchToTarget:BTPayPalDriverAppSwitchTargetBrowser];
+                [self.delegate payPalDriver:self didPerformAppSwitchToTarget:BTPayPalDriver3AppSwitchTargetBrowser];
                 break;
             case PayPalOneTouchRequestTargetOnDeviceApplication:
-                [self.delegate payPalDriver:self didPerformAppSwitchToTarget:BTPayPalDriverAppSwitchTargetPayPalApp];
+                [self.delegate payPalDriver:self didPerformAppSwitchToTarget:BTPayPalDriver3AppSwitchTargetPayPalApp];
                 break;
             default:
                 // Should never happen.
@@ -305,8 +302,8 @@ BT_ASSUME_NONNULL_BEGIN
 + (BOOL)verifyAppSwitchConfigurationForClient:(BTClient *)client returnURLScheme:(NSString *)returnURLScheme error:(NSError * __autoreleasing *)error {
     if (client == nil) {
         if (error != NULL) {
-            *error = [NSError errorWithDomain:BTAppSwitchErrorDomain
-                                         code:BTAppSwitchErrorIntegrationInvalidParameters
+            *error = [NSError errorWithDomain:BTPayPalDriver3ErrorDomain
+                                         code:BTPayPalDriver3ErrorCodeIntegrationInvalidParameters
                                      userInfo:@{ NSLocalizedDescriptionKey: @"PayPal app switch is missing a BTClient." }];
         }
         return NO;
@@ -315,8 +312,8 @@ BT_ASSUME_NONNULL_BEGIN
     if (!client.configuration.payPalEnabled) {
         [client postAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
         if (error != NULL) {
-            *error = [NSError errorWithDomain:BTBraintreePayPalErrorDomain
-                                         code:BTPayPalErrorPayPalDisabled
+            *error = [NSError errorWithDomain:BTPayPalDriver3ErrorDomain
+                                         code:BTPayPalDriver3ErrorCodePayPalDisabled
                                      userInfo:@{ NSLocalizedDescriptionKey: @"PayPal is not enabled for this merchant." }];
         }
         return NO;
@@ -325,8 +322,8 @@ BT_ASSUME_NONNULL_BEGIN
     if (returnURLScheme == nil) {
         [client postAnalyticsEvent:@"ios.paypal-otc.preflight.nil-return-url-scheme"];
         if (error != NULL) {
-            *error = [NSError errorWithDomain:BTAppSwitchErrorDomain
-                                         code:BTAppSwitchErrorIntegrationReturnURLScheme
+            *error = [NSError errorWithDomain:BTPayPalDriver3ErrorDomain
+                                         code:BTPayPalDriver3ErrorCodeIntegrationReturnURLScheme
                                      userInfo:@{ NSLocalizedDescriptionKey: @"PayPal app switch is missing a returnURLScheme. See +[Braintree setReturnURLScheme:]." }];
         }
         return NO;
@@ -336,8 +333,8 @@ BT_ASSUME_NONNULL_BEGIN
         [client postAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
         if (error != NULL) {
             NSString *errorMessage = [NSString stringWithFormat:@"Cannot app switch to PayPal. Verify that the return URL scheme (%@) starts with this app's bundle id, and that the PayPal app is installed.", returnURLScheme];
-            *error = [NSError errorWithDomain:BTAppSwitchErrorDomain
-                                         code:BTAppSwitchErrorIntegrationReturnURLScheme
+            *error = [NSError errorWithDomain:BTPayPalDriver3ErrorDomain
+                                         code:BTPayPalDriver3ErrorCodeIntegrationReturnURLScheme
                                      userInfo:@{ NSLocalizedDescriptionKey: errorMessage }];
         }
         return NO;
@@ -552,5 +549,3 @@ BT_ASSUME_NONNULL_BEGIN
 }
 
 @end
-
-BT_ASSUME_NONNULL_END

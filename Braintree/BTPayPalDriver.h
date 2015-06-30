@@ -19,3 +19,16 @@ BT_ASSUME_NONNULL_BEGIN
 @end
 
 BT_ASSUME_NONNULL_END
+
+// BTCardTokenizationClient+Testing
+@class BTAPIClient;
+
+BT_ASSUME_NONNULL_BEGIN
+
+@interface BTPayPalDriver (Testing)
+
+- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration apiClient:(BTAPIClient *)client;
+
+@end
+
+BT_ASSUME_NONNULL_END
