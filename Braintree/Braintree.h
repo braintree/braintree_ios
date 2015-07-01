@@ -9,7 +9,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeVersionString[];
 
 // Core
 
-#import <Braintree/BTJSON.h>
 #import <Braintree/BTConfiguration.h>
 #import <Braintree/BTPaymentOption.h>
 

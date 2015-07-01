@@ -7,6 +7,7 @@
 #import "BTCoinbasePaymentMethod_Internal.h"
 #import "BTPostalAddress.h"
 #import "BTPostalAddress_Internal.h"
+#import "BTPayPalPayerInfoHelper.h"
 
 @implementation BTClientPaymentMethodValueTransformer
 
@@ -54,38 +55,13 @@
         if (payerInfoDict && payerInfoDict[@"firstName"]) { payPal.firstName = payerInfoDict[@"firstName"]; }
         if (payerInfoDict && payerInfoDict[@"lastName"]) { payPal.lastName = payerInfoDict[@"lastName"]; }
         if (payerInfoDict && payerInfoDict[@"phone"]) { payPal.phone = payerInfoDict[@"phone"]; }
-        if (payerInfoDict && payerInfoDict[BTPostalAddressKeyAccountAddress]) {
-            NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyAccountAddress];
-            payPal.billingAddress = [[BTPostalAddress alloc] init];
-            payPal.billingAddress.recipientName = addressDictionary[BTPostalAddressKeyRecipientName]; // Likely nil, but doesn't hurt
-            payPal.billingAddress.streetAddress = addressDictionary[BTPostalAddressKeyStreet1];
-            payPal.billingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyStreet2];
-            payPal.billingAddress.locality = addressDictionary[BTPostalAddressKeyCity];
-            payPal.billingAddress.region = addressDictionary[BTPostalAddressKeyState];
-            payPal.billingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
-            payPal.billingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountry];
-        }
-        if (payerInfoDict && payerInfoDict[BTPostalAddressKeyBillingAddress]) {
-            NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyBillingAddress];
-            payPal.billingAddress = [[BTPostalAddress alloc] init];
-            payPal.billingAddress.recipientName = addressDictionary[BTPostalAddressKeyRecipientName]; // Likely nil, but doesn't hurt
-            payPal.billingAddress.streetAddress = addressDictionary[BTPostalAddressKeyLine1];
-            payPal.billingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyLine2];
-            payPal.billingAddress.locality = addressDictionary[BTPostalAddressKeyCity];
-            payPal.billingAddress.region = addressDictionary[BTPostalAddressKeyState];
-            payPal.billingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
-            payPal.billingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountryCode];
-        }
-        if (payerInfoDict && payerInfoDict[BTPostalAddressKeyShippingAddress]) {
-            NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyShippingAddress];
-            payPal.shippingAddress = [[BTPostalAddress alloc] init];
-            payPal.shippingAddress.recipientName = addressDictionary[BTPostalAddressKeyRecipientName];
-            payPal.shippingAddress.streetAddress = addressDictionary[BTPostalAddressKeyLine1];
-            payPal.shippingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyLine2];
-            payPal.shippingAddress.locality = addressDictionary[BTPostalAddressKeyCity];
-            payPal.shippingAddress.region = addressDictionary[BTPostalAddressKeyState];
-            payPal.shippingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
-            payPal.shippingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountryCode];
+
+        if (payerInfoDict) {
+            NSDictionary *billingAddressJSON = payerInfoDict[BTPostalAddressKeyBillingAddress] ? payerInfoDict[BTPostalAddressKeyBillingAddress] : payerInfoDict[BTPostalAddressKeyAccountAddress];
+            NSDictionary *shippingAddressJSON = payerInfoDict[BTPostalAddressKeyShippingAddress];
+
+            payPal.billingAddress = [BTPayPalPayerInfoHelper addressForJSONAddress:billingAddressJSON];
+            payPal.shippingAddress = [BTPayPalPayerInfoHelper addressForJSONAddress:];
         }
         
         // Braintree gateway has some inconsistent behavior depending on

@@ -1,0 +1,2 @@
+LIBRARY_SEARCH_PATHS = "$(SRCROOT)/Braintree/Internal/PayPal/PayPalOneTouchCore"
+OTHER_LDFLAGS = $(inherited) -ObjC -framework "SystemConfiguration" -weak_framework "CoreLocation" -framework "MessageUI" -weak_framework "PassKit"

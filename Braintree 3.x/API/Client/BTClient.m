@@ -80,11 +80,6 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
 - (void)prepareHttpFromConfiguration {
     self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
     [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-    
-    if (self.configuration.analyticsEnabled) {
-        self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
-        [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
-    }
 }
 
 - (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock {
@@ -161,8 +156,6 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         
         if (self.configuration.analyticsEnabled) {
-            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
-            [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         }
         
         self.hasConfiguration = [[decoder decodeObjectForKey:@"hasConfiguration"] boolValue];
@@ -495,38 +488,6 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                                       failure:failureBlock];
 }
 
-- (void)postAnalyticsEvent:(NSString *)eventKind
-                   success:(BTClientAnalyticsSuccessBlock)successBlock
-                   failure:(BTClientFailureBlock)failureBlock {
-    
-    if (self.configuration.analyticsEnabled) {
-        NSMutableDictionary *requestParameters = [self metaAnalyticsParameters];
-        [requestParameters addEntriesFromDictionary:@{ @"analytics": @[@{ @"kind": eventKind }],
-                                                       @"authorization_fingerprint": self.clientToken.authorizationFingerprint
-                                                       }];
-
-        [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@ session:%@", eventKind, self.metadata.sessionId];
-
-        [self.analyticsHttp POST:@"/"
-                      parameters:requestParameters
-                      completion:^(BTHTTPResponse *response, NSError *error) {
-                          if (response.isSuccess) {
-                              if (successBlock) {
-                                  successBlock();
-                              }
-                          } else {
-                              if (failureBlock) {
-                                  failureBlock(error);
-                              }
-                          }
-                      }];
-    } else {
-        if (successBlock) {
-            successBlock();
-        }
-    }
-}
-
 #pragma mark 3D Secure Lookup
 
 - (void)lookupNonceForThreeDSecure:(NSString *)nonce
@@ -632,21 +593,10 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                   }];
 }
 
-#pragma mark Braintree Analytics
-
-- (void)postAnalyticsEvent:(NSString *)eventKind {
-    [self postAnalyticsEvent:eventKind success:nil failure:nil];
-}
-
-
 #pragma mark -
 
 - (NSMutableDictionary *)metaPostParameters {
     return [self mutableDictionaryCopyWithClientMetadata:nil];
-}
-
-- (NSMutableDictionary *)metaAnalyticsParameters {
-    return [self mutableDictionaryCopyWithClientMetadata:@{@"_meta": [BTAnalyticsMetadata metadata]}];
 }
 
 - (NSMutableDictionary *)mutableDictionaryCopyWithClientMetadata:(NSDictionary *)parameters {

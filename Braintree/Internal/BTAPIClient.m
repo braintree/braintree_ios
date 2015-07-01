@@ -12,11 +12,11 @@
     return [self initWithBaseURL:nil authorizationFingerprint:nil];
 }
 
-- (void)GET:(NSString *)endpoint parameters:(BTJSON *)parameters completion:(BTAPIClientCompletionBlock)completionBlock {
+- (void)GET:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(BTAPIClientCompletionBlock)completionBlock {
     // TODO
 }
 
-- (void)POST:(NSString *)endpoint parameters:(BTJSON *)parameters completion:(BTAPIClientCompletionBlock)completionBlock {
+- (void)POST:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(BTAPIClientCompletionBlock)completionBlock {
     // TODO
 }
 

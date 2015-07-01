@@ -8,8 +8,8 @@ typedef void (^BTAPIClientCompletionBlock)(BTJSON *body, NSHTTPURLResponse *resp
 
 - (instancetype)initWithBaseURL:(NSURL *)baseURL authorizationFingerprint:(NSString *)authorizationFingerprint NS_DESIGNATED_INITIALIZER;
 
-- (void)GET:(NSString *)endpoint parameters:(BTJSON *)parameters completion:(BTAPIClientCompletionBlock)completionBlock;
+- (void)GET:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(BTAPIClientCompletionBlock)completionBlock;
 
-- (void)POST:(NSString *)endpoint parameters:(BTJSON *)parameters completion:(BTAPIClientCompletionBlock)completionBlock;
+- (void)POST:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(BTAPIClientCompletionBlock)completionBlock;
 
 @end

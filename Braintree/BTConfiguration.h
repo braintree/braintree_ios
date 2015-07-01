@@ -9,6 +9,8 @@ BT_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly, copy) NSString *key;
 
+@property (nonatomic, copy) NSString *returnURLScheme;
+
 /// The GCD dispatch queue to which completion handlers will be dispatched.
 ///
 /// By default, the application's main queue will be used.
