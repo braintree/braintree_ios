@@ -3,6 +3,8 @@
 #import "BTClientToken.h"
 #import "BTTestClientTokenFactory.h"
 
+// TODO: Change BTClientToken and then restore these tests
+
 SpecBegin(BTClientToken)
 
 context(@"unsupported versions", ^{

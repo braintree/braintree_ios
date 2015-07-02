@@ -113,8 +113,8 @@ describe(@"metadata", ^{
         });
     });
     describe(@"iosIsCocoaPods", ^{
-        it(@"returns YES if compiled with CocoaPods", ^{
-            expect([BTAnalyticsMetadata metadata][@"iosIsCocoapods"]).to.beTruthy();
+        it(@"is present", ^{
+            expect([BTAnalyticsMetadata metadata][@"iosIsCocoapods"]).to.beKindOf([NSNumber class]);
         });
     });
     describe(@"isSimulator", ^{

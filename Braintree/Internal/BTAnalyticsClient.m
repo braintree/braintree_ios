@@ -36,14 +36,13 @@
 
         NSURL *analyticsURL = remoteConfiguration[@"analytics"][@"url"].asURL;
         if (analyticsURL) {
-            BTHTTP *analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL];
+            BTHTTP *analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.configuration.clientKey];
 
             [analyticsHttp POST:@"/"
                      parameters:@{ @"analytics": @[@{ @"kind": eventKind }],
-                                   @"_meta": self.metaParameters,
-                                   @"authorization_fingerprint": self.configuration.clientKey }
-                     completion:^(BTHTTPResponse *response, NSError *error) {
-                         // TODO: log
+                                   @"_meta": self.metaParameters }
+                     completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                         // TODO
                      }];
         } else {
             // TODO: log

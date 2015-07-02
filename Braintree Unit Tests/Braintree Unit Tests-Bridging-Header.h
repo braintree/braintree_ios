@@ -3,5 +3,5 @@
 //
 
 // Internal headers for testing
-#import "BTAPIClient.h"
 #import "BTJSON.h"
+#import "BTHTTP.h"

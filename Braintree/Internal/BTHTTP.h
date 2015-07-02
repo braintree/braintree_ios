@@ -1,11 +1,17 @@
 #import <Foundation/Foundation.h>
 
-#import "BTHTTPResponse.h"
-#import "BTErrors.h"
+#import "BTJSON.h"
 
 @class BTHTTPResponse;
 
-typedef void (^BTHTTPCompletionBlock)(BTHTTPResponse *response, NSError *error);
+typedef void (^BTHTTPCompletionBlock)(BTJSON *body, NSHTTPURLResponse *response, NSError *error);
+
+extern NSString * const BTHTTPErrorDomain;
+
+typedef NS_ENUM(NSUInteger, BTHTTPErrorCode) {
+    BTHTTPErrorCodeUnknown = 0,
+    BTHTTPErrorCodeResponseContentTypeNotAcceptable,
+};
 
 @interface BTHTTP : NSObject<NSCopying>
 
@@ -13,11 +19,13 @@ typedef void (^BTHTTPCompletionBlock)(BTHTTPResponse *response, NSError *error);
 /// consisting of DER encoded x509 certificates
 @property (nonatomic, strong) NSArray *pinnedCertificates;
 
-- (instancetype)initWithBaseURL:(NSURL *)URL;
+- (instancetype)initWithBaseURL:(NSURL *)URL authorizationFingerprint:(NSString *)authorizationFingerprint NS_DESIGNATED_INITIALIZER;
 
-/// Set an optional array of subclasses of NSURLProtocol
-/// that are registered with the underlying URL handler upon initialization.
-- (void)setProtocolClasses:(NSArray *)protocolClasses;
+// For testing
+@property (nonatomic, strong) NSURLSession *session;
+
+/// Queue that callbacks are dispatched onto, main queue if not otherwise specified
+@property (nonatomic, strong) dispatch_queue_t dispatchQueue;
 
 - (void)GET:(NSString *)url completion:(BTHTTPCompletionBlock)completionBlock;
 - (void)GET:(NSString *)url parameters:(NSDictionary *)parameters completion:(BTHTTPCompletionBlock)completionBlock;

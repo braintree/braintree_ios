@@ -88,6 +88,7 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
 
                                                BTJSON *payPalAccount = body[@"paypalAccounts"][0];
 
+                                               // TODO use the existing value transformer to get payer info
                                                NSString *email, *firstName, *lastName, *phone;
                                                BTPostalAddress *billingAddress, *shippingAddress;
                                                NSDictionary *payerInfoDict = payPalAccount[@"details"][@"payerInfo"].asDictionary;
@@ -279,10 +280,10 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
 
 #pragma mark - 
 
-+ (BOOL)verifyAppSwitchWithRemoteConfiguration:(BTJSON *)configuration returnURLScheme:(NSString *)returnURLScheme error:(NSError * __autoreleasing *)error {
+- (BOOL)verifyAppSwitchWithRemoteConfiguration:(BTJSON *)remoteConfiguration returnURLScheme:(NSString *)returnURLScheme error:(NSError * __autoreleasing *)error {
 
-    if (!configuration[@"paypalEnabled"].isTrue) {
-        [client postAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
+    if (!remoteConfiguration[@"paypalEnabled"].isTrue) {
+        [self.analyticsClient postAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                          code:BTPayPalDriverErrorCodePayPalDisabled
@@ -292,7 +293,7 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
     }
 
     if (returnURLScheme == nil) {
-        [client postAnalyticsEvent:@"ios.paypal-otc.preflight.nil-return-url-scheme"];
+        [self.analyticsClient postAnalyticsEvent:@"ios.paypal-otc.preflight.nil-return-url-scheme"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                          code:BTPayPalDriverErrorCodeIntegrationReturnURLScheme
@@ -302,7 +303,7 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
     }
 
     if (![PayPalOneTouchCore doesApplicationSupportOneTouchCallbackURLScheme:returnURLScheme]) {
-        [client postAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
+        [self.analyticsClient postAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
         if (error != NULL) {
             NSString *errorMessage = [NSString stringWithFormat:@"Cannot app switch to PayPal. Verify that the return URL scheme (%@) starts with this app's bundle id, and that the PayPal app is installed.", returnURLScheme];
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain

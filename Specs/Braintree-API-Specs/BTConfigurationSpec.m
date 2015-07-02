@@ -3,6 +3,9 @@
 #import "BTConfiguration.h"
 #import "BTTestClientTokenFactory.h"
 
+// TODO: Restore this test
+
+
 NSDictionary *BTConfigurationSpecTestConfiguration() {
     return @{
              @"challenges": @[

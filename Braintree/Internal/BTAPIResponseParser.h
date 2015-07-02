@@ -4,11 +4,13 @@
 - (id)transformedValue:(id)value;
 @end
 
+// TODO: Remove me
+__deprecated
 @interface BTAPIResponseParser : NSObject <NSCopying, NSCoding>
 
-+ (instancetype)parserWithDictionary:(NSDictionary *)dictionary;
++ (instancetype)parserWithDictionary:(NSDictionary *)dictionary DEPRECATED_ATTRIBUTE;
 
-- (instancetype)initWithDictionary:(NSDictionary *)dictionary NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary NS_DESIGNATED_INITIALIZER DEPRECATED_ATTRIBUTE;
 
 #pragma mark - Accessors with Specified Types
 

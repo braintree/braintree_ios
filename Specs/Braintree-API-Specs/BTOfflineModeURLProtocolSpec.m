@@ -1,6 +1,8 @@
 #import "BTOfflineModeURLProtocol.h"
 #import "BTOfflineClientBackend.h"
 
+// TODO: remove this test when we remove offline mode
+
 SpecBegin(BTOfflineModeURLProtocol)
 
 describe(@"backend", ^{

@@ -3,11 +3,20 @@
 
 BT_ASSUME_NONNULL_BEGIN
 
+extern NSString *const BTConfigurationErrorDomain;
+
+typedef NS_ENUM(NSInteger, BTConfigurationErrorCode) {
+    BTConfigurationErrorCodeUnknown = 0,
+    BTConfigurationErrorCodeConfigurationUnavailable,
+};
+
 @interface BTConfiguration : NSObject
 
-- (instancetype)initWithKey:(NSString *)key;
+- (instancetype)initWithClientKey:(NSString *)clientKey;
 
-@property (nonatomic, readonly, copy) NSString *key;
+- (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue;
+
+@property (nonatomic, readonly, copy) NSString *clientKey;
 
 @property (nonatomic, copy) NSString *returnURLScheme;
 
@@ -16,7 +25,7 @@ BT_ASSUME_NONNULL_BEGIN
 /// By default, the application's main queue will be used.
 ///
 /// For more information, please read Grand Central Dispatch programming guide and dispatch_get_main_queue.
-@property (nonatomic, strong) dispatch_queue_t dispatchQueue;
+@property (nonatomic, readonly, strong) dispatch_queue_t dispatchQueue;
 
 @end
 

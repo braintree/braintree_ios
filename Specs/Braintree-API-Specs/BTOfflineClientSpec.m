@@ -2,6 +2,8 @@
 
 #import "BTClient+Offline.h"
 
+// TODO: Rip out offline client functionality from BTClient (or delete BTClient) and then remove this test
+
 SpecBegin(BTClient_Offline)
 
 describe(@"offline clients", ^{

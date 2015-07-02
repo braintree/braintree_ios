@@ -1,6 +1,6 @@
 #import "BTAnalyticsMetaData.h"
-#import "BTClient.h"
 
+#import "Braintree-Version.h"
 #import "BTKeychain.h"
 #import "BTReachability.h"
 @import CoreLocation;
@@ -65,11 +65,12 @@
 }
 
 - (NSString *)platformVersion {
+
     return [[UIDevice currentDevice] systemVersion];
 }
 
 - (NSString *)sdkVersion {
-    return [BTClient libraryVersion];
+    return BRAINTREE_VERSION;
 }
 
 - (NSString *)merchantAppId {

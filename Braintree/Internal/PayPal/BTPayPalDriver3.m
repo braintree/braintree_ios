@@ -12,6 +12,9 @@
 
 #import "BTAppSwitch.h"
 
+//
+// TODO: Add this file back to the Braintree target and fix it and test it and stuff
+//
 
 NSString *const BTPayPalDriver3ErrorDomain = @"com.braintreepayments.BTPayPalDriver3ErrorDomain";
 

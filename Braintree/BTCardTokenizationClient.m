@@ -1,11 +1,11 @@
 #import "BTCardTokenizationClient.h"
 #import "BTTokenizedCard_Internal.h"
-#import "BTAPIClient.h"
+#import "BTHTTP.h"
 #import "BTThreeDSecureInfo_Internal.h"
 #import "BTJSON.h"
 
 @interface BTCardTokenizationClient ()
-@property (nonatomic, strong) BTAPIClient *client;
+@property (nonatomic, strong) BTHTTP *clientApiHTTP;
 @end
 
 @implementation BTCardTokenizationClient
@@ -14,30 +14,31 @@
     self = [self init];
     if (self) {
         // TODO Set Base URL
-        _client = [[BTAPIClient alloc] initWithBaseURL:[NSURL URLWithString:@""] authorizationFingerprint:configuration.key];
+//        _client = [[BTAPIClient alloc] initWithBaseURL:[NSURL URLWithString:@""] authorizationFingerprint:configuration.key];
     }
 
     return self;
 }
 
-- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration apiClient:(nonnull BTAPIClient *)client {
+// For test
+- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration http:(nonnull BTHTTP *)clientApiHTTP {
     self = [self init];
     if (self) {
-        _client = client;
+        _clientApiHTTP = clientApiHTTP;
     }
     return self;
 }
 
 - (void)tokenizeCard:(nonnull BTCard *)card completion:(nonnull void (^)(BTTokenizedCard * __nullable, NSError * __nullable))completionBlock {
 
-    BTJSON *parameters = [[BTJSON alloc] init];
+    NSDictionary *parameters = @{};
     //    parameters[@"credit_card"] = card.parameters;
 
     // TODO populate metaPostParameters correctly
     //    parameters[@"_meta"][@"source"] = @"unknown";
     //    parameters[@"_meta"][@"integration"] = @"unknown";
 
-    [self.client POST:@"v1/payment_methods/credit_cards"
+    [self.clientApiHTTP POST:@"v1/payment_methods/credit_cards"
            parameters:parameters
            completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                if (error != nil) {

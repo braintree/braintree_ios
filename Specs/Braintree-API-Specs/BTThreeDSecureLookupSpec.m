@@ -1,5 +1,7 @@
 #import "BTThreeDSecureLookupResult.h"
 
+// TODO: Reenable this spec when 3D Secure stuff is added back into the new BTThreeDSecureDriver
+
 SpecBegin(BTThreeDSecureLookupResult)
 
 describe(@"requiresUserAuthentication", ^{

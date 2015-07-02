@@ -3,6 +3,8 @@
 #import "BTClient+Testing.h"
 #import "BTClient_Internal.h"
 
+// TODO: Restore these tests
+
 SpecBegin(BTClient_Metadata)
 
 __block NSString *clientToken;
