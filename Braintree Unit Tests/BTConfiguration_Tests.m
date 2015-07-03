@@ -1,7 +1,8 @@
 #import <XCTest/XCTest.h>
 #import "BTConfiguration_Internal.h"
-
 #import "BTHTTP.h"
+#import "BTHTTPTestProtocol.h"
+
 @interface FakeHTTP : BTHTTP
 
 @property (nonatomic, assign) NSUInteger requestCount;
@@ -50,31 +51,39 @@
 
 @implementation BTConfiguration_Tests
 
-- (void)setUp {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
 - (void)testConfigurationHasAKey {
-    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key"];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" error:NULL];
     XCTAssertEqualObjects(configuration.clientKey, @"test-client-key");
+}
+
+- (void)testClientApiHTTP_infersBaseURLFromClientKey_sandbox {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"HTTP Response"];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"sandbox_stuff_test_merchant_id" error:NULL];
+
+    NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    [sessionConfiguration setProtocolClasses:@[[BTHTTPTestProtocol class]]];
+    configuration.clientApiHTTP.session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+
+    [configuration.clientApiHTTP GET:@"foo" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        NSURLRequest *request = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+        XCTAssertEqualObjects(request.URL.absoluteString, @"https://sandbox.braintreegateway.com/merchants/test_merchant_id/client_api/foo?authorization_fingerprint=sandbox_stuff_test_merchant_id");
+
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 - (void)testConfigurationCanGetRemoteConfiguration {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key"];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" error:NULL];
 
     FakeHTTP *fake = [[FakeHTTP alloc] init];
     // TODO: Change the expected url to be based on the merchant and environment parsed out of the client key
     [fake expectGETRequestToEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES }];
 
-    configuration.configurationHttp = fake;
+    configuration.clientApiHTTP = fake;
 
     [configuration fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error) {
         XCTAssertEqual(fake.requestCount, 1);
@@ -88,12 +97,12 @@
 - (void)testConfigurationCanFailWhenTheServerRespondsWithANon200StatusCode {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key"];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" error:NULL];
 
     FakeHTTP *fake = [[FakeHTTP alloc] init];
     [fake expectGETRequestToEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"error_message": @"Something bad happened" } statusCode:503];
 
-    configuration.configurationHttp = fake;
+    configuration.clientApiHTTP = fake;
 
     [configuration fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error) {
         XCTAssertEqual(fake.requestCount, 1);
@@ -110,7 +119,7 @@
 - (void)testConfigurationFailsWhenNetworkHasError {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key"];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" error:NULL];
 
     FakeHTTP *fake = [[FakeHTTP alloc] init];
     NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
@@ -118,7 +127,7 @@
                                        userInfo:nil];
     [fake expectGETRequestToEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
 
-    configuration.configurationHttp = fake;
+    configuration.clientApiHTTP = fake;
 
     [configuration fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error) {
         XCTAssertEqual(fake.requestCount, 1);
@@ -131,12 +140,11 @@
 }
 
 - (void)testSerialInvocationsOfFetchConfigurationPerformOnlyOneRequest {
-    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key"];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" error:NULL];
 
     FakeHTTP *fake = [[FakeHTTP alloc] init];
-    // TODO: Change the expected url to be based on the merchant and environment parsed out of the client key
     [fake expectGETRequestToEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES }];
-    configuration.configurationHttp = fake;
+    configuration.clientApiHTTP = fake;
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"First fetch configuration"];
 
@@ -160,23 +168,28 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testInitialization_withInvalidClientKey_returnsError {
+//    BTConfiguration *configuration = [BTConfiguration alloc] initWithClientKey:<#(nonnull NSString *)#> dispatchQueue:<#(nullable dispatch_queue_t)#> error:<#(NSError * __nullable __autoreleasing * __nullable)#>
+    XCTFail();
+}
+
 #pragma mark Dispatch Queue
 
 - (void)testDispatchQueueMainQueueByDefault {
-    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key"];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" error:NULL];
 
     XCTAssertEqualObjects(configuration.dispatchQueue, dispatch_get_main_queue());
 }
 
 - (void)testDispatchQueueMainQueueByDefaultWhenNilSpecified {
-    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" dispatchQueue:nil];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" dispatchQueue:nil error:NULL];
 
     XCTAssertEqualObjects(configuration.dispatchQueue, dispatch_get_main_queue());
 }
 
 - (void)testDispatchQueueRetainedWhenSpecified {
     dispatch_queue_t q = dispatch_queue_create("com.braintreepayments.BTConfiguration_Tests.testDispatchQueueRetainedWhenSpecified", DISPATCH_QUEUE_SERIAL);
-    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" dispatchQueue:q];
+    BTConfiguration *configuration = [[BTConfiguration alloc] initWithClientKey:@"test-client-key" dispatchQueue:q error:NULL];
 
     XCTAssertEqualObjects(configuration.dispatchQueue, q);
 }

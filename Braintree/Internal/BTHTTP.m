@@ -94,6 +94,12 @@ NSString * const BTHTTPErrorDomain = @"com.braintreepayments.BTHTTPErrorDomain";
         fullPathURL = self.baseURL;
     }
 
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    if (self.authorizationFingerprint) {
+        mutableParameters[@"authorization_fingerprint"] = self.authorizationFingerprint;
+    }
+    parameters = [mutableParameters copy];
+
     NSURLComponents *components = [NSURLComponents componentsWithString:fullPathURL.absoluteString];
 
     NSMutableDictionary *headers = [NSMutableDictionary dictionaryWithDictionary:self.defaultHeaders];

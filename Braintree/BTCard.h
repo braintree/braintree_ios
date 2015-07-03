@@ -8,19 +8,16 @@ BT_ASSUME_NONNULL_BEGIN
 /// Its main purpose is to serve as the input for tokenization.
 @interface BTCard : NSObject
 
-- (instancetype)initWithNumber:(nullable NSString *)number expirationDate:(nullable NSString *)expirationDate cvv:(nullable NSString *)cvv;
+- (instancetype)init;
 
-+ (nonnull instancetype)cardWithNumber:(nullable NSString *)number expirationDate:(nullable NSString *)expirationDate cvv:(nullable NSString *)cvv;
-+ (nonnull instancetype)cardWithNumber:(nullable NSString *)number expirationDate:(nullable NSString *)expirationDate;
-+ (nonnull instancetype)cardWithNumber:(nullable NSString *)number expirationMonth:(nullable NSString *)expirationMonth expirationYear:(NSString *)expirationYear cvv:(nullable NSString *)cvv;
-+ (nonnull instancetype)cardWithNumber:(nullable NSString *)number expirationMonth:(nullable NSString *)expirationMonth expirationYear:(NSString *)expirationYear;
+- (instancetype)initWithNumber:(BT_NULLABLE NSString *)number expirationDate:(BT_NULLABLE NSString *)expirationDate cvv:(BT_NULLABLE NSString *)cvv;
 
-/// @name Parameters
+- (instancetype)initWithParameters:(NSDictionary *)parameters NS_DESIGNATED_INITIALIZER;
 
-@property (nonatomic, nullable, copy) NSString *number;
-@property (nonatomic, nullable, copy) NSString *cvv;
-@property (nonatomic, nullable, copy) NSString *postalCode;
-@property (nonatomic, nullable, copy) NSDictionary<NSString *,NSString *> *additionalParameters;
+@property (nonatomic, BT_NULLABLE, copy) NSString *number;
+@property (nonatomic, BT_NULLABLE, copy) NSString *expirationDate;
+@property (nonatomic, BT_NULLABLE, copy) NSString *cvv;
+@property (nonatomic, BT_NULLABLE, copy) NSString *postalCode;
 
 @end
 

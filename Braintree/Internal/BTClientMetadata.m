@@ -44,6 +44,14 @@
     return [[self class] sourceToString:self.source];
 }
 
+- (NSDictionary *)parameters {
+    return @{
+             @"integration": self.integrationString,
+             @"source": self.sourceString,
+             @"sessionId": self.sessionId
+             };
+}
+
 #pragma mark Internal helpers
 
 + (NSString *)integrationToString:(BTClientMetadataIntegrationType)integration {

@@ -1,43 +1,58 @@
-#import "BTCard.h"
+#import "BTCard_Internal.h"
 #import "BTJSON.h"
 
 @interface BTCard ()
-@property (nonatomic, nonnull, strong) NSMutableDictionary *parameters;
+@property (nonatomic, strong) NSMutableDictionary *mutableParameters;
 @end
 
 @implementation BTCard
 
-- (nonnull instancetype)initWithNumber:(nullable NSString *)number expirationDate:(nullable NSString *)expirationDate cvv:(nullable NSString *)cvv {
-    self = [self init];
+- (instancetype)init {
+    return [self initWithParameters:@{}];
+}
+
+- (nonnull instancetype)initWithParameters:(NSDictionary *)parameters {
+    self = [super init];
     if (self) {
-        self.parameters = [[NSMutableDictionary alloc] init];
-        self.parameters[@"number"] = number;
-        self.parameters[@"expirationDate"] = expirationDate;
-        self.parameters[@"cvv"] = cvv;
+        self.mutableParameters = [parameters mutableCopy];
     }
     return self;
 }
 
-+ (nonnull instancetype)cardWithNumber:(nullable NSString *)number expirationDate:(nullable NSString *)expirationDate {
-    return [self cardWithNumber:number expirationDate:expirationDate cvv:nil];
+- (instancetype)initWithNumber:(NSString *)number expirationDate:(NSString *)expirationDate cvv:(NSString *)cvv {
+    self = [self initWithParameters:@{}];
+    if (self) {
+        self.number = number;
+        self.expirationDate = expirationDate;
+        self.cvv = cvv;
+    }
+    return self;
 }
 
-+ (nonnull instancetype)cardWithNumber:(nullable NSString *)number expirationDate:(nullable NSString *)expirationDate cvv:(nullable NSString *)cvv {
-    return [[self alloc] initWithNumber:number expirationDate:expirationDate cvv:cvv];
-}
+#pragma mark -
 
-+ (nonnull instancetype)cardWithNumber:(nullable NSString *)number expirationMonth:(nullable NSString *)expirationMonth expirationYear:(nonnull NSString *)expirationYear {
-    return [self cardWithNumber:number expirationMonth:expirationMonth expirationYear:expirationMonth cvv:nil];
-}
+- (NSDictionary *)parameters {
+    NSMutableDictionary *p = [self.mutableParameters mutableCopy];
+    if (self.number) {
+        p[@"number"] = self.number;
+    }
+    if (self.expirationDate) {
+        p[@"expiration_date"] = self.expirationDate;
+    }
+    if (self.cvv) {
+        p[@"cvv"] = self.cvv;
+    }
+    if (self.postalCode) {
+        if (![p[@"billing_address"] isKindOfClass:[NSDictionary class]]) {
+            p[@"billing_address"] = @{ @"postal_code": self.postalCode };
+        } else if ([p[@"billing_address"] isKindOfClass:[NSDictionary class]]) {
+            NSMutableDictionary *billingAddress = [p[@"billing_address"] mutableCopy];
+            billingAddress[@"postal_code"] = self.postalCode;
+            p[@"billing_address"] = [billingAddress copy];
+        }
+    }
 
-+ (nonnull instancetype)cardWithNumber:(nullable NSString *)number expirationMonth:(nullable NSString *)expirationMonth expirationYear:(nonnull NSString *)expirationYear cvv:(nullable NSString *)cvv {
-    return [self cardWithNumber:number expirationDate:[NSString stringWithFormat:@"%@/%@", expirationMonth, expirationYear] cvv:cvv];
-}
-
-- (void)setAdditionalParameters:(NSDictionary<NSString *,NSString *> * __nullable)additionalParameters {
-    [additionalParameters enumerateKeysAndObjectsUsingBlock:^(NSString * __nonnull key, NSString * __nonnull obj, __unused BOOL * __nonnull stop) {
-        self.parameters[key] = obj;
-    }];
+    return [p copy];
 }
 
 @end

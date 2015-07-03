@@ -12,9 +12,9 @@ typedef NS_ENUM(NSInteger, BTConfigurationErrorCode) {
 
 @interface BTConfiguration : NSObject
 
-- (instancetype)initWithClientKey:(NSString *)clientKey;
+- (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey error:(NSError **)error;
 
-- (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue;
+- (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue error:(NSError **)error;
 
 @property (nonatomic, readonly, copy) NSString *clientKey;
 

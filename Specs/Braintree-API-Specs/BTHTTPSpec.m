@@ -1,89 +1,6 @@
 #import "BTHTTP.h"
+#import "BTHTTPTestProtocol.h"
 #import "BTSpecHelper.h"
-
-#define kBTHTTPTestProtocolScheme @"bt-http-test"
-#define kBTHTTPTestProtocolHost @"base.example.com"
-#define kBTHTTPTestProtocolBasePath @"/base/path"
-#define kBTHTTPTestProtocolPort @1234
-
-@interface BTHTTPTestProtocol : NSURLProtocol
-@end
-
-@implementation BTHTTPTestProtocol
-
-+ (BOOL)canInitWithRequest:(NSURLRequest *)request {
-
-    BOOL hasCorrectScheme = [request.URL.scheme isEqualToString:kBTHTTPTestProtocolScheme];
-    BOOL hasCorrectHost = [request.URL.host isEqualToString:kBTHTTPTestProtocolHost];
-    BOOL hasCorrectPort = [request.URL.port isEqual:kBTHTTPTestProtocolPort];
-    BOOL hasCorrectBasePath = [request.URL.path rangeOfString:kBTHTTPTestProtocolBasePath].location != NSNotFound;
-
-    return hasCorrectScheme && hasCorrectHost && hasCorrectPort && hasCorrectBasePath;
-}
-
-+ (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request {
-    return request;
-}
-
-- (void)startLoading {
-    id<NSURLProtocolClient> client = self.client;
-
-    NSHTTPURLResponse *response = [[NSHTTPURLResponse alloc] initWithURL:self.request.URL
-                                                              statusCode:200
-                                                             HTTPVersion:@"HTTP/1.1"
-                                                            headerFields:@{@"Content-Type": @"application/json"}];
-
-    NSData *archivedRequest = [NSKeyedArchiver archivedDataWithRootObject:self.request];
-    NSString *base64ArchivedRequest = [archivedRequest base64EncodedStringWithOptions:0];
-
-    NSData *requestBodyData;
-    if (self.request.HTTPBodyStream) {
-        NSInputStream *inputStream = self.request.HTTPBodyStream;
-        [inputStream open];
-        NSMutableData *mutableBodyData = [NSMutableData data];
-
-        while ([inputStream hasBytesAvailable]) {
-            uint8_t buffer[128];
-            NSUInteger bytesRead = [inputStream read:buffer maxLength:128];
-            [mutableBodyData appendBytes:buffer length:bytesRead];
-        }
-        [inputStream close];
-        requestBodyData = [mutableBodyData copy];
-    } else {
-        requestBodyData = self.request.HTTPBody;
-    }
-
-    NSDictionary *responseBody = @{ @"request": base64ArchivedRequest,
-                                    @"requestBody": [[NSString alloc] initWithData:requestBodyData encoding:NSUTF8StringEncoding] };
-
-    [client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
-
-    [client URLProtocol:self didLoadData:[NSJSONSerialization dataWithJSONObject:responseBody options:NSJSONWritingPrettyPrinted error:NULL]];
-
-    [client URLProtocolDidFinishLoading:self];
-}
-
-- (void)stopLoading {
-}
-
-+ (NSURL *)testBaseURL {
-    NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = kBTHTTPTestProtocolScheme;
-    components.host = kBTHTTPTestProtocolHost;
-    components.path = kBTHTTPTestProtocolBasePath;
-    components.port = kBTHTTPTestProtocolPort;
-    return components.URL;
-}
-
-+ (NSURLRequest *)parseRequestFromTestResponseBody:(BTJSON *)responseBody {
-    return [NSKeyedUnarchiver unarchiveObjectWithData:[[NSData alloc] initWithBase64EncodedString:responseBody[@"request"].asString options:0]];
-}
-
-+ (NSString *)parseRequestBodyFromTestResponseBody:(BTJSON *)responseBody {
-    return responseBody[@"requestBody"].asString;
-}
-
-@end
 
 NSURL *validDataURL() {
     NSDictionary *validObject = @{@"clientId":@"a-client-id", @"nest": @{@"nested":@"nested-value"}};
@@ -158,11 +75,33 @@ void withStub(void (^block)(void (^removeStub)(void))) {
         waitUntil(^(DoneCallback done){
             [http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                 NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
-                expect(httpRequest.URL.host).to.equal(@"base.example.com");
+                expect(httpRequest.URL.absoluteString).to.startWith(@"bt-http-test://base.example.com:1234/base/path/200.json");
 
                 done();
             }];
         });
+    });
+}
+
+- (void)test_sends_authorization_in_GET_requests {
+    waitUntil(^(DoneCallback done){
+        [http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
+            expect(httpRequest.URL.query).to.equal(@"authorization_fingerprint=test-authorization-fingerprint");
+
+            done();
+        }];
+    });
+}
+
+- (void)test_sends_authorization_in_POST_requests {
+    waitUntil(^(DoneCallback done){
+        [http POST:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponseBody:body];
+            expect(httpRequestBody).to.equal(@"{\n  \"authorization_fingerprint\" : \"test-authorization-fingerprint\"\n}");
+
+            done();
+        }];
     });
 }
 
@@ -313,7 +252,7 @@ void withStub(void (^block)(void (^removeStub)(void))) {
         [http GET:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error){
             NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
             expect(httpRequest.URL.path).to.match(@"/200.json$");
-            expect(httpRequest.URL.query).to.equal(@"param=value");
+            expect(httpRequest.URL.query).to.contain(@"param=value");
             expect(httpRequest.HTTPMethod).to.equal(@"GET");
             expect(httpRequest.HTTPBody).to.beNil();
             done();
@@ -340,7 +279,8 @@ void withStub(void (^block)(void (^removeStub)(void))) {
             NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
             NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponseBody:body];
             expect(httpRequest.URL.path).to.match(@"/200.json$");
-            expect(httpRequestBody).to.equal(@"{\n  \"param\" : \"value\"\n}");
+            BTJSON *json = [[BTJSON alloc] initWithData:[httpRequestBody dataUsingEncoding:NSUTF8StringEncoding]];
+            expect(json[@"param"].asString).to.equal(@"value");
             expect(httpRequest.HTTPMethod).to.equal(@"POST");
             expect(httpRequest.URL.query).to.beNil();
             done();
@@ -367,7 +307,8 @@ void withStub(void (^block)(void (^removeStub)(void))) {
             NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
             NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponseBody:body];
             expect(httpRequest.URL.path).to.match(@"200.json$");
-            expect(httpRequestBody).to.equal(@"{\n  \"param\" : \"value\"\n}");
+            BTJSON *json = [[BTJSON alloc] initWithData:[httpRequestBody dataUsingEncoding:NSUTF8StringEncoding]];
+            expect(json[@"param"].asString).to.equal(@"value");
             expect(httpRequest.HTTPMethod).to.equal(@"PUT");
             expect(httpRequest.URL.query).to.beNil();
             done();
@@ -383,7 +324,6 @@ void withStub(void (^block)(void (^removeStub)(void))) {
             expect(httpRequest.URL.path).to.match(@"200.json$");
             expect(httpRequest.HTTPBody).to.beNil();
             expect(httpRequest.HTTPMethod).to.equal(@"DELETE");
-            expect(httpRequest.URL.query).to.equal(@"");
             done();
         }];
     });
@@ -395,7 +335,7 @@ void withStub(void (^block)(void (^removeStub)(void))) {
             NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
 
             expect(httpRequest.URL.path).to.match(@"/200.json$");
-            expect(httpRequest.URL.query).to.equal(@"param=value");
+            expect(httpRequest.URL.query).to.contain(@"param=value");
             expect(httpRequest.HTTPMethod).to.equal(@"DELETE");
             expect(httpRequest.HTTPBody).to.beNil();
             done();
@@ -486,7 +426,8 @@ void withStub(void (^block)(void (^removeStub)(void))) {
                                                       },
                                               @"trueBooleanParameter": @YES,
                                               @"stringParameter": @"value",
-                                              @"crazyStringParameter[]": @"crazy%20and&value", @"arrayParameter": @[ @"arrayItem1", @"arrayItem2" ] };
+                                              @"crazyStringParameter[]": @"crazy%20and&value", @"arrayParameter": @[ @"arrayItem1", @"arrayItem2" ],
+                                              @"authorization_fingerprint": @"test-authorization-fingerprint" };
 
         [http POST:@"200.json" parameters:parameterDictionary() completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];

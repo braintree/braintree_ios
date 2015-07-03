@@ -2,7 +2,7 @@
 # Braintree iOS
 */
 
-import Braintree;
+//import Braintree
 
 /*
 This library enables you to accept mobile payments with Braintree
@@ -17,7 +17,7 @@ When you log in for the first time, you will receive a client key. This is used 
 
 In this example, we will present drop-in checkout, the easiest way to add payments to your app:
 */
-let checkoutRequest = BTCheckoutRequest()
+//let checkoutRequest = BTCheckoutRequest()
 
 /*
 ## Development Notes
@@ -38,4 +38,13 @@ This codebase is officially developed in the latest dev tool chain, based on Xco
 This codebase is written in Objective-C in order to make it simpler to integrate in iOS 7 apps.
 
 Nonetheless, we target Swift 2 as our first class integration as much as possible. Code examples, API design work and documentation are conducted using Swift.
+
+### Testing
+
+Unit Tests (which are logic tests that do not require external resources to run) are located in the Braintree Unit Tests target and scheme.
+
+Tests for public interfaces are written in Swift, while tests around internal classes are written in Objective-C.
+
+The tests are written in vanilla XCTest without any dependencies.
+
 */

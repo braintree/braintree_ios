@@ -9,17 +9,24 @@ NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigura
 
 @implementation BTConfiguration
 
-- (instancetype)initWithClientKey:(NSString *)clientKey {
-    return [self initWithClientKey:clientKey dispatchQueue:nil];
+- (instancetype)initWithClientKey:(NSString *)clientKey error:(NSError **)error {
+    return [self initWithClientKey:clientKey dispatchQueue:nil error:error];
 }
-- (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(dispatch_queue_t)dispatchQueue {
+
+- (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(dispatch_queue_t)dispatchQueue error:(NSError **)error {
+    NSURL *baseURL = [self baseURLFromClientKey:clientKey error:error];
+    if (!baseURL) {
+        return nil;
+    }
+
     self = [super init];
     if (self) {
-        self.clientKey = clientKey;
-        self.configurationHttp = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@""] authorizationFingerprint:self.clientKey];
+        _clientMetadata = [[BTClientMetadata alloc] init];
+        self.clientApiHTTP = [[BTHTTP alloc] initWithBaseURL:baseURL
+                                    authorizationFingerprint:clientKey];
 
         if (dispatchQueue) {
-            self.configurationHttp.dispatchQueue = dispatchQueue;
+            self.clientApiHTTP.dispatchQueue = dispatchQueue;
         }
         self.configurationQueue = dispatch_queue_create("com.braintreepayments.BTConfiguration", DISPATCH_QUEUE_SERIAL);
     }
@@ -27,8 +34,55 @@ NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigura
 }
 
 - (dispatch_queue_t)dispatchQueue {
-    return self.configurationHttp.dispatchQueue ?: dispatch_get_main_queue();
+    return self.clientApiHTTP.dispatchQueue ?: dispatch_get_main_queue();
 }
+
+#pragma mark - Base URL
+
+- (NSURL *)baseURLFromClientKey:(NSString *)clientKey error:(NSError **)error {
+    // TODO: check length of client key, return error if 0
+
+    NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:@"([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)" options:0 error:error];
+
+    NSArray *results = [regExp matchesInString:clientKey options:0 range:NSMakeRange(0, clientKey.length)];
+
+    if (results.count != 1 || [[results firstObject] numberOfRanges] != 3) {
+        if (error) {
+            *error = [NSError errorWithDomain:@"BTConfigurationErrorDomain" code:1 userInfo:nil]; // TODO: Flesh out this error
+        }
+        return nil;
+    }
+
+    NSString *environment = [clientKey substringWithRange:[results[0] rangeAtIndex:1]];
+    NSString *merchantID = [clientKey substringWithRange:[results[0] rangeAtIndex:2]];
+
+    NSURLComponents *components = [[NSURLComponents alloc] init];
+    components.scheme = @"https";
+    components.host = [self hostForEnvironmentString:environment];
+    components.path = [self clientApiBasePathForMerchantID:merchantID];
+
+    return components.URL;
+}
+
+- (NSString *)hostForEnvironmentString:(NSString *)environment {
+    if ([[environment lowercaseString] isEqualToString:@"sandbox"]) {
+        return @"sandbox.braintreegateway.com";
+    } else if ([[environment lowercaseString] isEqualToString:@"production"]) {
+        return @"braintreegateway.com";
+    } else {
+        return nil;
+    }
+}
+
+- (NSString *)clientApiBasePathForMerchantID:(NSString *)merchantID {
+    if (merchantID.length == 0) {
+        return nil;
+    }
+
+    return [NSString stringWithFormat:@"/merchants/%@/client_api", merchantID];
+}
+
+#pragma mark - Remote Configuration
 
 - (void)fetchOrReturnRemoteConfiguration:(void (^)(BTJSON *, NSError *))completionBlock {
     // Guarantee that multiple calls to this method will successfully obtain configuration exactly once.
@@ -50,7 +104,7 @@ NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigura
 
         if (self.cachedRemoteConfiguration == nil) {
             dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-            [self.configurationHttp GET:@"/client_api/v1/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            [self.clientApiHTTP GET:@"v1/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                 if (error) {
                     fetchError = error;
                 } else if (response.statusCode != 200) {

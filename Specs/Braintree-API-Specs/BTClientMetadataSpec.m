@@ -191,3 +191,20 @@ describe(@"metadata", ^{
 });
 
 SpecEnd
+
+@interface BTClientMetadata_Tests : XCTestCase
+@end
+
+@implementation BTClientMetadata_Tests
+
+- (void)testParameters_ReturnsTheMetadataMetaParametersForPosting {
+    BTClientMetadata *metadata = [[BTClientMetadata alloc] init];
+    NSDictionary *parameters = metadata.parameters;
+    expect(parameters).to.equal(
+                                @{@"integration": metadata.integrationString,
+                                  @"source": metadata.sourceString,
+                                  @"sessionId": metadata.sessionId,
+                                  });
+}
+
+@end
