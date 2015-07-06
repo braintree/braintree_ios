@@ -3,7 +3,7 @@
 #import "PayPalOneTouchRequest.h"
 #import "PayPalOneTouchCore.h"
 
-#import "BTConfiguration_Internal.h"
+#import "BTAPIClient_Internal.h"
 #import "BTAnalyticsClient.h"
 #import "BTAPIClient.h"
 #import "BTPayPalAppSwitchHandler.h"
@@ -14,12 +14,12 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
 
 @interface BTPayPalDriver ()
 @property (nonatomic, strong) BTAPIClient *client;
-@property (nonatomic, strong) BTConfiguration *configuration;
+@property (nonatomic, strong) BTAPIClient *configuration;
 @end
 
 @implementation BTPayPalDriver
 
-- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration {
+- (nonnull instancetype)initWithAPIClient:(nonnull BTAPIClient *)configuration {
     self = [super init];
     if (self) {
         // TODO how do we get the base URL? from configuration?
@@ -30,8 +30,8 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
     return self;
 }
 
-- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration apiClient:(nonnull BTAPIClient *)client {
-    self = [self initWithConfiguration:configuration];
+- (nonnull instancetype)initWithAPIClient:(nonnull BTAPIClient *)configuration apiClient:(nonnull BTAPIClient *)client {
+    self = [self initWithAPIClient:configuration];
     if (self) {
         _client = client;
     }
@@ -322,7 +322,7 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
     static BTAnalyticsClient *analyticsClient;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        analyticsClient = [[BTAnalyticsClient alloc] initWithConfiguration:self.configuration];
+        analyticsClient = [[BTAnalyticsClient alloc] initWithAPIClient:self.configuration];
     });
     return analyticsClient;
 }

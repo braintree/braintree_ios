@@ -2,7 +2,7 @@
 
 @implementation BTCoinbaseDriver
 
-- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration {
+- (nonnull instancetype)initWithAPIClient:(nonnull BTAPIClient *)apiClient {
     return [super init];
 }
 

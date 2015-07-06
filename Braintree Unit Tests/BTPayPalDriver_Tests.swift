@@ -4,7 +4,7 @@ import Braintree
 class BTPayPalDriver_Tests: XCTestCase {
 //    func testAuthorizePayPal() {
 //        let expectation = self.expectationWithDescription("Tokenize Card")
-//        let configuration = BTConfiguration(key: "CLIENT_KEY")
+//        let configuration = BTAPIClient(key: "CLIENT_KEY")
 //        let payPalDriver = BTPayPalDriver(configuration: configuration, apiClient: FakeAPIClient())
 //
 //        payPalDriver.authorizeAccountWithCompletion { (tokenizedPayPalAccount, error) -> Void in

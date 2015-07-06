@@ -4,7 +4,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 @implementation BTVenmoDriver
 
-- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration {
+- (nonnull instancetype)initWithAPIClient:(nonnull BTAPIClient *)apiClient {
     // TODO
     return [super init];
 }

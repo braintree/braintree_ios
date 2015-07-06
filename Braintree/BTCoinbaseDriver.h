@@ -1,13 +1,13 @@
 #import <Foundation/Foundation.h>
 #import "BTNullability.h"
-#import "BTConfiguration.h"
+#import "BTAPIClient.h"
 #import "BTTokenizedCoinbaseAccount.h"
 
 BT_ASSUME_NONNULL_BEGIN
 
 @interface BTCoinbaseDriver : NSObject
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 - (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedCoinbaseAccount __BT_NULLABLE *coinbaseAccount, NSError __BT_NULLABLE *error))completionBlock;
 

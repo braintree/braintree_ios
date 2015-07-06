@@ -1,15 +1,15 @@
 #import <XCTest/XCTest.h>
-#import "BTCard_Internal.h"
+#import "BTCardTokenizationRequest_Internal.h"
 
 // See also BTCard_Tests
-@interface BTCard_Internal_Tests : XCTestCase
+@interface BTCardTokenizationRequest_Internal_Tests : XCTestCase
 
 @end
 
-@implementation BTCard_Internal_Tests
+@implementation BTCardTokenizationRequest_Internal_Tests
 
 - (void)testParameters_standardProperties {
-    BTCard *card = [[BTCard alloc] initWithNumber:@"4111111111111111"
+    BTCardTokenizationRequest *card = [[BTCardTokenizationRequest alloc] initWithNumber:@"4111111111111111"
                                    expirationDate:@"12/2038"
                                               cvv:@"123"];
     BTJSON *parameters = [[BTJSON alloc] initWithValue:card.parameters];
@@ -20,8 +20,8 @@
 
 
 - (void)testParameters_encodesAllParametersIncludingAdditionalParameters {
-    BTCard *card =
-    [[BTCard alloc] initWithParameters:@{
+    BTCardTokenizationRequest *card =
+    [[BTCardTokenizationRequest alloc] initWithParameters:@{
                                          @"billing_address": @{
                                                  @"street_address": @"724 Evergreen Terrace" }
                                          }];
@@ -38,7 +38,7 @@
 }
 
 - (void)testParameters_WhenNothingSpecified_encodesEmptyObject {
-    BTCard *card = [[BTCard alloc] init];
+    BTCardTokenizationRequest *card = [[BTCardTokenizationRequest alloc] init];
 
     XCTAssertEqualObjects(card.parameters, @{});
 }

@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, BTHTTPErrorCode) {
 
 // For testing
 @property (nonatomic, strong) NSURLSession *session;
+@property (nonatomic, readonly, strong) NSURL *baseURL;
 
 /// Queue that callbacks are dispatched onto, main queue if not otherwise specified
 @property (nonatomic, strong) dispatch_queue_t dispatchQueue;

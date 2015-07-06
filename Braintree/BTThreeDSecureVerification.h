@@ -1,12 +1,12 @@
 #import <Foundation/Foundation.h>
-#import "BTCard.h"
+#import "BTCardTokenizationRequest.h"
 #import "BTTokenizedCard.h"
 
 BT_ASSUME_NONNULL_BEGIN
 
 @interface BTThreeDSecureVerification : NSObject
 
-- (instancetype)initWithCard:(BTCard *)card NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCardTokenizationRequest:(BTCardTokenizationRequest *)cardTokenizationRequest NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithPaymentMethodNonce:(NSString *)paymentMethodNonce NS_DESIGNATED_INITIALIZER;
 - (instancetype)initWithTokenizedCard:(BTTokenizedCard *)tokenizedCard;
 

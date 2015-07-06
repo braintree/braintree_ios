@@ -5,5 +5,4 @@
 // Internal headers for testing
 #import "BTJSON.h"
 #import "BTHTTP.h"
-#import "BTCardTokenizationClient_Internal.h"
-#import "BTConfiguration_Internal.h"
+#import "BTAPIClient_Internal.h"

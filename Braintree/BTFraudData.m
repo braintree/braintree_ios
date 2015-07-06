@@ -2,7 +2,7 @@
 
 @implementation BTFraudData
 
-- (instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration {
+- (instancetype)initWithAPIClient:(nonnull BTAPIClient *)apiClient {
     return [self init];
 }
 

@@ -1,12 +1,12 @@
 #import <Foundation/Foundation.h>
-#import "BTConfiguration.h"
+#import "BTAPIClient.h"
 #import "BTNullability.h"
 
 BT_ASSUME_NONNULL_BEGIN
 
 @interface BTFraudData : NSObject
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 - (BT_NULLABLE NSString *)collectDeviceData;
 

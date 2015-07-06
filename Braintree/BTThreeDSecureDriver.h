@@ -2,7 +2,7 @@
 #import <UIKit/UIKit.h>
 
 #import "BTNullability.h"
-#import "BTConfiguration.h"
+#import "BTAPIClient.h"
 #import "BTTokenizedCard.h"
 #import "BTThreeDSecureVerification.h"
 
@@ -10,7 +10,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 @interface BTThreeDSecureDriver : NSObject
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 - (void)performVerification:(BTThreeDSecureVerification *)verification
               authorization:(void (^)(UIViewController *authorizationViewController))authorizationBlock

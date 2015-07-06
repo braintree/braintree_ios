@@ -5,17 +5,17 @@ class BTCardTokenizationClient_Tests: XCTestCase {
 
     func testTokenization_sendsDataToClientAPI() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let apiClient = FakeAPIClient()
-        let configuration = try! BTConfiguration(clientKey: "sandbox_abcd_fake_merchant_id")
-        configuration.clientApiHTTP = apiClient
-        let cardTokenizationClient = BTCardTokenizationClient(configuration: configuration)
+        let fakeHTTP = FakeHTTP()
+        let apiClient = try! BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")
+        apiClient.http = fakeHTTP
+        let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
 
-        let card = BTCard(number: "4111111111111111", expirationDate: "12/2038", cvv: nil)
+        let card = BTCardTokenizationRequest(number: "4111111111111111", expirationDate: "12/2038", cvv: nil)
 
         cardTokenizationClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertEqual(apiClient.lastRequest!.endpoint, "v1/payment_methods/credit_cards")
-            XCTAssertEqual(apiClient.lastRequest!.method, "POST")
-            if let meta = apiClient.lastRequest!.parameters["_meta"] as? [String:String] {
+            XCTAssertEqual(fakeHTTP.lastRequest!.endpoint, "v1/payment_methods/credit_cards")
+            XCTAssertEqual(fakeHTTP.lastRequest!.method, "POST")
+            if let meta = fakeHTTP.lastRequest!.parameters["_meta"] as? [String:String] {
                 XCTAssertEqual(meta["source"]!, "unknown")
                 XCTAssertEqual(meta["integration"]!, "custom")
                 XCTAssertNotNil(meta["sessionId"])
@@ -23,7 +23,7 @@ class BTCardTokenizationClient_Tests: XCTestCase {
                 XCTFail()
             }
 
-            if let cardParameters = apiClient.lastRequest!.parameters["credit_card"] as? [String:String] {
+            if let cardParameters = fakeHTTP.lastRequest!.parameters["credit_card"] as? [String:String] {
                 XCTAssertEqual(cardParameters["number"]!, "4111111111111111")
                 XCTAssertEqual(cardParameters["expiration_date"]!, "12/2038")
             } else {
@@ -37,11 +37,11 @@ class BTCardTokenizationClient_Tests: XCTestCase {
 
     func testTokenization_success_returnsTokenizedCard() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let configuration = try! BTConfiguration(clientKey: "sandbox_abcd_fake_merchant_id")
-        configuration.clientApiHTTP = FakeAPIClient()
-        let cardTokenizationClient = BTCardTokenizationClient(configuration: configuration)
+        let apiClient = try! BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")
+        apiClient.http = FakeHTTP()
+        let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
 
-        let card = BTCard(number: "4111111111111111", expirationDate: "12/2038", cvv: nil)
+        let card = BTCardTokenizationRequest(number: "4111111111111111", expirationDate: "12/2038", cvv: nil)
 
         cardTokenizationClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
@@ -49,7 +49,7 @@ class BTCardTokenizationClient_Tests: XCTestCase {
                 return
             }
 
-            XCTAssertEqual(tokenizedCard.paymentMethodNonce, FakeAPIClient.fakeNonce)
+            XCTAssertEqual(tokenizedCard.paymentMethodNonce, FakeHTTP.fakeNonce)
             XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
             XCTAssertEqual(tokenizedCard.lastTwo!, "11")
             XCTAssertNil(tokenizedCard.threeDSecureInfo)
@@ -63,16 +63,16 @@ class BTCardTokenizationClient_Tests: XCTestCase {
 
     func testTokenization_errorResponse_returnsError() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let configuration = try! BTConfiguration(clientKey: "sandbox_abcd_fake_merchant_id")
-        configuration.clientApiHTTP = ApplicationErrorAPIClient()
-        let cardTokenizationClient = BTCardTokenizationClient(configuration: configuration)
+        let apiClient = try! BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")
+        apiClient.http = ApplicationErrorAPIClient()
+        let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
 
-        let card = BTCard(number: "4111111111111111", expirationDate: "12/2038", cvv: nil)
+        let card = BTCardTokenizationRequest(number: "4111111111111111", expirationDate: "12/2038", cvv: nil)
 
         cardTokenizationClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
             XCTAssertEqual(error!.domain, BTCardTokenizationClientErrorDomain)
-            XCTAssertEqual(error!.code, BTCardTokenizationClientErrorCode.FatalError.rawValue)
+            XCTAssertEqual(error!.code, BTCardTokenizationClientErrorType.FatalError.rawValue)
 
             expectation.fulfill()
         }
@@ -82,11 +82,11 @@ class BTCardTokenizationClient_Tests: XCTestCase {
 
     func testTokenization_failure_returnsError() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let configuration = try! BTConfiguration(clientKey: "sandbox_abcd_fake_merchant_id")
-        configuration.clientApiHTTP = ErrorAPIClient()
-        let cardTokenizationClient = BTCardTokenizationClient(configuration: configuration)
+        let apiClient = try! BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")
+        apiClient.http = ErrorAPIClient()
+        let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
 
-        let card = BTCard(number: "4111111111111111", expirationDate: "12/2038", cvv: nil)
+        let card = BTCardTokenizationRequest(number: "4111111111111111", expirationDate: "12/2038", cvv: nil)
 
         cardTokenizationClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
@@ -100,7 +100,7 @@ class BTCardTokenizationClient_Tests: XCTestCase {
 
 /***** HELPERS ******/
 
-class FakeAPIClient : BTHTTP {
+class FakeHTTP : BTHTTP {
     struct Request {
         let endpoint : String
         let method : String
@@ -118,7 +118,7 @@ class FakeAPIClient : BTHTTP {
         completionBlock(BTJSON(value: [
             "creditCards": [
                 [
-                    "nonce": FakeAPIClient.fakeNonce,
+                    "nonce": FakeHTTP.fakeNonce,
                     "description": "Visa ending in 11",
                     "details": [
                         "lastTwo" : "11",

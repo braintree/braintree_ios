@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "BTConfiguration.h"
+#import "BTAPIClient.h"
 
 @interface BTAnalyticsClient : NSObject
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 - (void)postAnalyticsEvent:(NSString *)name;
 

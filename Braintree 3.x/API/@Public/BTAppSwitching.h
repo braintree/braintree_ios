@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 
-#import "BTClient.h"
 #import "BTAppSwitchingDelegate.h"
 
 @protocol BTAppSwitching <NSObject>
@@ -22,7 +21,7 @@
 /// @param client A BTClient
 ///
 /// @return       Whether app switch is available
-- (BOOL)appSwitchAvailableForClient:(BTClient*)client;
+//- (BOOL)appSwitchAvailableForClient:(BTClient*)client;
 
 ///  Attempt to initiate app switch
 ///

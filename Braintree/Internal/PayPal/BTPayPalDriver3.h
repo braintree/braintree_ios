@@ -3,7 +3,7 @@
 #import "BTPayPalPaymentMethod.h"
 #import "BTPayPalCheckout.h"
 #import "BTNullability.h"
-#import "BTConfiguration.h"
+#import "BTAPIClient.h"
 #import "BTAPIClient.h"
 
 BT_ASSUME_NONNULL_BEGIN
@@ -50,7 +50,7 @@ BT_ASSUME_NONNULL_BEGIN
 /// @param returnURLScheme Your app's URL Scheme
 ///
 /// @return An instance that is ready to perform authorization or checkout; or nil if the client or URL Scheme are invalid
-- (nullable instancetype)initWithConfiguration:(BTConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
 
 #pragma mark - PayPal Login

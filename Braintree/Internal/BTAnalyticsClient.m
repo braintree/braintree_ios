@@ -8,27 +8,27 @@
 
 #import "BTAnalyticsClient.h"
 
-#import "BTConfiguration_Internal.h"
+#import "BTAPIClient_Internal.h"
 #import "BTAnalyticsMetadata.h"
 #import "BTClientMetadata.h"
 #import "BTHTTP.h"
 
 @interface BTAnalyticsClient ()
-@property (nonatomic, strong) BTConfiguration *configuration;
+@property (nonatomic, strong) BTAPIClient *apiClient;
 @end
 
 @implementation BTAnalyticsClient
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration {
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     self = [super init];
     if (self) {
-        self.configuration = configuration;
+        self.apiClient = apiClient;
     }
     return [super init];
 }
 
 - (void)postAnalyticsEvent:(NSString *)eventKind {
-    [self.configuration fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error){
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error){
         if (error) {
             // TODO: log error
             return;
@@ -36,7 +36,7 @@
 
         NSURL *analyticsURL = remoteConfiguration[@"analytics"][@"url"].asURL;
         if (analyticsURL) {
-            BTHTTP *analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.configuration.clientKey];
+            BTHTTP *analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.clientKey];
 
             [analyticsHttp POST:@"/"
                      parameters:@{ @"analytics": @[@{ @"kind": eventKind }],
@@ -51,7 +51,7 @@
 }
 
 - (NSDictionary *)metaParameters {
-    BTClientMetadata *clientMetadata = self.configuration.clientMetadata;
+    BTClientMetadata *clientMetadata = self.apiClient.clientMetadata;
     NSMutableDictionary *clientMetadataParameters = [NSMutableDictionary dictionary];
     clientMetadataParameters[@"integration"] = clientMetadata.integrationString;
     clientMetadataParameters[@"source"] = clientMetadata.sourceString;

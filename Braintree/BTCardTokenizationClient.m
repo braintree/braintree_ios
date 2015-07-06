@@ -1,88 +1,89 @@
-#import "BTCardTokenizationClient_Internal.h"
+#import "BTCardTokenizationClient.h"
 #import "BTTokenizedCard_Internal.h"
 #import "BTHTTP.h"
 #import "BTThreeDSecureInfo_Internal.h"
 #import "BTJSON.h"
 #import "BTClientMetadata.h"
-#import "BTConfiguration_Internal.h"
-#import "BTCard_Internal.h"
+#import "BTAPIClient_Internal.h"
+#import "BTCardTokenizationRequest_Internal.h"
 
 NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BTCardTokenizationClientErrorDomain";
 
 @interface BTCardTokenizationClient ()
-@property (nonatomic, strong) BTConfiguration *configuration;
+@property (nonatomic, strong) BTAPIClient *apiClient;
 @end
 
 @implementation BTCardTokenizationClient
 
-- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration {
+- (nonnull instancetype)initWithAPIClient:(nonnull BTAPIClient *)apiClient {
     self = [self init];
     if (self) {
-        self.configuration = configuration;
+        self.apiClient = apiClient;
     }
 
     return self;
 }
 
 - (BTHTTP *)clientApiHTTP {
-    return self.configuration.clientApiHTTP;
+    return self.apiClient.http;
 }
 
 - (BTClientMetadata *)clientMetadata {
-    BTClientMutableMetadata *clientMetadata = [self.configuration.clientMetadata mutableCopy];
+    BTClientMutableMetadata *clientMetadata = [self.apiClient.clientMetadata mutableCopy];
     clientMetadata.integration = BTClientMetadataIntegrationCustom;
     clientMetadata.source = BTClientMetadataSourceUnknown;
 
     return [clientMetadata copy];
 }
 
-- (void)tokenizeCard:(nonnull BTCard *)card completion:(nonnull void (^)(BTTokenizedCard * __nullable, NSError * __nullable))completionBlock {
-    [self.clientApiHTTP POST:@"v1/payment_methods/credit_cards"
-                  parameters:@{ @"_meta": self.clientMetadata.parameters,
-                                @"credit_card": card.parameters }
-                  completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-                      if (error != nil) {
-                          return completionBlock(nil, error);
-                      }
+- (void)tokenizeCard:(nonnull BTCardTokenizationRequest *)card completion:(nonnull void (^)(BTTokenizedCard * __nullable, NSError * __nullable))completionBlock {
 
-                      if (response.statusCode != 202) {
-                          return completionBlock(nil, [NSError errorWithDomain:BTCardTokenizationClientErrorDomain
-                                                                          code:BTCardTokenizationClientErrorCodeFatalError
-                                                                      userInfo: @{
-                                                                                  NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:@"Braintree server returned HTTP status code %ld", (long)response.statusCode] }]);
-                      }
+    [self.apiClient POST:@"v1/payment_methods/credit_cards"
+              parameters:@{ @"_meta": self.clientMetadata.parameters,
+                            @"credit_card": card.parameters }
+              completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                  if (error != nil) {
+                      return completionBlock(nil, error);
+                  }
 
-                      BTJSON *creditCard = body[@"creditCards"][0];
+                  if (response.statusCode != 202) {
+                      return completionBlock(nil, [NSError errorWithDomain:BTCardTokenizationClientErrorDomain
+                                                                      code:BTCardTokenizationClientErrorTypeFatalError
+                                                                  userInfo: @{
+                                                                              NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:@"Braintree server returned HTTP status code %ld", (long)response.statusCode] }]);
+                  }
 
-                      if (!creditCard[@"nonce"].isString || !creditCard[@"description"].isString) {
-                          // TODO Handle unhelpful server response
-                      }
+                  BTJSON *creditCard = body[@"creditCards"][0];
 
-                      BTThreeDSecureInfo *threeDSecureInfo;
-                      if (creditCard[@"threeDSecureInfo"].isObject) {
-                          threeDSecureInfo = [BTThreeDSecureInfo infoWithLiabilityShiftPossible:creditCard[@"threeDSecureInfo"][@"liabilityShiftPossible"].isTrue
-                                                                               liabilityShifted:creditCard[@"threeDSecureInfo"][@"liabilityShifted"].isTrue];
-                      }
+                  if (!creditCard[@"nonce"].isString || !creditCard[@"description"].isString) {
+                      // TODO Handle unhelpful server response
+                  }
 
-                      BTTokenizedCard *tokenizedCard = [[BTTokenizedCard alloc] initWithPaymentMethodNonce:creditCard[@"nonce"].asString
-                                                                                               description:creditCard[@"description"].asString
-                                                                                               cardNetwork:[creditCard[@"details"][@"cardType"] asEnum:@{
-                                                                                                                                                         @"american express": @(BTCardNetworkAMEX),
-                                                                                                                                                         @"diners club": @(BTCardNetworkDinersClub),
-                                                                                                                                                         @"china unionpay": @(BTCardNetworkUnionPay),
-                                                                                                                                                         @"discover": @(BTCardNetworkDiscover),
-                                                                                                                                                         @"jcb": @(BTCardNetworkJCB),
-                                                                                                                                                         @"maestro": @(BTCardNetworkMaestro),
-                                                                                                                                                         @"mastercard": @(BTCardNetworkMasterCard),
-                                                                                                                                                         @"solo": @(BTCardNetworkSolo),
-                                                                                                                                                         @"switch": @(BTCardNetworkSwitch),
-                                                                                                                                                         @"uk maestro": @(BTCardNetworkUKMaestro),
-                                                                                                                                                         @"visa": @(BTCardNetworkVisa),}
-                                                                                                                                             orDefault:BTCardNetworkUnknown]
-                                                                                                   lastTwo:creditCard[@"details"][@"lastTwo"].asString
-                                                                                          threeDSecureInfo:threeDSecureInfo];
-                      completionBlock(tokenizedCard, nil);
-                  }];
+                  BTThreeDSecureInfo *threeDSecureInfo;
+                  if (creditCard[@"threeDSecureInfo"].isObject) {
+                      threeDSecureInfo = [BTThreeDSecureInfo infoWithLiabilityShiftPossible:creditCard[@"threeDSecureInfo"][@"liabilityShiftPossible"].isTrue
+                                                                           liabilityShifted:creditCard[@"threeDSecureInfo"][@"liabilityShifted"].isTrue];
+                  }
+
+                  BTTokenizedCard *tokenizedCard = [[BTTokenizedCard alloc] initWithPaymentMethodNonce:creditCard[@"nonce"].asString
+                                                                                           description:creditCard[@"description"].asString
+                                                                                           cardNetwork:[creditCard[@"details"][@"cardType"] asEnum:@{
+                                                                                                                                                     @"american express": @(BTCardNetworkAMEX),
+                                                                                                                                                     @"diners club": @(BTCardNetworkDinersClub),
+                                                                                                                                                     @"china unionpay": @(BTCardNetworkUnionPay),
+                                                                                                                                                     @"discover": @(BTCardNetworkDiscover),
+                                                                                                                                                     @"jcb": @(BTCardNetworkJCB),
+                                                                                                                                                     @"maestro": @(BTCardNetworkMaestro),
+                                                                                                                                                     @"mastercard": @(BTCardNetworkMasterCard),
+                                                                                                                                                     @"solo": @(BTCardNetworkSolo),
+                                                                                                                                                     @"switch": @(BTCardNetworkSwitch),
+                                                                                                                                                     @"uk maestro": @(BTCardNetworkUKMaestro),
+                                                                                                                                                     @"visa": @(BTCardNetworkVisa),}
+                                                                                                                                         orDefault:BTCardNetworkUnknown]
+                                                                                               lastTwo:creditCard[@"details"][@"lastTwo"].asString
+                                                                                      threeDSecureInfo:threeDSecureInfo];
+                  completionBlock(tokenizedCard, nil);
+              }];
 }
 
 @end

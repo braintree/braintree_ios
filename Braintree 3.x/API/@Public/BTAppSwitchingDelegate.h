@@ -1,7 +1,5 @@
 #import <Foundation/Foundation.h>
 
-#import "BTPaymentMethod.h"
-
 @protocol BTAppSwitching;
 
 /// Delegate protocol for receiving messages about state changes to an app switch handler
@@ -16,7 +14,7 @@
 @required
 
 /// This message is sent when a payment method has been authorized and is available.
-- (void)appSwitcher:(id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod;
+//- (void)appSwitcher:(id<BTAppSwitching>)switcher didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod;
 
 /// This message is sent when the payment method could not be created.
 - (void)appSwitcher:(id<BTAppSwitching>)switcher didFailWithError:(NSError *)error;

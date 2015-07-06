@@ -5,7 +5,7 @@
 
 #import "BTTokenizedPayPalAccount_Internal.h"
 #import "BTLogger_Internal.h"
-#import "BTConfiguration_Internal.h"
+#import "BTAPIClient_Internal.h"
 #import "BTPostalAddress_Internal.h"
 #import "BTClientMetadata.h"
 
@@ -19,14 +19,14 @@
 NSString *const BTPayPalDriver3ErrorDomain = @"com.braintreepayments.BTPayPalDriver3ErrorDomain";
 
 @interface BTPayPalDriver3 ()
-@property (nonatomic, strong) BTConfiguration *configuration;
+@property (nonatomic, strong) BTAPIClient *configuration;
 @property (nonatomic, strong) BTAPIClient *client;
 @property (nonatomic, copy) NSString *returnURLScheme;
 @end
 
 @implementation BTPayPalDriver3
 
-- (instancetype)initWithConfiguration:(BTConfiguration * __nonnull)configuration {
+- (instancetype)initWithAPIClient:(BTAPIClient * __nonnull)configuration {
     NSError *initializationError;
     if (![BTPayPalDriver3 verifyAppSwitchConfiguration:configuration
                                        returnURLScheme:configuration.returnURLScheme

@@ -9,7 +9,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeVersionString[];
 
 // Core
 
-#import <Braintree/BTConfiguration.h>
+#import <Braintree/BTAPIClient.h>
 #import <Braintree/BTPaymentOption.h>
 
 // PayPal
@@ -30,7 +30,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeVersionString[];
 
 // Cards
 
-#import <Braintree/BTCard.h>
+#import <Braintree/BTCardTokenizationRequest.h>
 #import <Braintree/BTCardTokenizationClient.h>
 #import <Braintree/BTTokenizedCard.h>
 

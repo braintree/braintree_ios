@@ -4,7 +4,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 @implementation BTApplePayTokenizationClient
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration {
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     // TODO
     return [super init];
 }

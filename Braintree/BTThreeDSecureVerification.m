@@ -15,7 +15,7 @@
     return self;
 }
 
-- (nonnull instancetype)initWithCard:(nonnull BTCard *)card {
+- (instancetype)initWithCardTokenizationRequest:(BTCardTokenizationRequest *)cardTokenizationRequest {
     self = [super init];
     if (self) {
         self.parameters = [NSMutableDictionary dictionary];
@@ -24,7 +24,7 @@
     return self;
 }
 
-- (nonnull instancetype)initWithPaymentMethodNonce:(nonnull NSString *)paymentMethodNonce {
+- (instancetype)initWithPaymentMethodNonce:(NSString *)paymentMethodNonce {
     self = [super init];
     if (self) {
         self.parameters = [NSMutableDictionary dictionary];
@@ -33,7 +33,7 @@
     return self;
 }
 
-- (nonnull instancetype)initWithTokenizedCard:(nonnull BTTokenizedCard *)tokenizedCard {
+- (instancetype)initWithTokenizedCard:(BTTokenizedCard *)tokenizedCard {
     return [self initWithPaymentMethodNonce:tokenizedCard.paymentMethodNonce];
 }
 

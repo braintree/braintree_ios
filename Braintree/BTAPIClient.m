@@ -1,13 +1,13 @@
-#import "BTConfiguration_Internal.h"
+#import "BTAPIClient_Internal.h"
 
-NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigurationErrorDomain";
+NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 
-@interface BTConfiguration ()
+@interface BTAPIClient ()
 @property (nonatomic, strong) dispatch_queue_t configurationQueue;
 @property (nonatomic, strong) BTJSON *cachedRemoteConfiguration;
 @end
 
-@implementation BTConfiguration
+@implementation BTAPIClient
 
 - (instancetype)initWithClientKey:(NSString *)clientKey error:(NSError **)error {
     return [self initWithClientKey:clientKey dispatchQueue:nil error:error];
@@ -21,34 +21,35 @@ NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigura
 
     self = [super init];
     if (self) {
+        _clientKey = clientKey;
         _clientMetadata = [[BTClientMetadata alloc] init];
-        self.clientApiHTTP = [[BTHTTP alloc] initWithBaseURL:baseURL
+        self.http = [[BTHTTP alloc] initWithBaseURL:baseURL
                                     authorizationFingerprint:clientKey];
 
         if (dispatchQueue) {
-            self.clientApiHTTP.dispatchQueue = dispatchQueue;
+            self.http.dispatchQueue = dispatchQueue;
         }
-        self.configurationQueue = dispatch_queue_create("com.braintreepayments.BTConfiguration", DISPATCH_QUEUE_SERIAL);
+        self.configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
 
 - (dispatch_queue_t)dispatchQueue {
-    return self.clientApiHTTP.dispatchQueue ?: dispatch_get_main_queue();
+    return self.http.dispatchQueue ?: dispatch_get_main_queue();
 }
 
 #pragma mark - Base URL
 
 - (NSURL *)baseURLFromClientKey:(NSString *)clientKey error:(NSError **)error {
-    // TODO: check length of client key, return error if 0
-
-    NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:@"([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)" options:0 error:error];
+    NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:@"([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)" options:0 error:NULL];
 
     NSArray *results = [regExp matchesInString:clientKey options:0 range:NSMakeRange(0, clientKey.length)];
 
     if (results.count != 1 || [[results firstObject] numberOfRanges] != 3) {
         if (error) {
-            *error = [NSError errorWithDomain:@"BTConfigurationErrorDomain" code:1 userInfo:nil]; // TODO: Flesh out this error
+            *error = [NSError errorWithDomain:BTAPIClientErrorDomain
+                                         code:BTAPIClientErrorTypeInvalidClientKey
+                                     userInfo:nil];
         }
         return nil;
     }
@@ -60,6 +61,14 @@ NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigura
     components.scheme = @"https";
     components.host = [self hostForEnvironmentString:environment];
     components.path = [self clientApiBasePathForMerchantID:merchantID];
+    if (!components.host || !components.path) {
+        if (error) {
+            *error = [NSError errorWithDomain:BTAPIClientErrorDomain
+                                         code:BTAPIClientErrorTypeInvalidClientKey
+                                     userInfo:nil];
+        }
+        return nil;
+    }
 
     return components.URL;
 }
@@ -69,6 +78,8 @@ NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigura
         return @"sandbox.braintreegateway.com";
     } else if ([[environment lowercaseString] isEqualToString:@"production"]) {
         return @"braintreegateway.com";
+    } else if ([[environment lowercaseString] isEqualToString:@"test"]) {
+        return @"test";
     } else {
         return nil;
     }
@@ -104,13 +115,13 @@ NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigura
 
         if (self.cachedRemoteConfiguration == nil) {
             dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-            [self.clientApiHTTP GET:@"v1/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            [self.http GET:@"v1/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                 if (error) {
                     fetchError = error;
                 } else if (response.statusCode != 200) {
                     NSError *configurationDomainError =
-                    [NSError errorWithDomain:BTConfigurationErrorDomain
-                                        code:BTConfigurationErrorCodeConfigurationUnavailable
+                    [NSError errorWithDomain:BTAPIClientErrorDomain
+                                        code:BTAPIClientErrorTypeConfigurationUnavailable
                                     userInfo:@{
                                                NSLocalizedFailureReasonErrorKey: @"Unable to fetch remote configuration from Braintree API at this time."
                                                }];
@@ -130,6 +141,16 @@ NSString *const BTConfigurationErrorDomain = @"com.braintreepayments.BTConfigura
             completionBlock(self.cachedRemoteConfiguration, fetchError);
         });
     });
+}
+
+#pragma mark - HTTP Operations
+
+- (void)GET:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+    [self.http GET:endpoint parameters:parameters completion:completionBlock];
+}
+
+- (void)POST:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+    [self.http POST:endpoint parameters:parameters completion:completionBlock];
 }
 
 @end

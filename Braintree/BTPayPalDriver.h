@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "BTConfiguration.h"
+#import "BTAPIClient.h"
 #import "BTTokenizedPayPalAccount.h"
 #import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"
@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorCode) {
 @protocol BTPayPalDriverDelegate;
 @interface BTPayPalDriver : NSObject
 
-- (instancetype)initWithConfiguration:(BTConfiguration *)configuration;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 @property (nonatomic, copy) NSString *clientToken DEPRECATED_MSG_ATTRIBUTE("Delete me as soon as possible. BTPayPalDriver only requires a client token due to Browser-Switch requiring a client token.");
 
@@ -138,7 +138,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 @interface BTPayPalDriver (Testing)
 
-- (nonnull instancetype)initWithConfiguration:(nonnull BTConfiguration *)configuration apiClient:(BTAPIClient *)client;
+- (nonnull instancetype)initWithAPIClient:(nonnull BTAPIClient *)configuration apiClient:(BTAPIClient *)client;
 
 @end
 
