@@ -8,6 +8,6 @@
 @property (nonatomic, strong) BTHTTP *http;
 
 /// Client metadata that is used for tracking the client session
-@property (nonatomic, readonly, strong) BTClientMetadata *clientMetadata;
+@property (nonatomic, readonly, strong) BTClientMetadata *metadata;
 
 @end

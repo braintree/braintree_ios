@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BTAPIClient.h"
+#import "BTNullability.h"
 #import "BTTokenizedPayPalAccount.h"
 #import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"
@@ -51,18 +52,18 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorCode) {
 };
 
 @protocol BTPayPalDriverDelegate;
+
 @interface BTPayPalDriver : NSObject
 
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient returnURLScheme:(NSString *)returnURLScheme;
 
 @property (nonatomic, copy) NSString *clientToken DEPRECATED_MSG_ATTRIBUTE("Delete me as soon as possible. BTPayPalDriver only requires a client token due to Browser-Switch requiring a client token.");
 
-- (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedPayPalAccount __BT_NULLABLE*tokenizedPayPalAccount, NSError __BT_NULLABLE*error))completionBlock;
+- (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error))completionBlock;
 
-- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes completion:(void (^)(BTTokenizedPayPalAccount __BT_NULLABLE*, NSError __BT_NULLABLE*))completionBlock;
+- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes completion:(void (^)(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error))completionBlock;
 
-- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout __BT_NULLABLE*tokenizedPayPalCheckout, NSError __BT_NULLABLE*error))completionBlock;
-
+- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(__BT_NULLABLE BTTokenizedPayPalCheckout *tokenizedPayPalCheckout, __BT_NULLABLE NSError *error))completionBlock;
 
 #pragma mark - App Switch
 
@@ -131,15 +132,3 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverAppSwitchTarget){
 
 BT_ASSUME_NONNULL_END
 
-// BTCardTokenizationClient+Testing
-@class BTAPIClient;
-
-BT_ASSUME_NONNULL_BEGIN
-
-@interface BTPayPalDriver (Testing)
-
-- (nonnull instancetype)initWithAPIClient:(nonnull BTAPIClient *)configuration apiClient:(BTAPIClient *)client;
-
-@end
-
-BT_ASSUME_NONNULL_END

@@ -1,22 +1,26 @@
 #import <Foundation/Foundation.h>
 #import "BTNullability.h"
+#import "BTPostalAddress.h"
 
 BT_ASSUME_NONNULL_BEGIN
 
-/// A PayPal checkout request encapsulates a set of options that control a user-facing PayPal checkout flow.
+/// A PayPal checkout request groups options that control a user-facing PayPal checkout flow.
 ///
-/// A checkout request must specify, at minimum, an anticipated transaction amount.
+/// A checkout request must specify an anticipated transaction amount.
 ///
 /// @see BTPayPalDriver
 @interface BTPayPalCheckoutRequest : NSObject
 
-+ (nullable instancetype)checkoutWithAmount:(NSDecimalNumber *)amount error:(NSError **)error;
+/// Initialize a checkout request with an amount.
+///
+/// @param amount An amount greater than or equal to zero.
+- (BT_NULLABLE instancetype)initWithAmount:(NSDecimalNumber *)amount;
 
-+ (nullable instancetype)checkoutWithAmount:(NSDecimalNumber *)amount merchantAccount:(NSString *)merchantAccount error:(NSError **)error;
+@property (nonatomic, readonly, strong) NSDecimalNumber *amount;
+@property (nonatomic, BT_NULLABLE, copy) NSString *currencyCode;
 
-/// @name Properties
-
-@property (nonatomic, assign) BOOL enableShippingAddress;
+/// TODO: Figure out what shipping address will be used for
+@property (nonatomic, BT_NULLABLE, strong) BTPostalAddress *shippingAddress;
 
 @end
 

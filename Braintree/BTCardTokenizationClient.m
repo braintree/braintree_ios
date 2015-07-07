@@ -28,18 +28,10 @@ NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BT
     return self.apiClient.http;
 }
 
-- (BTClientMetadata *)clientMetadata {
-    BTClientMutableMetadata *clientMetadata = [self.apiClient.clientMetadata mutableCopy];
-    clientMetadata.integration = BTClientMetadataIntegrationCustom;
-    clientMetadata.source = BTClientMetadataSourceUnknown;
-
-    return [clientMetadata copy];
-}
-
 - (void)tokenizeCard:(nonnull BTCardTokenizationRequest *)card completion:(nonnull void (^)(BTTokenizedCard * __nullable, NSError * __nullable))completionBlock {
 
     [self.apiClient POST:@"v1/payment_methods/credit_cards"
-              parameters:@{ @"_meta": self.clientMetadata.parameters,
+              parameters:@{ @"_meta": self.apiClient.metadata.parameters,
                             @"credit_card": card.parameters }
               completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                   if (error != nil) {

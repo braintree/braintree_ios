@@ -2,14 +2,15 @@
 
 @implementation BTPayPalCheckoutRequest
 
-+ (nullable instancetype)checkoutWithAmount:(nonnull NSDecimalNumber *)amount error:(NSError * __nullable __autoreleasing * __nullable)error {
-    // TODO
-    return nil;
-}
+- (instancetype)initWithAmount:(NSDecimalNumber *)amount {
+    if (amount == nil || [amount compare:[NSDecimalNumber zero]] == NSOrderedAscending) {
+        return nil;
+    }
 
-+ (nullable instancetype)checkoutWithAmount:(nonnull NSDecimalNumber *)amount merchantAccount:(nonnull NSString *)merchantAccount error:(NSError * __nullable __autoreleasing * __nullable)error {
-    // TODO
-    return nil;
+    if (self = [self init]) {
+        _amount = amount;
+    }
+    return self;
 }
 
 @end

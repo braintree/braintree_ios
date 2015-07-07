@@ -22,7 +22,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     self = [super init];
     if (self) {
         _clientKey = clientKey;
-        _clientMetadata = [[BTClientMetadata alloc] init];
+        _metadata = [[BTClientMetadata alloc] init];
         self.http = [[BTHTTP alloc] initWithBaseURL:baseURL
                                     authorizationFingerprint:clientKey];
 

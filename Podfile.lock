@@ -1,27 +1,10 @@
 PODS:
-  - Expecta (0.3.2)
-  - NSURL+QueryDictionary (1.1.0)
-  - OCHamcrest (3.0.1)
   - OCMock (3.1.2)
-  - OHHTTPStubs (3.1.12):
-    - OHHTTPStubs/Core (= 3.1.12)
-  - OHHTTPStubs/Core (3.1.12)
-  - Specta (1.0.2)
 
 DEPENDENCIES:
-  - Expecta (~> 0.3.0)
-  - NSURL+QueryDictionary (~> 1.0)
-  - OCHamcrest (~> 3.0.1)
-  - OCMock (~> 3.1)
-  - OHHTTPStubs (~> 3.1.0)
-  - Specta
+  - OCMock
 
 SPEC CHECKSUMS:
-  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
-  NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
-  OCHamcrest: e19857683e4eefab64b878668eac04c2f4567118
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
-  Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
 
 COCOAPODS: 0.38.0.beta.1

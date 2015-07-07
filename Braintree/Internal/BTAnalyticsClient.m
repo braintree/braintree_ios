@@ -51,7 +51,7 @@
 }
 
 - (NSDictionary *)metaParameters {
-    BTClientMetadata *clientMetadata = self.apiClient.clientMetadata;
+    BTClientMetadata *clientMetadata = self.apiClient.metadata;
     NSMutableDictionary *clientMetadataParameters = [NSMutableDictionary dictionary];
     clientMetadataParameters[@"integration"] = clientMetadata.integrationString;
     clientMetadataParameters[@"source"] = clientMetadata.sourceString;
