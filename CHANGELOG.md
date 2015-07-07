@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.2 (2015-07-07)
+
+* Add BTPayPalScopeAddress
+
 ## 3.9.1 (2015-06-12)
 
 * Merge public master

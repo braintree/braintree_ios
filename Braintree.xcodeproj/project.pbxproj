@@ -128,6 +128,7 @@
 		842E21C81B02708E0036DA66 /* BraintreeDemoBTUICoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962A71AFC26DD00FB3459 /* BraintreeDemoBTUICoinbaseButtonViewController.m */; };
 		842E21C91B0270C90036DA66 /* BraintreeDemoCustomCoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962AA1AFC26DD00FB3459 /* BraintreeDemoCustomCoinbaseButtonViewController.m */; };
 		99750FDC809F68C4246BF88E /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		A71322C21B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A71322C11B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.m */; };
 		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
 		A7281C5819A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */; };
 		A7293F2D1AC0F05800FBD6FD /* BTOfflineClientSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7293F2C1AC0F05800FBD6FD /* BTOfflineClientSpec.m */; };
@@ -704,6 +705,8 @@
 		A70A52D11AA7DECF00CA2AC9 /* BTUICoinbaseWordmarkVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICoinbaseWordmarkVectorArtView.m; sourceTree = "<group>"; };
 		A70A52D21AA8D2DC00CA2AC9 /* BTUICoinbaseButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUICoinbaseButton.h; sourceTree = "<group>"; };
 		A70A52D31AA8D2DC00CA2AC9 /* BTUICoinbaseButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICoinbaseButton.m; sourceTree = "<group>"; };
+		A71322C01B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BraintreeDemoScopesPayPalButtonViewController.h; path = "PayPal - Scopes/BraintreeDemoScopesPayPalButtonViewController.h"; sourceTree = "<group>"; };
+		A71322C11B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoScopesPayPalButtonViewController.m; path = "PayPal - Scopes/BraintreeDemoScopesPayPalButtonViewController.m"; sourceTree = "<group>"; };
 		A714B9DD19620DB20008D179 /* BTDropInErrorAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInErrorAlert.h; sourceTree = "<group>"; };
 		A714B9DE19620DB20008D179 /* BTDropInErrorAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorAlert.m; sourceTree = "<group>"; };
 		A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInErrorStateSpec.m; sourceTree = "<group>"; };
@@ -2142,6 +2145,8 @@
 		A71B43D41B1CDD3E006B9C2A /* PayPal - Scopes */ = {
 			isa = PBXGroup;
 			children = (
+				A71322C01B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.h */,
+				A71322C11B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.m */,
 			);
 			name = "PayPal - Scopes";
 			sourceTree = "<group>";
@@ -3452,6 +3457,7 @@
 				CD9ED8C5A85D7AF64C4F2340 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m in Sources */,
 				16C402B91AEF3906004E6881 /* BraintreeDemoBraintreeDataViewController.m in Sources */,
 				1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */,
+				A71322C21B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */,
 				CD9ED53E9C13C386FFF05FC2 /* BraintreeDemoThreeDSecureViewController.m in Sources */,
 				163357801AEE103000794AAA /* BraintreeDemoPaymentsUIComponentsViewController.m in Sources */,
 				A76819A61B0D12B900736F52 /* BraintreeDemoSlideNavigationController.m in Sources */,
