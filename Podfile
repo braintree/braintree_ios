@@ -4,7 +4,10 @@ workspace 'Braintree.xcworkspace'
 
 target 'Test-Deps' do
   link_with 'Braintree Unit Tests'
-  pod 'OCMock'
+  pod 'Specta'
+  pod 'Expecta', '~> 0.3.0'
+  pod 'OCMock', '~> 3.1'
+  pod 'OHHTTPStubs', '~> 3.1.0'
 end
 
 # target 'Tests' do

@@ -10,4 +10,6 @@
 
 + (NSURLRequest *)parseRequestFromTestResponseBody:(BTJSON *)responseBody;
 + (NSString *)parseRequestBodyFromTestResponseBody:(BTJSON *)responseBody;
++ (NSURL *)testBaseURL;
+
 @end

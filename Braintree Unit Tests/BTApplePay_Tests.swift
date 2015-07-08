@@ -1,59 +1,171 @@
 import Braintree
+import PassKit
 import XCTest
 
 class BTApplePay_Tests: XCTestCase {
 
+    var mockClient : MockAPIClient = try! MockAPIClient(clientKey: "test_client_key")
+
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+        mockClient = try! MockAPIClient(clientKey: "test_client_key")
     }
 
-    func testApplePay() {
-        let mockClient = MockAPIClient(clientKey: "test_client_key")
+    func testTokenization_whenConfiguredOff_callsBackWithError() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "off"
+            ]
+            ])
+        let expectation = expectationWithDescription("successful tokenization")
+
+        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let payment = MockPKPayment()
+        client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
+            XCTAssertEqual(error!.domain, BTApplePayErrorDomain)
+            XCTAssertEqual(error!.code, BTApplePayErrorType.Unsupported.rawValue)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
 
-    //
+    func testTokenization_whenConfigurationFetchErrorOccurs_callsBackWithError() {
+        mockClient.cannedConfigurationResponseError = NSError(domain: "MyError", code: 1, userInfo: nil)
+        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let payment = MockPKPayment()
+        let expectation = expectationWithDescription("tokenization error")
+
+        client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
+            XCTAssertEqual(error!.domain, "MyError")
+            XCTAssertEqual(error!.code, 1)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testTokenization_whenTokenizationErrorOccurs_callsBackWithError() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production"
+            ]
+            ])
+        mockClient.cannedHTTPURLResponse = NSHTTPURLResponse(URL: NSURL(string: "any")!, statusCode: 503, HTTPVersion: nil, headerFields: nil)
+        mockClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: nil)
+        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let payment = MockPKPayment()
+        let expectation = expectationWithDescription("tokenization failure")
+
+        client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
+            XCTAssertEqual(error!, self.mockClient.cannedResponseError!)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testTokenization_whenTokenizationFailureOccurs_callsBackWithError() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production"
+            ]
+            ])
+        mockClient.cannedResponseError = NSError(domain: "MyError", code: 1, userInfo: nil)
+        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let payment = MockPKPayment()
+        let expectation = expectationWithDescription("tokenization failure")
+
+        client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
+            XCTAssertEqual(error!.domain, "MyError")
+            XCTAssertEqual(error!.code, 1)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testTokenization_whenSuccessfulTokenizationInProduction_callsBackWithTokenizedPayment() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production"
+            ]
+        ])
+        mockClient.cannedResponseBody = BTJSON(value: [
+            "applePayCards": [
+                [
+                    "nonce" : "an-apple-pay-nonce",
+                    "description": "a description",
+                ]
+            ]
+            ])
+        let expectation = expectationWithDescription("successful tokenization")
+
+        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let payment = MockPKPayment()
+        client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
+            XCTAssertNil(error)
+            XCTAssertEqual(tokenizedPayment!.localizedDescription, "a description")
+            XCTAssertEqual(tokenizedPayment!.paymentMethodNonce, "an-apple-pay-nonce")
+            expectation.fulfill()
+        }
+
+        XCTAssertEqual(mockClient.lastPOSTPath, "v1/payment_methods/apple_payment_tokens")
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    class MockPKPaymentToken : PKPaymentToken {
+        override var paymentData : NSData {
+            get {
+                return NSData()
+            }
+        }
+        override var transactionIdentifier : String {
+            get {
+                return "transaction-id"
+            }
+        }
+        override var paymentInstrumentName : String {
+            get {
+                return "payment-instrument-name"
+            }
+        }
+        override var paymentNetwork : String {
+            get {
+                return "payment-network"
+            }
+        }
+    }
+
+    class MockPKPayment : PKPayment {
+        var overrideToken = MockPKPaymentToken()
+        override var token : PKPaymentToken {
+            get {
+                return overrideToken
+            }
+        }
+    }
 
     class MockAPIClient : BTAPIClient {
         var lastPOSTPath = ""
         var lastPOSTParameters = [:] as [NSObject : AnyObject]
-        var cannedConfigurationError : NSError? = nil
-        var cannedPOSTError : NSError? = nil
+
+        var cannedConfigurationResponseBody : BTJSON? = nil
+        var cannedConfigurationResponseError : NSError? = nil
+
+        var cannedResponseError : NSError? = nil
+        var cannedHTTPURLResponse : NSHTTPURLResponse? = nil
+        var cannedResponseBody : BTJSON? = nil
 
         override func POST(path: String, parameters: [NSObject : AnyObject], completion completionBlock: (BTJSON?, NSHTTPURLResponse?, NSError?) -> Void) {
-            self.lastPOSTPath = path
-            self.lastPOSTParameters = parameters
+            lastPOSTPath = path
+            lastPOSTParameters = parameters
 
-            if cannedPOSTError != nil {
-                completionBlock(nil, nil, cannedPOSTError)
-                return;
-            }
-
-            let body = BTJSON(value: [
-                "paymentResource": [
-                    "redirectURL": "fakeURL://"
-                ] ])
-
-            completionBlock(body, nil, nil)
+            completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
         }
 
         override func fetchOrReturnRemoteConfiguration(completionBlock: (BTJSON?, NSError?) -> Void) {
-            if cannedConfigurationError != nil {
-                completionBlock(nil, cannedConfigurationError)
-                return;
-            }
-
-            let config = BTJSON(value: [
-                "paypal": [
-                    "environment": "offline"
-                ] ])
-            
-            completionBlock(config, nil)
+            completionBlock(cannedConfigurationResponseBody, cannedConfigurationResponseError)
         }
     }
 
@@ -64,118 +176,3 @@ class BTApplePay_Tests: XCTestCase {
 
 
 
-
-
-
-
-
-
-
-
-
-//
-//
-//if (![PKPayment class]) {
-//    if (failureBlock) {
-//        failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
-//            code:BTErrorUnsupported
-//            userInfo:@{NSLocalizedDescriptionKey: @"Apple Pay is not supported on this device"}]);
-//    }
-//    return;
-//
-//}
-//
-//NSString *encodedPaymentData;
-//NSError *error;
-//switch (self.configuration.applePayStatus) {
-//case BTClientApplePayStatusOff:
-//    error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-//        code:BTErrorUnsupported
-//        userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again." }];
-//    [[BTLogger sharedLogger] warning:error.localizedDescription];
-//    break;
-//case BTClientApplePayStatusMock: {
-//    NSDictionary *mockPaymentDataDictionary = @{
-//        @"version": @"hello-version",
-//        @"data": @"hello-data",
-//        @"header": @{
-//            @"transactionId": @"hello-transaction-id",
-//            @"ephemeralPublicKey": @"hello-ephemeral-public-key",
-//            @"publicKeyHash": @"hello-public-key-hash"
-//        }};
-//    NSError *error;
-//    NSData *paymentData = [NSJSONSerialization dataWithJSONObject:mockPaymentDataDictionary options:0 error:&error];
-//    NSAssert(error == nil, @"Unexpected JSON serialization error: %@", error);
-//    encodedPaymentData = [paymentData base64EncodedStringWithOptions:0];
-//    break;
-//    }
-//
-//case BTClientApplePayStatusProduction:
-//    if (!payment) {
-//        [[BTLogger sharedLogger] warning:@"-[BTClient saveApplePayPayment:success:failure:] received nil payment."];
-//        NSError *error = [NSError errorWithDomain:BTBraintreeAPIErrorDomain
-//        code:BTErrorUnsupported
-//        userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required in production"}];
-//        if (failureBlock) {
-//            failureBlock(error);
-//        }
-//        return;
-//    }
-//
-//    encodedPaymentData = [payment.token.paymentData base64EncodedStringWithOptions:0];
-//    break;
-//default:
-//    return;
-//}
-//
-//if (error) {
-//    if (failureBlock) {
-//        failureBlock(error);
-//    }
-//    return;
-//}
-//
-//NSMutableDictionary *tokenParameterValue = [NSMutableDictionary dictionary];
-//if (encodedPaymentData) {
-//    tokenParameterValue[@"paymentData"] = encodedPaymentData;
-//}
-//if (payment.token.paymentInstrumentName) {
-//    tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentInstrumentName;
-//}
-//if (payment.token.transactionIdentifier) {
-//    tokenParameterValue[@"transactionIdentifier"] = payment.token.transactionIdentifier;
-//}
-//if (payment.token.paymentNetwork) {
-//    tokenParameterValue[@"paymentNetwork"] = payment.token.paymentNetwork;
-//}
-//
-//NSMutableDictionary *requestParameters = [self metaPostParameters];
-//[requestParameters addEntriesFromDictionary:@{ @"applePaymentToken": tokenParameterValue,
-//    @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-//}];
-//
-//[self.clientApiHttp POST:@"v1/payment_methods/apple_payment_tokens" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
-//if (response.isSuccess) {
-//if (successBlock){
-//NSArray *applePayCards = [response.object arrayForKey:@"applePayCards" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
-//
-//BTMutableApplePayPaymentMethod *paymentMethod = [applePayCards firstObject];
-//
-//paymentMethod.shippingAddress = payment.shippingAddress;
-//paymentMethod.shippingMethod = payment.shippingMethod;
-//paymentMethod.billingAddress = payment.billingAddress;
-//
-//successBlock([paymentMethod copy]);
-//}
-//} else {
-//if (failureBlock) {
-//NSDictionary *userInfo;
-//if (error) {
-//userInfo = @{NSUnderlyingErrorKey: error,
-//@"statusCode": @(response.statusCode)};
-//}
-//failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain code:BTUnknownError userInfo:userInfo]);
-//}
-//}
-//}];
-//}

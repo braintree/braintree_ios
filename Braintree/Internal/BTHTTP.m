@@ -8,6 +8,8 @@
 #import "BTLogger_Internal.h"
 
 NSString * const BTHTTPErrorDomain = @"com.braintreepayments.BTHTTPErrorDomain";
+NSString * const BTHTTPURLResponseKey = @"com.braintreepayments.BTHTTPURLResponseKey";
+NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONResponseBodyKey";
 
 @interface BTHTTP ()<NSURLSessionDelegate>
 
@@ -160,24 +162,45 @@ NSString * const BTHTTPErrorDomain = @"com.braintreepayments.BTHTTPErrorDomain";
 
     NSString *responseContentType = [response MIMEType];
 
-    if (data.length == 0) {
-        // Accept empty responses
-        [self callCompletionBlock:completionBlock body:[[BTJSON alloc] init] response:httpResponse error:error];
-    } else if ([responseContentType isEqualToString:@"application/json"]) {
-        BTJSON *json = [[BTJSON alloc] initWithData:data];
-        if (json.isError) {
-            [self callCompletionBlock:completionBlock body:nil response:nil error:json.asError];
-            return;
+    NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
+    errorUserInfo[BTHTTPURLResponseKey] = httpResponse;
+
+    if (httpResponse.statusCode >= 400) {
+        errorUserInfo[NSLocalizedFailureReasonErrorKey] = [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode];
+
+        BTJSON *json;
+        if ([responseContentType isEqualToString:@"application/json"]) {
+            json = (data.length == 0) ? [BTJSON new] : [[BTJSON alloc] initWithData:data];
+            if (!json.isError) {
+                errorUserInfo[BTHTTPJSONResponseBodyKey] = json;
+            }
         }
-        [self callCompletionBlock:completionBlock body:json response:httpResponse error:nil];
-    } else {
+
+        NSError *error = [NSError errorWithDomain:BTHTTPErrorDomain
+                                                     code:httpResponse.statusCode >= 500 ? BTHTTPErrorCodeServerError : BTHTTPErrorCodeClientError
+                                                 userInfo:[errorUserInfo copy]];
+        [self callCompletionBlock:completionBlock body:json response:httpResponse error:error];
+        return;
+    }
+
+    if (![responseContentType isEqualToString:@"application/json"]) {
         // Return error for unsupported response type
+        errorUserInfo[NSLocalizedFailureReasonErrorKey] = [NSString stringWithFormat:@"BTHTTP only supports application/json responses, received Content-Type: %@", responseContentType];
         NSError *returnedError = [NSError errorWithDomain:BTHTTPErrorDomain
                                                      code:BTHTTPErrorCodeResponseContentTypeNotAcceptable
-                                                 userInfo:@{ NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:@"BTHTTP only supports application/json responses, received Content-Type: %@", responseContentType] }];
+                                                 userInfo:[errorUserInfo copy]];
         [self callCompletionBlock:completionBlock body:nil response:nil error:returnedError];
         return;
     }
+
+    // Empty response is valid
+    BTJSON *json = (data.length == 0) ? [BTJSON new] : [[BTJSON alloc] initWithData:data];
+    if (json.isError) {
+        [self callCompletionBlock:completionBlock body:nil response:nil error:json.asError];
+        return;
+    }
+
+    [self callCompletionBlock:completionBlock body:json response:httpResponse error:nil];
 }
 
 - (void)callCompletionBlock:(BTHTTPCompletionBlock)completionBlock body:(BTJSON *)jsonBody response:(NSHTTPURLResponse *)response error:(NSError *)error {

@@ -13,9 +13,11 @@ typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
 };
 
 extern NSString * const BTApplePayErrorDomain;
-typedef NS_ENUM(NSUInteger, BTApplePayErrorType) {
+typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
     BTApplePayErrorTypeUnknown = 0,
     BTApplePayErrorTypeUnsupported,
+    BTApplePayErrorTypeClientError,
+    BTApplePayErrorTypeServerError
 };
 
 @interface BTApplePayTokenizationClient : NSObject
