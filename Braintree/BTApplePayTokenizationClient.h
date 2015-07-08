@@ -6,11 +6,24 @@
 
 BT_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSUInteger, BTClientApplePayStatus) {
+    BTClientApplePayStatusOff = 0,
+    BTClientApplePayStatusMock = 1,
+    BTClientApplePayStatusProduction = 2,
+};
+
+extern NSString * const BTApplePayErrorDomain;
+typedef NS_ENUM(NSUInteger, BTApplePayErrorType) {
+    BTApplePayErrorTypeUnknown = 0,
+    BTApplePayErrorTypeUnsupported,
+};
+
 @interface BTApplePayTokenizationClient : NSObject
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
-- (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTTokenizedApplePayPayment __BT_NULLABLE *tokenizedApplePayPayment, NSError __BT_NULLABLE *error))completionBlock;
+- (void)tokenizeApplePayPayment:(PKPayment *)payment
+                     completion:(void (^)(BTTokenizedApplePayPayment __BT_NULLABLE *tokenizedApplePayPayment, NSError __BT_NULLABLE *error))completionBlock;
 
 @end
 

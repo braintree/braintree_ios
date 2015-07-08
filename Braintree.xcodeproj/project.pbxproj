@@ -169,6 +169,7 @@
 		A7B7432C19A3E093000A6A7A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3541921394200D997A2 /* Foundation.framework */; };
 		A7B7432D19A3E094000A6A7A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3651921394200D997A2 /* UIKit.framework */; };
 		A7D4630D1B4B16C100A09C46 /* BTHTTPTestProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D4630C1B4B16C100A09C46 /* BTHTTPTestProtocol.m */; };
+		A7D64ABC1B4C93B6005168EF /* BTApplePay_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */; };
 		A7DD05681B4B3C05004CE665 /* BTPayPalDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 16C42B6D1B3DE0550028A3B4 /* BTPayPalDriver.m */; };
 		A7F6F1731B41CD48002AD374 /* BTTokenizedCard_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F6F1721B41CCC4002AD374 /* BTTokenizedCard_Internal.h */; };
 		A7F6F1751B41E2C2002AD374 /* BTThreeDSecureInfo_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F6F1741B41E2C2002AD374 /* BTThreeDSecureInfo_Internal.h */; };
@@ -502,6 +503,7 @@
 		A7B7432A19A3E093000A6A7A /* Braintree-Venmo-Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Braintree-Venmo-Specs.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D4630B1B4B16C100A09C46 /* BTHTTPTestProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHTTPTestProtocol.h; sourceTree = "<group>"; };
 		A7D4630C1B4B16C100A09C46 /* BTHTTPTestProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPTestProtocol.m; sourceTree = "<group>"; };
+		A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTApplePay_Tests.swift; sourceTree = "<group>"; };
 		A7E6E8E11B420D0C004CFA95 /* Braintree Unit Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Braintree Unit Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A7F6F1721B41CCC4002AD374 /* BTTokenizedCard_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTTokenizedCard_Internal.h; sourceTree = "<group>"; };
 		A7F6F1741B41E2C2002AD374 /* BTThreeDSecureInfo_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureInfo_Internal.h; sourceTree = "<group>"; };
@@ -939,6 +941,7 @@
 		16C42B421B3DDC8D0028A3B4 /* Braintree */ = {
 			isa = PBXGroup;
 			children = (
+				A7D64ABA1B4C9367005168EF /* ApplePay */,
 				A7DD05661B4B3172004CE665 /* PayPal */,
 				A7D463101B4B1C3600A09C46 /* Other */,
 				A7D4630F1B4B1BD000A09C46 /* Card */,
@@ -982,6 +985,7 @@
 				A75147E01B4217A00005BBBA /* BTCardTokenizationClient_Tests.swift */,
 				16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */,
 				A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */,
+				A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */,
 			);
 			path = "Braintree Unit Tests";
 			sourceTree = "<group>";
@@ -1245,8 +1249,6 @@
 			isa = PBXGroup;
 			children = (
 				16C42B431B3DDC8D0028A3B4 /* Braintree.h */,
-				16C42B741B3DE0960028A3B4 /* BTApplePayTokenizationClient.h */,
-				16C42B751B3DE0960028A3B4 /* BTApplePayTokenizationClient.m */,
 				16E17D2A1B3E03210024F9AB /* BTCheckout.h */,
 				16E17D2B1B3E03210024F9AB /* BTCheckout.m */,
 				16C42B901B3DE12C0028A3B4 /* BTCheckoutButton.h */,
@@ -1266,14 +1268,23 @@
 				16C42B891B3DE1090028A3B4 /* BTThreeDSecureDriver.m */,
 				164CA0BE1B3E18B200EB4884 /* BTThreeDSecureVerification.h */,
 				164CA0BF1B3E18B200EB4884 /* BTThreeDSecureVerification.m */,
-				16E17D121B3DE3D20024F9AB /* BTTokenizedApplePayPayment.h */,
-				16E17D131B3DE3D20024F9AB /* BTTokenizedApplePayPayment.m */,
 				16E17D0E1B3DE3C80024F9AB /* BTTokenizedCoinbaseAccount.h */,
 				16E17D0F1B3DE3C80024F9AB /* BTTokenizedCoinbaseAccount.m */,
 				16C42B801B3DE0E80028A3B4 /* BTVenmoDriver.h */,
 				16C42B811B3DE0E80028A3B4 /* BTVenmoDriver.m */,
 			);
 			name = Other;
+			sourceTree = "<group>";
+		};
+		A7D64ABA1B4C9367005168EF /* ApplePay */ = {
+			isa = PBXGroup;
+			children = (
+				16C42B741B3DE0960028A3B4 /* BTApplePayTokenizationClient.h */,
+				16C42B751B3DE0960028A3B4 /* BTApplePayTokenizationClient.m */,
+				16E17D121B3DE3D20024F9AB /* BTTokenizedApplePayPayment.h */,
+				16E17D131B3DE3D20024F9AB /* BTTokenizedApplePayPayment.m */,
+			);
+			name = ApplePay;
 			sourceTree = "<group>";
 		};
 		A7DD05661B4B3172004CE665 /* PayPal */ = {
@@ -2588,6 +2599,7 @@
 				A7D4630D1B4B16C100A09C46 /* BTHTTPTestProtocol.m in Sources */,
 				A79033981B45C968004C8234 /* BTCard_Tests.swift in Sources */,
 				16CD2E9F1B4077FC00E68495 /* BTJSON_Tests.swift in Sources */,
+				A7D64ABC1B4C93B6005168EF /* BTApplePay_Tests.swift in Sources */,
 				A75147E11B4217A00005BBBA /* BTCardTokenizationClient_Tests.swift in Sources */,
 				A790339C1B45E16E004C8234 /* BTCard_Internal_Tests.m in Sources */,
 			);
