@@ -7,6 +7,7 @@
   * No change to Braintree Coinbase support, and existing integrations remain unaffected
   * Braintree iOS SDK now vendors Coinbase SDK
 * Add session ID to analytics tracking data
+* Add BTPayPalScopeAddress
 
 ## 3.9.1 (2015-06-12)
 
