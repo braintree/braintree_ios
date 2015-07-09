@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.2 (2015-07-08)
+
+* Removed Coinbase Cocoapods library as an external dependency
+  * Manual integrations no longer require installation of the Coinbase SDK library
+  * Coinbase support and existing integrations remain unaffected
+
 ## 3.9.1 (2015-06-12)
 
 * Merge public master
