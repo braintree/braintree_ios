@@ -7,6 +7,5 @@
 #import "BTHTTP.h"
 #import "BTAPIClient_Internal.h"
 #import "BTPayPalDriver_Internal.h"
-#import <OCMock/OCMock.h>
 #import "PayPalOneTouchCore.h"
 #import "PayPalOneTouchRequest.h"

@@ -95,8 +95,6 @@
 		A7A6DD571B445A29008857E1 /* BTReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD4F1B445A29008857E1 /* BTReachability.m */; };
 		A7A6DD581B445A29008857E1 /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A7A6DD501B445A29008857E1 /* BTURLUtils.h */; };
 		A7A6DD591B445A29008857E1 /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD511B445A29008857E1 /* BTURLUtils.m */; };
-		A7A6DD5C1B445A64008857E1 /* BTAPIResponseParser.h in Headers */ = {isa = PBXBuildFile; fileRef = A7A6DD5A1B445A64008857E1 /* BTAPIResponseParser.h */; };
-		A7A6DD5D1B445A64008857E1 /* BTAPIResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD5B1B445A64008857E1 /* BTAPIResponseParser.m */; };
 		A7A6DD5F1B445C1A008857E1 /* Braintree-Version.h in Headers */ = {isa = PBXBuildFile; fileRef = A7A6DD5E1B445C1A008857E1 /* Braintree-Version.h */; };
 		A7C823081B4DA9D7009D45D6 /* BTHTTPSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C823071B4DA9D7009D45D6 /* BTHTTPSpec.m */; };
 		A7C8230E1B4DAAB2009D45D6 /* BTSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */; };
@@ -282,8 +280,6 @@
 		A7A6DD4F1B445A29008857E1 /* BTReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTReachability.m; sourceTree = "<group>"; };
 		A7A6DD501B445A29008857E1 /* BTURLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTURLUtils.h; path = Internal/BTURLUtils.h; sourceTree = "<group>"; };
 		A7A6DD511B445A29008857E1 /* BTURLUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTURLUtils.m; path = Internal/BTURLUtils.m; sourceTree = "<group>"; };
-		A7A6DD5A1B445A64008857E1 /* BTAPIResponseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAPIResponseParser.h; sourceTree = "<group>"; };
-		A7A6DD5B1B445A64008857E1 /* BTAPIResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAPIResponseParser.m; sourceTree = "<group>"; };
 		A7A6DD5E1B445C1A008857E1 /* Braintree-Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Version.h"; sourceTree = "<group>"; };
 		A7B035B519D6273400750F8A /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/PassKit.framework; sourceTree = DEVELOPER_DIR; };
 		A7C823071B4DA9D7009D45D6 /* BTHTTPSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPSpec.m; sourceTree = "<group>"; };
@@ -396,12 +392,10 @@
 			children = (
 				A7A6DD5E1B445C1A008857E1 /* Braintree-Version.h */,
 				A7A6DD341B4335A5008857E1 /* BTAnalyticsClient.h */,
-				A7A6DD5A1B445A64008857E1 /* BTAPIResponseParser.h */,
 				A7F6F1741B41E2C2002AD374 /* BTThreeDSecureInfo_Internal.h */,
 				A7F6F1721B41CCC4002AD374 /* BTTokenizedCard_Internal.h */,
 				A7A6DD2E1B431DE7008857E1 /* BTTokenizedPayPalAccount_Internal.h */,
 				A7A6DD351B4335A5008857E1 /* BTAnalyticsClient.m */,
-				A7A6DD5B1B445A64008857E1 /* BTAPIResponseParser.m */,
 				A7A6DD4E1B445A29008857E1 /* BTReachability.h */,
 				A7A6DD4F1B445A29008857E1 /* BTReachability.m */,
 				A7A6DD0C1B430BED008857E1 /* PayPal */,
@@ -688,7 +682,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7A6DD5C1B445A64008857E1 /* BTAPIResponseParser.h in Headers */,
 				16C42B921B3DE12C0028A3B4 /* BTCheckoutButton.h in Headers */,
 				A7F6F1731B41CD48002AD374 /* BTTokenizedCard_Internal.h in Headers */,
 				16C42B9A1B3DE1580028A3B4 /* BTFraudData.h in Headers */,
@@ -975,7 +968,6 @@
 				A7A6DD531B445A29008857E1 /* BTAPIPinnedCertificates.m in Sources */,
 				A7A6DD451B445550008857E1 /* BTAnalyticsMetadata.m in Sources */,
 				A734D95D1B4C4B1000FE0E1B /* BTPayPalRequestFactory.m in Sources */,
-				A7A6DD5D1B445A64008857E1 /* BTAPIResponseParser.m in Sources */,
 				16E17D291B3DFA0F0024F9AB /* BTPayPalCheckoutRequest.m in Sources */,
 				164CA0C11B3E18B200EB4884 /* BTThreeDSecureVerification.m in Sources */,
 				16E17D311B3E04870024F9AB /* BTPaymentOption.m in Sources */,
@@ -1096,11 +1088,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Braintree/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mickeyreiss.Braintree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1147,11 +1140,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Braintree/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mickeyreiss.Braintree;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1319,7 +1313,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;
@@ -1362,7 +1356,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.Demo;

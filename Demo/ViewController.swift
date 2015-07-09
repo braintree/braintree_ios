@@ -4,7 +4,7 @@ import PassKit
 
 class ViewController: UIViewController, PKPaymentAuthorizationViewControllerDelegate {
 
-    let apiClient = try! BTAPIClient(clientKey: "sandbox_client_key")
+    let apiClient = try! BTAPIClient(clientKey: "test_client_key")
     var applePay : BTApplePayTokenizationClient
 
     required init(coder aDecoder: NSCoder) {

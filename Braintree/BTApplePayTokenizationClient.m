@@ -55,15 +55,22 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                       completionBlock(tokenized, nil);
                   }];
     }];
-
 }
 
 - (NSDictionary *)parametersForPaymentToken:(PKPaymentToken *)token {
-    return @{
-             @"paymentData": [token.paymentData base64EncodedStringWithOptions:0],
-             @"transactionIdentifier": token.transactionIdentifier,
-             @"paymentInstrumentName": token.paymentInstrumentName,
-             @"paymentNetwork": token.paymentNetwork
-             };
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
+
+    mutableParameters[@"paymentData"] = [token.paymentData base64EncodedStringWithOptions:0];
+    mutableParameters[@"transactionIdentifier"] = token.transactionIdentifier;
+
+    if ([PKPaymentMethod class]) {
+        mutableParameters[@"paymentInstrumentName"] = token.paymentMethod.displayName;
+        mutableParameters[@"paymentNetwork"] = token.paymentMethod.network;
+    } else {
+        mutableParameters[@"paymentInstrumentName"] = token.paymentInstrumentName;
+        mutableParameters[@"paymentNetwork"] = token.paymentNetwork;
+    }
+
+    return [mutableParameters copy];
 }
 @end

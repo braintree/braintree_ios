@@ -103,7 +103,6 @@ class BTJSON_Tests: XCTestCase {
 
         XCTAssertTrue(obj.isError)
         XCTAssertEqual((obj.asError()?.domain)!, NSCocoaErrorDomain)
-        XCTAssertEqual((obj.asError()?.localizedDescription)!, "The data couldn’t be read because it isn’t in the correct format.")
     }
 
     func testMultipleErrorsTakesFirst() {
@@ -114,9 +113,7 @@ class BTJSON_Tests: XCTestCase {
 
         XCTAssertTrue(error.isError)
         XCTAssertEqual((error.asError()?.domain)!, NSCocoaErrorDomain)
-        XCTAssertEqual((error.asError()?.localizedDescription)!, "The data couldn’t be read because it isn’t in the correct format.")
     }
-
 
     func testNestedObjects() {
         let JSON = "{ \"numbers\": [\"one\", \"two\", { \"tens\": 0, \"ones\": 1 } ], \"truthy\": true }".dataUsingEncoding(NSUTF8StringEncoding)!
