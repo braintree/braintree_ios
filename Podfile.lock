@@ -20,44 +20,44 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.9.1):
-    - Braintree/API (= 3.9.1)
-    - Braintree/Coinbase (= 3.9.1)
-    - Braintree/Drop-In (= 3.9.1)
-    - Braintree/Payments (= 3.9.1)
-    - Braintree/PayPal (= 3.9.1)
-    - Braintree/UI (= 3.9.1)
-    - Braintree/Venmo (= 3.9.1)
-  - Braintree/3D-Secure (3.9.1):
+  - Braintree (3.9.2):
+    - Braintree/API (= 3.9.2)
+    - Braintree/Coinbase (= 3.9.2)
+    - Braintree/Drop-In (= 3.9.2)
+    - Braintree/Payments (= 3.9.2)
+    - Braintree/PayPal (= 3.9.2)
+    - Braintree/UI (= 3.9.2)
+    - Braintree/Venmo (= 3.9.2)
+  - Braintree/3D-Secure (3.9.2):
     - Braintree/API
     - Braintree/Payments
     - Braintree/UI
-  - Braintree/API (3.9.1)
-  - Braintree/Apple-Pay (3.9.1):
+  - Braintree/API (3.9.2)
+  - Braintree/Apple-Pay (3.9.2):
     - Braintree/Payments
-  - Braintree/Coinbase (3.9.1):
+  - Braintree/Coinbase (3.9.2):
     - Braintree/API
-  - Braintree/Data (3.9.1):
+  - Braintree/Data (3.9.2):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (3.9.1):
+  - Braintree/Drop-In (3.9.2):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (3.9.1):
+  - Braintree/Payments (3.9.2):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (3.9.1):
+  - Braintree/PayPal (3.9.2):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.9.1):
+  - Braintree/UI (3.9.2):
     - Braintree/API
-  - Braintree/Venmo (3.9.1):
+  - Braintree/Venmo (3.9.2):
     - Braintree/API
   - CardIO (5.0.3)
   - Expecta (0.3.2)
@@ -125,7 +125,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Braintree: 460a476bc6579fe98956574af9241bd324891e2b
+  Braintree: 7df7050fd35c19a7e81409b15efe0320b980b3d4
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
