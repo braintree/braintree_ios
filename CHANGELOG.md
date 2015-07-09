@@ -1,7 +1,12 @@
 # Braintree iOS SDK Release Notes
 
-## 3.9.2 (2015-07-07)
+## 3.9.2 (2015-07-08)
 
+* Remove Coinbase Cocoapods library as an external dependency
+  * Integrating Coinbase SDK is no longer a prerequisite for manual integrations
+  * No change to Braintree Coinbase support, and existing integrations remain unaffected
+  * Braintree iOS SDK now vendors Coinbase SDK
+* Add session ID to analytics tracking data
 * Add BTPayPalScopeAddress
 
 ## 3.9.1 (2015-06-12)
