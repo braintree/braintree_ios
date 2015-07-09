@@ -53,7 +53,7 @@ Pod::Spec.new do |s|
   s.subspec "PayPal" do |s|
     s.source_files = "Braintree/PayPal/**/*.{h,m}"
     s.public_header_files = "Braintree/PayPal/@Public/**/*.h"
-    s.frameworks = "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
+    s.frameworks = "Accelerate", "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
     s.vendored_library = "Braintree/PayPal/mSDK/libPayPalMobile-BT.a"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
     s.dependency "Braintree/API"
