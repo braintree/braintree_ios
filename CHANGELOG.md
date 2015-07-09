@@ -3,13 +3,13 @@
 ## 3.9.2 (2015-07-08)
 
 * :rotating_light: This version requires Xcode 6.3+ (otherwise you'll get duplicate symbol errors)
-* :rotating_light: New: `Accelerate.framework` must be linked to your project
+* :rotating_light: New: `Accelerate.framework` must be linked to your project (CocoaPods should do this automatically)
 * Remove Coinbase CocoaPods library as an external dependency
   * Integrating Coinbase SDK is no longer a prerequisite for manual integrations
   * No change to Braintree Coinbase support; existing integrations remain unaffected
   * Braintree iOS SDK now vendors Coinbase SDK
 * Add session ID to analytics tracking data
-* Add BTPayPalScopeAddress
+* Add `BTPayPalScopeAddress`
 * Update PayPal mSDK to 2.11.1
   * Requires Xcode 6.3+
   * Fix an iPad display issue
