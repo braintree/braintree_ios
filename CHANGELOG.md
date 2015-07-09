@@ -3,6 +3,7 @@
 ## 3.9.2 (2015-07-08)
 
 * :rotating_light: This version requires Xcode 6.3+ (otherwise you'll get duplicate symbol errors)
+* :rotating_light: New: `Accelerate.framework` must be linked to your project
 * Remove Coinbase CocoaPods library as an external dependency
   * Integrating Coinbase SDK is no longer a prerequisite for manual integrations
   * No change to Braintree Coinbase support; existing integrations remain unaffected
