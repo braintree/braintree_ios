@@ -5,51 +5,28 @@
 #import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"
 
-BT_ASSUME_NONNULL_BEGIN
-
-/// App Switch NSError Domain
 extern NSString *const BTPayPalDriverErrorDomain;
 
-/// App Switch NSError Codes
-typedef NS_ENUM(NSInteger, BTPayPalDriverErrorCode) {
-    BTPayPalDriverErrorCodeUnknown = 0,
+typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
-    /// A compatible version of the target app is not available on this device.
-    BTPayPalDriverErrorCodeAppNotAvailable = 1,
+    BTPayPalDriverErrorTypeUnknown = 0,
 
-    /// App switch is not enabled.
-    BTPayPalDriverErrorCodeDisabled = 2,
+    /// PayPal is disabled in configuration
+    BTPayPalDriverErrorTypeDisabled,
 
     /// App switch is not configured appropriately. You must specify a
     /// valid returnURLScheme via Braintree before attempting an app switch.
-    BTPayPalDriverErrorCodeIntegrationReturnURLScheme = 3,
-
-    /// The merchant ID field was not valid or present in the client token.
-    BTPayPalDriverErrorCodeIntegrationMerchantId = 4,
+    BTPayPalDriverErrorTypeIntegrationReturnURLScheme,
 
     /// UIApplication failed to switch despite it being available.
     /// `[UIApplication openURL:]` returned `NO` when `YES` was expected.
-    BTPayPalDriverErrorCodeFailed = 5,
+    BTPayPalDriverErrorTypeAppSwitchFailed,
 
-    /// App switch completed, but the client encountered an error while attempting
-    /// to communicate with the Braintree server.
-    /// Check for a `NSUnderlyingError` value in the `userInfo` dictionary for information
-    /// about the underlying cause.
-    BTPayPalDriverErrorCodeFailureFetchingPaymentMethod = 6,
-
-    /// Parameters used to initiate app switch are invalid
-    BTPayPalDriverErrorCodeIntegrationInvalidParameters = 7,
-
-    /// Invalid CFBundleDisplayName
-    BTPayPalDriverErrorCodeIntegrationInvalidBundleDisplayName = 8,
-
-    BTPayPalDriverErrorCodeUnknownError = 9,
-
-    BTPayPalDriverErrorCodePayPalConfiguration = 10,
-
-    /// PayPal is disabled
-    BTPayPalDriverErrorCodePayPalDisabled = 11,
+    /// Invalid configuration, e.g. bad CFBundleDisplayName
+    BTPayPalDriverErrorTypeInvalidConfiguration,
 };
+
+BT_ASSUME_NONNULL_BEGIN
 
 @protocol BTPayPalDriverDelegate;
 
@@ -59,11 +36,13 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorCode) {
 
 @property (nonatomic, copy) NSString *clientToken DEPRECATED_MSG_ATTRIBUTE("Delete me as soon as possible. BTPayPalDriver only requires a client token due to Browser-Switch requiring a client token.");
 
-- (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error))completionBlock;
+- (void)authorizeAccountWithCompletion:(void (^)(__BT_NULLABLE BTTokenizedPayPalAccount *tokenizedPayPalAccount, __BT_NULLABLE NSError *error))completionBlock;
 
-- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes completion:(void (^)(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error))completionBlock;
+- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes
+                                  completion:(void (^)(__BT_NULLABLE BTTokenizedPayPalAccount *tokenizedPayPalAccount, __BT_NULLABLE NSError *error))completionBlock;
 
-- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(__BT_NULLABLE BTTokenizedPayPalCheckout *tokenizedPayPalCheckout, __BT_NULLABLE NSError *error))completionBlock;
+- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
+                         completion:(void (^)(__BT_NULLABLE BTTokenizedPayPalCheckout *tokenizedPayPalCheckout, __BT_NULLABLE NSError *error))completionBlock;
 
 #pragma mark - App Switch
 

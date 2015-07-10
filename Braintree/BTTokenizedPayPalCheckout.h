@@ -1,20 +1,28 @@
 #import <Foundation/Foundation.h>
-#import <AddressBook/AddressBook.h>
-#import <Contacts/Contacts.h>
-
+#import "BTPostalAddress.h"
 #import "BTTokenized.h"
 
 BT_ASSUME_NONNULL_BEGIN
 
 @interface BTTokenizedPayPalCheckout : NSObject <BTTokenized>
 
-@property (nonatomic, copy) NSString *email;
+// Payer's email address
+@property (nonatomic, readonly, copy) NSString *email;
 
-@property (nonatomic, assign) ABRecordRef shippingAddress DEPRECATED_MSG_ATTRIBUTE("Please use shippingContact");
-@property (nonatomic, nullable, strong) CNContact *shippingContact;
+/// Payer's first name.
+@property (nonatomic, readonly, copy) NSString *firstName;
 
-@property (nonatomic, assign) ABRecordRef billingAddress DEPRECATED_MSG_ATTRIBUTE("Please use billingContact");
-@property (nonatomic, nullable, strong) CNContact *billingContact;
+/// Payer's last name.
+@property (nonatomic, readonly, copy) NSString *lastName;
+
+/// Payer's phone number.
+@property (nonatomic, readonly, copy) NSString *phone;
+
+/// The billing address.
+@property (nonatomic, readonly, strong) BTPostalAddress *billingAddress;
+
+/// The shipping address.
+@property (nonatomic, readonly, strong) BTPostalAddress *shippingAddress;
 
 @end
 

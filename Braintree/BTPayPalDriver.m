@@ -7,12 +7,13 @@
 #import "BTAnalyticsClient.h"
 #import "BTAPIClient.h"
 #import "BTTokenizedPayPalAccount_Internal.h"
+#import "BTTokenizedPayPalCheckout_Internal.h"
 #import "BTPostalAddress_Internal.h"
 #import "BTLogger_Internal.h"
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
-static void (^BTPayPalHandleURLContinuation)(NSURL *url);
+static void (^appSwitchReturnBlock)(NSURL *url);
 
 @interface BTPayPalDriver ()
 @property (nonatomic, strong) BTAPIClient *apiClient;
@@ -30,124 +31,34 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
     return self;
 }
 
+#pragma mark - Authorization (Future Payments)
+
 - (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedPayPalAccount *paymentMethod, NSError *error))completionBlock {
     [self authorizeAccountWithAdditionalScopes:[NSSet set] completion:completionBlock];
 }
 
 - (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes completion:(void (^)(BTTokenizedPayPalAccount *, NSError *))completionBlock {
 
-    BTPayPalHandleURLContinuation = ^(NSURL *url){
-        [self informDelegateWillProcessAppSwitchResult];
-
-        [PayPalOneTouchCore parseResponseURL:url
-                             completionBlock:^(PayPalOneTouchCoreResult *result) {
-                                 [self postAnalyticsEventForHandlingOneTouchResult:result];
-
-                                 switch (result.type) {
-                                     case PayPalOneTouchResultTypeError:
-                                         if (completionBlock) {
-                                             completionBlock(nil, result.error);
-                                         }
-                                         break;
-                                     case PayPalOneTouchResultTypeCancel:
-                                         if (result.error) {
-                                             // TODO: Log error
-                                             return;
-                                         }
-                                         if (completionBlock) {
-                                             completionBlock(nil, nil);
-                                         }
-                                         break;
-                                     case PayPalOneTouchResultTypeSuccess: {
-                                         BTClientMetadata *clientMetadata = [self clientMetadataForResult:result];
-                                         [self.apiClient POST:@"v1/payment_methods/paypal_accounts"
-                                                   parameters:@{ @"paypal_account": result.response,
-                                                                 @"correlation_id": [PayPalOneTouchCore clientMetadataID],
-                                                                 @"_meta": @{ @"source": clientMetadata.sourceString,
-                                                                              @"integration": clientMetadata.integrationString } }
-                                                   completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-                                                       if (error) {
-                                                           [self postAnalyticsEventForTokenizationFailure];
-                                                           if (completionBlock) {
-                                                               completionBlock(nil, error);
-                                                           }
-                                                           return;
-                                                       }
-
-                                                       [self postAnalyticsEventForTokenizationSuccess];
-
-                                                       BTJSON *payPalAccount = body[@"paypalAccounts"][0];
-
-                                                       // TODO use the existing value transformer to get payer info
-                                                       NSString *email, *firstName, *lastName, *phone;
-                                                       BTPostalAddress *billingAddress, *shippingAddress;
-                                                       NSDictionary *payerInfoDict = payPalAccount[@"details"][@"payerInfo"].asDictionary;
-                                                       if (payerInfoDict[@"email"]) { email = payerInfoDict[@"email"]; } // Allow email to be under payerInfo
-                                                       if (payerInfoDict[@"firstName"]) { firstName = payerInfoDict[@"firstName"]; }
-                                                       if (payerInfoDict[@"lastName"]) { lastName = payerInfoDict[@"lastName"]; }
-                                                       if (payerInfoDict[@"phone"]) { phone = payerInfoDict[@"phone"]; }
-                                                       if (payerInfoDict[BTPostalAddressKeyAccountAddress]) {
-                                                           NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyAccountAddress];
-                                                           billingAddress = [[BTPostalAddress alloc] init];
-                                                           billingAddress.recipientName = addressDictionary[BTPostalAddressKeyRecipientName]; // Likely nil, but doesn't hurt
-                                                           billingAddress.streetAddress = addressDictionary[BTPostalAddressKeyStreet1];
-                                                           billingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyStreet2];
-                                                           billingAddress.locality = addressDictionary[BTPostalAddressKeyCity];
-                                                           billingAddress.region = addressDictionary[BTPostalAddressKeyState];
-                                                           billingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
-                                                           billingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountry];
-                                                       }
-                                                       if (payerInfoDict[BTPostalAddressKeyBillingAddress]) {
-                                                           NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyAccountAddress];
-                                                           billingAddress = [[BTPostalAddress alloc] init];
-                                                           billingAddress.recipientName = addressDictionary[BTPostalAddressKeyRecipientName]; // Likely nil, but doesn't hurt
-                                                           billingAddress.streetAddress = addressDictionary[BTPostalAddressKeyStreet1];
-                                                           billingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyStreet2];
-                                                           billingAddress.locality = addressDictionary[BTPostalAddressKeyCity];
-                                                           billingAddress.region = addressDictionary[BTPostalAddressKeyState];
-                                                           billingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
-                                                           billingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountry];
-                                                       }
-                                                       if (payerInfoDict[BTPostalAddressKeyShippingAddress]) {
-                                                           NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyShippingAddress];
-                                                           shippingAddress = [[BTPostalAddress alloc] init];
-                                                           shippingAddress.recipientName = addressDictionary[BTPostalAddressKeyRecipientName];
-                                                           shippingAddress.streetAddress = addressDictionary[BTPostalAddressKeyLine1];
-                                                           shippingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyLine2];
-                                                           shippingAddress.locality = addressDictionary[BTPostalAddressKeyCity];
-                                                           shippingAddress.region = addressDictionary[BTPostalAddressKeyState];
-                                                           shippingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
-                                                           shippingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountryCode];
-                                                       }
-
-                                                       BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:payPalAccount[@"nonce"].asString
-                                                                                                                                                           description:payPalAccount[@"email"].asString
-                                                                                                                                                                 email:payPalAccount[@"email"].asString
-                                                                                                                                                             firstName:firstName
-                                                                                                                                                              lastName:lastName
-                                                                                                                                                        billingAddress:billingAddress
-                                                                                                                                                       shippingAddress:shippingAddress];
-
-                                                       if (completionBlock) {
-                                                           completionBlock(tokenizedPayPalAccount, nil);
-                                                       }
-
-                                                       BTPayPalHandleURLContinuation = nil;
-                                                   }];
-                                         break;
-                                     }
-                                 }
-                             }];
-    };
+    [self setAuthorizationAppSwitchReturnBlock:completionBlock];
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error) {
+        if (error) {
+            if (completionBlock) completionBlock(nil, error);
+            return;
+        }
+        if (!remoteConfiguration[@"paypalEnabled"].isTrue) {
+            error = [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeDisabled userInfo:nil];
+            if (completionBlock) completionBlock(nil, error);
+            return;
+        }
+
         PayPalOneTouchAuthorizationRequest *request =
-        [PayPalOneTouchAuthorizationRequest requestWithScopeValues:[self.defaultOAuth2Scopes setByAddingObjectsFromSet:(additionalScopes ? additionalScopes : [NSSet set])]
-                                                        privacyURL:remoteConfiguration[@"paypal"][@"privacyUrl"].asURL
-                                                      agreementURL:remoteConfiguration[@"paypal"][@"userAgreementUrl"].asURL
-                                                          clientID:[self paypalClientIdWithRemoteConfiguration:remoteConfiguration]
-                                                       environment:[self payPalEnvironmentForRemoteConfiguration:remoteConfiguration]
-                                                 callbackURLScheme:self.returnURLScheme];
+        [self.requestFactory requestWithScopeValues:[self.defaultOAuth2Scopes setByAddingObjectsFromSet:(additionalScopes ? additionalScopes : [NSSet set])]
+                                         privacyURL:remoteConfiguration[@"paypal"][@"privacyUrl"].asURL
+                                       agreementURL:remoteConfiguration[@"paypal"][@"userAgreementUrl"].asURL
+                                           clientID:[self paypalClientIdWithRemoteConfiguration:remoteConfiguration]
+                                        environment:[self payPalEnvironmentForRemoteConfiguration:remoteConfiguration]
+                                  callbackURLScheme:self.returnURLScheme];
 
         // At this time, the Braintree client_token is required by the temporary Braintree Future Payments consent webpage.
         request.additionalPayloadAttributes = @{ @"client_token": self.clientToken };
@@ -158,33 +69,83 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
             if (success) {
                 [self informDelegateDidPerformAppSwitchToTarget:target];
             } else {
-                if (completionBlock) {
-                    completionBlock(nil, error);
-                }
+                if (completionBlock) completionBlock(nil, error);
             }
         }];
     }];
 }
 
-#pragma mark - Checkout
+- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *account, NSError *error))completionBlock {
+    appSwitchReturnBlock = ^(NSURL *url){
+        [self informDelegateWillProcessAppSwitchResult];
+
+        [self.payPalClass parseResponseURL:url
+                           completionBlock:^(PayPalOneTouchCoreResult *result) {
+                               [self postAnalyticsEventForHandlingOneTouchResult:result];
+
+                               switch (result.type) {
+                                   case PayPalOneTouchResultTypeError:
+                                       if (completionBlock) completionBlock(nil, result.error);
+                                       break;
+                                   case PayPalOneTouchResultTypeCancel:
+                                       if (result.error) {
+                                           // TODO: Log error
+                                           return;
+                                       }
+                                       if (completionBlock) completionBlock(nil, nil);
+                                       break;
+                                   case PayPalOneTouchResultTypeSuccess: {
+                                       BTClientMetadata *clientMetadata = [self clientMetadataForResult:result];
+                                       [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
+                                                 parameters:@{ @"paypal_account": result.response,
+                                                               @"correlation_id": [PayPalOneTouchCore clientMetadataID],
+                                                               @"_meta": @{ @"source": clientMetadata.sourceString,
+                                                                            @"integration": clientMetadata.integrationString } }
+                                                 completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                                                     if (error) {
+                                                         [self postAnalyticsEventForTokenizationFailure];
+                                                         if (completionBlock) completionBlock(nil, error);
+                                                         return;
+                                                     }
+
+                                                     [self postAnalyticsEventForTokenizationSuccess];
+
+                                                     BTPostalAddress *accountAddress = [self accountAddressFromJSON:body[@"paypalAccounts"][0][@"details"][@"payerInfo"][@"accountAddress"]];
+                                                     NSString *nonce = body[@"paypalAccounts"][0][@"nonce"].asString;
+                                                     NSString *email = body[@"paypalAccounts"][0][@"email"].asString;
+
+                                                     BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce description:email email:email accountAddress:accountAddress];
+
+                                                     if (completionBlock) completionBlock(tokenizedPayPalAccount, nil);
+                                                     appSwitchReturnBlock = nil;
+                                                 }];
+                                       break;
+                                   }
+                               }
+                           }];
+    };
+}
+
+
+
+#pragma mark - Checkout (Single Payments)
 
 - (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
     // TODO - call completion block with error if checkoutRequest is bad/nil
 
-    NSString *redirectUri;
-    NSString *cancelUri;
+    NSString *returnURI;
+    NSString *cancelURI;
 
     ///
     /// TODO: Why aren't we getting the redirect and cancel URLs?
     ///
     [self.payPalClass redirectURLsForCallbackURLScheme:self.returnURLScheme
-                                         withReturnURL:&redirectUri
-                                         withCancelURL:&cancelUri];
+                                         withReturnURL:&returnURI
+                                         withCancelURL:&cancelURI];
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error) {
-
         if (error) {
-            completionBlock(nil, error);
+            if (completionBlock) completionBlock(nil, error);
             return;
         }
 
@@ -194,17 +155,17 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
         [self.apiClient POST:@"v1/paypal_hermes/create_payment_resource"
                   parameters:@{ @"amount": checkoutRequest.amount.stringValue,
                                 @"currency_iso_code": currencyCode ?: [NSNull null],
-                                @"return_url": redirectUri ?: [NSNull null],
-                                @"cancel_url": cancelUri ?: [NSNull null],
+                                @"return_url": returnURI ?: [NSNull null],
+                                @"cancel_url": cancelURI ?: [NSNull null],
                                 @"correlation_id": correlationId }
                   completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
 
                       if (error) {
-                          completionBlock(nil, error);
+                          if (completionBlock) completionBlock(nil, error);
                           return;
                       }
 
-                      [self setCheckoutContinuationBlock:completionBlock];
+                      [self setCheckoutAppSwitchReturnBlock:completionBlock];
 
                       NSString *payPalClientID = remoteConfiguration[@"paypal"][@"clientId"].asString;
 
@@ -223,70 +184,74 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
                           if (success) {
                               [self informDelegateDidPerformAppSwitchToTarget:target];
                           } else {
-                              if (completionBlock) {
-                                  completionBlock(nil, error);
-                              }
+                              if (completionBlock) completionBlock(nil, error);
                           }
                       }];
                   }];
     }];
 }
 
-- (void)setCheckoutContinuationBlock:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
-    BTPayPalHandleURLContinuation = ^(NSURL *url){
+- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
+    appSwitchReturnBlock = ^(NSURL *url){
         [self informDelegateWillProcessAppSwitchResult];
 
         [self.payPalClass parseResponseURL:url
-                             completionBlock:^(PayPalOneTouchCoreResult *result) {
+                           completionBlock:^(PayPalOneTouchCoreResult *result) {
 
-                                 [self postAnalyticsEventForSinglePaymentForHandlingOneTouchResult:result];
+                               [self postAnalyticsEventForSinglePaymentForHandlingOneTouchResult:result];
 
-                                 switch (result.type) {
-                                     case PayPalOneTouchResultTypeError:
-                                         if (completionBlock) {
-                                             completionBlock(nil, result.error);
-                                         }
-                                         break;
-                                     case PayPalOneTouchResultTypeCancel:
-                                         if (result.error) {
-                                             [[BTLogger sharedLogger] error:@"PayPal error: %@", result.error];
-                                             return;
-                                         }
-                                         if (completionBlock) {
-                                             completionBlock(nil, nil);
-                                         }
-                                         break;
-                                     case PayPalOneTouchResultTypeSuccess: {
+                               switch (result.type) {
+                                   case PayPalOneTouchResultTypeError:
+                                       if (completionBlock) completionBlock(nil, result.error);
+                                       break;
+                                   case PayPalOneTouchResultTypeCancel:
+                                       if (result.error) {
+                                           [[BTLogger sharedLogger] error:@"PayPal error: %@", result.error];
+                                           return;
+                                       }
+                                       if (completionBlock) completionBlock(nil, nil);
+                                       break;
+                                   case PayPalOneTouchResultTypeSuccess: {
 
-                                         NSMutableDictionary *payPalParameters = [result.response mutableCopy];
-                                         payPalParameters[@"options"] = @{@"validate": @NO};
+                                       NSMutableDictionary *payPalParameters = [result.response mutableCopy];
+                                       payPalParameters[@"options"] = @{ @"validate": @NO };
 
-                                         [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
-                                                   parameters:@{ @"paypal_account": payPalParameters,
-                                                                 @"correlation_id": @"TODO" }
-                                                   completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-                                                       if (error) {
-                                                           [self postAnalyticsEventForTokenizationFailureForSinglePayment];
-                                                           if (completionBlock) {
-                                                               completionBlock(nil, error);
-                                                           }
-                                                           return;
-                                                       }
+                                       [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
+                                                 parameters:@{ @"paypal_account": payPalParameters,
+                                                               @"correlation_id": @"TODO" }
+                                                 completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                                                     if (error) {
+                                                         [self postAnalyticsEventForTokenizationFailureForSinglePayment];
+                                                         if (completionBlock) completionBlock(nil, error);
+                                                         return;
+                                                     }
 
-                                                       [self postAnalyticsEventForTokenizationSuccessForSinglePayment];
+                                                     [self postAnalyticsEventForTokenizationSuccessForSinglePayment];
 
-                                                       if (completionBlock) {
-                                                           // TODO: create BTTokenizedPayPalCheckout from the JSON response
-                                                           BTTokenizedPayPalCheckout *tokenizedCheckout = [[BTTokenizedPayPalCheckout alloc] init];
-                                                           completionBlock(tokenizedCheckout, nil);
-                                                       }
+                                                     BTPostalAddress *shippingAddress = [self shippingOrBillingAddressFromJSON:body[@"paypalAccounts"][0][@"details"][@"payerInfo"][@"shippingAddress"]];
+                                                     BTPostalAddress *billingAddress = [self shippingOrBillingAddressFromJSON:body[@"paypalAccounts"][0][@"details"][@"payerInfo"][@"billingAddress"]];
+                                                     if (!billingAddress) {
+                                                         billingAddress = [self accountAddressFromJSON:body[@"paypalAccounts"][0][@"details"][@"payerInfo"][@"accountAddress"]];
+                                                     }
+                                                     NSString *nonce = body[@"paypalAccounts"][0][@"nonce"].asString;
+                                                     NSString *email = body[@"paypalAccounts"][0][@"email"].asString;
 
-                                                   }];
-                                         break;
-                                     }
-                                 }
-                                 BTPayPalHandleURLContinuation = nil;
-                             }];
+                                                     BTTokenizedPayPalCheckout *tokenizedCheckout = [[BTTokenizedPayPalCheckout alloc] initWithPaymentMethodNonce:nonce
+                                                                                                                                                      description:email
+                                                                                                                                                            email:email
+                                                                                                                                                        firstName:@"TODO"
+                                                                                                                                                         lastName:@"TODO"
+                                                                                                                                                            phone:@"TODO"
+                                                                                                                                                   billingAddress:billingAddress
+                                                                                                                                                  shippingAddress:shippingAddress];
+
+                                                     if (completionBlock) completionBlock(tokenizedCheckout, nil);
+                                                 }];
+                                       break;
+                                   }
+                               }
+                               appSwitchReturnBlock = nil;
+                           }];
     };
 }
 
@@ -357,6 +322,40 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
     return [NSSet setWithObjects:@"https://uri.paypal.com/services/payments/futurepayments", @"email", nil];
 }
 
+- (BTPostalAddress *)accountAddressFromJSON:(BTJSON *)addressJSON {
+    if (!addressJSON.isObject) {
+        return nil;
+    }
+
+    BTPostalAddress *address = [[BTPostalAddress alloc] init];
+    address.recipientName = addressJSON[@"recipientName"].asString; // Likely to be nil
+    address.streetAddress = addressJSON[@"street1"].asString;
+    address.extendedAddress = addressJSON[@"street2"].asString;
+    address.locality = addressJSON[@"city"].asString;
+    address.region = addressJSON[@"state"].asString;
+    address.postalCode = addressJSON[@"postalCode"].asString;
+    address.countryCodeAlpha2 = addressJSON[@"country"].asString;
+
+    return address;
+}
+
+- (BTPostalAddress *)shippingOrBillingAddressFromJSON:(BTJSON *)addressJSON {
+    if (!addressJSON.isObject) {
+        return nil;
+    }
+
+    BTPostalAddress *address = [[BTPostalAddress alloc] init];
+    address.recipientName = addressJSON[@"recipientName"].asString; // Likely to be nil
+    address.streetAddress = addressJSON[@"line1"].asString;
+    address.extendedAddress = addressJSON[@"line2"].asString;
+    address.locality = addressJSON[@"city"].asString;
+    address.region = addressJSON[@"state"].asString;
+    address.postalCode = addressJSON[@"postalCode"].asString;
+    address.countryCodeAlpha2 = addressJSON[@"countryCode"].asString;
+
+    return address;
+}
+
 
 #pragma mark - Delegate Informers
 
@@ -396,7 +395,7 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
         [self.analyticsClient postAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                         code:BTPayPalDriverErrorCodePayPalDisabled
+                                         code:BTPayPalDriverErrorTypeDisabled
                                      userInfo:@{ NSLocalizedDescriptionKey: @"PayPal is not enabled for this merchant." }];
         }
         return NO;
@@ -406,7 +405,7 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
         [self.analyticsClient postAnalyticsEvent:@"ios.paypal-otc.preflight.nil-return-url-scheme"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                         code:BTPayPalDriverErrorCodeIntegrationReturnURLScheme
+                                         code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
                                      userInfo:@{ NSLocalizedDescriptionKey: @"PayPal app switch is missing a returnURLScheme. See +[Braintree setReturnURLScheme:]." }];
         }
         return NO;
@@ -417,7 +416,7 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
         if (error != NULL) {
             NSString *errorMessage = [NSString stringWithFormat:@"Cannot app switch to PayPal. Verify that the return URL scheme (%@) starts with this app's bundle id, and that the PayPal app is installed.", returnURLScheme];
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                         code:BTPayPalDriverErrorCodeIntegrationReturnURLScheme
+                                         code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
                                      userInfo:@{ NSLocalizedDescriptionKey: errorMessage }];
         }
         return NO;
@@ -602,12 +601,12 @@ static void (^BTPayPalHandleURLContinuation)(NSURL *url);
 #pragma mark - App Switch handling
 
 + (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return BTPayPalHandleURLContinuation != nil && [PayPalOneTouchCore canParseURL:url sourceApplication:sourceApplication];
+    return appSwitchReturnBlock != nil && [PayPalOneTouchCore canParseURL:url sourceApplication:sourceApplication];
 }
 
 + (void)handleAppSwitchReturnURL:(NSURL *)url {
-    if (BTPayPalHandleURLContinuation) {
-        BTPayPalHandleURLContinuation(url);
+    if (appSwitchReturnBlock) {
+        appSwitchReturnBlock(url);
     }
 }
 

@@ -1,33 +1,165 @@
 import XCTest
 import Braintree
 
-class BTPayPalDriver_Tests: XCTestCase {
+// MARK: Authorization
+
+class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
     var mockAPIClient : MockAPIClient = try! MockAPIClient(clientKey: "test_client_key")
 
     override func setUp() {
         super.setUp()
+
         mockAPIClient = try! MockAPIClient(clientKey: "test_client_key")
+    }
+
+    func testAuthorization_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
+        mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "")
+
+        let expectation = self.expectationWithDescription("Checkout fails with error")
+        payPalDriver.authorizeAccountWithCompletion { (tokenizedPayPalAccount, error) -> Void in
+            XCTAssertEqual(error!, self.mockAPIClient.cannedConfigurationResponseError!)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testAuthorization_whenPayPalConfigurationDisabled_callsBackWithError() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": false ])
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "test.urlReturnScheme://")
+
+        let expectation = expectationWithDescription("authorization callback")
+        payPalDriver.authorizeAccountWithCompletion { (tokenizedPayPalAccount, error) -> Void in
+            XCTAssertEqual(error!.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error!.code, BTPayPalDriverErrorType.Disabled.rawValue)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testAuthorization_whenRemoteConfigurationIsAvailable_performsAuthorizationAppSwitch() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
             "paypal": [
                 "environment": "offline"
             ] ])
-       mockAPIClient.cannedResponseBody = BTJSON(value: [
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "test.urlReturnScheme://")
+        payPalDriver.clientToken = "a-client-token"
+
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
+        let mockRequestFactory = PayPalMockRequestFactory()
+        payPalDriver.requestFactory = mockRequestFactory
+        let delegate = PayPalDriverTestDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform:self.expectationWithDescription("Delegate received didPerformAppSwitch"))
+        payPalDriver.delegate = delegate
+
+        payPalDriver.authorizeAccountWithCompletion { (_, _) -> Void in }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+        XCTAssertTrue(mockRequestFactory.authorizationRequest.appSwitchPerformed)
+    }
+
+    func testAuthorization_whenAppSwitchSuccessful_tokenizesBasicPayPalAccount() {
+        assertSuccessfulAuthorizationResponse([
+                "paypalAccounts": [
+                    [
+                        "nonce": "a-nonce",
+                        "email": "hello@world.com"
+                    ]
+                ]],
+            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
+                XCTAssertNotNil(tokenizedPayPalAccount)
+        })
+    }
+
+    func testSuccessfulPayPalTokenization_returnsExpectedAddress() {
+        assertSuccessfulAuthorizationResponse([
+            "paypalAccounts": [
+                [
+                    "nonce": "a-nonce",
+                    "email": "hello@world.com",
+                    "details": [
+                        "payerInfo": [
+                            "accountAddress": [
+                                "recipientName": "Foo Bar",
+                                "street1": "1 Foo Ct",
+                                "street2": "Apt Bar",
+                                "city": "Fubar",
+                                "state": "FU",
+                                "postalCode": "42",
+                                "country": "USA"
+                            ]
+                        ]
+                    ]
+                ] ] ],
+            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.recipientName!, "Foo Bar")
+                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.streetAddress, "1 Foo Ct")
+                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.extendedAddress!, "Apt Bar")
+                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.locality, "Fubar")
+                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.region!, "FU")
+                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.postalCode!, "42")
+                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.countryCodeAlpha2, "USA")
+        })
+    }
+
+    // MARK: Helpers
+
+    func assertSuccessfulAuthorizationResponse(response: [String:AnyObject], assertionBlock: (BTTokenizedPayPalAccount?, NSError?) -> Void) {
+        mockAPIClient.cannedResponseBody = BTJSON(value: response);
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "foo://")
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
+        payPalDriver.payPalClass.cannedResult.overrideType = .Success
+
+        payPalDriver.setAuthorizationAppSwitchReturnBlock { (tokenizedPayPalAccount, error) -> Void in
+            assertionBlock(tokenizedPayPalAccount, error)
+        }
+        BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
+
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
+    }
+}
+
+// MARK: Checkout
+
+class BTPayPalDriver_Checkout_Tests: XCTestCase {
+
+    var mockAPIClient : MockAPIClient = try! MockAPIClient(clientKey: "test_client_key")
+
+    override func setUp() {
+        super.setUp()
+
+        mockAPIClient = try! MockAPIClient(clientKey: "test_client_key")
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline"
+            ] ])
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
                 "redirectURL": "fakeURL://"
             ] ])
 
     }
 
+    func testCheckout_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
+        mockAPIClient.cannedConfigurationResponseBody = nil
+        mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "")
 
-    // MARK: Authorization
+        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let expectation = self.expectationWithDescription("Checkout fails with error")
+        payPalDriver.checkoutWithCheckoutRequest(request) { (_, error) -> Void in
+            XCTAssertEqual(error!, self.mockAPIClient.cannedConfigurationResponseError!)
+            expectation.fulfill()
+        }
 
+        self.waitForExpectationsWithTimeout(2, handler: nil)
+    }
 
-
-    // MARK: Checkout
-
-    func testCheckout_postsPaymentResource() {
-
+    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResource() {
+        // PayPalOneTouchCore provides cancel and return URLs that are used when creating payment resource
         class StubPayPalOneTouchCore : PayPalOneTouchCore {
             override class func redirectURLsForCallbackURLScheme(callbackURLScheme: String!,
                 withReturnURL returnURL: AutoreleasingUnsafeMutablePointer<NSString?>,
@@ -37,13 +169,12 @@ class BTPayPalDriver_Tests: XCTestCase {
             }
         }
 
-        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "test.urlReturnScheme://")
-        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
-        request.currencyCode = "GBP"
-
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "anyURL://")
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        checkoutRequest.currencyCode = "GBP"
         payPalDriver.payPalClass = StubPayPalOneTouchCore.self
-        payPalDriver.checkoutWithCheckoutRequest(request) { (_, _) -> Void in }
 
+        payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { (_, _) -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         let lastPostParameters = mockAPIClient.lastPOSTParameters
@@ -55,63 +186,17 @@ class BTPayPalDriver_Tests: XCTestCase {
     }
 
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
-
-        class PayPalDriverTestDelegate : NSObject, BTPayPalDriverDelegate {
-            var willPerform : XCTestExpectation
-
-            init(willPerform: XCTestExpectation) {
-                self.willPerform = willPerform
-            }
-
-            @objc func payPalDriverWillPerformAppSwitch(payPalDriver: BTPayPalDriver) {
-                self.willPerform.fulfill()
-            }
-        }
-
-        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "test.urlReturnScheme://")
-        let dummyRequest = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
-
-        payPalDriver.requestFactory = PayPalRequestMockFactory()
-        let delegate = PayPalDriverTestDelegate(willPerform: self.expectationWithDescription("Will Perform"))
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "anyURL://")
+        let mockRequestFactory = PayPalMockRequestFactory()
+        payPalDriver.requestFactory = mockRequestFactory
+        let delegate = PayPalDriverTestDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform: expectationWithDescription("Delegate received didPerformAppSwitch"))
         payPalDriver.delegate = delegate
-        payPalDriver.checkoutWithCheckoutRequest(dummyRequest) { (_, _) -> Void in }
+
+        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        payPalDriver.checkoutWithCheckoutRequest(request) { (_, _) -> Void in }
 
         self.waitForExpectationsWithTimeout(2, handler: nil)
-    }
-
-    func testCheckout_whenPayPalAppSwitchSuccessful_tokenizesPayPalAccount() {
-
-        let returnURLScheme = "foo://"
-        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: returnURLScheme)
-        let returnURL = NSURL(string: "bar://hello/world")!
-
-        let continuationExpectation = self.expectationWithDescription("Continuation called")
-
-        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
-        payPalDriver.payPalClass.cannedResult.overrideType = .Success
-        payPalDriver.setCheckoutContinuationBlock { (tokenizedCheckout, error) -> Void in
-            XCTAssertNotNil(tokenizedCheckout)
-            continuationExpectation.fulfill()
-        }
-
-        BTPayPalDriver.handleAppSwitchReturnURL(returnURL)
-
-        self.waitForExpectationsWithTimeout(2, handler: nil)
-        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
-    }
-
-    func testCheckout_whenRemoteConfigurationFails_callsBackWithError() {
-        mockAPIClient.cannedConfigurationResponseBody = nil
-        mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
-
-        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "")
-        let dummyRequest = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
-        let expectation = self.expectationWithDescription("Checkout fails with error")
-        payPalDriver.checkoutWithCheckoutRequest(dummyRequest) { (_, error) -> Void in
-            XCTAssertEqual(error!, self.mockAPIClient.cannedConfigurationResponseError!)
-            expectation.fulfill()
-        }
-        self.waitForExpectationsWithTimeout(2, handler: nil)
+        XCTAssertTrue(mockRequestFactory.checkoutRequest.appSwitchPerformed)
     }
 
     func testCheckout_whenPaymentResourceCreationFails_callsBackWithError() {
@@ -127,8 +212,7 @@ class BTPayPalDriver_Tests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
 
-    func testCheckout_whenPayPalAppSwitchCancels_callsBackWithNilResultError() {
-
+    func testCheckout_whenAppSwitchCancels_callsBackWithNilResultError() {
         let returnURLScheme = "foo://"
         let mockAPIClient = try! MockAPIClient(clientKey: "test_client_key")
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: returnURLScheme)
@@ -138,7 +222,7 @@ class BTPayPalDriver_Tests: XCTestCase {
 
         payPalDriver.payPalClass = StubPayPalOneTouchCore.self
         payPalDriver.payPalClass.cannedResult.overrideType = .Cancel
-        payPalDriver.setCheckoutContinuationBlock { (tokenizedCheckout, error) -> Void in
+        payPalDriver.setCheckoutAppSwitchReturnBlock { (tokenizedCheckout, error) -> Void in
             XCTAssertNil(tokenizedCheckout)
             XCTAssertNil(error)
             continuationExpectation.fulfill()
@@ -149,8 +233,7 @@ class BTPayPalDriver_Tests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
 
-    func testCheckout_whenPayPalAppSwitchErrors_callsBackWithError() {
-
+    func testCheckout_whenAppSwitchErrors_callsBackWithError() {
         let returnURLScheme = "foo://"
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: returnURLScheme)
         let returnURL = NSURL(string: "bar://hello/world")!
@@ -161,9 +244,9 @@ class BTPayPalDriver_Tests: XCTestCase {
         payPalDriver.payPalClass.cannedResult.overrideType = .Error
         payPalDriver.payPalClass.cannedResult.overrideError = NSError(domain: "", code: 0, userInfo: nil)
 
-        payPalDriver.setCheckoutContinuationBlock { (tokenizedCheckout, error) -> Void in
+        payPalDriver.setCheckoutAppSwitchReturnBlock { (tokenizedCheckout, error) -> Void in
             XCTAssertNil(tokenizedCheckout)
-            XCTAssertEqual(error, payPalDriver.payPalClass.cannedResult.error!)
+            XCTAssertEqual(error!, payPalDriver.payPalClass.cannedResult.error!)
             continuationExpectation.fulfill()
         }
 
@@ -172,63 +255,229 @@ class BTPayPalDriver_Tests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
 
-    // MARK: Test Doubles
+    func testSuccessfulCheckout_tokenizesPayPalAccount() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "foo://")
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
+        payPalDriver.payPalClass.cannedResult.overrideType = .Success
 
-    class StubPayPalOneTouchCoreResult : PayPalOneTouchCoreResult {
-        var overrideError : NSError?
-        override var error : NSError? {
-            get {
-                return overrideError
-            }
+        payPalDriver.setCheckoutAppSwitchReturnBlock { (_, _) -> Void in }
+        BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
+
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
+    }
+
+    func testSuccessfulCheckout_returnsPayerInfo() {
+        assertSuccessfulCheckoutResponse([
+            "paypalAccounts": [
+                [
+                    "nonce": "a-nonce",
+                    "email": "hello@world.com",
+                    "firstName": "Some",
+                    "lastName": "Dude",
+                    "details": [
+                        "payerInfo": [
+                            "accountAddress": [
+                                "street1": "1 Foo Ct",
+                                "street2": "Apt Bar",
+                                "city": "Fubar",
+                                "state": "FU",
+                                "postalCode": "42",
+                                "country": "USA"
+                            ],
+                            "billingAddress": [
+                                "recipientName": "Bar Foo",
+                                "line1": "2 Foo Ct",
+                                "line2": "Apt Foo",
+                                "city": "Barfoo",
+                                "state": "BF",
+                                "postalCode": "24",
+                                "countryCode": "ASU"
+                            ],
+                            "shippingAddress": [
+                                "recipientName": "Some Dude",
+                                "line1": "3 Foo Ct",
+                                "line2": "Apt 5",
+                                "city": "Dudeville",
+                                "state": "CA",
+                                "postalCode": "24",
+                                "countryCode": "US"
+                            ]
+                        ]
+                    ]
+                ] ] ],
+            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
+                // TODO: test firstName/lastName 
+                
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.recipientName!, "Bar Foo")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.streetAddress, "2 Foo Ct")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.extendedAddress!, "Apt Foo")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.locality, "Barfoo")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.region!, "BF")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.postalCode!, "24")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.countryCodeAlpha2, "ASU")
+                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.recipientName!, "Some Dude")
+                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.streetAddress, "3 Foo Ct")
+                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.extendedAddress!, "Apt 5")
+                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.locality, "Dudeville")
+                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.region!, "CA")
+                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.postalCode!, "24")
+                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.countryCodeAlpha2, "US")
+        })
+    }
+
+    func testSuccessfulCheckout_whenBillingAddressMissing_usesAccountAddressAsBillingAddress() {
+        assertSuccessfulCheckoutResponse([
+            "paypalAccounts": [
+                [
+                    "nonce": "a-nonce",
+                    "email": "hello@world.com",
+                    "details": [
+                        "payerInfo": [
+                            "accountAddress": [
+                                "recipientName": "Foo Bar",
+                                "street1": "1 Foo Ct",
+                                "street2": "Apt Bar",
+                                "city": "Fubar",
+                                "state": "FU",
+                                "postalCode": "42",
+                                "country": "USA"
+                            ]
+                        ]
+                    ]
+                ] ] ],
+            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.recipientName!, "Foo Bar")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.streetAddress, "1 Foo Ct")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.extendedAddress!, "Apt Bar")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.locality, "Fubar")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.region!, "FU")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.postalCode!, "42")
+                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.countryCodeAlpha2, "USA")
+        })
+    }
+
+    func testSuccessfulCheckout_createsPayPalAccount {
+
+    }
+
+    // MARK: Helpers
+
+    func assertSuccessfulCheckoutResponse(response: [String:AnyObject], assertionBlock: (BTTokenizedPayPalCheckout?, NSError?) -> Void) {
+        mockAPIClient.cannedResponseBody = BTJSON(value: response);
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "foo://")
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
+        payPalDriver.payPalClass.cannedResult.overrideType = .Success
+
+        payPalDriver.setCheckoutAppSwitchReturnBlock { (tokenizedPayPalCheckout, error) -> Void in
+            assertionBlock(tokenizedPayPalCheckout, error)
         }
+        BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
+    }
+}
 
-        var overrideType: PayPalOneTouchResultType
-        override var type : PayPalOneTouchResultType {
-            get {
-                return overrideType
-            }
-        }
 
-        override init() {
-            overrideError = nil
-            overrideType = .Success
-        }
+// MARK: Test Doubles
 
-        override var response : [NSObject : AnyObject] {
-            get {
-                return [:]
-            }
+class StubPayPalOneTouchCoreResult : PayPalOneTouchCoreResult {
+    var overrideError : NSError?
+    override var error : NSError? {
+        get {
+            return overrideError
         }
     }
 
-    class StubPayPalOneTouchCore : PayPalOneTouchCore {
-
-        static var cannedResult = StubPayPalOneTouchCoreResult()
-
-        override class func parseResponseURL(url: NSURL!, completionBlock: PayPalOneTouchCompletionBlock!) {
-            completionBlock(self.cannedResult)
+    var overrideType: PayPalOneTouchResultType
+    override var type : PayPalOneTouchResultType {
+        get {
+            return overrideType
         }
     }
 
-    class MockPayPalCheckoutRequest : PayPalOneTouchCheckoutRequest {
-        var cannedSuccess : Bool
-        var cannedTarget : PayPalOneTouchRequestTarget
-        var cannedError : NSError?
-
-        override init() {
-            cannedError = nil
-            cannedTarget = .None
-            cannedSuccess = true
-        }
-
-        override func performWithCompletionBlock(completionBlock: PayPalOneTouchRequestCompletionBlock!) {
-            completionBlock(cannedSuccess, cannedTarget, cannedError)
-        }
+    override init() {
+        overrideError = nil
+        overrideType = .Success
     }
 
-    class PayPalRequestMockFactory : BTPayPalRequestFactory {
-        override func requestWithApprovalURL(approvalURL: NSURL!, clientID: String!, environment: String!, callbackURLScheme: String!) -> PayPalOneTouchCheckoutRequest! {
-            return MockPayPalCheckoutRequest()
+    override var response : [NSObject : AnyObject] {
+        get {
+            return [:]
         }
+    }
+}
+
+class StubPayPalOneTouchCore : PayPalOneTouchCore {
+
+    static var cannedResult = StubPayPalOneTouchCoreResult()
+
+    override class func parseResponseURL(url: NSURL!, completionBlock: PayPalOneTouchCompletionBlock!) {
+        completionBlock(self.cannedResult)
+    }
+
+}
+
+class MockPayPalCheckoutRequest : PayPalOneTouchCheckoutRequest {
+    var cannedSuccess : Bool
+    var cannedTarget : PayPalOneTouchRequestTarget
+    var cannedError : NSError?
+    var appSwitchPerformed = false
+
+    override init() {
+        cannedError = nil
+        cannedTarget = .Browser
+        cannedSuccess = true
+    }
+
+    override func performWithCompletionBlock(completionBlock: PayPalOneTouchRequestCompletionBlock!) {
+        appSwitchPerformed = true
+        completionBlock(cannedSuccess, cannedTarget, cannedError)
+    }
+}
+
+class MockPayPalAuthorizationRequest : PayPalOneTouchAuthorizationRequest {
+    var cannedSuccess : Bool
+    var cannedTarget : PayPalOneTouchRequestTarget
+    var cannedError : NSError?
+    var appSwitchPerformed = false
+
+    override init() {
+        cannedError = nil
+        cannedTarget = .Browser
+        cannedSuccess = true
+    }
+
+    override func performWithCompletionBlock(completionBlock: PayPalOneTouchRequestCompletionBlock!) {
+        appSwitchPerformed = true
+        completionBlock(cannedSuccess, cannedTarget, cannedError)
+    }
+}
+
+class PayPalMockRequestFactory : BTPayPalRequestFactory {
+    var checkoutRequest = MockPayPalCheckoutRequest()
+    var authorizationRequest = MockPayPalAuthorizationRequest()
+
+    override func requestWithApprovalURL(approvalURL: NSURL!, clientID: String!, environment: String!, callbackURLScheme: String!) -> PayPalOneTouchCheckoutRequest! {
+        return checkoutRequest
+    }
+
+    override func requestWithScopeValues(scopeValues: Set<NSObject>!, privacyURL: NSURL!, agreementURL: NSURL!, clientID: String!, environment: String!, callbackURLScheme: String!) -> PayPalOneTouchAuthorizationRequest {
+        return authorizationRequest
+    }
+}
+
+class PayPalDriverTestDelegate : NSObject, BTPayPalDriverDelegate {
+    var willPerformAppSwitch : XCTestExpectation
+    var didPerformAppSwitch : XCTestExpectation
+
+    init(willPerform: XCTestExpectation, didPerform: XCTestExpectation) {
+        self.willPerformAppSwitch = willPerform
+        self.didPerformAppSwitch = didPerform
+    }
+    
+    @objc func payPalDriverWillPerformAppSwitch(payPalDriver: BTPayPalDriver) {
+        self.willPerformAppSwitch.fulfill()
+    }
+
+    @objc func payPalDriver(payPalDriver: BTPayPalDriver, didPerformAppSwitchToTarget target: BTPayPalDriverAppSwitchTarget) {
+        self.didPerformAppSwitch.fulfill()
     }
 }

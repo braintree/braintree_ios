@@ -55,6 +55,7 @@
 		16E17D2D1B3E03210024F9AB /* BTCheckout.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E17D2B1B3E03210024F9AB /* BTCheckout.m */; };
 		16E17D301B3E04870024F9AB /* BTPaymentOption.h in Headers */ = {isa = PBXBuildFile; fileRef = 16E17D2E1B3E04870024F9AB /* BTPaymentOption.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		16E17D311B3E04870024F9AB /* BTPaymentOption.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E17D2F1B3E04870024F9AB /* BTPaymentOption.m */; };
+		A7102E1A1B5085BB0007D40A /* BTTokenizedPayPalCheckout_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7102E191B5085BB0007D40A /* BTTokenizedPayPalCheckout_Internal.h */; };
 		A72E134D1B44630C002703DD /* BTPostalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = A72E134B1B44630C002703DD /* BTPostalAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A72E134E1B44630C002703DD /* BTPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = A72E134C1B44630C002703DD /* BTPostalAddress.m */; };
 		A72E13511B446DED002703DD /* BTClientMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = A72E134F1B446DED002703DD /* BTClientMetadata.h */; };
@@ -233,6 +234,7 @@
 		969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0D18A73520462F8D2FB1CD /* libPods-Braintree-API-Public-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Public-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7102E191B5085BB0007D40A /* BTTokenizedPayPalCheckout_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTokenizedPayPalCheckout_Internal.h; sourceTree = "<group>"; };
 		A72E134B1B44630C002703DD /* BTPostalAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTPostalAddress.h; path = Internal/BTPostalAddress.h; sourceTree = "<group>"; };
 		A72E134C1B44630C002703DD /* BTPostalAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTPostalAddress.m; path = Internal/BTPostalAddress.m; sourceTree = "<group>"; };
 		A72E134F1B446DED002703DD /* BTClientMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTClientMetadata.h; path = Internal/BTClientMetadata.h; sourceTree = "<group>"; };
@@ -397,6 +399,7 @@
 				A7F6F1741B41E2C2002AD374 /* BTThreeDSecureInfo_Internal.h */,
 				A7F6F1721B41CCC4002AD374 /* BTTokenizedCard_Internal.h */,
 				A7A6DD2E1B431DE7008857E1 /* BTTokenizedPayPalAccount_Internal.h */,
+				A7102E191B5085BB0007D40A /* BTTokenizedPayPalCheckout_Internal.h */,
 				A7A6DD351B4335A5008857E1 /* BTAnalyticsClient.m */,
 				A7A6DD4E1B445A29008857E1 /* BTReachability.h */,
 				A7A6DD4F1B445A29008857E1 /* BTReachability.m */,
@@ -711,6 +714,7 @@
 				A734D95C1B4C4B1000FE0E1B /* BTPayPalRequestFactory.h in Headers */,
 				16E17D0C1B3DE3BF0024F9AB /* BTTokenizedPayPalAccount.h in Headers */,
 				16C42B821B3DE0E80028A3B4 /* BTVenmoDriver.h in Headers */,
+				A7102E1A1B5085BB0007D40A /* BTTokenizedPayPalCheckout_Internal.h in Headers */,
 				A7A6DD3B1B434558008857E1 /* BTPostalAddress_Internal.h in Headers */,
 				16CD2EA71B40788300E68495 /* BTNullability.h in Headers */,
 				16E17D201B3DE71C0024F9AB /* BTCardTokenizationRequest.h in Headers */,

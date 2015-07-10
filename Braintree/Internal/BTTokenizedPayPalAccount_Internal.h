@@ -6,8 +6,6 @@
 - (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
                                description:(NSString *)description
                                      email:(NSString *)email
-                                 firstName:(NSString *)firstName
-                                  lastName:(NSString *)lastName
-                            billingAddress:(BTPostalAddress *)billingAddress
-                           shippingAddress:(BTPostalAddress *)shippingAddress;
+                            accountAddress:(BTPostalAddress *)accountAddress;
+
 @end

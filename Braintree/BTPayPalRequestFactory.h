@@ -9,4 +9,11 @@
                                               environment:(NSString *)environment
                                         callbackURLScheme:(NSString *)callbackURLScheme;
 
+- (PayPalOneTouchAuthorizationRequest *)requestWithScopeValues:(NSSet *)scopeValues
+                                                    privacyURL:(NSURL *)privacyURL
+                                                  agreementURL:(NSURL *)agreementURL
+                                                      clientID:(NSString *)clientID
+                                                   environment:(NSString *)environment
+                                             callbackURLScheme:(NSString *)callbackURLScheme;
+
 @end

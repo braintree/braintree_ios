@@ -1,9 +1,19 @@
 #import "BTPayPalDriver.h"
 #import "BTPayPalRequestFactory.h"
 
+BT_ASSUME_NONNULL_BEGIN
+
 @interface BTPayPalDriver ()
 
-- (void)setCheckoutContinuationBlock:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock;
+/// Set up the callback to be invoked on return from browser or app switch for PayPal Checkout (Single Payments)
+///
+/// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
+- (void)setCheckoutAppSwitchReturnBlock:(void (^)(__BT_NULLABLE BTTokenizedPayPalCheckout *tokenizedCheckout, __BT_NULLABLE NSError *error))completionBlock;
+
+/// Set up the callback to be invoked on return from browser or app switch for PayPal Authorization (Future Payments)
+///
+/// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
+- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(__BT_NULLABLE BTTokenizedPayPalAccount *tokenizedAccount, __BT_NULLABLE NSError *error))completionBlock;
 
 @property (nonatomic, strong) BTPayPalRequestFactory *requestFactory;
 
@@ -11,3 +21,5 @@
 @property (nonatomic, strong) Class payPalClass;
 
 @end
+
+BT_ASSUME_NONNULL_END
