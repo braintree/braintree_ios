@@ -7,7 +7,7 @@ class ViewController: UIViewController, PKPaymentAuthorizationViewControllerDele
     let apiClient = try! BTAPIClient(clientKey: "test_client_key")
     var applePay : BTApplePayTokenizationClient
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         applePay = BTApplePayTokenizationClient(APIClient: apiClient)
         super.init(coder: aDecoder)
     }

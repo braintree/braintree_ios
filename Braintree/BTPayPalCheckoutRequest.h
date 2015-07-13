@@ -19,7 +19,6 @@ BT_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, strong) NSDecimalNumber *amount;
 @property (nonatomic, BT_NULLABLE, copy) NSString *currencyCode;
 
-/// TODO: Figure out what shipping address will be used for
 @property (nonatomic, BT_NULLABLE, strong) BTPostalAddress *shippingAddress;
 
 @end

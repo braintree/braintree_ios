@@ -46,8 +46,8 @@ static void (^appSwitchReturnBlock)(NSURL *url);
             if (completionBlock) completionBlock(nil, error);
             return;
         }
-        if (!remoteConfiguration[@"paypalEnabled"].isTrue) {
-            error = [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeDisabled userInfo:nil];
+
+        if (![self verifyAppSwitchWithRemoteConfiguration:remoteConfiguration returnURLScheme:self.returnURLScheme error:&error]) {
             if (completionBlock) completionBlock(nil, error);
             return;
         }
@@ -146,20 +146,34 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 #pragma mark - Checkout (Single Payments)
 
 - (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
-    // TODO - call completion block with error if checkoutRequest is bad/nil
+    if (!checkoutRequest || !checkoutRequest.amount) {
+        completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
+        return;
+    }
 
     NSString *returnURI;
     NSString *cancelURI;
 
-    ///
-    /// TODO: Why aren't we getting the redirect and cancel URLs?
-    ///
     [self.payPalClass redirectURLsForCallbackURLScheme:self.returnURLScheme
                                          withReturnURL:&returnURI
                                          withCancelURL:&cancelURI];
+    if (!returnURI || !cancelURI) {
+        completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                                 code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
+                                             userInfo:@{NSLocalizedFailureReasonErrorKey: @"Application may not support One Touch callback URL scheme.",
+                                                        NSLocalizedRecoverySuggestionErrorKey: @"Check the return URL scheme" }]);
+        return;
+    }
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error) {
         if (error) {
+            if (completionBlock) completionBlock(nil, error);
+            return;
+        }
+
+        if (![self verifyAppSwitchWithRemoteConfiguration:remoteConfiguration
+                                          returnURLScheme:self.returnURLScheme
+                                                    error:&error]) {
             if (completionBlock) completionBlock(nil, error);
             return;
         }
@@ -460,13 +474,13 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         return NO;
     }
 
-    if (![PayPalOneTouchCore doesApplicationSupportOneTouchCallbackURLScheme:returnURLScheme]) {
+    if (![self.payPalClass doesApplicationSupportOneTouchCallbackURLScheme:returnURLScheme]) {
         [self.analyticsClient postAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
         if (error != NULL) {
-            NSString *errorMessage = [NSString stringWithFormat:@"Cannot app switch to PayPal. Verify that the return URL scheme (%@) starts with this app's bundle id, and that the PayPal app is installed.", returnURLScheme];
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                          code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
-                                     userInfo:@{ NSLocalizedDescriptionKey: errorMessage }];
+                                     userInfo:@{NSLocalizedFailureReasonErrorKey: @"Application may not support One Touch callback URL scheme",
+                                                NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithFormat:@"Verify that the return URL scheme (%@) starts with this app's bundle id", returnURLScheme] }];
         }
         return NO;
     }

@@ -26,6 +26,9 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
     /// Invalid configuration, e.g. bad CFBundleDisplayName
     BTPayPalDriverErrorTypeInvalidConfiguration,
+
+    /// Invalid request, e.g. missing checkout request
+    BTPayPalDriverErrorTypeInvalidRequest,
 };
 
 @protocol BTPayPalDriverDelegate;

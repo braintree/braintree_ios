@@ -185,6 +185,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = nil
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "")
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
 
         let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
         let expectation = self.expectationWithDescription("Checkout fails with error")
@@ -214,11 +215,12 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
 
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
-        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "anyURL://")
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "com.braintreepayments.Demo.payments")
         let mockRequestFactory = PayPalMockRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
         let delegate = PayPalDriverTestDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform: expectationWithDescription("Delegate received didPerformAppSwitch"))
         payPalDriver.delegate = delegate
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
 
         let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
         payPalDriver.checkoutWithCheckoutRequest(request) { (_, _) -> Void in }
@@ -231,6 +233,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: "", code: 0, userInfo: nil)
 
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "")
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
         let dummyRequest = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
         let expectation = self.expectationWithDescription("Checkout fails with error")
         payPalDriver.checkoutWithCheckoutRequest(dummyRequest) { (_, error) -> Void in
@@ -458,6 +461,10 @@ class StubPayPalOneTouchCore : PayPalOneTouchCore {
 
     override class func clientMetadataID() -> String! {
         return "mock-client-metadata-id"
+    }
+
+    override class func doesApplicationSupportOneTouchCallbackURLScheme(callbackURLScheme: String!) -> Bool {
+        return true
     }
 }
 
