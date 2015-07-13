@@ -76,6 +76,8 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     
+    NSSet *requestScopes = [self.defaultOAuth2Scopes setByAddingObjectsFromSet:(additionalScopes ? additionalScopes : [NSSet set])];
+    
     BTPayPalHandleURLContinuation = ^(NSURL *url){
         [self informDelegateWillProcessAppSwitchResult];
         
@@ -102,7 +104,15 @@ NS_ASSUME_NONNULL_BEGIN
                                          break;
                                      case PayPalOneTouchResultTypeSuccess: {
                                          NSString *userDisplayStringFromAppSwitchResponse = result.response[@"user"][@"display_string"];
-                                         [client savePaypalAccount:result.response
+                                         
+                                         // Modify payload in 'mock' mode to scope the response
+                                         NSMutableDictionary* mutableResponse = [result.response mutableCopy];
+                                         if ([PayPalEnvironmentMock isEqualToString:mutableResponse[@"client"][@"environment"]]
+                                             && mutableResponse[@"response"][@"code"] != nil) {
+                                             mutableResponse[@"response"] = @{@"code": [NSString stringWithFormat:@"fake-code:%@", [[requestScopes allObjects] componentsJoinedByString:@" "]]};
+                                         }
+                                         
+                                         [client savePaypalAccount:mutableResponse
                                                   clientMetadataID:[PayPalOneTouchCore clientMetadataID]
                                                            success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                                [self postAnalyticsEventForTokenizationSuccessWithClient:client];
@@ -133,7 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
     };
     
     PayPalOneTouchAuthorizationRequest *request =
-    [PayPalOneTouchAuthorizationRequest requestWithScopeValues:[self.defaultOAuth2Scopes setByAddingObjectsFromSet:(additionalScopes ? additionalScopes : [NSSet set])]
+    [PayPalOneTouchAuthorizationRequest requestWithScopeValues:requestScopes
                                                     privacyURL:client.configuration.payPalPrivacyPolicyURL
                                                   agreementURL:client.configuration.payPalMerchantUserAgreementURL
                                                       clientID:[self paypalClientIdForClient:client]
