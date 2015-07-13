@@ -98,7 +98,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                        BTClientMetadata *clientMetadata = [self clientMetadataForResult:result];
                                        [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
                                                  parameters:@{ @"paypal_account": result.response,
-                                                               @"correlation_id": [PayPalOneTouchCore clientMetadataID],
+                                                               @"correlation_id": [self.payPalClass clientMetadataID],
                                                                @"_meta": @{ @"source": clientMetadata.sourceString,
                                                                             @"integration": clientMetadata.integrationString } }
                                                  completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -110,11 +110,26 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
                                                      [self postAnalyticsEventForTokenizationSuccess];
 
-                                                     BTPostalAddress *accountAddress = [self accountAddressFromJSON:body[@"paypalAccounts"][0][@"details"][@"payerInfo"][@"accountAddress"]];
-                                                     NSString *nonce = body[@"paypalAccounts"][0][@"nonce"].asString;
-                                                     NSString *email = body[@"paypalAccounts"][0][@"email"].asString;
+                                                     BTJSON *payPalAccount = body[@"paypalAccounts"][0];
 
-                                                     BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce description:email email:email accountAddress:accountAddress];
+                                                     NSString *nonce = payPalAccount[@"nonce"].asString;
+                                                     NSString *description = payPalAccount[@"description"].asString;
+                                                     NSString *email = payPalAccount[@"details"][@"email"].asString;
+                                                     if (payPalAccount[@"details"][@"payerInfo"][@"email"].isString) {
+                                                         email = payPalAccount[@"details"][@"payerInfo"][@"email"].asString;
+                                                     }
+                                                     BTPostalAddress *accountAddress = [self accountAddressFromJSON:payPalAccount[@"details"][@"payerInfo"][@"accountAddress"]];
+
+                                                     // Braintree gateway has some inconsistent behavior depending on
+                                                     // the type of nonce, and sometimes returns "PayPal" for description,
+                                                     // and sometimes returns a real identifying string. The former is not
+                                                     // desirable for display. The latter is.
+                                                     // As a workaround, we ignore descriptions that look like "PayPal".
+                                                     if ([description caseInsensitiveCompare:@"PayPal"] == NSOrderedSame) {
+                                                         description = email;
+                                                     }
+
+                                                     BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce description:description email:email accountAddress:accountAddress];
 
                                                      if (completionBlock) completionBlock(tokenizedPayPalAccount, nil);
                                                      appSwitchReturnBlock = nil;
@@ -150,14 +165,26 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         }
 
         NSString *currencyCode = checkoutRequest.currencyCode ?: remoteConfiguration[@"payPal"][@"currencyIsoCode"].asString;
-        NSString *correlationId = @"TODO";
+
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        if (checkoutRequest.amount.stringValue) {
+            parameters[@"amount"] = checkoutRequest.amount.stringValue;
+        }
+        if (currencyCode) {
+            parameters[@"currency_iso_code"] = currencyCode;
+        }
+        if (returnURI) {
+            parameters[@"return_url"] = returnURI;
+        }
+        if (cancelURI) {
+            parameters[@"cancel_url"] = cancelURI;
+        }
+        if ([self.payPalClass clientMetadataID]) {
+            parameters[@"correlation_id"] = [self.payPalClass clientMetadataID];
+        }
 
         [self.apiClient POST:@"v1/paypal_hermes/create_payment_resource"
-                  parameters:@{ @"amount": checkoutRequest.amount.stringValue,
-                                @"currency_iso_code": currencyCode ?: [NSNull null],
-                                @"return_url": returnURI ?: [NSNull null],
-                                @"cancel_url": cancelURI ?: [NSNull null],
-                                @"correlation_id": correlationId }
+                  parameters:parameters
                   completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
 
                       if (error) {
@@ -213,12 +240,15 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                        break;
                                    case PayPalOneTouchResultTypeSuccess: {
 
-                                       NSMutableDictionary *payPalParameters = [result.response mutableCopy];
-                                       payPalParameters[@"options"] = @{ @"validate": @NO };
+                                       NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+                                       parameters[@"paypal_account"] = [result.response mutableCopy];
+                                       parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
+                                       if ([self.payPalClass clientMetadataID]) {
+                                           parameters[@"correlation_id"] = [self.payPalClass clientMetadataID];
+                                       }
 
                                        [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
-                                                 parameters:@{ @"paypal_account": payPalParameters,
-                                                               @"correlation_id": @"TODO" }
+                                                 parameters:parameters
                                                  completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                                                      if (error) {
                                                          [self postAnalyticsEventForTokenizationFailureForSinglePayment];
@@ -228,20 +258,39 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
                                                      [self postAnalyticsEventForTokenizationSuccessForSinglePayment];
 
-                                                     BTPostalAddress *shippingAddress = [self shippingOrBillingAddressFromJSON:body[@"paypalAccounts"][0][@"details"][@"payerInfo"][@"shippingAddress"]];
-                                                     BTPostalAddress *billingAddress = [self shippingOrBillingAddressFromJSON:body[@"paypalAccounts"][0][@"details"][@"payerInfo"][@"billingAddress"]];
+                                                     BTJSON *payPalAccount = body[@"paypalAccounts"][0];
+                                                     NSString *nonce = payPalAccount[@"nonce"].asString;
+                                                     NSString *description = payPalAccount[@"description"].asString;
+
+                                                     BTJSON *details = payPalAccount[@"details"];
+                                                     NSString *email = details[@"email"].asString;
+                                                     // Allow email to be under payerInfo
+                                                     if (details[@"payerInfo"][@"email"].isString) { email = details[@"payerInfo"][@"email"].asString; }
+                                                     NSString *firstName = details[@"payerInfo"][@"firstName"].asString;
+                                                     NSString *lastName = details[@"payerInfo"][@"lastName"].asString;
+                                                     NSString *phone = details[@"payerInfo"][@"phone"].asString;
+
+                                                     BTPostalAddress *shippingAddress = [self shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
+                                                     BTPostalAddress *billingAddress = [self shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
                                                      if (!billingAddress) {
-                                                         billingAddress = [self accountAddressFromJSON:body[@"paypalAccounts"][0][@"details"][@"payerInfo"][@"accountAddress"]];
+                                                         billingAddress = [self accountAddressFromJSON:details[@"payerInfo"][@"accountAddress"]];
                                                      }
-                                                     NSString *nonce = body[@"paypalAccounts"][0][@"nonce"].asString;
-                                                     NSString *email = body[@"paypalAccounts"][0][@"email"].asString;
+
+                                                     // Braintree gateway has some inconsistent behavior depending on
+                                                     // the type of nonce, and sometimes returns "PayPal" for description,
+                                                     // and sometimes returns a real identifying string. The former is not
+                                                     // desirable for display. The latter is.
+                                                     // As a workaround, we ignore descriptions that look like "PayPal".
+                                                     if ([description caseInsensitiveCompare:@"PayPal"] == NSOrderedSame) {
+                                                         description = email;
+                                                     }
 
                                                      BTTokenizedPayPalCheckout *tokenizedCheckout = [[BTTokenizedPayPalCheckout alloc] initWithPaymentMethodNonce:nonce
-                                                                                                                                                      description:email
+                                                                                                                                                      description:description
                                                                                                                                                             email:email
-                                                                                                                                                        firstName:@"TODO"
-                                                                                                                                                         lastName:@"TODO"
-                                                                                                                                                            phone:@"TODO"
+                                                                                                                                                        firstName:firstName
+                                                                                                                                                         lastName:lastName
+                                                                                                                                                            phone:phone
                                                                                                                                                    billingAddress:billingAddress
                                                                                                                                                   shippingAddress:shippingAddress];
 

@@ -60,26 +60,29 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         XCTAssertTrue(mockRequestFactory.authorizationRequest.appSwitchPerformed)
     }
 
-    func testAuthorization_whenAppSwitchSuccessful_tokenizesBasicPayPalAccount() {
-        assertSuccessfulAuthorizationResponse([
-                "paypalAccounts": [
-                    [
-                        "nonce": "a-nonce",
-                        "email": "hello@world.com"
-                    ]
-                ]],
-            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
-                XCTAssertNotNil(tokenizedPayPalAccount)
-        })
+    func testAuthorization_whenAppSwitchSucceeds_tokenizesPayPalAccount() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "foo://")
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
+        payPalDriver.payPalClass.cannedResult.overrideType = .Success
+
+        payPalDriver.setAuthorizationAppSwitchReturnBlock { (_, _) -> Void in }
+        BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
+
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
+        let lastPostParameters = mockAPIClient.lastPOSTParameters
+        XCTAssertEqual(lastPostParameters["correlation_id"] as! String, StubPayPalOneTouchCore.clientMetadataID())
+        let paypalAccount = lastPostParameters["paypal_account"] as! NSDictionary
+        XCTAssertEqual(paypalAccount, StubPayPalOneTouchCoreResult().response)
     }
 
-    func testSuccessfulPayPalTokenization_returnsExpectedAddress() {
+    func testTokenizedPayPalAccount_containsPayerInfo() {
         assertSuccessfulAuthorizationResponse([
             "paypalAccounts": [
                 [
                     "nonce": "a-nonce",
-                    "email": "hello@world.com",
+                    "description": "A description",
                     "details": [
+                        "email": "hello@world.com",
                         "payerInfo": [
                             "accountAddress": [
                                 "recipientName": "Foo Bar",
@@ -94,6 +97,9 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                     ]
                 ] ] ],
             assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalAccount!.paymentMethodNonce, "a-nonce")
+                XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
+                XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
                 XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.recipientName!, "Foo Bar")
                 XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.streetAddress, "1 Foo Ct")
                 XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.extendedAddress!, "Apt Bar")
@@ -101,6 +107,38 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                 XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.region!, "FU")
                 XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.postalCode!, "42")
                 XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.countryCodeAlpha2, "USA")
+        })
+    }
+
+    func testTokenizedPayPalAccount_whenEmailAddressIsNestedInsidePayerInfoJSON_usesNestedEmailAddress() {
+        assertSuccessfulAuthorizationResponse([
+            "paypalAccounts": [
+                [
+                    "details": [
+                        "email": "not-hello@world.com",
+                        "payerInfo": [
+                            "email": "hello@world.com",
+                        ]
+                    ],
+                ]
+            ] ],
+            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalCheckout!.email, "hello@world.com")
+        })
+    }
+
+    func testTokenizedPayPalAccount_whenDescriptionJSONIsPayPal_usesEmailAsLocalizedDescription() {
+        assertSuccessfulAuthorizationResponse([
+            "paypalAccounts": [
+                [
+                    "description": "PayPal",
+                    "details": [
+                        "email": "hello@world.com",
+                    ],
+                ]
+            ] ],
+            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalCheckout!.localizedDescription, "hello@world.com")
         })
     }
 
@@ -159,16 +197,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
 
     func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResource() {
-        // PayPalOneTouchCore provides cancel and return URLs that are used when creating payment resource
-        class StubPayPalOneTouchCore : PayPalOneTouchCore {
-            override class func redirectURLsForCallbackURLScheme(callbackURLScheme: String!,
-                withReturnURL returnURL: AutoreleasingUnsafeMutablePointer<NSString?>,
-                withCancelURL cancelURL: AutoreleasingUnsafeMutablePointer<NSString?>) {
-                    cancelURL.memory = "scheme://cancel"
-                    returnURL.memory = "scheme://return"
-            }
-        }
-
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "anyURL://")
         let checkoutRequest = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
         checkoutRequest.currencyCode = "GBP"
@@ -182,7 +210,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["currency_iso_code"] as! String, "GBP")
         XCTAssertEqual(lastPostParameters["return_url"] as! String, "scheme://return")
         XCTAssertEqual(lastPostParameters["cancel_url"] as! String, "scheme://cancel")
-        XCTAssertEqual(lastPostParameters["correlation_id"] as! String, "TODO")
+        XCTAssertEqual(lastPostParameters["correlation_id"] as! String, StubPayPalOneTouchCore.clientMetadataID())
     }
 
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
@@ -255,7 +283,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
 
-    func testSuccessfulCheckout_tokenizesPayPalAccount() {
+    func testCheckout_whenAppSwitchSucceeds_tokenizesPayPalCheckout() {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient, returnURLScheme: "foo://")
         payPalDriver.payPalClass = StubPayPalOneTouchCore.self
         payPalDriver.payPalClass.cannedResult.overrideType = .Success
@@ -264,18 +292,25 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
+        let lastPostParameters = mockAPIClient.lastPOSTParameters
+        let paypalAccount = lastPostParameters["paypal_account"] as! NSDictionary
+        let options = paypalAccount["options"] as! NSDictionary
+        let validate = (options["validate"] as! NSNumber).boolValue
+        XCTAssertFalse(validate)
     }
 
-    func testSuccessfulCheckout_returnsPayerInfo() {
+    func testTokenizedPayPalCheckout_containsPayerInfo() {
         assertSuccessfulCheckoutResponse([
             "paypalAccounts": [
                 [
                     "nonce": "a-nonce",
-                    "email": "hello@world.com",
-                    "firstName": "Some",
-                    "lastName": "Dude",
+                    "description": "A description",
                     "details": [
+                        "email": "hello@world.com",
                         "payerInfo": [
+                            "firstName": "Some",
+                            "lastName": "Dude",
+                            "phone": "867-5309",
                             "accountAddress": [
                                 "street1": "1 Foo Ct",
                                 "street2": "Apt Bar",
@@ -306,8 +341,12 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                     ]
                 ] ] ],
             assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
-                // TODO: test firstName/lastName 
-                
+                XCTAssertEqual(tokenizedPayPalCheckout!.paymentMethodNonce, "a-nonce")
+                XCTAssertEqual(tokenizedPayPalCheckout!.localizedDescription, "A description")
+                XCTAssertEqual(tokenizedPayPalCheckout!.firstName, "Some")
+                XCTAssertEqual(tokenizedPayPalCheckout!.lastName, "Dude")
+                XCTAssertEqual(tokenizedPayPalCheckout!.phone, "867-5309")
+                XCTAssertEqual(tokenizedPayPalCheckout!.email, "hello@world.com")
                 XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.recipientName!, "Bar Foo")
                 XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.streetAddress, "2 Foo Ct")
                 XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.extendedAddress!, "Apt Foo")
@@ -325,39 +364,36 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         })
     }
 
-    func testSuccessfulCheckout_whenBillingAddressMissing_usesAccountAddressAsBillingAddress() {
+    func testTokenizedPayPalCheckout_whenEmailAddressIsNestedInsidePayerInfoJSON_usesNestedEmailAddress() {
         assertSuccessfulCheckoutResponse([
             "paypalAccounts": [
                 [
-                    "nonce": "a-nonce",
-                    "email": "hello@world.com",
                     "details": [
+                        "email": "not-hello@world.com",
                         "payerInfo": [
-                            "accountAddress": [
-                                "recipientName": "Foo Bar",
-                                "street1": "1 Foo Ct",
-                                "street2": "Apt Bar",
-                                "city": "Fubar",
-                                "state": "FU",
-                                "postalCode": "42",
-                                "country": "USA"
-                            ]
+                            "email": "hello@world.com",
                         ]
-                    ]
-                ] ] ],
+                    ],
+                ]
+            ] ],
             assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.recipientName!, "Foo Bar")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.streetAddress, "1 Foo Ct")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.extendedAddress!, "Apt Bar")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.locality, "Fubar")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.region!, "FU")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.postalCode!, "42")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.countryCodeAlpha2, "USA")
+                XCTAssertEqual(tokenizedPayPalCheckout!.email, "hello@world.com")
         })
     }
 
-    func testSuccessfulCheckout_createsPayPalAccount {
-
+    func testTokenizedPayPalCheckout_whenDescriptionJSONIsPayPal_usesEmailAsLocalizedDescription() {
+        assertSuccessfulCheckoutResponse([
+            "paypalAccounts": [
+                [
+                    "description": "PayPal",
+                    "details": [
+                        "email": "hello@world.com",
+                    ],
+                ]
+            ] ],
+            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalCheckout!.localizedDescription, "hello@world.com")
+        })
     }
 
     // MARK: Helpers
@@ -400,7 +436,7 @@ class StubPayPalOneTouchCoreResult : PayPalOneTouchCoreResult {
 
     override var response : [NSObject : AnyObject] {
         get {
-            return [:]
+            return ["foo": "bar"]
         }
     }
 }
@@ -413,6 +449,16 @@ class StubPayPalOneTouchCore : PayPalOneTouchCore {
         completionBlock(self.cannedResult)
     }
 
+    override class func redirectURLsForCallbackURLScheme(callbackURLScheme: String!,
+        withReturnURL returnURL: AutoreleasingUnsafeMutablePointer<NSString?>,
+        withCancelURL cancelURL: AutoreleasingUnsafeMutablePointer<NSString?>) {
+            cancelURL.memory = "scheme://cancel"
+            returnURL.memory = "scheme://return"
+    }
+
+    override class func clientMetadataID() -> String! {
+        return "mock-client-metadata-id"
+    }
 }
 
 class MockPayPalCheckoutRequest : PayPalOneTouchCheckoutRequest {

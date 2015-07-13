@@ -5,6 +5,8 @@
 #import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"
 
+BT_ASSUME_NONNULL_BEGIN
+
 extern NSString *const BTPayPalDriverErrorDomain;
 
 typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
@@ -25,8 +27,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
     /// Invalid configuration, e.g. bad CFBundleDisplayName
     BTPayPalDriverErrorTypeInvalidConfiguration,
 };
-
-BT_ASSUME_NONNULL_BEGIN
 
 @protocol BTPayPalDriverDelegate;
 
