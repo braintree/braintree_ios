@@ -112,6 +112,10 @@
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(__unused NSString *)sourceApplication {
+    // BTCoinbase requires a delegate
+    if (!self.delegate) {
+        return NO;
+    }
     NSURL *redirectURL = self.redirectUri;
     BOOL schemeMatches = [[url.scheme lowercaseString] isEqualToString:[redirectURL.scheme lowercaseString]];
     BOOL hostMatches = [url.host isEqualToString:redirectURL.host];

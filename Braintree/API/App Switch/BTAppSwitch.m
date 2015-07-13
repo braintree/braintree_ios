@@ -36,11 +36,7 @@
 - (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
     for (id<BTAppSwitching> switcher in [self.appSwitchingInstances allValues]) {
         if ([switcher canHandleReturnURL:url sourceApplication:sourceApplication]) {
-            if ([switcher delegate]) {
-                [switcher handleReturnURL:url];
-            } else {
-                // Fallback BTSwitchingDelegate here
-            }
+            [switcher handleReturnURL:url];
             return YES;
         }
     }

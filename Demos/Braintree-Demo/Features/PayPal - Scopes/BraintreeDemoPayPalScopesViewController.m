@@ -20,6 +20,7 @@
         self.addressTextView = [[UITextView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 2) - 100, (self.view.bounds.size.width / 8) * 7, 200, 100)];
         [self.view addSubview:self.addressTextView];
         self.addressTextView.backgroundColor = [UIColor clearColor];
+        self.addressTextView.editable = NO;
     }
     return self;
 }

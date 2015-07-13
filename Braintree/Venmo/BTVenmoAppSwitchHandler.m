@@ -116,6 +116,10 @@
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    // BTVenmoAppSwitchHandler requires a delegate
+    if (!self.delegate) {
+        return NO;
+    }
     return [BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:sourceApplication];
 }
 

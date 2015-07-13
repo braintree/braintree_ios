@@ -38,18 +38,10 @@
 #pragma mark BTAppSwitching
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    if (self.client == nil || self.delegate == nil) {
-        return NO;
-    }
-    
     if (![[url.scheme lowercaseString] isEqualToString:[self.returnURLScheme lowercaseString]]) {
         return NO;
     }
-    
-    if (![PayPalOneTouchCore canParseURL:url sourceApplication:sourceApplication]) {
-        return NO;
-    }
-    return YES;
+    return [BTPayPalDriver canHandleAppSwitchReturnURL:url sourceApplication:sourceApplication];
 }
 
 - (void)handleReturnURL:(NSURL *)url {
