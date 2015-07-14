@@ -11,8 +11,10 @@ describe(@"checkoutWithAmount:", ^{
     
     it(@"defaults to shipping method collection disabled", ^{
         BTPayPalCheckout *checkout = [BTPayPalCheckout checkoutWithAmount:[NSDecimalNumber decimalNumberWithString:@"1.23"]];
-        expect(checkout.enableShippingAddress).to.beFalsy();
+        expect(checkout.enableShippingAddress).to.beTruthy();
+        expect(checkout.addressOverride).to.beFalsy();
         expect(checkout.shippingAddress).to.beNil();
+        expect(checkout.localeCode).to.beNil();
     });
     
     it(@"requires an amount", ^{
@@ -30,44 +32,49 @@ describe(@"checkoutWithAmount:", ^{
     });
 });
 
-describe(@"enableShippingAddress", ^{
+describe(@"disableShippingAddress", ^{
     it(@"retains the shipping address preference", ^{
         BTPayPalCheckout *checkout = [BTPayPalCheckout checkoutWithAmount:[NSDecimalNumber one]];
-        checkout.enableShippingAddress = YES;
+        checkout.enableShippingAddress = NO;
+        expect(checkout.enableShippingAddress).to.beFalsy();
+    });
+});
+
+describe(@"enableAddressOverride", ^{
+    it(@"retains the address override preference", ^{
+        BTPayPalCheckout *checkout = [BTPayPalCheckout checkoutWithAmount:[NSDecimalNumber one]];
+        checkout.addressOverride = YES;
         expect(checkout.enableShippingAddress).to.beTruthy();
+    });
+});
+
+describe(@"setLocalCode", ^{
+    it(@"retains the locale code preference", ^{
+        BTPayPalCheckout *checkout = [BTPayPalCheckout checkoutWithAmount:[NSDecimalNumber one]];
+        checkout.localeCode = @"de_DE";
+        expect(checkout.localeCode).to.equal(@"de_DE");
     });
 });
 
 describe(@"shippingAddress", ^{
     it(@"retains the specified shipping address override", ^{
         BTPayPalCheckout *checkout = [BTPayPalCheckout checkoutWithAmount:[NSDecimalNumber one]];
-        ABRecordRef person = ABPersonCreate();
-        ABRecordSetValue(person, kABPersonFirstNameProperty, (__bridge_retained CFStringRef)@"Johnny", NULL);
-        ABRecordSetValue(person, kABPersonLastNameProperty, (__bridge_retained CFStringRef)@"Appleseed", NULL);
-
-        ABMutableMultiValueRef shippingAddress = ABMultiValueCreateMutable(kABDictionaryPropertyType);
-        ABMultiValueAddValueAndLabel(shippingAddress, (__bridge CFDictionaryRef)@{
-                                                                                  (__bridge_transfer NSString *)kABPersonAddressStreetKey: @"1 Infinite Loop",
-                                                                                  (__bridge_transfer NSString *)kABPersonAddressCityKey: @"Cupertino",
-                                                                                  (__bridge_transfer NSString *)kABPersonAddressStateKey: @"CA",
-                                                                                  (__bridge_transfer NSString *)kABPersonAddressZIPKey: @"95014",
-                                                                                  (__bridge_transfer NSString *)kABPersonAddressCountryKey: @"USA",
-                                                                                  }, kABHomeLabel, NULL);
-        ABRecordSetValue(person, kABPersonAddressProperty, shippingAddress, NULL);
-        CFRelease(shippingAddress);
-
-        ABMultiValueRef emailsMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-        ABMultiValueAddValueAndLabel(emailsMultiValue, @"test@example.com", kABHomeLabel, NULL);
-        ABRecordSetValue(person, kABPersonEmailProperty, emailsMultiValue, NULL);
-        CFRelease(emailsMultiValue);
-        
-        NSInteger retainCount = CFGetRetainCount(person);
-        checkout.shippingAddress = person;
-        expect(CFGetRetainCount(person)).to.equal(retainCount + 1);
-        expect((__bridge_transfer NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty)).to.equal(@"Johnny");
-        ABMutableMultiValueRef multiValue = ABRecordCopyValue(person, kABPersonEmailProperty);
-        expect((__bridge_transfer NSString *)ABMultiValueCopyValueAtIndex(multiValue, 0)).to.equal(@"test@example.com");
-        CFRelease(multiValue);
+        BTPostalAddress *postalAddress = [[BTPostalAddress alloc] init];
+        postalAddress.recipientName = @"Johnny";
+        postalAddress.streetAddress = @"123 Fake St.";
+        postalAddress.extendedAddress = @"Apt 2";
+        postalAddress.locality = @"Oakland";
+        postalAddress.region = @"CA";
+        postalAddress.postalCode = @"94602";
+        postalAddress.countryCodeAlpha2 = @"US";
+        checkout.shippingAddress = postalAddress;
+        expect(postalAddress.recipientName).to.equal(@"Johnny");
+        expect(postalAddress.streetAddress).to.equal(@"123 Fake St.");
+        expect(postalAddress.extendedAddress).to.equal(@"Apt 2");
+        expect(postalAddress.locality).to.equal(@"Oakland");
+        expect(postalAddress.region).to.equal(@"CA");
+        expect(postalAddress.postalCode).to.equal(@"94602");
+        expect(postalAddress.countryCodeAlpha2).to.equal(@"US");
     });
 });
 

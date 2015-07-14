@@ -188,8 +188,7 @@ NS_ASSUME_NONNULL_BEGIN
                                            withReturnURL:&redirectUri
                                            withCancelURL:&cancelUri];
     
-    [client createPayPalPaymentResourceWithAmount:checkout.amount
-                                     currencyCode:checkout.currencyCode ?: client.configuration.payPalCurrencyCode
+    [client createPayPalPaymentResourceWithCheckout:checkout
                                       redirectUri:redirectUri
                                         cancelUri:cancelUri
                                  clientMetadataID:[PayPalOneTouchCore clientMetadataID]

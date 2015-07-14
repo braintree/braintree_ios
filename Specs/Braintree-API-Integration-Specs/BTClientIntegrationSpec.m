@@ -1275,8 +1275,9 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
             XCTestExpectation *expectation = [self expectationWithDescription:@""];
             NSString *cancelUrl = @"https://example.com/cancel";
             NSString *successUrl = @"https://example.com/redirect";
-            
-            [testClient createPayPalPaymentResourceWithAmount:[NSDecimalNumber decimalNumberWithString:@"1.23"] currencyCode:@"USD" redirectUri:successUrl cancelUri:cancelUrl clientMetadataID:@"fake-metadata-id" success:^(BTClientPayPalPaymentResource *paymentResource) {
+            BTPayPalCheckout *checkout = [BTPayPalCheckout checkoutWithAmount:[NSDecimalNumber one]];
+            checkout.currencyCode = @"USD";
+            [testClient createPayPalPaymentResourceWithCheckout:checkout redirectUri:successUrl cancelUri:cancelUrl clientMetadataID:@"fake-metadata-id" success:^(BTClientPayPalPaymentResource *paymentResource) {
                 expect(paymentResource.redirectURL).to.beKindOf([NSURL class]);
                 expect([[paymentResource.redirectURL absoluteString] length]).to.beGreaterThan(0);
                 [expectation fulfill];

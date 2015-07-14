@@ -6,6 +6,7 @@
 
 #import "BTClientPayPalPaymentResource.h"
 #import "BTThreeDSecureLookupResult.h"
+#import "BTPayPalCheckout.h"
 
 /// Success Block type for 3D Secure lookups
 typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup);
@@ -27,8 +28,7 @@ typedef void (^BTClientPayPalPaymentResourceBlock)(BTClientPayPalPaymentResource
                            success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
                            failure:(BTClientFailureBlock)failureBlock;
 
-- (void)createPayPalPaymentResourceWithAmount:(NSDecimalNumber *)amount
-                                 currencyCode:(NSString *)currencyCode
+- (void)createPayPalPaymentResourceWithCheckout:(BTPayPalCheckout *)checkout
                                   redirectUri:(NSString *)redirectUri
                                     cancelUri:(NSString *)cancelUri
                              clientMetadataID:(NSString *)clientMetadataID

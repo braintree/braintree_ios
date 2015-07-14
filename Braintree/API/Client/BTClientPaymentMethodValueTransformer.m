@@ -78,14 +78,16 @@
         }
         if (payerInfoDict && payerInfoDict[BTPostalAddressKeyShippingAddress]) {
             NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyShippingAddress];
-            payPal.shippingAddress = [[BTPostalAddress alloc] init];
-            payPal.shippingAddress.recipientName = addressDictionary[BTPostalAddressKeyRecipientName];
-            payPal.shippingAddress.streetAddress = addressDictionary[BTPostalAddressKeyLine1];
-            payPal.shippingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyLine2];
-            payPal.shippingAddress.locality = addressDictionary[BTPostalAddressKeyCity];
-            payPal.shippingAddress.region = addressDictionary[BTPostalAddressKeyState];
-            payPal.shippingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
-            payPal.shippingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountryCode];
+            if ([addressDictionary count] > 0) {
+                payPal.shippingAddress = [[BTPostalAddress alloc] init];
+                payPal.shippingAddress.recipientName = addressDictionary[BTPostalAddressKeyRecipientName];
+                payPal.shippingAddress.streetAddress = addressDictionary[BTPostalAddressKeyLine1];
+                payPal.shippingAddress.extendedAddress = addressDictionary[BTPostalAddressKeyLine2];
+                payPal.shippingAddress.locality = addressDictionary[BTPostalAddressKeyCity];
+                payPal.shippingAddress.region = addressDictionary[BTPostalAddressKeyState];
+                payPal.shippingAddress.postalCode = addressDictionary[BTPostalAddressKeyPostalCode];
+                payPal.shippingAddress.countryCodeAlpha2 = addressDictionary[BTPostalAddressKeyCountryCode];
+            }
         }
         
         // Braintree gateway has some inconsistent behavior depending on

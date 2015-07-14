@@ -22,25 +22,22 @@
     self = [self init];
     if (self) {
         self.amount = amount;
-        self.enableShippingAddress = NO;
+        self.enableShippingAddress = YES;
+        self.addressOverride = NO;
     }
     return self;
-}
-
-- (void)setShippingAddress:(ABRecordRef)shippingAddress {
-    _shippingAddress = CFRetain(shippingAddress);
 }
 
 - (NSString *)description {
     NSString *shippingAddressDescription = @"(nil)";
     if (self.shippingAddress) {
-        ABRecordGetRecordID(self.shippingAddress);
-        shippingAddressDescription = (__bridge_transfer NSString *)ABRecordCopyCompositeName(self.shippingAddress);
+        shippingAddressDescription = [self.shippingAddress debugDescription];
     }
-    return [NSString stringWithFormat:@"<BTPayPalCheckout:%p | amount:%@ enableShippingAddress:%@ shippingAddress:%@>",
+    return [NSString stringWithFormat:@"<BTPayPalCheckout:%p | amount:%@ enableShippingAddress:%@ addressOverride:%@ shippingAddress:%@>",
             self,
             self.amount.stringValue,
             self.enableShippingAddress ? @"YES" : @"NO",
+            self.addressOverride ? @"YES" : @"NO",
             shippingAddressDescription];
 }
 
