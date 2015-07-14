@@ -12,23 +12,29 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
     BTAPIClientErrorTypeConfigurationUnavailable,
 };
 
+/// This class acts as the entry point for accessing the Braintree APIs
+/// via common HTTP methods performed on API endpoints. It also manages
+/// authentication via client key and provides access to a merchant's
+/// gateway configuration.
+
 @interface BTAPIClient : NSObject
 
-///
+/// Initialize a new API client.
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @param error Returns an `NSError` object when an error occurs.
 - (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey
                                         error:(NSError **)error;
 
-///
+/// Initialize a new API client.
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing
 /// `nil` will use the application's main queue.
 /// @param error This is set to an `NSError` object when an error occurs.
 - (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey
-                                dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue error:(NSError **)error;
+                                dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue
+                                        error:(NSError **)error;
 
 /// The GCD dispatch queue to which completion handlers will be dispatched.
 ///
@@ -50,12 +56,27 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 
 /// Perfom an HTTP GET on a URL composed of the configured from environment
 /// and the given path.
+///
+/// @param path The endpoint URI path.
+/// @param parameters Optional set of query parameters to be encoded with the request.
+/// @param completionBlock A block object to be executed when the request finishes.
+/// On success, `body` and `response` will contain the JSON body response and the
+/// HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
+/// `nil` and `error` will contain the error that occurred.
 - (void)GET:(NSString *)path
  parameters:(NSDictionary *)parameters
  completion:(void(^)(__BT_NULLABLE BTJSON *body, __BT_NULLABLE NSHTTPURLResponse *response, __BT_NULLABLE NSError *error))completionBlock;
 
 /// Perfom an HTTP POST on a URL composed of the configured from environment
 /// and the given path.
+///
+/// @param path The endpoint URI path.
+/// @param parameters Optional set of parameters to be JSON encoded and sent in the
+/// body of the request.
+/// @param completionBlock A block object to be executed when the request finishes.
+/// On success, `body` and `response` will contain the JSON body response and the
+/// HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
+/// `nil` and `error` will contain the error that occurred.
 - (void)POST:(NSString *)path
   parameters:(NSDictionary *)parameters
   completion:(void(^)(__BT_NULLABLE BTJSON *body, __BT_NULLABLE NSHTTPURLResponse *response, __BT_NULLABLE NSError *error))completionBlock;

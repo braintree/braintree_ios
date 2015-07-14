@@ -38,13 +38,6 @@ NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BT
                       return completionBlock(nil, error);
                   }
 
-                  if (response.statusCode != 202) {
-                      return completionBlock(nil, [NSError errorWithDomain:BTCardTokenizationClientErrorDomain
-                                                                      code:BTCardTokenizationClientErrorTypeFatalError
-                                                                  userInfo: @{
-                                                                              NSLocalizedFailureReasonErrorKey : [NSString stringWithFormat:@"Braintree server returned HTTP status code %ld", (long)response.statusCode] }]);
-                  }
-
                   BTJSON *creditCard = body[@"creditCards"][0];
 
                   if (!creditCard[@"nonce"].isString || !creditCard[@"description"].isString) {
