@@ -89,8 +89,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                        break;
                                    case PayPalOneTouchResultTypeCancel:
                                        if (result.error) {
-                                           // TODO: Log error
-                                           return;
+                                           [[BTLogger sharedLogger] error:@"PayPal error: %@", result.error];
                                        }
                                        if (completionBlock) completionBlock(nil, nil);
                                        break;
@@ -248,7 +247,6 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                    case PayPalOneTouchResultTypeCancel:
                                        if (result.error) {
                                            [[BTLogger sharedLogger] error:@"PayPal error: %@", result.error];
-                                           return;
                                        }
                                        if (completionBlock) completionBlock(nil, nil);
                                        break;
@@ -491,12 +489,10 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 #pragma mark Analytics Helpers
 
 - (BTAnalyticsClient *)analyticsClient {
-    static BTAnalyticsClient *analyticsClient;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        analyticsClient = [[BTAnalyticsClient alloc] initWithAPIClient:self.apiClient];
-    });
-    return analyticsClient;
+    if (!_analyticsClient) {
+        _analyticsClient = [[BTAnalyticsClient alloc] initWithAPIClient:self.apiClient];
+    }
+    return _analyticsClient;
 }
 
 - (void)postAnalyticsEventForInitiatingOneTouchWithSuccess:(BOOL)success target:(PayPalOneTouchRequestTarget)target {
