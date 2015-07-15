@@ -1,4 +1,5 @@
 #import "BTClientMetadata.h"
+#import "BTSpecDependencies.h"
 
 SpecBegin(BTClientMetadata)
 
