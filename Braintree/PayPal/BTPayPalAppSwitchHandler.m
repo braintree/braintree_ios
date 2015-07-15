@@ -12,6 +12,10 @@
 #import "BTPayPalDriver.h"
 #import "BTPayPalDriver_Compatibility.h"
 
+@interface BTPayPalDriver (TestAdditions)
++ (void)resetSharedState;
+@end
+
 @interface BTPayPalAppSwitchHandler () <BTPayPalDriverDelegate>
 @end
 
@@ -145,6 +149,10 @@
 
 - (void)informDelegateDidCancel {
     [self.delegate appSwitcherDidCancel:self];
+}
+
++ (void)resetSharedState {
+    [BTPayPalDriver resetSharedState];
 }
 
 @end

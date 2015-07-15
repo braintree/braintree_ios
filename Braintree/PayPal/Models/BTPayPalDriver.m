@@ -560,6 +560,10 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
++ (void)resetSharedState {
+    BTPayPalHandleURLContinuation = nil;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END
