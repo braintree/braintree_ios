@@ -20,44 +20,44 @@ PODS:
   - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (4.0.0-pre2):
-    - Braintree/API (= 4.0.0-pre2)
-    - Braintree/Coinbase (= 4.0.0-pre2)
-    - Braintree/Drop-In (= 4.0.0-pre2)
-    - Braintree/Payments (= 4.0.0-pre2)
-    - Braintree/PayPal (= 4.0.0-pre2)
-    - Braintree/UI (= 4.0.0-pre2)
-    - Braintree/Venmo (= 4.0.0-pre2)
-  - Braintree/3D-Secure (4.0.0-pre2):
+  - Braintree (3.9.2-otc-pre3):
+    - Braintree/API (= 3.9.2-otc-pre3)
+    - Braintree/Coinbase (= 3.9.2-otc-pre3)
+    - Braintree/Drop-In (= 3.9.2-otc-pre3)
+    - Braintree/Payments (= 3.9.2-otc-pre3)
+    - Braintree/PayPal (= 3.9.2-otc-pre3)
+    - Braintree/UI (= 3.9.2-otc-pre3)
+    - Braintree/Venmo (= 3.9.2-otc-pre3)
+  - Braintree/3D-Secure (3.9.2-otc-pre3):
     - Braintree/API
     - Braintree/Payments
     - Braintree/UI
-  - Braintree/API (4.0.0-pre2)
-  - Braintree/Apple-Pay (4.0.0-pre2):
+  - Braintree/API (3.9.2-otc-pre3)
+  - Braintree/Apple-Pay (3.9.2-otc-pre3):
     - Braintree/Payments
-  - Braintree/Coinbase (4.0.0-pre2):
+  - Braintree/Coinbase (3.9.2-otc-pre3):
     - Braintree/API
-  - Braintree/Data (4.0.0-pre2):
+  - Braintree/Data (3.9.2-otc-pre3):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (4.0.0-pre2):
+  - Braintree/Drop-In (3.9.2-otc-pre3):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (4.0.0-pre2):
+  - Braintree/Payments (3.9.2-otc-pre3):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (4.0.0-pre2):
+  - Braintree/PayPal (3.9.2-otc-pre3):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (4.0.0-pre2):
+  - Braintree/UI (3.9.2-otc-pre3):
     - Braintree/API
-  - Braintree/Venmo (4.0.0-pre2):
+  - Braintree/Venmo (3.9.2-otc-pre3):
     - Braintree/API
   - CardIO (5.0.6)
   - Expecta (0.3.2)
@@ -121,7 +121,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  Braintree: 0ee1262f011ad66c218c70f892189bf165f19662
+  Braintree: b5e091a1c4024d521725daabf91fd452b8b71984
   CardIO: 3fb62d56651d80e8f98e9572bfbe589ebf13d706
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
