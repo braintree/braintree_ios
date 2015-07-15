@@ -1,17 +1,10 @@
-//
-//  BTAnalyticsClient.m
-//  Braintree
-//
-//  Created by pair on 6/30/15.
-//
-//
-
-#import "BTAnalyticsClient.h"
+#import "BTAnalyticsClient_Internal.h"
 
 #import "BTAPIClient_Internal.h"
 #import "BTAnalyticsMetadata.h"
 #import "BTClientMetadata.h"
 #import "BTHTTP.h"
+#import "BTLogger_Internal.h"
 
 @interface BTAnalyticsClient ()
 @property (nonatomic, strong) BTAPIClient *apiClient;
@@ -20,32 +13,44 @@
 @implementation BTAnalyticsClient
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
-    self = [super init];
-    if (self) {
-        self.apiClient = apiClient;
+    if (self = [super init]) {
+        _apiClient = apiClient;
     }
-    return [super init];
+    return self;
 }
 
 - (void)postAnalyticsEvent:(NSString *)eventKind {
+    [self postAnalyticsEvent:eventKind completion:nil];
+}
+
+- (void)postAnalyticsEvent:(NSString *)eventKind completion:(void(^)(NSError *error))completionBlock {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTJSON *remoteConfiguration, NSError *error){
         if (error) {
-            // TODO: log error
+            [[BTLogger sharedLogger] warning:[NSString stringWithFormat:@"Failed to send analytics event. Remote configuration fetch failed. %@", error.localizedDescription]];
+            if (completionBlock) completionBlock(error);
             return;
         }
 
         NSURL *analyticsURL = remoteConfiguration[@"analytics"][@"url"].asURL;
         if (analyticsURL) {
-            BTHTTP *analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.clientKey];
+            if (!self.analyticsHttp) {
+                self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.apiClient.clientKey];
+            }
+            // A special value passed in by unit tests to prevent BTHTTP from actually posting
+            if ([self.analyticsHttp.baseURL isEqual:[NSURL URLWithString:@"test://do-not-send.url"]]) {
+                if (completionBlock) completionBlock(nil);
+                return;
+            }
 
-            [analyticsHttp POST:@"/"
-                     parameters:@{ @"analytics": @[@{ @"kind": eventKind }],
-                                   @"_meta": self.metaParameters }
-                     completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-                         // TODO
-                     }];
+            [self.analyticsHttp POST:@"/"
+                          parameters:@{ @"analytics": @[@{ @"kind": eventKind }],
+                                        @"_meta": self.metaParameters }
+                          completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+                              if (completionBlock) completionBlock(error);
+                          }];
         } else {
-            // TODO: log
+            [[BTLogger sharedLogger] debug:@"Skipping sending analytics event - analytics is disabled in remote configuration"];
+            if (completionBlock) completionBlock(nil);
         }
     }];
 }

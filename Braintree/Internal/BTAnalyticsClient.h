@@ -1,10 +1,14 @@
-#import <Foundation/Foundation.h>
 #import "BTAPIClient.h"
+#import "BTNullability.h"
+
+BT_ASSUME_NONNULL_BEGIN
 
 @interface BTAnalyticsClient : NSObject
 
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
+- (BT_NULLABLE instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 - (void)postAnalyticsEvent:(NSString *)name;
 
 @end
+
+BT_ASSUME_NONNULL_END

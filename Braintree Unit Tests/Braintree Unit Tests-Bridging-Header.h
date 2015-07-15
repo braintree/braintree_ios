@@ -6,6 +6,7 @@
 #import "BTJSON.h"
 #import "BTHTTP.h"
 #import "BTAPIClient_Internal.h"
+#import "BTAnalyticsClient_Internal.h"
 #import "BTPayPalDriver_Internal.h"
 #import "PayPalOneTouchCore.h"
 #import "PayPalOneTouchRequest.h"
