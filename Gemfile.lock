@@ -107,5 +107,4 @@ DEPENDENCIES
   rake
   rake_commit
   shenzhen
-  xcodeproj (~> 0.24.3)
   xcpretty
