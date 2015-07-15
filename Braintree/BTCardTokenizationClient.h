@@ -10,8 +10,7 @@ extern NSString *const BTCardTokenizationClientErrorDomain;
 
 typedef NS_ENUM(NSInteger, BTCardTokenizationClientErrorType) {
     BTCardTokenizationClientErrorTypeUnknown = 0,
-    BTCardTokenizationClientErrorTypeInvalidCard,
-    BTCardTokenizationClientErrorTypeFatalError,
+    BTCardTokenizationClientErrorTypeInvalidServerResponse,
 };
 
 @interface BTCardTokenizationClient : NSObject

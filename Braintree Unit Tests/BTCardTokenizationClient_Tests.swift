@@ -52,7 +52,6 @@ class BTCardTokenizationClient_Tests: XCTestCase {
             XCTAssertEqual(tokenizedCard.paymentMethodNonce, FakeHTTP.fakeNonce)
             XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
             XCTAssertEqual(tokenizedCard.lastTwo!, "11")
-            XCTAssertNil(tokenizedCard.threeDSecureInfo)
             XCTAssertEqual(tokenizedCard.cardNetwork, .Visa)
             expectation.fulfill()
         }

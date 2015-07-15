@@ -1,4 +1,5 @@
 #import "BTTokenizedCard.h"
+#import "BTJSON.h"
 
 @interface BTTokenizedCard ()
 
@@ -6,5 +7,8 @@
                                description:(NSString *)description
                                cardNetwork:(BTCardNetwork)cardNetwork
                                    lastTwo:(NSString *)lastTwo
-                          threeDSecureInfo:(BTThreeDSecureInfo *)threeDSecureInfo;
+                          threeDSecureJSON:(BTJSON *)threeDSecureJSON;
+
++ (instancetype)cardWithJSON:(BTJSON *)cardJSON;
+
 @end

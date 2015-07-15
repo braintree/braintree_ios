@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
+#import "BTJSON.h"
 #import "BTNullability.h"
 #import "BTTokenized.h"
-#import "BTThreeDSecureInfo.h"
 
 /// Card type
 typedef NS_ENUM(NSInteger, BTCardNetwork) {
@@ -26,8 +26,6 @@ BT_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly, assign) BTCardNetwork cardNetwork;
 @property (nonatomic, nullable, readonly, copy) NSString *lastTwo;
-
-@property (nonatomic, nullable, readonly, strong) BTThreeDSecureInfo *threeDSecureInfo;
 
 @end
 

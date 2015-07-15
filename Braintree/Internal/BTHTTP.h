@@ -1,24 +1,16 @@
 #import <Foundation/Foundation.h>
 
+#import "BTHTTPErrors.h"
 #import "BTJSON.h"
 
 @class BTHTTPResponse;
 
 typedef void (^BTHTTPCompletionBlock)(BTJSON *body, NSHTTPURLResponse *response, NSError *error);
 
-extern NSString * const BTHTTPErrorDomain;
-
 /// Key for userInfo dictionary that contains the NSHTTPURLResponse from server when it returns an HTTP error
 extern NSString * const BTHTTPURLResponseKey;
 /// Key for userInfo dictionary that contains the BTJSON body of the HTTP error response
 extern NSString * const BTHTTPJSONResponseBodyKey;
-
-typedef NS_ENUM(NSInteger, BTHTTPErrorCode) {
-    BTHTTPErrorCodeUnknown = 0,
-    BTHTTPErrorCodeResponseContentTypeNotAcceptable,
-    BTHTTPErrorCodeClientError,
-    BTHTTPErrorCodeServerError
-};
 
 @interface BTHTTP : NSObject<NSCopying>
 

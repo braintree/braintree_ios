@@ -2,7 +2,7 @@
 
 #import "BTThreeDSecureLookupResult.h"
 #import "BTThreeDSecureErrors.h"
-#import "BTCardPaymentMethod.h"
+#import "BTThreeDSecureTokenizedCard.h"
 #import "BTWebViewController.h"
 
 typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 ///  @param card            The new payment method that should be used for creating a 3D Secure transaction
 ///  @param completionBlock A block that must be called upon completion of any asynchronous work that processes the received card
 - (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
-               didAuthenticateCard:(BTCardPaymentMethod *)card
+               didAuthenticateCard:(BTThreeDSecureTokenizedCard *)tokenizedCard
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus status))completionBlock;
 
 ///  The delegate will receive this message when 3D Secure authentication fails

@@ -1,12 +1,8 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTURLUtils.h"
-#import "BTClient_Internal.h"
-#import "UIColor+BTUI.h"
 #import "BTThreeDSecureResponse.h"
 #import "BTWebViewController.h"
-#import "BTAPIResponseParser.h"
-#import "BTClientTokenBooleanValueTransformer.h"
-#import "BTClientPaymentMethodValueTransformer.h"
+#import "BTTokenizedCard_Internal.h"
 
 @interface BTThreeDSecureAuthenticationViewController ()
 @end
@@ -49,7 +45,7 @@
     if (response.success) {
         if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateCard:completion:)]) {
             [self.delegate threeDSecureViewController:self
-                                  didAuthenticateCard:response.paymentMethod
+                                  didAuthenticateCard:response.tokenizedCard
                                            completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
                                                if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
                                                    [self.delegate threeDSecureViewControllerDidFinish:self];
@@ -65,7 +61,7 @@
             userInfo[NSLocalizedDescriptionKey] = response.errorMessage;
         }
         NSError *error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
-                                             code:BTThreeDSecureFailedAuthenticationErrorCode
+                                             code:BTThreeDSecureErrorCodeFailedAuthentication
                                          userInfo:userInfo];
         if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
             [self.delegate threeDSecureViewController:self didFailWithError:error];
@@ -80,22 +76,16 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeFormSubmitted && [request.URL.path rangeOfString:@"authentication_complete_frame"].location != NSNotFound) {
+        
         NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
-        BTAPIResponseParser *authResponseParser = ({
-            NSDictionary *authResponseDictionary = [NSJSONSerialization JSONObjectWithData:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                   options:0
-                                                                                     error:NULL];
-            [BTAPIResponseParser parserWithDictionary:authResponseDictionary];
-        });
+        BTJSON *authBody = [[BTJSON alloc] initWithValue:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]];
 
         BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
-        authResponse.success = [authResponseParser boolForKey:@"success"
-                                         withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
-        authResponse.threeDSecureInfo = [authResponseParser dictionaryForKey:@"threeDSecureInfo"];
+        authResponse.success = authBody[@"success"].isTrue;
+        authResponse.threeDSecureInfo = authBody[@"threeDSecureInfo"].asDictionary;
+        authResponse.tokenizedCard = [BTThreeDSecureTokenizedCard cardWithJSON:authBody[@"paymentMethod"]];
+        authResponse.errorMessage = authBody[@"error"][@"message"].asString;
 
-        authResponse.paymentMethod = [authResponseParser objectForKey:@"paymentMethod"
-                                                 withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
-        authResponse.errorMessage = [[authResponseParser responseParserForKey:@"error"] stringForKey:@"message"];
         [self didCompleteAuthentication:authResponse];
 
         return NO;

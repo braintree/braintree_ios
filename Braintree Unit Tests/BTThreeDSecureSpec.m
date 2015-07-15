@@ -2,6 +2,7 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTClient_Internal.h"
 #import "BTCardPaymentMethod_Mutable.h"
+#import "BTSpecDependencies.h"
 
 SpecBegin(BTThreeDSecure)
 

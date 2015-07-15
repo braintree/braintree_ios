@@ -52,8 +52,8 @@ FOUNDATION_EXPORT const unsigned char BraintreeVersionString[];
 
 // 3D Secure
 
-#import <Braintree/BTThreeDSecureDriver.h>
-#import <Braintree/BTThreeDSecureVerification.h>
-#import <Braintree/BTThreeDSecureInfo.h>
+//#import <Braintree/BTThreeDSecureDriver.h>
+//#import <Braintree/BTThreeDSecureVerification.h>
+//#import <Braintree/BTThreeDSecureInfo.h>
 
 // UI
