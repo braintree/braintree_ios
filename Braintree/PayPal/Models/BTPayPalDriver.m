@@ -11,6 +11,7 @@
 #import "BTErrors+BTPayPal.h"
 
 #import "BTAppSwitch.h"
+#import "BTClient+BTPayPal.h"
 
 static void (^BTPayPalHandleURLContinuation)(NSURL *url);
 

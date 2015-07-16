@@ -2,11 +2,9 @@
 #import "BTLogger_Internal.h"
 
 @interface BTPayPalCheckout ()
-
 @end
 
 @implementation BTPayPalCheckout
-
 
 + (instancetype)checkoutWithAmount:(NSDecimalNumber *)amount {
     BTPayPalCheckout *checkout = [[BTPayPalCheckout alloc] initWithAmount:amount];

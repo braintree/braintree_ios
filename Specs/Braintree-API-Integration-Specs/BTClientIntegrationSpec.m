@@ -3,6 +3,7 @@
 #import "BTSpecHelper.h"
 #import "BTCardPaymentMethod_Mutable.h"
 #import "BTClientPayPalPaymentResource.h"
+#import "BTClient+BTPayPal.h"
 
 @import AddressBook;
 
