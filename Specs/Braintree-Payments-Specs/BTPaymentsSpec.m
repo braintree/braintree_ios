@@ -14,6 +14,8 @@
 #import "BTCoinbase.h"
 #import "BTCoinbaseOAuth.h"
 
+#import "BTPayPalDriver.h"
+
 typedef void (^BTPaymentsSpecHelperBlock)(id, NSError *);
 
 @interface BTPaymentsSpecHelper : NSObject <BTPaymentMethodCreationDelegate>
@@ -60,6 +62,10 @@ typedef void (^BTPaymentsSpecHelperBlock)(id, NSError *);
 @end
 
 @interface BTPaymentProvider () <PKPaymentAuthorizationViewControllerDelegate>
+@end
+
+@interface BTPaymentProvider (TestAdditions)
+@property (nonatomic, strong) BTPayPalAppSwitchHandler *payPalAppSwitchHandler;
 @end
 
 SpecBegin(BTPaymentProvider)
@@ -177,13 +183,23 @@ describe(@"createPaymentMethod:", ^{
             });
 
             it(@"invokes an app switch delegate method", ^{
+                [[[configuration stub] andReturnValue:@YES] payPalEnabled];
+                
+                [[[payPalAppSwitchHandler stub] andReturnValue:@(YES)] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:((NSError __autoreleasing **)[OCMArg anyPointer])];
+                
+                provider.payPalAppSwitchHandler = payPalAppSwitchHandler;
+                
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
                 provider.delegate = delegate;
                 [provider createPaymentMethod:BTPaymentProviderTypePayPal];
                 expect([provider status]).to.equal(BTPaymentProviderStatusInitialized);
+                
+                provider.payPalAppSwitchHandler = nil;
             });
 
             it(@"invokes didcancel delegate method", ^{
+                [[[configuration stub] andReturnValue:@YES] payPalEnabled];
+                
                 [[delegate expect] paymentMethodCreatorDidCancel:provider];
                 provider.delegate = delegate;
                 [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreatorDidCancel:nil];

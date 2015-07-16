@@ -13,6 +13,7 @@
 
 @interface BTPaymentProvider () <BTAppSwitchingDelegate, BTPaymentMethodCreationDelegate>
 @property (nonatomic, strong) BTPaymentApplePayProvider *applePayPaymentProvider;
+@property (nonatomic, strong) BTPayPalAppSwitchHandler *payPalAppSwitchHandler;
 @end
 
 @implementation BTPaymentProvider
@@ -115,6 +116,10 @@
 
 #pragma mark PayPal
 
+- (BTPayPalAppSwitchHandler *)payPalAppSwitchHandler {
+    return _payPalAppSwitchHandler ? _payPalAppSwitchHandler : [BTPayPalAppSwitchHandler sharedHandler];
+}
+
 - (void)authorizePayPal:(BTPaymentMethodCreationOptions)options {
     
     BOOL appSwitchOptionEnabled = (options & BTPaymentAuthorizationOptionMechanismAppSwitch) == BTPaymentAuthorizationOptionMechanismAppSwitch;
@@ -129,7 +134,7 @@
     
     NSError *error;
     
-    BOOL appSwitchSuccess = [[BTPayPalAppSwitchHandler sharedHandler] initiateAppSwitchWithClient:self.client delegate:self error:&error];
+    BOOL appSwitchSuccess = [self.payPalAppSwitchHandler initiateAppSwitchWithClient:self.client delegate:self error:&error];
     if (appSwitchSuccess) {
         [self informDelegateWillPerformAppSwitch];
     } else {
