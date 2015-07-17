@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchRequest.h
 //
-//  Version 1.0.7
+//  Version 1.0.8
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
@@ -49,6 +49,9 @@ extern NSString *const PayPalEnvironmentMock;
 ///       delays (such as time-consuming cryptographic operations, or server interactions).
 - (void)performWithCompletionBlock:(PayPalOneTouchRequestCompletionBlock)completionBlock;
 
+/// Get token from approval URL
++ (NSString *)tokenFromApprovalURL:(NSURL *)approvalURL;
+
 /// All requests MUST include the app's Client ID, as obtained from developer.paypal.com
 @property (nonatomic, readonly) NSString *clientID;
 
@@ -60,10 +63,14 @@ extern NSString *const PayPalEnvironmentMock;
 /// All requests MUST indicate the URL scheme to be used for returning to this app, following an app-switch
 @property (nonatomic, readonly) NSString *callbackURLScheme;
 
+/// The clientMetadataId (Dyson Id) associated with this request
+@property (nonatomic, readonly) NSString *clientMetadataId;
+
 /// Requests MAY include additional key/value pairs that OTC will add to the payload
 /// (For example, the Braintree client_token, which is required by the
 ///  temporary Braintree Future Payments consent webpage.)
 @property (nonatomic, strong) NSDictionary *additionalPayloadAttributes;
+
 
 @end
 
@@ -112,6 +119,20 @@ extern NSString *const PayPalEnvironmentMock;
 ///        or else a stage indicated as `base-url:port`
 /// @param callbackURLScheme The URL scheme to be used for returning to this app, following an app-switch
 + (instancetype)requestWithApprovalURL:(NSURL *)approvalURL
+                              clientID:(NSString *)clientID
+                           environment:(NSString *)environment
+                     callbackURLScheme:(NSString *)callbackURLScheme;
+
+/// Factory method. Only pairingId can be nil.
+///
+/// @param approvalURL Client has already created a payment on PayPal server; this is the resulting HATEOS ApprovalURL
+/// @param pairingId The pairingId for the risk component
+/// @param clientID The app's Client ID, as obtained from developer.paypal.com
+/// @param environment PayPalEnvironmentProduction, PayPalEnvironmentMock, or PayPalEnvironmentSandbox;
+///        or else a stage indicated as `base-url:port`
+/// @param callbackURLScheme The URL scheme to be used for returning to this app, following an app-switch
++ (instancetype)requestWithApprovalURL:(NSURL *)approvalURL
+                             pairingId:(NSString *)pairingId
                               clientID:(NSString *)clientID
                            environment:(NSString *)environment
                      callbackURLScheme:(NSString *)callbackURLScheme;
