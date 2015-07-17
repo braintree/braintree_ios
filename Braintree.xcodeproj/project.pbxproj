@@ -171,9 +171,7 @@
 /* Begin PBXFileReference section */
 		056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0952D25AC13D43208F8288B6 /* libPods-Braintree-AppSwitch-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-AppSwitch-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		133578558B4E45ECA2C2D586 /* libPods-Braintree-PayPal-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		15AD2CC443481E5FA269CB4D /* Pods-Braintree-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		164CA0BE1B3E18B200EB4884 /* BTThreeDSecureVerification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureVerification.h; sourceTree = "<group>"; };
 		164CA0BF1B3E18B200EB4884 /* BTThreeDSecureVerification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureVerification.m; sourceTree = "<group>"; };
@@ -224,20 +222,15 @@
 		16E17D2E1B3E04870024F9AB /* BTPaymentOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPaymentOption.h; sourceTree = "<group>"; };
 		16E17D2F1B3E04870024F9AB /* BTPaymentOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentOption.m; sourceTree = "<group>"; };
 		16E17D321B3E07370024F9AB /* BTNullability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTNullability.h; sourceTree = "<group>"; };
-		1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		2A0D9AB11874709D3BEA9582 /* Pods-Braintree-Apple-Pay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay/Pods-Braintree-Apple-Pay.release.xcconfig"; sourceTree = "<group>"; };
 		2CDCE86975684EFC94DA10AB /* libPods-Braintree-Data-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Data-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		312C642A816448F6A6B7D69B /* libPods-Common.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		37EBD49E76CC2F7CE2E729DE /* Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig"; sourceTree = "<group>"; };
 		3E30C5FE1F5450A242279524 /* libPods-Braintree-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FEE5C97D00D4124A961B590 /* libPods-TestWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		51C10FB14D9587549DD4E990 /* libPods-Test-Deps.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Test-Deps.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		543B7387A30D495553758609 /* Pods-Braintree-Apple-Pay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay/Pods-Braintree-Apple-Pay.debug.xcconfig"; sourceTree = "<group>"; };
 		77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Acceptance-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9270469696964D9BABE95E62 /* libPods-TestWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0D18A73520462F8D2FB1CD /* libPods-Braintree-API-Public-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Public-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7102E191B5085BB0007D40A /* BTTokenizedPayPalCheckout_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTokenizedPayPalCheckout_Internal.h; sourceTree = "<group>"; };
@@ -363,10 +356,7 @@
 		BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Apple-Pay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAFC163247B67B8458942577 /* Pods-Test-Deps.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test-Deps.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Test-Deps/Pods-Test-Deps.debug.xcconfig"; sourceTree = "<group>"; };
-		CFEDF3A91EB6C4D446401E1A /* Pods-Braintree-Apple-Pay-Excluded.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Excluded.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded.release.xcconfig"; sourceTree = "<group>"; };
-		CFF24E2D258448C0F04FE3F0 /* Pods-Logic-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		D8C6A7C606BA446A1160B9F2 /* Pods-Test-Deps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Test-Deps.release.xcconfig"; path = "Pods/Target Support Files/Pods-Test-Deps/Pods-Test-Deps.release.xcconfig"; sourceTree = "<group>"; };
 		DBED5868ADC94026BA7674E4 /* libPods-Braintree-Payment-Authorization-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payment-Authorization-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Logic-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -471,16 +461,6 @@
 		847E11FCFF74B0CCB8E48E73 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Demo.debug.xcconfig */,
-				15AD2CC443481E5FA269CB4D /* Pods-Braintree-Demo.release.xcconfig */,
-				969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */,
-				D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */,
-				543B7387A30D495553758609 /* Pods-Braintree-Apple-Pay.debug.xcconfig */,
-				2A0D9AB11874709D3BEA9582 /* Pods-Braintree-Apple-Pay.release.xcconfig */,
-				37EBD49E76CC2F7CE2E729DE /* Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig */,
-				CFEDF3A91EB6C4D446401E1A /* Pods-Braintree-Apple-Pay-Excluded.release.xcconfig */,
-				CFF24E2D258448C0F04FE3F0 /* Pods-Logic-Tests.release.xcconfig */,
-				0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */,
 				CAFC163247B67B8458942577 /* Pods-Test-Deps.debug.xcconfig */,
 				D8C6A7C606BA446A1160B9F2 /* Pods-Test-Deps.release.xcconfig */,
 			);
