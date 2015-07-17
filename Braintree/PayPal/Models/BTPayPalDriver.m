@@ -120,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
                                      case PayPalOneTouchResultTypeSuccess: {
                                          if (__block__clientMetadataId == nil) {
                                              [client postAnalyticsEvent:@"ios.paypal-future-payments.tokenize.missing-cmid"];
-                                             completionBlock(nil, [NSError errorWithDomain:BTPayPalUnknownError code:500 userInfo:@{NSLocalizedDescriptionKey: @"PayPal is in an invalid state."}]);
+                                             completionBlock(nil, [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalErrorOther userInfo:@{NSLocalizedDescriptionKey: @"PayPal is in an invalid state."}]);
                                              break;
                                          }
                                          
@@ -246,7 +246,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                case PayPalOneTouchResultTypeSuccess: {
                                                                                    if (__block__clientMetadataId == nil) {
                                                                                        [client postAnalyticsEvent:@"ios.paypal-single-payment.tokenize.missing-cmid"];
-                                                                                       completionBlock(nil, [NSError errorWithDomain:BTPayPalUnknownError code:500 userInfo:@{NSLocalizedDescriptionKey: @"PayPal is in an invalid state."}]);
+                                                                                       completionBlock(nil, [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalErrorOther userInfo:@{NSLocalizedDescriptionKey: @"PayPal is in an invalid state."}]);
                                                                                        break;
                                                                                    }
                                                                                    
