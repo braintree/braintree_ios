@@ -4,13 +4,10 @@
 #import "BTConfiguration.h"
 #import "BTClientMetadata.h"
 
-#import "BTClientPayPalPaymentResource.h"
 #import "BTThreeDSecureLookupResult.h"
 
 /// Success Block type for 3D Secure lookups
 typedef void (^BTClientThreeDSecureLookupSuccessBlock)(BTThreeDSecureLookupResult *threeDSecureLookup);
-
-typedef void (^BTClientPayPalPaymentResourceBlock)(BTClientPayPalPaymentResource *paymentResource);
 
 @interface BTClient ()
 @property (nonatomic, strong, readwrite) BTHTTP *configHttp;
@@ -26,15 +23,6 @@ typedef void (^BTClientPayPalPaymentResourceBlock)(BTClientPayPalPaymentResource
                  transactionAmount:(NSDecimalNumber *)amount
                            success:(BTClientThreeDSecureLookupSuccessBlock)successBlock
                            failure:(BTClientFailureBlock)failureBlock;
-
-- (void)createPayPalPaymentResourceWithAmount:(NSDecimalNumber *)amount
-                                 currencyCode:(NSString *)currencyCode
-                                  redirectUri:(NSString *)redirectUri
-                                    cancelUri:(NSString *)cancelUri
-                             clientMetadataID:(NSString *)clientMetadataID
-                                      success:(BTClientPayPalPaymentResourceBlock)successBlock
-                                      failure:(BTClientFailureBlock)failureBlock;
-
 
 @property (nonatomic, copy, readonly) BTClientMetadata *metadata;
 

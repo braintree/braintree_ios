@@ -26,6 +26,8 @@ describe(@"An instance", ^{
         handler = [[BTVenmoAppSwitchHandler alloc] init];
         client = [OCMockObject mockForClass:[BTClient class]];
         delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
+        
+        handler.delegate = delegate;
 
         [[[client stub] andReturn:client] copyWithMetadata:OCMOCK_ANY];
         [[client stub] postAnalyticsEvent:OCMOCK_ANY];

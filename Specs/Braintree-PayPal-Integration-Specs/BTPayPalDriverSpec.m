@@ -1,5 +1,6 @@
 #import "BTPayPalDriver.h"
 
+#import "Braintree.h"
 #import "BTClient_Internal.h"
 #import "PayPalOneTouchCore.h"
 #import "PayPalOneTouchRequest.h"
@@ -842,7 +843,43 @@ describe(@"PayPal One Touch Core", ^{
             }];
         });
 
-        it(@"tokenizes a success response, returning the payment method nonce to the developer", ^{ //Todo
+        it(@"tokenizes a success response, returning the payment method nonce to the developer", ^{
+            
+            [BTPayPalDriverSpecHelper setupSpec:^(NSString *returnURLScheme, id mockClient, id mockApplication) {
+                
+                id ppOtcMock = [OCMockObject mockForClass:[PayPalOneTouchCore class]];
+                [[[ppOtcMock stub] andReturnValue:@YES] canParseURL:OCMOCK_ANY sourceApplication:OCMOCK_ANY];
+                
+                [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
+                
+                // Both -canOpenURL: and -openURL: are checked by OTC
+                [[[mockApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", @"com.paypal.ppclient.touch.v2")];
+                [[[mockApplication stub] andReturnValue:@YES] openURL:HC_hasProperty(@"scheme", @"com.paypal.ppclient.touch.v2")];
+                
+                BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
+                
+                XCTestExpectation *completionExpectation = [self expectationWithDescription:@"authorization completion callback"];
+                [payPalDriver startAuthorizationWithCompletion:^(BTPayPalPaymentMethod *payPalPaymentMethod, NSError *error) {
+                    NSLog(@"startAuthorizationWithCompletion %@ %@", payPalPaymentMethod, error);
+                    [completionExpectation fulfill];
+                }];
+                
+                NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.braintree-demo.payments://onetouch/v1/success?payloadEnc=IiRZ%2FKEnD6RQ8UeUmOFO8Ofh1RqQcWFycpO6pB9Yzl7fLb5szdaHanap7gwpmKsq4MJ2KGRJ0MzZBPvmoL%2BxkSH7%2FC%2F4WqeeVeGYvCpAvsPpkg%2BY8PID54FqVDpP1EXKS3Vx%2F6XmqbDplNLUUNzXZ4P%2FNcaXiEZXoHv6odjm7rxP3Ric%2Fsal9oiCDGDeFOAwTkiklA%2BA5nsASGopzrMHeIVBtcA01yae%2BDrgwPhHWNy6hffL2yVPVREtpVRBLrXK0jzn9IGUKMbBSMg%2F8BZ14ijhU%2F4cFlqi51NARQEFXMJcSba%2FscQTV1%2Fzj7D6B9W4pUYk9WY7eygmwMs%2BTYkTYnKRJjHTPWzMScdesYjj161c6DdWBFFtCVcanwvdk5rp1YCaElOmYV5WZSGKkSORCNMNKVKe8AkXMVO%2BPc41&payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IkNCNkY1Q0IwLUY4NEYtNEZEMC1BNzQ1LTdCMDE0MDQ0OUQyRSIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJtb2NrIiwiZXJyb3IiOm51bGx9&x-source=com.braintree.browserswitch"];
+                
+                // We must call +[Braintree handleOpenURL:sourceApplication:] (not [BTPayPalDriver handleAppSwitchReturnURL:returnURL])
+                // in order to test that the returnURL is passed through to BTPayPalDriver.
+                // This was a real bug that shipped in 4.0.0-pre2 and was fixed in 625ae947ee92561934dfb1a3a2bf387d8890b91f.
+                // Also, sourceApplication is verified by OTC.
+                [Braintree handleOpenURL:returnURL sourceApplication:@"com.apple.mobilesafari"];
+                
+                // Note: -savePaypalAccount:clientMetadataID:success:failure: isn't actually called here.
+                
+                [self waitForExpectationsWithTimeout:5 handler:nil];
+                
+                [mockClient verify];
+                
+                [ppOtcMock stopMocking];
+            }];
         });
 
         it(@"returns tokenization failures to the developer", ^{ //Todo

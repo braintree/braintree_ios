@@ -7,6 +7,8 @@
 #import "BTMutableCardPaymentMethod.h"
 #import "BTAppSwitch.h"
 
+#import "BTLogger_Internal.h"
+
 #import <UIKit/UIKit.h>
 
 @implementation BTVenmoAppSwitchHandler
@@ -116,6 +118,10 @@
 }
 
 - (BOOL)canHandleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    if (!self.delegate) {
+        [[BTLogger sharedLogger] error:@"BTVenmoAppSwitchHandler requires a delegate"];
+        return NO;
+    }
     return [BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:sourceApplication];
 }
 

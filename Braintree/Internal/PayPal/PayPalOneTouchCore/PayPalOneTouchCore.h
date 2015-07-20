@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchCore.h
 //
-//  Version 1.0.7
+//  Version 2.0.0
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
@@ -62,6 +62,20 @@ typedef void (^PayPalOneTouchCompletionBlock)(PayPalOneTouchCoreResult *result);
 ///
 /// @return clientMetadataID Your server will send this to PayPal in a 'PayPal-Client-Metadata-Id' header.
 + (NSString *)clientMetadataID;
+
+/// Once a user has consented to future payments, when the user subsequently initiates a PayPal payment
+/// from their device to be completed by your server, PayPal uses a Client Metadata ID to verify that the
+/// payment is originating from a valid, user-consented device+application.
+///
+/// This helps reduce fraud and decrease declines.
+///
+/// This method MUST be called prior to initiating a pre-consented payment (a "future payment") from a mobile device.
+/// Pass the result to your server, to include in the payment request sent to PayPal.
+/// Do not otherwise cache or store this value.
+///
+/// @param a pairingId (ex: EC-Token) to associate with this clientMetadataID must be 32 chars long or null
+/// @return clientMetadataID Your server will send this to PayPal in a 'PayPal-Client-Metadata-Id' header.
++ (NSString *)clientMetadataID:(NSString *)pairingId;
 
 /// For payment processing, the client's server will first create a payment on the PayPal server.
 /// Creating that payment requires, among many other things, a `redirect_urls` object containing two strings:

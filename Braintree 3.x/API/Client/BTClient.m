@@ -376,35 +376,6 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
 }
 #endif
 
-- (void)createPayPalPaymentResourceWithAmount:(NSDecimalNumber *)amount
-                                 currencyCode:(NSString *)currencyCode
-                                  redirectUri:(NSString *)redirectUri
-                                    cancelUri:(NSString *)cancelUri
-                             clientMetadataID:(NSString *)clientMetadataID
-                                      success:(BTClientPayPalPaymentResourceBlock)successBlock
-                                      failure:(BTClientFailureBlock)failureBlock {
-
-    NSDictionary *parameters = @{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                  @"amount": [amount stringValue],
-                                  @"currency_iso_code": currencyCode,
-                                  @"return_url": redirectUri,
-                                  @"cancel_url": cancelUri,
-                                  @"correlation_id": clientMetadataID };
-    [self.clientApiHttp POST:@"v1/paypal_hermes/create_payment_resource"
-                  parameters:parameters
-                  completion:^(BTHTTPResponse *response, NSError *error) {
-                      if (response.isSuccess) {
-                          if (successBlock) {
-                              successBlock([response.object objectForKey:@"paymentResource" withValueTransformer:[BTClientPayPalPaymentResourceValueTransformer sharedInstance]]);
-                          }
-                      } else {
-                          if (failureBlock) {
-                              failureBlock(error);
-                          }
-                      }
-                  }];
-}
-
 - (void)savePaypalAccount:(NSDictionary *)paypalResponse
          clientMetadataID:(NSString *)clientMetadataID
                   success:(BTClientPaypalSuccessBlock)successBlock
