@@ -11,7 +11,7 @@ NSString *const BTMockApplePayPaymentAuthorizationControlCell =  @"BTMockApplePa
 
 @implementation BTMockApplePayPaymentAuthorizationView
 
-- (nonnull instancetype)initWithCoder:(nonnull __unused NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(nonnull __unused NSCoder *)aDecoder {
     return [self initWithDelegate:nil];
 }
 

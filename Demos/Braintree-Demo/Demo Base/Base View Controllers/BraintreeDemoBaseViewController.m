@@ -14,7 +14,7 @@
     return [self initWithClientToken:nil];
 }
 
-- (nonnull instancetype)initWithCoder:(nonnull __unused NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(nonnull __unused NSCoder *)aDecoder {
     return [self initWithClientToken:nil];
 }
 
