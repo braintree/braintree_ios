@@ -6,6 +6,8 @@
 #import "BTClient+Offline.h"
 
 NSString *const BTClientPayPalMobileEnvironmentName = @"Braintree";
+NSString *const BTPayPalScopeAddress = @"address";
+
 NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be initialized. Perhaps client token did not contain a valid PayPal configuration.";
 
 @implementation BTClient (BTPayPal)

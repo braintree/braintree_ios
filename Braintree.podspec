@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "3.9.1"
+  s.version          = "3.9.2"
   s.summary          = "Braintree v.zero: A modern foundation for accepting payments"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -53,7 +53,7 @@ Pod::Spec.new do |s|
   s.subspec "PayPal" do |s|
     s.source_files = "Braintree/PayPal/**/*.{h,m}"
     s.public_header_files = "Braintree/PayPal/@Public/**/*.h"
-    s.frameworks = "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
+    s.frameworks = "Accelerate", "AVFoundation", "CoreLocation", "CoreMedia", "AudioToolbox", "MessageUI", "SystemConfiguration", "MobileCoreServices"
     s.vendored_library = "Braintree/PayPal/mSDK/libPayPalMobile-BT.a"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
     s.dependency "Braintree/API"

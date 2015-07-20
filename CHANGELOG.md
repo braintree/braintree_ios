@@ -1,5 +1,22 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.2 (2015-07-08)
+
+* :rotating_light: This version requires Xcode 6.3+ (otherwise you'll get duplicate symbol errors)
+* :rotating_light: New: `Accelerate.framework` must be linked to your project (CocoaPods should do this automatically)
+* Remove Coinbase CocoaPods library as an external dependency
+  * Integrating Coinbase SDK is no longer a prerequisite for manual integrations
+  * No change to Braintree Coinbase support; existing integrations remain unaffected
+  * Braintree iOS SDK now vendors Coinbase SDK
+* Add session ID to analytics tracking data
+* Add `BTPayPalScopeAddress`
+* Update PayPal mSDK to 2.11.1
+  * Requires Xcode 6.3+
+  * Fix an iPad display issue
+  * Improve mSDK screen blurring when app is backgrounded. NOTE: This change requires that you add `Accelerate.framework` to your project
+  * Update card.io library to 5.0.6
+  * Bug fixes
+
 ## 3.9.1 (2015-06-12)
 
 * Merge public master

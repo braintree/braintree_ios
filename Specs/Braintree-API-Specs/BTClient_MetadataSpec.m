@@ -34,12 +34,14 @@ describe(@"usage of meta by BTClient", ^{
             expect(copied).toNot.beIdenticalTo(client);
             expect(copied.metadata.integration).to.equal(BTClientMetadataIntegrationDropIn);
             expect(copied.metadata.source).to.equal(BTClientMetadataSourcePayPalSDK);
+            expect(copied.metadata.sessionId).to.equal(client.metadata.sessionId);
         });
         it(@"does not fail if block is nil", ^{
             BTClient *copied = [client copyWithMetadata:nil];
             expect(copied).toNot.beIdenticalTo(client);
             expect(copied.metadata.integration).to.equal(client.metadata.integration);
             expect(copied.metadata.source).to.equal(client.metadata.source);
+            expect(copied.metadata.sessionId).to.equal(client.metadata.sessionId);
         });
     });
 
@@ -48,9 +50,8 @@ describe(@"usage of meta by BTClient", ^{
     describe(@"BTClient POST _meta param", ^{
 
         describe(@"default values", ^{
-            BOOL (^isDefaultMetadata)(id) = ^BOOL(id obj) {
+            BOOL (^isDefaultMetadata)(NSDictionary *) = ^BOOL(NSDictionary *params) {
                 BTClientMetadata *defaultMetadata = [[BTClientMetadata alloc] init];
-                NSDictionary *params = (NSDictionary *)obj;
                 return [params[@"_meta"][@"integration"] isEqualToString:defaultMetadata.integrationString] &&
                 [params[@"_meta"][@"source"] isEqualToString:defaultMetadata.sourceString];
             };
@@ -64,7 +65,9 @@ describe(@"usage of meta by BTClient", ^{
                 }];
                 [self waitForExpectationsWithTimeout:3 handler:nil];
                 OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
-                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isDefaultMetadata] completion:[OCMArg any]];
+                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(NSDictionary *obj) {
+                    return isDefaultMetadata(obj) && [obj[@"_meta"][@"sessionId"] isEqualToString:client.metadata.sessionId];
+                }] completion:[OCMArg any]];
                 client.clientApiHttp = (id)mockHttp;
                 [client savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:nil success:nil failure:nil];
                 [mockHttp verify];
@@ -79,7 +82,9 @@ describe(@"usage of meta by BTClient", ^{
                 }];
                 [self waitForExpectationsWithTimeout:3 handler:nil];
                 OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
-                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isDefaultMetadata] completion:[OCMArg any]];
+                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    return isDefaultMetadata(obj) && [obj[@"_meta"][@"sessionId"] isEqualToString:client.metadata.sessionId];
+                }] completion:[OCMArg any]];
                 client.clientApiHttp = (id)mockHttp;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -97,7 +102,9 @@ describe(@"usage of meta by BTClient", ^{
                 }];
                 [self waitForExpectationsWithTimeout:3 handler:nil];
                 OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
-                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isDefaultMetadata] completion:[OCMArg any]];
+                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(id obj) {
+                    return isDefaultMetadata(obj) && [obj[@"_meta"][@"sessionId"] isEqualToString:client.metadata.sessionId];
+                }] completion:[OCMArg any]];
                 client.clientApiHttp = (id)mockHttp;
                 [client saveCoinbaseAccount:@{ @"code": @"some-coinbase-auth-code" } storeInVault:YES success:nil failure:nil];
                 [mockHttp verify];
@@ -185,11 +192,11 @@ describe(@"usage of meta by BTClient", ^{
     describe(@"BTClient POST _meta param", ^{
 
         describe(@"default values", ^{
-            BOOL (^isDefaultMetadata)(id) = ^BOOL(id obj) {
+            BOOL (^isDefaultMetadata)(NSDictionary *) = ^BOOL(NSDictionary *params) {
                 BTClientMetadata *defaultMetadata = [[BTClientMetadata alloc] init];
-                NSDictionary *params = (NSDictionary *)obj;
                 return [params[@"_meta"][@"integration"] isEqualToString:defaultMetadata.integrationString] &&
-                [params[@"_meta"][@"source"] isEqualToString:defaultMetadata.sourceString];
+                       [params[@"_meta"][@"source"] isEqualToString:defaultMetadata.sourceString] &&
+                       [params[@"_meta"][@"sessionId"] isKindOfClass:[NSString class]];
             };
 
 #pragma clang diagnostic push
@@ -198,7 +205,9 @@ describe(@"usage of meta by BTClient", ^{
             it(@"includes default _meta parameters in PayPal requests", ^{
                 BTClient *client = [[BTClient alloc] initWithClientToken:clientToken];
                 OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
-                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isDefaultMetadata] completion:[OCMArg any]];
+                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(NSDictionary *obj) {
+                    return isDefaultMetadata(obj) && [obj[@"_meta"][@"sessionId"] isEqualToString:client.metadata.sessionId];
+                }] completion:[OCMArg any]];
                 client.clientApiHttp = (id)mockHttp;
                 [client savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:nil success:nil failure:nil];
                 [mockHttp verify];
@@ -207,7 +216,9 @@ describe(@"usage of meta by BTClient", ^{
             it(@"includes default _meta parameters in card requests", ^{
                 BTClient *client = [[BTClient alloc] initWithClientToken:clientToken];
                 OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
-                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isDefaultMetadata] completion:[OCMArg any]];
+                [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:^BOOL(NSDictionary *obj) {
+                    return isDefaultMetadata(obj) && [obj[@"_meta"][@"sessionId"] isEqualToString:client.metadata.sessionId];
+                }] completion:[OCMArg any]];
                 client.clientApiHttp = (id)mockHttp;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -222,7 +233,7 @@ describe(@"usage of meta by BTClient", ^{
         describe(@"custom values", ^{
 
             __block BTClientMutableMetadata *customMetadata;
-            __block BTClient *customMetadataClient;
+            __block BTClient *customMetadataClient, *originalClient;
             beforeEach(^{
 
                 customMetadata = [[BTClientMutableMetadata alloc] init];
@@ -230,17 +241,18 @@ describe(@"usage of meta by BTClient", ^{
                 customMetadata.source = BTClientMetadataSourceForm;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                customMetadataClient = [[[BTClient alloc] initWithClientToken:clientToken] copyWithMetadata:^(BTClientMutableMetadata *metadata) {
+                originalClient = [[BTClient alloc] initWithClientToken:clientToken];
+                customMetadataClient = [originalClient copyWithMetadata:^(BTClientMutableMetadata *metadata) {
                     metadata.integration = customMetadata.integration;
                     metadata.source = customMetadata.source;
                 }];
 #pragma clang diagnostic pop
             });
 
-            BOOL (^isCustomMetadata)(id) = ^BOOL(id obj) {
-                NSDictionary *params = (NSDictionary *)obj;
+            BOOL (^isCustomMetadata)(NSDictionary *) = ^BOOL(NSDictionary *params) {
                 return [params[@"_meta"][@"integration"] isEqualToString:customMetadata.integrationString] &&
-                [params[@"_meta"][@"source"] isEqualToString:customMetadata.sourceString];
+                       [params[@"_meta"][@"source"] isEqualToString:customMetadata.sourceString] &&
+                       [params[@"_meta"][@"sessionId"] isEqualToString:originalClient.metadata.sessionId];
             };
 
             it(@"includes custom _meta parameters in PayPal requests", ^{
