@@ -79,6 +79,20 @@ NS_ASSUME_NONNULL_BEGIN
     
     NSSet *requestScopes = [self.defaultOAuth2Scopes setByAddingObjectsFromSet:(additionalScopes ? additionalScopes : [NSSet set])];
     
+    
+    PayPalOneTouchAuthorizationRequest *request =
+    [PayPalOneTouchAuthorizationRequest requestWithScopeValues:requestScopes
+                                                    privacyURL:client.configuration.payPalPrivacyPolicyURL
+                                                  agreementURL:client.configuration.payPalMerchantUserAgreementURL
+                                                      clientID:[self paypalClientIdForClient:client]
+                                                   environment:[self payPalEnvironmentForClient:client]
+                                             callbackURLScheme:[self returnURLScheme]];
+    
+    __block NSString *__block__clientMetadataId = nil;
+    
+    // At this time, the Braintree client_token is required by the temporary Braintree Future Payments consent webpage.
+    request.additionalPayloadAttributes = @{ @"client_token": client.clientToken.originalValue };
+    
     BTPayPalHandleURLContinuation = ^(NSURL *url){
         [self informDelegateWillProcessAppSwitchResult];
         
@@ -104,6 +118,12 @@ NS_ASSUME_NONNULL_BEGIN
                                          }
                                          break;
                                      case PayPalOneTouchResultTypeSuccess: {
+                                         if (__block__clientMetadataId == nil) {
+                                             [client postAnalyticsEvent:@"ios.paypal-future-payments.tokenize.missing-cmid"];
+                                             completionBlock(nil, [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalErrorOther userInfo:@{NSLocalizedDescriptionKey: @"PayPal is in an invalid state."}]);
+                                             break;
+                                         }
+                                         
                                          NSString *userDisplayStringFromAppSwitchResponse = result.response[@"user"][@"display_string"];
                                          
                                          // Modify payload in 'mock' mode to scope the response
@@ -114,7 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
                                          }
                                          
                                          [client savePaypalAccount:mutableResponse
-                                                  clientMetadataID:[PayPalOneTouchCore clientMetadataID]
+                                                  clientMetadataID:__block__clientMetadataId
                                                            success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                                [self postAnalyticsEventForTokenizationSuccessWithClient:client];
                                                                
@@ -143,19 +163,9 @@ NS_ASSUME_NONNULL_BEGIN
                              }];
     };
     
-    PayPalOneTouchAuthorizationRequest *request =
-    [PayPalOneTouchAuthorizationRequest requestWithScopeValues:requestScopes
-                                                    privacyURL:client.configuration.payPalPrivacyPolicyURL
-                                                  agreementURL:client.configuration.payPalMerchantUserAgreementURL
-                                                      clientID:[self paypalClientIdForClient:client]
-                                                   environment:[self payPalEnvironmentForClient:client]
-                                             callbackURLScheme:[self returnURLScheme]];
-    
-    // At this time, the Braintree client_token is required by the temporary Braintree Future Payments consent webpage.
-    request.additionalPayloadAttributes = @{ @"client_token": client.clientToken.originalValue };
-    
     [self informDelegateWillPerformAppSwitch];
-    [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, NSError *error) {
+    [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
+        __block__clientMetadataId = clientMetadataId;
         [self postAnalyticsEventWithClient:client forInitiatingOneTouchWithSuccess:success target:target];
         if (success) {
             [self informDelegateDidPerformAppSwitchToTarget:target];
@@ -192,17 +202,32 @@ NS_ASSUME_NONNULL_BEGIN
     [client createPayPalPaymentResourceWithCheckout:checkout
                                       redirectUri:redirectUri
                                         cancelUri:cancelUri
-                                 clientMetadataID:[PayPalOneTouchCore clientMetadataID]
-                                          success:^(BTClientPayPalPaymentResource *paymentResource) {                                              
-                                              BTPayPalHandleURLContinuation = ^(NSURL *url){
+                                 clientMetadataID:@""
+                                          success:^(BTClientPayPalPaymentResource *paymentResource) {
+                                              
+                                              NSString *token = [PayPalOneTouchRequest tokenFromApprovalURL:paymentResource.redirectURL];
+                                              
+                                              NSString *payPalClientId = client.configuration.payPalClientId;
+                                              if (!payPalClientId && [self payPalEnvironmentForClient:client] == PayPalEnvironmentMock) {
+                                                  payPalClientId = @"FAKE-PAYPAL-CLIENT-ID";
+                                              }
+                                              
+                                              PayPalOneTouchCheckoutRequest *request = [PayPalOneTouchCheckoutRequest requestWithApprovalURL:paymentResource.redirectURL
+                                                                                                                                   pairingId:token
+                                                                                                                                    clientID:payPalClientId
+                                                                                                                                 environment:[self payPalEnvironmentForClient:client]
+                                                                                                                           callbackURLScheme:self.returnURLScheme];
+                                              
+                                              __block NSString *__block__clientMetadataId = nil;
+                                              
+                                              BTPayPalHandleURLContinuation = ^(NSURL *url) {
                                                   [self informDelegateWillProcessAppSwitchResult];
-                                                  
+                                                
                                                   [PayPalOneTouchCore parseResponseURL:url
                                                                        completionBlock:^(PayPalOneTouchCoreResult *result) {
                                                                            BTClient *client = [self clientWithMetadataForResult:result];
                                                                            
                                                                            [self postAnalyticsEventWithClientForSinglePayment:client forHandlingOneTouchResult:result];
-                                                                           
                                                                            switch (result.type) {
                                                                                case PayPalOneTouchResultTypeError:
                                                                                    if (completionBlock) {
@@ -219,8 +244,14 @@ NS_ASSUME_NONNULL_BEGIN
                                                                                    }
                                                                                    break;
                                                                                case PayPalOneTouchResultTypeSuccess: {
+                                                                                   if (__block__clientMetadataId == nil) {
+                                                                                       [client postAnalyticsEvent:@"ios.paypal-single-payment.tokenize.missing-cmid"];
+                                                                                       completionBlock(nil, [NSError errorWithDomain:BTBraintreePayPalErrorDomain code:BTPayPalErrorOther userInfo:@{NSLocalizedDescriptionKey: @"PayPal is in an invalid state."}]);
+                                                                                       break;
+                                                                                   }
+                                                                                   
                                                                                    [client savePaypalAccount:result.response
-                                                                                            clientMetadataID:[PayPalOneTouchCore clientMetadataID]
+                                                                                            clientMetadataID:__block__clientMetadataId
                                                                                                      success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                                                                          [self postAnalyticsEventForTokenizationSuccessWithClientForSinglePayment:client];
                                                                                                          
@@ -241,17 +272,9 @@ NS_ASSUME_NONNULL_BEGIN
                                                                        }];
                                               };
                                               
-                                              NSString *payPalClientId = client.configuration.payPalClientId;
-                                              if (!payPalClientId && [self payPalEnvironmentForClient:client] == PayPalEnvironmentMock) {
-                                                  payPalClientId = @"FAKE-PAYPAL-CLIENT-ID";
-                                              }
-                                              
-                                              PayPalOneTouchCheckoutRequest *request = [PayPalOneTouchCheckoutRequest requestWithApprovalURL:paymentResource.redirectURL
-                                                                                                                                    clientID:payPalClientId
-                                                                                                                                 environment:[self payPalEnvironmentForClient:client]
-                                                                                                                           callbackURLScheme:self.returnURLScheme];
                                               [self informDelegateWillPerformAppSwitch];
-                                              [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, NSError *error) {
+                                              [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
+                                                  __block__clientMetadataId = clientMetadataId;
                                                   [self postAnalyticsEventWithClientForSinglePayment:client forInitiatingOneTouchWithSuccess:success target:target];
                                                   if (success) {
                                                       [self informDelegateDidPerformAppSwitchToTarget:target];

@@ -11,5 +11,6 @@ typedef NS_ENUM(NSInteger, BTPayPalErrorCode) {
     /// PayPal is disabled
     BTPayPalErrorPayPalDisabled = 2,
 
-
+    /// All other PayPal-related errors
+    BTPayPalErrorOther = 3,
 };

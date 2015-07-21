@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchRequest.h
 //
-//  Version 1.0.8
+//  Version 2.0.0
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
@@ -13,7 +13,7 @@
 typedef void (^PayPalOneTouchRequestPreflightCompletionBlock) (PayPalOneTouchRequestTarget target);
 
 /// Completion block for receiving the result of performing a request
-typedef void (^PayPalOneTouchRequestCompletionBlock) (BOOL success, PayPalOneTouchRequestTarget target, NSError *error);
+typedef void (^PayPalOneTouchRequestCompletionBlock) (BOOL success, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error);
 
 /// This environment MUST be used for App Store submissions.
 extern NSString *const PayPalEnvironmentProduction;
@@ -62,9 +62,6 @@ extern NSString *const PayPalEnvironmentMock;
 
 /// All requests MUST indicate the URL scheme to be used for returning to this app, following an app-switch
 @property (nonatomic, readonly) NSString *callbackURLScheme;
-
-/// The clientMetadataId (Dyson Id) associated with this request
-@property (nonatomic, readonly) NSString *clientMetadataId;
 
 /// Requests MAY include additional key/value pairs that OTC will add to the payload
 /// (For example, the Braintree client_token, which is required by the
