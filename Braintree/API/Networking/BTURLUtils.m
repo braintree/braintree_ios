@@ -48,12 +48,7 @@
 }
 
 + (NSString *)stringByURLEncodingAllCharactersInString:(NSString *)aString {
-    NSString *encodedString = (__bridge_transfer NSString * ) CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                                                      (__bridge CFStringRef)aString,
-                                                                                                      NULL,
-                                                                                                      (CFStringRef)@"&()<>@,;:\\\"/[]?=+$|^~`{}",
-                                                                                                      kCFStringEncodingUTF8);
-    return encodedString;
+    return [aString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
 
 + (NSDictionary *)dictionaryForQueryString:(NSString *)queryString {
@@ -77,7 +72,7 @@
 }
 
 + (NSString *)percentDecodedStringForString:(NSString *)string {
-    return [[string stringByReplacingOccurrencesOfString:@"+" withString:@" "] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [[string stringByReplacingOccurrencesOfString:@"+" withString:@" "] stringByRemovingPercentEncoding];
 }
 
 @end
