@@ -48,7 +48,13 @@
 }
 
 + (NSString *)stringByURLEncodingAllCharactersInString:(NSString *)aString {
-    return [aString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    // See Section 2.2. http://www.ietf.org/rfc/rfc2396.txt
+    NSString *reservedCharacters = @";/?:@&=+$,";
+
+    NSMutableCharacterSet *URLQueryPartAllowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    [URLQueryPartAllowedCharacterSet removeCharactersInString:reservedCharacters];
+
+    return [aString stringByAddingPercentEncodingWithAllowedCharacters:URLQueryPartAllowedCharacterSet];
 }
 
 + (NSDictionary *)dictionaryForQueryString:(NSString *)queryString {
@@ -61,6 +67,9 @@
 
         NSArray *keyValueArray = [keyValueString componentsSeparatedByString:@"="];
         NSString *key = [self percentDecodedStringForString:keyValueArray[0]];
+        if (!key) {
+            continue;
+        }
         if (keyValueArray.count == 2) {
             NSString *value = [self percentDecodedStringForString:keyValueArray[1]];
             parameters[key] = value;
