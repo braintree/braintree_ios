@@ -69,10 +69,18 @@
 
 - (void)showTopLevelError:(NSString *)message {
     NSString *localizedOK = BTUILocalizedString(TOP_LEVEL_ERROR_ALERT_VIEW_OK_BUTTON_TEXT);
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:localizedOK style:UIAlertActionStyleCancel handler:nil]];
-    UIViewController *visibleViewController = [[UIApplication sharedApplication].delegate.window.rootViewController BTUI_visibleViewController];
-    [visibleViewController presentViewController:alert animated:YES completion:nil];
+    if ([UIAlertController class]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:localizedOK style:UIAlertActionStyleCancel handler:nil]];
+        UIViewController *visibleViewController = [[UIApplication sharedApplication].delegate.window.rootViewController BTUI_visibleViewController];
+        [visibleViewController presentViewController:alert animated:YES completion:nil];
+    } else {
+        [[[UIAlertView alloc] initWithTitle:message
+                                    message:nil
+                                   delegate:nil
+                          cancelButtonTitle:localizedOK
+                          otherButtonTitles:nil] show];
+    }
 }
 
 - (void)setAlphaNumericPostalCode:(BOOL)alphaNumericPostalCode {
