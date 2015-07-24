@@ -2,6 +2,7 @@
 
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
+#import "BTUIUtil.h"
 
 @interface BTDropInErrorAlert () <UIAlertViewDelegate>
 
@@ -22,24 +23,45 @@
     return self;
 }
 
-
 - (void)show {
     NSString *localizedOK = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
     NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_CANCEL_BUTTON_TEXT);
-
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
-                                                        message:self.message
-                                                       delegate:self
-                                              cancelButtonTitle:self.retryBlock ? localizedCancel : localizedOK
-                                 otherButtonTitles:nil];
-
-    if (self.retryBlock) {
-        NSString *localizedTryAgain = BTDropInLocalizedString(ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT);
-        [alertView addButtonWithTitle:localizedTryAgain];
-
+    
+    if ([UIAlertController class]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:self.title
+                                                                       message:self.message
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:self.retryBlock ? localizedCancel : localizedOK
+                                                  style:UIAlertActionStyleCancel
+                                                handler:^(UIAlertAction * __nonnull __unused action) {
+                                                    if (self.cancelBlock) {
+                                                        self.cancelBlock();
+                                                    }
+                                                }]];
+        if (self.retryBlock) {
+            NSString *localizedTryAgain = BTDropInLocalizedString(ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT);
+            [alert addAction:[UIAlertAction actionWithTitle:localizedTryAgain
+                                                      style:UIAlertActionStyleDefault
+                                                    handler:^(UIAlertAction * __nonnull __unused action) {
+                                                        if (self.retryBlock) {
+                                                            self.retryBlock();
+                                                        }
+                                                    }]];
+        }
+        UIViewController *visibleViewController = [[UIApplication sharedApplication].delegate.window.rootViewController BTUI_visibleViewController];
+        [visibleViewController presentViewController:alert animated:YES completion:nil];
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
+                                                            message:self.message
+                                                           delegate:self
+                                                  cancelButtonTitle:self.retryBlock ? localizedCancel : localizedOK
+                                                  otherButtonTitles:nil];
+        if (self.retryBlock) {
+            NSString *localizedTryAgain = BTDropInLocalizedString(ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT);
+            [alertView addButtonWithTitle:localizedTryAgain];
+        }
+        [alertView show];
     }
-
-    [alertView show];
 }
 
 - (void)alertView:(__unused UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

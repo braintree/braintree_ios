@@ -15,3 +15,7 @@
 + (NSString *)stripNonExpiry:(NSString *)input;
 
 @end
+
+@interface UIViewController (BTUI_visibleViewController)
+- (UIViewController *)BTUI_visibleViewController;
+@end

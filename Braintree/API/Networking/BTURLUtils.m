@@ -48,12 +48,13 @@
 }
 
 + (NSString *)stringByURLEncodingAllCharactersInString:(NSString *)aString {
-    NSString *encodedString = (__bridge_transfer NSString * ) CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                                                      (__bridge CFStringRef)aString,
-                                                                                                      NULL,
-                                                                                                      (CFStringRef)@"&()<>@,;:\\\"/[]?=+$|^~`{}",
-                                                                                                      kCFStringEncodingUTF8);
-    return encodedString;
+    // See Section 2.2. http://www.ietf.org/rfc/rfc2396.txt
+    NSString *reservedCharacters = @";/?:@&=+$,";
+
+    NSMutableCharacterSet *URLQueryPartAllowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    [URLQueryPartAllowedCharacterSet removeCharactersInString:reservedCharacters];
+
+    return [aString stringByAddingPercentEncodingWithAllowedCharacters:URLQueryPartAllowedCharacterSet];
 }
 
 + (NSDictionary *)dictionaryForQueryString:(NSString *)queryString {
@@ -66,6 +67,9 @@
 
         NSArray *keyValueArray = [keyValueString componentsSeparatedByString:@"="];
         NSString *key = [self percentDecodedStringForString:keyValueArray[0]];
+        if (!key) {
+            continue;
+        }
         if (keyValueArray.count == 2) {
             NSString *value = [self percentDecodedStringForString:keyValueArray[1]];
             parameters[key] = value;
@@ -77,7 +81,7 @@
 }
 
 + (NSString *)percentDecodedStringForString:(NSString *)string {
-    return [[string stringByReplacingOccurrencesOfString:@"+" withString:@" "] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [[string stringByReplacingOccurrencesOfString:@"+" withString:@" "] stringByRemovingPercentEncoding];
 }
 
 @end
