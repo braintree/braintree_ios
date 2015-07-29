@@ -489,7 +489,7 @@
     if (self.configuration.merchantAccountId) {
         requestParameters[@"merchant_account_id"] = self.configuration.merchantAccountId;
     }
-    NSString *urlSafeNonce = [nonce stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlSafeNonce = [nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
     [self.clientApiHttp POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
                   completion:^(BTHTTPResponse *response, NSError *error){
