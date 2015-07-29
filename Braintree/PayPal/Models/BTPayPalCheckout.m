@@ -20,8 +20,6 @@
     self = [self init];
     if (self) {
         self.amount = amount;
-        self.enableShippingAddress = YES;
-        self.addressOverride = NO;
     }
     return self;
 }

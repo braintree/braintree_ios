@@ -89,6 +89,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param completionBlock This completion will be invoked when authorization is complete.
 - (void)startCheckout:(BTPayPalCheckout *)checkout completion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock;
 
+// TODO write docs
+- (void)startBillingAgreement:(__unused BTPayPalResource * __nonnull)resource completion:(nullable __unused void (^)(BTPayPalPaymentMethod * __nullable paymentMethod, NSError * __nullable error))completionBlock;
 
 #pragma mark - App Switch
 

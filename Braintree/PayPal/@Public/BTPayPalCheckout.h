@@ -2,16 +2,13 @@
 @import AddressBook;
 
 #import "BTPostalAddress.h"
+#import "BTPayPalResource.h"
 
-@interface BTPayPalCheckout : NSObject
+@interface BTPayPalCheckout : BTPayPalResource
 
 + (instancetype)checkoutWithAmount:(NSDecimalNumber *)amount;
 
 @property (nonatomic, copy) NSDecimalNumber *amount;
 @property (nonatomic, copy) NSString *currencyCode;
-@property (nonatomic, copy) NSString *localeCode;
-@property (nonatomic, assign) BOOL enableShippingAddress;
-@property (nonatomic, assign) BOOL addressOverride;
-@property (nonatomic, strong) BTPostalAddress *shippingAddress;
 
 @end
