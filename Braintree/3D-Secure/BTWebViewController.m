@@ -62,13 +62,13 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.webView.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     [self updateNetworkActivityIndicatorForWebView:self.webView];
 }
 
@@ -103,7 +103,7 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         [self informDelegateDidFinish];
         return NO;
     }
-
+    
     return YES;
 }
 
@@ -134,11 +134,14 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
                                                     }]];
             [self presentViewController:alert animated:YES completion:nil];
         } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [[[UIAlertView alloc] initWithTitle:error.localizedDescription
                                         message:nil
                                        delegate:nil
                               cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
                               otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
         }
     }
 }
@@ -193,7 +196,7 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 - (NSURL *)extractPopupLinkURL:(NSURL *)URL {
     NSURLComponents *c = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
     c.scheme = [[URL.scheme componentsSeparatedByString:@"+"] lastObject];
-
+    
     return c.URL;
 }
 

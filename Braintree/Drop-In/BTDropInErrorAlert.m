@@ -51,6 +51,8 @@
         UIViewController *visibleViewController = [[UIApplication sharedApplication].delegate.window.rootViewController BTUI_visibleViewController];
         [visibleViewController presentViewController:alert animated:YES completion:nil];
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
                                                             message:self.message
                                                            delegate:self
@@ -61,6 +63,7 @@
             [alertView addButtonWithTitle:localizedTryAgain];
         }
         [alertView show];
+#pragma clang diagnostic pop
     }
 }
 
@@ -74,7 +77,7 @@
 
 - (NSString *)title {
     NSString *localizedConnectionError = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
-
+    
     return _title ?: localizedConnectionError;
 }
 
