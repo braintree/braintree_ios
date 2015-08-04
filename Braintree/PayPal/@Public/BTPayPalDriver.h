@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param completionBlock This completion will be invoked exactly once when authorization is complete or an error occurs.
 - (void)startAuthorizationWithAdditionalScopes:(NSSet * __nullable)additionalScopes completion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock;
 
-/// Checkout with PayPal for creating a single-use PayPal payment method nonce.
+/// Checkout with PayPal for creating a single-use or billing-agreement PayPal payment method nonce.
 ///
 /// You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your server when this method completes without any additional user interaction.
 ///
@@ -88,9 +88,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @param completionBlock This completion will be invoked when authorization is complete.
 - (void)startCheckout:(BTPayPalCheckout *)checkout completion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock;
-
-// TODO write docs
-- (void)startBillingAgreement:(__unused BTPayPalResource * __nonnull)resource completion:(nullable __unused void (^)(BTPayPalPaymentMethod * __nullable paymentMethod, NSError * __nullable error))completionBlock;
 
 #pragma mark - App Switch
 

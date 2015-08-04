@@ -37,8 +37,9 @@
 
 - (void)tappedPayPalBillingAgreement:(UIButton *)sender {
     self.progressBlock(@"Tapped PayPal - initiating checkout using BTPayPalDriver");
-    BTPayPalResource *resource = [[BTPayPalResource alloc] init];
-    [self.payPalDriver startBillingAgreement:resource completion:^(BTPayPalPaymentMethod *paymentMethod, NSError *error) {
+    BTPayPalCheckout *checkout = [[BTPayPalCheckout alloc] init];
+    checkout.isSingleUse = NO;
+    [self.payPalDriver startCheckout:checkout completion:^(BTPayPalPaymentMethod *paymentMethod, NSError *error) {
         [sender setEnabled:YES];
         if (error) {
             self.progressBlock(error.localizedDescription);
