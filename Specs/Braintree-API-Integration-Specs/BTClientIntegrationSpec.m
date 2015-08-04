@@ -1278,7 +1278,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
             NSString *successUrl = @"https://example.com/redirect";
             BTPayPalCheckout *checkout = [BTPayPalCheckout checkoutWithAmount:[NSDecimalNumber one]];
             checkout.currencyCode = @"USD";
-            [testClient createPayPalPaymentResourceWithCheckout:checkout redirectUri:successUrl cancelUri:cancelUrl clientMetadataID:@"fake-metadata-id" success:^(BTClientPayPalPaymentResource *paymentResource) {
+            [testClient createPayPalPaymentResourceWithCheckout:checkout redirectUri:successUrl cancelUri:cancelUrl success:^(BTClientPayPalPaymentResource *paymentResource) {
                 expect(paymentResource.redirectURL).to.beKindOf([NSURL class]);
                 expect([[paymentResource.redirectURL absoluteString] length]).to.beGreaterThan(0);
                 [expectation fulfill];
