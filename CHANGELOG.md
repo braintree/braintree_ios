@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.2-pre4 (2015-08-04)
+* PayPal
+  * Update support for PayPal Checkout
+  * Add support for PayPal Billing Agreement authorization
+  * Update PayPal One Touch Core
+
 ## 4.0.0-pre2 (2015-06-23)
 
 * PayPal
