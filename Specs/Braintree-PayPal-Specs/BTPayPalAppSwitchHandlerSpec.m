@@ -133,7 +133,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                     [invocation retainArguments];
                     PayPalOneTouchRequestCompletionBlock completionBlock;
                     [invocation getArgument:&completionBlock atIndex:2];
-                    completionBlock(NO, PayPalOneTouchRequestTargetNone, nil);
+                    completionBlock(NO, PayPalOneTouchRequestTargetNone, @"CLIENT-METADATA-ID", nil);
                 }] performWithCompletionBlock:OCMOCK_ANY];
                 [[client expect] postAnalyticsEvent:@"ios.paypal-future-payments.none.initiate.failed"];
 
@@ -150,7 +150,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                     [invocation retainArguments];
                     PayPalOneTouchRequestCompletionBlock completionBlock;
                     [invocation getArgument:&completionBlock atIndex:2];
-                    completionBlock(YES, PayPalOneTouchRequestTargetBrowser, nil);
+                    completionBlock(YES, PayPalOneTouchRequestTargetBrowser, @"CLIENT-METADATA-ID", nil);
                 }] performWithCompletionBlock:OCMOCK_ANY];
                 [[client expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
 
@@ -219,7 +219,7 @@ describe(@"handleReturnURL:", ^{
             [invocation retainArguments];
             PayPalOneTouchRequestCompletionBlock completionBlock;
             [invocation getArgument:&completionBlock atIndex:2];
-            completionBlock(YES, PayPalOneTouchRequestTargetBrowser, nil);
+            completionBlock(YES, PayPalOneTouchRequestTargetBrowser, @"CLIENT-METADATA-ID", nil);
         }] performWithCompletionBlock:OCMOCK_ANY];
         
         NSError *error;
@@ -261,7 +261,7 @@ describe(@"handleReturnURL:", ^{
             [invocation retainArguments];
             PayPalOneTouchRequestCompletionBlock completionBlock;
             [invocation getArgument:&completionBlock atIndex:2];
-            completionBlock(YES, PayPalOneTouchRequestTargetBrowser, nil);
+            completionBlock(YES, PayPalOneTouchRequestTargetBrowser, @"CLIENT-METADATA-ID", nil);
         }] performWithCompletionBlock:OCMOCK_ANY];
         
         [[client expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
