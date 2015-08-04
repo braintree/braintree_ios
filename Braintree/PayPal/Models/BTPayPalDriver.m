@@ -202,7 +202,6 @@ NS_ASSUME_NONNULL_BEGIN
     [client createPayPalPaymentResourceWithCheckout:checkout
                                       redirectUri:redirectUri
                                         cancelUri:cancelUri
-                                 clientMetadataID:@""
                                           success:^(BTClientPayPalPaymentResource *paymentResource) {
                                               
                                               NSString *token = [PayPalOneTouchRequest tokenFromApprovalURL:paymentResource.redirectURL];

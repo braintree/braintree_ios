@@ -20,8 +20,17 @@
     self = [self init];
     if (self) {
         self.amount = amount;
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
         self.enableShippingAddress = YES;
         self.addressOverride = NO;
+        self.isSingleUse = YES;
     }
     return self;
 }

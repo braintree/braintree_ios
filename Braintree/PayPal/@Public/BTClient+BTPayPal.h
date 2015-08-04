@@ -8,7 +8,6 @@ typedef void (^BTClientPayPalPaymentResourceBlock)(BTClientPayPalPaymentResource
 - (void)createPayPalPaymentResourceWithCheckout:(BTPayPalCheckout *)checkout
                                     redirectUri:(NSString *)redirectUri
                                       cancelUri:(NSString *)cancelUri
-                               clientMetadataID:(NSString *)clientMetadataID
                                         success:(BTClientPayPalPaymentResourceBlock)successBlock
                                         failure:(BTClientFailureBlock)failureBlock;
 @end

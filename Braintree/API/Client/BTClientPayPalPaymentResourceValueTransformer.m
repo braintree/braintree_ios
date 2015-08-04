@@ -22,6 +22,10 @@
     
     paymentResource.redirectURL = [parser URLForKey:@"redirectUrl"];
     
+    if(paymentResource.redirectURL == nil) {
+        paymentResource.redirectURL = [parser URLForKey:@"approvalUrl"];
+    }
+    
     return paymentResource;
 }
 

@@ -7,7 +7,6 @@
 - (void)createPayPalPaymentResourceWithCheckout:(BTPayPalCheckout *)checkout
                                     redirectUri:(NSString *)redirectUri
                                       cancelUri:(NSString *)cancelUri
-                               clientMetadataID:(NSString *)clientMetadataID
                                         success:(BTClientPayPalPaymentResourceBlock)successBlock
                                         failure:(BTClientFailureBlock)failureBlock {
     
@@ -30,24 +29,29 @@
     }
     
     NSMutableDictionary *parameters = [@{ @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
-                                          @"amount": [checkout.amount stringValue],
-                                          @"currency_iso_code": checkout.currencyCode ?: self.configuration.payPalCurrencyCode,
                                           @"return_url": redirectUri,
                                           @"cancel_url": cancelUri,
                                           @"experience_profile": experienceProfileParams,
-                                          @"correlation_id": clientMetadataID
                                           } mutableCopy];
     
     if (shippingAddress != nil) {
         [parameters addEntriesFromDictionary:shippingAddress];
     }
     
-    [self.clientApiHttp POST:@"v1/paypal_hermes/create_payment_resource"
+    if (checkout.isSingleUse) {
+        [parameters addEntriesFromDictionary:@{@"amount": [checkout.amount stringValue],
+                                               @"currency_iso_code": checkout.currencyCode ?: self.configuration.payPalCurrencyCode}];
+    }
+    
+    NSString *apiUrl = checkout.isSingleUse ? @"v1/paypal_hermes/create_payment_resource" : @"v1/paypal_hermes/setup_billing_agreement";
+    __block NSString *urlKey = checkout.isSingleUse ? @"paymentResource" : @"agreementSetup";
+    
+    [self.clientApiHttp POST:apiUrl
                   parameters:parameters
                   completion:^(BTHTTPResponse *response, NSError *error) {
                       if (response.isSuccess) {
                           if (successBlock) {
-                              successBlock([response.object objectForKey:@"paymentResource" withValueTransformer:[BTClientPayPalPaymentResourceValueTransformer sharedInstance]]);
+                              successBlock([response.object objectForKey:urlKey withValueTransformer:[BTClientPayPalPaymentResourceValueTransformer sharedInstance]]);
                           }
                       } else {
                           if (failureBlock) {

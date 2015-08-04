@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		006DF886AA8467222145BEE3 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		034EF7CE1AC367EB00CC25D8 /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CB211AC08234007AD979 /* BTTestClientTokenFactory.m */; };
+		0391B2DD1B69700C0094E256 /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0391B2DC1B69700C0094E256 /* BraintreeDemoPayPalBillingAgreementViewController.m */; };
 		0D9D2B8667235033E88D7A23 /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
 		137D150CAF78BC9B8B08D9FF /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		14635ACA2F22A649D38DF214 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
@@ -279,6 +280,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0391B2DB1B69700C0094E256 /* BraintreeDemoPayPalBillingAgreementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BraintreeDemoPayPalBillingAgreementViewController.h; path = "PayPal - Billing Agreement/BraintreeDemoPayPalBillingAgreementViewController.h"; sourceTree = "<group>"; };
+		0391B2DC1B69700C0094E256 /* BraintreeDemoPayPalBillingAgreementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoPayPalBillingAgreementViewController.m; path = "PayPal - Billing Agreement/BraintreeDemoPayPalBillingAgreementViewController.m"; sourceTree = "<group>"; };
 		056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0952D25AC13D43208F8288B6 /* libPods-Braintree-AppSwitch-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-AppSwitch-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -998,6 +1001,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0391B2DE1B6970170094E256 /* PayPal - Billing Agreement */ = {
+			isa = PBXGroup;
+			children = (
+				0391B2DC1B69700C0094E256 /* BraintreeDemoPayPalBillingAgreementViewController.m */,
+				0391B2DB1B69700C0094E256 /* BraintreeDemoPayPalBillingAgreementViewController.h */,
+			);
+			name = "PayPal - Billing Agreement";
+			sourceTree = "<group>";
+		};
 		1607FE3A192D96BE0099D504 /* Docs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2025,6 +2037,7 @@
 				163357861AEE1A2100794AAA /* Venmo - BTUIVenmoButton */,
 				163357891AEE1A5D00794AAA /* Venmo - Custom Button */,
 				A711877E1B1E215F00AD9865 /* PayPal - Scopes */,
+				0391B2DE1B6970170094E256 /* PayPal - Billing Agreement */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -3434,6 +3447,7 @@
 				1621752B192D922F008DC35D /* BraintreeDemoAppDelegate.m in Sources */,
 				16F3A7E51AEC909800628DBF /* BraintreeDemoDemoContainmentViewController.m in Sources */,
 				842E21C81B02708E0036DA66 /* BraintreeDemoBTUICoinbaseButtonViewController.m in Sources */,
+				0391B2DD1B69700C0094E256 /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */,
 				16217531192D922F008DC35D /* BraintreeDemoCardTokenizationViewController.m in Sources */,
 				16D464521AECA5FB00177B0C /* BraintreeDemoDropInViewController.m in Sources */,
 				16D4644B1AECA24500177B0C /* BraintreeDemoBaseViewController.m in Sources */,
