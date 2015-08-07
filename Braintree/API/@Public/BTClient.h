@@ -16,7 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark Types
 
 /// Block type that takes an `NSArray` of `BTPaymentMethod`s
-typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray<__kindof BTPaymentMethod *> *paymentMethods);
+#if (defined(__clang__) && __has_feature(objc_generics))
+typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray<BTPaymentMethod *> *paymentMethods);
+#else
+typedef void (^BTClientPaymentMethodListSuccessBlock)(NSArray *paymentMethods);
+#endif
 
 /// Block type that takes a single `BTPaymentMethod`
 typedef void (^BTClientPaymentMethodSuccessBlock)(BTPaymentMethod *paymentMethod);
@@ -63,7 +67,11 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 
 /// A set of strings denoting additional scopes to use when authorizing a PayPal account.
 /// See PayPalOAuthScopes.h for a list of available scopes.
+#if (defined(__clang__) && __has_feature(objc_generics))
 @property (nonatomic, nullable, copy) NSSet<NSString *> *additionalPayPalScopes;
+#else
+@property (nonatomic, nullable, copy) NSSet *additionalPayPalScopes;
+#endif
 
 #pragma mark - Fetch a Payment Method
 
