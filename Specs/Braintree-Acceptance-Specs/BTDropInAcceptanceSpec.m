@@ -102,7 +102,6 @@ describe(@"Drop In view controller", ^{
             testDropInVC.cardForm.number = @"4111111111111111";
             NSDateFormatter *formatter = [NSDateFormatter new];
             formatter.dateFormat = @"12/2020";
-            testDropInVC.cardForm.number = @"4111111111111111";
             [testDropInVC.cardForm setExpirationDate:[formatter dateFromString:@"MM/YYYY"]];
             testDropInVC.cardForm.cvv = @"123";
             testDropInVC.cardForm.postalCode = @"12345";
