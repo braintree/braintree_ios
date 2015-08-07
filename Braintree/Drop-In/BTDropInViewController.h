@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "Braintree-API.h"
+#import "BTUICardFormView.h"
 
 @class BTUI;
 @protocol BTDropInViewControllerDelegate;
@@ -86,13 +87,15 @@
 /// @see callToActionAmount
 @property (nonatomic, assign) BOOL shouldHideCallToAction;
 
+/// The card form view, made available for customization.
+@property (nonatomic, readonly, strong) BTUICardFormView *cardForm;
+
 /// Fetches the customer's saved payment methods and populates Drop In with them.
 ///
 /// @note For the best user experience, you should call this method as early as
 ///       possible (after initializing BTDropInViewController, before presenting it)
 ///       in order to avoid a loading spinner.
 - (void)fetchPaymentMethods;
-
 
 @end
 

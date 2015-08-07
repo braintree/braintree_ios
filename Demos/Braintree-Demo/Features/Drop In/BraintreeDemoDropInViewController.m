@@ -8,6 +8,7 @@
 @interface BraintreeDemoDropInViewController () <BTDropInViewControllerDelegate>
 
 @property (nonatomic, strong) Braintree *braintree;
+@property (nonatomic, strong) UISwitch *prepopulateDataSwitch;
 
 @end
 
@@ -39,6 +40,18 @@
     [self.view addSubview:dropInButton];
     [dropInButton autoCenterInSuperview];
 
+    self.prepopulateDataSwitch = [UISwitch new];
+    [self.view addSubview:self.prepopulateDataSwitch];
+    [self.prepopulateDataSwitch autoConstrainAttribute:ALAttributeRight toAttribute:ALAttributeMarginRight ofView:self.view];
+    [self.prepopulateDataSwitch autoConstrainAttribute:ALAttributeBottom toAttribute:ALAttributeMarginBottom ofView:self.view withOffset:-20.0f];
+
+    UILabel *prepopulateLabel = [UILabel new];
+    prepopulateLabel.text = @"Modify card form";
+    [self.view addSubview:prepopulateLabel];
+    [prepopulateLabel autoConstrainAttribute:ALAttributeLeft toAttribute:ALAttributeMarginLeft ofView:self.view];
+    [prepopulateLabel autoConstrainAttribute:ALAttributeHorizontal toAttribute:ALAttributeHorizontal ofView:self.prepopulateDataSwitch];
+
+
     self.progressBlock(@"Ready to present Drop In");
 }
 
@@ -50,6 +63,16 @@
     dropIn.displayAmount = @"$19.00";
     dropIn.callToActionText = @"$19 - Subscribe Now";
     dropIn.shouldHideCallToAction = NO;
+
+    if (self.prepopulateDataSwitch.on) {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"MM/yyyy"];
+        [dropIn.cardForm setExpirationDate:[dateFormatter dateFromString: @"12/2018"]];
+        dropIn.cardForm.number = @"4111111111111111";
+        dropIn.cardForm.cvv = @"123";
+        dropIn.cardForm.postalCode = @"12345";
+        dropIn.cardForm.optionalFields = BTUICardFormOptionalFieldsAll;
+    }
 
     if ([BraintreeDemoSettings useModalPresentation]) {
         self.progressBlock(@"Presenting Drop In Modally");

@@ -277,8 +277,8 @@
         NSUInteger fieldIndex = [self.fields indexOfObject:field];
         NSUInteger startIndex = (fieldIndex + 1) % self.fields.count;
 
-        for (NSUInteger i = startIndex ; i != fieldIndex; i = (i + 1) % self.fields.count) {
-            BTUIFormField *ithField = self.fields[i];
+        for (NSUInteger i = 0 ; i < self.fields.count; i++) {
+            BTUIFormField *ithField = self.fields[(startIndex + i) % self.fields.count];
             if (!ithField.valid) {
                 [ithField becomeFirstResponder];
                 break;
