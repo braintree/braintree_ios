@@ -12,6 +12,7 @@
 #import "BTClient_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTCoinbase.h"
+#import "BTUICardFormView.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>
 
@@ -651,10 +652,70 @@
     }];
 }
 
-#pragma mark - Properties
+#pragma mark - Card Properties
 
-- (BTUICardFormView *)cardForm {
-    return self.dropInContentView.cardForm;
+- (NSString *)cardNumber {
+    return self.dropInContentView.cardForm.number;
+}
+
+- (void)setCardNumber:(NSString *)cardNumber {
+    self.dropInContentView.cardForm.number = cardNumber;
+}
+
+- (NSString *)cardExpirationMonth {
+    return self.dropInContentView.cardForm.expirationMonth;
+}
+
+- (NSString *)cardExpirationYear {
+    return self.dropInContentView.cardForm.expirationYear;
+}
+
+- (void)setCardExpirationDate:(NSDate *)expirationDate {
+    [self.dropInContentView.cardForm setExpirationDate:expirationDate];
+}
+
+- (NSString *)cardCVV {
+    return self.dropInContentView.cardForm.cvv;
+}
+
+- (void)setCardCVV:(NSString *)cardCVV {
+    self.dropInContentView.cardForm.cvv = cardCVV;
+}
+
+- (BOOL)requireCardCVV {
+    return self.dropInContentView.cardForm.optionalFields & BTUICardFormOptionalFieldsCvv;
+}
+
+- (void)setRequireCardCVV:(BOOL)requireCardCVV {
+    if (self.requireCardCVV != requireCardCVV) {
+        self.dropInContentView.cardForm.optionalFields ^= BTUICardFormOptionalFieldsCvv;
+    }
+}
+
+- (NSString *)cardPostalCode {
+    return self.dropInContentView.cardForm.postalCode;
+}
+
+- (void)setCardPostalCode:(NSString *)cardPostalCode {
+    self.dropInContentView.cardForm.postalCode = cardPostalCode;
+}
+
+- (BOOL)requireCardPostalCode {
+    return self.dropInContentView.cardForm.optionalFields & BTUICardFormOptionalFieldsPostalCode;
+}
+
+- (void)setRequireCardPostalCode:(BOOL)requireCardPostalCode {
+    if (self.requireCardPostalCode != requireCardPostalCode) {
+        self.dropInContentView.cardForm.optionalFields ^= BTUICardFormOptionalFieldsPostalCode;
+    }
+}
+
+- (BOOL)cardAlphaNumericPostalCode {
+    return self.dropInContentView.cardForm.alphaNumericPostalCode;
+}
+
+- (void)setCardAlphaNumericPostalCode:(BOOL)cardAlphaNumericPostalCode {
+    self.dropInContentView.cardForm.alphaNumericPostalCode = cardAlphaNumericPostalCode;
 }
 
 #pragma mark - Helpers

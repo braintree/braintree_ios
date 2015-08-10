@@ -1,3 +1,5 @@
+#import <KIF/UIView-KIFAdditions.h>
+
 #import "BTDropInViewController.h"
 #import "BTClient+Testing.h"
 
@@ -15,7 +17,8 @@ __block BTClient *testClient = nil;
 __block BOOL testShouldEnableCoinbase = NO;
 __block BOOL testShouldHaveCoinbaseAccountInVault = NO;
 __block BOOL testShouldHaveCardInVault = NO;
-__block BOOL testShouldDisplayCardFormOptions = NO;
+__block BOOL testShouldDisplayCardFormCVV = NO;
+__block BOOL testShouldDisplayCardFormPostalCode = NO;
 __block BOOL testShouldBeValidIfFormPrefilled = NO;
 
 afterEach(^{
@@ -23,8 +26,9 @@ afterEach(^{
     testShouldEnableCoinbase = NO;
     testShouldHaveCoinbaseAccountInVault = NO;
     testShouldHaveCardInVault = NO;
-    testShouldDisplayCardFormOptions = NO;
-    testShouldBeValidIfFormPrefilled = YES;
+    testShouldDisplayCardFormPostalCode = NO;
+    testShouldDisplayCardFormCVV = NO;
+    testShouldBeValidIfFormPrefilled = NO;
 });
 
 describe(@"Drop In view controller", ^{
@@ -95,16 +99,19 @@ describe(@"Drop In view controller", ^{
         }
 
         BTDropInViewController *testDropInVC = [[BTDropInViewController alloc] initWithClient:testClient];
-        if (testShouldDisplayCardFormOptions) {
-            testDropInVC.cardForm.optionalFields = BTUICardFormOptionalFieldsAll;
+        if (testShouldDisplayCardFormPostalCode) {
+            testDropInVC.requireCardPostalCode = YES;
+        }
+        if (testShouldDisplayCardFormCVV) {
+            testDropInVC.requireCardCVV = YES;
         }
         if (testShouldBeValidIfFormPrefilled) {
-            testDropInVC.cardForm.number = @"4111111111111111";
+            testDropInVC.cardNumber = @"4111111111111111";
             NSDateFormatter *formatter = [NSDateFormatter new];
-            formatter.dateFormat = @"12/2020";
-            [testDropInVC.cardForm setExpirationDate:[formatter dateFromString:@"MM/YYYY"]];
-            testDropInVC.cardForm.cvv = @"123";
-            testDropInVC.cardForm.postalCode = @"12345";
+            formatter.dateFormat = @"MM/YYYY";
+            [testDropInVC setCardExpirationDate:[formatter dateFromString:@"12/2020"]];
+            testDropInVC.cardCVV = @"123";
+            testDropInVC.cardPostalCode = @"12345";
         }
 
         [testDropInVC fetchPaymentMethods];
@@ -134,18 +141,55 @@ describe(@"Drop In view controller", ^{
         });
     });
 
-    describe(@"card form", ^{
+    fdescribe(@"card form", ^{
 
-        describe(@"additional card form options", ^{
+        describe(@"additional card form Postal Code option enabled", ^{
             beforeAll(^{
-                testShouldDisplayCardFormOptions = YES;
+                testShouldDisplayCardFormPostalCode = YES;
+            });
+
+            it(@"should display with disabled button", ^{
+                [tester waitForViewWithAccessibilityLabel:@"Postal Code" traits:0];
+
+            });
+        });
+
+        describe(@"additional card form with Postal Code option disabled", ^{
+            beforeAll(^{
+                testShouldDisplayCardFormPostalCode = NO;
+            });
+
+            it(@"should display with disabled button", ^{
+                UIView *topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
+                UIAccessibilityElement *element = [topView accessibilityElementWithLabel:@"Postal Code"];
+                XCTAssertNil(element);
+            });
+        });
+
+
+        describe(@"additional card form CVV option enabled", ^{
+            beforeAll(^{
+                testShouldDisplayCardFormCVV = YES;
             });
 
             it(@"should display with disabled button", ^{
                 [tester waitForViewWithAccessibilityLabel:@"CVV" traits:0];
-                [tester waitForViewWithAccessibilityLabel:@"Postal Code" traits:0];
+
             });
         });
+
+        describe(@"additional card form with CVV option disabled", ^{
+            beforeAll(^{
+                testShouldDisplayCardFormCVV = NO;
+            });
+
+            it(@"should display with disabled button", ^{
+                UIView *topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
+                UIAccessibilityElement *element = [topView accessibilityElementWithLabel:@"CVV"];
+                XCTAssertNil(element);
+            });
+        });
+
 
         describe(@"unfilled values", ^{
             it(@"should have a disabled button", ^{
@@ -156,7 +200,8 @@ describe(@"Drop In view controller", ^{
 
         describe(@"with valid overridden values in optionally added fields", ^{
             beforeAll(^{
-                testShouldDisplayCardFormOptions = YES;
+                testShouldDisplayCardFormCVV = YES;
+                testShouldDisplayCardFormPostalCode = YES;
                 testShouldBeValidIfFormPrefilled = YES;
             });
 

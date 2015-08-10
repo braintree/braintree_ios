@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import "Braintree-API.h"
-#import "BTUICardFormView.h"
 
 @class BTUI;
 @protocol BTDropInViewControllerDelegate;
@@ -43,6 +42,13 @@
 /// The array of `BTPaymentMethod *` payment methods on file. These payment methods may be in the Vault.
 /// Most payment methods are automatically Vaulted if the client token was generated with a customer ID.
 @property (nonatomic, strong) NSArray *paymentMethods;
+
+/// Fetches the customer's saved payment methods and populates Drop In with them.
+///
+/// @note For the best user experience, you should call this method as early as
+///       possible (after initializing BTDropInViewController, before presenting it)
+///       in order to avoid a loading spinner.
+- (void)fetchPaymentMethods;
 
 #pragma mark State Change Notifications
 
@@ -87,15 +93,45 @@
 /// @see callToActionAmount
 @property (nonatomic, assign) BOOL shouldHideCallToAction;
 
-/// The card form view, made available for customization.
-@property (nonatomic, readonly, strong) BTUICardFormView *cardForm;
+#pragma mark - Card Form
 
-/// Fetches the customer's saved payment methods and populates Drop In with them.
+/// The card number.
 ///
-/// @note For the best user experience, you should call this method as early as
-///       possible (after initializing BTDropInViewController, before presenting it)
-///       in order to avoid a loading spinner.
-- (void)fetchPaymentMethods;
+/// If you set a card number longer than is allowed by the card type,
+/// it will not be set.
+@property (nonatomic, copy) NSString *cardNumber;
+
+/// The card form view's expiration date month
+@property (nonatomic, copy, readonly) NSString *cardExpirationMonth;
+
+/// The card form view's expiration date year
+@property (nonatomic, copy, readonly) NSString *cardExpirationYear;
+
+/// Sets the card form view's expiration date
+///
+/// @param expirationDate The expiration date. Passing in `nil` will clear the
+/// card form's expiry field.
+- (void)setCardExpirationDate:(NSDate *)expirationDate;
+
+/// The card CVV
+///
+/// @note this field is only visible when requireCardCVV is YES
+@property (nonatomic, copy) NSString *cardCVV;
+
+/// Whether to require a CVV for cards
+@property (nonatomic, assign) BOOL requireCardCVV;
+
+/// The card billing address postal code for AVS verifications
+///
+/// @note this field is only visible when requireCardPostalCode is YES
+@property (nonatomic, copy) NSString *cardPostalCode;
+
+/// Whether the card form should require a postal code.
+@property (nonatomic, assign) BOOL requireCardPostalCode;
+/// Configure whether to support complete alphanumeric postal codes.
+///
+/// If NO, allows only digit entry.
+@property (nonatomic, assign) BOOL cardAlphaNumericPostalCode;
 
 @end
 

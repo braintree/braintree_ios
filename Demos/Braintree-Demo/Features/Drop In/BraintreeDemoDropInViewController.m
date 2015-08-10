@@ -67,11 +67,12 @@
     if (self.prepopulateDataSwitch.on) {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"MM/yyyy"];
-        [dropIn.cardForm setExpirationDate:[dateFormatter dateFromString: @"12/2018"]];
-        dropIn.cardForm.number = @"4111111111111111";
-        dropIn.cardForm.cvv = @"123";
-        dropIn.cardForm.postalCode = @"12345";
-        dropIn.cardForm.optionalFields = BTUICardFormOptionalFieldsAll;
+        [dropIn setCardExpirationDate:[dateFormatter dateFromString: @"12/2018"]];
+        dropIn.cardNumber = @"4111111111111111";
+        dropIn.cardCVV = @"123";
+        dropIn.cardPostalCode = @"12345";
+        dropIn.requireCardCVV = YES;
+        dropIn.requireCardPostalCode = YES;
     }
 
     if ([BraintreeDemoSettings useModalPresentation]) {
