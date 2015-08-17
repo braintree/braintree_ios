@@ -37,6 +37,10 @@ NSString *BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey = @"BraintreeDemo
     }
 }
 
++ (BOOL)useClientKey {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"BraintreeDemoUseClientKey"];
+}
+
 + (BraintreeDemoTransactionServiceThreeDSecureRequiredStatus)threeDSecureRequiredStatus {
     return [[NSUserDefaults standardUserDefaults] integerForKey:BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey];
 }

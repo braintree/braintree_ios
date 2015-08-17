@@ -15,7 +15,7 @@
         @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Subclasses must override initWithClientToken:" userInfo:nil];
     }
 
-    return [super initWithCoder:[[NSCoder alloc] init]];
+    return [super initWithNibName:nil bundle:nil];
 }
 
 - (instancetype)initWithClientKey:(NSString *)clientKey {
@@ -23,7 +23,7 @@
         @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Subclasses must override initWithClientKey:" userInfo:nil];
     }
 
-    return [super initWithCoder:[[NSCoder alloc] init]];
+    return [super initWithNibName:nil bundle:nil];
 }
 
 @end

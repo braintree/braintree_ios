@@ -56,9 +56,26 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3.9.2-otc-pre3</string>
+	<string>4.0.0-pre2</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>com.braintreepayments.Braintree-Demo.payments</string>
+		<string>com.venmo.touch.v1</string>
+		<string>com.paypal.ppclient.touch.v2</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>

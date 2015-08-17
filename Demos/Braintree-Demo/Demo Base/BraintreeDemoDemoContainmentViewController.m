@@ -114,15 +114,23 @@
         [self.currentDemoViewController.view removeFromSuperview];
     }
 
-    [self updateStatus:@"Fetching Client Token…"];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     self.title = @"Braintree";
-    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
+
+    [self updateStatus:@"Fetching Client Token or Client Key …"];
+    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientTokenOrClientKey, NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (error) {
             [self updateStatus:error.localizedDescription];
         } else {
-            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientToken:clientToken];
+            if ([self isClientKey:clientTokenOrClientKey]) {
+                [self updateStatus:@"Using Client Key"];
+                self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientKey:clientTokenOrClientKey];
+            } else {
+                [self updateStatus:@"Using Client Token"];
+                self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientToken:clientTokenOrClientKey];
+            }
+
             [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([self.currentDemoViewController class])]];
             self.currentDemoViewController.progressBlock = [self progressBlock];
             self.currentDemoViewController.completionBlock = [self completionBlock];
@@ -134,6 +142,11 @@
     }];
 }
 
+- (BOOL)isClientKey:(NSString *)clientTokenOrClientKey {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:clientTokenOrClientKey error:NULL];
+    return apiClient != nil;
+}
+
 - (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithClientToken:(NSString *)clientToken {
     NSString *integrationName = [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsIntegration"];
     NSLog(@"Loading integration: %@", integrationName);
@@ -142,6 +155,16 @@
     NSAssert([integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]], @"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
 
     return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithClientToken:clientToken];
+}
+
+- (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithClientKey:(NSString *)clientKey {
+    NSString *integrationName = [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsIntegration"];
+    NSLog(@"Loading integration: %@", integrationName);
+
+    Class integrationClass = NSClassFromString(integrationName);
+    NSAssert([integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]], @"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
+
+    return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithClientKey:clientKey];
 }
 
 - (void)containIntegrationViewController:(UIViewController *)viewController {

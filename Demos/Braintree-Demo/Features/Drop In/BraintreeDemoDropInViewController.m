@@ -1,22 +1,31 @@
 #import "BraintreeDemoDropInViewController.h"
 
 #import <PureLayout/PureLayout.h>
-#import <Braintree/Braintree.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeUI/BraintreeUI.h>
 
 #import "BraintreeDemoSettings.h"
 
 @interface BraintreeDemoDropInViewController () <BTDropInViewControllerDelegate>
 
-@property (nonatomic, strong) Braintree *braintree;
+@property (nonatomic, strong) BTAPIClient *apiClient;
 
 @end
 
 @implementation BraintreeDemoDropInViewController
 
+- (instancetype)initWithClientKey:(NSString *)clientKey {
+    if (self = [super initWithClientKey:clientKey]) {
+        _apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey error:NULL];
+    }
+    return self;
+}
+
+// TODO: update for JWT
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
-        self.braintree = [Braintree braintreeWithClientToken:clientToken];
+        _apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id" error:NULL];
     }
     return self;
 }
@@ -43,7 +52,8 @@
 }
 
 - (void)tappedToShowDropIn {
-    BTDropInViewController *dropIn = [self.braintree dropInViewControllerWithDelegate:self];
+    BTDropInViewController *dropIn = [[BTDropInViewController alloc] initWithAPIClient:self.apiClient];
+    dropIn.delegate = self;
     dropIn.title = @"Check Out";
     dropIn.summaryTitle = @"Our Fancy Magazine";
     dropIn.summaryDescription = @"53 Week Subscription";
@@ -70,10 +80,11 @@
 
 #pragma mark - BTDropInViewControllerDelegate
 
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithPaymentMethod:(BTPaymentMethod *)paymentMethod {
+// Renamed from -dropInViewController:didSucceedWithPaymentMethod:
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(id<BTTokenized>)tokenization {
     if ([BraintreeDemoSettings useModalPresentation]) {
         [viewController dismissViewControllerAnimated:YES completion:^{
-            self.completionBlock(paymentMethod);
+            self.completionBlock(tokenization);
         }];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
