@@ -354,12 +354,13 @@
 
             [client postAnalyticsEvent:@"dropin.ios.add-card.save"];
 
-            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
+            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(id<BTTokenized> tokenization, NSError *error) {
                 [self showLoadingState:NO];
 
                 if (error) {
                     [client postAnalyticsEvent:@"dropin.ios.add-card.failed"];
-                    if (error.domain == BTCardTokenizationClientErrorDomain && error.code == BTErrorCustomerInputInvalid) {
+                    // TODO: fix this grossness
+                    if ([error.domain isEqualToString:@"com.braintreepayments.BTCardTokenizationClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
                         [self informUserDidFailWithError:error];
                     } else {
                         // What should we do when there's an error that isn't card validation related?
@@ -370,20 +371,6 @@
                 [client postAnalyticsEvent:@"dropin.ios.add-card.success"];
                 [self informDelegateDidAddPaymentMethod:tokenization];
             }];
-
-
-//            BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
-//            request.number = cardForm.number;
-//            request.expirationMonth = cardForm.expirationMonth;
-//            request.expirationYear = cardForm.expirationYear;
-//            request.cvv = cardForm.cvv;
-//            request.postalCode = cardForm.postalCode;
-//            // 8-17-2015: Client key does not support validation, TODO: double-check that this is desired behavior
-//            request.shouldValidate = self.apiClient.clientKey ? NO : YES;
-
-//            BTCardTokenizationClient *cardTokenizationClient = [[BTCardTokenizationClient alloc] initWithAPIClient:client];
-//            [cardTokenizationClient tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
-//            }];
         } else {
             NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
             NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);

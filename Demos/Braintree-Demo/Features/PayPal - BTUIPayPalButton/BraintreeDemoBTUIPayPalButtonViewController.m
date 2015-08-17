@@ -1,38 +1,46 @@
 #import "BraintreeDemoBTUIPayPalButtonViewController.h"
 #import "BTUIPaymentButtonCollectionViewCell.h"
+#import <BraintreePayPal/BraintreePayPal.h>
+#import <BraintreeUI/BraintreeUI.h>
 
 @interface BraintreeDemoBTUIPayPalButtonViewController ()
-@property(nonatomic, strong) BTPaymentProvider *paymentProvider;
 @end
 
 @implementation BraintreeDemoBTUIPayPalButtonViewController
 
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
-    if (self) {
-        self.paymentProvider = [self.braintree paymentProviderWithDelegate:self];
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"BTUIPayPalButton+BTPaymentProvider";
+    self.title = @"BTUIPayPalButton";
+
+    self.paymentButton.hidden = YES;
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
+        if (!configuration.isPayPalEnabled) {
+            self.progressBlock(@"canCreatePaymentMethodWithProviderType: returns NO, hiding PayPal button");
+        } else {
+            self.paymentButton.hidden = NO;
+        }
+    }];
 }
 
 - (UIView *)paymentButton {
-    if ([self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal]) {
-        BTUIPayPalButton *payPalButton = [[BTUIPayPalButton alloc] init];
-        [payPalButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
-        return payPalButton;
-    } else {
-        self.progressBlock(@"canCreatePaymentMethodWithProviderType: returns NO, hiding PayPal button");
-        return nil;
-    }
+    BTUIPayPalButton *payPalButton = [[BTUIPayPalButton alloc] init];
+    [payPalButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
+    return payPalButton;
 }
 
 - (void)tappedPayPalButton {
-    [self.paymentProvider createPaymentMethod:BTPaymentProviderTypePayPal];
+    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
+    [payPalDriver authorizeAccountWithCompletion:^(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
+        if (tokenizedPayPalAccount) {
+            self.progressBlock(@"Got a nonce 💎!");
+            NSLog(@"%@", [tokenizedPayPalAccount debugDescription]);
+            self.completionBlock(tokenizedPayPalAccount);
+        } else if (error) {
+            self.progressBlock(error.localizedDescription);
+        } else {
+            self.progressBlock(@"Canceled 🔰");
+        }
+    }];
 }
 
 @end

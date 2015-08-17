@@ -183,7 +183,7 @@
 		A77345C11B7A93D00083EC8D /* BTUICTAControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A773455D1B7A93D00083EC8D /* BTUICTAControl.m */; };
 		A77345C21B7A93D00083EC8D /* BTUIPaymentMethodView.h in Headers */ = {isa = PBXBuildFile; fileRef = A773455E1B7A93D00083EC8D /* BTUIPaymentMethodView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77345C31B7A93D00083EC8D /* BTUIPaymentMethodView.m in Sources */ = {isa = PBXBuildFile; fileRef = A773455F1B7A93D00083EC8D /* BTUIPaymentMethodView.m */; };
-		A77345C41B7A93D00083EC8D /* BTUIPayPalButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345601B7A93D00083EC8D /* BTUIPayPalButton.h */; };
+		A77345C41B7A93D00083EC8D /* BTUIPayPalButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345601B7A93D00083EC8D /* BTUIPayPalButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77345C51B7A93D00083EC8D /* BTUIPayPalButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345611B7A93D00083EC8D /* BTUIPayPalButton.m */; };
 		A77345C61B7A93D00083EC8D /* BTUISummaryView.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345621B7A93D00083EC8D /* BTUISummaryView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77345C71B7A93D00083EC8D /* BTUISummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345631B7A93D00083EC8D /* BTUISummaryView.m */; };
@@ -261,6 +261,9 @@
 		A79AF9F31B56DB54007B1DF1 /* BTClientMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AF9F21B56DB54007B1DF1 /* BTClientMetadataSpec.m */; };
 		A7A094F61B8276E500D732CC /* BTTokenizedCard_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A094F51B8276E500D732CC /* BTTokenizedCard_Tests.swift */; };
 		A7A094F71B8283DF00D732CC /* BraintreeDemoDropInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DA1B79708900452CFA /* BraintreeDemoDropInViewController.m */; };
+		A7A094F81B828F4600D732CC /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E01B79708900452CFA /* BraintreeDemoBTUIPayPalButtonViewController.m */; };
+		A7A094F91B82912200D732CC /* BraintreePayPal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */; };
+		A7A094FA1B82919300D732CC /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19A91B79708900452CFA /* BraintreeDemoPaymentButtonBaseViewController.m */; };
 		A7A6DD071B4308EB008857E1 /* BTPayPalDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */; };
 		A7ABD6361B6FDF6400A1223C /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		A7ABD6371B6FDF8400A1223C /* BraintreeApplePay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889741B5EF5DE007A0E9C /* BraintreeApplePay.framework */; };
@@ -1069,8 +1072,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7731E5BAB405AD2ED86C1B6 /* libPods-Braintree-Demo.a in Frameworks */,
+				A7A094F91B82912200D732CC /* BraintreePayPal.framework in Frameworks */,
 				A77344FE1B7A93A10083EC8D /* BraintreeUI.framework in Frameworks */,
+				B7731E5BAB405AD2ED86C1B6 /* libPods-Braintree-Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3008,8 +3012,10 @@
 				A76B1A111B79708A00452CFA /* BraintreeDemoIntegrationViewController.m in Sources */,
 				A76B1A0F1B79708A00452CFA /* BraintreeDemoAppDelegate.m in Sources */,
 				A76B1A161B79708A00452CFA /* BraintreeDemoCustomPayPalButtonManager.m in Sources */,
+				A7A094F81B828F4600D732CC /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */,
 				A76B1A141B79708A00452CFA /* BraintreeDemoSettings.m in Sources */,
 				A76B1A301B79708A00452CFA /* BraintreeDemoMerchantAPI.m in Sources */,
+				A7A094FA1B82919300D732CC /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				A76B1A0C1B79708A00452CFA /* BraintreeDemoBaseViewController.m in Sources */,
 				A7A094F71B8283DF00D732CC /* BraintreeDemoDropInViewController.m in Sources */,
 			);

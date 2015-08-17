@@ -11,6 +11,10 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 @implementation BTAPIClient
 
+- (instancetype)initWithClientKey:(NSString *)clientKey {
+    return [self initWithClientKey:clientKey error:NULL];
+}
+
 - (instancetype)initWithClientKey:(NSString *)clientKey error:(NSError **)error {
     return [self initWithClientKey:clientKey dispatchQueue:nil error:error];
 }
