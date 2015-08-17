@@ -29,7 +29,6 @@
 				<string>Coinbase - Custom Button</string>
 				<string>Apple Pay - BTPaymentProvider</string>
 				<string>Apple Pay - PassKit</string>
-				<string>PayPal - Deprecated BTPayPalButton</string>
 				<string>Drop In</string>
 				<string>UI Components</string>
 				<string>Credit Cards - 3D Secure</string>
@@ -50,7 +49,6 @@
 				<string>BraintreeDemoCustomCoinbaseButtonViewController</string>
 				<string>BraintreeDemoApplePayPaymentProviderViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
-				<string>BraintreeDemoDeprecatedBTPayPalButtonViewController</string>
 				<string>BraintreeDemoDropInViewController</string>
 				<string>BraintreeDemoUIWidgetsViewController</string>
 				<string>BraintreeDemoThreeDSecureViewController</string>

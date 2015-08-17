@@ -1,56 +1,52 @@
 #import "BraintreeDemoPayPalScopesViewController.h"
 
-#import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeUI/UIColor+BTUI.h>
-
-#import "BTPayPalDriver.h"
-#import "BTAppSwitch.h"
+#import <BraintreePayPal/BraintreePayPal.h>
+#import <BraintreeUI/BraintreeUI.h>
 
 @interface BraintreeDemoPayPalScopesViewController ()
-@property(nonatomic, strong) BTPaymentProvider *paymentProvider;
 @property(nonatomic, strong) UITextView *addressTextView;
 @end
 
 @implementation BraintreeDemoPayPalScopesViewController
 
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
-    if (self) {
-        self.paymentProvider = [self.braintree paymentProviderWithDelegate:self];
-        self.addressTextView = [[UITextView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 2) - 100, (self.view.bounds.size.width / 8) * 7, 200, 100)];
-        [self.view addSubview:self.addressTextView];
-        self.addressTextView.backgroundColor = [UIColor clearColor];
-        self.addressTextView.editable = NO;
-    }
-    return self;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    self.addressTextView = [[UITextView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 2) - 100, (self.view.bounds.size.width / 8) * 7, 200, 100)];
+    [self.view addSubview:self.addressTextView];
+    self.addressTextView.backgroundColor = [UIColor clearColor];
+
+    self.paymentButton.hidden = YES;
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
+        if (!configuration.isPayPalEnabled) {
+            self.progressBlock(@"canCreatePaymentMethodWithProviderType: returns NO, hiding custom PayPal button");
+        } else {
+            self.paymentButton.hidden = NO;
+        }
+    }];
 }
 
 - (UIView *)paymentButton {
-    if ([self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal]) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setTitle:@"PayPal (Address Scope)" forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [button setTitleColor:[[UIColor blueColor] bt_adjustedBrightness:0.5] forState:UIControlStateHighlighted];
-        [button addTarget:self action:@selector(tappedCustomPayPal) forControlEvents:UIControlEventTouchUpInside];
-        return button;
-    } else {
-        return nil;
-    }
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:@"PayPal (Address Scope)" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [button setTitleColor:[[UIColor blueColor] bt_adjustedBrightness:0.5] forState:UIControlStateHighlighted];
+    [button addTarget:self action:@selector(tappedCustomPayPal) forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
 
 - (void)tappedCustomPayPal {
-
-    BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithClient:self.braintree.client returnURLScheme:[BTAppSwitch sharedInstance].returnURLScheme];
+    BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     self.progressBlock(@"Tapped PayPal - initiating authorization using BTPayPalDriver");
-    [driver startAuthorizationWithAdditionalScopes:[NSSet setWithObjects:@"address", nil] completion:^(BTPayPalPaymentMethod *paymentMethod, NSError *error) {
+
+    [driver authorizeAccountWithAdditionalScopes:[NSSet setWithArray:@[@"address"]] completion:^(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
-        } else if (paymentMethod) {
-            self.completionBlock(paymentMethod);
-            
-            BTPostalAddress *address = paymentMethod.billingAddress;
+        } else if (tokenizedPayPalAccount) {
+            self.completionBlock(tokenizedPayPalAccount);
+
+            BTPostalAddress *address = tokenizedPayPalAccount.accountAddress;
             self.addressTextView.text = [NSString stringWithFormat:@"Address:\n%@\n%@\n%@ %@\n%@ %@", address.streetAddress, address.extendedAddress, address.locality, address.region, address.postalCode, address.countryCodeAlpha2];
-            
         } else {
             self.progressBlock(@"Cancelled");
         }
