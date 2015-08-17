@@ -13,3 +13,4 @@ FOUNDATION_EXPORT const unsigned char BraintreeUIVersionString[];
 #import <BraintreeUI/BTUIPayPalButton.h>
 #import <BraintreeUI/BTPaymentButton.h>
 #import <BraintreeUI/BTDropInViewController.h>
+#import <BraintreeUI/UIColor+BTUI.h>

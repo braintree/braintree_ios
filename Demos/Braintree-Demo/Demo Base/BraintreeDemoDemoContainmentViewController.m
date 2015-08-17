@@ -130,6 +130,10 @@
                 [self updateStatus:@"Using Client Token"];
                 self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientToken:clientTokenOrClientKey];
             }
+            if (!self.currentDemoViewController) {
+                [self updateStatus:@"Demo not available"];
+                return;
+            }
 
             [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([self.currentDemoViewController class])]];
             self.currentDemoViewController.progressBlock = [self progressBlock];
@@ -152,7 +156,10 @@
     NSLog(@"Loading integration: %@", integrationName);
 
     Class integrationClass = NSClassFromString(integrationName);
-    NSAssert([integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]], @"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
+    if (![integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]]) {
+        NSLog(@"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
+        return nil;
+    }
 
     return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithClientToken:clientToken];
 }
@@ -162,7 +169,10 @@
     NSLog(@"Loading integration: %@", integrationName);
 
     Class integrationClass = NSClassFromString(integrationName);
-    NSAssert([integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]], @"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
+    if (![integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]]) {
+        NSLog(@"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
+        return nil;
+    }
 
     return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithClientKey:clientKey];
 }
