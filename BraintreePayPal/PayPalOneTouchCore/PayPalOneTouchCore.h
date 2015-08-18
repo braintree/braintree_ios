@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchCore.h
 //
-//  Version 2.0.0
+//  Version 2.0.2-beta
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
@@ -73,7 +73,7 @@ typedef void (^PayPalOneTouchCompletionBlock)(PayPalOneTouchCoreResult *result);
 /// Pass the result to your server, to include in the payment request sent to PayPal.
 /// Do not otherwise cache or store this value.
 ///
-/// @param a pairingId (ex: EC-Token) to associate with this clientMetadataID must be 32 chars long or null
+/// @param a pairingId (ex: EC-Token) to associate with this clientMetadataID must be 10-32 chars long or null
 /// @return clientMetadataID Your server will send this to PayPal in a 'PayPal-Client-Metadata-Id' header.
 + (NSString *)clientMetadataID:(NSString *)pairingId;
 
