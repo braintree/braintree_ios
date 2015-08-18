@@ -12,15 +12,11 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 @implementation BTAPIClient
 
 - (instancetype)initWithClientKey:(NSString *)clientKey {
-    return [self initWithClientKey:clientKey error:NULL];
+    return [self initWithClientKey:clientKey dispatchQueue:nil];
 }
 
-- (instancetype)initWithClientKey:(NSString *)clientKey error:(NSError **)error {
-    return [self initWithClientKey:clientKey dispatchQueue:nil error:error];
-}
-
-- (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(dispatch_queue_t)dispatchQueue error:(NSError **)error {
-    NSURL *baseURL = [self baseURLFromClientKey:clientKey error:error];
+- (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(dispatch_queue_t)dispatchQueue {
+    NSURL *baseURL = [self baseURLFromClientKey:clientKey];
     if (!baseURL) {
         return nil;
     }
@@ -42,7 +38,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 - (instancetype)copyWithSource:(BTClientMetadataSourceType)source
                    integration:(BTClientMetadataIntegrationType)integration
 {
-    BTAPIClient *copiedClient = [[[self class] alloc] initWithClientKey:self.clientKey dispatchQueue:self.dispatchQueue error:NULL];
+    BTAPIClient *copiedClient = [[[self class] alloc] initWithClientKey:self.clientKey dispatchQueue:self.dispatchQueue];
     copiedClient.clientJWT = self.clientJWT;
 
     BTMutableClientMetadata *mutableMetadata = [self.metadata mutableCopy];
@@ -61,17 +57,17 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 #pragma mark - Base URL
 
-- (NSURL *)baseURLFromClientKey:(NSString *)clientKey error:(NSError **)error {
+///  Gets base URL from client key
+///
+///  @param clientKey The client key
+///
+///  @return Base URL for environment, or `nil` if client key is invalid
+- (NSURL *)baseURLFromClientKey:(NSString *)clientKey {
     NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:@"([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)" options:0 error:NULL];
 
     NSArray *results = [regExp matchesInString:clientKey options:0 range:NSMakeRange(0, clientKey.length)];
 
     if (results.count != 1 || [[results firstObject] numberOfRanges] != 3) {
-        if (error) {
-            *error = [NSError errorWithDomain:BTAPIClientErrorDomain
-                                         code:BTAPIClientErrorTypeInvalidClientKey
-                                     userInfo:nil];
-        }
         return nil;
     }
 
@@ -88,11 +84,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
     components.path = [self clientApiBasePathForMerchantID:merchantID];
     if (!components.host || !components.path) {
-        if (error) {
-            *error = [NSError errorWithDomain:BTAPIClientErrorDomain
-                                         code:BTAPIClientErrorTypeInvalidClientKey
-                                     userInfo:nil];
-        }
         return nil;
     }
 

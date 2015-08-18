@@ -5,12 +5,12 @@ import BraintreePayPal
 
 class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
-    var mockAPIClient : MockAPIClient = try! MockAPIClient(clientKey: "development_client_key")
+    var mockAPIClient : MockAPIClient = MockAPIClient(clientKey: "development_client_key")!
 
     override func setUp() {
         super.setUp()
 
-        mockAPIClient = try! MockAPIClient(clientKey: "development_client_key")
+        mockAPIClient = MockAPIClient(clientKey: "development_client_key")!
         StubPayPalOneTouchCore.cannedIsWalletAppAvailable = true
     }
 
@@ -240,12 +240,12 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
 class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
-    var mockAPIClient : MockAPIClient = try! MockAPIClient(clientKey: "development_client_key")
+    var mockAPIClient : MockAPIClient = MockAPIClient(clientKey: "development_client_key")!
 
     override func setUp() {
         super.setUp()
 
-        mockAPIClient = try! MockAPIClient(clientKey: "development_client_key")
+        mockAPIClient = MockAPIClient(clientKey: "development_client_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "paypal": [

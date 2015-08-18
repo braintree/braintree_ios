@@ -6,7 +6,7 @@ class BTCardTokenizationClient_Tests: XCTestCase {
     func testTokenization_sendsDataToClientAPI() {
         let expectation = self.expectationWithDescription("Tokenize Card")
         let fakeHTTP = FakeHTTP.fakeHTTP()
-        let apiClient = try! BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")
+        let apiClient = BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = fakeHTTP
         let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
 
@@ -30,7 +30,7 @@ class BTCardTokenizationClient_Tests: XCTestCase {
 
     func testTokenization_whenAPIClientSucceeds_returnsTokenizedCard() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let apiClient = try! BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")
+        let apiClient = BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = FakeHTTP.fakeHTTP()
         let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
 
@@ -54,7 +54,7 @@ class BTCardTokenizationClient_Tests: XCTestCase {
 
     func testTokenization_whenAPIClientFails_returnsError() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let apiClient = try! BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")
+        let apiClient = BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = ErrorHTTP.fakeHTTP()
         let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
 

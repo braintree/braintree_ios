@@ -87,7 +87,7 @@
 //- (void)setUp {
 //    [super setUp];
 //
-//    mockAPIClient = [[MockAPIClient alloc] initWithClientKey:@"test_api_client" error:NULL];
+//    mockAPIClient = [[MockAPIClient alloc] initWithClientKey:@"test_api_client"];
 //    analyticsClient = [[BTAnalyticsClient alloc] initWithAPIClient:mockAPIClient];
 //}
 //

@@ -41,14 +41,14 @@
     [service registerType:@"MyType" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
         [expectation fulfill];
     }];
-    [service tokenizeType:@"MyType" withAPIClient:[[BTAPIClient alloc] initWithClientKey:@"test_key" error:nil] completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
+    [service tokenizeType:@"MyType" withAPIClient:[[BTAPIClient alloc] initWithClientKey:@"test_key"] completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
     }];
     [self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
 - (void)testTokenizeType_whenTypeIsNotRegistered_returnsError {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [service tokenizeType:@"TypeThatHasntBeenRegistered" withAPIClient:[[BTAPIClient alloc] initWithClientKey:@"test_key" error:nil] completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
+    [service tokenizeType:@"TypeThatHasntBeenRegistered" withAPIClient:[[BTAPIClient alloc] initWithClientKey:@"test_key"] completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
         XCTAssertNil(tokenization);
         XCTAssertEqualObjects(error.domain, BTTokenizationServiceErrorDomain);
         XCTAssertEqual(error.code, BTTokenizationServiceErrorTypeNotRegistered);

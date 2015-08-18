@@ -154,7 +154,7 @@
 }
 
 - (BOOL)isClientKey:(NSString *)clientTokenOrClientKey {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:clientTokenOrClientKey error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:clientTokenOrClientKey];
     return apiClient != nil;
 }
 

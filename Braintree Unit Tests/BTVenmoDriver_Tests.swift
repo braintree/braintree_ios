@@ -27,12 +27,12 @@ class FakeBundle : NSBundle {
 }
 
 class BTVenmoDriver_Tests: XCTestCase {
-    var mockAPIClient : MockAPIClient = try! MockAPIClient(clientKey: "development_client_key")
+    var mockAPIClient : MockAPIClient = MockAPIClient(clientKey: "development_client_key")!
 
     override func setUp() {
         super.setUp()
 
-        mockAPIClient = try! MockAPIClient(clientKey: "development_client_key")
+        mockAPIClient = MockAPIClient(clientKey: "development_client_key")!
     }
     
     override func tearDown() {

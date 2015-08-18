@@ -114,36 +114,20 @@
 #pragma mark - Initialization
 
 - (void)testInitialization_setsClientKey {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     XCTAssertEqualObjects(apiClient.clientKey, @"development_client_key");
-}
-
-- (void)testInitialization_withInvalidClientKey_returnsError {
-    NSError *error;
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"invalid-client-key" error:&error];
-    XCTAssertNil(apiClient);
-    XCTAssertEqualObjects(error.domain, BTAPIClientErrorDomain);
-    XCTAssertEqual(error.code, BTAPIClientErrorTypeInvalidClientKey);
-}
-
-- (void)testInitialization_withInvalidEnvironment_returnsError {
-    NSError *error;
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"foo_client_key" error:&error];
-    XCTAssertNil(apiClient);
-    XCTAssertEqualObjects(error.domain, BTAPIClientErrorDomain);
-    XCTAssertEqual(error.code, BTAPIClientErrorTypeInvalidClientKey);
 }
 
 #pragma mark - Environment Base URL
 
 - (void)testBaseURL_isDeterminedByClientKey {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"http://localhost:3000/merchants/key/client_api");
 
-    apiClient = [[BTAPIClient alloc] initWithClientKey:@"sandbox_client_key" error:NULL];
+    apiClient = [[BTAPIClient alloc] initWithClientKey:@"sandbox_client_key"];
     XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://sandbox.braintreegateway.com/merchants/key/client_api");
 
-    apiClient = [[BTAPIClient alloc] initWithClientKey:@"production_client_key" error:NULL];
+    apiClient = [[BTAPIClient alloc] initWithClientKey:@"production_client_key"];
     XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://braintreegateway.com/merchants/key/client_api");
 }
 
@@ -152,7 +136,7 @@
 - (void)testAPIClient_canGetRemoteConfiguration {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
 
     FakeHTTP *fake = [FakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
@@ -171,7 +155,7 @@
 - (void)testConfiguration_whenServerRespondsWithNon200StatusCode_returnsAPIClientError {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
 
     FakeHTTP *fake = [FakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"error_message": @"Something bad happened" } statusCode:503];
@@ -192,7 +176,7 @@
 - (void)testConfiguration_whenNetworkHasError_returnsNetworkErrorInCallback {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
 
     FakeHTTP *fake = [FakeHTTP fakeHTTP];
     NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
@@ -212,7 +196,7 @@
 }
 
 - (void)testConfiguration_whenCalledSerially_performOnlyOneRequest {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
 
     FakeHTTP *fake = [FakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
@@ -243,20 +227,20 @@
 #pragma mark - Dispatch Queue
 
 - (void)testDispatchQueueMainQueueByDefault {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
 
     XCTAssertEqualObjects(apiClient.dispatchQueue, dispatch_get_main_queue());
 }
 
 - (void)testDispatchQueueMainQueueByDefaultWhenNilSpecified {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" dispatchQueue:nil error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" dispatchQueue:nil];
 
     XCTAssertEqualObjects(apiClient.dispatchQueue, dispatch_get_main_queue());
 }
 
 - (void)testDispatchQueueRetainedWhenSpecified {
     dispatch_queue_t q = dispatch_queue_create("com.braintreepayments.BTAPIClient_Tests.testDispatchQueueRetainedWhenSpecified", DISPATCH_QUEUE_SERIAL);
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" dispatchQueue:q error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" dispatchQueue:q];
 
     XCTAssertEqualObjects(apiClient.dispatchQueue, q);
 }
@@ -264,7 +248,7 @@
 - (void)testCallbacks_useDispatchQueue {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"
                                                       dispatchQueue:dispatch_get_main_queue()
-                                                              error:NULL];
+                                                             ];
     FakeHTTP *fake = [[FakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
     fake.dispatchQueue = dispatch_queue_create("not.the.main.queue", DISPATCH_QUEUE_SERIAL);
     apiClient.http = fake;
@@ -365,7 +349,7 @@
 #pragma mark - Analytics tests
 
 - (void)testPostAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.http = stubConfigurationHTTP;
     FakeHTTP *mockAnalyticsHttp = [FakeHTTP fakeHTTP];
@@ -383,7 +367,7 @@
 }
 
 - (void)testPostAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.http = stubConfigurationHTTP;
     [stubConfigurationHTTP stubRequest:@"GET"
@@ -404,7 +388,7 @@
 }
 
 - (void)testPostAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourceCoinbaseApp integration:BTClientMetadataIntegrationCustom];
     FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
@@ -435,7 +419,7 @@
 }
 
 - (void)POST_usesMetadataSourceAndIntegration {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
     FakeHTTP *mockHTTP = [FakeHTTP fakeHTTP];
     FakeHTTP *stubAnalyticsHTTP = [FakeHTTP fakeHTTP];
@@ -468,7 +452,7 @@
 #pragma mark - Helpers
 
 - (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key" error:NULL];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     FakeHTTP *fake = [FakeHTTP fakeHTTP];
     fake.cannedResponse = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;

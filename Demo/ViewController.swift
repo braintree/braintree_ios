@@ -10,7 +10,7 @@ import PassKit
 class ViewController: UIViewController, PKPaymentAuthorizationViewControllerDelegate, BTDropInViewControllerDelegate
 {
 
-    let apiClient = try! BTAPIClient(clientKey: "development_testing_integration_merchant_id")
+    let apiClient = BTAPIClient(clientKey: "development_testing_integration_merchant_id")!
     var applePay : BTApplePayTokenizationClient
     var payPalDriver : BTPayPalDriver
     @IBOutlet weak var paymentButton: BTPaymentButton!

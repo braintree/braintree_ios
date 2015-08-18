@@ -4,11 +4,11 @@ import XCTest
 
 class BTApplePay_Tests: XCTestCase {
 
-    var mockClient : MockAPIClient = try! MockAPIClient(clientKey: "development_client_key")
+    var mockClient : MockAPIClient = MockAPIClient(clientKey: "development_client_key")!
 
     override func setUp() {
         super.setUp()
-        mockClient = try! MockAPIClient(clientKey: "development_client_key")
+        mockClient = MockAPIClient(clientKey: "development_client_key")!
     }
 
     func testTokenization_whenConfiguredOff_callsBackWithError() {

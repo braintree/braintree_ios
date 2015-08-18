@@ -10,7 +10,6 @@ extern NSString *const BTAPIClientErrorDomain;
 
 typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
     BTAPIClientErrorTypeUnknown = 0,
-    BTAPIClientErrorTypeInvalidClientKey,
     BTAPIClientErrorTypeConfigurationUnavailable,
 };
 
@@ -30,19 +29,11 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// Initialize a new API client.
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
-/// @param error Returns an `NSError` object when an error occurs.
-- (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey
-                                        error:(NSError **)error;
-
-/// Initialize a new API client.
-///
-/// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing
 /// `nil` will use the application's main queue.
 /// @param error This is set to an `NSError` object when an error occurs.
 - (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey
-                                dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue
-                                        error:(NSError **)error;
+                                dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue;
 
 
 /// Create a copy of an existing API client, but specify a new source and integration type.

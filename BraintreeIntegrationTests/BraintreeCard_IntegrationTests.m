@@ -11,7 +11,7 @@ describe(@"tokenizeCard:completion:", ^{
 
     context(@"with validation disabled", ^{
         beforeEach(^{
-            BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id" error:NULL];
+            BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
             client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
         });
 
@@ -53,7 +53,7 @@ describe(@"tokenizeCard:completion:", ^{
         context(@"and API client uses client key", ^{
 
             beforeEach(^{
-                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id" error:NULL];
+                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
                 client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
             });
 
@@ -177,7 +177,7 @@ describe(@"tokenizeCard:completion:", ^{
                 //            __block BTCardTokenizationClient *cvvAndZipClient;
                 //
                 //            beforeEach(^{
-                //                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_client_api_cvv_and_postal_code_verification_merchant_id" error:NULL];
+                //                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_client_api_cvv_and_postal_code_verification_merchant_id"];
                 //                cvvAndZipClient = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
                 //            });
                 //

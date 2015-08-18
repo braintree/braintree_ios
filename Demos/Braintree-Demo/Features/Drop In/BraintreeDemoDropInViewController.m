@@ -16,7 +16,7 @@
 
 - (instancetype)initWithClientKey:(NSString *)clientKey {
     if (self = [super initWithClientKey:clientKey]) {
-        _apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey error:NULL];
+        _apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey];
     }
     return self;
 }
@@ -25,7 +25,7 @@
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
-        _apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id" error:NULL];
+        _apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     }
     return self;
 }
