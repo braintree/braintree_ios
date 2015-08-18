@@ -4,6 +4,7 @@
 
 @synthesize paymentMethodNonce = _paymentMethodNonce;
 @synthesize localizedDescription = _localizedDescription;
+@synthesize type = _type;
 
 - (instancetype)initWithPaymentMethodNonce:(NSString *)paymentMethodNonce
                                description:(NSString *)localizedDescription {
