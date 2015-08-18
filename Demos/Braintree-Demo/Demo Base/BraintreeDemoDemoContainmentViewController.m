@@ -3,7 +3,7 @@
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
 #import <InAppSettingsKit/IASKSettingsReader.h>
 #import <PureLayout/PureLayout.h>
-#import <Braintree/BTPaymentMethod.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 #import "BraintreeDemoMerchantAPI.h"
 #import "BraintreeDemoBaseViewController.h"
@@ -12,7 +12,7 @@
 
 @interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, SlideNavigationControllerDelegate, IntegrationViewControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
-@property (nonatomic, strong) id latestPaymentMethodOrNonce;
+@property (nonatomic, strong) id <BTTokenized> latestTokenizedPayment;
 @property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
 @property (nonatomic, strong) UIViewController *rightMenu;
 @end
@@ -33,10 +33,17 @@
     UIBarButtonItem *flexSpaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                     target:nil
                                                                                     action:nil];
-    self.statusItem = [[UIBarButtonItem alloc] initWithTitle:@"Ready"
-                                                       style:UIBarButtonItemStylePlain
-                                                      target:self
-                                                      action:@selector(tappedStatus)];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.titleLabel.numberOfLines = 0;
+    [button setTitle:@"Ready" forState:UIControlStateNormal];
+    [button.titleLabel setTextColor:[UIColor whiteColor]];
+    [button addTarget:self action:@selector(tappedStatus) forControlEvents:UIControlEventTouchUpInside];
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    button.titleLabel.font = [UIFont systemFontOfSize:14];
+    CGRect f = self.navigationController.navigationBar.frame;
+    [button setFrame:CGRectMake(0, 0, f.size.width, f.size.height)];
+    // Use custom view with button so the text can span multiple lines
+    self.statusItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.statusItem.enabled = NO;
     self.toolbarItems = @[flexSpaceLeft, self.statusItem, flexSpaceRight];
 }
@@ -56,8 +63,8 @@
 
 #pragma mark - UI Updates
 
-- (void)setLatestPaymentMethodOrNonce:(id)latestPaymentMethodOrNonce {
-    _latestPaymentMethodOrNonce = latestPaymentMethodOrNonce;
+- (void)setLatestTokenizedPayment:(id)latestPaymentMethodOrNonce {
+    _latestTokenizedPayment = latestPaymentMethodOrNonce;
 
     if (latestPaymentMethodOrNonce) {
         self.statusItem.enabled = YES;
@@ -65,8 +72,8 @@
 }
 
 - (void)updateStatus:(NSString *)status {
-    [self.statusItem setTitle:status];
-    NSLog(@"%@", self.statusItem.title);
+    [(UIButton *)self.statusItem.customView setTitle:status forState:UIControlStateNormal];
+    NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
 }
 
 
@@ -75,14 +82,14 @@
 - (void)tappedStatus {
     NSLog(@"Tapped status!");
 
-    if (self.latestPaymentMethodOrNonce) {
-        NSString *nonce = [self.latestPaymentMethodOrNonce isKindOfClass:[BTPaymentMethod class]] ? [self.latestPaymentMethodOrNonce nonce] : self.latestPaymentMethodOrNonce;
+    if (self.latestTokenizedPayment) {
+        NSString *nonce = self.latestTokenizedPayment.paymentMethodNonce;
         [self updateStatus:@"Creating Transaction…"];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [[BraintreeDemoMerchantAPI sharedService] makeTransactionWithPaymentMethodNonce:nonce
                                                                              completion:^(NSString *transactionId, NSError *error){
                                                                                  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                                                                                 self.latestPaymentMethodOrNonce = nil;
+                                                                                 self.latestTokenizedPayment = nil;
                                                                                  if (error) {
                                                                                      [self updateStatus:error.localizedDescription];
                                                                                  } else {
@@ -114,15 +121,27 @@
         [self.currentDemoViewController.view removeFromSuperview];
     }
 
-    [self updateStatus:@"Fetching Client Token…"];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     self.title = @"Braintree";
-    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
+
+    [self updateStatus:@"Fetching Client Token or Client Key …"];
+    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientTokenOrClientKey, NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (error) {
             [self updateStatus:error.localizedDescription];
         } else {
-            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientToken:clientToken];
+            if ([self isClientKey:clientTokenOrClientKey]) {
+                [self updateStatus:@"Using Client Key"];
+                self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientKey:clientTokenOrClientKey];
+            } else {
+                [self updateStatus:@"Using Client Token"];
+                self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientToken:clientTokenOrClientKey];
+            }
+            if (!self.currentDemoViewController) {
+                [self updateStatus:@"Demo not available"];
+                return;
+            }
+
             [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([self.currentDemoViewController class])]];
             self.currentDemoViewController.progressBlock = [self progressBlock];
             self.currentDemoViewController.completionBlock = [self completionBlock];
@@ -134,14 +153,35 @@
     }];
 }
 
+- (BOOL)isClientKey:(NSString *)clientTokenOrClientKey {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:clientTokenOrClientKey error:NULL];
+    return apiClient != nil;
+}
+
 - (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithClientToken:(NSString *)clientToken {
     NSString *integrationName = [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsIntegration"];
     NSLog(@"Loading integration: %@", integrationName);
 
     Class integrationClass = NSClassFromString(integrationName);
-    NSAssert([integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]], @"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
+    if (![integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]]) {
+        NSLog(@"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
+        return nil;
+    }
 
     return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithClientToken:clientToken];
+}
+
+- (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithClientKey:(NSString *)clientKey {
+    NSString *integrationName = [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsIntegration"];
+    NSLog(@"Loading integration: %@", integrationName);
+
+    Class integrationClass = NSClassFromString(integrationName);
+    if (![integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]]) {
+        NSLog(@"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
+        return nil;
+    }
+
+    return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithClientKey:clientKey];
 }
 
 - (void)containIntegrationViewController:(UIViewController *)viewController {
@@ -172,13 +212,13 @@
     return block;
 }
 
-- (void (^)(BTPaymentMethod *paymentMethod))completionBlock {
+- (void (^)(id <BTTokenized> tokenized))completionBlock {
     // This class is responsible for retaining the completion block
     static id block;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        block = ^(id paymentMethod){
-            self.latestPaymentMethodOrNonce = paymentMethod;
+        block = ^(id tokenized){
+            self.latestTokenizedPayment = tokenized;
             [self updateStatus:[NSString stringWithFormat:@"Got a nonce. Tap to make a transaction."]];
         };
     });

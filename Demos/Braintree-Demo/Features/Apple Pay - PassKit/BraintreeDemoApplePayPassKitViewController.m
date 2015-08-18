@@ -1,10 +1,10 @@
 #import "BraintreeDemoApplePayPassKitViewController.h"
 #import "BraintreeDemoSettings.h"
+#import <BraintreeApplePay/BraintreeApplePay.h>
 
 @import PassKit;
 
 @interface BraintreeDemoApplePayPassKitViewController () <PKPaymentAuthorizationViewControllerDelegate>
-@property(nonatomic, copy) NSString *paymentMethodNonce;
 @end
 
 @implementation BraintreeDemoApplePayPassKitViewController
@@ -30,12 +30,12 @@
     }
 
     UIButton *button;
+    BOOL pkPaymentButtonAvailable = NO;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80300
-    if ([PKPaymentButton class]) {
-        button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
-#else
-    if (false) {
+    pkPaymentButtonAvailable = [PKPaymentButton class];
 #endif
+    if (pkPaymentButtonAvailable) {
+        button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
     } else {
         button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setTintColor:[UIColor blackColor]];
@@ -100,9 +100,10 @@
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
-                   didSelectShippingMethod:(PKShippingMethod *)shippingMethod
-                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *))completion {
+- (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
+                  didSelectShippingMethod:(PKShippingMethod *)shippingMethod
+                               completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion
+{
     PKPaymentSummaryItem *testItem = [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
     if ([shippingMethod.identifier isEqualToString:@"fast"]) {
         completion(PKPaymentAuthorizationStatusSuccess,
@@ -120,27 +121,24 @@
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion {
+                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion
+{
     self.progressBlock(@"Apple Pay Did Authorize Payment");
-    [self.braintree tokenizeApplePayPayment:payment
-                                 completion:^(NSString *nonce, NSError *error) {
-                                     if (error) {
-                                         self.progressBlock(error.localizedDescription);
-                                         completion(PKPaymentAuthorizationStatusFailure);
-                                     } else {
-                                         self.paymentMethodNonce = nonce;
-                                         completion(PKPaymentAuthorizationStatusSuccess);
-                                     }
-                                 }];
+    BTApplePayTokenizationClient *applePayTokenizationClient = [[BTApplePayTokenizationClient alloc] initWithAPIClient:self.apiClient];
+    [applePayTokenizationClient tokenizeApplePayPayment:payment completion:^(BTTokenizedApplePayPayment * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock(error.localizedDescription);
+            completion(PKPaymentAuthorizationStatusFailure);
+        } else {
+            self.completionBlock(tokenizedApplePayPayment);
+            completion(PKPaymentAuthorizationStatusSuccess);
+        }
+    }];
 }
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     self.progressBlock(@"Apple Pay Finished");
-    [controller dismissViewControllerAnimated:YES completion:^{
-        if (self.paymentMethodNonce) {
-            self.completionBlock(self.paymentMethodNonce);
-        }
-    }];
+    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)paymentAuthorizationViewControllerWillAuthorizePayment:(__unused PKPaymentAuthorizationViewController *)controller {

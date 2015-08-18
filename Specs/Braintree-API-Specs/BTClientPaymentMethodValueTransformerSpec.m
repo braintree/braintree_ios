@@ -2,6 +2,8 @@
 #import "BTPayPalPaymentMethod.h"
 #import "BTCoinbasePaymentMethod.h"
 
+// TODO: Move or remove this test after switching from BTAPIResponseParser to BTJSON
+
 SpecBegin(BTClientPaymentMethodValueTransformer)
 
 __block NSMutableDictionary *responseDictionary;

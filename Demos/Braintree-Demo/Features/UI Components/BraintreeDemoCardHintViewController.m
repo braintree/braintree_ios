@@ -10,22 +10,22 @@
 @implementation BraintreeDemoCardHintViewController
 
 - (IBAction)selectedCardType:(UISegmentedControl *)sender {
-    BTUIPaymentMethodType type = BTUIPaymentMethodTypeUnknown;
+    BTUIPaymentOptionType type = BTUIPaymentOptionTypeUnknown;
     switch(sender.selectedSegmentIndex) {
         case 0:
-            type = BTUIPaymentMethodTypeUnknown;
+            type = BTUIPaymentOptionTypeUnknown;
             break;
         case 1:
-            type = BTUIPaymentMethodTypeVisa;
+            type = BTUIPaymentOptionTypeVisa;
             break;
         case 2:
-            type = BTUIPaymentMethodTypeMasterCard;
+            type = BTUIPaymentOptionTypeMasterCard;
             break;
         case 3:
-            type = BTUIPaymentMethodTypeAMEX;
+            type = BTUIPaymentOptionTypeAMEX;
             break;
         case 4:
-            type = BTUIPaymentMethodTypeDiscover;
+            type = BTUIPaymentOptionTypeDiscover;
             break;
     }
     [self.cardHintView setCardType:type animated:YES];

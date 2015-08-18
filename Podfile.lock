@@ -20,46 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.9.2-otc-pre3):
-    - Braintree/API (= 3.9.2-otc-pre3)
-    - Braintree/Coinbase (= 3.9.2-otc-pre3)
-    - Braintree/Drop-In (= 3.9.2-otc-pre3)
-    - Braintree/Payments (= 3.9.2-otc-pre3)
-    - Braintree/PayPal (= 3.9.2-otc-pre3)
-    - Braintree/UI (= 3.9.2-otc-pre3)
-    - Braintree/Venmo (= 3.9.2-otc-pre3)
-  - Braintree/3D-Secure (3.9.2-otc-pre3):
-    - Braintree/API
-    - Braintree/Payments
-    - Braintree/UI
-  - Braintree/API (3.9.2-otc-pre3)
-  - Braintree/Apple-Pay (3.9.2-otc-pre3):
-    - Braintree/Payments
-  - Braintree/Coinbase (3.9.2-otc-pre3):
-    - Braintree/API
-  - Braintree/Data (3.9.2-otc-pre3):
-    - Braintree/API
-    - Braintree/PayPal
-  - Braintree/Drop-In (3.9.2-otc-pre3):
-    - Braintree/API
-    - Braintree/Coinbase
-    - Braintree/Payments
-    - Braintree/PayPal
-    - Braintree/UI
-    - Braintree/Venmo
-  - Braintree/Payments (3.9.2-otc-pre3):
-    - Braintree/API
-    - Braintree/Coinbase
-    - Braintree/PayPal
-    - Braintree/Venmo
-  - Braintree/PayPal (3.9.2-otc-pre3):
-    - Braintree/API
-    - Braintree/UI
-  - Braintree/UI (3.9.2-otc-pre3):
-    - Braintree/API
-  - Braintree/Venmo (3.9.2-otc-pre3):
-    - Braintree/API
-  - CardIO (5.0.6)
+  - CardIO (5.1.0)
   - Expecta (0.3.2)
   - FLEX (2.0.2)
   - HockeySDK (3.7.1):
@@ -67,13 +28,7 @@ PODS:
   - HockeySDK/AllFeaturesLib (3.7.1)
   - InAppSettingsKit (2.6)
   - iOS-Slide-Menu (1.4.6)
-  - KIF (3.2.3):
-    - KIF/XCTest (= 3.2.3)
-  - KIF/XCTest (3.2.3)
-  - KIFViewControllerActions (1.0.0):
-    - KIF (>= 2.0.0)
   - NSURL+QueryDictionary (1.1.0)
-  - OCHamcrest (3.0.1)
   - OCMock (3.1.2)
   - OHHTTPStubs (3.1.12):
     - OHHTTPStubs/Core (= 3.1.12)
@@ -83,55 +38,36 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
-  - Braintree (from `.`)
-  - Braintree/3D-Secure (from `.`)
-  - Braintree/Apple-Pay (from `.`)
-  - Braintree/Coinbase (from `.`)
-  - Braintree/Data (from `.`)
   - CardIO
   - Expecta (~> 0.3.0)
   - FLEX (from `https://github.com/intelliot/FLEX.git`)
   - HockeySDK
   - InAppSettingsKit
   - iOS-Slide-Menu
-  - KIF
-  - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
   - NSURL+QueryDictionary (~> 1.0)
-  - OCHamcrest (~> 3.0.1)
   - OCMock (~> 3.1)
   - OHHTTPStubs (~> 3.1.0)
   - PureLayout
   - Specta
 
 EXTERNAL SOURCES:
-  Braintree:
-    :path: "."
   FLEX:
     :git: https://github.com/intelliot/FLEX.git
-  KIFViewControllerActions:
-    :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
 CHECKOUT OPTIONS:
   FLEX:
     :commit: b797baa3efeffe73ab1d6ea6aaeb55cc05ff6422
     :git: https://github.com/intelliot/FLEX.git
-  KIFViewControllerActions:
-    :commit: 10d8d3a7bac839d75b8cec894326eae957372245
-    :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  Braintree: b5e091a1c4024d521725daabf91fd452b8b71984
-  CardIO: 3fb62d56651d80e8f98e9572bfbe589ebf13d706
+  CardIO: 5c8128e07f577824f132881171210b45721c517a
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
   HockeySDK: 77bb90b6484a3b742ccf32bcae247c0a0051a962
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
-  KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
-  KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
-  OCHamcrest: e19857683e4eefab64b878668eac04c2f4567118
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d

@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "BTUICardFormView.h"
+#import <BraintreeUI/BraintreeUI.h>
 
 @interface BraintreeDemoCreditCardEntryViewController : UIViewController
 @property (weak, nonatomic) IBOutlet BTUICardFormView *cardFormView;

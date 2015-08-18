@@ -69,7 +69,28 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
                  }];
 }
 
+/// Calls completionBlock with client token or client key, depending on Demo app Settings
 - (void)createCustomerAndFetchClientTokenWithCompletion:(void (^)(NSString *, NSError *))completionBlock {
+
+    // For now, we assume that if we're using a Client Key, then we're not using a Customer.
+    if ([BraintreeDemoSettings useClientKey]) {
+        NSString *clientKey;
+        switch ([BraintreeDemoSettings currentEnvironment]) {
+            case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
+                clientKey = @"sandbox_9dbg82cq_dcpspy2brwdjr3qn";
+                break;
+            case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
+                clientKey = @"production_testing_integration_merchant_id";
+                break;
+            case BraintreeDemoTransactionServiceEnvironmentCustomMerchant:
+            default:
+                clientKey = @"development_testing_integration_merchant_id";
+                break;
+        }
+        completionBlock(clientKey, nil);
+        return;
+    }
+
     NSMutableDictionary *parameters = [@{} mutableCopy];
     if ([BraintreeDemoSettings customerPresent]) {
         if ([BraintreeDemoSettings customerIdentifier].length > 0) {

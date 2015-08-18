@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "BraintreeDemoBaseViewController.h"
-#import <Braintree/Braintree.h>
+#import <BraintreeCore/BraintreeCore.h>
 
-@interface BraintreeDemoPaymentButtonBaseViewController : BraintreeDemoBaseViewController <BTPaymentMethodCreationDelegate>
-@property(nonatomic, strong) Braintree *braintree;
+@interface BraintreeDemoPaymentButtonBaseViewController : BraintreeDemoBaseViewController
+@property (nonatomic, strong) BTAPIClient *apiClient;
 - (UIView *)paymentButton;
 @end

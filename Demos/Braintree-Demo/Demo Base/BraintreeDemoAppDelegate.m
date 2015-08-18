@@ -1,6 +1,6 @@
 #import "BraintreeDemoAppDelegate.h"
 #import <HockeySDK/HockeySDK.h>
-#import "Braintree.h"
+#import <BraintreeCore/BraintreeCore.h>
 
 #if DEBUG
 #import <FLEX/FLEXManager.h>
@@ -22,14 +22,14 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
     [self setupAppearance];
     [self registerDefaultsFromSettings];
 
-    [Braintree setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
+    [BTAppSwitch sharedInstance].returnURLScheme = BraintreeDemoAppDelegatePaymentsURLScheme;
 
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)__unused application openURL:(NSURL *)url  sourceApplication:(NSString *)sourceApplication annotation:(id)__unused annotation {
+- (BOOL)application:(UIApplication *)__unused application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)__unused annotation {
     if ([[url.scheme lowercaseString] isEqualToString:[BraintreeDemoAppDelegatePaymentsURLScheme lowercaseString]]) {
-        return [Braintree handleOpenURL:url sourceApplication:sourceApplication];
+        return [BTAppSwitch handleReturnURL:url sourceApplication:sourceApplication];
     }
     return YES;
 }

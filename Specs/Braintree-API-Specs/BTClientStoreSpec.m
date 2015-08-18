@@ -4,6 +4,8 @@
 #import "BTKeychain.h"
 #import "BTTestClientTokenFactory.h"
 
+// TODO: Fix or remove this test and BTClientStore
+
 @interface BTClientTestStore : NSObject
 + (void)reset;
 + (BOOL)setData:(NSData *)data forKey:(NSString *)key;

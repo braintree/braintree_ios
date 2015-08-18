@@ -1,37 +1,53 @@
 #import "BraintreeDemoBTUIVenmoButtonViewController.h"
+#import <BraintreeVenmo/BraintreeVenmo.h>
+#import <BraintreeUI/BraintreeUI.h>
 
 @interface BraintreeDemoBTUIVenmoButtonViewController ()
-@property(nonatomic, strong) BTPaymentProvider *paymentProvider;
 @end
 
 @implementation BraintreeDemoBTUIVenmoButtonViewController
 
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
-    if (self) {
-        self.paymentProvider = [self.braintree paymentProviderWithDelegate:self];
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"BTUIVenmoButton+BTPaymentProvider";
+    self.title = @"BTUIVenmoButton";
+
+    self.paymentButton.hidden = YES;
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock(error.localizedDescription);
+            NSLog(@"Failed to fetch configuration: %@", error);
+            return;
+        }
+
+        if (configuration.isVenmoEnabled) {
+            self.paymentButton.hidden = NO;
+        } else {
+            self.progressBlock(@"canCreatePaymentMethodWithProviderType returns NO, hiding Venmo button");
+        }
+    }];
 }
 
 - (UIControl *)paymentButton {
-    if ([self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeVenmo]) {
-        BTUIVenmoButton *venmoButton = [[BTUIVenmoButton alloc] init];
-        [venmoButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
-        return venmoButton;
-    } else {
-        self.progressBlock(@"canCreatePaymentMethodWithProviderType returns NO, hiding Venmo button");
-        return nil;
-    }
+    BTUIVenmoButton *venmoButton = [[BTUIVenmoButton alloc] init];
+    [venmoButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
+    return venmoButton;
 }
 
 - (void)tappedPayPalButton {
-    [self.paymentProvider createPaymentMethod:BTPaymentProviderTypeVenmo];
+    self.progressBlock(@"Tapped Venmo - initiating Venmo auth");
+
+    BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:self.apiClient];
+    [driver tokenizeVenmoCardWithCompletion:^(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+        if (tokenizedCard) {
+            self.progressBlock(@"Got a nonce 💎!");
+            NSLog(@"%@", [tokenizedCard debugDescription]);
+            self.completionBlock(tokenizedCard);
+        } else if (error) {
+            self.progressBlock(error.localizedDescription);
+        } else {
+            self.progressBlock(@"Canceled 🔰");
+        }
+    }];
 }
 
 @end

@@ -22,7 +22,7 @@
 }
 
 - (IBAction)tappedSwapCardType {
-    [self.cardPaymentMethodView setType:((self.cardPaymentMethodView.type+1) % (BTUIPaymentMethodTypePayPal+1))];
+    [self.cardPaymentMethodView setType:((self.cardPaymentMethodView.type+1) % (BTUIPaymentOptionTypePayPal+1))];
 }
 
 - (IBAction)toggledProcessingState:(UISwitch *)sender {

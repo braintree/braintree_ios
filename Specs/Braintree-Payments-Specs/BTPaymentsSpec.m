@@ -11,7 +11,7 @@
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler.h"
 
-#import "BTCoinbase.h"
+#import "BTCoinbaseDriver.h"
 #import "BTCoinbaseOAuth.h"
 
 #import "BTPayPalDriver.h"
@@ -281,7 +281,7 @@ describe(@"createPaymentMethod:", ^{
         __block id stubCoinbase;
 
         beforeEach(^{
-            stubCoinbase = [OCMockObject mockForClass:[BTCoinbase class]];
+            stubCoinbase = [OCMockObject mockForClass:[BTCoinbaseDriver class]];
             [[BTAppSwitch sharedInstance] addAppSwitching:stubCoinbase forApp:BTAppTypeCoinbase];
         });
 

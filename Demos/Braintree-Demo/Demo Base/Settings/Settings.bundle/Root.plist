@@ -27,9 +27,7 @@
 				<string>Venmo - Custom Button</string>
 				<string>PayPal - Custom Button</string>
 				<string>Coinbase - Custom Button</string>
-				<string>Apple Pay - BTPaymentProvider</string>
 				<string>Apple Pay - PassKit</string>
-				<string>PayPal - Deprecated BTPayPalButton</string>
 				<string>Drop In</string>
 				<string>UI Components</string>
 				<string>Credit Cards - 3D Secure</string>
@@ -48,9 +46,7 @@
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
 				<string>BraintreeDemoCustomPayPalButtonViewController</string>
 				<string>BraintreeDemoCustomCoinbaseButtonViewController</string>
-				<string>BraintreeDemoApplePayPaymentProviderViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
-				<string>BraintreeDemoDeprecatedBTPayPalButtonViewController</string>
 				<string>BraintreeDemoDropInViewController</string>
 				<string>BraintreeDemoUIWidgetsViewController</string>
 				<string>BraintreeDemoThreeDSecureViewController</string>
@@ -96,6 +92,16 @@
 			<key>IASKTextAlignment</key>
 			<string>IASKUITextAlignmentRight</string>
 		</dict>
+        <dict>
+            <key>Type</key>
+            <string>PSToggleSwitchSpecifier</string>
+            <key>Title</key>
+            <string>Use Client Key</string>
+            <key>Key</key>
+            <string>BraintreeDemoUseClientKey</string>
+            <key>DefaultValue</key>
+            <true/>
+        </dict>
 		<dict>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>

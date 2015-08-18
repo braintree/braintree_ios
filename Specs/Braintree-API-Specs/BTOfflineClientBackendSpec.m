@@ -2,6 +2,8 @@
 #import "BTMutableCardPaymentMethod.h"
 #import "BTMutablePayPalPaymentMethod.h"
 
+// TODO: Remove when offline client functionality is removed
+
 SpecBegin(BTOfflineClientBackend)
 
 describe(@"all cards", ^{

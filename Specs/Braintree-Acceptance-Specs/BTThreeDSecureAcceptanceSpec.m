@@ -1,4 +1,4 @@
-#import "BTThreeDSecure.h"
+#import "BTThreeDSecureDriver.h"
 #import "BTClient+Testing.h"
 
 SpecBegin(BTThreeDSecure)
@@ -36,7 +36,7 @@ describe(@"verifyCardWithNonce:amount:", ^{
 
     describe(@"for a card that requires authentication", ^{
         it(@"returns the nonce on authentication completion", ^{
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 
             id delegateRequestPresentationExpectation = [(OCMockObject *)delegate expect];
             __block UIViewController *threeDSecureViewController;
@@ -102,7 +102,7 @@ withinNavigationControllerWithNavigationBarClass:nil
         });
 
         it(@"returns a nonce without user authentication", ^{
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 
             [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
                 return [obj isKindOfClass:[BTCardPaymentMethod class]];
@@ -136,7 +136,7 @@ withinNavigationControllerWithNavigationBarClass:nil
         });
 
         it(@"returns a card with a new nonce and appropriate threeDSecureInfo", ^{
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
             
             [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure
                                              didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
@@ -162,7 +162,7 @@ withinNavigationControllerWithNavigationBarClass:nil
 
     describe(@"when the user taps cancel", ^{
         it(@"requests dismissal and notifies the delegate of cancelation", ^{
-            BTThreeDSecure *threeDSecure = [[BTThreeDSecure alloc] initWithClient:client delegate:delegate];
+            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
             
             id delegateRequestPresentationExpectation = [(OCMockObject *)delegate expect];
             __block UIViewController *threeDSecureViewController;

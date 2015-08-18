@@ -1,5 +1,7 @@
 #import "BTMutablePayPalPaymentMethod.h"
 
+// TODO: move or remove these tests after deprecated BTPayPalPaymentMethod/BTMutablePayPalPaymentMethod in favor of BTTokenizedPayPal
+
 SpecBegin(BTMutablePayPalPaymentMethod)
 
 describe(@"setNonce", ^{

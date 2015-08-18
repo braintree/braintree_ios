@@ -182,7 +182,7 @@ namespace :demo do
 end
 
 desc 'Run all sanity checks'
-task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo]
+task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo sanity_checks:nullability_macros, sanity_checks:audit_public_interface sanity_checks:ensure_full_nullability_auditing]
 
 namespace :sanity_checks do
   desc 'Check for pending tests'
@@ -193,7 +193,23 @@ namespace :sanity_checks do
 
   desc 'Verify that all demo apps Build successfully'
   task :build_demo => 'demo:build'
+
+  desc 'Check for incompatible usage of nullablity macros'
+  task :nullability_macros do
+    fail "Unimplemented"
+  end
+
+  desc 'Audit public interface for semver'
+  task :audit_public_interface do
+    fail
+  end
+
+  desc 'Ensure all public interfaces are audited for nullability'
+  task :ensure_full_nullability_auditing do
+    fail
+  end
 end
+
 
 
 def apple_doc_command
