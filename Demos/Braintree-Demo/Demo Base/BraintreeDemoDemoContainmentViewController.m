@@ -38,6 +38,8 @@
     [button setTitle:@"Ready" forState:UIControlStateNormal];
     [button.titleLabel setTextColor:[UIColor whiteColor]];
     [button addTarget:self action:@selector(tappedStatus) forControlEvents:UIControlEventTouchUpInside];
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    button.titleLabel.font = [UIFont systemFontOfSize:14];
     CGRect f = self.navigationController.navigationBar.frame;
     [button setFrame:CGRectMake(0, 0, f.size.width, f.size.height)];
     // Use custom view with button so the text can span multiple lines

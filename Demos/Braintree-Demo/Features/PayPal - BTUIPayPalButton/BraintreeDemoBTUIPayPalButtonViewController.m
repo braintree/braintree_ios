@@ -14,6 +14,12 @@
 
     self.paymentButton.hidden = YES;
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock(@"Failed to fetch configuration");
+            NSLog(@"Failed to fetch configuration: %@", error);
+            return;
+        }
+
         if (!configuration.isPayPalEnabled) {
             self.progressBlock(@"canCreatePaymentMethodWithProviderType: returns NO, hiding PayPal button");
         } else {
