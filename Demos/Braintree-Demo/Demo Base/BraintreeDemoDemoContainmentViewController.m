@@ -33,10 +33,15 @@
     UIBarButtonItem *flexSpaceRight = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                     target:nil
                                                                                     action:nil];
-    self.statusItem = [[UIBarButtonItem alloc] initWithTitle:@"Ready"
-                                                       style:UIBarButtonItemStylePlain
-                                                      target:self
-                                                      action:@selector(tappedStatus)];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.titleLabel.numberOfLines = 0;
+    [button setTitle:@"Ready" forState:UIControlStateNormal];
+    [button.titleLabel setTextColor:[UIColor whiteColor]];
+    [button addTarget:self action:@selector(tappedStatus) forControlEvents:UIControlEventTouchUpInside];
+    CGRect f = self.navigationController.navigationBar.frame;
+    [button setFrame:CGRectMake(0, 0, f.size.width, f.size.height)];
+    // Use custom view with button so the text can span multiple lines
+    self.statusItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.statusItem.enabled = NO;
     self.toolbarItems = @[flexSpaceLeft, self.statusItem, flexSpaceRight];
 }
@@ -65,8 +70,8 @@
 }
 
 - (void)updateStatus:(NSString *)status {
-    [self.statusItem setTitle:status];
-    NSLog(@"%@", self.statusItem.title);
+    [(UIButton *)self.statusItem.customView setTitle:status forState:UIControlStateNormal];
+    NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
 }
 
 
