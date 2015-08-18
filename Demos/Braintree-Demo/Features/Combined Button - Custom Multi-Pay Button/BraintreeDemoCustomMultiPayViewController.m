@@ -1,28 +1,21 @@
 #import "BraintreeDemoCustomMultiPayViewController.h"
-
+#import <BraintreeCard/BraintreeCard.h>
+#import <BraintreeUI/BraintreeUI.h>
 #import <PureLayout/ALView+PureLayout.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeUI/UIColor+BTUI.h>
 
 @interface BraintreeDemoCustomMultiPayViewController ()
-@property(nonatomic, strong) BTPaymentProvider *paymentProvider;
 @property(nonatomic, strong) BTUICardFormView *cardForm;
 @property (nonatomic, strong) UINavigationController *cardFormNavigationViewController;
+@property (nonatomic, weak) UIBarButtonItem *saveButton;
 @end
 
 @implementation BraintreeDemoCustomMultiPayViewController
 
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
-    if (self) {
-        self.paymentProvider = [self.braintree paymentProviderWithDelegate:self];
-    }
-    return self;
-}
+#pragma mark - Lifecycle & Setup
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Custom Button+BTPaymentProvider";
+    self.title = @"Custom Payment Button";
 }
 
 - (UIView *)paymentButton {
@@ -34,7 +27,6 @@
     venmoButton.backgroundColor = [[BTUI braintreeTheme] venmoPrimaryBlue];
     [venmoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [venmoButton setTitle:@"Venmo" forState:UIControlStateNormal];
-    venmoButton.tag = BTPaymentProviderTypeVenmo;
 
     UIButton *payPalButton = [UIButton buttonWithType:UIButtonTypeSystem];
     payPalButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -42,18 +34,16 @@
     payPalButton.backgroundColor = [[BTUI braintreeTheme] palBlue];
     [payPalButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [payPalButton setTitle:@"PayPal" forState:UIControlStateNormal];
-    payPalButton.tag = BTPaymentProviderTypePayPal;
 
     UIButton *cardButton = [UIButton buttonWithType:UIButtonTypeSystem];
     cardButton.translatesAutoresizingMaskIntoConstraints = NO;
     cardButton.backgroundColor = [UIColor bt_colorFromHex:@"DDDECB" alpha:1.0f];
     [cardButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cardButton setTitle:@"💳" forState:UIControlStateNormal];
-    cardButton.tag = -1;
 
-    [venmoButton addTarget:self action:@selector(tapped:) forControlEvents:UIControlEventTouchUpInside];
-    [payPalButton addTarget:self action:@selector(tapped:) forControlEvents:UIControlEventTouchUpInside];
-    [cardButton addTarget:self action:@selector(tapped:) forControlEvents:UIControlEventTouchUpInside];
+    [venmoButton addTarget:self action:@selector(tappedVenmo:) forControlEvents:UIControlEventTouchUpInside];
+    [payPalButton addTarget:self action:@selector(tappedPayPal:) forControlEvents:UIControlEventTouchUpInside];
+    [cardButton addTarget:self action:@selector(tappedCard:) forControlEvents:UIControlEventTouchUpInside];
 
     [view addSubview:payPalButton];
     [view addSubview:venmoButton];
@@ -79,44 +69,72 @@
     return view;
 }
 
-- (void)tapped:(UIButton *)sender {
-    if (sender.tag == -1) {
-        self.cardForm = [[BTUICardFormView alloc] initForAutoLayout];
-        self.cardForm.optionalFields = BTUICardFormOptionalFieldsAll;
+#pragma mark - Actions
 
-        UIViewController *cardFormViewController = [[UIViewController alloc] init];
-        cardFormViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                                                target:self
-                                                                                                                action:@selector(cancelCardVC)];
-        cardFormViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                                                 target:self
-                                                                                                                 action:@selector(saveCardVC)];
-        cardFormViewController.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone;
+- (IBAction)tappedVenmo:(UIButton *)button {
+    [self tokenizeType:@"Venmo"];
+}
 
-        cardFormViewController.title = @"💳";
-        [cardFormViewController.view addSubview:self.cardForm];
-        cardFormViewController.view.backgroundColor = sender.backgroundColor;
+- (IBAction)tappedPayPal:(UIButton *)button {
+    [self tokenizeType:@"PayPal"];
+}
 
-        [self.cardForm autoPinToTopLayoutGuideOfViewController:cardFormViewController withInset:40];
-        [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
-        [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+- (IBAction)tappedCard:(UIButton *)button {
+    self.cardForm = [[BTUICardFormView alloc] initForAutoLayout];
+    self.cardForm.optionalFields = BTUICardFormOptionalFieldsAll;
 
-        self.cardFormNavigationViewController = [[UINavigationController alloc] initWithRootViewController:cardFormViewController];
+    UIViewController *cardFormViewController = [[UIViewController alloc] init];
+    cardFormViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                                            target:self
+                                                                                                            action:@selector(cancelCardVC)];
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                                    target:self
+                                                                    action:@selector(saveCardVC)];
+    cardFormViewController.navigationItem.rightBarButtonItem = saveButton;
+    cardFormViewController.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleDone;
+    cardFormViewController.navigationItem.rightBarButtonItem.enabled = NO;
+    self.saveButton = saveButton;
 
-        [self paymentMethodCreator:self requestsPresentationOfViewController:self.cardFormNavigationViewController];
-    } else {
-        [self.paymentProvider createPaymentMethod:sender.tag];
-    }
+    cardFormViewController.title = @"💳";
+    [cardFormViewController.view addSubview:self.cardForm];
+    cardFormViewController.view.backgroundColor = button.backgroundColor;
+
+    [self.cardForm autoPinToTopLayoutGuideOfViewController:cardFormViewController withInset:40];
+    [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
+    [self.cardForm autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
+
+    self.cardFormNavigationViewController = [[UINavigationController alloc] initWithRootViewController:cardFormViewController];
+
+    [self.cardForm addObserver:self forKeyPath:@"valid" options:0 context:NULL];
+
+    [self presentViewController:self.cardFormNavigationViewController animated:YES completion:nil];
+}
+
+#pragma mark - Private methods
+
+- (void)tokenizeType:(NSString *)type {
+    [[BTTokenizationService sharedService] tokenizeType:type options:nil withAPIClient:self.apiClient completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
+        if (tokenization) {
+            self.progressBlock(@"Got a nonce 💎!");
+            NSLog(@"%@", [tokenization debugDescription]);
+            self.completionBlock(tokenization);
+        } else if (error) {
+            self.progressBlock(error.localizedDescription);
+        } else {
+            self.progressBlock(@"Canceled 🔰");
+        }
+    }];
 }
 
 - (void)cancelCardVC {
-    [self paymentMethodCreator:self requestsDismissalOfViewController:self.cardFormNavigationViewController];
+    [self.cardForm removeObserver:self forKeyPath:@"valid"];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)saveCardVC {
     [self cancelCardVC];
 
-    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
     request.number = self.cardForm.number;
     request.expirationMonth = self.cardForm.expirationMonth;
     request.expirationYear = self.cardForm.expirationYear;
@@ -124,14 +142,29 @@
     request.postalCode = self.cardForm.postalCode;
     request.shouldValidate = NO;
 
-    [self.braintree.client saveCardWithRequest:request
-                                       success:^(BTCardPaymentMethod *card) {
-                                           [self paymentMethodCreator:self didCreatePaymentMethod:card];
-                                       }
-                                       failure:^(NSError *error) {
-                                           [self paymentMethodCreator:self didFailWithError:error];
-                                       }];
+    BTCardTokenizationClient *cardTokenizationClient = [[BTCardTokenizationClient alloc] initWithAPIClient:self.apiClient];
+    [cardTokenizationClient tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+        if (tokenizedCard) {
+            self.progressBlock(@"Got a nonce 💎!");
+            NSLog(@"%@", [tokenizedCard debugDescription]);
+            self.completionBlock(tokenizedCard);
+        } else if (error) {
+            self.progressBlock(error.localizedDescription);
+        } else {
+            self.progressBlock(@"Canceled 🔰");
+        }
+    }];
 }
 
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"valid"]) {
+        self.saveButton.enabled = self.cardForm.valid;
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
 
 @end

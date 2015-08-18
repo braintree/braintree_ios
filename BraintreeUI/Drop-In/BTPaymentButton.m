@@ -22,7 +22,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 @implementation BTPaymentButton
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient
-                       completion:(void(^)(id <BTTokenized> token, NSError *error))completion
+                       completion:(void(^)(id <BTTokenized> tokenization, NSError *error))completion
 {
     if (self = [super initWithFrame:CGRectZero]) {
         [self setupViews];

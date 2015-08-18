@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, BTCardTokenizationClientErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-- (void)tokenizeCard:(BTCardTokenizationRequest *)request completion:(void (^)(BTTokenizedCard * __BT_NULLABLE tokenized, NSError * __BT_NULLABLE  error))completionBlock;
+- (void)tokenizeCard:(BTCardTokenizationRequest *)request completion:(void (^)(BTTokenizedCard * __BT_NULLABLE tokenizedCard, NSError * __BT_NULLABLE  error))completionBlock;
 
 @end
 

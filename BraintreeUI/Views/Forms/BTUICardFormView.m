@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) NSArray *fields;
 @property (nonatomic, strong) NSArray *dynamicConstraints;
+@property (nonatomic, assign, readwrite) BOOL valid;
 
 @end
 
@@ -258,6 +259,8 @@
         self.cvvField.cardType = self.numberField.cardType;
     }
     [self advanceToNextInvalidFieldFrom:field];
+    // Trigger KVO
+    self.valid = self.valid;
     [self.delegate cardFormViewDidChange:self];
 }
 

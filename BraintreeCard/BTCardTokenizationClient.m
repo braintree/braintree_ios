@@ -37,7 +37,7 @@ NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BT
 }
 
 - (void)tokenizeCard:(BTCardTokenizationRequest *)card
-          completion:(void (^)(BTTokenizedCard *, NSError *))completionBlock {
+          completion:(void (^)(BTTokenizedCard *tokenizedCard, NSError *error))completionBlock {
 
     [self.apiClient POST:@"v1/payment_methods/credit_cards"
               parameters:@{ @"credit_card": card.parameters }
