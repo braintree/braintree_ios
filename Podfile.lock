@@ -1,21 +1,76 @@
 PODS:
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - CardIO (5.1.0)
   - Expecta (0.3.2)
+  - FLEX (2.0.2)
+  - HockeySDK (3.7.1):
+    - HockeySDK/AllFeaturesLib (= 3.7.1)
+  - HockeySDK/AllFeaturesLib (3.7.1)
+  - InAppSettingsKit (2.6)
+  - iOS-Slide-Menu (1.4.6)
+  - NSURL+QueryDictionary (1.1.0)
   - OCMock (3.1.2)
   - OHHTTPStubs (3.1.12):
     - OHHTTPStubs/Core (= 3.1.12)
   - OHHTTPStubs/Core (3.1.12)
+  - PureLayout (2.0.6)
   - Specta (1.0.2)
 
 DEPENDENCIES:
+  - AFNetworking (~> 2.2)
+  - CardIO
   - Expecta (~> 0.3.0)
+  - FLEX (from `https://github.com/intelliot/FLEX.git`)
+  - HockeySDK
+  - InAppSettingsKit
+  - iOS-Slide-Menu
+  - NSURL+QueryDictionary (~> 1.0)
   - OCMock (~> 3.1)
   - OHHTTPStubs (~> 3.1.0)
+  - PureLayout
   - Specta
 
+EXTERNAL SOURCES:
+  FLEX:
+    :git: https://github.com/intelliot/FLEX.git
+
+CHECKOUT OPTIONS:
+  FLEX:
+    :commit: b797baa3efeffe73ab1d6ea6aaeb55cc05ff6422
+    :git: https://github.com/intelliot/FLEX.git
+
 SPEC CHECKSUMS:
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  CardIO: 5c8128e07f577824f132881171210b45721c517a
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
+  FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
+  HockeySDK: 77bb90b6484a3b742ccf32bcae247c0a0051a962
+  InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
+  iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
+  NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
+  PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
 
 COCOAPODS: 0.38.0.beta.1

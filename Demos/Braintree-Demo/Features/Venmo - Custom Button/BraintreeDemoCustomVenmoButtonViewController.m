@@ -1,7 +1,7 @@
 #import "BraintreeDemoCustomVenmoButtonViewController.h"
 
-#import <Braintree/Braintree-Payments.h>
-#import <Braintree/UIColor+BTUI.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeUI/UIColor+BTUI.h>
 
 @interface BraintreeDemoCustomVenmoButtonViewController ()
 @property(nonatomic, strong) BTPaymentProvider *paymentProvider;

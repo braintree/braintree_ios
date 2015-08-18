@@ -1,7 +1,7 @@
 #import "BraintreeDemoApplePayPaymentProviderViewController.h"
 #import "ALView+PureLayout.h"
 
-#import <Braintree/Braintree.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 @interface BraintreeDemoApplePayPaymentProviderViewController ()
 @property(nonatomic, strong) BTPaymentProvider *paymentProvider;

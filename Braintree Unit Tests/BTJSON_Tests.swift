@@ -1,5 +1,5 @@
 import XCTest
-import Braintree
+import BraintreeCore
 
 class BTJSON_Tests: XCTestCase {
     func testEmptyJSON() {

@@ -1,4 +1,3 @@
-#import "Braintree.h"
 #import "BraintreeDemoBTPaymentButtonViewController.h"
 #import <PureLayout/ALView+PureLayout.h>
 #import "BraintreeDemoPaymentButtonBaseViewController.h"
@@ -10,6 +9,13 @@
     self = [super initWithClientToken:clientToken];
     if (self) {
         self.braintree = [Braintree braintreeWithClientToken:clientToken];
+    }
+    return self;
+}
+
+- (instancetype)initWithClientKey:(NSString *)clientKey {
+    if (self = [super initWithClientKey:clientKey]) {
+        self.apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey];
     }
     return self;
 }

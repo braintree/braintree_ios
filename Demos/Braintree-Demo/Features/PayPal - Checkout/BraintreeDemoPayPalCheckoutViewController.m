@@ -1,6 +1,6 @@
 #import "BraintreeDemoPayPalCheckoutViewController.h"
 
-#import <Braintree/Braintree.h>
+#import <BraintreeCore/BraintreeCore.h>
 #import "BTPayPalDriver.h"
 
 @interface BraintreeDemoPayPalCheckoutViewController () <BTPayPalDriverDelegate>

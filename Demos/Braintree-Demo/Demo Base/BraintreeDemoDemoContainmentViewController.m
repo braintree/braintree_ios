@@ -3,7 +3,7 @@
 #import <InAppSettingsKit/IASKAppSettingsViewController.h>
 #import <InAppSettingsKit/IASKSettingsReader.h>
 #import <PureLayout/PureLayout.h>
-#import <Braintree/BTPaymentMethod.h>
+#import <BraintreeCore/BraintreeCore.h>
 
 #import "BraintreeDemoMerchantAPI.h"
 #import "BraintreeDemoBaseViewController.h"
@@ -12,7 +12,7 @@
 
 @interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, SlideNavigationControllerDelegate, IntegrationViewControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
-@property (nonatomic, strong) id latestPaymentMethodOrNonce;
+@property (nonatomic, strong) id <BTTokenized> latestTokenizedPayment;
 @property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
 @property (nonatomic, strong) UIViewController *rightMenu;
 @end
@@ -56,8 +56,8 @@
 
 #pragma mark - UI Updates
 
-- (void)setLatestPaymentMethodOrNonce:(id)latestPaymentMethodOrNonce {
-    _latestPaymentMethodOrNonce = latestPaymentMethodOrNonce;
+- (void)setLatestTokenizedPayment:(id)latestPaymentMethodOrNonce {
+    _latestTokenizedPayment = latestPaymentMethodOrNonce;
 
     if (latestPaymentMethodOrNonce) {
         self.statusItem.enabled = YES;
@@ -75,14 +75,14 @@
 - (void)tappedStatus {
     NSLog(@"Tapped status!");
 
-    if (self.latestPaymentMethodOrNonce) {
-        NSString *nonce = [self.latestPaymentMethodOrNonce isKindOfClass:[BTPaymentMethod class]] ? [self.latestPaymentMethodOrNonce nonce] : self.latestPaymentMethodOrNonce;
+    if (self.latestTokenizedPayment) {
+        NSString *nonce = self.latestTokenizedPayment.paymentMethodNonce;
         [self updateStatus:@"Creating Transaction…"];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [[BraintreeDemoMerchantAPI sharedService] makeTransactionWithPaymentMethodNonce:nonce
                                                                              completion:^(NSString *transactionId, NSError *error){
                                                                                  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                                                                                 self.latestPaymentMethodOrNonce = nil;
+                                                                                 self.latestTokenizedPayment = nil;
                                                                                  if (error) {
                                                                                      [self updateStatus:error.localizedDescription];
                                                                                  } else {
@@ -172,13 +172,13 @@
     return block;
 }
 
-- (void (^)(BTPaymentMethod *paymentMethod))completionBlock {
+- (void (^)(id <BTTokenized> tokenized))completionBlock {
     // This class is responsible for retaining the completion block
     static id block;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        block = ^(id paymentMethod){
-            self.latestPaymentMethodOrNonce = paymentMethod;
+        block = ^(id tokenized){
+            self.latestTokenizedPayment = tokenized;
             [self updateStatus:[NSString stringWithFormat:@"Got a nonce. Tap to make a transaction."]];
         };
     });

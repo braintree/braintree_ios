@@ -1,7 +1,7 @@
 #import "BraintreeDemoPayPalScopesViewController.h"
 
-#import <Braintree/Braintree-Payments.h>
-#import <Braintree/UIColor+BTUI.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeUI/UIColor+BTUI.h>
 
 #import "BTPayPalDriver.h"
 #import "BTAppSwitch.h"

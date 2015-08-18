@@ -1,0 +1,33 @@
+#import "BTPayPalDriver.h"
+#import "BTPayPalRequestFactory.h"
+
+BT_ASSUME_NONNULL_BEGIN
+
+@interface BTPayPalDriver ()
+
+/// Set up the callback to be invoked on return from browser or app switch for PayPal Checkout (Single Payments)
+///
+/// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
+- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout * __BT_NULLABLE tokenizedCheckout, NSError * __BT_NULLABLE error))completionBlock;
+
+/// Set up the callback to be invoked on return from browser or app switch for PayPal Authorization (Future Payments)
+///
+/// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
+- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * __BT_NULLABLE tokenizedAccount, NSError * __BT_NULLABLE error))completionBlock;
+
+/// Exposed for testing to create stubbed versions of `PayPalOneTouchAuthorizationRequest` and
+/// `PayPalOneTouchCheckoutRequest`
+@property (nonatomic, strong) BTPayPalRequestFactory *requestFactory;
+
+/// Exposed for testing to provide subclasses of PayPalOneTouchCore to stub class methods
+@property (nonatomic, strong) Class payPalClass;
+
+/// Exposed for testing to provide a convenient way to inject custom return URL schemes
+@property (nonatomic, copy) NSString *returnURLScheme;
+
+/// Exposed for testing to get the instance of BTAPIClient after it has been copied by `copyWithSource:integration:`
+@property (nonatomic, strong) BTAPIClient *apiClient;
+
+@end
+
+BT_ASSUME_NONNULL_END

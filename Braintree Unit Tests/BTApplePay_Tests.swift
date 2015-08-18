@@ -1,14 +1,14 @@
-import Braintree
+import BraintreeApplePay
 import PassKit
 import XCTest
 
 class BTApplePay_Tests: XCTestCase {
 
-    var mockClient : MockAPIClient = try! MockAPIClient(clientKey: "test_client_key")
+    var mockClient : MockAPIClient = try! MockAPIClient(clientKey: "development_client_key")
 
     override func setUp() {
         super.setUp()
-        mockClient = try! MockAPIClient(clientKey: "test_client_key")
+        mockClient = try! MockAPIClient(clientKey: "development_client_key")
     }
 
     func testTokenization_whenConfiguredOff_callsBackWithError() {
@@ -17,7 +17,7 @@ class BTApplePay_Tests: XCTestCase {
                 "status" : "off"
             ]
             ])
-        let expectation = expectationWithDescription("successful tokenization")
+        let expectation = expectationWithDescription("Unsuccessful tokenization")
 
         let client = BTApplePayTokenizationClient(APIClient: mockClient)
         let payment = MockPKPayment()
@@ -28,6 +28,21 @@ class BTApplePay_Tests: XCTestCase {
         }
         waitForExpectationsWithTimeout(2, handler: nil)
     }
+
+    func testTokenization_whenConfigurationIsMissingApplePayStatus_callsBackWithError() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        let expectation = expectationWithDescription("Unsuccessful tokenization")
+
+        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let payment = MockPKPayment()
+        client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
+            XCTAssertEqual(error!.domain, BTApplePayErrorDomain)
+            XCTAssertEqual(error!.code, BTApplePayErrorType.Unsupported.rawValue)
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
 
     func testTokenization_whenConfigurationFetchErrorOccurs_callsBackWithError() {
         mockClient.cannedConfigurationResponseError = NSError(domain: "MyError", code: 1, userInfo: nil)

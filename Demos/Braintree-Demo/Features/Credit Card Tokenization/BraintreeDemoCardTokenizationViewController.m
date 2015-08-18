@@ -1,13 +1,15 @@
 #import "BraintreeDemoCardTokenizationViewController.h"
 
-#import <Braintree/Braintree.h>
+//#import <Braintree/Braintree.h>
+#import <BraintreeCard/BraintreeCard.h>
 #import <CardIO/CardIO.h>
 
 #import "BraintreeDemoSettings.h"
 
 @interface BraintreeDemoCardTokenizationViewController () <CardIOPaymentViewControllerDelegate>
 
-@property (nonatomic, strong) Braintree *braintree;
+//@property (nonatomic, strong) Braintree *braintree;
+@property (nonatomic, strong) BTCardTokenizationClient *client;
 @property (nonatomic, strong) IBOutlet UITextField *cardNumberField;
 @property (nonatomic, strong) IBOutlet UITextField *expirationMonthField;
 @property (nonatomic, strong) IBOutlet UITextField *expirationYearField;
@@ -23,7 +25,13 @@
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
-        self.braintree = [Braintree braintreeWithClientToken:clientToken];
+        NSError *error;
+        BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"" error:&error];
+        if (apiClient) {
+            _client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+        } else {
+            NSLog(@"Failed to create card tokenization client: %@", error);
+        }
     }
     return self;
 }
@@ -66,28 +74,28 @@
 
     [self setFieldsEnabled:NO];
 
-    BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-    request.number = self.cardNumberField.text;
-    request.expirationMonth = self.expirationMonthField.text;
-    request.expirationYear = self.expirationYearField.text;
+    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithNumber:self.cardNumberField.text
+                                                                           expirationMonth:self.expirationMonthField.text
+                                                                            expirationYear:self.expirationYearField.text
+                                                                                       cvv:nil];
 
-    [self.braintree tokenizeCard:request
-                      completion:^(NSString *nonce, NSError *error) {
-                          [self setFieldsEnabled:YES];
-                          if (error) {
-                              self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);
-                              [[[UIAlertView alloc] initWithTitle:@"Error"
-                                                          message:[error localizedDescription]
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil] show];
-                          }
+    [self.client tokenizeCard:request completion:^(BTTokenizedCard *tokenized, NSError *error) {
+        [self setFieldsEnabled:YES];
+        if (error) {
+            self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);
+            [[[UIAlertView alloc] initWithTitle:@"Error"
+                                        message:[error localizedDescription]
+                                       delegate:nil
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil] show];
+        }
 
-                          if (nonce) {
-                              self.progressBlock([NSString stringWithFormat:@"Card tokenized -> Nonce Received: %@", nonce]);
-                              self.completionBlock(nonce);
-                          }
-                      }];
+        if (tokenized.paymentMethodNonce) {
+            self.progressBlock([NSString stringWithFormat:@"Card tokenized -> Nonce Received: %@", tokenized.paymentMethodNonce]);
+            self.completionBlock(tokenized.paymentMethodNonce);
+        }
+
+    }];
 }
 
 - (IBAction)setupDemoData {
@@ -121,6 +129,5 @@
 - (NSString *)tableView:(__unused UITableView *)tableView titleForHeaderInSection:(__unused NSInteger)section {
     return @"Custom Card Form";
 }
-
 
 @end

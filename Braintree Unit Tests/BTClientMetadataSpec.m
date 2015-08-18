@@ -5,7 +5,7 @@ SpecBegin(BTClientMetadata)
 
 describe(@"string values", ^{
 
-    BTClientMutableMetadata *m = [[BTClientMutableMetadata alloc] init];
+    BTMutableClientMetadata *m = [[BTMutableClientMetadata alloc] init];
 
     it(@"source returns expected strings", ^{
         m.source = BTClientMetadataSourceForm;
@@ -47,7 +47,7 @@ describe(@"string values", ^{
     });
 
     it(@"sessionId should be different than a different instance's sessionId", ^{
-        BTClientMutableMetadata *m2 = [BTClientMutableMetadata new];
+        BTMutableClientMetadata *m2 = [BTMutableClientMetadata new];
         expect(m.sessionId).notTo.equal(m2.sessionId);
     });
 
@@ -71,10 +71,10 @@ sharedExamplesFor(@"a copied metadata instance", ^(NSDictionary *data) {
 
 describe(@"mutableMetadata", ^{
 
-    __block BTClientMutableMetadata *mutableMetadata;
+    __block BTMutableClientMetadata *mutableMetadata;
 
     beforeEach(^{
-        mutableMetadata = [[BTClientMutableMetadata alloc] init];
+        mutableMetadata = [[BTMutableClientMetadata alloc] init];
     });
 
     describe(@"init", ^{
@@ -104,12 +104,12 @@ describe(@"mutableMetadata", ^{
             it(@"returns a different, immutable instance", ^{
                 expect(mutableMetadata).toNot.beIdenticalTo(copied);
                 expect([copied isKindOfClass:[BTClientMetadata class]]).to.beTruthy();
-                expect([copied isKindOfClass:[BTClientMutableMetadata class]]).to.beFalsy();
+                expect([copied isKindOfClass:[BTMutableClientMetadata class]]).to.beFalsy();
             });
         });
 
         describe(@"mutableCopy", ^{
-            __block BTClientMutableMetadata *copied;
+            __block BTMutableClientMetadata *copied;
             beforeEach(^{
                 copied = [mutableMetadata mutableCopy];
             });
@@ -122,7 +122,7 @@ describe(@"mutableMetadata", ^{
             it(@"returns a different, immutable instance", ^{
                 expect(mutableMetadata).toNot.beIdenticalTo(copied);
                 expect([copied isKindOfClass:[BTClientMetadata class]]).to.beTruthy();
-                expect([copied isKindOfClass:[BTClientMutableMetadata class]]).to.beTruthy();
+                expect([copied isKindOfClass:[BTMutableClientMetadata class]]).to.beTruthy();
             });
         });
     });
@@ -146,7 +146,7 @@ describe(@"metadata", ^{
     context(@"with non-default values", ^{
         beforeEach(^{
             metadata = ({
-                BTClientMutableMetadata *mutableMetadata = [[BTClientMutableMetadata alloc] init];
+                BTMutableClientMetadata *mutableMetadata = [[BTMutableClientMetadata alloc] init];
                 mutableMetadata.integration = BTClientMetadataIntegrationDropIn;
                 mutableMetadata.source = BTClientMetadataSourcePayPalSDK;
                 [mutableMetadata copy];
@@ -167,12 +167,12 @@ describe(@"metadata", ^{
             it(@"returns a different, immutable instance", ^{
                 expect(metadata).toNot.beIdenticalTo(copied);
                 expect([copied isKindOfClass:[BTClientMetadata class]]).to.beTruthy();
-                expect([copied isKindOfClass:[BTClientMutableMetadata class]]).to.beFalsy();
+                expect([copied isKindOfClass:[BTMutableClientMetadata class]]).to.beFalsy();
             });
         });
 
         describe(@"mutableCopy", ^{
-            __block BTClientMutableMetadata *copied;
+            __block BTMutableClientMetadata *copied;
             beforeEach(^{
                 copied = [metadata mutableCopy];
             });
@@ -185,7 +185,7 @@ describe(@"metadata", ^{
             it(@"returns a different, immutable instance", ^{
                 expect(copied).toNot.beIdenticalTo(metadata);
                 expect([copied isKindOfClass:[BTClientMetadata class]]).to.beTruthy();
-                expect([copied isKindOfClass:[BTClientMutableMetadata class]]).to.beTruthy();
+                expect([copied isKindOfClass:[BTMutableClientMetadata class]]).to.beTruthy();
             });
         });
     });

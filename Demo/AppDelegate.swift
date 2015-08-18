@@ -6,6 +6,7 @@
 //
 //
 
+import BraintreeCore
 import UIKit
 
 @UIApplicationMain
@@ -17,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         return true
+    }
+
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+        return BTAppSwitch.handleReturnURL(url, options: options)
     }
 
     func applicationWillResignActive(application: UIApplication) {

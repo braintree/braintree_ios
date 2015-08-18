@@ -1,10 +1,8 @@
 #import "BraintreeDemoThreeDSecureViewController.h"
 #import "ALView+PureLayout.h"
 
-#import <Braintree/Braintree-3D-Secure.h>
-#import <Braintree/BTThreeDSecureDriver.h>
-
-#import <Braintree/BTCardPaymentMethod.h>
+#import <Braintree3DSecure/Braintree3DSecure.h>
+#import <BraintreeUI/BraintreeUI.h>
 
 @interface BraintreeDemoThreeDSecureViewController ()
 @property(nonatomic, strong) BTThreeDSecureDriver *threeDSecure;

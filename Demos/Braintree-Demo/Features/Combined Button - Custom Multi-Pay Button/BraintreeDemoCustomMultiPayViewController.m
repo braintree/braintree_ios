@@ -1,8 +1,8 @@
 #import "BraintreeDemoCustomMultiPayViewController.h"
 
 #import <PureLayout/ALView+PureLayout.h>
-#import <Braintree/Braintree.h>
-#import <Braintree/UIColor+BTUI.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeUI/UIColor+BTUI.h>
 
 @interface BraintreeDemoCustomMultiPayViewController ()
 @property(nonatomic, strong) BTPaymentProvider *paymentProvider;

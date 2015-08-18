@@ -1,7 +1,7 @@
 #import "BraintreeDemoCustomCoinbaseButtonViewController.h"
 
-#import <Braintree/Braintree-Payments.h>
-#import <Braintree/UIColor+BTUI.h>
+#import <BraintreeCore/BraintreeCore.h>
+#import <BraintreeUI/UIColor+BTUI.h>
 
 @interface BraintreeDemoCustomCoinbaseButtonViewController ()
 @property(nonatomic, strong) BTPaymentProvider *paymentProvider;
