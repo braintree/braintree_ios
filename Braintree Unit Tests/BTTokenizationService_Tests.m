@@ -46,9 +46,16 @@
     [self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
-- (void)testTokenizeType_whenTypeIsNotRegistered_doesNothing {
+- (void)testTokenizeType_whenTypeIsNotRegistered_returnsError {
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [service tokenizeType:@"TypeThatHasntBeenRegistered" withAPIClient:[[BTAPIClient alloc] initWithClientKey:@"test_key" error:nil] completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
+        XCTAssertNil(tokenization);
+        XCTAssertEqualObjects(error.domain, BTTokenizationServiceErrorDomain);
+        XCTAssertEqual(error.code, BTTokenizationServiceErrorTypeNotRegistered);
+        [expectation fulfill];
     }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
 @end

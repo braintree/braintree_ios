@@ -224,8 +224,10 @@
             [self.activityView stopAnimating];
             self.ctaControl.hidden = self.hideCTA;
             self.paymentButton.hidden = self.hidePaymentButton;
-            self.cardFormSectionHeader.hidden = NO;
-            self.cardForm.hidden = NO;
+            if ([[BTTokenizationService sharedService] isTypeAvailable:@"Card"]) {
+                self.cardFormSectionHeader.hidden = NO;
+                self.cardForm.hidden = NO;
+            }
             break;
         case BTDropInContentViewStatePaymentMethodsOnFile:
             self.activityView.hidden = YES;

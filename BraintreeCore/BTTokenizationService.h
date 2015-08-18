@@ -5,6 +5,13 @@
 
 BT_ASSUME_NONNULL_BEGIN
 
+extern NSString * const BTTokenizationServiceErrorDomain;
+
+typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
+    BTTokenizationServiceErrorUnknown = 0,
+    BTTokenizationServiceErrorTypeNotRegistered,
+};
+
 /// A tokenization service that supports registration of tokenizers at runtime.
 ///
 /// @note `BTTokenizationService` provides access to different payment option tokenizers (e.g.

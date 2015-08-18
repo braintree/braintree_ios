@@ -1,5 +1,7 @@
 #import "BTTokenizationService.h"
 
+NSString * const BTTokenizationServiceErrorDomain = @"com.braintreepayments.BTTokenizationServiceErrorDomain";
+
 @interface BTTokenizationService ()
 /// Dictionary of tokenization blocks keyed by types as strings. The blocks have the following type:
 ///
@@ -64,6 +66,14 @@
     void(^block)(BTAPIClient *, NSDictionary *, void(^)(id<BTTokenized>, NSError *)) = self.tokenizationBlocks[type];
     if (block) {
         block(apiClient, options ?: @{}, completion);
+    } else {
+        NSError *error = [NSError errorWithDomain:BTTokenizationServiceErrorDomain
+                                             code:BTTokenizationServiceErrorTypeNotRegistered
+                                         userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"%@ processing not available", type],
+                                                    NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:@"Type '%@' is not registered with BTTokenizationService", type],
+                                                    NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithFormat:@"Please link Braintree%@.framework to your app", type]
+                                                    }];
+        completion(nil, error);
     }
 }
 

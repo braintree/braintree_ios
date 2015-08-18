@@ -19,7 +19,7 @@
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTDropInViewController *addPaymentMethodDropInViewController;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
-@property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;
+@property (nonatomic, assign) NSInteger selectedPaymentInfoIndex;
 @property (nonatomic, strong) UIBarButtonItem *submitBarButtonItem;
 
 /// Whether currently visible.
@@ -77,7 +77,7 @@
 
         self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
 
-        self.selectedPaymentMethodIndex = NSNotFound;
+        self.selectedPaymentInfoIndex = NSNotFound;
         self.dropInContentView.state = BTDropInContentViewStateActivity;
         self.fullForm = YES;
         _callToActionText = BTDropInLocalizedString(DEFAULT_CALL_TO_ACTION);
@@ -312,7 +312,7 @@
         selectPaymentMethod.title = BTDropInLocalizedString(SELECT_PAYMENT_METHOD_TITLE);
         selectPaymentMethod.theme = self.theme;
         selectPaymentMethod.paymentInfoObjects = self.paymentInfoObjects;
-        selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentMethodIndex;
+        selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentInfoIndex;
         selectPaymentMethod.delegate = self;
         selectPaymentMethod.client = self.apiClient;
         rootViewController = selectPaymentMethod;
@@ -328,10 +328,10 @@
 - (void)tappedSubmitForm {
     [self showLoadingState:YES];
 
-    id<BTTokenized> paymentMethod = [self selectedPaymentMethod];
-    if (paymentMethod != nil) {
+    id<BTTokenized> paymentInfo = [self selectedPaymentMethod];
+    if (paymentInfo != nil) {
         [self informDelegateWillComplete];
-        [self informDelegateDidAddPaymentMethod:paymentMethod];
+        [self informDelegateDidAddPaymentInfo:paymentInfo];
     } else if (!self.dropInContentView.cardForm.hidden) {
         BTUICardFormView *cardForm = self.dropInContentView.cardForm;
 
@@ -363,23 +363,41 @@
                     if ([error.domain isEqualToString:@"com.braintreepayments.BTCardTokenizationClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
                         [self informUserDidFailWithError:error];
                     } else {
-                        // What should we do when there's an error that isn't card validation related?
+                        NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
+                        NSString *localizedAlertMessage = error.localizedDescription;
+                        NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
+
+                        if ([UIAlertController class]) {
+                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:localizedAlertTitle message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+                            [alert addAction:[UIAlertAction actionWithTitle:localizedCancel style:UIAlertActionStyleCancel handler:nil]];
+                            [self presentViewController:alert animated:YES completion:nil];
+                        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                            [[[UIAlertView alloc] initWithTitle:localizedAlertTitle message:localizedAlertMessage delegate:nil cancelButtonTitle:localizedCancel otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
+                        }
                     }
                     return;
                 }
 
                 [client postAnalyticsEvent:@"dropin.ios.add-card.success"];
-                [self informDelegateDidAddPaymentMethod:tokenization];
+                [self informDelegateDidAddPaymentInfo:tokenization];
             }];
         } else {
             NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
             NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
             NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
-            [[[UIAlertView alloc] initWithTitle:localizedAlertTitle
-                                        message:localizedAlertMessage
-                                       delegate:nil
-                              cancelButtonTitle:localizedCancel
-                              otherButtonTitles:nil] show];
+            if ([UIAlertController class]) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:localizedAlertTitle message:localizedAlertMessage preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:localizedCancel style:UIAlertActionStyleCancel handler:nil]];
+                [self presentViewController:alert animated:YES completion:nil];
+            } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                [[[UIAlertView alloc] initWithTitle:localizedAlertTitle message:localizedAlertMessage delegate:nil cancelButtonTitle:localizedCancel otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
+            }
         }
     }
 }
@@ -430,7 +448,7 @@
 
 - (void)selectPaymentMethodViewController:(BTDropInSelectPaymentMethodViewController *)viewController
             didSelectPaymentMethodAtIndex:(NSUInteger)index {
-    self.selectedPaymentMethodIndex = index;
+    self.selectedPaymentInfoIndex = index;
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -571,7 +589,7 @@
     }
 }
 
-- (void)informDelegateDidAddPaymentMethod:(id<BTTokenized> )paymentMethod {
+- (void)informDelegateDidAddPaymentInfo:(id<BTTokenized> )paymentMethod {
     if ([self.delegate respondsToSelector:@selector(dropInViewController:didSucceedWithTokenization:)]) {
         [self.delegate dropInViewController:self
                 didSucceedWithTokenization:paymentMethod];
@@ -634,10 +652,10 @@
     BTDropInContentViewStateType newState;
 
     if ([self.paymentInfoObjects count] == 0) {
-        self.selectedPaymentMethodIndex = NSNotFound;
+        self.selectedPaymentInfoIndex = NSNotFound;
         newState = BTDropInContentViewStateForm;
     } else {
-        self.selectedPaymentMethodIndex = 0;
+        self.selectedPaymentInfoIndex = 0;
         newState = BTDropInContentViewStatePaymentMethodsOnFile;
     }
     if (self.visible) {
@@ -656,9 +674,9 @@
     [self updateValidity];
 }
 
-- (void)setSelectedPaymentMethodIndex:(NSInteger)selectedPaymentMethodIndex {
-    _selectedPaymentMethodIndex = selectedPaymentMethodIndex;
-    if (selectedPaymentMethodIndex != NSNotFound) {
+- (void)setSelectedPaymentInfoIndex:(NSInteger)selectedPaymentInfoIndex {
+    _selectedPaymentInfoIndex = selectedPaymentInfoIndex;
+    if (_selectedPaymentInfoIndex != NSNotFound) {
         id<BTTokenized> defaultPaymentMethod = [self selectedPaymentMethod];
         BTUIPaymentOptionType paymentMethodType = [BTUI paymentOptionTypeForPaymentInfoType:defaultPaymentMethod.type];
         self.dropInContentView.selectedPaymentMethodView.type = paymentMethodType;
@@ -668,7 +686,7 @@
 }
 
 - (id<BTTokenized>)selectedPaymentMethod {
-    return self.selectedPaymentMethodIndex != NSNotFound ? self.paymentInfoObjects[self.selectedPaymentMethodIndex] : nil;
+    return self.selectedPaymentInfoIndex != NSNotFound ? self.paymentInfoObjects[self.selectedPaymentInfoIndex] : nil;
 }
 
 - (void)updateValidity {
