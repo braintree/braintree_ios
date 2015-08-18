@@ -1,15 +1,11 @@
 #import "BraintreeDemoCardTokenizationViewController.h"
-
-//#import <Braintree/Braintree.h>
+#import "BraintreeDemoSettings.h"
 #import <BraintreeCard/BraintreeCard.h>
 #import <CardIO/CardIO.h>
 
-#import "BraintreeDemoSettings.h"
 
 @interface BraintreeDemoCardTokenizationViewController () <CardIOPaymentViewControllerDelegate>
 
-//@property (nonatomic, strong) Braintree *braintree;
-@property (nonatomic, strong) BTCardTokenizationClient *client;
 @property (nonatomic, strong) IBOutlet UITextField *cardNumberField;
 @property (nonatomic, strong) IBOutlet UITextField *expirationMonthField;
 @property (nonatomic, strong) IBOutlet UITextField *expirationYearField;
@@ -17,21 +13,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *cardIOButton;
 @property (weak, nonatomic) IBOutlet UIButton *autofillButton;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
+@property (nonatomic, strong) BTAPIClient *apiClient;
 
 @end
 
 @implementation BraintreeDemoCardTokenizationViewController
 
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
-    if (self) {
-        NSError *error;
-        BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"" error:&error];
-        if (apiClient) {
-            _client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
-        } else {
-            NSLog(@"Failed to create card tokenization client: %@", error);
-        }
+- (instancetype)initWithClientKey:(NSString *)clientKey {
+    if (self = [super initWithClientKey:clientKey]) {
+        _apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey];
     }
     return self;
 }
@@ -39,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"Tokenization";
+    self.title = @"Card Tokenization";
     self.edgesForExtendedLayout = UIRectEdgeBottom;
 
     [CardIOUtilities preload];
@@ -65,36 +55,25 @@
     [paymentViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)viewDidAppear:(__unused BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
 - (IBAction)submitForm {
     self.progressBlock(@"Tokenizing card details!");
 
-    [self setFieldsEnabled:NO];
-
+    BTCardTokenizationClient *cardTokenizationClient = [[BTCardTokenizationClient alloc] initWithAPIClient:self.apiClient];
     BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithNumber:self.cardNumberField.text
                                                                            expirationMonth:self.expirationMonthField.text
                                                                             expirationYear:self.expirationYearField.text
                                                                                        cvv:nil];
 
-    [self.client tokenizeCard:request completion:^(BTTokenizedCard *tokenized, NSError *error) {
+    [self setFieldsEnabled:NO];
+    [cardTokenizationClient tokenizeCard:request completion:^(BTTokenizedCard *tokenized, NSError *error) {
         [self setFieldsEnabled:YES];
         if (error) {
-            self.progressBlock([NSString stringWithFormat:@"Error: %@", error]);
-            [[[UIAlertView alloc] initWithTitle:@"Error"
-                                        message:[error localizedDescription]
-                                       delegate:nil
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil] show];
+            self.progressBlock(error.localizedDescription);
+            NSLog(@"Error: %@", error);
+            return;
         }
 
-        if (tokenized.paymentMethodNonce) {
-            self.progressBlock([NSString stringWithFormat:@"Card tokenized -> Nonce Received: %@", tokenized.paymentMethodNonce]);
-            self.completionBlock(tokenized.paymentMethodNonce);
-        }
-
+        self.completionBlock(tokenized);
     }];
 }
 
@@ -122,12 +101,6 @@
     self.cardIOButton.enabled = enabled;
     self.autofillButton.enabled = enabled;
 
-}
-
-#pragma mark Table View Overrides
-
-- (NSString *)tableView:(__unused UITableView *)tableView titleForHeaderInSection:(__unused NSInteger)section {
-    return @"Custom Card Form";
 }
 
 @end

@@ -24,7 +24,8 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// Initialize a new API client.
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
-- (instancetype)initWithClientKey:(NSString *)clientKey;
+/// @return An API client, or `nil` if the client key is invalid.
+- (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey;
 
 /// Initialize a new API client.
 ///

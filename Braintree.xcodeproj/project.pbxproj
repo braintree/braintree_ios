@@ -277,6 +277,7 @@
 		A7A9C6D11B83C84A00F5EBBA /* BraintreeVenmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; };
 		A7A9C6D21B83C84A00F5EBBA /* BraintreeVenmo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7A9C6D51B83C98000F5EBBA /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FD1B79708A00452CFA /* BraintreeDemoCustomVenmoButtonViewController.m */; };
+		A7A9C6D61B83CC6F00F5EBBA /* BraintreeDemoCardTokenizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D31B79708900452CFA /* BraintreeDemoCardTokenizationViewController.m */; };
 		A7ABD6361B6FDF6400A1223C /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		A7ABD6371B6FDF8400A1223C /* BraintreeApplePay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889741B5EF5DE007A0E9C /* BraintreeApplePay.framework */; };
 		A7ABD6791B702FF000A1223C /* BTAPIClient_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */; };
@@ -3007,6 +3008,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A76B1A101B79708A00452CFA /* BraintreeDemoDemoContainmentViewController.m in Sources */,
+				A7A9C6D61B83CC6F00F5EBBA /* BraintreeDemoCardTokenizationViewController.m in Sources */,
 				A7A9C6D51B83C98000F5EBBA /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */,
 				A76B1A121B79708A00452CFA /* BraintreeDemoSlideNavigationController.m in Sources */,
 				A7A094FF1B839CC900D732CC /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
