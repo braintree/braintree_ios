@@ -1,11 +1,13 @@
 #import "BTAPIClient.h"
 #import "BTClientMetadata.h"
+#import "BTClientToken.h"
 #import "BTJSON.h"
 #import "BTHTTP.h"
 
 @interface BTAPIClient ()
 @property (nonatomic, copy) NSString *clientKey;
 @property (nonatomic, copy) NSString *clientJWT;
+@property (nonatomic, strong) BTClientToken *clientToken;
 @property (nonatomic, strong) BTHTTP *http;
 
 /// Client metadata that is used for tracking the client session

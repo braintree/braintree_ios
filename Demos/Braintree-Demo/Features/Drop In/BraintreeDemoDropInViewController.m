@@ -21,11 +21,10 @@
     return self;
 }
 
-// TODO: update for JWT
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
-        _apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
+        _apiClient = [[BTAPIClient alloc] initWithClientToken:clientToken];
     }
     return self;
 }

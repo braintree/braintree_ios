@@ -1,6 +1,8 @@
 #import "BTAnalyticsMetadata.h"
 #import "BTAPIClient_Internal.h"
 #import "BTLogger_Internal.h"
+#import "BTClientToken.h"
+#import "BTAPIResponseParser.h"
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 
@@ -35,10 +37,54 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     return self;
 }
 
+- (instancetype)initWithClientToken:(NSString *)clientToken {
+    return [self initWithClientToken:clientToken dispatchQueue:nil];
+}
+
+- (instancetype)initWithClientToken:(NSString *)clientToken
+                      dispatchQueue:(dispatch_queue_t)dispatchQueue
+{
+    if(![clientToken isKindOfClass:[NSString class]]) {
+        NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
+        [[BTLogger sharedLogger] error:reason];
+        return nil;
+    }
+
+    if (self = [self init]) {
+        NSError *error;
+        _clientToken = [[BTClientToken alloc] initWithClientToken:clientToken error:&error];
+        if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
+        if (!_clientToken) {
+            NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
+            [[BTLogger sharedLogger] error:reason];
+            return nil;
+        }
+
+        NSURL *baseURL = [self.clientToken.clientTokenParser URLForKey:@"clientApiUrl"];
+        self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
+        if (dispatchQueue) {
+            _http.dispatchQueue = dispatchQueue;
+        }
+        _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
+
+        _metadata = [[BTClientMetadata alloc] init];
+    }
+    return self;
+}
+
 - (instancetype)copyWithSource:(BTClientMetadataSourceType)source
                    integration:(BTClientMetadataIntegrationType)integration
 {
-    BTAPIClient *copiedClient = [[[self class] alloc] initWithClientKey:self.clientKey dispatchQueue:self.dispatchQueue];
+    BTAPIClient *copiedClient;
+
+    if (self.clientToken) {
+        copiedClient = [[[self class] alloc] initWithClientToken:self.clientToken.originalValue dispatchQueue:self.dispatchQueue];
+    } else if (self.clientKey) {
+        copiedClient = [[[self class] alloc] initWithClientKey:self.clientKey dispatchQueue:self.dispatchQueue];
+    } else {
+        NSAssert(NO, @"Cannot copy an API client that does not specify a client token or client key");
+    }
+
     copiedClient.clientJWT = self.clientJWT;
 
     BTMutableClientMetadata *mutableMetadata = [self.metadata mutableCopy];
@@ -188,7 +234,13 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         NSURL *analyticsURL = configuration.json[@"analytics"][@"url"].asURL;
         if (analyticsURL) {
             if (!self.analyticsHttp) {
-                self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL clientKey:self.clientKey];
+                if (self.clientToken) {
+                    self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
+                } else if (self.clientKey) {
+                    self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL clientKey:self.clientKey];
+                }
+                NSAssert(self.analyticsHttp != nil, @"Must have clientToken or clientKey");
+                self.analyticsHttp.dispatchQueue = self.dispatchQueue;
             }
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
             if ([self.analyticsHttp.baseURL isEqual:[NSURL URLWithString:@"test://do-not-send.url"]]) {
@@ -196,9 +248,10 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 return;
             }
 
+            NSString *clientKeyOrAuthFingerprint = self.clientToken.authorizationFingerprint ?: self.clientKey;
             [self.analyticsHttp POST:@"/"
                           parameters:@{ @"analytics": @[@{ @"kind": eventKind }],
-                                        @"authorization_fingerprint": self.clientKey,
+                                        @"authorization_fingerprint": clientKeyOrAuthFingerprint,
                                         @"_meta": self.metaParameters }
                           completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                               if (completionBlock) completionBlock(error);

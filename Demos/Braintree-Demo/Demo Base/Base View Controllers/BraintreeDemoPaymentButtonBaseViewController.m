@@ -8,8 +8,7 @@
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
-        // TODO: add BTAPIClient initializer that takes a clientToken/JWT
-//        self.braintree = [Braintree braintreeWithClientToken:clientToken];
+        self.apiClient = [[BTAPIClient alloc] initWithClientToken:clientToken];
     }
     return self;
 }

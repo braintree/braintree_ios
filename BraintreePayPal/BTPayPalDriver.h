@@ -91,10 +91,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-
-@property (nonatomic, copy) NSString *clientToken DEPRECATED_MSG_ATTRIBUTE("Delete me as soon as possible. BTPayPalDriver only requires a client token due to Browser-Switch requiring a client token.");
-
-
 /// Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser.
 ///
 /// @note During the app switch authorization, the user may switch back to your app manually. In this case, the caller

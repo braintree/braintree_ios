@@ -31,10 +31,24 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing
 /// `nil` will use the application's main queue.
-/// @param error This is set to an `NSError` object when an error occurs.
+/// @return An API client, or `nil` if the client key is invalid.
 - (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey
                                 dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue;
 
+/// Initialize a new API client.
+///
+/// @param clientToken The client token retrieved from your server. Passing an invalid client token will return `nil`.
+/// @return An API client, or `nil` if the client token is invalid.
+- (BT_NULLABLE instancetype)initWithClientToken:(NSString *)clientToken;
+
+/// Initialize a new API client.
+///
+/// @param clientToken The client token retrieved from your server. Passing an invalid client token will return `nil`.
+/// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing
+/// `nil` will use the application's main queue.
+/// @return An API client, or `nil` if the client token is invalid.
+- (BT_NULLABLE instancetype)initWithClientToken:(NSString *)clientToken
+                                  dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue;
 
 /// Create a copy of an existing API client, but specify a new source and integration type.
 /// @discussion This provides a way to override an API client's source and integration metadata, which

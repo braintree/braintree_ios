@@ -9,7 +9,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <BraintreeCore/PublicHeader.h>
 
 #import <BraintreeCore/BTAPIClient.h>
-#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTAPIClient_Internal.h> // TODO: remove
 #import <BraintreeCore/BTAPIPinnedCertificates.h>
 #import <BraintreeCore/BTAppSwitch.h>
 #import <BraintreeCore/BTAnalyticsMetadata.h>

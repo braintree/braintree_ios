@@ -9,6 +9,7 @@
 #import "BraintreeDemoBaseViewController.h"
 #import "BraintreeDemoIntegrationViewController.h"
 #import "BraintreeDemoSlideNavigationController.h"
+#import "BraintreeDemoSettings.h"
 
 @interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, SlideNavigationControllerDelegate, IntegrationViewControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
@@ -121,41 +122,61 @@
         [self.currentDemoViewController.view removeFromSuperview];
     }
 
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     self.title = @"Braintree";
 
-    [self updateStatus:@"Fetching Client Token or Client Key …"];
-    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientTokenOrClientKey, NSError *error) {
+    if ([BraintreeDemoSettings useClientKey]) {
+        [self updateStatus:@"Using Client Key"];
+
+        // For now, we assume that if we're using a Client Key, then we're not using a Customer.
+        NSString *clientKey;
+        switch ([BraintreeDemoSettings currentEnvironment]) {
+            case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
+                clientKey = @"sandbox_9dbg82cq_dcpspy2brwdjr3qn";
+                break;
+            case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
+                // TODO: replace with production client key
+                clientKey = @"production_testing_integration_merchant_id";
+                break;
+            case BraintreeDemoTransactionServiceEnvironmentCustomMerchant:
+            default:
+                clientKey = @"development_testing_integration_merchant_id";
+                break;
+        }
+
+        self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientKey:clientKey];
+        return;
+    }
+
+    [self updateStatus:@"Fetching Client Token…"];
+
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+
+    [[BraintreeDemoMerchantAPI sharedService] createCustomerAndFetchClientTokenWithCompletion:^(NSString *clientToken, NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (error) {
             [self updateStatus:error.localizedDescription];
         } else {
-            if ([self isClientKey:clientTokenOrClientKey]) {
-                [self updateStatus:@"Using Client Key"];
-                self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientKey:clientTokenOrClientKey];
-            } else {
-                [self updateStatus:@"Using Client Token"];
-                self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientToken:clientTokenOrClientKey];
-            }
-            if (!self.currentDemoViewController) {
-                [self updateStatus:@"Demo not available"];
-                return;
-            }
-
-            [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([self.currentDemoViewController class])]];
-            self.currentDemoViewController.progressBlock = [self progressBlock];
-            self.currentDemoViewController.completionBlock = [self completionBlock];
-
-            [self containIntegrationViewController:self.currentDemoViewController];
-
-            self.title = self.currentDemoViewController.title;
+            [self updateStatus:@"Using Client Token"];
+            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientToken:clientToken];
         }
     }];
 }
 
-- (BOOL)isClientKey:(NSString *)clientTokenOrClientKey {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:clientTokenOrClientKey];
-    return apiClient != nil;
+- (void)setCurrentDemoViewController:(BraintreeDemoBaseViewController *)currentDemoViewController {
+    _currentDemoViewController = currentDemoViewController;
+    
+    if (!_currentDemoViewController) {
+        [self updateStatus:@"Demo not available"];
+        return;
+    }
+
+    [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([_currentDemoViewController class])]];
+    _currentDemoViewController.progressBlock = [self progressBlock];
+    _currentDemoViewController.completionBlock = [self completionBlock];
+    
+    [self containIntegrationViewController:_currentDemoViewController];
+    
+    self.title = _currentDemoViewController.title;
 }
 
 - (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithClientToken:(NSString *)clientToken {
