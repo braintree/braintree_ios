@@ -30,7 +30,8 @@
                      @"environmentNoNetwork": @YES,
                      @"environment": @"offline",
                      @"merchantAccountId": @"a_merchant_account_id",
-                     @"currencyIsoCode": @"USD"
+                     @"currencyIsoCode": @"USD",
+                     @"billingAgreementsEnabled": @NO
                      },
              @"merchantId": @"a_merchant_id",
              @"venmo": @"offline",
