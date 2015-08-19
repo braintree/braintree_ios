@@ -84,6 +84,7 @@ extern NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgree
 - (NSURL *)payPalMerchantUserAgreementURL;
 - (NSURL *)payPalPrivacyPolicyURL;
 - (NSString *)payPalCurrencyCode;
+- (BOOL)payPalUseBillingAgreement;
 
 #pragma mark Coinbase
 

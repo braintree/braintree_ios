@@ -21,7 +21,7 @@ NSString *const BTConfigurationKeyPayPalDirectBaseUrl = @"directBaseUrl";
 NSString *const BTConfigurationKeyPayPalMerchantName = @"displayName";
 NSString *const BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl = @"privacyUrl";
 NSString *const BTConfigurationKeyPayPalMerchantUserAgreementUrl = @"userAgreementUrl";
-NSString *const BTConfigurationKeyPayPalBillingAgreement = @"billingAgreement";
+NSString *const BTConfigurationKeyPayPalBillingAgreement = @"billingAgreementsEnabled";
 NSString *const BTConfigurationKeyPayPalEnvironment = @"environment";
 NSString *const BTConfigurationKeyPayPalCurrencyCode = @"currencyIsoCode";
 
@@ -261,8 +261,7 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 }
 
 - (BOOL)payPalUseBillingAgreement {
-    //return [self.payPalEnvironment isEqualToString:BTConfigurationKeyPayPalBillingAgreement];
-    return false;
+    return [self.configurationParser boolForKey:BTConfigurationKeyPayPalBillingAgreement withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
 }
 
 #pragma mark Coinbase

@@ -63,7 +63,13 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)startAuthorizationWithCompletion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock {
-    [self startAuthorizationWithAdditionalScopes:nil completion:completionBlock];
+    if (_client.configuration.payPalUseBillingAgreement) {
+        BTPayPalCheckout *checkout = [BTPayPalCheckout checkoutWithAmount:[NSDecimalNumber decimalNumberWithString:@"0.0"]];
+        checkout.isSingleUse = false;
+        [self startCheckout:checkout completion:completionBlock];
+    } else {
+        [self startAuthorizationWithAdditionalScopes:nil completion:completionBlock];
+    }
 }
 
 - (void)startAuthorizationWithAdditionalScopes:(NSSet * __nullable)additionalScopes completion:(nullable void (^)(BTPayPalPaymentMethod *__nullable paymentMethod, NSError *__nullable error))completionBlock {

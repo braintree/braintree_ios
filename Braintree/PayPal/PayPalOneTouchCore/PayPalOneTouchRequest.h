@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchRequest.h
 //
-//  Version 2.0.1
+//  Version 2.1.1
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
