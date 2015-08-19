@@ -11,28 +11,38 @@ id OCMArgCheckURLSchemeBeginsWith(NSString *string) {
     }];
 }
 
-@interface BTPayPalDriverTestDelegate : NSObject <BTPayPalDriverDelegate>
+@interface BTPayPalDriverTestDelegate : NSObject <BTPaymentDriverDelegate>
 @property (nonatomic, strong) XCTestExpectation *willPerform;
 @property (nonatomic, strong) XCTestExpectation *didPerform;
 @property (nonatomic, strong) XCTestExpectation *willProcess;
+@property (nonatomic, strong) id lastDriver;
+@property (nonatomic, assign) BTAppSwitchTarget lastTarget;
 @end
 
 @implementation BTPayPalDriverTestDelegate
 
-- (void)payPalDriverWillPerformAppSwitch:(nonnull BTPayPalDriver *)payPalDriver {
+-(void)paymentDriverWillPerformAppSwitch:(id)driver {
+    self.lastDriver = driver;
     [self.willPerform fulfill];
 }
-- (void)payPalDriver:(nonnull BTPayPalDriver *)payPalDriver didPerformAppSwitchToTarget:(BTPayPalDriverAppSwitchTarget)target {
+
+- (void)paymentDriver:(id)driver didPerformAppSwitchToTarget:(BTAppSwitchTarget)target {
+    self.lastTarget = target;
+    self.lastDriver = driver;
     [self.didPerform fulfill];
 }
-- (void)payPalDriverWillProcessAppSwitchReturn:(nonnull BTPayPalDriver *)payPalDriver {
+
+- (void)paymentDriverWillProcessPaymentInfo:(id)driver {
+    self.lastDriver = driver;
     [self.willProcess fulfill];
 }
+
 @end
 
 @interface BraintreePayPal_IntegrationTests : XCTestCase
 @property (nonatomic, strong) NSNumber *didReceiveCompletionCallback;
 @end
+
 
 @implementation BraintreePayPal_IntegrationTests
 

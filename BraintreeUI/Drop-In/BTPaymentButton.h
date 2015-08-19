@@ -3,7 +3,7 @@
 #import "BTUIThemedView.h"
 
 @class BTClient, BTPaymentMethod;
-@protocol BTPaymentMethodCreationDelegate;
+@protocol BTPaymentDriverDelegate;
 
 @interface BTPaymentButton : BTUIThemedView
 
@@ -24,7 +24,7 @@
 /// Setting this property will force the button to reload.
 @property (nonatomic, strong) NSOrderedSet *enabledPaymentOptions;
 
-//@property (nonatomic, weak) id<BTPaymentMethodCreationDelegate> delegate;
+//@property (nonatomic, weak) id<BTPaymentDriverDelegate> delegate;
 
 @property (nonatomic, readonly) BOOL hasAvailablePaymentMethod;
 

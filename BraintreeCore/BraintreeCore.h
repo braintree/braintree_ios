@@ -29,3 +29,4 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <BraintreeCore/BTTokenizationService.h>
 #import <BraintreeCore/BTTokenized.h>
 #import <BraintreeCore/BTURLUtils.h>
+#import <BraintreeCore/BTPaymentDriverDelegate.h>

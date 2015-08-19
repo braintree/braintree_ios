@@ -103,7 +103,7 @@
                      }];
 }
 
-- (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
+- (void)paymentDriver:(__unused id)sender didCreatePaymentMethod:(BTPaymentMethod *)paymentMethod {
     
     if ([paymentMethod isKindOfClass:[BTCardPaymentMethod class]]) {
         BTCardPaymentMethod *cardPaymentMethod = (BTCardPaymentMethod *)paymentMethod;
@@ -121,7 +121,7 @@
         }
     }
     
-    [super paymentMethodCreator:sender didCreatePaymentMethod:paymentMethod];
+    [super paymentDriver:sender didCreatePaymentMethod:paymentMethod];
 }
 
 @end

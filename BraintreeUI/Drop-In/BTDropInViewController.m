@@ -4,15 +4,9 @@
 #import "BTUICardFormView.h"
 #import "BTUIScrollView.h"
 #import "BTDropInUtil.h"
-//#import "Braintree-API.h"
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
-//#import "BTPaymentMethodCreationDelegate.h"
-//#import "BTClient_Internal.h"
-#import "BTLogger_Internal.h"
-//#import "BTCoinbase.h"
-#import <BraintreeCard/BraintreeCard.h>
 
 @interface BTDropInViewController () <BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTDropInViewControllerDelegate, BTDropInSelectPaymentMethodViewControllerDelegate>
 
@@ -470,9 +464,9 @@
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark BTPaymentMethodCreationDelegate
+#pragma mark BTPaymentDriverDelegate
 
-//- (void)paymentMethodCreator:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
+//- (void)paymentDriver:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
 //    // In order to modally present PayPal on top of a nested Drop In, we need to first dismiss the
 //    // nested Drop In. Canceling will return to the outer Drop In.
 //    if ([self presentedViewController]) {
@@ -488,13 +482,13 @@
 //    }
 //}
 //
-//- (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(__unused UIViewController *)viewController {
+//- (void)paymentDriver:(__unused id)sender requestsDismissalOfViewController:(__unused UIViewController *)viewController {
 //    [self dismissViewControllerAnimated:YES completion:nil];
 //}
 
 
 // TODO: What are some possible presented view controller(s)?
-- (void)paymentMethodCreatorWillPerformAppSwitch:(__unused id)sender {
+- (void)paymentDriverWillPerformAppSwitch:(__unused id)sender {
     // If there is a presented view controller, dismiss it before app switch
     // so that the result of the app switch can be shown in this view controller.
     if ([self presentedViewController]) {
@@ -504,7 +498,7 @@
 
 // TODO
 
-//- (void)paymentMethodCreatorWillProcess:(__unused id)sender {
+//- (void)paymentDriverWillProcess:(__unused id)sender {
 //    self.dropInContentView.state = BTDropInContentViewStateActivity;
 //
 //    self.originalCoinbaseStoreInVault = [[BTCoinbase sharedCoinbase] storeInVault];
@@ -514,7 +508,7 @@
 
 
 // Moving to block...
-//- (void)paymentMethodCreator:(__unused id)sender didCreatePaymentMethod:(id<BTTokenized> )paymentMethod {
+//- (void)paymentDriver:(__unused id)sender didCreatePaymentMethod:(id<BTTokenized> )paymentMethod {
 //    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
 //
 //    NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentInfoObjects];
@@ -527,7 +521,7 @@
 
 
 // TODO: move to block
-//- (void)paymentMethodCreator:(id)sender didFailWithError:(NSError *)error {
+//- (void)paymentDriver:(id)sender didFailWithError:(NSError *)error {
 //    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
 //
 //    NSString *savePaymentMethodErrorAlertTitle;
@@ -560,7 +554,7 @@
 //    self.addPaymentMethodDropInViewController = nil;
 //}
 //
-//- (void)paymentMethodCreatorDidCancel:(__unused id)sender {
+//- (void)paymentDriverDidCancel:(__unused id)sender {
 //    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
 //
 //    // Refresh payment methods display

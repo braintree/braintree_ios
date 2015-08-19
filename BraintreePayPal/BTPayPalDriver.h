@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
-#import <BraintreeCore/BTAPIClient.h>
-#import <BraintreeCore/BTAppSwitch.h>
-#import <BraintreeCore/BTNullability.h>
+//#import <BraintreeCore/BTAPIClient.h>
+//#import <BraintreeCore/BTAppSwitch.h>
+//#import <BraintreeCore/BTNullability.h>
+#import <BraintreeCore/BraintreeCore.h>
 #import "BTTokenizedPayPalAccount.h"
 #import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"
@@ -32,9 +33,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
     BTPayPalDriverErrorTypeInvalidRequest,
 };
 
-@protocol BTPayPalDriverDelegate;
-
-/// The BTPayPalDriver enables you to obtain permission to charge your customers' PayPal accounts via app
+/// BTPayPalDriver enables you to obtain permission to charge your customers' PayPal accounts via app
 /// switch to the PayPal app and the browser.
 ///
 /// @note To make PayPal available, you must ensure that PayPal is enabled in your Braintree control panel.
@@ -144,53 +143,8 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 #pragma mark - Delegate
 
 /// An optional delegate for receiving notifications about the lifecycle of a PayPal app switch for updating your UI
-@property (nonatomic, weak, nullable) id<BTPayPalDriverDelegate> delegate;
-
-@end
-
-
-/// Specifies the destination of the PayPal app switch
-typedef NS_ENUM(NSInteger, BTPayPalDriverAppSwitchTarget){
-    /// Login or One Touch will take place in the PayPal app
-    BTPayPalDriverAppSwitchTargetPayPalApp,
-    /// Login or One Touch will take place in the browser on PayPal's website
-    BTPayPalDriverAppSwitchTargetBrowser,
-};
-
-/// A delegate protocol for sending lifecycle updates as PayPal login via app switch takes place
-@protocol BTPayPalDriverDelegate <NSObject>
-
-@optional
-
-/// Delegates receive this message when the PayPal driver is preparing to perform an app switch.
-///
-/// This transition is usually instantaneous; however, you may use this hook to present a loading
-/// indication to the user.
-///
-/// @param payPalDriver The BTPayPalDriver instance performing user authentication
-- (void)payPalDriverWillPerformAppSwitch:(BTPayPalDriver *)payPalDriver;
-
-/// Delegates receive this message when the PayPal driver has successfully performed an app switch.
-///
-/// You may use this hook to prepare your UI for app switch return. Keep in mind that
-/// users may manually switch back to your app via the iOS task manager.
-///
-/// @note You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
-///
-/// @param payPalDriver The BTPayPalDriver instance performing user authentication
-/// @param target       The destination that was actually used for this app switch
-- (void)payPalDriver:(BTPayPalDriver *)payPalDriver didPerformAppSwitchToTarget:(BTPayPalDriverAppSwitchTarget)target;
-
-/// Delegates receive this message when control returns to BTPayPalDriver upon app switch return
-///
-/// This usually gets invoked after handleAppSwitchReturnURL: is called in your UIApplicationDelegate.
-///
-/// @note You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
-///
-/// @param payPalDriver The instance of BTPayPalDriver handling the app switch return.
-- (void)payPalDriverWillProcessAppSwitchReturn:(BTPayPalDriver *)payPalDriver;
+@property (nonatomic, weak, nullable) id<BTPaymentDriverDelegate> delegate;
 
 @end
 
 BT_ASSUME_NONNULL_END
-

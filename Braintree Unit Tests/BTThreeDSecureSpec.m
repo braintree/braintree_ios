@@ -7,7 +7,7 @@
 //SpecBegin(BTThreeDSecure)
 //
 //__block BTClient *client;
-//__block id<BTPaymentMethodCreationDelegate> delegate;
+//__block id<BTPaymentDriverDelegate> delegate;
 //__block NSString *originalNonce_lookupEnrolledAuthenticationNotRequired = @"some-credit-card-nonce-where-3ds-succeeds-without-user-authentication";
 //__block NSString *originalNonce_lookupEnrolledAuthenticationRequired = @"some-credit-card-nonce-where-3ds-succeeds-after-user-authentication";
 //__block NSString *originalNonce_lookupCardNotEnrolled = @"some-credit-card-nonce-where-card-is-not-enrolled-for-3ds";
@@ -15,7 +15,7 @@
 //
 //beforeEach(^{
 //    client = [OCMockObject mockForClass:[BTClient class]];
-//    delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
+//    delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentDriverDelegate)];
 //
 //    [[(OCMockObject *)client stub] postAnalyticsEvent:OCMOCK_ANY];
 //
@@ -92,7 +92,7 @@
 //        it(@"requests presentation of a three d secure view controller", ^{
 //            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 //
-//            [[(OCMockObject *)delegate expect] paymentMethodCreator:threeDSecure
+//            [[(OCMockObject *)delegate expect] paymentDriver:threeDSecure
 //                               requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
 //                return [obj isKindOfClass:[UINavigationController class]] && [[(UINavigationController *)obj visibleViewController] isKindOfClass:[BTThreeDSecureAuthenticationViewController class]];
 //            }]];
@@ -107,7 +107,7 @@
 //        it(@"returns a nonce without any view controller interaction", ^{
 //            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 //
-//            [[(OCMockObject *)delegate expect] paymentMethodCreator:[OCMArg any] didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
+//            [[(OCMockObject *)delegate expect] paymentDriver:[OCMArg any] didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
 //                if (![obj isKindOfClass:[BTCardPaymentMethod class]]) {
 //                    return NO;
 //                }
@@ -149,7 +149,7 @@
 //            
 //            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 //            
-//            [[(OCMockObject *)delegate expect] paymentMethodCreator:[OCMArg any] didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
+//            [[(OCMockObject *)delegate expect] paymentDriver:[OCMArg any] didCreatePaymentMethod:[OCMArg checkWithBlock:^BOOL(id obj) {
 //                if (![obj isKindOfClass:[BTCardPaymentMethod class]]) {
 //                    return NO;
 //                }
@@ -174,7 +174,7 @@
 //        it(@"passes the error back to the caller", ^{
 //            BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithClient:client delegate:delegate];
 //
-//            [[(OCMockObject *)delegate expect] paymentMethodCreator:[OCMArg any] didFailWithError:[OCMArg isNotNil]];
+//            [[(OCMockObject *)delegate expect] paymentDriver:[OCMArg any] didFailWithError:[OCMArg isNotNil]];
 //
 //            [threeDSecure verifyCardWithNonce:originalNonce_lookupFails amount:[NSDecimalNumber decimalNumberWithString:@"1"]];
 //

@@ -90,8 +90,10 @@ static BTVenmoDriver *appSwitchedDriver;
                                                                   bundleDisplayName:bundleDisplayName
                                                                             offline:offline];
 
+        [self informDelegateWillPerformAppSwitch];
         BOOL success = [self.application openURL:appSwitchURL];
         if (success) {
+            [self informDelegateDidPerformAppSwitch];
             self.appSwitchCompletionBlock = completionBlock;
             appSwitchedDriver = self;
             [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
@@ -244,20 +246,20 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Delegate Informers
 
 - (void)informDelegateWillPerformAppSwitch {
-    if ([self.delegate respondsToSelector:@selector(venmoDriverWillPerformAppSwitch:)]) {
-        [self.delegate venmoDriverWillPerformAppSwitch:self];
+    if ([self.delegate respondsToSelector:@selector(paymentDriverWillPerformAppSwitch:)]) {
+        [self.delegate paymentDriverWillPerformAppSwitch:self];
     }
 }
 
 - (void)informDelegateDidPerformAppSwitch {
-    if ([self.delegate respondsToSelector:@selector(venmoDriverDidPerformAppSwitch:)]) {
-        [self.delegate venmoDriverDidPerformAppSwitch:self];
+    if ([self.delegate respondsToSelector:@selector(paymentDriver:didPerformAppSwitchToTarget:)]) {
+        [self.delegate paymentDriver:self didPerformAppSwitchToTarget:BTAppSwitchTargetNativeApp];
     }
 }
 
 - (void)informDelegateWillProcessAppSwitchReturn {
-    if ([self.delegate respondsToSelector:@selector(venmoDriverWillProcessAppSwitchReturn:)]) {
-        [self.delegate venmoDriverWillProcessAppSwitchReturn:self];
+    if ([self.delegate respondsToSelector:@selector(paymentDriverWillProcessPaymentInfo:)]) {
+        [self.delegate paymentDriverWillProcessPaymentInfo:self];
     }
 }
 

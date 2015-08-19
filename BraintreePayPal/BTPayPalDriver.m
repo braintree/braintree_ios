@@ -412,19 +412,19 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 #pragma mark - Delegate Informers
 
 - (void)informDelegateWillPerformAppSwitch {
-    if ([self.delegate respondsToSelector:@selector(payPalDriverWillPerformAppSwitch:)]) {
-        [self.delegate payPalDriverWillPerformAppSwitch:self];
+    if ([self.delegate respondsToSelector:@selector(paymentDriverWillPerformAppSwitch:)]) {
+        [self.delegate paymentDriverWillPerformAppSwitch:self];
     }
 }
 
 - (void)informDelegateDidPerformAppSwitchToTarget:(PayPalOneTouchRequestTarget)target {
-    if ([self.delegate respondsToSelector:@selector(payPalDriver:didPerformAppSwitchToTarget:)]) {
+    if ([self.delegate respondsToSelector:@selector(paymentDriver:didPerformAppSwitchToTarget:)]) {
         switch (target) {
             case PayPalOneTouchRequestTargetBrowser:
-                [self.delegate payPalDriver:self didPerformAppSwitchToTarget:BTPayPalDriverAppSwitchTargetBrowser];
+                [self.delegate paymentDriver:self didPerformAppSwitchToTarget:BTAppSwitchTargetWebBrowser];
                 break;
             case PayPalOneTouchRequestTargetOnDeviceApplication:
-                [self.delegate payPalDriver:self didPerformAppSwitchToTarget:BTPayPalDriverAppSwitchTargetPayPalApp];
+                [self.delegate paymentDriver:self didPerformAppSwitchToTarget:BTAppSwitchTargetNativeApp];
                 break;
             default:
                 // Should never happen.
@@ -434,8 +434,8 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 }
 
 - (void)informDelegateWillProcessAppSwitchReturn {
-    if ([self.delegate respondsToSelector:@selector(payPalDriverWillProcessAppSwitchReturn:)]) {
-        [self.delegate payPalDriverWillProcessAppSwitchReturn:self];
+    if ([self.delegate respondsToSelector:@selector(paymentDriverWillProcessPaymentInfo:)]) {
+        [self.delegate paymentDriverWillProcessPaymentInfo:self];
     }
 }
 

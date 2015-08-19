@@ -25,10 +25,10 @@ BT_ASSUME_NONNULL_BEGIN
 ///  when generating a client token (See https://developers.braintreepayments.com/ios/sdk/overview/generate-client-token ).
 ///
 ///  Your delegate must implement:
-///    * paymentMethodCreator:didCreatePaymentMethod:
-///    * paymentMethodCreator:didFailWithError:
-///    * paymentMethodCreator:requestsPresentationOfViewController:
-///    * paymentMethodCreator:requestsDismissalOfViewController:
+///    * paymentDriver:didCreatePaymentMethod:
+///    * paymentDriver:didFailWithError:
+///    * paymentDriver:requestsPresentationOfViewController:
+///    * paymentDriver:requestsDismissalOfViewController:
 ///
 ///  When verification succeeds, the original payment method nonce is consumed, and you will receive
 ///  a new payment method nonce, which points to the original payment method, as well as the 3D
@@ -40,7 +40,7 @@ BT_ASSUME_NONNULL_BEGIN
 ///  will not be associated with a 3D Secure Verification.
 ///
 ///  @note The user authentication view controller is not always necessary to achieve the liabilty
-///  shift. In these cases, your delegate will immediately receive paymentMethodCreator:didCreatePaymentMethod:.
+///  shift. In these cases, your delegate will immediately receive paymentDriver:didCreatePaymentMethod:.
 
 @interface BTThreeDSecureDriver : NSObject
 
