@@ -2,7 +2,7 @@
 
 #import <BraintreePayPal/BraintreePayPal.h>
 
-@interface BraintreeDemoPayPalCheckoutViewController () <BTPaymentDriverDelegate>
+@interface BraintreeDemoPayPalCheckoutViewController () <BTAppSwitchDelegate>
 
 @end
 
@@ -41,23 +41,26 @@
     }];
 }
 
-#pragma mark BTPaymentDriverDelegate
+#pragma mark BTAppSwitchDelegate
 
-- (void)paymentDriverWillPerformAppSwitch:(id)driver {
-    self.progressBlock(@"paymentDriverWillPerformAppSwitch:");
+- (void)appSwitcherWillPerformAppSwitch:(id)appSwitcher {
+   self.progressBlock(@"paymentDriverWillPerformAppSwitch:");
 }
 
-- (void)paymentDriverWillProcessPaymentInfo:(id)driver {
+- (void)appSwitcherWillProcessPaymentInfo:(id)appSwitcher {
     self.progressBlock(@"paymentDriverWillProcessPaymentInfo:");
 }
 
-- (void)paymentDriver:(id)driver didPerformAppSwitchToTarget:(BTAppSwitchTarget)target {
+- (void)appSwitcher:(id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target {
     switch (target) {
         case BTAppSwitchTargetWebBrowser:
-            self.progressBlock(@"paymentDriver:didPerformAppSwitchToTarget: browser");
+            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: browser");
             break;
         case BTAppSwitchTargetNativeApp:
-            self.progressBlock(@"paymentDriver:didPerformAppSwitchToTarget: app");
+            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: app");
+            break;
+        case BTAppSwitchTargetUnknown:
+            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: unknown");
             break;
     }
 }

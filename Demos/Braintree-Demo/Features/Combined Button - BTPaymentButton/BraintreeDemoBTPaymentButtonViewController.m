@@ -3,7 +3,7 @@
 #import <BraintreeUI/BraintreeUI.h>
 #import <PureLayout/ALView+PureLayout.h>
 
-@interface BraintreeDemoBTPaymentButtonViewController () <BTPaymentDriverDelegate>
+@interface BraintreeDemoBTPaymentButtonViewController () <BTAppSwitchDelegate, UITableViewDelegate>
 @end
 
 @implementation BraintreeDemoBTPaymentButtonViewController
@@ -20,19 +20,20 @@
             self.progressBlock(@"Canceled 🔰");
         }
     }];
-    paymentButton.delegate = self;
+    paymentButton.appSwitchDelegate = self;
     return paymentButton;
 }
 
-- (void)paymentDriverWillPerformAppSwitch:(id)driver {
+
+- (void)appSwitcherWillPerformAppSwitch:(id)appSwitcher {
     self.progressBlock(@"Will perform app switch");
 }
 
-- (void)paymentDriver:(id)driver didPerformAppSwitchToTarget:(BTAppSwitchTarget)target {
+- (void)appSwitcher:(id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target {
     self.progressBlock(@"Did perform app switch");
 }
 
-- (void)paymentDriverWillProcessPaymentInfo:(id)driver {
+- (void)appSwitcherWillProcessPaymentInfo:(id)appSwitcher {
     self.progressBlock(@"Processing payment info...");
 }
 

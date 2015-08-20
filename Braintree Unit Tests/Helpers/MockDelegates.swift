@@ -5,7 +5,7 @@ import XCTest
     var willPerformAppSwitch : XCTestExpectation? = nil
     var didPerformAppSwitch : XCTestExpectation? = nil
     var willProcess : XCTestExpectation? = nil
-    var lastSender : AnyObject? = nil
+    var lastAppSwitcher : AnyObject? = nil
 
     override init() { }
 
@@ -14,18 +14,18 @@ import XCTest
         didPerformAppSwitch = didPerform
     }
 
-    @objc func braintreeWillPerformAppSwitch(sender: AnyObject!) {
-        lastSender = sender
+    @objc func appSwitcherWillPerformAppSwitch(appSwitcher: AnyObject!) {
+        lastAppSwitcher = appSwitcher
         willPerformAppSwitch?.fulfill()
     }
 
-    @objc func braintree(sender: AnyObject!, didPerformAppSwitchToTarget target: BTAppSwitchTarget) {
-        lastSender = sender
+    @objc func appSwitcher(appSwitcher: AnyObject!, didPerformSwitchToTarget target: BTAppSwitchTarget) {
+        lastAppSwitcher = appSwitcher
         didPerformAppSwitch?.fulfill()
     }
 
-    @objc func braintreeWillProcessPaymentInfo(sender: AnyObject!) {
-        lastSender = sender
+    @objc func appSwitcherWillProcessPaymentInfo(appSwitcher: AnyObject!) {
+        lastAppSwitcher = appSwitcher
         willProcess?.fulfill()
     }
 }
@@ -34,16 +34,16 @@ import XCTest
     var requestsPresentationOfViewController : XCTestExpectation? = nil
     var requestsDismissalOfViewController : XCTestExpectation? = nil
     var lastViewController : UIViewController? = nil
-    var lastSender : AnyObject? = nil
+    var lastPaymentDriver : AnyObject? = nil
 
-    @objc func braintree(sender: AnyObject!, requestsDismissalOfViewController viewController: UIViewController!) {
-        lastSender = sender
+    func paymentDriver(driver: AnyObject!, requestsDismissalOfViewController viewController: UIViewController!) {
+        lastPaymentDriver = driver
         lastViewController = viewController
         requestsDismissalOfViewController?.fulfill()
     }
 
-    @objc func braintree(sender: AnyObject!, requestsPresentationOfViewController viewController: UIViewController!) {
-        lastSender = sender
+    func paymentDriver(driver: AnyObject!, requestsPresentationOfViewController viewController: UIViewController!) {
+        lastPaymentDriver = driver
         lastViewController = viewController
         requestsPresentationOfViewController?.fulfill()
     }

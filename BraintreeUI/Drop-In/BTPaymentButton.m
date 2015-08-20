@@ -226,8 +226,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [[NSNotificationCenter defaultCenter] removeObserver:self name:BTAppSwitchWillSwitchNotification object:nil];
 
     id paymentDriver = notification.object;
-    if ([self.appSwitchDelegate respondsToSelector:@selector(braintreeWillPerformAppSwitch:)]) {
-        [self.appSwitchDelegate braintreeWillPerformAppSwitch:paymentDriver];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillPerformAppSwitch:)]) {
+        [self.appSwitchDelegate appSwitcherWillPerformAppSwitch:paymentDriver];
     }
 }
 
@@ -236,8 +236,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
     id paymentDriver = notification.object;
     BTAppSwitchTarget appSwitchTarget = [notification.userInfo[BTAppSwitchNotificationTargetKey] integerValue];
-    if ([self.appSwitchDelegate respondsToSelector:@selector(braintree:didPerformAppSwitchToTarget:)]) {
-        [self.appSwitchDelegate braintree:paymentDriver didPerformAppSwitchToTarget:appSwitchTarget];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcher:didPerformSwitchToTarget:)]) {
+        [self.appSwitchDelegate appSwitcher:paymentDriver didPerformSwitchToTarget:appSwitchTarget];
     }
 }
 
@@ -245,8 +245,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [[NSNotificationCenter defaultCenter] removeObserver:self name:BTAppSwitchWillProcessPaymentInfoNotification object:nil];
 
     id paymentDriver = notification.object;
-    if ([self.appSwitchDelegate respondsToSelector:@selector(braintreeWillProcessPaymentInfo:)]) {
-        [self.appSwitchDelegate braintreeWillProcessPaymentInfo:paymentDriver];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
+        [self.appSwitchDelegate appSwitcherWillProcessPaymentInfo:paymentDriver];
     }
 }
 

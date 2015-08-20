@@ -415,8 +415,8 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillSwitchNotification object:self userInfo:nil];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 
-    if ([self.delegate respondsToSelector:@selector(braintreeWillPerformAppSwitch:)]) {
-        [self.delegate braintreeWillPerformAppSwitch:self];
+    if ([self.delegate respondsToSelector:@selector(appSwitcherWillPerformAppSwitch:)]) {
+        [self.delegate appSwitcherWillPerformAppSwitch:self];
     }
 }
 
@@ -439,8 +439,8 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchDidSwitchNotification object:self userInfo:@{ BTAppSwitchNotificationTargetKey : @(appSwitchTarget) } ];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 
-    if ([self.delegate respondsToSelector:@selector(braintree:didPerformAppSwitchToTarget:)]) {
-        [self.delegate braintree:self didPerformAppSwitchToTarget:appSwitchTarget];
+    if ([self.delegate respondsToSelector:@selector(appSwitcher:didPerformSwitchToTarget:)]) {
+        [self.delegate appSwitcher:self didPerformSwitchToTarget:appSwitchTarget];
     }
 }
 
@@ -448,8 +448,8 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillProcessPaymentInfoNotification object:self userInfo:nil];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 
-    if ([self.delegate respondsToSelector:@selector(braintreeWillProcessPaymentInfo:)]) {
-        [self.delegate braintreeWillProcessPaymentInfo:self];
+    if ([self.delegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
+        [self.delegate appSwitcherWillProcessPaymentInfo:self];
     }
 }
 

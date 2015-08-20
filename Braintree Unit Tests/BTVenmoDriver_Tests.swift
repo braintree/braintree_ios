@@ -111,7 +111,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in
-            XCTAssertEqual(delegate.lastSender as? BTVenmoDriver, venmoDriver)
+            XCTAssertEqual(delegate.lastAppSwitcher as? BTVenmoDriver, venmoDriver)
         }
 
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -201,7 +201,7 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         let expectation = self.expectationWithDescription("Callback")
         venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in
-            XCTAssertEqual(delegate.lastSender as? BTVenmoDriver, venmoDriver)
+            XCTAssertEqual(delegate.lastAppSwitcher as? BTVenmoDriver, venmoDriver)
             expectation.fulfill()
         }
         BTVenmoDriver.handleAppSwitchReturnURL(NSURL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce")!)
