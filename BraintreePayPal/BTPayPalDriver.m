@@ -412,28 +412,42 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 #pragma mark - Delegate Informers
 
 - (void)informDelegateWillPerformAppSwitch {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverWillAppSwitchNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
     if ([self.delegate respondsToSelector:@selector(paymentDriverWillPerformAppSwitch:)]) {
         [self.delegate paymentDriverWillPerformAppSwitch:self];
     }
 }
 
 - (void)informDelegateDidPerformAppSwitchToTarget:(PayPalOneTouchRequestTarget)target {
+    BTAppSwitchTarget appSwitchTarget;
+    switch (target) {
+        case PayPalOneTouchRequestTargetBrowser:
+            appSwitchTarget = BTAppSwitchTargetWebBrowser;
+            break;
+        case PayPalOneTouchRequestTargetOnDeviceApplication:
+            appSwitchTarget = BTAppSwitchTargetNativeApp;
+            break;
+        case PayPalOneTouchRequestTargetNone:
+        case PayPalOneTouchRequestTargetUnknown:
+            appSwitchTarget = BTAppSwitchTargetUnknown;
+            // Should never happen
+            break;
+    }
+
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverDidAppSwitchNotification object:self userInfo:@{ BTPaymentDriverAppSwitchNotificationTargetKey : @(appSwitchTarget) } ];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
     if ([self.delegate respondsToSelector:@selector(paymentDriver:didPerformAppSwitchToTarget:)]) {
-        switch (target) {
-            case PayPalOneTouchRequestTargetBrowser:
-                [self.delegate paymentDriver:self didPerformAppSwitchToTarget:BTAppSwitchTargetWebBrowser];
-                break;
-            case PayPalOneTouchRequestTargetOnDeviceApplication:
-                [self.delegate paymentDriver:self didPerformAppSwitchToTarget:BTAppSwitchTargetNativeApp];
-                break;
-            default:
-                // Should never happen.
-                break;
-        }
+        [self.delegate paymentDriver:self didPerformAppSwitchToTarget:appSwitchTarget];
     }
 }
 
 - (void)informDelegateWillProcessAppSwitchReturn {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverWillProcessPaymentInfoNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
     if ([self.delegate respondsToSelector:@selector(paymentDriverWillProcessPaymentInfo:)]) {
         [self.delegate paymentDriverWillProcessPaymentInfo:self];
     }

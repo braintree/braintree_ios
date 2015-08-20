@@ -246,18 +246,27 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Delegate Informers
 
 - (void)informDelegateWillPerformAppSwitch {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverWillAppSwitchNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
     if ([self.delegate respondsToSelector:@selector(paymentDriverWillPerformAppSwitch:)]) {
         [self.delegate paymentDriverWillPerformAppSwitch:self];
     }
 }
 
 - (void)informDelegateDidPerformAppSwitch {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverDidAppSwitchNotification object:self userInfo:@{ BTPaymentDriverAppSwitchNotificationTargetKey : @(BTAppSwitchTargetNativeApp) } ];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
     if ([self.delegate respondsToSelector:@selector(paymentDriver:didPerformAppSwitchToTarget:)]) {
         [self.delegate paymentDriver:self didPerformAppSwitchToTarget:BTAppSwitchTargetNativeApp];
     }
 }
 
 - (void)informDelegateWillProcessAppSwitchReturn {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverWillProcessPaymentInfoNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
     if ([self.delegate respondsToSelector:@selector(paymentDriverWillProcessPaymentInfo:)]) {
         [self.delegate paymentDriverWillProcessPaymentInfo:self];
     }

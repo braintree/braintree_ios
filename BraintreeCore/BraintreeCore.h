@@ -23,10 +23,10 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import <BraintreeCore/BTLogger.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #import <BraintreeCore/BTNullability.h>
+#import <BraintreeCore/BTPaymentDriverDelegate.h>
 #import <BraintreeCore/BTPaymentOption.h>
 #import <BraintreeCore/BTPostalAddress.h>
 #import <BraintreeCore/BTReachability.h>
 #import <BraintreeCore/BTTokenizationService.h>
 #import <BraintreeCore/BTTokenized.h>
 #import <BraintreeCore/BTURLUtils.h>
-#import <BraintreeCore/BTPaymentDriverDelegate.h>

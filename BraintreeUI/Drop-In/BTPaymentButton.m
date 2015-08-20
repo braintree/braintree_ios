@@ -1,6 +1,7 @@
 #import "BTPaymentButton.h"
 
 #import <BraintreeCore/BTAPIClient.h>
+#import <BraintreeCore/BTAppSwitch.h>
 #import "BTLogger_Internal.h"
 #import "BTTokenizationService.h"
 #import "BTUIVenmoButton.h"
@@ -53,6 +54,10 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         [self setupViews];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setupViews {
@@ -210,9 +215,41 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     NSString *paymentOption = [self paymentOptionForIndexPath:indexPath];
 
     if ([[BTTokenizationService sharedService] isTypeAvailable:paymentOption]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willAppSwitch:) name:BTPaymentDriverWillAppSwitchNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAppSwitch:) name:BTPaymentDriverDidAppSwitchNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willProcessPaymentInfo:) name:BTPaymentDriverWillProcessPaymentInfoNotification object:nil];
+
         [[BTTokenizationService sharedService] tokenizeType:paymentOption withAPIClient:self.apiClient completion:self.completion];
     } else {
         [[BTLogger sharedLogger] warning:@"BTPaymentButton encountered an unexpected payment option value: %@", paymentOption];
+    }
+}
+
+- (void)willAppSwitch:(NSNotification *)notification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTPaymentDriverWillAppSwitchNotification object:nil];
+
+    id paymentDriver = notification.object;
+    if ([self.delegate respondsToSelector:@selector(paymentDriverWillPerformAppSwitch:)]) {
+        [self.delegate paymentDriverWillPerformAppSwitch:paymentDriver];
+    }
+}
+
+- (void)didAppSwitch:(NSNotification *)notification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTPaymentDriverDidAppSwitchNotification object:nil];
+
+    id paymentDriver = notification.object;
+    BTAppSwitchTarget appSwitchTarget = [notification.userInfo[BTPaymentDriverAppSwitchNotificationTargetKey] integerValue];
+    if ([self.delegate respondsToSelector:@selector(paymentDriver:didPerformAppSwitchToTarget:)]) {
+        [self.delegate paymentDriver:paymentDriver didPerformAppSwitchToTarget:appSwitchTarget];
+    }
+}
+
+- (void)willProcessPaymentInfo:(NSNotification *)notification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTPaymentDriverWillProcessPaymentInfoNotification object:nil];
+
+    id paymentDriver = notification.object;
+    if ([self.delegate respondsToSelector:@selector(paymentDriverWillProcessPaymentInfo:)]) {
+        [self.delegate paymentDriverWillProcessPaymentInfo:paymentDriver];
     }
 }
 

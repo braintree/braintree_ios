@@ -1,7 +1,13 @@
 #import <UIKit/UIKit.h>
 
+extern NSString * const BTPaymentDriverWillAppSwitchNotification;
+extern NSString * const BTPaymentDriverDidAppSwitchNotification;
+extern NSString * const BTPaymentDriverWillProcessPaymentInfoNotification;
+extern NSString * const BTPaymentDriverAppSwitchNotificationTargetKey;
+
 /// Specifies the destination of an app switch
-typedef NS_ENUM(NSInteger, BTAppSwitchTarget){
+typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
+    BTAppSwitchTargetUnknown = 0,
     /// Native app
     BTAppSwitchTargetNativeApp,
     /// Browser (i.e. Mobile Safari)

@@ -6,12 +6,18 @@ import BraintreePayPal
 class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
     var mockAPIClient : MockAPIClient = MockAPIClient(clientKey: "development_client_key")!
+    var observers : [NSObjectProtocol] = []
 
     override func setUp() {
         super.setUp()
 
         mockAPIClient = MockAPIClient(clientKey: "development_client_key")!
         StubPayPalOneTouchCore.cannedIsWalletAppAvailable = true
+    }
+
+    override func tearDown() {
+        observers.map { NSNotificationCenter.defaultCenter().removeObserver($0) }
+        super.tearDown()
     }
 
     func testAuthorization_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
@@ -51,7 +57,6 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
-        payPalDriver.clientToken = "a-client-token"
 
         payPalDriver.payPalClass = StubPayPalOneTouchCore.self
         let mockRequestFactory = PayPalMockRequestFactory()
@@ -145,14 +150,63 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         XCTAssertEqual(paypalAccount, StubPayPalOneTouchCoreResult().response)
     }
 
-    func testAuthorization_whenAppSwitchSucceeds_makesDelegateCallback() {
+    func testAuthorization_whenAppSwitchSucceeds_makesDelegateCallbacks() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline"
+            ] ])
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
-        let delegate = MockPaymentDriverDelegate()
+        payPalDriver.returnURLScheme = "foo://"
+        let mockRequestFactory = PayPalMockRequestFactory()
+        payPalDriver.requestFactory = mockRequestFactory
+        let delegate = MockPaymentDriverDelegate(willPerform: expectationWithDescription("willPerformAppSwitch called"), didPerform: expectationWithDescription("didPerformAppSwitch called"))
         delegate.willProcess = expectationWithDescription("willProcessPaymentInfo called")
         payPalDriver.delegate = delegate
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.payPalClass = StubPayPalOneTouchCore.self
         payPalDriver.payPalClass.cannedResult.overrideType = .Success
+
+        payPalDriver.authorizeAccountWithCompletion { _ -> Void in }
+        payPalDriver.setAuthorizationAppSwitchReturnBlock { _ -> Void in }
+        BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testAuthorization_whenAppSwitchWillOccur_postsNotifications() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline"
+            ] ])
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        payPalDriver.returnURLScheme = "foo://"
+        let mockRequestFactory = PayPalMockRequestFactory()
+        payPalDriver.requestFactory = mockRequestFactory
+        let delegate = MockPaymentDriverDelegate()
+        delegate.willPerformAppSwitch = expectationWithDescription("willPerformAppSwitch called")
+        payPalDriver.delegate = delegate
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.payPalClass = StubPayPalOneTouchCore.self
+        payPalDriver.payPalClass.cannedResult.overrideType = .Success
+
+        let willAppSwitchNotificationExpectation = expectationWithDescription("willAppSwitch notification received")
+        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTPaymentDriverWillAppSwitchNotification, object: nil, queue: nil) { (notification) -> Void in
+            willAppSwitchNotificationExpectation.fulfill()
+        })
+
+        let didAppSwitchNotificationExpectation = expectationWithDescription("didAppSwitch notification received")
+        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTPaymentDriverDidAppSwitchNotification, object: nil, queue: nil) { (notification) -> Void in
+            didAppSwitchNotificationExpectation.fulfill()
+        })
+
+        payPalDriver.authorizeAccountWithCompletion { _ -> Void in }
+
+        let willProcessNotificationExpectation = expectationWithDescription("willProcess notification received")
+        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTPaymentDriverWillProcessPaymentInfoNotification, object: nil, queue: nil) { (notification) -> Void in
+            willProcessNotificationExpectation.fulfill()
+        })
 
         payPalDriver.setAuthorizationAppSwitchReturnBlock { _ -> Void in }
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)

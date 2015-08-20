@@ -20,7 +20,7 @@
 				<string>PayPal - Scopes</string>
 				<string>PayPal - Checkout</string>
 				<string>Credit Card Tokenization</string>
-				<string>Combined Button - BTPaymentButton</string>
+				<string>Combined - BTPaymentButton</string>
 				<string>PayPal - BTUIPayPalButton</string>
 				<string>Venmo - BTUIVenmoButton</string>
 				<string>Coinbase - BTUICoinbaseButton</string>
@@ -31,7 +31,7 @@
 				<string>Drop In</string>
 				<string>UI Components</string>
 				<string>Credit Cards - 3D Secure</string>
-				<string>Combined Button - Custom Multi-Pay Button</string>
+				<string>Combined - Custom Button</string>
 				<string>Fraud Protection - BTData</string>
 			</array>
 			<key>Values</key>
