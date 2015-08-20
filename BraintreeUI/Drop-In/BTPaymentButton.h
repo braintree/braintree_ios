@@ -2,9 +2,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #import "BTUIThemedView.h"
 
-@class BTClient, BTPaymentMethod;
-@protocol BTPaymentDriverDelegate;
-
 @interface BTPaymentButton : BTUIThemedView
 
 //- (instancetype)initWithPaymentProviderTypes:(NSOrderedSet *)paymentAuthorizationTypes;
@@ -24,7 +21,8 @@
 /// Setting this property will force the button to reload.
 @property (nonatomic, strong) NSOrderedSet *enabledPaymentOptions;
 
-@property (nonatomic, weak) id<BTPaymentDriverDelegate> delegate;
+@property (nonatomic, weak) id<BTAppSwitchDelegate> appSwitchDelegate;
+//@property (nonatomic, weak) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
 @property (nonatomic, readonly) BOOL hasAvailablePaymentMethod;
 

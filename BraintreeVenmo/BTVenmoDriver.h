@@ -1,9 +1,5 @@
+#import <BraintreeCore/BraintreeCore.h>
 #import <Foundation/Foundation.h>
-#import <BraintreeCore/BTAPIClient.h>
-#import <BraintreeCore/BTAppSwitch.h>
-#import <BraintreeCore/BTNullability.h>
-#import <BraintreeCore/BTPaymentDriverDelegate.h>
-
 #import "BTVenmoTokenizedCard.h"
 
 BT_ASSUME_NONNULL_BEGIN
@@ -54,7 +50,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 
 /// An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating
 /// your UI
-@property (nonatomic, weak) id<BTPaymentDriverDelegate> delegate;
+@property (nonatomic, weak) id<BTAppSwitchDelegate> delegate;
 
 @end
 

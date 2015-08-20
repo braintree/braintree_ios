@@ -1,11 +1,8 @@
-#import <Foundation/Foundation.h>
-//#import <BraintreeCore/BTAPIClient.h>
-//#import <BraintreeCore/BTAppSwitch.h>
-//#import <BraintreeCore/BTNullability.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import "BTTokenizedPayPalAccount.h"
 #import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"
+#import <Foundation/Foundation.h>
 
 BT_ASSUME_NONNULL_BEGIN
 
@@ -139,7 +136,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 #pragma mark - Delegate
 
 /// An optional delegate for receiving notifications about the lifecycle of a PayPal app switch for updating your UI
-@property (nonatomic, weak, nullable) id<BTPaymentDriverDelegate> delegate;
+@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> delegate;
 
 @end
 

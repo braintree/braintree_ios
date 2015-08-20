@@ -103,7 +103,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             "venmo": "production",
             "merchantId": "merchant_id" ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
-        let delegate = MockPaymentDriverDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
+        let delegate = MockAppSwitchDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
         venmoDriver.delegate = delegate
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
@@ -111,7 +111,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in
-            XCTAssertEqual(delegate.lastPaymentDriver as? BTVenmoDriver, venmoDriver)
+            XCTAssertEqual(delegate.lastSender as? BTVenmoDriver, venmoDriver)
         }
 
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -191,7 +191,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             "venmo": "production",
             "merchantId": "merchant_id" ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
-        let delegate = MockPaymentDriverDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
+        let delegate = MockAppSwitchDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
         delegate.willProcess = expectationWithDescription("willProcess called")
         venmoDriver.delegate = delegate
         mockAPIClient = venmoDriver.apiClient as! MockAPIClient
@@ -201,7 +201,7 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         let expectation = self.expectationWithDescription("Callback")
         venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in
-            XCTAssertEqual(delegate.lastPaymentDriver as? BTVenmoDriver, venmoDriver)
+            XCTAssertEqual(delegate.lastSender as? BTVenmoDriver, venmoDriver)
             expectation.fulfill()
         }
         BTVenmoDriver.handleAppSwitchReturnURL(NSURL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce")!)
@@ -214,7 +214,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             "venmo": "production",
             "merchantId": "merchant_id" ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
-        let delegate = MockPaymentDriverDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
+        let delegate = MockAppSwitchDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
         delegate.willProcess = expectationWithDescription("willProcess called")
         venmoDriver.delegate = delegate
         mockAPIClient = venmoDriver.apiClient as! MockAPIClient
@@ -223,19 +223,19 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         let willAppSwitchNotificationExpectation = expectationWithDescription("willAppSwitch notification received")
-        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTPaymentDriverWillAppSwitchNotification, object: nil, queue: nil) { (notification) -> Void in
+        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTAppSwitchWillSwitchNotification, object: nil, queue: nil) { (notification) -> Void in
             willAppSwitchNotificationExpectation.fulfill()
             })
 
         let didAppSwitchNotificationExpectation = expectationWithDescription("didAppSwitch notification received")
-        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTPaymentDriverDidAppSwitchNotification, object: nil, queue: nil) { (notification) -> Void in
+        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTAppSwitchDidSwitchNotification, object: nil, queue: nil) { (notification) -> Void in
             didAppSwitchNotificationExpectation.fulfill()
             })
 
         venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in }
 
         let willProcessNotificationExpectation = expectationWithDescription("willProcess notification received")
-        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTPaymentDriverWillProcessPaymentInfoNotification, object: nil, queue: nil) { (notification) -> Void in
+        observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTAppSwitchWillProcessPaymentInfoNotification, object: nil, queue: nil) { (notification) -> Void in
             willProcessNotificationExpectation.fulfill()
             })
 

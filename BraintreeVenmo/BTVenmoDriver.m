@@ -246,29 +246,29 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Delegate Informers
 
 - (void)informDelegateWillPerformAppSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverWillAppSwitchNotification object:self userInfo:nil];
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillSwitchNotification object:self userInfo:nil];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 
-    if ([self.delegate respondsToSelector:@selector(paymentDriverWillPerformAppSwitch:)]) {
-        [self.delegate paymentDriverWillPerformAppSwitch:self];
+    if ([self.delegate respondsToSelector:@selector(braintreeWillPerformAppSwitch:)]) {
+        [self.delegate braintreeWillPerformAppSwitch:self];
     }
 }
 
 - (void)informDelegateDidPerformAppSwitch {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverDidAppSwitchNotification object:self userInfo:@{ BTPaymentDriverAppSwitchNotificationTargetKey : @(BTAppSwitchTargetNativeApp) } ];
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchDidSwitchNotification object:self userInfo:@{ BTAppSwitchNotificationTargetKey : @(BTAppSwitchTargetNativeApp) } ];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 
-    if ([self.delegate respondsToSelector:@selector(paymentDriver:didPerformAppSwitchToTarget:)]) {
-        [self.delegate paymentDriver:self didPerformAppSwitchToTarget:BTAppSwitchTargetNativeApp];
+    if ([self.delegate respondsToSelector:@selector(braintree:didPerformAppSwitchToTarget:)]) {
+        [self.delegate braintree:self didPerformAppSwitchToTarget:BTAppSwitchTargetNativeApp];
     }
 }
 
 - (void)informDelegateWillProcessAppSwitchReturn {
-    NSNotification *notification = [[NSNotification alloc] initWithName:BTPaymentDriverWillProcessPaymentInfoNotification object:self userInfo:nil];
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillProcessPaymentInfoNotification object:self userInfo:nil];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 
-    if ([self.delegate respondsToSelector:@selector(paymentDriverWillProcessPaymentInfo:)]) {
-        [self.delegate paymentDriverWillProcessPaymentInfo:self];
+    if ([self.delegate respondsToSelector:@selector(braintreeWillProcessPaymentInfo:)]) {
+        [self.delegate braintreeWillProcessPaymentInfo:self];
     }
 }
 

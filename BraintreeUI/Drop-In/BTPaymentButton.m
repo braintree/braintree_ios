@@ -1,7 +1,4 @@
 #import "BTPaymentButton.h"
-
-#import <BraintreeCore/BTAPIClient.h>
-#import <BraintreeCore/BTAppSwitch.h>
 #import "BTLogger_Internal.h"
 #import "BTTokenizationService.h"
 #import "BTUIVenmoButton.h"
@@ -215,9 +212,9 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     NSString *paymentOption = [self paymentOptionForIndexPath:indexPath];
 
     if ([[BTTokenizationService sharedService] isTypeAvailable:paymentOption]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willAppSwitch:) name:BTPaymentDriverWillAppSwitchNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAppSwitch:) name:BTPaymentDriverDidAppSwitchNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willProcessPaymentInfo:) name:BTPaymentDriverWillProcessPaymentInfoNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willAppSwitch:) name:BTAppSwitchWillSwitchNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAppSwitch:) name:BTAppSwitchDidSwitchNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willProcessPaymentInfo:) name:BTAppSwitchWillProcessPaymentInfoNotification object:nil];
 
         [[BTTokenizationService sharedService] tokenizeType:paymentOption withAPIClient:self.apiClient completion:self.completion];
     } else {
@@ -226,30 +223,30 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (void)willAppSwitch:(NSNotification *)notification {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTPaymentDriverWillAppSwitchNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTAppSwitchWillSwitchNotification object:nil];
 
     id paymentDriver = notification.object;
-    if ([self.delegate respondsToSelector:@selector(paymentDriverWillPerformAppSwitch:)]) {
-        [self.delegate paymentDriverWillPerformAppSwitch:paymentDriver];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(braintreeWillPerformAppSwitch:)]) {
+        [self.appSwitchDelegate braintreeWillPerformAppSwitch:paymentDriver];
     }
 }
 
 - (void)didAppSwitch:(NSNotification *)notification {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTPaymentDriverDidAppSwitchNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTAppSwitchDidSwitchNotification object:nil];
 
     id paymentDriver = notification.object;
-    BTAppSwitchTarget appSwitchTarget = [notification.userInfo[BTPaymentDriverAppSwitchNotificationTargetKey] integerValue];
-    if ([self.delegate respondsToSelector:@selector(paymentDriver:didPerformAppSwitchToTarget:)]) {
-        [self.delegate paymentDriver:paymentDriver didPerformAppSwitchToTarget:appSwitchTarget];
+    BTAppSwitchTarget appSwitchTarget = [notification.userInfo[BTAppSwitchNotificationTargetKey] integerValue];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(braintree:didPerformAppSwitchToTarget:)]) {
+        [self.appSwitchDelegate braintree:paymentDriver didPerformAppSwitchToTarget:appSwitchTarget];
     }
 }
 
 - (void)willProcessPaymentInfo:(NSNotification *)notification {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTPaymentDriverWillProcessPaymentInfoNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:BTAppSwitchWillProcessPaymentInfoNotification object:nil];
 
     id paymentDriver = notification.object;
-    if ([self.delegate respondsToSelector:@selector(paymentDriverWillProcessPaymentInfo:)]) {
-        [self.delegate paymentDriverWillProcessPaymentInfo:paymentDriver];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(braintreeWillProcessPaymentInfo:)]) {
+        [self.appSwitchDelegate braintreeWillProcessPaymentInfo:paymentDriver];
     }
 }
 

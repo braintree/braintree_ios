@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-NSString * const BTPaymentDriverWillAppSwitchNotification = @"com.braintreepayments.BTPaymentDriverWillAppSwitchNotification";
-NSString * const BTPaymentDriverDidAppSwitchNotification = @"com.braintreepayments.BTPaymentDriverDidAppSwitchNotification";
-NSString * const BTPaymentDriverWillProcessPaymentInfoNotification = @"com.braintreepayments.BTPaymentDriverWillProcessPaymentInfoNotification";
+NSString * const BTAppSwitchWillSwitchNotification = @"com.braintreepayments.BTAppSwitchWillSwitchNotification";
+NSString * const BTAppSwitchDidSwitchNotification = @"com.braintreepayments.BTAppSwitchDidSwitchNotification";
+NSString * const BTAppSwitchWillProcessPaymentInfoNotification = @"com.braintreepayments.BTAppSwitchWillProcessPaymentInfoNotification";
 
-NSString * const BTPaymentDriverAppSwitchNotificationTargetKey = @"BTPaymentDriverAppSwitchNotificationTargetKey";
+NSString * const BTAppSwitchNotificationTargetKey = @"BTAppSwitchNotificationTargetKey";
