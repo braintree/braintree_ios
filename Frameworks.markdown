@@ -14,24 +14,47 @@ The Braintree iOS SDK is organized into a family of frameworks.
 
 This is the core set of models and networking needed to use Braintree in an app or extension. All other frameworks depend on this.
 
-### Features
+<sub>PRIMARY CLASS:</sub>
+### `BTAPIClient`: Braintree API client
+* Authentication with client key / JWT
+* Access configuration from gateway
+* Analytics
+* HTTP methods on Braintree API endpoints
 
-* `BTAPIClient`: Braintree API client
-  * Authentication with client key / JWT
-  * Access configuration from gateway
-  * Analytics
-  * HTTP methods on Braintree API endpoints
+#### Other Classes
+
 * `BTAppSwitch`: Class and protocol for authentication via app switch
 * `BTJSON`: JSON parser
+
+## Payment Options
+
+The Braintree iOS SDK currently supports 6 payment options.
+
+1. `BraintreeCard`: Credit and debit card
+  * No dependencies other than `BraintreeCore`
+2. `BraintreeApplePay`: Apple Pay
+  * Depends on `PassKit`
+3. `BraintreePayPal`: PayPal
+  * No dependencies other than `BraintreeCore`
+  * Use `BTPaymentDriverDelegate` to receive app switch lifecycle events
+4. `BraintreeVenmo`: Venmo
+  * Depends on `BraintreeCard`
+5. `Braintree3DSecure`: 3D Secure
+  * Depends on `BraintreeCard`
+  * Use `BTViewControllerPresentingDelegate` (required) for cases when a view controller must be presented for buyer verification
+6. `BraintreeCoinbase`: Coinbase
+  * No dependencies other than `BraintreeCore`
 
 
 ## BraintreeCard
 
 Tokenizes credit or debit cards.
 
-### Features
+<sub>PRIMARY CLASS:</sub>
+### `BTCardTokenizationClient`: Tokenizes credit and debit card info
 
-* `BTCardTokenizationClient`: Performs tokenization and returns a tokenized card
+#### Other Classes
+
 * `BTCardTokenizationRequest`: Raw credit or debit card data provided by the customer
 * `BTTokenizedCard`: A tokenized card that contains a payment method nonce
 
@@ -87,7 +110,7 @@ Accept bitcoin payments via Coinbase.
 
 ## BraintreeApplePay
 
-**Depends on PassKit.framework.**
+**Depends on `PassKit`.**
 
 Accept Apple Pay by using Braintree to process payments.
 
@@ -99,7 +122,7 @@ Accept Apple Pay by using Braintree to process payments.
 
 ## Braintree3DSecure
 
-**Depends on BraintreeCard.**
+**Depends on `BraintreeCard`.**
 
 Perform 3D Secure verification.
 
