@@ -53,7 +53,7 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 @implementation BTConfiguration
 
 - (instancetype)init {
-    return [self initWithResponseParser:nil error:nil];
+    return nil;
 }
 
 - (instancetype)initWithResponseParser:(BTAPIResponseParser *)responseParser error:(NSError **)error {
@@ -126,9 +126,8 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {
-    BTConfiguration *copiedConfiguration = [[[self class] allocWithZone:zone] init];
-    copiedConfiguration.clientApiURL = [_clientApiURL copy];
-    copiedConfiguration.configurationParser = [self.configurationParser copy];
+    BTConfiguration *copiedConfiguration = [[[self class] allocWithZone:zone] initWithResponseParser:[self.configurationParser copy] error:NULL];
+    copiedConfiguration.clientApiURL = self.clientApiURL;
     return copiedConfiguration;
 }
 
@@ -162,10 +161,9 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-    self = [self init];
-    if (self){
+    self = [self initWithResponseParser:[decoder decodeObjectForKey:@"claims"] error:NULL];
+    if (self) {
         self.clientApiURL = [decoder decodeObjectForKey:@"clientApiURL"];
-        self.configurationParser = [decoder decodeObjectForKey:@"claims"];
     }
     return self;
 }

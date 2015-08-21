@@ -204,8 +204,8 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 - (void)saveCardWithNumber:(NSString *)creditCardNumber
            expirationMonth:(NSString *)expirationMonth
             expirationYear:(NSString *)expirationYear
-                       cvv:(NSString *)cvv
-                postalCode:(NSString *)postalCode
+                       cvv:(nullable NSString *)cvv
+                postalCode:(nullable NSString *)postalCode
                   validate:(BOOL)shouldValidate
                    success:(nullable BTClientCardSuccessBlock)successBlock
                    failure:(nullable BTClientFailureBlock)failureBlock DEPRECATED_MSG_ATTRIBUTE("Please use BTClientCardRequest and saveCardWithRequest:validate:success:failure:");
