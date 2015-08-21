@@ -2,7 +2,6 @@
 #import "BTAPIClient_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTClientToken.h"
-#import "BTAPIResponseParser.h"
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 
@@ -60,7 +59,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             return nil;
         }
 
-        NSURL *baseURL = [self.clientToken.clientTokenParser URLForKey:@"clientApiUrl"];
+        NSURL *baseURL = self.clientToken.json[@"clientApiUrl"].asURL;
         self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
         if (dispatchQueue) {
             _http.dispatchQueue = dispatchQueue;

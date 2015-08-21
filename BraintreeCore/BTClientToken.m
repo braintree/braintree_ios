@@ -1,8 +1,4 @@
 #import "BTClientToken.h"
-#import "BTAPIResponseParser.h"
-#import "BTClientTokenApplePayStatusValueTransformer.h"
-#import "BTClientTokenApplePayPaymentNetworksValueTransformer.h"
-#import "BTClientTokenBooleanValueTransformer.h"
 
 NSString *const BTClientTokenKeyVersion = @"version";
 NSString *const BTClientTokenKeyAuthorizationFingerprint = @"authorizationFingerprint";
@@ -11,10 +7,10 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
 
 @interface BTClientToken ()
 
-@property (nonatomic, readwrite, strong) BTAPIResponseParser *clientTokenParser;
 @property (nonatomic, readwrite, copy) NSString *authorizationFingerprint;
 @property (nonatomic, readwrite, strong) NSURL *configURL;
 @property (nonatomic, copy) NSString *originalValue;
+@property (nonatomic, readwrite, strong) BTJSON *json;
 
 @end
 
@@ -25,13 +21,12 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
 }
 
 - (instancetype)initWithClientToken:(NSString *)clientToken error:(NSError * __autoreleasing *)error {
-    self = [super init];
-    if (self) {
+    if (self = [super init]) {
         // Client token must be decoded first because the other values are retrieved from it
-        self.clientTokenParser = [self decodeClientToken:clientToken error:error];
-        self.authorizationFingerprint = [self.clientTokenParser stringForKey:BTClientTokenKeyAuthorizationFingerprint];
-        self.configURL = [self.clientTokenParser URLForKey:BTClientTokenKeyConfigURL];
-        self.originalValue = clientToken;
+        _json = [self decodeClientToken:clientToken error:error];
+        _authorizationFingerprint = _json[BTClientTokenKeyAuthorizationFingerprint].asString;
+        _configURL = _json[BTClientTokenKeyConfigURL].asURL;
+        _originalValue = clientToken;
 
         if (![self validateClientToken:error]) {
             return nil;
@@ -70,16 +65,10 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
     return YES;
 }
 
-
 - (instancetype)copyWithZone:(NSZone *)zone {
-    BTClientToken *copiedClientToken = [[[self class] allocWithZone:zone] init];
-    copiedClientToken.authorizationFingerprint = [_authorizationFingerprint copy];
-    copiedClientToken.configURL = [_configURL copy];
-    copiedClientToken.clientTokenParser = [self.clientTokenParser copy];
-    copiedClientToken.originalValue = self.originalValue;
+    BTClientToken *copiedClientToken = [[[self class] allocWithZone:zone] initWithClientToken:self.originalValue error:NULL];
     return copiedClientToken;
 }
-
 
 #pragma mark JSON Parsing
 
@@ -89,31 +78,19 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
     return [NSJSONSerialization JSONObjectWithData:rawJSONData options:0 error:error];
 }
 
-
 #pragma mark NSCoding 
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeObject:self.configURL forKey:@"configURL"];
-    [coder encodeObject:self.authorizationFingerprint forKey:@"authorizationFingerprint"];
-    [coder encodeObject:self.clientTokenParser forKey:@"claims"];
     [coder encodeObject:self.originalValue forKey:@"originalValue"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-    self = [self initWithClientToken:[decoder decodeObjectForKey:@"originalValue"] error:NULL];
-    if (self) {
-        // Note: This may be redundant, since originalValue contains the other fields
-        self.configURL = [decoder decodeObjectForKey:@"configURL"];
-        self.authorizationFingerprint = [decoder decodeObjectForKey:@"authorizationFingerprint"];
-        self.clientTokenParser = [decoder decodeObjectForKey:@"claims"];
-        self.originalValue = [decoder decodeObjectForKey:@"originalValue"];
-    }
-    return self;
+    return [self initWithClientToken:[decoder decodeObjectForKey:@"originalValue"] error:NULL];
 }
 
 #pragma mark Client Token Parsing
 
-- (BTAPIResponseParser *)decodeClientToken:(NSString *)rawClientTokenString error:(NSError * __autoreleasing *)error {
+- (BTJSON *)decodeClientToken:(NSString *)rawClientTokenString error:(NSError * __autoreleasing *)error {
     NSError *JSONError;
     NSData *base64DecodedClientToken = [[NSData alloc] initWithBase64EncodedString:rawClientTokenString
                                                                            options:0];
@@ -177,24 +154,20 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
         default:
             if (error) {
                 *error = [NSError errorWithDomain:BTClientTokenErrorDomain
-                                             code:BTClientTokenErrorInvalid
+                                             code:BTClientTokenErrorUnsupportedVersion
                                          userInfo:@{
-                                                    NSLocalizedDescriptionKey: @"Invalid client token version. Please ensure your server is generating a valid Braintree ClientToken with a server-side SDK that is compatible with this version of Braintree iOS.",
+                                                    NSLocalizedDescriptionKey: @"Unsupported client token version. Please ensure your server is generating a valid Braintree ClientToken with a server-side SDK that is compatible with this version of Braintree iOS.",
                                                     NSLocalizedFailureReasonErrorKey: @"Unsupported client token version."
                                                     }];
             }
             return nil;
     }
 
-    return [BTAPIResponseParser parserWithDictionary:rawClientToken];
+    return [[BTJSON alloc] initWithValue:rawClientToken];
 }
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<BTClientToken: authorizationFingerprint:%@ configURL:%@>", self.authorizationFingerprint, self.configURL];
-}
-
-- (BOOL)isEqualToClientToken:(BTClientToken *)clientToken {
-    return (self.clientTokenParser == clientToken.clientTokenParser) || [self.clientTokenParser isEqual:clientToken.clientTokenParser];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -203,7 +176,8 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
     }
 
     if ([object isKindOfClass:[BTClientToken class]]) {
-        return [self isEqualToClientToken:object];
+        BTClientToken *otherToken = object;
+        return [self.json.asDictionary isEqualToDictionary:otherToken.json.asDictionary];
     }
 
     return NO;
