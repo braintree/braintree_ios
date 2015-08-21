@@ -77,8 +77,8 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     if (navigationType == UIWebViewNavigationTypeFormSubmitted && [request.URL.path rangeOfString:@"authentication_complete_frame"].location != NSNotFound) {
         
-        NSString *rawAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
-        BTJSON *authBody = [[BTJSON alloc] initWithValue:[rawAuthResponse dataUsingEncoding:NSUTF8StringEncoding]];
+        NSString *jsonAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
+        BTJSON *authBody = [[BTJSON alloc] initWithValue:[NSJSONSerialization JSONObjectWithData:[jsonAuthResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL]];
 
         BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
         authResponse.success = authBody[@"success"].isTrue;

@@ -60,14 +60,13 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 /// that requires presentation of a view controller to authorize a payment.
 @protocol BTViewControllerPresentingDelegate <NSObject>
 
-/// The payment driver requires presentation of a view controller in order to
-/// proceed.
+/// The payment driver requires presentation of a view controller in order to proceed.
 ///
 /// Your implementation should present the viewController modally, e.g. via
 /// `presentViewController:animated:completion:`
 ///
 /// @param driver         The payment driver
-/// @param viewController The view controller to be presented
+/// @param viewController The view controller to present
 - (void)paymentDriver:(id)driver requestsPresentationOfViewController:(UIViewController *)viewController;
 
 /// The payment driver requires dismissal of a view controller.

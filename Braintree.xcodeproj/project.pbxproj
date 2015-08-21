@@ -93,6 +93,9 @@
 		A726BFE21B56D5E900B5C8F0 /* BTAnalyticsMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A726BFE11B56D5E900B5C8F0 /* BTAnalyticsMetadataSpec.m */; };
 		A72A814D1B7BEADF00E4D6FA /* BTTokenizationService_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A72A814C1B7BEADF00E4D6FA /* BTTokenizationService_Tests.m */; };
 		A72A816C1B7C0FB600E4D6FA /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
+		A73088361B86872C009487BA /* BraintreeDemoThreeDSecureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D71B79708900452CFA /* BraintreeDemoThreeDSecureViewController.m */; };
+		A73088371B8694D6009487BA /* Braintree3DSecure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D881B5D9E8C0016EFB4 /* Braintree3DSecure.framework */; };
+		A73088381B8694D6009487BA /* Braintree3DSecure.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D881B5D9E8C0016EFB4 /* Braintree3DSecure.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A743CD211B449D8400757C9B /* BTAPIClient_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743CD201B449D8400757C9B /* BTAPIClient_Tests.m */; };
 		A75147E11B4217A00005BBBA /* BTCardTokenizationClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75147E01B4217A00005BBBA /* BTCardTokenizationClient_Tests.swift */; };
 		A75319E71B71466900E27B89 /* BTDropInViewController_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75319E61B71466900E27B89 /* BTDropInViewController_IntegrationTests.m */; };
@@ -452,6 +455,13 @@
 			remoteGlobalIDString = A77AA29B1B618C7700217B73;
 			remoteInfo = BraintreeVenmo;
 		};
+		A73088391B8694D7009487BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D941D871B5D9E8C0016EFB4;
+			remoteInfo = Braintree3DSecure;
+		};
 		A75319F11B715C4200E27B89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -562,6 +572,7 @@
 				A7A9C6CD1B83B88800F5EBBA /* BraintreeCore.framework in Embed Frameworks */,
 				A77344FF1B7A93A10083EC8D /* BraintreeUI.framework in Embed Frameworks */,
 				A7A9C6C61B83AFE500F5EBBA /* BraintreePayPal.framework in Embed Frameworks */,
+				A73088381B8694D6009487BA /* Braintree3DSecure.framework in Embed Frameworks */,
 				A7A9C6D21B83C84A00F5EBBA /* BraintreeVenmo.framework in Embed Frameworks */,
 				A7A9C6C21B83AFCC00F5EBBA /* BraintreeApplePay.framework in Embed Frameworks */,
 			);
@@ -1142,6 +1153,7 @@
 				A7A9C6C51B83AFE500F5EBBA /* BraintreePayPal.framework in Frameworks */,
 				A7A9C6C11B83AFCC00F5EBBA /* BraintreeApplePay.framework in Frameworks */,
 				A7A9C6D11B83C84A00F5EBBA /* BraintreeVenmo.framework in Frameworks */,
+				A73088371B8694D6009487BA /* Braintree3DSecure.framework in Frameworks */,
 				A77344FE1B7A93A10083EC8D /* BraintreeUI.framework in Frameworks */,
 				B7731E5BAB405AD2ED86C1B6 /* libPods-Braintree-Demo.a in Frameworks */,
 			);
@@ -2459,6 +2471,7 @@
 				A7A9C6C81B83AFE600F5EBBA /* PBXTargetDependency */,
 				A7A9C6CF1B83B88800F5EBBA /* PBXTargetDependency */,
 				A7A9C6D41B83C84B00F5EBBA /* PBXTargetDependency */,
+				A730883A1B8694D7009487BA /* PBXTargetDependency */,
 			);
 			name = "Braintree-Demo";
 			productName = "Braintree-Demo";
@@ -2639,6 +2652,7 @@
 					};
 					2D941D871B5D9E8C0016EFB4 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = 43253H4X22;
 					};
 					2DE12F081B59BE0100EA1BCF = {
 						CreatedOnToolsVersion = 7.0;
@@ -3075,6 +3089,7 @@
 				A7D674691B83E7F000ED6C00 /* BraintreeDemoCustomMultiPayViewController.m in Sources */,
 				A76B1A351B79708A00452CFA /* main.m in Sources */,
 				A76B1A111B79708A00452CFA /* BraintreeDemoIntegrationViewController.m in Sources */,
+				A73088361B86872C009487BA /* BraintreeDemoThreeDSecureViewController.m in Sources */,
 				A76B1A0F1B79708A00452CFA /* BraintreeDemoAppDelegate.m in Sources */,
 				A7A094F81B828F4600D732CC /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */,
 				A76B1A141B79708A00452CFA /* BraintreeDemoSettings.m in Sources */,
@@ -3282,6 +3297,11 @@
 			isa = PBXTargetDependency;
 			target = A77AA29B1B618C7700217B73 /* BraintreeVenmo */;
 			targetProxy = A715595F1B72C2A7007DE6F0 /* PBXContainerItemProxy */;
+		};
+		A730883A1B8694D7009487BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D941D871B5D9E8C0016EFB4 /* Braintree3DSecure */;
+			targetProxy = A73088391B8694D7009487BA /* PBXContainerItemProxy */;
 		};
 		A75319F21B715C4200E27B89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3704,6 +3724,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -3757,6 +3778,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
