@@ -181,7 +181,10 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     apiClient.http = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertEqual(fake.GETRequestCount, 1);
+        XCTAssertNotNil(configuration);
+        XCTAssertNil(error);
+
+        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
         XCTAssertTrue(configuration.json[@"test"].isTrue);
         [expectation fulfill];
     }];
@@ -199,7 +202,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     apiClient.http = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertEqual(fake.GETRequestCount, 1);
+        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
         XCTAssertNil(configuration);
         XCTAssertEqualObjects(error.domain, BTAPIClientErrorDomain);
         XCTAssertEqual(error.code, BTAPIClientErrorTypeConfigurationUnavailable);
@@ -223,7 +226,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     apiClient.http = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertEqual(fake.GETRequestCount, 1);
+        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
         XCTAssertNil(configuration);
         XCTAssertEqual(error, anError);
         [expectation fulfill];
@@ -242,7 +245,9 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"First fetch configuration"];
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertEqual(fake.GETRequestCount, 1);
+        XCTAssertNil(error);
+
+        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
         XCTAssertTrue(configuration.json[@"test"].isTrue);
 
         [expectation1 fulfill];
@@ -252,7 +257,9 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"Second fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertEqual(fake.GETRequestCount, 1);
+        XCTAssertNil(error);
+
+        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
         XCTAssertTrue(configuration.json[@"test"].isTrue);
 
         [expectation2 fulfill];
@@ -264,26 +271,33 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 #pragma mark - Dispatch Queue
 
 - (void)testCallbacks_useDispatchQueue {
+    // Although we set the dispatchQueue to the main thread on initialization, we later override `apiClient.http`
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"
-                                                      dispatchQueue:dispatch_get_main_queue()
-                                                             ];
+                                                      dispatchQueue:dispatch_get_main_queue()];
     FakeHTTP *fake = [[FakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
     fake.dispatchQueue = dispatch_queue_create("not.the.main.queue", DISPATCH_QUEUE_SERIAL);
+    // Override apiClient.http so that callbacks are not on the main thread
     apiClient.http = fake;
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        [NSThread isMainThread];
+    [apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, __unused NSError *error) {
+        XCTAssertFalse([NSThread isMainThread]);
         [expectation1 fulfill];
     }];
     XCTestExpectation *expectation2 = [self expectationWithDescription:@"GET request"];
-    [apiClient GET:@"" parameters:@{} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-        [NSThread isMainThread];
+    [apiClient GET:@"" parameters:@{} completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNotNil(response);
+        XCTAssertNil(error);
+
+        XCTAssertFalse([NSThread isMainThread]);
         [expectation2 fulfill];
     }];
     XCTestExpectation *expectation3 = [self expectationWithDescription:@"POST request"];
-    [apiClient POST:@"" parameters:@{} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-        [NSThread isMainThread];
+    [apiClient POST:@"" parameters:@{} completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNotNil(response);
+        XCTAssertNil(error);
+
+        XCTAssertFalse([NSThread isMainThread]);
         [expectation3 fulfill];
     }];
 
@@ -297,6 +311,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
         XCTAssertTrue(configuration.isVenmoEnabled);
         [expectation fulfill];
     }];
@@ -309,6 +325,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
         XCTAssertFalse(configuration.isVenmoEnabled);
         [expectation fulfill];
     }];
@@ -321,6 +339,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
         XCTAssertTrue(configuration.isPayPalEnabled);
         [expectation fulfill];
     }];
@@ -333,6 +353,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
         XCTAssertFalse(configuration.isPayPalEnabled);
         [expectation fulfill];
     }];
@@ -345,6 +367,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
         XCTAssertTrue(configuration.isApplePayEnabled);
         [expectation fulfill];
     }];
@@ -357,6 +381,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
         XCTAssertFalse(configuration.isApplePayEnabled);
         [expectation fulfill];
     }];
@@ -398,6 +424,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Uses analytics base URL"];
     [apiClient postAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
+        XCTAssertNil(error);
+        
         XCTAssertEqualObjects(apiClient.analyticsHttp.baseURL.absoluteString, @"test://do-not-send.url");
         [expectation fulfill];
     }];
@@ -423,6 +451,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
     [apiClient postAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
+        XCTAssertNil(error);
+        
         XCTAssertEqual(metadata.source, BTClientMetadataSourceCoinbaseApp);
         XCTAssertEqual(metadata.integration, BTClientMetadataIntegrationCustom);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
@@ -454,6 +484,10 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
     [apiClient POST:@"/" parameters:@{} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNotNil(body);
+        XCTAssertNotNil(response);
+        XCTAssertNil(error);
+
         XCTAssertEqualObjects(mockHTTP.lastRequestEndpoint, @"/");
         XCTAssertEqual(apiClient.metadata.source, BTClientMetadataSourcePayPalApp);
         XCTAssertEqual(apiClient.metadata.integration, BTClientMetadataIntegrationDropIn);

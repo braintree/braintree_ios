@@ -3,7 +3,7 @@
 
 @implementation BTHTTPTestProtocol
 
-+ (BOOL)canInitWithRequest:(NSURLRequest *)request {
++ (BOOL)canInitWithRequest:(__unused NSURLRequest *)request {
     return YES;
 }
 
