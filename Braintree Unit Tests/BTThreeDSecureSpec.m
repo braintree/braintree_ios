@@ -7,7 +7,7 @@
 //SpecBegin(BTThreeDSecure)
 //
 //__block BTClient *client;
-//__block id<BTPaymentDriverDelegate> delegate;
+//__block id<BTAppSwitchDelegate> delegate;
 //__block NSString *originalNonce_lookupEnrolledAuthenticationNotRequired = @"some-credit-card-nonce-where-3ds-succeeds-without-user-authentication";
 //__block NSString *originalNonce_lookupEnrolledAuthenticationRequired = @"some-credit-card-nonce-where-3ds-succeeds-after-user-authentication";
 //__block NSString *originalNonce_lookupCardNotEnrolled = @"some-credit-card-nonce-where-card-is-not-enrolled-for-3ds";
@@ -15,7 +15,7 @@
 //
 //beforeEach(^{
 //    client = [OCMockObject mockForClass:[BTClient class]];
-//    delegate = [OCMockObject mockForProtocol:@protocol(BTPaymentDriverDelegate)];
+//    delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchDelegate)];
 //
 //    [[(OCMockObject *)client stub] postAnalyticsEvent:OCMOCK_ANY];
 //

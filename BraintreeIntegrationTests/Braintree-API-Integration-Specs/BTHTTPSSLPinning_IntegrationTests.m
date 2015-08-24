@@ -12,7 +12,7 @@
     BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url clientKey:@"development_testing_integration_merchant_id"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [http GET:@"/heartbeat.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+    [http GET:@"/heartbeat.json" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body[@"heartbeat"].asString, @"d2765eaa0dad9b300b971f074-production");
         XCTAssertNil(error);
         [expectation fulfill];
@@ -26,7 +26,7 @@
     BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url clientKey:@"development_testing_integration_merchant_id"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [http GET:@"/heartbeat.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+    [http GET:@"/heartbeat.json" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
         XCTAssertEqualObjects(body[@"heartbeat"].asString, @"d2765eaa0dad9b300b971f074-sandbox");
         XCTAssertNil(error);
         [expectation fulfill];

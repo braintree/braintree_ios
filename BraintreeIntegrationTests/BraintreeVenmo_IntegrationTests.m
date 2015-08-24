@@ -10,7 +10,7 @@
 
 @implementation FakeApplication
 
-- (BOOL)canOpenURL:(NSURL *)url {
+- (BOOL)canOpenURL:(__unused NSURL *)url {
     return @YES;
 }
 
@@ -32,7 +32,7 @@
     FakeApplication *mockApplication = [[FakeApplication alloc] init];
     venmoDriver.application = mockApplication;
 
-    [venmoDriver tokenizeVenmoCardWithCompletion:^(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) { }];
+    [venmoDriver tokenizeVenmoCardWithCompletion:^(__unused BTVenmoTokenizedCard * _Nullable tokenizedCard, __unused NSError * _Nullable error) { }];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"openedURL != nil"];
     [self expectationForPredicate:predicate evaluatedWithObject:mockApplication handler:nil];

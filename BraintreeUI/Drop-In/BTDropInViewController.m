@@ -464,7 +464,7 @@
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark BTPaymentDriverDelegate
+#pragma mark BTAppSwitchDelegate
 
 //- (void)paymentDriver:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
 //    // In order to modally present PayPal on top of a nested Drop In, we need to first dismiss the

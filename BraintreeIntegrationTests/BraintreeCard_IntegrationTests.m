@@ -66,6 +66,7 @@ describe(@"tokenizeCard:completion:", ^{
 
                 XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
                 [client tokenizeCard:request completion:^(BTTokenizedCard *tokenized, NSError *error) {
+                    XCTAssertNil(tokenized);
                     expect(error.domain).to.equal(BTHTTPErrorDomain);
                     expect(error.code).to.equal(BTHTTPErrorCodeClientError);
                     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey];

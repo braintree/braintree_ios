@@ -1,7 +1,6 @@
 import UIKit
 import BraintreeCore
 import BraintreeApplePay
-import BraintreeCoinbase
 import BraintreePayPal
 import BraintreeVenmo
 import BraintreeUI
