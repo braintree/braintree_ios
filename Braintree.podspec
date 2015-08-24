@@ -74,7 +74,7 @@ Pod::Spec.new do |s|
 #    s.public_header_files = "Braintree3DSecure/Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/Core"
-    s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree/3D-Secure/Localization/*.lproj" }
+    s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree3DSecure/Localization/*.lproj" }
   end
 
 end
