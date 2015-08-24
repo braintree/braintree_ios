@@ -1,5 +1,5 @@
-#import <BraintreeCore/BTErrors.h>
-#import <BraintreeCore/BTTokenizationService.h>
+#import "BTErrors.h"
+#import "BTTokenizationService.h"
 #import "BTCardTokenizationClient.h"
 #import "BTTokenizedCard_Internal.h"
 #import "BTHTTP.h"
@@ -41,7 +41,7 @@ NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BT
 
     [self.apiClient POST:@"v1/payment_methods/credit_cards"
               parameters:@{ @"credit_card": card.parameters }
-              completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                   if (error != nil) {
 
                       // Check if the error is a card validation error, and provide add'l error info

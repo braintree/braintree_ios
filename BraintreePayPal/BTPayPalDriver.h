@@ -1,4 +1,4 @@
-#import <BraintreeCore/BraintreeCore.h>
+#import "BraintreeCore.h"
 #import "BTTokenizedPayPalAccount.h"
 #import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"

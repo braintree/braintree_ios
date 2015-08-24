@@ -1,6 +1,6 @@
 #import "BTDropInErrorState.h"
 #import "BTUICardFormView.h"
-#import <BraintreeCore/BTErrors.h>
+#import "BTErrors.h"
 
 @interface BTDropInErrorState ()
 @property (nonatomic, strong) NSError *error;

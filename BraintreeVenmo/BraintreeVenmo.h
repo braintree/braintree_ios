@@ -4,10 +4,10 @@ FOUNDATION_EXPORT double BraintreeVenmoVersionNumber;
 
 FOUNDATION_EXPORT const unsigned char BraintreeVenmoVersionString[];
 
-#import <BraintreeCard/BraintreeCard.h>
-#import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeVenmo/BTVenmoDriver_Internal.h>
-#import <BraintreeVenmo/BTVenmoTokenizedCard.h>
-#import <BraintreeVenmo/BTVenmoAppSwitchRequestURL.h>
-#import <BraintreeVenmo/BTVenmoAppSwitchReturnURL.h>
-#import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import "BraintreeCard.h"
+#import "BraintreeCore.h"
+#import "BTVenmoDriver_Internal.h"
+#import "BTVenmoTokenizedCard.h"
+#import "BTVenmoAppSwitchRequestURL.h"
+#import "BTVenmoAppSwitchReturnURL.h"
+#import "BTConfiguration+Venmo.h"

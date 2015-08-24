@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <BraintreeCore/BTNullability.h>
+#import "BTNullability.h"
 
 BT_ASSUME_NONNULL_BEGIN
 

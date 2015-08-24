@@ -100,7 +100,7 @@
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
-- (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
                   didSelectShippingMethod:(PKShippingMethod *)shippingMethod
                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion
 {

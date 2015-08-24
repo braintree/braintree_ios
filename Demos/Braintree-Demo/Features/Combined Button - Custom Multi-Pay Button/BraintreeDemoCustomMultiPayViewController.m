@@ -71,11 +71,11 @@
 
 #pragma mark - Actions
 
-- (IBAction)tappedVenmo:(UIButton *)button {
+- (IBAction)tappedVenmo:(__unused UIButton *)button {
     [self tokenizeType:@"Venmo"];
 }
 
-- (IBAction)tappedPayPal:(UIButton *)button {
+- (IBAction)tappedPayPal:(__unused UIButton *)button {
     [self tokenizeType:@"PayPal"];
 }
 

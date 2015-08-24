@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "3.9.2-otc-pre3"
+  s.version          = "4.0.0-beta1"
   s.summary          = "Braintree v.zero: A modern foundation for accepting payments"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -20,92 +20,62 @@ Pod::Spec.new do |s|
   s.platform         = :ios, "7.0"
   s.requires_arc     = true
 
-  s.source_files     = "Braintree/*.{m,h}"
+#  s.source_files     = "Braintree/*.{m,h}"
 
   s.compiler_flags = "-Wall -Werror -Wextra"
 
-  s.default_subspecs = %w[Drop-In API PayPal Venmo Coinbase UI Payments]
+  s.default_subspecs = %w[Core Card PayPal Venmo UI]
+
+  s.subspec "Core" do |s|
+    s.source_files  = "BraintreeCore/**/*.{h,m}"
+#    s.public_header_files = "BraintreeCore/Public/*.h"
+    s.frameworks = "AddressBook", "Contacts"
+  end
 
   s.subspec "Apple-Pay" do |s|
+    s.source_files  = "BraintreeApplePay/**/*.{h,m}"
+#    s.public_header_files = "BraintreeApplePay/Public/*.h"
     s.dependency "Braintree/Payments"
-    s.xcconfig = { "GCC_PREPROCESSOR_DEFINITIONS" => "BT_ENABLE_APPLE_PAY=1" }
     s.frameworks = "PassKit"
   end
 
-  s.subspec "Drop-In" do |s|
-    s.source_files  = "Braintree/Drop-In/**/*.{h,m}"
-    s.dependency "Braintree/API"
-    s.dependency "Braintree/PayPal"
-    s.dependency "Braintree/UI"
-    s.dependency "Braintree/Venmo"
-    s.dependency "Braintree/Coinbase"
-    s.dependency "Braintree/Payments"
-    s.resource_bundle = { "Braintree-Drop-In-Localization" => "Braintree/Drop-In/Localization/*.lproj" }
-  end
-
-  s.subspec "API" do |s|
-    s.source_files  = "Braintree/API/**/*.{h,m}"
-    s.public_header_files = "Braintree/API/@Public/*.h"
-    s.weak_frameworks = "PassKit"
-    s.frameworks = "AddressBook"
+  s.subspec "Card" do |s|
+    s.source_files  = "BraintreeCard/**/*.{h,m}"
+#    s.public_header_files = "BraintreeCard/Public/*.h"
+    s.dependency "Braintree/Core"
   end
 
   s.subspec "PayPal" do |s|
-    s.source_files = "Braintree/PayPal/**/*.{h,m}"
-    s.public_header_files = "Braintree/PayPal/@Public/**/*.h"
+    s.source_files = "BraintreePayPal/**/*.{h,m}"
+#    s.public_header_files = "BraintreePayPal/Public/**/*.h"
     s.frameworks = "CoreLocation", "MessageUI", "SystemConfiguration"
-    s.vendored_library = "Braintree/PayPal/PayPalOneTouchCore/libPayPalOneTouchCore.a"
+    s.vendored_library = "BraintreePayPal/PayPalOneTouchCore/libPayPalOneTouchCore.a"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
-    s.dependency "Braintree/API"
-    s.dependency "Braintree/UI"
+    s.dependency "Braintree/Core"
   end
 
   s.subspec "Venmo" do |s|
-    s.source_files = "Braintree/Venmo/**/*.{h,m}"
-    s.compiler_flags = "-Wall -Wextra"
-    s.dependency "Braintree/API"
+    s.source_files = "BraintreeVenmo/**/*.{h,m}"
+#    s.public_header_files = "BraintreeVenmo/Public/*.h"
+    s.dependency "Braintree/Core"
   end
 
   s.subspec "UI" do |s|
-    s.source_files  = "Braintree/UI/**/*.{h,m}"
-    s.compiler_flags = "-Wall -Wextra"
+    s.module_name = "BraintreeUI"
+    s.source_files  = "BraintreeUI/**/*.{h,m}"
+#    s.public_header_files = "BraintreeUI/Public/*.h"
     s.frameworks = "UIKit"
-    s.resource_bundle = { "Braintree-UI-Localization" => "Braintree/UI/Localization/*.lproj" }
-    s.dependency "Braintree/API"
-  end
-
-  s.subspec "Data" do |s|
-    s.source_files = "Braintree/Data/**/*.{h,m}"
-    s.vendored_library = "Braintree/Data/libDeviceCollectorLibrary.a"
-    s.frameworks = "UIKit", "SystemConfiguration"
-    s.dependency "Braintree/PayPal"
-    s.dependency "Braintree/API"
-  end
-
-  s.subspec "Payments" do |s|
-    s.source_files = "Braintree/Payments/**/*.{h,m}"
-    s.public_header_files = "Braintree/Payments/@Public/*.h"
-    s.frameworks = "UIKit"
-    s.dependency "Braintree/API"
-    s.dependency "Braintree/PayPal"
-    s.dependency "Braintree/Venmo"
-    s.dependency "Braintree/Coinbase"
+    s.resource_bundle = { "Braintree-UI-Localization" => "BraintreeUI/Localization/*.lproj", "Braintree-Drop-In-Localization" => "BraintreeUI/Drop-In/Localization/*.lproj" }
+    s.dependency "Braintree/Core"
   end
 
   s.subspec "3D-Secure" do |s|
-    s.source_files = "Braintree/3D-Secure/**/*.{h,m}"
-    s.public_header_files = "Braintree/3D-Secure/@Public/*.h"
+    s.source_files = "Braintree3DSecure/**/*.{h,m}"
+#    s.public_header_files = "Braintree3DSecure/Public/*.h"
     s.frameworks = "UIKit"
-    s.dependency "Braintree/API"
-    s.dependency "Braintree/UI"
-    s.dependency "Braintree/Payments"
+    s.dependency "Braintree/Core"
     s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree/3D-Secure/Localization/*.lproj" }
   end
 
-  s.subspec "Coinbase" do |s|
-    s.source_files = "Braintree/Coinbase/**/*.{h,m}"
-    s.public_header_files = "Braintree/Coinbase/@Public/*.h"
-    s.dependency "Braintree/API"
-  end
 end
 

@@ -6,13 +6,13 @@ FOUNDATION_EXPORT double BraintreePayPalVersionNumber;
 //! Project version string for BraintreePayPal.
 FOUNDATION_EXPORT const unsigned char BraintreePayPalVersionString[];
 
-#import <BraintreeCore/BraintreeCore.h>
-#import <BraintreePayPal/BTConfiguration+PayPal.h>
-#import <BraintreePayPal/BTPayPalCheckoutRequest.h>
-#import <BraintreePayPal/BTPayPalDriver.h>
-#import <BraintreePayPal/BTPayPalDriver_Internal.h>
-#import <BraintreePayPal/BTPayPalRequestFactory.h>
-#import <BraintreePayPal/BTTokenizedPayPalAccount.h>
-#import <BraintreePayPal/BTTokenizedPayPalAccount_Internal.h>
-#import <BraintreePayPal/BTTokenizedPayPalCheckout.h>
-#import <BraintreePayPal/BTTokenizedPayPalCheckout_Internal.h>
+#import "BraintreeCore.h"
+#import "BTConfiguration+PayPal.h"
+#import "BTPayPalCheckoutRequest.h"
+#import "BTPayPalDriver.h"
+#import "BTPayPalDriver_Internal.h"
+#import "BTPayPalRequestFactory.h"
+#import "BTTokenizedPayPalAccount.h"
+#import "BTTokenizedPayPalAccount_Internal.h"
+#import "BTTokenizedPayPalCheckout.h"
+#import "BTTokenizedPayPalCheckout_Internal.h"

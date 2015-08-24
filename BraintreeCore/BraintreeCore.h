@@ -6,27 +6,24 @@ FOUNDATION_EXPORT double BraintreeCoreVersionNumber;
 //! Project version string for BraintreeCore.
 FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <BraintreeCore/PublicHeader.h>
-
-#import <BraintreeCore/BTAPIClient.h>
-#import <BraintreeCore/BTAPIClient_Internal.h> // TODO: remove
-#import <BraintreeCore/BTAPIPinnedCertificates.h>
-#import <BraintreeCore/BTAppSwitch.h>
-#import <BraintreeCore/BTAnalyticsMetadata.h>
-#import <BraintreeCore/BTClientMetadata.h>
-#import <BraintreeCore/BTConfiguration.h>
-#import <BraintreeCore/BTErrors.h>
-#import <BraintreeCore/BTHTTP.h>
-#import <BraintreeCore/BTHTTPErrors.h>
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTKeychain.h>
-#import <BraintreeCore/BTLogger.h>
-#import <BraintreeCore/BTLogger_Internal.h>
-#import <BraintreeCore/BTNullability.h>
-#import <BraintreeCore/BTDelegates.h>
-#import <BraintreeCore/BTPaymentOption.h>
-#import <BraintreeCore/BTPostalAddress.h>
-#import <BraintreeCore/BTReachability.h>
-#import <BraintreeCore/BTTokenizationService.h>
-#import <BraintreeCore/BTTokenized.h>
-#import <BraintreeCore/BTURLUtils.h>
+#import "BTAPIClient.h"
+#import "BTAPIClient_Internal.h" // TODO: remove
+#import "BTAPIPinnedCertificates.h"
+#import "BTAppSwitch.h"
+#import "BTAnalyticsMetadata.h"
+#import "BTClientMetadata.h"
+#import "BTConfiguration.h"
+#import "BTErrors.h"
+#import "BTHTTP.h"
+#import "BTHTTPErrors.h"
+#import "BTJSON.h"
+#import "BTKeychain.h"
+#import "BTLogger.h"
+#import "BTLogger_Internal.h"
+#import "BTNullability.h"
+#import "BTDelegates.h"
+#import "BTPostalAddress.h"
+#import "BTReachability.h"
+#import "BTTokenizationService.h"
+#import "BTTokenized.h"
+#import "BTURLUtils.h"

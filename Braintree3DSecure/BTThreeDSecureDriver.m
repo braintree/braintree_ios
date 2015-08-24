@@ -73,6 +73,11 @@
                         completion:(void (^)(BTThreeDSecureLookupResult *lookupResult, NSError *error))completionBlock
 {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        if (error) {
+            completionBlock(nil, error);
+            return;
+        }
+
         NSMutableDictionary *requestParameters = [@{ @"amount": amount } mutableCopy];
 
         if (configuration.json[@"merchantAccountId"]) {
@@ -81,7 +86,7 @@
         NSString *urlSafeNonce = [nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
-                  completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                  completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
 
                       if (error) {
                           // Provide more context for card validation error when status code 422
@@ -127,7 +132,7 @@
 
 #pragma mark BTThreeDSecureAuthenticationViewControllerDelegate
 
-- (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
+- (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
                didAuthenticateCard:(BTThreeDSecureTokenizedCard *)tokenizedCard
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock
 {

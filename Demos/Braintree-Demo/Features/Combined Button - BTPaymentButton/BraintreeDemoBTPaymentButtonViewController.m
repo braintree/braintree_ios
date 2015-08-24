@@ -25,15 +25,15 @@
 }
 
 
-- (void)appSwitcherWillPerformAppSwitch:(id)appSwitcher {
+- (void)appSwitcherWillPerformAppSwitch:(__unused id)appSwitcher {
     self.progressBlock(@"Will perform app switch");
 }
 
-- (void)appSwitcher:(id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target {
+- (void)appSwitcher:(__unused id)appSwitcher didPerformSwitchToTarget:(__unused BTAppSwitchTarget)target {
     self.progressBlock(@"Did perform app switch");
 }
 
-- (void)appSwitcherWillProcessPaymentInfo:(id)appSwitcher {
+- (void)appSwitcherWillProcessPaymentInfo:(__unused id)appSwitcher {
     self.progressBlock(@"Processing payment info...");
 }
 

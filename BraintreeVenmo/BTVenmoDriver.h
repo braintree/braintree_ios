@@ -1,6 +1,6 @@
-#import <BraintreeCore/BraintreeCore.h>
-#import <Foundation/Foundation.h>
+#import "BraintreeCore.h"
 #import "BTVenmoTokenizedCard.h"
+#import <Foundation/Foundation.h>
 
 BT_ASSUME_NONNULL_BEGIN
 

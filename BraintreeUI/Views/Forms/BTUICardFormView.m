@@ -69,12 +69,15 @@
 }
 
 - (void)showTopLevelError:(NSString *)message {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSString *localizedOK = BTUILocalizedString(TOP_LEVEL_ERROR_ALERT_VIEW_OK_BUTTON_TEXT);
     [[[UIAlertView alloc] initWithTitle:message
                                 message:nil
                                delegate:nil
                       cancelButtonTitle:localizedOK
                       otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
 }
 
 - (void)setAlphaNumericPostalCode:(BOOL)alphaNumericPostalCode {
@@ -203,12 +206,13 @@
 #pragma mark - Validity
 
 - (BOOL)valid {
+    _valid = YES;
     for (BTUIFormField *f in self.fields) {
         if (!f.valid) {
-            return NO;
+            _valid = NO;
         }
     }
-    return YES;
+    return _valid;
 }
 
 - (void)setVibrate:(BOOL)vibrate {

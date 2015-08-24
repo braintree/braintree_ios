@@ -99,11 +99,11 @@
     }];
 }
 
-- (void)paymentDriver:(id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
-- (void)paymentDriver:(id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(__unused UIViewController *)viewController {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

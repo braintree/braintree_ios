@@ -19,11 +19,11 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 
 @implementation BTWebViewController
 
-- (instancetype)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(__unused NSCoder *)decoder {
     @throw [[NSException alloc] initWithName:@"Invalid initializer" reason:@"Use designated initializer" userInfo:nil];
 }
 
-- (instancetype)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle {
+- (instancetype)initWithNibName:(__unused NSString *)nibName bundle:(__unused NSBundle *)nibBundle {
     @throw [[NSException alloc] initWithName:@"Invalid initializer" reason:@"Use designated initializer" userInfo:nil];
 }
 

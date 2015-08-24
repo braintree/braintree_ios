@@ -43,15 +43,15 @@
 
 #pragma mark BTAppSwitchDelegate
 
-- (void)appSwitcherWillPerformAppSwitch:(id)appSwitcher {
+- (void)appSwitcherWillPerformAppSwitch:(__unused id)appSwitcher {
    self.progressBlock(@"paymentDriverWillPerformAppSwitch:");
 }
 
-- (void)appSwitcherWillProcessPaymentInfo:(id)appSwitcher {
+- (void)appSwitcherWillProcessPaymentInfo:(__unused id)appSwitcher {
     self.progressBlock(@"paymentDriverWillProcessPaymentInfo:");
 }
 
-- (void)appSwitcher:(id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target {
+- (void)appSwitcher:(__unused id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target {
     switch (target) {
         case BTAppSwitchTargetWebBrowser:
             self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: browser");

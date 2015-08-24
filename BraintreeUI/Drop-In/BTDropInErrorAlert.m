@@ -27,6 +27,9 @@
     NSString *localizedOK = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
     NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_CANCEL_BUTTON_TEXT);
 
+    // TODO: Add support for UIAlertController
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
                                                         message:self.message
                                                        delegate:self
@@ -40,6 +43,7 @@
     }
 
     [alertView show];
+#pragma clang diagnostic pop
 }
 
 - (void)alertView:(__unused UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

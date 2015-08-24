@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <BraintreeCore/BraintreeCore.h>
+#import "BraintreeCore.h"
 
 @class BTUI;
 @protocol BTDropInViewControllerDelegate;

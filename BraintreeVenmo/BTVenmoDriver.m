@@ -1,9 +1,6 @@
 #import "BTConfiguration+Venmo.h"
 #import "BTVenmoDriver_Internal.h"
-#import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTAppSwitch.h>
-#import <BraintreeCore/BTClientMetadata.h>
-#import <BraintreeCore/BTTokenizationService.h>
+#import "BTAPIClient_Internal.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
 #import <UIKit/UIKit.h>
@@ -20,7 +17,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 + (void)initialize {
     [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
-    [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
+    [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
         BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
         [driver tokenizeVenmoCardWithCompletion:completionBlock];
     }];
@@ -125,7 +122,9 @@ static BTVenmoDriver *appSwitchedDriver;
 - (void)handleReturnURL:(NSURL *)url {
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
 
-    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, __unused NSError *error) {
+        // Do nothing if an error occurs while fetching configuration, since we're only doing this
+        // to be able to post an analytics event with the Venmo configuration status, which is non-critical
         BTJSON *venmoConfiguration = configuration.json[@"venmo"];
         if (venmoConfiguration.isString) {
             [self.apiClient postAnalyticsEvent:[NSString stringWithFormat:@"ios.venmo.appswitch.handle.%@", venmoConfiguration.asString]];
@@ -162,7 +161,7 @@ static BTVenmoDriver *appSwitchedDriver;
                 // Assume we have a JWT
                 [self.apiClient GET:[NSString stringWithFormat:@"v1/payment_methods/%@", returnURL.nonce]
                          parameters:@{}
-                         completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                         completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                              if (error) {
                                  [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
                                  self.appSwitchCompletionBlock(nil, error);

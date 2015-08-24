@@ -46,7 +46,7 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 
         [self.apiClient POST:@"v1/payment_methods/apple_payment_tokens"
                   parameters:@{ @"applePaymentToken": [self parametersForPaymentToken:payment.token] }
-                  completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                  completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                       if (error) {
                           completionBlock(nil, error);
                           return;

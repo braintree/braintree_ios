@@ -8,8 +8,6 @@
 #import "BTTokenizedPayPalCheckout_Internal.h"
 #import "BTPostalAddress.h"
 #import "BTLogger_Internal.h"
-#import <BraintreeCore/BTAppSwitch.h>
-#import <BraintreeCore/BTTokenizationService.h>
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
@@ -22,7 +20,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
 + (void)initialize {
     [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
-    [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
+    [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
         BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
         [driver authorizeAccountWithCompletion:completionBlock];
     }];
@@ -81,7 +79,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
 
         [self informDelegateWillPerformAppSwitch];
-        [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
+        [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, __unused NSString *clientMetadataId, NSError *error) {
             [self postAnalyticsEventForInitiatingOneTouchWithSuccess:success target:target];
             if (success) {
                 [self informDelegateDidPerformAppSwitchToTarget:target];
@@ -115,7 +113,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                               parameters:@{ @"paypal_account": result.response,
                                             @"correlation_id": [self.payPalClass clientMetadataID],
                                             }
-                              completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                                   if (error) {
                                       [self postAnalyticsEventForTokenizationFailure];
                                       if (completionBlock) completionBlock(nil, error);
@@ -213,7 +211,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
         [self.apiClient POST:@"v1/paypal_hermes/create_payment_resource"
                   parameters:parameters
-                  completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                  completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
 
                       if (error) {
                           if (completionBlock) completionBlock(nil, error);
@@ -234,7 +232,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
                       [self informDelegateWillPerformAppSwitch];
 
-                      [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
+                      [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, __unused NSString *clientMetadataId, NSError *error) {
                           [self postAnalyticsEventForSinglePaymentForInitiatingOneTouchWithSuccess:success target:target];
                           if (success) {
                               [self informDelegateDidPerformAppSwitchToTarget:target];
@@ -273,14 +271,14 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                     if ([self.payPalClass clientMetadataID]) {
                         parameters[@"correlation_id"] = [self.payPalClass clientMetadataID];
                     }
-                    BTClientMetadata *metadata = [self clientMetadataForResult:result];
+                    BTClientMetadata *metadata = [self clientMetadata];
                     parameters[@"_meta"] =  @{ @"source": metadata.sourceString,
                                                @"integration": metadata.integrationString };
 
 
                     [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
                               parameters:parameters
-                              completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+                              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                                   if (error) {
                                       [self postAnalyticsEventForTokenizationFailureForSinglePayment];
                                       if (completionBlock) completionBlock(nil, error);
@@ -358,7 +356,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     }
 }
 
-- (BTClientMetadata *)clientMetadataForResult:(PayPalOneTouchCoreResult *)result {
+- (BTClientMetadata *)clientMetadata {
     BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
 
     if ([self isiOSAppAvailableForAppSwitch]) {

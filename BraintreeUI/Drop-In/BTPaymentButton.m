@@ -149,7 +149,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 // Collection of payment option strings, e.g. "PayPal", "Coinbase"
 - (NSOrderedSet *)filteredEnabledPaymentOptions {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *paymentOption, NSDictionary<NSString *,id> * _Nullable bindings) {
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *paymentOption, __unused NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[BTTokenizationService sharedService] isTypeAvailable:paymentOption];
     }];
     return [self.enabledPaymentOptions filteredOrderedSetUsingPredicate:predicate];
@@ -208,6 +208,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 - (void)collectionView:(__unused UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSAssert(self.apiClient, @"BTPaymentButton tapped without a BTAPIClient instance. Please set a client on this payment button: myPaymentButton.apiClient = (BTAPIClient *)myClient;");
+    NSAssert(self.completion, @"BTPaymentButton tapped without a completion block. Please set up a completion block on this payment button by setting the completion property.");
 
     NSString *paymentOption = [self paymentOptionForIndexPath:indexPath];
 

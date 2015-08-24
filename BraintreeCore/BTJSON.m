@@ -68,7 +68,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
                 break;
             }
 
-            NSInteger idx = [(NSNumber *)key integerValue];
+            NSUInteger idx = [(NSNumber *)key unsignedIntegerValue];
             if (idx >= [(NSArray *)value count]) {
                 value = nil;
                 break;
