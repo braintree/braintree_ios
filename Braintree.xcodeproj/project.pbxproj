@@ -75,7 +75,7 @@
 		2DE12F5A1B59C36900EA1BCF /* BTTokenized.h in Headers */ = {isa = PBXBuildFile; fileRef = 16E17D061B3DE3B40024F9AB /* BTTokenized.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DE12F5B1B59C36900EA1BCF /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A7A6DD501B445A29008857E1 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DE12F5C1B59C36900EA1BCF /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD511B445A29008857E1 /* BTURLUtils.m */; };
-		41D6E2A71B8D12CD00A3C2AE /* FakePayPalClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */; settings = {ASSET_TAGS = (); }; };
+		41D6E2A71B8D12CD00A3C2AE /* FakePayPalClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */; };
 		A71559421B729297007DE6F0 /* BTIntegrationTestsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A71559411B729297007DE6F0 /* BTIntegrationTestsHelper.m */; };
 		A71559481B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A71559471B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m */; };
 		A715594A1B72BD40007DE6F0 /* BraintreeVenmo_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A71559491B72BD40007DE6F0 /* BraintreeVenmo_IntegrationTests.m */; };
@@ -1007,8 +1007,8 @@
 		A7CB64211B4DBC4600241049 /* EXPMatchers+BTMatches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+BTMatches.h"; sourceTree = "<group>"; };
 		A7CB64221B4DBC4600241049 /* EXPMatchers+BTMatches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+BTMatches.m"; sourceTree = "<group>"; };
 		A7CCE2AD1B67F26C006EA661 /* BTAppSwitch_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTAppSwitch_Tests.swift; sourceTree = "<group>"; };
-		A7D4630B1B4B16C100A09C46 /* BTHTTPTestProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTHTTPTestProtocol.h; path = ../BTHTTPTestProtocol.h; sourceTree = "<group>"; };
-		A7D4630C1B4B16C100A09C46 /* BTHTTPTestProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTHTTPTestProtocol.m; path = ../BTHTTPTestProtocol.m; sourceTree = "<group>"; };
+		A7D4630B1B4B16C100A09C46 /* BTHTTPTestProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHTTPTestProtocol.h; sourceTree = "<group>"; };
+		A7D4630C1B4B16C100A09C46 /* BTHTTPTestProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPTestProtocol.m; sourceTree = "<group>"; };
 		A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTApplePay_Tests.swift; sourceTree = "<group>"; };
 		A7D6746A1B83F91400ED6C00 /* BTDelegates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDelegates.h; sourceTree = "<group>"; };
 		A7D6746C1B84073300ED6C00 /* MockDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDelegates.swift; sourceTree = "<group>"; };
@@ -1277,7 +1277,7 @@
 				16E17D061B3DE3B40024F9AB /* BTTokenized.h */,
 				A7A6DD501B445A29008857E1 /* BTURLUtils.h */,
 			);
-			name = Public;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		41777D451B8D01510026F987 /* Public */ = {
@@ -1288,7 +1288,7 @@
 				A7C8899F1B5F0471007A0E9C /* BTCardTokenizationRequest.h */,
 				A7C889A11B5F0471007A0E9C /* BTTokenizedCard.h */,
 			);
-			name = Public;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		41777D461B8D02050026F987 /* Public */ = {
@@ -1301,7 +1301,7 @@
 				16E17D1A1B3DE4570024F9AB /* BTTokenizedPayPalCheckout.h */,
 				A7B1C1491B66E11C00ED063C /* BTConfiguration+PayPal.h */,
 			);
-			name = Public;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		41777D471B8D028C0026F987 /* Public */ = {
@@ -1312,7 +1312,7 @@
 				A7F96D061B6043B7005A4A09 /* BTVenmoTokenizedCard.h */,
 				A7B1C1451B66D94600ED063C /* BTConfiguration+Venmo.h */,
 			);
-			name = Public;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		41D6E2A81B8D242B00A3C2AE /* Public */ = {
@@ -1323,7 +1323,7 @@
 				A7C8897C1B5EF62C007A0E9C /* BTApplePayTokenizationClient.h */,
 				A7C8897E1B5EF62C007A0E9C /* BTTokenizedApplePayPayment.h */,
 			);
-			name = Public;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		41D6E2A91B8D24A400A3C2AE /* Public */ = {
@@ -1334,7 +1334,7 @@
 				A79AFA761B56F8C3007B1DF1 /* BTThreeDSecureTokenizedCard.h */,
 				2D941D8A1B5D9E8C0016EFB4 /* Braintree3DSecure.h */,
 			);
-			name = Public;
+			path = Public;
 			sourceTree = "<group>";
 		};
 		847E11FCFF74B0CCB8E48E73 /* Pods */ = {
@@ -1453,8 +1453,7 @@
 				A76B1A021B79708A00452CFA /* README.md */,
 				A76B1A031B79708A00452CFA /* Supporting Files */,
 			);
-			name = "Braintree-Demo";
-			path = "Demos/Braintree-Demo";
+			path = "Braintree-Demo";
 			sourceTree = "<group>";
 		};
 		A76B19A41B79708900452CFA /* Demo Base */ = {
@@ -3798,7 +3797,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/Demos/Braintree-Demo/Supporting Files/Braintree-Demo-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Braintree-Demo/Supporting Files/Braintree-Demo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -3840,7 +3839,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = "$(SRCROOT)/Demos/Braintree-Demo/Supporting Files/Braintree-Demo-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Braintree-Demo/Supporting Files/Braintree-Demo-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
