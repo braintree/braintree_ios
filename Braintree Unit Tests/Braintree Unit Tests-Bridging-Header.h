@@ -3,11 +3,9 @@
 //
 
 // Internal headers for testing
-#import "BTJSON.h"
-#import "BTHTTP.h"
 #import "BTAPIClient_Internal.h"
 #import "BTPayPalDriver_Internal.h"
-#import "PayPalOneTouchCore.h"
-#import "PayPalOneTouchRequest.h"
+#import "BTVenmoDriver_Internal.h"
+#import "FakePayPalClasses.h"
 
 #import <OCMock/OCMock.h>

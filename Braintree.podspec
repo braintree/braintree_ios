@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
 
   s.subspec "Core" do |s|
     s.source_files  = "BraintreeCore/**/*.{h,m}"
-#    s.public_header_files = "BraintreeCore/Public/*.h"
+    s.public_header_files = "BraintreeCore/Public/*.h"
     s.frameworks = "AddressBook", "Contacts"
   end
 
@@ -41,13 +41,13 @@ Pod::Spec.new do |s|
 
   s.subspec "Card" do |s|
     s.source_files  = "BraintreeCard/**/*.{h,m}"
-#    s.public_header_files = "BraintreeCard/Public/*.h"
+    s.public_header_files = "BraintreeCard/Public/*.h"
     s.dependency "Braintree/Core"
   end
 
   s.subspec "PayPal" do |s|
     s.source_files = "BraintreePayPal/**/*.{h,m}"
-#    s.public_header_files = "BraintreePayPal/Public/**/*.h"
+    s.public_header_files = "BraintreePayPal/Public/**/*.h"
     s.frameworks = "CoreLocation", "MessageUI", "SystemConfiguration"
     s.vendored_library = "BraintreePayPal/PayPalOneTouchCore/libPayPalOneTouchCore.a"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
@@ -56,8 +56,9 @@ Pod::Spec.new do |s|
 
   s.subspec "Venmo" do |s|
     s.source_files = "BraintreeVenmo/**/*.{h,m}"
-#    s.public_header_files = "BraintreeVenmo/Public/*.h"
+    s.public_header_files = "BraintreeVenmo/Public/*.h"
     s.dependency "Braintree/Core"
+    s.dependency "Braintree/Card"
   end
 
   s.subspec "UI" do |s|

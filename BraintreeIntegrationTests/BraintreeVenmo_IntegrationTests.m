@@ -1,4 +1,4 @@
-#import <BraintreeCore/BTURLUtils.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeVenmo/BraintreeVenmo.h>
 #import <BraintreeVenmo/BTVenmoDriver_Internal.h>
 #import "BTIntegrationTestsHelper.h"

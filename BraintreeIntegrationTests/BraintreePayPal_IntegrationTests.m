@@ -1,3 +1,4 @@
+#import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreePayPal/BraintreePayPal.h>
 #import <BraintreePayPal/BTPayPalDriver_Internal.h>
 #import "BTIntegrationTestsHelper.h"
