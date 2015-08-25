@@ -1,7 +1,6 @@
 #import "BTUIThemedView.h"
 
 #import "BraintreeUI.h"
-#import "BraintreePayPal.h"
 
 #import "BTPaymentButton.h"
 

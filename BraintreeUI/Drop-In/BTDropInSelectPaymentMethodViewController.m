@@ -5,7 +5,6 @@
 #import "BTDropinViewController.h"
 #import "BTDropInLocalizedString.h"
 #import "BTUILocalizedString.h"
-#import "BraintreePayPal.h"
 
 @interface BTDropInSelectPaymentMethodViewController ()
 
