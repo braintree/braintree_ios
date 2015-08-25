@@ -1,3 +1,4 @@
+#import "BTAPIClient_Internal.h"
 #import "BTDropInViewController.h"
 #import "BTDropInContentView.h"
 #import "BTDropInSelectPaymentMethodViewController.h"
