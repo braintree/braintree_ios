@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
 
   s.subspec "Apple-Pay" do |s|
     s.source_files  = "BraintreeApplePay/**/*.{h,m}"
-#    s.public_header_files = "BraintreeApplePay/Public/*.h"
+    s.public_header_files = "BraintreeApplePay/Public/*.h"
     s.dependency "Braintree/Payments"
     s.frameworks = "PassKit"
   end
@@ -74,7 +74,7 @@ Pod::Spec.new do |s|
 
   s.subspec "3D-Secure" do |s|
     s.source_files = "Braintree3DSecure/**/*.{h,m}"
-#    s.public_header_files = "Braintree3DSecure/Public/*.h"
+    s.public_header_files = "Braintree3DSecure/Public/*.h"
     s.frameworks = "UIKit"
     s.dependency "Braintree/Core"
     s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree3DSecure/Localization/*.lproj" }
