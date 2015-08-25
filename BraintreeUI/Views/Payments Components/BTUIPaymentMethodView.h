@@ -1,6 +1,6 @@
-#import <UIKit/UIKit.h>
 #import "BTUIPaymentOptionType.h"
 #import "BTUIThemedView.h"
+#import <UIKit/UIKit.h>
 
 /// A view that indicates the currently selected payment method, be it a credit card or a PayPal account.
 @interface BTUIPaymentMethodView : BTUIThemedView

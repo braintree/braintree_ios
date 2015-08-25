@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "BTUI.h"
+
+@class BTUI;
 
 /// The Call To Action control is A button that is intended to be used as the submit button
 /// on the bottom of a payment form. As a UIControl subclass, typical target-action event

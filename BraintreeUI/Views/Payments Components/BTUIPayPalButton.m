@@ -1,8 +1,6 @@
-#import "BTUIPayPalButton.h"
-
-#import "BTUIPayPalWordmarkVectorArtView.h"
-
 #import "BTUI.h"
+#import "BTUIPayPalButton.h"
+#import "BTUIPayPalWordmarkVectorArtView.h"
 
 @interface BTUIPayPalButton ()
 @property (nonatomic, strong) BTUIPayPalWordmarkVectorArtView *payPalWordmark;

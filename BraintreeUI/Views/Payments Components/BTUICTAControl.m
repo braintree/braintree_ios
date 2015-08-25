@@ -1,5 +1,5 @@
-#import "BTUICTAControl.h"
 #import "BTUI.h"
+#import "BTUICTAControl.h"
 #import "UIColor+BTUI.h"
 
 @interface BTUICTAControl()

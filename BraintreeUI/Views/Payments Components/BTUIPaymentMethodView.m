@@ -1,9 +1,8 @@
-#import "BTUIPaymentMethodView.h"
 #import "BTUI.h"
 #import "BTUICardType.h"
-#import "BTUIViewUtil.h"
-
+#import "BTUIPaymentMethodView.h"
 #import "BTUIUnknownCardVectorArtView.h"
+#import "BTUIViewUtil.h"
 
 typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     BTPaymentMethodViewStateNormal,

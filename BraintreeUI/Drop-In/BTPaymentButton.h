@@ -1,6 +1,8 @@
-#import <UIKit/UIKit.h>
-#import "BraintreeCore.h"
 #import "BTUIThemedView.h"
+#import <UIKit/UIKit.h>
+
+@protocol BTAppSwitchDelegate, BTTokenized;
+@class BTAPIClient;
 
 @interface BTPaymentButton : BTUIThemedView
 

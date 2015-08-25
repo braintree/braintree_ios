@@ -1,9 +1,7 @@
-#import "BTUIVenmoButton.h"
-
-#import "BTUI.h"
-#import "UIColor+BTUI.h"
-
 #import "BTUIVenmoWordmarkVectorArtView.h"
+#import "BTUI.h"
+#import "BTUIVenmoButton.h"
+#import "UIColor+BTUI.h"
 
 @interface BTUIVenmoButton ()
 @property (nonatomic, strong) BTUIVenmoWordmarkVectorArtView *venmoWordmark;
