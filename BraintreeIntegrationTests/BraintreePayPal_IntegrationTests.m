@@ -47,14 +47,14 @@ id OCMArgCheckURLSchemeBeginsWith(NSString *string) {
 
 @implementation BraintreePayPal_IntegrationTests
 
-NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayments.Demo://onetouch/v1/success?payload=eyJ2ZXJzaW9uIjoyLCJhY2NvdW50X2NvdW50cnkiOiJVUyIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJtb2NrIiwiZXhwaXJlc19pbiI6LTEsImRpc3BsYXlfbmFtZSI6Im1vY2tEaXNwbGF5TmFtZSIsInNjb3BlIjoiaHR0cHM6XC9cL3VyaS5wYXlwYWwuY29tXC9zZXJ2aWNlc1wvcGF5bWVudHNcL2Z1dHVyZXBheW1lbnRzIiwiZW1haWwiOiJtb2NrZW1haWxhZGRyZXNzQG1vY2suY29tIiwiYXV0aG9yaXphdGlvbl9jb2RlIjoibW9ja1RoaXJkUGFydHlBdXRob3JpemF0aW9uQ29kZSJ9&x-source=com.paypal.ppclient.touch.v1-or-v2";
+NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayments.Demo.payments://onetouch/v1/success?payload=eyJ2ZXJzaW9uIjoyLCJhY2NvdW50X2NvdW50cnkiOiJVUyIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJtb2NrIiwiZXhwaXJlc19pbiI6LTEsImRpc3BsYXlfbmFtZSI6Im1vY2tEaXNwbGF5TmFtZSIsInNjb3BlIjoiaHR0cHM6XC9cL3VyaS5wYXlwYWwuY29tXC9zZXJ2aWNlc1wvcGF5bWVudHNcL2Z1dHVyZXBheW1lbnRzIiwiZW1haWwiOiJtb2NrZW1haWxhZGRyZXNzQG1vY2suY29tIiwiYXV0aG9yaXphdGlvbl9jb2RlIjoibW9ja1RoaXJkUGFydHlBdXRob3JpemF0aW9uQ29kZSJ9&x-source=com.paypal.ppclient.touch.v1-or-v2";
 
 #pragma mark - Authorization (Future Payments)
 
 - (void)testFuturePayments_whenPayPalAppIsInstalled_performsAppSwitchToApp {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     // Since we're stubbing UIApplication canOpenURL to say YES to everything, PayPalOneTouchCore will believe
     // that both browser switch and app switch are available
@@ -76,14 +76,14 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testFuturePayments_whenPayPalAppIsNotInstalled_performsAppSwitchToBrowser {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     // Must be careful about stubbing canOpenURL: to do the following:
     //  * Return YES for "https" for browser switch
-    //  * Return YES for "com.braintreepayments.Demo" for PayPalOneTouchCore, which validates that
+    //  * Return YES for "com.braintreepayments.Demo.payments" for PayPalOneTouchCore, which validates that
     //    the return URL has been set up correctly
     OCMStub([mockApplication canOpenURL:OCMArgCheckURLSchemeBeginsWith(@"https")]).andReturn(YES);
-    OCMStub([mockApplication canOpenURL:OCMArgCheckURLSchemeBeginsWith(@"com.braintreepayments.Demo")]).andReturn(YES);
+    OCMStub([mockApplication canOpenURL:OCMArgCheckURLSchemeBeginsWith(@"com.braintreepayments.Demo.payments")]).andReturn(YES);
     XCTestExpectation *expectation = [self expectationWithDescription:@"Perform App Switch"];
     OCMStub([mockApplication openURL:OCMArgCheckURLSchemeBeginsWith(@"https")]).andDo(^(__unused NSInvocation *invocation) {
         [expectation fulfill];
@@ -148,7 +148,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testFuturePayments_onSuccessfulAppSwitchAuthorization_returnsTokenizedPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     XCTestExpectation *expectation = [self expectationWithDescription:@"App switch occurred"];
@@ -165,7 +165,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo://onetouch/v1/success?payload=eyJ2ZXJzaW9uIjoxLCJlbnZpcm9ubWVudCI6Im1vY2siLCJhdXRob3JpemF0aW9uX2NvZGUiOiJtb2NrVGhpcmRQYXJ0eUF1dGhvcml6YXRpb25Db2RlIiwicmVzcG9uc2VfdHlwZSI6ImNvZGUiLCJzY29wZSI6ImVtYWlsIGh0dHBzOlwvXC91cmkucGF5cGFsLmNvbVwvc2VydmljZXNcL3BheW1lbnRzXC9mdXR1cmVwYXltZW50cyIsImVtYWlsIjoibW9ja2VtYWlsYWRkcmVzc0Btb2NrLmNvbSIsImFjY291bnRfY291bnRyeSI6IlVTIiwiZGlzcGxheV9uYW1lIjoibW9ja0Rpc3BsYXlOYW1lIiwiYWNjZXNzX3Rva2VuIjoiIiwibGFuZ3VhZ2UiOiJlbl9VUyIsImV4cGlyZXNfaW4iOi0xfQ%3D%3D&x-source=com.yourcompany.PPClient"]];
+    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/success?payload=eyJ2ZXJzaW9uIjoxLCJlbnZpcm9ubWVudCI6Im1vY2siLCJhdXRob3JpemF0aW9uX2NvZGUiOiJtb2NrVGhpcmRQYXJ0eUF1dGhvcml6YXRpb25Db2RlIiwicmVzcG9uc2VfdHlwZSI6ImNvZGUiLCJzY29wZSI6ImVtYWlsIGh0dHBzOlwvXC91cmkucGF5cGFsLmNvbVwvc2VydmljZXNcL3BheW1lbnRzXC9mdXR1cmVwYXltZW50cyIsImVtYWlsIjoibW9ja2VtYWlsYWRkcmVzc0Btb2NrLmNvbSIsImFjY291bnRfY291bnRyeSI6IlVTIiwiZGlzcGxheV9uYW1lIjoibW9ja0Rpc3BsYXlOYW1lIiwiYWNjZXNzX3Rva2VuIjoiIiwibGFuZ3VhZ2UiOiJlbl9VUyIsImV4cGlyZXNfaW4iOi0xfQ%3D%3D&x-source=com.yourcompany.PPClient"]];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"didReceiveCompletionCallback != nil"];
     [self expectationForPredicate:predicate evaluatedWithObject:self handler:nil];
@@ -176,7 +176,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)pendFuturePayments_onSuccessfulBrowserSwitchAuthorization_returnsTokenizedPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([mockApplication canOpenURL:OCMArgCheckURLSchemeBeginsWith(@"https")]).andReturn(YES);
     XCTestExpectation *expectation = [self expectationWithDescription:@"Browser switch occurred"];
@@ -195,7 +195,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
     // From Demo app
-    NSURL *validUrl = [NSURL URLWithString:@"com.braintreepayments.demo://onetouch/v1/success?payloadEnc=t4XttSmQAJLKnuGiA8ho5%2F%2F8rAHUwTt5AZWLJtjdNh%2BmjcLqOblmDwzRa2qswVn2SkcPVIAe57WaYt0%2FeBJrSMGgDohij2Cqi0NMkpNzCj2ausVmc41kROmFUS3sD6GzOWr0c%2Bz%2FU4dPEWVRbwClTgap%2B%2BftAcrozfYWAkZBu7wGlQ26FEejIfTq3ZUwkU%2FbdRk8yg%2B3rxlYLBUKdWAJoOgqNBmLNV%2BvfKKOI0u0eGKwLzNlSbz%2BIWLjTlk1JKcKpPxuEETNR0Nik2BgdGgCJil5jJ5poErA2YWkwH5EBjR3JvEk4wDpZzni0UlM120g1ByZP9axACxCSDDJQ6qlgTmNGJ%2Bq0T6LDrMcwhKCg%2BbyF0f3c4un3eO0K3M2Fo0P6WkfgPvAHp7MHfCDUpHoYA%3D%3D&payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IkQwREQ2M0M5LTc4NkMtNEU1Ny1CNUE3LTZFOUVCMzgwQTIwRiIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJtb2NrIiwiZXJyb3IiOm51bGx9&x-source=com.braintree.browserswitch"];
+    NSURL *validUrl = [NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/success?payloadEnc=t4XttSmQAJLKnuGiA8ho5%2F%2F8rAHUwTt5AZWLJtjdNh%2BmjcLqOblmDwzRa2qswVn2SkcPVIAe57WaYt0%2FeBJrSMGgDohij2Cqi0NMkpNzCj2ausVmc41kROmFUS3sD6GzOWr0c%2Bz%2FU4dPEWVRbwClTgap%2B%2BftAcrozfYWAkZBu7wGlQ26FEejIfTq3ZUwkU%2FbdRk8yg%2B3rxlYLBUKdWAJoOgqNBmLNV%2BvfKKOI0u0eGKwLzNlSbz%2BIWLjTlk1JKcKpPxuEETNR0Nik2BgdGgCJil5jJ5poErA2YWkwH5EBjR3JvEk4wDpZzni0UlM120g1ByZP9axACxCSDDJQ6qlgTmNGJ%2Bq0T6LDrMcwhKCg%2BbyF0f3c4un3eO0K3M2Fo0P6WkfgPvAHp7MHfCDUpHoYA%3D%3D&payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IkQwREQ2M0M5LTc4NkMtNEU1Ny1CNUE3LTZFOUVCMzgwQTIwRiIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJtb2NrIiwiZXJyb3IiOm51bGx9&x-source=com.braintree.browserswitch"];
 
     NSString *source = @"com.apple.mobilesafari";
 
@@ -212,7 +212,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testFuturePayments_onCancelledAppSwitchAuthorization_callsBackWithNoTokenizedAccountOrError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     XCTestExpectation *expectation = [self expectationWithDescription:@"App switch occurred"];
@@ -229,7 +229,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo://onetouch/v1/cancel?payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IjQ1QUZEQkE3LUJEQTYtNDNEMi04MUY2LUY4REM1QjZEOTkzQSIsImVudmlyb25tZW50IjoibW9jayJ9&x-source=com.paypal.ppclient.touch.v2"]];
+    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/cancel?payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IjQ1QUZEQkE3LUJEQTYtNDNEMi04MUY2LUY4REM1QjZEOTkzQSIsImVudmlyb25tZW50IjoibW9jayJ9&x-source=com.paypal.ppclient.touch.v2"]];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"didReceiveCompletionCallback != nil"];
     [self expectationForPredicate:predicate evaluatedWithObject:self handler:nil];
@@ -245,7 +245,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     // BTPayPalDriver copies APIClient, so we have to mock the API client after the call to initWithAPIClient
     id partialMockAPIClient = OCMPartialMock(payPalDriver.apiClient);
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
 
     // App switch target iOS app
@@ -272,7 +272,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //- (void)testCheckout_whenPayPalAppIsInstalled_performsAppSwitchToApp {
 //    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
 //    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 //    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
 //    OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"Perform App Switch"];
@@ -294,10 +294,10 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //- (void)testCheckout_whenPayPalAppIsNotInstalled_performsAppSwitchToBrowser {
 //    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
 //    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 //    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
 //    OCMStub([mockApplication canOpenURL:OCMArgCheckURLSchemeBeginsWith(@"https")]).andReturn(YES);
-//    OCMStub([mockApplication canOpenURL:OCMArgCheckURLSchemeBeginsWith(@"com.braintreepayments.Demo")]).andReturn(YES);
+//    OCMStub([mockApplication canOpenURL:OCMArgCheckURLSchemeBeginsWith(@"com.braintreepayments.Demo.payments")]).andReturn(YES);
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"Perform App Switch"];
 //    OCMStub([mockApplication openURL:OCMArgCheckURLSchemeBeginsWith(@"https")]).andDo(^(NSInvocation *invocation) {
 //        [expectation fulfill];
@@ -366,7 +366,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //- (void)testCheckout_onSuccessfulAppSwitchAuthorization_returnsTokenizedPayPalCheckout {
 //    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
 //    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 //    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
 //    OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"App switch occurred"];
@@ -395,7 +395,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //- (void)testCheckout_onSuccessfulBrowserSwitchAuthorization_returnsTokenizedPayPalCheckout {
 //    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
 //    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 //    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
 //    OCMStub([mockApplication canOpenURL:OCMArgCheckURLSchemeBeginsWith(@"https")]).andReturn(YES);
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"App switch occurred"];
@@ -424,7 +424,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //- (void)testFuturePayments_onCancelledAppSwitchAuthorization_returnsNothing {
 //    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
 //    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+//    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 //    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
 //    OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"App switch occurred"];
@@ -442,7 +442,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //
 //    [self waitForExpectationsWithTimeout:5 handler:nil];
 //
-//    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo://onetouch/v1/cancel?payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IjQ1QUZEQkE3LUJEQTYtNDNEMi04MUY2LUY4REM1QjZEOTkzQSIsImVudmlyb25tZW50IjoibW9jayJ9&x-source=com.paypal.ppclient.touch.v2"]];
+//    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/cancel?payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IjQ1QUZEQkE3LUJEQTYtNDNEMi04MUY2LUY4REM1QjZEOTkzQSIsImVudmlyb25tZW50IjoibW9jayJ9&x-source=com.paypal.ppclient.touch.v2"]];
 //
 //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"didReceiveCompletionCallback != nil"];
 //    [self expectationForPredicate:predicate evaluatedWithObject:self handler:nil];
@@ -460,7 +460,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testCanHandleAppSwitchReturnURL_forURLsFromBrowserSwitch_returnsYES {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
@@ -475,7 +475,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Demo://onetouch/v1/success?payloadEnc=e0yvzQHOOoXyoLjKZvHBI0Rbyad6usxhOz22CjG3V1lOsguMRsuQpEqPxlIlK86VPmTuagb1jJcnDUK9QsWJE8ffe4i9Ms4ggd6r5EoymVM%2BAYgjyjaYtPPOxIgMepNGnvnYt9EKJs2Bd0wbZj0ekxSA6BzRZDPEpZ%2FjhssxJVscjbPvOwCoTnjEhuNxiOamAGSRd6fo7ln%2BishDwRCLz81qlV8cgfXNzlHrRw1P7CbTQ8XhNGn35CHD64ysuHAW97ZjAzPCRdikWbgiw2S%2BDvSePhRRnTR10e2NPDYBeVzGQFzvf6WRklrqcLeFwRcAqoa0ZneOPgMbk5nvylGY716caCCPtJKnoJAflZZK6%2F7iXcA%2F3p9qrQIrszmthu%2FbnA%2FP7dZsWRarUiT%2FZhZg32MsmV3B3fPjQOMbhB7dRv5uomhCjhNhPzXH7nFA54mKOlvAdTm1QOk5P%2Fh3AaHz0qwIKgXAhxIfwxqHgIYxtba53sdwa7OXfx14FRlcfPngrR02IAHeaulkH6vJ24ZAsoUUdNkvRfDmM1O2%2B4424%2FMINTUJJsR0%2FwrYrwzp0gC6fKoAzT%2FgFhL6QVLoUss%3D&payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IkMwQTkwODQ1LTJBRUQtNEZCRC04NzIwLTQzNUU2MkRGNjhFNCIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJsaXZlIiwiZXJyb3IiOm51bGx9&x-source=com.braintree.browserswitch"];
+    NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/success?payloadEnc=e0yvzQHOOoXyoLjKZvHBI0Rbyad6usxhOz22CjG3V1lOsguMRsuQpEqPxlIlK86VPmTuagb1jJcnDUK9QsWJE8ffe4i9Ms4ggd6r5EoymVM%2BAYgjyjaYtPPOxIgMepNGnvnYt9EKJs2Bd0wbZj0ekxSA6BzRZDPEpZ%2FjhssxJVscjbPvOwCoTnjEhuNxiOamAGSRd6fo7ln%2BishDwRCLz81qlV8cgfXNzlHrRw1P7CbTQ8XhNGn35CHD64ysuHAW97ZjAzPCRdikWbgiw2S%2BDvSePhRRnTR10e2NPDYBeVzGQFzvf6WRklrqcLeFwRcAqoa0ZneOPgMbk5nvylGY716caCCPtJKnoJAflZZK6%2F7iXcA%2F3p9qrQIrszmthu%2FbnA%2FP7dZsWRarUiT%2FZhZg32MsmV3B3fPjQOMbhB7dRv5uomhCjhNhPzXH7nFA54mKOlvAdTm1QOk5P%2Fh3AaHz0qwIKgXAhxIfwxqHgIYxtba53sdwa7OXfx14FRlcfPngrR02IAHeaulkH6vJ24ZAsoUUdNkvRfDmM1O2%2B4424%2FMINTUJJsR0%2FwrYrwzp0gC6fKoAzT%2FgFhL6QVLoUss%3D&payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IkMwQTkwODQ1LTJBRUQtNEZCRC04NzIwLTQzNUU2MkRGNjhFNCIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJsaXZlIiwiZXJyb3IiOm51bGx9&x-source=com.braintree.browserswitch"];
     NSString *source = @"com.apple.mobilesafari";
 
     BOOL canHandleAppSwitch = [BTPayPalDriver canHandleAppSwitchReturnURL:returnURL sourceApplication:source];
@@ -486,7 +486,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testCanHandleAppSwitchReturnURL_forURLsFromAppSwitch_returnsYES {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
@@ -514,7 +514,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testCanHandleAppSwitchReturnURL_forMalformedURLs_returnsNO {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
@@ -532,14 +532,14 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
     // This malformed returnURL is just missing payload
-    NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Demo://onetouch/v1/success?x-source=com.paypal.ppclient.touch.v1-or-v2"];
+    NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/success?x-source=com.paypal.ppclient.touch.v1-or-v2"];
     BOOL canHandleAppSwitch = [BTPayPalDriver canHandleAppSwitchReturnURL:returnURL sourceApplication:@"com.paypal.ppclient.touch.v1"];
 
     XCTAssertFalse(canHandleAppSwitch);
 }
 
 - (void)testCanHandleAppSwitchReturnURL_whenNoAppSwitchIsInProgress_returnsNO {
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -552,7 +552,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testCanHandleAppSwitchReturnURL_afterHandlingAnAppSwitchAndBeforeInitiatingAnotherAppSwitch_returnsNO {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
@@ -589,7 +589,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     // Motivation for this test is because of Safari's habit of downcasing URL schemes
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
@@ -604,7 +604,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.DEmO://onetouch/v1/success?payloadEnc=e0yvzQHOOoXyoLjKZvHBI0Rbyad6usxhOz22CjG3V1lOsguMRsuQpEqPxlIlK86VPmTuagb1jJcnDUK9QsWJE8ffe4i9Ms4ggd6r5EoymVM%2BAYgjyjaYtPPOxIgMepNGnvnYt9EKJs2Bd0wbZj0ekxSA6BzRZDPEpZ%2FjhssxJVscjbPvOwCoTnjEhuNxiOamAGSRd6fo7ln%2BishDwRCLz81qlV8cgfXNzlHrRw1P7CbTQ8XhNGn35CHD64ysuHAW97ZjAzPCRdikWbgiw2S%2BDvSePhRRnTR10e2NPDYBeVzGQFzvf6WRklrqcLeFwRcAqoa0ZneOPgMbk5nvylGY716caCCPtJKnoJAflZZK6%2F7iXcA%2F3p9qrQIrszmthu%2FbnA%2FP7dZsWRarUiT%2FZhZg32MsmV3B3fPjQOMbhB7dRv5uomhCjhNhPzXH7nFA54mKOlvAdTm1QOk5P%2Fh3AaHz0qwIKgXAhxIfwxqHgIYxtba53sdwa7OXfx14FRlcfPngrR02IAHeaulkH6vJ24ZAsoUUdNkvRfDmM1O2%2B4424%2FMINTUJJsR0%2FwrYrwzp0gC6fKoAzT%2FgFhL6QVLoUss%3D&payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IkMwQTkwODQ1LTJBRUQtNEZCRC04NzIwLTQzNUU2MkRGNjhFNCIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJsaXZlIiwiZXJyb3IiOm51bGx9&x-source=com.braintree.browserswitch"];
+    NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/success?payloadEnc=e0yvzQHOOoXyoLjKZvHBI0Rbyad6usxhOz22CjG3V1lOsguMRsuQpEqPxlIlK86VPmTuagb1jJcnDUK9QsWJE8ffe4i9Ms4ggd6r5EoymVM%2BAYgjyjaYtPPOxIgMepNGnvnYt9EKJs2Bd0wbZj0ekxSA6BzRZDPEpZ%2FjhssxJVscjbPvOwCoTnjEhuNxiOamAGSRd6fo7ln%2BishDwRCLz81qlV8cgfXNzlHrRw1P7CbTQ8XhNGn35CHD64ysuHAW97ZjAzPCRdikWbgiw2S%2BDvSePhRRnTR10e2NPDYBeVzGQFzvf6WRklrqcLeFwRcAqoa0ZneOPgMbk5nvylGY716caCCPtJKnoJAflZZK6%2F7iXcA%2F3p9qrQIrszmthu%2FbnA%2FP7dZsWRarUiT%2FZhZg32MsmV3B3fPjQOMbhB7dRv5uomhCjhNhPzXH7nFA54mKOlvAdTm1QOk5P%2Fh3AaHz0qwIKgXAhxIfwxqHgIYxtba53sdwa7OXfx14FRlcfPngrR02IAHeaulkH6vJ24ZAsoUUdNkvRfDmM1O2%2B4424%2FMINTUJJsR0%2FwrYrwzp0gC6fKoAzT%2FgFhL6QVLoUss%3D&payload=eyJ2ZXJzaW9uIjozLCJtc2dfR1VJRCI6IkMwQTkwODQ1LTJBRUQtNEZCRC04NzIwLTQzNUU2MkRGNjhFNCIsInJlc3BvbnNlX3R5cGUiOiJjb2RlIiwiZW52aXJvbm1lbnQiOiJsaXZlIiwiZXJyb3IiOm51bGx9&x-source=com.braintree.browserswitch"];
     NSString *source = @"com.apple.mobilesafari";
     BOOL canHandleAppSwitch = [BTPayPalDriver canHandleAppSwitchReturnURL:returnURL sourceApplication:source];
 
@@ -616,7 +616,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testHandleURL_whenURLIsConsideredInvalidByPayPalOTC_returnsError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
@@ -633,7 +633,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.DeMo://----invalid----"]];
+    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo.payments://----invalid----"]];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"didReceiveCompletionCallback != nil"];
     [self expectationForPredicate:predicate evaluatedWithObject:self handler:nil];
@@ -643,7 +643,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testHandleURL_whenURLIsMissingHostAndPath_returnsError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
@@ -660,7 +660,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo://"]];
+    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:@"com.braintreepayments.Demo.payments://"]];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"didReceiveCompletionCallback != nil"];
     [self expectationForPredicate:predicate evaluatedWithObject:self handler:nil];

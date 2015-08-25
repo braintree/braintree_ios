@@ -44,7 +44,7 @@
 - (void)testTokenizeVenmoCard_whenVenmoEnabledInControlPanelAndUsingClientKey_returnsANonce {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTVenmoDriver *venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     FakeApplication *mockApplication = [[FakeApplication alloc] init];
     venmoDriver.application = mockApplication;
 
@@ -67,11 +67,11 @@
     XCTAssertEqualObjects(mockApplication.openedURL.host, @"x-callback-url");
     XCTAssertEqualObjects(mockApplication.openedURL.path, @"/vzero/auth");
     NSDictionary *queryParamsDictionary = [BTURLUtils dictionaryForQueryString:mockApplication.openedURL.query];
-    NSDictionary *expectedQueryParams = @{@"x-cancel": @"com.braintreepayments.Demo://x-callback-url/vzero/auth/venmo/cancel",
-                                          @"x-error": @"com.braintreepayments.Demo://x-callback-url/vzero/auth/venmo/error",
+    NSDictionary *expectedQueryParams = @{@"x-cancel": @"com.braintreepayments.Demo.payments://x-callback-url/vzero/auth/venmo/cancel",
+                                          @"x-error": @"com.braintreepayments.Demo.payments://x-callback-url/vzero/auth/venmo/error",
                                           @"braintree_merchant_id": @"integration_merchant_id",
-                                          @"x-source": @"Braintree Demo",
-                                          @"x-success": @"com.braintreepayments.Demo://x-callback-url/vzero/auth/venmo/success"
+                                          @"x-source": @"SDK Demo",
+                                          @"x-success": @"com.braintreepayments.Demo.payments://x-callback-url/vzero/auth/venmo/success"
                                           };
     XCTAssertEqualObjects(queryParamsDictionary, expectedQueryParams);
     predicate = [NSPredicate predicateWithFormat:@"didReceiveCompletionCallback != nil"];
@@ -84,7 +84,7 @@
 - (void)pendTokenizeVenmoCard_whenVenmoEnabledInControlPanelAndUsingJWT_returnsACard {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     apiClient.clientJWT = @"TODO";
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo";
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTVenmoDriver *venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
     FakeApplication *mockApplication = [[FakeApplication alloc] init];
     venmoDriver.application = mockApplication;
@@ -110,11 +110,11 @@
     XCTAssertEqualObjects(mockApplication.openedURL.host, @"x-callback-url");
     XCTAssertEqualObjects(mockApplication.openedURL.path, @"/vzero/auth");
     NSDictionary *queryParamsDictionary = [BTURLUtils dictionaryForQueryString:mockApplication.openedURL.query];
-    NSDictionary *expectedQueryParams = @{@"x-cancel": @"com.braintreepayments.Demo://x-callback-url/vzero/auth/venmo/cancel",
-                                          @"x-error": @"com.braintreepayments.Demo://x-callback-url/vzero/auth/venmo/error",
+    NSDictionary *expectedQueryParams = @{@"x-cancel": @"com.braintreepayments.Demo.payments://x-callback-url/vzero/auth/venmo/cancel",
+                                          @"x-error": @"com.braintreepayments.Demo.payments://x-callback-url/vzero/auth/venmo/error",
                                           @"braintree_merchant_id": @"integration_merchant_id",
-                                          @"x-source": @"Braintree Demo",
-                                          @"x-success": @"com.braintreepayments.Demo://x-callback-url/vzero/auth/venmo/success"
+                                          @"x-source": @"SDK Demo",
+                                          @"x-success": @"com.braintreepayments.Demo.payments://x-callback-url/vzero/auth/venmo/success"
                                           };
     XCTAssertEqualObjects(queryParamsDictionary, expectedQueryParams);
 
