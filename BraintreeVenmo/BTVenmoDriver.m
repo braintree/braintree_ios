@@ -210,7 +210,7 @@ static BTVenmoDriver *appSwitchedDriver;
 - (BOOL)verifyAppSwitchWithConfiguration:(BTConfiguration *)configuration error:(NSError * __autoreleasing *)error {
 
     if (!configuration.isVenmoEnabled) {
-        [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.initiate.disabled"];
+        [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.disabled"];
         if (error) {
             *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                          code:BTVenmoDriverErrorTypeDisabled
