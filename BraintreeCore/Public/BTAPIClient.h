@@ -22,6 +22,10 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 
 /// Initialize a new API client.
 ///
+/// @note Malformed or invalid client keys may not cause this method to return `nil`.
+/// Client keys are designed for Braintree to initialize itself without requiring an initial
+/// network call, so the only validation that occurs is a simple syntactical check.
+///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @return An API client, or `nil` if the client key is invalid.
 - (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey;
