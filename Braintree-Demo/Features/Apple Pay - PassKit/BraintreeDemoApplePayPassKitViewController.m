@@ -24,6 +24,8 @@
         return nil;
     }
 
+    // Discover and PrivateLabel were added in iOS 9.0
+    // At this time, we have not tested these options
     if (![PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa]]) {
         self.progressBlock(@"canMakePaymentsUsingNetworks: returns NO, hiding Apple Pay button");
         return nil;
@@ -31,20 +33,27 @@
 
     UIButton *button;
     BOOL pkPaymentButtonAvailable = NO;
+
+    // When compiling with an iOS 8.3 or higher SDK, we can check for
+    // the PKPaymentButton, which was added in iOS 8.3. Note that we
+    // still need to check, because the deployment target may be < 8.3
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80300
     pkPaymentButtonAvailable = [PKPaymentButton class];
-#endif
     if (pkPaymentButtonAvailable) {
         button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
-    } else {
+    }
+#endif
+    // If we're compiling with an older version of the iOS SDK (very rare),
+    // we should not use the `PKPaymentButton` at all - not even to check
+    // whether it's available.
+    if (pkPaymentButtonAvailable == NO) {
+        // Create a custom button
         button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setTintColor:[UIColor blackColor]];
         [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:36]];
         [button setTitle:@"PAY WITH APPLE PAY" forState:UIControlStateNormal];
     }
-
     [button addTarget:self action:@selector(tappedApplePayButton) forControlEvents:UIControlEventTouchUpInside];
-
     return button;
 }
 
@@ -101,8 +110,8 @@
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
-                  didSelectShippingMethod:(PKShippingMethod *)shippingMethod
-                               completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion
+                   didSelectShippingMethod:(PKShippingMethod *)shippingMethod
+                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion
 {
     PKPaymentSummaryItem *testItem = [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
     if ([shippingMethod.identifier isEqualToString:@"fast"]) {

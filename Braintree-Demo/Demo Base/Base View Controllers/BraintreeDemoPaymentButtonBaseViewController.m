@@ -31,8 +31,10 @@
     [self.view addSubview:paymentButton];
 
     [paymentButton autoCenterInSuperviewMargins];
-    [paymentButton autoPinEdgeToSuperviewEdge:ALEdgeLeading];
-    [paymentButton autoPinEdgeToSuperviewEdge:ALEdgeTrailing];
+    // This margin is important for the Apple Pay button.
+    // BTPaymentButton looks fine without, but it's also not too terrible with it.
+    [paymentButton autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20];
+    [paymentButton autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:20];
     [paymentButton autoSetDimension:ALDimensionHeight toSize:44 relation:NSLayoutRelationGreaterThanOrEqual];
 }
 
