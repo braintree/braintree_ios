@@ -344,7 +344,8 @@
             if (cardForm.postalCode) {
                 options[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
             }
-            // 8-17-2015: Client key does not support validation, TODO: double-check that this is desired behavior
+            // 2015-08-17: Client Key does not support validation
+            // TODO: Double-check that this is desired behavior
             options[@"options"] = @{ @"validate" : @(self.apiClient.clientKey ? NO : YES) };
 
             [client postAnalyticsEvent:@"dropin.ios.add-card.save"];
