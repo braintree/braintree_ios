@@ -1,8 +1,7 @@
 #import <UIKit/UIKit.h>
-#import "BraintreeCore.h"
 
-@class BTUI;
-@protocol BTDropInViewControllerDelegate;
+@class BTAPIClient, BTUI;
+@protocol BTDropInViewControllerDelegate, BTTokenized;
 
 /// A view controller that provides a quick and easy payment experience.
 ///

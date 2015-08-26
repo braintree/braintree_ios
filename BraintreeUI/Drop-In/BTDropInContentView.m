@@ -1,5 +1,6 @@
 #import "BTDropInContentView.h"
 #import "BTDropInLocalizedString.h"
+#import "BTTokenizationService.h"
 
 @interface BTDropInContentView () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSArray *verticalLayoutConstraints;
