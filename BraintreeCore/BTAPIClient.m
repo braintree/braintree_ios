@@ -32,6 +32,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             _http.dispatchQueue = dispatchQueue;
         }
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
+        
+        [self postAnalyticsEvent:@"ios.started.client-key"];
     }
     return self;
 }
@@ -67,6 +69,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
 
         _metadata = [[BTClientMetadata alloc] init];
+        
+        [self postAnalyticsEvent:@"ios.started.client-token"];
     }
     return self;
 }
