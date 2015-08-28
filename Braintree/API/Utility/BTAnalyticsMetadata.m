@@ -2,7 +2,6 @@
 #import "BTClient.h"
 
 #import "BTKeychain.h"
-#import "BTReachability.h"
 @import CoreLocation;
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
@@ -33,7 +32,6 @@
 #endif
     [self setObject:[m deviceManufacturer] forKey:@"deviceManufacturer" inDictionary:data];
     [self setObject:[m deviceModel] forKey:@"deviceModel" inDictionary:data];
-    [self setObject:[m deviceNetworkType] forKey:@"deviceNetworkType" inDictionary:data];
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kBTCLAuthorizationStatusAuthorized) {
         [self setObject:@([m deviceLocationLatitude]) forKey:@"deviceLocationLatitude" inDictionary:data];
         [self setObject:@([m deviceLocationLongitude]) forKey:@"deviceLocationLongitude" inDictionary:data];
@@ -108,25 +106,6 @@
 
 
     return code;
-}
-
-- (NSString *)deviceNetworkType {
-    @try {
-        BTNetworkStatus networkStatus = [[BTReachability reachabilityForLocalWiFi] currentReachabilityStatus];
-        switch (networkStatus) {
-            case BTReachableViaWWAN:
-                return @"cellular";
-            case BTReachableViaWiFi:
-                return @"wifi";
-            case BTNotReachable:
-                return @"unknown";
-            default:
-                break;
-        }
-    } @catch (NSException *e) {
-        return nil;
-    }
-    return nil;
 }
 
 - (CLLocationDegrees)deviceLocationLatitude {

@@ -318,12 +318,10 @@
         } else {
             NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
             NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
-            NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
-            [[[UIAlertView alloc] initWithTitle:localizedAlertTitle
-                                        message:localizedAlertMessage
-                                       delegate:nil
-                              cancelButtonTitle:localizedCancel
-                              otherButtonTitles:nil] show];
+            BTDropInErrorAlert *alert = [[BTDropInErrorAlert alloc] initWithCancel:nil retry:nil];
+            alert.title = localizedAlertTitle;
+            alert.message = localizedAlertMessage;
+            [alert show];
         }
     }
 }

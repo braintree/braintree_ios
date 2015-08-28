@@ -177,7 +177,7 @@ describe(@"offline clients", ^{
     describe(@"save Apple Pay payments", ^{
         it(@"succeeds if payment is nil in mock mode", ^{
             waitUntil(^(DoneCallback done){
-                [offlineClient saveApplePayPayment:nil success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
+                [offlineClient saveApplePayPayment:[PKPayment new] success:^(BTApplePayPaymentMethod *applePayPaymentMethod) {
                     if ([PKPayment class]) {
                         expect(applePayPaymentMethod.nonce).to.beANonce();
                         done();
@@ -208,7 +208,7 @@ describe(@"offline clients", ^{
                                                    done();
                                                } failure:nil];
                 } else {
-                    [offlineClient saveApplePayPayment:nil success:nil failure:^(NSError *error) {
+                    [offlineClient saveApplePayPayment:[PKPayment new] success:nil failure:^(NSError *error) {
                         expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                         expect(error.code).to.equal(BTErrorUnsupported);
                         done();
@@ -279,7 +279,7 @@ describe(@"offline clients", ^{
                     [offlineClient saveCardWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"2038" cvv:nil
                                            postalCode:nil validate:YES success:^(BTPaymentMethod *card) {
                                                [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                                                         applicationCorrelationID:nil
+                                                                         applicationCorrelationID:@""
                                                                                           success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                                                               [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
                                                                                                   paymentMethods = fetchedPaymentMethods;
@@ -388,7 +388,7 @@ describe(@"offline clients", ^{
                         [offlineClient saveCardWithRequest:request
                                                    success:^(BTPaymentMethod *card){
                                                        [offlineClient savePaypalPaymentMethodWithAuthCode:@"authCode"
-                                                                                 applicationCorrelationID:nil
+                                                                                 applicationCorrelationID:@""
                                                                                                   success:^(BTPayPalPaymentMethod *paypalPaymentMethod) {
                                                                                                       [offlineClient fetchPaymentMethodsWithSuccess:^(NSArray *fetchedPaymentMethods) {
                                                                                                           paymentMethods = fetchedPaymentMethods;

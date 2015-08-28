@@ -20,6 +20,10 @@
 
 @implementation Braintree
 
++ (Braintree *)braintreeWithClientToken:(NSString *)clientToken {
+    return [[self alloc] initWithClientToken:clientToken];
+}
+
 + (void)setupWithClientToken:(NSString *)clientToken
                   completion:(BraintreeCompletionBlock)completionBlock {
     
@@ -155,10 +159,6 @@
 }
 
 #pragma mark Deprecated
-
-+ (Braintree *)braintreeWithClientToken:(NSString *)clientToken {
-    return [(Braintree *)[self alloc] initWithClientToken:clientToken];
-}
 
 - (BTPayPalButton *)payPalButtonWithDelegate:(id<BTPayPalButtonDelegate>)delegate {
     [self.client postAnalyticsEvent:@"custom.ios.paypal.init"

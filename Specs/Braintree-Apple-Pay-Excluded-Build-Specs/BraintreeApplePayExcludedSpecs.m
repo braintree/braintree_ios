@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import <OCMock/OCMock.h>
+#import <PassKit/PassKit.h>
 
 #import <Braintree/Braintree.h>
 #import <Braintree/BTPaymentProvider.h>
@@ -33,7 +34,8 @@
 
 - (void)tokenizeApplePay {
     Braintree *braintree = [Braintree braintreeWithClientToken:[BTTestClientTokenFactory tokenWithVersion:2]];
-    [braintree tokenizeApplePayPayment:nil completion:nil];
+    [braintree tokenizeApplePayPayment:[PKPayment new] completion:^(NSString * __nullable nonce, NSError * __nullable error) {
+    }];
 }
 
 - (void)testBTPaymentProviderExcludesApplePay {

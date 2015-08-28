@@ -60,14 +60,14 @@ PODS:
   - Braintree/Venmo (3.9.2):
     - Braintree/API
   - CardIO (5.0.3)
-  - Expecta (0.3.2)
+  - Expecta (1.0.2)
   - FLEX (2.0.2)
   - HockeySDK (3.6.4)
   - InAppSettingsKit (2.6)
   - iOS-Slide-Menu (1.4.6)
-  - KIF (3.2.1):
-    - KIF/XCTest (= 3.2.1)
-  - KIF/XCTest (3.2.1)
+  - KIF (3.2.3):
+    - KIF/XCTest (= 3.2.3)
+  - KIF/XCTest (3.2.3)
   - KIFViewControllerActions (1.0.0):
     - KIF (>= 2.0.0)
   - NSURL+QueryDictionary (1.1.0)
@@ -77,7 +77,7 @@ PODS:
     - OHHTTPStubs/Core (= 3.1.11)
   - OHHTTPStubs/Core (3.1.11)
   - PureLayout (2.0.6)
-  - Specta (1.0.0)
+  - Specta (1.0.3)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
@@ -87,7 +87,7 @@ DEPENDENCIES:
   - Braintree/Coinbase (from `.`)
   - Braintree/Data (from `.`)
   - CardIO
-  - Expecta (~> 0.3.0)
+  - Expecta (~> 1.0.2)
   - FLEX (from `https://github.com/intelliot/FLEX.git`)
   - HockeySDK
   - InAppSettingsKit
@@ -99,7 +99,7 @@ DEPENDENCIES:
   - OCMock (~> 3.1)
   - OHHTTPStubs (~> 3.1.0)
   - PureLayout
-  - Specta
+  - Specta (~> 1.0.3)
 
 EXTERNAL SOURCES:
   Braintree:
@@ -117,7 +117,7 @@ CHECKOUT OPTIONS:
     :commit: b797baa3efeffe73ab1d6ea6aaeb55cc05ff6422
     :git: https://github.com/intelliot/FLEX.git
   KIF:
-    :commit: 63d20ad162e36248de4f183c0bfd7d6822b39573
+    :commit: d2567a99a14414949fe8217211cda54a3e9f3f92
     :git: https://github.com/kif-framework/KIF.git
   KIFViewControllerActions:
     :commit: 10d8d3a7bac839d75b8cec894326eae957372245
@@ -127,18 +127,18 @@ SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   Braintree: a9627ce90feb6da6d417c88358fc95049d1c387f
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
-  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
+  Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
-  KIF: ef1691e54e1d969c3b4fd0b5b56a3d7ddf37f216
+  KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
   KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
   OCHamcrest: e19857683e4eefab64b878668eac04c2f4567118
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: 5624a5d20d97d46d47e15a68ca8808b59ccf0512
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
-  Specta: 96fe05fe5c7348b5223f85e862904f6e832abb14
+  Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 
 COCOAPODS: 0.38.2

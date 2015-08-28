@@ -69,7 +69,7 @@ describe(@"usage of meta by BTClient", ^{
                     return isDefaultMetadata(obj) && [obj[@"_meta"][@"sessionId"] isEqualToString:client.metadata.sessionId];
                 }] completion:[OCMArg any]];
                 client.clientApiHttp = (id)mockHttp;
-                [client savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:nil success:nil failure:nil];
+                [client savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:@"" success:nil failure:nil];
                 [mockHttp verify];
             });
 
@@ -143,7 +143,7 @@ describe(@"usage of meta by BTClient", ^{
                 OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
                 [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isCustomMetadata] completion:[OCMArg any]];
                 customMetadataClient.clientApiHttp = (id)mockHttp;
-                [customMetadataClient savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:nil success:nil failure:nil];
+                [customMetadataClient savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:@"" success:nil failure:nil];
                 [mockHttp verify];
             });
 
@@ -209,7 +209,7 @@ describe(@"usage of meta by BTClient", ^{
                     return isDefaultMetadata(obj) && [obj[@"_meta"][@"sessionId"] isEqualToString:client.metadata.sessionId];
                 }] completion:[OCMArg any]];
                 client.clientApiHttp = (id)mockHttp;
-                [client savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:nil success:nil failure:nil];
+                [client savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:@"" success:nil failure:nil];
                 [mockHttp verify];
             });
 
@@ -259,7 +259,7 @@ describe(@"usage of meta by BTClient", ^{
                 OCMockObject *mockHttp = [OCMockObject mockForClass:[BTHTTP class]];
                 [[mockHttp expect] POST:[OCMArg any] parameters:[OCMArg checkWithBlock:isCustomMetadata] completion:[OCMArg any]];
                 customMetadataClient.clientApiHttp = (id)mockHttp;
-                [customMetadataClient savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:nil success:nil failure:nil];
+                [customMetadataClient savePaypalPaymentMethodWithAuthCode:@"authcode" applicationCorrelationID:@"" success:nil failure:nil];
                 [mockHttp verify];
             });
             

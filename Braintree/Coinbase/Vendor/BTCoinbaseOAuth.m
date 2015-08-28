@@ -79,7 +79,7 @@ static NSURL * __strong baseURL;
     
     if (params[@"error_description"] != nil) {
         NSString *errorDescription = [[params[@"error_description"] stringByReplacingOccurrencesOfString:@"+" withString:@" "]
-                                      stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                                      stringByRemovingPercentEncoding];
         NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: errorDescription, BTCoinbaseOAuthErrorUserInfoKey: (params[@"error"] ?: [NSNull null]) };
         NSError *error = [NSError errorWithDomain:BTCoinbaseErrorDomain
                                              code:BTCoinbaseOAuthError
@@ -192,10 +192,7 @@ static NSURL * __strong baseURL;
 
 + (NSString *)URLEncodedStringFromString:(NSString *)string
 {
-    static CFStringRef charset = CFSTR("!@#$%&*()+'\";:=,/?[] ");
-    CFStringRef str = (__bridge CFStringRef)string;
-    CFStringEncoding encoding = kCFStringEncodingUTF8;
-    return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, str, NULL, charset, encoding));
+    return [string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
 
 + (void)setBaseURL:(NSURL *)URL {

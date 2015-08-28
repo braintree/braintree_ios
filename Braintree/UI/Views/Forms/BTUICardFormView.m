@@ -5,7 +5,7 @@
 #import "BTUICardPostalCodeField.h"
 #import "BTUI.h"
 #import "BTUILocalizedString.h"
-
+#import "BTUIUtil.h"
 
 @interface BTUICardFormView ()<BTUIFormFieldDelegate>
 
@@ -42,9 +42,9 @@
     for (BTUIFormField *field in self.fields) {
         height += field.intrinsicContentSize.height;
     }
-     // subtract (number of field adjacencies) * (number of pixels overlap per adjacency)
+    // subtract (number of field adjacencies) * (number of pixels overlap per adjacency)
     height -= (self.fields.count - 1) * 1;
-
+    
     return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }
 
@@ -69,11 +69,21 @@
 
 - (void)showTopLevelError:(NSString *)message {
     NSString *localizedOK = BTUILocalizedString(TOP_LEVEL_ERROR_ALERT_VIEW_OK_BUTTON_TEXT);
-    [[[UIAlertView alloc] initWithTitle:message
-                                message:nil
-                               delegate:nil
-                      cancelButtonTitle:localizedOK
-                      otherButtonTitles:nil] show];
+    if ([UIAlertController class]) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:message message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:localizedOK style:UIAlertActionStyleCancel handler:nil]];
+        UIViewController *visibleViewController = [[UIApplication sharedApplication].delegate.window.rootViewController BTUI_visibleViewController];
+        [visibleViewController presentViewController:alert animated:YES completion:nil];
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [[[UIAlertView alloc] initWithTitle:message
+                                    message:nil
+                                   delegate:nil
+                          cancelButtonTitle:localizedOK
+                          otherButtonTitles:nil] show];
+#pragma clang diagnostic pop
+    }
 }
 
 - (void)setAlphaNumericPostalCode:(BOOL)alphaNumericPostalCode {
@@ -84,7 +94,7 @@
 - (void)setOptionalFields:(BTUICardFormOptionalFields)optionalFields {
     _optionalFields = optionalFields;
     NSMutableArray *fields = [NSMutableArray arrayWithObjects:self.numberField, self.expiryField, nil];
-
+    
     self.cvvField.hidden = self.postalCodeField.hidden = YES;
     if (optionalFields & BTUICardFormOptionalFieldsCvv) {
         [fields addObject:self.cvvField];
@@ -94,15 +104,15 @@
         [fields addObject:self.postalCodeField];
         self.postalCodeField.hidden = NO;
     }
-
+    
     // Set bottom border for fields
     for (NSUInteger i = 0; i < fields.count - 1; i++) {
         [fields[i] setBottomBorder:YES];
     }
     [[fields lastObject] setBottomBorder:NO];
-
+    
     self.fields = fields;
-
+    
     [self invalidateIntrinsicContentSize];
 }
 
@@ -113,7 +123,7 @@
         // The expiry field only allows digit chars to be entered
         dateFormatter.dateFormat = @"MMyyyy";
     }
-
+    
     NSString *expirationDateString = [dateFormatter stringFromDate:expirationDate];
     [self.expiryField setText:expirationDateString];
 }
@@ -121,48 +131,48 @@
 - (void)setup {
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];
-
+    
     self.dynamicConstraints = @[];
-
+    
     _numberField = [[BTUICardNumberField alloc] init];
     self.numberField.translatesAutoresizingMaskIntoConstraints = NO;
     self.numberField.delegate = self;
     [self addSubview:self.numberField];
-
+    
     _expiryField = [[BTUICardExpiryField alloc] init];
     self.expiryField.translatesAutoresizingMaskIntoConstraints = NO;
     self.expiryField.delegate = self;
     [self addSubview:self.expiryField];
-
+    
     _cvvField = [[BTUICardCvvField alloc] init];
     self.cvvField.translatesAutoresizingMaskIntoConstraints = NO;
     self.cvvField.delegate = self;
     [self addSubview:self.cvvField];
-
+    
     _postalCodeField = [[BTUICardPostalCodeField alloc] init];
     self.postalCodeField.translatesAutoresizingMaskIntoConstraints = NO;
     self.postalCodeField.delegate = self;
     [self addSubview:self.postalCodeField];
     [self setAlphaNumericPostalCode:YES];
-
+    
     self.vibrate = YES;
     self.optionalFields = BTUICardFormOptionalFieldsAll;
-
+    
     for (UIView *v in self.fields) {
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:@{} views:@{@"v": v}]];
     }
-
-
+    
+    
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]"
                                                                  options:0
                                                                  metrics:0
                                                                    views:@{@"v": self.numberField}]];
-
+    
 }
 
 - (void)updateConstraints {
     [self removeConstraints:self.dynamicConstraints];
-
+    
     NSMutableArray *newContraints = [NSMutableArray array];
     for (NSUInteger i = 0; i < self.fields.count - 1; i++) {
         BTUIFormField *fieldAbove = self.fields[i];
@@ -172,12 +182,12 @@
                                                                                    metrics:0
                                                                                      views:@{@"v": fieldAbove, @"v2": fieldBelow }]];
     }
-
+    
     self.dynamicConstraints = newContraints;
     [self addConstraints:self.dynamicConstraints];
-
+    
     [super updateConstraints];
-
+    
 }
 
 #pragma mark - Drawing
@@ -185,16 +195,16 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     [self.theme.borderColor setFill];
-
+    
     // Top
     CGPathRef path = CGPathCreateWithRect(CGRectMake(rect.origin.x, 0, rect.size.width, 0.5f), NULL);
     CGContextAddPath(context, path);
     CGPathRelease(path);
-
+    
     // Bottom
     path = CGPathCreateWithRect(CGRectMake(rect.origin.x, CGRectGetMaxY(rect) - 0.5f, rect.size.width, 0.5f), NULL);
     CGContextAddPath(context, path);
-
+    
     CGContextDrawPath(context, kCGPathFill);
     CGPathRelease(path);
 }
@@ -224,7 +234,7 @@
 }
 
 - (void)setNumber:(NSString *)number {
-  self.numberField.number = number;
+    self.numberField.number = number;
 }
 
 - (NSString *)expirationMonth {
@@ -276,7 +286,7 @@
     if (field.entryComplete) {
         NSUInteger fieldIndex = [self.fields indexOfObject:field];
         NSUInteger startIndex = (fieldIndex + 1) % self.fields.count;
-
+        
         for (NSUInteger i = startIndex ; i != fieldIndex; i = (i + 1) % self.fields.count) {
             BTUIFormField *ithField = self.fields[i];
             if (!ithField.valid) {

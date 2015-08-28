@@ -14,9 +14,16 @@ NSString *const BTClientTokenKeyConfigURL = @"configUrl";
 @property (nonatomic, readwrite, copy) NSString *authorizationFingerprint;
 @property (nonatomic, readwrite, strong) NSURL *configURL;
 
+/// Returns an incomplete client token for manual initialization
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
+
 @end
 
 @implementation BTClientToken
+
+- (instancetype)init {
+    return [super init];
+}
 
 - (instancetype)initWithClientTokenString:(NSString *)JSONString error:(NSError * __autoreleasing *)error {
     self = [super init];
