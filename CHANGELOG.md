@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.2-pre6 (2015-08-28)
+* PayPal
+  * Fix canOpenUrl warnings in iOS9
+* Added `PayerId` and `ClientMetadataId` to `BTPayPalPaymentMethod`
+
 ## 3.9.2-pre5 (2015-08-19)
 * PayPal
   * Fix Billing Agreements support
