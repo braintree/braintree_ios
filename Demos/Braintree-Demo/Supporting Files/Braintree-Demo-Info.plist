@@ -57,6 +57,12 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>3.9.2</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+        <string>com.braintreepayments.Braintree-Demo.payments</string>
+        <string>com.venmo.touch.v1</string>
+        <string>com.paypal.ppclient.touch.v2</string>
+    </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
