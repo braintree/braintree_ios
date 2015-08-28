@@ -20,44 +20,44 @@ PODS:
   - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.9.2-otc-pre5):
-    - Braintree/API (= 3.9.2-otc-pre5)
-    - Braintree/Coinbase (= 3.9.2-otc-pre5)
-    - Braintree/Drop-In (= 3.9.2-otc-pre5)
-    - Braintree/Payments (= 3.9.2-otc-pre5)
-    - Braintree/PayPal (= 3.9.2-otc-pre5)
-    - Braintree/UI (= 3.9.2-otc-pre5)
-    - Braintree/Venmo (= 3.9.2-otc-pre5)
-  - Braintree/3D-Secure (3.9.2-otc-pre5):
+  - Braintree (3.9.2-otc-pre6):
+    - Braintree/API (= 3.9.2-otc-pre6)
+    - Braintree/Coinbase (= 3.9.2-otc-pre6)
+    - Braintree/Drop-In (= 3.9.2-otc-pre6)
+    - Braintree/Payments (= 3.9.2-otc-pre6)
+    - Braintree/PayPal (= 3.9.2-otc-pre6)
+    - Braintree/UI (= 3.9.2-otc-pre6)
+    - Braintree/Venmo (= 3.9.2-otc-pre6)
+  - Braintree/3D-Secure (3.9.2-otc-pre6):
     - Braintree/API
     - Braintree/Payments
     - Braintree/UI
-  - Braintree/API (3.9.2-otc-pre5)
-  - Braintree/Apple-Pay (3.9.2-otc-pre5):
+  - Braintree/API (3.9.2-otc-pre6)
+  - Braintree/Apple-Pay (3.9.2-otc-pre6):
     - Braintree/Payments
-  - Braintree/Coinbase (3.9.2-otc-pre5):
+  - Braintree/Coinbase (3.9.2-otc-pre6):
     - Braintree/API
-  - Braintree/Data (3.9.2-otc-pre5):
+  - Braintree/Data (3.9.2-otc-pre6):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (3.9.2-otc-pre5):
+  - Braintree/Drop-In (3.9.2-otc-pre6):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (3.9.2-otc-pre5):
+  - Braintree/Payments (3.9.2-otc-pre6):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (3.9.2-otc-pre5):
+  - Braintree/PayPal (3.9.2-otc-pre6):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.9.2-otc-pre5):
+  - Braintree/UI (3.9.2-otc-pre6):
     - Braintree/API
-  - Braintree/Venmo (3.9.2-otc-pre5):
+  - Braintree/Venmo (3.9.2-otc-pre6):
     - Braintree/API
   - CardIO (5.0.6)
   - Expecta (0.3.2)
@@ -105,7 +105,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: .
+    :path: "."
   FLEX:
     :git: https://github.com/intelliot/FLEX.git
   KIFViewControllerActions:
@@ -121,7 +121,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  Braintree: f9fa8a55faaabfd85b73668d41ae774811bab4d8
+  Braintree: 7d7efcf7cde34e293cb2415ef5ebf62b7850d061
   CardIO: 3fb62d56651d80e8f98e9572bfbe589ebf13d706
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FLEX: 436744379e30ffc394d62e5b7656874051576391
