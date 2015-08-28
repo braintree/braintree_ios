@@ -152,7 +152,7 @@ typedef void (^BraintreeCompletionBlock)(Braintree *__nullable braintree, NSErro
 /// @param sourceApplication The source application received by the application delegate `openURL` method
 ///
 /// @return Whether Braintree was able to handle the URL and source application
-+ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
++ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication;
 
 
 #pragma mark Advanced Integrations
