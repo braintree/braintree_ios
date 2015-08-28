@@ -54,6 +54,7 @@
         if (payerInfoDict && payerInfoDict[@"firstName"]) { payPal.firstName = payerInfoDict[@"firstName"]; }
         if (payerInfoDict && payerInfoDict[@"lastName"]) { payPal.lastName = payerInfoDict[@"lastName"]; }
         if (payerInfoDict && payerInfoDict[@"phone"]) { payPal.phone = payerInfoDict[@"phone"]; }
+        if (payerInfoDict && payerInfoDict[@"payer_id"]) { payPal.payerId = payerInfoDict[@"payer_id"]; }
         if (payerInfoDict && payerInfoDict[BTPostalAddressKeyAccountAddress]) {
             NSDictionary *addressDictionary = payerInfoDict[BTPostalAddressKeyAccountAddress];
             payPal.billingAddress = [[BTPostalAddress alloc] init];

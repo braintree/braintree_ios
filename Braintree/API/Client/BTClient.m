@@ -400,6 +400,9 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                       if (response.isSuccess) {
                           if (successBlock) {
                               NSArray *payPalPaymentMethods = [response.object arrayForKey:@"paypalAccounts" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
+                              for (BTPayPalPaymentMethod *payPalPaymentMethod in payPalPaymentMethods) {
+                                  payPalPaymentMethod.clientMetadataId = clientMetadataID;
+                              }
                               successBlock([payPalPaymentMethods firstObject]);
                           }
                       } else {

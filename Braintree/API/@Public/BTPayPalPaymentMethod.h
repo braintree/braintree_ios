@@ -32,4 +32,10 @@
 /// Will be provided if you use -[PayPalDriver startCheckout:completion:]
 @property (nonatomic, copy) BTPostalAddress *shippingAddress;
 
+/// Client Metadata Id associated with this transaction.
+@property (nonatomic, copy) NSString *clientMetadataId;
+
+/// Optional. Payer Id associated with this transaction.
+/// Will be provided for Billing Agreement and Checkout.
+@property (nonatomic, copy) NSString *payerId;
 @end
