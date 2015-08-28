@@ -58,6 +58,15 @@
     format.backspace = self.backspace;
     [format formattedValue:&formattedValue cursorLocation:&formattedCursorLocation];
 
+    // Important: Reset the state of self.backspace.
+    // Otherwise, the user won't be able to do the following:
+    // Enter "11/16", then backspace to
+    //       "1", and then type e.g. "2". Instead of showing:
+    //       "12/" (as it should), the form would instead remain stuck at
+    //       "1".
+    self.backspace = NO;
+    // This is because UIControlEventEditingChanged is *not* sent after the "/" is removed.
+    // We can't trigger UIControlEventEditingChanged here (after removing a "/") because that would cause an infinite loop.
 
     NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:formattedValue attributes:self.theme.textFieldTextAttributes];
     [self kernExpiration:result];
@@ -127,36 +136,6 @@
 
 - (NSArray *)expirationComponents:(NSString *)expirationDate {
     return [expirationDate componentsSeparatedByString:BTUICardExpiryFieldComponentSeparator];
-}
-
-- (void)format {
-    NSMutableString *s = [NSMutableString stringWithString:[BTUIUtil stripNonDigits:self.textField.text]];
-
-    if (s.length == 0) {
-        self.textField.attributedText = [[NSAttributedString alloc] initWithString:s];
-        return;
-    }
-
-    if ([s characterAtIndex:0] > '1' && [s characterAtIndex:0] <= '9') {
-        [s insertString:@"0" atIndex:0];
-    }
-
-    if (self.backspace) {
-        if (s.length == 2) {
-            [s deleteCharactersInRange:NSMakeRange(1, 1)];
-        }
-    }
-
-    if (s.length > 2 && ![[s substringWithRange:NSMakeRange(2, 1)] isEqualToString:BTUICardExpiryFieldComponentSeparator]) {
-        [s insertString:BTUICardExpiryFieldComponentSeparator
-                atIndex:2];
-    } else if (s.length == 2) {
-        [s appendString:BTUICardExpiryFieldComponentSeparator];
-    }
-
-    NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:s attributes:self.theme.textFieldTextAttributes];
-    [self kernExpiration:result];
-    self.textField.attributedText = result;
 }
 
 - (void)kernExpiration:(NSMutableAttributedString *)input {

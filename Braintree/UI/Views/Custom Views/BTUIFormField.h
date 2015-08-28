@@ -20,7 +20,7 @@
 @property (nonatomic, assign, readonly) BOOL entryComplete;
 @property (nonatomic, assign) BOOL displayAsValid;
 @property (nonatomic, assign) BOOL bottomBorder;
-@property (nonatomic, assign, readonly) BOOL backspace;
+@property (nonatomic, assign, readwrite) BOOL backspace;
 
 /// The text displayed by the field
 @property (nonatomic, copy) NSString *text;
