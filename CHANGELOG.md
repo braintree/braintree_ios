@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.3 (2015-08-28)
+
+* Xcode 7 support
+* Improved Swift interface with nullability annotations and lightweight generics
+* Update PayPal mSDK to 2.11.4-bt1
+  * Remove checking via canOpenURL:
+* Bug fix for `BTPaymentButton` edge case where it choose the wrong payment option when the option availability changes after UI setup.
+
 ## 3.9.2 (2015-07-08)
 
 * :rotating_light: This version requires Xcode 6.3+ (otherwise you'll get duplicate symbol errors)
