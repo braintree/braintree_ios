@@ -20,44 +20,44 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (3.9.2):
-    - Braintree/API (= 3.9.2)
-    - Braintree/Coinbase (= 3.9.2)
-    - Braintree/Drop-In (= 3.9.2)
-    - Braintree/Payments (= 3.9.2)
-    - Braintree/PayPal (= 3.9.2)
-    - Braintree/UI (= 3.9.2)
-    - Braintree/Venmo (= 3.9.2)
-  - Braintree/3D-Secure (3.9.2):
+  - Braintree (3.9.3):
+    - Braintree/API (= 3.9.3)
+    - Braintree/Coinbase (= 3.9.3)
+    - Braintree/Drop-In (= 3.9.3)
+    - Braintree/Payments (= 3.9.3)
+    - Braintree/PayPal (= 3.9.3)
+    - Braintree/UI (= 3.9.3)
+    - Braintree/Venmo (= 3.9.3)
+  - Braintree/3D-Secure (3.9.3):
     - Braintree/API
     - Braintree/Payments
     - Braintree/UI
-  - Braintree/API (3.9.2)
-  - Braintree/Apple-Pay (3.9.2):
+  - Braintree/API (3.9.3)
+  - Braintree/Apple-Pay (3.9.3):
     - Braintree/Payments
-  - Braintree/Coinbase (3.9.2):
+  - Braintree/Coinbase (3.9.3):
     - Braintree/API
-  - Braintree/Data (3.9.2):
+  - Braintree/Data (3.9.3):
     - Braintree/API
     - Braintree/PayPal
-  - Braintree/Drop-In (3.9.2):
+  - Braintree/Drop-In (3.9.3):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/Payments
     - Braintree/PayPal
     - Braintree/UI
     - Braintree/Venmo
-  - Braintree/Payments (3.9.2):
+  - Braintree/Payments (3.9.3):
     - Braintree/API
     - Braintree/Coinbase
     - Braintree/PayPal
     - Braintree/Venmo
-  - Braintree/PayPal (3.9.2):
+  - Braintree/PayPal (3.9.3):
     - Braintree/API
     - Braintree/UI
-  - Braintree/UI (3.9.2):
+  - Braintree/UI (3.9.3):
     - Braintree/API
-  - Braintree/Venmo (3.9.2):
+  - Braintree/Venmo (3.9.3):
     - Braintree/API
   - CardIO (5.0.3)
   - Expecta (1.0.2)
@@ -125,10 +125,10 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  Braintree: a9627ce90feb6da6d417c88358fc95049d1c387f
+  Braintree: 996027dcc8633569f2405bc57dca11f367050c60
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
-  FLEX: 436744379e30ffc394d62e5b7656874051576391
+  FLEX: 8b78bf22dd060d293c4aaf505d403c36c53a1054
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
