@@ -83,7 +83,7 @@ class FakeHTTP : BTHTTP {
     var lastRequest : Request?
 
     class func fakeHTTP() -> FakeHTTP {
-        return FakeHTTP(baseURL: NSURL(), authorizationFingerprint: "")
+        return FakeHTTP(baseURL: NSURL(string: "fake://fake")!, authorizationFingerprint: "")
     }
 
     override func POST(endpoint: String, parameters: [NSObject : AnyObject]?, completion completionBlock: ((BTJSON?, NSHTTPURLResponse?, NSError?) -> Void)?) {

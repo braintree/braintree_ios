@@ -18,12 +18,14 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
 @implementation BTPayPalDriver
 
-+ (void)initialize {
-    [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
-    [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
-        BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-        [driver authorizeAccountWithCompletion:completionBlock];
-    }];
++ (void)load {
+    if (self == [BTPayPalDriver class]) {
+        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
+        [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
+            BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+            [driver authorizeAccountWithCompletion:completionBlock];
+        }];
+    }
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {

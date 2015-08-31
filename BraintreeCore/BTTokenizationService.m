@@ -11,17 +11,6 @@ NSString * const BTTokenizationServiceErrorDomain = @"com.braintreepayments.BTTo
 
 @implementation BTTokenizationService
 
-// TODO: see if +load allows us to circumvent the issue of initialization not occurring until class is loaded into memory
-+ (void)initialize {
-    /// Ensure that these classes have had their +initialize method called, i.e. the classes are loaded
-    /// into memory. Without this, it is not guaranteed that their +initialize method will have been
-    /// invoked unless an app explicitly uses these classes.
-    [NSClassFromString(@"BTPayPalDriver") class];
-    [NSClassFromString(@"BTVenmoDriver") class];
-    [NSClassFromString(@"BTCoinbaseDriver") class];
-    [NSClassFromString(@"BTCardTokenizationClient") class];
-}
-
 + (instancetype)sharedService {
     static BTTokenizationService *sharedService;
     static dispatch_once_t onceToken;

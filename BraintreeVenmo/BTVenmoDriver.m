@@ -15,12 +15,14 @@ NSString * const BTVenmoDriverErrorDomain = @"com.braintreepayments.BTVenmoDrive
 
 static BTVenmoDriver *appSwitchedDriver;
 
-+ (void)initialize {
-    [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
-    [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
-        BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
-        [driver tokenizeVenmoCardWithCompletion:completionBlock];
-    }];
++ (void)load {
+    if (self == [BTVenmoDriver class]) {
+        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
+        [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
+            BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
+            [driver tokenizeVenmoCardWithCompletion:completionBlock];
+        }];
+    }
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {

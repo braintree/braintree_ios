@@ -16,12 +16,14 @@ NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BT
 
 @implementation BTCardTokenizationClient
 
-+ (void)initialize {
-    [[BTTokenizationService sharedService] registerType:@"Card" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
-        BTCardTokenizationClient *client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
-        BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithParameters:options];
-        [client tokenizeCard:request completion:completionBlock];
-    }];
++ (void)load {
+    if (self == [BTCardTokenizationClient class]) {
+        [[BTTokenizationService sharedService] registerType:@"Card" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
+            BTCardTokenizationClient *client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+            BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithParameters:options];
+            [client tokenizeCard:request completion:completionBlock];
+        }];
+    }
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
