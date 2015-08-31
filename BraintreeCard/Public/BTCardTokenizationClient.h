@@ -21,6 +21,8 @@ typedef NS_ENUM(NSInteger, BTCardTokenizationClientErrorType) {
 
 - (void)tokenizeCard:(BTCardTokenizationRequest *)request completion:(void (^)(BTTokenizedCard * __BT_NULLABLE tokenizedCard, NSError * __BT_NULLABLE  error))completionBlock;
 
+@property (nonatomic, strong, readonly) BTAPIClient *apiClient;
+
 @end
 
 BT_ASSUME_NONNULL_END

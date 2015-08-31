@@ -11,7 +11,7 @@
 NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BTCardTokenizationClientErrorDomain";
 
 @interface BTCardTokenizationClient ()
-@property (nonatomic, strong) BTAPIClient *apiClient;
+@property (nonatomic, strong, readwrite) BTAPIClient *apiClient;
 @end
 
 @implementation BTCardTokenizationClient
