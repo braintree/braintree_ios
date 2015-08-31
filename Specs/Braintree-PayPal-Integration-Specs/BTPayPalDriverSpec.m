@@ -19,6 +19,7 @@
     [[[configuration stub] andReturn:[NSURL URLWithString:@"https://example.com/tos"]] payPalMerchantUserAgreementURL];
     [[[configuration stub] andReturn:@"offline"] payPalEnvironment];
     [[[configuration stub] andReturn:@"client-id"] payPalClientId];
+    [[[configuration stub] andReturnValue:@NO] payPalUseBillingAgreement];
     
     id clientToken = [OCMockObject mockForClass:[BTClientToken class]];
     [[[clientToken stub] andReturn:@"client-token"] originalValue];

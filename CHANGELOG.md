@@ -1,5 +1,21 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.2-pre6 (2015-08-28)
+* PayPal
+  * Fix canOpenUrl warnings in iOS9
+* Added `PayerId` and `ClientMetadataId` to `BTPayPalPaymentMethod`
+
+## 3.9.2-pre5 (2015-08-19)
+* PayPal
+  * Fix Billing Agreements support
+  * Update PayPal One Touch Core
+
+## 3.9.2-pre4 (2015-08-04)
+* PayPal
+  * Update support for PayPal Checkout
+  * Add support for PayPal Billing Agreement authorization
+  * Update PayPal One Touch Core
+
 ## 4.0.0-pre2 (2015-06-23)
 
 * PayPal
@@ -14,6 +30,14 @@
 * Replace mSDK with One Touch Core
   * This replaces PayPal in-app login with browser switch for future payments consent
   * This adds the capability to perform checkout (single payments) with One Touch
+
+## 3.9.3 (2015-08-28)
+
+* Xcode 7 support
+* Improved Swift interface with nullability annotations and lightweight generics
+* Update PayPal mSDK to 2.11.4-bt1
+  * Remove checking via canOpenURL:
+* Bug fix for `BTPaymentButton` edge case where it choose the wrong payment option when the option availability changes after UI setup.
 
 ## 3.9.2 (2015-07-08)
 

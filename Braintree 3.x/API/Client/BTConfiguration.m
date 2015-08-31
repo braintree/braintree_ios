@@ -21,6 +21,7 @@ NSString *const BTConfigurationKeyPayPalDirectBaseUrl = @"directBaseUrl";
 NSString *const BTConfigurationKeyPayPalMerchantName = @"displayName";
 NSString *const BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl = @"privacyUrl";
 NSString *const BTConfigurationKeyPayPalMerchantUserAgreementUrl = @"userAgreementUrl";
+NSString *const BTConfigurationKeyPayPalBillingAgreement = @"billingAgreementsEnabled";
 NSString *const BTConfigurationKeyPayPalEnvironment = @"environment";
 NSString *const BTConfigurationKeyPayPalCurrencyCode = @"currencyIsoCode";
 
@@ -52,6 +53,10 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 @end
 
 @implementation BTConfiguration
+
+- (instancetype)init {
+    return nil;
+}
 
 - (instancetype)initWithResponseParser:(BTAPIResponseParser *)responseParser error:(NSError **)error {
     self = [super init];
@@ -123,9 +128,8 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {
-    BTConfiguration *copiedConfiguration = [[[self class] allocWithZone:zone] init];
-    copiedConfiguration.clientApiURL = [_clientApiURL copy];
-    copiedConfiguration.configurationParser = [self.configurationParser copy];
+    BTConfiguration *copiedConfiguration = [[[self class] allocWithZone:zone] initWithResponseParser:[self.configurationParser copy] error:NULL];
+    copiedConfiguration.clientApiURL = self.clientApiURL;
     return copiedConfiguration;
 }
 
@@ -159,10 +163,9 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-    self = [self init];
-    if (self){
+    self = [self initWithResponseParser:[decoder decodeObjectForKey:@"claims"] error:NULL];
+    if (self) {
         self.clientApiURL = [decoder decodeObjectForKey:@"clientApiURL"];
-        self.configurationParser = [decoder decodeObjectForKey:@"claims"];
     }
     return self;
 }
@@ -257,6 +260,10 @@ NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgreementUrl
     NSURL *url = [self.payPalConfiguration URLForKey:BTConfigurationKeyPayPalMerchantPrivacyPolicyUrl];
 
     return url ?: defaultURL;
+}
+
+- (BOOL)payPalUseBillingAgreement {
+    return [self.configurationParser boolForKey:BTConfigurationKeyPayPalBillingAgreement withValueTransformer:[BTClientTokenBooleanValueTransformer sharedInstance]];
 }
 
 #pragma mark Coinbase

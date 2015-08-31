@@ -19,12 +19,14 @@
     mutablePayPalPaymentMethod.nonce = self.nonce;
     mutablePayPalPaymentMethod.challengeQuestions = [self.challengeQuestions copy];
     mutablePayPalPaymentMethod.description = self.description;
+    mutablePayPalPaymentMethod.clientMetadataId = self.clientMetadataId;
+    mutablePayPalPaymentMethod.payerId = self.payerId;
 
     return mutablePayPalPaymentMethod;
 }
 
 - (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"<%@:%p \"%@\" email:%@ nonce:%@ billingAddress:%@>", NSStringFromClass([self class]), self, [self description], self.email, self.nonce, self.billingAddress];
+    return [NSString stringWithFormat:@"<%@:%p \"%@\" email:%@ nonce:%@ billingAddress:%@ clientMetadataId:%@ payerId:%@>", NSStringFromClass([self class]), self, [self description], self.email, self.nonce, self.billingAddress, self.clientMetadataId, self.payerId];
 }
 
 @end

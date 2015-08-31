@@ -6,16 +6,27 @@
 
 @interface BTMockApplePayPaymentAuthorizationViewController () <BTMockApplePayPaymentAuthorizationViewDelegate>
 
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
+
 @end
 
 @implementation BTMockApplePayPaymentAuthorizationViewController
 
 - (instancetype)initWithPaymentRequest:(PKPaymentRequest *)request {
-    self = [super init];
+    self = [super initWithNibName:nil bundle:nil];
     if (self) {
         [[BTLogger sharedLogger] debug:@"Initializing BTMockApplePayPaymentAuthorizationViewController with PKRequest merchantIdentifier: %@; items: %@", request.merchantIdentifier, request.paymentSummaryItems ];
     }
     return self;
+}
+
+- (instancetype)initWithCoder:(__unused NSCoder *)aDecoder {
+    return [super initWithCoder:aDecoder];
+}
+
+- (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil {
+    return [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 }
 
 - (void)viewDidLoad

@@ -21,8 +21,6 @@
 /// @return An initialized Apple Pay provider
 - (instancetype)initWithClient:(BTClient *)client NS_DESIGNATED_INITIALIZER;
 
-- (id)init __attribute__((unavailable("Please use initWithClient:")));
-
 /// A required delegate that should receive notifications about the payment method
 /// creation lifecycle.
 ///

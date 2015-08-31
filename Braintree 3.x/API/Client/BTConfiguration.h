@@ -84,6 +84,7 @@ extern NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgree
 - (NSURL *)payPalMerchantUserAgreementURL;
 - (NSURL *)payPalPrivacyPolicyURL;
 - (NSString *)payPalCurrencyCode;
+- (BOOL)payPalUseBillingAgreement;
 
 #pragma mark Coinbase
 
@@ -109,5 +110,7 @@ extern NSString *const BTConfigurationPayPalNonLiveDefaultValueMerchantUserAgree
 
 //// Initialize Configuration with a configuration response parser fetched from Braintree.
 - (instancetype)initWithResponseParser:(BTAPIResponseParser *)responseParser error:(NSError **)error NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)init __attribute__((unavailable("Please use initWithResponseParser:error: instead.")));
 
 @end

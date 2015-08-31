@@ -15,6 +15,10 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 @property (nonatomic, strong) UIWebView *webView;
 
 @property (nonatomic, weak) id<BTThreeDSecurePopupDelegate> delegate;
+
+- (nonnull instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_DESIGNATED_INITIALIZER DEPRECATED_ATTRIBUTE;
+- (nonnull instancetype)initWithCoder:(nonnull NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER DEPRECATED_ATTRIBUTE;
+
 @end
 
 @implementation BTWebViewController
@@ -35,6 +39,14 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         [self.webView loadRequest:request];
     }
     return self;
+}
+
+- (nonnull instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil {
+    return [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+}
+
+- (nonnull instancetype)initWithCoder:(nonnull NSCoder *)aDecoder {
+    return [super initWithCoder:aDecoder];
 }
 
 - (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id<BTThreeDSecurePopupDelegate>)delegate {
@@ -58,13 +70,13 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.webView.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     [self updateNetworkActivityIndicatorForWebView:self.webView];
 }
 
@@ -99,7 +111,7 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         [self informDelegateDidFinish];
         return NO;
     }
-
+    
     return YES;
 }
 
@@ -132,11 +144,11 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                [[[UIAlertView alloc] initWithTitle:error.localizedDescription
-                                            message:nil
-                                           delegate:nil
-                                  cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
-                                  otherButtonTitles:nil] show];
+            [[[UIAlertView alloc] initWithTitle:error.localizedDescription
+                                        message:nil
+                                       delegate:nil
+                              cancelButtonTitle:BTThreeDSecureLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT)
+                              otherButtonTitles:nil] show];
 #pragma clang diagnostic pop
         }
     }
@@ -192,7 +204,7 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 - (NSURL *)extractPopupLinkURL:(NSURL *)URL {
     NSURLComponents *c = [NSURLComponents componentsWithURL:URL resolvingAgainstBaseURL:NO];
     c.scheme = [[URL.scheme componentsSeparatedByString:@"+"] lastObject];
-
+    
     return c.URL;
 }
 

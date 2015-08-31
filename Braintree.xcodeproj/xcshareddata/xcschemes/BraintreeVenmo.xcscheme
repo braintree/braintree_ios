@@ -29,6 +29,18 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+<<<<<<< HEAD:Braintree.xcodeproj/xcshareddata/xcschemes/BraintreeVenmo.xcscheme
+=======
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "16E20A651A703F86002BCC34"
+            BuildableName = "Braintree-3D-Secure-Specs.xctest"
+            BlueprintName = "Braintree-3D-Secure-Specs"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+>>>>>>> beta/paypal-browser-switch:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree-3D-Secure-Specs.xcscheme
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -45,9 +57,15 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
+<<<<<<< HEAD:Braintree.xcodeproj/xcshareddata/xcschemes/BraintreeVenmo.xcscheme
             BlueprintIdentifier = "A7C889EE1B5F0B30007A0E9C"
             BuildableName = "BraintreeVenmo.framework"
             BlueprintName = "BraintreeVenmo"
+=======
+            BlueprintIdentifier = "16E20A651A703F86002BCC34"
+            BuildableName = "Braintree-3D-Secure-Specs.xctest"
+            BlueprintName = "Braintree-3D-Secure-Specs"
+>>>>>>> beta/paypal-browser-switch:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree-3D-Secure-Specs.xcscheme
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +81,15 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
+<<<<<<< HEAD:Braintree.xcodeproj/xcshareddata/xcschemes/BraintreeVenmo.xcscheme
             BlueprintIdentifier = "A7C889EE1B5F0B30007A0E9C"
             BuildableName = "BraintreeVenmo.framework"
             BlueprintName = "BraintreeVenmo"
+=======
+            BlueprintIdentifier = "16E20A651A703F86002BCC34"
+            BuildableName = "Braintree-3D-Secure-Specs.xctest"
+            BlueprintName = "Braintree-3D-Secure-Specs"
+>>>>>>> beta/paypal-browser-switch:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree-3D-Secure-Specs.xcscheme
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

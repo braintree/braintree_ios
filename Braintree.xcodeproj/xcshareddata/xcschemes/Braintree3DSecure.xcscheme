@@ -29,6 +29,18 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+<<<<<<< HEAD:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree3DSecure.xcscheme
+=======
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "2D30F1301A7C49E2004BA8C3"
+            BuildableName = "Braintree-Apple-Pay-Build-Specs.xctest"
+            BlueprintName = "Braintree-Apple-Pay-Build-Specs"
+            ReferencedContainer = "container:Braintree.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+>>>>>>> beta/paypal-browser-switch:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree-Apple-Pay-Build-Specs.xcscheme
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -60,6 +72,7 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+<<<<<<< HEAD:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree3DSecure.xcscheme
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -69,6 +82,8 @@
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+=======
+>>>>>>> beta/paypal-browser-switch:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree-Apple-Pay-Build-Specs.xcscheme
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -14,6 +14,7 @@
 @property (nonatomic, assign) BOOL enableShippingAddress;
 //@property (nonatomic, assign) ABRecordRef shippingAddress DEPRECATED_MSG_ATTRIBUTE("Please use shippingContact");
 @property (nonatomic, assign) BOOL addressOverride;
+@property (nonatomic, assign) BOOL isSingleUse;
 @property (nonatomic, strong) BTPostalAddress *shippingAddress;
 
 @end

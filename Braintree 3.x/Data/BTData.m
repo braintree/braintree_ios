@@ -10,6 +10,9 @@ static NSString *BTDataSharedMerchantId = @"600000";
 @property (nonatomic, strong) BTClient *client;
 @property (nonatomic, copy) NSString *fraudMerchantId;
 @property (nonatomic, strong) DeviceCollectorSDK *kount;
+
+- (instancetype)init NS_DESIGNATED_INITIALIZER DEPRECATED_ATTRIBUTE;
+
 @end
 
 @implementation BTData
@@ -28,6 +31,10 @@ static NSString *BTDataSharedMerchantId = @"600000";
     [data setupEnvironment:environment];
 
     return data;
+}
+
+- (instancetype)init {
+    return [super init];
 }
 
 - (instancetype)initWithClient:(BTClient *)client environment:(BTDataEnvironment)environment {

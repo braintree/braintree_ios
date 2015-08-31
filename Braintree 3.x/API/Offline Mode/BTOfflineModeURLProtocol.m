@@ -237,9 +237,9 @@ static BTOfflineClientBackend *backend;
         NSArray *parameters = [queryString componentsSeparatedByString:@"&"];
         for (NSString *parameter in parameters) {
             NSArray *parts = [parameter componentsSeparatedByString:@"="];
-            NSString *key = [[parts objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *key = [[parts objectAtIndex:0] stringByRemovingPercentEncoding];
             if ([parts count] > 1) {
-                id value = [[parts objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                id value = [[parts objectAtIndex:1] stringByRemovingPercentEncoding];
                 [result setObject:value forKey:key];
             }
         }

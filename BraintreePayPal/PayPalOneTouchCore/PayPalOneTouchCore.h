@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchCore.h
 //
-//  Version 2.0.2-beta
+//  Version 2.1.2
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //

@@ -17,6 +17,7 @@
 			<string>BraintreeDemoDropInViewController</string>
 			<key>Titles</key>
 			<array>
+				<string>PayPal - Billing Agreement</string>
 				<string>PayPal - Scopes</string>
 				<string>PayPal - Checkout</string>
 				<string>Credit Card Tokenization</string>
@@ -36,6 +37,7 @@
 			</array>
 			<key>Values</key>
 			<array>
+				<string>BraintreeDemoPayPalBillingAgreementViewController</string>
 				<string>BraintreeDemoPayPalScopesViewController</string>
 				<string>BraintreeDemoPayPalCheckoutViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>

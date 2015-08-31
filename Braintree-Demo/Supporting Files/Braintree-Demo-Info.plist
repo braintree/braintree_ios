@@ -61,6 +61,7 @@
 	<array>
 		<string>com.braintreepayments.Demo.payments</string>
 		<string>com.venmo.touch.v1</string>
+		<string>com.paypal.ppclient.touch.v1</string>
 		<string>com.paypal.ppclient.touch.v2</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
@@ -69,6 +70,15 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>kaptcha.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionMinimumTLSVersion</key>
+				<string>TLSv1.0</string>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>

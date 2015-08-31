@@ -112,6 +112,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                 [[[configuration stub] andReturn:@"http://example.com/privacy"] payPalPrivacyPolicyURL];
                 [[[configuration stub] andReturn:@"http://example.com/tos"] payPalMerchantUserAgreementURL];
                 [[[configuration stub] andReturn:@"Example Merchant"] payPalMerchantName];
+                [[[configuration stub] andReturnValue:@NO] payPalUseBillingAgreement];
                 [[[configuration stub] andReturn:@"mock"] payPalEnvironment];
                 [[[clientToken stub] andReturn:@"fake-client-token-string"] originalValue];
                 [[[[payPalTouch stub] andReturnValue:@YES] classMethod] doesApplicationSupportOneTouchCallbackURLScheme:OCMOCK_ANY];
@@ -133,7 +134,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                     [invocation retainArguments];
                     PayPalOneTouchRequestCompletionBlock completionBlock;
                     [invocation getArgument:&completionBlock atIndex:2];
-                    completionBlock(NO, PayPalOneTouchRequestTargetNone, nil);
+                    completionBlock(NO, PayPalOneTouchRequestTargetNone, @"CLIENT-METADATA-ID", nil);
                 }] performWithCompletionBlock:OCMOCK_ANY];
                 [[client expect] postAnalyticsEvent:@"ios.paypal-future-payments.none.initiate.failed"];
 
@@ -150,7 +151,7 @@ describe(@"initiatePayPalAuthWithClient:delegate:", ^{
                     [invocation retainArguments];
                     PayPalOneTouchRequestCompletionBlock completionBlock;
                     [invocation getArgument:&completionBlock atIndex:2];
-                    completionBlock(YES, PayPalOneTouchRequestTargetBrowser, nil);
+                    completionBlock(YES, PayPalOneTouchRequestTargetBrowser, @"CLIENT-METADATA-ID", nil);
                 }] performWithCompletionBlock:OCMOCK_ANY];
                 [[client expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
 
@@ -219,7 +220,7 @@ describe(@"handleReturnURL:", ^{
             [invocation retainArguments];
             PayPalOneTouchRequestCompletionBlock completionBlock;
             [invocation getArgument:&completionBlock atIndex:2];
-            completionBlock(YES, PayPalOneTouchRequestTargetBrowser, nil);
+            completionBlock(YES, PayPalOneTouchRequestTargetBrowser, @"CLIENT-METADATA-ID", nil);
         }] performWithCompletionBlock:OCMOCK_ANY];
         
         NSError *error;
@@ -243,7 +244,9 @@ describe(@"handleReturnURL:", ^{
         [[[configuration stub] andReturn:@"http://www.example.com/"] payPalPrivacyPolicyURL];
         [[[configuration stub] andReturn:@"http://www.example.com/"] payPalMerchantUserAgreementURL];
         [[[configuration stub] andReturn:@"offline"] payPalEnvironment];
+        [[[configuration stub] andReturnValue:@NO] payPalUseBillingAgreement];
         [[[configuration stub] andReturn:nil] payPalClientId];
+        
         [[[clientToken stub] andReturn:@"fake-client-token"] originalValue];
         
         id authorizationRequestStub = [OCMockObject mockForClass:[PayPalOneTouchAuthorizationRequest class]];
@@ -261,7 +264,7 @@ describe(@"handleReturnURL:", ^{
             [invocation retainArguments];
             PayPalOneTouchRequestCompletionBlock completionBlock;
             [invocation getArgument:&completionBlock atIndex:2];
-            completionBlock(YES, PayPalOneTouchRequestTargetBrowser, nil);
+            completionBlock(YES, PayPalOneTouchRequestTargetBrowser, @"CLIENT-METADATA-ID", nil);
         }] performWithCompletionBlock:OCMOCK_ANY];
         
         [[client expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];

@@ -488,7 +488,7 @@ describe(@"3D Secure View Controller", ^{
     });
 
     describe(@"web view interaction details", ^{
-        it(@"displays a loading indicator during page loads", ^{
+        xit(@"displays a loading indicator during page loads", ^{
             [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                 [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 

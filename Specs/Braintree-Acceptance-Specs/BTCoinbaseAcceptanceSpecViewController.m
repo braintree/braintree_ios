@@ -72,7 +72,7 @@ NSString *const BTCoinbaseAcceptanceSpecCoinbaseScheme = @"com.coinbase.oauth-au
 }
 
 - (void)paymentMethodCreator:(id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
-    [self dismissViewControllerAnimated:viewController completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -80,6 +80,11 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
 - (void)prepareHttpFromConfiguration {
     self.clientApiHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.clientApiURL];
     [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+    
+    if (self.configuration.analyticsEnabled) {
+        self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
+        [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
+    }
 }
 
 - (void)fetchConfigurationWithCompletion:(BTClientCompletionBlock)completionBlock {
@@ -156,6 +161,8 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
         [self.clientApiHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         
         if (self.configuration.analyticsEnabled) {
+            self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:self.configuration.analyticsURL];
+            [self.analyticsHttp setProtocolClasses:@[[BTOfflineModeURLProtocol class]]];
         }
         
         self.hasConfiguration = [[decoder decodeObjectForKey:@"hasConfiguration"] boolValue];
@@ -376,6 +383,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
 }
 #endif
 
+//<<<<<<< HEAD
 - (void)savePaypalAccount:(NSDictionary *)paypalResponse
          clientMetadataID:(NSString *)clientMetadataID
                   success:(BTClientPaypalSuccessBlock)successBlock
@@ -393,6 +401,9 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                       if (response.isSuccess) {
                           if (successBlock) {
                               NSArray *payPalPaymentMethods = [response.object arrayForKey:@"paypalAccounts" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
+                              for (BTPayPalPaymentMethod *payPalPaymentMethod in payPalPaymentMethods) {
+                                  payPalPaymentMethod.clientMetadataId = clientMetadataID;
+                              }
                               successBlock([payPalPaymentMethods firstObject]);
                           }
                       } else {
@@ -403,60 +414,36 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                   }];
 }
 
-- (void)savePaypalPaymentMethodWithAuthCode:(NSString*)authCode
-                   applicationCorrelationID:(NSString *)correlationId
-                                    success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock {
+- (void)postAnalyticsEvent:(NSString *)eventKind
+                   success:(BTClientAnalyticsSuccessBlock)successBlock
+                   failure:(BTClientFailureBlock)failureBlock {
     
-    NSMutableDictionary *requestParameters = [self metaPostParameters];
-    // To preserve backwards compatibility - only set shouldValidate to FALSE when requesting additional scopes
-    BOOL shouldValidate = [self.additionalPayPalScopes count] == 0;
-    [requestParameters addEntriesFromDictionary:@{ @"paypal_account": @{
-                                                           @"consent_code": authCode ?: NSNull.null,
-                                                           @"correlation_id": correlationId ?: NSNull.null,
-                                                           @"options": @{@"validate": @(shouldValidate)}
-                                                           },
-                                                   @"authorization_fingerprint": self.clientToken.authorizationFingerprint
-                                                   
-                                                   }];
-    
-    [self.clientApiHttp POST:@"v1/payment_methods/paypal_accounts" parameters:requestParameters completion:^(BTHTTPResponse *response, NSError *error){
-        if (response.isSuccess) {
-            if (successBlock){
-                NSArray *payPalPaymentMethods = [response.object arrayForKey:@"paypalAccounts" withValueTransformer:[BTClientPaymentMethodValueTransformer sharedInstance]];
-                BTPayPalPaymentMethod *payPalPaymentMethod = [payPalPaymentMethods firstObject];
-                
-                successBlock(payPalPaymentMethod);
-            }
-        } else {
-            if (failureBlock) {
-                failureBlock([NSError errorWithDomain:BTBraintreeAPIErrorDomain
-                                                 code:BTUnknownError // TODO - use a client error code
-                                             userInfo:@{NSUnderlyingErrorKey: error}]);
-            }
+    if (self.configuration.analyticsEnabled) {
+        NSMutableDictionary *requestParameters = [self metaAnalyticsParameters];
+        [requestParameters addEntriesFromDictionary:@{ @"analytics": @[@{ @"kind": eventKind }],
+                                                       @"authorization_fingerprint": self.clientToken.authorizationFingerprint
+                                                       }];
+
+        [[BTLogger sharedLogger] debug:@"BTClient postAnalyticsEvent:%@ session:%@", eventKind, self.metadata.sessionId];
+
+        [self.analyticsHttp POST:@"/"
+                      parameters:requestParameters
+                      completion:^(BTHTTPResponse *response, NSError *error) {
+                          if (response.isSuccess) {
+                              if (successBlock) {
+                                  successBlock();
+                              }
+                          } else {
+                              if (failureBlock) {
+                                  failureBlock(error);
+                              }
+                          }
+                      }];
+    } else {
+        if (successBlock) {
+            successBlock();
         }
-    }];
-}
-
-// Deprecated
-- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
-                                    success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock {
-    [self savePaypalPaymentMethodWithAuthCode:authCode
-                     applicationCorrelationID:nil
-                                      success:successBlock
-                                      failure:failureBlock];
-}
-
-// Deprecated
-- (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
-                              correlationId:(NSString *)correlationId
-                                    success:(BTClientPaypalSuccessBlock)successBlock
-                                    failure:(BTClientFailureBlock)failureBlock {
-    [self savePaypalPaymentMethodWithAuthCode:authCode
-                     applicationCorrelationID:correlationId
-                                      success:successBlock
-                                      failure:failureBlock];
+    }
 }
 
 #pragma mark 3D Secure Lookup
@@ -470,7 +457,7 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
     if (self.configuration.merchantAccountId) {
         requestParameters[@"merchant_account_id"] = self.configuration.merchantAccountId;
     }
-    NSString *urlSafeNonce = [nonce stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlSafeNonce = [nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
     [self.clientApiHttp POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
                   completion:^(BTHTTPResponse *response, NSError *error)
@@ -564,10 +551,21 @@ NSString *const BTClientPayPalConfigurationError = @"The PayPal SDK could not be
                   }];
 }
 
+#pragma mark Braintree Analytics
+
+- (void)postAnalyticsEvent:(NSString *)eventKind {
+    [self postAnalyticsEvent:eventKind success:nil failure:nil];
+}
+
+
 #pragma mark -
 
 - (NSMutableDictionary *)metaPostParameters {
     return [self mutableDictionaryCopyWithClientMetadata:nil];
+}
+
+- (NSMutableDictionary *)metaAnalyticsParameters {
+    return [self mutableDictionaryCopyWithClientMetadata:@{@"_meta": [BTAnalyticsMetadata metadata]}];
 }
 
 - (NSMutableDictionary *)mutableDictionaryCopyWithClientMetadata:(NSDictionary *)parameters {

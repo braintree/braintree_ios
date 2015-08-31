@@ -71,7 +71,14 @@ describe(@"editDelegate", ^{
             [tester enterTextIntoCurrentFirstResponder:@"a"];
 
             OCMVerify(editDelegate);
-            expect(editDelegate.textAtTimeOfWillInsertText).to.equal(@"Some text");
+            // Note: the behavior of `insertText:` in iOS 9 is buggy. We have implemented
+            // a workaround that makes the card expiry field functional, but the workaround
+            // causes willInsertText to be called *after* the text has already been inserted.
+            if ([UIDevice currentDevice].systemVersion.intValue < 9) {
+                expect(editDelegate.textAtTimeOfWillInsertText).to.equal(@"Some text");
+            } else {
+                expect(editDelegate.textAtTimeOfWillInsertText).to.equal(@"Some texta");
+            }
             expect(editDelegate.textAtTimeOfDidInsertText).to.equal(@"Some texta");
         });
 

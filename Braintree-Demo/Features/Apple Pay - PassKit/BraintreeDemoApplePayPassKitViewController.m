@@ -79,7 +79,12 @@
                                            [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod1.amount],
                                            [PKPaymentSummaryItem summaryItemWithLabel:@"BRAINTREE" amount:[NSDecimalNumber decimalNumberWithString:@"14.99"]]
                                            ];
+    
+#ifdef __IPHONE_9_0
+    paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover];
+#else
     paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex];
+#endif
     paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
     paymentRequest.currencyCode = @"USD";
     paymentRequest.countryCode = @"US";
