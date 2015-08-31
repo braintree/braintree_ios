@@ -75,6 +75,8 @@
 		2DE12F5A1B59C36900EA1BCF /* BTTokenized.h in Headers */ = {isa = PBXBuildFile; fileRef = 16E17D061B3DE3B40024F9AB /* BTTokenized.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DE12F5B1B59C36900EA1BCF /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A7A6DD501B445A29008857E1 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DE12F5C1B59C36900EA1BCF /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD511B445A29008857E1 /* BTURLUtils.m */; };
+		41BEFDD31B94F0F100E560E7 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
+		41BEFDD41B94F0F100E560E7 /* BraintreeCard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		41D6E2A71B8D12CD00A3C2AE /* FakePayPalClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */; };
 		41D6E2D51B8E28CE00A3C2AE /* BraintreeCoinbase.h in Headers */ = {isa = PBXBuildFile; fileRef = 41D6E2D41B8E28CE00A3C2AE /* BraintreeCoinbase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		41D6E2D91B8E28CE00A3C2AE /* BraintreeCoinbase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41D6E2D21B8E28CE00A3C2AE /* BraintreeCoinbase.framework */; };
@@ -391,6 +393,13 @@
 			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
 			remoteInfo = BraintreeCore;
 		};
+		41BEFDD51B94F0F100E560E7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7C8898F1B5F043B007A0E9C;
+			remoteInfo = BraintreeCard;
+		};
 		41D6E2D71B8E28CE00A3C2AE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -534,6 +543,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				41D6E2DA1B8E28CE00A3C2AE /* BraintreeCoinbase.framework in Embed Frameworks */,
+				41BEFDD41B94F0F100E560E7 /* BraintreeCard.framework in Embed Frameworks */,
 				A7A9C6CD1B83B88800F5EBBA /* BraintreeCore.framework in Embed Frameworks */,
 				A77344FF1B7A93A10083EC8D /* BraintreeUI.framework in Embed Frameworks */,
 				A7A9C6C61B83AFE500F5EBBA /* BraintreePayPal.framework in Embed Frameworks */,
@@ -1109,6 +1119,7 @@
 				A7A9C6D11B83C84A00F5EBBA /* BraintreeVenmo.framework in Frameworks */,
 				A73088371B8694D6009487BA /* Braintree3DSecure.framework in Frameworks */,
 				A77344FE1B7A93A10083EC8D /* BraintreeUI.framework in Frameworks */,
+				41BEFDD31B94F0F100E560E7 /* BraintreeCard.framework in Frameworks */,
 				B7731E5BAB405AD2ED86C1B6 /* libPods-Braintree-Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2428,6 +2439,7 @@
 				A7A9C6D41B83C84B00F5EBBA /* PBXTargetDependency */,
 				A730883A1B8694D7009487BA /* PBXTargetDependency */,
 				41D6E2D81B8E28CE00A3C2AE /* PBXTargetDependency */,
+				41BEFDD61B94F0F100E560E7 /* PBXTargetDependency */,
 			);
 			name = "Braintree-Demo";
 			productName = "Braintree-Demo";
@@ -3118,6 +3130,11 @@
 			isa = PBXTargetDependency;
 			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
 			targetProxy = 2D941DA41B5D9F790016EFB4 /* PBXContainerItemProxy */;
+		};
+		41BEFDD61B94F0F100E560E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
+			targetProxy = 41BEFDD51B94F0F100E560E7 /* PBXContainerItemProxy */;
 		};
 		41D6E2D81B8E28CE00A3C2AE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4530,6 +4547,7 @@
 				41D6E2DC1B8E28CF00A3C2AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A75DA347192138F000D997A2 /* Build configuration list for PBXProject "Braintree" */ = {
 			isa = XCConfigurationList;
