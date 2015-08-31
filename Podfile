@@ -11,8 +11,8 @@ target 'Tests' do
             'Braintree-Data-Specs',
             'Braintree-3D-Secure-Specs',
             'Braintree-Coinbase-Integration-Specs'
-  pod 'Specta'
-  pod 'Expecta', '~> 0.3.0'
+  pod 'Specta', '~> 1.0.3'
+  pod 'Expecta', '~> 1.0.2'
   pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
@@ -47,8 +47,8 @@ target 'Logic-Tests' do
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
   pod 'Braintree/Coinbase', :path => '.'
-  pod 'Specta'
-  pod 'Expecta', '~> 0.3.0'
+  pod 'Specta', '~> 1.0.3'
+  pod 'Expecta', '~> 1.0.2'
   pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'

@@ -1,10 +1,42 @@
 #import "BTUITextField.h"
 
-@interface BTUITextField ()
-
+@interface BTUITextField () <UITextFieldDelegate>
+@property (nonatomic, copy) NSString *previousText;
 @end
 
 @implementation BTUITextField
+
+- (instancetype)init {
+    if (self = [super init]) {
+        if ([UIDevice currentDevice].systemVersion.intValue == 9) {
+            [self addTarget:self action:@selector(iOS9_changed) forControlEvents:UIControlEventEditingChanged];
+            self.delegate = self;
+        }
+    }
+    return self;
+}
+
+- (void)iOS9_changed {
+    // We only want to notify when this text field's text length has increased
+    if (self.previousText.length >= self.text.length) {
+        self.previousText = self.text;
+        return;
+    }
+    self.previousText = self.text;
+    
+    NSString *insertedText = [self.text substringWithRange:NSMakeRange(self.previousText.length, self.text.length - self.previousText.length)];
+    
+    if ([self.editDelegate respondsToSelector:@selector(textField:willInsertText:)]) {
+        // Sets _backspace = NO; in the BTUIFormField or BTUIFormField subclass
+        [self.editDelegate textField:self willInsertText:insertedText];
+    }
+
+    self.previousText = self.text;
+    
+    if ([self.editDelegate respondsToSelector:@selector(textField:didInsertText:)]) {
+        [self.editDelegate textField:self didInsertText:insertedText];
+    }
+}
 
 - (BOOL)keyboardInputShouldDelete:(__unused UITextField *)textField {
     if ([self.editDelegate respondsToSelector:@selector(textFieldWillDeleteBackward:)]) {

@@ -48,7 +48,10 @@ __block id mockCLLocationManager;
 
 beforeEach(^{
     mockCLLocationManager = [OCMockObject mockForClass:[CLLocationManager class]];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [[[[mockCLLocationManager stub] andReturnValue:@(NO)] classMethod] locationServicesEnabled];
+#pragma clang diagnostic pop
 });
 
 afterEach(^{

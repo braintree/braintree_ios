@@ -60,7 +60,7 @@ PODS:
   - Braintree/Venmo (3.9.2-otc-pre6):
     - Braintree/API
   - CardIO (5.0.6)
-  - Expecta (0.3.2)
+  - Expecta (1.0.2)
   - FLEX (2.0.2)
   - HockeySDK (3.7.1):
     - HockeySDK/AllFeaturesLib (= 3.7.1)
@@ -79,7 +79,7 @@ PODS:
     - OHHTTPStubs/Core (= 3.1.12)
   - OHHTTPStubs/Core (3.1.12)
   - PureLayout (2.0.6)
-  - Specta (1.0.2)
+  - Specta (1.0.3)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
@@ -89,7 +89,7 @@ DEPENDENCIES:
   - Braintree/Coinbase (from `.`)
   - Braintree/Data (from `.`)
   - CardIO
-  - Expecta (~> 0.3.0)
+  - Expecta (~> 1.0.2)
   - FLEX (from `https://github.com/intelliot/FLEX.git`)
   - HockeySDK
   - InAppSettingsKit
@@ -101,11 +101,11 @@ DEPENDENCIES:
   - OCMock (~> 3.1)
   - OHHTTPStubs (~> 3.1.0)
   - PureLayout
-  - Specta
+  - Specta (~> 1.0.3)
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: "."
+    :path: .
   FLEX:
     :git: https://github.com/intelliot/FLEX.git
   KIFViewControllerActions:
@@ -121,9 +121,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  Braintree: 7d7efcf7cde34e293cb2415ef5ebf62b7850d061
+  Braintree: 755b49c6e6a1dd5df54a48cbc8924576c2d8d239
   CardIO: 3fb62d56651d80e8f98e9572bfbe589ebf13d706
-  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
+  Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   FLEX: 436744379e30ffc394d62e5b7656874051576391
   HockeySDK: 77bb90b6484a3b742ccf32bcae247c0a0051a962
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
@@ -135,6 +135,6 @@ SPEC CHECKSUMS:
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
-  Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
+  Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 
-COCOAPODS: 0.38.0.beta.1
+COCOAPODS: 0.38.2

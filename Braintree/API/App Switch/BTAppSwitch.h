@@ -9,16 +9,20 @@ typedef NS_ENUM(NSInteger, BTAppType) {
     BTAppTypeCoinbase,
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface BTAppSwitch : NSObject
 
 @property (nonatomic, readwrite, copy) NSString *returnURLScheme;
 
 + (instancetype)sharedInstance;
 
-- (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+- (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication;
 
 - (void)addAppSwitching:(id<BTAppSwitching>)appSwitching forApp:(BTAppType)type;
 - (void)removeAppSwitchingForApp:(BTAppType)type;
 - (id <BTAppSwitching>)appSwitchingForApp:(BTAppType)type;
 
 @end
+
+NS_ASSUME_NONNULL_END

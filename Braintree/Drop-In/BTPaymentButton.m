@@ -18,6 +18,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 @property (nonatomic, strong) UIView *topBorder;
 @property (nonatomic, strong) UIView *bottomBorder;
+@property (nonatomic, strong) NSOrderedSet *filteredEnabledPaymentProviderTypes;
+
 @end
 
 @implementation BTPaymentButton
@@ -155,17 +157,22 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (NSOrderedSet *)filteredEnabledPaymentProviderTypes {
-    NSMutableOrderedSet *filteredEnabledPaymentMethods = [self.enabledPaymentProviderTypes mutableCopy];
-    if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeVenmo]) {
-        [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypeVenmo)];
+    if (!_filteredEnabledPaymentProviderTypes) {
+        NSMutableOrderedSet *mutableProviderTypes = [self.enabledPaymentProviderTypes mutableCopy];
+
+        if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeVenmo]) {
+            [mutableProviderTypes removeObject:@(BTPaymentProviderTypeVenmo)];
+        }
+        if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal]) {
+            [mutableProviderTypes removeObject:@(BTPaymentProviderTypePayPal)];
+        }
+        if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase]) {
+            [mutableProviderTypes removeObject:@(BTPaymentProviderTypeCoinbase)];
+        }
+        _filteredEnabledPaymentProviderTypes = [mutableProviderTypes copy];
     }
-    if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal]) {
-        [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypePayPal)];
-    }
-    if (![self.paymentProvider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypeCoinbase]) {
-        [filteredEnabledPaymentMethods removeObject:@(BTPaymentProviderTypeCoinbase)];
-    }
-    return filteredEnabledPaymentMethods;
+ 
+    return _filteredEnabledPaymentProviderTypes;
 }
 
 - (BOOL)hasAvailablePaymentMethod {

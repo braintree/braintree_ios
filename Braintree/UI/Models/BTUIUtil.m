@@ -46,3 +46,21 @@
 }
 
 @end
+
+@implementation UIViewController (BTUI_visibleViewController)
+
+- (UIViewController *)BTUI_visibleViewController {
+    if ([self isKindOfClass:[UINavigationController class]]) {
+        // Do not use [UINavigationController visibleViewController] because it could be BeingDismissed
+        return [[(UINavigationController *)self topViewController] BTUI_visibleViewController];
+    }
+    if ([self isKindOfClass:[UITabBarController class]]) {
+        return [[(UITabBarController *)self selectedViewController] BTUI_visibleViewController];
+    }
+    if (self.presentedViewController == nil || self.presentedViewController.isBeingDismissed) {
+        return self;
+    }
+    return [self.presentedViewController BTUI_visibleViewController];
+}
+
+@end
