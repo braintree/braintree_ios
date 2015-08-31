@@ -1,9 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <XCTest/XCTest.h>
-
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import "EXPMatchers+BTMatches.h"
-#import "EXPMatchers+BTDeepEquals.h"
+#import <XCTest/XCTest.h>
 
 typedef NS_ENUM(NSInteger, BTTestMode_t) {
     BTTestModeDebug = 1,

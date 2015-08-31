@@ -841,7 +841,7 @@ NSURLSession *testURLSession() {
         id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:nil statusCode:200 headers:@{@"Content-Type": @"application/json"}];
+            return [OHHTTPStubsResponse responseWithData:[[NSData alloc] init] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
         [http GET:@"empty.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error){

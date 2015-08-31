@@ -16,7 +16,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
     }
 
     override func tearDown() {
-        observers.map { NSNotificationCenter.defaultCenter().removeObserver($0) }
+        for observer in observers { NSNotificationCenter.defaultCenter().removeObserver(observer) }
         super.tearDown()
     }
 

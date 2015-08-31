@@ -1,76 +1,77 @@
 PODS:
-  - AFNetworking (2.5.4):
-    - AFNetworking/NSURLConnection (= 2.5.4)
-    - AFNetworking/NSURLSession (= 2.5.4)
-    - AFNetworking/Reachability (= 2.5.4)
-    - AFNetworking/Security (= 2.5.4)
-    - AFNetworking/Serialization (= 2.5.4)
-    - AFNetworking/UIKit (= 2.5.4)
-  - AFNetworking/NSURLConnection (2.5.4):
+  - AFNetworking (2.6.0):
+    - AFNetworking/NSURLConnection (= 2.6.0)
+    - AFNetworking/NSURLSession (= 2.6.0)
+    - AFNetworking/Reachability (= 2.6.0)
+    - AFNetworking/Security (= 2.6.0)
+    - AFNetworking/Serialization (= 2.6.0)
+    - AFNetworking/UIKit (= 2.6.0)
+  - AFNetworking/NSURLConnection (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.4):
+  - AFNetworking/NSURLSession (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.4)
-  - AFNetworking/Security (2.5.4)
-  - AFNetworking/Serialization (2.5.4)
-  - AFNetworking/UIKit (2.5.4):
+  - AFNetworking/Reachability (2.6.0)
+  - AFNetworking/Security (2.6.0)
+  - AFNetworking/Serialization (2.6.0)
+  - AFNetworking/UIKit (2.6.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - CardIO (5.1.0)
-  - Expecta (0.3.2)
-  - FLEX (2.0.2)
-  - HockeySDK (3.7.1):
-    - HockeySDK/AllFeaturesLib (= 3.7.1)
-  - HockeySDK/AllFeaturesLib (3.7.1)
+  - CardIO (5.1.1)
+  - Expecta (1.0.2)
+  - FLEX (2.0.3)
+  - HockeySDK (3.7.3):
+    - HockeySDK/AllFeaturesLib (= 3.7.3)
+  - HockeySDK/AllFeaturesLib (3.7.3)
   - InAppSettingsKit (2.6)
-  - iOS-Slide-Menu (1.4.6)
+  - iOS-Slide-Menu (1.5)
   - NSURL+QueryDictionary (1.1.0)
-  - OCMock (3.1.2)
-  - OHHTTPStubs (3.1.12):
-    - OHHTTPStubs/Core (= 3.1.12)
-  - OHHTTPStubs/Core (3.1.12)
-  - PureLayout (2.0.6)
-  - Specta (1.0.2)
+  - OCMock (3.1.5)
+  - OHHTTPStubs (4.2.0):
+    - OHHTTPStubs/Default (= 4.2.0)
+  - OHHTTPStubs/Core (4.2.0)
+  - OHHTTPStubs/Default (4.2.0):
+    - OHHTTPStubs/Core
+    - OHHTTPStubs/JSON
+    - OHHTTPStubs/NSURLSession
+    - OHHTTPStubs/OHPathHelpers
+  - OHHTTPStubs/JSON (4.2.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/NSURLSession (4.2.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/OHPathHelpers (4.2.0)
+  - PureLayout (3.0.1)
+  - Specta (1.0.3)
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.2)
+  - AFNetworking (~> 2.6.0)
   - CardIO
-  - Expecta (~> 0.3.0)
-  - FLEX (from `https://github.com/intelliot/FLEX.git`)
+  - Expecta
+  - FLEX
   - HockeySDK
   - InAppSettingsKit
   - iOS-Slide-Menu
   - NSURL+QueryDictionary (~> 1.0)
-  - OCMock (~> 3.1)
-  - OHHTTPStubs (~> 3.1.0)
+  - OCMock
+  - OHHTTPStubs
   - PureLayout
   - Specta
 
-EXTERNAL SOURCES:
-  FLEX:
-    :git: https://github.com/intelliot/FLEX.git
-
-CHECKOUT OPTIONS:
-  FLEX:
-    :commit: b797baa3efeffe73ab1d6ea6aaeb55cc05ff6422
-    :git: https://github.com/intelliot/FLEX.git
-
 SPEC CHECKSUMS:
-  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  CardIO: 5c8128e07f577824f132881171210b45721c517a
-  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
-  FLEX: 436744379e30ffc394d62e5b7656874051576391
-  HockeySDK: 77bb90b6484a3b742ccf32bcae247c0a0051a962
+  AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
+  CardIO: 2c3a8ef9b9add4bd664c83bb653b83b2f32d9d7f
+  Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
+  FLEX: 4f04fe0b0594163c00879e2b3db888e5ae37c8d5
+  HockeySDK: a0b915dc081f1ba67782a347220a8623dbe93b8a
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
-  iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
+  iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
-  OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  OHHTTPStubs: 8cf0cfe6f34f13fc88fdf5b2a1b2c2536e8c0261
-  PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
-  Specta: 9cec98310dca411f7c7ffd6943552b501622abfe
+  OCMock: 4c2925291f80407c3738dd1db14d21d0cc278864
+  OHHTTPStubs: f639130b83fb5f4f022d38f841141b0a6fa77249
+  PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
+  Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
 
 COCOAPODS: 0.38.2
