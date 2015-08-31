@@ -3,7 +3,10 @@
 @interface BTPaymentApplePayProvider ()
 
 + (BOOL)isSimulator;
-- (UIViewController *)paymentAuthorizationViewControllerWithPaymentRequest:(PKPaymentRequest *)paymentRequest;
 - (BOOL)paymentAuthorizationViewControllerCanMakePayments;
+
+#if BT_ENABLE_APPLE_PAY
+- (UIViewController *)paymentAuthorizationViewControllerWithPaymentRequest:(PKPaymentRequest *)paymentRequest;
+#endif
 
 @end
