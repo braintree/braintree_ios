@@ -27,7 +27,11 @@
 }
 
 + (BOOL)handleReturnURL:(NSURL *)url options:(NSDictionary *)options {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
     return [[[self class] sharedInstance] handleReturnURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
+#else
+    return [[[self class] sharedInstance] handleReturnURL:url sourceApplication:nil];
+#endif
 }
 
 + (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {

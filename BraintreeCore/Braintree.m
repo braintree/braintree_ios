@@ -20,4 +20,13 @@
 }
 
 
++ (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    return [BTAppSwitch handleReturnURL:url sourceApplication:sourceApplication];
+}
+
+
++ (BOOL)handleReturnURL:(NSURL *)url options:(NSDictionary *)options {
+    return [BTAppSwitch handleReturnURL:url options:options];
+}
+
 @end

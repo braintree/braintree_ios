@@ -36,6 +36,21 @@ BT_ASSUME_NONNULL_BEGIN
 /// @param returnURLScheme The return URL scheme
 + (void)setReturnURLScheme:(NSString *)returnURLScheme;
 
+
+/// Handles a return from app switch
+/// @param url The URL that was opened to return to your app
+/// @param sourceApplication The source app that requested the launch of your app
+/// @return `YES` if the URL was handled
++ (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+
+
+/// Handles a return from app switch
+/// @param url The URL that was opened to return to your app
+/// @param options The options dictionary provided by `application:openURL:options:`
+/// @return `YES` if the URL was handled
++ (BOOL)handleReturnURL:(NSURL *)url options:(NSDictionary *)options;
+
+
 @end
 
 BT_ASSUME_NONNULL_END
