@@ -28,6 +28,31 @@ pod "Braintree/Apple-Pay"
 Then ensure `BT_ENABLE_APPLE_PAY=1` is present in your target's "Preprocessor Macros" settings.
 By default, this should happen automatically if you have a Preprocessor Macro entry for `$(inherited)`.
 
+## Updating for iOS 9
+
+At the time of this writing, iOS 9 and Xcode 7 are still in beta, so these instructions may change.
+
+There is a new `UIApplicationDelegate` method that you may implement on iOS 9:
+```
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+```
+Implementing this method is optional. If you do not implement it, the deprecated equivalent will still be called; otherwise, it will not.
+
+In either case, you still need to implement the deprecated equivalent in order to support iOS 8 or earlier:
+```
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+```
+
+To support PayPal and Venmo, whitelist querying the following URL schemes in your Info.plist:
+```
+com.paypal.ppclient.touch.v1
+com.paypal.ppclient.touch.v2
+org-appextension-feature-password-management
+com.venmo.touch.v1
+```
+
+The `BTPaymentProvider` uses the `com.venmo.touch.v1` URL scheme to detect Venmo.
+
 ## Help
 
 * [Read the headers](Braintree/Braintree.h)
@@ -47,3 +72,4 @@ Here are a few ways to get in touch:
 ### License
 
 The Braintree v.zero SDK is open source and available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+
