@@ -11,8 +11,8 @@ target 'Tests' do
             'Braintree-Data-Specs',
             'Braintree-3D-Secure-Specs',
             'Braintree-Coinbase-Integration-Specs'
-  pod 'Specta'
-  pod 'Expecta', '~> 0.3.0'
+  pod 'Specta', '~> 1.0.3'
+  pod 'Expecta', '~> 1.0.2'
   pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
@@ -47,8 +47,8 @@ target 'Logic-Tests' do
   pod 'Braintree/Data', :path => '.'
   pod 'Braintree/3D-Secure', :path => '.'
   pod 'Braintree/Coinbase', :path => '.'
-  pod 'Specta'
-  pod 'Expecta', '~> 0.3.0'
+  pod 'Specta', '~> 1.0.3'
+  pod 'Expecta', '~> 1.0.2'
   pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
@@ -70,7 +70,7 @@ target 'Braintree-Apple-Pay' do
 end
 
 post_install do |installer|
-    targets = installer.project.targets.select{ |t| t.to_s.end_with? "-Braintree" }
+    targets = installer.pods_project.targets.select{ |t| t.to_s.end_with? "-Braintree" }
     if (targets.count > 0)
         targets.each do |target|
             target.build_configurations.each do |config|

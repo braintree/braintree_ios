@@ -284,6 +284,7 @@ const CGFloat formFieldBottomMargin = 11;
 #pragma mark - BTUITextFieldEditDelegate methods
 
 - (void)textFieldWillDeleteBackward:(__unused BTUITextField *)textField {
+    // _backspace indicates that the backspace key was typed.
     _backspace = YES;
 
 }

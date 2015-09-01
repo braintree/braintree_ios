@@ -12,6 +12,10 @@
     return [[self alloc] initWithDictionary:dictionary];
 }
 
+- (instancetype)init {
+    return [self initWithDictionary:@{}];
+}
+
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
     if (![dictionary isKindOfClass:[NSDictionary class]]) {
         return nil;

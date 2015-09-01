@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem 'cocoapods'
-gem 'xcodeproj', '~>0.24.3'
+gem 'xcodeproj'
 gem 'rake'
 gem 'git-pairing'
 gem 'highline', :require => 'highline/import'

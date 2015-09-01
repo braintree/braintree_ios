@@ -4,14 +4,23 @@
 @interface BTMockApplePayPaymentAuthorizationView () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, weak) id delegate;
 @property (nonatomic, strong) UITableView *tableView;
+
 @end
 
 NSString *const BTMockApplePayPaymentAuthorizationControlCell =  @"BTMockApplePayPaymentAuthorizationControlCell";
 
 @implementation BTMockApplePayPaymentAuthorizationView
 
+- (instancetype)initWithCoder:(nonnull __unused NSCoder *)aDecoder {
+    return [self initWithDelegate:nil];
+}
+
+- (nonnull instancetype)initWithFrame:(__unused CGRect)frame {
+    return [self initWithDelegate:nil];
+}
+
 - (instancetype)initWithDelegate:(id)delegate {
-    self = [super init];
+    self = [super initWithFrame:CGRectNull];
     if (self) {
         self.delegate = delegate;
 
