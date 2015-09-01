@@ -16,9 +16,6 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
 
 @property (nonatomic, weak) id<BTThreeDSecurePopupDelegate> delegate;
 
-- (nonnull instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_DESIGNATED_INITIALIZER DEPRECATED_ATTRIBUTE;
-- (nonnull instancetype)initWithCoder:(nonnull NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER DEPRECATED_ATTRIBUTE;
-
 @end
 
 @implementation BTWebViewController
@@ -39,14 +36,6 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         [self.webView loadRequest:request];
     }
     return self;
-}
-
-- (nonnull instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil {
-    return [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-}
-
-- (nonnull instancetype)initWithCoder:(nonnull NSCoder *)aDecoder {
-    return [super initWithCoder:aDecoder];
 }
 
 - (instancetype)initWithRequest:(NSURLRequest *)request delegate:(id<BTThreeDSecurePopupDelegate>)delegate {

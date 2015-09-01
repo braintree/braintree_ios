@@ -29,18 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-<<<<<<< HEAD:Braintree.xcodeproj/xcshareddata/xcschemes/BraintreeApplePay.xcscheme
-=======
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "161E0C7B1A9EA83400D7285A"
-            BuildableName = "Braintree-Coinbase-Integration-Specs.xctest"
-            BlueprintName = "Braintree-Coinbase-Integration-Specs"
-            ReferencedContainer = "container:Braintree.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
->>>>>>> beta/paypal-browser-switch:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree-Coinbase-Integration-Specs.xcscheme
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

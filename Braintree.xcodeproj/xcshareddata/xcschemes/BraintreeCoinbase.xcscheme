@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2D941D871B5D9E8C0016EFB4"
-               BuildableName = "Braintree3DSecure.framework"
-               BlueprintName = "Braintree3DSecure"
+               BlueprintIdentifier = "41D6E2D11B8E28CE00A3C2AE"
+               BuildableName = "BraintreeCoinbase.framework"
+               BlueprintName = "BraintreeCoinbase"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D941D871B5D9E8C0016EFB4"
-            BuildableName = "Braintree3DSecure.framework"
-            BlueprintName = "Braintree3DSecure"
+            BlueprintIdentifier = "41D6E2D11B8E28CE00A3C2AE"
+            BuildableName = "BraintreeCoinbase.framework"
+            BlueprintName = "BraintreeCoinbase"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D941D871B5D9E8C0016EFB4"
-            BuildableName = "Braintree3DSecure.framework"
-            BlueprintName = "Braintree3DSecure"
+            BlueprintIdentifier = "41D6E2D11B8E28CE00A3C2AE"
+            BuildableName = "BraintreeCoinbase.framework"
+            BlueprintName = "BraintreeCoinbase"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

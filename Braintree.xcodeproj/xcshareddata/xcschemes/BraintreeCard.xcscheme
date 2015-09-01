@@ -29,31 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-<<<<<<< HEAD:Braintree.xcodeproj/xcshareddata/xcschemes/BraintreeCard.xcscheme
-=======
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "16968169192D9A3200120846"
-            BuildableName = "Braintree-Acceptance-Specs.xctest"
-            BlueprintName = "Braintree-Acceptance-Specs"
-            ReferencedContainer = "container:Braintree.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-disableUpdateCheck YES"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "KIF_SCREENSHOTS"
-            value = "$(SRCROOT)/Specs/Braintree-Acceptance-Specs/Screenshots"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
->>>>>>> beta/paypal-browser-switch:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree-Acceptance-Specs.xcscheme
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -88,15 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-<<<<<<< HEAD:Braintree.xcodeproj/xcshareddata/xcschemes/BraintreeCard.xcscheme
             BlueprintIdentifier = "A7C8898F1B5F043B007A0E9C"
             BuildableName = "BraintreeCard.framework"
             BlueprintName = "BraintreeCard"
-=======
-            BlueprintIdentifier = "16968169192D9A3200120846"
-            BuildableName = "Braintree-Acceptance-Specs.xctest"
-            BlueprintName = "Braintree-Acceptance-Specs"
->>>>>>> beta/paypal-browser-switch:Braintree.xcodeproj/xcshareddata/xcschemes/Braintree-Acceptance-Specs.xcscheme
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
