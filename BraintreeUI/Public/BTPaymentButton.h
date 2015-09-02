@@ -13,7 +13,11 @@
 
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient completion:(void(^)(id <BTTokenized> tokenization, NSError *error))completion;
+
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
+
 @property (nonatomic, strong) BTAPIClient *apiClient;
+
 @property (nonatomic, copy) void(^completion)(id <BTTokenized> token, NSError *error);
 
 
@@ -23,8 +27,8 @@
 /// Setting this property will force the button to reload.
 @property (nonatomic, strong) NSOrderedSet *enabledPaymentOptions;
 
-@property (nonatomic, weak) id<BTAppSwitchDelegate> appSwitchDelegate;
-//@property (nonatomic, weak) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
+@property (nonatomic, weak) id <BTAppSwitchDelegate> appSwitchDelegate;
+//@property (nonatomic, weak) id <BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
 @property (nonatomic, readonly) BOOL hasAvailablePaymentMethod;
 

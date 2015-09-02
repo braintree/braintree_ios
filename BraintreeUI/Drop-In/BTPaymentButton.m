@@ -19,14 +19,19 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 @implementation BTPaymentButton
 
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
+    if (self = [super initWithFrame:CGRectZero]) {
+        [self setupViews];
+        _apiClient = apiClient;
+    }
+    return self;
+}
+
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient
                        completion:(void(^)(id <BTTokenized> tokenization, NSError *error))completion
 {
-    if (self = [super initWithFrame:CGRectZero]) {
-        [self setupViews];
-
-        _apiClient = apiClient;
-        _completion = completion;
+    if (self = [self initWithAPIClient:apiClient]) {
+        _completion = [completion copy];
     }
     return self;
 }

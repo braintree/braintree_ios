@@ -6,6 +6,8 @@ FOUNDATION_EXPORT double BraintreeUIVersionNumber;
 //! Project version string for BraintreeUI.
 FOUNDATION_EXPORT const unsigned char BraintreeUIVersionString[];
 
+#import "BraintreeCore.h"
+#import "Braintree+UI.h"
 #import "BTDropInViewController.h"
 #import "BTPaymentButton.h"
 #import "BTUICardFormView.h"
