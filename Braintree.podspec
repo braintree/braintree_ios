@@ -60,7 +60,7 @@ Pod::Spec.new do |s|
 
   s.subspec "UI" do |s|
     s.source_files  = "BraintreeUI/**/*.{h,m}"
-#    s.public_header_files = "BraintreeUI/Public/*.h"
+    s.public_header_files = "BraintreeUI/Public/*.h"
     s.frameworks = "UIKit"
     s.resource_bundles = {
       "Braintree-UI-Localization" => ["BraintreeUI/Localization/*.lproj"],
