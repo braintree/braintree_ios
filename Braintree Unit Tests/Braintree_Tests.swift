@@ -32,6 +32,8 @@ class Braintree_Tests: XCTestCase {
         let apiClient = Braintree.clientWithClientToken(ValidClientToken)
         let clientToken = try! BTClientToken(clientToken: ValidClientToken)
         XCTAssertEqual(apiClient?.clientToken, clientToken)
+
+
     }
     
     func testAPIClientInitialization_withInvalidClientToken_returnsNil() {
@@ -99,5 +101,26 @@ class Braintree_Tests: XCTestCase {
     
     func testVenmoDriverInitialization_withInvalidClientToken_returnsNil() {
         XCTAssertNil(Braintree.venmoDriverWithClientToken("invalid"))
+    }
+    
+    // MARK: Apple Pay
+    
+    func testApplePayInitialization_withValidClientKey_returnsClientWithClientKey() {
+        let applePayClient = Braintree.applePayClientWithClientKey("development_testing_integration_merchant_id")
+        XCTAssertEqual(applePayClient?.apiClient.clientKey, "development_testing_integration_merchant_id")
+    }
+    
+    func testApplePayInitialization_withInvalidClientKey_returnsNil() {
+        XCTAssertNil(Braintree.applePayClientWithClientKey("invalid"))
+    }
+    
+    func testApplePayInitialization_withValidClientToken_returnsClientWithClientToken() {
+        let applePayClient = Braintree.applePayClientWithClientToken(ValidClientToken)
+        let clientToken = try! BTClientToken(clientToken: ValidClientToken)
+        XCTAssertEqual(applePayClient?.apiClient.clientToken, clientToken)
+    }
+    
+    func testApplePayInitialization_withInvalidClientToken_returnsNil() {
+        XCTAssertNil(Braintree.applePayClientWithClientToken("invalid"))
     }
 }

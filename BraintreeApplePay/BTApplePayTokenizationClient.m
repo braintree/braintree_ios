@@ -1,17 +1,15 @@
-#import "BTApplePayTokenizationClient.h"
+#import "BTApplePayTokenizationClient_Internal.h"
 #import "BTAPIClient_Internal.h"
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
 
 @interface BTApplePayTokenizationClient ()
-@property (nonatomic, strong) BTAPIClient *apiClient;
 @end
 
 @implementation BTApplePayTokenizationClient
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
-        // TODO: should we use copyWithSource:integration:?
         _apiClient = apiClient;
     }
     return self;
