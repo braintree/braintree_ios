@@ -6,7 +6,7 @@
 #import <FLEX/FLEXManager.h>
 #endif
 
-NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Braintree-Demo.payments";
+NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Demo.payments";
 
 @implementation BraintreeDemoAppDelegate
 
@@ -22,7 +22,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Br
     [self setupAppearance];
     [self registerDefaultsFromSettings];
 
-    [BTAppSwitch sharedInstance].returnURLScheme = BraintreeDemoAppDelegatePaymentsURLScheme;
+    [Braintree setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
 
     return YES;
 }

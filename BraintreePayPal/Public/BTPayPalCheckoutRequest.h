@@ -14,6 +14,7 @@ BT_ASSUME_NONNULL_BEGIN
 /// Initialize a checkout request with an amount.
 ///
 /// @param amount An amount greater than or equal to zero.
+/// @return A checkout request, or `nil` if the amount is `nil` or less than 0.
 - (BT_NULLABLE instancetype)initWithAmount:(NSDecimalNumber *)amount;
 
 @property (nonatomic, readonly, strong) NSDecimalNumber *amount;
