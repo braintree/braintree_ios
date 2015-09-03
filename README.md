@@ -10,30 +10,32 @@ The Braintree SDK requires a minimum iOS target of 7.0.
 
 ## Getting Started
 
+** These instructions are for installing the 4.0 beta release **
+
 We recommend using either [Cocoapods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
 ### Cocoapods
 
-To get started with a default installation, add `pod 'Braintree'` to your `Podfile` and run `pod install`. This includes everything you need to accept card, PayPal, and Venmo payments, and also includes our drop-in UI and payment button.
+To get started with a default installation, add `pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'` to your `Podfile` and run `pod install`. This includes everything you need to accept card, PayPal, and Venmo payments, and also includes our drop-in UI and payment button.
 
 You can customize your integration by specifying additional components. For example, you can add Apple Pay support:
 
 ```
-pod 'Braintree'
-pod 'Braintree/Apple-Pay'
+pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
+pod 'Braintree/Apple-Pay', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
 ```
 
 You can also strip down your integration to only support credit and debit cards:
 
 ```
-pod 'Braintree/Card'
+pod 'Braintree/Card', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
 ```
 
 See our [`Podspec`](https://github.com/braintree/braintree_ios/blob/master/Braintree.podspec) for more information.
 
 ### Carthage
 
-Add `github 'braintree/braintree_ios'` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
+Add `github "braintree/braintree_ios" "4.0-beta"` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
 ### Static Library
 
