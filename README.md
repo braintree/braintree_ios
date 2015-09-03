@@ -1,5 +1,7 @@
 # Braintree v.zero SDK for iOS
 
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
 Welcome to Braintree's v.zero SDK for iOS. This CocoaPod will help you accept card, PayPal, and Venmo payments in your iOS app.
 
 ![Screenshot of v.zero](screenshot.png)
