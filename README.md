@@ -2,9 +2,46 @@
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-Welcome to Braintree's v.zero SDK for iOS. This CocoaPod will help you accept card, PayPal, and Venmo payments in your iOS app.
+Welcome to Braintree's v.zero SDK for iOS. This library will help you accept card, PayPal, and Venmo payments in your iOS app.
+
+The Braintree SDK requires a minimum iOS target of 7.0.
 
 ![Screenshot of v.zero](screenshot.png)
+
+## Getting Started
+
+We recommend using either [Cocoapods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
+
+### Cocoapods
+
+To get started with a default installation, add `pod 'Braintree'` to your `Podfile` and run `pod install`. This includes everything you need to accept card, PayPal, and Venmo payments, and also includes our drop-in UI and payment button.
+
+You can customize your integration by specifying additional components. For example, you can add Apple Pay support:
+
+```
+pod 'Braintree'
+pod 'Braintree/Apple-Pay'
+```
+
+You can also strip down your integration to only support credit and debit cards:
+
+```
+pod 'Braintree/Card'
+```
+
+See our [`Podspec`](https://github.com/braintree/braintree_ios/blob/master/Braintree.podspec) for more information.
+
+### Carthage
+
+Add `github 'braintree/braintree_ios'` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
+
+### Static Library
+
+We plan to offer a static library of the Braintree SDK.
+
+### Manual Integration
+
+Follow the [manual integration instructions](https://github.braintreeps.com/braintree/braintree-ios/blob/master/Docs/Manual%20Integration.md).
 
 ## Documentation
 
@@ -17,18 +54,6 @@ Finally, [**cocoadocs.org/docsets/Braintree**](http://cocoadocs.org/docsets/Brai
 ## Demo
 
 A demo app is included in project. To run it, run `pod install` and then open `Braintree.xcworkspace` in Xcode. See the [README](Demos/Braintree-Demo/README.md) for more details.
-
-### Special note on preprocessor macros
-
-Apple Pay is a build option. To include Apple Pay support in your build, use the `Apple-Pay` subspec in your Podfile:
-
-```
-pod "Braintree"
-pod "Braintree/Apple-Pay"
-```
-
-Then ensure `BT_ENABLE_APPLE_PAY=1` is present in your target's "Preprocessor Macros" settings.
-By default, this should happen automatically if you have a Preprocessor Macro entry for `$(inherited)`.
 
 ## Help
 
