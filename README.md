@@ -45,6 +45,64 @@ We plan to offer a static library of the Braintree SDK.
 
 Follow the [manual integration instructions](https://github.braintreeps.com/braintree/braintree-ios/blob/master/Docs/Manual%20Integration.md).
 
+## Supporting iOS 9
+
+iOS 9 introduces new security requirements and restrictions that can impact the behavior of the Braintree SDK.
+
+### App Transport Security
+
+If your app is compiled with iOS 9 SDK, it must comply with Apple's [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) policy.
+
+Please whitelist the Braintree Gateway domain by adding the following to your application's plist:
+
+```
+  <key>NSAppTransportSecurity</key>
+  <dict>
+    <key>NSExceptionDomains</key>
+    <dict>
+      <key>api.braintreegateway.com</key>
+      <dict>
+          <key>NSExceptionRequiresForwardSecrecy</key>
+          <false/>
+      </dict>
+    </dict>
+  </dict>
+```
+
+If your app uses BraintreeFraud, also include the following under `NSExceptionDomains`:
+
+```
+  <key>kaptcha.com</key>
+    <dict>
+      <key>NSExceptionRequiresForwardSecrecy</key>
+      <false/>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSTemporaryExceptionMinimumTLSVersion</key>
+      <string>TLSv1.0</string>
+  </dict>
+```
+
+### URL Query Scheme Whitelist
+
+If your app is compiled with iOS 9 SDK and integrates payment options with an app-switch workflow, you must add URL schemes to the whitelist in your application's plist.
+
+If your app supports payments from PayPal:
+* `com.paypal.ppclient.touch.v1`
+* `com.paypal.ppclient.touch.v2`
+
+If your app supports payments from Venmo:
+* `com.venmo.touch.v1`
+
+For example, if your app supports both PayPal and Venmo, you could add the following:
+```
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>com.venmo.touch.v1</string>
+    <string>com.paypal.ppclient.touch.v2</string>
+  </array>
+```
+
 ## Documentation
 
 Start with [**'Hello, Client!'**](https://developers.braintreepayments.com/ios/start/hello-client) for instructions on basic setup and usage.
