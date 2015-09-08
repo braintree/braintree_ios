@@ -99,6 +99,7 @@ For example, if your app supports both PayPal and Venmo, you could add the follo
   <key>LSApplicationQueriesSchemes</key>
   <array>
     <string>com.venmo.touch.v1</string>
+    <string>com.paypal.ppclient.touch.v1</string>
     <string>com.paypal.ppclient.touch.v2</string>
   </array>
 ```
