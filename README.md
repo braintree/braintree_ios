@@ -32,6 +32,65 @@ By default, this should happen automatically if you have a Preprocessor Macro en
 
 At the time of this writing, iOS 9 and Xcode 7 are still in beta, so these instructions may change.
 
+iOS 9 introduces new security requirements and restrictions that can impact the behavior of the Braintree SDK.
+
+### App Transport Security
+
+If your app is compiled with iOS 9 SDK, it must comply with Apple's [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) policy.
+
+Please whitelist the Braintree Gateway domain by adding the following to your application's plist:
+
+```
+  <key>NSAppTransportSecurity</key>
+  <dict>
+    <key>NSExceptionDomains</key>
+    <dict>
+      <key>api.braintreegateway.com</key>
+      <dict>
+          <key>NSExceptionRequiresForwardSecrecy</key>
+          <false/>
+      </dict>
+    </dict>
+  </dict>
+```
+
+If your app uses `BTData`, also include the following under `NSExceptionDomains`:
+
+```
+  <key>kaptcha.com</key>
+    <dict>
+      <key>NSExceptionRequiresForwardSecrecy</key>
+      <false/>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSTemporaryExceptionMinimumTLSVersion</key>
+      <string>TLSv1.0</string>
+  </dict>
+```
+
+### URL Query Scheme Whitelist
+
+If your app is compiled with iOS 9 SDK and integrates payment options with an app-switch workflow, you must add URL schemes to the whitelist in your application's plist.
+
+If your app supports payments from PayPal:
+* `com.paypal.ppclient.touch.v1`
+* `com.paypal.ppclient.touch.v2`
+* `org-appextension-feature-password-management`
+
+If your app supports payments from Venmo:
+* `com.venmo.touch.v1`
+
+For example, if your app supports both PayPal and Venmo, you could add the following:
+```
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>com.venmo.touch.v1</string>
+    <string>com.paypal.ppclient.touch.v1</string>
+    <string>com.paypal.ppclient.touch.v2</string>
+    <string>org-appextension-feature-password-management</string>
+  </array>
+```
+
 There is a new `UIApplicationDelegate` method that you may implement on iOS 9:
 ```
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
@@ -42,16 +101,6 @@ In either case, you still need to implement the deprecated equivalent in order t
 ```
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 ```
-
-To support PayPal and Venmo, whitelist querying the following URL schemes in your Info.plist:
-```
-com.paypal.ppclient.touch.v1
-com.paypal.ppclient.touch.v2
-org-appextension-feature-password-management
-com.venmo.touch.v1
-```
-
-The `BTPaymentProvider` uses the `com.venmo.touch.v1` URL scheme to detect Venmo.
 
 ## Help
 
