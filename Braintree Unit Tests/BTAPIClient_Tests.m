@@ -165,7 +165,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://sandbox.braintreegateway.com/merchants/key/client_api");
 
     apiClient = [[BTAPIClient alloc] initWithClientKey:@"production_client_key"];
-    XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://braintreegateway.com/merchants/key/client_api");
+    XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://api.braintreegateway.com:443/merchants/key/client_api");
 }
 
 #pragma mark - Configuration

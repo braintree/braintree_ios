@@ -134,8 +134,7 @@
                 clientKey = @"sandbox_9dbg82cq_dcpspy2brwdjr3qn";
                 break;
             case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
-                // TODO: replace with production client key
-                clientKey = @"production_testing_integration_merchant_id";
+                clientKey = @"production_t2wns2y2_dfy45jdj3dxkmz5m";
                 break;
             case BraintreeDemoTransactionServiceEnvironmentCustomMerchant:
             default:
