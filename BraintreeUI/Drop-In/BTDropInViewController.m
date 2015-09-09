@@ -29,11 +29,8 @@
 
 /// Strong reference to a BTDropInErrorAlert. Reference is needed to
 /// handle user input from UIAlertView.
+// TODO: double check that this strong reference is really needed...
 @property (nonatomic, strong) BTDropInErrorAlert *fetchPaymentMethodsErrorAlert;
-
-/// Strong reference to  BTDropInErrorAlert. Reference is needed to
-/// handle user input from UIAlertView.
-@property (nonatomic, strong) BTDropInErrorAlert *saveAccountErrorAlert;
 
 @property (nonatomic, assign) BOOL cardEntryDidBegin;
 
@@ -52,22 +49,32 @@
         self.dropInContentView.paymentButton.apiClient = self.apiClient;
         __weak typeof(self) weakSelf = self;
         self.dropInContentView.paymentButton.completion = ^(id<BTTokenized> tokenization, NSError *error) {
-            // TODO: move delegate method code here
+            // TODO: uncomment when BTCoinbase is implemented?
+            //    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
 
-            if (tokenization) {
+            if (error) {
+                NSString *savePaymentMethodErrorAlertTitle = error.localizedDescription ?: BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
+
+                BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:weakSelf];
+                errorAlert.title = savePaymentMethodErrorAlertTitle;
+                errorAlert.cancelBlock = ^{
+                    // Use the paymentInfoObjects setter to update state
+                    weakSelf.paymentInfoObjects = weakSelf.paymentInfoObjects;
+                };
+
+                [errorAlert show];
+            } else if (tokenization) {
                 NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:weakSelf.paymentInfoObjects];
                 [newPaymentMethods insertObject:tokenization atIndex:0];
                 weakSelf.paymentInfoObjects = newPaymentMethods;
-
-                // Let the addPaymentMethodDropInViewController release
-                weakSelf.addPaymentMethodDropInViewController = nil;
             } else {
-                NSLog(@"error = %@", error);
+                // Refresh payment methods display
+                weakSelf.paymentInfoObjects = weakSelf.paymentInfoObjects;
+                NSLog(@"User cancelled payment");
             }
-            // TODO: handle error
-            
-            
-            
+
+            // Let the addPaymentMethodDropInViewController release
+            weakSelf.addPaymentMethodDropInViewController = nil;
         };
 
         self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
@@ -121,7 +128,9 @@
         self.paymentInfoObjects = @[]; // Drop-in view controller remains in what appears to be a loading state until this is set
 
         if (error) {
-            // TODO: sane fallback if we can't fetch remote configuration?
+            BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
+            errorAlert.title = error.localizedDescription ?: BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
+            [errorAlert show];
         }
 
         NSArray *challenges = configuration.json[@"challenges"].asArray;
@@ -359,41 +368,30 @@
                     if ([error.domain isEqualToString:@"com.braintreepayments.BTCardTokenizationClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
                         [self informUserDidFailWithError:error];
                     } else {
-                        NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
-                        NSString *localizedAlertMessage = error.localizedDescription;
-                        NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
-
-                        if ([UIAlertController class]) {
-                            UIAlertController *alert = [UIAlertController alertControllerWithTitle:localizedAlertTitle message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
-                            [alert addAction:[UIAlertAction actionWithTitle:localizedCancel style:UIAlertActionStyleCancel handler:nil]];
-                            [self presentViewController:alert animated:YES completion:nil];
-                        } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                            [[[UIAlertView alloc] initWithTitle:localizedAlertTitle message:localizedAlertMessage delegate:nil cancelButtonTitle:localizedCancel otherButtonTitles:nil] show];
-#pragma clang diagnostic pop
-                        }
+                        BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
+                        errorAlert.title = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
+                        errorAlert.message = error.localizedDescription;
+                        __weak typeof(self) weakSelf = self;
+                        errorAlert.cancelBlock = ^{
+                            // Use the paymentInfoObjects setter to update state
+                            weakSelf.paymentInfoObjects = weakSelf.paymentInfoObjects;
+                        };
+                        [errorAlert show];
                     }
                     return;
                 }
 
                 [client postAnalyticsEvent:@"dropin.ios.add-card.success"];
                 [self informDelegateDidAddPaymentInfo:tokenization];
+
+                // Let the view controller release
+                self.addPaymentMethodDropInViewController = nil;
             }];
         } else {
-            NSString *localizedAlertTitle = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
-            NSString *localizedAlertMessage = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
-            NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
-            if ([UIAlertController class]) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:localizedAlertTitle message:localizedAlertMessage preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:localizedCancel style:UIAlertActionStyleCancel handler:nil]];
-                [self presentViewController:alert animated:YES completion:nil];
-            } else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                [[[UIAlertView alloc] initWithTitle:localizedAlertTitle message:localizedAlertMessage delegate:nil cancelButtonTitle:localizedCancel otherButtonTitles:nil] show];
-#pragma clang diagnostic pop
-            }
+            BTDropInErrorAlert *alert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
+            alert.title = BTDropInLocalizedString(ERROR_SAVING_CARD_ALERT_TITLE);
+            alert.message = BTDropInLocalizedString(ERROR_SAVING_CARD_MESSAGE);
+            [alert show];
         }
     }
 }
@@ -506,75 +504,6 @@
 //    self.originalCoinbaseStoreInVault = [[BTCoinbase sharedCoinbase] storeInVault];
 //    [[BTCoinbase sharedCoinbase] setStoreInVault:YES];
 //}
-
-
-
-// Moving to block...
-//- (void)paymentDriver:(__unused id)sender didCreatePaymentMethod:(id<BTTokenized> )paymentMethod {
-//    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
-//
-//    NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentInfoObjects];
-//    [newPaymentMethods insertObject:paymentMethod atIndex:0];
-//    self.paymentInfoObjects = newPaymentMethods;
-//
-//    // Let the addPaymentMethodDropInViewController release
-//    self.addPaymentMethodDropInViewController = nil;
-//}
-
-
-// TODO: move to block
-//- (void)paymentDriver:(id)sender didFailWithError:(NSError *)error {
-//    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
-//
-//    NSString *savePaymentMethodErrorAlertTitle;
-//    if ([error localizedDescription]) {
-//        savePaymentMethodErrorAlertTitle = [error localizedDescription];
-//    } else {
-//        savePaymentMethodErrorAlertTitle = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
-//    }
-//
-//    if (sender != self.dropInContentView.paymentButton) {
-//
-//        self.saveAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
-//            // Use the paymentInfoObjects setter to update state
-//            [self setPaymentMethods:_paymentMethods];
-//            self.saveAccountErrorAlert = nil;
-//        } retry:nil];
-//        self.saveAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
-//        [self.saveAccountErrorAlert show];
-//    } else {
-//        self.saveAccountErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
-//            // Use the paymentInfoObjects setter to update state
-//            [self setPaymentMethods:_paymentMethods];
-//            self.saveAccountErrorAlert = nil;
-//        } retry:nil];
-//        self.saveAccountErrorAlert.title = savePaymentMethodErrorAlertTitle;
-//        [self.saveAccountErrorAlert show];
-//    }
-//
-//    // Let the addPaymentMethodDropInViewController release
-//    self.addPaymentMethodDropInViewController = nil;
-//}
-//
-//- (void)paymentDriverDidCancel:(__unused id)sender {
-//    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
-//
-//    // Refresh payment methods display
-//    self.paymentInfoObjects = self.paymentInfoObjects;
-//
-//    // Let the addPaymentMethodDropInViewController release
-//    self.addPaymentMethodDropInViewController = nil;
-//}
-
-
-
-
-
-
-
-
-
-
 
 
 #pragma mark Delegate Notifications

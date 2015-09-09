@@ -1,23 +1,15 @@
-#import <UIKit/UIKit.h>
-
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
 
 @interface BTDropInErrorAlert () <UIAlertViewDelegate>
-
-@property (nonatomic, copy) void (^retryBlock)(void);
-
-@property (nonatomic, copy) void (^cancelBlock)(void);
-
 @end
 
 @implementation BTDropInErrorAlert
 
-- (instancetype)initWithCancel:(void (^)(void))cancelBlock retry:(void (^)(void))retryBlock {
-    self = [super init];
-    if (self) {
-        self.retryBlock = retryBlock;
-        self.cancelBlock = cancelBlock;
+- (instancetype)initWithPresentingViewController:(UIViewController *)viewController
+{
+    if (self = [super init]) {
+        _presentingViewController = viewController;
     }
     return self;
 }
@@ -27,23 +19,44 @@
     NSString *localizedOK = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
     NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_CANCEL_BUTTON_TEXT);
 
-    // TODO: Add support for UIAlertController
+    if ([UIAlertController class]) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:self.title message:self.message preferredStyle:UIAlertControllerStyleAlert];
+
+        [alertController addAction:[UIAlertAction actionWithTitle:self.retryBlock ? localizedCancel : localizedOK
+                                                            style:UIAlertActionStyleCancel
+                                                          handler:^(__unused UIAlertAction *action) {
+                                                              if (self.cancelBlock) {
+                                                                  self.cancelBlock();
+                                                              }
+                                                          }]];
+        if (self.retryBlock) {
+            [alertController addAction:[UIAlertAction actionWithTitle:BTDropInLocalizedString(ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT)
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(__unused UIAlertAction *action) {
+                if (self.retryBlock) {
+                    self.retryBlock();
+                }
+            }]];
+        }
+
+        [self.presentingViewController presentViewController:alertController animated:YES completion:nil];
+    } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
-                                                        message:self.message
-                                                       delegate:self
-                                              cancelButtonTitle:self.retryBlock ? localizedCancel : localizedOK
-                                 otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:self.title
+                                                            message:self.message
+                                                           delegate:self
+                                                  cancelButtonTitle:self.retryBlock ? localizedCancel : localizedOK
+                                                  otherButtonTitles:nil];
 
-    if (self.retryBlock) {
-        NSString *localizedTryAgain = BTDropInLocalizedString(ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT);
-        [alertView addButtonWithTitle:localizedTryAgain];
-
-    }
-
-    [alertView show];
+        if (self.retryBlock) {
+            NSString *localizedTryAgain = BTDropInLocalizedString(ERROR_ALERT_TRY_AGAIN_BUTTON_TEXT);
+            [alertView addButtonWithTitle:localizedTryAgain];
+        }
+        
+        [alertView show];
 #pragma clang diagnostic pop
+    }
 }
 
 - (void)alertView:(__unused UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -55,9 +68,7 @@
 }
 
 - (NSString *)title {
-    NSString *localizedConnectionError = BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
-
-    return _title ?: localizedConnectionError;
+    return _title ?: BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
 }
 
 @end
