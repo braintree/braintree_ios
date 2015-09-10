@@ -8,6 +8,8 @@
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
+#import "BTTokenizationParser.h"
+#import "BTTokenizationService.h"
 
 @interface BTDropInViewController () <BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTDropInViewControllerDelegate, BTDropInSelectPaymentMethodViewControllerDelegate>
 
@@ -26,11 +28,6 @@
 ///
 /// Defaults to `YES`.
 @property (nonatomic, assign) BOOL fullForm;
-
-/// Strong reference to a BTDropInErrorAlert. Reference is needed to
-/// handle user input from UIAlertView.
-// TODO: double check that this strong reference is really needed...
-@property (nonatomic, strong) BTDropInErrorAlert *fetchPaymentMethodsErrorAlert;
 
 @property (nonatomic, assign) BOOL cardEntryDidBegin;
 
@@ -124,8 +121,8 @@
             NSLog(@"ERROR: Drop-in delegate not set");
         }
 
-        // TODO: this should be fetched
-        self.paymentInfoObjects = @[]; // Drop-in view controller remains in what appears to be a loading state until this is set
+        // Drop-in view controller remains in a loading state until this is set
+        self.paymentInfoObjects = self.paymentInfoObjects;
 
         if (error) {
             BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
@@ -624,26 +621,50 @@
     }];
 }
 
-- (void)fetchPaymentMethods {
-//    BOOL networkActivityIndicatorState = [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible];
-//    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+- (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock {
+    if (self.apiClient.clientKey) {
+        if (completionBlock) completionBlock();
+        return;
+    }
+    
+    BOOL networkActivityIndicatorState = [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    [self.apiClient GET:@"v1/payment_methods"
+             parameters:nil
+             completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
 
-//    [self.apiClient fetchPaymentMethodsWithSuccess:^(NSArray *paymentInfoObjects) {
-//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
-//        self.paymentInfoObjects = paymentInfoObjects;
-//    } failure:^(__unused NSError *error) {
-//        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
-//
-//        self.fetchPaymentMethodsErrorAlert = [[BTDropInErrorAlert alloc] initWithCancel:^{
-//            [self informDelegateDidCancel];
-//            self.fetchPaymentMethodsErrorAlert = nil;
-//        } retry:^{
-//            [self fetchPaymentMethods];
-//            self.fetchPaymentMethodsErrorAlert = nil;
-//        }];
-//
-//        [self.fetchPaymentMethodsErrorAlert show];
-//    }];
+                     if (error) {
+                         BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
+                         errorAlert.title = error.localizedDescription;
+                         BTJSON *errorBody = error.userInfo[BTHTTPJSONResponseBodyKey];
+                         errorAlert.message = errorBody[@"error"][@"message"].asString;
+                         errorAlert.cancelBlock = ^{
+                             [self informDelegateDidCancel];
+                             if (completionBlock) completionBlock();
+                         };
+                         errorAlert.retryBlock = ^{
+                             [self fetchPaymentMethodsOnCompletion:completionBlock];
+                         };
+                         [errorAlert show];
+
+                         return;
+                     }
+
+                     NSMutableArray *paymentInfoObjects = [NSMutableArray array];
+                     for (NSDictionary *paymentInfo in body[@"paymentMethods"].asArray) {
+                         BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
+                         id <BTTokenized> tokenization = [[BTTokenizationParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
+                         if (tokenization) [paymentInfoObjects addObject:tokenization];
+                     }
+                     if (paymentInfoObjects.count) {
+                         self.paymentInfoObjects = [paymentInfoObjects copy];
+                     }
+                     if (completionBlock) completionBlock();
+                 });
+    }];
 }
 
 #pragma mark - Helpers

@@ -90,7 +90,9 @@
 /// @note For the best user experience, you should call this method as early as
 ///       possible (after initializing BTDropInViewController, before presenting it)
 ///       in order to avoid a loading spinner.
-- (void)fetchPaymentMethods;
+///
+/// @param completionBlock A block that gets called on completion.
+- (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock;
 
 
 @end

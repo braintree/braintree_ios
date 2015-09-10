@@ -5,7 +5,7 @@ NSString * const BTTokenizationServiceErrorDomain = @"com.braintreepayments.BTTo
 @interface BTTokenizationService ()
 /// Dictionary of tokenization blocks keyed by types as strings. The blocks have the following type:
 ///
-/// `void(^)(BTAPIClient *apiClient, NSDictionary *options, void(^completionBlock)(id<BTTokenized> tokenization, NSError *error))`
+/// `void(^)(BTAPIClient *apiClient, NSDictionary *options, void(^completionBlock)(id <BTTokenized> tokenization, NSError *error))`
 @property (nonatomic, strong) NSMutableDictionary *tokenizationBlocks;
 @end
 
@@ -27,7 +27,7 @@ NSString * const BTTokenizationServiceErrorDomain = @"com.braintreepayments.BTTo
     return _tokenizationBlocks;
 }
 
-- (void)registerType:(NSString *)type withTokenizationBlock:(void(^)(BTAPIClient *apiClient, NSDictionary *options, void(^)(id<BTTokenized> tokenization, NSError *error)))tokenizationBlock
+- (void)registerType:(NSString *)type withTokenizationBlock:(void(^)(BTAPIClient *apiClient, NSDictionary *options, void(^)(id <BTTokenized> tokenization, NSError *error)))tokenizationBlock
 {
     self.tokenizationBlocks[type] = [tokenizationBlock copy];
 }

@@ -1,4 +1,5 @@
 #import "BTErrors.h"
+#import "BTTokenizationParser.h"
 #import "BTTokenizationService.h"
 #import "BTCardTokenizationClient.h"
 #import "BTTokenizedCard_Internal.h"
@@ -23,12 +24,15 @@ NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BT
             BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithParameters:options];
             [client tokenizeCard:request completion:completionBlock];
         }];
+
+        [[BTTokenizationParser sharedParser] registerType:@"Card" withParsingBlock:^id<BTTokenized> _Nullable(BTJSON * _Nonnull creditCard) {
+            return [BTTokenizedCard cardWithJSON:creditCard];
+        }];
     }
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
-        // TODO: do we need to use copyWithSource:integration: here?
         self.apiClient = apiClient;
     }
     return self;

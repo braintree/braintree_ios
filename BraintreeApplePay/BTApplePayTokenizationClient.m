@@ -1,5 +1,6 @@
 #import "BTApplePayTokenizationClient_Internal.h"
 #import "BTAPIClient_Internal.h"
+#import "BTTokenizationParser.h"
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
 
@@ -7,6 +8,14 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 @end
 
 @implementation BTApplePayTokenizationClient
+
++ (void)load {
+    if (self == [BTApplePayTokenizationClient class]) {
+        [[BTTokenizationParser sharedParser] registerType:@"ApplePayCard" withParsingBlock:^id<BTTokenized> _Nullable(BTJSON * _Nonnull applePayCard) {
+            return [[BTTokenizedApplePayPayment alloc] initWithPaymentMethodNonce:applePayCard[@"nonce"].asString description:applePayCard[@"description"].asString];
+        }];
+    }
+}
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
