@@ -3,6 +3,7 @@
 #include <sys/sysctl.h>
 
 #import "Braintree-Version.h"
+#import "BTClientToken.h"
 #import "BTAPIPinnedCertificates.h"
 #import "BTURLUtils.h"
 #import "BTLogger_Internal.h"
@@ -59,8 +60,18 @@ NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONR
     return self;
 }
 
+- (instancetype)initWithClientToken:(BTClientToken *)clientToken {
+    return [self initWithBaseURL:clientToken.json[@"clientApiUrl"].asURL authorizationFingerprint:clientToken.authorizationFingerprint];
+}
+
 - (instancetype)copyWithZone:(NSZone *)zone {
-    BTHTTP *copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:_baseURL authorizationFingerprint:_authorizationFingerprint];
+    BTHTTP *copiedHTTP;
+    if (self.authorizationFingerprint) {
+        copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL authorizationFingerprint:self.authorizationFingerprint];
+    } else {
+        copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL clientKey:self.clientKey];
+    }
+    
     copiedHTTP.pinnedCertificates = [_pinnedCertificates copy];
     return copiedHTTP;
 }
