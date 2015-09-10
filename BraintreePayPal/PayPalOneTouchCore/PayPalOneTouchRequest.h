@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchRequest.h
 //
-//  Version 2.1.2
+//  Version 3.0.0
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
@@ -14,6 +14,9 @@ typedef void (^PayPalOneTouchRequestPreflightCompletionBlock) (PayPalOneTouchReq
 
 /// Completion block for receiving the result of performing a request
 typedef void (^PayPalOneTouchRequestCompletionBlock) (BOOL success, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error);
+
+/// Adapter block for app switching.
+typedef void (^PayPalOneTouchRequestAdapterBlock) (NSURL *url);
 
 /// This environment MUST be used for App Store submissions.
 extern NSString *const PayPalEnvironmentProduction;
@@ -39,15 +42,15 @@ extern NSString *const PayPalEnvironmentMock;
 /// Ask the OneTouch library to carry out a request.
 /// Will app-switch to the PayPal mobile Wallet app if present, or to web browser otherwise.
 ///
-/// @param request The PayPalOneTouchAuthorizationRequest, PayPalOneTouchCheckoutRequest, or other subclass object
+/// @param adapterBlock Block that makes the URL request.
 /// @param completionBlock Block that is called when the request has finished initiating
 ///        (i.e., app-switch has occurred or an error was encountered).
 ///
-/// @note As currently implemented, the appropriate app-switch (to Wallet, browser, or neither) will
-///       happen immediately, followed in turn by an immediate call of the completionBlock.
+/// @note The adapter block is responsible to determine app-switch (to Wallet, browser, or neither). After the request completionBlock is called immediately.
 ///       We use a completion block here to allow for future changes in implementation that might cause
 ///       delays (such as time-consuming cryptographic operations, or server interactions).
-- (void)performWithCompletionBlock:(PayPalOneTouchRequestCompletionBlock)completionBlock;
+- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock
+                completionBlock:(PayPalOneTouchRequestCompletionBlock)completionBlock;
 
 /// Get token from approval URL
 + (NSString *)tokenFromApprovalURL:(NSURL *)approvalURL;
