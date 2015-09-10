@@ -70,6 +70,11 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>www.paypalobjects.com</key>
+			<dict>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+			</dict>
 			<key>api.braintreegateway.com</key>
 			<dict>
 				<key>NSExceptionRequiresForwardSecrecy</key>
