@@ -1,22 +1,22 @@
 #import "Braintree+ApplePay.h"
-#import "BTApplePayTokenizationClient.h"
+#import "BTApplePayClient.h"
 
 @implementation Braintree (ApplePay)
 
-+ (BTApplePayTokenizationClient *)applePayClientWithClientKey:(NSString *)clientKey {
++ (BTApplePayClient *)applePayClientWithClientKey:(NSString *)clientKey {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey];
     if (!apiClient) {
         return nil;
     }
-    return [[BTApplePayTokenizationClient alloc] initWithAPIClient:apiClient];
+    return [[BTApplePayClient alloc] initWithAPIClient:apiClient];
 }
 
-+ (BTApplePayTokenizationClient *)applePayClientWithClientToken:(NSString *)clientToken {
++ (BTApplePayClient *)applePayClientWithClientToken:(NSString *)clientToken {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientToken:clientToken];
     if (!apiClient) {
         return nil;
     }
-    return [[BTApplePayTokenizationClient alloc] initWithAPIClient:apiClient];
+    return [[BTApplePayClient alloc] initWithAPIClient:apiClient];
 }
 
 @end

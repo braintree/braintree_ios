@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
     BTApplePayErrorTypeUnsupported,
 };
 
-@interface BTApplePayTokenizationClient : NSObject
+@interface BTApplePayClient : NSObject
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
 

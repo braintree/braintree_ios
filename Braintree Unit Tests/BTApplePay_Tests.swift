@@ -19,7 +19,7 @@ class BTApplePay_Tests: XCTestCase {
             ])
         let expectation = expectationWithDescription("Unsuccessful tokenization")
 
-        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let client = BTApplePayClient(APIClient: mockClient)
         let payment = MockPKPayment()
         client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
             XCTAssertEqual(error!.domain, BTApplePayErrorDomain)
@@ -33,7 +33,7 @@ class BTApplePay_Tests: XCTestCase {
         mockClient.cannedConfigurationResponseBody = BTJSON(value: [:])
         let expectation = expectationWithDescription("Unsuccessful tokenization")
 
-        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let client = BTApplePayClient(APIClient: mockClient)
         let payment = MockPKPayment()
         client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
             XCTAssertEqual(error!.domain, BTApplePayErrorDomain)
@@ -46,7 +46,7 @@ class BTApplePay_Tests: XCTestCase {
 
     func testTokenization_whenConfigurationFetchErrorOccurs_callsBackWithError() {
         mockClient.cannedConfigurationResponseError = NSError(domain: "MyError", code: 1, userInfo: nil)
-        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let client = BTApplePayClient(APIClient: mockClient)
         let payment = MockPKPayment()
         let expectation = expectationWithDescription("tokenization error")
 
@@ -67,7 +67,7 @@ class BTApplePay_Tests: XCTestCase {
             ])
         mockClient.cannedHTTPURLResponse = NSHTTPURLResponse(URL: NSURL(string: "any")!, statusCode: 503, HTTPVersion: nil, headerFields: nil)
         mockClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: nil)
-        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let client = BTApplePayClient(APIClient: mockClient)
         let payment = MockPKPayment()
         let expectation = expectationWithDescription("tokenization failure")
 
@@ -86,7 +86,7 @@ class BTApplePay_Tests: XCTestCase {
             ]
             ])
         mockClient.cannedResponseError = NSError(domain: "MyError", code: 1, userInfo: nil)
-        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let client = BTApplePayClient(APIClient: mockClient)
         let payment = MockPKPayment()
         let expectation = expectationWithDescription("tokenization failure")
 
@@ -115,7 +115,7 @@ class BTApplePay_Tests: XCTestCase {
             ])
         let expectation = expectationWithDescription("successful tokenization")
 
-        let client = BTApplePayTokenizationClient(APIClient: mockClient)
+        let client = BTApplePayClient(APIClient: mockClient)
         let payment = MockPKPayment()
         client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
             XCTAssertNil(error)

@@ -1,6 +1,6 @@
-#import "BTApplePayTokenizationClient.h"
+#import "BTApplePayClient.h"
 
-@interface BTApplePayTokenizationClient ()
+@interface BTApplePayClient ()
 
 /// Exposed for testing to get the instance of BTAPIClient
 @property (nonatomic, strong) BTAPIClient *apiClient;

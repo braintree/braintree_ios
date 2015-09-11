@@ -138,8 +138,8 @@
                                 completion:(void (^)(PKPaymentAuthorizationStatus status))completion
 {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
-    BTApplePayTokenizationClient *applePayTokenizationClient = [[BTApplePayTokenizationClient alloc] initWithAPIClient:self.apiClient];
-    [applePayTokenizationClient tokenizeApplePayPayment:payment completion:^(BTTokenizedApplePayPayment * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+    BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:self.apiClient];
+    [applePayClient tokenizeApplePayPayment:payment completion:^(BTTokenizedApplePayPayment * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
             completion(PKPaymentAuthorizationStatusFailure);
