@@ -8,10 +8,12 @@
 #import "BTTokenizedPayPalCheckout_Internal.h"
 #import "BTPostalAddress.h"
 #import "BTLogger_Internal.h"
+#import <SafariServices/SafariServices.h>
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
 static void (^appSwitchReturnBlock)(NSURL *url);
+static SFSafariViewController *safariViewController;
 
 @interface BTPayPalDriver ()
 @end
@@ -86,7 +88,10 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
 
         [self informDelegateWillPerformAppSwitch];
-        [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, __unused NSString *clientMetadataId, NSError *error) {
+        [request performWithAdapterBlock:^(NSURL *url) {
+            [self performSwitchRequest:url];
+        } completionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, __unused NSString *clientMetadataId, NSError *error) {
+                
             [self postAnalyticsEventForInitiatingOneTouchWithSuccess:success target:target];
             if (success) {
                 [self informDelegateDidPerformAppSwitchToTarget:target];
@@ -221,7 +226,9 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
                       [self informDelegateWillPerformAppSwitch];
 
-                      [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, __unused NSString *clientMetadataId, NSError *error) {
+                      [request performWithAdapterBlock:^(NSURL *url) {
+                          [self performSwitchRequest:url];
+                      } completionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, __unused NSString *clientMetadataId, NSError *error) {
                           [self postAnalyticsEventForSinglePaymentForInitiatingOneTouchWithSuccess:success target:target];
                           if (success) {
                               [self informDelegateDidPerformAppSwitchToTarget:target];
@@ -323,6 +330,16 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 }
 
 #pragma mark - Helpers
+
+- (void)performSwitchRequest:(NSURL*) appSwitchURL {
+    if([SFSafariViewController class]){
+        safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
+        [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:safariViewController animated:YES completion:nil];
+    }
+    else {
+        [[UIApplication sharedApplication] openURL:appSwitchURL];
+    }
+}
 
 - (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {
     NSString *btPayPalEnvironmentName = configuration[@"paypal"][@"environment"].asString;
@@ -674,6 +691,11 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 }
 
 + (void)handleAppSwitchReturnURL:(NSURL *)url {
+    if (safariViewController) {
+        [safariViewController dismissViewControllerAnimated:YES completion:^{
+            safariViewController = nil;
+        }];
+    }
     if (appSwitchReturnBlock) {
         appSwitchReturnBlock(url);
     }
