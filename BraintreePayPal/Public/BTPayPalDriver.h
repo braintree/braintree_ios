@@ -132,6 +132,20 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
                          completion:(void (^)(BTTokenizedPayPalCheckout * __BT_NULLABLE tokenizedPayPalCheckout, NSError * __BT_NULLABLE error))completionBlock;
 
+/// Check out with PayPal to create a Billing Agreement PayPal payment method nonce.
+///
+/// You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+/// server when this method completes without any additional user interaction.
+///
+/// @note This method is mutually exclusive with `authorizeAccountWithCompletion:`. In both cases, you need to create a
+/// Braintree transaction from your server in order to actually move money!
+///
+/// @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
+/// On success, you will receive an instance of `BTTokenizedPayPalCheckout`; on failure, an error; on user cancellation,
+/// you will receive `nil` for both parameters.
+- (void)billingAgreementWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
+                         completion:(void (^)(BTTokenizedPayPalCheckout * __BT_NULLABLE tokenizedPayPalCheckout, NSError * __BT_NULLABLE error))completionBlock;
+
 
 #pragma mark - Delegate
 

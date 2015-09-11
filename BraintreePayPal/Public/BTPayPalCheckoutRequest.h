@@ -19,7 +19,9 @@ BT_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly, strong) NSDecimalNumber *amount;
 @property (nonatomic, BT_NULLABLE, copy) NSString *currencyCode;
-
+@property (nonatomic, BT_NULLABLE, copy) NSString *localeCode;
+@property (nonatomic)                    BOOL enableShippingAddress;
+@property (nonatomic)                    BOOL addressOverride;
 @property (nonatomic, BT_NULLABLE, strong) BTPostalAddress *shippingAddress;
 
 @end

@@ -151,8 +151,18 @@ static SFSafariViewController *safariViewController;
 
 #pragma mark - Checkout (Single Payments)
 
+- (void)billingAgreementWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
+    [self checkoutWithCheckoutRequest:checkoutRequest
+                           completion:completionBlock isBillingAgreement:YES];
+}
+
 - (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
-    if (!checkoutRequest || !checkoutRequest.amount) {
+    [self checkoutWithCheckoutRequest:checkoutRequest
+                           completion:completionBlock isBillingAgreement:NO];
+}
+
+- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement {
+    if (!checkoutRequest || (!isBillingAgreement && !checkoutRequest.amount)) {
         completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
         return;
     }
@@ -187,11 +197,24 @@ static SFSafariViewController *safariViewController;
         NSString *currencyCode = checkoutRequest.currencyCode ?: configuration.json[@"payPal"][@"currencyIsoCode"].asString;
 
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-        if (checkoutRequest.amount.stringValue) {
-            parameters[@"amount"] = checkoutRequest.amount.stringValue;
+        
+        if(!isBillingAgreement){
+            if (checkoutRequest.amount.stringValue) {
+                parameters[@"amount"] = checkoutRequest.amount.stringValue;
+            }
+            if (currencyCode) {
+                parameters[@"currency_iso_code"] = currencyCode;
+            }
         }
-        if (currencyCode) {
-            parameters[@"currency_iso_code"] = currencyCode;
+        if(checkoutRequest.enableShippingAddress && checkoutRequest.shippingAddress != nil){
+            BTPostalAddress *shippingAddress = checkoutRequest.shippingAddress;
+            parameters[@"line1"] = shippingAddress.streetAddress;
+            parameters[@"line2"] = shippingAddress.extendedAddress;
+            parameters[@"city"] = shippingAddress.locality;
+            parameters[@"state"] = shippingAddress.region;
+            parameters[@"postal_code"] = shippingAddress.postalCode;
+            parameters[@"country_code"] = shippingAddress.countryCodeAlpha2;
+            parameters[@"recipient_name"] = shippingAddress.recipientName;
         }
         if (returnURI) {
             parameters[@"return_url"] = returnURI;
@@ -203,7 +226,9 @@ static SFSafariViewController *safariViewController;
             parameters[@"correlation_id"] = [self.payPalClass clientMetadataID];
         }
 
-        [self.apiClient POST:@"v1/paypal_hermes/create_payment_resource"
+        NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
+        
+        [self.apiClient POST: [NSString stringWithFormat:@"v1/paypal_hermes/%@",url]
                   parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
 
@@ -219,7 +244,13 @@ static SFSafariViewController *safariViewController;
                       if (!payPalClientID && [self payPalEnvironmentForRemoteConfiguration:configuration.json] == PayPalEnvironmentMock) {
                           payPalClientID = @"FAKE-PAYPAL-CLIENT-ID";
                       }
-                      PayPalOneTouchCheckoutRequest *request = [self.requestFactory requestWithApprovalURL:body[@"paymentResource"][@"redirectUrl"].asURL
+                      
+                      NSURL *approvalUrl = body[@"paymentResource"][@"redirectUrl"].asURL;
+                      if (approvalUrl == nil) {
+                          approvalUrl = body[@"agreementSetup"][@"approvalUrl"].asURL;
+                      }
+                                            
+                      PayPalOneTouchCheckoutRequest *request = [self.requestFactory requestWithApprovalURL:approvalUrl
                                                                                                   clientID:payPalClientID
                                                                                                environment:[self payPalEnvironmentForRemoteConfiguration:configuration.json]
                                                                                          callbackURLScheme:self.returnURLScheme];
