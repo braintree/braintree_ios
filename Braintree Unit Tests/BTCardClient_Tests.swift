@@ -10,7 +10,7 @@ class BTCardClient_Tests: XCTestCase {
         apiClient.http = fakeHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
 
-        let card = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertEqual(fakeHTTP.lastRequest!.endpoint, "v1/payment_methods/credit_cards")
@@ -34,7 +34,7 @@ class BTCardClient_Tests: XCTestCase {
         apiClient.http = FakeHTTP.fakeHTTP()
         let cardClient = BTCardClient(APIClient: apiClient)
 
-        let card = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
@@ -58,7 +58,7 @@ class BTCardClient_Tests: XCTestCase {
         apiClient.http = ErrorHTTP.fakeHTTP()
         let cardClient = BTCardClient(APIClient: apiClient)
 
-        let card = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)

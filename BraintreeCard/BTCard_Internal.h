@@ -1,7 +1,7 @@
-#import "BTCardTokenizationRequest.h"
+#import "BTCard.h"
 #import "BTJSON.h"
 
-@interface BTCardTokenizationRequest ()
+@interface BTCard ()
 
 /// @name Parameters
 

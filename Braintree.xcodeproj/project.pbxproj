@@ -342,9 +342,9 @@
 		A7C8898A1B5EF737007A0E9C /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889891B5EF737007A0E9C /* PassKit.framework */; };
 		A7C889A31B5F0471007A0E9C /* BTCardClient.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8899C1B5F0471007A0E9C /* BTCardClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7C889A41B5F0471007A0E9C /* BTCardClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8899D1B5F0471007A0E9C /* BTCardClient.m */; };
-		A7C889A51B5F0471007A0E9C /* BTCardTokenizationRequest_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8899E1B5F0471007A0E9C /* BTCardTokenizationRequest_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		A7C889A61B5F0471007A0E9C /* BTCardTokenizationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8899F1B5F0471007A0E9C /* BTCardTokenizationRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A7C889A71B5F0471007A0E9C /* BTCardTokenizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889A01B5F0471007A0E9C /* BTCardTokenizationRequest.m */; };
+		A7C889A51B5F0471007A0E9C /* BTCard_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8899E1B5F0471007A0E9C /* BTCard_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		A7C889A61B5F0471007A0E9C /* BTCard.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8899F1B5F0471007A0E9C /* BTCard.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A7C889A71B5F0471007A0E9C /* BTCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889A01B5F0471007A0E9C /* BTCard.m */; };
 		A7C889A81B5F0471007A0E9C /* BTTokenizedCard.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889A11B5F0471007A0E9C /* BTTokenizedCard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7C889A91B5F0471007A0E9C /* BTTokenizedCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889A21B5F0471007A0E9C /* BTTokenizedCard.m */; };
 		A7C889AA1B5F04AE007A0E9C /* BraintreeCard.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889921B5F043B007A0E9C /* BraintreeCard.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1029,9 +1029,9 @@
 		A7C889941B5F043B007A0E9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7C8899C1B5F0471007A0E9C /* BTCardClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardClient.h; sourceTree = "<group>"; };
 		A7C8899D1B5F0471007A0E9C /* BTCardClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCardClient.m; sourceTree = "<group>"; };
-		A7C8899E1B5F0471007A0E9C /* BTCardTokenizationRequest_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardTokenizationRequest_Internal.h; sourceTree = "<group>"; };
-		A7C8899F1B5F0471007A0E9C /* BTCardTokenizationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardTokenizationRequest.h; sourceTree = "<group>"; };
-		A7C889A01B5F0471007A0E9C /* BTCardTokenizationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCardTokenizationRequest.m; sourceTree = "<group>"; };
+		A7C8899E1B5F0471007A0E9C /* BTCard_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCard_Internal.h; sourceTree = "<group>"; };
+		A7C8899F1B5F0471007A0E9C /* BTCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCard.h; sourceTree = "<group>"; };
+		A7C889A01B5F0471007A0E9C /* BTCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCard.m; sourceTree = "<group>"; };
 		A7C889A11B5F0471007A0E9C /* BTTokenizedCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTokenizedCard.h; sourceTree = "<group>"; };
 		A7C889A21B5F0471007A0E9C /* BTTokenizedCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTokenizedCard.m; sourceTree = "<group>"; };
 		A7C889D71B5F0ACB007A0E9C /* BTTokenizedCard_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTokenizedCard_Internal.h; sourceTree = "<group>"; };
@@ -1362,7 +1362,7 @@
 			isa = PBXGroup;
 			children = (
 				A7C8899C1B5F0471007A0E9C /* BTCardClient.h */,
-				A7C8899F1B5F0471007A0E9C /* BTCardTokenizationRequest.h */,
+				A7C8899F1B5F0471007A0E9C /* BTCard.h */,
 				A7C889A11B5F0471007A0E9C /* BTTokenizedCard.h */,
 				4141AC051B94F679003A7C8A /* Braintree+Card.h */,
 				A7C889921B5F043B007A0E9C /* BraintreeCard.h */,
@@ -2110,8 +2110,8 @@
 			children = (
 				41777D451B8D01510026F987 /* Public */,
 				A7C8899D1B5F0471007A0E9C /* BTCardClient.m */,
-				A7C889A01B5F0471007A0E9C /* BTCardTokenizationRequest.m */,
-				A7C8899E1B5F0471007A0E9C /* BTCardTokenizationRequest_Internal.h */,
+				A7C889A01B5F0471007A0E9C /* BTCard.m */,
+				A7C8899E1B5F0471007A0E9C /* BTCard_Internal.h */,
 				A7C889A21B5F0471007A0E9C /* BTTokenizedCard.m */,
 				A7C889D71B5F0ACB007A0E9C /* BTTokenizedCard_Internal.h */,
 				41BEFDD81B94F45000E560E7 /* Braintree+Card.m */,
@@ -2335,9 +2335,9 @@
 				A7C889AA1B5F04AE007A0E9C /* BraintreeCard.h in Headers */,
 				A7C889D81B5F0ACB007A0E9C /* BTTokenizedCard_Internal.h in Headers */,
 				A7C889A81B5F0471007A0E9C /* BTTokenizedCard.h in Headers */,
-				A7C889A51B5F0471007A0E9C /* BTCardTokenizationRequest_Internal.h in Headers */,
+				A7C889A51B5F0471007A0E9C /* BTCard_Internal.h in Headers */,
 				A7C889A31B5F0471007A0E9C /* BTCardClient.h in Headers */,
-				A7C889A61B5F0471007A0E9C /* BTCardTokenizationRequest.h in Headers */,
+				A7C889A61B5F0471007A0E9C /* BTCard.h in Headers */,
 				4141AC061B94F679003A7C8A /* Braintree+Card.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3131,7 +3131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				41BEFDDA1B94F45000E560E7 /* Braintree+Card.m in Sources */,
-				A7C889A71B5F0471007A0E9C /* BTCardTokenizationRequest.m in Sources */,
+				A7C889A71B5F0471007A0E9C /* BTCard.m in Sources */,
 				A7C889A91B5F0471007A0E9C /* BTTokenizedCard.m in Sources */,
 				A7C889A41B5F0471007A0E9C /* BTCardClient.m in Sources */,
 			);

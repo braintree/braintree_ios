@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "BTNullability.h"
-#import "BTCardTokenizationRequest.h"
+#import "BTCard.h"
 #import "BTTokenizedCard.h"
 #import "BTAPIClient.h"
 
@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-- (void)tokenizeCard:(BTCardTokenizationRequest *)request completion:(void (^)(BTTokenizedCard * __BT_NULLABLE tokenizedCard, NSError * __BT_NULLABLE  error))completionBlock;
+- (void)tokenizeCard:(BTCard *)request completion:(void (^)(BTTokenizedCard * __BT_NULLABLE tokenizedCard, NSError * __BT_NULLABLE  error))completionBlock;
 
 @property (nonatomic, strong, readonly) BTAPIClient *apiClient;
 

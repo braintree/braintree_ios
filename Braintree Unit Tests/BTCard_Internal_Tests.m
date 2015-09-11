@@ -1,15 +1,15 @@
 #import <XCTest/XCTest.h>
-#import "BTCardTokenizationRequest_Internal.h"
+#import "BTCard_Internal.h"
 
 // See also BTCard_Tests
-@interface BTCardTokenizationRequest_Internal_Tests : XCTestCase
+@interface BTCard_Internal_Tests : XCTestCase
 
 @end
 
-@implementation BTCardTokenizationRequest_Internal_Tests
+@implementation BTCard_Internal_Tests
 
 - (void)testParameters_standardProperties {
-    BTCardTokenizationRequest *card = [[BTCardTokenizationRequest alloc] initWithNumber:@"4111111111111111"
+    BTCard *card = [[BTCard alloc] initWithNumber:@"4111111111111111"
                                                                         expirationMonth:@"12"
                                                                          expirationYear:@"2038"
                                                                                     cvv:@"123"];
@@ -21,15 +21,15 @@
 }
 
 - (void)testParameters_whenShouldValidateIsTrue_encodesParametersCorrectly {
-    BTCardTokenizationRequest *card = [[BTCardTokenizationRequest alloc] init];
+    BTCard *card = [[BTCard alloc] init];
     card.shouldValidate = YES;
     BTJSON *parameters = [[BTJSON alloc] initWithValue:card.parameters];
     XCTAssertTrue(parameters[@"options"][@"validate"].isTrue);
 }
 
 - (void)testParameters_encodesAllParametersIncludingAdditionalParameters {
-    BTCardTokenizationRequest *card =
-    [[BTCardTokenizationRequest alloc] initWithParameters:@{
+    BTCard *card =
+    [[BTCard alloc] initWithParameters:@{
                                                             @"billing_address": @{
                                                                     @"street_address": @"724 Evergreen Terrace" }
                                                             }];

@@ -1,11 +1,11 @@
-#import "BTCardTokenizationRequest_Internal.h"
+#import "BTCard_Internal.h"
 #import "BTJSON.h"
 
-@interface BTCardTokenizationRequest ()
+@interface BTCard ()
 @property (nonatomic, strong) NSMutableDictionary *mutableParameters;
 @end
 
-@implementation BTCardTokenizationRequest
+@implementation BTCard
 
 - (instancetype)init {
     return [self initWithParameters:@{}];

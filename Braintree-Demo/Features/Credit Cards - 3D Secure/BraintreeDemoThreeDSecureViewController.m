@@ -46,32 +46,32 @@
     return threeDSecureButtonsContainer;
 }
 
-- (BTCardTokenizationRequest *)cardRequest {
-    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
+- (BTCard *)newCard {
+    BTCard *card = [[BTCard alloc] init];
     if (self.cardFormView.valid &&
         self.cardFormView.number &&
         self.cardFormView.expirationMonth &&
         self.cardFormView.expirationYear) {
-        request.number = self.cardFormView.number;
-        request.expirationMonth = self.cardFormView.expirationMonth;
-        request.expirationYear = self.cardFormView.expirationYear;
+        card.number = self.cardFormView.number;
+        card.expirationMonth = self.cardFormView.expirationMonth;
+        card.expirationYear = self.cardFormView.expirationYear;
     } else {
         [self.cardFormView showTopLevelError:@"Not valid. Using default 3DS test card..."];
-        request.number = @"4000000000000002";
-        request.expirationMonth = @"12";
-        request.expirationYear = @"2020";
+        card.number = @"4000000000000002";
+        card.expirationMonth = @"12";
+        card.expirationYear = @"2020";
     }
-    return request;
+    return card;
 }
 
 /// "Tokenize and Verify New Card"
 - (void)tappedToVerifyNewCard {
-    BTCardTokenizationRequest *request = [self cardRequest];
+    BTCard *card = [self newCard];
 
-    self.progressBlock([NSString stringWithFormat:@"Tokenizing card ending in %@", [request.number substringFromIndex:(request.number.length - 4)]]);
+    self.progressBlock([NSString stringWithFormat:@"Tokenizing card ending in %@", [card.number substringFromIndex:(card.number.length - 4)]]);
 
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
-    [client tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+    [client tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
 
         if (error) {
             self.progressBlock(error.localizedDescription);

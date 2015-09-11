@@ -1,10 +1,10 @@
 import XCTest
 import BraintreeCard
 
-// See also BTCardTokenizationRequest_Internal_Tests
-class BTCardTokenizationRequest_Tests: XCTestCase {
+// See also BTCard_Internal_Tests
+class BTCard_Tests: XCTestCase {
     func testInitialization_savesStandardProperties() {
-        let card = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth:"12", expirationYear:"2038", cvv: "123")
+        let card = BTCard(number: "4111111111111111", expirationMonth:"12", expirationYear:"2038", cvv: "123")
 
         XCTAssertEqual(card.number!, "4111111111111111")
         XCTAssertEqual(card.expirationMonth!, "12")
@@ -14,10 +14,10 @@ class BTCardTokenizationRequest_Tests: XCTestCase {
     }
 
     func testInitialization_acceptsNil() {
-        let card1 = BTCardTokenizationRequest(number: nil, expirationMonth:"12", expirationYear: "2038", cvv: "123")
-        let card2 = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: nil, expirationYear: "2038", cvv: "123")
-        let card3 = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: "12", expirationYear: nil, cvv: "123")
-        let card4 = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card1 = BTCard(number: nil, expirationMonth:"12", expirationYear: "2038", cvv: "123")
+        let card2 = BTCard(number: "4111111111111111", expirationMonth: nil, expirationYear: "2038", cvv: "123")
+        let card3 = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: nil, cvv: "123")
+        let card4 = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
 
         XCTAssertNil(card1.number)
         XCTAssertNil(card2.expirationMonth)
@@ -27,7 +27,7 @@ class BTCardTokenizationRequest_Tests: XCTestCase {
 
 
     func testInitialization_withoutParameters() {
-        let card = BTCardTokenizationRequest()
+        let card = BTCard()
 
         card.number = "4111111111111111"
         card.expirationMonth = "12"
@@ -42,7 +42,7 @@ class BTCardTokenizationRequest_Tests: XCTestCase {
     }
 
     func testInitialization_fromParameters() {
-        let card = BTCardTokenizationRequest(parameters: ["cvv": "123", "billing_address": ["postal_code": "94949"] ])
+        let card = BTCard(parameters: ["cvv": "123", "billing_address": ["postal_code": "94949"] ])
 
         XCTAssertNil(card.number)
         XCTAssertNil(card.expirationMonth)

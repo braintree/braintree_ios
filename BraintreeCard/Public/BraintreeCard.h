@@ -6,5 +6,5 @@ FOUNDATION_EXPORT const unsigned char BraintreeCardVersionString[];
 
 #import "Braintree+Card.h"
 #import "BTCardClient.h"
-#import "BTCardTokenizationRequest.h"
+#import "BTCard.h"
 #import "BTTokenizedCard.h"
