@@ -1,18 +1,18 @@
 import XCTest
 import BraintreeCard
 
-class BTCardTokenizationClient_Tests: XCTestCase {
+class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_sendsDataToClientAPI() {
         let expectation = self.expectationWithDescription("Tokenize Card")
         let fakeHTTP = FakeHTTP.fakeHTTP()
         let apiClient = BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = fakeHTTP
-        let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
+        let cardClient = BTCardClient(APIClient: apiClient)
 
         let card = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
 
-        cardTokenizationClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertEqual(fakeHTTP.lastRequest!.endpoint, "v1/payment_methods/credit_cards")
             XCTAssertEqual(fakeHTTP.lastRequest!.method, "POST")
 
@@ -32,11 +32,11 @@ class BTCardTokenizationClient_Tests: XCTestCase {
         let expectation = self.expectationWithDescription("Tokenize Card")
         let apiClient = BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = FakeHTTP.fakeHTTP()
-        let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
+        let cardClient = BTCardClient(APIClient: apiClient)
 
         let card = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
 
-        cardTokenizationClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
                 XCTFail("Received an error: \(error)")
                 return
@@ -56,11 +56,11 @@ class BTCardTokenizationClient_Tests: XCTestCase {
         let expectation = self.expectationWithDescription("Tokenize Card")
         let apiClient = BTAPIClient(clientKey: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = ErrorHTTP.fakeHTTP()
-        let cardTokenizationClient = BTCardTokenizationClient(APIClient: apiClient)
+        let cardClient = BTCardClient(APIClient: apiClient)
 
         let card = BTCardTokenizationRequest(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
 
-        cardTokenizationClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
             XCTAssertEqual(error!, ErrorHTTP.error)
             expectation.fulfill()

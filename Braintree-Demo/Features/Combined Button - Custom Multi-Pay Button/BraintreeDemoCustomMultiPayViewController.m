@@ -142,8 +142,8 @@
     request.postalCode = self.cardForm.postalCode;
     request.shouldValidate = NO;
 
-    BTCardTokenizationClient *cardTokenizationClient = [[BTCardTokenizationClient alloc] initWithAPIClient:self.apiClient];
-    [cardTokenizationClient tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+    BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
+    [cardClient tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
         if (tokenizedCard) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [tokenizedCard debugDescription]);

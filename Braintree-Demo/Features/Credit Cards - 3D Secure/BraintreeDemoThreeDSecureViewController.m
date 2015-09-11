@@ -70,7 +70,7 @@
 
     self.progressBlock([NSString stringWithFormat:@"Tokenizing card ending in %@", [request.number substringFromIndex:(request.number.length - 4)]]);
 
-    BTCardTokenizationClient *client = [[BTCardTokenizationClient alloc] initWithAPIClient:self.apiClient];
+    BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
     [client tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
 
         if (error) {

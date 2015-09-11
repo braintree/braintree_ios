@@ -362,7 +362,7 @@
                 if (error) {
                     [client postAnalyticsEvent:@"dropin.ios.add-card.failed"];
                     // TODO: fix this grossness
-                    if ([error.domain isEqualToString:@"com.braintreepayments.BTCardTokenizationClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
+                    if ([error.domain isEqualToString:@"com.braintreepayments.BTCardClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
                         [self informUserDidFailWithError:error];
                     } else {
                         BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];

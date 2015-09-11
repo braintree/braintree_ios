@@ -6,14 +6,14 @@
 
 BT_ASSUME_NONNULL_BEGIN
 
-extern NSString * const BTCardTokenizationClientErrorDomain;
+extern NSString * const BTCardClientErrorDomain;
 
-typedef NS_ENUM(NSInteger, BTCardTokenizationClientErrorType) {
-    BTCardTokenizationClientErrorTypeUnknown = 0,
-    BTCardTokenizationClientErrorTypeInvalidServerResponse,
+typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
+    BTCardClientErrorTypeUnknown = 0,
+    BTCardClientErrorTypeInvalidServerResponse,
 };
 
-@interface BTCardTokenizationClient : NSObject
+@interface BTCardClient : NSObject
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
 

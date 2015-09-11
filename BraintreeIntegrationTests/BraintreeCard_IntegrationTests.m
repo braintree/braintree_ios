@@ -4,15 +4,15 @@
 #import <Expecta/Expecta.h>
 #import <Specta/Specta.h>
 
-SpecBegin(BTCardTokenizationClient_Integration)
+SpecBegin(BTCardClient_Integration)
 
 describe(@"tokenizeCard:completion:", ^{
-    __block BTCardTokenizationClient *client;
+    __block BTCardClient *client;
 
     context(@"with validation disabled", ^{
         beforeEach(^{
             BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
-            client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+            client = [[BTCardClient alloc] initWithAPIClient:apiClient];
         });
 
         it(@"creates an unlocked card with a nonce using an invalid card", ^{
@@ -54,7 +54,7 @@ describe(@"tokenizeCard:completion:", ^{
 
             beforeEach(^{
                 BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
-                client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+                client = [[BTCardClient alloc] initWithAPIClient:apiClient];
             });
 
             it(@"returns an authorization error", ^{
@@ -175,11 +175,11 @@ describe(@"tokenizeCard:completion:", ^{
             //        });
 
 //            context(@"when merchant has CVV challenge enabled", ^{
-                //            __block BTCardTokenizationClient *cvvAndZipClient;
+                //            __block BTCardClient *cvvAndZipClient;
                 //
                 //            beforeEach(^{
                 //                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_client_api_cvv_and_postal_code_verification_merchant_id"];
-                //                cvvAndZipClient = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+                //                cvvAndZipClient = [[BTCardClient alloc] initWithAPIClient:apiClient];
                 //            });
                 //
                 //            it(@"saves a card when the challenges are provided", ^{

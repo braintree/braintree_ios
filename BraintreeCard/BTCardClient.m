@@ -1,7 +1,7 @@
 #import "BTErrors.h"
 #import "BTTokenizationParser.h"
 #import "BTTokenizationService.h"
-#import "BTCardTokenizationClient.h"
+#import "BTCardClient.h"
 #import "BTTokenizedCard_Internal.h"
 #import "BTHTTP.h"
 #import "BTJSON.h"
@@ -9,18 +9,18 @@
 #import "BTAPIClient_Internal.h"
 #import "BTCardTokenizationRequest_Internal.h"
 
-NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BTCardTokenizationClientErrorDomain";
+NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
 
-@interface BTCardTokenizationClient ()
+@interface BTCardClient ()
 @property (nonatomic, strong, readwrite) BTAPIClient *apiClient;
 @end
 
-@implementation BTCardTokenizationClient
+@implementation BTCardClient
 
 + (void)load {
-    if (self == [BTCardTokenizationClient class]) {
+    if (self == [BTCardClient class]) {
         [[BTTokenizationService sharedService] registerType:@"Card" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
-            BTCardTokenizationClient *client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+            BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
             BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithParameters:options];
             [client tokenizeCard:request completion:completionBlock];
         }];
@@ -56,7 +56,7 @@ NSString *const BTCardTokenizationClientErrorDomain = @"com.braintreepayments.BT
                       if (response.statusCode == 422) {
                           BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
                           NSDictionary *userInfo = jsonResponse.asDictionary ? @{ BTCustomerInputBraintreeValidationErrorsKey : jsonResponse.asDictionary } : @{};
-                          NSError *validationError = [NSError errorWithDomain:BTCardTokenizationClientErrorDomain
+                          NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
                                                                          code:BTErrorCustomerInputInvalid
                                                                      userInfo:userInfo];
                           completionBlock(nil, validationError);
