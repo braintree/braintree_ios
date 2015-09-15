@@ -82,6 +82,8 @@ If your app uses `BTData`, also include the following under `NSExceptionDomains`
   </dict>
 ```
 
+We are actively working to update the SSL certificates of these servers so that your app will not require these exceptions in the near future.
+
 ### URL Query Scheme Whitelist
 
 If your app is compiled with iOS 9 SDK and integrates payment options with an app-switch workflow, you must add URL schemes to the whitelist in your application's plist.
