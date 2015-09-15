@@ -10,6 +10,8 @@
                                   lastName:(NSString *)lastName
                                      phone:(NSString *)phone
                             billingAddress:(BTPostalAddress *)billingAddress
-                           shippingAddress:(BTPostalAddress *)shippingAddress;
+                           shippingAddress:(BTPostalAddress *)shippingAddress
+                          clientMetadataId:(NSString *)clientMetadataId
+                                   payerId:(NSString *)payerId;
 
 @end

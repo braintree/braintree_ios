@@ -16,6 +16,9 @@ BT_ASSUME_NONNULL_BEGIN
 //
 //- (void)collectFraudDeviceDataWithMerchantID:(NSString *)merchantId collectorUrl:(NSString *)collectorUrl completion:(void (^)(NSString * __BT_NULLABLE deviceData, NSError * __BT_NULLABLE error))completionBlock;
 
+/// Generates a new clientMetadataId if using PayPalOneTouchCore - otherwise returns nil
++ (NSString *)clientMetadataID;
+
 @end
 
 BT_ASSUME_NONNULL_END

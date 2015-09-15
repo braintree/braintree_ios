@@ -28,7 +28,7 @@
 @property (nonatomic, strong) NSOrderedSet *enabledPaymentOptions;
 
 @property (nonatomic, weak) id <BTAppSwitchDelegate> appSwitchDelegate;
-//@property (nonatomic, weak) id <BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
+@property (nonatomic, weak) id <BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
 @property (nonatomic, readonly) BOOL hasAvailablePaymentMethod;
 

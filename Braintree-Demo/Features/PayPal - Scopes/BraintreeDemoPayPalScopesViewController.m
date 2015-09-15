@@ -3,7 +3,7 @@
 #import <BraintreePayPal/BraintreePayPal.h>
 #import <BraintreeUI/BraintreeUI.h>
 
-@interface BraintreeDemoPayPalScopesViewController ()
+@interface BraintreeDemoPayPalScopesViewController () <BTViewControllerPresentingDelegate>
 @property(nonatomic, strong) UITextView *addressTextView;
 @end
 
@@ -42,6 +42,7 @@
 
 - (void)tappedCustomPayPal {
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
+    driver.viewControllerPresentingDelegate = self;
     self.progressBlock(@"Tapped PayPal - initiating authorization using BTPayPalDriver");
 
     [driver authorizeAccountWithAdditionalScopes:[NSSet setWithArray:@[@"address"]] completion:^(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error) {
@@ -56,6 +57,14 @@
             self.progressBlock(@"Cancelled");
         }
     }];
+}
+
+- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

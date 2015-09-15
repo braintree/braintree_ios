@@ -24,4 +24,12 @@
 //    // TODO
 //}
 
++ (NSString *)clientMetadataID {
+    Class paypalClass = NSClassFromString(@"PayPalOneTouchCore");
+    if (paypalClass) {
+        return [paypalClass performSelector:@selector(clientMetadataID)];
+    }
+    return nil;
+}
+
 @end

@@ -221,8 +221,13 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willAppSwitch:) name:BTAppSwitchWillSwitchNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAppSwitch:) name:BTAppSwitchDidSwitchNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willProcessPaymentInfo:) name:BTAppSwitchWillProcessPaymentInfoNotification object:nil];
-
-        [[BTTokenizationService sharedService] tokenizeType:paymentOption withAPIClient:self.apiClient completion:self.completion];
+        
+        NSDictionary *options = nil;
+        if (self.viewControllerPresentingDelegate != nil) {
+            options = @{BTTokenizationServiceViewPresentingDelegateOption: self.viewControllerPresentingDelegate};
+        }
+        
+        [[BTTokenizationService sharedService] tokenizeType:paymentOption options:options withAPIClient:self.apiClient completion:self.completion];
     } else {
         [[BTLogger sharedLogger] warning:@"BTPaymentButton encountered an unexpected payment option value: %@", paymentOption];
     }

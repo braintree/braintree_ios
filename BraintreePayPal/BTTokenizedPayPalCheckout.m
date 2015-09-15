@@ -7,6 +7,8 @@
 @property (nonatomic, readwrite, copy) NSString *phone;
 @property (nonatomic, readwrite, strong) BTPostalAddress *billingAddress;
 @property (nonatomic, readwrite, strong) BTPostalAddress *shippingAddress;
+@property (nonatomic, readwrite, copy) NSString *clientMetadataId;
+@property (nonatomic, readwrite, copy) NSString *payerId;
 @end
 
 @implementation BTTokenizedPayPalCheckout
@@ -23,6 +25,8 @@
                                      phone:(NSString *)phone
                             billingAddress:(BTPostalAddress *)billingAddress
                            shippingAddress:(BTPostalAddress *)shippingAddress
+                          clientMetadataId:(NSString *)clientMetadataId
+                                   payerId:(NSString *)payerId
 {
     if (self = [super init]) {
         _paymentMethodNonce = nonce;
@@ -33,6 +37,8 @@
         _phone = phone;
         _billingAddress = [billingAddress copy];
         _shippingAddress = [shippingAddress copy];
+        _clientMetadataId = clientMetadataId;
+        _payerId = payerId;
         _type = @"PayPal";
     }
     return self;

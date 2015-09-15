@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchRequest.h
 //
-//  Version 3.0.0
+//  Version 3.1.0
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
@@ -12,11 +12,8 @@
 /// Completion block for receiving the result of preflighting a request
 typedef void (^PayPalOneTouchRequestPreflightCompletionBlock) (PayPalOneTouchRequestTarget target);
 
-/// Completion block for receiving the result of performing a request
-typedef void (^PayPalOneTouchRequestCompletionBlock) (BOOL success, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error);
-
 /// Adapter block for app switching.
-typedef void (^PayPalOneTouchRequestAdapterBlock) (NSURL *url);
+typedef void (^PayPalOneTouchRequestAdapterBlock) (BOOL success, NSURL *url, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error);
 
 /// This environment MUST be used for App Store submissions.
 extern NSString *const PayPalEnvironmentProduction;
@@ -49,8 +46,7 @@ extern NSString *const PayPalEnvironmentMock;
 /// @note The adapter block is responsible to determine app-switch (to Wallet, browser, or neither). After the request completionBlock is called immediately.
 ///       We use a completion block here to allow for future changes in implementation that might cause
 ///       delays (such as time-consuming cryptographic operations, or server interactions).
-- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock
-                completionBlock:(PayPalOneTouchRequestCompletionBlock)completionBlock;
+- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock;
 
 /// Get token from approval URL
 + (NSString *)tokenFromApprovalURL:(NSURL *)approvalURL;

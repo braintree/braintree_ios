@@ -3,7 +3,7 @@
 #import <BraintreeUI/BraintreeUI.h>
 #import <PureLayout/ALView+PureLayout.h>
 
-@interface BraintreeDemoCustomMultiPayViewController ()
+@interface BraintreeDemoCustomMultiPayViewController () <BTViewControllerPresentingDelegate>
 @property(nonatomic, strong) BTUICardFormView *cardForm;
 @property (nonatomic, strong) UINavigationController *cardFormNavigationViewController;
 @property (nonatomic, weak) UIBarButtonItem *saveButton;
@@ -113,7 +113,7 @@
 #pragma mark - Private methods
 
 - (void)tokenizeType:(NSString *)type {
-    [[BTTokenizationService sharedService] tokenizeType:type options:nil withAPIClient:self.apiClient completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
+    [[BTTokenizationService sharedService] tokenizeType:type options:@{ BTTokenizationServiceViewPresentingDelegateOption: self } withAPIClient:self.apiClient completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
         if (tokenization) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [tokenization debugDescription]);
@@ -165,6 +165,14 @@
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
