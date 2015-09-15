@@ -16,10 +16,10 @@
 /// Exposed for testing to verify interaction between analytics client and the network
 @property (nonatomic, strong) BTHTTP *analyticsHttp;
 
-/// Analytics should only be posted by internal clients?
-- (void)postAnalyticsEvent:(NSString *)name;
+/// Analytics should only be posted by internal clients.
+- (void)sendAnalyticsEvent:(NSString *)eventName;
 
 /// Exposed to provide a more testable API for sending analytics, since it involves asynchronous operations
-- (void)postAnalyticsEvent:(NSString *)name completion:(void(^)(NSError *error))completionBlock;
+- (void)sendAnalyticsEvent:(NSString *)eventName completion:(void(^)(NSError *error))completionBlock;
 
 @end

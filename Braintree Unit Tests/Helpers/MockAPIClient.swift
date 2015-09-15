@@ -49,7 +49,7 @@ class MockAPIClient : BTAPIClient {
         return self
     }
 
-    override func postAnalyticsEvent(name: String!, completion completionBlock: ((NSError!) -> Void)!) {
+    override func sendAnalyticsEvent(name: String!, completion completionBlock: ((NSError!) -> Void)!) {
         postedAnalyticsEvents.append(name)
     }
 }

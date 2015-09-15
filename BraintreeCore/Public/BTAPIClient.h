@@ -39,13 +39,13 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 - (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey
                                 dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue;
 
-/// Initialize a new API client.
+/// Initialize a new API client with a client token. The API client base URL will use Client API base URL from the token.
 ///
 /// @param clientToken The client token retrieved from your server. Passing an invalid client token will return `nil`.
 /// @return An API client, or `nil` if the client token is invalid.
 - (BT_NULLABLE instancetype)initWithClientToken:(NSString *)clientToken;
 
-/// Initialize a new API client.
+/// Initialize a new API client with a client token. The API client base URL will use Client API base URL from the token.
 ///
 /// @param clientToken The client token retrieved from your server. Passing an invalid client token will return `nil`.
 /// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing

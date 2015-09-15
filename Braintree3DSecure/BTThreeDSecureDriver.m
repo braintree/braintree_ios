@@ -59,7 +59,7 @@
                                   authenticationViewController.delegate = self;
                                   UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:authenticationViewController];
                                   [self informDelegateRequestsPresentationOfViewController:navigationController];
-                                  [self.apiClient postAnalyticsEvent:@"ios.threedsecure.authentication-start"];
+                                  [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.authentication-start"];
                               } else {
 //                                  [self informDelegateDidVerifyCard:lookupResult.tokenizedCard];
                                   completionBlock(lookupResult.tokenizedCard, nil);
@@ -138,15 +138,15 @@
 {
     self.upgradedTokenizedCard = tokenizedCard;
     completionBlock(BTThreeDSecureViewControllerCompletionStatusSuccess);
-    [self.apiClient postAnalyticsEvent:@"ios.threedsecure.authenticated"];
+    [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.authenticated"];
 }
 
 - (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error {
     if ([error.domain isEqualToString:BTThreeDSecureErrorDomain] && error.code == BTThreeDSecureErrorCodeFailedAuthentication) {
-        [self.apiClient postAnalyticsEvent:@"ios.threedsecure.error.auth-failure"];
+        [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.error.auth-failure"];
     } else {
-        [self.apiClient postAnalyticsEvent:@"ios.threedsecure.error.unrecognized-error"];
+        [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.error.unrecognized-error"];
     }
 
     self.upgradedTokenizedCard = nil;
@@ -161,7 +161,7 @@
     } else {
 //        [self informDelegateDidCancel];
         self.completionBlockAfterAuthenticating(nil, nil);
-        [self.apiClient postAnalyticsEvent:@"ios.threedsecure.canceled"];
+        [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.canceled"];
     }
 
     self.completionBlockAfterAuthenticating = nil;
@@ -170,7 +170,7 @@
 
 - (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
       didPresentErrorForURLRequest:(NSURLRequest *)request {
-    [self.apiClient postAnalyticsEvent:[NSString stringWithFormat:@"ios.threedsecure.error.webview-error.%@", request.URL.host]];
+    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.threedsecure.error.webview-error.%@", request.URL.host]];
 }
 
 #pragma mark Delegate informer helpers

@@ -91,12 +91,12 @@
 //    analyticsClient = [[BTAnalyticsClient alloc] initWithAPIClient:mockAPIClient];
 //}
 //
-//- (void)testPostAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
+//- (void)testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
 //    mockAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] init];
 //    analyticsClient.analyticsHttp = [[StubBTHTTP alloc] init];
 //
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
-//    [analyticsClient postAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
+//    [analyticsClient sendAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
 //        XCTAssertTrue(mockAPIClient.lastPOSTPath.length == 0);
 //        [expectation fulfill];
 //    }];
@@ -104,14 +104,14 @@
 //    [self waitForExpectationsWithTimeout:2 handler:nil];
 //}
 //
-//- (void)testPostAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
+//- (void)testSendAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
 //    mockAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] initWithValue:@{
 //                                                                                    @"analytics" : @{
 //                                                                                            @"url" : @"test://do-not-send.url"
 //                                                                                            } }];
 //
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"Uses analytics base URL"];
-//    [analyticsClient postAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
+//    [analyticsClient sendAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
 //        XCTAssertEqualObjects(analyticsClient.analyticsHttp.baseURL.absoluteString, @"test://do-not-send.url");
 //        [expectation fulfill];
 //    }];
@@ -119,7 +119,7 @@
 //    [self waitForExpectationsWithTimeout:2 handler:nil];
 //}
 //
-//- (void)testPostAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
+//- (void)testSendAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
 //    mockAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] initWithValue:@{
 //                                                                                    @"analytics" : @{
 //                                                                                            @"url" : @"https://test.url"
@@ -133,7 +133,7 @@
 //    analyticsClient.analyticsHttp = mockHTTP;
 //
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
-//    [analyticsClient postAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
+//    [analyticsClient sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
 //        XCTAssertEqualObjects(mockHTTP.lastPOSTPath, @"/");
 //        XCTAssertEqualObjects(mockHTTP.lastPOSTParameters[@"analytics"], @[ @{ @"kind" : @"an.analytics.event" } ]);
 //        XCTAssertEqualObjects(mockHTTP.lastPOSTParameters[@"_meta"][@"integration"], @"custom");

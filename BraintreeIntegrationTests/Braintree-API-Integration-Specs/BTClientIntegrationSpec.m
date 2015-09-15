@@ -924,7 +924,7 @@
 //                                                    } async:asyncClient completion:^(BTClient *client) {
 //                                                        testClient = client;
 //                                                        NSString *event = @"hello world! 🐴";
-//                                                        [testClient postAnalyticsEvent:event
+//                                                        [testClient sendAnalyticsEvent:event
 //                                                                               success:^{
 //                                                                                   [expectation fulfill];
 //                                                                               }
@@ -943,7 +943,7 @@
 //                                                    BTClientTestConfigurationKeyClientTokenVersion: @2
 //                                                    } async:asyncClient completion:^(BTClient *client) {
 //                                                        NSString *event = @"hello world! 🐴";
-//                                                        [client postAnalyticsEvent:event
+//                                                        [client sendAnalyticsEvent:event
 //                                                                           success:^{
 //                                                                               [expectation fulfill];
 //                                                                           }

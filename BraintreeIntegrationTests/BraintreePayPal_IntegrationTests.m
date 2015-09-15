@@ -261,7 +261,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    OCMVerify([partialMockAPIClient postAnalyticsEvent:@"ios.paypal-future-payments.appswitch.initiate.started"]);
+    OCMVerify([partialMockAPIClient sendAnalyticsEvent:@"ios.paypal-future-payments.appswitch.initiate.started"]);
 }
 // TODO: Add more tests for analytics
 
@@ -671,7 +671,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    it(@"accepts a failure app switch return", ^{
 //
 //        [BTPayPalDriverSpecHelper setupSpec:^(NSString *returnURLScheme, id mockClient, id mockApplication){
-//            [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
+//            [[mockClient stub] sendAnalyticsEvent:OCMOCK_ANY];
 //
 //            // Both -canOpenURL: and -openURL: are checked by OTC
 //            [[[mockApplication stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", @"com.paypal.ppclient.touch.v2")];
@@ -715,7 +715,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.appswitch.initiate.started"];
+                    [[mockClient expect] sendAnalyticsEvent:@"ios.paypal-future-payments.appswitch.initiate.started"];
 
                     [payPalDriver startAuthorizationWithCompletion:nil];
                     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -735,7 +735,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
+                    [[mockClient expect] sendAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
 
                     [payPalDriver startAuthorizationWithCompletion:nil];
                     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -755,7 +755,7 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
+                    [[mockClient expect] sendAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"];
 
                     [payPalDriver startAuthorizationWithCompletion:nil];
                     [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -766,7 +766,7 @@ describe(@"PayPal One Touch Core", ^{
 
             it(@"posts analytics events when preflight checks fail", ^{
                 [BTPayPalDriverSpecHelper setupSpec:^(NSString *returnURLScheme, id mockClient, id mockApplication){
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
+                    [[mockClient expect] sendAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:@"invalid-return-url-scheme"];
                     expect(payPalDriver).to.beNil();
@@ -795,8 +795,8 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.unknown.canceled"];
-                    [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
+                    [[mockClient expect] sendAnalyticsEvent:@"ios.paypal-future-payments.unknown.canceled"];
+                    [[mockClient stub] sendAnalyticsEvent:OCMOCK_ANY];
 
                     XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Received call to completion block"];
                     [payPalDriver startAuthorizationWithCompletion:^void(BTPayPalPaymentMethod *paymentMethod, NSError *error) {
@@ -836,8 +836,8 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.tokenize.succeeded"];
-                    [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
+                    [[mockClient expect] sendAnalyticsEvent:@"ios.paypal-future-payments.tokenize.succeeded"];
+                    [[mockClient stub] sendAnalyticsEvent:OCMOCK_ANY];
 
                     XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Received call to completion block"];
                     [payPalDriver startAuthorizationWithCompletion:^void(BTPayPalPaymentMethod *paymentMethod, NSError *error) {
@@ -877,8 +877,8 @@ describe(@"PayPal One Touch Core", ^{
 
                     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithClient:mockClient returnURLScheme:returnURLScheme];
 
-                    [[mockClient expect] postAnalyticsEvent:@"ios.paypal-future-payments.tokenize.failed"];
-                    [[mockClient stub] postAnalyticsEvent:OCMOCK_ANY];
+                    [[mockClient expect] sendAnalyticsEvent:@"ios.paypal-future-payments.tokenize.failed"];
+                    [[mockClient stub] sendAnalyticsEvent:OCMOCK_ANY];
 
                     XCTestExpectation *completionExpectation = [self expectationWithDescription:@"Received call to completion block"];
                     [payPalDriver startAuthorizationWithCompletion:^void(BTPayPalPaymentMethod *paymentMethod, NSError *error) {
@@ -956,7 +956,7 @@ describe(@"PayPal One Touch Core", ^{
                 id application = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
                 [[[application stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", returnURLScheme)];
 
-                [[client expect] postAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
+                [[client expect] sendAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
                 
                 NSError *error;
                 BOOL isAvailable = [BTPayPalDriver verifyAppSwitchConfigurationForClient:client returnURLScheme:returnURLScheme error:&error];
@@ -986,7 +986,7 @@ describe(@"PayPal One Touch Core", ^{
                 id application = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
                 [[[application stub] andReturnValue:@YES] canOpenURL:HC_hasProperty(@"scheme", returnURLScheme)];
                 
-                [[client expect] postAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
+                [[client expect] sendAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
                 
                 NSError *error;
                 BOOL isAvailable = [BTPayPalDriver verifyAppSwitchConfigurationForClient:client returnURLScheme:returnURLScheme error:&error];
@@ -1016,7 +1016,7 @@ describe(@"PayPal One Touch Core", ^{
                 id bundle = [OCMockObject partialMockForObject:[NSBundle mainBundle]];
                 [[[bundle stub] andReturn:@[@{ @"CFBundleURLSchemes": @[returnURLScheme] }]] objectForInfoDictionaryKey:@"CFBundleURLTypes"];
                 
-                [[client expect] postAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
+                [[client expect] sendAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
                 
                 NSError *error;
                 BOOL isAvailable = [BTPayPalDriver verifyAppSwitchConfigurationForClient:client returnURLScheme:returnURLScheme error:&error];

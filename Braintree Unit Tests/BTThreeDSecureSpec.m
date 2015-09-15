@@ -17,7 +17,7 @@
 //    client = [OCMockObject mockForClass:[BTClient class]];
 //    delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchDelegate)];
 //
-//    [[(OCMockObject *)client stub] postAnalyticsEvent:OCMOCK_ANY];
+//    [[(OCMockObject *)client stub] sendAnalyticsEvent:OCMOCK_ANY];
 //
 //    id clientStub_lookupSucceedsAuthenticationRequired = [(OCMockObject *)client stub];
 //    [clientStub_lookupSucceedsAuthenticationRequired andDo:^(NSInvocation *invocation) {

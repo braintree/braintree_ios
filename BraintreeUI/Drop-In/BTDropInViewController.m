@@ -221,7 +221,7 @@
     self.dropInContentView.alpha = 1.0f;
 
     if (self.fullForm) {
-        [self.apiClient postAnalyticsEvent:@"dropin.ios.appear"];
+        [self.apiClient sendAnalyticsEvent:@"dropin.ios.appear"];
     }
 }
 
@@ -234,7 +234,7 @@
         self.dropInContentView.alpha = 0.0f;
     }];
     if (self.fullForm) {
-        [self.apiClient postAnalyticsEvent:@"dropin.ios.disappear"];
+        [self.apiClient sendAnalyticsEvent:@"dropin.ios.disappear"];
     }
 }
 
@@ -354,13 +354,13 @@
             // TODO: Double-check that this is desired behavior
             options[@"options"] = @{ @"validate" : @(self.apiClient.clientKey ? NO : YES) };
 
-            [client postAnalyticsEvent:@"dropin.ios.add-card.save"];
+            [client sendAnalyticsEvent:@"dropin.ios.add-card.save"];
 
             [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(id<BTTokenized> tokenization, NSError *error) {
                 [self showLoadingState:NO];
 
                 if (error) {
-                    [client postAnalyticsEvent:@"dropin.ios.add-card.failed"];
+                    [client sendAnalyticsEvent:@"dropin.ios.add-card.failed"];
                     // TODO: fix this grossness
                     if ([error.domain isEqualToString:@"com.braintreepayments.BTCardClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
                         [self informUserDidFailWithError:error];
@@ -378,7 +378,7 @@
                     return;
                 }
 
-                [client postAnalyticsEvent:@"dropin.ios.add-card.success"];
+                [client sendAnalyticsEvent:@"dropin.ios.add-card.success"];
                 [self informDelegateDidAddPaymentInfo:tokenization];
 
                 // Let the view controller release
@@ -428,7 +428,7 @@
 - (void)cardFormViewDidChange:(__unused BTUICardFormView *)cardFormView {
 
     if (!self.cardEntryDidBegin) {
-        [self.apiClient postAnalyticsEvent:@"dropin.ios.add-card.start"];
+        [self.apiClient sendAnalyticsEvent:@"dropin.ios.add-card.start"];
         self.cardEntryDidBegin = YES;
     }
 
