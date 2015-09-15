@@ -30,13 +30,17 @@ By default, this should happen automatically if you have a Preprocessor Macro en
 
 ## Updating for iOS 9
 
-At the time of this writing, iOS 9 and Xcode 7 are still in beta, so these instructions may change.
+**Xcode 7 is required.**
 
-iOS 9 introduces new security requirements and restrictions that can impact the behavior of the Braintree SDK.
+### Supporting Bitcode
+
+The Braintree SDK works with apps that have [bitcode](https://developer.apple.com/library/prerelease/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AppThinning/AppThinning.html#//apple_ref/doc/uid/TP40012582-CH35-SW3) enabled.
+
+However, if your integration uses `BTData` for fraud detection, it does not currently support having bitcode enabled. We are working to add support for this shortly.
 
 ### App Transport Security
 
-If your app is compiled with iOS 9 SDK, it must comply with Apple's [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) policy.
+iOS 9 introduces new security requirements and restrictions that can impact the behavior of the Braintree SDK. If your app is compiled with iOS 9 SDK, it must comply with Apple's [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) policy.
 
 Please whitelist the Braintree Gateway domain by adding the following to your application's plist:
 
