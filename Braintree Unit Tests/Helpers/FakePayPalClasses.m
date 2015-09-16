@@ -92,14 +92,15 @@ static BOOL cannedIsWalletAppAvailable = YES;
         _cannedError = nil;
         _cannedTarget = PayPalOneTouchRequestTargetBrowser;
         _cannedSuccess = YES;
-        _cannedMetadataId = @"";
+        _cannedMetadataId = @"fake-canned-metadata-id";
     }
     return self;
 }
 
-- (void)performWithCompletionBlock:(PayPalOneTouchRequestCompletionBlock)completionBlock {
+//TODO do something different here since its an adapter block?
+- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
-    completionBlock(self.cannedSuccess, self.cannedTarget, self.cannedMetadataId, self.cannedError);
+    adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"canned"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
 }
 
 @end
@@ -113,14 +114,15 @@ static BOOL cannedIsWalletAppAvailable = YES;
         _cannedError = nil;
         _cannedTarget = PayPalOneTouchRequestTargetBrowser;
         _cannedSuccess = YES;
-        _cannedMetadataId = @"";
+        _cannedMetadataId = @"fake-canned-metadata-id";
     }
     return self;
 }
 
-- (void)performWithCompletionBlock:(PayPalOneTouchRequestCompletionBlock)completionBlock {
+//TODO do something different here since its an adapter block?
+- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
-    completionBlock(self.cannedSuccess, self.cannedTarget, self.cannedMetadataId, self.cannedError);
+    adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"canned"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
 }
 
 @end

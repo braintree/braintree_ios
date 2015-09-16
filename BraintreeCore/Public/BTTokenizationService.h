@@ -6,6 +6,7 @@
 BT_ASSUME_NONNULL_BEGIN
 
 extern NSString * const BTTokenizationServiceErrorDomain;
+extern NSString * const BTTokenizationServiceViewPresentingDelegateOption;
 
 typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
     BTTokenizationServiceErrorUnknown = 0,

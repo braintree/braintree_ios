@@ -24,6 +24,13 @@ BT_ASSUME_NONNULL_BEGIN
 /// The shipping address.
 @property (nonatomic, readonly, strong) BTPostalAddress *shippingAddress;
 
+/// Client Metadata Id associated with this transaction.
+@property (nonatomic, readonly, copy) NSString *clientMetadataId;
+
+/// Optional. Payer Id associated with this transaction.
+/// Will be provided for Billing Agreement and Checkout.
+@property (nonatomic, readonly, copy) NSString *payerId;
+
 @end
 
 BT_ASSUME_NONNULL_END

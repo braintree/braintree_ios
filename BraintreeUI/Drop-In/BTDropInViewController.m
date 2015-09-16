@@ -11,7 +11,7 @@
 #import "BTTokenizationParser.h"
 #import "BTTokenizationService.h"
 
-@interface BTDropInViewController () <BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTDropInViewControllerDelegate, BTDropInSelectPaymentMethodViewControllerDelegate>
+@interface BTDropInViewController () <BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTDropInViewControllerDelegate, BTDropInSelectPaymentMethodViewControllerDelegate, BTViewControllerPresentingDelegate>
 
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTDropInViewController *addPaymentMethodDropInViewController;
@@ -41,6 +41,7 @@
     if (self = [super init]) {
         self.theme = [BTUI braintreeTheme];
         self.dropInContentView = [[BTDropInContentView alloc] init];
+        self.dropInContentView.paymentButton.viewControllerPresentingDelegate = self;
 
         self.apiClient = [apiClient copyWithSource:BTClientMetadataSourceUnknown integration:BTClientMetadataIntegrationDropIn];
         self.dropInContentView.paymentButton.apiClient = self.apiClient;
@@ -680,6 +681,16 @@
 //        _addPaymentMethodDropInViewController.dropInContentView.paymentButton.delegate = self;
     }
     return _addPaymentMethodDropInViewController;
+}
+
+#pragma mark - BTViewControllerPresentingDelegate
+
+- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(__unused UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

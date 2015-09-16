@@ -4,7 +4,7 @@
 
 Welcome to Braintree's v.zero SDK for iOS. This library will help you accept card, PayPal, and Venmo payments in your iOS app.
 
-The Braintree SDK requires Xcode 7, iOS SDK 8.0+, and a minimum iOS target of 7.0.
+The Braintree SDK requires Xcode 7, iOS SDK 9.0+, and a minimum iOS target of 7.0.
 
 ![Screenshot of v.zero](screenshot.png)
 

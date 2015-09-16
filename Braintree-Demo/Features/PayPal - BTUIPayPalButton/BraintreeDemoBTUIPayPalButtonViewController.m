@@ -3,7 +3,7 @@
 #import <BraintreePayPal/BraintreePayPal.h>
 #import <BraintreeUI/BraintreeUI.h>
 
-@interface BraintreeDemoBTUIPayPalButtonViewController ()
+@interface BraintreeDemoBTUIPayPalButtonViewController () <BTViewControllerPresentingDelegate>
 @end
 
 @implementation BraintreeDemoBTUIPayPalButtonViewController
@@ -36,6 +36,7 @@
 
 - (void)tappedPayPalButton {
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
+    payPalDriver.viewControllerPresentingDelegate = self;
     [payPalDriver authorizeAccountWithCompletion:^(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         if (tokenizedPayPalAccount) {
             self.progressBlock(@"Got a nonce 💎!");
@@ -47,6 +48,14 @@
             self.progressBlock(@"Canceled 🔰");
         }
     }];
+}
+
+- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

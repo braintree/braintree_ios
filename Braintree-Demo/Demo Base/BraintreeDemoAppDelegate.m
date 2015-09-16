@@ -51,7 +51,6 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     [[UINavigationBar appearance] setBarTintColor:pleasantGray];
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackTranslucent];
 
-    [[UIToolbar appearance] setTintColor:[UIColor whiteColor]];
     [[UIToolbar appearance] setBarTintColor:pleasantGray];
     [[UIToolbar appearance] setBarStyle:UIBarStyleBlackTranslucent];
 }

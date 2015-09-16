@@ -8,13 +8,11 @@
 #import "BTTokenizedPayPalCheckout_Internal.h"
 #import "BTPostalAddress.h"
 #import "BTLogger_Internal.h"
+#import <SafariServices/SafariServices.h>
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
 static void (^appSwitchReturnBlock)(NSURL *url);
-
-@interface BTPayPalDriver ()
-@end
 
 @implementation BTPayPalDriver
 
@@ -24,11 +22,12 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
         [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
             BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+            driver.viewControllerPresentingDelegate = options[BTTokenizationServiceViewPresentingDelegateOption];
             [driver authorizeAccountWithCompletion:completionBlock];
         }];
 
         [[BTTokenizationParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^id<BTTokenized> _Nullable(BTJSON * _Nonnull payPalAccount) {
-            return [self payPalAccountFromJSON:payPalAccount];
+            return [self payPalAccountFromJSON:payPalAccount withClientMetadataId:nil];
         }];
     }
 }
@@ -86,9 +85,11 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
 
         [self informDelegateWillPerformAppSwitch];
-        [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, __unused NSString *clientMetadataId, NSError *error) {
+        [request performWithAdapterBlock:^(BOOL success, NSURL *url, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
+            self.clientMetadataId = clientMetadataId;
             [self sendAnalyticsEventForInitiatingOneTouchWithSuccess:success target:target];
             if (success) {
+                [self performSwitchRequest:url];
                 [self informDelegateDidPerformAppSwitchToTarget:target];
             } else {
                 if (completionBlock) completionBlock(nil, error);
@@ -100,6 +101,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 - (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *account, NSError *error))completionBlock
 {
     appSwitchReturnBlock = ^(NSURL *url) {
+        [self informDelegatePresentingViewControllerNeedsDismissal];
         [self informDelegateWillProcessAppSwitchReturn];
 
         [self.payPalClass parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
@@ -118,7 +120,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                 case PayPalOneTouchResultTypeSuccess: {
                     [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
                               parameters:@{ @"paypal_account": result.response,
-                                            @"correlation_id": [self.payPalClass clientMetadataID],
+                                            @"correlation_id": self.clientMetadataId,
                                             }
                               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                                   if (error) {
@@ -130,7 +132,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                   [self sendAnalyticsEventForTokenizationSuccess];
 
                                   BTJSON *payPalAccount = body[@"paypalAccounts"][0];
-                                  BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[self class] payPalAccountFromJSON:payPalAccount];
+                                  BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[self class] payPalAccountFromJSON:payPalAccount withClientMetadataId:self.clientMetadataId];
 
                                   if (completionBlock) completionBlock(tokenizedPayPalAccount, nil);
                                   appSwitchReturnBlock = nil;
@@ -146,8 +148,18 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
 #pragma mark - Checkout (Single Payments)
 
+- (void)billingAgreementWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
+    [self checkoutWithCheckoutRequest:checkoutRequest
+                           completion:completionBlock isBillingAgreement:YES];
+}
+
 - (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
-    if (!checkoutRequest || !checkoutRequest.amount) {
+    [self checkoutWithCheckoutRequest:checkoutRequest
+                           completion:completionBlock isBillingAgreement:NO];
+}
+
+- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement {
+    if (!checkoutRequest || (!isBillingAgreement && !checkoutRequest.amount)) {
         completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
         return;
     }
@@ -182,11 +194,26 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         NSString *currencyCode = checkoutRequest.currencyCode ?: configuration.json[@"payPal"][@"currencyIsoCode"].asString;
 
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-        if (checkoutRequest.amount.stringValue) {
-            parameters[@"amount"] = checkoutRequest.amount.stringValue;
+        
+        if (!isBillingAgreement) {
+            if (checkoutRequest.amount.stringValue) {
+                parameters[@"amount"] = checkoutRequest.amount.stringValue;
+            }
         }
+        
         if (currencyCode) {
             parameters[@"currency_iso_code"] = currencyCode;
+        }
+        
+        if (checkoutRequest.enableShippingAddress && checkoutRequest.shippingAddress != nil) {
+            BTPostalAddress *shippingAddress = checkoutRequest.shippingAddress;
+            parameters[@"line1"] = shippingAddress.streetAddress;
+            parameters[@"line2"] = shippingAddress.extendedAddress;
+            parameters[@"city"] = shippingAddress.locality;
+            parameters[@"state"] = shippingAddress.region;
+            parameters[@"postal_code"] = shippingAddress.postalCode;
+            parameters[@"country_code"] = shippingAddress.countryCodeAlpha2;
+            parameters[@"recipient_name"] = shippingAddress.recipientName;
         }
         if (returnURI) {
             parameters[@"return_url"] = returnURI;
@@ -194,11 +221,10 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         if (cancelURI) {
             parameters[@"cancel_url"] = cancelURI;
         }
-        if ([self.payPalClass clientMetadataID]) {
-            parameters[@"correlation_id"] = [self.payPalClass clientMetadataID];
-        }
 
-        [self.apiClient POST:@"v1/paypal_hermes/create_payment_resource"
+        NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
+        
+        [self.apiClient POST: [NSString stringWithFormat:@"v1/paypal_hermes/%@",url]
                   parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
 
@@ -214,16 +240,24 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                       if (!payPalClientID && [self payPalEnvironmentForRemoteConfiguration:configuration.json] == PayPalEnvironmentMock) {
                           payPalClientID = @"FAKE-PAYPAL-CLIENT-ID";
                       }
-                      PayPalOneTouchCheckoutRequest *request = [self.requestFactory requestWithApprovalURL:body[@"paymentResource"][@"redirectUrl"].asURL
+                      
+                      NSURL *approvalUrl = body[@"paymentResource"][@"redirectUrl"].asURL;
+                      if (approvalUrl == nil) {
+                          approvalUrl = body[@"agreementSetup"][@"approvalUrl"].asURL;
+                      }
+                                            
+                      PayPalOneTouchCheckoutRequest *request = [self.requestFactory requestWithApprovalURL:approvalUrl
                                                                                                   clientID:payPalClientID
                                                                                                environment:[self payPalEnvironmentForRemoteConfiguration:configuration.json]
                                                                                          callbackURLScheme:self.returnURLScheme];
 
                       [self informDelegateWillPerformAppSwitch];
 
-                      [request performWithCompletionBlock:^(BOOL success, PayPalOneTouchRequestTarget target, __unused NSString *clientMetadataId, NSError *error) {
+                      [request performWithAdapterBlock:^(BOOL success, NSURL *url, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
+                          self.clientMetadataId = clientMetadataId;
                           [self sendAnalyticsEventForSinglePaymentForInitiatingOneTouchWithSuccess:success target:target];
                           if (success) {
+                              [self performSwitchRequest:url];
                               [self informDelegateDidPerformAppSwitchToTarget:target];
                           } else {
                               if (completionBlock) completionBlock(nil, error);
@@ -236,6 +270,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 - (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock
 {
     appSwitchReturnBlock = ^(NSURL *url) {
+        [self informDelegatePresentingViewControllerNeedsDismissal];
         [self informDelegateWillProcessAppSwitchReturn];
 
         [self.payPalClass parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
@@ -257,9 +292,8 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
                     parameters[@"paypal_account"] = [result.response mutableCopy];
                     parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
-                    if ([self.payPalClass clientMetadataID]) {
-                        parameters[@"correlation_id"] = [self.payPalClass clientMetadataID];
-                    }
+                    parameters[@"correlation_id"] = self.clientMetadataId;
+                    
                     BTClientMetadata *metadata = [self clientMetadata];
                     parameters[@"_meta"] =  @{ @"source": metadata.sourceString,
                                                @"integration": metadata.integrationString };
@@ -287,6 +321,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                   NSString *firstName = details[@"payerInfo"][@"firstName"].asString;
                                   NSString *lastName = details[@"payerInfo"][@"lastName"].asString;
                                   NSString *phone = details[@"payerInfo"][@"phone"].asString;
+                                  NSString *payerId = details[@"payerInfo"][@"payerId"].asString;
 
                                   BTPostalAddress *shippingAddress = [self shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
                                   BTPostalAddress *billingAddress = [self shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
@@ -310,7 +345,9 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                                                                                                                       lastName:lastName
                                                                                                                                          phone:phone
                                                                                                                                 billingAddress:billingAddress
-                                                                                                                               shippingAddress:shippingAddress];
+                                                                                                                               shippingAddress:shippingAddress
+                                                                                                                              clientMetadataId:self.clientMetadataId
+                                                                                                                                       payerId:payerId];
 
                                   if (completionBlock) completionBlock(tokenizedCheckout, nil);
                               }];
@@ -323,6 +360,15 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 }
 
 #pragma mark - Helpers
+
+- (void)performSwitchRequest:(NSURL*) appSwitchURL {
+    if ([SFSafariViewController class]) {
+        [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
+    }
+    else {
+        [[UIApplication sharedApplication] openURL:appSwitchURL];
+    }
+}
 
 - (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {
     NSString *btPayPalEnvironmentName = configuration[@"paypal"][@"environment"].asString;
@@ -395,7 +441,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     return address;
 }
 
-+ (BTTokenizedPayPalAccount *)payPalAccountFromJSON:(BTJSON *)payPalAccount {
++ (BTTokenizedPayPalAccount *)payPalAccountFromJSON:(BTJSON *)payPalAccount withClientMetadataId:(NSString *)clientMetadataId {
     NSString *nonce = payPalAccount[@"nonce"].asString;
     NSString *description = payPalAccount[@"description"].asString;
     NSString *email = payPalAccount[@"details"][@"email"].asString;
@@ -413,7 +459,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         description = email;
     }
 
-    BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce description:description email:email accountAddress:accountAddress];
+    BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce description:description email:email accountAddress:accountAddress clientMetadataId:clientMetadataId];
     return tokenizedPayPalAccount;
 }
 
@@ -458,6 +504,24 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
     if ([self.delegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
         [self.delegate appSwitcherWillProcessPaymentInfo:self];
+    }
+}
+
+- (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL {
+    if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
+        self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
+        [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
+    } else {
+        [[BTLogger sharedLogger] warning:@"Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+    }
+}
+
+- (void)informDelegatePresentingViewControllerNeedsDismissal {
+    if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsDismissalOfViewController:)]) {
+        [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
+        self.safariViewController = nil;
+    } else {
+        [[BTLogger sharedLogger] warning:@"Unable to dismiss View Controller to end PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
 }
 

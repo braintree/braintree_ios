@@ -113,6 +113,7 @@
 		A73088361B86872C009487BA /* BraintreeDemoThreeDSecureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D71B79708900452CFA /* BraintreeDemoThreeDSecureViewController.m */; };
 		A73088371B8694D6009487BA /* Braintree3DSecure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D881B5D9E8C0016EFB4 /* Braintree3DSecure.framework */; };
 		A73088381B8694D6009487BA /* Braintree3DSecure.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D881B5D9E8C0016EFB4 /* Braintree3DSecure.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A7334F251BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7334F241BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.m */; settings = {ASSET_TAGS = (); }; };
 		A734A98E1B8797FD00D2461B /* BTClientTokenSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A98D1B8797FD00D2461B /* BTClientTokenSpec.m */; };
 		A734A9911B87989400D2461B /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A9901B87989400D2461B /* BTTestClientTokenFactory.m */; };
 		A743CD211B449D8400757C9B /* BTAPIClient_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743CD201B449D8400757C9B /* BTAPIClient_Tests.m */; };
@@ -647,6 +648,8 @@
 		A72E134C1B44630C002703DD /* BTPostalAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPostalAddress.m; sourceTree = "<group>"; };
 		A72E134F1B446DED002703DD /* BTClientMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTClientMetadata.h; sourceTree = "<group>"; };
 		A72E13501B446DED002703DD /* BTClientMetadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientMetadata.m; sourceTree = "<group>"; };
+		A7334F231BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BraintreeDemoPayPalBillingAgreementViewController.h; path = "PayPal - Billing Agreement/BraintreeDemoPayPalBillingAgreementViewController.h"; sourceTree = "<group>"; };
+		A7334F241BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BraintreeDemoPayPalBillingAgreementViewController.m; path = "PayPal - Billing Agreement/BraintreeDemoPayPalBillingAgreementViewController.m"; sourceTree = "<group>"; };
 		A734A98D1B8797FD00D2461B /* BTClientTokenSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientTokenSpec.m; sourceTree = "<group>"; };
 		A734A98F1B87989400D2461B /* BTTestClientTokenFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTestClientTokenFactory.h; sourceTree = "<group>"; };
 		A734A9901B87989400D2461B /* BTTestClientTokenFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTestClientTokenFactory.m; sourceTree = "<group>"; };
@@ -1412,6 +1415,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		A7334F221BA38AF50083C411 /* PayPal - Billing Agreement */ = {
+			isa = PBXGroup;
+			children = (
+				A7334F231BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.h */,
+				A7334F241BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.m */,
+			);
+			name = "PayPal - Billing Agreement";
+			sourceTree = "<group>";
+		};
 		A75DA343192138F000D997A2 = {
 			isa = PBXGroup;
 			children = (
@@ -1551,6 +1563,7 @@
 		A76B19BE1B79708900452CFA /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				A7334F221BA38AF50083C411 /* PayPal - Billing Agreement */,
 				A76B19C21B79708900452CFA /* Apple Pay - PassKit */,
 				A76B19C51B79708900452CFA /* Coinbase - BTUICoinbaseButton */,
 				A76B19C81B79708900452CFA /* Coinbase - Custom Button */,
@@ -2930,6 +2943,7 @@
 				A7A094FA1B82919300D732CC /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				A76B1A0C1B79708A00452CFA /* BraintreeDemoBaseViewController.m in Sources */,
 				A7A094F71B8283DF00D732CC /* BraintreeDemoDropInViewController.m in Sources */,
+				A7334F251BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */,
 				A7D674681B83E5A100ED6C00 /* BraintreeDemoBTPaymentButtonViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
