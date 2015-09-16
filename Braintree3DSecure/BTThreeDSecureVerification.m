@@ -15,7 +15,7 @@
     return nil;
 }
 
-- (instancetype)initWithCardTokenizationRequest:(__unused BTCardTokenizationRequest *)cardTokenizationRequest {
+- (instancetype)initWithCardTokenizationRequest:(__unused BTCard *)cardTokenizationRequest {
     self = [super init];
     if (self) {
         self.parameters = [NSMutableDictionary dictionary];

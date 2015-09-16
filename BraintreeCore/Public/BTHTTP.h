@@ -5,12 +5,14 @@
 
 BT_ASSUME_NONNULL_BEGIN
 
-@class BTHTTPResponse;
+@class BTHTTPResponse, BTClientToken;
 
 /// Key for userInfo dictionary that contains the NSHTTPURLResponse from server when it returns an HTTP error
 extern NSString * const BTHTTPURLResponseKey;
 /// Key for userInfo dictionary that contains the BTJSON body of the HTTP error response
 extern NSString * const BTHTTPJSONResponseBodyKey;
+
+/// Performs HTTP methods on the Braintree Client API
 
 @interface BTHTTP : NSObject<NSCopying>
 
@@ -18,9 +20,24 @@ extern NSString * const BTHTTPJSONResponseBodyKey;
 /// consisting of DER encoded x509 certificates
 @property (nonatomic, BT_NULLABLE, strong) BT_GENERICS(NSArray, NSData *) *pinnedCertificates;
 
-- (instancetype)initWithBaseURL:(NSURL *)URL authorizationFingerprint:(NSString *)authorizationFingerprint NS_DESIGNATED_INITIALIZER;
+/// Initialize `BTHTTP` with the authorization fingerprint from a client token
+///
+/// @param URL The base URL for the Braintree Client API
+/// @param authorizationFingerprint The authorization fingerprint HMAC from a client token
+- (instancetype)initWithBaseURL:(NSURL *)URL
+       authorizationFingerprint:(NSString *)authorizationFingerprint NS_DESIGNATED_INITIALIZER;
 
+/// Initialize `BTHTTP` with the authorization fingerprint from a client token
+///
+/// @param URL The base URL for the Braintree Client API
+/// @param clientKey A client key
 - (instancetype)initWithBaseURL:(nonnull NSURL *)URL clientKey:(nonnull NSString *)clientKey NS_DESIGNATED_INITIALIZER;
+
+/// A convenience initializer to initialize `BTHTTP` with a client token
+///
+/// @param clientToken A client token
+- (instancetype)initWithClientToken:(BTClientToken *)clientToken;
+
 
 - (BT_NULLABLE instancetype)init __attribute__((unavailable("Please use initWithBaseURL:authorizationFingerprint: instead.")));
 

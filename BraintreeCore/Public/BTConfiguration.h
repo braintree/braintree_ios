@@ -8,6 +8,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithJSON:(BTJSON *)json NS_DESIGNATED_INITIALIZER;
 
+/// The merchant account's configuration as a `BTJSON` object
 @property (nonatomic, readonly, strong) BTJSON *json;
 
 #pragma mark - Undesignated initializers (do not use)

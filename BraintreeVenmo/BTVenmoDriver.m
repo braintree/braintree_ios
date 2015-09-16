@@ -95,9 +95,9 @@ static BTVenmoDriver *appSwitchedDriver;
             [self informDelegateDidPerformAppSwitch];
             self.appSwitchCompletionBlock = completionBlock;
             appSwitchedDriver = self;
-            [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
+            [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.initiate.success"];
         } else {
-            [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.failure"];
+            [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.failure"];
             error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                         code:BTVenmoDriverErrorTypeAppSwitchFailed
                                     userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
@@ -129,14 +129,14 @@ static BTVenmoDriver *appSwitchedDriver;
         // to be able to post an analytics event with the Venmo configuration status, which is non-critical
         BTJSON *venmoConfiguration = configuration.json[@"venmo"];
         if (venmoConfiguration.isString) {
-            [self.apiClient postAnalyticsEvent:[NSString stringWithFormat:@"ios.venmo.appswitch.handle.%@", venmoConfiguration.asString]];
+            [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.venmo.appswitch.handle.%@", venmoConfiguration.asString]];
         }
     }];
 
     switch (returnURL.state) {
         case BTVenmoAppSwitchReturnURLStateSucceeded: {
             [self informDelegateWillProcessAppSwitchReturn];
-            [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
+            [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
 
             if (!self.apiClient.clientJWT) {
                 NSError *error = nil;
@@ -144,13 +144,13 @@ static BTVenmoDriver *appSwitchedDriver;
                     error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];
                 }
                 if (error) {
-                    [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
+                    [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
                     self.appSwitchCompletionBlock(nil, error);
                     self.appSwitchCompletionBlock = nil;
                     return;
                 }
 
-                [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.handle.success"];
+                [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.success"];
 
                 BTJSON *json = [[BTJSON alloc] initWithValue:@{
                                                                @"nonce": returnURL.nonce,
@@ -165,13 +165,13 @@ static BTVenmoDriver *appSwitchedDriver;
                          parameters:@{}
                          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                              if (error) {
-                                 [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
+                                 [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.client-failure"];
                                  self.appSwitchCompletionBlock(nil, error);
                                  self.appSwitchCompletionBlock = nil;
                                  return;
                              }
 
-                             [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.handle.success"];
+                             [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.success"];
 
                              BTJSON *cardJSON = body[@"paymentMethods"][0];
                              if (cardJSON.isError) {
@@ -186,7 +186,7 @@ static BTVenmoDriver *appSwitchedDriver;
             break;
         }
         case BTVenmoAppSwitchReturnURLStateFailed: {
-            [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.handle.error"];
+            [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.error"];
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
             userInfo[NSUnderlyingErrorKey] = returnURL.error;
             userInfo[NSLocalizedDescriptionKey] = @"App switch failed";
@@ -197,7 +197,7 @@ static BTVenmoDriver *appSwitchedDriver;
             break;
         }
         case BTVenmoAppSwitchReturnURLStateCanceled:
-            [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.handle.cancel"];
+            [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.cancel"];
             self.appSwitchCompletionBlock(nil, nil);
             self.appSwitchCompletionBlock = nil;
             break;
@@ -212,7 +212,7 @@ static BTVenmoDriver *appSwitchedDriver;
 - (BOOL)verifyAppSwitchWithConfiguration:(BTConfiguration *)configuration error:(NSError * __autoreleasing *)error {
 
     if (!configuration.isVenmoEnabled) {
-        [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.disabled"];
+        [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.disabled"];
         if (error) {
             *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                          code:BTVenmoDriverErrorTypeDisabled
@@ -222,7 +222,7 @@ static BTVenmoDriver *appSwitchedDriver;
     }
 
     if (![self isiOSAppAvailableForAppSwitch]) {
-        [self.apiClient postAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unavailable"];
+        [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.initiate.error.unavailable"];
         if (error) {
             *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                          code:BTVenmoDriverErrorTypeAppNotAvailable

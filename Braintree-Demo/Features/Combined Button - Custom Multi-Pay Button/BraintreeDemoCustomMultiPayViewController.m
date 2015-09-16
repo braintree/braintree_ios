@@ -134,16 +134,16 @@
 - (void)saveCardVC {
     [self cancelCardVC];
 
-    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
-    request.number = self.cardForm.number;
-    request.expirationMonth = self.cardForm.expirationMonth;
-    request.expirationYear = self.cardForm.expirationYear;
-    request.cvv = self.cardForm.cvv;
-    request.postalCode = self.cardForm.postalCode;
-    request.shouldValidate = NO;
+    BTCard *card = [[BTCard alloc] init];
+    card.number = self.cardForm.number;
+    card.expirationMonth = self.cardForm.expirationMonth;
+    card.expirationYear = self.cardForm.expirationYear;
+    card.cvv = self.cardForm.cvv;
+    card.postalCode = self.cardForm.postalCode;
+    card.shouldValidate = NO;
 
-    BTCardTokenizationClient *cardTokenizationClient = [[BTCardTokenizationClient alloc] initWithAPIClient:self.apiClient];
-    [cardTokenizationClient tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+    BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
+    [cardClient tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
         if (tokenizedCard) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [tokenizedCard debugDescription]);

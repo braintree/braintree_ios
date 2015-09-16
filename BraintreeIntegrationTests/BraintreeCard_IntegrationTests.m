@@ -4,25 +4,25 @@
 #import <Expecta/Expecta.h>
 #import <Specta/Specta.h>
 
-SpecBegin(BTCardTokenizationClient_Integration)
+SpecBegin(BTCardClient_Integration)
 
 describe(@"tokenizeCard:completion:", ^{
-    __block BTCardTokenizationClient *client;
+    __block BTCardClient *client;
 
     context(@"with validation disabled", ^{
         beforeEach(^{
             BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
-            client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+            client = [[BTCardClient alloc] initWithAPIClient:apiClient];
         });
 
         it(@"creates an unlocked card with a nonce using an invalid card", ^{
-            BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
-            request.number = @"INVALID_CARD";
-            request.expirationMonth = @"XX";
-            request.expirationYear = @"YYYY";
+            BTCard *card = [[BTCard alloc] init];
+            card.number = @"INVALID_CARD";
+            card.expirationMonth = @"XX";
+            card.expirationYear = @"YYYY";
 
             XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-            [client tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
+            [client tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
                 expect(tokenized.paymentMethodNonce.isANonce).to.beTruthy();
                 expect(error).to.beNil();
                 [expectation fulfill];
@@ -32,13 +32,13 @@ describe(@"tokenizeCard:completion:", ^{
         });
 
         it(@"creates an unlocked card with a nonce using a valid card", ^{
-            BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
-            request.number = @"4111111111111111";
-            request.expirationMonth = @"12";
-            request.expirationYear = @"2018";
+            BTCard *card = [[BTCard alloc] init];
+            card.number = @"4111111111111111";
+            card.expirationMonth = @"12";
+            card.expirationYear = @"2018";
 
             XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-            [client tokenizeCard:request completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
+            [client tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
                 expect(tokenized.paymentMethodNonce.isANonce).to.beTruthy();
                 expect(error).to.beNil();
                 [expectation fulfill];
@@ -54,18 +54,18 @@ describe(@"tokenizeCard:completion:", ^{
 
             beforeEach(^{
                 BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
-                client = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+                client = [[BTCardClient alloc] initWithAPIClient:apiClient];
             });
 
             it(@"returns an authorization error", ^{
-                BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
-                request.shouldValidate = YES;
-                request.number = @"4111111111111111";
-                request.expirationMonth = @"12";
-                request.expirationYear = @"2018";
+                BTCard *card = [[BTCard alloc] init];
+                card.shouldValidate = YES;
+                card.number = @"4111111111111111";
+                card.expirationMonth = @"12";
+                card.expirationYear = @"2018";
 
                 XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-                [client tokenizeCard:request completion:^(BTTokenizedCard *tokenized, NSError *error) {
+                [client tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
                     XCTAssertNil(tokenized);
                     expect(error.domain).to.equal(BTHTTPErrorDomain);
                     expect(error.code).to.equal(BTHTTPErrorCodeClientError);
@@ -81,14 +81,14 @@ describe(@"tokenizeCard:completion:", ^{
         pending(@"and API client uses signed JWT", ^{
 
 //            it(@"populates card details based on the server-side response", ^{
-//                BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
-//                request.shouldValidate = YES;
-//                request.number = @"5555555555554444";
-//                request.expirationMonth = @"12";
-//                request.expirationYear = @"2018";
+//                BTCard *card = [[BTCard alloc] init];
+//                card.shouldValidate = YES;
+//                card.number = @"5555555555554444";
+//                card.expirationMonth = @"12";
+//                card.expirationYear = @"2018";
 //
 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-//                [client tokenizeCard:request completion:^(BTTokenizedCard *tokenized, NSError *error) {
+//                [client tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
 //                    expect(tokenized.cardNetwork).to.equal(BTCardNetworkMasterCard);
 //                    expect(tokenized.lastTwo).to.equal(@"44");
 //                    expect(tokenized.localizedDescription).to.equal(@"ending in 44");
@@ -102,12 +102,12 @@ describe(@"tokenizeCard:completion:", ^{
             //
             //        it(@"fails when the provided card number is not valid", ^{
             //            XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-            //            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-            //            request.number = @"4111111111111112";
-            //            request.expirationMonth = @"12";
-            //            request.expirationYear = @"2018";
-            //            request.shouldValidate = YES;
-            //            [testClient saveCardWithRequest:request
+            //            BTClientCardcard *card = [[BTClientCardcard alloc] init];
+            //            card.number = @"4111111111111112";
+            //            card.expirationMonth = @"12";
+            //            card.expirationYear = @"2018";
+            //            card.shouldValidate = YES;
+            //            [testClient saveCardWithcard:card
             //                                    success:nil
             //                                    failure:^(NSError *error) {
             //                                        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
@@ -119,13 +119,13 @@ describe(@"tokenizeCard:completion:", ^{
             //
             //        it(@"fails and provides all braintree validation errors when user input is invalid", ^{
             //            XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-            //            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-            //            request.number = @"4111111111111112";
-            //            request.expirationMonth = @"82";
-            //            request.expirationYear = @"2";
-            //            request.shouldValidate = YES;
+            //            BTClientCardcard *card = [[BTClientCardcard alloc] init];
+            //            card.number = @"4111111111111112";
+            //            card.expirationMonth = @"82";
+            //            card.expirationYear = @"2";
+            //            card.shouldValidate = YES;
             //
-            //            [testClient saveCardWithRequest:request
+            //            [testClient saveCardWithcard:card
             //                                    success:nil
             //                                    failure:^(NSError *error) {
             //                                        expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).toNot.beNil();
@@ -155,13 +155,13 @@ describe(@"tokenizeCard:completion:", ^{
             //
             //        it(@"saves a transactable credit card nonce", ^{
             //            XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-            //            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-            //            request.number = @"4111111111111111";
-            //            request.expirationMonth = @"12";
-            //            request.expirationYear = @"2018";
-            //            request.shouldValidate = YES;
+            //            BTClientCardcard *card = [[BTClientCardcard alloc] init];
+            //            card.number = @"4111111111111111";
+            //            card.expirationMonth = @"12";
+            //            card.expirationYear = @"2018";
+            //            card.shouldValidate = YES;
             //
-            //            [testClient saveCardWithRequest:request
+            //            [testClient saveCardWithcard:card
             //                                    success:^(BTPaymentMethod *card) {
             //                                        [testClient fetchNonceInfo:card.nonce
             //                                                           success:^(NSDictionary *nonceInfo) {
@@ -175,24 +175,24 @@ describe(@"tokenizeCard:completion:", ^{
             //        });
 
 //            context(@"when merchant has CVV challenge enabled", ^{
-                //            __block BTCardTokenizationClient *cvvAndZipClient;
+                //            __block BTCardClient *cvvAndZipClient;
                 //
                 //            beforeEach(^{
                 //                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_client_api_cvv_and_postal_code_verification_merchant_id"];
-                //                cvvAndZipClient = [[BTCardTokenizationClient alloc] initWithAPIClient:apiClient];
+                //                cvvAndZipClient = [[BTCardClient alloc] initWithAPIClient:apiClient];
                 //            });
                 //
                 //            it(@"saves a card when the challenges are provided", ^{
                 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-                //                BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
-                //                request.number = @"4111111111111111";
-                //                request.expirationMonth = @"12";
-                //                request.expirationYear = @"38";
-                //                request.cvv = @"100";
-                //                request.postalCode = @"15213";
-                //                request.shouldValidate = YES;
+                //                BTCard *card = [[BTCard alloc] init];
+                //                card.number = @"4111111111111111";
+                //                card.expirationMonth = @"12";
+                //                card.expirationYear = @"38";
+                //                card.cvv = @"100";
+                //                card.postalCode = @"15213";
+                //                card.shouldValidate = YES;
                 //
-                //                [cvvAndZipClient tokenizeCard:request completion:^(BTTokenizedCard *tokenized, NSError *error) {
+                //                [cvvAndZipClient tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
                 //                    expect(tokenized.paymentMethodNonce).toNot.beNil();
                 //                    expect(error).to.beNil();
                 //                    [expectation fulfill];
@@ -203,11 +203,11 @@ describe(@"tokenizeCard:completion:", ^{
                 //
                 //            it(@"fails to save a card when a cvv response is incorrect", ^{
                 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-                //                BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"38" cvv:@"200"];
-                //                request.postalCode = @"15213";
-                //                request.shouldValidate = YES;
+                //                BTCard *card = [[BTCard alloc] initWithNumber:@"4111111111111111" expirationMonth:@"12" expirationYear:@"38" cvv:@"200"];
+                //                card.postalCode = @"15213";
+                //                card.shouldValidate = YES;
                 //
-                //                [cvvAndZipClient tokenizeCard:request completion:^(BTTokenizedCard *tokenized, NSError *error) {
+                //                [cvvAndZipClient tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
                 //                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                 //                    expect(error.code).to.equal(BTCustomerInputErrorInvalid);
                 //                    expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"]).to.haveCountOf(1);
@@ -220,19 +220,19 @@ describe(@"tokenizeCard:completion:", ^{
                 //
                 //            it(@"fails to save a card when a postal code response is incorrect", ^{
                 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch client and save card"];
-                //                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
+                //                BTClientCardcard *card = [[BTClientCardcard alloc] init];
                 //                [BTClient testClientWithConfiguration:@{
                 //                                                        BTClientTestConfigurationKeyMerchantIdentifier: @"client_api_postal_code_verification_merchant_id",
                 //                                                        BTClientTestConfigurationKeyPublicKey: @"client_api_postal_code_verification_public_key",
                 //                                                        BTClientTestConfigurationKeyCustomer: @YES }
                 //                                                async:asyncClient completion:^(BTClient *zipClient) {
-                //                                                    request.number = @"4111111111111111";
-                //                                                    request.expirationMonth = @"12";
-                //                                                    request.expirationYear = @"38";
-                //                                                    request.cvv = @"100";
-                //                                                    request.postalCode = @"20000";
-                //                                                    request.shouldValidate = YES;
-                //                                                    [zipClient saveCardWithRequest:request
+                //                                                    card.number = @"4111111111111111";
+                //                                                    card.expirationMonth = @"12";
+                //                                                    card.expirationYear = @"38";
+                //                                                    card.cvv = @"100";
+                //                                                    card.postalCode = @"20000";
+                //                                                    card.shouldValidate = YES;
+                //                                                    [zipClient saveCardWithcard:card
                 //                                                                           success:nil
                 //                                                                           failure:^(NSError *error) {
                 //                                                                               expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
@@ -248,14 +248,14 @@ describe(@"tokenizeCard:completion:", ^{
                 //
                 //            it(@"fails to save a card when cvv and postal code responses are both incorrect", ^{
                 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Fail to save card"];
-                //                BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-                //                request.number = @"4111111111111111";
-                //                request.expirationMonth = @"12";
-                //                request.expirationYear = @"38";
-                //                request.cvv = @"200";
-                //                request.postalCode = @"20000";
-                //                request.shouldValidate = YES;
-                //                [cvvAndZipClient saveCardWithRequest:request
+                //                BTClientCardcard *card = [[BTClientCardcard alloc] init];
+                //                card.number = @"4111111111111111";
+                //                card.expirationMonth = @"12";
+                //                card.expirationYear = @"38";
+                //                card.cvv = @"200";
+                //                card.postalCode = @"20000";
+                //                card.shouldValidate = YES;
+                //                [cvvAndZipClient saveCardWithcard:card
                 //                                             success:nil
                 //                                             failure:^(NSError *error) {
                 //                                                 expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
@@ -436,12 +436,12 @@ SpecEnd
 //
 //        it(@"invokes the failure block for save card", ^{
 //            XCTestExpectation *expectation = [self expectationWithDescription:@"Fails to save card"];
-//            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-//            request.number = @"4111111111111111";
-//            request.expirationMonth = @"12";
-//            request.expirationYear = @"2018";
-//            request.shouldValidate = NO;
-//            [testClient saveCardWithRequest:request
+//            BTClientCardcard *card = [[BTClientCardcard alloc] init];
+//            card.number = @"4111111111111111";
+//            card.expirationMonth = @"12";
+//            card.expirationYear = @"2018";
+//            card.shouldValidate = NO;
+//            [testClient saveCardWithcard:card
 //                                    success:nil
 //                                    failure:^(NSError *error) {
 //                                        expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
@@ -452,12 +452,12 @@ SpecEnd
 //        });
 //
 //        it(@"noops for save card if the failure block is nil", ^{
-//            BTClientCardRequest *request = [[BTClientCardRequest alloc] init];
-//            request.number = @"4111111111111111";
-//            request.expirationMonth = @"12";
-//            request.expirationYear = @"2018";
-//            request.shouldValidate = YES;
-//            [testClient saveCardWithRequest:request
+//            BTClientCardcard *card = [[BTClientCardcard alloc] init];
+//            card.number = @"4111111111111111";
+//            card.expirationMonth = @"12";
+//            card.expirationYear = @"2018";
+//            card.shouldValidate = YES;
+//            [testClient saveCardWithcard:card
 //                                    success:nil
 //                                    failure:nil];
 //
@@ -493,11 +493,11 @@ SpecEnd
 //
 //            beforeEach(^{
 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-//                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+//                BTClientCardcard *r = [[BTClientCardcard alloc] init];
 //                r.number = @"4010000000000018";
 //                r.expirationDate = @"12/2015";
 //
-//                [testThreeDSecureClient saveCardWithRequest:r
+//                [testThreeDSecureClient saveCardWithcard:r
 //                                                    success:^(BTCardPaymentMethod *card) {
 //                                                        nonce = card.nonce;
 //                                                        [expectation fulfill];
@@ -530,11 +530,11 @@ SpecEnd
 //
 //            beforeEach(^{
 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-//                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+//                BTClientCardcard *r = [[BTClientCardcard alloc] init];
 //                r.number = @"4000000000000051";
 //                r.expirationDate = @"01/2020";
 //
-//                [testThreeDSecureClient saveCardWithRequest:r
+//                [testThreeDSecureClient saveCardWithcard:r
 //                                                    success:^(BTCardPaymentMethod *card) {
 //                                                        nonce = card.nonce;
 //                                                        [expectation fulfill];
@@ -563,11 +563,11 @@ SpecEnd
 //
 //            beforeEach(^{
 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-//                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+//                BTClientCardcard *r = [[BTClientCardcard alloc] init];
 //                r.number = @"4000000000000069";
 //                r.expirationDate = @"01/2020";
 //
-//                [testThreeDSecureClient saveCardWithRequest:r
+//                [testThreeDSecureClient saveCardWithcard:r
 //                                                    success:^(BTCardPaymentMethod *card) {
 //                                                        nonce = card.nonce;
 //                                                        [expectation fulfill];
@@ -596,11 +596,11 @@ SpecEnd
 //
 //            beforeEach(^{
 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-//                BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+//                BTClientCardcard *r = [[BTClientCardcard alloc] init];
 //                r.number = @"6011111111111117";
 //                r.expirationDate = @"01/2020";
 //
-//                [testThreeDSecureClient saveCardWithRequest:r
+//                [testThreeDSecureClient saveCardWithcard:r
 //                                                    success:^(BTCardPaymentMethod *card) {
 //                                                        nonce = card.nonce;
 //                                                        [expectation fulfill];
@@ -629,11 +629,11 @@ SpecEnd
 //
 //                beforeEach(^{
 //                    XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
-//                    BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+//                    BTClientCardcard *r = [[BTClientCardcard alloc] init];
 //                    r.number = @"not a card number";
 //                    r.expirationDate = @"12/2020";
 //
-//                    [testThreeDSecureClient saveCardWithRequest:r
+//                    [testThreeDSecureClient saveCardWithcard:r
 //                                                        success:^(BTCardPaymentMethod *card) {
 //                                                            nonce = card.nonce;
 //                                                            [expectation fulfill];
@@ -716,11 +716,11 @@ SpecEnd
 //                                                        BTClientTestConfigurationKeyClientTokenVersion: @2
 //                                                        } async:asyncClient completion:^(BTClient *testClient) {
 //                                                            testThreeDSecureClient = testClient;
-//                                                            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+//                                                            BTClientCardcard *r = [[BTClientCardcard alloc] init];
 //                                                            r.number = @"4000000000000051";
 //                                                            r.expirationDate = @"01/2020";
 //
-//                                                            [testThreeDSecureClient saveCardWithRequest:r
+//                                                            [testThreeDSecureClient saveCardWithcard:r
 //                                                                                                success:^(BTCardPaymentMethod *card) {
 //                                                                                                    nonce = card.nonce;
 //                                                                                                    [expectation fulfill];
@@ -757,11 +757,11 @@ SpecEnd
 //                                                        BTClientTestConfigurationKeyClientTokenVersion: @2
 //                                                        } async:asyncClient completion:^(BTClient *testClient) {
 //                                                            testThreeDSecureClient = testClient;
-//                                                            BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
+//                                                            BTClientCardcard *r = [[BTClientCardcard alloc] init];
 //                                                            r.number = @"4000000000000051";
 //                                                            r.expirationDate = @"01/2020";
 //
-//                                                            [testThreeDSecureClient saveCardWithRequest:r
+//                                                            [testThreeDSecureClient saveCardWithcard:r
 //                                                                                                success:^(BTCardPaymentMethod *card) {
 //                                                                                                    nonce = card.nonce;
 //                                                                                                    [expectation fulfill];

@@ -30,7 +30,7 @@
 
     // Analytics require an authorization fingerprint, needs support for client key
     NSString *event = @"hello world! 🐴";
-    [client postAnalyticsEvent:event completion:^(NSError *error) {
+    [client sendAnalyticsEvent:event completion:^(NSError *error) {
         XCTAssertNil(error);
         [expectation fulfill];
     }];
@@ -40,6 +40,6 @@
 
 // Testing that analytics "is successful but does not send the event when analytics URL is omitted from the client token"
 // is covered by the unit test:
-//   testPostAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent
+//   testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent
 
 @end

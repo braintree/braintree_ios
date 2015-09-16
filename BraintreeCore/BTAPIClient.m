@@ -33,7 +33,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         }
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
         
-        [self postAnalyticsEvent:@"ios.started.client-key"];
+        [self sendAnalyticsEvent:@"ios.started.client-key"];
     }
     return self;
 }
@@ -70,7 +70,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
         _metadata = [[BTClientMetadata alloc] init];
         
-        [self postAnalyticsEvent:@"ios.started.client-token"];
+        [self sendAnalyticsEvent:@"ios.started.client-token"];
     }
     return self;
 }
@@ -222,11 +222,11 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 #pragma mark - Analytics
 
-- (void)postAnalyticsEvent:(NSString *)eventKind {
-    [self postAnalyticsEvent:eventKind completion:nil];
+- (void)sendAnalyticsEvent:(NSString *)eventKind {
+    [self sendAnalyticsEvent:eventKind completion:nil];
 }
 
-- (void)postAnalyticsEvent:(NSString *)eventKind completion:(void(^)(NSError *error))completionBlock {
+- (void)sendAnalyticsEvent:(NSString *)eventKind completion:(void(^)(NSError *error))completionBlock {
     [self fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error){
         if (error) {
             [[BTLogger sharedLogger] warning:[NSString stringWithFormat:@"Failed to send analytics event. Remote configuration fetch failed. %@", error.localizedDescription]];

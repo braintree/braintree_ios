@@ -23,6 +23,8 @@ BT_ASSUME_NONNULL_BEGIN
 
 /// Creates a Braintree API client using a client token.
 ///
+/// This is a convenience wrapper for `BTAPIClient`'s' `-initWithClientToken:` initializer.
+///
 /// @param clientToken The client token
 /// @return A Braintree API client, or `nil` if the client token is invalid
 + (BT_NULLABLE BTAPIClient *)clientWithClientToken:(NSString *)clientToken;

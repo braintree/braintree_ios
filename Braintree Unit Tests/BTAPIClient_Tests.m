@@ -392,7 +392,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
 #pragma mark - Analytics tests
 
-- (void)testPostAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
+- (void)testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.http = stubConfigurationHTTP;
@@ -401,7 +401,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [stubConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{} statusCode:200];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
-    [apiClient postAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
+    [apiClient sendAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
         XCTAssertTrue(mockAnalyticsHttp.POSTRequestCount == 0);
         XCTAssertNil(error);
         [expectation fulfill];
@@ -410,7 +410,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-- (void)testPostAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
+- (void)testSendAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.http = stubConfigurationHTTP;
@@ -423,7 +423,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
                             statusCode:200];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Uses analytics base URL"];
-    [apiClient postAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
+    [apiClient sendAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
         XCTAssertNil(error);
         
         XCTAssertEqualObjects(apiClient.analyticsHttp.baseURL.absoluteString, @"test://do-not-send.url");
@@ -433,7 +433,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-- (void)testPostAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
+- (void)testSendAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourceCoinbaseApp integration:BTClientMetadataIntegrationCustom];
     FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
@@ -450,7 +450,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     BTClientMetadata *metadata = apiClient.metadata;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
-    [apiClient postAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
+    [apiClient sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
         XCTAssertNil(error);
         
         XCTAssertEqual(metadata.source, BTClientMetadataSourceCoinbaseApp);

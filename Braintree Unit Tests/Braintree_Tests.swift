@@ -39,11 +39,11 @@ class Braintree_Tests: XCTestCase {
         XCTAssertNil(Braintree.clientWithClientToken("invalid"))
     }
     
-    // MARK: BTCardTokenizationClient
+    // MARK: BTCardClient
     
     func testCardClientInitialization_withValidClientKey_returnsClientWithClientKey() {
-        let cardTokenizationClient = Braintree.cardClientWithClientKey("development_testing_integration_merchant_id")
-        XCTAssertEqual(cardTokenizationClient?.apiClient.clientKey, "development_testing_integration_merchant_id")
+        let cardClient = Braintree.cardClientWithClientKey("development_testing_integration_merchant_id")
+        XCTAssertEqual(cardClient?.apiClient.clientKey, "development_testing_integration_merchant_id")
     }
     
     func testCardClientInitialization_withInvalidClientKey_returnsNil() {
@@ -51,9 +51,9 @@ class Braintree_Tests: XCTestCase {
     }
     
     func testCardClientInitialization_withValidClientToken_returnsClientWithClientToken() {
-        let cardTokenizationClient = Braintree.cardClientWithClientToken(ValidClientToken)
+        let cardClient = Braintree.cardClientWithClientToken(ValidClientToken)
         let clientToken = try! BTClientToken(clientToken: ValidClientToken)
-        XCTAssertEqual(cardTokenizationClient?.apiClient.clientToken, clientToken)
+        XCTAssertEqual(cardClient?.apiClient.clientToken, clientToken)
     }
     
     func testCardClientInitialization_withInvalidClientToken_returnsNil() {

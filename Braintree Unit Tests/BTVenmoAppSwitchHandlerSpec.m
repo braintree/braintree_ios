@@ -28,7 +28,7 @@
 //        delegate = [OCMockObject mockForProtocol:@protocol(BTAppSwitchingDelegate)];
 //
 //        [[[client stub] andReturn:client] copyWithMetadata:OCMOCK_ANY];
-//        [[client stub] postAnalyticsEvent:OCMOCK_ANY];
+//        [[client stub] sendAnalyticsEvent:OCMOCK_ANY];
 //    });
 //
 //    afterEach(^{
@@ -247,7 +247,7 @@
 //
 //            it(@"performs fetchPaymentMethodWithNonce:success:failure:", ^{
 //                [[delegate expect] appSwitcherWillCreatePaymentMethod:handler];
-//                [[client expect] postAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
+//                [[client expect] sendAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
 //                [[client expect] fetchPaymentMethodWithNonce:@"a-nonce" success:OCMOCK_ANY failure:OCMOCK_ANY];
 //
 //                // TODO - examine blocks passed to fetchPaymentMethodWithNonce

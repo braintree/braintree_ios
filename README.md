@@ -4,7 +4,7 @@
 
 Welcome to Braintree's v.zero SDK for iOS. This library will help you accept card, PayPal, and Venmo payments in your iOS app.
 
-The Braintree SDK requires a minimum iOS target of 7.0 and a Base SDK of iOS 9.0+.
+The Braintree SDK requires Xcode 7, iOS SDK 9.0+, and a minimum iOS target of 7.0.
 
 ![Screenshot of v.zero](screenshot.png)
 
@@ -69,16 +69,6 @@ Please whitelist the Braintree Gateway domain by adding the following to your ap
   </dict>
 ```
 
-If your app uses PayPal, include the following under `NSExceptionDomains`:
-
-```
-  <key>www.paypalobjects.com</key>
-    <dict>
-      <key>NSExceptionRequiresForwardSecrecy</key>
-      <false/>
-  </dict>
-```
-
 If your app uses BraintreeFraud, also include the following under `NSExceptionDomains`:
 
 ```
@@ -92,6 +82,8 @@ If your app uses BraintreeFraud, also include the following under `NSExceptionDo
       <string>TLSv1.0</string>
   </dict>
 ```
+
+We are actively working to update the SSL certificates of these servers so that your app will not require these exceptions in the near future.
 
 ### URL Query Scheme Whitelist
 
@@ -113,6 +105,12 @@ For example, if your app supports both PayPal and Venmo, you could add the follo
     <string>com.paypal.ppclient.touch.v2</string>
   </array>
 ```
+
+#### Bitcode
+
+The Braintree SDK works with apps that have [bitcode](https://developer.apple.com/library/prerelease/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AppThinning/AppThinning.html#//apple_ref/doc/uid/TP40012582-CH35-SW3) enabled.
+
+However, if your integration uses `BraintreeFraud` for fraud detection, it does not currently support having bitcode enabled. This will be fixed in an upcoming release.
 
 ## Documentation
 

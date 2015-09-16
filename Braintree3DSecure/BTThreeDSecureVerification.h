@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "BTCardTokenizationRequest.h"
+#import "BTCard.h"
 #import "BTTokenizedCard.h"
 
 BT_ASSUME_NONNULL_BEGIN
@@ -8,7 +8,7 @@ BT_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Initializers
 
-- (instancetype)initWithCardTokenizationRequest:(BTCardTokenizationRequest *)cardTokenizationRequest NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCardTokenizationRequest:(BTCard *)cardTokenizationRequest NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithPaymentMethodNonce:(NSString *)paymentMethodNonce NS_DESIGNATED_INITIALIZER;
 
