@@ -75,14 +75,10 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                         environment:[self payPalEnvironmentForRemoteConfiguration:configuration.json]
                                   callbackURLScheme:self.returnURLScheme];
 
-        // TODO: add support for client key in server
         if (self.apiClient.clientToken) {
             request.additionalPayloadAttributes = @{ @"client_token": self.apiClient.clientToken.originalValue };
         } else if (self.apiClient.clientKey) {
-            // TODO: remove when server has supoprt for client key
-            NSString *clientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiIyMzQwNTZjNGE3YTQ3ZTY5NDE1Zjg1M2Y0N2Y3Mjc2ZGFiY2YyMWIxOThhZDE4ODYyODcyYzEyNTRiMjViZTZkfGNyZWF0ZWRfYXQ9MjAxNS0wOC0xMFQyMjowMjo1My4yODI1NjM2NzUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPWQ4aHhxaGRnN3dyM2Y3dzJcdTAwMjZwdWJsaWNfa2V5PTIyeDh3ajZyeTRiZm50Y3ciLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZDhoeHFoZGc3d3IzZjd3Mi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbImN2diJdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZDhoeHFoZGc3d3IzZjd3Mi9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20ifSwidGhyZWVEU2VjdXJlRW5hYmxlZCI6dHJ1ZSwidGhyZWVEU2VjdXJlIjp7Imxvb2t1cFVybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy9kOGh4cWhkZzd3cjNmN3cyL3RocmVlX2Rfc2VjdXJlL2xvb2t1cCJ9LCJwYXlwYWxFbmFibGVkIjp0cnVlLCJwYXlwYWwiOnsiZGlzcGxheU5hbWUiOiJHb2dnaW4iLCJjbGllbnRJZCI6bnVsbCwicHJpdmFjeVVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS9wcCIsInVzZXJBZ3JlZW1lbnRVcmwiOiJodHRwOi8vZXhhbXBsZS5jb20vdG9zIiwiYmFzZVVybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9jaGVja291dC5wYXlwYWwuY29tIiwiZGlyZWN0QmFzZVVybCI6bnVsbCwiYWxsb3dIdHRwIjp0cnVlLCJlbnZpcm9ubWVudE5vTmV0d29yayI6dHJ1ZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsIm1lcmNoYW50QWNjb3VudElkIjoiMzI2ODJ5ZzI1OHk0Mjk3NiIsImN1cnJlbmN5SXNvQ29kZSI6IlVTRCJ9LCJjb2luYmFzZUVuYWJsZWQiOmZhbHNlLCJtZXJjaGFudElkIjoiZDhoeHFoZGc3d3IzZjd3MiIsInZlbm1vIjoib2ZmIn0=";
-//            request.additionalPayloadAttributes = @{ @"client_key": self.apiClient.clientKey };
-            request.additionalPayloadAttributes = @{ @"client_token": clientToken };
+            request.additionalPayloadAttributes = @{ @"client_key": self.apiClient.clientKey };
         }
 
 
