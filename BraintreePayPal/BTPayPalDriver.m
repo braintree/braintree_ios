@@ -202,7 +202,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         
-        if(!isBillingAgreement){
+        if (!isBillingAgreement) {
             if (checkoutRequest.amount.stringValue) {
                 parameters[@"amount"] = checkoutRequest.amount.stringValue;
             }
@@ -210,7 +210,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                 parameters[@"currency_iso_code"] = currencyCode;
             }
         }
-        if(checkoutRequest.enableShippingAddress && checkoutRequest.shippingAddress != nil){
+        if (checkoutRequest.enableShippingAddress && checkoutRequest.shippingAddress != nil) {
             BTPostalAddress *shippingAddress = checkoutRequest.shippingAddress;
             parameters[@"line1"] = shippingAddress.streetAddress;
             parameters[@"line2"] = shippingAddress.extendedAddress;
