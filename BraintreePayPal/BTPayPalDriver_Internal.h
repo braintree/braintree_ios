@@ -25,7 +25,8 @@ BT_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) BTPayPalRequestFactory *requestFactory;
 
 /// Exposed for testing to provide subclasses of PayPalOneTouchCore to stub class methods
-@property (nonatomic, strong) Class payPalClass;
++ (Class)payPalClass;
++ (void)setPayPalClass:(Class)payPalClass;
 
 /// Exposed for testing to provide a convenient way to inject custom return URL schemes
 @property (nonatomic, copy) NSString *returnURLScheme;

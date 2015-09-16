@@ -1,14 +1,11 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, BTClientMetadataSourceType) {
-    BTClientMetadataSourcePayPalSDK,
+    BTClientMetadataSourceUnknown = 0,
     BTClientMetadataSourcePayPalApp,
     BTClientMetadataSourcePayPalBrowser,
     BTClientMetadataSourceVenmoApp,
     BTClientMetadataSourceForm,
-    BTClientMetadataSourceUnknown,
-    BTClientMetadataSourceCoinbaseApp,
-    BTClientMetadataSourceCoinbaseBrowser,
 };
 
 typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
@@ -29,7 +26,7 @@ typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
 /// the sessionId should remain constant. To achieve this, users of this class
 /// should use `mutableCopy` to create a new copy based on the existing session
 /// and then update the object as needed.
-@interface BTClientMetadata : NSObject<NSCopying, NSMutableCopying>
+@interface BTClientMetadata : NSObject <NSCopying, NSMutableCopying>
 
 @property (nonatomic, assign, readonly) BTClientMetadataIntegrationType integration;
 @property (nonatomic, assign, readonly) BTClientMetadataSourceType source;

@@ -67,8 +67,6 @@
 
 + (NSString *)sourceToString:(BTClientMetadataSourceType)source {
     switch (source) {
-        case BTClientMetadataSourcePayPalSDK:
-            return @"paypal-sdk";
         case BTClientMetadataSourcePayPalApp:
             return @"paypal-app";
         case BTClientMetadataSourcePayPalBrowser:
@@ -77,10 +75,6 @@
             return @"venmo-app";
         case BTClientMetadataSourceForm:
             return @"form";
-        case BTClientMetadataSourceCoinbaseApp:
-            return @"coinbase-app";
-        case BTClientMetadataSourceCoinbaseBrowser:
-            return @"coinbase-browser";
         case BTClientMetadataSourceUnknown:
             return @"unknown";
     }

@@ -8,27 +8,18 @@ describe(@"string values", ^{
     BTMutableClientMetadata *m = [[BTMutableClientMetadata alloc] init];
 
     it(@"source returns expected strings", ^{
-        m.source = BTClientMetadataSourceForm;
-        expect(m.sourceString).to.equal(@"form");
+        NSDictionary *sources = @{
+                                  @(BTClientMetadataSourceUnknown) : @"unknown",
+                                  @(BTClientMetadataSourceForm) : @"form",
+                                  @(BTClientMetadataSourcePayPalApp) : @"paypal-app",
+                                  @(BTClientMetadataSourcePayPalBrowser) : @"paypal-browser",
+                                  @(BTClientMetadataSourceVenmoApp) : @"venmo-app",
+                                  };
 
-        m.source = BTClientMetadataSourceUnknown;
-        expect(m.sourceString).to.equal(@"unknown");
-
-        m.source = BTClientMetadataSourcePayPalSDK;
-        expect(m.sourceString).to.equal(@"paypal-sdk");
-
-        m.source = BTClientMetadataSourcePayPalApp;
-        expect(m.sourceString).to.equal(@"paypal-app");
-
-        m.source = BTClientMetadataSourceCoinbaseApp;
-        expect(m.sourceString).to.equal(@"coinbase-app");
-
-        m.source = BTClientMetadataSourceCoinbaseBrowser;
-        expect(m.sourceString).to.equal(@"coinbase-browser");
-
-        m.source = BTClientMetadataSourceVenmoApp;
-        expect(m.sourceString).to.equal(@"venmo-app");
-
+        for (NSNumber *sourceNumber in sources) {
+            m.source = (BTClientMetadataSourceType)sourceNumber.integerValue;
+            XCTAssertEqualObjects(m.sourceString, sources[sourceNumber]);
+        }
     });
 
     it(@"integration returns expected strings", ^{
@@ -87,7 +78,7 @@ describe(@"mutableMetadata", ^{
     context(@"with non-default values", ^{
         beforeEach(^{
             mutableMetadata.integration = BTClientMetadataIntegrationDropIn;
-            mutableMetadata.source = BTClientMetadataSourcePayPalSDK;
+            mutableMetadata.source = BTClientMetadataSourcePayPalApp;
         });
 
         describe(@"copy", ^{
@@ -148,7 +139,7 @@ describe(@"metadata", ^{
             metadata = ({
                 BTMutableClientMetadata *mutableMetadata = [[BTMutableClientMetadata alloc] init];
                 mutableMetadata.integration = BTClientMetadataIntegrationDropIn;
-                mutableMetadata.source = BTClientMetadataSourcePayPalSDK;
+                mutableMetadata.source = BTClientMetadataSourcePayPalApp;
                 [mutableMetadata copy];
             });
         });

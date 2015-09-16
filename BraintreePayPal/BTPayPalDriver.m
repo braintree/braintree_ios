@@ -18,6 +18,8 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
 + (void)load {
     if (self == [BTPayPalDriver class]) {
+        PayPalClass = [PayPalOneTouchCore class];
+        
         [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
 
         [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
@@ -104,7 +106,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         [self informDelegatePresentingViewControllerNeedsDismissal];
         [self informDelegateWillProcessAppSwitchReturn];
 
-        [self.payPalClass parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
+        [[self.class payPalClass] parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
             [self sendAnalyticsEventForHandlingOneTouchResult:result];
 
             switch (result.type) {
@@ -118,10 +120,17 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                     if (completionBlock) completionBlock(nil, nil);
                     break;
                 case PayPalOneTouchResultTypeSuccess: {
+                    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+                    parameters[@"paypal_account"] = result.response;
+                    if ([[self.class payPalClass] clientMetadataID]) {
+                        parameters[@"correlation_id"] = [[self.class payPalClass] clientMetadataID];
+                    }
+                    BTClientMetadata *metadata = [self clientMetadata];
+                    parameters[@"_meta"] =  @{ @"source": metadata.sourceString,
+                                               @"integration": metadata.integrationString };
+                    
                     [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
-                              parameters:@{ @"paypal_account": result.response,
-                                            @"correlation_id": self.clientMetadataId,
-                                            }
+                              parameters:parameters
                               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                                   if (error) {
                                       [self sendAnalyticsEventForTokenizationFailure];
@@ -167,7 +176,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     NSString *returnURI;
     NSString *cancelURI;
 
-    [self.payPalClass redirectURLsForCallbackURLScheme:self.returnURLScheme
+    [[self.class payPalClass] redirectURLsForCallbackURLScheme:self.returnURLScheme
                                          withReturnURL:&returnURI
                                          withCancelURL:&cancelURI];
     if (!returnURI || !cancelURI) {
@@ -221,6 +230,9 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         if (cancelURI) {
             parameters[@"cancel_url"] = cancelURI;
         }
+        if ([[self.class payPalClass] clientMetadataID]) {
+            parameters[@"correlation_id"] = [[self.class payPalClass] clientMetadataID];
+        }
 
         NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
         
@@ -273,7 +285,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         [self informDelegatePresentingViewControllerNeedsDismissal];
         [self informDelegateWillProcessAppSwitchReturn];
 
-        [self.payPalClass parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
+        [[self.class payPalClass] parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
 
             [self sendAnalyticsEventForSinglePaymentForHandlingOneTouchResult:result];
 
@@ -292,8 +304,9 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
                     parameters[@"paypal_account"] = [result.response mutableCopy];
                     parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
-                    parameters[@"correlation_id"] = self.clientMetadataId;
-                    
+                    if (self.clientMetadataId) {
+                        parameters[@"correlation_id"] = self.clientMetadataId;
+                    }
                     BTClientMetadata *metadata = [self clientMetadata];
                     parameters[@"_meta"] =  @{ @"source": metadata.sourceString,
                                                @"integration": metadata.integrationString };
@@ -549,7 +562,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         return NO;
     }
 
-    if (![self.payPalClass doesApplicationSupportOneTouchCallbackURLScheme:returnURLScheme]) {
+    if (![[self.class payPalClass] doesApplicationSupportOneTouchCallbackURLScheme:returnURLScheme]) {
         [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
@@ -730,7 +743,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 #pragma mark - App Switch handling
 
 - (BOOL)isiOSAppAvailableForAppSwitch {
-    return [self.payPalClass isWalletAppInstalled];
+    return [[self.class payPalClass] isWalletAppInstalled];
 }
 
 + (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
@@ -759,19 +772,16 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     return _requestFactory;
 }
 
-@synthesize payPalClass = _payPalClass;
+static Class PayPalClass;
 
-- (Class)payPalClass {
-    if (!_payPalClass) {
-        _payPalClass = [PayPalOneTouchCore class];
++ (void)setPayPalClass:(Class)payPalClass {
+    if ([payPalClass isSubclassOfClass:[PayPalOneTouchCore class]]) {
+        PayPalClass = payPalClass;
     }
-    return _payPalClass;
 }
 
-- (void)setPayPalClass:(Class)payPalClass {
-    if ([payPalClass isSubclassOfClass:[PayPalOneTouchCore class]]) {
-        _payPalClass = payPalClass;
-    }
++ (Class)payPalClass {
+    return PayPalClass;
 }
 
 @end

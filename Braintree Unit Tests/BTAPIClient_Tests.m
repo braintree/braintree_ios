@@ -435,7 +435,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
 - (void)testSendAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
-    apiClient = [apiClient copyWithSource:BTClientMetadataSourceCoinbaseApp integration:BTClientMetadataIntegrationCustom];
+    apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalBrowser integration:BTClientMetadataIntegrationCustom];
     FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
     FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
     apiClient.analyticsHttp = mockAnalyticsHTTP;
@@ -453,7 +453,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [apiClient sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
         XCTAssertNil(error);
         
-        XCTAssertEqual(metadata.source, BTClientMetadataSourceCoinbaseApp);
+        XCTAssertEqual(metadata.source, BTClientMetadataSourcePayPalBrowser);
         XCTAssertEqual(metadata.integration, BTClientMetadataIntegrationCustom);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"], @[ @{ @"kind" : @"an.analytics.event" } ]);
@@ -466,7 +466,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-- (void)POST_usesMetadataSourceAndIntegration {
+- (void)testPOST_usesMetadataSourceAndIntegration {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_client_key"];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
     FakeHTTP *mockHTTP = [FakeHTTP fakeHTTP];
