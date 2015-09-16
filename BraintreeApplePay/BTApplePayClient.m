@@ -29,8 +29,20 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 }
 
 - (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTTokenizedApplePayPayment *, NSError *))completionBlock {
+    [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.start"];
+   
+    if (!payment) {
+        NSError *error = [NSError errorWithDomain:BTApplePayErrorDomain
+                                             code:BTApplePayErrorTypeUnsupported
+                                         userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required."}];
+        completionBlock(nil, error);
+        [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.invalid-payment"];
+        return;
+    }
+    
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         if (error) {
+            [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.configuration"];
             completionBlock(nil, error);
             return;
         }
@@ -41,21 +53,16 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                                                  code:BTApplePayErrorTypeUnsupported
                                              userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again." }];
             completionBlock(nil, error);
+            [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.disabled"];
             return;
         }
-        if (!payment) {
-            NSError *error = [NSError errorWithDomain:BTApplePayErrorDomain
-                                                 code:BTApplePayErrorTypeUnsupported
-                                             userInfo:@{NSLocalizedDescriptionKey: @"A valid PKPayment is required."}];
-            completionBlock(nil, error);
-            return;
-        }
-
+        
         [self.apiClient POST:@"v1/payment_methods/apple_payment_tokens"
                   parameters:@{ @"applePaymentToken": [self parametersForPaymentToken:payment.token] }
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                       if (error) {
                           completionBlock(nil, error);
+                          [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.tokenization"];
                           return;
                       }
 
@@ -63,6 +70,7 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                       BTTokenizedApplePayPayment *tokenized = [[BTTokenizedApplePayPayment alloc] initWithPaymentMethodNonce:applePayCard[@"nonce"].asString description:applePayCard[@"description"].asString];
 
                       completionBlock(tokenized, nil);
+                      [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.success"];
                   }];
     }];
 }
