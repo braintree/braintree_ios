@@ -138,7 +138,7 @@ static BTVenmoDriver *appSwitchedDriver;
             [self informDelegateWillProcessAppSwitchReturn];
             [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
 
-            if (!self.apiClient.clientJWT) {
+            if (self.apiClient.clientKey) {
                 NSError *error = nil;
                 if (!returnURL.nonce) {
                     error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];
@@ -160,7 +160,7 @@ static BTVenmoDriver *appSwitchedDriver;
                 self.appSwitchCompletionBlock(card, nil);
                 self.appSwitchCompletionBlock = nil;
             } else {
-                // Assume we have a JWT
+                // Assume we have a client token
                 [self.apiClient GET:[NSString stringWithFormat:@"v1/payment_methods/%@", returnURL.nonce]
                          parameters:@{}
                          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
