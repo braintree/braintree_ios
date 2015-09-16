@@ -122,8 +122,11 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                         parameters[@"correlation_id"] = [[self.class payPalClass] clientMetadataID];
                     }
                     BTClientMetadata *metadata = [self clientMetadata];
-                    parameters[@"_meta"] =  @{ @"source": metadata.sourceString,
-                                               @"integration": metadata.integrationString };
+                    parameters[@"_meta"] = @{
+                                             @"source" : metadata.sourceString,
+                                             @"integration" : metadata.integrationString,
+                                             @"sessionId" : metadata.sessionId,
+                                             };
                     
                     [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
                               parameters:parameters
@@ -304,9 +307,11 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                         parameters[@"correlation_id"] = self.clientMetadataId;
                     }
                     BTClientMetadata *metadata = [self clientMetadata];
-                    parameters[@"_meta"] =  @{ @"source": metadata.sourceString,
-                                               @"integration": metadata.integrationString };
-
+                    parameters[@"_meta"] = @{
+                                             @"source" : metadata.sourceString,
+                                             @"integration" : metadata.integrationString,
+                                             @"sessionId" : metadata.sessionId,
+                                             };
 
                     [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
                               parameters:parameters

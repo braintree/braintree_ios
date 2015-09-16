@@ -68,6 +68,31 @@ class BTCardClient_Tests: XCTestCase {
 
         self.waitForExpectationsWithTimeout(10, handler: nil)
     }
+    
+    // MARK: _meta parameter
+    
+    func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
+        let mockAPIClient = MockAPIClient(clientKey: "development_client_key")!
+        let cardClient = BTCardClient(APIClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        
+        let expectation = expectationWithDescription("Tokenized card")
+        cardClient.tokenizeCard(card) { _ -> Void in
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(5, handler: nil)
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/credit_cards")
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        let metaParameters = lastPostParameters["_meta"] as! NSDictionary
+        XCTAssertEqual(metaParameters["source"] as? String, "unknown")
+        XCTAssertEqual(metaParameters["integration"] as? String, "custom")
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+    }
 }
 
 // MARK: Helpers

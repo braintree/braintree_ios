@@ -128,6 +128,36 @@ class BTApplePay_Tests: XCTestCase {
 
         waitForExpectationsWithTimeout(2, handler: nil)
     }
+    
+    // MARK: - Metadata
+    
+    func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
+        let mockAPIClient = MockAPIClient(clientKey: "development_client_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production"
+            ]
+            ])
+        let applePayClient = BTApplePayClient(APIClient: mockAPIClient)
+        let payment = MockPKPayment()
+        
+        let expectation = expectationWithDescription("Tokenized card")
+        applePayClient.tokenizeApplePayPayment(payment) { _ -> Void in
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(5, handler: nil)
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/apple_payment_tokens")
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        let metaParameters = lastPostParameters["_meta"] as! NSDictionary
+        XCTAssertEqual(metaParameters["source"] as? String, "unknown")
+        XCTAssertEqual(metaParameters["integration"] as? String, "custom")
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+    }
 
     class MockPKPaymentToken : PKPaymentToken {
         override var paymentData : NSData {

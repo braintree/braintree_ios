@@ -57,8 +57,16 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
             return;
         }
         
+        NSMutableDictionary *parameters = [NSMutableDictionary new];
+        parameters[@"applePaymentToken"] = [self parametersForPaymentToken:payment.token];
+        parameters[@"_meta"] = @{
+                                 @"source" : self.apiClient.metadata.sourceString,
+                                 @"integration" : self.apiClient.metadata.integrationString,
+                                 @"sessionId" : self.apiClient.metadata.sessionId,
+                                 };
+        
         [self.apiClient POST:@"v1/payment_methods/apple_payment_tokens"
-                  parameters:@{ @"applePaymentToken": [self parametersForPaymentToken:payment.token] }
+                  parameters:parameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                       if (error) {
                           completionBlock(nil, error);

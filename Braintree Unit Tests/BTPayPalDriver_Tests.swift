@@ -373,6 +373,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! NSDictionary
         XCTAssertEqual(metaParameters["source"] as? String, "paypal-app")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
     }
     
     func testMetaParameter_whenAuthorizationBrowserSwitchIsSuccessful_isPOSTedToServer() {
@@ -393,6 +394,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! NSDictionary
         XCTAssertEqual(metaParameters["source"] as? String, "paypal-browser")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
     }
 
     // MARK: Helpers
@@ -728,6 +730,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! NSDictionary
         XCTAssertEqual(metaParameters["source"] as? String, "paypal-app")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
     }
 
     func testMetadata_whenCheckoutBrowserSwitchIsSuccessful_isPOSTedToServer() {
@@ -748,6 +751,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let metaParameters = lastPostParameters["_meta"] as! NSDictionary
         XCTAssertEqual(metaParameters["source"] as? String, "paypal-browser")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
+        XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
     }
 
     // MARK: Helpers

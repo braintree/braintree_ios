@@ -161,3 +161,24 @@
 //        });
 //    });
 //
+
+//
+// MARK: - _meta parameter for card form
+//
+//func testMetadata_whenCardFormTokenizationIsSuccessful_isPOSTedToServer() {
+//    let mockAPIClient = MockAPIClient(clientKey: "development_testing_integration_merchant_id")!
+//    let dropIn = BTDropInViewController(APIClient: mockAPIClient)
+//    
+//    
+//    
+//    XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
+//    guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+//        XCTFail()
+//        return
+//    }
+//    let metaParameters = lastPostParameters["_meta"] as! NSDictionary
+//    XCTAssertEqual(metaParameters["source"] as? String, "paypal-browser")
+//    XCTAssertEqual(metaParameters["integration"] as? String, "custom")
+//    XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+//}
+//
