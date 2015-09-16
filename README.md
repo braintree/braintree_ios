@@ -58,16 +58,6 @@ Please whitelist the Braintree Gateway domain by adding the following to your ap
   </dict>
 ```
 
-If your app uses PayPal, include the following under `NSExceptionDomains`:
-
-```
-  <key>www.paypalobjects.com</key>
-    <dict>
-      <key>NSExceptionRequiresForwardSecrecy</key>
-      <false/>
-  </dict>
-```
-
 If your app uses `BTData`, also include the following under `NSExceptionDomains`:
 
 ```
