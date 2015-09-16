@@ -8,5 +8,6 @@
 #import "BTPayPalDriver_Internal.h"
 #import "BTVenmoDriver_Internal.h"
 #import "FakePayPalClasses.h"
+#import "BTLogger_Internal.h"
 
 #import <OCMock/OCMock.h>

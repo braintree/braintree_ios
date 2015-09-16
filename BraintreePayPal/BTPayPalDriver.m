@@ -14,13 +14,6 @@ NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriv
 
 static void (^appSwitchReturnBlock)(NSURL *url);
 
-@interface BTPayPalDriver ()
-
-@property (nonatomic, strong) SFSafariViewController *safariViewController;
-@property (nonatomic, strong) NSString* clientMetadataId;
-
-@end
-
 @implementation BTPayPalDriver
 
 + (void)load {
@@ -127,7 +120,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                 case PayPalOneTouchResultTypeSuccess: {
                     [self.apiClient POST:@"/v1/payment_methods/paypal_accounts"
                               parameters:@{ @"paypal_account": result.response,
-                                            @"correlation_id": [self.payPalClass clientMetadataID],
+                                            @"correlation_id": self.clientMetadataId,
                                             }
                               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                                   if (error) {
@@ -206,10 +199,12 @@ static void (^appSwitchReturnBlock)(NSURL *url);
             if (checkoutRequest.amount.stringValue) {
                 parameters[@"amount"] = checkoutRequest.amount.stringValue;
             }
-            if (currencyCode) {
-                parameters[@"currency_iso_code"] = currencyCode;
-            }
         }
+        
+        if (currencyCode) {
+            parameters[@"currency_iso_code"] = currencyCode;
+        }
+        
         if (checkoutRequest.enableShippingAddress && checkoutRequest.shippingAddress != nil) {
             BTPostalAddress *shippingAddress = checkoutRequest.shippingAddress;
             parameters[@"line1"] = shippingAddress.streetAddress;
@@ -226,8 +221,6 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         if (cancelURI) {
             parameters[@"cancel_url"] = cancelURI;
         }
-        parameters[@"correlation_id"] = self.clientMetadataId;
-        
 
         NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
         

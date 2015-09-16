@@ -1,5 +1,6 @@
 #import "BTPayPalDriver.h"
 #import "BTPayPalRequestFactory.h"
+#import <SafariServices/SafariServices.h>
 
 BT_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,10 @@ BT_ASSUME_NONNULL_BEGIN
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
 - (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * __BT_NULLABLE tokenizedAccount, NSError * __BT_NULLABLE error))completionBlock;
 
+- (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL;
+
+- (void)informDelegatePresentingViewControllerNeedsDismissal;
+
 /// Exposed for testing to create stubbed versions of `PayPalOneTouchAuthorizationRequest` and
 /// `PayPalOneTouchCheckoutRequest`
 @property (nonatomic, strong) BTPayPalRequestFactory *requestFactory;
@@ -27,6 +32,12 @@ BT_ASSUME_NONNULL_BEGIN
 
 /// Exposed for testing to get the instance of BTAPIClient after it has been copied by `copyWithSource:integration:`
 @property (nonatomic, strong) BTAPIClient *apiClient;
+
+/// Exposed for testing, the clientMetadataId associated with this request
+@property (nonatomic, strong) NSString *clientMetadataId;
+
+/// Exposed for testing, the safariViewController instance used for the paypal flow on iOS >=9
+@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
 
 @end
 
