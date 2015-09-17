@@ -17,7 +17,6 @@
 /// Completion block for receiving the result of performing a request
 typedef void (^PayPalOneTouchCompletionBlock)(PayPalOneTouchCoreResult *result);
 
-
 @interface PayPalOneTouchCore : NSObject
 
 /// Check if the application is configured correctly to handle responses for OneTouch flow.
@@ -26,7 +25,10 @@ typedef void (^PayPalOneTouchCompletionBlock)(PayPalOneTouchCoreResult *result);
 /// @return YES iff the application is correctly configured.
 + (BOOL)doesApplicationSupportOneTouchCallbackURLScheme:(NSString *)callbackURLScheme;
 
-/// Check whether the PayPal Wallet app is installed on this device
+/// Check whether the PayPal Wallet app is installed on this device (iOS <=8)
+/// Universal links are used in iOS >=9 so the check is not performed
+///
+/// @return YES if the wallet app is installed
 + (BOOL)isWalletAppInstalled;
 
 /// Check whether the URL and source application are recognized and valid for OneTouch.
@@ -37,17 +39,16 @@ typedef void (^PayPalOneTouchCompletionBlock)(PayPalOneTouchCoreResult *result);
 ///
 /// (To then actually process the URL, call `+ (void)parseOneTouchURL:completionBlock`.)
 ///
-/// @param  url The URL of the app switch request
-/// @param  sourceApplication The bundle ID of the source application
+/// @param url The URL of the app switch request
+/// @param sourceApplication The bundle ID of the source application
 ///
 /// @return YES iff the URL and sending app are both valid.
 + (BOOL)canParseURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
-/// Process a URL request.
+/// Process a URL response.
 ///
-/// @param  url   The URL to process
+/// @param url The URL to process
 /// @return PayPalOneTouchResult containing result of the OneTouch.
-///
 + (void)parseResponseURL:(NSURL *)url completionBlock:(PayPalOneTouchCompletionBlock)completionBlock;
 
 /// Once a user has consented to future payments, when the user subsequently initiates a PayPal payment
