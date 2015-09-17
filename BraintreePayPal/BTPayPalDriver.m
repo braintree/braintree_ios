@@ -199,7 +199,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
             return;
         }
 
-        NSString *currencyCode = checkoutRequest.currencyCode ?: configuration.json[@"payPal"][@"currencyIsoCode"].asString;
+        NSString *currencyCode = checkoutRequest.currencyCode ?: configuration.json[@"paypal"][@"currencyIsoCode"].asString;
 
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         
