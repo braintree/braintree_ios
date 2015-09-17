@@ -448,6 +448,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     XCTAssertTrue(canHandleV2AppSwitch);
 }
 
+
+
 - (void)testCanHandleAppSwitchReturnURL_forMalformedURLs_returnsNO {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
@@ -472,6 +474,33 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     NSURL *returnURL = [NSURL URLWithString:@"com.braintreepayments.Demo.payments://onetouch/v1/success?x-source=com.paypal.ppclient.touch.v1-or-v2"];
     BOOL canHandleAppSwitch = [BTPayPalDriver canHandleAppSwitchReturnURL:returnURL sourceApplication:@"com.paypal.ppclient.touch.v1"];
 
+    XCTAssertFalse(canHandleAppSwitch);
+}
+
+- (void)testCanHandleAppSwitchReturnURL_forUnsupportedSourceApplication_returnsNO {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
+    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
+    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+    payPalDriver.delegate = delegate;
+    id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
+    OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
+    
+    [payPalDriver authorizeAccountWithCompletion:^(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error) {
+        XCTAssertNotNil(tokenizedPayPalAccount);
+        if (error) {
+            XCTFail(@"%@", error);
+        }
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+    
+    // This malformed returnURL is just missing payload
+    NSURL *returnURL = [NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture];
+    BOOL canHandleAppSwitch = [BTPayPalDriver canHandleAppSwitchReturnURL:returnURL sourceApplication:@"com.example.application"];
+    
     XCTAssertFalse(canHandleAppSwitch);
 }
 
