@@ -147,20 +147,35 @@ typedef NS_ENUM(NSInteger, BTPaymentProviderStatus) {
 /// Currently only affects Apple Pay payments.
 @property (nonatomic, assign) PKAddressField requiredBillingAddressFields;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 /// The customer's billing address for pre-populating the checkout form
 ///
 /// Currently only affects Apple Pay payments.
 @property (nonatomic, assign) ABRecordRef billingAddress;
 
-/// The set of required billing address fields (defaults to none)
-///
-/// Currently only affects Apple Pay payments.
-@property (nonatomic, assign) PKAddressField requiredShippingAddressFields;
-
 /// The customer's billing address for pre-populating the checkout form
 ///
 /// Currently only affects Apple Pay payments.
 @property (nonatomic, assign) ABRecordRef shippingAddress;
+
+#pragma clang diagnostic pop
+
+/// The billing contact for pre-populating the checkout form
+///
+/// Currently only affects Apple Pay payments.
+@property (nonatomic, strong) PKContact *billingContact;
+
+/// The shipping contact for pre-populating the checkout form
+///
+/// Currently only affects Apple Pay payments.
+@property (nonatomic, strong) PKContact *shippingContact;
+
+/// The set of required billing address fields (defaults to none)
+///
+/// Currently only affects Apple Pay payments.
+@property (nonatomic, assign) PKAddressField requiredShippingAddressFields;
 
 /// Available shipping methods
 ///

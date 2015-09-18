@@ -12,6 +12,8 @@
     copy->_shippingMethod = [self.shippingMethod copy];
     copy.billingAddress = self.billingAddress;
     copy.shippingAddress = self.shippingAddress;
+    copy.billingContact = self.billingContact;
+    copy.shippingContact = self.shippingContact;
     return copy;
 }
 
@@ -21,12 +23,33 @@
     [mutableInstance setShippingMethod:self.shippingMethod];
     [mutableInstance setShippingAddress:self.shippingAddress];
     [mutableInstance setBillingAddress:self.billingAddress];
+    [mutableInstance setShippingContact:self.shippingContact];
+    [mutableInstance setBillingContact:self.billingContact];
     return mutableInstance;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<BTApplePayPaymentMethod:%p nonce:(%@) shippingAddress:%@ shippingMethod:(%@) billingAddress:%@>", self, self.nonce, self.shippingAddress, self.shippingMethod.label, self.billingAddress];
+    NSMutableString *description = [NSMutableString stringWithFormat:@"<BTApplePayPaymentMethod:%p nonce:(%@) shippingMethod:(%@) ", self, self.nonce, self.shippingAddress];
+    
+    if (self.shippingContact) {
+        [description appendFormat:@"shippingContact: %@ ", self.shippingContact];
+    } else if (self.shippingAddress) {
+        [description appendFormat:@"shippingAddress: %@ ", self.shippingAddress];
+    }
+    
+    if (self.billingContact) {
+        [description appendFormat:@"billingContact: %@ ", self.billingContact];
+    } else if (self.billingAddress) {
+        [description appendFormat:@"billingAddress: %@ ", self.billingAddress];
+    }
+    
+    [description appendString:@">"];
+    
+    return [description copy];
 }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 - (void)setShippingAddress:(ABRecordRef)shippingAddress {
     if (shippingAddress != NULL) {
@@ -39,6 +62,8 @@
         _billingAddress = CFRetain(billingAddress);
     }
 }
+
+#pragma clang diagnostic pop
 
 - (void)dealloc {
     if (_shippingAddress != NULL) {

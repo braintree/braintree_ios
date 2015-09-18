@@ -338,16 +338,30 @@
     if (encodedPaymentData) {
         tokenParameterValue[@"paymentData"] = encodedPaymentData;
     }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (payment.token.paymentInstrumentName) {
         tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentInstrumentName;
     }
-    if (payment.token.transactionIdentifier) {
-        tokenParameterValue[@"transactionIdentifier"] = payment.token.transactionIdentifier;
-    }
+    
     if (payment.token.paymentNetwork) {
         tokenParameterValue[@"paymentNetwork"] = payment.token.paymentNetwork;
     }
+#pragma clang diagnostic pop
+    
+    if (payment.token.paymentMethod.network) {
+        tokenParameterValue[@"paymentNetwork"] = payment.token.paymentMethod.network;
+    }
+    
+    if (payment.token.paymentMethod.displayName) {
+        tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentMethod.displayName;
+    }
 
+    if (payment.token.transactionIdentifier) {
+        tokenParameterValue[@"transactionIdentifier"] = payment.token.transactionIdentifier;
+    }
+    
     NSMutableDictionary *requestParameters = [self metaPostParameters];
     [requestParameters addEntriesFromDictionary:@{ @"applePaymentToken": tokenParameterValue,
                                                    @"authorization_fingerprint": self.clientToken.authorizationFingerprint,
@@ -360,10 +374,15 @@
 
                 BTMutableApplePayPaymentMethod *paymentMethod = [applePayCards firstObject];
 
-                paymentMethod.shippingAddress = payment.shippingAddress;
                 paymentMethod.shippingMethod = payment.shippingMethod;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                paymentMethod.shippingAddress = payment.shippingAddress;
                 paymentMethod.billingAddress = payment.billingAddress;
-
+#pragma clang diagnostic pop
+                paymentMethod.shippingContact = payment.shippingContact;
+                paymentMethod.billingContact = payment.billingContact;
+                
                 successBlock([paymentMethod copy]);
             }
         } else {

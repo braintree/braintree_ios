@@ -177,39 +177,46 @@ describe(@"authorizeApplePay", ^{
     };
 
     if ([PKPaymentAuthorizationViewController class]) {
-        it(@"passes a configured PKPaymentRequest to Apple Pay", ^{
-            waitUntil(^(DoneCallback done) {
-                BTPaymentApplePayProvider *provider = testApplePayProvider(NO, YES);
-                provider.delegate = [OCMockObject niceMockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
-                provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
-                provider.requiredBillingAddressFields = PKAddressFieldPostalAddress;
-                provider.requiredShippingAddressFields = PKAddressFieldPostalAddress;
-                PKShippingMethod *shippingMethod = [PKShippingMethod summaryItemWithLabel:@"Shipping Method" amount:[NSDecimalNumber decimalNumberWithString:@"2"]];
-                shippingMethod.identifier = @"Shipping Method";
-                provider.shippingMethods = @[ shippingMethod ];
-                provider.supportedNetworks = @[ PKPaymentNetworkVisa ];
-                ABRecordRef billingAddress = ABPersonCreate();
-                provider.billingAddress = billingAddress;
-                CFRelease(billingAddress);
-                ABRecordRef shippingAddress = ABPersonCreate();
-                provider.shippingAddress = shippingAddress;
-                CFRelease(shippingAddress);
-                id checkPaymentRequestBlock = [OCMArg checkWithBlock:^BOOL(PKPaymentRequest *actualRequest) {
-                    if ([actualRequest.paymentSummaryItems isEqualToArray:provider.paymentSummaryItems] &&
-                        actualRequest.requiredShippingAddressFields == provider.requiredShippingAddressFields &&
-                        actualRequest.requiredBillingAddressFields == provider.requiredBillingAddressFields &&
-                        actualRequest.shippingAddress == provider.shippingAddress &&
-                        actualRequest.billingAddress == provider.billingAddress) {
-                        done();
-                        return YES;
-                    }
-                    return NO;
-                }];
-                OCMStub([mockApplePayPaymentProvider paymentAuthorizationViewControllerWithPaymentRequest:checkPaymentRequestBlock]).andReturn(nil);
-
-                [provider authorizeApplePay];
+        
+            it(@"passes a configured PKPaymentRequest to Apple Pay", ^{
+                waitUntil(^(DoneCallback done) {
+                    BTPaymentApplePayProvider *provider = testApplePayProvider(NO, YES);
+                    provider.delegate = [OCMockObject niceMockForProtocol:@protocol(BTPaymentMethodCreationDelegate)];
+                    provider.paymentSummaryItems = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"label" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
+                    provider.requiredBillingAddressFields = PKAddressFieldPostalAddress;
+                    provider.requiredShippingAddressFields = PKAddressFieldPostalAddress;
+                    PKShippingMethod *shippingMethod = [PKShippingMethod summaryItemWithLabel:@"Shipping Method" amount:[NSDecimalNumber decimalNumberWithString:@"2"]];
+                    shippingMethod.identifier = @"Shipping Method";
+                    provider.shippingMethods = @[ shippingMethod ];
+                    provider.supportedNetworks = @[ PKPaymentNetworkVisa ];
+                    ABRecordRef billingAddress = ABPersonCreate();
+                    provider.billingAddress = billingAddress;
+                    CFRelease(billingAddress);
+                    ABRecordRef shippingAddress = ABPersonCreate();
+                    provider.shippingAddress = shippingAddress;
+                    CFRelease(shippingAddress);
+                    provider.billingContact = [[PKContact alloc] init];
+                    provider.shippingContact = [[PKContact alloc] init];
+                    id checkPaymentRequestBlock = [OCMArg checkWithBlock:^BOOL(PKPaymentRequest *actualRequest) {
+                        if ([actualRequest.paymentSummaryItems isEqualToArray:provider.paymentSummaryItems] &&
+                            actualRequest.requiredShippingAddressFields == provider.requiredShippingAddressFields &&
+                            actualRequest.requiredBillingAddressFields == provider.requiredBillingAddressFields &&
+                            actualRequest.shippingAddress == provider.shippingAddress &&
+                            actualRequest.billingAddress == provider.billingAddress &&
+                            actualRequest.shippingContact == provider.shippingContact &&
+                            actualRequest.billingContact == provider.billingContact) {
+                            done();
+                            return YES;
+                        }
+                        return NO;
+                    }];
+                    OCMStub([mockApplePayPaymentProvider paymentAuthorizationViewControllerWithPaymentRequest:checkPaymentRequestBlock]).andReturn(nil);
+                    
+                    [provider authorizeApplePay];
+                });
             });
         });
+
 
         it(@"the PKPaymentRequest favors values set on the provider over those from client configuration", ^{
             waitUntil(^(DoneCallback done) {
