@@ -62,7 +62,7 @@ Please whitelist the Braintree Gateway domain by adding the following to your ap
     <dict>
       <key>api.braintreegateway.com</key>
       <dict>
-          <key>NSExceptionRequiresForwardSecrecy</key>
+          <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
           <false/>
       </dict>
     </dict>
@@ -74,7 +74,7 @@ If your app uses BraintreeFraud, also include the following under `NSExceptionDo
 ```
   <key>kaptcha.com</key>
     <dict>
-      <key>NSExceptionRequiresForwardSecrecy</key>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
       <false/>
       <key>NSIncludesSubdomains</key>
       <true/>
