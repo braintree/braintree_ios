@@ -28,11 +28,11 @@ target 'Braintree-Demo' do
   pod 'Braintree/3D-Secure', :path => '.'
   pod 'Braintree/Coinbase', :path => '.'
   pod 'HockeySDK'
-  pod 'AFNetworking', '~> 2.2'
+  pod 'AFNetworking', '~> 2.6.0'
   pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
-  pod 'FLEX', :git => 'https://github.com/intelliot/FLEX.git'
+  pod 'FLEX'
   pod 'InAppSettingsKit'
   pod 'iOS-Slide-Menu'
 end
