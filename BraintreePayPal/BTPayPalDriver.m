@@ -244,7 +244,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                           return;
                       }
 
-                      [self setCheckoutAppSwitchReturnBlock:completionBlock];
+                      [self setCheckoutAppSwitchReturnBlock:completionBlock isBillingAgreement:isBillingAgreement];
 
                       NSString *payPalClientID = configuration.json[@"paypal"][@"clientId"].asString;
 
@@ -266,7 +266,11 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
                       [request performWithAdapterBlock:^(BOOL success, NSURL *url, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
                           self.clientMetadataId = clientMetadataId;
-                          [self sendAnalyticsEventForSinglePaymentForInitiatingOneTouchWithSuccess:success target:target];
+                          if (isBillingAgreement) {
+                              [self sendAnalyticsEventForBillingAgreementForInitiatingOneTouchWithSuccess:success target:target];
+                          } else {
+                              [self sendAnalyticsEventForSinglePaymentForInitiatingOneTouchWithSuccess:success target:target];
+                          }
                           if (success) {
                               [self performSwitchRequest:url];
                               [self informDelegateDidPerformAppSwitchToTarget:target];
@@ -278,16 +282,19 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     }];
 }
 
-- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock
+- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement
 {
     appSwitchReturnBlock = ^(NSURL *url) {
         [self informDelegatePresentingViewControllerNeedsDismissal];
         [self informDelegateWillProcessAppSwitchReturn];
 
         [[self.class payPalClass] parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
-
-            [self sendAnalyticsEventForSinglePaymentForHandlingOneTouchResult:result];
-
+            
+            if (isBillingAgreement) {
+                [self sendAnalyticsEventForBillingAgreementForHandlingOneTouchResult:result];
+            } else {
+                [self sendAnalyticsEventForSinglePaymentForHandlingOneTouchResult:result];
+            }
             switch (result.type) {
                 case PayPalOneTouchResultTypeError:
                     if (completionBlock) completionBlock(nil, result.error);
@@ -317,13 +324,20 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                               parameters:parameters
                               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                                   if (error) {
-                                      [self sendAnalyticsEventForTokenizationFailureForSinglePayment];
+                                      if (isBillingAgreement) {
+                                          [self sendAnalyticsEventForTokenizationFailureForBillingAgreement];
+                                      } else {
+                                          [self sendAnalyticsEventForTokenizationFailureForSinglePayment];
+                                      }
                                       if (completionBlock) completionBlock(nil, error);
                                       return;
                                   }
-
-                                  [self sendAnalyticsEventForTokenizationSuccessForSinglePayment];
-
+                                  if (isBillingAgreement) {
+                                      [self sendAnalyticsEventForTokenizationSuccessForBillingAgreement];
+                                  } else {
+                                      [self sendAnalyticsEventForTokenizationSuccessForSinglePayment];
+                                  }
+                
                                   BTJSON *payPalAccount = body[@"paypalAccounts"][0];
                                   NSString *nonce = payPalAccount[@"nonce"].asString;
                                   NSString *description = payPalAccount[@"description"].asString;
@@ -740,6 +754,88 @@ static void (^appSwitchReturnBlock)(NSURL *url);
             }
     }
 }
+
+- (void)sendAnalyticsEventForTokenizationSuccessForBillingAgreement {
+    return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.tokenize.succeeded"];
+}
+
+- (void)sendAnalyticsEventForTokenizationFailureForBillingAgreement{
+    return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.tokenize.failed"];
+}
+
+- (void)sendAnalyticsEventForBillingAgreementForInitiatingOneTouchWithSuccess:(BOOL)success target:(PayPalOneTouchRequestTarget)target {
+    if (success) {
+        switch (target) {
+            case PayPalOneTouchRequestTargetNone:
+                return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.none.initiate.started"];
+            case PayPalOneTouchRequestTargetUnknown:
+                return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.unknown.initiate.started"];
+            case PayPalOneTouchRequestTargetOnDeviceApplication:
+                return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.appswitch.initiate.started"];
+            case PayPalOneTouchRequestTargetBrowser:
+                return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.webswitch.initiate.started"];
+        }
+    } else {
+        switch (target) {
+            case PayPalOneTouchRequestTargetNone:
+                return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.none.initiate.failed"];
+            case PayPalOneTouchRequestTargetUnknown:
+                return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.unknown.initiate.failed"];
+            case PayPalOneTouchRequestTargetOnDeviceApplication:
+                return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.appswitch.initiate.failed"];
+            case PayPalOneTouchRequestTargetBrowser:
+                return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.webswitch.initiate.failed"];
+        }
+    }
+}
+
+- (void)sendAnalyticsEventForBillingAgreementForHandlingOneTouchResult:(PayPalOneTouchCoreResult *)result {
+    switch (result.type) {
+        case PayPalOneTouchResultTypeError:
+            switch (result.target) {
+                case PayPalOneTouchRequestTargetNone:
+                case PayPalOneTouchRequestTargetUnknown:
+                    return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.unknown.failed"];
+                case PayPalOneTouchRequestTargetOnDeviceApplication:
+                    return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.appswitch.failed"];
+                case PayPalOneTouchRequestTargetBrowser:
+                    return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.webswitch.failed"];
+            }
+        case PayPalOneTouchResultTypeCancel:
+            if (result.error) {
+                switch (result.target) {
+                    case PayPalOneTouchRequestTargetNone:
+                    case PayPalOneTouchRequestTargetUnknown:
+                        return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.unknown.canceled-with-error"];
+                    case PayPalOneTouchRequestTargetOnDeviceApplication:
+                        return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.appswitch.canceled-with-error"];
+                    case PayPalOneTouchRequestTargetBrowser:
+                        return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.webswitch.canceled-with-error"];
+                }
+            } else {
+                switch (result.target) {
+                    case PayPalOneTouchRequestTargetNone:
+                    case PayPalOneTouchRequestTargetUnknown:
+                        return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.unknown.canceled"];
+                    case PayPalOneTouchRequestTargetOnDeviceApplication:
+                        return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.appswitch.canceled"];
+                    case PayPalOneTouchRequestTargetBrowser:
+                        return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.webswitch.canceled"];
+                }
+            }
+        case PayPalOneTouchResultTypeSuccess:
+            switch (result.target) {
+                case PayPalOneTouchRequestTargetNone:
+                case PayPalOneTouchRequestTargetUnknown:
+                    return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.unknown.succeeded"];
+                case PayPalOneTouchRequestTargetOnDeviceApplication:
+                    return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.appswitch.succeeded"];
+                case PayPalOneTouchRequestTargetBrowser:
+                    return [self.apiClient sendAnalyticsEvent:@"ios.paypal-ba.webswitch.succeeded"];
+            }
+    }
+}
+
 
 #pragma mark - App Switch handling
 

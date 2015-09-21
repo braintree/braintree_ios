@@ -9,7 +9,7 @@ BT_ASSUME_NONNULL_BEGIN
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Checkout (Single Payments)
 ///
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
-- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout * __BT_NULLABLE tokenizedCheckout, NSError * __BT_NULLABLE error))completionBlock;
+- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout * __BT_NULLABLE tokenizedCheckout, NSError * __BT_NULLABLE error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement;
 
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Authorization (Future Payments)
 ///
