@@ -48,7 +48,7 @@
     self.progressBlock(@"Constructing PKPaymentRequest");
 
     PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
-//    paymentRequest.requiredBillingAddressFields = PKAddressFieldName|PKAddressFieldPostalAddress;
+    paymentRequest.requiredBillingAddressFields = PKAddressFieldName|PKAddressFieldPostalAddress;
 
     PKShippingMethod *shippingMethod1 = [PKShippingMethod summaryItemWithLabel:@"✈️ Fast Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"4.99"]];
     shippingMethod1.detail = @"Fast but expensive";
