@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "417405421BB086FC008A5DEA"
-               BuildableName = "StaticLibraryUnitTests.xctest"
-               BlueprintName = "StaticLibraryUnitTests"
+               BuildableName = "UnitTests-StaticLibrary.xctest"
+               BlueprintName = "UnitTests-StaticLibrary"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
