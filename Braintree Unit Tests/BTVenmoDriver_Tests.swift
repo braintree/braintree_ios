@@ -1,7 +1,5 @@
 import UIKit
 import XCTest
-import BraintreeCard
-import BraintreeVenmo
 
 class FakeApplication {
     var lastOpenURL : NSURL? = nil

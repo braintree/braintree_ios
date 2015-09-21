@@ -1,6 +1,4 @@
 import XCTest
-import BraintreePayPal
-import BraintreeUI
 
 // MARK: Authorization
 

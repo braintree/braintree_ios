@@ -93,8 +93,11 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
         mutableParameters[@"paymentInstrumentName"] = token.paymentMethod.displayName;
         mutableParameters[@"paymentNetwork"] = token.paymentMethod.network;
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         mutableParameters[@"paymentInstrumentName"] = token.paymentInstrumentName;
         mutableParameters[@"paymentNetwork"] = token.paymentNetwork;
+#pragma clang diagnostic pop
     }
 
     return [mutableParameters copy];

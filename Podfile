@@ -5,6 +5,7 @@ platform :ios, '8.0'
 workspace 'Braintree.xcworkspace'
 
 target 'Braintree-Demo' do
+  link_with 'Braintree-StaticLibraryDemo'
   pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.6.0'
   pod 'CardIO'
@@ -16,7 +17,7 @@ target 'Braintree-Demo' do
 end
 
 target 'Test-Deps' do
-  link_with 'Braintree Unit Tests', 'BraintreeIntegrationTests'
+  link_with 'Braintree Unit Tests', 'BraintreeIntegrationTests', 'StaticLibraryUnitTests'
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'

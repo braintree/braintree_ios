@@ -1,4 +1,3 @@
-import BraintreeApplePay
 import PassKit
 import XCTest
 

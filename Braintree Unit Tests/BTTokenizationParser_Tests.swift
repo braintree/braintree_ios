@@ -1,4 +1,3 @@
-import BraintreeCore
 import XCTest
 
 class BTTokenizationParser_Tests: XCTestCase {
