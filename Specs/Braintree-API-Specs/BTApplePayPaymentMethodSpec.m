@@ -17,6 +17,12 @@ beforeEach(^{
     address = ABPersonCreate();
     applePayPaymentMethod.billingAddress = address;
     CFRelease(address);
+    PKContact *billingContact = [[PKContact alloc] init];
+    billingContact.emailAddress = @"billing_email@example.com";
+    PKContact *shippingContact = [[PKContact alloc] init];
+    shippingContact.emailAddress = @"shipping_email.example.com";
+    applePayPaymentMethod.billingContact = billingContact;
+    applePayPaymentMethod.shippingContact = shippingContact;
     immutable = [applePayPaymentMethod copy];
 });
 
@@ -39,6 +45,16 @@ describe(@"mutableCopy", ^{
         expect(copy.shippingAddress).to.equal(immutable.shippingAddress);
         expect(CFGetRetainCount(copy.billingAddress)).to.equal(referenceCount + 1);
     });
+    
+    it(@"copies the shipping contact", ^{
+        BTApplePayPaymentMethod *copy = [immutable mutableCopy];
+        expect(copy.shippingContact).to.equal(immutable.shippingContact);
+    });
+    
+    it(@"copies the billing contact", ^{
+        BTApplePayPaymentMethod *copy = [immutable mutableCopy];
+        expect(copy.billingContact).to.equal(immutable.billingContact);
+    });
 });
 
 describe(@"copy", ^{
@@ -49,16 +65,26 @@ describe(@"copy", ^{
 
     it(@"retains the shipping address", ^{
         NSInteger referenceCount = CFGetRetainCount(immutable.shippingAddress);
-        BTApplePayPaymentMethod *copy = [immutable mutableCopy];
+        BTApplePayPaymentMethod *copy = [immutable copy];
         expect(copy.shippingAddress).to.equal(immutable.shippingAddress);
         expect(CFGetRetainCount(copy.shippingAddress)).to.equal(referenceCount + 1);
     });
 
     it(@"retains the billing address", ^{
         NSInteger referenceCount = CFGetRetainCount(immutable.shippingAddress);
-        BTApplePayPaymentMethod *copy = [immutable mutableCopy];
+        BTApplePayPaymentMethod *copy = [immutable copy];
         expect(copy.shippingAddress).to.equal(immutable.shippingAddress);
         expect(CFGetRetainCount(copy.billingAddress)).to.equal(referenceCount + 1);
+    });
+    
+    it(@"copies the shipping contact", ^{
+        BTApplePayPaymentMethod *copy = [immutable copy];
+        expect(copy.shippingContact).to.equal(immutable.shippingContact);
+    });
+    
+    it(@"copies the billing contact", ^{
+        BTApplePayPaymentMethod *copy = [immutable copy];
+        expect(copy.billingContact).to.equal(immutable.billingContact);
     });
 });
 

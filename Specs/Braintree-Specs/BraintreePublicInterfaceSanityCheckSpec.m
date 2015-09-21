@@ -85,6 +85,8 @@ describe(@"the public facing API guaranteed to be stable in this version of the 
         expect(applePayPaymentMethod).to.respondTo(@selector(nonce));
         expect(applePayPaymentMethod).to.respondTo(@selector(shippingAddress));
         expect(applePayPaymentMethod).to.respondTo(@selector(billingAddress));
+        expect(applePayPaymentMethod).to.respondTo(@selector(shippingContact));
+        expect(applePayPaymentMethod).to.respondTo(@selector(billingContact));
         expect(applePayPaymentMethod).to.respondTo(@selector(shippingMethod));
     });
 

@@ -132,7 +132,9 @@ describe(@"createPaymentMethod:", ^{
                 NSArray *shippingMethods = @[ [PKPaymentSummaryItem summaryItemWithLabel:@"Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"1"]] ];
                 ABRecordRef shippingAddress = ABPersonCreate();
                 ABRecordRef billingAddress = ABPersonCreate();
-
+                PKContact *shippingContact = [[PKContact alloc] init];
+                PKContact *billingContact = [[PKContact alloc] init];
+                
                 [[applePayProvider expect] setPaymentSummaryItems:paymentSummaryItems];
                 [[applePayProvider expect] setRequiredBillingAddressFields:PKAddressFieldAll];
                 [[applePayProvider expect] setRequiredShippingAddressFields:PKAddressFieldAll];
@@ -140,7 +142,9 @@ describe(@"createPaymentMethod:", ^{
                 [[applePayProvider expect] setShippingAddress:shippingAddress];
                 [[applePayProvider expect] setShippingMethods:shippingMethods];
                 [[applePayProvider expect] setSupportedNetworks:supportedNetworks];
-
+                [[applePayProvider expect] setShippingContact:shippingContact];
+                [[applePayProvider expect] setBillingContact:billingContact];
+                
                 [provider setPaymentSummaryItems:paymentSummaryItems];
                 [provider setRequiredBillingAddressFields:PKAddressFieldAll];
                 [provider setRequiredShippingAddressFields:PKAddressFieldAll];
@@ -148,6 +152,8 @@ describe(@"createPaymentMethod:", ^{
                 [provider setShippingAddress:shippingAddress];
                 [provider setShippingMethods:shippingMethods];
                 [provider setSupportedNetworks:supportedNetworks];
+                [provider setBillingContact:billingContact];
+                [provider setShippingContact:shippingContact];
 
                 [applePayProvider verify];
 

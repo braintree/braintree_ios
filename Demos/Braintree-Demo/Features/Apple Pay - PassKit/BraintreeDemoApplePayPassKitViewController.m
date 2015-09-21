@@ -103,7 +103,7 @@
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
                    didSelectShippingMethod:(PKShippingMethod *)shippingMethod
-                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray *))completion
+                                completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion
 {
     PKPaymentSummaryItem *testItem = [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]];
     if ([shippingMethod.identifier isEqualToString:@"fast"]) {

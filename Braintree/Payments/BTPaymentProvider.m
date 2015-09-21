@@ -353,6 +353,9 @@
     ;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)setBillingAddress:(ABRecordRef)billingAddress {
     _billingAddress = CFRetain(billingAddress);
     self.applePayPaymentProvider.billingAddress = billingAddress;
@@ -361,6 +364,18 @@
 - (void)setShippingAddress:(ABRecordRef)shippingAddress {
     _shippingAddress = CFRetain(shippingAddress);
     self.applePayPaymentProvider.shippingAddress = shippingAddress;
+}
+
+#pragma clang diagnostic pop
+
+- (void)setBillingContact:(PKContact *)billingContact {
+    _billingContact = billingContact;
+    self.applePayPaymentProvider.billingContact = billingContact;
+}
+
+- (void)setShippingContact:(PKContact *)shippingContact {
+    _shippingContact = shippingContact;
+    self.applePayPaymentProvider.shippingContact = shippingContact;
 }
 
 - (void)setShippingMethods:(NSArray *)shippingMethods {

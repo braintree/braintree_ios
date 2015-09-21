@@ -1,23 +1,23 @@
 PODS:
-  - AFNetworking (2.5.3):
-    - AFNetworking/NSURLConnection (= 2.5.3)
-    - AFNetworking/NSURLSession (= 2.5.3)
-    - AFNetworking/Reachability (= 2.5.3)
-    - AFNetworking/Security (= 2.5.3)
-    - AFNetworking/Serialization (= 2.5.3)
-    - AFNetworking/UIKit (= 2.5.3)
-  - AFNetworking/NSURLConnection (2.5.3):
+  - AFNetworking (2.6.0):
+    - AFNetworking/NSURLConnection (= 2.6.0)
+    - AFNetworking/NSURLSession (= 2.6.0)
+    - AFNetworking/Reachability (= 2.6.0)
+    - AFNetworking/Security (= 2.6.0)
+    - AFNetworking/Serialization (= 2.6.0)
+    - AFNetworking/UIKit (= 2.6.0)
+  - AFNetworking/NSURLConnection (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.3):
+  - AFNetworking/NSURLSession (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.3)
-  - AFNetworking/Security (2.5.3)
-  - AFNetworking/Serialization (2.5.3)
-  - AFNetworking/UIKit (2.5.3):
+  - AFNetworking/Reachability (2.6.0)
+  - AFNetworking/Security (2.6.0)
+  - AFNetworking/Serialization (2.6.0)
+  - AFNetworking/UIKit (2.6.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Braintree (3.9.3):
@@ -61,8 +61,10 @@ PODS:
     - Braintree/API
   - CardIO (5.0.3)
   - Expecta (1.0.2)
-  - FLEX (2.0.2)
-  - HockeySDK (3.6.4)
+  - FLEX (2.0.6)
+  - HockeySDK (3.8.2):
+    - HockeySDK/AllFeaturesLib (= 3.8.2)
+  - HockeySDK/AllFeaturesLib (3.8.2)
   - InAppSettingsKit (2.6)
   - iOS-Slide-Menu (1.4.6)
   - KIF (3.2.3):
@@ -80,7 +82,7 @@ PODS:
   - Specta (1.0.3)
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.2)
+  - AFNetworking (~> 2.6.0)
   - Braintree (from `.`)
   - Braintree/3D-Secure (from `.`)
   - Braintree/Apple-Pay (from `.`)
@@ -88,7 +90,7 @@ DEPENDENCIES:
   - Braintree/Data (from `.`)
   - CardIO
   - Expecta (~> 1.0.2)
-  - FLEX (from `https://github.com/intelliot/FLEX.git`)
+  - FLEX
   - HockeySDK
   - InAppSettingsKit
   - iOS-Slide-Menu
@@ -104,8 +106,6 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Braintree:
     :path: "."
-  FLEX:
-    :git: https://github.com/intelliot/FLEX.git
   KIF:
     :branch: master
     :git: https://github.com/kif-framework/KIF.git
@@ -113,9 +113,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
 CHECKOUT OPTIONS:
-  FLEX:
-    :commit: b797baa3efeffe73ab1d6ea6aaeb55cc05ff6422
-    :git: https://github.com/intelliot/FLEX.git
   KIF:
     :commit: d2567a99a14414949fe8217211cda54a3e9f3f92
     :git: https://github.com/kif-framework/KIF.git
@@ -124,12 +121,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
 SPEC CHECKSUMS:
-  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   Braintree: 996027dcc8633569f2405bc57dca11f367050c60
   CardIO: 3b0cc447bd0dd3d9552159365ba5c7b7f1db586a
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
-  FLEX: 436744379e30ffc394d62e5b7656874051576391
-  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
+  FLEX: 3c390976e788d3d447b614ea1714ffc8fc914cf3
+  HockeySDK: 9f4ac41263acf9d8a4d59491a7f17af16529b935
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e

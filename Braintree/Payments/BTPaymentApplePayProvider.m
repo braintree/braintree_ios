@@ -187,12 +187,23 @@
         paymentRequest.requiredShippingAddressFields = self.requiredShippingAddressFields;
     }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (self.shippingAddress) {
         paymentRequest.shippingAddress = self.shippingAddress;
     }
-
+    
     if (self.billingAddress) {
         paymentRequest.billingAddress = self.billingAddress;
+    }
+#pragma clang diagnostic pop
+    
+    if (self.shippingContact) {
+        paymentRequest.shippingContact = self.shippingContact;
+    }
+    
+    if (self.billingContact) {
+        paymentRequest.billingContact = self.billingContact;
     }
 
     if (self.shippingMethods) {
@@ -206,6 +217,9 @@
     return paymentRequest;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)setBillingAddress:(ABRecordRef)billingAddress {
     _billingAddress = CFRetain(billingAddress);
 }
@@ -213,6 +227,8 @@
 - (void)setShippingAddress:(ABRecordRef)shippingAddress {
     _shippingAddress = CFRetain(shippingAddress);
 }
+
+#pragma clang diagnostic pop
 
 - (void)dealloc {
     if (_billingAddress) {
