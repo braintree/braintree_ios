@@ -17,8 +17,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A7ABD6521B702FD800A1223C"
-               BuildableName = "BraintreeIntegrationTests.xctest"
-               BlueprintName = "BraintreeIntegrationTests"
+               BuildableName = "IntegrationTests.xctest"
+               BlueprintName = "IntegrationTests"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>

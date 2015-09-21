@@ -17,7 +17,7 @@ target 'Braintree-Demo' do
 end
 
 target 'Test-Deps' do
-  link_with 'Braintree Unit Tests', 'BraintreeIntegrationTests', 'StaticLibraryUnitTests'
+  link_with 'UnitTests', 'IntegrationTests', 'UnitTests-StaticLibrary'
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
