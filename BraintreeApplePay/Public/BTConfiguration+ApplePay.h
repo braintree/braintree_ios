@@ -1,4 +1,4 @@
-#import <BraintreeCore/BraintreeCore.h>
+#import "BraintreeCore.h"
 
 @interface BTConfiguration (ApplePay)
 
