@@ -1,24 +1,33 @@
 #import <Foundation/Foundation.h>
-#import "BTAPIClient.h"
-#import "BTNullability.h"
 
-BT_ASSUME_NONNULL_BEGIN
+typedef NS_ENUM(NSInteger, BTFraudDataEnvironment) {
+    BTFraudDataEnvironmentDevelopment,
+    BTFraudDataEnvironmentQA,
+    BTFraudDataEnvironmentSandbox,
+    BTFraudDataEnvironmentProduction
+};
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTFraudData : NSObject
 
-//- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
-//
-//- (BT_NULLABLE NSString *)collectDeviceData;
-//
-//- (void)collectDeviceDataWithCompletion:(void (^)(NSString * __BT_NULLABLE deviceData, NSError * __BT_NULLABLE error))completionBlock;
-//
-//- (BT_NULLABLE NSString *)collectFraudDeviceDataWithMerchantID:(NSString *)merchantId collectorUrl:(NSString *)collectorUrl;
-//
-//- (void)collectFraudDeviceDataWithMerchantID:(NSString *)merchantId collectorUrl:(NSString *)collectorUrl completion:(void (^)(NSString * __BT_NULLABLE deviceData, NSError * __BT_NULLABLE error))completionBlock;
+- (instancetype)initWithEnvironment:(BTFraudDataEnvironment)environment;
 
-/// Generates a new clientMetadataId if using PayPalOneTouchCore - otherwise returns nil
-+ (NSString *)clientMetadataID;
+/// Generates a new clientMetadataID if using PayPalOneTouchCore - otherwise returns nil
++ (NSString *)payPalFraudID;
+
+/// Collects device data using Kount, uses the default merchant ID and collector URL.
+- (void)collectCardFraudData:(nullable void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
+
+/// Collects device data using Kount, using your own merchant ID and collector URL
+- (void)collectCardFraudDataWithMerchantID:(NSString *)merchantID collectorURL:(NSString *)collectorURL completion:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
+
+/// Collects ALL device data using Kount and PayPal, uses the default merchant ID and collector URL for Kount.
+- (void)collectFraudData:(nullable void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
+
+/// Collects ALL device data using Kount and PayPal, using your own merchant ID and collector URL for Kount.
+- (void)collectFraudDataWithMerchantID:(NSString *)merchantID collectorURL:(NSString *)collectorURL completion:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END
