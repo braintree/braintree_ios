@@ -42,6 +42,11 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
   end
 
+  s.subspec "Fraud" do |s|
+    s.source_files = "BraintreeFraud/**/*.{h,m}"
+    s.public_header_files = "BraintreeFraud/Public/*.h"
+  end
+
   s.subspec "PayPal" do |s|
     s.source_files = "BraintreePayPal/**/*.{h,m}"
     s.public_header_files = "BraintreePayPal/Public/**/*.h"
