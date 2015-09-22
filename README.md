@@ -4,34 +4,36 @@
 
 Welcome to Braintree's v.zero SDK for iOS. This library will help you accept card, PayPal, and Venmo payments in your iOS app.
 
-The Braintree SDK requires Xcode 7, iOS SDK 9.0+, and a minimum iOS target of 7.0.
+The Braintree iOS SDK requires Xcode 7 and a Base SDK of iOS 9.0. It permits a Deployment Target of iOS 7.0 or higher.
 
 ![Screenshot of v.zero](screenshot.png)
 
 ## Getting Started
 
-** These instructions are for installing the 4.0 beta release **
+:rotating_light: **These instructions are for installing the SDK 4.0 beta** :rotating_light:
 
-We recommend using either [Cocoapods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
+We recommend using either [CocoaPods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
-### Cocoapods
+### CocoaPods
 
-To get started with a default installation, add `pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'` to your `Podfile` and run `pod install`. This includes everything you need to accept card, PayPal, and Venmo payments, and also includes our drop-in UI and payment button.
+Add to your `Podfile`:
+```
+pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
+```
+Then run `pod install`. This includes everything you need to accept card, PayPal, and Venmo payments. It also includes our Drop-in UI and payment button.
 
-You can customize your integration by specifying additional components. For example, you can add Apple Pay support:
-
+Customize your integration by specifying additional components. For example, add Apple Pay support:
 ```
 pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
 pod 'Braintree/Apple-Pay', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
 ```
 
 You can also strip down your integration to only support credit and debit cards:
-
 ```
 pod 'Braintree/Card', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
 ```
 
-See our [`Podspec`](https://github.com/braintree/braintree_ios/blob/master/Braintree.podspec) for more information.
+See our [`Podspec`](Braintree.podspec) for more information.
 
 ### Carthage
 
