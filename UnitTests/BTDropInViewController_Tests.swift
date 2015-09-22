@@ -1,4 +1,3 @@
-import BraintreeUI
 import XCTest
 
 class BTDropInViewController_Tests: XCTestCase {

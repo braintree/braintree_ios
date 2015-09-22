@@ -1,5 +1,4 @@
 import XCTest
-import BraintreeCard
 
 class BTCardClient_Tests: XCTestCase {
 

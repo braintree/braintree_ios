@@ -1,4 +1,3 @@
-import BraintreeCore
 import XCTest
 
 @objc class MockAppSwitchDelegate : NSObject, BTAppSwitchDelegate {

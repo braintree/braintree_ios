@@ -1,4 +1,3 @@
-import BraintreeCore
 import XCTest
 
 class BTAppSwitch_Tests: XCTestCase {

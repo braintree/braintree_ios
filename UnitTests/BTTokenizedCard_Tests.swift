@@ -1,4 +1,3 @@
-import BraintreeCard
 import XCTest
 
 class BTTokenizedCard_Tests: XCTestCase {

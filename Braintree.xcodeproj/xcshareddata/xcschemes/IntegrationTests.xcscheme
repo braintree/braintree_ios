@@ -16,9 +16,19 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "16CD2E9B1B4077FB00E68495"
-               BuildableName = "Braintree Unit Tests.xctest"
-               BlueprintName = "Braintree Unit Tests"
+               BlueprintIdentifier = "A7ABD6521B702FD800A1223C"
+               BuildableName = "IntegrationTests.xctest"
+               BlueprintName = "IntegrationTests"
+               ReferencedContainer = "container:Braintree.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "417405421BB086FC008A5DEA"
+               BuildableName = "UnitTests-StaticLibrary.xctest"
+               BlueprintName = "UnitTests-StaticLibrary"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>

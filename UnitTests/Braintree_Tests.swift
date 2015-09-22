@@ -1,8 +1,3 @@
-import BraintreeCard
-import BraintreeCore
-import BraintreePayPal
-import BraintreeUI
-import BraintreeVenmo
 import XCTest
 
 class Braintree_Tests: XCTestCase {

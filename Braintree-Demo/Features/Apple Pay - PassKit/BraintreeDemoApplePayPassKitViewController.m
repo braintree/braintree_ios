@@ -38,7 +38,7 @@
     // the PKPaymentButton, which was added in iOS 8.3. Note that we
     // still need to check, because the deployment target may be < 8.3
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80300
-    pkPaymentButtonAvailable = [PKPaymentButton class];
+    pkPaymentButtonAvailable = [PKPaymentButton class] != nil;
     if (pkPaymentButtonAvailable) {
         button = [PKPaymentButton buttonWithType:PKPaymentButtonTypePlain style:PKPaymentButtonStyleBlack];
     }
