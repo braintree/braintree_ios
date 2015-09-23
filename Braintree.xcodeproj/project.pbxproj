@@ -340,6 +340,7 @@
 		A76D7C301BB217EE0000FA6A /* BraintreeDemoBraintreeDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DD1B79708900452CFA /* BraintreeDemoBraintreeDataViewController.m */; settings = {ASSET_TAGS = (); }; };
 		A76D7C311BB2192D0000FA6A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD261B431453008857E1 /* CoreLocation.framework */; };
 		A76D7C321BB219340000FA6A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD261B431453008857E1 /* CoreLocation.framework */; };
+		A76D7C341BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C331BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m */; settings = {ASSET_TAGS = (); }; };
 		A77344FA1B7A93A10083EC8D /* BraintreeUI.h in Headers */ = {isa = PBXBuildFile; fileRef = A77344F91B7A93A10083EC8D /* BraintreeUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77344FE1B7A93A10083EC8D /* BraintreeUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77344F71B7A93A10083EC8D /* BraintreeUI.framework */; };
 		A77344FF1B7A93A10083EC8D /* BraintreeUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A77344F71B7A93A10083EC8D /* BraintreeUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -974,6 +975,7 @@
 		A76D7C261BB1D31A0000FA6A /* DeviceCollectorSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceCollectorSDK.h; sourceTree = "<group>"; };
 		A76D7C271BB1D31A0000FA6A /* libDeviceCollectorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libDeviceCollectorLibrary.a; sourceTree = "<group>"; };
 		A76D7C2C1BB1D35A0000FA6A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A76D7C331BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeFraud_IntegrationTests.m; sourceTree = "<group>"; };
 		A77344F71B7A93A10083EC8D /* BraintreeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77344F91B7A93A10083EC8D /* BraintreeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeUI.h; sourceTree = "<group>"; };
 		A77344FB1B7A93A10083EC8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1723,10 +1725,10 @@
 				A7C889751B5EF5DE007A0E9C /* BraintreeApplePay */,
 				A7C889911B5F043B007A0E9C /* BraintreeCard */,
 				2DE12F0A1B59BE0100EA1BCF /* BraintreeCore */,
+				A76D7C011BB1CAB00000FA6A /* BraintreeFraud */,
 				2D941D391B59C76A0016EFB4 /* BraintreePayPal */,
 				A77344F81B7A93A10083EC8D /* BraintreeUI */,
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
-				A76D7C011BB1CAB00000FA6A /* BraintreeFraud */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				847E11FCFF74B0CCB8E48E73 /* Pods */,
 				A75DA3521921394200D997A2 /* Products */,
@@ -2325,11 +2327,12 @@
 			isa = PBXGroup;
 			children = (
 				A7ABD65D1B702FF000A1223C /* Braintree-API-Integration-Specs */,
-				A715593F1B729297007DE6F0 /* Helpers */,
 				A71559471B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m */,
 				A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */,
+				A76D7C331BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m */,
 				A7CB42D21B73E629002CCFDD /* BraintreePayPal_IntegrationTests.m */,
 				A71559491B72BD40007DE6F0 /* BraintreeVenmo_IntegrationTests.m */,
+				A715593F1B729297007DE6F0 /* Helpers */,
 				A7ABD6571B702FD800A1223C /* Info.plist */,
 			);
 			path = IntegrationTests;
@@ -3743,6 +3746,7 @@
 				A7ABD6791B702FF000A1223C /* BTAPIClient_IntegrationTests.m in Sources */,
 				A71559481B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m in Sources */,
 				A7ABD67C1B702FF000A1223C /* BTHTTPSSLPinning_IntegrationTests.m in Sources */,
+				A76D7C341BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m in Sources */,
 				A7ABD67D1B702FF000A1223C /* BTTestClientTokenIntegrationSpec.m in Sources */,
 				A75319E71B71466900E27B89 /* BTDropInViewController_IntegrationTests.m in Sources */,
 				A7ABD67A1B702FF000A1223C /* BTClientCoinbaseIntegrationSpec.m in Sources */,
