@@ -58,6 +58,8 @@
 
 - (IBAction)tappedCollect
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [self.data collectFraudData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
         if (error) {
             self.progressBlock(@"Error collecting data");
@@ -67,6 +69,7 @@
         self.progressBlock([NSString stringWithFormat:@"Collected data!"]);
         self.dataLabel.text = deviceData;
     }];
+#pragma clang diagnostic pop
 }
 
 - (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {

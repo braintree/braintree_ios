@@ -18,6 +18,11 @@
     [super tearDown];
 }
 
+#pragma mark - collectFraudData:
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)testCollectFraudData_returnsFraudData {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [self.data collectFraudData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
@@ -40,6 +45,8 @@
     
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
+
+#pragma clang diagnostic pop
 
 - (void)testPayPalFraudID_returnsFraudID {
     XCTAssertNotNil([BTFraudData payPalFraudID]);

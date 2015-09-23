@@ -97,7 +97,7 @@ static NSString *BTFraudDataSharedMerchantId = @"600000";
     [self.kount collect:deviceSessionId];
 }
 
-- (void)collectFraudData:(nullable void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock
+- (void)collectFraudData:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock
 {
     [self collectFraudDataWithMerchantID:BTFraudDataSharedMerchantId
                             collectorURL:[self defaultCollectorURL]

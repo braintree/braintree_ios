@@ -45,6 +45,7 @@ Pod::Spec.new do |s|
   s.subspec "Fraud" do |s|
     s.source_files = "BraintreeFraud/**/*.{h,m}"
     s.public_header_files = "BraintreeFraud/Public/*.h"
+    s.vendored_library = "BraintreeFraud/Kount/libDeviceCollectorLibrary.a"
   end
 
   s.subspec "PayPal" do |s|
