@@ -88,6 +88,8 @@
 			<dict>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
 			</dict>
 		</dict>
 	</dict>

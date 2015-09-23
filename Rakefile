@@ -21,8 +21,8 @@ task :distribute => %w[distribute:build distribute:hockeyapp]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
-VERSION_FILE = "Braintree/API/@Public/Braintree-Version.h"
-DEMO_PLIST = "Demos/Braintree-Demo/Supporting Files/Braintree-Demo-Info.plist"
+VERSION_FILE = "BraintreeCore/Braintree-Version.h"
+DEMO_PLIST = "Braintree-Demo/Supporting Files/Braintree-Demo-Info.plist"
 PUBLIC_REMOTE_NAME = "public"
 
 class << self
@@ -70,18 +70,15 @@ namespace :spec do
 
   desc 'Run unit tests'
   task :unit do
-    run_test_scheme! 'Braintree-Specs'
+    run_test_scheme! 'UnitTests'
+    run_test_scheme! 'UnitTests-StaticLibrary'
   end
 
   namespace :api do
-    desc 'Run api unit tests'
-    task :unit do
-      run_test_scheme! 'Braintree-API-Specs'
-    end
 
     def with_https_server &block
       begin
-        pid = Process.spawn('ruby ./Specs/Braintree-API-Integration-Specs/SSL/https_server.rb')
+        pid = Process.spawn('ruby ./IntegrationTests/Braintree-API-Integration-Specs/SSL/https_server.rb')
         puts "Started server (#{pid})"
         yield
         puts "Killing server (#{pid})"
@@ -90,84 +87,16 @@ namespace :spec do
       end
     end
 
-    desc 'Run api integration tests'
+    desc 'Run integration tests'
     task :integration do
       with_https_server do
-        run! xcodebuild('Braintree-API-Integration-Specs', 'test', 'Release', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
+        run! xcodebuild('IntegrationTests', 'test', 'Release', :build_settings => {'GCC_PREPROCESSOR_DEFINITIONS' => '$GCC_PREPROCESSOR_DEFINITIONS RUN_SSL_PINNING_SPECS=1'})
       end
     end
-  end
-
-  desc 'Run Payment Authorization tests'
-  task :payments do
-    run_test_scheme! 'Braintree-Payments-Specs'
-  end
-
-  desc 'Run UI Acceptance tests'
-  task :acceptance do
-    run_test_scheme! 'Braintree-Acceptance-Specs'
-  end
-
-  desc 'Run Data tests'
-  task :data do
-    run_test_scheme! 'Braintree-Data-Specs'
-  end
-
-  namespace :paypal do
-    desc 'Run PayPal unit tests'
-    task :unit do
-      run_test_scheme! 'Braintree-PayPal-Specs'
-    end
-
-    desc 'Run PayPal integration tests'
-    task :integration do
-      run_test_scheme! 'Braintree-PayPal-Integration-Specs'
-    end
-  end
-
-  namespace :venmo do
-    desc 'run Venmo unit tests'
-    task :unit do
-        run_test_scheme! 'Braintree-Venmo-Specs'
-    end
-  end
-
-  namespace :ui do
-    desc 'Run UI unit tests'
-    task :unit do
-      run_test_scheme! 'Braintree-UI-Specs'
-    end
-  end
-
-  namespace :applepay do
-    desc 'Run Apple Pay enabled build test'
-    task :included do
-      run! xcodebuild('Braintree-Apple-Pay-Build-Specs', 'test', 'Debug')
-      run "xcodebuild test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
-        build_dir = result.split("=")[-1].strip
-        run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Braintree.a | grep PKPay" do |result|
-          fail("Missing expected Apple Pay symbols") if result.strip.empty?
-        end
-      end
-    end
-
-    desc 'Run Apple Pay disabled build test'
-    task :excluded do
-      run! xcodebuild('Braintree-Apple-Pay-Excluded-Build-Specs', 'test', 'Debug')
-      run "xcodebuild test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
-        build_dir = result.split("=")[-1].strip
-        run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Excluded-Braintree.a | grep PKPay" do |result|
-          fail("Contains verboten Apple Pay symbols!") unless result.strip.empty?
-        end
-      end
-    end
-
-    desc 'Run all Apple Pay tests'
-    task :all => %w[spec:applepay:included spec:applepay:excluded]
   end
 
   desc 'Run all spec schemes'
-  task :all => %w[sanity_checks spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:api:integration spec:paypal:integration spec:payments spec:data spec:applepay:all spec:acceptance]
+  task :all => %w[spec:unit spec:api:integration]
 end
 
 namespace :demo do
