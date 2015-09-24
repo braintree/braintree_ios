@@ -61,7 +61,7 @@
             userInfo[NSLocalizedDescriptionKey] = response.errorMessage;
         }
         NSError *error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
-                                             code:BTThreeDSecureErrorCodeFailedAuthentication
+                                             code:BTThreeDSecureErrorTypeFailedAuthentication
                                          userInfo:userInfo];
         if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
             [self.delegate threeDSecureViewController:self didFailWithError:error];

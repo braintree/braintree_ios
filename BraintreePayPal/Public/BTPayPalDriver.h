@@ -28,6 +28,9 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
     /// Invalid request, e.g. missing checkout request
     BTPayPalDriverErrorTypeInvalidRequest,
+    
+    /// Braintree SDK is integrated incorrectly
+    BTPayPalDriverErrorTypeIntegration,
 };
 
 /// BTPayPalDriver enables you to obtain permission to charge your customers' PayPal accounts via app

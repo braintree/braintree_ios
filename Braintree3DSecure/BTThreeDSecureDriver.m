@@ -18,7 +18,6 @@
 
 - (instancetype)init {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"-init is not available for BTThreeDSecureDriver. Use -initWithAPIClient:delegate: instead." userInfo:nil];
-    return nil;
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient delegate:(id<BTViewControllerPresentingDelegate>)delegate {
@@ -72,6 +71,14 @@
                  transactionAmount:(NSDecimalNumber *)amount
                         completion:(void (^)(BTThreeDSecureLookupResult *lookupResult, NSError *error))completionBlock
 {
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
+                                             code:BTThreeDSecureErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureDriver failed because BTAPIClient is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
+    
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         if (error) {
             completionBlock(nil, error);
@@ -108,7 +115,7 @@
                               }
 
                               error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
-                                                         code:BTThreeDSecureErrorCodeFailedLookup
+                                                         code:BTThreeDSecureErrorTypeFailedLookup
                                                      userInfo:userInfo];
                           }
 
@@ -143,7 +150,7 @@
 
 - (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
                   didFailWithError:(NSError *)error {
-    if ([error.domain isEqualToString:BTThreeDSecureErrorDomain] && error.code == BTThreeDSecureErrorCodeFailedAuthentication) {
+    if ([error.domain isEqualToString:BTThreeDSecureErrorDomain] && error.code == BTThreeDSecureErrorTypeFailedAuthentication) {
         [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.error.auth-failure"];
     } else {
         [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.error.unrecognized-error"];

@@ -1,7 +1,7 @@
 #import "BTErrors.h"
 #import "BTTokenizationParser.h"
 #import "BTTokenizationService.h"
-#import "BTCardClient.h"
+#import "BTCardClient_Internal.h"
 #import "BTTokenizedCard_Internal.h"
 #import "BTHTTP.h"
 #import "BTJSON.h"
@@ -12,7 +12,6 @@
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
 
 @interface BTCardClient ()
-@property (nonatomic, strong, readwrite) BTAPIClient *apiClient;
 @end
 
 @implementation BTCardClient
@@ -44,6 +43,14 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
 
 - (void)tokenizeCard:(BTCard *)card
           completion:(void (^)(BTTokenizedCard *tokenizedCard, NSError *error))completionBlock {
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
+                                             code:BTCardClientErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because BTAPIClient is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
+    
     NSMutableDictionary *parameters = [NSMutableDictionary new];
     parameters[@"credit_card"] = card.parameters;
     parameters[@"_meta"] = @{

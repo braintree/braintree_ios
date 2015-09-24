@@ -41,6 +41,21 @@ class BTVenmoDriver_Tests: XCTestCase {
         }
         super.tearDown()
     }
+    
+    func testTokenization_whenAPIClientIsNil_callsBackWithError() {
+        let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
+        venmoDriver.apiClient = nil
+        
+        let expectation = expectationWithDescription("Callback invoked with error")
+        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+            XCTAssertNil(tokenizedCard)
+            XCTAssertEqual(error!.domain, BTVenmoDriverErrorDomain)
+            XCTAssertEqual(error!.code, BTVenmoDriverErrorType.Integration.rawValue)
+            expectation.fulfill()
+        }
+        
+        self.waitForExpectationsWithTimeout(10, handler: nil)
+    }
 
     func testTokenization_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)

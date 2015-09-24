@@ -202,7 +202,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     apiClient.http = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
+        // Note: GETRequestCount will be 1 or 2 depending on whether the analytics event for the API client initialization
+        // has failed yet
         XCTAssertNil(configuration);
         XCTAssertEqualObjects(error.domain, BTAPIClientErrorDomain);
         XCTAssertEqual(error.code, BTAPIClientErrorTypeConfigurationUnavailable);

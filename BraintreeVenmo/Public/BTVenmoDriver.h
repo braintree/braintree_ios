@@ -18,6 +18,8 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
     BTVenmoDriverErrorTypeAppSwitchFailed,
     /// Return URL was invalid
     BTVenmoDriverErrorTypeInvalidReturnURL,
+    /// Braintree SDK is integrated incorrectly
+    BTVenmoDriverErrorTypeIntegration,
 };
 
 @interface BTVenmoDriver : NSObject <BTAppSwitchHandler>

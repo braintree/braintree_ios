@@ -8,11 +8,13 @@ extern NSString * const BTThreeDSecureInfoKey;
 extern NSString * const BTThreeDSecureValidationErrorsKey;
 
  /// Error codes that describe errors that occur during 3D Secure
-typedef NS_ENUM(NSInteger, BTThreeDSecureErrorCode){
+typedef NS_ENUM(NSInteger, BTThreeDSecureErrorType){
     /// An unknown error related to 3D Secure occured.
-    BTThreeDSecureErrorCodeUnknown = 0,
+    BTThreeDSecureErrorTypeUnknown = 0,
     /// 3D Secure failed during the backend card lookup phase; please retry.
-    BTThreeDSecureErrorCodeFailedLookup,
+    BTThreeDSecureErrorTypeFailedLookup,
     /// 3D Secure failed during the user-facing authentication phase; please retry.
-    BTThreeDSecureErrorCodeFailedAuthentication,
+    BTThreeDSecureErrorTypeFailedAuthentication,
+    /// Braintree SDK is integrated incorrectly
+    BTThreeDSecureErrorTypeIntegration,
 };

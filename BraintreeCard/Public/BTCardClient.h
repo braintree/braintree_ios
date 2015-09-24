@@ -10,7 +10,9 @@ extern NSString * const BTCardClientErrorDomain;
 
 typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
     BTCardClientErrorTypeUnknown = 0,
-    BTCardClientErrorTypeInvalidServerResponse,
+    
+    /// Braintree SDK is integrated incorrectly
+    BTCardClientErrorTypeIntegration,
 };
 
 @interface BTCardClient : NSObject
@@ -29,9 +31,6 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 ///        `tokenizedCard` will contain a nonce and `error` will be `nil`; if it fails, `tokenizedCard` will be `nil` and `error`
 ///        will describe the failure.
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTTokenizedCard * __BT_NULLABLE tokenizedCard, NSError * __BT_NULLABLE error))completionBlock;
-
-/// The API client used by the card client.
-@property (nonatomic, strong, readonly) BTAPIClient *apiClient;
 
 @end
 

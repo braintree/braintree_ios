@@ -59,7 +59,7 @@ class Braintree_Tests: XCTestCase {
     
     func testPayPalDriverInitialization_withValidClientKey_returnsDriverWithClientKey() {
         let payPalDriver = Braintree.payPalDriverWithClientKey("development_testing_integration_merchant_id")
-        XCTAssertEqual(payPalDriver?.apiClient.clientKey, "development_testing_integration_merchant_id")
+        XCTAssertEqual(payPalDriver?.apiClient?.clientKey, "development_testing_integration_merchant_id")
     }
     
     func testPayPalDriverInitialization_withInvalidClientKey_returnsNil() {
@@ -69,7 +69,7 @@ class Braintree_Tests: XCTestCase {
     func testPayPalDriverInitialization_withValidClientToken_returnsDriverWithClientToken() {
         let payPalDriver = Braintree.payPalDriverWithClientToken(ValidClientToken)
         let clientToken = try! BTClientToken(clientToken: ValidClientToken)
-        XCTAssertEqual(payPalDriver?.apiClient.clientToken, clientToken)
+        XCTAssertEqual(payPalDriver?.apiClient?.clientToken, clientToken)
     }
     
     func testPayPalDriverInitialization_withInvalidClientToken_returnsNil() {

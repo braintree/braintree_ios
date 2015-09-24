@@ -13,6 +13,7 @@
 // Internal headers for testing
 #import "BTAPIClient_Internal.h"
 #import "BTApplePayClient_Internal.h"
+#import "BTCardClient_Internal.h"
 #import "BTPayPalDriver_Internal.h"
 #import "BTVenmoDriver_Internal.h"
 #import "FakePayPalClasses.h"

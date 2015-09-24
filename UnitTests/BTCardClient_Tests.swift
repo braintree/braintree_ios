@@ -1,6 +1,23 @@
 import XCTest
 
 class BTCardClient_Tests: XCTestCase {
+    
+    func testTokenization_whenAPIClientIsNil_callsBackWithError() {
+        let mockClient = MockAPIClient(clientKey: "development_client_key")!
+        let cardClient = BTCardClient(APIClient: mockClient)
+        cardClient.apiClient = nil
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        
+        let expectation = expectationWithDescription("Callback invoked with error")
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+            XCTAssertNil(tokenizedCard)
+            XCTAssertEqual(error!.domain, BTCardClientErrorDomain)
+            XCTAssertEqual(error!.code, BTCardClientErrorType.Integration.rawValue)
+            expectation.fulfill()
+        }
+        
+        self.waitForExpectationsWithTimeout(10, handler: nil)
+    }
 
     func testTokenization_sendsDataToClientAPI() {
         let expectation = self.expectationWithDescription("Tokenize Card")

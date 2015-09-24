@@ -9,7 +9,11 @@ BT_ASSUME_NONNULL_BEGIN
 extern NSString * const BTApplePayErrorDomain;
 typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
     BTApplePayErrorTypeUnknown = 0,
+    
+    /// Apple Pay is disabled in the Braintree Control Panel
     BTApplePayErrorTypeUnsupported,
+    
+    /// Braintree SDK is integrated incorrectly
     BTApplePayErrorTypeIntegration,
 };
 

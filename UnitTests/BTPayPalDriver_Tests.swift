@@ -20,13 +20,28 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         for observer in observers { NSNotificationCenter.defaultCenter().removeObserver(observer) }
         super.tearDown()
     }
+    
+    func testAuthorization_whenAPIClientIsNil_callsBackWithError() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        payPalDriver.apiClient = nil
+        
+        let expectation = self.expectationWithDescription("Authorization fails with error")
+        payPalDriver.authorizeAccountWithCompletion { (tokenizedPayPalAccount, error) -> Void in
+            XCTAssertNil(tokenizedPayPalAccount)
+            XCTAssertEqual(error!.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error!.code, BTPayPalDriverErrorType.Integration.rawValue)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
 
     func testAuthorization_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
 
-        let expectation = self.expectationWithDescription("Checkout fails with error")
+        let expectation = self.expectationWithDescription("Authorization fails with error")
         payPalDriver.authorizeAccountWithCompletion { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertEqual(error!, self.mockAPIClient.cannedConfigurationResponseError!)
             expectation.fulfill()
@@ -435,6 +450,22 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             ] ])
 
     }
+    
+    func testCheckout_whenAPIClientIsNil_callsBackWithError() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        payPalDriver.apiClient = nil
+        
+        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let expectation = self.expectationWithDescription("Checkout fails with error")
+        payPalDriver.checkoutWithCheckoutRequest(request) { (tokenizedPayPalCheckout, error) -> Void in
+            XCTAssertNil(tokenizedPayPalCheckout)
+            XCTAssertEqual(error!.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error!.code, BTPayPalDriverErrorType.Integration.rawValue)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
 
     func testCheckout_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
         mockAPIClient.cannedConfigurationResponseBody = nil
@@ -777,8 +808,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
         let payPalDriver = BTPayPalDriver(APIClient: apiClient)
         
-        XCTAssertEqual(payPalDriver.apiClient.metadata.integration, BTClientMetadataIntegrationType.Custom)
-        XCTAssertEqual(payPalDriver.apiClient.metadata.source, BTClientMetadataSourceType.PayPalApp)
+        XCTAssertEqual(payPalDriver.apiClient?.metadata.integration, BTClientMetadataIntegrationType.Custom)
+        XCTAssertEqual(payPalDriver.apiClient?.metadata.source, BTClientMetadataSourceType.PayPalApp)
     }
     
     func testAPIClientMetadata_whenWalletAppIsNotAvailable_hasSourceSetToPayPalBrowser() {
@@ -788,8 +819,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
         let payPalDriver = BTPayPalDriver(APIClient: apiClient)
         
-        XCTAssertEqual(payPalDriver.apiClient.metadata.integration, BTClientMetadataIntegrationType.Custom)
-        XCTAssertEqual(payPalDriver.apiClient.metadata.source, BTClientMetadataSourceType.PayPalBrowser)
+        XCTAssertEqual(payPalDriver.apiClient?.metadata.integration, BTClientMetadataIntegrationType.Custom)
+        XCTAssertEqual(payPalDriver.apiClient?.metadata.source, BTClientMetadataSourceType.PayPalBrowser)
     }
 }
 
@@ -813,6 +844,22 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
                 "redirectURL": "fakeURL://"
             ] ])
         
+    }
+    
+    func testBillingAgreement_whenAPIClientIsNil_callsBackWithError() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        payPalDriver.apiClient = nil
+        
+        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let expectation = self.expectationWithDescription("Billing Agreement fails with error")
+        payPalDriver.billingAgreementWithCheckoutRequest(request) { (tokenizedPayPalCheckout, error) -> Void in
+            XCTAssertNil(tokenizedPayPalCheckout)
+            XCTAssertEqual(error!.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error!.code, BTPayPalDriverErrorType.Integration.rawValue)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
     
     func testBillingAgreement_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {

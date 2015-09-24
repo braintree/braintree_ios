@@ -41,7 +41,21 @@ class BTApplePay_Tests: XCTestCase {
         }
         waitForExpectationsWithTimeout(2, handler: nil)
     }
+    
+    func testTokenization_whenAPIClientIsNil_callsBackWithError() {
+        let client = BTApplePayClient(APIClient: mockClient)
+        client.apiClient = nil
 
+        let expectation = expectationWithDescription("Callback invoked")
+        client.tokenizeApplePayPayment(MockPKPayment()) { (tokenizedPayment, error) -> Void in
+            XCTAssertNil(tokenizedPayment)
+            XCTAssertEqual(error!.domain, BTApplePayErrorDomain)
+            XCTAssertEqual(error!.code, BTApplePayErrorType.Integration.rawValue)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
 
     func testTokenization_whenConfigurationFetchErrorOccurs_callsBackWithError() {
         mockClient.cannedConfigurationResponseError = NSError(domain: "MyError", code: 1, userInfo: nil)

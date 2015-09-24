@@ -62,6 +62,13 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Tokenization
 
 - (void)tokenizeVenmoCardWithCompletion:(void (^)(BTVenmoTokenizedCard *tokenizedCard, NSError *configurationError))completionBlock {
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                             code:BTVenmoDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTVenmoDriver failed because BTAPIClient is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *configurationError) {
         if (configurationError) {

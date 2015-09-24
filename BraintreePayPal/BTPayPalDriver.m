@@ -53,6 +53,13 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 }
 
 - (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes completion:(void (^)(BTTokenizedPayPalAccount *, NSError *))completionBlock {
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalDriver failed because BTAPIClient is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
 
     [self setAuthorizationAppSwitchReturnBlock:completionBlock];
 
@@ -167,6 +174,14 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 }
 
 - (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement {
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                             code:BTPayPalDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTPayPalDriver failed because BTAPIClient is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
+    
     if (!checkoutRequest || (!isBillingAgreement && !checkoutRequest.amount)) {
         completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
         return;
