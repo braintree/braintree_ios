@@ -47,32 +47,7 @@
         self.dropInContentView.paymentButton.apiClient = self.apiClient;
         __weak typeof(self) weakSelf = self;
         self.dropInContentView.paymentButton.completion = ^(id<BTTokenized> tokenization, NSError *error) {
-            // TODO: uncomment when BTCoinbase is implemented?
-            //    [[BTCoinbase sharedCoinbase] setStoreInVault:self.originalCoinbaseStoreInVault];
-
-            if (error) {
-                NSString *savePaymentMethodErrorAlertTitle = error.localizedDescription ?: BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
-
-                BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:weakSelf];
-                errorAlert.title = savePaymentMethodErrorAlertTitle;
-                errorAlert.cancelBlock = ^{
-                    // Use the paymentInfoObjects setter to update state
-                    weakSelf.paymentInfoObjects = weakSelf.paymentInfoObjects;
-                };
-
-                [errorAlert show];
-            } else if (tokenization) {
-                NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:weakSelf.paymentInfoObjects];
-                [newPaymentMethods insertObject:tokenization atIndex:0];
-                weakSelf.paymentInfoObjects = newPaymentMethods;
-            } else {
-                // Refresh payment methods display
-                weakSelf.paymentInfoObjects = weakSelf.paymentInfoObjects;
-                NSLog(@"User cancelled payment");
-            }
-
-            // Let the addPaymentMethodDropInViewController release
-            weakSelf.addPaymentMethodDropInViewController = nil;
+            [weakSelf paymentButtonDidCompleteTokenization:tokenization fromViewController:weakSelf error:error];
         };
 
         self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
@@ -351,8 +326,6 @@
             if (cardForm.postalCode) {
                 options[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
             }
-            // 2015-08-17: Client Key does not support validation
-            // TODO: Double-check that this is desired behavior
             options[@"options"] = @{ @"validate" : @(self.apiClient.clientKey ? NO : YES) };
 
             [client sendAnalyticsEvent:@"dropin.ios.add-card.save"];
@@ -464,28 +437,6 @@
 
 #pragma mark BTAppSwitchDelegate
 
-//- (void)paymentDriver:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
-//    // In order to modally present PayPal on top of a nested Drop In, we need to first dismiss the
-//    // nested Drop In. Canceling will return to the outer Drop In.
-//    if ([self presentedViewController]) {
-//        BTDropInContentViewStateType originalState = self.dropInContentView.state;
-//        self.dropInContentView.state = BTDropInContentViewStateActivity;
-//        [self dismissViewControllerAnimated:YES completion:^{
-//            [self presentViewController:viewController animated:YES completion:^{
-//                self.dropInContentView.state = originalState;
-//            }];
-//        }];
-//    } else {
-//        [self presentViewController:viewController animated:YES completion:nil];
-//    }
-//}
-//
-//- (void)paymentDriver:(__unused id)sender requestsDismissalOfViewController:(__unused UIViewController *)viewController {
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
-
-
-// TODO: What are some possible presented view controller(s)?
 - (void)paymentDriverWillPerformAppSwitch:(__unused id)sender {
     // If there is a presented view controller, dismiss it before app switch
     // so that the result of the app switch can be shown in this view controller.
@@ -493,16 +444,6 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
-
-// TODO
-
-//- (void)paymentDriverWillProcess:(__unused id)sender {
-//    self.dropInContentView.state = BTDropInContentViewStateActivity;
-//
-//    self.originalCoinbaseStoreInVault = [[BTCoinbase sharedCoinbase] storeInVault];
-//    [[BTCoinbase sharedCoinbase] setStoreInVault:YES];
-//}
-
 
 #pragma mark Delegate Notifications
 
@@ -678,9 +619,41 @@
         _addPaymentMethodDropInViewController.fullForm = NO;
         _addPaymentMethodDropInViewController.shouldHideCallToAction = YES;
         _addPaymentMethodDropInViewController.delegate = self;
-//        _addPaymentMethodDropInViewController.dropInContentView.paymentButton.delegate = self;
+        __weak typeof(self) weakSelf = self;
+        __weak typeof(_addPaymentMethodDropInViewController) weakAddPaymentMethodController = _addPaymentMethodDropInViewController;
+        _addPaymentMethodDropInViewController.dropInContentView.paymentButton.completion = ^(id <BTTokenized> tokenization, NSError *error) {
+            [weakSelf paymentButtonDidCompleteTokenization:tokenization fromViewController:weakAddPaymentMethodController error:error];
+        };
     }
     return _addPaymentMethodDropInViewController;
+}
+
+- (void)paymentButtonDidCompleteTokenization:(id <BTTokenized>)tokenization
+              fromViewController:(UIViewController *)viewController
+                           error:(NSError *)error {
+    if (error) {
+        NSString *savePaymentMethodErrorAlertTitle = error.localizedDescription ?: BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
+        
+        BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:viewController];
+        errorAlert.title = savePaymentMethodErrorAlertTitle;
+        errorAlert.cancelBlock = ^{
+            // Use the paymentInfoObjects setter to update state
+            self.paymentInfoObjects = self.paymentInfoObjects;
+        };
+        
+        [errorAlert show];
+    } else if (tokenization) {
+        NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentInfoObjects];
+        [newPaymentMethods insertObject:tokenization atIndex:0];
+        self.paymentInfoObjects = newPaymentMethods;
+        [self informDelegateDidAddPaymentInfo:tokenization];
+    } else {
+        // Refresh payment methods display
+        self.paymentInfoObjects = self.paymentInfoObjects;
+    }
+    
+    // Let the addPaymentMethodDropInViewController release
+    self.addPaymentMethodDropInViewController = nil;
 }
 
 #pragma mark - BTViewControllerPresentingDelegate
