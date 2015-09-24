@@ -194,22 +194,27 @@ describe(@"authorizeApplePay", ^{
                 ABRecordRef shippingAddress = ABPersonCreate();
                 provider.shippingAddress = shippingAddress;
                 CFRelease(shippingAddress);
+                provider.billingContact = [[PKContact alloc] init];
+                provider.shippingContact = [[PKContact alloc] init];
                 id checkPaymentRequestBlock = [OCMArg checkWithBlock:^BOOL(PKPaymentRequest *actualRequest) {
                     if ([actualRequest.paymentSummaryItems isEqualToArray:provider.paymentSummaryItems] &&
                         actualRequest.requiredShippingAddressFields == provider.requiredShippingAddressFields &&
                         actualRequest.requiredBillingAddressFields == provider.requiredBillingAddressFields &&
                         actualRequest.shippingAddress == provider.shippingAddress &&
-                        actualRequest.billingAddress == provider.billingAddress) {
+                        actualRequest.billingAddress == provider.billingAddress &&
+                        actualRequest.shippingContact == provider.shippingContact &&
+                        actualRequest.billingContact == provider.billingContact) {
                         done();
                         return YES;
                     }
                     return NO;
                 }];
                 OCMStub([mockApplePayPaymentProvider paymentAuthorizationViewControllerWithPaymentRequest:checkPaymentRequestBlock]).andReturn(nil);
-
+                
                 [provider authorizeApplePay];
             });
         });
+
 
         it(@"the PKPaymentRequest favors values set on the provider over those from client configuration", ^{
             waitUntil(^(DoneCallback done) {

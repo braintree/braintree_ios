@@ -126,6 +126,86 @@ Finally, [**cocoadocs.org/docsets/Braintree**](http://cocoadocs.org/docsets/Brai
 
 A demo app is included in project. To run it, run `pod install` and then open `Braintree.xcworkspace` in Xcode. See the [README](Demos/Braintree-Demo/README.md) for more details.
 
+## Updating for iOS 9
+
+**Xcode 7 is required.**
+
+### Supporting Bitcode
+
+The Braintree SDK works with apps that have [bitcode](https://developer.apple.com/library/prerelease/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AppThinning/AppThinning.html#//apple_ref/doc/uid/TP40012582-CH35-SW3) enabled.
+
+However, if your integration uses `BTData` for fraud detection, it does not currently support having bitcode enabled. We are working to add support for this shortly.
+
+### App Transport Security
+
+iOS 9 introduces new security requirements and restrictions that can impact the behavior of the Braintree SDK. If your app is compiled with iOS 9 SDK, it must comply with Apple's [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) policy.
+
+Please whitelist the Braintree Gateway domain by adding the following to your application's plist:
+
+```
+  <key>NSAppTransportSecurity</key>
+  <dict>
+    <key>NSExceptionDomains</key>
+    <dict>
+      <key>api.braintreegateway.com</key>
+      <dict>
+          <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+          <false/>
+      </dict>
+    </dict>
+  </dict>
+```
+
+If your app uses `BTData`, also include the following under `NSExceptionDomains`:
+
+```
+  <key>kaptcha.com</key>
+    <dict>
+      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+      <false/>
+      <key>NSIncludesSubdomains</key>
+      <true/>
+      <key>NSTemporaryExceptionMinimumTLSVersion</key>
+      <string>TLSv1.0</string>
+  </dict>
+```
+
+We are actively working to update the SSL certificates of these servers so that your app will not require these exceptions in the near future.
+
+### URL Query Scheme Whitelist
+
+If your app is compiled with iOS 9 SDK and integrates payment options with an app-switch workflow, you must add URL schemes to the whitelist in your application's plist.
+
+If your app supports payments from PayPal:
+* `com.paypal.ppclient.touch.v1`
+* `com.paypal.ppclient.touch.v2`
+* `org-appextension-feature-password-management`
+
+If your app supports payments from Venmo:
+* `com.venmo.touch.v1`
+
+For example, if your app supports both PayPal and Venmo, you could add the following:
+```
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>com.venmo.touch.v1</string>
+    <string>com.paypal.ppclient.touch.v1</string>
+    <string>com.paypal.ppclient.touch.v2</string>
+    <string>org-appextension-feature-password-management</string>
+  </array>
+```
+
+There is a new `UIApplicationDelegate` method that you may implement on iOS 9:
+```
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+```
+Implementing this method is optional. If you do not implement it, the deprecated equivalent will still be called; otherwise, it will not.
+
+In either case, you still need to implement the deprecated equivalent in order to support iOS 8 or earlier:
+```
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+```
+
 ## Help
 
 * [Read the headers](Braintree/Braintree.h)
@@ -145,3 +225,4 @@ Here are a few ways to get in touch:
 ### License
 
 The Braintree v.zero SDK is open source and available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+

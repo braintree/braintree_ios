@@ -22,10 +22,10 @@ PODS:
     - AFNetworking/NSURLSession
   - CardIO (5.1.1)
   - Expecta (1.0.2)
-  - FLEX (2.0.3)
-  - HockeySDK (3.7.3):
-    - HockeySDK/AllFeaturesLib (= 3.7.3)
-  - HockeySDK/AllFeaturesLib (3.7.3)
+  - FLEX (2.0.6)
+  - HockeySDK (3.8.2):
+    - HockeySDK/AllFeaturesLib (= 3.8.2)
+  - HockeySDK/AllFeaturesLib (3.8.2)
   - InAppSettingsKit (2.6)
   - iOS-Slide-Menu (1.5)
   - NSURL+QueryDictionary (1.1.0)
