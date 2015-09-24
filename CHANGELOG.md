@@ -4,6 +4,7 @@
 
 * Update README.md and Braintree Demo app for iOS 9 and Xcode 7
 * Update PayPal mSDK to 2.12.1 with bitcode
+* Update Kount library with bitcode support
 * Update Apple Pay support for iOS 9. `BTApplePayPaymentMethod` changes:
   * Deprecate `ABRecordRef` properties: `billingAddress` and `shippingAddress`
   * Add `PKContact` properties: `billingContact` and `shippingContact`
