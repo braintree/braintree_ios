@@ -10,6 +10,7 @@ extern NSString * const BTApplePayErrorDomain;
 typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
     BTApplePayErrorTypeUnknown = 0,
     BTApplePayErrorTypeUnsupported,
+    BTApplePayErrorTypeIntegration,
 };
 
 @interface BTApplePayClient : NSObject

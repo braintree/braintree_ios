@@ -29,6 +29,14 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 }
 
 - (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTTokenizedApplePayPayment *, NSError *))completionBlock {
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTApplePayErrorDomain
+                                             code:BTApplePayErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTApplePayClient tokenization failed because BTAPIClient is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
+    
     [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.start"];
    
     if (!payment) {
