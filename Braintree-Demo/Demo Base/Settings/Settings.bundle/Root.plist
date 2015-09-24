@@ -33,7 +33,7 @@
 				<string>UI Components</string>
 				<string>Credit Cards - 3D Secure</string>
 				<string>Combined - Custom Button</string>
-				<string>Fraud Protection - BTData</string>
+				<string>Fraud Protection - BTFraudData</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -53,7 +53,7 @@
 				<string>BraintreeDemoUIWidgetsViewController</string>
 				<string>BraintreeDemoThreeDSecureViewController</string>
 				<string>BraintreeDemoCustomMultiPayViewController</string>
-				<string>BraintreeDemoBraintreeDataViewController</string>
+				<string>BraintreeDemoBTFraudDataViewController</string>
 			</array>
 		</dict>
 		<dict>
@@ -94,16 +94,16 @@
 			<key>IASKTextAlignment</key>
 			<string>IASKUITextAlignmentRight</string>
 		</dict>
-        <dict>
-            <key>Type</key>
-            <string>PSToggleSwitchSpecifier</string>
-            <key>Title</key>
-            <string>Use Client Key</string>
-            <key>Key</key>
-            <string>BraintreeDemoUseClientKey</string>
-            <key>DefaultValue</key>
-            <true/>
-        </dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Use Client Key</string>
+			<key>Key</key>
+			<string>BraintreeDemoUseClientKey</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
 		<dict>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
