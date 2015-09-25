@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.9.4 (2015-09-25)
 
 * Update README.md and Braintree Demo app for iOS 9 and Xcode 7
 * Update PayPal mSDK to 2.12.1 with bitcode
