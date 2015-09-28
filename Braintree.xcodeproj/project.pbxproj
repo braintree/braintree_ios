@@ -280,6 +280,8 @@
 		417405C21BB08874008A5DEA /* MockDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D6746C1B84073300ED6C00 /* MockDelegates.swift */; };
 		417405C31BB08979008A5DEA /* libPayPalOneTouchCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD1C1B431313008857E1 /* libPayPalOneTouchCore.a */; };
 		417405C51BB08C69008A5DEA /* libBraintree.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 417404491BB084D3008A5DEA /* libBraintree.a */; };
+		41913D9F1BB9D504004EF1BB /* BTUIPaymentOptionType.h in Headers */ = {isa = PBXBuildFile; fileRef = 41913D9D1BB9D503004EF1BB /* BTUIPaymentOptionType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		41913DA01BB9D504004EF1BB /* BTUIThemedView.h in Headers */ = {isa = PBXBuildFile; fileRef = 41913D9E1BB9D503004EF1BB /* BTUIThemedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		41B787BD1BAA20DB001AD351 /* BTDropInViewController_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B787BC1BAA20DB001AD351 /* BTDropInViewController_Tests.swift */; settings = {ASSET_TAGS = (); }; };
 		41BEFDD31B94F0F100E560E7 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
 		41BEFDD41B94F0F100E560E7 /* BraintreeCard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -346,7 +348,6 @@
 		A77344FA1B7A93A10083EC8D /* BraintreeUI.h in Headers */ = {isa = PBXBuildFile; fileRef = A77344F91B7A93A10083EC8D /* BraintreeUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77344FE1B7A93A10083EC8D /* BraintreeUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77344F71B7A93A10083EC8D /* BraintreeUI.framework */; };
 		A77344FF1B7A93A10083EC8D /* BraintreeUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A77344F71B7A93A10083EC8D /* BraintreeUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A77345881B7A93D00083EC8D /* BTUIPaymentOptionType.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345051B7A93D00083EC8D /* BTUIPaymentOptionType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77345891B7A93D00083EC8D /* BTUILocalizedString.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345071B7A93D00083EC8D /* BTUILocalizedString.h */; };
 		A773458A1B7A93D00083EC8D /* BTUILocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345081B7A93D00083EC8D /* BTUILocalizedString.m */; };
 		A773458B1B7A93D00083EC8D /* UI.strings in Resources */ = {isa = PBXBuildFile; fileRef = A77345091B7A93D00083EC8D /* UI.strings */; };
@@ -383,7 +384,6 @@
 		A77345AB1B7A93D00083EC8D /* BTUIScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345441B7A93D00083EC8D /* BTUIScrollView.m */; };
 		A77345AC1B7A93D00083EC8D /* BTUITextField.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345451B7A93D00083EC8D /* BTUITextField.h */; };
 		A77345AD1B7A93D00083EC8D /* BTUITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345461B7A93D00083EC8D /* BTUITextField.m */; };
-		A77345AE1B7A93D00083EC8D /* BTUIThemedView.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345471B7A93D00083EC8D /* BTUIThemedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77345AF1B7A93D00083EC8D /* BTUIThemedView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345481B7A93D00083EC8D /* BTUIThemedView.m */; };
 		A77345B01B7A93D00083EC8D /* BTUIVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345491B7A93D00083EC8D /* BTUIVectorArtView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77345B11B7A93D00083EC8D /* BTUIVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A773454A1B7A93D00083EC8D /* BTUIVectorArtView.m */; };
@@ -861,6 +861,8 @@
 		417404491BB084D3008A5DEA /* libBraintree.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBraintree.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		417405431BB086FC008A5DEA /* UnitTests-StaticLibrary.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "UnitTests-StaticLibrary.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		417405961BB0875E008A5DEA /* Braintree-StaticLibraryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Braintree-StaticLibraryDemo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		41913D9D1BB9D503004EF1BB /* BTUIPaymentOptionType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIPaymentOptionType.h; sourceTree = "<group>"; };
+		41913D9E1BB9D503004EF1BB /* BTUIThemedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIThemedView.h; sourceTree = "<group>"; };
 		41B787BC1BAA20DB001AD351 /* BTDropInViewController_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDropInViewController_Tests.swift; sourceTree = "<group>"; };
 		41BEFDD81B94F45000E560E7 /* Braintree+Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Braintree+Card.m"; sourceTree = "<group>"; };
 		41D6E2A51B8D12CD00A3C2AE /* FakePayPalClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakePayPalClasses.h; sourceTree = "<group>"; };
@@ -989,7 +991,6 @@
 		A77344F71B7A93A10083EC8D /* BraintreeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77344F91B7A93A10083EC8D /* BraintreeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeUI.h; sourceTree = "<group>"; };
 		A77344FB1B7A93A10083EC8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A77345051B7A93D00083EC8D /* BTUIPaymentOptionType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIPaymentOptionType.h; sourceTree = "<group>"; };
 		A77345071B7A93D00083EC8D /* BTUILocalizedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUILocalizedString.h; sourceTree = "<group>"; };
 		A77345081B7A93D00083EC8D /* BTUILocalizedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUILocalizedString.m; sourceTree = "<group>"; };
 		A773450A1B7A93D00083EC8D /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/UI.strings; sourceTree = "<group>"; };
@@ -1047,7 +1048,6 @@
 		A77345441B7A93D00083EC8D /* BTUIScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIScrollView.m; sourceTree = "<group>"; };
 		A77345451B7A93D00083EC8D /* BTUITextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUITextField.h; sourceTree = "<group>"; };
 		A77345461B7A93D00083EC8D /* BTUITextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUITextField.m; sourceTree = "<group>"; };
-		A77345471B7A93D00083EC8D /* BTUIThemedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIThemedView.h; sourceTree = "<group>"; };
 		A77345481B7A93D00083EC8D /* BTUIThemedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIThemedView.m; sourceTree = "<group>"; };
 		A77345491B7A93D00083EC8D /* BTUIVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIVectorArtView.h; sourceTree = "<group>"; };
 		A773454A1B7A93D00083EC8D /* BTUIVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIVectorArtView.m; sourceTree = "<group>"; };
@@ -1601,8 +1601,10 @@
 				A773455A1B7A93D00083EC8D /* BTUICoinbaseButton.h */,
 				A773455C1B7A93D00083EC8D /* BTUICTAControl.h */,
 				A773455E1B7A93D00083EC8D /* BTUIPaymentMethodView.h */,
+				41913D9D1BB9D503004EF1BB /* BTUIPaymentOptionType.h */,
 				A77345601B7A93D00083EC8D /* BTUIPayPalButton.h */,
 				A77345621B7A93D00083EC8D /* BTUISummaryView.h */,
+				41913D9E1BB9D503004EF1BB /* BTUIThemedView.h */,
 				A77345641B7A93D00083EC8D /* BTUIVenmoButton.h */,
 				A773452C1B7A93D00083EC8D /* UIColor+BTUI.h */,
 			);
@@ -2099,7 +2101,6 @@
 			isa = PBXGroup;
 			children = (
 				412FE05C1B97B18C008AAABE /* Braintree+UI.m */,
-				A77345051B7A93D00083EC8D /* BTUIPaymentOptionType.h */,
 				A77345EA1B7A9E340083EC8D /* Drop-In */,
 				A77344FB1B7A93A10083EC8D /* Info.plist */,
 				A77345061B7A93D00083EC8D /* Localization */,
@@ -2199,7 +2200,6 @@
 				A77345441B7A93D00083EC8D /* BTUIScrollView.m */,
 				A77345451B7A93D00083EC8D /* BTUITextField.h */,
 				A77345461B7A93D00083EC8D /* BTUITextField.m */,
-				A77345471B7A93D00083EC8D /* BTUIThemedView.h */,
 				A77345481B7A93D00083EC8D /* BTUIThemedView.m */,
 				A77345491B7A93D00083EC8D /* BTUIVectorArtView.h */,
 				A773454A1B7A93D00083EC8D /* BTUIVectorArtView.m */,
@@ -2551,13 +2551,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A77345A31B7A93D00083EC8D /* BTUIPaymentButtonCollectionViewCell.h in Headers */,
-				A77345881B7A93D00083EC8D /* BTUIPaymentOptionType.h in Headers */,
-				A77345AE1B7A93D00083EC8D /* BTUIThemedView.h in Headers */,
+				41913D9F1BB9D504004EF1BB /* BTUIPaymentOptionType.h in Headers */,
 				A77345C81B7A93D00083EC8D /* BTUIVenmoButton.h in Headers */,
 				A77345991B7A93D00083EC8D /* BTMockApplePayPaymentAuthorizationView.h in Headers */,
 				A77345E81B7A93D00083EC8D /* BTUIVisaVectorArtView.h in Headers */,
 				A77345BE1B7A93D00083EC8D /* BTUICoinbaseButton.h in Headers */,
 				A77345A71B7A93D00083EC8D /* BTUIFormField.h in Headers */,
+				41913DA01BB9D504004EF1BB /* BTUIThemedView.h in Headers */,
 				A77345AA1B7A93D00083EC8D /* BTUIScrollView.h in Headers */,
 				A77345B01B7A93D00083EC8D /* BTUIVectorArtView.h in Headers */,
 				A77345AC1B7A93D00083EC8D /* BTUITextField.h in Headers */,
