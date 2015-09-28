@@ -20,13 +20,13 @@
 }
 
 
-+ (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [BTAppSwitch handleReturnURL:url sourceApplication:sourceApplication];
++ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    return [BTAppSwitch handleOpenURL:url sourceApplication:sourceApplication];
 }
 
 
-+ (BOOL)handleReturnURL:(NSURL *)url options:(NSDictionary *)options {
-    return [BTAppSwitch handleReturnURL:url options:options];
++ (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options {
+    return [BTAppSwitch handleOpenURL:url options:options];
 }
 
 @end

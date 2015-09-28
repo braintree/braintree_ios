@@ -27,21 +27,21 @@
 }
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
-+ (BOOL)handleReturnURL:(NSURL *)url options:(NSDictionary *)options {
-    return [[[self class] sharedInstance] handleReturnURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
++ (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options {
+    return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
 }
 #else
-+ (BOOL)handleReturnURL:(NSURL *)url options:(__unused NSDictionary *)options {
-    return [[[self class] sharedInstance] handleReturnURL:url sourceApplication:nil];
++ (BOOL)handleOpenURL:(NSURL *)url options:(__unused NSDictionary *)options {
+    return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:nil];
 }
 #endif
 
 
-+ (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [[[self class] sharedInstance] handleReturnURL:url sourceApplication:sourceApplication];
++ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:sourceApplication];
 }
 
-- (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+- (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
     for (Class<BTAppSwitchHandler> handlerClass in self.appSwitchHandlers) {
         if ([handlerClass canHandleAppSwitchReturnURL:url sourceApplication:sourceApplication]) {
             [handlerClass handleAppSwitchReturnURL:url];

@@ -37,7 +37,7 @@ BT_ASSUME_NONNULL_BEGIN
 /// @description Handles return URLs when returning from app switch and routes the return URL to the correct
 /// app switch handler class.
 /// @note `returnURLScheme` must contain your app's registered URL Type that starts with the app's bundle
-/// ID. When your app returns from app switch, the app delegate should call `handleReturnURL:sourceApplication:`
+/// ID. When your app returns from app switch, the app delegate should call `handleOpenURL:sourceApplication:`
 @interface BTAppSwitch : NSObject
 
 /// The URL scheme to return to this app after switching to another app. This URL scheme must be registered
@@ -50,12 +50,12 @@ BT_ASSUME_NONNULL_BEGIN
 /// Handles a return from app switch
 /// @param url The URL that was opened to return to your app
 /// @param sourceApplication The source app that requested the launch of your app
-+ (BOOL)handleReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
++ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 /// Handles a return from app switch
 /// @param url The URL that was opened to return to your app
 /// @param options The options dictionary provided by `application:openURL:options:`
-+ (BOOL)handleReturnURL:(NSURL *)url options:(NSDictionary *)options;
++ (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options;
 
 /// Registers a class that knows how to handle a return from app switch
 - (void)registerAppSwitchHandler:(Class<BTAppSwitchHandler>)handler;
