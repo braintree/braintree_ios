@@ -30,6 +30,7 @@
 @property (nonatomic, assign) BOOL fullForm;
 
 @property (nonatomic, assign) BOOL cardEntryDidBegin;
+@property (nonatomic, assign) BOOL cardEntryDidFocus;
 
 @property (nonatomic, assign) BOOL originalCoinbaseStoreInVault;
 
@@ -199,6 +200,7 @@
     if (self.fullForm) {
         [self.apiClient sendAnalyticsEvent:@"dropin.ios.appear"];
     }
+    [self.apiClient sendAnalyticsEvent:@"ios.dropin.appear.succeeded"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -328,13 +330,10 @@
             }
             options[@"options"] = @{ @"validate" : @(self.apiClient.clientKey ? NO : YES) };
 
-            [client sendAnalyticsEvent:@"dropin.ios.add-card.save"];
-
             [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(id<BTTokenized> tokenization, NSError *error) {
                 [self showLoadingState:NO];
 
                 if (error) {
-                    [client sendAnalyticsEvent:@"dropin.ios.add-card.failed"];
                     // TODO: fix this grossness
                     if ([error.domain isEqualToString:@"com.braintreepayments.BTCardClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
                         [self informUserDidFailWithError:error];
@@ -352,7 +351,6 @@
                     return;
                 }
 
-                [client sendAnalyticsEvent:@"dropin.ios.add-card.success"];
                 [self informDelegateDidAddPaymentInfo:tokenization];
 
                 // Let the view controller release
@@ -372,6 +370,14 @@
 }
 
 #pragma mark Progress UI
+
+- (void)cardFormViewDidBeginEditing:(__unused BTUICardFormView *)cardFormView {
+    if (!self.cardEntryDidFocus) {
+        [self.apiClient sendAnalyticsEvent:@"ios.dropin.card.focus"];
+        self.cardEntryDidFocus = YES;
+    }
+}
+
 
 - (void)showLoadingState:(BOOL)loadingState {
     [self.dropInContentView.ctaControl showLoadingState:loadingState];
