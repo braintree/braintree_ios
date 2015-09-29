@@ -8,7 +8,7 @@ HighLine.color_scheme = HighLine::SampleColorScheme.new
 task :default => %w[sanity_checks spec]
 
 desc "Run default set of tasks"
-task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:payments spec:data spec:acceptance]
+task :spec => %w[spec:all]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
 task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
