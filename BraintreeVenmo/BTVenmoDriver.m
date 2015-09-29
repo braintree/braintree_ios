@@ -120,7 +120,7 @@ static BTVenmoDriver *appSwitchedDriver;
 }
 
 + (void)handleAppSwitchReturnURL:(NSURL *)url {
-    [appSwitchedDriver handleReturnURL:url];
+    [appSwitchedDriver handleOpenURL:url];
     appSwitchedDriver = nil;
 }
 
@@ -128,7 +128,7 @@ static BTVenmoDriver *appSwitchedDriver;
     return [BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:sourceApplication];
 }
 
-- (void)handleReturnURL:(NSURL *)url {
+- (void)handleOpenURL:(NSURL *)url {
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, __unused NSError *error) {

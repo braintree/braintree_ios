@@ -109,7 +109,7 @@
 //    });
 //
 //
-//    describe(@"canHandleReturnURL:sourceApplication:", ^{
+//    describe(@"canhandleOpenURL:sourceApplication:", ^{
 //
 //        __block id mockVenmoAppSwitchReturnURL;
 //        NSString *testSourceApplication = @"a-source.app.App";
@@ -127,7 +127,7 @@
 //        it(@"returns YES if [BTVenmoAppSwitchReturnURL isValidURL:sourceApplication:] returns YES", ^{
 //            [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@YES] isValidURL:testURL sourceApplication:testSourceApplication];
 //
-//            BOOL handled = [handler canHandleReturnURL:testURL sourceApplication:testSourceApplication];
+//            BOOL handled = [handler canhandleOpenURL:testURL sourceApplication:testSourceApplication];
 //
 //            expect(handled).to.beTruthy();
 //        });
@@ -135,7 +135,7 @@
 //        it(@"returns NO if [BTVenmoAppSwitchReturnURL isValidURL:sourceApplication:] returns NO", ^{
 //            [[[mockVenmoAppSwitchReturnURL expect] andReturnValue:@NO] isValidURL:testURL sourceApplication:testSourceApplication];
 //
-//            BOOL handled = [handler canHandleReturnURL:testURL sourceApplication:testSourceApplication];
+//            BOOL handled = [handler canhandleOpenURL:testURL sourceApplication:testSourceApplication];
 //
 //            expect(handled).to.beFalsy();
 //        });
@@ -210,7 +210,7 @@
 //
 //    });
 //
-//    describe(@"handleReturnURL:", ^{
+//    describe(@"handleOpenURL:", ^{
 //
 //        __block id appSwitchReturnURL;
 //        __block id paymentMethod;
@@ -254,7 +254,7 @@
 //                // [[client expect] fetchPaymentMethodWithNonce:@"a-nonce" success:OCMOCK_ANY failure:OCMOCK_ANY];
 //                // [[delegate expect] appSwitcher:handler didCreatePaymentMethod:paymentMethod];
 //
-//                [handler handleReturnURL:returnURL];
+//                [handler handleOpenURL:returnURL];
 //            });
 //        });
 //    });
