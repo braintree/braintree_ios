@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchRequest.h
 //
-//  Version 3.1.1
+//  Version 3.2.0
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
@@ -135,6 +135,11 @@ extern NSString *const PayPalEnvironmentMock;
 
 /// Client has already created a payment on PayPal server; this is the resulting HATEOS ApprovalURL
 @property (nonatomic, readonly) NSURL *approvalURL;
+
+@end
+
+/// Request approval of a Billing Agreement
+@interface PayPalOneTouchBillingAgreementRequest : PayPalOneTouchCheckoutRequest
 
 @end
 
