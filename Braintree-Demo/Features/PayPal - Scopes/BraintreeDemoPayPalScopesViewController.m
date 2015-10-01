@@ -51,7 +51,7 @@
         } else if (tokenizedPayPalAccount) {
             self.completionBlock(tokenizedPayPalAccount);
 
-            BTPostalAddress *address = tokenizedPayPalAccount.accountAddress;
+            BTPostalAddress *address = tokenizedPayPalAccount.shippingAddress;
             self.addressTextView.text = [NSString stringWithFormat:@"Address:\n%@\n%@\n%@ %@\n%@ %@", address.streetAddress, address.extendedAddress, address.locality, address.region, address.postalCode, address.countryCodeAlpha2];
         } else {
             self.progressBlock(@"Cancelled");

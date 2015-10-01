@@ -5,10 +5,10 @@
 
 #import "BTAPIClient_Internal.h"
 #import "BTTokenizedPayPalAccount_Internal.h"
-#import "BTTokenizedPayPalCheckout_Internal.h"
 #import "BTPostalAddress.h"
 #import "BTLogger_Internal.h"
 #import <SafariServices/SafariServices.h>
+#import "BTConfiguration+PayPal.h"
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
@@ -66,6 +66,13 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         if (error) {
             if (completionBlock) completionBlock(nil, error);
+            return;
+        }
+        
+        if (configuration.isBillingAgreementsEnabled) {
+            // Switch to Billing Agreements flow
+            BTPayPalCheckoutRequest *checkout = [[BTPayPalCheckoutRequest alloc] init];
+            [self billingAgreementWithCheckoutRequest:checkout completion:completionBlock];
             return;
         }
 
@@ -163,17 +170,17 @@ static void (^appSwitchReturnBlock)(NSURL *url);
 
 #pragma mark - Checkout (Single Payments)
 
-- (void)billingAgreementWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
+- (void)billingAgreementWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
     [self checkoutWithCheckoutRequest:checkoutRequest
                            completion:completionBlock isBillingAgreement:YES];
 }
 
-- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock {
+- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
     [self checkoutWithCheckoutRequest:checkoutRequest
                            completion:completionBlock isBillingAgreement:NO];
 }
 
-- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement {
+- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeIntegration
@@ -297,7 +304,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
     }];
 }
 
-- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout *tokenizedCheckout, NSError *error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement
+- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement
 {
     appSwitchReturnBlock = ^(NSURL *url) {
         [self informDelegatePresentingViewControllerNeedsDismissal];
@@ -381,7 +388,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
                                       description = email;
                                   }
 
-                                  BTTokenizedPayPalCheckout *tokenizedCheckout = [[BTTokenizedPayPalCheckout alloc] initWithPaymentMethodNonce:nonce
+                                  BTTokenizedPayPalAccount *tokenizedCheckout = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce
                                                                                                                                    description:description
                                                                                                                                          email:email
                                                                                                                                      firstName:firstName
@@ -502,7 +509,8 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         description = email;
     }
 
-    BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce description:description email:email accountAddress:accountAddress clientMetadataId:clientMetadataId];
+    BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce description:description email:email firstName:nil lastName:nil phone:nil billingAddress:nil shippingAddress:accountAddress clientMetadataId:clientMetadataId payerId:nil];
+
     return tokenizedPayPalAccount;
 }
 

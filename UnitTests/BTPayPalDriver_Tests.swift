@@ -324,13 +324,13 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                 XCTAssertEqual(tokenizedPayPalAccount!.paymentMethodNonce, "a-nonce")
                 XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.recipientName!, "Foo Bar")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.streetAddress, "1 Foo Ct")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.extendedAddress!, "Apt Bar")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.locality, "Fubar")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.region!, "FU")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.postalCode!, "42")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.countryCodeAlpha2, "USA")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.recipientName!, "Foo Bar")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.streetAddress, "1 Foo Ct")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.extendedAddress!, "Apt Bar")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.locality, "Fubar")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.region!, "FU")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.postalCode!, "42")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.countryCodeAlpha2, "USA")
         })
     }
 
@@ -785,7 +785,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
     // MARK: Helpers
 
-    func assertSuccessfulCheckoutResponse(response: [String:AnyObject], assertionBlock: (BTTokenizedPayPalCheckout?, NSError?) -> Void) {
+    func assertSuccessfulCheckoutResponse(response: [String:AnyObject], assertionBlock: (BTTokenizedPayPalAccount?, NSError?) -> Void) {
         mockAPIClient.cannedResponseBody = BTJSON(value: response)
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)

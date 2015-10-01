@@ -6,15 +6,30 @@ BT_ASSUME_NONNULL_BEGIN
 
 @interface BTTokenizedPayPalAccount : NSObject <BTTokenized>
 
-/// Email address associated with the PayPal Account.
+// Payer's email address
 @property (nonatomic, readonly, copy) NSString *email;
 
-/// Optional. The billing address.
-/// Will be provided if you request "address" scope when using -[PayPalDriver startAuthorizationWithAdditionalScopes:completion:]
-@property (nonatomic, BT_NULLABLE, readonly, strong) BTPostalAddress *accountAddress;
+/// Payer's first name.
+@property (nonatomic, readonly, copy) NSString *firstName;
+
+/// Payer's last name.
+@property (nonatomic, readonly, copy) NSString *lastName;
+
+/// Payer's phone number.
+@property (nonatomic, readonly, copy) NSString *phone;
+
+/// The billing address.
+@property (nonatomic, readonly, strong) BTPostalAddress *billingAddress;
+
+/// The shipping address.
+@property (nonatomic, readonly, strong) BTPostalAddress *shippingAddress;
 
 /// Client Metadata Id associated with this transaction.
 @property (nonatomic, readonly, copy) NSString *clientMetadataId;
+
+/// Optional. Payer Id associated with this transaction.
+/// Will be provided for Billing Agreement and Checkout.
+@property (nonatomic, readonly, copy) NSString *payerId;
 
 @end
 
