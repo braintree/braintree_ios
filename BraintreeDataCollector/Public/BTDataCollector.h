@@ -1,21 +1,21 @@
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, BTFraudDataEnvironment) {
-    BTFraudDataEnvironmentDevelopment,
-    BTFraudDataEnvironmentQA,
-    BTFraudDataEnvironmentSandbox,
-    BTFraudDataEnvironmentProduction
+typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
+    BTDataCollectorEnvironmentDevelopment,
+    BTDataCollectorEnvironmentQA,
+    BTDataCollectorEnvironmentSandbox,
+    BTDataCollectorEnvironmentProduction
 };
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTFraudData : NSObject
+@interface BTDataCollector : NSObject
 
-/// Initializes a `BTFraudData` instance for an environment.
+/// Initializes a `BTDataCollector` instance for an environment.
 ///
 /// @param environment The desired environment to target. This setting will determine which
 /// default collectorURL is used when collecting fraud data from the device.
-- (instancetype)initWithEnvironment:(BTFraudDataEnvironment)environment;
+- (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment;
 
 
 /// Generates a new PayPal fraud ID (i.e. PayPalOneTouchCore `clientMetadataID`) if PayPal is integrated, otherwise returns `nil`

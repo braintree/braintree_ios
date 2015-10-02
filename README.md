@@ -71,7 +71,7 @@ Please whitelist the Braintree Gateway domain by adding the following to your ap
   </dict>
 ```
 
-If your app uses BraintreeFraud, also include the following under `NSExceptionDomains`:
+If your app uses BraintreeDataCollector, also include the following under `NSExceptionDomains`:
 
 ```
   <key>kaptcha.com</key>
@@ -112,7 +112,7 @@ For example, if your app supports both PayPal and Venmo, you could add the follo
 
 The Braintree SDK works with apps that have [bitcode](https://developer.apple.com/library/prerelease/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AppThinning/AppThinning.html#//apple_ref/doc/uid/TP40012582-CH35-SW3) enabled.
 
-However, if your integration uses `BraintreeFraud` for fraud detection, it does not currently support having bitcode enabled. This will be fixed in an upcoming release.
+However, if your integration uses `BraintreeDataCollector` for fraud detection, it does not currently support having bitcode enabled. This will be fixed in an upcoming release.
 
 ## Documentation
 

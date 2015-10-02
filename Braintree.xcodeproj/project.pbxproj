@@ -330,19 +330,19 @@
 		A76B1A331B79708A00452CFA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A76B1A061B79708A00452CFA /* InfoPlist.strings */; };
 		A76B1A341B79708A00452CFA /* Main.strings in Resources */ = {isa = PBXBuildFile; fileRef = A76B1A081B79708A00452CFA /* Main.strings */; };
 		A76B1A351B79708A00452CFA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B1A0A1B79708A00452CFA /* main.m */; };
-		A76D7C151BB1CAB00000FA6A /* BraintreeFraud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeFraud.framework */; };
-		A76D7C161BB1CAB00000FA6A /* BraintreeFraud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeFraud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A76D7C201BB1CBD50000FA6A /* BraintreeFraud.h in Headers */ = {isa = PBXBuildFile; fileRef = A76D7C1E1BB1CBD50000FA6A /* BraintreeFraud.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A76D7C211BB1CBD50000FA6A /* BTFraudData.h in Headers */ = {isa = PBXBuildFile; fileRef = A76D7C1F1BB1CBD50000FA6A /* BTFraudData.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A76D7C231BB1CBDC0000FA6A /* BTFraudData.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C221BB1CBDC0000FA6A /* BTFraudData.m */; settings = {ASSET_TAGS = (); }; };
+		A76D7C151BB1CAB00000FA6A /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
+		A76D7C161BB1CAB00000FA6A /* BraintreeDataCollector.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A76D7C201BB1CBD50000FA6A /* BraintreeDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = A76D7C1E1BB1CBD50000FA6A /* BraintreeDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A76D7C211BB1CBD50000FA6A /* BTDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = A76D7C1F1BB1CBD50000FA6A /* BTDataCollector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A76D7C231BB1CBDC0000FA6A /* BTDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */; settings = {ASSET_TAGS = (); }; };
 		A76D7C2A1BB1D31A0000FA6A /* libDeviceCollectorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C271BB1D31A0000FA6A /* libDeviceCollectorLibrary.a */; settings = {ASSET_TAGS = (); }; };
-		A76D7C2F1BB217EE0000FA6A /* BraintreeDemoBTFraudDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DD1B79708900452CFA /* BraintreeDemoBTFraudDataViewController.m */; settings = {ASSET_TAGS = (); }; };
-		A76D7C301BB217EE0000FA6A /* BraintreeDemoBTFraudDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DD1B79708900452CFA /* BraintreeDemoBTFraudDataViewController.m */; settings = {ASSET_TAGS = (); }; };
+		A76D7C2F1BB217EE0000FA6A /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DD1B79708900452CFA /* BraintreeDemoBTDataCollectorViewController.m */; settings = {ASSET_TAGS = (); }; };
+		A76D7C301BB217EE0000FA6A /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DD1B79708900452CFA /* BraintreeDemoBTDataCollectorViewController.m */; settings = {ASSET_TAGS = (); }; };
 		A76D7C311BB2192D0000FA6A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD261B431453008857E1 /* CoreLocation.framework */; };
 		A76D7C321BB219340000FA6A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD261B431453008857E1 /* CoreLocation.framework */; };
-		A76D7C341BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C331BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m */; settings = {ASSET_TAGS = (); }; };
-		A76D7C391BB318CF0000FA6A /* BraintreeFraud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeFraud.framework */; };
-		A76D7C3A1BB31A2B0000FA6A /* BTFraudData.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C221BB1CBDC0000FA6A /* BTFraudData.m */; settings = {ASSET_TAGS = (); }; };
+		A76D7C341BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C331BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m */; settings = {ASSET_TAGS = (); }; };
+		A76D7C391BB318CF0000FA6A /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
+		A76D7C3A1BB31A2B0000FA6A /* BTDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */; settings = {ASSET_TAGS = (); }; };
 		A76D7C3B1BB31A4B0000FA6A /* libDeviceCollectorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C271BB1D31A0000FA6A /* libDeviceCollectorLibrary.a */; settings = {ASSET_TAGS = (); }; };
 		A76D7C3D1BB31ABB0000FA6A /* DeviceCollectorSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = A76D7C3C1BB31ABB0000FA6A /* DeviceCollectorSDK.h */; settings = {ASSET_TAGS = (); }; };
 		A77344FA1B7A93A10083EC8D /* BraintreeUI.h in Headers */ = {isa = PBXBuildFile; fileRef = A77344F91B7A93A10083EC8D /* BraintreeUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -691,14 +691,14 @@
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
-			remoteInfo = BraintreeFraud;
+			remoteInfo = BraintreeDataCollector;
 		};
 		A76D7C351BB318BF0000FA6A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
-			remoteInfo = BraintreeFraud;
+			remoteInfo = BraintreeDataCollector;
 		};
 		A77344FC1B7A93A10083EC8D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -797,7 +797,7 @@
 			files = (
 				41BEFDD41B94F0F100E560E7 /* BraintreeCard.framework in Embed Frameworks */,
 				A7A9C6CD1B83B88800F5EBBA /* BraintreeCore.framework in Embed Frameworks */,
-				A76D7C161BB1CAB00000FA6A /* BraintreeFraud.framework in Embed Frameworks */,
+				A76D7C161BB1CAB00000FA6A /* BraintreeDataCollector.framework in Embed Frameworks */,
 				A77344FF1B7A93A10083EC8D /* BraintreeUI.framework in Embed Frameworks */,
 				A7A9C6C61B83AFE500F5EBBA /* BraintreePayPal.framework in Embed Frameworks */,
 				A73088381B8694D6009487BA /* Braintree3DSecure.framework in Embed Frameworks */,
@@ -946,8 +946,8 @@
 		A76B19D71B79708900452CFA /* BraintreeDemoThreeDSecureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BraintreeDemoThreeDSecureViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A76B19D91B79708900452CFA /* BraintreeDemoDropInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoDropInViewController.h; sourceTree = "<group>"; };
 		A76B19DA1B79708900452CFA /* BraintreeDemoDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BraintreeDemoDropInViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		A76B19DC1B79708900452CFA /* BraintreeDemoBTFraudDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTFraudDataViewController.h; sourceTree = "<group>"; };
-		A76B19DD1B79708900452CFA /* BraintreeDemoBTFraudDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTFraudDataViewController.m; sourceTree = "<group>"; };
+		A76B19DC1B79708900452CFA /* BraintreeDemoBTDataCollectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTDataCollectorViewController.h; sourceTree = "<group>"; };
+		A76B19DD1B79708900452CFA /* BraintreeDemoBTDataCollectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTDataCollectorViewController.m; sourceTree = "<group>"; };
 		A76B19DF1B79708900452CFA /* BraintreeDemoBTUIPayPalButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTUIPayPalButtonViewController.h; sourceTree = "<group>"; };
 		A76B19E01B79708900452CFA /* BraintreeDemoBTUIPayPalButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTUIPayPalButtonViewController.m; sourceTree = "<group>"; };
 		A76B19E21B79708900452CFA /* BraintreeDemoPayPalCheckoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalCheckoutViewController.h; sourceTree = "<group>"; };
@@ -979,14 +979,14 @@
 		A76B1A071B79708A00452CFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A76B1A091B79708A00452CFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		A76B1A0A1B79708A00452CFA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A76D7C001BB1CAB00000FA6A /* BraintreeFraud.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeFraud.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A76D7C041BB1CAB00000FA6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A76D7C1E1BB1CBD50000FA6A /* BraintreeFraud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeFraud.h; sourceTree = "<group>"; };
-		A76D7C1F1BB1CBD50000FA6A /* BTFraudData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTFraudData.h; sourceTree = "<group>"; };
-		A76D7C221BB1CBDC0000FA6A /* BTFraudData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFraudData.m; sourceTree = "<group>"; };
+		A76D7C1E1BB1CBD50000FA6A /* BraintreeDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDataCollector.h; sourceTree = "<group>"; };
+		A76D7C1F1BB1CBD50000FA6A /* BTDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDataCollector.h; sourceTree = "<group>"; };
+		A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDataCollector.m; sourceTree = "<group>"; };
 		A76D7C271BB1D31A0000FA6A /* libDeviceCollectorLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libDeviceCollectorLibrary.a; sourceTree = "<group>"; };
 		A76D7C2C1BB1D35A0000FA6A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		A76D7C331BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeFraud_IntegrationTests.m; sourceTree = "<group>"; };
+		A76D7C331BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDataCollector_IntegrationTests.m; sourceTree = "<group>"; };
 		A76D7C3C1BB31ABB0000FA6A /* DeviceCollectorSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceCollectorSDK.h; sourceTree = "<group>"; };
 		A77344F71B7A93A10083EC8D /* BraintreeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77344F91B7A93A10083EC8D /* BraintreeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeUI.h; sourceTree = "<group>"; };
@@ -1410,7 +1410,7 @@
 				A77344FE1B7A93A10083EC8D /* BraintreeUI.framework in Frameworks */,
 				41BEFDD31B94F0F100E560E7 /* BraintreeCard.framework in Frameworks */,
 				5D55CFDE07D476267F5BACD2 /* libPods-Braintree-Demo.a in Frameworks */,
-				A76D7C151BB1CAB00000FA6A /* BraintreeFraud.framework in Frameworks */,
+				A76D7C151BB1CAB00000FA6A /* BraintreeDataCollector.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1443,7 +1443,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A76D7C391BB318CF0000FA6A /* BraintreeFraud.framework in Frameworks */,
+				A76D7C391BB318CF0000FA6A /* BraintreeDataCollector.framework in Frameworks */,
 				411D1C071BB0B56E000E7D8C /* Braintree3DSecure.framework in Frameworks */,
 				411D1C081BB0B56E000E7D8C /* BraintreeApplePay.framework in Frameworks */,
 				411D1C091BB0B56E000E7D8C /* BraintreeCard.framework in Frameworks */,
@@ -1740,7 +1740,7 @@
 				A7C889751B5EF5DE007A0E9C /* BraintreeApplePay */,
 				A7C889911B5F043B007A0E9C /* BraintreeCard */,
 				2DE12F0A1B59BE0100EA1BCF /* BraintreeCore */,
-				A76D7C011BB1CAB00000FA6A /* BraintreeFraud */,
+				A76D7C011BB1CAB00000FA6A /* BraintreeDataCollector */,
 				2D941D391B59C76A0016EFB4 /* BraintreePayPal */,
 				A77344F81B7A93A10083EC8D /* BraintreeUI */,
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
@@ -1766,7 +1766,7 @@
 				417404491BB084D3008A5DEA /* libBraintree.a */,
 				417405431BB086FC008A5DEA /* UnitTests-StaticLibrary.xctest */,
 				417405961BB0875E008A5DEA /* Braintree-StaticLibraryDemo.app */,
-				A76D7C001BB1CAB00000FA6A /* BraintreeFraud.framework */,
+				A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1882,7 +1882,7 @@
 				A76B19D11B79708900452CFA /* Credit Card Tokenization */,
 				A76B19D51B79708900452CFA /* Credit Cards - 3D Secure */,
 				A76B19D81B79708900452CFA /* Drop In */,
-				A76B19DB1B79708900452CFA /* Fraud Protection - BTFraudData */,
+				A76B19DB1B79708900452CFA /* Fraud Protection - BTDataCollector */,
 				A7334F221BA38AF50083C411 /* PayPal - Billing Agreement */,
 				A76B19DE1B79708900452CFA /* PayPal - BTUIPayPalButton */,
 				A76B19E11B79708900452CFA /* PayPal - Checkout */,
@@ -1968,13 +1968,14 @@
 			path = "Drop In";
 			sourceTree = "<group>";
 		};
-		A76B19DB1B79708900452CFA /* Fraud Protection - BTFraudData */ = {
+		A76B19DB1B79708900452CFA /* Fraud Protection - BTDataCollector */ = {
 			isa = PBXGroup;
 			children = (
-				A76B19DC1B79708900452CFA /* BraintreeDemoBTFraudDataViewController.h */,
-				A76B19DD1B79708900452CFA /* BraintreeDemoBTFraudDataViewController.m */,
+				A76B19DC1B79708900452CFA /* BraintreeDemoBTDataCollectorViewController.h */,
+				A76B19DD1B79708900452CFA /* BraintreeDemoBTDataCollectorViewController.m */,
 			);
-			path = "Fraud Protection - BTFraudData";
+			name = "Fraud Protection - BTDataCollector";
+			path = "Fraud Protection - BTDataCollector";
 			sourceTree = "<group>";
 		};
 		A76B19DE1B79708900452CFA /* PayPal - BTUIPayPalButton */ = {
@@ -2069,23 +2070,23 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A76D7C011BB1CAB00000FA6A /* BraintreeFraud */ = {
+		A76D7C011BB1CAB00000FA6A /* BraintreeDataCollector */ = {
 			isa = PBXGroup;
 			children = (
-				A76D7C221BB1CBDC0000FA6A /* BTFraudData.m */,
+				A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */,
 				A76D7C041BB1CAB00000FA6A /* Info.plist */,
 				A76D7C251BB1D31A0000FA6A /* Kount */,
 				A76D7C1D1BB1CBBF0000FA6A /* Public */,
 				A76D7C2C1BB1D35A0000FA6A /* README.md */,
 			);
-			path = BraintreeFraud;
+			path = BraintreeDataCollector;
 			sourceTree = "<group>";
 		};
 		A76D7C1D1BB1CBBF0000FA6A /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				A76D7C1E1BB1CBD50000FA6A /* BraintreeFraud.h */,
-				A76D7C1F1BB1CBD50000FA6A /* BTFraudData.h */,
+				A76D7C1E1BB1CBD50000FA6A /* BraintreeDataCollector.h */,
+				A76D7C1F1BB1CBD50000FA6A /* BTDataCollector.h */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -2340,7 +2341,7 @@
 				A7ABD65D1B702FF000A1223C /* Braintree-API-Integration-Specs */,
 				A71559471B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m */,
 				A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */,
-				A76D7C331BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m */,
+				A76D7C331BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m */,
 				A7CB42D21B73E629002CCFDD /* BraintreePayPal_IntegrationTests.m */,
 				A71559491B72BD40007DE6F0 /* BraintreeVenmo_IntegrationTests.m */,
 				A715593F1B729297007DE6F0 /* Helpers */,
@@ -2540,9 +2541,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A76D7C201BB1CBD50000FA6A /* BraintreeFraud.h in Headers */,
+				A76D7C201BB1CBD50000FA6A /* BraintreeDataCollector.h in Headers */,
 				A76D7C3D1BB31ABB0000FA6A /* DeviceCollectorSDK.h in Headers */,
-				A76D7C211BB1CBD50000FA6A /* BTFraudData.h in Headers */,
+				A76D7C211BB1CBD50000FA6A /* BTDataCollector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2825,9 +2826,9 @@
 			productReference = A76B198B1B79707700452CFA /* Braintree-Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A76D7BFF1BB1CAB00000FA6A /* BraintreeFraud */ = {
+		A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A76D7C1B1BB1CAB00000FA6A /* Build configuration list for PBXNativeTarget "BraintreeFraud" */;
+			buildConfigurationList = A76D7C1B1BB1CAB00000FA6A /* Build configuration list for PBXNativeTarget "BraintreeDataCollector" */;
 			buildPhases = (
 				A76D7BFB1BB1CAB00000FA6A /* Sources */,
 				A76D7BFC1BB1CAB00000FA6A /* Frameworks */,
@@ -2838,9 +2839,9 @@
 			);
 			dependencies = (
 			);
-			name = BraintreeFraud;
-			productName = BraintreeFraud;
-			productReference = A76D7C001BB1CAB00000FA6A /* BraintreeFraud.framework */;
+			name = BraintreeDataCollector;
+			productName = BraintreeDataCollector;
+			productReference = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		A77344F61B7A93A10083EC8D /* BraintreeUI */ = {
@@ -3061,7 +3062,7 @@
 				A7C889731B5EF5DE007A0E9C /* BraintreeApplePay */,
 				A7C8898F1B5F043B007A0E9C /* BraintreeCard */,
 				2DE12F081B59BE0100EA1BCF /* BraintreeCore */,
-				A76D7BFF1BB1CAB00000FA6A /* BraintreeFraud */,
+				A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */,
 				2D941D371B59C76A0016EFB4 /* BraintreePayPal */,
 				A77AA29B1B618C7700217B73 /* BraintreeVenmo */,
 				A77344F61B7A93A10083EC8D /* BraintreeUI */,
@@ -3492,7 +3493,7 @@
 				417405061BB0869C008A5DEA /* BTUIScrollView.m in Sources */,
 				417405081BB0869C008A5DEA /* BTUITextField.m in Sources */,
 				4174050A1BB0869C008A5DEA /* BTUIThemedView.m in Sources */,
-				A76D7C3A1BB31A2B0000FA6A /* BTFraudData.m in Sources */,
+				A76D7C3A1BB31A2B0000FA6A /* BTDataCollector.m in Sources */,
 				4174050C1BB0869C008A5DEA /* BTUIVectorArtView.m in Sources */,
 				4174050E1BB0869C008A5DEA /* BTUICardCvvField.m in Sources */,
 				417405101BB0869C008A5DEA /* BTUICardExpiryField.m in Sources */,
@@ -3627,7 +3628,7 @@
 				4174056E1BB0875E008A5DEA /* BraintreeDemoPayPalScopesViewController.m in Sources */,
 				4174056F1BB0875E008A5DEA /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				417405701BB0875E008A5DEA /* BraintreeDemoBaseViewController.m in Sources */,
-				A76D7C301BB217EE0000FA6A /* BraintreeDemoBTFraudDataViewController.m in Sources */,
+				A76D7C301BB217EE0000FA6A /* BraintreeDemoBTDataCollectorViewController.m in Sources */,
 				417405711BB0875E008A5DEA /* BraintreeDemoDropInViewController.m in Sources */,
 				417405721BB0875E008A5DEA /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */,
 				417405731BB0875E008A5DEA /* BraintreeDemoBTPaymentButtonViewController.m in Sources */,
@@ -3657,7 +3658,7 @@
 				A7A094FC1B82983300D732CC /* BraintreeDemoPayPalScopesViewController.m in Sources */,
 				A7A094FA1B82919300D732CC /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
 				A76B1A0C1B79708A00452CFA /* BraintreeDemoBaseViewController.m in Sources */,
-				A76D7C2F1BB217EE0000FA6A /* BraintreeDemoBTFraudDataViewController.m in Sources */,
+				A76D7C2F1BB217EE0000FA6A /* BraintreeDemoBTDataCollectorViewController.m in Sources */,
 				A7A094F71B8283DF00D732CC /* BraintreeDemoDropInViewController.m in Sources */,
 				A7334F251BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */,
 				A7D674681B83E5A100ED6C00 /* BraintreeDemoBTPaymentButtonViewController.m in Sources */,
@@ -3668,7 +3669,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A76D7C231BB1CBDC0000FA6A /* BTFraudData.m in Sources */,
+				A76D7C231BB1CBDC0000FA6A /* BTDataCollector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3760,7 +3761,7 @@
 				A7ABD6791B702FF000A1223C /* BTAPIClient_IntegrationTests.m in Sources */,
 				A71559481B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m in Sources */,
 				A7ABD67C1B702FF000A1223C /* BTHTTPSSLPinning_IntegrationTests.m in Sources */,
-				A76D7C341BB21CE90000FA6A /* BraintreeFraud_IntegrationTests.m in Sources */,
+				A76D7C341BB21CE90000FA6A /* BraintreeDataCollector_IntegrationTests.m in Sources */,
 				A7ABD67D1B702FF000A1223C /* BTTestClientTokenIntegrationSpec.m in Sources */,
 				A75319E71B71466900E27B89 /* BTDropInViewController_IntegrationTests.m in Sources */,
 				A7ABD67A1B702FF000A1223C /* BTClientCoinbaseIntegrationSpec.m in Sources */,
@@ -3874,12 +3875,12 @@
 		};
 		A76D7C141BB1CAB00000FA6A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeFraud */;
+			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
 			targetProxy = A76D7C131BB1CAB00000FA6A /* PBXContainerItemProxy */;
 		};
 		A76D7C361BB318BF0000FA6A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeFraud */;
+			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
 			targetProxy = A76D7C351BB318BF0000FA6A /* PBXContainerItemProxy */;
 		};
 		A77344FD1B7A93A10083EC8D /* PBXTargetDependency */ = {
@@ -4511,7 +4512,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BraintreePayPal/PayPalOneTouchCore",
-					"$(PROJECT_DIR)/BraintreeFraud/Kount",
+					"$(PROJECT_DIR)/BraintreeDataCollector/Kount",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "-ObjC";
@@ -4554,7 +4555,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BraintreePayPal/PayPalOneTouchCore",
-					"$(PROJECT_DIR)/BraintreeFraud/Kount",
+					"$(PROJECT_DIR)/BraintreeDataCollector/Kount",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "-ObjC";
@@ -4928,16 +4929,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeFraud/Info.plist;
+				INFOPLIST_FILE = BraintreeDataCollector/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/BraintreeFraud/Kount",
+					"$(PROJECT_DIR)/BraintreeDataCollector/Kount",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeFraud;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4981,16 +4982,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeFraud/Info.plist;
+				INFOPLIST_FILE = BraintreeDataCollector/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/BraintreeFraud/Kount",
+					"$(PROJECT_DIR)/BraintreeDataCollector/Kount",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeFraud;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreeDataCollector;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5589,7 +5590,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A76D7C1B1BB1CAB00000FA6A /* Build configuration list for PBXNativeTarget "BraintreeFraud" */ = {
+		A76D7C1B1BB1CAB00000FA6A /* Build configuration list for PBXNativeTarget "BraintreeDataCollector" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A76D7C171BB1CAB00000FA6A /* Debug */,

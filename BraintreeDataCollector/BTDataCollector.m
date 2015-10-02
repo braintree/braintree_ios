@@ -1,23 +1,23 @@
-#import "BTFraudData.h"
+#import "BTDataCollector.h"
 #import "DeviceCollectorSDK.h"
 
-@interface BTFraudData () <DeviceCollectorSDKDelegate>
+@interface BTDataCollector () <DeviceCollectorSDKDelegate>
 @property (nonatomic, strong) DeviceCollectorSDK *kount;
-@property (nonatomic, assign) BTFraudDataEnvironment environment;
+@property (nonatomic, assign) BTDataCollectorEnvironment environment;
 /// The JSON serialized string that contains the merchant ID, session ID, and the PayPal fraud ID (if PayPal is available)
 @property (nonatomic, copy) NSString *deviceData;
 @property (nonatomic, copy) void (^completionBlock)(NSString *, NSError *);
 @end
 
-@implementation BTFraudData
+@implementation BTDataCollector
 
-static NSString *BTFraudDataSharedMerchantId = @"600000";
+static NSString *BTDataCollectorSharedMerchantId = @"600000";
 
 
 #pragma mark - Initialization and setup
 
 
-- (instancetype)initWithEnvironment:(BTFraudDataEnvironment)environment {
+- (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment {
     if (self = [super init]) {
         [self setUpKountWithDebugOn:NO];
         _environment = environment;
@@ -58,7 +58,7 @@ static NSString *BTFraudDataSharedMerchantId = @"600000";
 
 - (void)collectCardFraudData:(nullable void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock
 {
-    [self collectCardFraudDataWithMerchantID:BTFraudDataSharedMerchantId
+    [self collectCardFraudDataWithMerchantID:BTDataCollectorSharedMerchantId
                                 collectorURL:[self defaultCollectorURL]
                                   completion:completionBlock];
 }
@@ -70,7 +70,7 @@ static NSString *BTFraudDataSharedMerchantId = @"600000";
     if (self.completionBlock != nil) {
         NSLog(@"Fraud data is already being collected");
         if (completionBlock) {
-            NSError *error = [NSError errorWithDomain:@"com.braintreepayments.BTFraudDataError"
+            NSError *error = [NSError errorWithDomain:@"com.braintreepayments.BTDataCollectorError"
                                                  code:0
                                              userInfo:@{ NSLocalizedDescriptionKey : @"Fraud data is already being collected" }];
             completionBlock(nil, error);
@@ -99,7 +99,7 @@ static NSString *BTFraudDataSharedMerchantId = @"600000";
 
 - (void)collectFraudData:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock
 {
-    [self collectFraudDataWithMerchantID:BTFraudDataSharedMerchantId
+    [self collectFraudDataWithMerchantID:BTDataCollectorSharedMerchantId
                             collectorURL:[self defaultCollectorURL]
                               completion:completionBlock];
 }
@@ -111,7 +111,7 @@ static NSString *BTFraudDataSharedMerchantId = @"600000";
     if (self.completionBlock != nil) {
         NSLog(@"Fraud data is already being collected");
         if (completionBlock) {
-            NSError *error = [NSError errorWithDomain:@"com.braintreepayments.BTFraudDataError"
+            NSError *error = [NSError errorWithDomain:@"com.braintreepayments.BTDataCollectorError"
                                                  code:0
                                              userInfo:@{ NSLocalizedDescriptionKey : @"Fraud data is already being collected" }];
             completionBlock(nil, error);
@@ -125,7 +125,7 @@ static NSString *BTFraudDataSharedMerchantId = @"600000";
     NSMutableDictionary *dataDictionary = [NSMutableDictionary dictionaryWithDictionary:@{ @"device_session_id": deviceSessionId,
                                                                                            @"fraud_merchant_id": merchantID
                                                                                            }];
-    NSString *payPalFraudID = [BTFraudData payPalFraudID];
+    NSString *payPalFraudID = [BTDataCollector payPalFraudID];
     if (payPalFraudID) {
         dataDictionary[@"correlation_id"] = payPalFraudID;
     }
@@ -155,15 +155,15 @@ static NSString *BTFraudDataSharedMerchantId = @"600000";
 - (NSString *)defaultCollectorURL {
     NSString *defaultCollectorURL;
     switch (self.environment) {
-        case BTFraudDataEnvironmentDevelopment:
+        case BTDataCollectorEnvironmentDevelopment:
             break;
-        case BTFraudDataEnvironmentQA:
+        case BTDataCollectorEnvironmentQA:
             defaultCollectorURL = @"https://assets.qa.braintreegateway.com/data/logo.htm";
             break;
-        case BTFraudDataEnvironmentSandbox:
+        case BTDataCollectorEnvironmentSandbox:
             defaultCollectorURL = @"https://assets.braintreegateway.com/sandbox/data/logo.htm";
             break;
-        case BTFraudDataEnvironmentProduction:
+        case BTDataCollectorEnvironmentProduction:
             defaultCollectorURL = @"https://assets.braintreegateway.com/data/logo.htm";
             break;
     }

@@ -42,10 +42,10 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
   end
 
-  s.subspec "Fraud" do |s|
-    s.source_files = "BraintreeFraud/**/*.{h,m}"
-    s.public_header_files = "BraintreeFraud/Public/*.h"
-    s.vendored_library = "BraintreeFraud/Kount/libDeviceCollectorLibrary.a"
+  s.subspec "DataCollector" do |s|
+    s.source_files = "BraintreeDataCollector/**/*.{h,m}"
+    s.public_header_files = "BraintreeDataCollector/Public/*.h"
+    s.vendored_library = "BraintreeDataCollector/Kount/libDeviceCollectorLibrary.a"
   end
 
   s.subspec "PayPal" do |s|
