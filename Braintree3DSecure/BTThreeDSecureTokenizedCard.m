@@ -1,5 +1,10 @@
 #import "BTThreeDSecureTokenizedCard.h"
+#if __has_include("BraintreeCard.h")
 #import "BTTokenizedCard_Internal.h"
+#else
+#import <BraintreeCard/BTTokenizedCard_Internal.h>
+#endif
+
 
 @interface BTThreeDSecureTokenizedCard ()
 
