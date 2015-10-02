@@ -3,11 +3,19 @@
 #import "PayPalOneTouchRequest.h"
 #import "PayPalOneTouchCore.h"
 
+#if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
 #import "BTTokenizedPayPalAccount_Internal.h"
 #import "BTTokenizedPayPalCheckout_Internal.h"
 #import "BTPostalAddress.h"
 #import "BTLogger_Internal.h"
+#else
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTTokenizedPayPalAccount_Internal.h>
+#import <BraintreeCore/BTTokenizedPayPalCheckout_Internal.h>
+#import <BraintreeCore/BTPostalAddress.h>
+#import <BraintreeCore/BTLogger_Internal.h>
+#endif
 #import <SafariServices/SafariServices.h>
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";

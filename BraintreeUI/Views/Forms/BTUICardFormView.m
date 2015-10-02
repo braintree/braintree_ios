@@ -268,6 +268,12 @@
     [self.delegate cardFormViewDidChange:self];
 }
 
+- (void)formFieldDidBeginEditing:(__unused BTUIFormField *)field {
+    if ([self.delegate respondsToSelector:@selector(cardFormViewDidBeginEditing:)]) {
+        [self.delegate cardFormViewDidBeginEditing:self];
+    }
+}
+
 - (void)formFieldDidDeleteWhileEmpty:(BTUIFormField *)formField {
     [self switchToPreviousField:formField];
 }

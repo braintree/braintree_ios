@@ -1,7 +1,10 @@
 #import <PassKit/PassKit.h>
+#if __has_include("BraintreeCore.h")
+#import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 
-#import "BTNullability.h"
-#import "BTAPIClient.h"
 #import "BTTokenizedApplePayPayment.h"
 
 BT_ASSUME_NONNULL_BEGIN

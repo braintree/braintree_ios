@@ -1,30 +1,29 @@
 #import <Foundation/Foundation.h>
-#import "BTNullability.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 /// The card tokenization request represents raw credit or debit card data provided by the customer.
 /// Its main purpose is to serve as the input for tokenization.
 @interface BTCard : NSObject
 
 /// A convenience initializer for creating a card tokenization request.
-- (instancetype)initWithNumber:(BT_NULLABLE NSString *)number
-               expirationMonth:(BT_NULLABLE NSString *)expirationMonth
-                expirationYear:(BT_NULLABLE NSString *)expirationYear
-                           cvv:(BT_NULLABLE NSString *)cvv;
+- (instancetype)initWithNumber:( NSString * _Nullable )number
+               expirationMonth:( NSString * _Nullable )expirationMonth
+                expirationYear:( NSString * _Nullable )expirationYear
+                           cvv:( NSString * _Nullable )cvv;
 
 - (instancetype)initWithParameters:(NSDictionary *)parameters NS_DESIGNATED_INITIALIZER;
 
 /// The card number
-@property (nonatomic, BT_NULLABLE, copy) NSString *number;
+@property (nonatomic, nullable, copy) NSString *number;
 /// The expiration month as a one or two-digit number on the Gregorian calendar
-@property (nonatomic, BT_NULLABLE, copy) NSString *expirationMonth;
+@property (nonatomic, nullable, copy) NSString *expirationMonth;
 /// The expiration year as a two or four-digit number on the Gregorian calendar
-@property (nonatomic, BT_NULLABLE, copy) NSString *expirationYear;
+@property (nonatomic, nullable, copy) NSString *expirationYear;
 /// The card CVV
-@property (nonatomic, BT_NULLABLE, copy) NSString *cvv;
+@property (nonatomic, nullable, copy) NSString *cvv;
 /// The postal code associated with the card's billing address
-@property (nonatomic, BT_NULLABLE, copy) NSString *postalCode;
+@property (nonatomic, nullable, copy) NSString *postalCode;
 
 /// Controls whether or not to return validations and/or verification results. By default, this is
 /// not enabled.
@@ -35,4 +34,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

@@ -1,8 +1,11 @@
 #import <Foundation/Foundation.h>
-#import "BTNullability.h"
+#if __has_include("BraintreeCore.h")
 #import "BTTokenized.h"
+#else
+#import <BraintreeCore/BTTokenized.h>
+#endif
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTTokenizedApplePayPayment : NSObject <BTTokenized>
 
@@ -11,4 +14,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

@@ -1,4 +1,8 @@
+#if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 #import "BTTokenizedPayPalAccount.h"
 #import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"

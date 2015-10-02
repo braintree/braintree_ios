@@ -1,5 +1,9 @@
 #import "BTTokenizedPayPalCheckout.h"
-#import "BTPostalAddress.h"
+#if __has_include("BraintreeCore.h")
+#import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 
 @interface BTTokenizedPayPalCheckout ()
 

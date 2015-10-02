@@ -6,8 +6,13 @@
 #import "BTHTTP.h"
 #import "BTJSON.h"
 #import "BTClientMetadata.h"
+#if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
 #import "BTCard_Internal.h"
+#else
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTCard_Internal.h>
+#endif
 
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
 
@@ -77,6 +82,8 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
                       } else {
                           completionBlock(nil, error);
                       }
+                      
+                      [self sendAnalyticsEventWithSuccess:NO];
 
                       return;
                   }
@@ -84,10 +91,23 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
                   BTJSON *creditCard = body[@"creditCards"][0];
                   if (creditCard.isError) {
                       completionBlock(nil, creditCard.asError);
+                      [self sendAnalyticsEventWithSuccess:NO];
                   } else {
                       completionBlock([BTTokenizedCard cardWithJSON:creditCard], nil);
+                      [self sendAnalyticsEventWithSuccess:YES];
                   }
               }];
+}
+
+#pragma mark - Analytics
+
+- (void)sendAnalyticsEventWithSuccess:(BOOL)success {
+    BOOL isDropIn = self.apiClient.metadata.source == BTClientMetadataIntegrationDropIn;
+    if (success) {
+        [self.apiClient sendAnalyticsEvent:(isDropIn ? @"ios.dropin.card.failed" : @"ios.custom.card.failed")];
+    } else {
+        [self.apiClient sendAnalyticsEvent:(isDropIn ? @"ios.dropin.card.succeeded" : @"ios.custom.card.succeeded")];
+    }
 }
 
 @end

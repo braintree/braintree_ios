@@ -1,4 +1,8 @@
+#if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 #import "BTVenmoTokenizedCard.h"
 #import <Foundation/Foundation.h>
 

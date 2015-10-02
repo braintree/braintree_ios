@@ -1,6 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "BTPostalAddress.h"
-#import "BTTokenized.h"
+#if __has_include("BraintreeCore.h")
+#import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 
 BT_ASSUME_NONNULL_BEGIN
 

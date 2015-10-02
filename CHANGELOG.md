@@ -1,9 +1,11 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.9.4 (2015-09-25)
 
+* :rotating_light: This version requires Xcode 7 and iOS SDK 9.0+
 * Update README.md and Braintree Demo app for iOS 9 and Xcode 7
 * Update PayPal mSDK to 2.12.1 with bitcode
+* Update Kount library with bitcode support
 * Update Apple Pay support for iOS 9. `BTApplePayPaymentMethod` changes:
   * Deprecate `ABRecordRef` properties: `billingAddress` and `shippingAddress`
   * Add `PKContact` properties: `billingContact` and `shippingContact`
