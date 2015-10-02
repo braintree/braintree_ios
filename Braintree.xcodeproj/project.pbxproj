@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		16CD2E9F1B4077FC00E68495 /* BTJSON_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */; };
-		2D941D2C1B59C3E80016EFB4 /* BTReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = A7A6DD4E1B445A29008857E1 /* BTReachability.h */; };
-		2D941D2D1B59C3E80016EFB4 /* BTReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD4F1B445A29008857E1 /* BTReachability.m */; };
 		2D941D3B1B59C76A0016EFB4 /* BraintreePayPal.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D941D3A1B59C76A0016EFB4 /* BraintreePayPal.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2D941D411B59C8E60016EFB4 /* BTPayPalCheckoutRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 16E17D261B3DFA0F0024F9AB /* BTPayPalCheckoutRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2D941D421B59C8E60016EFB4 /* BTPayPalCheckoutRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 16E17D271B3DFA0F0024F9AB /* BTPayPalCheckoutRequest.m */; };
@@ -138,7 +136,6 @@
 		4174048E1BB08629008A5DEA /* BTKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD4D1B445A29008857E1 /* BTKeychain.m */; };
 		417404901BB08629008A5DEA /* BTLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD151B4312DC008857E1 /* BTLogger.m */; };
 		417404911BB08629008A5DEA /* BTPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = A72E134C1B44630C002703DD /* BTPostalAddress.m */; };
-		417404931BB08629008A5DEA /* BTReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD4F1B445A29008857E1 /* BTReachability.m */; };
 		417404941BB08629008A5DEA /* BTTokenization.m in Sources */ = {isa = PBXBuildFile; fileRef = 41211EF61BA0E45300DB1705 /* BTTokenization.m */; };
 		417404951BB08629008A5DEA /* BTTokenizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = A773462F1B7BB1A70083EC8D /* BTTokenizationService.m */; };
 		417404961BB08629008A5DEA /* BTTokenizationParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 415924B01BA0F2A900C095F6 /* BTTokenizationParser.m */; };
@@ -1215,8 +1212,6 @@
 		A7A6DD4B1B445A29008857E1 /* BTAPIPinnedCertificates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAPIPinnedCertificates.m; sourceTree = "<group>"; };
 		A7A6DD4C1B445A29008857E1 /* BTKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTKeychain.h; sourceTree = "<group>"; };
 		A7A6DD4D1B445A29008857E1 /* BTKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTKeychain.m; sourceTree = "<group>"; };
-		A7A6DD4E1B445A29008857E1 /* BTReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTReachability.h; sourceTree = "<group>"; };
-		A7A6DD4F1B445A29008857E1 /* BTReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTReachability.m; sourceTree = "<group>"; };
 		A7A6DD501B445A29008857E1 /* BTURLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTURLUtils.h; sourceTree = "<group>"; };
 		A7A6DD511B445A29008857E1 /* BTURLUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTURLUtils.m; sourceTree = "<group>"; };
 		A7ABD6531B702FD800A1223C /* IntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1575,8 +1570,6 @@
 				A7A6DD131B4312DC008857E1 /* BTLogger_Internal.h */,
 				A7A6DD151B4312DC008857E1 /* BTLogger.m */,
 				A72E134C1B44630C002703DD /* BTPostalAddress.m */,
-				A7A6DD4E1B445A29008857E1 /* BTReachability.h */,
-				A7A6DD4F1B445A29008857E1 /* BTReachability.m */,
 				41211EF61BA0E45300DB1705 /* BTTokenization.m */,
 				A773462F1B7BB1A70083EC8D /* BTTokenizationService.m */,
 				415924B01BA0F2A900C095F6 /* BTTokenizationParser.m */,
@@ -2517,7 +2510,6 @@
 				2DE12F5A1B59C36900EA1BCF /* BTTokenized.h in Headers */,
 				2DE12F521B59C36900EA1BCF /* BTKeychain.h in Headers */,
 				415924B41BA0F2D800C095F6 /* BTTokenizationParser.h in Headers */,
-				2D941D2C1B59C3E80016EFB4 /* BTReachability.h in Headers */,
 				A7D6746B1B83F91400ED6C00 /* BTDelegates.h in Headers */,
 				2DE12F551B59C36900EA1BCF /* BTLogger.h in Headers */,
 				A7C889F91B5F0B6A007A0E9C /* Braintree-Version.h in Headers */,
@@ -3443,7 +3435,6 @@
 				2DE12F441B59C36900EA1BCF /* BTAnalyticsMetadata.m in Sources */,
 				415924B21BA0F2A900C095F6 /* BTTokenizationParser.m in Sources */,
 				2DE12F471B59C36900EA1BCF /* BTAPIClient.m in Sources */,
-				2D941D2D1B59C3E80016EFB4 /* BTReachability.m in Sources */,
 				A7D674741B84FDB400ED6C00 /* BTClientToken.m in Sources */,
 				41D6E3191B8E384600A3C2AE /* Braintree.m in Sources */,
 				2DE12F4B1B59C36900EA1BCF /* BTClientMetadata.m in Sources */,
@@ -3538,7 +3529,6 @@
 				4174048E1BB08629008A5DEA /* BTKeychain.m in Sources */,
 				417404901BB08629008A5DEA /* BTLogger.m in Sources */,
 				417404911BB08629008A5DEA /* BTPostalAddress.m in Sources */,
-				417404931BB08629008A5DEA /* BTReachability.m in Sources */,
 				417404941BB08629008A5DEA /* BTTokenization.m in Sources */,
 				417404951BB08629008A5DEA /* BTTokenizationService.m in Sources */,
 				417404961BB08629008A5DEA /* BTTokenizationParser.m in Sources */,
