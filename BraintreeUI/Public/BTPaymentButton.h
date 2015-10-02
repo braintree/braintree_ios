@@ -1,7 +1,7 @@
 #import "BTUIThemedView.h"
 #import <UIKit/UIKit.h>
 
-@protocol BTAppSwitchDelegate, BTTokenized;
+@protocol BTAppSwitchDelegate, BTTokenized, BTViewControllerPresentingDelegate;
 @class BTAPIClient;
 
 @interface BTPaymentButton : BTUIThemedView

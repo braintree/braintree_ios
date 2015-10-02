@@ -6,8 +6,13 @@
 #import "BTHTTP.h"
 #import "BTJSON.h"
 #import "BTClientMetadata.h"
+#if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
 #import "BTCard_Internal.h"
+#else
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTCard_Internal.h>
+#endif
 
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
 

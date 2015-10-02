@@ -1,4 +1,8 @@
+#if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 
 @class BTDropInViewController, BTPaymentButton;
 

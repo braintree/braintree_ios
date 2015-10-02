@@ -1,6 +1,11 @@
 #import <UIKit/UIKit.h>
-#import <BraintreeCore/BraintreeCore.h>
+#if __has_include("BraintreeCore.h")
+#import "BraintreeCard.h"
+#import "BraintreeCore.h"
+#else
 #import <BraintreeCard/BraintreeCard.h>
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 #import "BTThreeDSecureTokenizedCard.h"
 
 BT_ASSUME_NONNULL_BEGIN

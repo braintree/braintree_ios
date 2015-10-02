@@ -4,9 +4,14 @@ FOUNDATION_EXPORT double BraintreeVenmoVersionNumber;
 
 FOUNDATION_EXPORT const unsigned char BraintreeVenmoVersionString[];
 
-#import "Braintree+Venmo.h"
+#if __has_include("BraintreeCore.h")
 #import "BraintreeCard.h"
 #import "BraintreeCore.h"
+#else
+#import <BraintreeCard/BraintreeCard.h>
+#import <BraintreeCore/BraintreeCore.h>
+#endif
+#import "Braintree+Venmo.h"
 #import "BTConfiguration+Venmo.h"
 #import "BTVenmoDriver.h"
 #import "BTVenmoTokenizedCard.h"

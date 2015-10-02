@@ -1,10 +1,16 @@
+#if __has_include("BraintreeCore.h")
+#import "BTAPIClient_Internal.h"
+#import "BTTokenizedCard_Internal.h"
+#else
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import "BTHTTP.h"
+#import <BraintreeCore/BTTokenizedCard_Internal.h>
+#endif
+
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTThreeDSecureDriver.h"
 #import "BTThreeDSecureLookupResult.h"
 #import "BTThreeDSecureTokenizedCard.h"
-#import "BTTokenizedCard_Internal.h"
+
 
 @interface BTThreeDSecureDriver () <BTThreeDSecureAuthenticationViewControllerDelegate>
 
