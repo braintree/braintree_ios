@@ -40,25 +40,11 @@ However, if your integration uses `BTData` for fraud detection, it does not curr
 
 ### App Transport Security
 
-iOS 9 introduces new security requirements and restrictions that can impact the behavior of the Braintree SDK. If your app is compiled with iOS 9 SDK, it must comply with Apple's [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) policy.
+iOS 9 introduces new security requirements and restrictions. If your app is compiled with iOS 9 SDK, it must comply with Apple's [App Transport Security](https://developer.apple.com/library/prerelease/ios/technotes/App-Transport-Security-Technote/) policy.
 
-Please whitelist the Braintree Gateway domain by adding the following to your application's plist:
+The Braintree Gateway domain complies with this policy.
 
-```
-  <key>NSAppTransportSecurity</key>
-  <dict>
-    <key>NSExceptionDomains</key>
-    <dict>
-      <key>api.braintreegateway.com</key>
-      <dict>
-          <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-          <false/>
-      </dict>
-    </dict>
-  </dict>
-```
-
-If your app uses `BTData`, also include the following under `NSExceptionDomains`:
+If your app uses `BTData` (Kount), include the following under `NSExceptionDomains`:
 
 ```
   <key>kaptcha.com</key>
@@ -72,7 +58,7 @@ If your app uses `BTData`, also include the following under `NSExceptionDomains`
   </dict>
 ```
 
-We are actively working to update the SSL certificates of these servers so that your app will not require these exceptions in the near future.
+In the future, the SSL certificate will be updated so that your app will not require this exception.
 
 ### URL Query Scheme Whitelist
 
