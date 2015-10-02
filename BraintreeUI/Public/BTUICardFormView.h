@@ -84,4 +84,9 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 /// The card form data has updated.
 - (void)cardFormViewDidChange:(BTUICardFormView *)cardFormView;
 
+@optional
+
+- (void)cardFormViewDidBeginEditing:(BTUICardFormView *)cardFormView;
+
+
 @end
