@@ -64,8 +64,8 @@ SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   CardIO: 2c3a8ef9b9add4bd664c83bb653b83b2f32d9d7f
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
-  FLEX: 4f04fe0b0594163c00879e2b3db888e5ae37c8d5
-  HockeySDK: a0b915dc081f1ba67782a347220a8623dbe93b8a
+  FLEX: 3c390976e788d3d447b614ea1714ffc8fc914cf3
+  HockeySDK: 9f4ac41263acf9d8a4d59491a7f17af16529b935
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
