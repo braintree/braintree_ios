@@ -1,21 +1,21 @@
-#import "BraintreeDemoBTFraudDataViewController.h"
-#import "BTFraudData.h"
+#import "BraintreeDemoBTDataCollectorViewController.h"
+#import "BTDataCollector.h"
 #import <CoreLocation/CLLocationManager.h>
 #import <PureLayout/PureLayout.h>
 
-@interface BraintreeDemoBTFraudDataViewController ()
-/// Retain BTFraudData for entire lifecycle of view controller
-@property (nonatomic, strong) BTFraudData *data;
+@interface BraintreeDemoBTDataCollectorViewController ()
+/// Retain BTDataCollector for entire lifecycle of view controller
+@property (nonatomic, strong) BTDataCollector *data;
 @property (nonatomic, strong) UILabel *dataLabel;
 @end
 
-@implementation BraintreeDemoBTFraudDataViewController
+@implementation BraintreeDemoBTDataCollectorViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.title = @"BTFraudData Protection";
+    self.title = @"BTDataCollector Protection";
 
     UIButton *collectButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [collectButton setTitle:@"Collect All Data" forState:UIControlStateNormal];
@@ -56,7 +56,7 @@
     [self.dataLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
     [self.dataLabel autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
     
-    self.data = [[BTFraudData alloc] initWithEnvironment:BTFraudDataEnvironmentSandbox];
+    self.data = [[BTDataCollector alloc] initWithEnvironment:BTDataCollectorEnvironmentSandbox];
 }
 
 - (IBAction)tappedCollect
@@ -94,7 +94,7 @@
 }
 
 - (IBAction)tappedCollectDyson {
-    self.dataLabel.text = [BTFraudData payPalFraudID];
+    self.dataLabel.text = [BTDataCollector payPalFraudID];
     self.progressBlock(@"Collected data!");
 }
 

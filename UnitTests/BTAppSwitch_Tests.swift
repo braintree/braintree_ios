@@ -17,32 +17,32 @@ class BTAppSwitch_Tests: XCTestCase {
         super.tearDown()
     }
 
-    func testHandleReturnURL_whenHandlerIsRegistered_invokesCanHandleAppSwitchReturnURL() {
+    func testHandleOpenURL_whenHandlerIsRegistered_invokesCanHandleAppSwitchReturnURL() {
         appSwitch.registerAppSwitchHandler(MockAppSwitchHander.self)
         let expectedURL = NSURL(string: "fake://url")!
         let expectedSourceApplication = "fakeSourceApplication"
 
-        BTAppSwitch.handleReturnURL(expectedURL, sourceApplication: expectedSourceApplication)
+        BTAppSwitch.handleOpenURL(expectedURL, sourceApplication: expectedSourceApplication)
 
         XCTAssertEqual(MockAppSwitchHander.lastCanHandleURL!, expectedURL)
         XCTAssertEqual(MockAppSwitchHander.lastCanHandleSourceApplication!, expectedSourceApplication)
     }
 
-    func testHandleReturnURL_whenHandlerCanHandleReturnURL_invokesHandleAppSwitchReturnURL() {
+    func testHandleOpenURL_whenHandlerCanHandleOpenURL_invokesHandleAppSwitchReturnURL() {
         appSwitch.registerAppSwitchHandler(MockAppSwitchHander.self)
         MockAppSwitchHander.cannedCanHandle = true
         let expectedURL = NSURL(string: "fake://url")!
 
-        BTAppSwitch.handleReturnURL(expectedURL, sourceApplication: "not important")
+        BTAppSwitch.handleOpenURL(expectedURL, sourceApplication: "not important")
 
         XCTAssertEqual(MockAppSwitchHander.lastHandleAppSwitchReturnURL!, expectedURL)
     }
 
-    func testHandleReturnURL_whenHandlerCantHandleReturnURL_doesNotInvokeHandleAppSwitchReturnURL() {
+    func testHandleOpenURL_whenHandlerCantHandleOpenURL_doesNotInvokeHandleAppSwitchReturnURL() {
         appSwitch.registerAppSwitchHandler(MockAppSwitchHander.self)
         MockAppSwitchHander.cannedCanHandle = false
 
-        BTAppSwitch.handleReturnURL(NSURL(string: "fake://url")!, sourceApplication: "not important")
+        BTAppSwitch.handleOpenURL(NSURL(string: "fake://url")!, sourceApplication: "not important")
 
         XCTAssertNil(MockAppSwitchHander.lastHandleAppSwitchReturnURL)
     }

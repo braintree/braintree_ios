@@ -57,7 +57,7 @@ iOS 9 introduces new security requirements and restrictions. If your app is comp
 
 The Braintree Gateway domain complies with this policy.
 
-If your app uses `BraintreeDataCollector` (Kount), include the following under `NSExceptionDomains`:
+If your app uses BraintreeDataCollector, also include the following under `NSExceptionDomains`:
 
 ```
   <key>kaptcha.com</key>

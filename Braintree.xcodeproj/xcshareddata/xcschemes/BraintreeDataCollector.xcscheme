@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A76B198A1B79707700452CFA"
-               BuildableName = "Braintree-Demo.app"
-               BlueprintName = "Braintree-Demo"
+               BlueprintIdentifier = "A76D7BFF1BB1CAB00000FA6A"
+               BuildableName = "BraintreeDataCollector.framework"
+               BlueprintName = "BraintreeDataCollector"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,36 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "417405421BB086FC008A5DEA"
-               BuildableName = "UnitTests-StaticLibrary.xctest"
-               BlueprintName = "UnitTests-StaticLibrary"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A76D7C081BB1CAB00000FA6A"
-               BuildableName = "BraintreeDataCollectorTests.xctest"
-               BlueprintName = "BraintreeDataCollectorTests"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A76B198A1B79707700452CFA"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
-            ReferencedContainer = "container:Braintree.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -71,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A76B198A1B79707700452CFA"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
+            BlueprintIdentifier = "A76D7BFF1BB1CAB00000FA6A"
+            BuildableName = "BraintreeDataCollector.framework"
+            BlueprintName = "BraintreeDataCollector"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -90,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A76B198A1B79707700452CFA"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
+            BlueprintIdentifier = "A76D7BFF1BB1CAB00000FA6A"
+            BuildableName = "BraintreeDataCollector.framework"
+            BlueprintName = "BraintreeDataCollector"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

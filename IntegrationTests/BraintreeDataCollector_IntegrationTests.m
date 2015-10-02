@@ -1,16 +1,16 @@
-#import "BraintreeFraud.h"
+#import "BraintreeDataCollector.h"
 #import <XCTest/XCTest.h>
 
-@interface BraintreeFraud_IntegrationTests : XCTestCase
-@property (nonatomic, strong) BTFraudData *data;
+@interface BraintreeDataCollector_IntegrationTests : XCTestCase
+@property (nonatomic, strong) BTDataCollector *data;
 @end
 
-@implementation BraintreeFraud_IntegrationTests
+@implementation BraintreeDataCollector_IntegrationTests
 
 - (void)setUp {
     [super setUp];
     
-    self.data = [[BTFraudData alloc] initWithEnvironment:BTFraudDataEnvironmentSandbox];
+    self.data = [[BTDataCollector alloc] initWithEnvironment:BTDataCollectorEnvironmentSandbox];
 }
 
 - (void)tearDown {
@@ -49,7 +49,7 @@
 #pragma clang diagnostic pop
 
 - (void)testPayPalFraudID_returnsFraudID {
-    XCTAssertNotNil([BTFraudData payPalFraudID]);
+    XCTAssertNotNil([BTDataCollector payPalFraudID]);
 }
 
 
