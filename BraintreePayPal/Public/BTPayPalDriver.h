@@ -8,7 +8,7 @@
 #import "BTPayPalCheckoutRequest.h"
 #import <Foundation/Foundation.h>
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 extern NSString *const BTPayPalDriverErrorDomain;
 
@@ -105,7 +105,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// @param completionBlock This completion will be invoked exactly once when authorization is complete or an error occurs.
 /// On success, you will receive an instance of `BTTokenizedPayPalAccount`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
-- (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedPayPalAccount * __BT_NULLABLE tokenizedPayPalAccount, NSError * __BT_NULLABLE error))completionBlock;
+- (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 
 /// Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser with
@@ -121,8 +121,8 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// @param completionBlock This completion will be invoked exactly once when authorization is complete or an error occurs.
 /// On success, you will receive an instance of `BTTokenizedPayPalAccount`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
-- (void)authorizeAccountWithAdditionalScopes:(BT_GENERICS(NSSet, NSString *) *)additionalScopes
-                                  completion:(void (^)(BTTokenizedPayPalAccount * __BT_NULLABLE tokenizedPayPalAccount, NSError * __BT_NULLABLE error))completionBlock;
+- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes
+                                  completion:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 
 /// Check out with PayPal to create a single-use PayPal payment method nonce.
@@ -137,7 +137,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// On success, you will receive an instance of `BTTokenizedPayPalCheckout`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
 - (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
-                         completion:(void (^)(BTTokenizedPayPalCheckout * __BT_NULLABLE tokenizedPayPalCheckout, NSError * __BT_NULLABLE error))completionBlock;
+                         completion:(void (^)(BTTokenizedPayPalCheckout * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error))completionBlock;
 
 /// Check out with PayPal to create a Billing Agreement PayPal payment method nonce.
 ///
@@ -151,7 +151,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// On success, you will receive an instance of `BTTokenizedPayPalCheckout`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
 - (void)billingAgreementWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
-                         completion:(void (^)(BTTokenizedPayPalCheckout * __BT_NULLABLE tokenizedPayPalCheckout, NSError * __BT_NULLABLE error))completionBlock;
+                         completion:(void (^)(BTTokenizedPayPalCheckout * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error))completionBlock;
 
 
 #pragma mark - Delegate
@@ -164,4 +164,4 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

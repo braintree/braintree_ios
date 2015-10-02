@@ -8,7 +8,7 @@
 #import "BTCard.h"
 #import "BTTokenizedCard.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const BTCardClientErrorDomain;
 
@@ -34,8 +34,8 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 /// @param completionBlock A completion block that is invoked when card tokenization has completed. If tokenization succeeds,
 ///        `tokenizedCard` will contain a nonce and `error` will be `nil`; if it fails, `tokenizedCard` will be `nil` and `error`
 ///        will describe the failure.
-- (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTTokenizedCard * __BT_NULLABLE tokenizedCard, NSError * __BT_NULLABLE error))completionBlock;
+- (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

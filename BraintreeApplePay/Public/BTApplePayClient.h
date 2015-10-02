@@ -7,7 +7,7 @@
 
 #import "BTTokenizedApplePayPayment.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const BTApplePayErrorDomain;
 typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
@@ -38,8 +38,8 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
 ///        `tokenizedApplePayPayment` will contain a nonce and `error` will be `nil`; if it fails,
 ///        `tokenizedApplePayPayment` will be `nil` and `error` will describe the failure.
 - (void)tokenizeApplePayPayment:(PKPayment *)payment
-                     completion:(void (^)(BTTokenizedApplePayPayment * __BT_NULLABLE tokenizedApplePayPayment, NSError * __BT_NULLABLE error))completionBlock;
+                     completion:(void (^)(BTTokenizedApplePayPayment * _Nullable tokenizedApplePayPayment, NSError * _Nullable error))completionBlock;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

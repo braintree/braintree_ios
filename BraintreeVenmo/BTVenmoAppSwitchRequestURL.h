@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "BTNullability.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTVenmoAppSwitchRequestURL : NSObject
 
@@ -24,4 +23,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

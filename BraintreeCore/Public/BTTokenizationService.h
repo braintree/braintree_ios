@@ -1,9 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "BTAPIClient.h"
-#import "BTNullability.h"
 #import "BTTokenized.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const BTTokenizationServiceErrorDomain;
 extern NSString * const BTTokenizationServiceViewPresentingDelegateOption;
@@ -29,7 +28,7 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
 /// @param type A type string to identify the tokenization block. Providing a type that has already
 ///        been registered will overwrite the previously registered tokenization block.
 /// @param tokenizationBlock The tokenization block to register for a type.
-- (void)registerType:(NSString *)type withTokenizationBlock:(void(^)(BTAPIClient *apiClient, NSDictionary *options, void(^)(id <BTTokenized> tokenization, NSError *error)))tokenizationBlock;
+- (void)registerType:(NSString *)type withTokenizationBlock:(void(^)(BTAPIClient *apiClient, NSDictionary * _Nullable options, void(^)(id <BTTokenized> _Nullable tokenization, NSError * _Nullable error)))tokenizationBlock;
 
 /// Indicates whether a type has been registered with a valid tokenization block.
 - (BOOL)isTypeAvailable:(NSString *)type;
@@ -42,7 +41,7 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
 /// @param completion The completion block to invoke when tokenization has completed.
 - (void)tokenizeType:(NSString *)type
        withAPIClient:(BTAPIClient *)apiClient
-          completion:(void(^)(id<BTTokenized> tokenization, NSError *error))completion;
+          completion:(void(^)(id<BTTokenized> _Nullable tokenization, NSError * _Nullable error))completion;
 
 /// Perform tokenization for the given type. This will execute the tokenization block that has been
 /// registered for the type.
@@ -53,12 +52,12 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
 /// @param apiClient The API client to use when performing tokenization.
 /// @param completion The completion block to invoke when tokenization has completed.
 - (void)tokenizeType:(NSString *)type
-             options:(BT_NULLABLE BT_GENERICS(NSDictionary, NSString *, id) *)options
+             options:(nullable NSDictionary<NSString *, id> *)options
        withAPIClient:(BTAPIClient *)apiClient
-          completion:(void(^)(id<BTTokenized> tokenization, NSError *error))completion;
+          completion:(void(^)(id<BTTokenized> _Nullable tokenization, NSError * _Nullable error))completion;
 
 @property (nonatomic, readonly, strong) NSArray *allTypes;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

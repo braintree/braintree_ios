@@ -18,7 +18,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import "BTHTTPErrors.h"
 #import "BTJSON.h"
 #import "BTLogger.h"
-#import "BTNullability.h"
 #import "BTPostalAddress.h"
 #import "BTTokenization.h"
 #import "BTTokenizationParser.h"

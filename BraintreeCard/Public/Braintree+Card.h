@@ -6,7 +6,7 @@
 
 @class BTCardClient;
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface Braintree (Card)
 
@@ -18,7 +18,7 @@ BT_ASSUME_NONNULL_BEGIN
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @return A card tokenization client, or `nil` if the client key is invalid.
-+ (BT_NULLABLE BTCardClient *)cardClientWithClientKey:(NSString *)clientKey;
++ (nullable BTCardClient *)cardClientWithClientKey:(NSString *)clientKey;
 
 
 /// Create a new card tokenization client with a client token from your server.
@@ -26,8 +26,8 @@ BT_ASSUME_NONNULL_BEGIN
 /// @param clientToken The client token retrieved from your server. Passing an invalid client
 /// token will return `nil`.
 /// @return A card tokenization client, or `nil` if the client token is invalid.
-+ (BT_NULLABLE BTCardClient *)cardClientWithClientToken:(NSString *)clientToken;
++ (nullable BTCardClient *)cardClientWithClientToken:(NSString *)clientToken;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

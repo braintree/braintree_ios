@@ -6,7 +6,7 @@
 
 @class BTVenmoDriver;
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface Braintree (Venmo)
 
@@ -18,7 +18,7 @@ BT_ASSUME_NONNULL_BEGIN
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @return A card tokenization client, or `nil` if the client key is invalid.
-+ (BT_NULLABLE BTVenmoDriver *)venmoDriverWithClientKey:(NSString *)clientKey;
++ (nullable BTVenmoDriver *)venmoDriverWithClientKey:(NSString *)clientKey;
 
 
 /// Create a new Venmo driver with a client token from your server.
@@ -26,8 +26,8 @@ BT_ASSUME_NONNULL_BEGIN
 /// @param clientToken The client token retrieved from your server. Passing an invalid client
 /// token will return `nil`.
 /// @return A card tokenization client, or `nil` if the client token is invalid.
-+ (BT_NULLABLE BTVenmoDriver *)venmoDriverWithClientToken:(NSString *)clientToken;
++ (nullable BTVenmoDriver *)venmoDriverWithClientToken:(NSString *)clientToken;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

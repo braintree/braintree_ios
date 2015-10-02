@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "BTNullability.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const BTJSONErrorDomain;
 
@@ -72,7 +71,7 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 
 @property (nonatomic, assign, readonly) BOOL isError;
 
-- (BT_NULLABLE NSError *)asError;
+- (nullable NSError *)asError;
 
 // @name Generating JSON
 
@@ -81,19 +80,19 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 
 // @name JSON Type Casts
 
-- (BT_NULLABLE NSString *)asString;
+- (nullable NSString *)asString;
 
-- (BT_NULLABLE BT_GENERICS(NSArray, BTJSON *) *)asArray;
+- (nullable NSArray<BTJSON *> *)asArray;
 
-- (BT_NULLABLE NSDecimalNumber *)asNumber;
+- (nullable NSDecimalNumber *)asNumber;
 
 // @name JSON Extension Type Casts
 
-- (BT_NULLABLE NSURL *)asURL;
+- (nullable NSURL *)asURL;
 
-- (BT_NULLABLE BT_GENERICS(NSArray, NSString *) *)asStringArray;
+- (nullable NSArray<NSString *> *)asStringArray;
 
-- (BT_NULLABLE NSDictionary *)asDictionary;
+- (nullable NSDictionary *)asDictionary;
 
 - (NSInteger)asIntegerOrZero;
 
@@ -132,4 +131,4 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END
