@@ -1,5 +1,10 @@
 #import "BTThreeDSecureVerification.h"
+
+#if __has_include("BraintreeCore.h")
 #import "BTJSON.h"
+#else
+#import <BraintreeCore/BTJSON.h>
+#endif
 
 // TODO RSS 7/31: Pretty sure we can delete this safely...
 
