@@ -378,13 +378,26 @@
                 BTMutableApplePayPaymentMethod *paymentMethod = [applePayCards firstObject];
 
                 paymentMethod.shippingMethod = payment.shippingMethod;
+				
+				if ([payment respondsToSelector:@selector(shippingContact)]) {
+					paymentMethod.shippingContact = payment.shippingContact;
+				}else
+				{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                paymentMethod.shippingAddress = payment.shippingAddress;
-                paymentMethod.billingAddress = payment.billingAddress;
+					paymentMethod.shippingAddress = payment.shippingAddress;
 #pragma clang diagnostic pop
-                paymentMethod.shippingContact = payment.shippingContact;
-                paymentMethod.billingContact = payment.billingContact;
+				}
+				
+				if ([payment respondsToSelector:@selector(billingContact)]) {
+					paymentMethod.billingContact = payment.billingContact;
+				}else
+				{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+					paymentMethod.billingAddress = payment.billingAddress;
+#pragma clang diagnostic pop
+				}
                 
                 successBlock([paymentMethod copy]);
             }
