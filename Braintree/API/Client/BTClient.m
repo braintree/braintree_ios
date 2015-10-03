@@ -338,25 +338,28 @@
     if (encodedPaymentData) {
         tokenParameterValue[@"paymentData"] = encodedPaymentData;
     }
-
+	
+	if ([payment.token respondsToSelector:@selector(paymentMethod)]) {
+		if (payment.token.paymentMethod.network) {
+			tokenParameterValue[@"paymentNetwork"] = payment.token.paymentMethod.network;
+		}
+		
+		if (payment.token.paymentMethod.displayName) {
+			tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentMethod.displayName;
+		}
+	}else
+	{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    if (payment.token.paymentInstrumentName) {
-        tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentInstrumentName;
-    }
-    
-    if (payment.token.paymentNetwork) {
-        tokenParameterValue[@"paymentNetwork"] = payment.token.paymentNetwork;
-    }
+		if (payment.token.paymentInstrumentName) {
+			tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentInstrumentName;
+		}
+		
+		if (payment.token.paymentNetwork) {
+			tokenParameterValue[@"paymentNetwork"] = payment.token.paymentNetwork;
+		}
 #pragma clang diagnostic pop
-    
-    if (payment.token.paymentMethod.network) {
-        tokenParameterValue[@"paymentNetwork"] = payment.token.paymentMethod.network;
-    }
-    
-    if (payment.token.paymentMethod.displayName) {
-        tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentMethod.displayName;
-    }
+	}
 
     if (payment.token.transactionIdentifier) {
         tokenParameterValue[@"transactionIdentifier"] = payment.token.transactionIdentifier;
