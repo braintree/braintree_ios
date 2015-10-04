@@ -338,25 +338,28 @@
     if (encodedPaymentData) {
         tokenParameterValue[@"paymentData"] = encodedPaymentData;
     }
-
+	
+	if ([payment.token respondsToSelector:@selector(paymentMethod)]) {
+		if (payment.token.paymentMethod.network) {
+			tokenParameterValue[@"paymentNetwork"] = payment.token.paymentMethod.network;
+		}
+		
+		if (payment.token.paymentMethod.displayName) {
+			tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentMethod.displayName;
+		}
+	}else
+	{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    if (payment.token.paymentInstrumentName) {
-        tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentInstrumentName;
-    }
-    
-    if (payment.token.paymentNetwork) {
-        tokenParameterValue[@"paymentNetwork"] = payment.token.paymentNetwork;
-    }
+		if (payment.token.paymentInstrumentName) {
+			tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentInstrumentName;
+		}
+		
+		if (payment.token.paymentNetwork) {
+			tokenParameterValue[@"paymentNetwork"] = payment.token.paymentNetwork;
+		}
 #pragma clang diagnostic pop
-    
-    if (payment.token.paymentMethod.network) {
-        tokenParameterValue[@"paymentNetwork"] = payment.token.paymentMethod.network;
-    }
-    
-    if (payment.token.paymentMethod.displayName) {
-        tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentMethod.displayName;
-    }
+	}
 
     if (payment.token.transactionIdentifier) {
         tokenParameterValue[@"transactionIdentifier"] = payment.token.transactionIdentifier;
@@ -375,13 +378,26 @@
                 BTMutableApplePayPaymentMethod *paymentMethod = [applePayCards firstObject];
 
                 paymentMethod.shippingMethod = payment.shippingMethod;
+				
+				if ([payment respondsToSelector:@selector(shippingContact)]) {
+					paymentMethod.shippingContact = payment.shippingContact;
+				}else
+				{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-                paymentMethod.shippingAddress = payment.shippingAddress;
-                paymentMethod.billingAddress = payment.billingAddress;
+					paymentMethod.shippingAddress = payment.shippingAddress;
 #pragma clang diagnostic pop
-                paymentMethod.shippingContact = payment.shippingContact;
-                paymentMethod.billingContact = payment.billingContact;
+				}
+				
+				if ([payment respondsToSelector:@selector(billingContact)]) {
+					paymentMethod.billingContact = payment.billingContact;
+				}else
+				{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+					paymentMethod.billingAddress = payment.billingAddress;
+#pragma clang diagnostic pop
+				}
                 
                 successBlock([paymentMethod copy]);
             }
