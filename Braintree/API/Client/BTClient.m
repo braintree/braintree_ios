@@ -339,6 +339,7 @@
         tokenParameterValue[@"paymentData"] = encodedPaymentData;
     }
 	
+    // iOS 9 path: PKPaymentToken -paymentMethod is new in iOS 9
 	if ([payment.token respondsToSelector:@selector(paymentMethod)]) {
 		if (payment.token.paymentMethod.network) {
 			tokenParameterValue[@"paymentNetwork"] = payment.token.paymentMethod.network;
@@ -347,8 +348,8 @@
 		if (payment.token.paymentMethod.displayName) {
 			tokenParameterValue[@"paymentInstrumentName"] = payment.token.paymentMethod.displayName;
 		}
-	}else
-	{
+	} else {
+        // iOS 8 path: methods were deprecated in iOS 9
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 		if (payment.token.paymentInstrumentName) {
@@ -379,22 +380,14 @@
 
                 paymentMethod.shippingMethod = payment.shippingMethod;
 				
+                // iOS 9 path: shippingContact and billingContact are new in iOS 9
 				if ([payment respondsToSelector:@selector(shippingContact)]) {
 					paymentMethod.shippingContact = payment.shippingContact;
-				}else
-				{
+                    paymentMethod.billingContact = payment.billingContact;
+				} else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 					paymentMethod.shippingAddress = payment.shippingAddress;
-#pragma clang diagnostic pop
-				}
-				
-				if ([payment respondsToSelector:@selector(billingContact)]) {
-					paymentMethod.billingContact = payment.billingContact;
-				}else
-				{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 					paymentMethod.billingAddress = payment.billingAddress;
 #pragma clang diagnostic pop
 				}
