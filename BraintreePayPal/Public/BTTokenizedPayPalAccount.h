@@ -5,7 +5,7 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTTokenizedPayPalAccount : NSObject <BTTokenized>
 
@@ -14,11 +14,11 @@ BT_ASSUME_NONNULL_BEGIN
 
 /// Optional. The billing address.
 /// Will be provided if you request "address" scope when using -[PayPalDriver startAuthorizationWithAdditionalScopes:completion:]
-@property (nonatomic, BT_NULLABLE, readonly, strong) BTPostalAddress *accountAddress;
+@property (nonatomic, nullable, readonly, strong) BTPostalAddress *accountAddress;
 
 /// Client Metadata Id associated with this transaction.
 @property (nonatomic, readonly, copy) NSString *clientMetadataId;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

@@ -5,7 +5,7 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTTokenizedPayPalCheckout : NSObject <BTTokenized>
 
@@ -36,4 +36,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

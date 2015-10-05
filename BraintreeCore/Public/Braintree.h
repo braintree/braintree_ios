@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "BTNullability.h"
+
 
 @class BTAPIClient;
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface Braintree : NSObject
 
@@ -18,7 +18,7 @@ BT_ASSUME_NONNULL_BEGIN
 ///
 /// @param clientKey The client key
 /// @return A Braintree API client, or `nil` if the client key can be determined to be malformed.
-+ (BT_NULLABLE BTAPIClient *)clientWithClientKey:(NSString *)clientKey;
++ (nullable BTAPIClient *)clientWithClientKey:(NSString *)clientKey;
 
 
 /// Creates a Braintree API client using a client token.
@@ -27,7 +27,7 @@ BT_ASSUME_NONNULL_BEGIN
 ///
 /// @param clientToken The client token
 /// @return A Braintree API client, or `nil` if the client token is invalid
-+ (BT_NULLABLE BTAPIClient *)clientWithClientToken:(NSString *)clientToken;
++ (nullable BTAPIClient *)clientWithClientToken:(NSString *)clientToken;
 
 
 /// Sets the return URL scheme for your app.
@@ -55,4 +55,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

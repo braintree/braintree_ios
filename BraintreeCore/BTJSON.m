@@ -161,7 +161,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
     return [self.value isKindOfClass:[NSError class]];
 }
 
-- (BT_NULLABLE NSError *)asError {
+- (NSError *)asError {
     if (![self.value isKindOfClass:[NSError class]]) {
         return nil;
     }
@@ -171,13 +171,13 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 
 #pragma mark Generating JSON
 
-- (nullable NSData *)asJSONAndReturnError:(NSError **)error {
+- (NSData *)asJSONAndReturnError:(NSError **)error {
     return [NSJSONSerialization dataWithJSONObject:self.value
                                            options:0
                                              error:error];
 }
 
-- (nullable NSString *)asPrettyJSONAndReturnError:(NSError **)error {
+- (NSString *)asPrettyJSONAndReturnError:(NSError **)error {
     return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:self.value
                                                                           options:NSJSONWritingPrettyPrinted
                                                                             error:error]
@@ -187,7 +187,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 
 #pragma mark JSON Type Casts
 
-- (BT_NULLABLE NSString *)asString {
+- (NSString *)asString {
     if (![self.value isKindOfClass:[NSString class]]) {
         return nil;
     }
@@ -195,7 +195,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
     return self.value;
 }
 
-- (BT_NULLABLE BT_GENERICS(NSArray, BTJSON *) *)asArray {
+- (NSArray<BTJSON *> *)asArray {
     if (![self.value isKindOfClass:[NSArray class]]) {
         return nil;
     }
@@ -203,7 +203,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
     return self.value;
 }
 
-- (BT_NULLABLE NSDecimalNumber *)asNumber {
+- (NSDecimalNumber *)asNumber {
     if (![self.value isKindOfClass:[NSNumber class]]) {
         return nil;
     }
@@ -213,7 +213,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 
 #pragma mark JSON Extension Type Casts
 
-- (BT_NULLABLE NSURL *)asURL {
+- (NSURL *)asURL {
     NSString *urlString = self.asString;
 
     if (urlString == nil) {
@@ -223,7 +223,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
     return [NSURL URLWithString:urlString];
 }
 
-- (BT_NULLABLE BT_GENERICS(NSArray, NSString *) *)asStringArray {
+- (NSArray<NSString *> *)asStringArray {
     NSArray *array = self.asArray;
 
     for (id obj in array) {
@@ -235,7 +235,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
     return array;
 }
 
-- (BT_NULLABLE BT_GENERICS(NSDictionary, NSString *, BTJSON *) *)asDictionary {
+- (NSDictionary<NSString *, BTJSON *> *)asDictionary {
     NSDictionary *dictionary = self.value;
 
     if (![dictionary isKindOfClass:[NSDictionary class]]) {

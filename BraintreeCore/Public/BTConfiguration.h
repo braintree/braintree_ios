@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "BTJSON.h"
-#import "BTNullability.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTConfiguration : NSObject
 
@@ -13,8 +12,8 @@ BT_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Undesignated initializers (do not use)
 
-- (BT_NULLABLE instancetype)init __attribute__((unavailable("Please use initWithJSON: instead.")));
+- (nullable instancetype)init __attribute__((unavailable("Please use initWithJSON: instead.")));
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END
