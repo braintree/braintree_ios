@@ -97,16 +97,16 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
     [self.kount collect:deviceSessionId];
 }
 
-- (void)collectFraudData:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock
+- (NSString *)collectFraudData:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock
 {
-    [self collectFraudDataWithMerchantID:BTDataCollectorSharedMerchantId
-                            collectorURL:[self defaultCollectorURL]
-                              completion:completionBlock];
+    return [self collectFraudDataWithMerchantID:BTDataCollectorSharedMerchantId
+                                   collectorURL:[self defaultCollectorURL]
+                                     completion:completionBlock];
 }
 
-- (void)collectFraudDataWithMerchantID:(NSString *)merchantID
-                          collectorURL:(NSString *)collectorURL
-                            completion:(void (^)(NSString * _Nullable, NSError * _Nullable))completionBlock
+- (NSString *)collectFraudDataWithMerchantID:(NSString *)merchantID
+                                collectorURL:(NSString *)collectorURL
+                                  completion:(void (^)(NSString * _Nullable, NSError * _Nullable))completionBlock
 {
     if (self.completionBlock != nil) {
         NSLog(@"Fraud data is already being collected");
@@ -116,7 +116,7 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
                                              userInfo:@{ NSLocalizedDescriptionKey : @"Fraud data is already being collected" }];
             completionBlock(nil, error);
         }
-        return;
+        return nil;
     }
     
     self.completionBlock = completionBlock;
@@ -141,6 +141,8 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
     [self.kount setMerchantId:merchantID];
     [self.kount setCollectorUrl:collectorURL];
     [self.kount collect:deviceSessionId];
+    
+    return self.deviceData;
 }
 
 

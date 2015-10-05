@@ -44,38 +44,36 @@ NS_ASSUME_NONNULL_BEGIN
                                 completion:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
 
 
-/// Collects ALL device data using Kount and PayPal, uses the default merchant ID and collector URL for Kount.
+/// Collects device data using Kount and PayPal. Uses the default merchant ID and collector URL for Kount.
 ///
-/// @warning This method collects device data using both Kount and PayPal and has been marked as deprecated
-///          in favor of using `-collectCardFraudData:` and `+payPalFraudID` for collecting fraud data for
-///          card and PayPal transactions, respectively. If your integration is unable to determine the
-///          underlying type of payment option for a transaction (i.e. card or PayPal) -- for example, if
-///          your server-side integration stores vaulted payment method tokens without knowing whether it's
-///          a tokenized card or a tokenized PayPal account authorization -- you can use this method to gather
-///          both. However, using this method for other cases is discouraged, since it creates unnecessary
-///          storage overhead for the fraud detection backend services.
+/// This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
+/// use `-collectCardFraudData:`. To collect data for PayPal, use `+payPalFraudID`. When possible, you should
+/// avoid using Kount when processing a PayPal transaction because it expends bandwidth and storage unnecessarily.
 ///
-/// @param completionBlock A callback block that gets invoked when fraud data collection has finished. It
-///                        returns fraud data to send to your server when successful, or an error when it fails.
-- (void)collectFraudData:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use collectCardFraudData: or payPalFraudID");
+/// @param completionBlock An optional callback block that gets invoked when fraud data collection has finished.
+///                        When successful, you should send the deviceData identifier to your server.
+///                        On failure, you may receive an error.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as Transaction.create.
+///         If data is already being collected, this method returns nil.
+- (NSString *)collectFraudData:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
 
 
-/// Collects ALL device data using Kount and PayPal, using your own merchant ID and collector URL for Kount.
+/// Collects device data using Kount and PayPal. Uses your own merchant ID and collector URL for Kount.
 ///
-/// @warning This method collects device data using both Kount and PayPal and has been marked as deprecated
-///          in favor of using `-collectCardFraudData:` and `+payPalFraudID` for collecting fraud data for
-///          card and PayPal transactions, respectively. If your integration is unable to determine the
-///          underlying type of payment option for a transaction (i.e. card or PayPal) -- for example, if
-///          your server-side integration stores vaulted payment method tokens without knowing whether it's
-///          a tokenized card or a tokenized PayPal account authorization -- you can use this method to gather
-///          both. However, using this method for other cases is discouraged, since it creates unnecessary
-///          storage overhead for the fraud detection backend services.
+/// This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
+/// use `-collectCardFraudData:`. To collect data for PayPal, use `+payPalFraudID`. When possible, you should
+/// avoid using Kount when processing a PayPal transaction because it expends bandwidth and storage unnecessarily.
 ///
-/// @param completionBlock A callback block that gets invoked when fraud data collection has finished. It
-///                        returns fraud data to send to your server when successful, or an error when it fails.
-- (void)collectFraudDataWithMerchantID:(NSString *)merchantID
-                          collectorURL:(NSString *)collectorURL
-                            completion:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use collectCardFraudData: or payPalFraudID");
+/// @param completionBlock A callback block that gets invoked when fraud data collection has finished.
+///                        When successful, you should send the deviceData identifier to your server.
+///                        On failure, you may receive an error.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as Transaction.create.
+///         If data is already being collected, this method returns nil.
+- (NSString *)collectFraudDataWithMerchantID:(NSString *)merchantID
+                                collectorURL:(NSString *)collectorURL
+                                  completion:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
 
 @end
 
