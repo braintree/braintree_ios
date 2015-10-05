@@ -1,8 +1,12 @@
+#if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 
 @class BTPayPalDriver;
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface Braintree (PayPal)
 
@@ -14,7 +18,7 @@ BT_ASSUME_NONNULL_BEGIN
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @return A card tokenization client, or `nil` if the client key is invalid.
-+ (BT_NULLABLE BTPayPalDriver *)payPalDriverWithClientKey:(NSString *)clientKey;
++ (nullable BTPayPalDriver *)payPalDriverWithClientKey:(NSString *)clientKey;
 
 
 /// Create a new PayPal driver with a client token from your server.
@@ -22,8 +26,8 @@ BT_ASSUME_NONNULL_BEGIN
 /// @param clientToken The client token retrieved from your server. Passing an invalid client
 /// token will return `nil`.
 /// @return A card tokenization client, or `nil` if the client token is invalid.
-+ (BT_NULLABLE BTPayPalDriver *)payPalDriverWithClientToken:(NSString *)clientToken;
++ (nullable BTPayPalDriver *)payPalDriverWithClientToken:(NSString *)clientToken;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

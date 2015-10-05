@@ -1,8 +1,12 @@
+#if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 #import "BTVenmoTokenizedCard.h"
 #import <Foundation/Foundation.h>
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const BTVenmoDriverErrorDomain;
 
@@ -41,7 +45,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 /// @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
 /// On success, you will receive an instance of `BTVenmoTokenizedCard`; on failure, an error; on user
 /// cancellation, you will receive `nil` for both parameters.
-- (void)tokenizeVenmoCardWithCompletion:(void (^)(BTVenmoTokenizedCard * __BT_NULLABLE tokenizedCard, NSError * __BT_NULLABLE error))completionBlock;
+- (void)tokenizeVenmoCardWithCompletion:(void (^)(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
 /// Indicates whether the Venmo app is available for app switch. This should be checked before presenting
 /// any UI to pay with Venmo.
@@ -56,4 +60,4 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

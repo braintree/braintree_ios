@@ -2,19 +2,19 @@
 #import "BTPayPalRequestFactory.h"
 #import <SafariServices/SafariServices.h>
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTPayPalDriver ()
 
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Checkout (Single Payments)
 ///
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
-- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * __BT_NULLABLE tokenizedCheckout, NSError * __BT_NULLABLE error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement;
+- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedCheckout, NSError * _Nullable error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement;
 
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Authorization (Future Payments)
 ///
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
-- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * __BT_NULLABLE tokenizedAccount, NSError * __BT_NULLABLE error))completionBlock;
+- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL;
 
@@ -42,4 +42,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

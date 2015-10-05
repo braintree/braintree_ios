@@ -1,8 +1,13 @@
 #import <Foundation/Foundation.h>
+#if __has_include("BraintreeCard.h")
 #import "BTCard.h"
 #import "BTTokenizedCard.h"
+#else
+#import <BraintreeCard/BTCard.h>
+#import <BraintreeCard/BTTokenizedCard.h>
+#endif
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTThreeDSecureVerification : NSObject
 
@@ -23,4 +28,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

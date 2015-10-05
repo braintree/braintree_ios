@@ -7,7 +7,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTTokenizedPayPalAccount : NSObject <BTTokenized>
+@interface BTTokenizedPayPalCheckout : NSObject <BTTokenized>
 
 // Payer's email address
 @property (nonatomic, readonly, copy) NSString *email;
@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Optional. Payer Id associated with this transaction.
 /// Will be provided for Billing Agreement and Checkout.
-@property (nonatomic, nullable, readonly, copy) NSString *payerId;
+@property (nonatomic, readonly, copy) NSString *payerId;
 
 @end
 

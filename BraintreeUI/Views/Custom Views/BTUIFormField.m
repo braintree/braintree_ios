@@ -275,6 +275,9 @@ const CGFloat formFieldBottomMargin = 11;
 
 - (void)textFieldDidBeginEditing:(__unused UITextField *)textField {
     [self updateFloatLabelTextColor];
+    if ([self.delegate respondsToSelector:@selector(formFieldDidBeginEditing:)]) {
+        [self.delegate formFieldDidBeginEditing:self];
+    }
 }
 
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {

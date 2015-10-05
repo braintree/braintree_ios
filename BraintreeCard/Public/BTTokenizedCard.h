@@ -1,7 +1,11 @@
 #import <Foundation/Foundation.h>
+#if __has_include("BraintreeCore.h")
 #import "BTJSON.h"
-#import "BTNullability.h"
 #import "BTTokenized.h"
+#else
+#import <BraintreeCore/BTJSON.h>
+#import <BraintreeCore/BTTokenized.h>
+#endif
 
 /// Card type
 typedef NS_ENUM(NSInteger, BTCardNetwork) {
@@ -20,7 +24,7 @@ typedef NS_ENUM(NSInteger, BTCardNetwork) {
     BTCardNetworkUKMaestro,
 };
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTTokenizedCard : NSObject <BTTokenized>
 
@@ -31,4 +35,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

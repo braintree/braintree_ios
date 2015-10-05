@@ -18,10 +18,10 @@
     return self;
 }
 
-- (instancetype)initWithNumber:(BT_NULLABLE NSString *)number
-               expirationMonth:(BT_NULLABLE NSString *)expirationMonth
-                expirationYear:(BT_NULLABLE NSString *)expirationYear
-                           cvv:(BT_NULLABLE NSString *)cvv
+- (instancetype)initWithNumber:(nullable NSString *)number
+               expirationMonth:(nullable NSString *)expirationMonth
+                expirationYear:(nullable NSString *)expirationYear
+                           cvv:(nullable NSString *)cvv
 {
     if (self = [self initWithParameters:@{}]) {
         _number = number;

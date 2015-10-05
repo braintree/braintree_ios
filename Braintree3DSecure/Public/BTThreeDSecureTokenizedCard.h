@@ -1,4 +1,8 @@
+#if __has_include("BraintreeCard.h")
+#import "BTTokenizedCard.h"
+#else
 #import <BraintreeCard/BTTokenizedCard.h>
+#endif
 
 @interface BTThreeDSecureTokenizedCard : BTTokenizedCard
 

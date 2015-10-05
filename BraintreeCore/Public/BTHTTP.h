@@ -1,9 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "BTHTTPErrors.h"
 #import "BTJSON.h"
-#import "BTNullability.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @class BTHTTPResponse, BTClientToken;
 
@@ -18,7 +17,7 @@ extern NSString * const BTHTTPJSONResponseBodyKey;
 
 /// An optional array of pinned certificates, each an NSData instance
 /// consisting of DER encoded x509 certificates
-@property (nonatomic, BT_NULLABLE, strong) BT_GENERICS(NSArray, NSData *) *pinnedCertificates;
+@property (nonatomic, nullable, strong) NSArray<NSData *> *pinnedCertificates;
 
 /// Initialize `BTHTTP` with the authorization fingerprint from a client token
 ///
@@ -39,7 +38,7 @@ extern NSString * const BTHTTPJSONResponseBodyKey;
 - (instancetype)initWithClientToken:(BTClientToken *)clientToken;
 
 
-- (BT_NULLABLE instancetype)init __attribute__((unavailable("Please use initWithBaseURL:authorizationFingerprint: instead.")));
+- (nullable instancetype)init __attribute__((unavailable("Please use initWithBaseURL:authorizationFingerprint: instead.")));
 
 // For testing
 @property (nonatomic, strong) NSURLSession *session;
@@ -49,33 +48,33 @@ extern NSString * const BTHTTPJSONResponseBodyKey;
 @property (nonatomic, strong) dispatch_queue_t dispatchQueue;
 
 - (void)GET:(NSString *)endpoint
- completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)GET:(NSString *)endpoint
- parameters:(BT_NULLABLE NSDictionary *)parameters
- completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+ parameters:(nullable NSDictionary *)parameters
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)POST:(NSString *)endpoint
-  completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)POST:(NSString *)endpoint
-  parameters:(BT_NULLABLE NSDictionary *)parameters
-  completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+  parameters:(nullable NSDictionary *)parameters
+  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)PUT:(NSString *)endpoint
- completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)PUT:(NSString *)endpoint
- parameters:(BT_NULLABLE NSDictionary *)parameters
- completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+ parameters:(nullable NSDictionary *)parameters
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)DELETE:(NSString *)endpoint
-    completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+    completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 - (void)DELETE:(NSString *)endpoint
-    parameters:(BT_NULLABLE NSDictionary *)parameters
-    completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+    parameters:(nullable NSDictionary *)parameters
+    completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

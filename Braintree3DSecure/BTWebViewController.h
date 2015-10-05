@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <BraintreeCore/BTNullability.h>
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BTWebViewController : UIViewController
 
@@ -11,8 +10,8 @@ BT_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Undesignated initializers (do not use)
 
-- (BT_NULLABLE instancetype)initWithCoder:(NSCoder *)decoder __attribute__((unavailable("Please use initWithRequest: instead.")));
-- (instancetype)initWithNibName:(BT_NULLABLE NSString *)nibName bundle:(BT_NULLABLE NSBundle *)nibBundle __attribute__((unavailable("Please use initWithRequest: instead.")));
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder __attribute__((unavailable("Please use initWithRequest: instead.")));
+- (instancetype)initWithNibName:(nullable NSString *)nibName bundle:(nullable NSBundle *)nibBundle __attribute__((unavailable("Please use initWithRequest: instead.")));
 
 #pragma mark Override Points for Subclasses
 
@@ -23,5 +22,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
-
+NS_ASSUME_NONNULL_END

@@ -1,7 +1,10 @@
+#if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 #import "BTPaymentButton.h"
 #import "BTLogger_Internal.h"
-#import "BTTokenizationService.h"
 #import "BTUIVenmoButton.h"
 #import "BTUIPayPalButton.h"
 #import "BTUICoinbaseButton.h"

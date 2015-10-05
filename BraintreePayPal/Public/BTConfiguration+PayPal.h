@@ -1,4 +1,8 @@
+#if __has_include("BraintreeCore.h")
 #import "BTConfiguration.h"
+#else
+#import <BraintreeCore/BTConfiguration.h>
+#endif
 
 @interface BTConfiguration (PayPal)
 

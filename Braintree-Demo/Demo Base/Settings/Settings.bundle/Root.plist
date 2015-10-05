@@ -33,7 +33,7 @@
 				<string>UI Components</string>
 				<string>Credit Cards - 3D Secure</string>
 				<string>Combined - Custom Button</string>
-				<string>Fraud Protection - BTFraudData</string>
+				<string>Fraud Protection - BTDataCollector</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -53,7 +53,7 @@
 				<string>BraintreeDemoUIWidgetsViewController</string>
 				<string>BraintreeDemoThreeDSecureViewController</string>
 				<string>BraintreeDemoCustomMultiPayViewController</string>
-				<string>BraintreeDemoBTFraudDataViewController</string>
+				<string>BraintreeDemoBTDataCollectorViewController</string>
 			</array>
 		</dict>
 		<dict>

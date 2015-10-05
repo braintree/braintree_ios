@@ -22,10 +22,20 @@
     self.appSettingsViewController = [[IASKAppSettingsViewController alloc] init];
     self.appSettingsViewController.delegate = self;
     
-    // Assume that "Integration" is the first row of the first section
-    self.specifier  = [self.appSettingsViewController.settingsReader specifierForIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    // Find the "Integration" specifier
+    IASKSettingsReader *reader = self.appSettingsViewController.settingsReader;
+    for (NSInteger section = 0; section < reader.numberOfSections; section++) {
+        for (NSInteger row = 0; row < [reader numberOfRowsForSection:section]; row++) {
+            IASKSpecifier *specifier = [reader specifierForIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+            if ([specifier.title isEqualToString:@"Integration"]) {
+                self.specifier = specifier;
+                break;
+            }
+        }
+    }
+    
     [self.targetViewController setCurrentSpecifier:self.specifier];
-    self.targetViewController.settingsReader = self.appSettingsViewController.settingsReader;
+    self.targetViewController.settingsReader = reader;
     self.targetViewController.settingsStore = self.appSettingsViewController.settingsStore;
     IASK_IF_IOS7_OR_GREATER(self.targetViewController.view.tintColor = self.appSettingsViewController.view.tintColor;)
     

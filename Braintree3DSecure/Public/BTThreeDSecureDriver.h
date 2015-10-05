@@ -1,9 +1,14 @@
 #import <UIKit/UIKit.h>
-#import <BraintreeCore/BraintreeCore.h>
+#if __has_include("BraintreeCore.h")
+#import "BraintreeCard.h"
+#import "BraintreeCore.h"
+#else
 #import <BraintreeCard/BraintreeCard.h>
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 #import "BTThreeDSecureTokenizedCard.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol BTThreeDSecureDriverDelegate;
 
@@ -49,11 +54,11 @@ BT_ASSUME_NONNULL_BEGIN
 ///  @param apiClient The Braintree API Client
 ///
 ///  @return An initialized instance of BTThreeDSecureDriver
-//- (BT_NULLABLE instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
+//- (nullable instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient delegate:(id<BTViewControllerPresentingDelegate>)delegate;
 
-- (BT_NULLABLE instancetype)init __attribute__((unavailable("Please use initWithAPIClient: instead.")));
+- (nullable instancetype)init __attribute__((unavailable("Please use initWithAPIClient: instead.")));
 
 /// Verify a card for a 3D Secure transaction, referring to the card by raw payment method nonce
 ///
@@ -81,7 +86,7 @@ BT_ASSUME_NONNULL_BEGIN
 /// On user cancellation, you will receive `nil` for both parameters.
 - (void)verifyCardWithNonce:(NSString *)nonce
                      amount:(NSDecimalNumber *)amount
-                 completion:(void (^)(BTThreeDSecureTokenizedCard * __BT_NULLABLE tokenizedCard, NSError * __BT_NULLABLE error))completionBlock;
+                 completion:(void (^)(BTThreeDSecureTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
 #pragma mark - Delegate
 
@@ -90,4 +95,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

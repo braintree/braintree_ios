@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "BTNullability.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 /// @protocol BTAppSwitchHandler
 /// @description A protocol for handling the return from switching out of an app to gather payment information.
@@ -65,4 +64,4 @@ BT_ASSUME_NONNULL_BEGIN
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

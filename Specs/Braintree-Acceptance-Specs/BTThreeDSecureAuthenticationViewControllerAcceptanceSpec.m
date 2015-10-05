@@ -494,8 +494,10 @@ describe(@"3D Secure View Controller", ^{
 
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
+                [system waitForTimeInterval:1];
                 [tester tapViewWithAccessibilityLabel:@"Submit"];
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
+                [system waitForTimeInterval:1];
                 [tester waitForViewWithAccessibilityLabel:@"Incorrect, Please try again"];
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
             }];

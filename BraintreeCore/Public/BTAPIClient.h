@@ -1,10 +1,9 @@
 #import <Foundation/Foundation.h>
 #import "BTClientMetadata.h"
 #import "BTConfiguration.h"
-#import "BTNullability.h"
 #import "BTJSON.h"
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 extern NSString *const BTAPIClientErrorDomain;
 
@@ -28,7 +27,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @return An API client, or `nil` if the client key is invalid.
-- (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey;
+- (nullable instancetype)initWithClientKey:(NSString *)clientKey;
 
 /// Initialize a new API client.
 ///
@@ -36,14 +35,14 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing
 /// `nil` will use the application's main queue.
 /// @return An API client, or `nil` if the client key is invalid.
-- (BT_NULLABLE instancetype)initWithClientKey:(NSString *)clientKey
-                                dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue;
+- (nullable instancetype)initWithClientKey:(NSString *)clientKey
+                                dispatchQueue:(nullable dispatch_queue_t)dispatchQueue;
 
 /// Initialize a new API client with a client token. The API client base URL will use Client API base URL from the token.
 ///
 /// @param clientToken The client token retrieved from your server. Passing an invalid client token will return `nil`.
 /// @return An API client, or `nil` if the client token is invalid.
-- (BT_NULLABLE instancetype)initWithClientToken:(NSString *)clientToken;
+- (nullable instancetype)initWithClientToken:(NSString *)clientToken;
 
 /// Initialize a new API client with a client token. The API client base URL will use Client API base URL from the token.
 ///
@@ -51,8 +50,8 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing
 /// `nil` will use the application's main queue.
 /// @return An API client, or `nil` if the client token is invalid.
-- (BT_NULLABLE instancetype)initWithClientToken:(NSString *)clientToken
-                                  dispatchQueue:(BT_NULLABLE dispatch_queue_t)dispatchQueue;
+- (nullable instancetype)initWithClientToken:(NSString *)clientToken
+                                  dispatchQueue:(nullable dispatch_queue_t)dispatchQueue;
 
 /// Create a copy of an existing API client, but specify a new source and integration type.
 /// @discussion This provides a way to override an API client's source and integration metadata, which
@@ -77,7 +76,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// @note This method is asynchronous because it requires a network call to fetch the
 /// configuration for a merchant account from Braintree servers. This configuration is
 /// cached on subsequent calls for better performance.
-- (void)fetchOrReturnRemoteConfiguration:(void (^)(BTConfiguration * __BT_NULLABLE configuration, NSError * __BT_NULLABLE error))completionBlock;
+- (void)fetchOrReturnRemoteConfiguration:(void (^)(BTConfiguration * _Nullable configuration, NSError * _Nullable error))completionBlock;
 
 /// Perfom an HTTP GET on a URL composed of the configured from environment
 /// and the given path.
@@ -89,8 +88,8 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
 /// `nil` and `error` will contain the error that occurred.
 - (void)GET:(NSString *)path
- parameters:(BT_NULLABLE NSDictionary *)parameters
- completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+ parameters:(nullable NSDictionary *)parameters
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 /// Perfom an HTTP POST on a URL composed of the configured from environment
 /// and the given path.
@@ -103,9 +102,9 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
 /// `nil` and `error` will contain the error that occurred.
 - (void)POST:(NSString *)path
-  parameters:(BT_NULLABLE NSDictionary *)parameters
-  completion:(BT_NULLABLE void(^)(BTJSON * __BT_NULLABLE body, NSHTTPURLResponse * __BT_NULLABLE response, NSError * __BT_NULLABLE error))completionBlock;
+  parameters:(nullable NSDictionary *)parameters
+  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

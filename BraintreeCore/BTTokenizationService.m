@@ -6,7 +6,7 @@ NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewContr
 @interface BTTokenizationService ()
 /// Dictionary of tokenization blocks keyed by types as strings. The blocks have the following type:
 ///
-/// `void(^)(BTAPIClient *apiClient, NSDictionary *options, void(^completionBlock)(id <BTTokenized> tokenization, NSError *error))`
+/// `void (^)(BTAPIClient * _Nonnull, NSDictionary * _Nullable, void (^ _Nonnull)(id<BTTokenized> _Nullable, NSError * _Nullable))`
 @property (nonatomic, strong) NSMutableDictionary *tokenizationBlocks;
 @end
 
@@ -28,7 +28,7 @@ NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewContr
     return _tokenizationBlocks;
 }
 
-- (void)registerType:(NSString *)type withTokenizationBlock:(void(^)(BTAPIClient *apiClient, NSDictionary *options, void(^)(id <BTTokenized> tokenization, NSError *error)))tokenizationBlock
+- (void)registerType:(NSString *)type withTokenizationBlock:(void (^)(BTAPIClient * _Nonnull, NSDictionary * _Nullable, void (^ _Nonnull)(id<BTTokenized> _Nullable, NSError * _Nullable)))tokenizationBlock
 {
     self.tokenizationBlocks[type] = [tokenizationBlock copy];
 }
@@ -43,15 +43,15 @@ NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewContr
 
 - (void)tokenizeType:(NSString *)type
        withAPIClient:(BTAPIClient *)apiClient
-          completion:(void(^)(id<BTTokenized> tokenization, NSError *error))completion
+          completion:(void (^)(id<BTTokenized> _Nullable, NSError * _Nullable))completion
 {
     [self tokenizeType:type options:nil withAPIClient:apiClient completion:completion];
 }
 
 - (void)tokenizeType:(NSString *)type
-             options:(BT_NULLABLE BT_GENERICS(NSDictionary, NSString *, id) *)options
+             options:(NSDictionary<NSString *,id> *)options
        withAPIClient:(BTAPIClient *)apiClient
-          completion:(void(^)(id<BTTokenized> tokenization, NSError *error))completion
+          completion:(void (^)(id<BTTokenized> _Nullable, NSError * _Nullable))completion
 {
     void(^block)(BTAPIClient *, NSDictionary *, void(^)(id<BTTokenized>, NSError *)) = self.tokenizationBlocks[type];
     if (block) {

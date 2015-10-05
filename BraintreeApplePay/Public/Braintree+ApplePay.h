@@ -1,8 +1,12 @@
+#if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
 
 @class BTApplePayClient;
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 @interface Braintree (ApplePay)
 
@@ -14,7 +18,7 @@ BT_ASSUME_NONNULL_BEGIN
 ///
 /// @param clientKey The client key. Passing an invalid key will return `nil`.
 /// @return An Apple Pay tokenization client, or `nil` if the client key is invalid.
-+ (BT_NULLABLE BTApplePayClient *)applePayClientWithClientKey:(NSString *)clientKey;
++ (nullable BTApplePayClient *)applePayClientWithClientKey:(NSString *)clientKey;
 
 
 /// Create a new Apple Pay tokenization client with a client token from your server.
@@ -22,8 +26,8 @@ BT_ASSUME_NONNULL_BEGIN
 /// @param clientToken The client token retrieved from your server. Passing an invalid client
 /// token will return `nil`.
 /// @return An Apple Pay tokenization client, or `nil` if the client token is invalid.
-+ (BT_NULLABLE BTApplePayClient *)applePayClientWithClientToken:(NSString *)clientToken;
++ (nullable BTApplePayClient *)applePayClientWithClientToken:(NSString *)clientToken;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

@@ -1,9 +1,8 @@
 #import "BTJSON.h"
-#import "BTNullability.h"
 #import "BTTokenized.h"
 #import <Foundation/Foundation.h>
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 /// A JSON parser that parses `BTJSON` into concrete `BTTokenized` objects. It supports registration of
 /// parsers at runtime.
@@ -17,7 +16,7 @@ BT_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedParser;
 
 /// An array of the tokenization types currently registered
-@property (nonatomic, readonly, strong) BT_GENERICS(NSArray, NSString *) *allTypes;
+@property (nonatomic, readonly, strong) NSArray<NSString *> *allTypes;
 
 /// Indicates whether a tokenization type is currently registered
 ///
@@ -29,7 +28,7 @@ BT_ASSUME_NONNULL_BEGIN
 /// @param type The tokenization type string
 /// @param jsonParsingBlock The block to execute when `parseJSON:type:` is called for the tokenization type.
 ///        This block should return a `BTTokenized` object, or `nil` if the JSON cannot be parsed.
-- (void)registerType:(NSString *)type withParsingBlock:(id <BTTokenized> __BT_NULLABLE (^)(BTJSON *json))jsonParsingBlock;
+- (void)registerType:(NSString *)type withParsingBlock:(id <BTTokenized> _Nullable (^)(BTJSON *json))jsonParsingBlock;
 
 /// Parses tokenized payment information that has been serialized to JSON, and returns a `BTTokenized` object.
 /// The `BTTokenized` object is created by the JSON parsing block that has been registered for the tokenization
@@ -41,8 +40,8 @@ BT_ASSUME_NONNULL_BEGIN
 /// @param json The tokenized payment info, serialized to JSON
 /// @param type The registered type of the parsing block to use
 /// @return A `BTTokenized` object, or `nil` if the tokenized payment info JSON does not contain a nonce
-- (BT_NULLABLE id <BTTokenized>)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type;
+- (nullable id <BTTokenized>)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END

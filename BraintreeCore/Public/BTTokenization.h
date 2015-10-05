@@ -1,8 +1,7 @@
-#import "BTNullability.h"
 #import "BTTokenized.h"
 #import <Foundation/Foundation.h>
 
-BT_ASSUME_NONNULL_BEGIN
+NS_ASSUME_NONNULL_BEGIN
 
 /// A concrete implementation of `BTTokenized` that implements the interface and nothing more.
 ///
@@ -11,8 +10,8 @@ BT_ASSUME_NONNULL_BEGIN
 /// a PayPal account but the client-side integration does not include the PayPal component), this type can act as a fallback.
 @interface BTTokenization : NSObject <BTTokenized>
 
-- (BT_NULLABLE instancetype)initWithNonce:(NSString *)nonce localizedDescription:(BT_NULLABLE NSString *)description;
+- (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(nullable NSString *)description;
 
 @end
 
-BT_ASSUME_NONNULL_END
+NS_ASSUME_NONNULL_END
