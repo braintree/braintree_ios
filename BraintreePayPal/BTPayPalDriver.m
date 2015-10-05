@@ -80,6 +80,7 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         if (configuration.isBillingAgreementsEnabled) {
             // Switch to Billing Agreements flow
             BTPayPalCheckoutRequest *checkout = [[BTPayPalCheckoutRequest alloc] init];
+            checkout.currencyCode = configuration.json[@"paypal"][@"currencyIsoCode"].asString;
             [self billingAgreementWithCheckoutRequest:checkout completion:completionBlock];
             return;
         }

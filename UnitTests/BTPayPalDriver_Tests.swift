@@ -85,6 +85,33 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
         XCTAssertTrue(mockRequestFactory.authorizationRequest.appSwitchPerformed)
     }
+    
+    func testAuthorization_whenBillingAgreementsEnabledInConfiguration_performsBillingAgreements() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline",
+                "billingAgreementsEnabled": true,
+                "currencyIsoCode": "GBP",
+            ] ])
+
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        payPalDriver.authorizeAccountWithCompletion { _ -> Void in
+        }
+        
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "GBP")
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
+    }
 
     func testAuthorizationRequest_byDefault_containsEmailAndFuturePaymentsScopes() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
