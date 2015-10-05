@@ -384,13 +384,14 @@
 				if ([payment respondsToSelector:@selector(shippingContact)]) {
 					paymentMethod.shippingContact = payment.shippingContact;
                     paymentMethod.billingContact = payment.billingContact;
-				} else {
+				}
+                
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-					paymentMethod.shippingAddress = payment.shippingAddress;
-					paymentMethod.billingAddress = payment.billingAddress;
+                // To ensure backwards compatibility with old iOS 8 code, always pass through the deprecated addresses, even on iOS 9 devices
+                paymentMethod.shippingAddress = payment.shippingAddress;
+                paymentMethod.billingAddress = payment.billingAddress;
 #pragma clang diagnostic pop
-				}
                 
                 successBlock([paymentMethod copy]);
             }
