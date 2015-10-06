@@ -924,6 +924,24 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
     }
     
+    func testBillingAgreement_whenAppSwitchSucceeds_tokenizesPayPalAccount() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
+        
+        payPalDriver.setBillingAgreementAppSwitchReturnBlock ({ _ -> Void in })
+        BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        let paypalAccount = lastPostParameters["paypal_account"] as! NSDictionary
+        XCTAssertEqual(paypalAccount, FakePayPalOneTouchCoreResult().response)
+    }
+    
     func testBillingAgreement_whenConfigurationHasCurrency_doesNotSendCurrencyViaPOSTParameters() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,

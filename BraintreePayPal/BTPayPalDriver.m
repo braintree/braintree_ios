@@ -314,7 +314,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                     
                     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
                     parameters[@"paypal_account"] = [result.response mutableCopy];
-                    parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
+                    
+                    if (paymentType == BTPayPalPaymentTypeCheckout) {
+                        parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
+                    }
                     if (self.clientMetadataId) {
                         parameters[@"correlation_id"] = self.clientMetadataId;
                     }
