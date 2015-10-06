@@ -80,7 +80,6 @@ static void (^appSwitchReturnBlock)(NSURL *url);
         if (configuration.isBillingAgreementsEnabled) {
             // Switch to Billing Agreements flow
             BTPayPalCheckoutRequest *checkout = [[BTPayPalCheckoutRequest alloc] init];
-            checkout.currencyCode = configuration.json[@"paypal"][@"currencyIsoCode"].asString;
             [self billingAgreementWithCheckoutRequest:checkout completion:completionBlock];
             return;
         }
@@ -230,8 +229,6 @@ static void (^appSwitchReturnBlock)(NSURL *url);
             return;
         }
 
-        NSString *currencyCode = checkoutRequest.currencyCode ?: configuration.json[@"paypal"][@"currencyIsoCode"].asString;
-
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         
         if (!isBillingAgreement) {
@@ -240,7 +237,10 @@ static void (^appSwitchReturnBlock)(NSURL *url);
             }
         }
         
-        if (currencyCode) {
+        // Currency code should only be used for Hermes Checkout (one-time payment). For BA, currency
+        // should not be used.
+        NSString *currencyCode = checkoutRequest.currencyCode ?: configuration.json[@"paypal"][@"currencyIsoCode"].asString;
+        if (!isBillingAgreement && currencyCode) {
             parameters[@"currency_iso_code"] = currencyCode;
         }
         

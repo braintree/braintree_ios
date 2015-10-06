@@ -108,7 +108,8 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             XCTFail()
             return
         }
-        XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "GBP")
+        // We want to make sure that currency is not used for Billing Agreements
+        XCTAssertTrue(lastPostParameters["currency_iso_code"] == nil)
         XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
     }
@@ -910,9 +911,49 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        payPalDriver.billingAgreementWithCheckoutRequest(BTPayPalCheckoutRequest()) { _ -> Void in }
+        
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
+    }
+    
+    func testBillingAgreement_whenConfigurationHasCurrency_doesNotSendCurrencyViaPOSTParameters() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline",
+                "currencyIsoCode": "GBP",
+            ] ])
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        
+        payPalDriver.billingAgreementWithCheckoutRequest(BTPayPalCheckoutRequest()) { _ -> Void in }
+        
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(lastPostParameters["currency_iso_code"] == nil)
+    }
+    
+    func testBillingAgreement_whenCheckoutRequestHasCurrency_doesNotSendCurrencyViaPOSTParameters() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         let checkoutRequest = BTPayPalCheckoutRequest()
         checkoutRequest.currencyCode = "GBP"
-        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        
         payPalDriver.billingAgreementWithCheckoutRequest(checkoutRequest) { _ -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
@@ -920,9 +961,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             XCTFail()
             return
         }
-        XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "GBP")
-        XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
-        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
+        XCTAssertTrue(lastPostParameters["currency_iso_code"] == nil)
     }
     
     func testBillingAgreement_whenSetupBillingAgreementCreationSuccessful_performsAppSwitch() {
