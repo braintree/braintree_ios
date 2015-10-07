@@ -71,7 +71,7 @@
 }
 
 - (IBAction)tappedCollectDyson {
-    self.dataLabel.text = [BTDataCollector payPalFraudID];
+    self.dataLabel.text = [BTDataCollector payPalClientMetadataId];
     self.progressBlock(@"Collected PayPal clientMetadataID!");
 }
 
