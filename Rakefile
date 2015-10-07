@@ -77,7 +77,6 @@ namespace :spec do
   end
 
   namespace :api do
-
     def with_https_server &block
       begin
         pid = Process.spawn('ruby ./IntegrationTests/Braintree-API-Integration-Specs/SSL/https_server.rb')

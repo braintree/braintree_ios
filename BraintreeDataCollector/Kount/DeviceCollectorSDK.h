@@ -1,9 +1,9 @@
 /**
  * @abstract Device Collector SDK for iOS
- * @discussion This SDK is used to implement the Dvice Collector in your 
+ * @discussion This SDK is used to implement the Device Collector in your
  * application.  Please read through all the documentation before implementing.
  *
- * Copyright (c) 2012-2013 Kount. All rights reserved.
+ * Copyright (c) 2012-2015 Kount. All rights reserved.
  */
 
 /**
@@ -63,7 +63,7 @@
   
 /**
  * @method onCollectorSuccess
- * @abstract Notfication that the collector finished successfully.
+ * @abstract Notification that the collector finished successfully.
  * @result void
  */
 - (void) onCollectorSuccess;
@@ -88,7 +88,7 @@
 /**
  * @method skipList
  * @abstract A list of collectors to skip
- * @param list An NSArray of  DC_COLLECOTOR_* define values
+ * @param list An NSArray of DC_COLLECTOR_* define values
  * @result void
  */
 @property (nonatomic, strong) NSArray *skipList;
@@ -145,3 +145,4 @@
  */
 - (void) setDelegate:(id<DeviceCollectorSDKDelegate>) delegate;
 @end // end @interface DeviceCollectorSDK
+
