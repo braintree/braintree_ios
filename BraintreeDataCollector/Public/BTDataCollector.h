@@ -9,6 +9,25 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Provides status updates from a BTDataCollector instance.
+/// At this time, updates will only be sent for card fraud data (from Kount).
+@protocol BTDataCollectorDelegate <NSObject>
+@optional
+
+/// The collector has started.
+- (void)onCollectorStart;
+
+/// The collector finished successfully.
+- (void)onCollectorSuccess;
+
+/// An error occurred.
+///
+/// @param errorCode Error code
+/// @param error Triggering error if available
+- (void)onCollectorError:(int)errorCode
+               withError:(NSError *)error;
+@end
+
 @interface BTDataCollector : NSObject
 
 /// Initializes a `BTDataCollector` instance for an environment.
@@ -28,52 +47,81 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// This should be used when the user is paying with a card.
 ///
-/// @param completionBlock A callback block that gets invoked when fraud data collection has finished. It
-///                        returns fraud data to send to your server when successful, or an error when it fails.
-- (void)collectCardFraudData:(nullable void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
+/// For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
+/// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
+/// Normal response time is less than 1 second, and it should never take more than 10 seconds.
+///
+/// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
+/// calling it e.g. when the customer initiates checkout should also be fine.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
+///         This JSON serialized string contains the merchant ID and session ID.
+- (NSString *)collectCardFraudData;
 
 
 /// Collects device data using your own merchant ID and a custom collector URL.
 ///
 /// This should be used when the user is paying with a card.
 ///
-/// @param completionBlock A callback block that gets invoked when fraud data collection has finished. It
-///                        returns fraud data to send to your server when successful, or an error when it fails.
-- (void)collectCardFraudDataWithMerchantID:(NSString *)merchantID
-                              collectorURL:(NSString *)collectorURL
-                                completion:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
+/// For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
+/// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
+/// Normal response time is less than 1 second, and it should never take more than 10 seconds.
+///
+/// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
+/// calling it e.g. when the customer initiates checkout should also be fine.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
+///         This JSON serialized string contains the merchant ID and session ID.
+- (NSString *)collectCardFraudDataWithMerchantID:(NSString *)merchantID
+                                    collectorURL:(NSString *)collectorURL;
 
 
 /// Collects device data using Kount and PayPal. Uses the default merchant ID and collector URL for Kount.
 ///
 /// This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
-/// use `-collectCardFraudData:`. To collect data for PayPal, use `+payPalFraudID`. When possible, you should
-/// avoid using Kount when processing a PayPal transaction because it expends bandwidth and storage unnecessarily.
+/// use `-collectCardFraudData`. To collect data for PayPal, use `+payPalFraudID`.
 ///
-/// @param completionBlock An optional callback block that gets invoked when fraud data collection has finished.
-///                        When successful, you should send the deviceData identifier to your server.
-///                        On failure, you may receive an error.
+/// For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
+/// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
+/// Normal response time is less than 1 second, and it should never take more than 10 seconds.
 ///
-/// @return a deviceData string that should be passed into server-side calls, such as Transaction.create.
-///         If data is already being collected, this method returns nil.
-- (NSString *)collectFraudData:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
+/// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
+/// calling it e.g. when the customer initiates checkout should also be fine.
+///
+/// Store the return value as deviceData to use with debit/credit card transactions on your server,
+/// e.g. with `Transaction.sale`.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
+///         This JSON serialized string contains the merchant ID, session ID, and the PayPal fraud ID (if PayPal is available).
+- (NSString *)collectFraudData;
 
 
 /// Collects device data using Kount and PayPal. Uses your own merchant ID and collector URL for Kount.
 ///
 /// This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
-/// use `-collectCardFraudData:`. To collect data for PayPal, use `+payPalFraudID`. When possible, you should
-/// avoid using Kount when processing a PayPal transaction because it expends bandwidth and storage unnecessarily.
+/// use `-collectCardFraudData:`. To collect data for PayPal, use `+payPalFraudID`.
 ///
-/// @param completionBlock A callback block that gets invoked when fraud data collection has finished.
-///                        When successful, you should send the deviceData identifier to your server.
-///                        On failure, you may receive an error.
+/// For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
+/// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
+/// Normal response time is less than 1 second, and it should never take more than 10 seconds.
 ///
-/// @return a deviceData string that should be passed into server-side calls, such as Transaction.create.
+/// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
+/// calling it e.g. when the customer initiates checkout should also be fine.
+///
+/// Store the return value as deviceData to use with debit/credit card transactions on your server,
+/// e.g. with `Transaction.sale`.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
 ///         If data is already being collected, this method returns nil.
+///         If you need to collect device data repeatedly, create a new BTDataCollector instance.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
+///         This JSON serialized string contains the merchant ID, session ID, and the PayPal fraud ID (if PayPal is available).
 - (NSString *)collectFraudDataWithMerchantID:(NSString *)merchantID
-                                collectorURL:(NSString *)collectorURL
-                                  completion:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock;
+                                collectorURL:(NSString *)collectorURL;
+
+/// @see BTDataCollectorDelegate protocol declaration
+@property (nonatomic, weak) id<BTDataCollectorDelegate> delegate;
 
 @end
 
