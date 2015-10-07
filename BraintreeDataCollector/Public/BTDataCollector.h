@@ -86,13 +86,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// Provides status updates from a BTDataCollector instance.
 /// At this time, updates will only be sent for card fraud data (from Kount).
 @protocol BTDataCollectorDelegate <NSObject>
+
+/// The collector finished successfully.
+///
+/// Use this delegate method if, due to fraud, you want to wait
+/// until collection completes before performing a transaction.
+///
+/// This method is required because there's no reason to implement BTDataCollectorDelegate without this method.
+- (void)dataCollectorDidComplete:(BTDataCollector *)dataCollector;
+
 @optional
 
 /// The collector has started.
 - (void)dataCollectorDidStart:(BTDataCollector *)dataCollector;
-
-/// The collector finished successfully.
-- (void)dataCollectorDidComplete:(BTDataCollector *)dataCollector;
 
 /// An error occurred.
 ///

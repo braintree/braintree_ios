@@ -83,21 +83,20 @@
 #pragma mark - BTDataCollectorDelegate
 
 /// The collector has started.
-- (void)onCollectorStart {
-    self.progressBlock(@"Received onCollectorStart...");
+- (void)dataCollectorDidStart:(__unused BTDataCollector *)dataCollector {
+    self.progressBlock(@"Data collector did start...");
 }
 
 /// The collector finished successfully.
-- (void)onCollectorSuccess {
-    self.progressBlock(@"Received onCollectorSuccess.");
+- (void)dataCollectorDidComplete:(__unused BTDataCollector *)dataCollector {
+    self.progressBlock(@"Data collector did complete.");
 }
 
 /// An error occurred.
 ///
 /// @param errorCode Error code
 /// @param error Triggering error if available
-- (void)onCollectorError:(int)errorCode
-               withError:(NSError *)error {
+- (void)dataCollector:(__unused BTDataCollector *)dataCollector didFailWithErrorCode:(int)errorCode error:(NSError *)error {
     self.progressBlock(@"Error collecting data.");
     NSLog(@"Error collecting data. errorCode = %d, error = %@", errorCode, error);
 }
