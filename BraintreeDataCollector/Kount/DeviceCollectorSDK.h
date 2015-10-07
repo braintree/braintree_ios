@@ -145,3 +145,4 @@
  */
 - (void) setDelegate:(id<DeviceCollectorSDKDelegate>) delegate;
 @end // end @interface DeviceCollectorSDK
+
