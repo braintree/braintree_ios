@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## master
+
+* Update Kount DeviceCollectorSDK to v2.6.2 to [fix #175](https://github.com/braintree/braintree_ios/issues/175) (thanks, @keith)
+
 ## 3.9.5 (2015-10-5)
 
 * Add runtime checks before using new features in Apple Pay iOS 9
