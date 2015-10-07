@@ -1,7 +1,7 @@
 //
 //  PayPalOneTouchRequest.h
 //
-//  Version 3.2.0
+//  Version 3.2.1
 //
 //  Copyright (c) 2015 PayPal Inc. All rights reserved.
 //
@@ -106,6 +106,8 @@ extern NSString *const PayPalEnvironmentMock;
 
 /// Request approval of a payment
 @interface PayPalOneTouchCheckoutRequest : PayPalOneTouchRequest
+
+@property (nonatomic, strong) NSString *pairingId;
 
 /// Factory method. Non-empty values for all parameters MUST be provided.
 ///

@@ -9,6 +9,7 @@
                                         callbackURLScheme:(NSString *)callbackURLScheme
 {
     return [PayPalOneTouchCheckoutRequest requestWithApprovalURL:approvalURL
+                                                       pairingId:[PayPalOneTouchRequest tokenFromApprovalURL:approvalURL]
                                                         clientID:clientID
                                                      environment:environment
                                                callbackURLScheme:callbackURLScheme];
