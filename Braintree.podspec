@@ -26,7 +26,8 @@ Pod::Spec.new do |s|
   s.subspec "Core" do |s|
     s.source_files  = "BraintreeCore/**/*.{h,m}"
     s.public_header_files = "BraintreeCore/Public/*.h"
-    s.frameworks = "AddressBook", "Contacts"
+    s.frameworks = "AddressBook"
+    s.weak_frameworks = "Contacts"
   end
 
   s.subspec "Apple-Pay" do |s|
