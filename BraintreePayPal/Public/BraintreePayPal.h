@@ -16,4 +16,3 @@ FOUNDATION_EXPORT const unsigned char BraintreePayPalVersionString[];
 #import "BTPayPalCheckoutRequest.h"
 #import "BTPayPalDriver.h"
 #import "BTTokenizedPayPalAccount.h"
-#import "BTTokenizedPayPalCheckout.h"

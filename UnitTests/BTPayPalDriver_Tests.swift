@@ -6,7 +6,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
     var mockAPIClient : MockAPIClient = MockAPIClient(clientKey: "development_client_key")!
     var observers : [NSObjectProtocol] = []
-    let ValidClientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiI3ODJhZmFlNDJlZTNiNTA4NWUxNmMzYjhkZTY3OGQxNTJhODFlYzk5MTBmZDNhY2YyYWU4MzA2OGI4NzE4YWZhfGNyZWF0ZWRfYXQ9MjAxNS0wOC0yMFQwMjoxMTo1Ni4yMTY1NDEwNjErMDAwMFx1MDAyNmN1c3RvbWVyX2lkPTM3OTU5QTE5LThCMjktNDVBNC1CNTA3LTRFQUNBM0VBOEM4Nlx1MDAyNm1lcmNoYW50X2lkPWRjcHNweTJicndkanIzcW5cdTAwMjZwdWJsaWNfa2V5PTl3d3J6cWszdnIzdDRuYzgiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzL2RjcHNweTJicndkanIzcW4vY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIn0sInRocmVlRFNlY3VyZUVuYWJsZWQiOnRydWUsInRocmVlRFNlY3VyZSI6eyJsb29rdXBVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi90aHJlZV9kX3NlY3VyZS9sb29rdXAifSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRBY2NvdW50SWQiOiJzdGNoMm5mZGZ3c3p5dHc1IiwiY3VycmVuY3lJc29Db2RlIjoiVVNEIn0sImNvaW5iYXNlRW5hYmxlZCI6dHJ1ZSwiY29pbmJhc2UiOnsiY2xpZW50SWQiOiIxMWQyNzIyOWJhNThiNTZkN2UzYzAxYTA1MjdmNGQ1YjQ0NmQ0ZjY4NDgxN2NiNjIzZDI1NWI1NzNhZGRjNTliIiwibWVyY2hhbnRBY2NvdW50IjoiY29pbmJhc2UtZGV2ZWxvcG1lbnQtbWVyY2hhbnRAZ2V0YnJhaW50cmVlLmNvbSIsInNjb3BlcyI6ImF1dGhvcml6YXRpb25zOmJyYWludHJlZSB1c2VyIiwicmVkaXJlY3RVcmwiOiJodHRwczovL2Fzc2V0cy5icmFpbnRyZWVnYXRld2F5LmNvbS9jb2luYmFzZS9vYXV0aC9yZWRpcmVjdC1sYW5kaW5nLmh0bWwiLCJlbnZpcm9ubWVudCI6Im1vY2sifSwibWVyY2hhbnRJZCI6ImRjcHNweTJicndkanIzcW4iLCJ2ZW5tbyI6Im9mZmxpbmUiLCJhcHBsZVBheSI6eyJzdGF0dXMiOiJtb2NrIiwiY291bnRyeUNvZGUiOiJVUyIsImN1cnJlbmN5Q29kZSI6IlVTRCIsIm1lcmNoYW50SWRlbnRpZmllciI6Im1lcmNoYW50LmNvbS5icmFpbnRyZWVwYXltZW50cy5zYW5kYm94LkJyYWludHJlZS1EZW1vIiwic3VwcG9ydGVkTmV0d29ya3MiOlsidmlzYSIsIm1hc3RlcmNhcmQiLCJhbWV4Il19fQ==";
+    let ValidClientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiI3ODJhZmFlNDJlZTNiNTA4NWUxNmMzYjhkZTY3OGQxNTJhODFlYzk5MTBmZDNhY2YyYWU4MzA2OGI4NzE4YWZhfGNyZWF0ZWRfYXQ9MjAxNS0wOC0yMFQwMjoxMTo1Ni4yMTY1NDEwNjErMDAwMFx1MDAyNmN1c3RvbWVyX2lkPTM3OTU5QTE5LThCMjktNDVBNC1CNTA3LTRFQUNBM0VBOEM4Nlx1MDAyNm1lcmNoYW50X2lkPWRjcHNweTJicndkanIzcW5cdTAwMjZwdWJsaWNfa2V5PTl3d3J6cWszdnIzdDRuYzgiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzL2RjcHNweTJicndkanIzcW4vY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIn0sInRocmVlRFNlY3VyZUVuYWJsZWQiOnRydWUsInRocmVlRFNlY3VyZSI6eyJsb29rdXBVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi90aHJlZV9kX3NlY3VyZS9sb29rdXAifSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRBY2NvdW50SWQiOiJzdGNoMm5mZGZ3c3p5dHc1IiwiY3VycmVuY3lJc29Db2RlIjoiVVNEIn0sImNvaW5iYXNlRW5hYmxlZCI6dHJ1ZSwiY29pbmJhc2UiOnsiY2xpZW50SWQiOiIxMWQyNzIyOWJhNThiNTZkN2UzYzAxYTA1MjdmNGQ1YjQ0NmQ0ZjY4NDgxN2NiNjIzZDI1NWI1NzNhZGRjNTliIiwibWVyY2hhbnRBY2NvdW50IjoiY29pbmJhc2UtZGV2ZWxvcG1lbnQtbWVyY2hhbnRAZ2V0YnJhaW50cmVlLmNvbSIsInNjb3BlcyI6ImF1dGhvcml6YXRpb25zOmJyYWludHJlZSB1c2VyIiwicmVkaXJlY3RVcmwiOiJodHRwczovL2Fzc2V0cy5icmFpbnRyZWVnYXRld2F5LmNvbS9jb2luYmFzZS9vYXV0aC9yZWRpcmVjdC1sYW5kaW5nLmh0bWwiLCJlbnZpcm9ubWVudCI6Im1vY2sifSwibWVyY2hhbnRJZCI6ImRjcHNweTJicndkanIzcW4iLCJ2ZW5tbyI6Im9mZmxpbmUiLCJhcHBsZVBheSI6eyJzdGF0dXMiOiJtb2NrIiwiY291bnRyeUNvZGUiOiJVUyIsImN1cnJlbmN5Q29kZSI6IlVTRCIsIm1lcmNoYW50SWRlbnRpZmllciI6Im1lcmNoYW50LmNvbS5icmFpbnRyZWVwYXltZW50cy5zYW5kYm94LkJyYWludHJlZS1EZW1vIiwic3VwcG9ydGVkTmV0d29ya3MiOlsidmlzYSIsIm1hc3RlcmNhcmQiLCJhbWV4Il19fQ=="
 
 
     override func setUp() {
@@ -84,6 +84,34 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
         waitForExpectationsWithTimeout(2, handler: nil)
         XCTAssertTrue(mockRequestFactory.authorizationRequest.appSwitchPerformed)
+    }
+    
+    func testAuthorization_whenBillingAgreementsEnabledInConfiguration_performsBillingAgreements() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline",
+                "billingAgreementsEnabled": true,
+                "currencyIsoCode": "GBP",
+            ] ])
+
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        payPalDriver.authorizeAccountWithCompletion { _ -> Void in
+        }
+        
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        // We want to make sure that currency is not used for Billing Agreements
+        XCTAssertTrue(lastPostParameters["currency_iso_code"] == nil)
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
     }
 
     func testAuthorizationRequest_byDefault_containsEmailAndFuturePaymentsScopes() {
@@ -324,13 +352,13 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                 XCTAssertEqual(tokenizedPayPalAccount!.paymentMethodNonce, "a-nonce")
                 XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.recipientName!, "Foo Bar")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.streetAddress, "1 Foo Ct")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.extendedAddress!, "Apt Bar")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.locality, "Fubar")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.region!, "FU")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.postalCode!, "42")
-                XCTAssertEqual(tokenizedPayPalAccount!.accountAddress!.countryCodeAlpha2, "USA")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.recipientName!, "Foo Bar")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.streetAddress, "1 Foo Ct")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.extendedAddress!, "Apt Bar")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.locality, "Fubar")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.region!, "FU")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.postalCode!, "42")
+                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.countryCodeAlpha2, "USA")
         })
     }
 
@@ -552,7 +580,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTAssertNil(tokenizedCheckout)
             XCTAssertNil(error)
             continuationExpectation.fulfill()
-        }, isBillingAgreement: false);
+        })
 
         BTPayPalDriver.handleAppSwitchReturnURL(returnURL)
 
@@ -575,7 +603,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTAssertNil(tokenizedCheckout)
             XCTAssertEqual(error!, BTPayPalDriver.payPalClass().cannedResult()?.error!)
             continuationExpectation.fulfill()
-            }, isBillingAgreement: false);
+            })
 
         BTPayPalDriver.handleAppSwitchReturnURL(returnURL)
 
@@ -588,7 +616,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
 
-        payPalDriver.setCheckoutAppSwitchReturnBlock ({ _ -> Void in }, isBillingAgreement: false);
+        payPalDriver.setCheckoutAppSwitchReturnBlock ({ _ -> Void in })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -611,7 +639,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
 
-        payPalDriver.setCheckoutAppSwitchReturnBlock ({ _ -> Void in }, isBillingAgreement: false);
+        payPalDriver.setCheckoutAppSwitchReturnBlock ({ _ -> Void in })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -633,7 +661,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             }
             XCTAssertEqual(error, fakeError)
             expectation.fulfill()
-        }, isBillingAgreement: false);
+        })
 
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
@@ -748,7 +776,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         stubPayPalClass.cannedResult()?.cannedType = .Success
         stubPayPalClass.setCannedIsWalletAppAvailable(true)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
-        payPalDriver.setCheckoutAppSwitchReturnBlock ({ _ -> Void in }, isBillingAgreement: false);
+        payPalDriver.setCheckoutAppSwitchReturnBlock ({ _ -> Void in })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -769,7 +797,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         stubPayPalClass.cannedResult()?.cannedType = .Success
         stubPayPalClass.setCannedIsWalletAppAvailable(false)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
-        payPalDriver.setCheckoutAppSwitchReturnBlock ({ _ -> Void in }, isBillingAgreement: false);
+        payPalDriver.setCheckoutAppSwitchReturnBlock ({ _ -> Void in })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -785,7 +813,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
     // MARK: Helpers
 
-    func assertSuccessfulCheckoutResponse(response: [String:AnyObject], assertionBlock: (BTTokenizedPayPalCheckout?, NSError?) -> Void) {
+    func assertSuccessfulCheckoutResponse(response: [String:AnyObject], assertionBlock: (BTTokenizedPayPalAccount?, NSError?) -> Void) {
         mockAPIClient.cannedResponseBody = BTJSON(value: response)
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
@@ -793,7 +821,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         payPalDriver.setCheckoutAppSwitchReturnBlock ({ (tokenizedPayPalCheckout, error) -> Void in
             assertionBlock(tokenizedPayPalCheckout, error)
-        }, isBillingAgreement: false);
+        })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
     }
 
@@ -883,9 +911,67 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        payPalDriver.billingAgreementWithCheckoutRequest(BTPayPalCheckoutRequest()) { _ -> Void in }
+        
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
+        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
+    }
+    
+    func testBillingAgreement_whenAppSwitchSucceeds_tokenizesPayPalAccount() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
+        
+        payPalDriver.setBillingAgreementAppSwitchReturnBlock ({ _ -> Void in })
+        BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
+        
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        let paypalAccount = lastPostParameters["paypal_account"] as! NSDictionary
+        XCTAssertEqual(paypalAccount, FakePayPalOneTouchCoreResult().response)
+    }
+    
+    func testBillingAgreement_whenConfigurationHasCurrency_doesNotSendCurrencyViaPOSTParameters() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline",
+                "currencyIsoCode": "GBP",
+            ] ])
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        
+        payPalDriver.billingAgreementWithCheckoutRequest(BTPayPalCheckoutRequest()) { _ -> Void in }
+        
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(lastPostParameters["currency_iso_code"] == nil)
+    }
+    
+    func testBillingAgreement_whenCheckoutRequestHasCurrency_doesNotSendCurrencyViaPOSTParameters() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         let checkoutRequest = BTPayPalCheckoutRequest()
         checkoutRequest.currencyCode = "GBP"
-        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        
         payPalDriver.billingAgreementWithCheckoutRequest(checkoutRequest) { _ -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
@@ -893,9 +979,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             XCTFail()
             return
         }
-        XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "GBP")
-        XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
-        XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
+        XCTAssertTrue(lastPostParameters["currency_iso_code"] == nil)
     }
     
     func testBillingAgreement_whenSetupBillingAgreementCreationSuccessful_performsAppSwitch() {
@@ -1004,7 +1088,7 @@ class BTPayPalDriver_DropIn_Tests: XCTestCase {
     func testDropInViewDelegateSet() {
         let dropInViewController = BTDropInViewController(APIClient: mockAPIClient)
 
-        var paymentButton :BTPaymentButton? = nil;
+        var paymentButton : BTPaymentButton? = nil
         for subView in dropInViewController.view.subviews.first!.subviews.first!.subviews {
             if let view = subView as? BTPaymentButton {
                 paymentButton = view

@@ -9,7 +9,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Checkout (Single Payments)
 ///
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
-- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalCheckout * _Nullable tokenizedCheckout, NSError * _Nullable error))completionBlock isBillingAgreement:(BOOL)isBillingAgreement;
+- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedCheckout, NSError * _Nullable error))completionBlock;
+
+/// Set up the callback to be invoked on return from browser or app switch for PayPal Billing Agreement (Vault Flow)
+///
+/// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
+- (void)setBillingAgreementAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
 
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Authorization (Future Payments)
 ///

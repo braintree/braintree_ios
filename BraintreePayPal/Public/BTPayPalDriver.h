@@ -4,7 +4,6 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 #import "BTTokenizedPayPalAccount.h"
-#import "BTTokenizedPayPalCheckout.h"
 #import "BTPayPalCheckoutRequest.h"
 #import <Foundation/Foundation.h>
 
@@ -67,7 +66,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// Regardless of the type or target, all of these user experiences take full advantage of One Touch. This
 /// means that users may bypass the username/password entry screen when they are already logged in.
 ///
-/// Upon successful completion, you will receive a `BTTokenizedPayPalAccount` or `BTTokenizedPayPalCheckout`,
+/// Upon successful completion, you will receive a `BTTokenizedPayPalAccount` or `BTTokenizedPayPalAccount`,
 /// which includes user-facing details and a payment method nonce, which you must pass to your server in
 /// order to create a transaction or save the authorization in the Braintree vault (not possible with
 /// Checkout).
@@ -134,10 +133,10 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// Braintree transaction from your server in order to actually move money!
 ///
 /// @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
-/// On success, you will receive an instance of `BTTokenizedPayPalCheckout`; on failure, an error; on user cancellation,
+/// On success, you will receive an instance of `BTTokenizedPayPalAccount`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
 - (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
-                         completion:(void (^)(BTTokenizedPayPalCheckout * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error))completionBlock;
+                         completion:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error))completionBlock;
 
 /// Check out with PayPal to create a Billing Agreement PayPal payment method nonce.
 ///
@@ -148,10 +147,10 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// Braintree transaction from your server in order to actually move money!
 ///
 /// @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
-/// On success, you will receive an instance of `BTTokenizedPayPalCheckout`; on failure, an error; on user cancellation,
+/// On success, you will receive an instance of `BTTokenizedPayPalAccount`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
 - (void)billingAgreementWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
-                         completion:(void (^)(BTTokenizedPayPalCheckout * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error))completionBlock;
+                         completion:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error))completionBlock;
 
 
 #pragma mark - Delegate
