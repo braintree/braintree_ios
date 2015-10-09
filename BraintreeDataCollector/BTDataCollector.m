@@ -56,32 +56,34 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
 /// we can modify this method to include a clientMetadataID without breaking the public interface.
 - (NSString *)collectCardFraudData
 {
-    NSString *deviceSessionId = [self sessionId];
-    NSMutableDictionary *dataDictionary = [NSMutableDictionary dictionaryWithDictionary:@{ @"device_session_id": deviceSessionId,
-                                                                                           @"fraud_merchant_id": self.fraudMerchantId
-                                                                                           }];
-    NSError *error;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&error];
-    if (!data) {
-        NSLog(@"ERROR: Failed to create deviceData string, error = %@", error);
-        return @"";
-    }
-    
-    [self.kount collect:deviceSessionId];
-    
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return [self collectFraudDataForCard:YES forPayPal:NO];
 }
 
-/// Similar to `collectCardFraudData` but with the addition of the payPalFraudID, if available.
+- (NSString *)collectPayPalClientMetadataId
+{
+    return [self collectFraudDataForCard:NO forPayPal:YES];
+}
+
+/// Similar to `collectCardFraudData` but with the addition of the payPalClientMetadataId, if available.
 - (NSString *)collectFraudData
 {
-    NSString *deviceSessionId = [self sessionId];
-    NSMutableDictionary *dataDictionary = [NSMutableDictionary dictionaryWithDictionary:@{ @"device_session_id": deviceSessionId,
-                                                                                           @"fraud_merchant_id": self.fraudMerchantId
-                                                                                           }];
-    NSString *payPalClientMetadataId = [BTDataCollector payPalClientMetadataId];
-    if (payPalClientMetadataId) {
-        dataDictionary[@"correlation_id"] = payPalClientMetadataId;
+    return [self collectFraudDataForCard:YES forPayPal:YES];
+}
+
+- (NSString *)collectFraudDataForCard:(BOOL)includeCard forPayPal:(BOOL)includePayPal
+{
+    NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
+    if (includeCard) {
+        NSString *deviceSessionId = [self sessionId];
+        dataDictionary[@"device_session_id"] = deviceSessionId;
+        dataDictionary[@"fraud_merchant_id"] = self.fraudMerchantId;
+        [self.kount collect:deviceSessionId];
+    }
+    if (includePayPal) {
+        NSString *payPalClientMetadataId = [BTDataCollector payPalClientMetadataId];
+        if (payPalClientMetadataId) {
+            dataDictionary[@"correlation_id"] = payPalClientMetadataId;
+        }
     }
     
     NSError *error;
@@ -90,8 +92,6 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
         NSLog(@"ERROR: Failed to create deviceData string, error = %@", error);
         return @"";
     }
-    
-    [self.kount collect:deviceSessionId];
     
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }

@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return A PayPal fraud ID
 + (nullable NSString *)payPalClientMetadataId;
 
-/// Collects device data.
+/// Collects device data for Kount.
 ///
 /// This should be used when the user is paying with a card.
 ///
@@ -44,6 +44,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
 ///         This JSON serialized string contains the merchant ID and session ID.
 - (NSString *)collectCardFraudData;
+
+/// Collects device data for PayPal.
+///
+/// This should be used when the user is paying with PayPal only.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`,
+///         for PayPal transactions. This JSON serialized string contains a PayPal fraud ID.
+- (NSString *)collectPayPalClientMetadataId;
 
 /// Collects device data using Kount and PayPal.
 ///
