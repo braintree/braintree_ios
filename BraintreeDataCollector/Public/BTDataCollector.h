@@ -11,6 +11,8 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString * const BTDataCollectorKountErrorDomain;
+
 /// BTDataCollector - Braintree's advanced fraud protection solution
 @interface BTDataCollector : NSObject
 
@@ -112,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @param errorCode Error code
 /// @param error Triggering error if available
-- (void)dataCollector:(BTDataCollector *)dataCollector didFailWithErrorCode:(int)errorCode error:(NSError *)error;
+- (void)dataCollector:(BTDataCollector *)dataCollector didFailWithError:(NSError *)error;
 
 @end
 

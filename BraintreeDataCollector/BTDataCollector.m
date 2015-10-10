@@ -11,6 +11,8 @@
 
 static NSString *BTDataCollectorSharedMerchantId = @"600000";
 
+NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDataCollectorKountErrorDomain";
+
 #pragma mark - Initialization and setup
 
 - (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment {
@@ -152,8 +154,33 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
 /// @param error Triggering error if available
 - (void)onCollectorError:(int)errorCode
                withError:(NSError*)error {
-    if ([self.delegate respondsToSelector:@selector(dataCollector:didFailWithErrorCode:error:)]) {
-        [self.delegate dataCollector:self didFailWithErrorCode:errorCode error:error];
+    if (error == nil) {
+        error = [NSError errorWithDomain:BTDataCollectorKountErrorDomain
+                                    code:errorCode
+                                userInfo:@{
+                                           NSLocalizedDescriptionKey: @"An error occurred",
+                                           NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:@"Kount data collector failed: %@", [self failureReasonForKountErrorCode:errorCode]] }];
+    }
+
+    if ([self.delegate respondsToSelector:@selector(dataCollector:didFailWithError:)]) {
+        [self.delegate dataCollector:self didFailWithError:error];
+    }
+}
+
+- (NSString *)failureReasonForKountErrorCode:(int)errorCode {
+    switch (errorCode) {
+        case DC_ERR_NONETWORK:
+            return @"Network access not available";
+        case DC_ERR_INVALID_URL:
+            return @"Invalid collector URL";
+        case DC_ERR_INVALID_MERCHANT:
+            return @"Invalid merchant ID";
+        case DC_ERR_INVALID_SESSION:
+            return @"Invalid session ID";
+        case DC_ERR_VALIDATION_FAILURE:
+            return @"Session validation failure";
+        default:
+            return @"Unknown error";
     }
 }
 
