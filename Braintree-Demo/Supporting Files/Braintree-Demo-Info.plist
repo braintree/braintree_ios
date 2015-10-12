@@ -70,24 +70,8 @@
 	<dict>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>api.braintreegateway.com</key>
-			<dict>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-			</dict>
-			<key>kaptcha.com</key>
-			<dict>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSTemporaryExceptionMinimumTLSVersion</key>
-				<string>TLSv1.0</string>
-			</dict>
 			<key>localhost</key>
 			<dict>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
