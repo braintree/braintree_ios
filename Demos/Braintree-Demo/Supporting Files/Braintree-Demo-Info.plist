@@ -41,7 +41,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.9.6</string>
+	<string>3.9.5</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -56,7 +56,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3.9.6</string>
+	<string>3.9.5</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>com.venmo.touch.v1</string>
@@ -66,6 +66,17 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
