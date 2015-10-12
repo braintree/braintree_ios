@@ -4,10 +4,15 @@
 
 @interface BTPayPalRequestFactory : NSObject
 
-- (PayPalOneTouchCheckoutRequest *)requestWithApprovalURL:(NSURL *)approvalURL
-                                                 clientID:(NSString *)clientID
-                                              environment:(NSString *)environment
-                                        callbackURLScheme:(NSString *)callbackURLScheme;
+- (PayPalOneTouchCheckoutRequest *)checkoutRequestWithApprovalURL:(NSURL *)approvalURL
+                                                         clientID:(NSString *)clientID
+                                                      environment:(NSString *)environment
+                                                callbackURLScheme:(NSString *)callbackURLScheme;
+
+- (PayPalOneTouchBillingAgreementRequest *)billingAgreementRequestWithApprovalURL:(NSURL *)approvalURL
+                                                                         clientID:(NSString *)clientID
+                                                                      environment:(NSString *)environment
+                                                                callbackURLScheme:(NSString *)callbackURLScheme;
 
 - (PayPalOneTouchAuthorizationRequest *)requestWithScopeValues:(NSSet *)scopeValues
                                                     privacyURL:(NSURL *)privacyURL
