@@ -241,9 +241,13 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                           if (completionBlock) completionBlock(nil, error);
                           return;
                       }
-                      
-                      [self setCheckoutAppSwitchReturnBlock:completionBlock];
-                      
+
+                      if (isBillingAgreement) {
+                          [self setBillingAgreementAppSwitchReturnBlock:completionBlock];
+                      } else {
+                          [self setCheckoutAppSwitchReturnBlock:completionBlock];
+                      }
+
                       NSString *payPalClientID = configuration.json[@"paypal"][@"clientId"].asString;
                       
                       if (!payPalClientID && [self payPalEnvironmentForRemoteConfiguration:configuration.json] == PayPalEnvironmentMock) {
