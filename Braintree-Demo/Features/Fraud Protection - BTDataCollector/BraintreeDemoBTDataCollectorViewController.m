@@ -94,11 +94,10 @@
 
 /// An error occurred.
 ///
-/// @param errorCode Error code
-/// @param error Triggering error if available
-- (void)dataCollector:(__unused BTDataCollector *)dataCollector didFailWithErrorCode:(int)errorCode error:(NSError *)error {
+/// @param error Triggering error
+- (void)dataCollector:(__unused BTDataCollector *)dataCollector didFailWithError:(NSError *)error {
     self.progressBlock(@"Error collecting data.");
-    NSLog(@"Error collecting data. errorCode = %d, error = %@", errorCode, error);
+    NSLog(@"Error collecting data. error = %@", error);
 }
 
 @end

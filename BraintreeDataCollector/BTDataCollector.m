@@ -158,8 +158,8 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
         error = [NSError errorWithDomain:BTDataCollectorKountErrorDomain
                                     code:errorCode
                                 userInfo:@{
-                                           NSLocalizedDescriptionKey: @"An error occurred",
-                                           NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:@"Kount data collector failed: %@", [self failureReasonForKountErrorCode:errorCode]] }];
+                                           NSLocalizedDescriptionKey: @"Failed to send data",
+                                           NSLocalizedFailureReasonErrorKey: [self failureReasonForKountErrorCode:errorCode]}];
     }
 
     if ([self.delegate respondsToSelector:@selector(dataCollector:didFailWithError:)]) {

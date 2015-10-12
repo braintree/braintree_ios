@@ -112,8 +112,9 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 
 /// An error occurred.
 ///
-/// @param errorCode Error code
-/// @param error Triggering error if available
+/// @param error Triggering error. If the error domain is BTDataCollectorKountErrorDomain, then the
+///              errorCode is a Kount error code. See error.userInfo[NSLocalizedFailureReasonErrorKey]
+///              for the cause of the failure.
 - (void)dataCollector:(BTDataCollector *)dataCollector didFailWithError:(NSError *)error;
 
 @end
