@@ -996,7 +996,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.billingAgreementWithCheckoutRequest(request) { _ -> Void in }
         
         self.waitForExpectationsWithTimeout(2, handler: nil)
-        XCTAssertTrue(mockRequestFactory.checkoutRequest.appSwitchPerformed)
+        XCTAssertTrue(mockRequestFactory.billingAgreementRequest.appSwitchPerformed)
     }
     
     func testBillingAgreement_whenSetupBillingAgreementCreationFails_callsBackWithError() {

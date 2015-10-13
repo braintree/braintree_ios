@@ -127,6 +127,28 @@ static BOOL cannedIsWalletAppAvailable = YES;
 
 @end
 
+#pragma mark - FakePayPalBillingAgreementRequest
+
+@implementation FakePayPalBillingAgreementRequest
+
+- (instancetype)init {
+    if (self = [super init]) {
+        _cannedError = nil;
+        _cannedTarget = PayPalOneTouchRequestTargetBrowser;
+        _cannedSuccess = YES;
+        _cannedMetadataId = @"fake-canned-metadata-id";
+    }
+    return self;
+}
+
+//TODO do something different here since its an adapter block?
+- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
+    self.appSwitchPerformed = YES;
+    adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"canned"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
+}
+
+@end
+
 #pragma mark - FakePayPalRequestFactory
 
 @implementation FakePayPalRequestFactory
@@ -135,6 +157,7 @@ static BOOL cannedIsWalletAppAvailable = YES;
     if (self = [super init]) {
         _authorizationRequest = [[FakePayPalAuthorizationRequest alloc] init];
         _checkoutRequest = [[FakePayPalCheckoutRequest alloc] init];
+        _billingAgreementRequest = [[FakePayPalBillingAgreementRequest alloc] init];
     }
     return self;
 }
