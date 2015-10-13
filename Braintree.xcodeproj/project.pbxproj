@@ -237,9 +237,6 @@
 		417405871BB0875E008A5DEA /* BraintreeDemoCreditCardEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A76B19F21B79708900452CFA /* BraintreeDemoCreditCardEntryViewController.xib */; };
 		417405881BB0875E008A5DEA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A76B19AA1B79708900452CFA /* Main.storyboard */; };
 		417405891BB0875E008A5DEA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A76B1A061B79708A00452CFA /* InfoPlist.strings */; };
-		4174059C1BB087F4008A5DEA /* Three-D-Secure.strings in Resources */ = {isa = PBXBuildFile; fileRef = A79AFA4A1B56F822007B1DF1 /* Three-D-Secure.strings */; };
-		4174059D1BB087F4008A5DEA /* Drop-In.strings in Resources */ = {isa = PBXBuildFile; fileRef = A77345FC1B7A9E340083EC8D /* Drop-In.strings */; };
-		4174059E1BB087F4008A5DEA /* UI.strings in Resources */ = {isa = PBXBuildFile; fileRef = A77345091B7A93D00083EC8D /* UI.strings */; };
 		417405A01BB08874008A5DEA /* Braintree_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4141AC071B94F6A5003A7C8A /* Braintree_Tests.swift */; };
 		417405A11BB08874008A5DEA /* BTAnalyticsClient_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7623AB21B55BF2D004BC794 /* BTAnalyticsClient_Tests.m */; };
 		417405A21BB08874008A5DEA /* BTAnalyticsMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A726BFE11B56D5E900B5C8F0 /* BTAnalyticsMetadataSpec.m */; };
@@ -3093,9 +3090,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4174059C1BB087F4008A5DEA /* Three-D-Secure.strings in Resources */,
-				4174059D1BB087F4008A5DEA /* Drop-In.strings in Resources */,
-				4174059E1BB087F4008A5DEA /* UI.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
