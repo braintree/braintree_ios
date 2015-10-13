@@ -139,11 +139,20 @@ static BOOL cannedIsWalletAppAvailable = YES;
     return self;
 }
 
-- (PayPalOneTouchCheckoutRequest *)requestWithApprovalURL:(__unused NSURL *)approvalURL
-                                                 clientID:(__unused NSString *)clientID
-                                              environment:(__unused NSString *)environment
-                                        callbackURLScheme:(__unused NSString *)callbackURLScheme {
+- (PayPalOneTouchCheckoutRequest *)checkoutRequestWithApprovalURL:(__unused NSURL *)approvalURL
+                                                         clientID:(__unused NSString *)clientID
+                                                      environment:(__unused NSString *)environment
+                                                callbackURLScheme:(__unused NSString *)callbackURLScheme
+{
     return self.checkoutRequest;
+}
+
+- (PayPalOneTouchBillingAgreementRequest *)billingAgreementRequestWithApprovalURL:(__unused NSURL *)approvalURL
+                                                                         clientID:(__unused NSString *)clientID
+                                                                      environment:(__unused NSString *)environment
+                                                                callbackURLScheme:(__unused NSString *)callbackURLScheme
+{
+    return self.billingAgreementRequest;
 }
 
 - (PayPalOneTouchAuthorizationRequest *)requestWithScopeValues:(NSSet *)scopeValues
@@ -151,7 +160,8 @@ static BOOL cannedIsWalletAppAvailable = YES;
                                                   agreementURL:(__unused NSURL *)agreementURL
                                                       clientID:(__unused NSString *)clientID
                                                    environment:(__unused NSString *)environment
-                                             callbackURLScheme:(__unused NSString *)callbackURLScheme {
+                                             callbackURLScheme:(__unused NSString *)callbackURLScheme
+{
     self.lastScopeValues = scopeValues;
     return self.authorizationRequest;
 }

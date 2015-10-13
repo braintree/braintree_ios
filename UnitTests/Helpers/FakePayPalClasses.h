@@ -39,10 +39,21 @@
 @property (nonatomic, assign) BOOL appSwitchPerformed;
 @end
 
+#pragma mark - FakePayPalBillingAgreementRequest
+
+@interface FakePayPalBillingAgreementRequest : PayPalOneTouchBillingAgreementRequest
+@property (nonatomic, strong, nullable) NSError *cannedError;
+@property (nonatomic, assign) BOOL cannedSuccess;
+@property (nonatomic, assign) PayPalOneTouchRequestTarget cannedTarget;
+@property (nonatomic, strong, nullable) NSString *cannedMetadataId;
+@property (nonatomic, assign) BOOL appSwitchPerformed;
+@end
+
 #pragma mark - FakePayPalRequestFactory
 
 @interface FakePayPalRequestFactory : BTPayPalRequestFactory
 @property (nonatomic, strong, nonnull) FakePayPalCheckoutRequest *checkoutRequest;
 @property (nonatomic, strong, nonnull) FakePayPalAuthorizationRequest *authorizationRequest;
+@property (nonatomic, strong, nonnull) FakePayPalBillingAgreementRequest *billingAgreementRequest;
 @property (nonatomic, strong, nullable) NSSet<NSObject *> *lastScopeValues;
 @end
