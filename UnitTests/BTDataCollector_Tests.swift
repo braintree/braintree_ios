@@ -26,11 +26,25 @@ class BTDataCollector_Tests: XCTestCase {
         dataCollector.collectCardFraudData()
         waitForExpectationsWithTimeout(5, handler: nil)
         
-//        XCTAssertEqual(testDelegate!.error!.domain, BTDataCollectorKountErrorDomain)
-        XCTAssertEqual(testDelegate!.error!.domain, "URL validation failed")
+        XCTAssertEqual(testDelegate!.error!.domain, "URL validation failed") // Note: Kount provides NSError, so BTDataCollectorKountErrorDomain is not used.
         XCTAssertEqual(testDelegate!.error!.code, Int(DC_ERR_INVALID_URL))
-//        XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedDescriptionKey] as? String, "Failed to send data")
-//        XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedFailureReasonErrorKey] as? String, "Invalid collector URL")
+        // Similarly, these keys are not set.
+        //XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedDescriptionKey] as? String, "Failed to send data")
+        //XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedFailureReasonErrorKey] as? String, "Invalid collector URL")
+        XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedDescriptionKey] as? String, nil)
+        XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedFailureReasonErrorKey] as? String, nil)
+    }
+    
+    func testFailsWithInvalidMerchantIdAndCallsDelegateMethod() {
+        let dataCollector = BTDataCollector(environment: .Sandbox)
+        testDelegate = TestDelegateForBTDataCollector(didFailExpectation: expectationWithDescription("didFail"))
+        dataCollector.delegate = testDelegate
+        dataCollector.setFraudMerchantId("fake merchant id which should fail")
+        dataCollector.collectCardFraudData()
+        waitForExpectationsWithTimeout(5, handler: nil)
+        
+        XCTAssertEqual(testDelegate!.error!.domain, "Merchant ID validation failed")
+        XCTAssertEqual(testDelegate!.error!.code, Int(DC_ERR_INVALID_MERCHANT))
         XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedDescriptionKey] as? String, nil)
         XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedFailureReasonErrorKey] as? String, nil)
     }
