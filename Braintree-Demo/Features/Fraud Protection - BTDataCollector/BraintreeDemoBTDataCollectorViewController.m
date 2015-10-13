@@ -3,9 +3,9 @@
 #import <CoreLocation/CLLocationManager.h>
 #import <PureLayout/PureLayout.h>
 
-@interface BraintreeDemoBTDataCollectorViewController ()
+@interface BraintreeDemoBTDataCollectorViewController () <BTDataCollectorDelegate>
 /// Retain BTDataCollector for entire lifecycle of view controller
-@property (nonatomic, strong) BTDataCollector *data;
+@property (nonatomic, strong) BTDataCollector *dataCollector;
 @property (nonatomic, strong) UILabel *dataLabel;
 @end
 
@@ -56,51 +56,48 @@
     [self.dataLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
     [self.dataLabel autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
     
-    self.data = [[BTDataCollector alloc] initWithEnvironment:BTDataCollectorEnvironmentSandbox];
+    self.dataCollector = [[BTDataCollector alloc] initWithEnvironment:BTDataCollectorEnvironmentSandbox];
+    self.dataCollector.delegate = self;
 }
 
 - (IBAction)tappedCollect
-{
-    self.progressBlock(@"Started collecting all data...");
-    self.dataLabel.text = nil;
-    
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [self.data collectFraudData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
-#pragma clang diagnostic pop
-        if (error) {
-            self.progressBlock(@"Error collecting data");
-            NSLog(@"Error collecting data: %@", error);
-            return;
-        }
-        self.progressBlock(@"Collected data!");
-        self.dataLabel.text = deviceData;
-    }];
+{    self.progressBlock(@"Started collecting all data...");
+    self.dataLabel.text = [self.dataCollector collectFraudData];
 }
 
 - (IBAction)tappedCollectKount {
     self.progressBlock(@"Started collecting Kount data...");
-    self.dataLabel.text = nil;
-    
-    [self.data collectCardFraudData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
-        if (error) {
-            self.progressBlock(@"Error collecting data");
-            NSLog(@"Error collecting data: %@", error);
-            return;
-        }
-        self.progressBlock(@"Collected data!");
-        self.dataLabel.text = deviceData;
-    }];
+    self.dataLabel.text = [self.dataCollector collectCardFraudData];
 }
 
 - (IBAction)tappedCollectDyson {
-    self.dataLabel.text = [BTDataCollector payPalFraudID];
-    self.progressBlock(@"Collected data!");
+    self.dataLabel.text = [BTDataCollector payPalClientMetadataId];
+    self.progressBlock(@"Collected PayPal clientMetadataID!");
 }
 
 - (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {
     CLLocationManager *locationManager = [[CLLocationManager alloc] init];
     [locationManager requestWhenInUseAuthorization];
+}
+
+#pragma mark - BTDataCollectorDelegate
+
+/// The collector has started.
+- (void)dataCollectorDidStart:(__unused BTDataCollector *)dataCollector {
+    self.progressBlock(@"Data collector did start...");
+}
+
+/// The collector finished successfully.
+- (void)dataCollectorDidComplete:(__unused BTDataCollector *)dataCollector {
+    self.progressBlock(@"Data collector did complete.");
+}
+
+/// An error occurred.
+///
+/// @param error Triggering error
+- (void)dataCollector:(__unused BTDataCollector *)dataCollector didFailWithError:(NSError *)error {
+    self.progressBlock(@"Error collecting data.");
+    NSLog(@"Error collecting data. error = %@", error);
 }
 
 @end

@@ -8,6 +8,7 @@
 #import "BraintreePayPal.h"
 #import "BraintreeVenmo.h"
 #import "Braintree3DSecure.h"
+#import "BraintreeDataCollector.h"
 #import "BraintreeUI.h"
 
 // Internal headers for testing
@@ -18,5 +19,6 @@
 #import "BTVenmoDriver_Internal.h"
 #import "FakePayPalClasses.h"
 #import "BTLogger_Internal.h"
+#import "DeviceCollectorSDK.h" // for testing Kount error codes
 
 #import <OCMock/OCMock.h>

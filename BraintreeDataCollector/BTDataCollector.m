@@ -4,27 +4,26 @@
 @interface BTDataCollector () <DeviceCollectorSDKDelegate>
 @property (nonatomic, strong) DeviceCollectorSDK *kount;
 @property (nonatomic, assign) BTDataCollectorEnvironment environment;
-/// The JSON serialized string that contains the merchant ID, session ID, and the PayPal fraud ID (if PayPal is available)
-@property (nonatomic, copy) NSString *deviceData;
-@property (nonatomic, copy) void (^completionBlock)(NSString *, NSError *);
+@property (nonatomic, copy) NSString *fraudMerchantId;
 @end
 
 @implementation BTDataCollector
 
 static NSString *BTDataCollectorSharedMerchantId = @"600000";
 
+NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDataCollectorKountErrorDomain";
 
 #pragma mark - Initialization and setup
-
 
 - (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment {
     if (self = [super init]) {
         [self setUpKountWithDebugOn:NO];
         _environment = environment;
+        [self setCollectorUrl:[self defaultCollectorURL]];
+        [self setFraudMerchantId:BTDataCollectorSharedMerchantId];
     }
     return self;
 }
-
 
 - (void)setUpKountWithDebugOn:(BOOL)debugLogging {
     self.kount = [[DeviceCollectorSDK alloc] initWithDebugOn:debugLogging];
@@ -40,11 +39,9 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
     [self.kount setSkipList:skipList];
 }
 
-
 #pragma mark - Public methods
 
-
-+ (NSString *)payPalFraudID {
++ (NSString *)payPalClientMetadataId {
     Class paypalClass = NSClassFromString(@"PayPalOneTouchCore");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
@@ -56,96 +53,61 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
     return nil;
 }
 
-- (void)collectCardFraudData:(nullable void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock
+/// At this time, this method only collects data with Kount. However, it is possible that in the future,
+/// we will want to collect data (for card transactions) with PayPal as well. If this becomes the case,
+/// we can modify this method to include a clientMetadataID without breaking the public interface.
+- (NSString *)collectCardFraudData
 {
-    [self collectCardFraudDataWithMerchantID:BTDataCollectorSharedMerchantId
-                                collectorURL:[self defaultCollectorURL]
-                                  completion:completionBlock];
+    return [self collectFraudDataForCard:YES forPayPal:NO];
 }
 
-- (void)collectCardFraudDataWithMerchantID:(NSString *)merchantID
-                          collectorURL:(NSString *)collectorURL
-                            completion:(void (^)(NSString * _Nullable, NSError * _Nullable))completionBlock
+- (NSString *)collectPayPalClientMetadataId
 {
-    if (self.completionBlock != nil) {
-        NSLog(@"Fraud data is already being collected");
-        if (completionBlock) {
-            NSError *error = [NSError errorWithDomain:@"com.braintreepayments.BTDataCollectorError"
-                                                 code:0
-                                             userInfo:@{ NSLocalizedDescriptionKey : @"Fraud data is already being collected" }];
-            completionBlock(nil, error);
+    return [self collectFraudDataForCard:NO forPayPal:YES];
+}
+
+/// Similar to `collectCardFraudData` but with the addition of the payPalClientMetadataId, if available.
+- (NSString *)collectFraudData
+{
+    return [self collectFraudDataForCard:YES forPayPal:YES];
+}
+
+- (NSString *)collectFraudDataForCard:(BOOL)includeCard forPayPal:(BOOL)includePayPal
+{
+    NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
+    if (includeCard) {
+        NSString *deviceSessionId = [self sessionId];
+        dataDictionary[@"device_session_id"] = deviceSessionId;
+        dataDictionary[@"fraud_merchant_id"] = self.fraudMerchantId;
+        [self.kount collect:deviceSessionId];
+    }
+    if (includePayPal) {
+        NSString *payPalClientMetadataId = [BTDataCollector payPalClientMetadataId];
+        if (payPalClientMetadataId) {
+            dataDictionary[@"correlation_id"] = payPalClientMetadataId;
         }
-        return;
-    }
-    
-    self.completionBlock = completionBlock;
-    
-    NSString *deviceSessionId = [self sessionId];
-    NSMutableDictionary *dataDictionary = [NSMutableDictionary dictionaryWithDictionary:@{ @"device_session_id": deviceSessionId,
-                                                                                           @"fraud_merchant_id": merchantID
-                                                                                           }];
-    NSError *error;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&error];
-    if (!data) {
-        self.completionBlock(nil, error);
-    } else {
-        self.deviceData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    }
-    
-    [self.kount setMerchantId:merchantID];
-    [self.kount setCollectorUrl:collectorURL];
-    [self.kount collect:deviceSessionId];
-}
-
-- (void)collectFraudData:(void (^)(NSString * _Nullable deviceData, NSError * _Nullable error))completionBlock
-{
-    [self collectFraudDataWithMerchantID:BTDataCollectorSharedMerchantId
-                            collectorURL:[self defaultCollectorURL]
-                              completion:completionBlock];
-}
-
-- (void)collectFraudDataWithMerchantID:(NSString *)merchantID
-                          collectorURL:(NSString *)collectorURL
-                            completion:(void (^)(NSString * _Nullable, NSError * _Nullable))completionBlock
-{
-    if (self.completionBlock != nil) {
-        NSLog(@"Fraud data is already being collected");
-        if (completionBlock) {
-            NSError *error = [NSError errorWithDomain:@"com.braintreepayments.BTDataCollectorError"
-                                                 code:0
-                                             userInfo:@{ NSLocalizedDescriptionKey : @"Fraud data is already being collected" }];
-            completionBlock(nil, error);
-        }
-        return;
-    }
-    
-    self.completionBlock = completionBlock;
-    
-    NSString *deviceSessionId = [self sessionId];
-    NSMutableDictionary *dataDictionary = [NSMutableDictionary dictionaryWithDictionary:@{ @"device_session_id": deviceSessionId,
-                                                                                           @"fraud_merchant_id": merchantID
-                                                                                           }];
-    NSString *payPalFraudID = [BTDataCollector payPalFraudID];
-    if (payPalFraudID) {
-        dataDictionary[@"correlation_id"] = payPalFraudID;
     }
     
     NSError *error;
     NSData *data = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&error];
     if (!data) {
-        self.completionBlock(nil, error);
-    } else {
-        self.deviceData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"ERROR: Failed to create deviceData string, error = %@", error);
+        return @"";
     }
     
-    [self.kount setMerchantId:merchantID];
-    [self.kount setCollectorUrl:collectorURL];
-    [self.kount collect:deviceSessionId];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
+- (void)setCollectorUrl:(NSString *)url{
+    [self.kount setCollectorUrl:url];
+}
+
+- (void)setFraudMerchantId:(NSString *)fraudMerchantId {
+    _fraudMerchantId = fraudMerchantId;
+    [self.kount setMerchantId:fraudMerchantId];
+}
 
 #pragma mark - Private methods
-
 
 /// Generates a new session ID
 - (NSString *)sessionId {
@@ -170,19 +132,56 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
     return defaultCollectorURL;
 }
 
-
 #pragma mark DeviceCollectorSDKDelegate methods
 
-- (void)onCollectorSuccess {
-    if (self.completionBlock) self.completionBlock(self.deviceData, nil);
-    self.completionBlock = nil;
-    self.deviceData = nil;
+/// The collector has started.
+- (void)onCollectorStart {
+    if ([self.delegate respondsToSelector:@selector(dataCollectorDidStart:)]) {
+        [self.delegate dataCollectorDidStart:self];
+    }
 }
 
-- (void)onCollectorError:(__unused int)errorCode :(NSError *)error {
-    if (self.completionBlock) self.completionBlock(nil, error);
-    self.completionBlock = nil;
-    self.deviceData = nil;
+/// The collector finished successfully.
+- (void)onCollectorSuccess {
+    if ([self.delegate respondsToSelector:@selector(dataCollectorDidComplete:)]) {
+        [self.delegate dataCollectorDidComplete:self];
+    }
+}
+
+/// An error occurred.
+///
+/// @param errorCode Error code
+/// @param error Triggering error if available
+- (void)onCollectorError:(int)errorCode
+               withError:(NSError*)error {
+    if (error == nil) {
+        error = [NSError errorWithDomain:BTDataCollectorKountErrorDomain
+                                    code:errorCode
+                                userInfo:@{
+                                           NSLocalizedDescriptionKey: @"Failed to send data",
+                                           NSLocalizedFailureReasonErrorKey: [self failureReasonForKountErrorCode:errorCode]}];
+    }
+
+    if ([self.delegate respondsToSelector:@selector(dataCollector:didFailWithError:)]) {
+        [self.delegate dataCollector:self didFailWithError:error];
+    }
+}
+
+- (NSString *)failureReasonForKountErrorCode:(int)errorCode {
+    switch (errorCode) {
+        case DC_ERR_NONETWORK:
+            return @"Network access not available";
+        case DC_ERR_INVALID_URL:
+            return @"Invalid collector URL";
+        case DC_ERR_INVALID_MERCHANT:
+            return @"Invalid merchant ID";
+        case DC_ERR_INVALID_SESSION:
+            return @"Invalid session ID";
+        case DC_ERR_VALIDATION_FAILURE:
+            return @"Session validation failure";
+        default:
+            return @"Unknown error";
+    }
 }
 
 @end
