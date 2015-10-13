@@ -283,6 +283,7 @@
 		41D6E31B1B8E38A600A3C2AE /* Braintree.h in Headers */ = {isa = PBXBuildFile; fileRef = 41D6E31A1B8E38A600A3C2AE /* Braintree.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5D55CFDE07D476267F5BACD2 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BE4AE5B5E7C04D2F5644EED0 /* libPods-Braintree-Demo.a */; };
 		7869A3C92D302B207C8C7EF8 /* libPods-Test-Deps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3677CEDD938F25BE7096B6C /* libPods-Test-Deps.a */; };
+		841CDCC21BCDBC1500A06B21 /* BraintreeDataCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */; };
 		844ED5E71BCC3F0B002B590C /* BTDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */; settings = {ASSET_TAGS = (); }; };
 		844ED5E91BCC4A1A002B590C /* BTDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */; settings = {ASSET_TAGS = (); }; };
 		8498EC1B1BB46D4B007FFDEC /* BTCardClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -630,6 +631,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = A77344F61B7A93A10083EC8D;
 			remoteInfo = BraintreeUI;
+		};
+		841CDCC31BCDBC6100A06B21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
+			remoteInfo = BraintreeDataCollector;
 		};
 		A71559551B72C2A7007DE6F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1319,6 +1327,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841CDCC21BCDBC1500A06B21 /* BraintreeDataCollector.framework in Frameworks */,
 				411D1C001BB0B528000E7D8C /* Braintree3DSecure.framework in Frameworks */,
 				411D1C011BB0B528000E7D8C /* BraintreeApplePay.framework in Frameworks */,
 				411D1C021BB0B528000E7D8C /* BraintreeCard.framework in Frameworks */,
@@ -2651,6 +2660,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				841CDCC41BCDBC6100A06B21 /* PBXTargetDependency */,
 				41E3B35C1BA386DE0081824E /* PBXTargetDependency */,
 				2D941D671B5D6C940016EFB4 /* PBXTargetDependency */,
 				A77AA2A51B618CB300217B73 /* PBXTargetDependency */,
@@ -3814,6 +3824,11 @@
 			isa = PBXTargetDependency;
 			target = A77344F61B7A93A10083EC8D /* BraintreeUI */;
 			targetProxy = 41E3B35B1BA386DE0081824E /* PBXContainerItemProxy */;
+		};
+		841CDCC41BCDBC6100A06B21 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
+			targetProxy = 841CDCC31BCDBC6100A06B21 /* PBXContainerItemProxy */;
 		};
 		A71559561B72C2A7007DE6F0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
