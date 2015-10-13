@@ -152,6 +152,13 @@ class ErrorHTTP : BTHTTP {
     class func fakeHTTP() -> ErrorHTTP {
         return ErrorHTTP(baseURL: NSURL(), authorizationFingerprint: "")
     }
+    
+    override func GET(endpoint: String, completion completionBlock: ((BTJSON?, NSHTTPURLResponse?, NSError?) -> Void)?) {
+        guard let completionBlock = completionBlock else {
+            return
+        }
+        completionBlock(nil, nil, ErrorHTTP.error)
+    }
 
     override func POST(endpoint: String, parameters: [NSObject : AnyObject]?, completion completionBlock: ((BTJSON?, NSHTTPURLResponse?, NSError?) -> Void)?) {
         guard let completionBlock = completionBlock else {
