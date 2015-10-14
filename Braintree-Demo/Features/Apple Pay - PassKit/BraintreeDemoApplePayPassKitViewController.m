@@ -150,8 +150,9 @@
     }];
 }
 
+
+
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
-    self.progressBlock(@"Apple Pay Finished");
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
