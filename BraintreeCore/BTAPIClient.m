@@ -12,16 +12,29 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 @implementation BTAPIClient
 
+- (nullable instancetype)initWithClientKeyOrToken:(NSString *)clientKeyOrToken {
+    NSURL *baseURL = [BTAPIClient baseURLFromClientKey:clientKeyOrToken];
+    if (baseURL) {
+        return [self initWithClientKey:clientKeyOrToken dispatchQueue:nil baseURL:baseURL];
+    } else {
+        return [self initWithClientToken:clientKeyOrToken];
+    }
+}
+
 - (instancetype)initWithClientKey:(NSString *)clientKey {
     return [self initWithClientKey:clientKey dispatchQueue:nil];
 }
 
 - (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(dispatch_queue_t)dispatchQueue {
-    NSURL *baseURL = [self baseURLFromClientKey:clientKey];
+    NSURL *baseURL = [BTAPIClient baseURLFromClientKey:clientKey];
     if (!baseURL) {
         return nil;
     }
+    
+    return [self initWithClientKey:clientKey dispatchQueue:dispatchQueue baseURL:baseURL];
+}
 
+- (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(dispatch_queue_t)dispatchQueue baseURL:(NSURL *)baseURL {
     self = [super init];
     if (self) {
         _clientKey = clientKey;
@@ -111,7 +124,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 ///  @param clientKey The client key
 ///
 ///  @return Base URL for environment, or `nil` if client key is invalid
-- (NSURL *)baseURLFromClientKey:(NSString *)clientKey {
++ (NSURL *)baseURLFromClientKey:(NSString *)clientKey {
     NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:@"([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)" options:0 error:NULL];
 
     NSArray *results = [regExp matchesInString:clientKey options:0 range:NSMakeRange(0, clientKey.length)];
@@ -124,14 +137,15 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     NSString *merchantID = [clientKey substringWithRange:[results[0] rangeAtIndex:2]];
 
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = [self schemeForEnvironmentString:environment];
-    NSString *host = [self hostForEnvironmentString:environment];
+    // Avoid using self before self = [self init]
+    components.scheme = [BTAPIClient schemeForEnvironmentString:environment];
+    NSString *host = [BTAPIClient hostForEnvironmentString:environment];
     NSArray *hostComponents = [host componentsSeparatedByString:@":"];
     components.host = hostComponents[0];
     if (hostComponents.count > 1) {
         components.port = hostComponents[1];
     }
-    components.path = [self clientApiBasePathForMerchantID:merchantID];
+    components.path = [BTAPIClient clientApiBasePathForMerchantID:merchantID];
     if (!components.host || !components.path) {
         return nil;
     }
@@ -139,14 +153,14 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     return components.URL;
 }
 
-- (NSString *)schemeForEnvironmentString:(NSString *)environment {
++ (NSString *)schemeForEnvironmentString:(NSString *)environment {
     if ([[environment lowercaseString] isEqualToString:@"development"]) {
         return @"http";
     }
     return @"https";
 }
 
-- (NSString *)hostForEnvironmentString:(NSString *)environment {
++ (NSString *)hostForEnvironmentString:(NSString *)environment {
     if ([[environment lowercaseString] isEqualToString:@"sandbox"]) {
         return @"sandbox.braintreegateway.com";
     } else if ([[environment lowercaseString] isEqualToString:@"production"]) {
@@ -158,7 +172,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
 }
 
-- (NSString *)clientApiBasePathForMerchantID:(NSString *)merchantID {
++ (NSString *)clientApiBasePathForMerchantID:(NSString *)merchantID {
     if (merchantID.length == 0) {
         return nil;
     }

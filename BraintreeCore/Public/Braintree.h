@@ -1,33 +1,13 @@
 #import <Foundation/Foundation.h>
 
-
-@class BTAPIClient;
-
 NS_ASSUME_NONNULL_BEGIN
 
+/// Use this class to handle app switch, which requires global state.
+/// For the entrypoint into the Braintree API, see BTAPIClient.
+///
+/// @see BTAPIClient
+
 @interface Braintree : NSObject
-
-
-/// Creates a Braintree API client using a client key.
-///
-/// This is a convenience wrapper for `BTAPIClient`'s' `-initWithClientKey:` initializer.
-///
-/// @note Malformed or invalid client keys may not cause this method to return `nil`.
-/// Client keys are designed for Braintree to initialize itself without requiring an initial
-/// network call, so the only validation that occurs is a simple syntactical check.
-///
-/// @param clientKey The client key
-/// @return A Braintree API client, or `nil` if the client key can be determined to be malformed.
-+ (nullable BTAPIClient *)clientWithClientKey:(NSString *)clientKey;
-
-
-/// Creates a Braintree API client using a client token.
-///
-/// This is a convenience wrapper for `BTAPIClient`'s' `-initWithClientToken:` initializer.
-///
-/// @param clientToken The client token
-/// @return A Braintree API client, or `nil` if the client token is invalid
-+ (nullable BTAPIClient *)clientWithClientToken:(NSString *)clientToken;
 
 
 /// Sets the return URL scheme for your app.

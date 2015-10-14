@@ -13,27 +13,6 @@ class Braintree_Tests: XCTestCase {
         super.tearDown()
     }
     
-    // MARK: BTAPIClient
-    
-    func testAPIClientInitialization_withValidClientKey_returnsClientWithClientKey() {
-        let apiClient = Braintree.clientWithClientKey("development_testing_integration_merchant_id")
-        XCTAssertEqual(apiClient?.clientKey, "development_testing_integration_merchant_id")
-    }
-
-    func testAPIClientInitialization_withInvalidClientKey_returnsNil() {
-        XCTAssertNil(Braintree.clientWithClientKey("invalid"))
-    }
-    
-    func testAPIClientInitialization_withValidClientToken_returnsClientWithClientToken() {
-        let apiClient = Braintree.clientWithClientToken(ValidClientToken)
-        let clientToken = try! BTClientToken(clientToken: ValidClientToken)
-        XCTAssertEqual(apiClient?.clientToken, clientToken)
-    }
-    
-    func testAPIClientInitialization_withInvalidClientToken_returnsNil() {
-        XCTAssertNil(Braintree.clientWithClientToken("invalid"))
-    }
-    
     // MARK: BTCardClient
     
     func testCardClientInitialization_withValidClientKey_returnsClientWithClientKey() {
