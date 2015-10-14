@@ -113,6 +113,15 @@ NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONR
 #pragma mark - Underlying HTTP
 
 - (void)httpRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+    
+    if (!self.baseURL) {
+        NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
+        if (method) errorUserInfo[@"method"] = method;
+        if (aPath) errorUserInfo[@"path"] = aPath;
+        if (parameters) errorUserInfo[@"parameters"] = parameters;
+        completionBlock(nil, nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
+        return;
+    }
 
     BOOL isNotDataURL = ![self.baseURL.scheme isEqualToString:@"data"];
     NSURL *fullPathURL;
