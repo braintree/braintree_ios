@@ -57,22 +57,6 @@ iOS 9 introduces new security requirements and restrictions. If your app is comp
 
 The Braintree Gateway domain complies with this policy.
 
-If your app uses BraintreeDataCollector, also include the following under `NSExceptionDomains`:
-
-```
-  <key>kaptcha.com</key>
-    <dict>
-      <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-      <false/>
-      <key>NSIncludesSubdomains</key>
-      <true/>
-      <key>NSTemporaryExceptionMinimumTLSVersion</key>
-      <string>TLSv1.0</string>
-  </dict>
-```
-
-In the future, the SSL certificate will be updated so that your app will not require this exception.
-
 ### URL Query Scheme Whitelist
 
 If your app is compiled with iOS 9 SDK and integrates payment options with an app-switch workflow, you must add URL schemes to the whitelist in your application's plist.
