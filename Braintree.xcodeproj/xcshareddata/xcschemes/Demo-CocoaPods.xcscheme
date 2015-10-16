@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A76B198A1B79707700452CFA"
-               BuildableName = "Braintree-Demo.app"
-               BlueprintName = "Braintree-Demo"
+               BlueprintIdentifier = "4145B8551BBF4B36008F0CC7"
+               BuildableName = "Demo-CocoaPods.app"
+               BlueprintName = "Demo-CocoaPods"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,19 +32,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "417405421BB086FC008A5DEA"
-               BuildableName = "UnitTests-StaticLibrary.xctest"
-               BlueprintName = "UnitTests-StaticLibrary"
-               ReferencedContainer = "container:Braintree.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A76D7C081BB1CAB00000FA6A"
-               BuildableName = "BraintreeDataCollectorTests.xctest"
-               BlueprintName = "BraintreeDataCollectorTests"
+               BlueprintIdentifier = "4163BF641BCEDE6A0047CBA3"
+               BuildableName = "UnitTests-CocoaPods.xctest"
+               BlueprintName = "UnitTests-CocoaPods"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -52,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A76B198A1B79707700452CFA"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
+            BlueprintIdentifier = "4145B8551BBF4B36008F0CC7"
+            BuildableName = "Demo-CocoaPods.app"
+            BlueprintName = "Demo-CocoaPods"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -75,9 +65,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A76B198A1B79707700452CFA"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
+            BlueprintIdentifier = "4145B8551BBF4B36008F0CC7"
+            BuildableName = "Demo-CocoaPods.app"
+            BlueprintName = "Demo-CocoaPods"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -94,9 +84,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A76B198A1B79707700452CFA"
-            BuildableName = "Braintree-Demo.app"
-            BlueprintName = "Braintree-Demo"
+            BlueprintIdentifier = "4145B8551BBF4B36008F0CC7"
+            BuildableName = "Demo-CocoaPods.app"
+            BlueprintName = "Demo-CocoaPods"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

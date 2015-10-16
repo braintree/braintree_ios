@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4174054D1BB0875E008A5DEA"
-               BuildableName = "Braintree-StaticLibraryDemo.app"
-               BlueprintName = "Braintree-StaticLibraryDemo"
+               BlueprintIdentifier = "A76B198A1B79707700452CFA"
+               BuildableName = "Demo.app"
+               BlueprintName = "Demo"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,13 +28,23 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "16CD2E9B1B4077FB00E68495"
+               BuildableName = "UnitTests.xctest"
+               BlueprintName = "UnitTests"
+               ReferencedContainer = "container:Braintree.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4174054D1BB0875E008A5DEA"
-            BuildableName = "Braintree-StaticLibraryDemo.app"
-            BlueprintName = "Braintree-StaticLibraryDemo"
+            BlueprintIdentifier = "A76B198A1B79707700452CFA"
+            BuildableName = "Demo.app"
+            BlueprintName = "Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,9 +65,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4174054D1BB0875E008A5DEA"
-            BuildableName = "Braintree-StaticLibraryDemo.app"
-            BlueprintName = "Braintree-StaticLibraryDemo"
+            BlueprintIdentifier = "A76B198A1B79707700452CFA"
+            BuildableName = "Demo.app"
+            BlueprintName = "Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -74,9 +84,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4174054D1BB0875E008A5DEA"
-            BuildableName = "Braintree-StaticLibraryDemo.app"
-            BlueprintName = "Braintree-StaticLibraryDemo"
+            BlueprintIdentifier = "A76B198A1B79707700452CFA"
+            BuildableName = "Demo.app"
+            BlueprintName = "Demo"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
