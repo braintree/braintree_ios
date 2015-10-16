@@ -1,10 +1,10 @@
 # Braintree iOS SDK Release Notes
 
-## master
+## 3.9.6 (2015-10-08)
 
 * Update Kount DeviceCollectorSDK to v2.6.2 to [fix #175](https://github.com/braintree/braintree_ios/issues/175) (thanks, @keith)
 
-## 3.9.5 (2015-10-5)
+## 3.9.5 (2015-10-05)
 
 * Add runtime checks before using new features in Apple Pay iOS 9
   * Bug in 3.9.4 caused `shippingContact`, `billingContact`, and `paymentMethod` to be used on < iOS 9 devices, which causes unrecognized selector crashes

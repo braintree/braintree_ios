@@ -57,6 +57,8 @@ iOS 9 introduces new security requirements and restrictions. If your app is comp
 
 The Braintree Gateway domain complies with this policy.
 
+3D Secure uses third party domains, which may need to be whitelisted for ATS, as part of the authentication process.
+
 ### URL Query Scheme Whitelist
 
 If your app is compiled with iOS 9 SDK and integrates payment options with an app-switch workflow, you must add URL schemes to the whitelist in your application's plist.
