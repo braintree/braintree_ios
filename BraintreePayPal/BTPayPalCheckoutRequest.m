@@ -6,14 +6,13 @@
 {
     self = [super init];
     if (self) {
-        _enableShippingAddress = true;
-        _addressOverride = false;
+        _noShipping = NO;
     }
     return self;
 }
 
-- (instancetype)initWithAmount:(NSDecimalNumber *)amount {
-    if (amount == nil || [amount compare:[NSDecimalNumber zero]] == NSOrderedAscending) {
+- (instancetype)initWithAmount:(NSString *)amount {
+    if (amount == nil) {
         return nil;
     }
 

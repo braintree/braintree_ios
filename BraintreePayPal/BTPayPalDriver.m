@@ -197,13 +197,20 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         }
         
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+        NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
         
         if (!isBillingAgreement) {
-            if (checkoutRequest.amount.stringValue) {
-                parameters[@"amount"] = checkoutRequest.amount.stringValue;
+            if (checkoutRequest.amount != nil) {
+                parameters[@"amount"] = checkoutRequest.amount;
             }
         }
         
+        experienceProfile[@"no_shipping"] = [NSNumber numberWithBool:checkoutRequest.noShipping];
+        
+        if (checkoutRequest.localeCode != nil) {
+            experienceProfile[@"locale_code"] = checkoutRequest.localeCode;
+        }
+
         // Currency code should only be used for Hermes Checkout (one-time payment).
         // For BA, currency should not be used.
         NSString *currencyCode = checkoutRequest.currencyCode ?: configuration.json[@"paypal"][@"currencyIsoCode"].asString;
@@ -211,7 +218,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             parameters[@"currency_iso_code"] = currencyCode;
         }
         
-        if (checkoutRequest.enableShippingAddress && checkoutRequest.shippingAddress != nil) {
+        if (checkoutRequest.shippingAddress != nil) {
+            experienceProfile[@"address_override"] = @YES;
             BTPostalAddress *shippingAddress = checkoutRequest.shippingAddress;
             parameters[@"line1"] = shippingAddress.streetAddress;
             parameters[@"line2"] = shippingAddress.extendedAddress;
@@ -220,16 +228,18 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             parameters[@"postal_code"] = shippingAddress.postalCode;
             parameters[@"country_code"] = shippingAddress.countryCodeAlpha2;
             parameters[@"recipient_name"] = shippingAddress.recipientName;
+        } else {
+            experienceProfile[@"address_override"] = @NO;
         }
+        
         if (returnURI) {
             parameters[@"return_url"] = returnURI;
         }
         if (cancelURI) {
             parameters[@"cancel_url"] = cancelURI;
         }
-        if ([[self.class payPalClass] clientMetadataID]) {
-            parameters[@"correlation_id"] = [[self.class payPalClass] clientMetadataID];
-        }
+
+        parameters[@"experience_profile"] = experienceProfile;
         
         NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
         
@@ -238,6 +248,13 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                       
                       if (error) {
+                          NSString *errorDetailsIssue = ((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey][@"paymentResource"][@"errorDetails"][0][@"issue"]).asString;
+                          if (error.userInfo[NSLocalizedDescriptionKey] == nil && errorDetailsIssue != nil) {
+                              NSMutableDictionary *dictionary = [error.userInfo mutableCopy];
+                              dictionary[NSLocalizedDescriptionKey] = errorDetailsIssue;
+                              error = [NSError errorWithDomain:error.domain code:error.code userInfo:dictionary];
+                          }
+                          
                           if (completionBlock) completionBlock(nil, error);
                           return;
                       }
