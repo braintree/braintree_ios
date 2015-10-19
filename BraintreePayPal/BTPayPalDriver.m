@@ -66,6 +66,12 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     return self;
 }
 
+- (void)appDidBecomeActive {
+    if (appSwitchReturnBlock) {
+        appSwitchReturnBlock([NSURL URLWithString:AppSwitchReturnBlockManualCancellationURL]);
+    }
+}
+
 - (instancetype)init {
     return nil;
 }
@@ -386,12 +392,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             appSwitchReturnBlock = nil;
         }];
     };
-}
-
-- (void)appDidBecomeActive {
-    if (appSwitchReturnBlock) {
-        appSwitchReturnBlock([NSURL URLWithString:AppSwitchReturnBlockManualCancellationURL]);
-    }
 }
 
 - (void)performSwitchRequest:(NSURL*) appSwitchURL {

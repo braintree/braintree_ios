@@ -326,6 +326,22 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
         waitForExpectationsWithTimeout(5, handler: nil)
     }
+    
+    func testAppSwitchReturn_whenUserManuallyCancels_callsBackWithNoResultOrError() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        
+        let expectation = expectationWithDescription("App switch return block invoked")
+        payPalDriver.setAuthorizationAppSwitchReturnBlock { (tokenizedAccount, error) -> Void in
+            XCTAssertNil(tokenizedAccount)
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        // We simulate the user "manually cancelling" by posting a notification that the app has
+        // become active
+        NSNotificationCenter.defaultCenter().postNotificationName(UIApplicationDidBecomeActiveNotification, object: nil)
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
 
     func testTokenizedPayPalAccount_containsPayerInfo() {
         assertSuccessfulAuthorizationResponse([
@@ -1101,4 +1117,3 @@ class BTPayPalDriver_DropIn_Tests: XCTestCase {
     }
 
 }
-
