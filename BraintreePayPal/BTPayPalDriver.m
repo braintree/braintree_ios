@@ -20,6 +20,11 @@
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 
+// A special URL to use when invoking the app switch return block to denote that the user
+// manually cancelled manually (e.g. "Done" button on SFSafariViewController, using task
+// manager to switch back to app)
+NSString * const AppSwitchReturnBlockManualCancellationURL = @"paypalappswitch://manually-cancelled";
+
 static void (^appSwitchReturnBlock)(NSURL *url);
 
 typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
@@ -56,12 +61,17 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     if (self = [super init]) {
         BTClientMetadataSourceType source = [self isiOSAppAvailableForAppSwitch] ? BTClientMetadataSourcePayPalApp : BTClientMetadataSourcePayPalBrowser;
         _apiClient = [apiClient copyWithSource:source integration:apiClient.metadata.integration];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     }
     return self;
 }
 
 - (instancetype)init {
     return nil;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 #pragma mark - Authorization (Future Payments)
@@ -315,7 +325,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         // Before parsing the return URL, check whether the user cancelled by breaking
         // out of the PayPal app switch flow (e.g. "Done" button in SFSafariViewController)
         // TODO: add UI automation test
-        if ([url.absoluteString isEqualToString:SFSafariViewControllerFinishedURL]) {
+        if ([url.absoluteString isEqualToString:AppSwitchReturnBlockManualCancellationURL]) {
             if (completionBlock) completionBlock(nil, nil);
             return;
         }
@@ -378,6 +388,11 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     };
 }
 
+- (void)appDidBecomeActive {
+    if (appSwitchReturnBlock) {
+        appSwitchReturnBlock([NSURL URLWithString:AppSwitchReturnBlockManualCancellationURL]);
+    }
+}
 
 - (void)performSwitchRequest:(NSURL*) appSwitchURL {
     if ([SFSafariViewController class]) {
@@ -560,10 +575,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 #pragma mark - SFSafariViewControllerDelegate
 
-static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontroller://finished";
-
 - (void)safariViewControllerDidFinish:(__unused SFSafariViewController *)controller {
-    [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
+    [self.class handleAppSwitchReturnURL:[NSURL URLWithString:AppSwitchReturnBlockManualCancellationURL]];
 }
 
 #pragma mark - Preflight check
