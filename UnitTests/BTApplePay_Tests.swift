@@ -3,11 +3,11 @@ import XCTest
 
 class BTApplePay_Tests: XCTestCase {
 
-    var mockClient : MockAPIClient = MockAPIClient(clientKey: "development_client_key")!
+    var mockClient : MockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
 
     override func setUp() {
         super.setUp()
-        mockClient = MockAPIClient(clientKey: "development_client_key")!
+        mockClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
     }
 
     func testTokenization_whenConfiguredOff_callsBackWithError() {
@@ -145,7 +145,7 @@ class BTApplePay_Tests: XCTestCase {
     // MARK: - Metadata
     
     func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
-        let mockAPIClient = MockAPIClient(clientKey: "development_client_key")!
+        let mockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "applePay" : [
                 "status" : "production"

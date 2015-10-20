@@ -10,7 +10,7 @@
 //
 //- (void)setUp {
 //    [super setUp];
-//    client = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
+//    client = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
 //}
 //
 //- (void)tearDown {
@@ -166,7 +166,7 @@
 // MARK: - _meta parameter for card form
 //
 //func testMetadata_whenCardFormTokenizationIsSuccessful_isPOSTedToServer() {
-//    let mockAPIClient = MockAPIClient(clientKey: "development_testing_integration_merchant_id")!
+//    let mockAPIClient = MockAPIClient(clientKeyOrToken: "development_testing_integration_merchant_id")!
 //    let dropIn = BTDropInViewController(APIClient: mockAPIClient)
 //    
 //    

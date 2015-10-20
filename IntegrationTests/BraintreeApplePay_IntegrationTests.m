@@ -10,7 +10,7 @@
 @implementation BraintreeApplePay_IntegrationTests
 
 - (void)testTokenizeApplePayPayment_whenApplePayEnabledInControlPanel_returnsANonce {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
     BTApplePayClient *client = [[BTApplePayClient alloc] initWithAPIClient:apiClient];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Apple Pay payment"];
@@ -25,7 +25,7 @@
 }
 
 - (void)testTokenizeApplePayPayment_whenApplePayDisabledInControlPanel_returnsError {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration2_merchant_id"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration2_merchant_id"];
     BTApplePayClient *client = [[BTApplePayClient alloc] initWithAPIClient:apiClient];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Apple Pay payment"];

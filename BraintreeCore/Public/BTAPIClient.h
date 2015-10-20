@@ -25,54 +25,11 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// @return A Braintree API client, or `nil` if initialization failed.
 - (nullable instancetype)initWithClientKeyOrToken:(NSString *)clientKeyOrToken;
 
-#pragma mark - Advanced Integrations
-
-/// Initialize a new API client.
-///
-/// @note Malformed or invalid client keys may not cause this method to return `nil`.
-/// Client keys are designed for Braintree to initialize itself without requiring an initial
-/// network call, so the only validation that occurs is a basic syntax check.
-///
-/// @param clientKey The client key. Passing an invalid key will return `nil`.
-/// @return An API client, or `nil` if the client key is invalid.
-- (nullable instancetype)initWithClientKey:(NSString *)clientKey;
-
-/// Initialize a new API client.
-///
-/// @param clientKey The client key. Passing an invalid key will return `nil`.
-/// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing
-/// `nil` will use the application's main queue.
-/// @return An API client, or `nil` if the client key is invalid.
-- (nullable instancetype)initWithClientKey:(NSString *)clientKey
-                                dispatchQueue:(nullable dispatch_queue_t)dispatchQueue;
-
-/// Initialize a new API client with a client token. The API client base URL will use Client API base URL from the token.
-///
-/// @param clientToken The client token retrieved from your server. Passing an invalid client token will return `nil`.
-/// @return An API client, or `nil` if the client token is invalid.
-- (nullable instancetype)initWithClientToken:(NSString *)clientToken;
-
-/// Initialize a new API client with a client token. The API client base URL will use Client API base URL from the token.
-///
-/// @param clientToken The client token retrieved from your server. Passing an invalid client token will return `nil`.
-/// @param dispatchQueue The dispatch queue onto which completion handlers are dispatched. Passing
-/// `nil` will use the application's main queue.
-/// @return An API client, or `nil` if the client token is invalid.
-- (nullable instancetype)initWithClientToken:(NSString *)clientToken
-                                  dispatchQueue:(nullable dispatch_queue_t)dispatchQueue;
-
 /// Create a copy of an existing API client, but specify a new source and integration type.
 /// @discussion This provides a way to override an API client's source and integration metadata, which
 /// is captured and sent to Braintree as part of the analytics we track.
 - (instancetype)copyWithSource:(BTClientMetadataSourceType)source
                    integration:(BTClientMetadataIntegrationType)integration;
-
-/// The GCD dispatch queue to which completion handlers will be dispatched.
-///
-/// By default, the application's main queue will be used.
-///
-/// For more information, please read Grand Central Dispatch programming guide and dispatch_get_main_queue.
-@property (nonatomic, readonly, strong) dispatch_queue_t dispatchQueue;
 
 /// Provides configuration data as a `BTJSON` object.
 ///

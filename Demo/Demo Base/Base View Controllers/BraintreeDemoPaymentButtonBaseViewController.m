@@ -8,14 +8,14 @@
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
-        self.apiClient = [[BTAPIClient alloc] initWithClientToken:clientToken];
+        self.apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientToken];
     }
     return self;
 }
 
 - (instancetype)initWithClientKey:(NSString *)clientKey {
     if (self = [super initWithClientKey:clientKey]) {
-        self.apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey];
+        self.apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientKey];
     }
     return self;
 }

@@ -16,7 +16,7 @@
 
 - (instancetype)initWithClientKey:(NSString *)clientKey {
     if (self = [super initWithClientKey:clientKey]) {
-        _apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey];
+        _apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientKey];
     }
     return self;
 }
@@ -24,7 +24,7 @@
 - (instancetype)initWithClientToken:(NSString *)clientToken {
     self = [super initWithClientToken:clientToken];
     if (self) {
-        _apiClient = [[BTAPIClient alloc] initWithClientToken:clientToken];
+        _apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientToken];
     }
     return self;
 }

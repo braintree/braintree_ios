@@ -13,13 +13,13 @@ class BTAPIClient_SwiftTests: XCTestCase {
         XCTAssertNil(BTAPIClient(clientKeyOrToken: "invalid"))
     }
     
+    func testAPIClientInitialization_withEmptyClientKey_returnsNil() {
+        XCTAssertNil(BTAPIClient(clientKeyOrToken: ""))
+    }
+    
     func testAPIClientInitialization_withValidClientToken_returnsClientWithClientToken() {
         let apiClient = BTAPIClient(clientKeyOrToken: ValidClientToken)
         let clientToken = try! BTClientToken(clientToken: ValidClientToken)
         XCTAssertEqual(apiClient?.clientToken, clientToken)
-    }
-    
-    func testAPIClientInitialization_withInvalidClientToken_returnsNil() {
-        XCTAssertNil(BTAPIClient(clientKeyOrToken: "invalid"))
     }
 }

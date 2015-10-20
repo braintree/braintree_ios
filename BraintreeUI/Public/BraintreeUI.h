@@ -11,7 +11,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeUIVersionString[];
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#import "Braintree+UI.h"
 #import "BTDropInViewController.h"
 #import "BTPaymentButton.h"
 #import "BTUICardFormView.h"
