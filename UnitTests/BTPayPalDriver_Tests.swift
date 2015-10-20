@@ -483,7 +483,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         payPalDriver.apiClient = nil
         
-        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let request = BTPayPalCheckoutRequest(amount: "1")!
         let expectation = self.expectationWithDescription("Checkout fails with error")
         payPalDriver.checkoutWithCheckoutRequest(request) { (tokenizedPayPalCheckout, error) -> Void in
             XCTAssertNil(tokenizedPayPalCheckout)
@@ -502,7 +502,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let request = BTPayPalCheckoutRequest(amount: "1")!
         let expectation = self.expectationWithDescription("Checkout fails with error")
         payPalDriver.checkoutWithCheckoutRequest(request) { (_, error) -> Void in
             XCTAssertEqual(error!, self.mockAPIClient.cannedConfigurationResponseError!)
@@ -516,7 +516,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
-        let checkoutRequest = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")!
         checkoutRequest.currencyCode = "GBP"
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
@@ -526,10 +526,72 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
         XCTAssertEqual(lastPostParameters["amount"] as? String, "1")
         XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "GBP")
         XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
+    }
+    
+    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithNoShipping() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")!
+        checkoutRequest.currencyCode = "GBP"
+        checkoutRequest.noShipping = true
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
+        
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, true)
+    }
+    
+    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithShippingAddress() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")!
+        checkoutRequest.currencyCode = "GBP"
+        let address : BTPostalAddress = BTPostalAddress()
+        address.streetAddress = "1234 Fake St."
+        address.extendedAddress = "Apt. 0"
+        address.region = "CA"
+        address.locality = "Oakland"
+        address.countryCodeAlpha2 = "US"
+        address.postalCode = "12345"
+        checkoutRequest.shippingAddress = address
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
+        
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
+        XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
+        XCTAssertEqual(lastPostParameters["line2"] as? String, "Apt. 0")
+        XCTAssertEqual(lastPostParameters["city"] as? String, "Oakland")
+        XCTAssertEqual(lastPostParameters["state"] as? String, "CA")
+        XCTAssertEqual(lastPostParameters["postal_code"] as? String, "12345")
+        XCTAssertEqual(lastPostParameters["country_code"] as? String, "US")
     }
 
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
@@ -542,7 +604,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         payPalDriver.delegate = delegate
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let request = BTPayPalCheckoutRequest(amount: "1")!
         payPalDriver.checkoutWithCheckoutRequest(request) { _ -> Void in }
 
         self.waitForExpectationsWithTimeout(2, handler: nil)
@@ -557,7 +619,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
-        let dummyRequest = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let dummyRequest = BTPayPalCheckoutRequest(amount: "1")!
         let expectation = self.expectationWithDescription("Checkout fails with error")
         payPalDriver.checkoutWithCheckoutRequest(dummyRequest) { (_, error) -> Void in
             XCTAssertEqual(error!, self.mockAPIClient.cannedResponseError!)
@@ -878,7 +940,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         payPalDriver.apiClient = nil
         
-        let request = BTPayPalCheckoutRequest(amount: NSDecimalNumber(string: "1"))!
+        let request = BTPayPalCheckoutRequest(amount: "1")!
         let expectation = self.expectationWithDescription("Billing Agreement fails with error")
         payPalDriver.billingAgreementWithCheckoutRequest(request) { (tokenizedPayPalCheckout, error) -> Void in
             XCTAssertNil(tokenizedPayPalCheckout)
