@@ -93,9 +93,7 @@ In either case, you still need to implement the deprecated equivalent in order t
 
 #### Bitcode
 
-The Braintree SDK works with apps that have [bitcode](https://developer.apple.com/library/prerelease/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AppThinning/AppThinning.html#//apple_ref/doc/uid/TP40012582-CH35-SW3) enabled.
-
-However, if your integration uses `BraintreeDataCollector` for fraud detection, it does not currently support having bitcode enabled. This will be fixed in an upcoming release.
+The Braintree SDK works with apps that have [bitcode](https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AppThinning/AppThinning.html#//apple_ref/doc/uid/TP40012582-CH35-SW3) enabled.
 
 ## Documentation
 
