@@ -9,6 +9,8 @@
 
 @implementation BTUICTAControl
 
+@synthesize theme = _theme;
+
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -28,14 +30,12 @@
 #pragma mark View Lifecycle
 
 - (void)setupView {
-    self.theme = [BTUI braintreeTheme];
     self.backgroundColor = self.tintColor;
 
     self.label = [[UILabel alloc] init];
     [self.label setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     self.label.textColor = [UIColor whiteColor];
-    self.label.font = [UIFont systemFontOfSize:17.0f];
     self.label.textAlignment = NSTextAlignmentCenter;
 
     [self addSubview:self.label];
@@ -51,6 +51,24 @@
     self.accessibilityTraits = UIAccessibilityTraitButton;
     
     [self updateText];
+    [self syncUIToTheme];
+}
+
+- (void)syncUIToTheme {
+    self.label.font = self.theme.controlFont;
+}
+
+- (void)setTheme:(BTUI *)theme {
+    _theme = theme;
+
+    [self syncUIToTheme];
+}
+
+- (BTUI *)theme {
+    if (_theme == nil) {
+      _theme = [BTUI braintreeTheme];
+    }
+    return _theme;
 }
 
 - (void)showLoadingState: (__unused BOOL)loadingState{

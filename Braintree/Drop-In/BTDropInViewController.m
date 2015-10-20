@@ -48,10 +48,11 @@
 
 @implementation BTDropInViewController
 
+@synthesize theme = _theme;
+
 - (instancetype)initWithClient:(BTClient *)client {
     self = [self init];
     if (self) {
-        self.theme = [BTUI braintreeTheme];
         self.dropInContentView = [[BTDropInContentView alloc] init];
 
         self.client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
@@ -73,8 +74,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeNone;
-
-    self.view.backgroundColor = self.theme.viewBackgroundColor;
 
     // Configure Subviews
     self.scrollView = [[BTUIScrollView alloc] init];
@@ -109,8 +108,7 @@
                                           action:@selector(tappedSubmitForm)
                                 forControlEvents:UIControlEventTouchUpInside];
 
-    self.dropInContentView.cardFormSectionHeader.textColor = self.theme.sectionHeaderTextColor;
-    self.dropInContentView.cardFormSectionHeader.font = self.theme.sectionHeaderFont;
+
     self.dropInContentView.cardFormSectionHeader.text = BTDropInLocalizedString(CARD_FORM_SECTION_HEADER);
 
 
@@ -158,7 +156,8 @@
     if (!self.fullForm) {
         self.dropInContentView.state = BTDropInContentViewStateForm;
     }
-
+  
+    [self syncUIToTheme];
     [self updateValidity];
 }
 
@@ -330,14 +329,24 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark Sync UI
+
+- (void)syncUIToTheme {
+    self.view.backgroundColor = self.theme.viewBackgroundColor;
+    self.view.tintColor = self.theme.defaultTintColor;
+  
+    self.dropInContentView.theme = self.theme;
+}
+
 #pragma mark Progress UI
 
 - (void)showLoadingState:(BOOL)loadingState {
     [self.dropInContentView.ctaControl showLoadingState:loadingState];
     self.submitBarButtonItem.enabled = !loadingState;
     if (self.submitBarButtonItem != nil) {
-        [BTUI activityIndicatorViewStyleForBarTintColor:self.navigationController.navigationBar.barTintColor];
-        UIActivityIndicatorView *submitInProgressActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        UIActivityIndicatorViewStyle style =
+            [BTUI activityIndicatorViewStyleForBarTintColor:self.navigationController.navigationBar.barTintColor];
+        UIActivityIndicatorView *submitInProgressActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
         [submitInProgressActivityIndicator startAnimating];
         UIBarButtonItem *submitInProgressActivityIndicatorBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:submitInProgressActivityIndicator];
         [self.navigationItem setRightBarButtonItem:(loadingState ? submitInProgressActivityIndicatorBarButtonItem : self.submitBarButtonItem) animated:YES];
@@ -512,7 +521,6 @@
     _fullForm = fullForm;
     if (!self.fullForm) {
         self.dropInContentView.state = BTDropInContentViewStateForm;
-
     }
 }
 
@@ -547,6 +555,21 @@
 - (void)setCallToActionText:(__unused NSString *)callToActionText {
     _callToActionText = callToActionText;
     self.dropInContentView.ctaControl.callToAction = callToActionText;
+}
+
+- (void)setTheme:(BTUI *)newTheme {
+    _theme = newTheme;
+    
+    [self syncUIToTheme];
+}
+
+#pragma mark Lazy Instantiation
+
+- (BTUI *)theme {
+    if (_theme == nil) {
+      _theme = [BTUI braintreeTheme];
+    }
+    return _theme;
 }
 
 #pragma mark Data
@@ -655,7 +678,7 @@
 - (BTDropInViewController *)addPaymentMethodDropInViewController {
     if (!_addPaymentMethodDropInViewController) {
         _addPaymentMethodDropInViewController = [[BTDropInViewController alloc] initWithClient:self.client];
-
+        _addPaymentMethodDropInViewController.theme = self.theme;
         _addPaymentMethodDropInViewController.title = BTDropInLocalizedString(ADD_PAYMENT_METHOD_VIEW_CONTROLLER_TITLE);
         _addPaymentMethodDropInViewController.fullForm = NO;
         _addPaymentMethodDropInViewController.shouldHideCallToAction = YES;

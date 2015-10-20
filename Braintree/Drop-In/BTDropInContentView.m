@@ -24,7 +24,6 @@
         self.summaryView = [[BTUISummaryView alloc] init];
 
         UIView *summaryBorderBottom = [[UIView alloc] init];
-        summaryBorderBottom.backgroundColor = self.theme.borderColor;
         summaryBorderBottom.translatesAutoresizingMaskIntoConstraints = NO;
         [self.summaryView addSubview:summaryBorderBottom];
         [self.summaryView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[border]|"
@@ -80,7 +79,6 @@
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped)];
         tapGesture.delegate = self;
         [self addGestureRecognizer:tapGesture];
-
     }
     return self;
 }
@@ -204,6 +202,20 @@
     _hidePaymentButton = hidePaymentButton;
     self.paymentButton.hidden = hidePaymentButton;
     [self updateLayout];
+}
+
+- (void)setTheme:(BTUI *)theme {
+    [super setTheme:theme];
+    
+    self.cardFormSectionHeader.textColor = theme.sectionHeaderTextColor;
+    self.cardFormSectionHeader.font = theme.sectionHeaderFont;
+    
+    self.summaryView.theme = theme;
+    self.ctaControl.theme = theme;
+    self.paymentButton.theme = theme;
+    self.cardForm.theme = theme;
+    self.selectedPaymentMethodView.theme = theme;
+    self.activityView.color = theme.defaultTintColor;
 }
 
 - (void)updateLayout {
