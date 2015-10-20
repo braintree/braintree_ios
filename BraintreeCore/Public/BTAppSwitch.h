@@ -46,6 +46,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// The singleton instance
 + (instancetype)sharedInstance;
 
+/// Sets the return URL scheme for your app.
+///
+/// This must be configured if your app integrates a payment option that may switch to either
+/// Mobile Safari or to another app to finish the payment authorization workflow.
+///
+/// @param returnURLScheme The return URL scheme
++ (void)setReturnURLScheme:(NSString *)returnURLScheme;
+
 /// Handles a return from app switch
 /// @param url The URL that was opened to return to your app
 /// @param sourceApplication The source app that requested the launch of your app

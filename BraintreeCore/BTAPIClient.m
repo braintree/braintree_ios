@@ -19,14 +19,15 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         return nil;
     }
     
-    if ((self = [super init])) {
+    if (self = [super init]) {
+        _metadata = [[BTClientMetadata alloc] init];
+        _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
+        
         NSURL *baseURL = [BTAPIClient baseURLFromClientKey:clientKeyOrToken];
         if (baseURL) {
             _clientKey = clientKeyOrToken;
-            _metadata = [[BTClientMetadata alloc] init];
+
             _http = [[BTHTTP alloc] initWithBaseURL:baseURL clientKey:clientKeyOrToken];
-            
-            _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
             
             [self sendAnalyticsEvent:@"ios.started.client-key"];
         } else {
@@ -40,11 +41,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             }
             
             NSURL *baseURL = self.clientToken.json[@"clientApiUrl"].asURL;
-            self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-            
-            _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
-            
-            _metadata = [[BTClientMetadata alloc] init];
+            _http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
             
             [self sendAnalyticsEvent:@"ios.started.client-token"];
         }
@@ -95,7 +92,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     NSString *merchantID = [clientKey substringWithRange:[results[0] rangeAtIndex:2]];
 
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    // Avoid using self before self = [self init]
     components.scheme = [BTAPIClient schemeForEnvironmentString:environment];
     NSString *host = [BTAPIClient hostForEnvironmentString:environment];
     NSArray *hostComponents = [host componentsSeparatedByString:@":"];
