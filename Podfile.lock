@@ -42,7 +42,7 @@ PODS:
   - Braintree/Venmo (4.0.0-beta1):
     - Braintree/Card
     - Braintree/Core
-  - CardIO (5.1.1)
+  - CardIO (5.2.1)
   - Expecta (1.0.2)
   - FLEX (2.0.6)
   - HockeySDK (3.8.2):
@@ -93,7 +93,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   Braintree: 1368be3937ee61ec2471e6d8a2acaae2f674df83
-  CardIO: 2c3a8ef9b9add4bd664c83bb653b83b2f32d9d7f
+  CardIO: 710a4877315b3caa02dba01857aaa184fcbe21ad
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   FLEX: 3c390976e788d3d447b614ea1714ffc8fc914cf3
   HockeySDK: 9f4ac41263acf9d8a4d59491a7f17af16529b935
