@@ -12,65 +12,39 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 @implementation BTAPIClient
 
-- (instancetype)initWithClientKey:(NSString *)clientKey {
-    return [self initWithClientKey:clientKey dispatchQueue:nil];
-}
-
-- (instancetype)initWithClientKey:(NSString *)clientKey dispatchQueue:(dispatch_queue_t)dispatchQueue {
-    NSURL *baseURL = [self baseURLFromClientKey:clientKey];
-    if (!baseURL) {
-        return nil;
-    }
-
-    self = [super init];
-    if (self) {
-        _clientKey = clientKey;
-        _metadata = [[BTClientMetadata alloc] init];
-        _http = [[BTHTTP alloc] initWithBaseURL:baseURL clientKey:clientKey];
-
-        if (dispatchQueue) {
-            _http.dispatchQueue = dispatchQueue;
-        }
-        _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
-        
-        [self sendAnalyticsEvent:@"ios.started.client-key"];
-    }
-    return self;
-}
-
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    return [self initWithClientToken:clientToken dispatchQueue:nil];
-}
-
-- (instancetype)initWithClientToken:(NSString *)clientToken
-                      dispatchQueue:(dispatch_queue_t)dispatchQueue
-{
-    if(![clientToken isKindOfClass:[NSString class]]) {
-        NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
+- (nullable instancetype)initWithClientKeyOrToken:(NSString *)clientKeyOrToken {
+    if(![clientKeyOrToken isKindOfClass:[NSString class]]) {
+        NSString *reason = @"BTClient could not initialize because the provided clientKeyOrToken was invalid";
         [[BTLogger sharedLogger] error:reason];
         return nil;
     }
-
-    if (self = [self init]) {
-        NSError *error;
-        _clientToken = [[BTClientToken alloc] initWithClientToken:clientToken error:&error];
-        if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
-        if (!_clientToken) {
-            NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
-            [[BTLogger sharedLogger] error:reason];
-            return nil;
-        }
-
-        NSURL *baseURL = self.clientToken.json[@"clientApiUrl"].asURL;
-        self.http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-        if (dispatchQueue) {
-            _http.dispatchQueue = dispatchQueue;
-        }
-        _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
-
+    
+    if (self = [super init]) {
         _metadata = [[BTClientMetadata alloc] init];
+        _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
         
-        [self sendAnalyticsEvent:@"ios.started.client-token"];
+        NSURL *baseURL = [BTAPIClient baseURLFromClientKey:clientKeyOrToken];
+        if (baseURL) {
+            _clientKey = clientKeyOrToken;
+
+            _http = [[BTHTTP alloc] initWithBaseURL:baseURL clientKey:clientKeyOrToken];
+            
+            [self sendAnalyticsEvent:@"ios.started.client-key"];
+        } else {
+            NSError *error;
+            _clientToken = [[BTClientToken alloc] initWithClientToken:clientKeyOrToken error:&error];
+            if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
+            if (!_clientToken) {
+                NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
+                [[BTLogger sharedLogger] error:reason];
+                return nil;
+            }
+            
+            NSURL *baseURL = self.clientToken.json[@"clientApiUrl"].asURL;
+            _http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
+            
+            [self sendAnalyticsEvent:@"ios.started.client-token"];
+        }
     }
     return self;
 }
@@ -81,9 +55,9 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     BTAPIClient *copiedClient;
 
     if (self.clientToken) {
-        copiedClient = [[[self class] alloc] initWithClientToken:self.clientToken.originalValue dispatchQueue:self.dispatchQueue];
+        copiedClient = [[[self class] alloc] initWithClientKeyOrToken:self.clientToken.originalValue];
     } else if (self.clientKey) {
-        copiedClient = [[[self class] alloc] initWithClientKey:self.clientKey dispatchQueue:self.dispatchQueue];
+        copiedClient = [[[self class] alloc] initWithClientKeyOrToken:self.clientKey];
     } else {
         NSAssert(NO, @"Cannot copy an API client that does not specify a client token or client key");
     }
@@ -98,12 +72,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     return copiedClient;
 }
 
-#pragma mark - Accessors
-
-- (dispatch_queue_t)dispatchQueue {
-    return self.http.dispatchQueue ?: dispatch_get_main_queue();
-}
-
 #pragma mark - Base URL
 
 ///  Gets base URL from client key
@@ -111,7 +79,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 ///  @param clientKey The client key
 ///
 ///  @return Base URL for environment, or `nil` if client key is invalid
-- (NSURL *)baseURLFromClientKey:(NSString *)clientKey {
++ (NSURL *)baseURLFromClientKey:(NSString *)clientKey {
     NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:@"([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)" options:0 error:NULL];
 
     NSArray *results = [regExp matchesInString:clientKey options:0 range:NSMakeRange(0, clientKey.length)];
@@ -124,14 +92,14 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     NSString *merchantID = [clientKey substringWithRange:[results[0] rangeAtIndex:2]];
 
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = [self schemeForEnvironmentString:environment];
-    NSString *host = [self hostForEnvironmentString:environment];
+    components.scheme = [BTAPIClient schemeForEnvironmentString:environment];
+    NSString *host = [BTAPIClient hostForEnvironmentString:environment];
     NSArray *hostComponents = [host componentsSeparatedByString:@":"];
     components.host = hostComponents[0];
     if (hostComponents.count > 1) {
         components.port = hostComponents[1];
     }
-    components.path = [self clientApiBasePathForMerchantID:merchantID];
+    components.path = [BTAPIClient clientApiBasePathForMerchantID:merchantID];
     if (!components.host || !components.path) {
         return nil;
     }
@@ -139,14 +107,14 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     return components.URL;
 }
 
-- (NSString *)schemeForEnvironmentString:(NSString *)environment {
++ (NSString *)schemeForEnvironmentString:(NSString *)environment {
     if ([[environment lowercaseString] isEqualToString:@"development"]) {
         return @"http";
     }
     return @"https";
 }
 
-- (NSString *)hostForEnvironmentString:(NSString *)environment {
++ (NSString *)hostForEnvironmentString:(NSString *)environment {
     if ([[environment lowercaseString] isEqualToString:@"sandbox"]) {
         return @"sandbox.braintreegateway.com";
     } else if ([[environment lowercaseString] isEqualToString:@"production"]) {
@@ -158,7 +126,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
 }
 
-- (NSString *)clientApiBasePathForMerchantID:(NSString *)merchantID {
++ (NSString *)clientApiBasePathForMerchantID:(NSString *)merchantID {
     if (merchantID.length == 0) {
         return nil;
     }
@@ -210,7 +178,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         }
 
-        dispatch_async(self.dispatchQueue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             BTConfiguration *configuration;
             if (self.cachedRemoteConfiguration) {
                 configuration = [[BTConfiguration alloc] initWithJSON:self.cachedRemoteConfiguration];
@@ -243,7 +211,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                     self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL clientKey:self.clientKey];
                 }
                 NSAssert(self.analyticsHttp != nil, @"Must have clientToken or clientKey");
-                self.analyticsHttp.dispatchQueue = self.dispatchQueue;
+                self.analyticsHttp.dispatchQueue = dispatch_get_main_queue();
             }
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
             if ([self.analyticsHttp.baseURL isEqual:[NSURL URLWithString:@"test://do-not-send.url"]]) {

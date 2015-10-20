@@ -21,7 +21,7 @@
 
 - (instancetype)initWithClientKey:(NSString *)clientKey {
     if (self = [super initWithClientKey:clientKey]) {
-        _apiClient = [[BTAPIClient alloc] initWithClientKey:clientKey];
+        _apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientKey];
     }
     return self;
 }

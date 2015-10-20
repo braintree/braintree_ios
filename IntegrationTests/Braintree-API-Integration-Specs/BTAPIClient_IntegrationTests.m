@@ -11,7 +11,7 @@
 
 - (void)setUp {
     [super setUp];
-    client = [[BTAPIClient alloc] initWithClientKey:@"development_testing_integration_merchant_id"];
+    client = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
 }
 
 - (void)testFetchConfiguration_returnsTheConfiguration {

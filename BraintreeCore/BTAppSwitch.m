@@ -26,6 +26,10 @@
     return self;
 }
 
++ (void)setReturnURLScheme:(NSString *)returnURLScheme {
+    [BTAppSwitch sharedInstance].returnURLScheme = returnURLScheme;
+}
+
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
 + (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options {
     return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
@@ -35,7 +39,6 @@
     return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:nil];
 }
 #endif
-
 
 + (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
     return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:sourceApplication];
