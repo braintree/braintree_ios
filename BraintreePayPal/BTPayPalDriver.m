@@ -29,6 +29,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     BTPayPalPaymentTypeBillingAgreement,
 };
 
+@interface BTPayPalDriver () <SFSafariViewControllerDelegate>
+@end
+
 @implementation BTPayPalDriver
 
 + (void)load {
@@ -326,6 +329,14 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         [self informDelegatePresentingViewControllerNeedsDismissal];
         [self informDelegateWillProcessAppSwitchReturn];
         
+        // Before parsing the return URL, check whether the user cancelled by breaking
+        // out of the PayPal app switch flow (e.g. "Done" button in SFSafariViewController)
+        // TODO: add UI automation test
+        if ([url.absoluteString isEqualToString:SFSafariViewControllerFinishedURL]) {
+            if (completionBlock) completionBlock(nil, nil);
+            return;
+        }
+        
         [[self.class payPalClass] parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
             
             [self sendAnalyticsEventForHandlingOneTouchResult:result forPaymentType:paymentType];
@@ -383,7 +394,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         }];
     };
 }
-
 
 - (void)performSwitchRequest:(NSURL*) appSwitchURL {
     if ([SFSafariViewController class]) {
@@ -548,6 +558,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL {
     if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
+        self.safariViewController.delegate = self;
         [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
     } else {
         [[BTLogger sharedLogger] warning:@"Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
@@ -561,6 +572,14 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     } else {
         [[BTLogger sharedLogger] warning:@"Unable to dismiss View Controller to end PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
+}
+
+#pragma mark - SFSafariViewControllerDelegate
+
+static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontroller://finished";
+
+- (void)safariViewControllerDidFinish:(__unused SFSafariViewController *)controller {
+    [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
 }
 
 #pragma mark - Preflight check
