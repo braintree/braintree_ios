@@ -52,9 +52,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// a screen with legal language that directs the user to agree to the terms of Future Payments.
 /// Unfortunately, it is not currently possible to collect shipping information in the Vault flow.
 ///
-/// Additionally, the Vault option can use PayPal Billing Agreements, which is similar to future payments
-/// authorization, but adds the ability to collect shipping addresses and choose a funding instrument.
-///
 /// The *Checkout* option creates a one-time use PayPal payment on your behalf. As a result, you must
 /// specify the checkout details up-front, so that they can be shown to the user during the PayPal flow.
 /// With this flow, you must specify the estimated transaction amount, and you can collect shipping
@@ -69,9 +66,10 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// Regardless of the type or target, all of these user experiences take full advantage of One Touch. This
 /// means that users may bypass the username/password entry screen when they are already logged in.
 ///
-/// Upon successful completion, you will receive a `BTTokenizedPayPalAccount`, which includes user-facing
-/// details and a payment method nonce, which you must pass to your server in order to create a transaction
-/// or save the authorization in the Braintree vault (not possible with Checkout).
+/// Upon successful completion, you will receive a `BTTokenizedPayPalAccount` or `BTTokenizedPayPalAccount`,
+/// which includes user-facing details and a payment method nonce, which you must pass to your server in
+/// order to create a transaction or save the authorization in the Braintree vault (not possible with
+/// Checkout).
 ///
 /// ## User Experience Details
 ///
@@ -82,8 +80,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// ## App Switching Details
 ///
 /// This class will handle switching out of your app to the PayPal app or the browser (including the call to
-/// `-[UIApplication openURL:]`). Devices running iOS 9 or above should present an SFSafariViewController
-/// via the `viewControllerPresentingDelegate` object.
+/// `-[UIApplication openURL:]`).
 ///
 
 @interface BTPayPalDriver : NSObject <BTAppSwitchHandler>
@@ -99,6 +96,11 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 /// Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser.
 ///
+/// @note During the app switch authorization, the user may switch back to your app manually. In this case, the caller
+/// will not receive a cancellation via the completionBlock. Rather, it is the caller's responsibility to observe
+/// `UIApplicationDidBecomeActiveNotification` and `UIApplicationWillResignActiveNotification` using `NSNotificationCenter`
+/// if necessary.
+///
 /// @param completionBlock This completion will be invoked exactly once when authorization is complete or an error occurs.
 /// On success, you will receive an instance of `BTTokenizedPayPalAccount`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
@@ -107,6 +109,11 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 /// Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser with
 /// additional scopes (e.g. address).
+///
+/// @note During the app switch authorization, the user may switch back to your app manually. In this case, the caller
+/// will not receive a cancellation via the completionBlock. Rather, it is the caller's responsibility to observe
+/// `UIApplicationDidBecomeActiveNotification` and `UIApplicationWillResignActiveNotification` using `NSNotificationCenter`
+/// if necessary.
 ///
 /// @param additionalScopes An `NSSet` of requested scope-values as `NSString`s. Available scope-values are listed at
 /// https://developer.paypal.com/webapps/developer/docs/integration/direct/identity/attributes/
