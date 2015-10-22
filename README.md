@@ -14,6 +14,8 @@ The Braintree iOS SDK requires Xcode 7 and a Base SDK of iOS 9.0. It permits a D
 
 We recommend using either [CocoaPods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
+If you're upgrading from v3.x, read the [Braintree iOS Migration Guide](https://developers.braintreepayments.com/reference/general/client-sdk-migration/ios) for an overview of the architectural changes.
+
 ### CocoaPods
 
 Add to your `Podfile`:
