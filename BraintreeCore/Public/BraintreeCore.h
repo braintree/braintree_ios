@@ -13,7 +13,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 #import "BTConfiguration.h"
 #import "BTDelegates.h"
 #import "BTErrors.h"
-#import "BTHTTP.h"
 #import "BTHTTPErrors.h"
 #import "BTJSON.h"
 #import "BTLogger.h"
