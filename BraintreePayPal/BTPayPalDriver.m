@@ -208,7 +208,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             }
         }
         
-        experienceProfile[@"no_shipping"] = @(!checkoutRequest.shippingAddressRequired);
+        experienceProfile[@"no_shipping"] = @(!checkoutRequest.isShippingAddressRequired);
         
         if (checkoutRequest.localeCode != nil) {
             experienceProfile[@"locale_code"] = checkoutRequest.localeCode;

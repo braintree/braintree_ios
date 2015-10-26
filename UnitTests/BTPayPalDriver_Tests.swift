@@ -589,7 +589,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         address.locality = "Oakland"
         address.countryCodeAlpha2 = "US"
         address.postalCode = "12345"
-        checkoutRequest.shippingAddress = address
+        checkoutRequest.shippingAddressOverride = address
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
         

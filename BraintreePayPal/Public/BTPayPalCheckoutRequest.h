@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, strong) NSString *amount;
 
 /// Defaults to false. When set to true, the shipping address selector will be displayed.
-@property (nonatomic) BOOL shippingAddressRequired;
+@property (nonatomic, getter=isShippingAddressRequired) BOOL shippingAddressRequired;
 
 /// Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
 /// @note This is only used for one-time payments.
