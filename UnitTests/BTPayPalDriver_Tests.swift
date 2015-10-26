@@ -942,7 +942,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         
         let request = BTPayPalCheckoutRequest(amount: "1")!
         let expectation = self.expectationWithDescription("Billing Agreement fails with error")
-        payPalDriver.billingAgreementWithCheckoutRequest(request) { (tokenizedPayPalCheckout, error) -> Void in
+        payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalCheckout, error) -> Void in
             XCTAssertNil(tokenizedPayPalCheckout)
             XCTAssertEqual(error!.domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual(error!.code, BTPayPalDriverErrorType.Integration.rawValue)
@@ -961,7 +961,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         
         let request = BTPayPalCheckoutRequest()
         let expectation = self.expectationWithDescription("Checkout fails with error")
-        payPalDriver.billingAgreementWithCheckoutRequest(request) { (_, error) -> Void in
+        payPalDriver.requestBillingAgreement(request) { (_, error) -> Void in
             XCTAssertEqual(error!, self.mockAPIClient.cannedConfigurationResponseError!)
             expectation.fulfill()
         }
@@ -975,7 +975,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.billingAgreementWithCheckoutRequest(BTPayPalCheckoutRequest()) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(BTPayPalCheckoutRequest()) { _ -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1016,7 +1016,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         
-        payPalDriver.billingAgreementWithCheckoutRequest(BTPayPalCheckoutRequest()) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(BTPayPalCheckoutRequest()) { _ -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1034,7 +1034,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let checkoutRequest = BTPayPalCheckoutRequest()
         checkoutRequest.currencyCode = "GBP"
         
-        payPalDriver.billingAgreementWithCheckoutRequest(checkoutRequest) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(checkoutRequest) { _ -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1055,7 +1055,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         
         let request = BTPayPalCheckoutRequest()
-        payPalDriver.billingAgreementWithCheckoutRequest(request) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(request) { _ -> Void in }
         
         self.waitForExpectationsWithTimeout(2, handler: nil)
         XCTAssertTrue(mockRequestFactory.billingAgreementRequest.appSwitchPerformed)
@@ -1070,7 +1070,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         let dummyRequest = BTPayPalCheckoutRequest()
         let expectation = self.expectationWithDescription("Checkout fails with error")
-        payPalDriver.billingAgreementWithCheckoutRequest(dummyRequest) { (_, error) -> Void in
+        payPalDriver.requestBillingAgreement(dummyRequest) { (_, error) -> Void in
             XCTAssertEqual(error!, self.mockAPIClient.cannedResponseError!)
             expectation.fulfill()
         }

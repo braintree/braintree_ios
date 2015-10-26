@@ -90,7 +90,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         if (configuration.isBillingAgreementsEnabled) {
             // Switch to Billing Agreements flow
             BTPayPalCheckoutRequest *checkout = [[BTPayPalCheckoutRequest alloc] init];
-            [self billingAgreementWithCheckoutRequest:checkout completion:completionBlock];
+            [self requestBillingAgreement:checkout completion:completionBlock];
             return;
         }
         
@@ -136,7 +136,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 #pragma mark - Billing Agreement
 
-- (void)billingAgreementWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
+- (void)requestBillingAgreement:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
     [self checkoutWithCheckoutRequest:checkoutRequest
                    isBillingAgreement:YES
                            completion:completionBlock];
