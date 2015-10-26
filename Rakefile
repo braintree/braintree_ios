@@ -22,7 +22,7 @@ task :distribute => %w[distribute:build distribute:hockeyapp]
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
 VERSION_FILE = "BraintreeCore/Braintree-Version.h"
-DEMO_PLIST = "Braintree-Demo/Supporting Files/Braintree-Demo-Info.plist"
+DEMO_PLIST = "Demo/Supporting Files/Braintree-Demo-Info.plist"
 PUBLIC_REMOTE_NAME = "public"
 
 class << self
