@@ -27,17 +27,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// Amount must be a non-negative number, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', limited to 7 digits before the decimal point.
 @property (nonatomic, readonly, strong) NSString *amount;
 
-/// Defaults to false. When set to true, the shipping address selector will not be displayed.
-@property (nonatomic) BOOL noShipping;
+/// Defaults to false. When set to true, the shipping address selector will be displayed.
+@property (nonatomic) BOOL shippingAddressRequired;
 
 /// Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
+/// @note This is only used for one-time payments.
 @property (nonatomic, nullable, copy) NSString *currencyCode;
 
 /// Optional: A locale code to use for the transaction.
 @property (nonatomic, nullable, copy) NSString *localeCode;
 
 /// Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
-@property (nonatomic, nullable, strong) BTPostalAddress *shippingAddress;
+@property (nonatomic, nullable, strong) BTPostalAddress *shippingAddressOverride;
 
 @end
 

@@ -208,7 +208,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             }
         }
         
-        experienceProfile[@"no_shipping"] = [NSNumber numberWithBool:checkoutRequest.noShipping];
+        experienceProfile[@"no_shipping"] = @(!checkoutRequest.shippingAddressRequired);
         
         if (checkoutRequest.localeCode != nil) {
             experienceProfile[@"locale_code"] = checkoutRequest.localeCode;
@@ -221,9 +221,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             parameters[@"currency_iso_code"] = currencyCode;
         }
         
-        if (checkoutRequest.shippingAddress != nil) {
+        if (checkoutRequest.shippingAddressOverride != nil) {
             experienceProfile[@"address_override"] = @YES;
-            BTPostalAddress *shippingAddress = checkoutRequest.shippingAddress;
+            BTPostalAddress *shippingAddress = checkoutRequest.shippingAddressOverride;
             parameters[@"line1"] = shippingAddress.streetAddress;
             parameters[@"line2"] = shippingAddress.extendedAddress;
             parameters[@"city"] = shippingAddress.locality;

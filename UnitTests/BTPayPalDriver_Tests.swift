@@ -526,24 +526,19 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
-        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
         XCTAssertEqual(lastPostParameters["amount"] as? String, "1")
         XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "GBP")
         XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
     }
     
-    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithNoShipping() {
+    func testCheckout_byDefault_postsPaymentResourceWithNoShipping() {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")!
         checkoutRequest.currencyCode = "GBP"
-        checkoutRequest.noShipping = true
+        // no_shipping = true should be the default.
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
         
@@ -557,6 +552,28 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, true)
+    }
+    
+    func testCheckout_whenShippingAddressIsRequired_postsPaymentResourceWithNoShippingAsFalse() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")!
+        checkoutRequest.currencyCode = "GBP"
+        checkoutRequest.shippingAddressRequired = true
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
+        
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
     }
     
     func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithShippingAddress() {
