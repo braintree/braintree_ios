@@ -6,6 +6,7 @@
 #import <BraintreeCore/BTTokenizedCard_Internal.h>
 #endif
 
+#import "BTLogger_Internal.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTThreeDSecureDriver.h"
 #import "BTThreeDSecureLookupResult.h"
@@ -27,22 +28,27 @@
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient delegate:(id<BTViewControllerPresentingDelegate>)delegate {
+    // Defensive programming: apiClient and delegate parameters are annotated as nonnull
     if (apiClient == nil || delegate == nil) {
         return nil;
     }
-    if (self = [self initWithAPIClient:apiClient]) {
+    if (self = [super init]) {
         _apiClient = apiClient;
         _delegate = delegate;
     }
     return self;
 }
 
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
-    if (self = [super init]) {
-        _apiClient = apiClient;
+#pragma mark - Custom accessors
+
+- (void)setDelegate:(id<BTViewControllerPresentingDelegate>)delegate {
+    if (![delegate conformsToProtocol:@protocol(BTViewControllerPresentingDelegate)]) {
+        [[BTLogger sharedLogger] warning:@"Delegate does not conform to BTViewControllerPresentingDelegate"];
     }
-    return self;
+    _delegate = delegate;
 }
+
+#pragma mark - Public methods
 
 - (void)verifyCardWithNonce:(NSString *)nonce
                      amount:(NSDecimalNumber *)amount
@@ -52,7 +58,6 @@
                    transactionAmount:amount
                           completion:^(BTThreeDSecureLookupResult *lookupResult, NSError *error) {
                               if (error) {
-//                                  [self informDelegateDidFailWithError:error];
                                   completionBlock(nil, error);
                                   return;
                               }
@@ -66,7 +71,6 @@
                                   [self informDelegateRequestsPresentationOfViewController:navigationController];
                                   [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.authentication-start"];
                               } else {
-//                                  [self informDelegateDidVerifyCard:lookupResult.tokenizedCard];
                                   completionBlock(lookupResult.tokenizedCard, nil);
                               }
                           }];
@@ -164,15 +168,12 @@
 
     self.upgradedTokenizedCard = nil;
     self.completionBlockAfterAuthenticating(nil, error);
-//    [self informDelegateDidFailWithError:error];
 }
 
 - (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController {
     if (self.upgradedTokenizedCard) {
-//        [self informDelegateDidVerifyCard:self.upgradedTokenizedCard];
         self.completionBlockAfterAuthenticating(self.upgradedTokenizedCard, nil);
     } else {
-//        [self informDelegateDidCancel];
         self.completionBlockAfterAuthenticating(nil, nil);
         [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.canceled"];
     }
@@ -191,35 +192,13 @@
 - (void)informDelegateRequestsPresentationOfViewController:(UIViewController *)viewController {
     if ([self.delegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
         [self.delegate paymentDriver:self requestsPresentationOfViewController:viewController];
-    } else {
-        // TODO: report error
     }
 }
 
 - (void)informDelegateRequestsDismissalOfViewController:(UIViewController *)viewController {
     if ([self.delegate respondsToSelector:@selector(paymentDriver:requestsDismissalOfViewController:)]) {
         [self.delegate paymentDriver:self requestsDismissalOfViewController:viewController];
-    } else {
-        // TODO: report error
     }
 }
-
-//- (void)informDelegateDidVerifyCard:(BTTokenizedCard *)tokenizedCard {
-//    if ([self.delegate respondsToSelector:@selector(threeDSecureDriver:didVerifyCard:)]) {
-//        [self.delegate threeDSecureDriver:self didVerifyCard:tokenizedCard];
-//    }
-//}
-//
-//- (void)informDelegateDidCancel {
-//    if ([self.delegate respondsToSelector:@selector(threeDSecureDriverDidCancel:)]) {
-//        [self.delegate threeDSecureDriverDidCancel:self];
-//    }
-//}
-//
-//- (void)informDelegateDidFailWithError:(NSError *)error {
-//    if ([self.delegate respondsToSelector:@selector(threeDSecureDriver:didFailWithError:)]) {
-//        [self.delegate threeDSecureDriver:self didFailWithError:error];
-//    }
-//}
 
 @end

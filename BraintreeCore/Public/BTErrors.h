@@ -8,4 +8,4 @@ typedef NS_ENUM(NSInteger, BTError) {
 #pragma mark NSError userInfo Keys
 
 /// NSError userInfo key for validation errors.
-extern NSString * const BTCustomerInputBraintreeValidationErrorsKey;
+extern NSString * _Nonnull const BTCustomerInputBraintreeValidationErrorsKey;

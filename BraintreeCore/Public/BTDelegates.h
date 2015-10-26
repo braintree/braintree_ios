@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const BTAppSwitchWillSwitchNotification;
 extern NSString * const BTAppSwitchDidSwitchNotification;
 extern NSString * const BTAppSwitchWillProcessPaymentInfoNotification;
@@ -79,3 +81,5 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 - (void)paymentDriver:(id)driver requestsDismissalOfViewController:(UIViewController *)viewController;
 
 @end
+
+NS_ASSUME_NONNULL_END

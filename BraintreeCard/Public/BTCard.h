@@ -7,10 +7,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTCard : NSObject
 
 /// A convenience initializer for creating a card tokenization request.
-- (instancetype)initWithNumber:( NSString * _Nullable )number
-               expirationMonth:( NSString * _Nullable )expirationMonth
-                expirationYear:( NSString * _Nullable )expirationYear
-                           cvv:( NSString * _Nullable )cvv;
+- (instancetype)initWithNumber:(NSString *)number
+               expirationMonth:(NSString *)expirationMonth
+                expirationYear:(NSString *)expirationYear
+                           cvv:(nullable NSString *)cvv;
 
 - (instancetype)initWithParameters:(NSDictionary *)parameters NS_DESIGNATED_INITIALIZER;
 

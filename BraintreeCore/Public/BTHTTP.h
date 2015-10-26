@@ -12,7 +12,6 @@ extern NSString * const BTHTTPURLResponseKey;
 extern NSString * const BTHTTPJSONResponseBodyKey;
 
 /// Performs HTTP methods on the Braintree Client API
-
 @interface BTHTTP : NSObject<NSCopying>
 
 /// An optional array of pinned certificates, each an NSData instance
@@ -30,13 +29,12 @@ extern NSString * const BTHTTPJSONResponseBodyKey;
 ///
 /// @param URL The base URL for the Braintree Client API
 /// @param clientKey A client key
-- (instancetype)initWithBaseURL:(nonnull NSURL *)URL clientKey:(nonnull NSString *)clientKey NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBaseURL:(NSURL *)URL clientKey:(NSString *)clientKey NS_DESIGNATED_INITIALIZER;
 
 /// A convenience initializer to initialize `BTHTTP` with a client token
 ///
 /// @param clientToken A client token
 - (instancetype)initWithClientToken:(BTClientToken *)clientToken;
-
 
 - (nullable instancetype)init __attribute__((unavailable("Please use initWithBaseURL:authorizationFingerprint: instead.")));
 

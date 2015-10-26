@@ -4,6 +4,8 @@
 #import <BraintreeCard/BTTokenizedCard.h>
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface BTThreeDSecureTokenizedCard : BTTokenizedCard
 
 @property (nonatomic, readonly, assign) BOOL liabilityShifted;
@@ -12,9 +14,11 @@
 #pragma mark - Internal
 
 - (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
-                               description:(NSString *)description
+                               description:(nullable NSString *)description
                                cardNetwork:(BTCardNetwork)cardNetwork
-                                   lastTwo:(NSString *)lastTwo
+                                   lastTwo:(nullable NSString *)lastTwo
                           threeDSecureJSON:(BTJSON *)threeDSecureJSON;
 
 @end
+
+NS_ASSUME_NONNULL_END

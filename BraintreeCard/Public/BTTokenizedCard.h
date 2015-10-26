@@ -28,9 +28,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTTokenizedCard : NSObject <BTTokenized>
 
+/// The card network.
 @property (nonatomic, readonly, assign) BTCardNetwork cardNetwork;
+
+/// The last two digits of the card, if available.
 @property (nonatomic, nullable, readonly, copy) NSString *lastTwo;
 
+#pragma mark - Internal
+
+/// Create a `BTTokenizedCard` object from JSON.
 + (instancetype)cardWithJSON:(BTJSON *)cardJSON;
 
 @end

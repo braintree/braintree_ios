@@ -14,6 +14,8 @@ typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
     BTClientMetadataIntegrationUnknown
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 /// Represents the metadata associated with a session for posting along with
 /// payment data during tokenization
 ///
@@ -49,3 +51,5 @@ typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
 - (void)setSessionId:(NSString *)sessionId;
 
 @end
+
+NS_ASSUME_NONNULL_END

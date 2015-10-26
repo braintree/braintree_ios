@@ -54,9 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///  @param apiClient The Braintree API Client
 ///
 ///  @return An initialized instance of BTThreeDSecureDriver
-//- (nullable instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient delegate:(id<BTViewControllerPresentingDelegate>)delegate;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient delegate:(id<BTViewControllerPresentingDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 
 - (nullable instancetype)init __attribute__((unavailable("Please use initWithAPIClient: instead.")));
 
