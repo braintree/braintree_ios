@@ -114,21 +114,6 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 
 @property (nonatomic, assign, readonly) BOOL isNull;
 
-//// @name Setters
-//
-///// Sets the given value of the JSON object in a null safe manner
-/////
-///// When `nil` is received, the given value is omitted or removed.
-/////
-///// As it is the uncommon case, use `NSNull.null` to insert JSON `null`.
-/////
-///// If the current value is not an object, isError will begin to return true, and asError will return the relevant error.
-//- (void)setObject:(id)value forKeyedSubscript:(NSString *)key;
-//
-//- (void)setObject:(id)value atIndexedSubscript:(NSUInteger)idx;
-//
-//- (void)setValue:(id)value;
-
 @end
 
 NS_ASSUME_NONNULL_END

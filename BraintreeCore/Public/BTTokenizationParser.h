@@ -9,7 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note `BTTokenizationParser` provides access to JSON parsing for different payment options
 /// without introducing compile-time dependencies on payment option frameworks and their symbols.
-
 @interface BTTokenizationParser : NSObject
 
 /// The singleton instance

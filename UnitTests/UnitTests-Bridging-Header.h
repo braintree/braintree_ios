@@ -17,6 +17,7 @@
 #import "BTCardClient_Internal.h"
 #import "BTPayPalDriver_Internal.h"
 #import "BTVenmoDriver_Internal.h"
+#import "BTURLUtils.h"
 #import "FakePayPalClasses.h"
 #import "BTLogger_Internal.h"
 #import "DeviceCollectorSDK.h" // for testing Kount error codes

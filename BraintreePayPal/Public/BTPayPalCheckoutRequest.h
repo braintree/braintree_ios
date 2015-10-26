@@ -18,11 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// Amount must be a non-negative number, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', limited to 7 digits before the decimal point.
 ///
-/// @param amount An amount greater than or equal to zero. Used for single payment Checkout Requests.
-/// @return A Checkout Request, or `nil` if the amount is `nil`.
-- (nullable instancetype)initWithAmount:(NSString *)amount;
+/// @param amount An amount greater than or equal to zero. Used for one-time payment Checkout Requests.
+/// @return A Checkout Request.
+- (instancetype)initWithAmount:(NSString *)amount;
 
-/// The amount - used for single payment Checkout Requests.
+/// The amount - used for one-time payment Checkout Requests.
 ///
 /// Amount must be a non-negative number, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', limited to 7 digits before the decimal point.
 @property (nonatomic, readonly, strong) NSString *amount;

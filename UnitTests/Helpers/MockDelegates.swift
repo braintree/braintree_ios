@@ -13,17 +13,17 @@ import XCTest
         didPerformAppSwitch = didPerform
     }
 
-    @objc func appSwitcherWillPerformAppSwitch(appSwitcher: AnyObject!) {
+    @objc func appSwitcherWillPerformAppSwitch(appSwitcher: AnyObject) {
         lastAppSwitcher = appSwitcher
         willPerformAppSwitch?.fulfill()
     }
 
-    @objc func appSwitcher(appSwitcher: AnyObject!, didPerformSwitchToTarget target: BTAppSwitchTarget) {
+    @objc func appSwitcher(appSwitcher: AnyObject, didPerformSwitchToTarget target: BTAppSwitchTarget) {
         lastAppSwitcher = appSwitcher
         didPerformAppSwitch?.fulfill()
     }
 
-    @objc func appSwitcherWillProcessPaymentInfo(appSwitcher: AnyObject!) {
+    @objc func appSwitcherWillProcessPaymentInfo(appSwitcher: AnyObject) {
         lastAppSwitcher = appSwitcher
         willProcess?.fulfill()
     }
@@ -35,13 +35,13 @@ import XCTest
     var lastViewController : UIViewController? = nil
     var lastPaymentDriver : AnyObject? = nil
 
-    func paymentDriver(driver: AnyObject!, requestsDismissalOfViewController viewController: UIViewController!) {
+    func paymentDriver(driver: AnyObject, requestsDismissalOfViewController viewController: UIViewController) {
         lastPaymentDriver = driver
         lastViewController = viewController
         requestsDismissalOfViewController?.fulfill()
     }
 
-    func paymentDriver(driver: AnyObject!, requestsPresentationOfViewController viewController: UIViewController!) {
+    func paymentDriver(driver: AnyObject, requestsPresentationOfViewController viewController: UIViewController) {
         lastPaymentDriver = driver
         lastViewController = viewController
         requestsPresentationOfViewController?.fulfill()
