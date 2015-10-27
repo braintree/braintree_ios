@@ -980,10 +980,6 @@
 		A76B19B91B79708900452CFA /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A76B19C31B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoApplePayPassKitViewController.h; sourceTree = "<group>"; };
 		A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoApplePayPassKitViewController.m; sourceTree = "<group>"; };
-		A76B19C61B79708900452CFA /* BraintreeDemoBTUICoinbaseButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTUICoinbaseButtonViewController.h; sourceTree = "<group>"; };
-		A76B19C71B79708900452CFA /* BraintreeDemoBTUICoinbaseButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTUICoinbaseButtonViewController.m; sourceTree = "<group>"; };
-		A76B19C91B79708900452CFA /* BraintreeDemoCustomCoinbaseButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomCoinbaseButtonViewController.h; sourceTree = "<group>"; };
-		A76B19CA1B79708900452CFA /* BraintreeDemoCustomCoinbaseButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomCoinbaseButtonViewController.m; sourceTree = "<group>"; };
 		A76B19CC1B79708900452CFA /* BraintreeDemoBTPaymentButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTPaymentButtonViewController.h; sourceTree = "<group>"; };
 		A76B19CD1B79708900452CFA /* BraintreeDemoBTPaymentButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTPaymentButtonViewController.m; sourceTree = "<group>"; };
 		A76B19CF1B79708900452CFA /* BraintreeDemoCustomMultiPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomMultiPayViewController.h; sourceTree = "<group>"; };
@@ -1935,8 +1931,6 @@
 			isa = PBXGroup;
 			children = (
 				A76B19C21B79708900452CFA /* Apple Pay - PassKit */,
-				A76B19C51B79708900452CFA /* Coinbase - BTUICoinbaseButton */,
-				A76B19C81B79708900452CFA /* Coinbase - Custom Button */,
 				A76B19CB1B79708900452CFA /* Combined Button - BTPaymentButton */,
 				A76B19CE1B79708900452CFA /* Combined Button - Custom Multi-Pay Button */,
 				A76B19D11B79708900452CFA /* Credit Card Tokenization */,
@@ -1962,24 +1956,6 @@
 				A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */,
 			);
 			path = "Apple Pay - PassKit";
-			sourceTree = "<group>";
-		};
-		A76B19C51B79708900452CFA /* Coinbase - BTUICoinbaseButton */ = {
-			isa = PBXGroup;
-			children = (
-				A76B19C61B79708900452CFA /* BraintreeDemoBTUICoinbaseButtonViewController.h */,
-				A76B19C71B79708900452CFA /* BraintreeDemoBTUICoinbaseButtonViewController.m */,
-			);
-			path = "Coinbase - BTUICoinbaseButton";
-			sourceTree = "<group>";
-		};
-		A76B19C81B79708900452CFA /* Coinbase - Custom Button */ = {
-			isa = PBXGroup;
-			children = (
-				A76B19C91B79708900452CFA /* BraintreeDemoCustomCoinbaseButtonViewController.h */,
-				A76B19CA1B79708900452CFA /* BraintreeDemoCustomCoinbaseButtonViewController.m */,
-			);
-			path = "Coinbase - Custom Button";
 			sourceTree = "<group>";
 		};
 		A76B19CB1B79708900452CFA /* Combined Button - BTPaymentButton */ = {

@@ -24,10 +24,8 @@
 				<string>Combined - BTPaymentButton</string>
 				<string>PayPal - BTUIPayPalButton</string>
 				<string>Venmo - BTUIVenmoButton</string>
-				<string>Coinbase - BTUICoinbaseButton</string>
 				<string>Venmo - Custom Button</string>
 				<string>PayPal - Custom Button</string>
-				<string>Coinbase - Custom Button</string>
 				<string>Apple Pay - PassKit</string>
 				<string>Drop In</string>
 				<string>UI Components</string>
@@ -44,10 +42,8 @@
 				<string>BraintreeDemoBTPaymentButtonViewController</string>
 				<string>BraintreeDemoBTUIPayPalButtonViewController</string>
 				<string>BraintreeDemoBTUIVenmoButtonViewController</string>
-				<string>BraintreeDemoBTUICoinbaseButtonViewController</string>
 				<string>BraintreeDemoCustomVenmoButtonViewController</string>
 				<string>BraintreeDemoCustomPayPalButtonViewController</string>
-				<string>BraintreeDemoCustomCoinbaseButtonViewController</string>
 				<string>BraintreeDemoApplePayPassKitViewController</string>
 				<string>BraintreeDemoDropInViewController</string>
 				<string>BraintreeDemoUIWidgetsViewController</string>
