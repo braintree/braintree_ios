@@ -5,35 +5,31 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface BTTokenizedPayPalAccount : NSObject <BTTokenized>
 
-// Payer's email address
-@property (nonatomic, readonly, copy) NSString *email;
+/// Payer's email address
+@property (nonatomic, nullable, readonly, copy) NSString *email;
 
 /// Payer's first name.
-@property (nonatomic, readonly, copy) NSString *firstName;
+@property (nonatomic, nullable, readonly, copy) NSString *firstName;
 
 /// Payer's last name.
-@property (nonatomic, readonly, copy) NSString *lastName;
+@property (nonatomic, nullable, readonly, copy) NSString *lastName;
 
 /// Payer's phone number.
-@property (nonatomic, readonly, copy) NSString *phone;
+@property (nonatomic, nullable, readonly, copy) NSString *phone;
 
 /// The billing address.
-@property (nonatomic, readonly, strong) BTPostalAddress *billingAddress;
+@property (nonatomic, nullable, readonly, strong) BTPostalAddress *billingAddress;
 
 /// The shipping address.
-@property (nonatomic, readonly, strong) BTPostalAddress *shippingAddress;
+@property (nonatomic, nullable, readonly, strong) BTPostalAddress *shippingAddress;
 
 /// Client Metadata Id associated with this transaction.
-@property (nonatomic, readonly, copy) NSString *clientMetadataId;
+@property (nonatomic, nullable, readonly, copy) NSString *clientMetadataId;
 
 /// Optional. Payer Id associated with this transaction.
 /// Will be provided for Billing Agreement and Checkout.
 @property (nonatomic, nullable, readonly, copy) NSString *payerId;
 
 @end
-
-NS_ASSUME_NONNULL_END

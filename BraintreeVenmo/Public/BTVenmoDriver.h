@@ -47,13 +47,6 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 /// cancellation, you will receive `nil` for both parameters.
 - (void)tokenizeVenmoCardWithCompletion:(void (^)(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
-/// Indicates whether the Venmo app is available for app switch. This should be checked before presenting
-/// any UI to pay with Venmo.
-///
-/// @note This only indicates if the app is installed and available to be launched, not whether Venmo is
-/// enabled for your merchant account.
-@property (nonatomic, readonly, assign) BOOL isAppSwitchAvailable;
-
 /// An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating
 /// your UI
 @property (nonatomic, weak) id<BTAppSwitchDelegate> delegate;

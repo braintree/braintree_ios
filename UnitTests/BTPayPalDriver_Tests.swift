@@ -352,13 +352,14 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                 XCTAssertEqual(tokenizedPayPalAccount!.paymentMethodNonce, "a-nonce")
                 XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
-                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.recipientName!, "Foo Bar")
-                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.streetAddress, "1 Foo Ct")
-                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.extendedAddress!, "Apt Bar")
-                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.locality, "Fubar")
-                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.region!, "FU")
-                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.postalCode!, "42")
-                XCTAssertEqual(tokenizedPayPalAccount!.shippingAddress.countryCodeAlpha2, "USA")
+                let shippingAddress = tokenizedPayPalAccount!.shippingAddress!
+                XCTAssertEqual(shippingAddress.recipientName, "Foo Bar")
+                XCTAssertEqual(shippingAddress.streetAddress, "1 Foo Ct")
+                XCTAssertEqual(shippingAddress.extendedAddress, "Apt Bar")
+                XCTAssertEqual(shippingAddress.locality, "Fubar")
+                XCTAssertEqual(shippingAddress.region, "FU")
+                XCTAssertEqual(shippingAddress.postalCode, "42")
+                XCTAssertEqual(shippingAddress.countryCodeAlpha2, "USA")
         })
     }
 
@@ -374,8 +375,8 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                     ],
                 ]
             ] ],
-            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalCheckout!.email, "hello@world.com")
+            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
         })
     }
 
@@ -389,8 +390,8 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                     ],
                 ]
             ] ],
-            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalCheckout!.localizedDescription, "hello@world.com")
+            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "hello@world.com")
         })
     }
     
@@ -485,8 +486,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         
         let request = BTPayPalCheckoutRequest(amount: "1")
         let expectation = self.expectationWithDescription("Checkout fails with error")
-        payPalDriver.checkoutWithCheckoutRequest(request) { (tokenizedPayPalCheckout, error) -> Void in
-            XCTAssertNil(tokenizedPayPalCheckout)
+        payPalDriver.checkoutWithCheckoutRequest(request) { (tokenizedPayPalAccount, error) -> Void in
+            XCTAssertNil(tokenizedPayPalAccount)
             XCTAssertEqual(error!.domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual(error!.code, BTPayPalDriverErrorType.Integration.rawValue)
             expectation.fulfill()
@@ -730,7 +731,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         self.waitForExpectationsWithTimeout(5, handler: nil)
     }
 
-    func testTokenizedPayPalCheckout_containsPayerInfo() {
+    func testtokenizedPayPalAccount_containsPayerInfo() {
         assertSuccessfulCheckoutResponse([
             "paypalAccounts": [
                 [
@@ -772,32 +773,34 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                         ]
                     ]
                 ] ] ],
-            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalCheckout!.paymentMethodNonce, "a-nonce")
-                XCTAssertEqual(tokenizedPayPalCheckout!.localizedDescription, "A description")
-                XCTAssertEqual(tokenizedPayPalCheckout!.firstName, "Some")
-                XCTAssertEqual(tokenizedPayPalCheckout!.lastName, "Dude")
-                XCTAssertEqual(tokenizedPayPalCheckout!.phone, "867-5309")
-                XCTAssertEqual(tokenizedPayPalCheckout!.email, "hello@world.com")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.recipientName!, "Bar Foo")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.streetAddress, "2 Foo Ct")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.extendedAddress!, "Apt Foo")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.locality, "Barfoo")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.region!, "BF")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.postalCode!, "24")
-                XCTAssertEqual(tokenizedPayPalCheckout!.billingAddress.countryCodeAlpha2, "ASU")
-                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.recipientName!, "Some Dude")
-                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.streetAddress, "3 Foo Ct")
-                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.extendedAddress!, "Apt 5")
-                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.locality, "Dudeville")
-                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.region!, "CA")
-                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.postalCode!, "24")
-                XCTAssertEqual(tokenizedPayPalCheckout!.shippingAddress.countryCodeAlpha2, "US")
-                XCTAssertEqual(tokenizedPayPalCheckout!.payerId, "FAKE-PAYER-ID")
+            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalAccount!.paymentMethodNonce, "a-nonce")
+                XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
+                XCTAssertEqual(tokenizedPayPalAccount!.firstName, "Some")
+                XCTAssertEqual(tokenizedPayPalAccount!.lastName, "Dude")
+                XCTAssertEqual(tokenizedPayPalAccount!.phone, "867-5309")
+                XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
+                XCTAssertEqual(tokenizedPayPalAccount!.payerId, "FAKE-PAYER-ID")
+                let billingAddress = tokenizedPayPalAccount!.billingAddress!
+                let shippingAddress = tokenizedPayPalAccount!.shippingAddress!
+                XCTAssertEqual(billingAddress.recipientName, "Bar Foo")
+                XCTAssertEqual(billingAddress.streetAddress, "2 Foo Ct")
+                XCTAssertEqual(billingAddress.extendedAddress, "Apt Foo")
+                XCTAssertEqual(billingAddress.locality, "Barfoo")
+                XCTAssertEqual(billingAddress.region, "BF")
+                XCTAssertEqual(billingAddress.postalCode, "24")
+                XCTAssertEqual(billingAddress.countryCodeAlpha2, "ASU")
+                XCTAssertEqual(shippingAddress.recipientName, "Some Dude")
+                XCTAssertEqual(shippingAddress.streetAddress, "3 Foo Ct")
+                XCTAssertEqual(shippingAddress.extendedAddress, "Apt 5")
+                XCTAssertEqual(shippingAddress.locality, "Dudeville")
+                XCTAssertEqual(shippingAddress.region, "CA")
+                XCTAssertEqual(shippingAddress.postalCode, "24")
+                XCTAssertEqual(shippingAddress.countryCodeAlpha2, "US")
         })
     }
 
-    func testTokenizedPayPalCheckout_whenEmailAddressIsNestedInsidePayerInfoJSON_usesNestedEmailAddress() {
+    func testtokenizedPayPalAccount_whenEmailAddressIsNestedInsidePayerInfoJSON_usesNestedEmailAddress() {
         assertSuccessfulCheckoutResponse([
             "paypalAccounts": [
                 [
@@ -809,12 +812,12 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                     ],
                 ]
             ] ],
-            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalCheckout!.email, "hello@world.com")
+            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
         })
     }
 
-    func testTokenizedPayPalCheckout_whenDescriptionJSONIsPayPal_usesEmailAsLocalizedDescription() {
+    func testtokenizedPayPalAccount_whenDescriptionJSONIsPayPal_usesEmailAsLocalizedDescription() {
         assertSuccessfulCheckoutResponse([
             "paypalAccounts": [
                 [
@@ -824,8 +827,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                     ],
                 ]
             ] ],
-            assertionBlock: { (tokenizedPayPalCheckout, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalCheckout!.localizedDescription, "hello@world.com")
+            assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
+                XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "hello@world.com")
         })
     }
 
@@ -881,8 +884,8 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
 
-        payPalDriver.setCheckoutAppSwitchReturnBlock ({ (tokenizedPayPalCheckout, error) -> Void in
-            assertionBlock(tokenizedPayPalCheckout, error)
+        payPalDriver.setCheckoutAppSwitchReturnBlock ({ (tokenizedPayPalAccount, error) -> Void in
+            assertionBlock(tokenizedPayPalAccount, error)
         })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
     }
@@ -942,8 +945,8 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         
         let request = BTPayPalCheckoutRequest(amount: "1")
         let expectation = self.expectationWithDescription("Billing Agreement fails with error")
-        payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalCheckout, error) -> Void in
-            XCTAssertNil(tokenizedPayPalCheckout)
+        payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalAccount, error) -> Void in
+            XCTAssertNil(tokenizedPayPalAccount)
             XCTAssertEqual(error!.domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual(error!.code, BTPayPalDriverErrorType.Integration.rawValue)
             expectation.fulfill()
