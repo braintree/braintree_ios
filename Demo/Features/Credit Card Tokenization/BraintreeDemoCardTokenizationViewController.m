@@ -19,9 +19,9 @@
 
 @implementation BraintreeDemoCardTokenizationViewController
 
-- (instancetype)initWithClientKey:(NSString *)clientKey {
-    if (self = [super initWithClientKey:clientKey]) {
-        _apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientKey];
+- (instancetype)initWithAuthorization:(NSString *)authorization {
+    if (self = [super initWithAuthorization:authorization]) {
+        _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     }
     return self;
 }

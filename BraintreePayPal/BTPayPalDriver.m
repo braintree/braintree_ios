@@ -109,8 +109,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         
         if (self.apiClient.clientToken) {
             request.additionalPayloadAttributes = @{ @"client_token": self.apiClient.clientToken.originalValue };
-        } else if (self.apiClient.clientKey) {
-            request.additionalPayloadAttributes = @{ @"client_key": self.apiClient.clientKey };
+        } else if (self.apiClient.tokenizationKey) {
+            request.additionalPayloadAttributes = @{ @"client_key": self.apiClient.tokenizationKey };
         }
         
         

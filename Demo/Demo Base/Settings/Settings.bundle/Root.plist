@@ -94,9 +94,9 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Use Client Key</string>
+			<string>Use Tokenization Key</string>
 			<key>Key</key>
-			<string>BraintreeDemoUseClientKey</string>
+			<string>BraintreeDemoUseTokenizationKey</string>
 			<key>DefaultValue</key>
 			<true/>
 		</dict>

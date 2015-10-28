@@ -124,25 +124,25 @@
 
     self.title = @"Braintree";
 
-    if ([BraintreeDemoSettings useClientKey]) {
-        [self updateStatus:@"Using Client Key"];
+    if ([BraintreeDemoSettings useTokenizationKey]) {
+        [self updateStatus:@"Using Tokenization Key"];
 
-        // For now, we assume that if we're using a Client Key, then we're not using a Customer.
-        NSString *clientKey;
+        // If we're using a Tokenization Key, then we're not using a Customer.
+        NSString *tokenizationKey;
         switch ([BraintreeDemoSettings currentEnvironment]) {
             case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
-                clientKey = @"sandbox_9dbg82cq_dcpspy2brwdjr3qn";
+                tokenizationKey = @"sandbox_9dbg82cq_dcpspy2brwdjr3qn";
                 break;
             case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
-                clientKey = @"production_t2wns2y2_dfy45jdj3dxkmz5m";
+                tokenizationKey = @"production_t2wns2y2_dfy45jdj3dxkmz5m";
                 break;
             case BraintreeDemoTransactionServiceEnvironmentCustomMerchant:
             default:
-                clientKey = @"development_testing_integration_merchant_id";
+                tokenizationKey = @"development_testing_integration_merchant_id";
                 break;
         }
 
-        self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientKey:clientKey];
+        self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:tokenizationKey];
         return;
     }
 
@@ -156,7 +156,7 @@
             [self updateStatus:error.localizedDescription];
         } else {
             [self updateStatus:@"Using Client Token"];
-            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithClientToken:clientToken];
+            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:clientToken];
         }
     }];
 }
@@ -178,7 +178,7 @@
     self.title = _currentDemoViewController.title;
 }
 
-- (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithClientToken:(NSString *)clientToken {
+- (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithAuthorization:(NSString *)authorization {
     NSString *integrationName = [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsIntegration"];
     NSLog(@"Loading integration: %@", integrationName);
 
@@ -188,20 +188,7 @@
         return nil;
     }
 
-    return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithClientToken:clientToken];
-}
-
-- (BraintreeDemoBaseViewController *)instantiateCurrentIntegrationViewControllerWithClientKey:(NSString *)clientKey {
-    NSString *integrationName = [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsIntegration"];
-    NSLog(@"Loading integration: %@", integrationName);
-
-    Class integrationClass = NSClassFromString(integrationName);
-    if (![integrationClass isSubclassOfClass:[BraintreeDemoBaseViewController class]]) {
-        NSLog(@"%@ is not a valid BraintreeDemoBaseViewController", integrationName);
-        return nil;
-    }
-
-    return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithClientKey:clientKey];
+    return [(BraintreeDemoBaseViewController *)[integrationClass alloc] initWithAuthorization:authorization];
 }
 
 - (void)containIntegrationViewController:(UIViewController *)viewController {

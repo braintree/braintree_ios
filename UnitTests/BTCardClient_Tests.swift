@@ -3,7 +3,7 @@ import XCTest
 class BTCardClient_Tests: XCTestCase {
     
     func testTokenization_whenAPIClientIsNil_callsBackWithError() {
-        let mockClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+        let mockClient = MockAPIClient(authorization: "development_tokenization_key")!
         let cardClient = BTCardClient(APIClient: mockClient)
         cardClient.apiClient = nil
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
@@ -22,7 +22,7 @@ class BTCardClient_Tests: XCTestCase {
     func testTokenization_sendsDataToClientAPI() {
         let expectation = self.expectationWithDescription("Tokenize Card")
         let fakeHTTP = FakeHTTP.fakeHTTP()
-        let apiClient = BTAPIClient(clientKeyOrToken: "sandbox_abcd_fake_merchant_id")!
+        let apiClient = BTAPIClient(authorization: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = fakeHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
 
@@ -46,7 +46,7 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenAPIClientSucceeds_returnsTokenizedCard() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let apiClient = BTAPIClient(clientKeyOrToken: "sandbox_abcd_fake_merchant_id")!
+        let apiClient = BTAPIClient(authorization: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = FakeHTTP.fakeHTTP()
         let cardClient = BTCardClient(APIClient: apiClient)
 
@@ -70,7 +70,7 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenAPIClientFails_returnsError() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let apiClient = BTAPIClient(clientKeyOrToken: "sandbox_abcd_fake_merchant_id")!
+        let apiClient = BTAPIClient(authorization: "sandbox_abcd_fake_merchant_id")!
         apiClient.http = ErrorHTTP.fakeHTTP()
         let cardClient = BTCardClient(APIClient: apiClient)
 
@@ -88,7 +88,7 @@ class BTCardClient_Tests: XCTestCase {
     // MARK: _meta parameter
     
     func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
-        let mockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         let cardClient = BTCardClient(APIClient: mockAPIClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
         

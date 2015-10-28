@@ -14,17 +14,9 @@
 
 @implementation BraintreeDemoDropInViewController
 
-- (instancetype)initWithClientKey:(NSString *)clientKey {
-    if (self = [super initWithClientKey:clientKey]) {
-        _apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientKey];
-    }
-    return self;
-}
-
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
-    if (self) {
-        _apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientToken];
+- (instancetype)initWithAuthorization:(NSString *)authorization {
+    if (self = [super initWithAuthorization:authorization]) {
+        _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     }
     return self;
 }

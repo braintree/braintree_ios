@@ -11,7 +11,7 @@
 
 - (void)setUp {
     [super setUp];
-    client = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
+    client = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
 }
 
 - (void)testFetchConfiguration_returnsTheConfiguration {
@@ -28,7 +28,7 @@
 - (void)testPostAnalytics_whenCalled_isSuccessful {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Post analytics event"];
 
-    // Analytics require an authorization fingerprint, needs support for client key
+    // Analytics require an authorization fingerprint, needs support for tokenization key
     NSString *event = @"hello world! 🐴";
     [client sendAnalyticsEvent:event completion:^(NSError *error) {
         XCTAssertNil(error);

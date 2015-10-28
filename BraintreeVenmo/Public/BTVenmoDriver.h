@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 /// Initiates Venmo login via app switch, which returns a tokenized card when successful.
 ///
 /// @note If the BTAPIClient was initialized with a JWT, the tokenizedCard will have the card
-/// network and the last 2 digits of the card number. With a client key, these properties will be `nil`.
+/// network and the last 2 digits of the card number. With a tokenization key, these properties will be `nil`.
 ///
 /// @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
 /// On success, you will receive an instance of `BTVenmoTokenizedCard`; on failure, an error; on user

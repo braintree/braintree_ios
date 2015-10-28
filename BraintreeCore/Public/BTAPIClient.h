@@ -14,16 +14,16 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 
 /// This class acts as the entry point for accessing the Braintree APIs
 /// via common HTTP methods performed on API endpoints. It also manages
-/// authentication via client key and provides access to a merchant's
+/// authentication via tokenization key and provides access to a merchant's
 /// gateway configuration.
 
 @interface BTAPIClient : NSObject
 
 /// Initialize a new API client.
 ///
-/// @param clientKeyOrToken Your client key or client token. Passing an invalid value may return `nil`.
+/// @param authorization Your tokenization key or client token. Passing an invalid value may return `nil`.
 /// @return A Braintree API client, or `nil` if initialization failed.
-- (nullable instancetype)initWithClientKeyOrToken:(NSString *)clientKeyOrToken;
+- (nullable instancetype)initWithAuthorization:(NSString *)authorization;
 
 /// Create a copy of an existing API client, but specify a new source and integration type.
 /// @discussion This provides a way to override an API client's source and integration metadata, which
