@@ -145,7 +145,7 @@ static BTVenmoDriver *appSwitchedDriver;
             [self informDelegateWillProcessAppSwitchReturn];
             [self.apiClient sendAnalyticsEvent:@"ios.venmo.appswitch.handle.authorized"];
 
-            if (self.apiClient.clientKey) {
+            if (self.apiClient.tokenizationKey) {
                 NSError *error = nil;
                 if (!returnURL.nonce) {
                     error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];

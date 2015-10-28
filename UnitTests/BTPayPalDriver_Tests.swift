@@ -4,7 +4,7 @@ import XCTest
 
 class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
-    var mockAPIClient : MockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     var observers : [NSObjectProtocol] = []
     let ValidClientToken = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiI3ODJhZmFlNDJlZTNiNTA4NWUxNmMzYjhkZTY3OGQxNTJhODFlYzk5MTBmZDNhY2YyYWU4MzA2OGI4NzE4YWZhfGNyZWF0ZWRfYXQ9MjAxNS0wOC0yMFQwMjoxMTo1Ni4yMTY1NDEwNjErMDAwMFx1MDAyNmN1c3RvbWVyX2lkPTM3OTU5QTE5LThCMjktNDVBNC1CNTA3LTRFQUNBM0VBOEM4Nlx1MDAyNm1lcmNoYW50X2lkPWRjcHNweTJicndkanIzcW5cdTAwMjZwdWJsaWNfa2V5PTl3d3J6cWszdnIzdDRuYzgiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24iLCJjaGFsbGVuZ2VzIjpbXSwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwiY2xpZW50QXBpVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzL2RjcHNweTJicndkanIzcW4vY2xpZW50X2FwaSIsImFzc2V0c1VybCI6Imh0dHBzOi8vYXNzZXRzLmJyYWludHJlZWdhdGV3YXkuY29tIiwiYXV0aFVybCI6Imh0dHBzOi8vYXV0aC52ZW5tby5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIiwiYW5hbHl0aWNzIjp7InVybCI6Imh0dHBzOi8vY2xpZW50LWFuYWx5dGljcy5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tIn0sInRocmVlRFNlY3VyZUVuYWJsZWQiOnRydWUsInRocmVlRFNlY3VyZSI6eyJsb29rdXBVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi90aHJlZV9kX3NlY3VyZS9sb29rdXAifSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiQWNtZSBXaWRnZXRzLCBMdGQuIChTYW5kYm94KSIsImNsaWVudElkIjpudWxsLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjp0cnVlLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYnJhaW50cmVlQ2xpZW50SWQiOiJtYXN0ZXJjbGllbnQzIiwiYmlsbGluZ0FncmVlbWVudHNFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRBY2NvdW50SWQiOiJzdGNoMm5mZGZ3c3p5dHc1IiwiY3VycmVuY3lJc29Db2RlIjoiVVNEIn0sImNvaW5iYXNlRW5hYmxlZCI6dHJ1ZSwiY29pbmJhc2UiOnsiY2xpZW50SWQiOiIxMWQyNzIyOWJhNThiNTZkN2UzYzAxYTA1MjdmNGQ1YjQ0NmQ0ZjY4NDgxN2NiNjIzZDI1NWI1NzNhZGRjNTliIiwibWVyY2hhbnRBY2NvdW50IjoiY29pbmJhc2UtZGV2ZWxvcG1lbnQtbWVyY2hhbnRAZ2V0YnJhaW50cmVlLmNvbSIsInNjb3BlcyI6ImF1dGhvcml6YXRpb25zOmJyYWludHJlZSB1c2VyIiwicmVkaXJlY3RVcmwiOiJodHRwczovL2Fzc2V0cy5icmFpbnRyZWVnYXRld2F5LmNvbS9jb2luYmFzZS9vYXV0aC9yZWRpcmVjdC1sYW5kaW5nLmh0bWwiLCJlbnZpcm9ubWVudCI6Im1vY2sifSwibWVyY2hhbnRJZCI6ImRjcHNweTJicndkanIzcW4iLCJ2ZW5tbyI6Im9mZmxpbmUiLCJhcHBsZVBheSI6eyJzdGF0dXMiOiJtb2NrIiwiY291bnRyeUNvZGUiOiJVUyIsImN1cnJlbmN5Q29kZSI6IlVTRCIsIm1lcmNoYW50SWRlbnRpZmllciI6Im1lcmNoYW50LmNvbS5icmFpbnRyZWVwYXltZW50cy5zYW5kYm94LkJyYWludHJlZS1EZW1vIiwic3VwcG9ydGVkTmV0d29ya3MiOlsidmlzYSIsIm1hc3RlcmNhcmQiLCJhbWV4Il19fQ=="
 
@@ -12,7 +12,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        mockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         FakePayPalOneTouchCore.setCannedIsWalletAppAvailable(true)
     }
 
@@ -158,7 +158,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         }
     }
     
-    func testAuthorizationRequest_whenUsingClientKey_includesClientKeyInAdditionalPayloadAttributes() {
+    func testAuthorizationRequest_whenUsingTokenizationKey_includesTokenizationKeyInAdditionalPayloadAttributes() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "paypal": [
@@ -176,7 +176,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         payPalDriver.authorizeAccountWithCompletion { _ -> Void in }
         
         waitForExpectationsWithTimeout(5, handler: nil)
-        XCTAssertEqual(mockRequest.additionalPayloadAttributes["client_key"] as? String, "development_client_key")
+        XCTAssertEqual(mockRequest.additionalPayloadAttributes["tokenization_key"] as? String, "development_tokenization_key")
     }
     
     func testAuthorizationRequest_whenUsingClientToken_includesClientTokenInAdditionalPayloadAttributes() {
@@ -185,7 +185,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             "paypal": [
                 "environment": "offline"
             ] ])
-        mockAPIClient.clientKey = nil
+        mockAPIClient.tokenizationKey = nil
         mockAPIClient.clientToken = try! BTClientToken(clientToken: ValidClientToken)
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         payPalDriver.returnURLScheme = "foo://"
@@ -462,12 +462,12 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
 class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
-    var mockAPIClient : MockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
 
     override func setUp() {
         super.setUp()
 
-        mockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "paypal": [
@@ -527,24 +527,19 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
-        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
         XCTAssertEqual(lastPostParameters["amount"] as? String, "1")
         XCTAssertEqual(lastPostParameters["currency_iso_code"] as? String, "GBP")
         XCTAssertEqual(lastPostParameters["return_url"] as? String, "scheme://return")
         XCTAssertEqual(lastPostParameters["cancel_url"] as? String, "scheme://cancel")
     }
     
-    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithNoShipping() {
+    func testCheckout_byDefault_postsPaymentResourceWithNoShipping() {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
         let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")
         checkoutRequest.currencyCode = "GBP"
-        checkoutRequest.noShipping = true
+        // no_shipping = true should be the default.
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
         
@@ -560,6 +555,28 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, true)
     }
     
+    func testCheckout_whenShippingAddressIsRequired_postsPaymentResourceWithNoShippingAsFalse() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let checkoutRequest = BTPayPalCheckoutRequest(amount: "1")!
+        checkoutRequest.currencyCode = "GBP"
+        checkoutRequest.shippingAddressRequired = true
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
+        
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(experienceProfile["no_shipping"] as? Bool, false)
+    }
+    
     func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithShippingAddress() {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
@@ -573,7 +590,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         address.locality = "Oakland"
         address.countryCodeAlpha2 = "US"
         address.postalCode = "12345"
-        checkoutRequest.shippingAddress = address
+        checkoutRequest.shippingAddressOverride = address
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         payPalDriver.checkoutWithCheckoutRequest(checkoutRequest) { _ -> Void in }
         
@@ -894,7 +911,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     
     func testAPIClientMetadata_whenWalletAppIsInstalled_hasSourceSetToPayPalApp() {
         // API client by default uses source = .Unknown and integration = .Custom
-        let apiClient = BTAPIClient(clientKeyOrToken: "development_testing_integration_merchant_id")!
+        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         // It is critical to stub PayPalClass before instantiating the driver, since that is when source is set
         let stubPayPalClass = FakePayPalOneTouchCore.self
         stubPayPalClass.setCannedIsWalletAppAvailable(true)
@@ -906,7 +923,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
     }
     
     func testAPIClientMetadata_whenWalletAppIsNotAvailable_hasSourceSetToPayPalBrowser() {
-        let apiClient = BTAPIClient(clientKeyOrToken: "development_testing_integration_merchant_id")!
+        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let stubPayPalClass = FakePayPalOneTouchCore.self
         stubPayPalClass.setCannedIsWalletAppAvailable(false)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
@@ -921,12 +938,12 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
 class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     
-    var mockAPIClient : MockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     
     override func setUp() {
         super.setUp()
         
-        mockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "paypal": [
@@ -1133,12 +1150,12 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
 
 class BTPayPalDriver_DropIn_Tests: XCTestCase {
     
-    var mockAPIClient : MockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     
     override func setUp() {
         super.setUp()
         
-        mockAPIClient = MockAPIClient(clientKeyOrToken: "development_client_key")!
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "paypalEnabled": true,
             "paypal": [

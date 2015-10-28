@@ -328,7 +328,7 @@
             if (cardForm.postalCode) {
                 options[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
             }
-            options[@"options"] = @{ @"validate" : @(self.apiClient.clientKey ? NO : YES) };
+            options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
 
             [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(id<BTTokenized> tokenization, NSError *error) {
                 [self showLoadingState:NO];
@@ -570,7 +570,7 @@
 }
 
 - (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock {
-    if (self.apiClient.clientKey) {
+    if (self.apiClient.tokenizationKey) {
         if (completionBlock) completionBlock();
         return;
     }

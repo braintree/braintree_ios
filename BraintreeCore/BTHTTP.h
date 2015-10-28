@@ -25,11 +25,11 @@ extern NSString * const BTHTTPJSONResponseBodyKey;
 - (instancetype)initWithBaseURL:(NSURL *)URL
        authorizationFingerprint:(NSString *)authorizationFingerprint NS_DESIGNATED_INITIALIZER;
 
-/// Initialize `BTHTTP` with the authorization fingerprint from a client token
+/// Initialize `BTHTTP` with a tokenization key
 ///
 /// @param URL The base URL for the Braintree Client API
-/// @param clientKey A client key
-- (instancetype)initWithBaseURL:(NSURL *)URL clientKey:(NSString *)clientKey NS_DESIGNATED_INITIALIZER;
+/// @param tokenizationKey A tokenization key
+- (instancetype)initWithBaseURL:(NSURL *)URL tokenizationKey:(NSString *)tokenizationKey NS_DESIGNATED_INITIALIZER;
 
 /// A convenience initializer to initialize `BTHTTP` with a client token
 ///

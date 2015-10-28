@@ -3,24 +3,16 @@
 @implementation BraintreeDemoBaseViewController
 
 - (instancetype)initWithCoder:(__unused NSCoder *)aDecoder {
-    return [self initWithClientKey:nil];
+    return [self initWithAuthorization:nil];
 }
 
 - (instancetype)initWithNibName:(__unused NSString *)nibNameOrNil bundle:(__unused NSBundle *)nibBundleOrNil {
-    return [self initWithClientKey:nil];
+    return [self initWithAuthorization:nil];
 }
 
-- (instancetype)initWithClientToken:(__unused NSString *)clientToken {
+- (instancetype)initWithAuthorization:(__unused NSString *)authorization {
     if ([self class] == [BraintreeDemoBaseViewController class]) {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Subclasses must override initWithClientToken:" userInfo:nil];
-    }
-
-    return [super initWithNibName:nil bundle:nil];
-}
-
-- (instancetype)initWithClientKey:(__unused NSString *)clientKey {
-    if ([self class] == [BraintreeDemoBaseViewController class]) {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Subclasses must override initWithClientKey:" userInfo:nil];
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Subclasses must override initWithAuthorization:" userInfo:nil];
     }
 
     return [super initWithNibName:nil bundle:nil];

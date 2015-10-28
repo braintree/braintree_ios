@@ -15,7 +15,7 @@ NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONR
 
 @property (nonatomic, strong) NSURL *baseURL;
 @property (nonatomic, copy) NSString *authorizationFingerprint;
-@property (nonatomic, copy) NSString *clientKey;
+@property (nonatomic, copy) NSString *tokenizationKey;
 
 @end
 
@@ -43,7 +43,7 @@ NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONR
     return self;
 }
 
-- (instancetype)initWithBaseURL:(nonnull NSURL *)URL clientKey:(nonnull NSString *)clientKey {
+- (instancetype)initWithBaseURL:(nonnull NSURL *)URL tokenizationKey:(nonnull NSString *)tokenizationKey {
     if (self = [super init]) {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
         configuration.HTTPAdditionalHeaders = self.defaultHeaders;
@@ -55,7 +55,7 @@ NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONR
 
         self.session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:delegateQueue];
         self.pinnedCertificates = [BTAPIPinnedCertificates trustedCertificates];
-        self.clientKey = clientKey;
+        self.tokenizationKey = tokenizationKey;
     }
     return self;
 }
@@ -69,7 +69,7 @@ NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONR
     if (self.authorizationFingerprint) {
         copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL authorizationFingerprint:self.authorizationFingerprint];
     } else {
-        copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL clientKey:self.clientKey];
+        copiedHTTP = [[[self class] allocWithZone:zone] initWithBaseURL:self.baseURL tokenizationKey:self.tokenizationKey];
     }
     
     copiedHTTP.pinnedCertificates = [_pinnedCertificates copy];
@@ -169,8 +169,8 @@ NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONR
         [request setHTTPBody:bodyData];
         headers[@"Content-Type"]  = @"application/json; charset=utf-8";
     }
-    if (self.clientKey) {
-        headers[@"Client-Key"] = self.clientKey;
+    if (self.tokenizationKey) {
+        headers[@"Client-Key"] = self.tokenizationKey;
     }
     [request setAllHTTPHeaderFields:headers];
 

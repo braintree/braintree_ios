@@ -6,7 +6,7 @@
 {
     self = [super init];
     if (self) {
-        _noShipping = NO;
+        _shippingAddressRequired = NO;
     }
     return self;
 }

@@ -411,8 +411,8 @@ NSURLSession *testURLSession() {
     });
 }
 
-- (void)testGETRequests_whenBTHTTPInitializedWithClientKey_sendClientKeyInHeader {
-    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] clientKey:@"development_client_key"];
+- (void)testGETRequests_whenBTHTTPInitializedWithTokenizationKey_sendTokenizationKeyInHeader {
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
     http.session = testURLSession();
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
@@ -422,7 +422,7 @@ NSURLSession *testURLSession() {
         XCTAssertNil(error);
         NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
 
-        XCTAssertEqualObjects(httpRequest.allHTTPHeaderFields[@"Client-Key"], @"development_client_key");
+        XCTAssertEqualObjects(httpRequest.allHTTPHeaderFields[@"Client-Key"], @"development_tokenization_key");
         [expectation fulfill];
     }];
 
@@ -444,8 +444,8 @@ NSURLSession *testURLSession() {
     });
 }
 
-- (void)testPOSTRequests_whenBTHTTPInitializedWithClientKey_sendAuthorization {
-    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] clientKey:@"development_client_key"];
+- (void)testPOSTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization {
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
     http.session = testURLSession();
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
@@ -455,7 +455,7 @@ NSURLSession *testURLSession() {
         XCTAssertNil(error);
 
         NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
-        XCTAssertEqualObjects(httpRequest.allHTTPHeaderFields[@"Client-Key"], @"development_client_key");
+        XCTAssertEqualObjects(httpRequest.allHTTPHeaderFields[@"Client-Key"], @"development_tokenization_key");
         [expectation fulfill];
     }];
 
@@ -477,8 +477,8 @@ NSURLSession *testURLSession() {
     });
 }
 
-- (void)testPUTRequests_whenBTHTTPInitializedWithClientKey_sendAuthorization {
-    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] clientKey:@"development_client_key"];
+- (void)testPUTRequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization {
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
     http.session = testURLSession();
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
@@ -488,7 +488,7 @@ NSURLSession *testURLSession() {
         XCTAssertNil(error);
 
         NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
-        XCTAssertEqualObjects(httpRequest.allHTTPHeaderFields[@"Client-Key"], @"development_client_key");
+        XCTAssertEqualObjects(httpRequest.allHTTPHeaderFields[@"Client-Key"], @"development_tokenization_key");
         [expectation fulfill];
     }];
 
@@ -510,8 +510,8 @@ NSURLSession *testURLSession() {
     });
 }
 
-- (void)testDELETERequests_whenBTHTTPInitializedWithClientKey_sendAuthorization {
-    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] clientKey:@"development_client_key"];
+- (void)testDELETERequests_whenBTHTTPInitializedWithTokenizationKey_sendAuthorization {
+    http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] tokenizationKey:@"development_tokenization_key"];
     http.session = testURLSession();
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
@@ -521,7 +521,7 @@ NSURLSession *testURLSession() {
         XCTAssertNil(error);
         
         NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
-        XCTAssertEqualObjects(httpRequest.allHTTPHeaderFields[@"Client-Key"], @"development_client_key");
+        XCTAssertEqualObjects(httpRequest.allHTTPHeaderFields[@"Client-Key"], @"development_tokenization_key");
         [expectation fulfill];
     }];
 
