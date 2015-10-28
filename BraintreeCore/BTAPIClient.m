@@ -12,9 +12,9 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 @implementation BTAPIClient
 
-- (nullable instancetype)initWithClientKeyOrToken:(NSString *)clientKeyOrToken {
-    if(![clientKeyOrToken isKindOfClass:[NSString class]]) {
-        NSString *reason = @"BTClient could not initialize because the provided clientKeyOrToken was invalid";
+- (nullable instancetype)initWithAuthorization:(NSString *)authorization {
+    if(![authorization isKindOfClass:[NSString class]]) {
+        NSString *reason = @"BTClient could not initialize because the provided authorization was invalid";
         [[BTLogger sharedLogger] error:reason];
         return nil;
     }
@@ -23,16 +23,16 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         _metadata = [[BTClientMetadata alloc] init];
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
         
-        NSURL *baseURL = [BTAPIClient baseURLFromClientKey:clientKeyOrToken];
+        NSURL *baseURL = [BTAPIClient baseURLFromTokenizationKey:authorization];
         if (baseURL) {
-            _clientKey = clientKeyOrToken;
+            _tokenizationKey = authorization;
 
-            _http = [[BTHTTP alloc] initWithBaseURL:baseURL clientKey:clientKeyOrToken];
+            _http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:authorization];
             
             [self sendAnalyticsEvent:@"ios.started.client-key"];
         } else {
             NSError *error;
-            _clientToken = [[BTClientToken alloc] initWithClientToken:clientKeyOrToken error:&error];
+            _clientToken = [[BTClientToken alloc] initWithClientToken:authorization error:&error];
             if (error) { [[BTLogger sharedLogger] error:[error localizedDescription]]; }
             if (!_clientToken) {
                 NSString *reason = @"BTClient could not initialize because the provided clientToken was invalid";
@@ -55,11 +55,11 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     BTAPIClient *copiedClient;
 
     if (self.clientToken) {
-        copiedClient = [[[self class] alloc] initWithClientKeyOrToken:self.clientToken.originalValue];
-    } else if (self.clientKey) {
-        copiedClient = [[[self class] alloc] initWithClientKeyOrToken:self.clientKey];
+        copiedClient = [[[self class] alloc] initWithAuthorization:self.clientToken.originalValue];
+    } else if (self.tokenizationKey) {
+        copiedClient = [[[self class] alloc] initWithAuthorization:self.tokenizationKey];
     } else {
-        NSAssert(NO, @"Cannot copy an API client that does not specify a client token or client key");
+        NSAssert(NO, @"Cannot copy an API client that does not specify a client token or tokenization key");
     }
 
     copiedClient.clientJWT = self.clientJWT;
@@ -74,22 +74,22 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 #pragma mark - Base URL
 
-///  Gets base URL from client key
+///  Gets base URL from tokenization key
 ///
-///  @param clientKey The client key
+///  @param tokenizationKey The tokenization key
 ///
-///  @return Base URL for environment, or `nil` if client key is invalid
-+ (NSURL *)baseURLFromClientKey:(NSString *)clientKey {
+///  @return Base URL for environment, or `nil` if tokenization key is invalid
++ (NSURL *)baseURLFromTokenizationKey:(NSString *)tokenizationKey {
     NSRegularExpression *regExp = [NSRegularExpression regularExpressionWithPattern:@"([a-zA-Z0-9]+)_[a-zA-Z0-9]+_([a-zA-Z0-9_]+)" options:0 error:NULL];
 
-    NSArray *results = [regExp matchesInString:clientKey options:0 range:NSMakeRange(0, clientKey.length)];
+    NSArray *results = [regExp matchesInString:tokenizationKey options:0 range:NSMakeRange(0, tokenizationKey.length)];
 
     if (results.count != 1 || [[results firstObject] numberOfRanges] != 3) {
         return nil;
     }
 
-    NSString *environment = [clientKey substringWithRange:[results[0] rangeAtIndex:1]];
-    NSString *merchantID = [clientKey substringWithRange:[results[0] rangeAtIndex:2]];
+    NSString *environment = [tokenizationKey substringWithRange:[results[0] rangeAtIndex:1]];
+    NSString *merchantID = [tokenizationKey substringWithRange:[results[0] rangeAtIndex:2]];
 
     NSURLComponents *components = [[NSURLComponents alloc] init];
     components.scheme = [BTAPIClient schemeForEnvironmentString:environment];
@@ -207,10 +207,10 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             if (!self.analyticsHttp) {
                 if (self.clientToken) {
                     self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-                } else if (self.clientKey) {
-                    self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL clientKey:self.clientKey];
+                } else if (self.tokenizationKey) {
+                    self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL tokenizationKey:self.tokenizationKey];
                 }
-                NSAssert(self.analyticsHttp != nil, @"Must have clientToken or clientKey");
+                NSAssert(self.analyticsHttp != nil, @"Must have clientToken or tokenizationKey");
                 self.analyticsHttp.dispatchQueue = dispatch_get_main_queue();
             }
             // A special value passed in by unit tests to prevent BTHTTP from actually posting
@@ -219,10 +219,10 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 return;
             }
 
-            NSString *clientKeyOrAuthFingerprint = self.clientToken.authorizationFingerprint ?: self.clientKey;
+            NSString *tokenizationKeyOrAuthFingerprint = self.clientToken.authorizationFingerprint ?: self.tokenizationKey;
             [self.analyticsHttp POST:@"/"
                           parameters:@{ @"analytics": @[@{ @"kind": eventKind }],
-                                        @"authorization_fingerprint": clientKeyOrAuthFingerprint,
+                                        @"authorization_fingerprint": tokenizationKeyOrAuthFingerprint,
                                         @"_meta": self.metaParameters }
                           completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                               if (completionBlock) completionBlock(error);

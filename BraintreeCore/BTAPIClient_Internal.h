@@ -5,7 +5,7 @@
 #import "BTHTTP.h"
 
 @interface BTAPIClient ()
-@property (nonatomic, copy) NSString *clientKey;
+@property (nonatomic, copy) NSString *tokenizationKey;
 @property (nonatomic, copy) NSString *clientJWT;
 @property (nonatomic, strong) BTClientToken *clientToken;
 @property (nonatomic, strong) BTHTTP *http;

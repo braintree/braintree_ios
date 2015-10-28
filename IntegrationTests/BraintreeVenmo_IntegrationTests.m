@@ -27,9 +27,9 @@
 @implementation BraintreeVenmo_IntegrationTests
 
 // TODO: either enable Venmo for the integration_merchant_id in the db seed, or use a
-// different client key for a merchant that has Venmo enabled
+// different tokenization key for a merchant that has Venmo enabled
 - (void)pendTokenizeVenmoCard_whenVenmoEnabledInControlPanel_opensVenmoApp {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTVenmoDriver *venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
     FakeApplication *mockApplication = [[FakeApplication alloc] init];
     venmoDriver.application = mockApplication;
@@ -43,8 +43,8 @@
     XCTAssertEqualObjects(mockApplication.openedURL.scheme, @"com.venmo.touch.v1");
 }
 
-- (void)pendTokenizeVenmoCard_whenVenmoEnabledInControlPanelAndUsingClientKey_returnsANonce {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
+- (void)pendTokenizeVenmoCard_whenVenmoEnabledInControlPanelAndUsingTokenizationKey_returnsANonce {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTVenmoDriver *venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     FakeApplication *mockApplication = [[FakeApplication alloc] init];
@@ -84,7 +84,7 @@
 
 // TODO: Will work when JWT is implemented
 - (void)pendTokenizeVenmoCard_whenVenmoEnabledInControlPanelAndUsingJWT_returnsACard {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     apiClient.clientJWT = @"TODO";
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     BTVenmoDriver *venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
@@ -127,7 +127,7 @@
 }
 
 - (void)testTokenizeVenmoCard_whenVenmoDisabledInControlPanel_returnsANonce {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration2_merchant_id"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration2_merchant_id"];
     BTVenmoDriver *venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Venmo card"];

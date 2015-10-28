@@ -11,7 +11,7 @@ describe(@"tokenizeCard:completion:", ^{
 
     context(@"with validation disabled", ^{
         beforeEach(^{
-            BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
+            BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
             client = [[BTCardClient alloc] initWithAPIClient:apiClient];
         });
 
@@ -50,10 +50,10 @@ describe(@"tokenizeCard:completion:", ^{
 
     context(@"with validation enabled", ^{
 
-        context(@"and API client uses client key", ^{
+        context(@"and API client uses tokenization key", ^{
 
             beforeEach(^{
-                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_integration_merchant_id"];
+                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
                 client = [[BTCardClient alloc] initWithAPIClient:apiClient];
             });
 
@@ -178,7 +178,7 @@ describe(@"tokenizeCard:completion:", ^{
                 //            __block BTCardClient *cvvAndZipClient;
                 //
                 //            beforeEach(^{
-                //                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:@"development_testing_client_api_cvv_and_postal_code_verification_merchant_id"];
+                //                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_client_api_cvv_and_postal_code_verification_merchant_id"];
                 //                cvvAndZipClient = [[BTCardClient alloc] initWithAPIClient:apiClient];
                 //            });
                 //

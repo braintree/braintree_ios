@@ -11,8 +11,8 @@
 
 @implementation BraintreeDemoThreeDSecureViewController
 
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
+- (instancetype)initWithAuthorization:(NSString *)authorization {
+    self = [super initWithAuthorization:authorization];
     if (self) {
         _threeDSecure = [[BTThreeDSecureDriver alloc] initWithAPIClient:self.apiClient delegate:self];
     }

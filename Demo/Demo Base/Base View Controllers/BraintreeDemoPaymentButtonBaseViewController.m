@@ -5,17 +5,10 @@
 
 @implementation BraintreeDemoPaymentButtonBaseViewController
 
-- (instancetype)initWithClientToken:(NSString *)clientToken {
-    self = [super initWithClientToken:clientToken];
+- (instancetype)initWithAuthorization:(NSString *)authorization {
+    self = [super initWithAuthorization:authorization];
     if (self) {
-        self.apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientToken];
-    }
-    return self;
-}
-
-- (instancetype)initWithClientKey:(NSString *)clientKey {
-    if (self = [super initWithClientKey:clientKey]) {
-        self.apiClient = [[BTAPIClient alloc] initWithClientKeyOrToken:clientKey];
+        self.apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     }
     return self;
 }

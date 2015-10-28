@@ -9,7 +9,7 @@
 // Will work when we comply with ATS
 - (void)pendBTHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication {
     NSURL *url = [NSURL URLWithString:@"https://api.braintreegateway.com"];
-    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url clientKey:@"development_testing_integration_merchant_id"];
+    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [http GET:@"/heartbeat.json" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
@@ -23,7 +23,7 @@
 
 - (void)testBTHTTP_whenUsingSandboxEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication {
     NSURL *url = [NSURL URLWithString:@"https://api.sandbox.braintreegateway.com"];
-    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url clientKey:@"development_testing_integration_merchant_id"];
+    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [http GET:@"/heartbeat.json" completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
@@ -37,7 +37,7 @@
 
 - (void)testBTHTTP_whenUsingAServerWithValidCertificateChainWithARootCAThatWeDoNotExplicitlyTrust_doesNotAllowNetworkCommunication {
     NSURL *url = [NSURL URLWithString:@"https://www.digicert.com"];
-    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url clientKey:@"development_testing_integration_merchant_id"];
+    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [http GET:@"/heartbeat.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
@@ -57,7 +57,7 @@
 
 - (void)testBTHTTP_whenUsingTrustedPinnedRootCertificates_allowsNetworkCommunication {
     NSURL *url = [NSURL URLWithString:@"https://localhost:9443"];
-    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url clientKey:@"development_testing_integration_merchant_id"];
+    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
     http.pinnedCertificates = @[[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"good_root_cert" ofType:@"der"]]];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
@@ -73,7 +73,7 @@
 
 - (void)testBTHTTP_whenUsingUntrustedUnpinnedRootCertificatesFromLegitimateHosts_doesNotallowNetworkCommunication {
     NSURL *url = [NSURL URLWithString:@"https://localhost:9444"];
-    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url clientKey:@"development_testing_integration_merchant_id"];
+    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
     http.pinnedCertificates = @[[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"good_root_cert" ofType:@"der"]]];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
@@ -90,7 +90,7 @@
 
 - (void)testBTHTTP_whenUsingNonSSLConnection_allowsNetworkCommunication {
     NSURL *url = [NSURL URLWithString:@"http://localhost:9445/"];
-    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url clientKey:@"development_testing_integration_merchant_id"];
+    BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [http GET:@"heartbeat" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
