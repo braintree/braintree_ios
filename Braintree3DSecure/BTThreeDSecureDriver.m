@@ -1,3 +1,4 @@
+#import "BTThreeDSecureDriver_Internal.h"
 #if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
 #import "BTTokenizedCard_Internal.h"
@@ -14,10 +15,6 @@
 
 
 @interface BTThreeDSecureDriver () <BTThreeDSecureAuthenticationViewControllerDelegate>
-
-@property (nonatomic, strong) BTAPIClient *apiClient;
-@property (nonatomic, strong) BTThreeDSecureTokenizedCard *upgradedTokenizedCard;
-@property (nonatomic, copy) void (^completionBlockAfterAuthenticating)(BTThreeDSecureTokenizedCard *, NSError *);
 
 @end
 

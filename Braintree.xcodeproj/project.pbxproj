@@ -350,6 +350,8 @@
 		A734A98E1B8797FD00D2461B /* BTClientTokenSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A98D1B8797FD00D2461B /* BTClientTokenSpec.m */; };
 		A734A9911B87989400D2461B /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A9901B87989400D2461B /* BTTestClientTokenFactory.m */; };
 		A743CD211B449D8400757C9B /* BTAPIClient_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743CD201B449D8400757C9B /* BTAPIClient_Tests.m */; };
+		A74BCF031BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74BCF021BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift */; };
+		A74BCF041BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74BCF021BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift */; };
 		A75147E11B4217A00005BBBA /* BTCardClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */; };
 		A75319E71B71466900E27B89 /* BTDropInViewController_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75319E61B71466900E27B89 /* BTDropInViewController_IntegrationTests.m */; };
 		A7623AB31B55BF2D004BC794 /* BTAnalyticsClient_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7623AB21B55BF2D004BC794 /* BTAnalyticsClient_Tests.m */; };
@@ -520,6 +522,7 @@
 		A79033981B45C968004C8234 /* BTCardTokenizationRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79033971B45C968004C8234 /* BTCardTokenizationRequest_Tests.swift */; };
 		A790339C1B45E16E004C8234 /* BTCard_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */; };
 		A79AF9F31B56DB54007B1DF1 /* BTClientMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AF9F21B56DB54007B1DF1 /* BTClientMetadataSpec.m */; };
+		A79C9C701BE17BC7007EAF73 /* BTThreeDSecureDriver_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A79C9C6F1BE17BBF007EAF73 /* BTThreeDSecureDriver_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A7A094F61B8276E500D732CC /* BTTokenizedCard_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A094F51B8276E500D732CC /* BTTokenizedCard_Tests.swift */; };
 		A7A094F71B8283DF00D732CC /* BraintreeDemoDropInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DA1B79708900452CFA /* BraintreeDemoDropInViewController.m */; };
 		A7A094F81B828F4600D732CC /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E01B79708900452CFA /* BraintreeDemoBTUIPayPalButtonViewController.m */; };
@@ -953,6 +956,7 @@
 		A734D95B1B4C4B1000FE0E1B /* BTPayPalRequestFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalRequestFactory.m; sourceTree = "<group>"; };
 		A734D95E1B4C4C0700FE0E1B /* BTPayPalDriver_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPayPalDriver_Internal.h; sourceTree = "<group>"; };
 		A743CD201B449D8400757C9B /* BTAPIClient_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTAPIClient_Tests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A74BCF021BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureDriver_Tests.swift; sourceTree = "<group>"; };
 		A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCardClient_Tests.swift; sourceTree = "<group>"; };
 		A75319E61B71466900E27B89 /* BTDropInViewController_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTDropInViewController_IntegrationTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A75DA3541921394200D997A2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1244,6 +1248,7 @@
 		A79AFA7F1B56FEE4007B1DF1 /* BTThreeDSecureDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureDriver.m; sourceTree = "<group>"; };
 		A79AFA841B5721A2007B1DF1 /* BTHTTPErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHTTPErrors.h; sourceTree = "<group>"; };
 		A79AFA861B5721F6007B1DF1 /* BTHTTPErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPErrors.m; sourceTree = "<group>"; };
+		A79C9C6F1BE17BBF007EAF73 /* BTThreeDSecureDriver_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureDriver_Internal.h; sourceTree = "<group>"; };
 		A7A094F51B8276E500D732CC /* BTTokenizedCard_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTTokenizedCard_Tests.swift; sourceTree = "<group>"; };
 		A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTPayPalDriver_Tests.swift; sourceTree = "<group>"; };
 		A7A6DD131B4312DC008857E1 /* BTLogger_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTLogger_Internal.h; sourceTree = "<group>"; };
@@ -1558,6 +1563,7 @@
 				A7C823071B4DA9D7009D45D6 /* BTHTTPSpec.m */,
 				16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */,
 				A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */,
+				A74BCF021BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift */,
 				A71F7DDD1B616BA0005DA1B0 /* BTThreeDSecureSpec.m */,
 				4149C91C1BA218830090665E /* BTTokenizationParser_Tests.swift */,
 				A72A814C1B7BEADF00E4D6FA /* BTTokenizationService_Tests.m */,
@@ -1597,6 +1603,7 @@
 			children = (
 				A79AFA401B56F822007B1DF1 /* BTThreeDSecureAuthenticationViewController.h */,
 				A79AFA411B56F822007B1DF1 /* BTThreeDSecureAuthenticationViewController.m */,
+				A79C9C6F1BE17BBF007EAF73 /* BTThreeDSecureDriver_Internal.h */,
 				A79AFA7F1B56FEE4007B1DF1 /* BTThreeDSecureDriver.m */,
 				A79AFA421B56F822007B1DF1 /* BTThreeDSecureErrors.m */,
 				A79AFA7A1B56FBD1007B1DF1 /* BTThreeDSecureLookupResult.h */,
@@ -2544,6 +2551,7 @@
 			files = (
 				2D941D911B5D9F200016EFB4 /* BTThreeDSecureAuthenticationViewController.h in Headers */,
 				2D941D8B1B5D9E8C0016EFB4 /* Braintree3DSecure.h in Headers */,
+				A79C9C701BE17BC7007EAF73 /* BTThreeDSecureDriver_Internal.h in Headers */,
 				A7C88A181B5F0ECB007A0E9C /* BTThreeDSecureVerification.h in Headers */,
 				2D941D991B5D9F200016EFB4 /* BTThreeDSecureResponse.h in Headers */,
 				2D941D9F1B5D9F200016EFB4 /* BTThreeDSecureLocalizedString.h in Headers */,
@@ -3656,6 +3664,7 @@
 				A71F7DE71B6180A3005DA1B0 /* BTVenmoDriver_Tests.swift in Sources */,
 				4149C91D1BA218830090665E /* BTTokenizationParser_Tests.swift in Sources */,
 				A7A6DD071B4308EB008857E1 /* BTPayPalDriver_Tests.swift in Sources */,
+				A74BCF031BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift in Sources */,
 				A743CD211B449D8400757C9B /* BTAPIClient_Tests.m in Sources */,
 				842B68F11BCF083E0039634F /* BTAPIClient_SwiftTests.swift in Sources */,
 				A7E93E581B601EE900957223 /* BTURLUtils_Tests.swift in Sources */,
@@ -3920,6 +3929,7 @@
 				417405A21BB08874008A5DEA /* BTAnalyticsMetadataSpec.m in Sources */,
 				417405A31BB08874008A5DEA /* BTAPIClient_Tests.m in Sources */,
 				417405A41BB08874008A5DEA /* BTApplePay_Tests.swift in Sources */,
+				A74BCF041BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift in Sources */,
 				842B68F21BCF08620039634F /* BTAPIClient_SwiftTests.swift in Sources */,
 				417405A51BB08874008A5DEA /* BTAppSwitch_Tests.swift in Sources */,
 				417405A61BB08874008A5DEA /* BTCard_Internal_Tests.m in Sources */,
