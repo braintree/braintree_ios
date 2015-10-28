@@ -5,7 +5,7 @@
 
 /// Dictionary of JSON parsing blocks keyed by types as strings. The blocks have the following type:
 ///
-/// `id <BTTokenized>(^)(NSDictionary *json)`
+/// `id <BTPaymentMethodNonce>(^)(NSDictionary *json)`
 @property (nonatomic, strong) NSMutableDictionary *JSONParsingBlocks;
 
 @end
@@ -36,14 +36,14 @@
     return self.JSONParsingBlocks.allKeys;
 }
 
-- (void)registerType:(NSString *)type withParsingBlock:(id <BTTokenized>(^)(BTJSON *))jsonParsingBlock {
+- (void)registerType:(NSString *)type withParsingBlock:(id <BTPaymentMethodNonce>(^)(BTJSON *))jsonParsingBlock {
     if (jsonParsingBlock) {
         self.JSONParsingBlocks[type] = [jsonParsingBlock copy];
     }
 }
 
-- (id<BTTokenized>)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type {
-    id <BTTokenized>(^block)(BTJSON *) = self.JSONParsingBlocks[type];
+- (id<BTPaymentMethodNonce>)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type {
+    id <BTPaymentMethodNonce>(^block)(BTJSON *) = self.JSONParsingBlocks[type];
     if (!json) {
         return nil;
     }

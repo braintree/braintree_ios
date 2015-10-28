@@ -31,7 +31,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient
-                       completion:(void(^)(id <BTTokenized> tokenization, NSError *error))completion
+                       completion:(void(^)(id <BTPaymentMethodNonce> tokenization, NSError *error))completion
 {
     if (self = [self initWithAPIClient:apiClient]) {
         _completion = [completion copy];

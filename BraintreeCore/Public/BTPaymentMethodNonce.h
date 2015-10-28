@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// The paymentMethodNonce is the public token that is safe to access on the client but can be used
 /// on your server to reference the data in Braintree operations, such as Transaction.Sale.
-@protocol BTTokenized <NSObject>
+@protocol BTPaymentMethodNonce <NSObject>
 
 /// The one-time use payment method nonce
 @property (nonatomic, readonly, copy) NSString *paymentMethodNonce;

@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
 @class BTAPIClient, BTUI;
-@protocol BTDropInViewControllerDelegate, BTTokenized;
+@protocol BTDropInViewControllerDelegate, BTPaymentMethodNonce;
 
 /// A view controller that provides a quick and easy payment experience.
 ///
@@ -38,7 +38,7 @@
 /// @see BTAPIClient
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
-/// The array of `BTTokenized` payment information objects on file. The tokenized payment info may be in the Vault.
+/// The array of `BTPaymentMethodNonce` payment information objects on file. The tokenized payment info may be in the Vault.
 /// Most payment methods are automatically Vaulted if the client token was generated with a customer ID.
 @property (nonatomic, strong) NSArray *paymentInfoObjects;
 
@@ -107,7 +107,7 @@
 ///
 /// @param viewController The Drop In view controller informing its delegate of success
 /// @param tokenization The selected (and possibly newly created) tokenized payment information.
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(id<BTTokenized>)tokenization;
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(id<BTPaymentMethodNonce>)tokenization;
 
 /// Informs the delegate when the user has decided to cancel out of the Drop In payment form.
 ///

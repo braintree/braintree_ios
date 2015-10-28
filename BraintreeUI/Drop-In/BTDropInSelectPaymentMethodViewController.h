@@ -17,7 +17,7 @@
 @property (nonatomic, strong) BTAPIClient *client;
 @property (nonatomic, weak) id<BTDropInSelectPaymentMethodViewControllerDelegate> delegate;
 
-// Array of id <BTTokenized> objects
+// Array of id <BTPaymentMethodNonce> objects
 @property (nonatomic, strong) NSArray *paymentInfoObjects;
 
 @property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;

@@ -1,10 +1,10 @@
 #import "BTJSON.h"
-#import "BTTokenized.h"
+#import "BTPaymentMethodNonce.h"
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// A JSON parser that parses `BTJSON` into concrete `BTTokenized` objects. It supports registration of
+/// A JSON parser that parses `BTJSON` into concrete `BTPaymentMethodNonce` objects. It supports registration of
 /// parsers at runtime.
 ///
 /// @note `BTTokenizationParser` provides access to JSON parsing for different payment options
@@ -26,11 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @param type The tokenization type string
 /// @param jsonParsingBlock The block to execute when `parseJSON:type:` is called for the tokenization type.
-///        This block should return a `BTTokenized` object, or `nil` if the JSON cannot be parsed.
-- (void)registerType:(NSString *)type withParsingBlock:(id <BTTokenized> _Nullable (^)(BTJSON *json))jsonParsingBlock;
+///        This block should return a `BTPaymentMethodNonce` object, or `nil` if the JSON cannot be parsed.
+- (void)registerType:(NSString *)type withParsingBlock:(id <BTPaymentMethodNonce> _Nullable (^)(BTJSON *json))jsonParsingBlock;
 
-/// Parses tokenized payment information that has been serialized to JSON, and returns a `BTTokenized` object.
-/// The `BTTokenized` object is created by the JSON parsing block that has been registered for the tokenization
+/// Parses tokenized payment information that has been serialized to JSON, and returns a `BTPaymentMethodNonce` object.
+/// The `BTPaymentMethodNonce` object is created by the JSON parsing block that has been registered for the tokenization
 /// type.
 ///
 /// If the `type` has not been registered, this method will attempt to read the nonce from the JSON and return
@@ -38,8 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @param json The tokenized payment info, serialized to JSON
 /// @param type The registered type of the parsing block to use
-/// @return A `BTTokenized` object, or `nil` if the tokenized payment info JSON does not contain a nonce
-- (nullable id <BTTokenized>)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type;
+/// @return A `BTPaymentMethodNonce` object, or `nil` if the tokenized payment info JSON does not contain a nonce
+- (nullable id <BTPaymentMethodNonce>)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type;
 
 @end
 

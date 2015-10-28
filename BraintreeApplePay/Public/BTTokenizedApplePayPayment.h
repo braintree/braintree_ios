@@ -1,13 +1,13 @@
 #import <Foundation/Foundation.h>
 #if __has_include("BraintreeCore.h")
-#import "BTTokenized.h"
+#import "BTPaymentMethodNonce.h"
 #else
-#import <BraintreeCore/BTTokenized.h>
+#import <BraintreeCore/BTPaymentMethodNonce.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTTokenizedApplePayPayment : NSObject <BTTokenized>
+@interface BTTokenizedApplePayPayment : NSObject <BTPaymentMethodNonce>
 
 - (instancetype)initWithPaymentMethodNonce:(NSString *)paymentMethodNonce
                                description:(NSString *)localizedDescription;
