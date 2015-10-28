@@ -1,3 +1,5 @@
+#import <KIF/UIView-KIFAdditions.h>
+
 #import "BTDropInViewController.h"
 #import "BTClient+Testing.h"
 
@@ -15,12 +17,18 @@ __block BTClient *testClient = nil;
 __block BOOL testShouldEnableCoinbase = NO;
 __block BOOL testShouldHaveCoinbaseAccountInVault = NO;
 __block BOOL testShouldHaveCardInVault = NO;
+__block BOOL testShouldDisplayCardFormCVV = NO;
+__block BOOL testShouldDisplayCardFormPostalCode = NO;
+__block BOOL testShouldBeValidIfFormPrefilled = NO;
 
 afterEach(^{
     testClient = nil;
     testShouldEnableCoinbase = NO;
     testShouldHaveCoinbaseAccountInVault = NO;
     testShouldHaveCardInVault = NO;
+    testShouldDisplayCardFormPostalCode = NO;
+    testShouldDisplayCardFormCVV = NO;
+    testShouldBeValidIfFormPrefilled = NO;
 });
 
 describe(@"Drop In view controller", ^{
@@ -91,6 +99,21 @@ describe(@"Drop In view controller", ^{
         }
 
         BTDropInViewController *testDropInVC = [[BTDropInViewController alloc] initWithClient:testClient];
+        if (testShouldDisplayCardFormPostalCode) {
+            testDropInVC.requireCardPostalCode = YES;
+        }
+        if (testShouldDisplayCardFormCVV) {
+            testDropInVC.requireCardCVV = YES;
+        }
+        if (testShouldBeValidIfFormPrefilled) {
+            testDropInVC.cardNumber = @"4111111111111111";
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            formatter.dateFormat = @"MM/YYYY";
+            [testDropInVC setCardExpirationDate:[formatter dateFromString:@"12/2020"]];
+            testDropInVC.cardCVV = @"123";
+            testDropInVC.cardPostalCode = @"12345";
+        }
+
         [testDropInVC fetchPaymentMethods];
         [system presentViewController:testDropInVC withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
     });
@@ -114,6 +137,78 @@ describe(@"Drop In view controller", ^{
 
         describe(@"tapping 'CHANGE PAYMENT METHOD'", ^{
             xit(@"presents the full list of vaulted payment methods", ^{
+            });
+        });
+    });
+
+    fdescribe(@"card form", ^{
+
+        describe(@"additional card form Postal Code option enabled", ^{
+            beforeAll(^{
+                testShouldDisplayCardFormPostalCode = YES;
+            });
+
+            it(@"should display with disabled button", ^{
+                [tester waitForViewWithAccessibilityLabel:@"Postal Code" traits:0];
+
+            });
+        });
+
+        describe(@"additional card form with Postal Code option disabled", ^{
+            beforeAll(^{
+                testShouldDisplayCardFormPostalCode = NO;
+            });
+
+            it(@"should display with disabled button", ^{
+                UIView *topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
+                UIAccessibilityElement *element = [topView accessibilityElementWithLabel:@"Postal Code"];
+                XCTAssertNil(element);
+            });
+        });
+
+
+        describe(@"additional card form CVV option enabled", ^{
+            beforeAll(^{
+                testShouldDisplayCardFormCVV = YES;
+            });
+
+            it(@"should display with disabled button", ^{
+                [tester waitForViewWithAccessibilityLabel:@"CVV" traits:0];
+
+            });
+        });
+
+        describe(@"additional card form with CVV option disabled", ^{
+            beforeAll(^{
+                testShouldDisplayCardFormCVV = NO;
+            });
+
+            it(@"should display with disabled button", ^{
+                UIView *topView = [[[[UIApplication sharedApplication] keyWindow] subviews] lastObject];
+                UIAccessibilityElement *element = [topView accessibilityElementWithLabel:@"CVV"];
+                XCTAssertNil(element);
+            });
+        });
+
+
+        describe(@"unfilled values", ^{
+            it(@"should have a disabled button", ^{
+                UIControl *v = (UIControl *)[tester waitForViewWithAccessibilityLabel:@"Pay" traits:UIAccessibilityTraitButton];
+                XCTAssertFalse(v.enabled);
+            });
+        });
+
+        describe(@"with valid overridden values in optionally added fields", ^{
+            beforeAll(^{
+                testShouldDisplayCardFormCVV = YES;
+                testShouldDisplayCardFormPostalCode = YES;
+                testShouldBeValidIfFormPrefilled = YES;
+            });
+
+            it(@"is valid", ^{
+                [tester waitForViewWithAccessibilityLabel:@"Postal Code" value:@"12345" traits:0];
+                UIControl *v = (UIControl *)[tester waitForViewWithAccessibilityLabel:@"Pay" traits:UIAccessibilityTraitButton];
+                XCTAssertTrue(v.enabled);
             });
         });
     });

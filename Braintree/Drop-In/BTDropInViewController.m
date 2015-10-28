@@ -1,7 +1,6 @@
 #import "BTDropInViewController.h"
 #import "BTDropInContentView.h"
 #import "BTDropInSelectPaymentMethodViewController.h"
-#import "BTUICardFormView.h"
 #import "BTUIScrollView.h"
 #import "BTDropInUtil.h"
 #import "Braintree-API.h"
@@ -13,6 +12,7 @@
 #import "BTClient_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTCoinbase.h"
+#import "BTUICardFormView.h"
 
 @interface BTDropInViewController () < BTDropInSelectPaymentMethodViewControllerDelegate, BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTPaymentMethodCreationDelegate, BTDropInViewControllerDelegate>
 
@@ -52,11 +52,16 @@
     self = [self init];
     if (self) {
         self.theme = [BTUI braintreeTheme];
-        self.dropInContentView = [[BTDropInContentView alloc] init];
 
         self.client = [client copyWithMetadata:^(BTClientMutableMetadata *metadata) {
             metadata.integration = BTClientMetadataIntegrationDropIn;
         }];
+
+        self.dropInContentView = [[BTDropInContentView alloc] init];
+        self.dropInContentView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.dropInContentView.cardForm.alphaNumericPostalCode = YES;
+        self.dropInContentView.cardForm.optionalFields = self.optionalFieldsFromClientToken;
+
         self.dropInContentView.paymentButton.client = self.client;
         self.dropInContentView.paymentButton.delegate = self;
 
@@ -64,6 +69,7 @@
 
         self.selectedPaymentMethodIndex = NSNotFound;
         self.dropInContentView.state = BTDropInContentViewStateActivity;
+
         self.fullForm = YES;
         _callToActionText = BTDropInLocalizedString(DEFAULT_CALL_TO_ACTION);
     }
@@ -95,12 +101,6 @@
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
 
-    self.dropInContentView.translatesAutoresizingMaskIntoConstraints = NO;
-
-    self.dropInContentView.cardForm.delegate = self;
-    self.dropInContentView.cardForm.alphaNumericPostalCode = YES;
-    self.dropInContentView.cardForm.optionalFields = self.optionalFieldsFromClientToken;
-
     [self.dropInContentView.changeSelectedPaymentMethodButton addTarget:self
                                                                  action:@selector(tappedChangePaymentMethod)
                                                        forControlEvents:UIControlEventTouchUpInside];
@@ -113,6 +113,7 @@
     self.dropInContentView.cardFormSectionHeader.font = self.theme.sectionHeaderFont;
     self.dropInContentView.cardFormSectionHeader.text = BTDropInLocalizedString(CARD_FORM_SECTION_HEADER);
 
+    self.dropInContentView.cardForm.delegate = self;
 
     // Call the setters explicitly
     [self setCallToActionText:_callToActionText];
@@ -158,8 +159,6 @@
     if (!self.fullForm) {
         self.dropInContentView.state = BTDropInContentViewStateForm;
     }
-
-    [self updateValidity];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -173,6 +172,7 @@
     if (self.fullForm) {
         [self.client postAnalyticsEvent:@"dropin.ios.appear"];
     }
+    [self updateValidity];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -603,7 +603,7 @@
 
 - (void)updateValidity {
     BTPaymentMethod *paymentMethod = [self selectedPaymentMethod];
-    BOOL valid = (paymentMethod != nil) || (!self.dropInContentView.cardForm.hidden && self.dropInContentView.cardForm.valid);
+    BOOL valid = (paymentMethod != nil) || self.dropInContentView.cardForm.valid;
 
     [self.navigationItem.rightBarButtonItem setEnabled:valid];
     [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
@@ -648,6 +648,72 @@
 
         [self.fetchPaymentMethodsErrorAlert show];
     }];
+}
+
+#pragma mark - Card Properties
+
+- (NSString *)cardNumber {
+    return self.dropInContentView.cardForm.number;
+}
+
+- (void)setCardNumber:(NSString *)cardNumber {
+    self.dropInContentView.cardForm.number = cardNumber;
+}
+
+- (NSString *)cardExpirationMonth {
+    return self.dropInContentView.cardForm.expirationMonth;
+}
+
+- (NSString *)cardExpirationYear {
+    return self.dropInContentView.cardForm.expirationYear;
+}
+
+- (void)setCardExpirationDate:(NSDate *)expirationDate {
+    [self.dropInContentView.cardForm setExpirationDate:expirationDate];
+}
+
+- (NSString *)cardCVV {
+    return self.dropInContentView.cardForm.cvv;
+}
+
+- (void)setCardCVV:(NSString *)cardCVV {
+    self.dropInContentView.cardForm.cvv = cardCVV;
+}
+
+- (BOOL)requireCardCVV {
+    return self.dropInContentView.cardForm.optionalFields & BTUICardFormOptionalFieldsCvv;
+}
+
+- (void)setRequireCardCVV:(BOOL)requireCardCVV {
+    if (self.requireCardCVV != requireCardCVV) {
+        self.dropInContentView.cardForm.optionalFields ^= BTUICardFormOptionalFieldsCvv;
+    }
+}
+
+- (NSString *)cardPostalCode {
+    return self.dropInContentView.cardForm.postalCode;
+}
+
+- (void)setCardPostalCode:(NSString *)cardPostalCode {
+    self.dropInContentView.cardForm.postalCode = cardPostalCode;
+}
+
+- (BOOL)requireCardPostalCode {
+    return self.dropInContentView.cardForm.optionalFields & BTUICardFormOptionalFieldsPostalCode;
+}
+
+- (void)setRequireCardPostalCode:(BOOL)requireCardPostalCode {
+    if (self.requireCardPostalCode != requireCardPostalCode) {
+        self.dropInContentView.cardForm.optionalFields ^= BTUICardFormOptionalFieldsPostalCode;
+    }
+}
+
+- (BOOL)cardAlphaNumericPostalCode {
+    return self.dropInContentView.cardForm.alphaNumericPostalCode;
+}
+
+- (void)setCardAlphaNumericPostalCode:(BOOL)cardAlphaNumericPostalCode {
+    self.dropInContentView.cardForm.alphaNumericPostalCode = cardAlphaNumericPostalCode;
 }
 
 #pragma mark - Helpers
