@@ -1,25 +1,25 @@
-#import "BraintreeDemoPayPalCheckoutViewController.h"
+#import "BraintreeDemoPayPalOneTimePaymentViewController.h"
 
 #import <BraintreePayPal/BraintreePayPal.h>
 
-@interface BraintreeDemoPayPalCheckoutViewController () <BTAppSwitchDelegate, BTViewControllerPresentingDelegate>
+@interface BraintreeDemoPayPalOneTimePaymentViewController () <BTAppSwitchDelegate, BTViewControllerPresentingDelegate>
 
 @end
 
-@implementation BraintreeDemoPayPalCheckoutViewController
+@implementation BraintreeDemoPayPalOneTimePaymentViewController
 
 - (UIView *)paymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:@"Checkout with PayPal" forState:UIControlStateNormal];
+    [button setTitle:@"PayPal one-time payment" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithRed:50.0/255 green:50.0/255 blue:255.0/255 alpha:1.0] forState:UIControlStateHighlighted];
     [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
-    [button addTarget:self action:@selector(tappedPayPalCheckout:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(tappedPayPalOneTimePayment:) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
 
-- (void)tappedPayPalCheckout:(UIButton *)sender {
-    self.progressBlock(@"Tapped PayPal - initiating checkout using BTPayPalDriver");
+- (void)tappedPayPalOneTimePayment:(UIButton *)sender {
+    self.progressBlock(@"Tapped PayPal - initiating one-time payment using BTPayPalDriver");
 
     [sender setTitle:@"Processing..." forState:UIControlStateDisabled];
     [sender setEnabled:NO];
@@ -27,14 +27,14 @@
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     driver.delegate = self;
     driver.viewControllerPresentingDelegate = self;
-    BTPayPalRequest *checkout = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
-    [driver requestOneTimePayment:checkout completion:^(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
+    [driver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount * _Nullable payPalAccount, NSError * _Nullable error) {
         [sender setEnabled:YES];
 
         if (error) {
             self.progressBlock(error.localizedDescription);
-        } else if (tokenizedPayPalCheckout) {
-            self.completionBlock(tokenizedPayPalCheckout);
+        } else if (payPalAccount) {
+            self.completionBlock(payPalAccount);
         } else {
             self.progressBlock(@"Cancelled");
         }
