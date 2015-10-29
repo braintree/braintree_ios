@@ -133,7 +133,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     self.didReceiveCompletionCallback = nil;
     
     [payPalDriver authorizeAccountWithCompletion:^(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error) {
-        XCTAssertTrue(tokenizedPayPalAccount.paymentMethodNonce.isANonce);
+        XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
         XCTAssertNil(error);
         self.didReceiveCompletionCallback = @(YES);
     }];
@@ -314,7 +314,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    self.didReceiveCompletionCallback = nil;
 //    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
 //    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
-//        XCTAssertTrue(tokenizedPayPalCheckout.paymentMethodNonce.isANonce);
+//        XCTAssertTrue(tokenizedPayPalCheckout.nonce.isANonce);
 //        XCTAssertNil(error);
 //        self.didReceiveCompletionCallback = @(YES);
 //    }];
@@ -343,7 +343,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    self.didReceiveCompletionCallback = nil;
 //    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
 //    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
-//        XCTAssertTrue(tokenizedPayPalCheckout.paymentMethodNonce.isANonce);
+//        XCTAssertTrue(tokenizedPayPalCheckout.nonce.isANonce);
 //        XCTAssertNil(error);
 //        self.didReceiveCompletionCallback = @(YES);
 //    }];
@@ -372,7 +372,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    self.didReceiveCompletionCallback = nil;
 //    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
 //    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
-//        XCTAssertTrue(tokenizedPayPalCheckout.paymentMethodNonce.isANonce);
+//        XCTAssertTrue(tokenizedPayPalCheckout.nonce.isANonce);
 //        XCTAssertNil(error);
 //        self.didReceiveCompletionCallback = @(YES);
 //    }];

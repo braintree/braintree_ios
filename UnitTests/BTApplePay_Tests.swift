@@ -133,7 +133,7 @@ class BTApplePay_Tests: XCTestCase {
         client.tokenizeApplePayPayment(payment) { (tokenizedPayment, error) -> Void in
             XCTAssertNil(error)
             XCTAssertEqual(tokenizedPayment!.localizedDescription, "a description")
-            XCTAssertEqual(tokenizedPayment!.paymentMethodNonce, "an-apple-pay-nonce")
+            XCTAssertEqual(tokenizedPayment!.nonce, "an-apple-pay-nonce")
             expectation.fulfill()
         }
 

@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BTPaymentMethodNonce <NSObject>
 
 /// The one-time use payment method nonce
-@property (nonatomic, readonly, copy) NSString *paymentMethodNonce;
+@property (nonatomic, readonly, copy) NSString *nonce;
 /// A localized description of the payment info
 @property (nonatomic, readonly, copy) NSString *localizedDescription;
 /// The type of the tokenized data, e.g. PayPal, Venmo, MasterCard, Visa, Amex

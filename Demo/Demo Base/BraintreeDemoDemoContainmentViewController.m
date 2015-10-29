@@ -84,7 +84,7 @@
     NSLog(@"Tapped status!");
 
     if (self.latestTokenizedPayment) {
-        NSString *nonce = self.latestTokenizedPayment.paymentMethodNonce;
+        NSString *nonce = self.latestTokenizedPayment.nonce;
         [self updateStatus:@"Creating Transaction…"];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [[BraintreeDemoMerchantAPI sharedService] makeTransactionWithPaymentMethodNonce:nonce

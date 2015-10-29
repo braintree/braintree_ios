@@ -40,7 +40,7 @@ class BTTokenizationParser_Tests: XCTestCase {
         
         let tokenization = parser.parseJSON(json, withParsingBlockForType: "MyType")
         
-        XCTAssertEqual(tokenization?.paymentMethodNonce, "valid-nonce")
+        XCTAssertEqual(tokenization?.nonce, "valid-nonce")
         XCTAssertEqual(tokenization?.localizedDescription, "My Description")
     }
     

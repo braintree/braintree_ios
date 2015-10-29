@@ -23,7 +23,7 @@ describe(@"tokenizeCard:completion:", ^{
 
             XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
             [client tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
-                expect(tokenized.paymentMethodNonce.isANonce).to.beTruthy();
+                expect(tokenized.nonce.isANonce).to.beTruthy();
                 expect(error).to.beNil();
                 [expectation fulfill];
             }];
@@ -39,7 +39,7 @@ describe(@"tokenizeCard:completion:", ^{
 
             XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
             [client tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
-                expect(tokenized.paymentMethodNonce.isANonce).to.beTruthy();
+                expect(tokenized.nonce.isANonce).to.beTruthy();
                 expect(error).to.beNil();
                 [expectation fulfill];
             }];
@@ -193,7 +193,7 @@ describe(@"tokenizeCard:completion:", ^{
                 //                card.shouldValidate = YES;
                 //
                 //                [cvvAndZipClient tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
-                //                    expect(tokenized.paymentMethodNonce).toNot.beNil();
+                //                    expect(tokenized.nonce).toNot.beNil();
                 //                    expect(error).to.beNil();
                 //                    [expectation fulfill];
                 //                }];

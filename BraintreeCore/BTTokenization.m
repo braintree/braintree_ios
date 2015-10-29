@@ -1,7 +1,7 @@
 #import "BTTokenization.h"
 
 @interface BTTokenization ()
-@property (nonatomic, copy, readwrite) NSString *paymentMethodNonce;
+@property (nonatomic, copy, readwrite) NSString *nonce;
 @property (nonatomic, copy, readwrite) NSString *localizedDescription;
 @end
 
@@ -11,7 +11,7 @@
     if (!nonce) return nil;
     
     if (self = [super init]) {
-        self.paymentMethodNonce = nonce;
+        self.nonce = nonce;
         self.localizedDescription = description;
     }
     return self;
