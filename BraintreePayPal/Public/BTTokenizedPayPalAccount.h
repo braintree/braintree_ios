@@ -5,7 +5,7 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-@interface BTTokenizedPayPalAccount : NSObject <BTPaymentMethodNonce>
+@interface BTTokenizedPayPalAccount : BTPaymentMethodNonce
 
 /// Payer's email address
 @property (nonatomic, nullable, readonly, copy) NSString *email;

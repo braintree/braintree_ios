@@ -13,7 +13,7 @@
 
 @interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, SlideNavigationControllerDelegate, IntegrationViewControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
-@property (nonatomic, strong) id <BTPaymentMethodNonce> latestTokenizedPayment;
+@property (nonatomic, strong) BTPaymentMethodNonce *latestTokenizedPayment;
 @property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
 @property (nonatomic, strong) UIViewController *rightMenu;
 @end
@@ -219,7 +219,7 @@
     return block;
 }
 
-- (void (^)(id <BTPaymentMethodNonce> tokenized))completionBlock {
+- (void (^)(BTPaymentMethodNonce *tokenized))completionBlock {
     // This class is responsible for retaining the completion block
     static id block;
     static dispatch_once_t onceToken;

@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, BTCardNetwork) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTTokenizedCard : NSObject <BTPaymentMethodNonce>
+@interface BTTokenizedCard : BTPaymentMethodNonce
 
 /// The card network.
 @property (nonatomic, readonly, assign) BTCardNetwork cardNetwork;

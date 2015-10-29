@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
-@class BTAPIClient, BTUI;
-@protocol BTDropInViewControllerDelegate, BTPaymentMethodNonce;
+@class BTAPIClient, BTUI, BTPaymentMethodNonce;
+@protocol BTDropInViewControllerDelegate;
 
 /// A view controller that provides a quick and easy payment experience.
 ///
@@ -107,7 +107,7 @@
 ///
 /// @param viewController The Drop In view controller informing its delegate of success
 /// @param tokenization The selected (and possibly newly created) tokenized payment information.
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(id<BTPaymentMethodNonce>)tokenization;
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce *)tokenization;
 
 /// Informs the delegate when the user has decided to cancel out of the Drop In payment form.
 ///

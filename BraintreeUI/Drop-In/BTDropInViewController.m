@@ -47,7 +47,7 @@
         self.apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn];
         self.dropInContentView.paymentButton.apiClient = self.apiClient;
         __weak typeof(self) weakSelf = self;
-        self.dropInContentView.paymentButton.completion = ^(id<BTPaymentMethodNonce> tokenization, NSError *error) {
+        self.dropInContentView.paymentButton.completion = ^(BTPaymentMethodNonce * tokenization, NSError *error) {
             [weakSelf paymentButtonDidCompleteTokenization:tokenization fromViewController:weakSelf error:error];
         };
 
@@ -307,7 +307,7 @@
 - (void)tappedSubmitForm {
     [self showLoadingState:YES];
 
-    id<BTPaymentMethodNonce> paymentInfo = [self selectedPaymentMethod];
+    BTPaymentMethodNonce * paymentInfo = [self selectedPaymentMethod];
     if (paymentInfo != nil) {
         [self informDelegateWillComplete];
         [self informDelegateDidAddPaymentInfo:paymentInfo];
@@ -330,7 +330,7 @@
             }
             options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
 
-            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(id<BTPaymentMethodNonce> tokenization, NSError *error) {
+            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(BTPaymentMethodNonce * tokenization, NSError *error) {
                 [self showLoadingState:NO];
 
                 if (error) {
@@ -429,7 +429,7 @@
 
 #pragma mark BTDropInViewControllerDelegate implementation
 
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(id<BTPaymentMethodNonce> )paymentMethod {
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce * )paymentMethod {
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 
     NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentInfoObjects];
@@ -459,7 +459,7 @@
     }
 }
 
-- (void)informDelegateDidAddPaymentInfo:(id<BTPaymentMethodNonce> )paymentMethod {
+- (void)informDelegateDidAddPaymentInfo:(BTPaymentMethodNonce * )paymentMethod {
     if ([self.delegate respondsToSelector:@selector(dropInViewController:didSucceedWithTokenization:)]) {
         [self.delegate dropInViewController:self
                 didSucceedWithTokenization:paymentMethod];
@@ -547,7 +547,7 @@
 - (void)setSelectedPaymentInfoIndex:(NSInteger)selectedPaymentInfoIndex {
     _selectedPaymentInfoIndex = selectedPaymentInfoIndex;
     if (_selectedPaymentInfoIndex != NSNotFound) {
-        id<BTPaymentMethodNonce> defaultPaymentMethod = [self selectedPaymentMethod];
+        BTPaymentMethodNonce * defaultPaymentMethod = [self selectedPaymentMethod];
         BTUIPaymentOptionType paymentMethodType = [BTUI paymentOptionTypeForPaymentInfoType:defaultPaymentMethod.type];
         self.dropInContentView.selectedPaymentMethodView.type = paymentMethodType;
         self.dropInContentView.selectedPaymentMethodView.detailDescription = defaultPaymentMethod.localizedDescription;
@@ -555,12 +555,12 @@
     [self updateValidity];
 }
 
-- (id<BTPaymentMethodNonce>)selectedPaymentMethod {
+- (BTPaymentMethodNonce *)selectedPaymentMethod {
     return self.selectedPaymentInfoIndex != NSNotFound ? self.paymentInfoObjects[self.selectedPaymentInfoIndex] : nil;
 }
 
 - (void)updateValidity {
-    id<BTPaymentMethodNonce> paymentMethod = [self selectedPaymentMethod];
+    BTPaymentMethodNonce * paymentMethod = [self selectedPaymentMethod];
     BOOL valid = (paymentMethod != nil) || (!self.dropInContentView.cardForm.hidden && self.dropInContentView.cardForm.valid);
 
     [self.navigationItem.rightBarButtonItem setEnabled:valid];
@@ -604,7 +604,7 @@
                      NSMutableArray *paymentInfoObjects = [NSMutableArray array];
                      for (NSDictionary *paymentInfo in body[@"paymentMethods"].asArray) {
                          BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
-                         id <BTPaymentMethodNonce> tokenization = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
+                         BTPaymentMethodNonce *tokenization = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
                          if (tokenization) [paymentInfoObjects addObject:tokenization];
                      }
                      if (paymentInfoObjects.count) {
@@ -627,14 +627,14 @@
         _addPaymentMethodDropInViewController.delegate = self;
         __weak typeof(self) weakSelf = self;
         __weak typeof(_addPaymentMethodDropInViewController) weakAddPaymentMethodController = _addPaymentMethodDropInViewController;
-        _addPaymentMethodDropInViewController.dropInContentView.paymentButton.completion = ^(id <BTPaymentMethodNonce> tokenization, NSError *error) {
+        _addPaymentMethodDropInViewController.dropInContentView.paymentButton.completion = ^(BTPaymentMethodNonce *tokenization, NSError *error) {
             [weakSelf paymentButtonDidCompleteTokenization:tokenization fromViewController:weakAddPaymentMethodController error:error];
         };
     }
     return _addPaymentMethodDropInViewController;
 }
 
-- (void)paymentButtonDidCompleteTokenization:(id <BTPaymentMethodNonce>)tokenization
+- (void)paymentButtonDidCompleteTokenization:(BTPaymentMethodNonce *)tokenization
               fromViewController:(UIViewController *)viewController
                            error:(NSError *)error {
     if (error) {

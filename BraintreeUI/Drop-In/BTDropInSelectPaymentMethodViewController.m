@@ -52,7 +52,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:paymentMethodCellIdentifier];
     }
 
-    id<BTPaymentMethodNonce> paymentInfo = self.paymentInfoObjects[indexPath.row];
+    BTPaymentMethodNonce * paymentInfo = self.paymentInfoObjects[indexPath.row];
 
 
     NSString *typeString = paymentInfo.type;

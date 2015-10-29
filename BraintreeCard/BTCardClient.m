@@ -23,13 +23,13 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
 
 + (void)load {
     if (self == [BTCardClient class]) {
-        [[BTTokenizationService sharedService] registerType:@"Card" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(id<BTPaymentMethodNonce> tokenization, NSError *error)) {
+        [[BTTokenizationService sharedService] registerType:@"Card" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce * tokenization, NSError *error)) {
             BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
             BTCard *card = [[BTCard alloc] initWithParameters:options];
             [client tokenizeCard:card completion:completionBlock];
         }];
 
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"Card" withParsingBlock:^id<BTPaymentMethodNonce> _Nullable(BTJSON * _Nonnull creditCard) {
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"Card" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
             return [BTTokenizedCard cardWithJSON:creditCard];
         }];
     }

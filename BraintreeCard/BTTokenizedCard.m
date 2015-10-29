@@ -1,8 +1,5 @@
 #import "BTTokenizedCard_Internal.h"
 
-@interface BTTokenizedCard ()
-@end
-
 @implementation BTTokenizedCard
 
 @synthesize nonce = _paymentMethodNonce;

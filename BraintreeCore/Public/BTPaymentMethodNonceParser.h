@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param type The tokenization type string
 /// @param jsonParsingBlock The block to execute when `parseJSON:type:` is called for the tokenization type.
 ///        This block should return a `BTPaymentMethodNonce` object, or `nil` if the JSON cannot be parsed.
-- (void)registerType:(NSString *)type withParsingBlock:(id <BTPaymentMethodNonce> _Nullable (^)(BTJSON *json))jsonParsingBlock;
+- (void)registerType:(NSString *)type withParsingBlock:(BTPaymentMethodNonce * _Nullable (^)(BTJSON *json))jsonParsingBlock;
 
 /// Parses tokenized payment information that has been serialized to JSON, and returns a `BTPaymentMethodNonce` object.
 /// The `BTPaymentMethodNonce` object is created by the JSON parsing block that has been registered for the tokenization
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param json The tokenized payment info, serialized to JSON
 /// @param type The registered type of the parsing block to use
 /// @return A `BTPaymentMethodNonce` object, or `nil` if the tokenized payment info JSON does not contain a nonce
-- (nullable id <BTPaymentMethodNonce>)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type;
+- (nullable BTPaymentMethodNonce *)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type;
 
 @end
 
