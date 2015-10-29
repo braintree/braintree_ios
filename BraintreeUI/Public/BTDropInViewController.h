@@ -107,7 +107,7 @@
 ///
 /// @param viewController The Drop In view controller informing its delegate of success
 /// @param tokenization The selected (and possibly newly created) tokenized payment information.
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce *)tokenization;
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce *)paymentMethodNonce;
 
 /// Informs the delegate when the user has decided to cancel out of the Drop In payment form.
 ///

@@ -47,8 +47,8 @@
         self.apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn];
         self.dropInContentView.paymentButton.apiClient = self.apiClient;
         __weak typeof(self) weakSelf = self;
-        self.dropInContentView.paymentButton.completion = ^(BTPaymentMethodNonce * tokenization, NSError *error) {
-            [weakSelf paymentButtonDidCompleteTokenization:tokenization fromViewController:weakSelf error:error];
+        self.dropInContentView.paymentButton.completion = ^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
+            [weakSelf paymentButtonDidCompleteTokenization:paymentMethodNonce fromViewController:weakSelf error:error];
         };
 
         self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
@@ -330,7 +330,7 @@
             }
             options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
 
-            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(BTPaymentMethodNonce * tokenization, NSError *error) {
+            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
                 [self showLoadingState:NO];
 
                 if (error) {
@@ -351,7 +351,7 @@
                     return;
                 }
 
-                [self informDelegateDidAddPaymentInfo:tokenization];
+                [self informDelegateDidAddPaymentInfo:paymentMethodNonce];
 
                 // Let the view controller release
                 self.addPaymentMethodDropInViewController = nil;
@@ -604,8 +604,8 @@
                      NSMutableArray *paymentInfoObjects = [NSMutableArray array];
                      for (NSDictionary *paymentInfo in body[@"paymentMethods"].asArray) {
                          BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
-                         BTPaymentMethodNonce *tokenization = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
-                         if (tokenization) [paymentInfoObjects addObject:tokenization];
+                         BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
+                         if (paymentMethodNonce) [paymentInfoObjects addObject:paymentMethodNonce];
                      }
                      if (paymentInfoObjects.count) {
                          self.paymentInfoObjects = [paymentInfoObjects copy];
@@ -627,14 +627,14 @@
         _addPaymentMethodDropInViewController.delegate = self;
         __weak typeof(self) weakSelf = self;
         __weak typeof(_addPaymentMethodDropInViewController) weakAddPaymentMethodController = _addPaymentMethodDropInViewController;
-        _addPaymentMethodDropInViewController.dropInContentView.paymentButton.completion = ^(BTPaymentMethodNonce *tokenization, NSError *error) {
-            [weakSelf paymentButtonDidCompleteTokenization:tokenization fromViewController:weakAddPaymentMethodController error:error];
+        _addPaymentMethodDropInViewController.dropInContentView.paymentButton.completion = ^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
+            [weakSelf paymentButtonDidCompleteTokenization:paymentMethodNonce fromViewController:weakAddPaymentMethodController error:error];
         };
     }
     return _addPaymentMethodDropInViewController;
 }
 
-- (void)paymentButtonDidCompleteTokenization:(BTPaymentMethodNonce *)tokenization
+- (void)paymentButtonDidCompleteTokenization:(BTPaymentMethodNonce *)paymentMethodNonce
               fromViewController:(UIViewController *)viewController
                            error:(NSError *)error {
     if (error) {
@@ -648,11 +648,11 @@
         };
         
         [errorAlert show];
-    } else if (tokenization) {
+    } else if (paymentMethodNonce) {
         NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentInfoObjects];
-        [newPaymentMethods insertObject:tokenization atIndex:0];
+        [newPaymentMethods insertObject:paymentMethodNonce atIndex:0];
         self.paymentInfoObjects = newPaymentMethods;
-        [self informDelegateDidAddPaymentInfo:tokenization];
+        [self informDelegateDidAddPaymentInfo:paymentMethodNonce];
     } else {
         // Refresh payment methods display
         self.paymentInfoObjects = self.paymentInfoObjects;

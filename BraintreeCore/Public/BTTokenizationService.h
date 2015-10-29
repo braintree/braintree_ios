@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
 /// @param type A type string to identify the tokenization block. Providing a type that has already
 ///        been registered will overwrite the previously registered tokenization block.
 /// @param tokenizationBlock The tokenization block to register for a type.
-- (void)registerType:(NSString *)type withTokenizationBlock:(void(^)(BTAPIClient *apiClient, NSDictionary * _Nullable options, void(^)(BTPaymentMethodNonce * _Nullable tokenization, NSError * _Nullable error)))tokenizationBlock;
+- (void)registerType:(NSString *)type withTokenizationBlock:(void(^)(BTAPIClient *apiClient, NSDictionary * _Nullable options, void(^)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error)))tokenizationBlock;
 
 /// Indicates whether a type has been registered with a valid tokenization block.
 - (BOOL)isTypeAvailable:(NSString *)type;
@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
 /// @param completion The completion block to invoke when tokenization has completed.
 - (void)tokenizeType:(NSString *)type
        withAPIClient:(BTAPIClient *)apiClient
-          completion:(void(^)(BTPaymentMethodNonce * _Nullable tokenization, NSError * _Nullable error))completion;
+          completion:(void(^)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error))completion;
 
 /// Perform tokenization for the given type. This will execute the tokenization block that has been
 /// registered for the type.
@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
 - (void)tokenizeType:(NSString *)type
              options:(nullable NSDictionary<NSString *, id> *)options
        withAPIClient:(BTAPIClient *)apiClient
-          completion:(void(^)(BTPaymentMethodNonce * _Nullable tokenization, NSError * _Nullable error))completion;
+          completion:(void(^)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error))completion;
 
 @property (nonatomic, readonly, strong) NSArray *allTypes;
 

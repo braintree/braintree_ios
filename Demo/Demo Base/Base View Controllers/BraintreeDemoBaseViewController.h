@@ -6,6 +6,6 @@
 - (instancetype)initWithAuthorization:(NSString *)authorization NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, weak) void (^progressBlock)(NSString *newStatus);
-@property (nonatomic, weak) void (^completionBlock)(BTPaymentMethodNonce * tokenization);
+@property (nonatomic, weak) void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce);
 
 @end

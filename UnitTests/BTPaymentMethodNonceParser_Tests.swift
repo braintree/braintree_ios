@@ -38,15 +38,15 @@ class BTTokenizationParser_Tests: XCTestCase {
         let json = BTJSON(value: ["nonce": "valid-nonce",
                                   "description": "My Description"])
         
-        let tokenization = parser.parseJSON(json, withParsingBlockForType: "MyType")
+        let paymentMethodNonce = parser.parseJSON(json, withParsingBlockForType: "MyType")
         
-        XCTAssertEqual(tokenization?.nonce, "valid-nonce")
-        XCTAssertEqual(tokenization?.localizedDescription, "My Description")
+        XCTAssertEqual(paymentMethodNonce?.nonce, "valid-nonce")
+        XCTAssertEqual(paymentMethodNonce?.localizedDescription, "My Description")
     }
     
     func testParseJSON_whenTypeIsNotRegisteredAndJSONDoesNotContainNonce_returnsNil() {
-        let tokenization = parser.parseJSON(BTJSON(value: ["description": "blah"]), withParsingBlockForType: "MyType")
+        let paymentMethodNonce = parser.parseJSON(BTJSON(value: ["description": "blah"]), withParsingBlockForType: "MyType")
         
-       XCTAssertNil(tokenization)
+       XCTAssertNil(paymentMethodNonce)
     }
 }
