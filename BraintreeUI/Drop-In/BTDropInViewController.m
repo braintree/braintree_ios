@@ -8,7 +8,7 @@
 #import "BTDropInErrorState.h"
 #import "BTDropInErrorAlert.h"
 #import "BTDropInLocalizedString.h"
-#import "BTTokenizationParser.h"
+#import "BTPaymentMethodNonceParser.h"
 #import "BTTokenizationService.h"
 
 @interface BTDropInViewController () <BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTDropInViewControllerDelegate, BTDropInSelectPaymentMethodViewControllerDelegate, BTViewControllerPresentingDelegate>
@@ -604,7 +604,7 @@
                      NSMutableArray *paymentInfoObjects = [NSMutableArray array];
                      for (NSDictionary *paymentInfo in body[@"paymentMethods"].asArray) {
                          BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
-                         id <BTPaymentMethodNonce> tokenization = [[BTTokenizationParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
+                         id <BTPaymentMethodNonce> tokenization = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
                          if (tokenization) [paymentInfoObjects addObject:tokenization];
                      }
                      if (paymentInfoObjects.count) {

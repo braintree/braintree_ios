@@ -2,7 +2,7 @@ import XCTest
 
 class BTTokenizationParser_Tests: XCTestCase {
     
-    var parser : BTTokenizationParser = BTTokenizationParser()
+    var parser : BTPaymentMethodNonceParser = BTPaymentMethodNonceParser()
 
     func testRegisterType_addsTypeToTypes() {
         parser.registerType("MyType") { _ -> BTPaymentMethodNonce? in return nil}

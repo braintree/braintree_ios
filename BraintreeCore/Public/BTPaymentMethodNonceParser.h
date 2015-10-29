@@ -7,9 +7,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// A JSON parser that parses `BTJSON` into concrete `BTPaymentMethodNonce` objects. It supports registration of
 /// parsers at runtime.
 ///
-/// @note `BTTokenizationParser` provides access to JSON parsing for different payment options
+/// @note `BTPaymentMethodNonceParser` provides access to JSON parsing for different payment options
 /// without introducing compile-time dependencies on payment option frameworks and their symbols.
-@interface BTTokenizationParser : NSObject
+@interface BTPaymentMethodNonceParser : NSObject
 
 /// The singleton instance
 + (instancetype)sharedParser;

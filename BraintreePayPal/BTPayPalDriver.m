@@ -46,7 +46,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             [driver authorizeAccountWithCompletion:completionBlock];
         }];
         
-        [[BTTokenizationParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^id<BTPaymentMethodNonce> _Nullable(BTJSON * _Nonnull payPalAccount) {
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^id<BTPaymentMethodNonce> _Nullable(BTJSON * _Nonnull payPalAccount) {
             return [self payPalAccountFromJSON:payPalAccount];
         }];
     }

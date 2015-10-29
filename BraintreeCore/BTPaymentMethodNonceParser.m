@@ -1,7 +1,7 @@
 #import "BTTokenization.h"
-#import "BTTokenizationParser.h"
+#import "BTPaymentMethodNonceParser.h"
 
-@interface BTTokenizationParser ()
+@interface BTPaymentMethodNonceParser ()
 
 /// Dictionary of JSON parsing blocks keyed by types as strings. The blocks have the following type:
 ///
@@ -10,13 +10,13 @@
 
 @end
 
-@implementation BTTokenizationParser
+@implementation BTPaymentMethodNonceParser
 
 + (instancetype)sharedParser {
-    static BTTokenizationParser *sharedParser;
+    static BTPaymentMethodNonceParser *sharedParser;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedParser = [[BTTokenizationParser alloc] init];
+        sharedParser = [[BTPaymentMethodNonceParser alloc] init];
     });
     return sharedParser;
 }
