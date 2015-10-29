@@ -19,7 +19,7 @@
 			<array>
 				<string>PayPal - Billing Agreement</string>
 				<string>PayPal - Scopes</string>
-				<string>PayPal - Checkout</string>
+				<string>PayPal - One-Time Payment</string>
 				<string>Credit Card Tokenization</string>
 				<string>Combined - BTPaymentButton</string>
 				<string>PayPal - BTUIPayPalButton</string>
@@ -37,7 +37,7 @@
 			<array>
 				<string>BraintreeDemoPayPalBillingAgreementViewController</string>
 				<string>BraintreeDemoPayPalScopesViewController</string>
-				<string>BraintreeDemoPayPalCheckoutViewController</string>
+				<string>BraintreeDemoPayPalOneTimePaymentViewController</string>
 				<string>BraintreeDemoCardTokenizationViewController</string>
 				<string>BraintreeDemoBTPaymentButtonViewController</string>
 				<string>BraintreeDemoBTUIPayPalButtonViewController</string>

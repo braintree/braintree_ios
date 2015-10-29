@@ -93,7 +93,7 @@
 		4145B85D1BBF4B36008F0CC7 /* BraintreeDemoSlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B31B79708900452CFA /* BraintreeDemoSlideNavigationController.m */; };
 		4145B85E1BBF4B36008F0CC7 /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */; };
 		4145B85F1BBF4B36008F0CC7 /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E61B79708900452CFA /* BraintreeDemoCustomPayPalButtonViewController.m */; };
-		4145B8601BBF4B36008F0CC7 /* BraintreeDemoPayPalCheckoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E31B79708900452CFA /* BraintreeDemoPayPalCheckoutViewController.m */; };
+		4145B8601BBF4B36008F0CC7 /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E31B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.m */; };
 		4145B8611BBF4B36008F0CC7 /* BraintreeDemoCustomMultiPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D01B79708900452CFA /* BraintreeDemoCustomMultiPayViewController.m */; };
 		4145B8621BBF4B36008F0CC7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B1A0A1B79708A00452CFA /* main.m */; };
 		4145B8631BBF4B36008F0CC7 /* BraintreeDemoIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B11B79708900452CFA /* BraintreeDemoIntegrationViewController.m */; };
@@ -259,7 +259,7 @@
 		417405611BB0875E008A5DEA /* BraintreeDemoSlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B31B79708900452CFA /* BraintreeDemoSlideNavigationController.m */; };
 		417405621BB0875E008A5DEA /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */; };
 		417405631BB0875E008A5DEA /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E61B79708900452CFA /* BraintreeDemoCustomPayPalButtonViewController.m */; };
-		417405641BB0875E008A5DEA /* BraintreeDemoPayPalCheckoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E31B79708900452CFA /* BraintreeDemoPayPalCheckoutViewController.m */; };
+		417405641BB0875E008A5DEA /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E31B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.m */; };
 		417405651BB0875E008A5DEA /* BraintreeDemoCustomMultiPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D01B79708900452CFA /* BraintreeDemoCustomMultiPayViewController.m */; };
 		417405661BB0875E008A5DEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B1A0A1B79708A00452CFA /* main.m */; };
 		417405671BB0875E008A5DEA /* BraintreeDemoIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B11B79708900452CFA /* BraintreeDemoIntegrationViewController.m */; };
@@ -529,7 +529,7 @@
 		A7A094FA1B82919300D732CC /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19A91B79708900452CFA /* BraintreeDemoPaymentButtonBaseViewController.m */; };
 		A7A094FB1B8295E000D732CC /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E61B79708900452CFA /* BraintreeDemoCustomPayPalButtonViewController.m */; };
 		A7A094FC1B82983300D732CC /* BraintreeDemoPayPalScopesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19EC1B79708900452CFA /* BraintreeDemoPayPalScopesViewController.m */; };
-		A7A094FD1B829ACC00D732CC /* BraintreeDemoPayPalCheckoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E31B79708900452CFA /* BraintreeDemoPayPalCheckoutViewController.m */; };
+		A7A094FD1B829ACC00D732CC /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E31B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.m */; };
 		A7A094FF1B839CC900D732CC /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */; };
 		A7A095001B839CDE00D732CC /* BraintreeApplePay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889741B5EF5DE007A0E9C /* BraintreeApplePay.framework */; };
 		A7A095011B839CE400D732CC /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889891B5EF737007A0E9C /* PassKit.framework */; };
@@ -998,8 +998,8 @@
 		A76B19DD1B79708900452CFA /* BraintreeDemoBTDataCollectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTDataCollectorViewController.m; sourceTree = "<group>"; };
 		A76B19DF1B79708900452CFA /* BraintreeDemoBTUIPayPalButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBTUIPayPalButtonViewController.h; sourceTree = "<group>"; };
 		A76B19E01B79708900452CFA /* BraintreeDemoBTUIPayPalButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTUIPayPalButtonViewController.m; sourceTree = "<group>"; };
-		A76B19E21B79708900452CFA /* BraintreeDemoPayPalCheckoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalCheckoutViewController.h; sourceTree = "<group>"; };
-		A76B19E31B79708900452CFA /* BraintreeDemoPayPalCheckoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalCheckoutViewController.m; sourceTree = "<group>"; };
+		A76B19E21B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalOneTimePaymentViewController.h; sourceTree = "<group>"; };
+		A76B19E31B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalOneTimePaymentViewController.m; sourceTree = "<group>"; };
 		A76B19E51B79708900452CFA /* BraintreeDemoCustomPayPalButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomPayPalButtonViewController.h; sourceTree = "<group>"; };
 		A76B19E61B79708900452CFA /* BraintreeDemoCustomPayPalButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomPayPalButtonViewController.m; sourceTree = "<group>"; };
 		A76B19EB1B79708900452CFA /* BraintreeDemoPayPalScopesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalScopesViewController.h; sourceTree = "<group>"; };
@@ -2030,8 +2030,8 @@
 		A76B19E11B79708900452CFA /* PayPal - Checkout */ = {
 			isa = PBXGroup;
 			children = (
-				A76B19E21B79708900452CFA /* BraintreeDemoPayPalCheckoutViewController.h */,
-				A76B19E31B79708900452CFA /* BraintreeDemoPayPalCheckoutViewController.m */,
+				A76B19E21B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.h */,
+				A76B19E31B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.m */,
 			);
 			path = "PayPal - Checkout";
 			sourceTree = "<group>";
@@ -3733,7 +3733,7 @@
 				4145B85D1BBF4B36008F0CC7 /* BraintreeDemoSlideNavigationController.m in Sources */,
 				4145B85E1BBF4B36008F0CC7 /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
 				4145B85F1BBF4B36008F0CC7 /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */,
-				4145B8601BBF4B36008F0CC7 /* BraintreeDemoPayPalCheckoutViewController.m in Sources */,
+				4145B8601BBF4B36008F0CC7 /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */,
 				4145B8611BBF4B36008F0CC7 /* BraintreeDemoCustomMultiPayViewController.m in Sources */,
 				4145B8621BBF4B36008F0CC7 /* main.m in Sources */,
 				4145B8631BBF4B36008F0CC7 /* BraintreeDemoIntegrationViewController.m in Sources */,
@@ -3944,7 +3944,7 @@
 				417405611BB0875E008A5DEA /* BraintreeDemoSlideNavigationController.m in Sources */,
 				417405621BB0875E008A5DEA /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
 				417405631BB0875E008A5DEA /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */,
-				417405641BB0875E008A5DEA /* BraintreeDemoPayPalCheckoutViewController.m in Sources */,
+				417405641BB0875E008A5DEA /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */,
 				417405651BB0875E008A5DEA /* BraintreeDemoCustomMultiPayViewController.m in Sources */,
 				417405661BB0875E008A5DEA /* main.m in Sources */,
 				417405671BB0875E008A5DEA /* BraintreeDemoIntegrationViewController.m in Sources */,
@@ -3974,7 +3974,7 @@
 				A76B1A121B79708A00452CFA /* BraintreeDemoSlideNavigationController.m in Sources */,
 				A7A094FF1B839CC900D732CC /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
 				A7A094FB1B8295E000D732CC /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */,
-				A7A094FD1B829ACC00D732CC /* BraintreeDemoPayPalCheckoutViewController.m in Sources */,
+				A7A094FD1B829ACC00D732CC /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */,
 				A7D674691B83E7F000ED6C00 /* BraintreeDemoCustomMultiPayViewController.m in Sources */,
 				A76B1A351B79708A00452CFA /* main.m in Sources */,
 				A76B1A111B79708A00452CFA /* BraintreeDemoIntegrationViewController.m in Sources */,
