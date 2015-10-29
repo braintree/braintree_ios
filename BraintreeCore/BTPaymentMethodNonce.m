@@ -1,17 +1,17 @@
-#import "BTTokenization.h"
+#import "BTPaymentMethodNonce.h"
 
-@interface BTTokenization ()
-@property (nonatomic, copy, readwrite) NSString *paymentMethodNonce;
+@interface BTPaymentMethodNonce ()
+@property (nonatomic, copy, readwrite) NSString *nonce;
 @property (nonatomic, copy, readwrite) NSString *localizedDescription;
 @end
 
-@implementation BTTokenization
+@implementation BTPaymentMethodNonce
 
 - (instancetype)initWithNonce:(NSString *)nonce localizedDescription:(NSString *)description {
     if (!nonce) return nil;
     
     if (self = [super init]) {
-        self.paymentMethodNonce = nonce;
+        self.nonce = nonce;
         self.localizedDescription = description;
     }
     return self;

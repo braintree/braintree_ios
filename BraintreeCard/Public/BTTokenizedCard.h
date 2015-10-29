@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
 #if __has_include("BraintreeCore.h")
 #import "BTJSON.h"
-#import "BTTokenized.h"
+#import "BTPaymentMethodNonce.h"
 #else
 #import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTTokenized.h>
+#import <BraintreeCore/BTPaymentMethodNonce.h>
 #endif
 
 /// Card type
@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, BTCardNetwork) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTTokenizedCard : NSObject <BTTokenized>
+@interface BTTokenizedCard : BTPaymentMethodNonce
 
 /// The card network.
 @property (nonatomic, readonly, assign) BTCardNetwork cardNetwork;

@@ -13,7 +13,7 @@
 
 @interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, SlideNavigationControllerDelegate, IntegrationViewControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
-@property (nonatomic, strong) id <BTTokenized> latestTokenizedPayment;
+@property (nonatomic, strong) BTPaymentMethodNonce *latestTokenizedPayment;
 @property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
 @property (nonatomic, strong) UIViewController *rightMenu;
 @end
@@ -84,7 +84,7 @@
     NSLog(@"Tapped status!");
 
     if (self.latestTokenizedPayment) {
-        NSString *nonce = self.latestTokenizedPayment.paymentMethodNonce;
+        NSString *nonce = self.latestTokenizedPayment.nonce;
         [self updateStatus:@"Creating Transaction…"];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         [[BraintreeDemoMerchantAPI sharedService] makeTransactionWithPaymentMethodNonce:nonce
@@ -219,7 +219,7 @@
     return block;
 }
 
-- (void (^)(id <BTTokenized> tokenized))completionBlock {
+- (void (^)(BTPaymentMethodNonce *tokenized))completionBlock {
     // This class is responsible for retaining the completion block
     static id block;
     static dispatch_once_t onceToken;

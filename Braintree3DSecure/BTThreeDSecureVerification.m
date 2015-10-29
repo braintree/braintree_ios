@@ -39,7 +39,7 @@
 }
 
 - (instancetype)initWithTokenizedCard:(BTTokenizedCard *)tokenizedCard {
-    return [self initWithPaymentMethodNonce:tokenizedCard.paymentMethodNonce];
+    return [self initWithPaymentMethodNonce:tokenizedCard.nonce];
 }
 
 @end

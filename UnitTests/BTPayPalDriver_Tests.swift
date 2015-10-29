@@ -349,7 +349,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                     ]
                 ] ] ],
             assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalAccount!.paymentMethodNonce, "a-nonce")
+                XCTAssertEqual(tokenizedPayPalAccount!.nonce, "a-nonce")
                 XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
                 XCTAssertEqual(tokenizedPayPalAccount!.email, "hello@world.com")
                 let shippingAddress = tokenizedPayPalAccount!.shippingAddress!
@@ -792,7 +792,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
                     ]
                 ] ] ],
             assertionBlock: { (tokenizedPayPalAccount, error) -> Void in
-                XCTAssertEqual(tokenizedPayPalAccount!.paymentMethodNonce, "a-nonce")
+                XCTAssertEqual(tokenizedPayPalAccount!.nonce, "a-nonce")
                 XCTAssertEqual(tokenizedPayPalAccount!.localizedDescription, "A description")
                 XCTAssertEqual(tokenizedPayPalAccount!.firstName, "Some")
                 XCTAssertEqual(tokenizedPayPalAccount!.lastName, "Dude")

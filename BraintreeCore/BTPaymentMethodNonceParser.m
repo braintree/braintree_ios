@@ -1,22 +1,22 @@
-#import "BTTokenization.h"
-#import "BTTokenizationParser.h"
+#import "BTPaymentMethodNonce.h"
+#import "BTPaymentMethodNonceParser.h"
 
-@interface BTTokenizationParser ()
+@interface BTPaymentMethodNonceParser ()
 
 /// Dictionary of JSON parsing blocks keyed by types as strings. The blocks have the following type:
 ///
-/// `id <BTTokenized>(^)(NSDictionary *json)`
+/// `BTPaymentMethodNonce *(^)(NSDictionary *json)`
 @property (nonatomic, strong) NSMutableDictionary *JSONParsingBlocks;
 
 @end
 
-@implementation BTTokenizationParser
+@implementation BTPaymentMethodNonceParser
 
 + (instancetype)sharedParser {
-    static BTTokenizationParser *sharedParser;
+    static BTPaymentMethodNonceParser *sharedParser;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedParser = [[BTTokenizationParser alloc] init];
+        sharedParser = [[BTPaymentMethodNonceParser alloc] init];
     });
     return sharedParser;
 }
@@ -36,14 +36,14 @@
     return self.JSONParsingBlocks.allKeys;
 }
 
-- (void)registerType:(NSString *)type withParsingBlock:(id <BTTokenized>(^)(BTJSON *))jsonParsingBlock {
+- (void)registerType:(NSString *)type withParsingBlock:(BTPaymentMethodNonce *(^)(BTJSON *))jsonParsingBlock {
     if (jsonParsingBlock) {
         self.JSONParsingBlocks[type] = [jsonParsingBlock copy];
     }
 }
 
-- (id<BTTokenized>)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type {
-    id <BTTokenized>(^block)(BTJSON *) = self.JSONParsingBlocks[type];
+- (BTPaymentMethodNonce *)parseJSON:(BTJSON *)json withParsingBlockForType:(NSString *)type {
+    BTPaymentMethodNonce *(^block)(BTJSON *) = self.JSONParsingBlocks[type];
     if (!json) {
         return nil;
     }
@@ -52,7 +52,7 @@
     }
     // Unregistered types should fall back to parsing basic nonce and description from JSON
     if (!json[@"nonce"].isString) return nil;
-    return [[BTTokenization alloc] initWithNonce:json[@"nonce"].asString localizedDescription:json[@"description"].asString];
+    return [[BTPaymentMethodNonce alloc] initWithNonce:json[@"nonce"].asString localizedDescription:json[@"description"].asString];
 }
 
 @end

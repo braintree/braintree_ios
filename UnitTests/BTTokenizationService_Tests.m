@@ -15,7 +15,7 @@
 }
 
 - (void)testRegisterType_addsTypeToTypes {
-    [service registerType:@"MyType" withTokenizationBlock:^(__unused BTAPIClient *apiClient, __unused NSDictionary *options, __unused void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
+    [service registerType:@"MyType" withTokenizationBlock:^(__unused BTAPIClient *apiClient, __unused NSDictionary *options, __unused void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
     }];
 
     XCTAssertTrue([service.allTypes containsObject:@"MyType"]);
@@ -26,7 +26,7 @@
 }
 
 - (void)testIsTypeAvailable_whenTypeIsRegistered_isTrue {
-    [service registerType:@"MyType" withTokenizationBlock:^(__unused BTAPIClient *apiClient, __unused NSDictionary *options, __unused void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
+    [service registerType:@"MyType" withTokenizationBlock:^(__unused BTAPIClient *apiClient, __unused NSDictionary *options, __unused void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
     }];
 
     XCTAssertTrue([service isTypeAvailable:@"MyType"]);
@@ -38,18 +38,18 @@
 
 - (void)testTokenizeType_whenTypeIsRegistered_callsTokenizationBlock {
     XCTestExpectation *expectation = [self expectationWithDescription:@"tokenization block called"];
-    [service registerType:@"MyType" withTokenizationBlock:^(__unused BTAPIClient *apiClient, __unused NSDictionary *options, __unused void (^completionBlock)(id<BTTokenized> tokenization, NSError *error)) {
+    [service registerType:@"MyType" withTokenizationBlock:^(__unused BTAPIClient *apiClient, __unused NSDictionary *options, __unused void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
         [expectation fulfill];
     }];
-    [service tokenizeType:@"MyType" withAPIClient:[[BTAPIClient alloc] initWithAuthorization:@"test_key"] completion:^(__unused id<BTTokenized>  _Nonnull tokenization, __unused NSError * _Nonnull error) {
+    [service tokenizeType:@"MyType" withAPIClient:[[BTAPIClient alloc] initWithAuthorization:@"test_key"] completion:^(__unused BTPaymentMethodNonce *  _Nonnull paymentMethodNonce, __unused NSError * _Nonnull error) {
     }];
     [self waitForExpectationsWithTimeout:3 handler:nil];
 }
 
 - (void)testTokenizeType_whenTypeIsNotRegistered_returnsError {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [service tokenizeType:@"TypeThatHasntBeenRegistered" withAPIClient:[[BTAPIClient alloc] initWithAuthorization:@"test_key"] completion:^(id<BTTokenized>  _Nonnull tokenization, NSError * _Nonnull error) {
-        XCTAssertNil(tokenization);
+    [service tokenizeType:@"TypeThatHasntBeenRegistered" withAPIClient:[[BTAPIClient alloc] initWithAuthorization:@"test_key"] completion:^(BTPaymentMethodNonce *  _Nonnull paymentMethodNonce, NSError * _Nonnull error) {
+        XCTAssertNil(paymentMethodNonce);
         XCTAssertEqualObjects(error.domain, BTTokenizationServiceErrorDomain);
         XCTAssertEqual(error.code, BTTokenizationServiceErrorTypeNotRegistered);
         [expectation fulfill];

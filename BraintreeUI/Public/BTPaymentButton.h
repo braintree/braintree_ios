@@ -1,8 +1,8 @@
 #import "BTUIThemedView.h"
 #import <UIKit/UIKit.h>
 
-@protocol BTAppSwitchDelegate, BTTokenized, BTViewControllerPresentingDelegate;
-@class BTAPIClient;
+@protocol BTAppSwitchDelegate, BTViewControllerPresentingDelegate;
+@class BTAPIClient, BTPaymentMethodNonce;
 
 @interface BTPaymentButton : BTUIThemedView
 
@@ -12,13 +12,13 @@
 - (id)init;
 
 
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient completion:(void(^)(id <BTTokenized> tokenization, NSError *error))completion;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient completion:(void(^)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error))completion;
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
-@property (nonatomic, copy) void(^completion)(id <BTTokenized> token, NSError *error);
+@property (nonatomic, copy) void(^completion)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error);
 
 
 /// Set of payment options as strings, e.g. `@"PayPal"`, `@"Venmo"`. By default, this is configured

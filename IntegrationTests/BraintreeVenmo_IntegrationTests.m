@@ -52,7 +52,7 @@
 
     _didReceiveCompletionCallback = nil;
     [venmoDriver tokenizeVenmoCardWithCompletion:^(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
-        XCTAssertTrue(tokenizedCard.paymentMethodNonce.isANonce);
+        XCTAssertTrue(tokenizedCard.nonce.isANonce);
         XCTAssertEqualObjects(tokenizedCard.localizedDescription, @"Card from Venmo");
         XCTAssertNil(error);
 
@@ -93,7 +93,7 @@
 
     _didReceiveCompletionCallback = nil;
     [venmoDriver tokenizeVenmoCardWithCompletion:^(BTVenmoTokenizedCard *tokenizedCard, NSError *error) {
-        XCTAssertTrue(tokenizedCard.paymentMethodNonce.isANonce);
+        XCTAssertTrue(tokenizedCard.nonce.isANonce);
         XCTAssertEqualObjects(tokenizedCard.localizedDescription, @"Card from Venmo");
         XCTAssertEqualObjects(tokenizedCard.lastTwo, @"Card from Venmo");
 //        XCTAssertEqualObjects(tokenizedCard.cardNetwork, @"Card from Venmo");

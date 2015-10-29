@@ -2,10 +2,10 @@ import XCTest
 
 class BTTokenizationParser_Tests: XCTestCase {
     
-    var parser : BTTokenizationParser = BTTokenizationParser()
+    var parser : BTPaymentMethodNonceParser = BTPaymentMethodNonceParser()
 
     func testRegisterType_addsTypeToTypes() {
-        parser.registerType("MyType") { _ -> BTTokenized? in return nil}
+        parser.registerType("MyType") { _ -> BTPaymentMethodNonce? in return nil}
 
         XCTAssertTrue(parser.allTypes.contains("MyType"))
     }
@@ -15,7 +15,7 @@ class BTTokenizationParser_Tests: XCTestCase {
     }
     
     func testIsTypeAvailable_whenTypeIsRegistered_isTrue() {
-        parser.registerType("MyType") { _ -> BTTokenized? in return nil}
+        parser.registerType("MyType") { _ -> BTPaymentMethodNonce? in return nil}
         XCTAssertTrue(parser.isTypeAvailable("MyType"))
     }
     
@@ -25,7 +25,7 @@ class BTTokenizationParser_Tests: XCTestCase {
 
     func testParseJSON_whenTypeIsRegistered_callsParsingBlock() {
         let expectation = expectationWithDescription("Parsing block called")
-        parser.registerType("MyType") { _ -> BTTokenized? in
+        parser.registerType("MyType") { _ -> BTPaymentMethodNonce? in
             expectation.fulfill()
             return nil
         }
@@ -38,15 +38,15 @@ class BTTokenizationParser_Tests: XCTestCase {
         let json = BTJSON(value: ["nonce": "valid-nonce",
                                   "description": "My Description"])
         
-        let tokenization = parser.parseJSON(json, withParsingBlockForType: "MyType")
+        let paymentMethodNonce = parser.parseJSON(json, withParsingBlockForType: "MyType")
         
-        XCTAssertEqual(tokenization?.paymentMethodNonce, "valid-nonce")
-        XCTAssertEqual(tokenization?.localizedDescription, "My Description")
+        XCTAssertEqual(paymentMethodNonce?.nonce, "valid-nonce")
+        XCTAssertEqual(paymentMethodNonce?.localizedDescription, "My Description")
     }
     
     func testParseJSON_whenTypeIsNotRegisteredAndJSONDoesNotContainNonce_returnsNil() {
-        let tokenization = parser.parseJSON(BTJSON(value: ["description": "blah"]), withParsingBlockForType: "MyType")
+        let paymentMethodNonce = parser.parseJSON(BTJSON(value: ["description": "blah"]), withParsingBlockForType: "MyType")
         
-       XCTAssertNil(tokenization)
+       XCTAssertNil(paymentMethodNonce)
     }
 }

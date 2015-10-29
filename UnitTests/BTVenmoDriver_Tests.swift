@@ -151,7 +151,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             }
 
             XCTAssertNil(error)
-            XCTAssertEqual(tokenizedCard.paymentMethodNonce, "fake-nonce")
+            XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
             XCTAssertEqual(tokenizedCard.localizedDescription, "Card from Venmo")
             XCTAssertNil(tokenizedCard.lastTwo)
             XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.Unknown)
@@ -193,7 +193,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             }
             
             XCTAssertNil(error)
-            XCTAssertEqual(tokenizedCard.paymentMethodNonce, "fake-nonce")
+            XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
             XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
             XCTAssertEqual(tokenizedCard.lastTwo!, "11")
             XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.Visa)
@@ -238,7 +238,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             }
 
             XCTAssertNil(error)
-            XCTAssertEqual(tokenizedCard.paymentMethodNonce, "fake-nonce")
+            XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
             XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
             XCTAssertEqual(tokenizedCard.lastTwo!, "11")
             XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.Visa)

@@ -76,10 +76,10 @@
 #pragma mark - BTDropInViewControllerDelegate
 
 // Renamed from -dropInViewController:didSucceedWithPaymentMethod:
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(id<BTTokenized>)tokenization {
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce *)paymentMethodNonce {
     if ([BraintreeDemoSettings useModalPresentation]) {
         [viewController dismissViewControllerAnimated:YES completion:^{
-            self.completionBlock(tokenization);
+            self.completionBlock(paymentMethodNonce);
         }];
     } else {
         [self.navigationController popViewControllerAnimated:YES];

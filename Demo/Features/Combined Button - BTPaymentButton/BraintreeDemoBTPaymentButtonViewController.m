@@ -9,11 +9,11 @@
 @implementation BraintreeDemoBTPaymentButtonViewController
 
 - (UIView *)paymentButton {
-    BTPaymentButton *paymentButton = [[BTPaymentButton alloc] initWithAPIClient:self.apiClient completion:^(id<BTTokenized> tokenization, NSError *error) {
-        if (tokenization) {
+    BTPaymentButton *paymentButton = [[BTPaymentButton alloc] initWithAPIClient:self.apiClient completion:^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
+        if (paymentMethodNonce) {
             self.progressBlock(@"Got a nonce 💎!");
-            NSLog(@"%@", [tokenization debugDescription]);
-            self.completionBlock(tokenization);
+            NSLog(@"%@", [paymentMethodNonce debugDescription]);
+            self.completionBlock(paymentMethodNonce);
         } else if (error) {
             self.progressBlock(error.localizedDescription);
         } else {

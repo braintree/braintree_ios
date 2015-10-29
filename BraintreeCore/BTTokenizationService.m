@@ -6,7 +6,7 @@ NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewContr
 @interface BTTokenizationService ()
 /// Dictionary of tokenization blocks keyed by types as strings. The blocks have the following type:
 ///
-/// `void (^)(BTAPIClient * _Nonnull, NSDictionary * _Nullable, void (^ _Nonnull)(id<BTTokenized> _Nullable, NSError * _Nullable))`
+/// `void (^)(BTAPIClient * _Nonnull, NSDictionary * _Nullable, void (^ _Nonnull)(BTPaymentMethodNonce * _Nullable, NSError * _Nullable))`
 @property (nonatomic, strong) NSMutableDictionary *tokenizationBlocks;
 @end
 
@@ -28,7 +28,7 @@ NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewContr
     return _tokenizationBlocks;
 }
 
-- (void)registerType:(NSString *)type withTokenizationBlock:(void (^)(BTAPIClient * _Nonnull, NSDictionary * _Nullable, void (^ _Nonnull)(id<BTTokenized> _Nullable, NSError * _Nullable)))tokenizationBlock
+- (void)registerType:(NSString *)type withTokenizationBlock:(void (^)(BTAPIClient * _Nonnull, NSDictionary * _Nullable, void (^ _Nonnull)(BTPaymentMethodNonce * _Nullable, NSError * _Nullable)))tokenizationBlock
 {
     self.tokenizationBlocks[type] = [tokenizationBlock copy];
 }
@@ -43,7 +43,7 @@ NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewContr
 
 - (void)tokenizeType:(NSString *)type
        withAPIClient:(BTAPIClient *)apiClient
-          completion:(void (^)(id<BTTokenized> _Nullable, NSError * _Nullable))completion
+          completion:(void (^)(BTPaymentMethodNonce * _Nullable, NSError * _Nullable))completion
 {
     [self tokenizeType:type options:nil withAPIClient:apiClient completion:completion];
 }
@@ -51,9 +51,9 @@ NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewContr
 - (void)tokenizeType:(NSString *)type
              options:(NSDictionary<NSString *,id> *)options
        withAPIClient:(BTAPIClient *)apiClient
-          completion:(void (^)(id<BTTokenized> _Nullable, NSError * _Nullable))completion
+          completion:(void (^)(BTPaymentMethodNonce * _Nullable, NSError * _Nullable))completion
 {
-    void(^block)(BTAPIClient *, NSDictionary *, void(^)(id<BTTokenized>, NSError *)) = self.tokenizationBlocks[type];
+    void(^block)(BTAPIClient *, NSDictionary *, void(^)(BTPaymentMethodNonce *, NSError *)) = self.tokenizationBlocks[type];
     if (block) {
         block(apiClient, options ?: @{}, completion);
     } else {

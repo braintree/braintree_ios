@@ -19,7 +19,7 @@ class BTTokenizedCard_Tests: XCTestCase {
         XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.Visa)
         XCTAssertEqual(tokenizedCard.lastTwo, "11")
-        XCTAssertEqual(tokenizedCard.paymentMethodNonce, "fake-nonce")
+        XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
         XCTAssertEqual(tokenizedCard.type, "Visa")
     }
 
@@ -36,7 +36,7 @@ class BTTokenizedCard_Tests: XCTestCase {
         XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.Visa)
         XCTAssertEqual(tokenizedCard.lastTwo, "11")
-        XCTAssertEqual(tokenizedCard.paymentMethodNonce, "fake-nonce")
+        XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
         XCTAssertEqual(tokenizedCard.type, "Visa")
     }
 

@@ -80,7 +80,7 @@
 
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
 
-        [self.threeDSecure verifyCardWithNonce:tokenizedCard.paymentMethodNonce
+        [self.threeDSecure verifyCardWithNonce:tokenizedCard.nonce
                                         amount:[NSDecimalNumber decimalNumberWithString:@"10"]
                                     completion:^(BTThreeDSecureTokenizedCard * _Nullable threeDSecureCard, NSError * _Nullable error)
          {
