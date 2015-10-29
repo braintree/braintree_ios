@@ -2,7 +2,6 @@
 
 @implementation BTPayPalRequestFactory
 
-/// Creates checkout (Single Payments) requests for PayPal
 - (PayPalOneTouchCheckoutRequest *)checkoutRequestWithApprovalURL:(NSURL *)approvalURL
                                                          clientID:(NSString *)clientID
                                                       environment:(NSString *)environment
@@ -15,7 +14,6 @@
                                                callbackURLScheme:callbackURLScheme];
 }
 
-/// Creates billing agreement requests for PayPal
 - (PayPalOneTouchBillingAgreementRequest *)billingAgreementRequestWithApprovalURL:(NSURL *)approvalURL
                                                                          clientID:(NSString *)clientID
                                                                       environment:(NSString *)environment
@@ -28,7 +26,6 @@
                                                        callbackURLScheme:callbackURLScheme];
 }
 
-/// Creates authorization (Future Payments) requests for PayPal
 - (PayPalOneTouchAuthorizationRequest *)requestWithScopeValues:(NSSet *)scopeValues
                                                     privacyURL:(NSURL *)privacyURL
                                                   agreementURL:(NSURL *)agreementURL

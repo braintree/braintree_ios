@@ -7,24 +7,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// A PayPal Checkout Request specifies options that control a user-facing PayPal checkout flow.
+/// A PayPal request specifies options that control the PayPal flow.
 ///
-/// A Checkout Request must specify an anticipated transaction amount.
+/// For a one-time payment, the request must specify a transaction amount.
 ///
 /// @see BTPayPalDriver
-@interface BTPayPalCheckoutRequest : NSObject
+@interface BTPayPalRequest : NSObject
 
-/// Initialize a Checkout Request with an amount.
+/// Initialize a PayPal request with an amount for a one-time payment.
 ///
-/// Amount must be a non-negative number, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', limited to 7 digits before the decimal point.
-///
-/// @param amount An amount greater than or equal to zero. Used for one-time payment Checkout Requests.
-/// @return A Checkout Request.
+/// @param amount Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', and is limited to 7 digits before the decimal point.
+/// @return A PayPal request.
 - (instancetype)initWithAmount:(NSString *)amount;
 
-/// The amount - used for one-time payment Checkout Requests.
+/// Used for a one-time payment.
 ///
-/// Amount must be a non-negative number, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', limited to 7 digits before the decimal point.
+/// Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', and is limited to 7 digits before the decimal point.
 @property (nonatomic, readonly, strong) NSString *amount;
 
 /// Defaults to false. When set to true, the shipping address selector will be displayed.

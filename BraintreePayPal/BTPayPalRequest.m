@@ -1,6 +1,6 @@
-#import "BTPayPalCheckoutRequest.h"
+#import "BTPayPalRequest.h"
 
-@implementation BTPayPalCheckoutRequest
+@implementation BTPayPalRequest
 
 - (instancetype)init
 {

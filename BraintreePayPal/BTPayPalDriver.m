@@ -89,7 +89,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         
         if (configuration.isBillingAgreementsEnabled) {
             // Switch to Billing Agreements flow
-            BTPayPalCheckoutRequest *checkout = [[BTPayPalCheckoutRequest alloc] init];
+            BTPayPalRequest *checkout = [[BTPayPalRequest alloc] init];
             [self requestBillingAgreement:checkout completion:completionBlock];
             return;
         }
@@ -136,10 +136,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 #pragma mark - Billing Agreement
 
-- (void)requestBillingAgreement:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
-    [self checkoutWithCheckoutRequest:checkoutRequest
-                   isBillingAgreement:YES
-                           completion:completionBlock];
+- (void)requestBillingAgreement:(BTPayPalRequest *)request completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
+    [self requestOneTimePayment:request isBillingAgreement:YES completion:completionBlock];
 }
 
 
@@ -147,18 +145,22 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeBillingAgreement];
 }
 
+#pragma mark - Express Checkout (One-Time Payments)
 
-#pragma mark - Checkout (Single Payments)
-
-- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
-    [self checkoutWithCheckoutRequest:checkoutRequest
-                   isBillingAgreement:NO
-                           completion:completionBlock];
+- (void)requestOneTimePayment:(BTPayPalRequest *)request completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
+    [self requestOneTimePayment:request isBillingAgreement:NO completion:completionBlock];
 }
 
-- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
-                 isBillingAgreement:(BOOL)isBillingAgreement
-                         completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
+- (void)setExpressCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *tokenizedAccount, NSError *error))completionBlock {
+    [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeCheckout];
+}
+
+#pragma mark - Helpers
+
+/// A "Hermes checkout" is used by both Billing Agreements and Express Checkout
+- (void)requestOneTimePayment:(BTPayPalRequest *)request
+           isBillingAgreement:(BOOL)isBillingAgreement
+                   completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeIntegration
@@ -167,7 +169,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         return;
     }
     
-    if (!checkoutRequest || (!isBillingAgreement && !checkoutRequest.amount)) {
+    if (!request || (!isBillingAgreement && !request.amount)) {
         completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain code:BTPayPalDriverErrorTypeInvalidRequest userInfo:nil]);
         return;
     }
@@ -203,27 +205,27 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
         
         if (!isBillingAgreement) {
-            if (checkoutRequest.amount != nil) {
-                parameters[@"amount"] = checkoutRequest.amount;
+            if (request.amount != nil) {
+                parameters[@"amount"] = request.amount;
             }
         }
         
-        experienceProfile[@"no_shipping"] = @(!checkoutRequest.isShippingAddressRequired);
+        experienceProfile[@"no_shipping"] = @(!request.isShippingAddressRequired);
         
-        if (checkoutRequest.localeCode != nil) {
-            experienceProfile[@"locale_code"] = checkoutRequest.localeCode;
+        if (request.localeCode != nil) {
+            experienceProfile[@"locale_code"] = request.localeCode;
         }
-
+        
         // Currency code should only be used for Hermes Checkout (one-time payment).
         // For BA, currency should not be used.
-        NSString *currencyCode = checkoutRequest.currencyCode ?: configuration.json[@"paypal"][@"currencyIsoCode"].asString;
+        NSString *currencyCode = request.currencyCode ?: configuration.json[@"paypal"][@"currencyIsoCode"].asString;
         if (!isBillingAgreement && currencyCode) {
             parameters[@"currency_iso_code"] = currencyCode;
         }
         
-        if (checkoutRequest.shippingAddressOverride != nil) {
+        if (request.shippingAddressOverride != nil) {
             experienceProfile[@"address_override"] = @YES;
-            BTPostalAddress *shippingAddress = checkoutRequest.shippingAddressOverride;
+            BTPostalAddress *shippingAddress = request.shippingAddressOverride;
             parameters[@"line1"] = shippingAddress.streetAddress;
             parameters[@"line2"] = shippingAddress.extendedAddress;
             parameters[@"city"] = shippingAddress.locality;
@@ -241,7 +243,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         if (cancelURI) {
             parameters[@"cancel_url"] = cancelURI;
         }
-
+        
         parameters[@"experience_profile"] = experienceProfile;
         
         NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
@@ -261,13 +263,13 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                           if (completionBlock) completionBlock(nil, error);
                           return;
                       }
-
+                      
                       if (isBillingAgreement) {
                           [self setBillingAgreementAppSwitchReturnBlock:completionBlock];
                       } else {
-                          [self setCheckoutAppSwitchReturnBlock:completionBlock];
+                          [self setExpressCheckoutAppSwitchReturnBlock:completionBlock];
                       }
-
+                      
                       NSString *payPalClientID = configuration.json[@"paypal"][@"clientId"].asString;
                       
                       if (!payPalClientID && [self payPalEnvironmentForRemoteConfiguration:configuration.json] == PayPalEnvironmentMock) {
@@ -313,15 +315,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                   }];
     }];
 }
-
-
-- (void)setCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *tokenizedAccount, NSError *error))completionBlock {
-    [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeCheckout];
-}
-
-
-#pragma mark - Helpers
-
 
 - (void)setAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *tokenizedAccount, NSError *error))completionBlock
                  forPaymentType:(BTPayPalPaymentType)paymentType {

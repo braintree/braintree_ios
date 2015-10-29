@@ -202,7 +202,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 }
 // TODO: Add more tests for analytics
 
-#pragma mark - Checkout (Single Payments)
+#pragma mark - Express Checkout (One-Time Payments)
 
 // TODO: Tokenization Key does not have permissions to perform PayPal Single Payments
 // (because /paypal_hermes/create_payment_resource doesn't have enough)
@@ -217,8 +217,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //        [expectation fulfill];
 //    });
 //
-//    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"] ];
-//    [payPalDriver checkoutWithCheckoutRequest:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
+//    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"] ];
+//    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
 //        if (error) {
 //            XCTFail(@"%@", error);
 //        }
@@ -240,8 +240,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //        [expectation fulfill];
 //    });
 //
-//    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-//    [payPalDriver checkoutWithCheckoutRequest:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
+//    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+//    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
 //        if (error) {
 //            XCTFail(@"%@", error);
 //        }
@@ -255,8 +255,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
 //
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-//    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-//    [payPalDriver checkoutWithCheckoutRequest:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
+//    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+//    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
 //        XCTAssertNil(tokenizedPayPalCheckout);
 //        XCTAssertEqualObjects(error.domain, BTPayPalDriverErrorDomain);
 //        XCTAssertEqual(error.code, BTPayPalDriverErrorTypeDisabled);
@@ -271,8 +271,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
 //
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-//    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-//    [payPalDriver checkoutWithCheckoutRequest:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
+//    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+//    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
 //        XCTAssertNil(tokenizedPayPalCheckout);
 //        XCTAssertEqualObjects(error.domain, BTPayPalDriverErrorDomain);
 //        XCTAssertEqual(error.code, BTPayPalDriverErrorTypeIntegrationReturnURLScheme);
@@ -289,8 +289,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    [BTAppSwitch sharedInstance].returnURLScheme = @"not-my-app-bundle-id";
 //
 //    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-//    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-//    [payPalDriver checkoutWithCheckoutRequest:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
+//    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+//    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
 //        XCTAssertNil(tokenizedPayPalCheckout);
 //        XCTAssertEqualObjects(error.domain, BTPayPalDriverErrorDomain);
 //        XCTAssertEqual(error.code, BTPayPalDriverErrorTypeIntegrationReturnURLScheme);
@@ -312,8 +312,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    });
 //
 //    self.didReceiveCompletionCallback = nil;
-//    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-//    [payPalDriver checkoutWithCheckoutRequest:request completion:^(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
+//    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+//    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
 //        XCTAssertTrue(tokenizedPayPalCheckout.paymentMethodNonce.isANonce);
 //        XCTAssertNil(error);
 //        self.didReceiveCompletionCallback = @(YES);
@@ -341,8 +341,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    });
 //
 //    self.didReceiveCompletionCallback = nil;
-//    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-//    [payPalDriver checkoutWithCheckoutRequest:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
+//    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+//    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
 //        XCTAssertTrue(tokenizedPayPalCheckout.paymentMethodNonce.isANonce);
 //        XCTAssertNil(error);
 //        self.didReceiveCompletionCallback = @(YES);
@@ -370,8 +370,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 //    });
 //
 //    self.didReceiveCompletionCallback = nil;
-//    BTPayPalCheckoutRequest *request = [[BTPayPalCheckoutRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
-//    [payPalDriver checkoutWithCheckoutRequest:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
+//    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:[NSDecimalNumber decimalNumberWithString:@"1"]];
+//    [payPalDriver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount *tokenizedPayPalCheckout, NSError *error) {
 //        XCTAssertTrue(tokenizedPayPalCheckout.paymentMethodNonce.isANonce);
 //        XCTAssertNil(error);
 //        self.didReceiveCompletionCallback = @(YES);

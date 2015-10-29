@@ -4,7 +4,7 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 #import "BTTokenizedPayPalAccount.h"
-#import "BTPayPalCheckoutRequest.h"
+#import "BTPayPalRequest.h"
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
     /// Invalid configuration, e.g. bad CFBundleDisplayName
     BTPayPalDriverErrorTypeInvalidConfiguration,
 
-    /// Invalid request, e.g. missing checkout request
+    /// Invalid request, e.g. missing PayPal request
     BTPayPalDriverErrorTypeInvalidRequest,
     
     /// Braintree SDK is integrated incorrectly
@@ -132,11 +132,12 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// @note This method is mutually exclusive with `authorizeAccountWithCompletion:`. In both cases, you need to create a
 /// Braintree transaction from your server in order to actually move money!
 ///
+/// @param request A PayPal request
 /// @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
 /// On success, you will receive an instance of `BTTokenizedPayPalAccount`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
-- (void)checkoutWithCheckoutRequest:(BTPayPalCheckoutRequest *)checkoutRequest
-                         completion:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
+- (void)requestOneTimePayment:(BTPayPalRequest *)request
+                   completion:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 /// Create a PayPal Billing Agreement for repeat purchases.
 ///
@@ -146,10 +147,11 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 /// @note This method is mutually exclusive with `authorizeAccountWithCompletion:`. In both cases, you need to create a
 /// Braintree transaction from your server in order to actually move money!
 ///
+/// @param request A PayPal request
 /// @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
 /// On success, you will receive an instance of `BTTokenizedPayPalAccount`; on failure, an error; on user cancellation,
 /// you will receive `nil` for both parameters.
-- (void)requestBillingAgreement:(BTPayPalCheckoutRequest *)checkoutRequest
+- (void)requestBillingAgreement:(BTPayPalRequest *)request
                      completion:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 
