@@ -17,12 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return `YES` when the object can handle returning from the application with a URL
 + (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
-
 /// Pass control back to `BTPayPalDriver` after returning from app or browser switch.
 ///
 /// @param url The URL you receive in `application:openURL:sourceApplication:annotation`
 + (void)handleAppSwitchReturnURL:(NSURL *)url;
-
 
 @optional
 
@@ -30,7 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isiOSAppAvailableForAppSwitch;
 
 @end
-
 
 /// @class BTAppSwitch
 /// @description Handles return URLs when returning from app switch and routes the return URL to the correct
@@ -55,13 +52,17 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setReturnURLScheme:(NSString *)returnURLScheme;
 
 /// Handles a return from app switch
+///
 /// @param url The URL that was opened to return to your app
 /// @param sourceApplication The source app that requested the launch of your app
+/// @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
 + (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 /// Handles a return from app switch
+///
 /// @param url The URL that was opened to return to your app
 /// @param options The options dictionary provided by `application:openURL:options:`
+/// @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
 + (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options;
 
 /// Registers a class that knows how to handle a return from app switch
