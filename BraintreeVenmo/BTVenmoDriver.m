@@ -20,7 +20,7 @@ static BTVenmoDriver *appSwitchedDriver;
         [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
         [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
-            [driver tokenizeVenmoCardWithCompletion:completionBlock];
+            [driver authorizeWithCompletion:completionBlock];
         }];
     }
 }
@@ -61,7 +61,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - Tokenization
 
-- (void)tokenizeVenmoCardWithCompletion:(void (^)(BTVenmoTokenizedCard *tokenizedCard, NSError *configurationError))completionBlock {
+- (void)authorizeWithCompletion:(void (^)(BTVenmoTokenizedCard *tokenizedCard, NSError *configurationError))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeIntegration

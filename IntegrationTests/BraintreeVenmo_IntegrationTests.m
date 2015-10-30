@@ -35,7 +35,7 @@
     FakeApplication *mockApplication = [[FakeApplication alloc] init];
     venmoDriver.application = mockApplication;
 
-    [venmoDriver tokenizeVenmoCardWithCompletion:^(__unused BTVenmoTokenizedCard * _Nullable tokenizedCard, __unused NSError * _Nullable error) { }];
+    [venmoDriver authorizeWithCompletion:^(__unused BTVenmoTokenizedCard * _Nullable tokenizedCard, __unused NSError * _Nullable error) { }];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"openedURL != nil"];
     [self expectationForPredicate:predicate evaluatedWithObject:mockApplication handler:nil];
@@ -52,7 +52,7 @@
     venmoDriver.application = mockApplication;
 
     _didReceiveCompletionCallback = nil;
-    [venmoDriver tokenizeVenmoCardWithCompletion:^(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+    [venmoDriver authorizeWithCompletion:^(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
         XCTAssertTrue(tokenizedCard.nonce.isANonce);
         XCTAssertEqualObjects(tokenizedCard.localizedDescription, @"Card from Venmo");
         XCTAssertNil(error);
@@ -93,7 +93,7 @@
     venmoDriver.application = mockApplication;
 
     _didReceiveCompletionCallback = nil;
-    [venmoDriver tokenizeVenmoCardWithCompletion:^(BTVenmoTokenizedCard *tokenizedCard, NSError *error) {
+    [venmoDriver authorizeWithCompletion:^(BTVenmoTokenizedCard *tokenizedCard, NSError *error) {
         XCTAssertTrue(tokenizedCard.nonce.isANonce);
         XCTAssertEqualObjects(tokenizedCard.localizedDescription, @"Card from Venmo");
         XCTAssertEqualObjects(tokenizedCard.lastTwo, @"Card from Venmo");
@@ -132,7 +132,7 @@
     BTVenmoDriver *venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Venmo card"];
-    [venmoDriver tokenizeVenmoCardWithCompletion:^(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+    [venmoDriver authorizeWithCompletion:^(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
         XCTAssertEqualObjects(error.domain, BTVenmoDriverErrorDomain);
         XCTAssertEqual(error.code, BTVenmoDriverErrorTypeDisabled);
         XCTAssertNil(tokenizedCard);

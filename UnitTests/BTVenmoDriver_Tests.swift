@@ -47,7 +47,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.apiClient = nil
         
         let expectation = expectationWithDescription("Callback invoked with error")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
             XCTAssertEqual(error!.domain, BTVenmoDriverErrorDomain)
             XCTAssertEqual(error!.code, BTVenmoDriverErrorType.Integration.rawValue)
@@ -63,7 +63,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
 
         let expectation = self.expectationWithDescription("Tokenize fails with error")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             XCTAssertEqual(error!, self.mockAPIClient.cannedConfigurationResponseError!)
             expectation.fulfill()
         }
@@ -77,7 +77,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
 
         let expectation = expectationWithDescription("tokenization callback")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             XCTAssertEqual(error!.domain, BTVenmoDriverErrorDomain)
             XCTAssertEqual(error!.code, BTVenmoDriverErrorType.Disabled.rawValue)
             expectation.fulfill()
@@ -91,7 +91,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
 
         let expectation = expectationWithDescription("tokenization callback")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             XCTAssertEqual(error!.domain, BTVenmoDriverErrorDomain)
             XCTAssertEqual(error!.code, BTVenmoDriverErrorType.Disabled.rawValue)
             expectation.fulfill()
@@ -109,7 +109,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.application = fakeApplication
         venmoDriver.bundle = FakeBundle()
 
-        venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in }
+        venmoDriver.authorizeWithCompletion { _ -> Void in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
     }
@@ -126,7 +126,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.application = fakeApplication
         venmoDriver.bundle = FakeBundle()
 
-        venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in
+        venmoDriver.authorizeWithCompletion { _ -> Void in
             XCTAssertEqual(delegate.lastAppSwitcher as? BTVenmoDriver, venmoDriver)
         }
 
@@ -144,7 +144,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         let expectation = self.expectationWithDescription("Callback")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
                 XCTFail("Received an error: \(error)")
                 return
@@ -186,7 +186,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
         
         let expectation = self.expectationWithDescription("Callback")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
                 XCTFail("Received an error: \(error)")
                 return
@@ -231,7 +231,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         let expectation = self.expectationWithDescription("Callback")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
                 XCTFail("Received an error: \(error)")
                 return
@@ -263,7 +263,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         let expectation = self.expectationWithDescription("Callback")
-        venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in
+        venmoDriver.authorizeWithCompletion { _ -> Void in
             XCTAssertEqual(delegate.lastAppSwitcher as? BTVenmoDriver, venmoDriver)
             expectation.fulfill()
         }
@@ -295,7 +295,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             didAppSwitchNotificationExpectation.fulfill()
             })
 
-        venmoDriver.tokenizeVenmoCardWithCompletion { _ -> Void in }
+        venmoDriver.authorizeWithCompletion { _ -> Void in }
 
         let willProcessNotificationExpectation = expectationWithDescription("willProcess notification received")
         observers.append(NSNotificationCenter.defaultCenter().addObserverForName(BTAppSwitchWillProcessPaymentInfoNotification, object: nil, queue: nil) { (notification) -> Void in
@@ -318,7 +318,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         let expectation = self.expectationWithDescription("Callback invoked")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             guard let error = error else {
                 XCTFail("Did not receive expected error")
                 return
@@ -345,7 +345,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         let expectation = self.expectationWithDescription("Callback invoked")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
             XCTAssertNil(error)
             expectation.fulfill()

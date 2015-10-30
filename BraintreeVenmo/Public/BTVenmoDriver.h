@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 /// @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
 /// On success, you will receive an instance of `BTVenmoTokenizedCard`; on failure, an error; on user
 /// cancellation, you will receive `nil` for both parameters.
-- (void)tokenizeVenmoCardWithCompletion:(void (^)(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
+- (void)authorizeWithCompletion:(void (^)(BTVenmoTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
 /// An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating
 /// your UI
