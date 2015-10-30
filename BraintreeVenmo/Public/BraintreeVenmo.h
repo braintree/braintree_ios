@@ -13,4 +13,3 @@ FOUNDATION_EXPORT const unsigned char BraintreeVenmoVersionString[];
 #endif
 #import "BTConfiguration+Venmo.h"
 #import "BTVenmoDriver.h"
-#import "BTVenmoTokenizedCard.h"
