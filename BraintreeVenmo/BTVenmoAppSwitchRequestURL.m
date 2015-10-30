@@ -1,7 +1,12 @@
 #import <UIKit/UIKit.h>
 
 #import "BTVenmoAppSwitchRequestURL.h"
+
+#if __has_include("BTURLUtils.h")
 #import "BTURLUtils.h"
+#else
+#import <BraintreeCore/BTURLUtils.h>
+#endif
 
 #define kXCallbackTemplate @"scheme://x-callback-url/path"
 #define kVenmoScheme @"com.venmo.touch.v1"

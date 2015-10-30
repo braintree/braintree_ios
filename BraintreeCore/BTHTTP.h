@@ -6,11 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BTHTTPResponse, BTClientToken;
 
-/// Key for userInfo dictionary that contains the NSHTTPURLResponse from server when it returns an HTTP error
-extern NSString * const BTHTTPURLResponseKey;
-/// Key for userInfo dictionary that contains the BTJSON body of the HTTP error response
-extern NSString * const BTHTTPJSONResponseBodyKey;
-
 /// Performs HTTP methods on the Braintree Client API
 @interface BTHTTP : NSObject<NSCopying>
 

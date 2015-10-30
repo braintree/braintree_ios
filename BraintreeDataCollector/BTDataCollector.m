@@ -95,6 +95,12 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
         return @"";
     }
     
+    // If only PayPal fraud is being collected, immediately inform the delegate that collection has
+    // finished, since Dyson does not allow us to know when it has officially finished collection.
+    if (!includeCard && includePayPal) {
+        [self onCollectorSuccess];
+    }
+    
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 

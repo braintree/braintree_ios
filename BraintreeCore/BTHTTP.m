@@ -8,9 +8,6 @@
 #import "BTURLUtils.h"
 #import "BTLogger_Internal.h"
 
-NSString * const BTHTTPURLResponseKey = @"com.braintreepayments.BTHTTPURLResponseKey";
-NSString * const BTHTTPJSONResponseBodyKey = @"com.braintreepayments.BTHTTPJSONResponseBodyKey";
-
 @interface BTHTTP () <NSURLSessionDelegate>
 
 @property (nonatomic, strong) NSURL *baseURL;

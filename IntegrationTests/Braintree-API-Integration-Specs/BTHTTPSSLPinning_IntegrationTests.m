@@ -7,7 +7,7 @@
 @implementation BTHTTPSSLPinning_IntegrationTests
 
 // Will work when we comply with ATS
-- (void)pendBTHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication {
+- (void)testBTHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication {
     NSURL *url = [NSURL URLWithString:@"https://api.braintreegateway.com"];
     BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
 
@@ -44,7 +44,7 @@
         XCTAssertNil(body);
         XCTAssertNil(response);
         XCTAssertEqualObjects(error.domain, NSURLErrorDomain);
-        XCTAssertEqual(error.code, NSURLErrorSecureConnectionFailed);
+        XCTAssertEqual(error.code, NSURLErrorServerCertificateUntrusted);
         [expectation fulfill];
     }];
 

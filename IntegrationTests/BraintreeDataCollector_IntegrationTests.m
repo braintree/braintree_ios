@@ -1,4 +1,5 @@
 #import "BraintreeDataCollector.h"
+#import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
 @interface BraintreeDataCollector_IntegrationTests : XCTestCase
@@ -24,32 +25,48 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 - (void)testCollectFraudData_returnsFraudData {
+    id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
+    self.data.delegate = delegate;
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [self.data collectFraudData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
-        XCTAssertTrue([deviceData containsString:@"correlation_id"]);
-        XCTAssertNil(error);
+    OCMStub([delegate dataCollectorDidComplete:self.data]).andDo(^(__unused NSInvocation *invocation) {
         [expectation fulfill];
-    }];
+    });
+
+    NSString *deviceData = [self.data collectFraudData];
     
+    XCTAssertTrue([deviceData containsString:@"correlation_id"]);
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
 - (void)testCollectCardFraudData_returnsFraudDataWithNoPayPalFraudData {
+    id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
+    self.data.delegate = delegate;
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [self.data collectCardFraudData:^(NSString * _Nullable deviceData, NSError * _Nullable error) {
-        XCTAssertNotNil(deviceData);
-        XCTAssertFalse([deviceData containsString:@"correlation_id"]);
-        XCTAssertNil(error);
+    OCMStub([delegate dataCollectorDidComplete:self.data]).andDo(^(__unused NSInvocation *invocation) {
         [expectation fulfill];
-    }];
+    });
+    
+    NSString *deviceData = [self.data collectCardFraudData];
+    
+    XCTAssertNotNil(deviceData);
+    XCTAssertFalse([deviceData containsString:@"correlation_id"]);
     
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
 #pragma clang diagnostic pop
 
-- (void)testPayPalFraudID_returnsFraudID {
-    XCTAssertNotNil([BTDataCollector payPalFraudID]);
+- (void)testCollectPayPalClientMetadataId_returnsClientMetadataId {
+    id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
+    self.data.delegate = delegate;
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
+    OCMStub([delegate dataCollectorDidComplete:self.data]).andDo(^(__unused NSInvocation *invocation) {
+        [expectation fulfill];
+    });
+    
+    XCTAssertNotNil([self.data collectPayPalClientMetadataId]);
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
 
