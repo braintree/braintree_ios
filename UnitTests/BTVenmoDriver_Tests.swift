@@ -99,6 +99,32 @@ class BTVenmoDriver_Tests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
 
+    func testAuthorization_whenReturnURLSchemeIsNil_logsCriticalMessageAndCallsBackWithError() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "venmo": "production" ])
+        let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
+        
+        var criticalMessageLogged = false
+        BTLogger.sharedLogger().logBlock = {
+            (level: BTLogLevel, message: String!) in
+            if (level == BTLogLevel.Critical && message == "Venmo requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]") {
+                criticalMessageLogged = true
+            }
+            BTLogger.sharedLogger().logBlock = nil
+            return
+        }
+        
+        let expectation = expectationWithDescription("authorization callback")
+        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+            XCTAssertEqual(error!.domain, BTVenmoDriverErrorDomain)
+            XCTAssertEqual(error!.code, BTVenmoDriverErrorType.AppNotAvailable.rawValue)
+            expectation.fulfill()
+        }
+        
+        XCTAssertTrue(criticalMessageLogged)
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
     func testTokenization_whenVenmoIsConfiguredCorrectly_opensVenmoURL() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "venmo": "production",

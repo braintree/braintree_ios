@@ -63,6 +63,33 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         }
         waitForExpectationsWithTimeout(2, handler: nil)
     }
+    
+    func testAuthorization_whenReturnURLSchemeIsNil_logsCriticalMessageAndCallsBackWithError() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        
+        var criticalMessageLogged = false
+        BTLogger.sharedLogger().logBlock = {
+            (level: BTLogLevel, message: String!) in
+            if (level == BTLogLevel.Critical && message == "PayPal requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]") {
+                criticalMessageLogged = true
+            }
+            BTLogger.sharedLogger().logBlock = nil
+            return
+        }
+        
+        let expectation = expectationWithDescription("authorization callback")
+        payPalDriver.authorizeAccountWithCompletion { (tokenizedPayPalAccount, error) -> Void in
+            XCTAssertEqual(error!.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error!.code, BTPayPalDriverErrorType.IntegrationReturnURLScheme.rawValue)
+            expectation.fulfill()
+        }
+        
+        XCTAssertTrue(criticalMessageLogged)
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
 
     func testAuthorization_whenRemoteConfigurationIsAvailable_performsAuthorizationAppSwitch() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
@@ -1134,17 +1161,17 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
     func testViewControllerPresentationDelegateMethodsCalledButNoViewControllerPresentingDelegateSet() {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         
-        var warningMessageLogged = false
+        var criticalMessageLogged = false
         BTLogger.sharedLogger().logBlock = {
             (level: BTLogLevel, message: String!) in
-            if (level == BTLogLevel.Warning && message == "Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.") {
-                warningMessageLogged = true
+            if (level == BTLogLevel.Critical && message == "Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set.") {
+                criticalMessageLogged = true
             }
             return
         }
 
         payPalDriver.informDelegatePresentingViewControllerRequestPresent(NSURL(string: "http://example.com")!)
-        XCTAssertTrue(warningMessageLogged)
+        XCTAssertTrue(criticalMessageLogged)
     }
 
 }

@@ -94,7 +94,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             return;
         }
         
-        if (![self verifyAppSwitchWithRemoteConfiguration:configuration.json returnURLScheme:self.returnURLScheme error:&error]) {
+        if (![self verifyAppSwitchWithRemoteConfiguration:configuration.json error:&error]) {
             if (completionBlock) completionBlock(nil, error);
             return;
         }
@@ -137,7 +137,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 #pragma mark - Billing Agreement
 
 - (void)requestBillingAgreement:(BTPayPalRequest *)request completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestOneTimePayment:request isBillingAgreement:YES completion:completionBlock];
+    [self requestExpressCheckout:request isBillingAgreement:YES completion:completionBlock];
 }
 
 
@@ -148,7 +148,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 #pragma mark - Express Checkout (One-Time Payments)
 
 - (void)requestOneTimePayment:(BTPayPalRequest *)request completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestOneTimePayment:request isBillingAgreement:NO completion:completionBlock];
+    [self requestExpressCheckout:request isBillingAgreement:NO completion:completionBlock];
 }
 
 - (void)setExpressCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *tokenizedAccount, NSError *error))completionBlock {
@@ -158,7 +158,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 #pragma mark - Helpers
 
 /// A "Hermes checkout" is used by both Billing Agreements and Express Checkout
-- (void)requestOneTimePayment:(BTPayPalRequest *)request
+- (void)requestExpressCheckout:(BTPayPalRequest *)request
            isBillingAgreement:(BOOL)isBillingAgreement
                    completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
     if (!self.apiClient) {
@@ -174,29 +174,13 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         return;
     }
     
-    NSString *returnURI;
-    NSString *cancelURI;
-    
-    [[self.class payPalClass] redirectURLsForCallbackURLScheme:self.returnURLScheme
-                                                 withReturnURL:&returnURI
-                                                 withCancelURL:&cancelURI];
-    if (!returnURI || !cancelURI) {
-        completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                                 code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
-                                             userInfo:@{NSLocalizedFailureReasonErrorKey: @"Application may not support One Touch callback URL scheme.",
-                                                        NSLocalizedRecoverySuggestionErrorKey: @"Check the return URL scheme" }]);
-        return;
-    }
-    
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         if (error) {
             if (completionBlock) completionBlock(nil, error);
             return;
         }
         
-        if (![self verifyAppSwitchWithRemoteConfiguration:configuration.json
-                                          returnURLScheme:self.returnURLScheme
-                                                    error:&error]) {
+        if (![self verifyAppSwitchWithRemoteConfiguration:configuration.json error:&error]) {
             if (completionBlock) completionBlock(nil, error);
             return;
         }
@@ -235,6 +219,20 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             parameters[@"recipient_name"] = shippingAddress.recipientName;
         } else {
             experienceProfile[@"address_override"] = @NO;
+        }
+        
+        NSString *returnURI;
+        NSString *cancelURI;
+        
+        [[self.class payPalClass] redirectURLsForCallbackURLScheme:self.returnURLScheme
+                                                     withReturnURL:&returnURI
+                                                     withCancelURL:&cancelURI];
+        if (!returnURI || !cancelURI) {
+            completionBlock(nil, [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                                     code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
+                                                 userInfo:@{NSLocalizedFailureReasonErrorKey: @"Application may not support One Touch callback URL scheme.",
+                                                            NSLocalizedRecoverySuggestionErrorKey: @"Check the return URL scheme" }]);
+            return;
         }
         
         if (returnURI) {
@@ -555,7 +553,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         self.safariViewController.delegate = self;
         [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
     } else {
-        [[BTLogger sharedLogger] warning:@"Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+        [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
 }
 
@@ -564,7 +562,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
         self.safariViewController = nil;
     } else {
-        [[BTLogger sharedLogger] warning:@"Unable to dismiss View Controller to end PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
+        [[BTLogger sharedLogger] critical:@"Unable to dismiss View Controller to end PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
 }
 
@@ -578,35 +576,44 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 
 #pragma mark - Preflight check
 
-- (BOOL)verifyAppSwitchWithRemoteConfiguration:(BTJSON *)configuration returnURLScheme:(NSString *)returnURLScheme error:(NSError * __autoreleasing *)error {
-    
+- (BOOL)verifyAppSwitchWithRemoteConfiguration:(BTJSON *)configuration error:(NSError * __autoreleasing *)error {
     if (!configuration[@"paypalEnabled"].isTrue) {
         [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                          code:BTPayPalDriverErrorTypeDisabled
-                                     userInfo:@{ NSLocalizedDescriptionKey: @"PayPal is not enabled for this merchant." }];
+                                     userInfo:@{ NSLocalizedDescriptionKey: @"PayPal is not enabled for this merchant",
+                                                 NSLocalizedRecoverySuggestionErrorKey: @"Enable PayPal for this merchant in the Braintree Control Panel" }];
         }
         return NO;
     }
     
-    if (returnURLScheme == nil) {
+    if (self.returnURLScheme == nil) {
+        NSString *recoverySuggestion = @"PayPal requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]. This custom URL scheme must also be registered with your app.";
+        if (!self.returnURLScheme) {
+            [[BTLogger sharedLogger] critical:recoverySuggestion];
+        }
+
         [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.nil-return-url-scheme"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                          code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
-                                     userInfo:@{ NSLocalizedDescriptionKey: @"PayPal app switch is missing a returnURLScheme. See BTAppSwitch -returnURLScheme." }];
+                                     userInfo:@{ NSLocalizedDescriptionKey: @"PayPal app switch is missing a returnURLScheme",
+                                                 NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion }];
         }
         return NO;
     }
     
-    if (![[self.class payPalClass] doesApplicationSupportOneTouchCallbackURLScheme:returnURLScheme]) {
+    if (![[self.class payPalClass] doesApplicationSupportOneTouchCallbackURLScheme:self.returnURLScheme]) {
+        NSString *recoverySuggestion = [NSString stringWithFormat:@"PayPal requires [BTAppSwitch setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@).", [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme];
+        [[BTLogger sharedLogger] critical:recoverySuggestion];
+        
         [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.invalid-return-url-scheme"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                          code:BTPayPalDriverErrorTypeIntegrationReturnURLScheme
-                                     userInfo:@{NSLocalizedFailureReasonErrorKey: @"Application may not support One Touch callback URL scheme",
-                                                NSLocalizedRecoverySuggestionErrorKey: @"Verify that BTAppSwitch -returnURLScheme is set to this app's bundle id" }];
+                                     userInfo:@{NSLocalizedFailureReasonErrorKey: @"Application does not support One Touch callback URL scheme",
+                                                NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion }];
         }
         return NO;
     }

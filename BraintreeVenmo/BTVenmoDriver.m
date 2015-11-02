@@ -1,4 +1,9 @@
 #import "BTConfiguration+Venmo.h"
+#if __has_include("BTLogger_Internal.h")
+#import "BTLogger_Internal.h"
+#else
+#import <BraintreeCore/BTLogger_Internal.h>
+#endif
 #import "BTVenmoDriver_Internal.h"
 #import "BTAPIClient_Internal.h"
 #import "BTVenmoAppSwitchRequestURL.h"
@@ -68,6 +73,12 @@ static BTVenmoDriver *appSwitchedDriver;
                                          userInfo:@{NSLocalizedDescriptionKey: @"BTVenmoDriver failed because BTAPIClient is nil."}];
         completionBlock(nil, error);
         return;
+    }
+    
+    if (!self.returnURLScheme) {
+        [[BTLogger sharedLogger] critical:@"Venmo requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]"];
+    } else if (![NSBundle mainBundle].bundleIdentifier || ![self.returnURLScheme hasPrefix:[NSBundle mainBundle].bundleIdentifier]) {
+        [[BTLogger sharedLogger] critical:@"Venmo requires [BTAppSwitch setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@) ", [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme];
     }
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *configurationError) {
