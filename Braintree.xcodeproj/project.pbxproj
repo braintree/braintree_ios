@@ -198,7 +198,6 @@
 		417404C91BB08658008A5DEA /* BTVenmoAppSwitchRequestURL.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D0B1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.m */; };
 		417404CB1BB08658008A5DEA /* BTVenmoAppSwitchReturnURL.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D0D1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.m */; };
 		417404CC1BB08658008A5DEA /* BTVenmoDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889FB1B5F0C00007A0E9C /* BTVenmoDriver.m */; };
-		417404CE1BB08658008A5DEA /* BTVenmoTokenizedCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D071B6043B7005A4A09 /* BTVenmoTokenizedCard.m */; };
 		417404D31BB0869C008A5DEA /* BTDropInLocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345FB1B7A9E340083EC8D /* BTDropInLocalizedString.m */; };
 		417404D51BB0869C008A5DEA /* BTDropInContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345EC1B7A9E340083EC8D /* BTDropInContentView.m */; };
 		417404D71BB0869C008A5DEA /* BTDropInErrorAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345EE1B7A9E340083EC8D /* BTDropInErrorAlert.m */; };
@@ -514,8 +513,6 @@
 		A77AA2AA1B618CFB00217B73 /* BraintreeVenmo.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889F11B5F0B30007A0E9C /* BraintreeVenmo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77AA2AB1B618CFB00217B73 /* BTVenmoDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889FA1B5F0C00007A0E9C /* BTVenmoDriver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77AA2AC1B618CFB00217B73 /* BTVenmoDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889FB1B5F0C00007A0E9C /* BTVenmoDriver.m */; };
-		A77AA2AD1B618CFB00217B73 /* BTVenmoTokenizedCard.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F96D061B6043B7005A4A09 /* BTVenmoTokenizedCard.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A77AA2AE1B618CFB00217B73 /* BTVenmoTokenizedCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D071B6043B7005A4A09 /* BTVenmoTokenizedCard.m */; };
 		A77AA2B31B618D6200217B73 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
 		A77AA2B41B618D6200217B73 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		A77AA2B61B61936A00217B73 /* BTVenmoDriver_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1339,8 +1336,6 @@
 		A7D674721B84FDB400ED6C00 /* BTClientToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTClientToken.m; sourceTree = "<group>"; };
 		A7E6E8E11B420D0C004CFA95 /* UnitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UnitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTURLUtils_Tests.swift; sourceTree = "<group>"; };
-		A7F96D061B6043B7005A4A09 /* BTVenmoTokenizedCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoTokenizedCard.h; sourceTree = "<group>"; };
-		A7F96D071B6043B7005A4A09 /* BTVenmoTokenizedCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoTokenizedCard.m; sourceTree = "<group>"; };
 		A7F96D0A1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTVenmoAppSwitchRequestURL.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		A7F96D0B1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoAppSwitchRequestURL.m; sourceTree = "<group>"; };
 		A7F96D0C1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoAppSwitchReturnURL.h; sourceTree = "<group>"; };
@@ -1722,7 +1717,6 @@
 			children = (
 				A7B1C1451B66D94600ED063C /* BTConfiguration+Venmo.h */,
 				A7C889FA1B5F0C00007A0E9C /* BTVenmoDriver.h */,
-				A7F96D061B6043B7005A4A09 /* BTVenmoTokenizedCard.h */,
 				A7C889F11B5F0B30007A0E9C /* BraintreeVenmo.h */,
 			);
 			path = Public;
@@ -2488,7 +2482,6 @@
 				A7F96D0D1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.m */,
 				A7C889FB1B5F0C00007A0E9C /* BTVenmoDriver.m */,
 				A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */,
-				A7F96D071B6043B7005A4A09 /* BTVenmoTokenizedCard.m */,
 				A7C889F31B5F0B30007A0E9C /* Info.plist */,
 			);
 			path = BraintreeVenmo;
@@ -2643,7 +2636,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A77AA2AD1B618CFB00217B73 /* BTVenmoTokenizedCard.h in Headers */,
 				A7B1C1471B66D94600ED063C /* BTConfiguration+Venmo.h in Headers */,
 				A77AA2AB1B618CFB00217B73 /* BTVenmoDriver.h in Headers */,
 				A77AA2A81B618CFB00217B73 /* BTVenmoAppSwitchReturnURL.h in Headers */,
@@ -3847,7 +3839,6 @@
 				417404C91BB08658008A5DEA /* BTVenmoAppSwitchRequestURL.m in Sources */,
 				417404CB1BB08658008A5DEA /* BTVenmoAppSwitchReturnURL.m in Sources */,
 				417404CC1BB08658008A5DEA /* BTVenmoDriver.m in Sources */,
-				417404CE1BB08658008A5DEA /* BTVenmoTokenizedCard.m in Sources */,
 				417404B71BB0864F008A5DEA /* BTConfiguration+PayPal.m in Sources */,
 				417404B81BB0864F008A5DEA /* BTPayPalRequest.m in Sources */,
 				417404B91BB0864F008A5DEA /* BTPayPalDriver.m in Sources */,
@@ -4065,7 +4056,6 @@
 				A77AA2A71B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.m in Sources */,
 				A77AA2AC1B618CFB00217B73 /* BTVenmoDriver.m in Sources */,
 				A77AA2A91B618CFB00217B73 /* BTVenmoAppSwitchReturnURL.m in Sources */,
-				A77AA2AE1B618CFB00217B73 /* BTVenmoTokenizedCard.m in Sources */,
 				A7B1C1481B66D94600ED063C /* BTConfiguration+Venmo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

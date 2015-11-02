@@ -6,7 +6,7 @@
 #import <UIKit/UIKit.h>
 
 @interface BTVenmoDriver ()
-@property (nonatomic, copy) void (^appSwitchCompletionBlock)(BTVenmoTokenizedCard *, NSError *);
+@property (nonatomic, copy) void (^appSwitchCompletionBlock)(BTTokenizedCard *, NSError *);
 @end
 
 NSString * const BTVenmoDriverErrorDomain = @"com.braintreepayments.BTVenmoDriverErrorDomain";
@@ -20,7 +20,7 @@ static BTVenmoDriver *appSwitchedDriver;
         [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
         [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
-            [driver tokenizeVenmoCardWithCompletion:completionBlock];
+            [driver authorizeWithCompletion:completionBlock];
         }];
     }
 }
@@ -61,7 +61,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - Tokenization
 
-- (void)tokenizeVenmoCardWithCompletion:(void (^)(BTVenmoTokenizedCard *tokenizedCard, NSError *configurationError))completionBlock {
+- (void)authorizeWithCompletion:(void (^)(BTTokenizedCard *tokenizedCard, NSError *configurationError))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeIntegration
@@ -163,7 +163,7 @@ static BTVenmoDriver *appSwitchedDriver;
                                                                @"nonce": returnURL.nonce,
                                                                @"description": @"Card from Venmo"
                                                                }];
-                BTVenmoTokenizedCard *card = [BTVenmoTokenizedCard cardWithJSON:json];
+                BTTokenizedCard *card = [BTTokenizedCard cardWithJSON:json];
                 self.appSwitchCompletionBlock(card, nil);
                 self.appSwitchCompletionBlock = nil;
             } else {
@@ -184,7 +184,7 @@ static BTVenmoDriver *appSwitchedDriver;
                              if (cardJSON.isError) {
                                  self.appSwitchCompletionBlock(nil, cardJSON.asError);
                              } else {
-                                 BTVenmoTokenizedCard *card = [BTVenmoTokenizedCard cardWithJSON:cardJSON];
+                                 BTTokenizedCard *card = [BTTokenizedCard cardWithJSON:cardJSON];
                                  self.appSwitchCompletionBlock(card, nil);
                              }
                              self.appSwitchCompletionBlock = nil;
