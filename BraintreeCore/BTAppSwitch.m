@@ -1,6 +1,11 @@
 #import "BTAppSwitch.h"
 #import <UIKit/UIKit.h>
 
+NSString * const BTAppSwitchWillSwitchNotification = @"com.braintreepayments.BTAppSwitchWillSwitchNotification";
+NSString * const BTAppSwitchDidSwitchNotification = @"com.braintreepayments.BTAppSwitchDidSwitchNotification";
+NSString * const BTAppSwitchWillProcessPaymentInfoNotification = @"com.braintreepayments.BTAppSwitchWillProcessPaymentInfoNotification";
+NSString * const BTAppSwitchNotificationTargetKey = @"BTAppSwitchNotificationTargetKey";
+
 @interface BTAppSwitch ()
 
 @property (nonatomic, strong) NSMutableSet *appSwitchHandlers;
