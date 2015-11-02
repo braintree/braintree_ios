@@ -219,11 +219,16 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 return;
             }
 
-            NSString *tokenizationKeyOrAuthFingerprint = self.clientToken.authorizationFingerprint ?: self.tokenizationKey;
+            NSMutableDictionary *parameters = [@{ @"analytics": @[@{ @"kind": eventKind }],
+                                                  @"_meta": self.metaParameters } mutableCopy];
+            if (self.clientToken.authorizationFingerprint) {
+                parameters[@"authorization_fingerprint"] = self.clientToken.authorizationFingerprint;
+            }
+            if (self.tokenizationKey) {
+                parameters[@"tokenization_key"] = self.tokenizationKey;
+            }
             [self.analyticsHttp POST:@"/"
-                          parameters:@{ @"analytics": @[@{ @"kind": eventKind }],
-                                        @"authorization_fingerprint": tokenizationKeyOrAuthFingerprint,
-                                        @"_meta": self.metaParameters }
+                          parameters:parameters
                           completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                               if (completionBlock) completionBlock(error);
                           }];

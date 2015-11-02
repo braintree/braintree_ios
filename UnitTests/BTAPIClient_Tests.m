@@ -5,94 +5,7 @@
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
-
-@interface FakeHTTP : BTHTTP
-
-@property (nonatomic, assign) NSUInteger GETRequestCount;
-@property (nonatomic, assign) NSUInteger POSTRequestCount;
-@property (nonatomic, copy) NSString *lastRequestEndpoint;
-@property (nonatomic, strong) NSDictionary *lastRequestParameters;
-@property (nonatomic, copy) NSString *stubMethod;
-@property (nonatomic, copy) NSString *stubEndpoint;
-@property (nonatomic, strong) BTJSON *cannedResponse;
-@property (nonatomic, assign) NSUInteger cannedStatusCode;
-@property (nonatomic, strong) NSError *cannedError;
-
-+ (instancetype)fakeHTTP;
-
-@end
-
-@implementation FakeHTTP
-
-+ (instancetype)fakeHTTP {
-    return [[FakeHTTP alloc] initWithBaseURL:[[NSURL alloc] init] authorizationFingerprint:@""];
-}
-
-- (void)stubRequest:(NSString *)httpMethod toEndpoint:(NSString *)endpoint respondWith:(id)value statusCode:(NSUInteger)statusCode {
-    self.stubMethod = httpMethod;
-    self.stubEndpoint = endpoint;
-    self.cannedResponse = [[BTJSON alloc] initWithValue:value];
-    self.cannedStatusCode = statusCode;
-}
-
-- (void)stubRequest:(NSString *)httpMethod toEndpoint:(NSString *)endpoint respondWithError:(NSError *)error {
-    self.stubMethod = httpMethod;
-    self.stubEndpoint = endpoint;
-    self.cannedError = error;
-}
-
-- (void)GET:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *, NSHTTPURLResponse *, NSError *))completionBlock {
-    self.GETRequestCount++;
-    self.lastRequestEndpoint = endpoint;
-    self.lastRequestParameters = parameters;
-
-    if (self.cannedError) {
-        [self dispatchBlock:^{
-            completionBlock(nil, nil, self.cannedError);
-        }];
-    } else {
-        NSHTTPURLResponse *httpResponse = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:endpoint]
-                                                                      statusCode:self.cannedStatusCode
-                                                                     HTTPVersion:nil
-                                                                    headerFields:nil];
-        [self dispatchBlock:^{
-            completionBlock(self.cannedResponse, httpResponse, nil);
-        }];
-    }
-}
-
-- (void)POST:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void (^)(BTJSON *, NSHTTPURLResponse *, NSError *))completionBlock {
-    self.POSTRequestCount++;
-    self.lastRequestEndpoint = endpoint;
-    self.lastRequestParameters = parameters;
-    
-    if (self.cannedError) {
-        [self dispatchBlock:^{
-            completionBlock(nil, nil, self.cannedError);
-        }];
-    } else {
-        NSHTTPURLResponse *httpResponse = [[NSHTTPURLResponse alloc] initWithURL:[NSURL URLWithString:endpoint]
-                                                                      statusCode:self.cannedStatusCode
-                                                                     HTTPVersion:nil
-                                                                    headerFields:nil];
-        [self dispatchBlock:^{
-            completionBlock(self.cannedResponse, httpResponse, nil);
-        }];
-    }
-}
-
-/// Helper method to dispatch callbacks to dispatchQueue
-- (void)dispatchBlock:(void(^)())block {
-    if (self.dispatchQueue) {
-        dispatch_async(self.dispatchQueue, ^{
-            block();
-        });
-    } else {
-        block();
-    }
-}
-
-@end
+#import "BTFakeHTTP.h"
 
 @interface StubBTClientMetadata : BTClientMetadata
 @property (nonatomic, assign) BTClientMetadataIntegrationType integration;
@@ -153,7 +66,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
 
-    FakeHTTP *fake = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
 
     apiClient.http = fake;
@@ -175,7 +88,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
 
-    FakeHTTP *fake = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"error_message": @"Something bad happened" } statusCode:503];
     apiClient.http = fake;
 
@@ -197,7 +110,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
 
-    FakeHTTP *fake = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
                                            code:NSURLErrorCannotConnectToHost
                                        userInfo:nil];
@@ -219,7 +132,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (void)testConfiguration_whenCalledSerially_performOnlyOneRequest {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
 
-    FakeHTTP *fake = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
     apiClient.http = fake;
 
@@ -253,7 +166,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
 - (void)testCallbacks_useMainDispatchQueue {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
-    FakeHTTP *fake = [[FakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
+    BTFakeHTTP *fake = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
     // Override apiClient.http so that requests don't fail
     apiClient.http = fake;
 
@@ -372,9 +285,9 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
 - (void)testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
-    FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
     apiClient.http = stubConfigurationHTTP;
-    FakeHTTP *mockAnalyticsHttp = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *mockAnalyticsHttp = [BTFakeHTTP fakeHTTP];
     apiClient.analyticsHttp = mockAnalyticsHttp;
     [stubConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{} statusCode:200];
 
@@ -390,7 +303,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
 - (void)testSendAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
-    FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
     apiClient.http = stubConfigurationHTTP;
     [stubConfigurationHTTP stubRequest:@"GET"
                             toEndpoint:@"/client_api/v1/configuration"
@@ -414,8 +327,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (void)testSendAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalBrowser integration:BTClientMetadataIntegrationCustom];
-    FakeHTTP *mockAnalyticsHTTP = [FakeHTTP fakeHTTP];
-    FakeHTTP *stubConfigurationHTTP = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
     apiClient.analyticsHttp = mockAnalyticsHTTP;
     apiClient.http = stubConfigurationHTTP;
     [stubConfigurationHTTP stubRequest:@"GET"
@@ -447,8 +360,8 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (void)testPOST_usesMetadataSourceAndIntegration {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
-    FakeHTTP *mockHTTP = [FakeHTTP fakeHTTP];
-    FakeHTTP *stubAnalyticsHTTP = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *mockHTTP = [BTFakeHTTP fakeHTTP];
+    BTFakeHTTP *stubAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
     apiClient.http = mockHTTP;
     apiClient.analyticsHttp = stubAnalyticsHTTP;
     [mockHTTP stubRequest:@"GET"
@@ -483,7 +396,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
 - (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
-    FakeHTTP *fake = [FakeHTTP fakeHTTP];
+    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     fake.cannedResponse = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;
     apiClient.http = fake;
