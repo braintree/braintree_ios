@@ -30,11 +30,14 @@ class BTAPIClient_SwiftTests: XCTestCase {
         let fakeHttp = BTFakeHTTP()!
         fakeHttp.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: ["analytics": ["url": ""]], statusCode: 200)
         apiClient.http = fakeHttp
+        
+        let expectation = expectationWithDescription("Callback invoked")
         apiClient.sendAnalyticsEvent("test.analytics.event") { (error) -> Void in
-            XCTAssertNotNil(error)
             XCTAssertEqual(error.domain, BTHTTPErrorDomain)
             XCTAssertEqual(error.code, BTHTTPErrorCode.MissingBaseURL.rawValue)
-            XCTAssertEqual(error.localizedFailureReason, "fullPathURL was nil")
+            expectation.fulfill()
         }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
 }

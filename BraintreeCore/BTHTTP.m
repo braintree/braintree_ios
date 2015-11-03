@@ -111,7 +111,7 @@
 
 - (void)httpRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     
-    if (!self.baseURL) {
+    if (!self.baseURL || [self.baseURL.absoluteString isEqualToString:@""]) {
         NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
         if (method) errorUserInfo[@"method"] = method;
         if (aPath) errorUserInfo[@"path"] = aPath;
