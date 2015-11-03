@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param url The URL that was opened to return to your app
 /// @param sourceApplication The source app that requested the launch of your app
 /// @return `YES` if the app switch successfully handled the URL, or `NO` if the attempt to handle the URL failed.
-+ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
++ (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication;
 
 /// Handles a return from app switch
 ///

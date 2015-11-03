@@ -576,7 +576,9 @@ NSURLSession *testURLSession() {
 
                 NSURLRequest *httpRequest = [BTHTTPTestProtocol parseRequestFromTestResponseBody:body];
                 NSDictionary *requestHeaders = httpRequest.allHTTPHeaderFields;
-                expect(requestHeaders[@"Accept-Language"]).to.equal([[NSLocale preferredLanguages] objectAtIndex:0]);
+                NSLocale *locale = [NSLocale currentLocale];
+                NSString *expectedLanguageString = [NSString stringWithFormat:@"%@-%@", [locale objectForKey:NSLocaleLanguageCode], [locale objectForKey:NSLocaleCountryCode]];
+                expect(requestHeaders[@"Accept-Language"]).to.equal(expectedLanguageString);
                 removeStub();
                 done();
             }];
