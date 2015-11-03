@@ -114,7 +114,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         }
         
         let expectation = expectationWithDescription("authorization callback")
-        venmoDriver.tokenizeVenmoCardWithCompletion { (tokenizedCard, error) -> Void in
+        venmoDriver.authorizeWithCompletion { (venmoAccount, error) -> Void in
             XCTAssertEqual(error!.domain, BTVenmoDriverErrorDomain)
             XCTAssertEqual(error!.code, BTVenmoDriverErrorType.AppNotAvailable.rawValue)
             expectation.fulfill()

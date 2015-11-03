@@ -72,7 +72,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         var criticalMessageLogged = false
         BTLogger.sharedLogger().logBlock = {
             (level: BTLogLevel, message: String!) in
-            if (level == BTLogLevel.Critical && message == "PayPal requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]") {
+            if (level == BTLogLevel.Critical && message == "PayPal requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]. This custom URL scheme must also be registered with your app.") {
                 criticalMessageLogged = true
             }
             BTLogger.sharedLogger().logBlock = nil
