@@ -22,5 +22,6 @@
 #import "FakePayPalClasses.h"
 #import "BTLogger_Internal.h"
 #import "DeviceCollectorSDK.h" // for testing Kount error codes
+#import "BTFakeHTTP.h"
 
 #import <OCMock/OCMock.h>

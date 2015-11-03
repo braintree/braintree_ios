@@ -111,7 +111,7 @@
 
 - (void)httpRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     
-    if (!self.baseURL) {
+    if (!self.baseURL || [self.baseURL.absoluteString isEqualToString:@""]) {
         NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
         if (method) errorUserInfo[@"method"] = method;
         if (aPath) errorUserInfo[@"path"] = aPath;
@@ -134,6 +134,18 @@
     }
     parameters = [mutableParameters copy];
 
+    if (!fullPathURL) {
+        // baseURL can be non-nil (e.g. an empty string) and still return nil for -URLByAppendingPathComponent:
+        // causing a crash when NSURLComponents.componentsWithString is called with nil.
+        NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
+        if (method) errorUserInfo[@"method"] = method;
+        if (aPath) errorUserInfo[@"path"] = aPath;
+        if (parameters) errorUserInfo[@"parameters"] = parameters;
+        errorUserInfo[NSLocalizedFailureReasonErrorKey] = @"fullPathURL was nil";
+        completionBlock(nil, nil, [NSError errorWithDomain:BTHTTPErrorDomain code:BTHTTPErrorCodeMissingBaseURL userInfo:errorUserInfo]);
+        return;
+    }
+    
     NSURLComponents *components = [NSURLComponents componentsWithString:fullPathURL.absoluteString];
 
     NSMutableDictionary *headers = [NSMutableDictionary dictionaryWithDictionary:self.defaultHeaders];
