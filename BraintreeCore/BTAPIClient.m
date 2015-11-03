@@ -195,6 +195,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 }
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind completion:(void(^)(NSError *error))completionBlock {
+    long timestampInSeconds = round([[NSDate date] timeIntervalSince1970]);
+
     [self fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error){
         if (error) {
             [[BTLogger sharedLogger] warning:[NSString stringWithFormat:@"Failed to send analytics event. Remote configuration fetch failed. %@", error.localizedDescription]];
@@ -219,7 +221,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 return;
             }
 
-            NSMutableDictionary *parameters = [@{ @"analytics": @[@{ @"kind": eventKind }],
+            NSMutableDictionary *parameters = [@{ @"analytics": @[@{ @"kind": eventKind,
+                                                                     @"timestamp": @(timestampInSeconds)}],
                                                   @"_meta": self.metaParameters } mutableCopy];
             if (self.clientToken.authorizationFingerprint) {
                 parameters[@"authorization_fingerprint"] = self.clientToken.authorizationFingerprint;

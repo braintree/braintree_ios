@@ -347,7 +347,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
         XCTAssertEqual(metadata.source, BTClientMetadataSourcePayPalBrowser);
         XCTAssertEqual(metadata.integration, BTClientMetadataIntegrationCustom);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"], @[ @{ @"kind" : @"an.analytics.event" } ]);
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"_meta"][@"integration"], metadata.integrationString);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"_meta"][@"source"], metadata.sourceString);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"_meta"][@"sessionId"], metadata.sessionId);
