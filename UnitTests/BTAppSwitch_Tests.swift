@@ -46,6 +46,12 @@ class BTAppSwitch_Tests: XCTestCase {
 
         XCTAssertNil(MockAppSwitchHander.lastHandleAppSwitchReturnURL)
     }
+    
+    func testHandleOpenURL_acceptsOptionalSourceApplication() {
+        // This doesn't assert any behavior about nil source application. It only checks that the code will compile!
+        let sourceApplication : String? = nil
+        BTAppSwitch.handleOpenURL(NSURL(string: "fake://url")!, sourceApplication: sourceApplication)
+    }
 }
 
 class MockAppSwitchHander: BTAppSwitchHandler {
