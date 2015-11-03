@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #if __has_include("BraintreeCore.h")
-#import "BTPaymentMethodNonce.h"
+#import "BraintreeCore.h"
 #else
-#import <BraintreeCore/BTPaymentMethodNonce.h>
+#import <BraintreeCore/BraintreeCore.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN

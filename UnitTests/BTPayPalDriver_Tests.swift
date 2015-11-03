@@ -1125,37 +1125,40 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
     
+    
     func testViewControllerPresentationDelegateMethodsCalled() {
-        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
-        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        
-        // Setup for requestsPersentationOfViewController
-        viewControllerPresentingDelegate.requestsPresentationOfViewController = self.expectationWithDescription("Delegate received requestsPresentationOfViewController")
-        
-        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
-        payPalDriver.informDelegatePresentingViewControllerRequestPresent(NSURL(string: "http://example.com")!)
-        
-        self.waitForExpectationsWithTimeout(2, handler: nil)
-        
-        XCTAssertTrue(viewControllerPresentingDelegate.lastViewController is SFSafariViewController)
-        XCTAssertEqual(viewControllerPresentingDelegate.lastViewController, payPalDriver.safariViewController)
-        let payPalDriverViewControllerPresented = payPalDriver.safariViewController
-        XCTAssertEqual(viewControllerPresentingDelegate.lastPaymentDriver as? BTPayPalDriver, payPalDriver)
-        
-        viewControllerPresentingDelegate.lastViewController = nil
-        viewControllerPresentingDelegate.lastPaymentDriver = nil
-
-        // Setup for requestsDismissalOfViewController
-        viewControllerPresentingDelegate.requestsDismissalOfViewController = self.expectationWithDescription("Delegate received requestsDismissalOfViewController")
-        payPalDriver.informDelegatePresentingViewControllerNeedsDismissal()
-        
-        self.waitForExpectationsWithTimeout(2, handler: nil)
-
-        XCTAssertTrue(viewControllerPresentingDelegate.lastViewController is SFSafariViewController)
-        XCTAssertEqual(viewControllerPresentingDelegate.lastViewController as? SFSafariViewController, payPalDriverViewControllerPresented)
-        XCTAssertNil(payPalDriver.safariViewController)
-
-        XCTAssertEqual(viewControllerPresentingDelegate.lastPaymentDriver as? BTPayPalDriver, payPalDriver)
+        if #available(iOS 9.0, *) {
+            let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+            let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+            
+            // Setup for requestsPersentationOfViewController
+            viewControllerPresentingDelegate.requestsPresentationOfViewController = self.expectationWithDescription("Delegate received requestsPresentationOfViewController")
+            
+            payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+            payPalDriver.informDelegatePresentingViewControllerRequestPresent(NSURL(string: "http://example.com")!)
+            
+            self.waitForExpectationsWithTimeout(2, handler: nil)
+            
+            XCTAssertTrue(viewControllerPresentingDelegate.lastViewController is SFSafariViewController)
+            XCTAssertEqual(viewControllerPresentingDelegate.lastViewController, payPalDriver.safariViewController)
+            let payPalDriverViewControllerPresented = payPalDriver.safariViewController
+            XCTAssertEqual(viewControllerPresentingDelegate.lastPaymentDriver as? BTPayPalDriver, payPalDriver)
+            
+            viewControllerPresentingDelegate.lastViewController = nil
+            viewControllerPresentingDelegate.lastPaymentDriver = nil
+            
+            // Setup for requestsDismissalOfViewController
+            viewControllerPresentingDelegate.requestsDismissalOfViewController = self.expectationWithDescription("Delegate received requestsDismissalOfViewController")
+            payPalDriver.informDelegatePresentingViewControllerNeedsDismissal()
+            
+            self.waitForExpectationsWithTimeout(2, handler: nil)
+            
+            XCTAssertTrue(viewControllerPresentingDelegate.lastViewController is SFSafariViewController)
+            XCTAssertEqual(viewControllerPresentingDelegate.lastViewController as? SFSafariViewController, payPalDriverViewControllerPresented)
+            XCTAssertNil(payPalDriver.safariViewController)
+            
+            XCTAssertEqual(viewControllerPresentingDelegate.lastPaymentDriver as? BTPayPalDriver, payPalDriver)
+        }
     }
     
     func testViewControllerPresentationDelegateMethodsCalledButNoViewControllerPresentingDelegateSet() {

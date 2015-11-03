@@ -1,10 +1,8 @@
 #import <Foundation/Foundation.h>
 #if __has_include("BraintreeCore.h")
-#import "BTJSON.h"
-#import "BTPaymentMethodNonce.h"
+#import "BraintreeCore.h"
 #else
-#import <BraintreeCore/BTJSON.h>
-#import <BraintreeCore/BTPaymentMethodNonce.h>
+#import <BraintreeCore/BraintreeCore.h>
 #endif
 
 /// Card type
