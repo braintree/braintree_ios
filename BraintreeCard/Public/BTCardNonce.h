@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, BTCardNetwork) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTTokenizedCard : BTPaymentMethodNonce
+@interface BTCardNonce : BTPaymentMethodNonce
 
 /// The card network.
 @property (nonatomic, readonly, assign) BTCardNetwork cardNetwork;
@@ -34,8 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Internal
 
-/// Create a `BTTokenizedCard` object from JSON.
-+ (instancetype)cardWithJSON:(BTJSON *)cardJSON;
+/// Create a `BTCardNonce` object from JSON.
++ (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON;
 
 @end
 

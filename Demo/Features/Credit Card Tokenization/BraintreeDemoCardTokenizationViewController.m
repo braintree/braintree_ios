@@ -65,7 +65,7 @@
                                                                                        cvv:nil];
 
     [self setFieldsEnabled:NO];
-    [cardClient tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
+    [cardClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
         [self setFieldsEnabled:YES];
         if (error) {
             self.progressBlock(error.localizedDescription);

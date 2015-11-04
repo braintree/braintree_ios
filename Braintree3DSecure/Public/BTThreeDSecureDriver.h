@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param nonce  A payment method nonce
 /// @param amount The amount of the transaction in the current merchant account's currency
 /// @param completionBlock This completion will be invoked exactly once when authorization is complete, is cancelled, or an error occurs.
-/// On success, you will receive an instance of `BTTokenizedCard`. Typically, an implementation will send this tokenized card to your own
+/// On success, you will receive an instance of `BTCardNonce`. Typically, an implementation will send this tokenized card to your own
 /// server for further use.
 /// On failure, you will receive an error.
 ///

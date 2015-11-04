@@ -1,13 +1,13 @@
 import XCTest
 
-class BTTokenizedCard_Tests: XCTestCase {
+class BTCardNonce_Tests: XCTestCase {
 
     override func setUp() {
         super.setUp()
     }
 
     func testCardWithJSON_createsCardWithExpectedValues() {
-        let tokenizedCard = BTTokenizedCard(JSON: BTJSON(value: [
+        let tokenizedCard = BTCardNonce(JSON: BTJSON(value: [
             "description": "Visa ending in 11",
             "details": [
                 "cardType": "Visa",
@@ -24,7 +24,7 @@ class BTTokenizedCard_Tests: XCTestCase {
     }
 
     func testCardWithJSON_ignoresCaseWhenParsingCardType() {
-        let tokenizedCard = BTTokenizedCard(JSON: BTJSON(value: [
+        let tokenizedCard = BTCardNonce(JSON: BTJSON(value: [
             "description": "Visa ending in 11",
             "details": [
                 "cardType": "vIsA",
@@ -95,7 +95,7 @@ class BTTokenizedCard_Tests: XCTestCase {
                 ],
                 "nonce": "fake-nonce",
             ]
-            let tokenizedCard = BTTokenizedCard(JSON: BTJSON(value: jsonValue))
+            let tokenizedCard = BTCardNonce(JSON: BTJSON(value: jsonValue))
 
             XCTAssertEqual(tokenizedCard.cardNetwork, cardNetworks[i])
             XCTAssertEqual(tokenizedCard.type, cardTypes[i])

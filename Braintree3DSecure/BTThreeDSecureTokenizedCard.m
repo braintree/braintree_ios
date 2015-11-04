@@ -1,8 +1,8 @@
 #import "BTThreeDSecureTokenizedCard.h"
 #if __has_include("BraintreeCard.h")
-#import "BTTokenizedCard_Internal.h"
+#import "BTCardNonce_Internal.h"
 #else
-#import <BraintreeCard/BTTokenizedCard_Internal.h>
+#import <BraintreeCard/BTCardNonce_Internal.h>
 #endif
 
 
@@ -27,8 +27,8 @@
     return self;
 }
 
-+ (instancetype)cardWithJSON:(BTJSON *)cardJSON {
-    BTThreeDSecureTokenizedCard *card = [super cardWithJSON:cardJSON];
++ (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON {
+    BTThreeDSecureTokenizedCard *card = [super cardNonceWithJSON:cardJSON];
     card.threeDSecureJSON = cardJSON[@"threeDSecureInfo"];
     return card;
 }

@@ -1,12 +1,12 @@
 #if __has_include("BraintreeCard.h")
-#import "BTTokenizedCard.h"
+#import "BTCardNonce.h"
 #else
-#import <BraintreeCard/BTTokenizedCard.h>
+#import <BraintreeCard/BTCardNonce.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTThreeDSecureTokenizedCard : BTTokenizedCard
+@interface BTThreeDSecureTokenizedCard : BTCardNonce
 
 @property (nonatomic, readonly, assign) BOOL liabilityShifted;
 @property (nonatomic, readonly, assign) BOOL liabilityShiftPossible;
