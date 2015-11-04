@@ -37,8 +37,8 @@
 		2D941D981B5D9F200016EFB4 /* BTThreeDSecureLookupResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA7B1B56FBD1007B1DF1 /* BTThreeDSecureLookupResult.m */; };
 		2D941D991B5D9F200016EFB4 /* BTThreeDSecureResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AFA3D1B56F822007B1DF1 /* BTThreeDSecureResponse.h */; };
 		2D941D9A1B5D9F200016EFB4 /* BTThreeDSecureResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA441B56F822007B1DF1 /* BTThreeDSecureResponse.m */; };
-		2D941D9B1B5D9F200016EFB4 /* BTThreeDSecureTokenizedCard.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AFA761B56F8C3007B1DF1 /* BTThreeDSecureTokenizedCard.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2D941D9C1B5D9F200016EFB4 /* BTThreeDSecureTokenizedCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureTokenizedCard.m */; };
+		2D941D9B1B5D9F200016EFB4 /* BTThreeDSecureCardNonce.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AFA761B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D941D9C1B5D9F200016EFB4 /* BTThreeDSecureCardNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.m */; };
 		2D941D9D1B5D9F200016EFB4 /* BTWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AFA451B56F822007B1DF1 /* BTWebViewController.h */; };
 		2D941D9E1B5D9F200016EFB4 /* BTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA461B56F822007B1DF1 /* BTWebViewController.m */; };
 		2D941D9F1B5D9F200016EFB4 /* BTThreeDSecureLocalizedString.h in Headers */ = {isa = PBXBuildFile; fileRef = A79AFA481B56F822007B1DF1 /* BTThreeDSecureLocalizedString.h */; };
@@ -161,7 +161,7 @@
 		4174045B1BB08526008A5DEA /* BTThreeDSecureErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA421B56F822007B1DF1 /* BTThreeDSecureErrors.m */; };
 		4174045D1BB08526008A5DEA /* BTThreeDSecureLookupResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA7B1B56FBD1007B1DF1 /* BTThreeDSecureLookupResult.m */; };
 		4174045F1BB08526008A5DEA /* BTThreeDSecureResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA441B56F822007B1DF1 /* BTThreeDSecureResponse.m */; };
-		417404601BB08526008A5DEA /* BTThreeDSecureTokenizedCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureTokenizedCard.m */; };
+		417404601BB08526008A5DEA /* BTThreeDSecureCardNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.m */; };
 		417404621BB08526008A5DEA /* BTThreeDSecureVerification.m in Sources */ = {isa = PBXBuildFile; fileRef = 164CA0BF1B3E18B200EB4884 /* BTThreeDSecureVerification.m */; };
 		417404641BB08526008A5DEA /* BTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA461B56F822007B1DF1 /* BTWebViewController.m */; };
 		4174046A1BB08530008A5DEA /* BTApplePayClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */; };
@@ -1240,8 +1240,8 @@
 		A79AFA5D1B56F823007B1DF1 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "sv.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
 		A79AFA5E1B56F823007B1DF1 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "tr.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
 		A79AFA5F1B56F823007B1DF1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
-		A79AFA761B56F8C3007B1DF1 /* BTThreeDSecureTokenizedCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureTokenizedCard.h; sourceTree = "<group>"; };
-		A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureTokenizedCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureTokenizedCard.m; sourceTree = "<group>"; };
+		A79AFA761B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureCardNonce.h; sourceTree = "<group>"; };
+		A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureCardNonce.m; sourceTree = "<group>"; };
 		A79AFA7A1B56FBD1007B1DF1 /* BTThreeDSecureLookupResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureLookupResult.h; sourceTree = "<group>"; };
 		A79AFA7B1B56FBD1007B1DF1 /* BTThreeDSecureLookupResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureLookupResult.m; sourceTree = "<group>"; };
 		A79AFA7E1B56FEE4007B1DF1 /* BTThreeDSecureDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureDriver.h; sourceTree = "<group>"; };
@@ -1608,7 +1608,7 @@
 				A79AFA7B1B56FBD1007B1DF1 /* BTThreeDSecureLookupResult.m */,
 				A79AFA3D1B56F822007B1DF1 /* BTThreeDSecureResponse.h */,
 				A79AFA441B56F822007B1DF1 /* BTThreeDSecureResponse.m */,
-				A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureTokenizedCard.m */,
+				A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.m */,
 				164CA0BE1B3E18B200EB4884 /* BTThreeDSecureVerification.h */,
 				164CA0BF1B3E18B200EB4884 /* BTThreeDSecureVerification.m */,
 				A79AFA451B56F822007B1DF1 /* BTWebViewController.h */,
@@ -1751,7 +1751,7 @@
 			children = (
 				A79AFA7E1B56FEE4007B1DF1 /* BTThreeDSecureDriver.h */,
 				A79AFA3B1B56F822007B1DF1 /* BTThreeDSecureErrors.h */,
-				A79AFA761B56F8C3007B1DF1 /* BTThreeDSecureTokenizedCard.h */,
+				A79AFA761B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.h */,
 				2D941D8A1B5D9E8C0016EFB4 /* Braintree3DSecure.h */,
 			);
 			path = Public;
@@ -2534,7 +2534,7 @@
 				A7C88A181B5F0ECB007A0E9C /* BTThreeDSecureVerification.h in Headers */,
 				2D941D991B5D9F200016EFB4 /* BTThreeDSecureResponse.h in Headers */,
 				2D941D9F1B5D9F200016EFB4 /* BTThreeDSecureLocalizedString.h in Headers */,
-				2D941D9B1B5D9F200016EFB4 /* BTThreeDSecureTokenizedCard.h in Headers */,
+				2D941D9B1B5D9F200016EFB4 /* BTThreeDSecureCardNonce.h in Headers */,
 				2D941D951B5D9F200016EFB4 /* BTThreeDSecureErrors.h in Headers */,
 				2D941D971B5D9F200016EFB4 /* BTThreeDSecureLookupResult.h in Headers */,
 				2D941D9D1B5D9F200016EFB4 /* BTWebViewController.h in Headers */,
@@ -3694,7 +3694,7 @@
 				2D941D961B5D9F200016EFB4 /* BTThreeDSecureErrors.m in Sources */,
 				2D941DA01B5D9F200016EFB4 /* BTThreeDSecureLocalizedString.m in Sources */,
 				2D941D981B5D9F200016EFB4 /* BTThreeDSecureLookupResult.m in Sources */,
-				2D941D9C1B5D9F200016EFB4 /* BTThreeDSecureTokenizedCard.m in Sources */,
+				2D941D9C1B5D9F200016EFB4 /* BTThreeDSecureCardNonce.m in Sources */,
 				A7C88A191B5F0ECB007A0E9C /* BTThreeDSecureVerification.m in Sources */,
 				2D941D941B5D9F200016EFB4 /* BTThreeDSecureDriver.m in Sources */,
 				2D941D921B5D9F200016EFB4 /* BTThreeDSecureAuthenticationViewController.m in Sources */,
@@ -3893,7 +3893,7 @@
 				4174045B1BB08526008A5DEA /* BTThreeDSecureErrors.m in Sources */,
 				4174045D1BB08526008A5DEA /* BTThreeDSecureLookupResult.m in Sources */,
 				4174045F1BB08526008A5DEA /* BTThreeDSecureResponse.m in Sources */,
-				417404601BB08526008A5DEA /* BTThreeDSecureTokenizedCard.m in Sources */,
+				417404601BB08526008A5DEA /* BTThreeDSecureCardNonce.m in Sources */,
 				417404621BB08526008A5DEA /* BTThreeDSecureVerification.m in Sources */,
 				417404641BB08526008A5DEA /* BTWebViewController.m in Sources */,
 			);

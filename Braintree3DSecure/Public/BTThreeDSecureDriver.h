@@ -6,7 +6,7 @@
 #import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#import "BTThreeDSecureTokenizedCard.h"
+#import "BTThreeDSecureCardNonce.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// On user cancellation, you will receive `nil` for both parameters.
 - (void)verifyCardWithNonce:(NSString *)nonce
                      amount:(NSDecimalNumber *)amount
-                 completion:(void (^)(BTThreeDSecureTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
+                 completion:(void (^)(BTThreeDSecureCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
 #pragma mark - Delegate
 

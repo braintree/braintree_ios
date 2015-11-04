@@ -82,7 +82,7 @@
 
         [self.threeDSecure verifyCardWithNonce:tokenizedCard.nonce
                                         amount:[NSDecimalNumber decimalNumberWithString:@"10"]
-                                    completion:^(BTThreeDSecureTokenizedCard * _Nullable threeDSecureCard, NSError * _Nullable error)
+                                    completion:^(BTThreeDSecureCardNonce * _Nullable threeDSecureCard, NSError * _Nullable error)
          {
              if (error) {
                  self.progressBlock(error.localizedDescription);

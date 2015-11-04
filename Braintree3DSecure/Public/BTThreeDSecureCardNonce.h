@@ -6,7 +6,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTThreeDSecureTokenizedCard : BTCardNonce
+@interface BTThreeDSecureCardNonce : BTCardNonce
 
 @property (nonatomic, readonly, assign) BOOL liabilityShifted;
 @property (nonatomic, readonly, assign) BOOL liabilityShiftPossible;

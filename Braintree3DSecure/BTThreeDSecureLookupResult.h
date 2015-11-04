@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#import "BTThreeDSecureTokenizedCard.h"
+#import "BTThreeDSecureCardNonce.h"
 
 @interface BTThreeDSecureLookupResult : NSObject
 
@@ -9,7 +9,7 @@
 @property (nonatomic, copy) NSURL *acsURL;
 @property (nonatomic, copy) NSURL *termURL;
 
-@property (nonatomic, strong) BTThreeDSecureTokenizedCard *tokenizedCard;
+@property (nonatomic, strong) BTThreeDSecureCardNonce *tokenizedCard;
 
 - (BOOL)requiresUserAuthentication;
 

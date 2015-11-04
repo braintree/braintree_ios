@@ -13,7 +13,7 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTThreeDSecureDriver.h"
 #import "BTThreeDSecureLookupResult.h"
-#import "BTThreeDSecureTokenizedCard.h"
+#import "BTThreeDSecureCardNonce.h"
 
 
 @interface BTThreeDSecureDriver () <BTThreeDSecureAuthenticationViewControllerDelegate>
@@ -51,7 +51,7 @@
 
 - (void)verifyCardWithNonce:(NSString *)nonce
                      amount:(NSDecimalNumber *)amount
-                 completion:(void (^)(BTThreeDSecureTokenizedCard *, NSError *))completionBlock
+                 completion:(void (^)(BTThreeDSecureCardNonce *, NSError *))completionBlock
 {
     [self lookupThreeDSecureForNonce:nonce
                    transactionAmount:amount
@@ -139,7 +139,7 @@
                       lookup.PAReq = lookupJSON[@"pareq"].asString;
                       lookup.MD = lookupJSON[@"md"].asString;
                       lookup.termURL = lookupJSON[@"termUrl"].asURL;
-                      lookup.tokenizedCard = [BTThreeDSecureTokenizedCard cardNonceWithJSON:body[@"paymentMethod"]];
+                      lookup.tokenizedCard = [BTThreeDSecureCardNonce cardNonceWithJSON:body[@"paymentMethod"]];
 
                       completionBlock(lookup, nil);
                   }];
@@ -149,7 +149,7 @@
 #pragma mark BTThreeDSecureAuthenticationViewControllerDelegate
 
 - (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController
-               didAuthenticateCard:(BTThreeDSecureTokenizedCard *)tokenizedCard
+               didAuthenticateCard:(BTThreeDSecureCardNonce *)tokenizedCard
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus))completionBlock
 {
     self.upgradedTokenizedCard = tokenizedCard;

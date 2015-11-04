@@ -87,7 +87,7 @@
         BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
         authResponse.success = authBody[@"success"].isTrue;
         authResponse.threeDSecureInfo = authBody[@"threeDSecureInfo"].asDictionary;
-        authResponse.tokenizedCard = [BTThreeDSecureTokenizedCard cardNonceWithJSON:authBody[@"paymentMethod"]];
+        authResponse.tokenizedCard = [BTThreeDSecureCardNonce cardNonceWithJSON:authBody[@"paymentMethod"]];
         authResponse.errorMessage = authBody[@"error"][@"message"].asString;
 
         [self didCompleteAuthentication:authResponse];
