@@ -38,9 +38,6 @@
 
 @implementation BTDropInViewController
 
-/// Create a backing variable because this property has a custom getter and a custom setter
-@synthesize paymentRequest = _paymentRequest;
-
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         self.theme = [BTUI braintreeTheme];
@@ -144,7 +141,7 @@
 
 
     // Call the setters explicitly
-    [self updateDropInContentViewFromCheckoutRequest];
+    [self updateDropInContentViewFromPaymentRequest];
 
     [self.dropInContentView setNeedsUpdateConstraints];
 
@@ -611,20 +608,21 @@
 
 #pragma mark - BTPaymentRequest
 
+@synthesize paymentRequest = _paymentRequest;
+
 - (BTPaymentRequest *)paymentRequest {
-    if ([_paymentRequest.callToActionText isEqualToString:@"(Missing callToActionText)"]) {
-        // Set default value here because BTDropInLocalizedString() is not available in BraintreeCore
-        _paymentRequest.callToActionText = BTDropInLocalizedString(DEFAULT_CALL_TO_ACTION);
+    if (!_paymentRequest) {
+        _paymentRequest = [[BTPaymentRequest alloc] init];
     }
     return _paymentRequest;
 }
 
 - (void)setPaymentRequest:(BTPaymentRequest *)paymentRequest {
     _paymentRequest = paymentRequest;
-    [self updateDropInContentViewFromCheckoutRequest];
+    [self updateDropInContentViewFromPaymentRequest];
 }
 
-- (void)updateDropInContentViewFromCheckoutRequest {
+- (void)updateDropInContentViewFromPaymentRequest {
     self.dropInContentView.paymentButton.paymentRequest = self.paymentRequest;
     [self setShouldHideCallToAction:self.paymentRequest.shouldHideCallToAction];
     [self setSummaryTitle:self.paymentRequest.summaryTitle];
