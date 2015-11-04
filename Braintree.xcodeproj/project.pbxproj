@@ -3041,7 +3041,6 @@
 					};
 					2D941D871B5D9E8C0016EFB4 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					2DE12F081B59BE0100EA1BCF = {
 						CreatedOnToolsVersion = 7.0;
@@ -3067,14 +3066,12 @@
 					};
 					A76D7BFF1BB1CAB00000FA6A = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					A77344F61B7A93A10083EC8D = {
 						CreatedOnToolsVersion = 7.0;
 					};
 					A77AA29B1B618C7700217B73 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					A7ABD6521B702FD800A1223C = {
 						CreatedOnToolsVersion = 7.0;
@@ -3085,7 +3082,6 @@
 					};
 					A7C8898F1B5F043B007A0E9C = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 				};
 			};
