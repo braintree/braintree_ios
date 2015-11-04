@@ -5,7 +5,7 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-#import "BTTokenizedApplePayPayment.h"
+#import "BTApplePayCardNonce.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
 ///        `tokenizedApplePayPayment` will contain a nonce and `error` will be `nil`; if it fails,
 ///        `tokenizedApplePayPayment` will be `nil` and `error` will describe the failure.
 - (void)tokenizeApplePayPayment:(PKPayment *)payment
-                     completion:(void (^)(BTTokenizedApplePayPayment * _Nullable tokenizedApplePayPayment, NSError * _Nullable error))completionBlock;
+                     completion:(void (^)(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error))completionBlock;
 
 @end
 

@@ -166,7 +166,7 @@
 		417404641BB08526008A5DEA /* BTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA461B56F822007B1DF1 /* BTWebViewController.m */; };
 		4174046A1BB08530008A5DEA /* BTApplePayClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */; };
 		4174046C1BB08530008A5DEA /* BTConfiguration+ApplePay.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B1C14E1B66E46900ED063C /* BTConfiguration+ApplePay.m */; };
-		4174046D1BB08530008A5DEA /* BTTokenizedApplePayPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8897F1B5EF62C007A0E9C /* BTTokenizedApplePayPayment.m */; };
+		4174046D1BB08530008A5DEA /* BTApplePayCardNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8897F1B5EF62C007A0E9C /* BTApplePayCardNonce.m */; };
 		417404741BB085F1008A5DEA /* BTCardClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8899D1B5F0471007A0E9C /* BTCardClient.m */; };
 		417404751BB085F1008A5DEA /* BTCard.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889A01B5F0471007A0E9C /* BTCard.m */; };
 		417404771BB085F1008A5DEA /* BTCardNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C889A21B5F0471007A0E9C /* BTCardNonce.m */; };
@@ -582,8 +582,8 @@
 		A7C8230E1B4DAAB2009D45D6 /* BTSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */; };
 		A7C889801B5EF62C007A0E9C /* BTApplePayClient.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8897C1B5EF62C007A0E9C /* BTApplePayClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7C889811B5EF62C007A0E9C /* BTApplePayClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */; };
-		A7C889821B5EF62C007A0E9C /* BTTokenizedApplePayPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8897E1B5EF62C007A0E9C /* BTTokenizedApplePayPayment.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A7C889831B5EF62C007A0E9C /* BTTokenizedApplePayPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8897F1B5EF62C007A0E9C /* BTTokenizedApplePayPayment.m */; };
+		A7C889821B5EF62C007A0E9C /* BTApplePayCardNonce.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8897E1B5EF62C007A0E9C /* BTApplePayCardNonce.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A7C889831B5EF62C007A0E9C /* BTApplePayCardNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8897F1B5EF62C007A0E9C /* BTApplePayCardNonce.m */; };
 		A7C889871B5EF65C007A0E9C /* BraintreeApplePay.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889861B5EF65C007A0E9C /* BraintreeApplePay.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7C889881B5EF685007A0E9C /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		A7C8898A1B5EF737007A0E9C /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889891B5EF737007A0E9C /* PassKit.framework */; };
@@ -1315,8 +1315,8 @@
 		A7C889781B5EF5DE007A0E9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7C8897C1B5EF62C007A0E9C /* BTApplePayClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTApplePayClient.h; sourceTree = "<group>"; };
 		A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTApplePayClient.m; sourceTree = "<group>"; };
-		A7C8897E1B5EF62C007A0E9C /* BTTokenizedApplePayPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTTokenizedApplePayPayment.h; sourceTree = "<group>"; };
-		A7C8897F1B5EF62C007A0E9C /* BTTokenizedApplePayPayment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTokenizedApplePayPayment.m; sourceTree = "<group>"; };
+		A7C8897E1B5EF62C007A0E9C /* BTApplePayCardNonce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTApplePayCardNonce.h; sourceTree = "<group>"; };
+		A7C8897F1B5EF62C007A0E9C /* BTApplePayCardNonce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTApplePayCardNonce.m; sourceTree = "<group>"; };
 		A7C889861B5EF65C007A0E9C /* BraintreeApplePay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeApplePay.h; sourceTree = "<group>"; };
 		A7C889891B5EF737007A0E9C /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		A7C889901B5F043B007A0E9C /* BraintreeCard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeCard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1740,7 +1740,7 @@
 			children = (
 				A7C8897C1B5EF62C007A0E9C /* BTApplePayClient.h */,
 				A7B1C14D1B66E46900ED063C /* BTConfiguration+ApplePay.h */,
-				A7C8897E1B5EF62C007A0E9C /* BTTokenizedApplePayPayment.h */,
+				A7C8897E1B5EF62C007A0E9C /* BTApplePayCardNonce.h */,
 				A7C889861B5EF65C007A0E9C /* BraintreeApplePay.h */,
 			);
 			path = Public;
@@ -2465,7 +2465,7 @@
 				412FE0561B9799EE008AAABE /* BTApplePayClient_Internal.h */,
 				A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */,
 				A7B1C14E1B66E46900ED063C /* BTConfiguration+ApplePay.m */,
-				A7C8897F1B5EF62C007A0E9C /* BTTokenizedApplePayPayment.m */,
+				A7C8897F1B5EF62C007A0E9C /* BTApplePayCardNonce.m */,
 				A7C889781B5EF5DE007A0E9C /* Info.plist */,
 				41D6E2A81B8D242B00A3C2AE /* Public */,
 			);
@@ -2668,7 +2668,7 @@
 				A7C889801B5EF62C007A0E9C /* BTApplePayClient.h in Headers */,
 				A7B1C14F1B66E46900ED063C /* BTConfiguration+ApplePay.h in Headers */,
 				412FE0571B9799EE008AAABE /* BTApplePayClient_Internal.h in Headers */,
-				A7C889821B5EF62C007A0E9C /* BTTokenizedApplePayPayment.h in Headers */,
+				A7C889821B5EF62C007A0E9C /* BTApplePayCardNonce.h in Headers */,
 				A7C889871B5EF65C007A0E9C /* BraintreeApplePay.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3886,7 +3886,7 @@
 				417404771BB085F1008A5DEA /* BTCardNonce.m in Sources */,
 				4174046A1BB08530008A5DEA /* BTApplePayClient.m in Sources */,
 				4174046C1BB08530008A5DEA /* BTConfiguration+ApplePay.m in Sources */,
-				4174046D1BB08530008A5DEA /* BTTokenizedApplePayPayment.m in Sources */,
+				4174046D1BB08530008A5DEA /* BTApplePayCardNonce.m in Sources */,
 				417404531BB08526008A5DEA /* BTThreeDSecureLocalizedString.m in Sources */,
 				417404591BB08526008A5DEA /* BTThreeDSecureAuthenticationViewController.m in Sources */,
 				4174045A1BB08526008A5DEA /* BTThreeDSecureDriver.m in Sources */,
@@ -4105,7 +4105,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7C889831B5EF62C007A0E9C /* BTTokenizedApplePayPayment.m in Sources */,
+				A7C889831B5EF62C007A0E9C /* BTApplePayCardNonce.m in Sources */,
 				A7B1C1501B66E46900ED063C /* BTConfiguration+ApplePay.m in Sources */,
 				A7C889811B5EF62C007A0E9C /* BTApplePayClient.m in Sources */,
 			);
