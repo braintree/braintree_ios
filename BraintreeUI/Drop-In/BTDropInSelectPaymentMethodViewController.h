@@ -18,7 +18,7 @@
 @property (nonatomic, weak) id<BTDropInSelectPaymentMethodViewControllerDelegate> delegate;
 
 // Array of BTPaymentMethodNonce *objects
-@property (nonatomic, strong) NSArray *paymentInfoObjects;
+@property (nonatomic, strong) NSArray *paymentMethodNonces;
 
 @property (nonatomic, assign) NSInteger selectedPaymentMethodIndex;
 

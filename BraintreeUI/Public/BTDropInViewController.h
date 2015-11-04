@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 
-@class BTAPIClient, BTUI, BTPaymentMethodNonce;
+NS_ASSUME_NONNULL_BEGIN
+
+@class BTAPIClient, BTUI, BTPaymentRequest, BTPaymentMethodNonce;
 @protocol BTDropInViewControllerDelegate;
 
 /// A view controller that provides a quick and easy payment experience.
@@ -25,65 +27,31 @@
 /// UIViewController, you can setup properties like `title` or `navigationBar.rightBarButtonItem`.
 @interface BTDropInViewController : UIViewController
 
-/// Initialize a new Drop In.
+/// Initialize a new Drop-in view controller.
 ///
-/// @param apiClient A Braintree API client
+/// @param apiClient A BTAPIClient used for communicating with Braintree servers. Required.
 ///
-/// @return A new Drop In view controller that is ready to be presented.
+/// @return A new Drop-in view controller that is ready to be presented.
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
-/// The Braintree API client used for communication with Braintree servers. This property is exposed
-/// to enable the use of other UIViewController initializers, e.g. when using Storyboards.
+/// The BTPaymentRequest that defines the Drop-in experience.
 ///
-/// @see BTAPIClient
-@property (nonatomic, strong) BTAPIClient *apiClient;
+/// The properties of this payment request are used to customize Drop-in.
+@property (nonatomic, strong, nullable) BTPaymentRequest *paymentRequest;
 
-/// The array of `BTPaymentMethodNonce` payment information objects on file. The tokenized payment info may be in the Vault.
+/// The array of `BTPaymentMethodNonce` payment method nonces on file. The payment method nonces may be in the Vault.
 /// Most payment methods are automatically Vaulted if the client token was generated with a customer ID.
-@property (nonatomic, strong) NSArray *paymentInfoObjects;
+@property (nonatomic, strong) NSArray *paymentMethodNonces;
 
 #pragma mark State Change Notifications
 
 /// The delegate that, if set, is notified of success or failure.
-@property (nonatomic, weak) id<BTDropInViewControllerDelegate> delegate;
+@property (nonatomic, weak, nullable) id<BTDropInViewControllerDelegate> delegate;
 
 #pragma mark Customization
 
 /// The presentation theme to use for the Drop In.
-@property (nonatomic, strong) BTUI *theme;
-
-/// Primary text to display in the summary view.
-///
-/// Intended to provide a name the overall transaction taking place. For example, "1 Item", "1 Year Subscription", "Yellow T-Shirt", etc.
-///
-/// If summaryTitle or summaryDescription are nil, then the summary view is not shown.
-@property (nonatomic, copy) NSString *summaryTitle;
-
-/// Detail text to display in the summary view.
-///
-/// Intended to provide a few words of detail. For example, "Ships in Five Days", "15 feet by 12 feet" or "We know you'll love it"
-///
-/// If summaryTitle or summaryDescription are nil, then the summary view is not shown.
-@property (nonatomic, copy) NSString *summaryDescription;
-
-/// A string representation of the grand total amount
-///
-/// For example, "$12.95"
-@property (nonatomic, copy) NSString *displayAmount;
-
-/// The text to display in the primary call-to-action button. For example: "$19 - Purchase" or "Subscribe Now".
-@property (nonatomic, copy) NSString *callToActionText;
-
-/// Whether to hide the call to action control.
-///
-/// When true, a submit button will be added as a bar button item (which
-/// relies on the drop-in view controller being embedded in a navigation controller.
-///
-/// Defaults to `NO`.
-///
-/// @see callToAction
-/// @see callToActionAmount
-@property (nonatomic, assign) BOOL shouldHideCallToAction;
+@property (nonatomic, strong, nullable) BTUI *theme;
 
 /// Fetches the customer's saved payment methods and populates Drop In with them.
 ///
@@ -94,6 +62,8 @@
 /// @param completionBlock A block that gets called on completion.
 - (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock;
 
+/// The API Client used for communication with Braintree servers.
+@property (nonatomic, strong) BTAPIClient *apiClient;
 
 @end
 
@@ -126,3 +96,5 @@
 - (void)dropInViewControllerWillComplete:(BTDropInViewController *)viewController;
 
 @end
+
+NS_ASSUME_NONNULL_END

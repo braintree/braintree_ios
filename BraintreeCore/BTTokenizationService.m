@@ -2,6 +2,7 @@
 
 NSString * const BTTokenizationServiceErrorDomain = @"com.braintreepayments.BTTokenizationServiceErrorDomain";
 NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewControllerPresentingDelegate";
+NSString * const BTTokenizationServicePayPalScopesOption = @"BTPaymentRequest.additionalPayPalScopes";
 
 @interface BTTokenizationService ()
 /// Dictionary of tokenization blocks keyed by types as strings. The blocks have the following type:

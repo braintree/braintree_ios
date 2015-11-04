@@ -22,18 +22,12 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 @implementation BTPaymentButton
 
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
-    if (self = [super initWithFrame:CGRectZero]) {
-        [self setupViews];
-        _apiClient = apiClient;
-    }
-    return self;
-}
-
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient
                        completion:(void(^)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error))completion
 {
-    if (self = [self initWithAPIClient:apiClient]) {
+    if (self = [super initWithFrame:CGRectZero]) {
+        [self setupViews];
+        _apiClient = apiClient;
         _completion = [completion copy];
     }
     return self;
@@ -215,7 +209,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (void)collectionView:(__unused UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSAssert(self.apiClient, @"BTPaymentButton tapped without a BTAPIClient instance. Please set a client on this payment button: myPaymentButton.apiClient = (BTAPIClient *)myClient;");
+    NSAssert(self.apiClient, @"BTPaymentButton tapped without an apiClient. Please set a BTAPIClient on this payment button by setting the apiClient property.");
     NSAssert(self.completion, @"BTPaymentButton tapped without a completion block. Please set up a completion block on this payment button by setting the completion property.");
 
     NSString *paymentOption = [self paymentOptionForIndexPath:indexPath];
@@ -225,9 +219,12 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAppSwitch:) name:BTAppSwitchDidSwitchNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willProcessPaymentInfo:) name:BTAppSwitchWillProcessPaymentInfoNotification object:nil];
         
-        NSDictionary *options = nil;
+        NSMutableDictionary *options = [NSMutableDictionary dictionary];
         if (self.viewControllerPresentingDelegate != nil) {
-            options = @{BTTokenizationServiceViewPresentingDelegateOption: self.viewControllerPresentingDelegate};
+            options[BTTokenizationServiceViewPresentingDelegateOption] = self.viewControllerPresentingDelegate;
+        }
+        if (self.paymentRequest.additionalPayPalScopes != nil) {
+            options[BTTokenizationServicePayPalScopesOption] = self.paymentRequest.additionalPayPalScopes;
         }
         
         [[BTTokenizationService sharedService] tokenizeType:paymentOption options:options withAPIClient:self.apiClient completion:self.completion];

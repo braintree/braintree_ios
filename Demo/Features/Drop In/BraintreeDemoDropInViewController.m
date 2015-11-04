@@ -43,14 +43,15 @@
 }
 
 - (void)tappedToShowDropIn {
+    BTPaymentRequest *paymentRequest = [[BTPaymentRequest alloc] init];
+    paymentRequest.summaryTitle = @"Our Fancy Magazine";
+    paymentRequest.summaryDescription = @"53 Week Subscription";
+    paymentRequest.displayAmount = @"$19.00";
+    paymentRequest.callToActionText = @"$19 - Subscribe Now";
+    paymentRequest.shouldHideCallToAction = NO;
     BTDropInViewController *dropIn = [[BTDropInViewController alloc] initWithAPIClient:self.apiClient];
     dropIn.delegate = self;
     dropIn.title = @"Check Out";
-    dropIn.summaryTitle = @"Our Fancy Magazine";
-    dropIn.summaryDescription = @"53 Week Subscription";
-    dropIn.displayAmount = @"$19.00";
-    dropIn.callToActionText = @"$19 - Subscribe Now";
-    dropIn.shouldHideCallToAction = NO;
 
     self.progressBlock(@"Fetching payment methods...");
 

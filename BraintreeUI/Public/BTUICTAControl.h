@@ -2,15 +2,17 @@
 
 @class BTUI;
 
-/// The Call To Action control is A button that is intended to be used as the submit button
+NS_ASSUME_NONNULL_BEGIN
+
+/// The Call To Action control is a button that is intended to be used as the submit button
 /// on the bottom of a payment form. As a UIControl subclass, typical target-action event
 /// listeners are available.
 @interface BTUICTAControl : UIControl
 
-/// The amount, including a currency symbol, to be displayed. May be nil.
-@property (nonatomic, copy) NSString *amount;
+/// The amount, including a currency symbol, to be displayed.
+@property (nonatomic, copy, nullable) NSString *displayAmount;
 
-/// The call to action verb, such as "Subscribe" or "Buy". Must be non-nil.
+/// The call to action verb, such as "Subscribe" or "Buy".
 @property (nonatomic, copy) NSString *callToAction;
 
 - (void)showLoadingState:(BOOL)loadingState;
@@ -18,3 +20,5 @@
 @property (nonatomic, strong) BTUI *theme;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const BTTokenizationServiceErrorDomain;
 extern NSString * const BTTokenizationServiceViewPresentingDelegateOption;
+extern NSString * const BTTokenizationServicePayPalScopesOption;
 
 typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
     BTTokenizationServiceErrorUnknown = 0,

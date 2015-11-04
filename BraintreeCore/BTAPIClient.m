@@ -272,4 +272,9 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 }
 
+- (instancetype)init NS_UNAVAILABLE
+{
+    return nil;
+}
+
 @end

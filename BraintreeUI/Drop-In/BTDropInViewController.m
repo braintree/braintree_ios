@@ -16,7 +16,7 @@
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTDropInViewController *addPaymentMethodDropInViewController;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
-@property (nonatomic, assign) NSInteger selectedPaymentInfoIndex;
+@property (nonatomic, assign) NSInteger selectedPaymentMethodNonceIndex;
 @property (nonatomic, strong) UIBarButtonItem *submitBarButtonItem;
 
 /// Whether currently visible.
@@ -38,14 +38,17 @@
 
 @implementation BTDropInViewController
 
+/// Create a backing variable because this property has a custom getter and a custom setter
+@synthesize paymentRequest = _paymentRequest;
+
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
     if (self = [super init]) {
         self.theme = [BTUI braintreeTheme];
         self.dropInContentView = [[BTDropInContentView alloc] init];
         self.dropInContentView.paymentButton.viewControllerPresentingDelegate = self;
 
-        self.apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn];
-        self.dropInContentView.paymentButton.apiClient = self.apiClient;
+        _apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn];
+
         __weak typeof(self) weakSelf = self;
         self.dropInContentView.paymentButton.completion = ^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
             [weakSelf paymentButtonDidCompleteTokenization:paymentMethodNonce fromViewController:weakSelf error:error];
@@ -53,10 +56,9 @@
 
         self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
 
-        self.selectedPaymentInfoIndex = NSNotFound;
+        self.selectedPaymentMethodNonceIndex = NSNotFound;
         self.dropInContentView.state = BTDropInContentViewStateActivity;
         self.fullForm = YES;
-        _callToActionText = BTDropInLocalizedString(DEFAULT_CALL_TO_ACTION);
     }
     return self;
 }
@@ -99,7 +101,7 @@
         }
 
         // Drop-in view controller remains in a loading state until this is set
-        self.paymentInfoObjects = self.paymentInfoObjects;
+        self.paymentMethodNonces = self.paymentMethodNonces;
 
         if (error) {
             BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
@@ -142,11 +144,7 @@
 
 
     // Call the setters explicitly
-    [self setCallToActionText:_callToActionText];
-    [self setSummaryDescription:_summaryDescription];
-    [self setSummaryTitle:_summaryTitle];
-    [self setDisplayAmount:_displayAmount];
-    [self setShouldHideCallToAction:_shouldHideCallToAction];
+    [self updateDropInContentViewFromCheckoutRequest];
 
     [self.dropInContentView setNeedsUpdateConstraints];
 
@@ -284,14 +282,14 @@
 
 - (void)tappedChangePaymentMethod {
     UIViewController *rootViewController;
-    if (self.paymentInfoObjects.count == 1) {
+    if (self.paymentMethodNonces.count == 1) {
         rootViewController = self.addPaymentMethodDropInViewController;
     } else {
         BTDropInSelectPaymentMethodViewController *selectPaymentMethod = [[BTDropInSelectPaymentMethodViewController alloc] init];
         selectPaymentMethod.title = BTDropInLocalizedString(SELECT_PAYMENT_METHOD_TITLE);
         selectPaymentMethod.theme = self.theme;
-        selectPaymentMethod.paymentInfoObjects = self.paymentInfoObjects;
-        selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentInfoIndex;
+        selectPaymentMethod.paymentMethodNonces = self.paymentMethodNonces;
+        selectPaymentMethod.selectedPaymentMethodIndex = self.selectedPaymentMethodNonceIndex;
         selectPaymentMethod.delegate = self;
         selectPaymentMethod.client = self.apiClient;
         rootViewController = selectPaymentMethod;
@@ -343,8 +341,8 @@
                         errorAlert.message = error.localizedDescription;
                         __weak typeof(self) weakSelf = self;
                         errorAlert.cancelBlock = ^{
-                            // Use the paymentInfoObjects setter to update state
-                            weakSelf.paymentInfoObjects = weakSelf.paymentInfoObjects;
+                            // Use the paymentMethodNonces setter to update state
+                            weakSelf.paymentMethodNonces = weakSelf.paymentMethodNonces;
                         };
                         [errorAlert show];
                     }
@@ -419,7 +417,7 @@
 
 - (void)selectPaymentMethodViewController:(BTDropInSelectPaymentMethodViewController *)viewController
             didSelectPaymentMethodAtIndex:(NSUInteger)index {
-    self.selectedPaymentInfoIndex = index;
+    self.selectedPaymentMethodNonceIndex = index;
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -432,9 +430,9 @@
 - (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce * )paymentMethod {
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 
-    NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentInfoObjects];
+    NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethodNonces];
     [newPaymentMethods insertObject:paymentMethod atIndex:0];
-    self.paymentInfoObjects = newPaymentMethods;
+    self.paymentMethodNonces = newPaymentMethods;
 }
 
 - (void)dropInViewControllerDidCancel:(BTDropInViewController *)viewController {
@@ -483,49 +481,45 @@
 }
 
 - (void)setShouldHideCallToAction:(BOOL)shouldHideCallToAction {
-    _shouldHideCallToAction = shouldHideCallToAction;
     self.dropInContentView.hideCTA = shouldHideCallToAction;
 
-    self.submitBarButtonItem = shouldHideCallToAction ? [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-                                                                                                      target:self
-                                                                                                      action:@selector(tappedSubmitForm)] : nil;
+    self.submitBarButtonItem = shouldHideCallToAction ? [[UIBarButtonItem alloc]
+                                                         initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+                                                         target:self
+                                                         action:@selector(tappedSubmitForm)] : nil;
     self.submitBarButtonItem.style = UIBarButtonItemStyleDone;
     self.navigationItem.rightBarButtonItem = self.submitBarButtonItem;
 }
 
 - (void)setSummaryTitle:(NSString *)summaryTitle {
-    _summaryTitle = summaryTitle;
     self.dropInContentView.summaryView.slug = summaryTitle;
-    self.dropInContentView.hideSummary = (self.summaryTitle == nil || self.summaryDescription == nil);
+    self.dropInContentView.hideSummary = (summaryTitle == nil || self.dropInContentView.summaryView.summary == nil);
 }
 
-- (void)setSummaryDescription:(__unused NSString *)summaryDescription {
-    _summaryDescription = summaryDescription;
+- (void)setSummaryDescription:(NSString *)summaryDescription {
     self.dropInContentView.summaryView.summary = summaryDescription;
-    self.dropInContentView.hideSummary = (self.summaryTitle == nil || self.summaryDescription == nil);
+    self.dropInContentView.hideSummary = (self.dropInContentView.summaryView.slug == nil || summaryDescription == nil);
 }
 
-- (void)setDisplayAmount:(__unused NSString *)displayAmount {
-    _displayAmount = displayAmount;
+- (void)setDisplayAmount:(NSString *)displayAmount {
     self.dropInContentView.summaryView.amount = displayAmount;
 }
 
-- (void)setCallToActionText:(__unused NSString *)callToActionText {
-    _callToActionText = callToActionText;
+- (void)setCallToActionText:(NSString *)callToActionText {
     self.dropInContentView.ctaControl.callToAction = callToActionText;
 }
 
 #pragma mark Data
 
-- (void)setPaymentInfoObjects:(NSArray *)paymentInfoObjects {
-    _paymentInfoObjects = paymentInfoObjects;
+- (void)setPaymentMethodNonces:(NSArray *)paymentMethodNonces {
+    _paymentMethodNonces = paymentMethodNonces;
     BTDropInContentViewStateType newState;
 
-    if ([self.paymentInfoObjects count] == 0) {
-        self.selectedPaymentInfoIndex = NSNotFound;
+    if ([self.paymentMethodNonces count] == 0) {
+        self.selectedPaymentMethodNonceIndex = NSNotFound;
         newState = BTDropInContentViewStateForm;
     } else {
-        self.selectedPaymentInfoIndex = 0;
+        self.selectedPaymentMethodNonceIndex = 0;
         newState = BTDropInContentViewStatePaymentMethodsOnFile;
     }
     if (self.visible) {
@@ -544,9 +538,9 @@
     [self updateValidity];
 }
 
-- (void)setSelectedPaymentInfoIndex:(NSInteger)selectedPaymentInfoIndex {
-    _selectedPaymentInfoIndex = selectedPaymentInfoIndex;
-    if (_selectedPaymentInfoIndex != NSNotFound) {
+- (void)setSelectedPaymentMethodNonceIndex:(NSInteger)selectedPaymentMethodNonceIndex {
+    _selectedPaymentMethodNonceIndex = selectedPaymentMethodNonceIndex;
+    if (_selectedPaymentMethodNonceIndex != NSNotFound) {
         BTPaymentMethodNonce * defaultPaymentMethod = [self selectedPaymentMethod];
         BTUIPaymentOptionType paymentMethodType = [BTUI paymentOptionTypeForPaymentInfoType:defaultPaymentMethod.type];
         self.dropInContentView.selectedPaymentMethodView.type = paymentMethodType;
@@ -556,7 +550,7 @@
 }
 
 - (BTPaymentMethodNonce *)selectedPaymentMethod {
-    return self.selectedPaymentInfoIndex != NSNotFound ? self.paymentInfoObjects[self.selectedPaymentInfoIndex] : nil;
+    return self.selectedPaymentMethodNonceIndex != NSNotFound ? self.paymentMethodNonces[self.selectedPaymentMethodNonceIndex] : nil;
 }
 
 - (void)updateValidity {
@@ -601,18 +595,42 @@
                          return;
                      }
 
-                     NSMutableArray *paymentInfoObjects = [NSMutableArray array];
+                     NSMutableArray *paymentMethodNonces = [NSMutableArray array];
                      for (NSDictionary *paymentInfo in body[@"paymentMethods"].asArray) {
                          BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
                          BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
-                         if (paymentMethodNonce) [paymentInfoObjects addObject:paymentMethodNonce];
+                         if (paymentMethodNonce) [paymentMethodNonces addObject:paymentMethodNonce];
                      }
-                     if (paymentInfoObjects.count) {
-                         self.paymentInfoObjects = [paymentInfoObjects copy];
+                     if (paymentMethodNonces.count) {
+                         self.paymentMethodNonces = [paymentMethodNonces copy];
                      }
                      if (completionBlock) completionBlock();
                  });
     }];
+}
+
+#pragma mark - BTPaymentRequest
+
+- (BTPaymentRequest *)paymentRequest {
+    if ([_paymentRequest.callToActionText isEqualToString:@"(Missing callToActionText)"]) {
+        // Set default value here because BTDropInLocalizedString() is not available in BraintreeCore
+        _paymentRequest.callToActionText = BTDropInLocalizedString(DEFAULT_CALL_TO_ACTION);
+    }
+    return _paymentRequest;
+}
+
+- (void)setPaymentRequest:(BTPaymentRequest *)paymentRequest {
+    _paymentRequest = paymentRequest;
+    [self updateDropInContentViewFromCheckoutRequest];
+}
+
+- (void)updateDropInContentViewFromCheckoutRequest {
+    self.dropInContentView.paymentButton.paymentRequest = self.paymentRequest;
+    [self setShouldHideCallToAction:self.paymentRequest.shouldHideCallToAction];
+    [self setSummaryTitle:self.paymentRequest.summaryTitle];
+    [self setSummaryDescription:self.paymentRequest.summaryDescription];
+    [self setDisplayAmount:self.paymentRequest.displayAmount];
+    [self setCallToActionText:self.paymentRequest.callToActionText];
 }
 
 #pragma mark - Helpers
@@ -643,19 +661,19 @@
         BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:viewController];
         errorAlert.title = savePaymentMethodErrorAlertTitle;
         errorAlert.cancelBlock = ^{
-            // Use the paymentInfoObjects setter to update state
-            self.paymentInfoObjects = self.paymentInfoObjects;
+            // Use the paymentMethodNonces setter to update state
+            self.paymentMethodNonces = self.paymentMethodNonces;
         };
         
         [errorAlert show];
     } else if (paymentMethodNonce) {
-        NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentInfoObjects];
+        NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethodNonces];
         [newPaymentMethods insertObject:paymentMethodNonce atIndex:0];
-        self.paymentInfoObjects = newPaymentMethods;
+        self.paymentMethodNonces = newPaymentMethods;
         [self informDelegateDidAddPaymentInfo:paymentMethodNonce];
     } else {
         // Refresh payment methods display
-        self.paymentInfoObjects = self.paymentInfoObjects;
+        self.paymentMethodNonces = self.paymentMethodNonces;
     }
     
     // Let the addPaymentMethodDropInViewController release

@@ -40,7 +40,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(__unused UITableView *)tableView numberOfRowsInSection:(__unused NSInteger)section {
-    return self.paymentInfoObjects.count;
+    return self.paymentMethodNonces.count;
 }
 
 
@@ -52,7 +52,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:paymentMethodCellIdentifier];
     }
 
-    BTPaymentMethodNonce * paymentInfo = self.paymentInfoObjects[indexPath.row];
+    BTPaymentMethodNonce * paymentInfo = self.paymentMethodNonces[indexPath.row];
 
 
     NSString *typeString = paymentInfo.type;

@@ -43,7 +43,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
             driver.viewControllerPresentingDelegate = options[BTTokenizationServiceViewPresentingDelegateOption];
-            [driver authorizeAccountWithCompletion:completionBlock];
+            [driver authorizeAccountWithAdditionalScopes:options[BTTokenizationServicePayPalScopesOption] completion:completionBlock];
         }];
         
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"PayPalAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull payPalAccount) {
@@ -89,8 +89,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         
         if (configuration.isBillingAgreementsEnabled) {
             // Switch to Billing Agreements flow
-            BTPayPalRequest *checkout = [[BTPayPalRequest alloc] init];
-            [self requestBillingAgreement:checkout completion:completionBlock];
+            BTPayPalRequest *payPalRequest = [[BTPayPalRequest alloc] init]; // Drop-in only supports Vault flow, which does not use currency code or amount
+            [self requestBillingAgreement:payPalRequest completion:completionBlock];
             return;
         }
         

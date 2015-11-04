@@ -69,6 +69,8 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
   parameters:(nullable NSDictionary *)parameters
   completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
+- (instancetype)init __attribute__((unavailable("Use initWithClientKeyOrToken: instead.")));
+
 @end
 
 NS_ASSUME_NONNULL_END

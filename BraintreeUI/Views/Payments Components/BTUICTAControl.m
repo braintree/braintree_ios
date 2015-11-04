@@ -120,8 +120,8 @@
 
 #pragma mark Public Parameters
 
-- (void)setAmount:(NSString *)amount {
-    _amount = amount;
+- (void)setDisplayAmount:(NSString *)displayAmount {
+    _displayAmount = displayAmount;
     [self updateText];
 }
 
@@ -133,8 +133,8 @@
 #pragma mark State Management
 
 - (void)updateText {
-    if (self.amount) {
-        self.label.text = [NSString stringWithFormat:@"%@ - %@", self.amount, self.callToAction];
+    if (self.displayAmount) {
+        self.label.text = [NSString stringWithFormat:@"%@ - %@", self.displayAmount, self.callToAction];
     } else {
         self.label.text = [NSString stringWithFormat:@"%@", self.callToAction];
     }

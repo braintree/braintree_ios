@@ -1,6 +1,4 @@
 #import "BTPostalAddress.h"
-#import "BTPostalAddress.h"
-
 
 @implementation BTPostalAddress
 
