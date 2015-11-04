@@ -9,17 +9,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Express Checkout (Checkout Flow)
 ///
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
-- (void)setExpressCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedCheckout, NSError * _Nullable error))completionBlock;
+- (void)setExpressCheckoutAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedCheckout, NSError * _Nullable error))completionBlock;
 
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Billing Agreement (Vault Flow)
 ///
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
-- (void)setBillingAgreementAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
+- (void)setBillingAgreementAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
 
 /// Set up the callback to be invoked on return from browser or app switch for PayPal Future Payments (Vault Flow)
 ///
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
-- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
+- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL;
 

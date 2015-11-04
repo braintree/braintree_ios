@@ -28,7 +28,7 @@
     driver.delegate = self;
     driver.viewControllerPresentingDelegate = self;
     BTPayPalRequest *checkout = [[BTPayPalRequest alloc] init];
-    [driver requestBillingAgreement:checkout completion:^(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
+    [driver requestBillingAgreement:checkout completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
         [sender setEnabled:YES];
 
         if (error) {

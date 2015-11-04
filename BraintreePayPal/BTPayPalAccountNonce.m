@@ -1,6 +1,6 @@
-#import "BTTokenizedPayPalAccount_Internal.h"
+#import "BTPayPalAccountNonce_Internal.h"
 
-@interface BTTokenizedPayPalAccount ()
+@interface BTPayPalAccountNonce ()
 @property (nonatomic, readwrite, copy) NSString *email;
 @property (nonatomic, readwrite, copy) NSString *firstName;
 @property (nonatomic, readwrite, copy) NSString *lastName;
@@ -11,7 +11,7 @@
 @property (nonatomic, readwrite, copy) NSString *payerId;
 @end
 
-@implementation BTTokenizedPayPalAccount
+@implementation BTPayPalAccountNonce
 
 @synthesize nonce = _paymentMethodNonce;
 @synthesize localizedDescription = _localizedDescription;

@@ -45,7 +45,7 @@
     driver.viewControllerPresentingDelegate = self;
     self.progressBlock(@"Tapped PayPal - initiating authorization using BTPayPalDriver");
 
-    [driver authorizeAccountWithAdditionalScopes:[NSSet setWithArray:@[@"address"]] completion:^(BTTokenizedPayPalAccount *tokenizedPayPalAccount, NSError *error) {
+    [driver authorizeAccountWithAdditionalScopes:[NSSet setWithArray:@[@"address"]] completion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
         } else if (tokenizedPayPalAccount) {
