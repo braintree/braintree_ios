@@ -1,19 +1,18 @@
 #import "BTAPIClient_Internal.h"
-#import "BTDropInViewController.h"
-#import "BTDropInContentView.h"
-#import "BTDropInSelectPaymentMethodViewController.h"
-#import "BTUICardFormView.h"
-#import "BTUIScrollView.h"
-#import "BTDropInUtil.h"
-#import "BTDropInErrorState.h"
+#import "BTDropInViewController_Internal.h"
+#import "BTLogger_Internal.h"
 #import "BTDropInErrorAlert.h"
+#import "BTDropInErrorState.h"
 #import "BTDropInLocalizedString.h"
+#import "BTDropInSelectPaymentMethodViewController.h"
+#import "BTDropInUtil.h"
 #import "BTPaymentMethodNonceParser.h"
 #import "BTTokenizationService.h"
+#import "BTUICardFormView.h"
+#import "BTUIScrollView.h"
 
 @interface BTDropInViewController () <BTUIScrollViewScrollRectToVisibleDelegate, BTUICardFormViewDelegate, BTDropInViewControllerDelegate, BTDropInSelectPaymentMethodViewControllerDelegate, BTViewControllerPresentingDelegate>
 
-@property (nonatomic, strong) BTDropInContentView *dropInContentView;
 @property (nonatomic, strong) BTDropInViewController *addPaymentMethodDropInViewController;
 @property (nonatomic, strong) BTUIScrollView *scrollView;
 @property (nonatomic, assign) NSInteger selectedPaymentMethodNonceIndex;
@@ -93,9 +92,11 @@
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
 
         if (!self.delegate) {
-            // Report integration error, as a delegate is required by this point
-            NSLog(@"ERROR: Drop-in delegate not set");
+            // Log integration error, as a delegate is required by this point
+            [[BTLogger sharedLogger] critical:@"ERROR: Drop-in delegate not set"];
         }
+
+        self.dropInContentView.paymentButton.configuration = configuration;
 
         // Drop-in view controller remains in a loading state until this is set
         self.paymentMethodNonces = self.paymentMethodNonces;
@@ -123,9 +124,9 @@
         }
 
         self.dropInContentView.cardForm.optionalFields = optionalFields;
+
+        [self informDelegateDidLoad];
     }];
-
-
 
     [self.dropInContentView.changeSelectedPaymentMethodButton addTarget:self
                                                                  action:@selector(tappedChangePaymentMethod)
@@ -447,6 +448,12 @@
 }
 
 #pragma mark Delegate Notifications
+
+- (void)informDelegateDidLoad {
+    if ([self.delegate respondsToSelector:@selector(dropInViewControllerDidLoad:)]) {
+        [self.delegate dropInViewControllerDidLoad:self];
+    }
+}
 
 - (void)informDelegateWillComplete {
     if ([self.delegate respondsToSelector:@selector(dropInViewControllerWillComplete:)]) {

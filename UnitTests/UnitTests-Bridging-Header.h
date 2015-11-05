@@ -23,5 +23,7 @@
 #import "BTLogger_Internal.h"
 #import "DeviceCollectorSDK.h" // for testing Kount error codes
 #import "BTFakeHTTP.h"
+#import "BTDropInViewController_Internal.h"
+#import "BTPaymentButton_Internal.h"
 
 #import <OCMock/OCMock.h>

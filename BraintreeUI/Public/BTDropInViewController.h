@@ -79,20 +79,24 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param tokenization The selected (and possibly newly created) tokenized payment information.
 - (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce *)paymentMethodNonce;
 
-/// Informs the delegate when the user has decided to cancel out of the Drop In payment form.
+/// Informs the delegate when the user has decided to cancel out of the Drop-in payment form.
 ///
-/// Drop In handles its own error cases, so this cancelation is user initiated and
-/// irreversable. Upon receiving this message, you should dismiss Drop In.
+/// Drop-in handles its own error cases, so this cancelation is user initiated and
+/// irreversable. Upon receiving this message, you should dismiss Drop-in.
 ///
-/// @param viewController The Drop In view controller informing its delegate of failure.
-/// @param error An error that describes the failure.
+/// @param viewController The Drop-in view controller informing its delegate of failure or cancelation.
 - (void)dropInViewControllerDidCancel:(BTDropInViewController *)viewController;
 
 @optional
 
+/// Informs the delegate when the Drop-in view controller has finished loading.
+///
+/// @param viewController The Drop-in view controller informing its delegate
+- (void)dropInViewControllerDidLoad:(BTDropInViewController *)viewController;
+
 /// Informs the delegate when the user has entered or selected payment information.
 ///
-/// @param viewController The Drop In view controller informing its delegate
+/// @param viewController The Drop-in view controller informing its delegate
 - (void)dropInViewControllerWillComplete:(BTDropInViewController *)viewController;
 
 @end

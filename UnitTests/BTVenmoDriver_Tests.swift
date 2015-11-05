@@ -392,4 +392,88 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertEqual(venmoDriver.apiClient.metadata.integration, BTClientMetadataIntegrationType.Custom)
         XCTAssertEqual(venmoDriver.apiClient.metadata.source, BTClientMetadataSourceType.VenmoApp)
     }
+
+    // MARK: - Drop-in
+
+    /// Helper
+    func client(configurationDictionary: Dictionary<String, String>) -> BTAPIClient {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
+        let fakeHttp = BTFakeHTTP()!
+        fakeHttp.cannedResponse = BTJSON(value: configurationDictionary)
+        fakeHttp.cannedStatusCode = 200
+        apiClient.http = fakeHttp
+        return apiClient
+    }
+
+    class BTDropInViewControllerTestDelegate : NSObject, BTDropInViewControllerDelegate {
+        var didLoadExpectation: XCTestExpectation
+
+        init(didLoadExpectation: XCTestExpectation) {
+            self.didLoadExpectation = didLoadExpectation
+        }
+
+        @objc func dropInViewController(viewController: BTDropInViewController, didSucceedWithTokenization paymentMethodNonce: BTPaymentMethodNonce) {}
+
+        @objc func dropInViewControllerDidCancel(viewController: BTDropInViewController) {}
+
+        @objc func dropInViewControllerDidLoad(viewController: BTDropInViewController) {
+            didLoadExpectation.fulfill()
+        }
+    }
+
+    func testFetchConfiguration_whenVenmoIsOff_isVenmoEnabledIsFalse() {
+        let apiClient = self.client(["venmo": "off"])
+
+        let expectation = self.expectationWithDescription("Fetch configuration")
+        apiClient.fetchOrReturnRemoteConfiguration { (configuration, error) -> Void in
+            XCTAssertNotNil(configuration)
+            XCTAssertNil(error)
+            XCTAssertFalse(configuration!.isVenmoEnabled)
+            expectation.fulfill()
+        }
+        self.waitForExpectationsWithTimeout(5, handler: nil)
+    }
+
+    func testDropIn_whenVenmoIsNotEnabled_doesNotDisplayVenmoButton() {
+        let apiClient = self.client(["venmo": "off"])
+
+        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        let didLoadExpectation = self.expectationWithDescription("Drop-in did finish loading")
+
+        // Must be assigned here for a strong reference. The delegate property of the BTDropInViewController is a weak reference.
+        let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation)
+        dropInViewController.delegate = testDelegate
+        
+        let window = UIWindow()
+        let viewController = UIViewController()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        self.waitForExpectationsWithTimeout(5, handler: nil)
+
+        let filteredEnabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.filteredEnabledPaymentOptions()
+        XCTAssertFalse(filteredEnabledPaymentOptions.containsObject("Venmo"))
+    }
+
+    func testDropIn_whenVenmoIsEnabled_displaysVenmoButton() {
+        let apiClient = self.client(["venmo": "offline"]) // "offline" is the BT Sandbox Venmo-enabled state
+
+        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        let didLoadExpectation = self.expectationWithDescription("Drop-in did finish loading")
+
+        // Must be assigned here for a strong reference. The delegate property of the BTDropInViewController is a weak reference.
+        let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation)
+        dropInViewController.delegate = testDelegate
+
+        let window = UIWindow()
+        let viewController = UIViewController()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        self.waitForExpectationsWithTimeout(5, handler: nil)
+
+        let filteredEnabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.filteredEnabledPaymentOptions()
+        XCTAssertTrue(filteredEnabledPaymentOptions.containsObject("Venmo"))
+    }
 }
+

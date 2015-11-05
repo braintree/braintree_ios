@@ -33,10 +33,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) void(^completion)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error);
 
 /// Set of payment options as strings, e.g. `@"PayPal"`, `@"Venmo"`. By default, this is configured
-/// to the set of payment options that have been included in the client-side app integration.
+/// to the set of payment options that have been included in the client-side app integration,
+/// e.g. via frameworks.
 ///
 /// Setting this property will force the button to reload.
 @property (nonatomic, strong) NSOrderedSet *enabledPaymentOptions;
+
+/// Configuration from a BTAPIClient. By default, BTPaymentButton will display all payment options
+/// included in the client-side app integration. Provide configuration in order to hide payment
+/// options that are not enabled in the server-side Braintree Control Panel.
+///
+/// Setting this property will force the button to reload.
+@property (nonatomic, strong) BTConfiguration *configuration;
 
 /// Optional delegate for receiving payment lifecycle messages from a payment option
 /// that may initiate an app or browser switch to authorize payments.
