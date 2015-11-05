@@ -13,6 +13,15 @@
 
 NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentButtonCellIdentifier";
 
+@interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
+
+@property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
+
+@property (nonatomic, strong) UIView *topBorder;
+@property (nonatomic, strong) UIView *bottomBorder;
+
+@end
+
 @implementation BTPaymentButton
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient
@@ -152,12 +161,11 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 /// Collection of payment option strings, e.g. "PayPal", "Coinbase"
 - (NSOrderedSet *)filteredEnabledPaymentOptions {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *paymentOption, __unused NSDictionary<NSString *,id> * _Nullable bindings) {
-        if ([[BTTokenizationService sharedService] isTypeAvailable:paymentOption] == NO) {
+        if (![[BTTokenizationService sharedService] isTypeAvailable:paymentOption]) {
             return NO; // If the payment option's framework is not present, it should never be shown
         }
 
         if (self.configuration == nil) {
-            [[BTLogger sharedLogger] info:@"BTPaymentButton configuration is nil. Payment options are not filtered by server-side Control Panel settings."];
             return YES; // Without Configuration, we can't do additional filtering.
         }
 
