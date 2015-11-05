@@ -68,6 +68,8 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "paypalEnabled": true ])
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        BTAppSwitch.setReturnURLScheme("")
+        payPalDriver.returnURLScheme = ""
         
         var criticalMessageLogged = false
         BTLogger.sharedLogger().logBlock = {
