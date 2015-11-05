@@ -3,7 +3,7 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#import "BTPaymentButton.h"
+#import "BTPaymentButton_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTUIVenmoButton.h"
 #import "BTUIPayPalButton.h"
@@ -12,13 +12,6 @@
 #import "BTUIPaymentButtonCollectionViewCell.h"
 
 NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentButtonCellIdentifier";
-
-@interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-@property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
-
-@property (nonatomic, strong) UIView *topBorder;
-@property (nonatomic, strong) UIView *bottomBorder;
-@end
 
 @implementation BTPaymentButton
 
@@ -149,10 +142,36 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [self.paymentButtonsCollectionView reloadData];
 }
 
-// Collection of payment option strings, e.g. "PayPal", "Coinbase"
+- (void)setConfiguration:(BTConfiguration *)configuration {
+    _configuration = configuration;
+
+    [self invalidateIntrinsicContentSize];
+    [self.paymentButtonsCollectionView reloadData];
+}
+
+/// Collection of payment option strings, e.g. "PayPal", "Coinbase"
 - (NSOrderedSet *)filteredEnabledPaymentOptions {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *paymentOption, __unused NSDictionary<NSString *,id> * _Nullable bindings) {
-        return [[BTTokenizationService sharedService] isTypeAvailable:paymentOption];
+        if ([[BTTokenizationService sharedService] isTypeAvailable:paymentOption] == NO) {
+            return NO; // If the payment option's framework is not present, it should never be shown
+        }
+
+        if (self.configuration == nil) {
+            [[BTLogger sharedLogger] info:@"BTPaymentButton configuration is nil. Payment options are not filtered by server-side Control Panel settings."];
+            return YES; // Without Configuration, we can't do additional filtering.
+        }
+
+        if ([paymentOption isEqualToString:@"PayPal"]) {
+            return self.configuration.json[@"paypalEnabled"].isTrue;
+        } else if ([paymentOption isEqualToString:@"Venmo"]) {
+            // Directly from BTConfiguration+Venmo.m. Be sure to keep these files in sync! This
+            // is intentionally not DRY so that BraintreeUI does not depend on BraintreeVenmo.
+            BTJSON *venmoConfiguration = self.configuration.json[@"venmo"];
+            return venmoConfiguration.isString && ![venmoConfiguration.asString isEqualToString:@"off"];
+        }
+        // Payment option is available in the tokenization service, but BTPaymentButton does not know how
+        // to check Configuration for whether it is enabled. Default to YES.
+        return YES;
     }];
     return [self.enabledPaymentOptions filteredOrderedSetUsingPredicate:predicate];
 }
