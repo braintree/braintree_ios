@@ -1,11 +1,11 @@
-#import "BTTokenizedPayPalCheckout.h"
+#import "BTPayPalAccountNonce.h"
 #if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-@interface BTTokenizedPayPalCheckout ()
+@interface BTPayPalAccountNonce ()
 
 - (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
                                description:(NSString *)description

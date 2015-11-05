@@ -37,7 +37,7 @@
 - (void)tappedPayPalButton {
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     payPalDriver.viewControllerPresentingDelegate = self;
-    [payPalDriver authorizeAccountWithCompletion:^(BTTokenizedPayPalAccount * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
+    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         if (tokenizedPayPalAccount) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [tokenizedPayPalAccount debugDescription]);

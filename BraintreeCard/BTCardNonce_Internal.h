@@ -1,9 +1,9 @@
-#import "BTTokenizedCard.h"
+#import "BTCardNonce.h"
 #import "BTJSON.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTTokenizedCard ()
+@interface BTCardNonce ()
 
 - (instancetype)initWithPaymentMethodNonce:(nonnull NSString *)nonce
                                description:(nullable NSString *)description

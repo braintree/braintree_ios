@@ -11,4 +11,4 @@ FOUNDATION_EXPORT const unsigned char Braintree3DSecureVersionString[];
 #endif
 #import "BTThreeDSecureDriver.h"
 #import "BTThreeDSecureErrors.h"
-#import "BTThreeDSecureTokenizedCard.h"
+#import "BTThreeDSecureCardNonce.h"

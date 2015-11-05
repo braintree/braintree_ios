@@ -22,7 +22,7 @@ describe(@"tokenizeCard:completion:", ^{
             card.expirationYear = @"YYYY";
 
             XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-            [client tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
+            [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenized, NSError * _Nullable error) {
                 expect(tokenized.nonce.isANonce).to.beTruthy();
                 expect(error).to.beNil();
                 [expectation fulfill];
@@ -38,7 +38,7 @@ describe(@"tokenizeCard:completion:", ^{
             card.expirationYear = @"2018";
 
             XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-            [client tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenized, NSError * _Nullable error) {
+            [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenized, NSError * _Nullable error) {
                 expect(tokenized.nonce.isANonce).to.beTruthy();
                 expect(error).to.beNil();
                 [expectation fulfill];
@@ -65,7 +65,7 @@ describe(@"tokenizeCard:completion:", ^{
                 card.expirationYear = @"2018";
 
                 XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-                [client tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
+                [client tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
                     XCTAssertNil(tokenized);
                     expect(error.domain).to.equal(BTHTTPErrorDomain);
                     expect(error.code).to.equal(BTHTTPErrorCodeClientError);
@@ -88,7 +88,7 @@ describe(@"tokenizeCard:completion:", ^{
 //                card.expirationYear = @"2018";
 //
 //                XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-//                [client tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
+//                [client tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
 //                    expect(tokenized.cardNetwork).to.equal(BTCardNetworkMasterCard);
 //                    expect(tokenized.lastTwo).to.equal(@"44");
 //                    expect(tokenized.localizedDescription).to.equal(@"ending in 44");
@@ -192,7 +192,7 @@ describe(@"tokenizeCard:completion:", ^{
                 //                card.postalCode = @"15213";
                 //                card.shouldValidate = YES;
                 //
-                //                [cvvAndZipClient tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
+                //                [cvvAndZipClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
                 //                    expect(tokenized.nonce).toNot.beNil();
                 //                    expect(error).to.beNil();
                 //                    [expectation fulfill];
@@ -207,7 +207,7 @@ describe(@"tokenizeCard:completion:", ^{
                 //                card.postalCode = @"15213";
                 //                card.shouldValidate = YES;
                 //
-                //                [cvvAndZipClient tokenizeCard:card completion:^(BTTokenizedCard *tokenized, NSError *error) {
+                //                [cvvAndZipClient tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
                 //                    expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                 //                    expect(error.code).to.equal(BTCustomerInputErrorInvalid);
                 //                    expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey][@"fieldErrors"][0][@"fieldErrors"]).to.haveCountOf(1);

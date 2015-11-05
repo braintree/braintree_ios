@@ -42,7 +42,7 @@
     self.progressBlock(@"Tapped Venmo - initiating Venmo auth");
 
     BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:self.apiClient];
-    [driver authorizeWithCompletion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+    [driver authorizeWithCompletion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         if (tokenizedCard) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [tokenizedCard debugDescription]);

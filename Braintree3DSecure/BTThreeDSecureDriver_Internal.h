@@ -4,8 +4,8 @@
 @interface BTThreeDSecureDriver ()
 
 @property (nonatomic, strong) BTAPIClient *apiClient;
-@property (nonatomic, strong) BTThreeDSecureTokenizedCard *upgradedTokenizedCard;
-@property (nonatomic, copy) void (^completionBlockAfterAuthenticating)(BTThreeDSecureTokenizedCard *, NSError *);
+@property (nonatomic, strong) BTThreeDSecureCardNonce *upgradedTokenizedCard;
+@property (nonatomic, copy) void (^completionBlockAfterAuthenticating)(BTThreeDSecureCardNonce *, NSError *);
 
 @end
 

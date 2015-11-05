@@ -1,6 +1,6 @@
-#import "BTTokenizedCard_Internal.h"
+#import "BTCardNonce_Internal.h"
 
-@implementation BTTokenizedCard
+@implementation BTCardNonce
 
 @synthesize nonce = _paymentMethodNonce;
 @synthesize localizedDescription = _localizedDescription;
@@ -17,7 +17,7 @@
         _localizedDescription = description;
         _cardNetwork = cardNetwork;
         _lastTwo = lastTwo;
-        _type = [BTTokenizedCard stringFromCardNetwork:_cardNetwork];
+        _type = [BTCardNonce stringFromCardNetwork:_cardNetwork];
     }
     return self;
 }
@@ -54,7 +54,7 @@
     }
 }
 
-+ (instancetype)cardWithJSON:(BTJSON *)cardJSON {
++ (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON {
     // Normalize the card network string in cardJSON to be lowercase so that our enum mapping is case insensitive
     BTJSON *cardType = [[BTJSON alloc] initWithValue:cardJSON[@"details"][@"cardType"].asString.lowercaseString];
     return [[[self class] alloc] initWithPaymentMethodNonce:cardJSON[@"nonce"].asString

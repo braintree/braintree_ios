@@ -1,9 +1,12 @@
 #if __has_include("BraintreeCore.h")
 #import "BraintreeCore.h"
-#import "BTTokenizedCard.h"
 #else
 #import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeCard/BTTokenizedCard.h>
+#endif
+#if __has_include("BraintreeCard.h")
+#import "BTCardNonce.h"
+#else
+#import <BraintreeCard/BTCardNonce.h>
 #endif
 #import <Foundation/Foundation.h>
 
@@ -44,9 +47,9 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 /// network and the last 2 digits of the card number. With a tokenization key, these properties will be `nil`.
 ///
 /// @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
-/// On success, you will receive an instance of `BTTokenizedCard`; on failure, an error; on user
+/// On success, you will receive an instance of `BTCardNonce`; on failure, an error; on user
 /// cancellation, you will receive `nil` for both parameters.
-- (void)authorizeWithCompletion:(void (^)(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
+- (void)authorizeWithCompletion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
 /// An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating
 /// your UI

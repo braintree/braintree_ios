@@ -2,7 +2,7 @@
 #import "BTPaymentMethodNonceParser.h"
 #import "BTTokenizationService.h"
 #import "BTCardClient_Internal.h"
-#import "BTTokenizedCard_Internal.h"
+#import "BTCardNonce_Internal.h"
 #import "BTHTTP.h"
 #import "BTJSON.h"
 #import "BTClientMetadata.h"
@@ -30,7 +30,7 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
         }];
 
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"Card" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
-            return [BTTokenizedCard cardWithJSON:creditCard];
+            return [BTCardNonce cardNonceWithJSON:creditCard];
         }];
     }
 }
@@ -47,7 +47,7 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
 }
 
 - (void)tokenizeCard:(BTCard *)card
-          completion:(void (^)(BTTokenizedCard *tokenizedCard, NSError *error))completionBlock {
+          completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                              code:BTCardClientErrorTypeIntegration
@@ -93,7 +93,7 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
                       completionBlock(nil, creditCard.asError);
                       [self sendAnalyticsEventWithSuccess:NO];
                   } else {
-                      completionBlock([BTTokenizedCard cardWithJSON:creditCard], nil);
+                      completionBlock([BTCardNonce cardNonceWithJSON:creditCard], nil);
                       [self sendAnalyticsEventWithSuccess:YES];
                   }
               }];

@@ -15,7 +15,7 @@
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Apple Pay payment"];
     [client tokenizeApplePayPayment:[[PKPayment alloc] init]
-                         completion:^(BTTokenizedApplePayPayment * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+                         completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
         XCTAssertTrue(tokenizedApplePayPayment.nonce.isANonce);
         XCTAssertNil(error);
         [expectation fulfill];
@@ -30,7 +30,7 @@
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize Apple Pay payment"];
     [client tokenizeApplePayPayment:[[PKPayment alloc] init]
-                         completion:^(BTTokenizedApplePayPayment * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+                         completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
         XCTAssertEqualObjects(error.domain, BTApplePayErrorDomain);
         XCTAssertEqual(error.code, BTApplePayErrorTypeUnsupported);
         XCTAssertNil(tokenizedApplePayPayment);

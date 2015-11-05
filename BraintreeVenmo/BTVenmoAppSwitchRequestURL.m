@@ -2,7 +2,7 @@
 
 #import "BTVenmoAppSwitchRequestURL.h"
 
-#if __has_include("BTURLUtils.h")
+#if __has_include("BraintreeCore.h")
 #import "BTURLUtils.h"
 #else
 #import <BraintreeCore/BTURLUtils.h>

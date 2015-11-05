@@ -6,7 +6,7 @@
 #import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#import "BTThreeDSecureTokenizedCard.h"
+#import "BTThreeDSecureCardNonce.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param nonce  A payment method nonce
 /// @param amount The amount of the transaction in the current merchant account's currency
 /// @param completionBlock This completion will be invoked exactly once when authorization is complete, is cancelled, or an error occurs.
-/// On success, you will receive an instance of `BTTokenizedCard`. Typically, an implementation will send this tokenized card to your own
+/// On success, you will receive an instance of `BTCardNonce`. Typically, an implementation will send this tokenized card to your own
 /// server for further use.
 /// On failure, you will receive an error.
 ///
@@ -84,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// On user cancellation, you will receive `nil` for both parameters.
 - (void)verifyCardWithNonce:(NSString *)nonce
                      amount:(NSDecimalNumber *)amount
-                 completion:(void (^)(BTThreeDSecureTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
+                 completion:(void (^)(BTThreeDSecureCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
 #pragma mark - Delegate
 

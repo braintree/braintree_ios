@@ -3,9 +3,9 @@
 #import "BTThreeDSecureResponse.h"
 #import "BTWebViewController.h"
 #if __has_include("BraintreeCard.h")
-#import "BTTokenizedCard_Internal.h"
+#import "BTCardNonce_Internal.h"
 #else
-#import <BraintreeCard/BTTokenizedCard_Internal.h>
+#import <BraintreeCard/BTCardNonce_Internal.h>
 #endif
 
 @interface BTThreeDSecureAuthenticationViewController ()
@@ -87,7 +87,7 @@
         BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
         authResponse.success = authBody[@"success"].isTrue;
         authResponse.threeDSecureInfo = authBody[@"threeDSecureInfo"].asDictionary;
-        authResponse.tokenizedCard = [BTThreeDSecureTokenizedCard cardWithJSON:authBody[@"paymentMethod"]];
+        authResponse.tokenizedCard = [BTThreeDSecureCardNonce cardNonceWithJSON:authBody[@"paymentMethod"]];
         authResponse.errorMessage = authBody[@"error"][@"message"].asString;
 
         [self didCompleteAuthentication:authResponse];

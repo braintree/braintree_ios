@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 
 @interface BTVenmoDriver ()
-@property (nonatomic, copy) void (^appSwitchCompletionBlock)(BTTokenizedCard *, NSError *);
+@property (nonatomic, copy) void (^appSwitchCompletionBlock)(BTCardNonce *, NSError *);
 @end
 
 NSString * const BTVenmoDriverErrorDomain = @"com.braintreepayments.BTVenmoDriverErrorDomain";
@@ -66,7 +66,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - Tokenization
 
-- (void)authorizeWithCompletion:(void (^)(BTTokenizedCard *tokenizedCard, NSError *configurationError))completionBlock {
+- (void)authorizeWithCompletion:(void (^)(BTCardNonce *tokenizedCard, NSError *configurationError))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeIntegration
@@ -174,7 +174,7 @@ static BTVenmoDriver *appSwitchedDriver;
                                                                @"nonce": returnURL.nonce,
                                                                @"description": @"Card from Venmo"
                                                                }];
-                BTTokenizedCard *card = [BTTokenizedCard cardWithJSON:json];
+                BTCardNonce *card = [BTCardNonce cardNonceWithJSON:json];
                 self.appSwitchCompletionBlock(card, nil);
                 self.appSwitchCompletionBlock = nil;
             } else {
@@ -195,7 +195,7 @@ static BTVenmoDriver *appSwitchedDriver;
                              if (cardJSON.isError) {
                                  self.appSwitchCompletionBlock(nil, cardJSON.asError);
                              } else {
-                                 BTTokenizedCard *card = [BTTokenizedCard cardWithJSON:cardJSON];
+                                 BTCardNonce *card = [BTCardNonce cardNonceWithJSON:cardJSON];
                                  self.appSwitchCompletionBlock(card, nil);
                              }
                              self.appSwitchCompletionBlock = nil;

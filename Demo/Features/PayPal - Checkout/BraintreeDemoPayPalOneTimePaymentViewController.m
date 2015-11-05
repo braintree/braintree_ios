@@ -28,7 +28,7 @@
     driver.delegate = self;
     driver.viewControllerPresentingDelegate = self;
     BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
-    [driver requestOneTimePayment:request completion:^(BTTokenizedPayPalAccount * _Nullable payPalAccount, NSError * _Nullable error) {
+    [driver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
         [sender setEnabled:YES];
 
         if (error) {

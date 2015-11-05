@@ -468,7 +468,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
     // MARK: Helpers
 
-    func assertSuccessfulAuthorizationResponse(response: [String:AnyObject], assertionBlock: (BTTokenizedPayPalAccount?, NSError?) -> Void) {
+    func assertSuccessfulAuthorizationResponse(response: [String:AnyObject], assertionBlock: (BTPayPalAccountNonce?, NSError?) -> Void) {
         mockAPIClient.cannedResponseBody = BTJSON(value: response)
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         payPalDriver.clientMetadataId = FakePayPalOneTouchCore.clientMetadataID()
@@ -923,7 +923,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
     // MARK: Helpers
 
-    func assertSuccessfulCheckoutResponse(response: [String:AnyObject], assertionBlock: (BTTokenizedPayPalAccount?, NSError?) -> Void) {
+    func assertSuccessfulCheckoutResponse(response: [String:AnyObject], assertionBlock: (BTPayPalAccountNonce?, NSError?) -> Void) {
         mockAPIClient.cannedResponseBody = BTJSON(value: response)
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)

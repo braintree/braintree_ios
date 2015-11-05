@@ -61,7 +61,10 @@
     self.progressBlock(@"Constructing PKPaymentRequest");
 
     PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
-    paymentRequest.requiredBillingAddressFields = PKAddressFieldName|PKAddressFieldPostalAddress;
+
+    // Requiring PKAddressFieldPostalAddress crashes Simulator
+    //paymentRequest.requiredBillingAddressFields = PKAddressFieldName|PKAddressFieldPostalAddress;
+    paymentRequest.requiredBillingAddressFields = PKAddressFieldName;
 
     PKShippingMethod *shippingMethod1 = [PKShippingMethod summaryItemWithLabel:@"✈️ Fast Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"4.99"]];
     shippingMethod1.detail = @"Fast but expensive";
@@ -79,7 +82,7 @@
                                            [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod1.amount],
                                            [PKPaymentSummaryItem summaryItemWithLabel:@"BRAINTREE" amount:[NSDecimalNumber decimalNumberWithString:@"14.99"]]
                                            ];
-    
+
 #ifdef __IPHONE_9_0
     paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover];
 #else
@@ -139,7 +142,7 @@
 {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
     BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:self.apiClient];
-    [applePayClient tokenizeApplePayPayment:payment completion:^(BTTokenizedApplePayPayment * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+    [applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
             completion(PKPaymentAuthorizationStatusFailure);

@@ -11,4 +11,4 @@ FOUNDATION_EXPORT const unsigned char BraintreeApplePayVersionString[];
 #endif
 #import "BTApplePayClient.h"
 #import "BTConfiguration+ApplePay.h"
-#import "BTTokenizedApplePayPayment.h"
+#import "BTApplePayCardNonce.h"

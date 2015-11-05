@@ -5,12 +5,12 @@
 
 #if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
-#import "BTTokenizedPayPalAccount_Internal.h"
+#import "BTPayPalAccountNonce_Internal.h"
 #import "BTPostalAddress.h"
 #import "BTLogger_Internal.h"
 #else
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTTokenizedPayPalAccount_Internal.h>
+#import <BraintreeCore/BTPayPalAccountNonce_Internal.h>
 #import <BraintreeCore/BTTokenizedPayPalCheckout_Internal.h>
 #import <BraintreeCore/BTPostalAddress.h>
 #import <BraintreeCore/BTLogger_Internal.h>
@@ -66,11 +66,11 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 #pragma mark - Authorization (Future Payments)
 
-- (void)authorizeAccountWithCompletion:(void (^)(BTTokenizedPayPalAccount *paymentMethod, NSError *error))completionBlock {
+- (void)authorizeAccountWithCompletion:(void (^)(BTPayPalAccountNonce *paymentMethod, NSError *error))completionBlock {
     [self authorizeAccountWithAdditionalScopes:[NSSet set] completion:completionBlock];
 }
 
-- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes completion:(void (^)(BTTokenizedPayPalAccount *, NSError *))completionBlock {
+- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeIntegration
@@ -130,28 +130,28 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     }];
 }
 
-- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *account, NSError *error))completionBlock {
+- (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *account, NSError *error))completionBlock {
     [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeFuturePayments];
 }
 
 #pragma mark - Billing Agreement
 
-- (void)requestBillingAgreement:(BTPayPalRequest *)request completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
+- (void)requestBillingAgreement:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     [self requestExpressCheckout:request isBillingAgreement:YES completion:completionBlock];
 }
 
 
-- (void)setBillingAgreementAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *tokenizedAccount, NSError *error))completionBlock {
+- (void)setBillingAgreementAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
     [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeBillingAgreement];
 }
 
 #pragma mark - Express Checkout (One-Time Payments)
 
-- (void)requestOneTimePayment:(BTPayPalRequest *)request completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
+- (void)requestOneTimePayment:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     [self requestExpressCheckout:request isBillingAgreement:NO completion:completionBlock];
 }
 
-- (void)setExpressCheckoutAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *tokenizedAccount, NSError *error))completionBlock {
+- (void)setExpressCheckoutAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
     [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeCheckout];
 }
 
@@ -160,7 +160,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 /// A "Hermes checkout" is used by both Billing Agreements and Express Checkout
 - (void)requestExpressCheckout:(BTPayPalRequest *)request
            isBillingAgreement:(BOOL)isBillingAgreement
-                   completion:(void (^)(BTTokenizedPayPalAccount *tokenizedCheckout, NSError *error))completionBlock {
+                   completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
                                              code:BTPayPalDriverErrorTypeIntegration
@@ -314,7 +314,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     }];
 }
 
-- (void)setAppSwitchReturnBlock:(void (^)(BTTokenizedPayPalAccount *tokenizedAccount, NSError *error))completionBlock
+- (void)setAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock
                  forPaymentType:(BTPayPalPaymentType)paymentType {
     appSwitchReturnBlock = ^(NSURL *url) {
         [self informDelegatePresentingViewControllerNeedsDismissal];
@@ -373,7 +373,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                          [self sendAnalyticsEventForTokenizationSuccessForPaymentType:paymentType];
                          
                          BTJSON *payPalAccount = body[@"paypalAccounts"][0];
-                         BTTokenizedPayPalAccount *tokenizedAccount = [self.class payPalAccountFromJSON:payPalAccount];
+                         BTPayPalAccountNonce *tokenizedAccount = [self.class payPalAccountFromJSON:payPalAccount];
                          
                          if (completionBlock) completionBlock(tokenizedAccount, nil);
                      }];
@@ -467,7 +467,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     return address;
 }
 
-+ (BTTokenizedPayPalAccount *)payPalAccountFromJSON:(BTJSON *)payPalAccount {
++ (BTPayPalAccountNonce *)payPalAccountFromJSON:(BTJSON *)payPalAccount {
     NSString *nonce = payPalAccount[@"nonce"].asString;
     NSString *description = payPalAccount[@"description"].asString;
     
@@ -498,7 +498,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         description = email;
     }
     
-    BTTokenizedPayPalAccount *tokenizedPayPalAccount = [[BTTokenizedPayPalAccount alloc] initWithPaymentMethodNonce:nonce description:description email:email firstName:firstName lastName:lastName phone:phone billingAddress:billingAddress shippingAddress:shippingAddress clientMetadataId:clientMetadataId payerId:payerId];
+    BTPayPalAccountNonce *tokenizedPayPalAccount = [[BTPayPalAccountNonce alloc] initWithPaymentMethodNonce:nonce description:description email:email firstName:firstName lastName:lastName phone:phone billingAddress:billingAddress shippingAddress:shippingAddress clientMetadataId:clientMetadataId payerId:payerId];
     
     return tokenizedPayPalAccount;
 }

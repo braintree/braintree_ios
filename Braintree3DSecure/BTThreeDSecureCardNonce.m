@@ -1,18 +1,18 @@
-#import "BTThreeDSecureTokenizedCard.h"
+#import "BTThreeDSecureCardNonce.h"
 #if __has_include("BraintreeCard.h")
-#import "BTTokenizedCard_Internal.h"
+#import "BTCardNonce_Internal.h"
 #else
-#import <BraintreeCard/BTTokenizedCard_Internal.h>
+#import <BraintreeCard/BTCardNonce_Internal.h>
 #endif
 
 
-@interface BTThreeDSecureTokenizedCard ()
+@interface BTThreeDSecureCardNonce ()
 
 @property (nonatomic, strong) BTJSON *threeDSecureJSON;
 
 @end
 
-@implementation BTThreeDSecureTokenizedCard
+@implementation BTThreeDSecureCardNonce
 
 - (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
                                description:(NSString *)description
@@ -27,8 +27,8 @@
     return self;
 }
 
-+ (instancetype)cardWithJSON:(BTJSON *)cardJSON {
-    BTThreeDSecureTokenizedCard *card = [super cardWithJSON:cardJSON];
++ (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON {
+    BTThreeDSecureCardNonce *card = [super cardNonceWithJSON:cardJSON];
     card.threeDSecureJSON = cardJSON[@"threeDSecureInfo"];
     return card;
 }

@@ -143,7 +143,7 @@
     card.shouldValidate = NO;
 
     BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
-    [cardClient tokenizeCard:card completion:^(BTTokenizedCard * _Nullable tokenizedCard, NSError * _Nullable error) {
+    [cardClient tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         if (tokenizedCard) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [tokenizedCard debugDescription]);
