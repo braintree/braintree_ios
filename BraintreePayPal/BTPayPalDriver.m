@@ -588,11 +588,9 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
         return NO;
     }
     
-    if (self.returnURLScheme == nil) {
+    if (self.returnURLScheme == nil || [self.returnURLScheme isEqualToString:@""]) {
         NSString *recoverySuggestion = @"PayPal requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]. This custom URL scheme must also be registered with your app.";
-        if (!self.returnURLScheme) {
-            [[BTLogger sharedLogger] critical:recoverySuggestion];
-        }
+        [[BTLogger sharedLogger] critical:recoverySuggestion];
 
         [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.nil-return-url-scheme"];
         if (error != NULL) {

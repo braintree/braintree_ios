@@ -75,7 +75,7 @@ static BTVenmoDriver *appSwitchedDriver;
         return;
     }
     
-    if (!self.returnURLScheme) {
+    if (self.returnURLScheme == nil || [self.returnURLScheme isEqualToString:@""]) {
         [[BTLogger sharedLogger] critical:@"Venmo requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]"];
     } else if (![NSBundle mainBundle].bundleIdentifier || ![self.returnURLScheme hasPrefix:[NSBundle mainBundle].bundleIdentifier]) {
         [[BTLogger sharedLogger] critical:@"Venmo requires [BTAppSwitch setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@) ", [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme];

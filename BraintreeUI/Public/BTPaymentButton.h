@@ -9,10 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTPaymentButton : BTUIThemedView
 
-- (id)initWithFrame:(CGRect)frame;
-- (id)initWithCoder:(NSCoder *)aDecoder;
-- (id)init;
-
 /// Initialize a BTPaymentButton.
 ///
 /// @param apiClient A BTAPIClient used for communicating with Braintree servers. Required.

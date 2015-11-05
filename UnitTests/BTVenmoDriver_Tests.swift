@@ -102,6 +102,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     func testAuthorization_whenReturnURLSchemeIsNil_logsCriticalMessageAndCallsBackWithError() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [ "venmo": "production" ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
+        BTAppSwitch.setReturnURLScheme("")
         
         var criticalMessageLogged = false
         BTLogger.sharedLogger().logBlock = {

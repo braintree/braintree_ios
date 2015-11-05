@@ -835,6 +835,13 @@
 			remoteGlobalIDString = A7C8898F1B5F043B007A0E9C;
 			remoteInfo = BraintreeCard;
 		};
+		A7EBB9D91BEAEBF400EFF1B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A76B198A1B79707700452CFA;
+			remoteInfo = Demo;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -2712,6 +2719,7 @@
 				A7C88A2A1B5F109B007A0E9C /* PBXTargetDependency */,
 				2D941DA21B5D9F470016EFB4 /* PBXTargetDependency */,
 				2D941D631B5D6C850016EFB4 /* PBXTargetDependency */,
+				A7EBB9DA1BEAEBF400EFF1B2 /* PBXTargetDependency */,
 			);
 			name = UnitTests;
 			productName = "Braintree Unit Tests";
@@ -3035,6 +3043,7 @@
 				TargetAttributes = {
 					16CD2E9B1B4077FB00E68495 = {
 						CreatedOnToolsVersion = 7.0;
+						TestTargetID = A76B198A1B79707700452CFA;
 					};
 					2D941D371B59C76A0016EFB4 = {
 						CreatedOnToolsVersion = 7.0;
@@ -4275,6 +4284,11 @@
 			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
 			targetProxy = A7C88A291B5F109B007A0E9C /* PBXContainerItemProxy */;
 		};
+		A7EBB9DA1BEAEBF400EFF1B2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A76B198A1B79707700452CFA /* Demo */;
+			targetProxy = A7EBB9D91BEAEBF400EFF1B2 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -4409,6 +4423,7 @@
 			baseConfigurationReference = CAFC163247B67B8458942577 /* Pods-Test-Deps.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -4449,6 +4464,7 @@
 				SRCROOT = "$(PROJECT_DIR)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/UnitTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Demo.app/Demo";
 			};
 			name = Debug;
 		};
@@ -4457,6 +4473,7 @@
 			baseConfigurationReference = D8C6A7C606BA446A1160B9F2 /* Pods-Test-Deps.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -4491,6 +4508,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SRCROOT = "$(PROJECT_DIR)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/UnitTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Demo.app/Demo";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
