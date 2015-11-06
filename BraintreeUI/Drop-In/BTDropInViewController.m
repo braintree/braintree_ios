@@ -304,7 +304,7 @@
 - (void)tappedSubmitForm {
     [self showLoadingState:YES];
 
-    BTPaymentMethodNonce * paymentInfo = [self selectedPaymentMethod];
+    BTPaymentMethodNonce *paymentInfo = [self selectedPaymentMethod];
     if (paymentInfo != nil) {
         [self informDelegateWillComplete];
         [self informDelegateDidAddPaymentInfo:paymentInfo];
@@ -559,7 +559,7 @@
 }
 
 - (void)updateValidity {
-    BTPaymentMethodNonce * paymentMethod = [self selectedPaymentMethod];
+    BTPaymentMethodNonce *paymentMethod = [self selectedPaymentMethod];
     BOOL valid = (paymentMethod != nil) || (!self.dropInContentView.cardForm.hidden && self.dropInContentView.cardForm.valid);
 
     [self.navigationItem.rightBarButtonItem setEnabled:valid];

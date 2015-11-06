@@ -52,8 +52,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:paymentMethodCellIdentifier];
     }
 
-    BTPaymentMethodNonce * paymentInfo = self.paymentMethodNonces[indexPath.row];
-
+    BTPaymentMethodNonce *paymentInfo = self.paymentMethodNonces[indexPath.row];
 
     NSString *typeString = paymentInfo.type;
     NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, paymentInfo.localizedDescription ?: @""]];
@@ -65,56 +64,6 @@
     UIImage *icon = [iconArt imageOfSize:CGSizeMake(42, 23)];
     cell.imageView.contentMode = UIViewContentModeCenter;
     cell.imageView.image = icon;
-
-
-//    if ([paymentInfo.source isEqualToString:@"PayPal"]) {
-////        BTPayPalPaymentMethod *payPalPaymentMethod = (BTPayPalPaymentMethod *)paymentMethod;
-//        NSString *typeString = BTUILocalizedString(PAYPAL_CARD_BRAND);
-//        NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, paymentInfo.localizedDescription ?: @""]];
-//        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
-//        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], paymentInfo.localizedDescription.length)];
-//        cell.textLabel.attributedText = typeWithDescription;
-//
-//        BTUIVectorArtView *iconArt = [[BTUI braintreeTheme] vectorArtViewForPaymentOptionType:BTUIPaymentOptionTypePayPal];
-//        UIImage *icon = [iconArt imageOfSize:CGSizeMake(42, 23)];
-//        cell.imageView.contentMode = UIViewContentModeCenter;
-//        cell.imageView.image = icon;
-//
-//    } else if ([paymentInfo.source isEqualToString:@"Card"]) {
-//        BTTokenizedCard *card = (BTTokenizedCard *)paymentInfo;
-//        BTUIPaymentOptionType uiPaymentMethodType = [BTDropInUtil uiForCardNetwork:card.cardNetwork];
-//        NSString *typeString = [BTUIViewUtil nameForPaymentMethodType:uiPaymentMethodType];
-//
-//        NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, card.description]];
-//        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
-//        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [card.description length])];
-//        cell.textLabel.attributedText = typeWithDescription;
-//
-//        BTUIPaymentOptionType uiType = [BTDropInUtil uiForCardType:card.type];
-//        BTUIVectorArtView *iconArt = [[BTUI braintreeTheme] vectorArtViewForPaymentOptionType:uiType];
-//        UIImage *icon = [iconArt imageOfSize:CGSizeMake(42, 23)];
-//        cell.imageView.contentMode = UIViewContentModeCenter;
-//        cell.imageView.image = icon;
-//    } else if ([paymentInfo.source isEqualToString:@"Coinbase"]) {
-//        BTCoinbasePaymentMethod *coinbasePaymentMethod = (BTCoinbasePaymentMethod *)paymentMethod;
-//        NSString *typeString = BTUILocalizedString(PAYMENT_METHOD_TYPE_COINBASE);
-//        NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, (coinbasePaymentMethod.description ?: @"")]];
-//        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
-//        [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], [coinbasePaymentMethod.description length])];
-//        cell.textLabel.attributedText = typeWithDescription;
-//
-//
-//        BTUIVectorArtView *iconArt = [[BTUI braintreeTheme] vectorArtViewForPaymentOptionType:BTUIPaymentOptionTypeCoinbase];
-//        UIImage *icon = [iconArt imageOfSize:CGSizeMake(42, 23)];
-//        cell.imageView.contentMode = UIViewContentModeCenter;
-//        cell.imageView.image = icon;
-//
-//    } else {
-//        cell.textLabel.text = [paymentMethod description];
-//        cell.imageView.image = nil;
-//    }
-
-
     cell.accessoryType = (indexPath.row == self.selectedPaymentMethodIndex) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 
     return cell;

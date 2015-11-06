@@ -245,42 +245,4 @@ class BTJSON_Tests: XCTestCase {
 
         XCTAssertFalse(obj.isObject);
     }
-
-
-//    func testMutation() {
-//        var obj = BTJSON()
-//
-//        obj["string"] = "Hello, World!"
-//        XCTAssertEqual(obj["string"].asString()!, "Hello, World!")
-//
-//        obj["string"] = "Goodbye, World!"
-//        XCTAssertEqual(obj["string"].asString()!, "Goodbye, World!")
-//
-//        obj["secondString"] = "Hello, again!"
-//        XCTAssertEqual(obj["string"].asString()!, "Goodbye, World!")
-//        XCTAssertEqual(obj["secondString"].asString()!, "Hello, again!")
-
-//        obj["array"] = []
-//        obj.JSONForKey("array")[0] = "One";
-//        obj.JSONForKey("array")[1] = "Two"
-//        obj.JSONForKey("array")[2] = "Three"
-//        XCTAssertEqual(obj["string"].asString()!, "Hello, World!")
-//        XCTAssertEqual(obj["secondString"].asString()!, "Hello, again!")
-//        XCTAssertEqual(obj["array"].asArray()!, ["One", "Two", "Three"])
-
-//        XCTAssertEqual(try! obj.asJSON(), "{\"string\":\"Hello, World!\"}".dataUsingEncoding(NSUTF8StringEncoding)!)
-//    }
-
-//    func testSerializationAsJSON() {
-//        let JSON = "{ \"key\": \"value\" }".dataUsingEncoding(NSUTF8StringEncoding)!
-//        let obj = BTJSON(data: JSON)
-//
-////        obj["numbers"] = [1,2,"three"]
-//
-//        let serializedJSON = try! obj.asJSON()
-//        XCTAssertEqual(serializedJSON, "{ \"key\": \"value\", \"numbers\": [1, 2, \"three\"] }".dataUsingEncoding(NSUTF8StringEncoding)!)
-//
-//        let prettySerializedJSON = try! obj.asPrettyJSON()
-//        XCTAssertEqual(prettySerializedJSON, "{\n\t\"key\" : \"value\",\n\t\"numbers\" : [1, 2, \"three\"]\n}")
-//    }
 }
