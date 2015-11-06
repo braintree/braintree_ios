@@ -43,7 +43,8 @@
         self.dropInContentView = [[BTDropInContentView alloc] init];
         self.dropInContentView.paymentButton.viewControllerPresentingDelegate = self;
 
-        _apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn];
+        self.apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn];
+        self.dropInContentView.paymentButton.apiClient = self.apiClient;
 
         __weak typeof(self) weakSelf = self;
         self.dropInContentView.paymentButton.completion = ^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
