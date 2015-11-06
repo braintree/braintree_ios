@@ -33,12 +33,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// The text to display in the primary call-to-action button. For example: "$19 - Purchase" or "Subscribe Now".
 @property (nonatomic, copy) NSString *callToActionText;
 
-/// Whether to hide the call to action control.
+/// Whether to hide the call to action control in Drop-in's content view.
 ///
-/// When true, a submit button will be added as a bar button item (which
-/// relies on the drop-in view controller being embedded in a navigation controller.
+/// When `YES`, the call to action control in Drop-in's content view will be hidden;
+/// instead, a submit button will be added as a bar button item, which relies on the
+/// Drop-in view controller being embedded in a navigation controller.
 ///
-/// Defaults to `NO`.
+/// Defaults to `NO`, so that the call to action control will be shown within Drop-in's
+/// content view.
 ///
 /// @see callToAction
 /// @see callToActionAmount

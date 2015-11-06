@@ -1,40 +1,110 @@
 import XCTest
 
 class BTDropInViewController_Tests: XCTestCase {
-    
+
+    class BTDropInViewControllerTestDelegate : NSObject, BTDropInViewControllerDelegate {
+        var didLoadExpectation: XCTestExpectation
+
+        init(didLoadExpectation: XCTestExpectation) {
+            self.didLoadExpectation = didLoadExpectation
+        }
+
+        @objc func dropInViewController(viewController: BTDropInViewController, didSucceedWithTokenization paymentMethodNonce: BTPaymentMethodNonce) {}
+
+        @objc func dropInViewControllerDidCancel(viewController: BTDropInViewController) {}
+
+        @objc func dropInViewControllerDidLoad(viewController: BTDropInViewController) {
+            didLoadExpectation.fulfill()
+        }
+    }
+
     func testInitializesWithCheckoutRequestCorrectly() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let request = BTPaymentRequest()
-        let dropIn = BTDropInViewController(APIClient: apiClient)
-        dropIn.paymentRequest = request
-        XCTAssertEqual(request, dropIn.paymentRequest)
-        XCTAssertEqual(apiClient.tokenizationKey, dropIn.apiClient.tokenizationKey) // Tokenization key should be the same
-        XCTAssertNil(dropIn.navigationItem.rightBarButtonItem) // TODO: Will this be set when the view controller is presented (viewDidLoad)?
+        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        dropInViewController.paymentRequest = request
+        XCTAssertEqual(request, dropInViewController.paymentRequest)
+        XCTAssertEqual(apiClient.tokenizationKey, dropInViewController.apiClient.tokenizationKey)
+
+        // By default, Drop-in does not set any bar button items. The developer should embed Drop-in in a navigation controller
+        // as seen in BraintreeDemoDropInViewController, or provide some other way to dismiss Drop-in.
+        XCTAssertNil(dropInViewController.navigationItem.leftBarButtonItem)
+        XCTAssertNil(dropInViewController.navigationItem.rightBarButtonItem)
+
+        let didLoadExpectation = self.expectationWithDescription("Drop-in did finish loading")
+        let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
+        dropInViewController.delegate = testDelegate
+
+        let window = UIWindow()
+        let viewController = UIViewController()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        self.waitForExpectationsWithTimeout(5, handler: nil)
     }
     
     func testInitializesWithoutCheckoutRequestCorrectly() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let request = BTPaymentRequest()
-        request.shouldHideCallToAction = false // TODO: Investigate the rightBarButtonItem
+
+        // When this is true, the call to action control will be hidden from Drop-in's content view. Instead, a submit button will be
+        // added as a navigation bar button item. The default value is false.
+        request.shouldHideCallToAction = true
         
-        let dropIn = BTDropInViewController(APIClient: apiClient)
-        dropIn.paymentRequest = request
+        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        dropInViewController.paymentRequest = request
         
-        XCTAssertEqual(request, dropIn.paymentRequest)
-        XCTAssertEqual(apiClient.tokenizationKey, dropIn.apiClient.tokenizationKey) // Tokenization key should be the same
-        XCTAssertNil(dropIn.navigationItem.rightBarButtonItem)
+        XCTAssertEqual(request, dropInViewController.paymentRequest)
+        XCTAssertEqual(apiClient.tokenizationKey, dropInViewController.apiClient.tokenizationKey)
+        XCTAssertNil(dropInViewController.navigationItem.leftBarButtonItem)
+
+        // There will be a rightBarButtonItem instead of a call to action control because it has been set to hide.
+        XCTAssertNotNil(dropInViewController.navigationItem.rightBarButtonItem)
+
+        let didLoadExpectation = self.expectationWithDescription("Drop-in did finish loading")
+        let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
+        dropInViewController.delegate = testDelegate
+
+        let window = UIWindow()
+        let viewController = UIViewController()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        self.waitForExpectationsWithTimeout(5, handler: nil)
     }
 
-    func pendInitializesWithCheckoutRequestAndSetsNewCheckoutRequest() {
-        
-        // TODO
-        
+    func testDropIn_canSetNewCheckoutRequestAfterPresentation() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let request = BTPaymentRequest()
-        let dropIn = BTDropInViewController(APIClient: apiClient)
-        XCTAssertEqual(request, dropIn.paymentRequest)
-        XCTAssertEqual(apiClient.tokenizationKey, dropIn.apiClient.tokenizationKey) // Tokenization key should be the same
-        XCTAssertNil(dropIn.navigationItem.rightBarButtonItem) // This will be set when the view controller is presented (viewDidLoad)
+        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        dropInViewController.paymentRequest = request
+        XCTAssertEqual(request, dropInViewController.paymentRequest)
+        XCTAssertEqual(apiClient.tokenizationKey, dropInViewController.apiClient.tokenizationKey)
+
+        // By default, Drop-in does not set any bar button items. The developer should embed Drop-in in a navigation controller
+        // as seen in BraintreeDemoDropInViewController, or provide some other way to dismiss Drop-in.
+        XCTAssertNil(dropInViewController.navigationItem.leftBarButtonItem)
+        XCTAssertNil(dropInViewController.navigationItem.rightBarButtonItem)
+
+        let didLoadExpectation = self.expectationWithDescription("Drop-in did finish loading")
+        let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
+        dropInViewController.delegate = testDelegate
+
+        let window = UIWindow()
+        let viewController = UIViewController()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        self.waitForExpectationsWithTimeout(5, handler: nil)
+
+        let newRequest = BTPaymentRequest()
+        newRequest.shouldHideCallToAction = true
+        dropInViewController.paymentRequest = newRequest
+        XCTAssertNil(dropInViewController.navigationItem.leftBarButtonItem)
+
+        // There will now be a rightBarButtonItem because shouldHideCallToAction = true; this button is the replacement
+        // of the call to action control.
+        XCTAssertNotNil(dropInViewController.navigationItem.rightBarButtonItem)
     }
     
     // MARK: - Metadata
