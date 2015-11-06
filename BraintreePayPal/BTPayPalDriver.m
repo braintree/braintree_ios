@@ -322,7 +322,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         
         // Before parsing the return URL, check whether the user cancelled by breaking
         // out of the PayPal app switch flow (e.g. "Done" button in SFSafariViewController)
-        // TODO: add UI automation test
         if ([url.absoluteString isEqualToString:SFSafariViewControllerFinishedURL]) {
             if (completionBlock) completionBlock(nil, nil);
             return;

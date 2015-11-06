@@ -131,7 +131,6 @@
 		4174045D1BB08526008A5DEA /* BTThreeDSecureLookupResult.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA7B1B56FBD1007B1DF1 /* BTThreeDSecureLookupResult.m */; };
 		4174045F1BB08526008A5DEA /* BTThreeDSecureResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA441B56F822007B1DF1 /* BTThreeDSecureResponse.m */; };
 		417404601BB08526008A5DEA /* BTThreeDSecureCardNonce.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.m */; };
-		417404621BB08526008A5DEA /* BTThreeDSecureVerification.m in Sources */ = {isa = PBXBuildFile; fileRef = 164CA0BF1B3E18B200EB4884 /* BTThreeDSecureVerification.m */; };
 		417404641BB08526008A5DEA /* BTWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AFA461B56F822007B1DF1 /* BTWebViewController.m */; };
 		4174046A1BB08530008A5DEA /* BTApplePayClient.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */; };
 		4174046C1BB08530008A5DEA /* BTConfiguration+ApplePay.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B1C14E1B66E46900ED063C /* BTConfiguration+ApplePay.m */; };
@@ -524,8 +523,6 @@
 		A7C889AB1B5F04E9007A0E9C /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		A7C889D81B5F0ACB007A0E9C /* BTCardNonce_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889D71B5F0ACB007A0E9C /* BTCardNonce_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A7C889F91B5F0B6A007A0E9C /* Braintree-Version.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C889F81B5F0B6A007A0E9C /* Braintree-Version.h */; };
-		A7C88A181B5F0ECB007A0E9C /* BTThreeDSecureVerification.h in Headers */ = {isa = PBXBuildFile; fileRef = 164CA0BE1B3E18B200EB4884 /* BTThreeDSecureVerification.h */; };
-		A7C88A191B5F0ECB007A0E9C /* BTThreeDSecureVerification.m in Sources */ = {isa = PBXBuildFile; fileRef = 164CA0BF1B3E18B200EB4884 /* BTThreeDSecureVerification.m */; };
 		A7C88A2F1B5F10EF007A0E9C /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
 		A7CB42D31B73E629002CCFDD /* BraintreePayPal_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CB42D21B73E629002CCFDD /* BraintreePayPal_IntegrationTests.m */; };
 		A7CCE2AE1B67F26C006EA661 /* BTAppSwitch_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CCE2AD1B67F26C006EA661 /* BTAppSwitch_Tests.swift */; };
@@ -792,8 +789,6 @@
 		109E26613EA5CC5E29DA481A /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		133578558B4E45ECA2C2D586 /* libPods-Braintree-PayPal-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		162174E1192D9220008DC35D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		164CA0BE1B3E18B200EB4884 /* BTThreeDSecureVerification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureVerification.h; sourceTree = "<group>"; };
-		164CA0BF1B3E18B200EB4884 /* BTThreeDSecureVerification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureVerification.m; sourceTree = "<group>"; };
 		16C42B681B3DDFE00028A3B4 /* BTAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTAPIClient.h; sourceTree = "<group>"; };
 		16C42B691B3DDFE00028A3B4 /* BTAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTAPIClient.m; sourceTree = "<group>"; };
 		16C42B6C1B3DE0550028A3B4 /* BTPayPalDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPayPalDriver.h; sourceTree = "<group>"; };
@@ -1502,8 +1497,6 @@
 				A79AFA3D1B56F822007B1DF1 /* BTThreeDSecureResponse.h */,
 				A79AFA441B56F822007B1DF1 /* BTThreeDSecureResponse.m */,
 				A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.m */,
-				164CA0BE1B3E18B200EB4884 /* BTThreeDSecureVerification.h */,
-				164CA0BF1B3E18B200EB4884 /* BTThreeDSecureVerification.m */,
 				A79AFA451B56F822007B1DF1 /* BTWebViewController.h */,
 				A79AFA461B56F822007B1DF1 /* BTWebViewController.m */,
 				2D941D8C1B5D9E8C0016EFB4 /* Info.plist */,
@@ -2420,7 +2413,6 @@
 				2D941D911B5D9F200016EFB4 /* BTThreeDSecureAuthenticationViewController.h in Headers */,
 				2D941D8B1B5D9E8C0016EFB4 /* Braintree3DSecure.h in Headers */,
 				A79C9C701BE17BC7007EAF73 /* BTThreeDSecureDriver_Internal.h in Headers */,
-				A7C88A181B5F0ECB007A0E9C /* BTThreeDSecureVerification.h in Headers */,
 				2D941D991B5D9F200016EFB4 /* BTThreeDSecureResponse.h in Headers */,
 				2D941D9F1B5D9F200016EFB4 /* BTThreeDSecureLocalizedString.h in Headers */,
 				2D941D9B1B5D9F200016EFB4 /* BTThreeDSecureCardNonce.h in Headers */,
@@ -3426,7 +3418,6 @@
 				2D941DA01B5D9F200016EFB4 /* BTThreeDSecureLocalizedString.m in Sources */,
 				2D941D981B5D9F200016EFB4 /* BTThreeDSecureLookupResult.m in Sources */,
 				2D941D9C1B5D9F200016EFB4 /* BTThreeDSecureCardNonce.m in Sources */,
-				A7C88A191B5F0ECB007A0E9C /* BTThreeDSecureVerification.m in Sources */,
 				2D941D941B5D9F200016EFB4 /* BTThreeDSecureDriver.m in Sources */,
 				2D941D921B5D9F200016EFB4 /* BTThreeDSecureAuthenticationViewController.m in Sources */,
 				2D941D9E1B5D9F200016EFB4 /* BTWebViewController.m in Sources */,
@@ -3587,7 +3578,6 @@
 				4174045D1BB08526008A5DEA /* BTThreeDSecureLookupResult.m in Sources */,
 				4174045F1BB08526008A5DEA /* BTThreeDSecureResponse.m in Sources */,
 				417404601BB08526008A5DEA /* BTThreeDSecureCardNonce.m in Sources */,
-				417404621BB08526008A5DEA /* BTThreeDSecureVerification.m in Sources */,
 				417404641BB08526008A5DEA /* BTWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -331,7 +331,6 @@
                 [self showLoadingState:NO];
 
                 if (error) {
-                    // TODO: fix this grossness
                     if ([error.domain isEqualToString:@"com.braintreepayments.BTCardClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
                         [self informUserDidFailWithError:error];
                     } else {

@@ -97,7 +97,6 @@ static BOOL cannedIsWalletAppAvailable = YES;
     return self;
 }
 
-//TODO do something different here since its an adapter block?
 - (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
     adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"canned"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
@@ -119,7 +118,6 @@ static BOOL cannedIsWalletAppAvailable = YES;
     return self;
 }
 
-//TODO do something different here since its an adapter block?
 - (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
     adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"canned"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
@@ -141,7 +139,6 @@ static BOOL cannedIsWalletAppAvailable = YES;
     return self;
 }
 
-//TODO do something different here since its an adapter block?
 - (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
     adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"canned"], self.cannedTarget, self.cannedMetadataId, self.cannedError);

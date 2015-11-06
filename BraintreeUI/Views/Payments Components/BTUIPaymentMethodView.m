@@ -69,7 +69,7 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
 
     self.detailDescriptionLabel = [[UILabel alloc] init];
     [self.detailDescriptionLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    self.detailDescriptionLabel.lineBreakMode = NSLineBreakByTruncatingMiddle; // TODO - use attributed string for line break
+    self.detailDescriptionLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     self.detailDescriptionLabel.font = [self.theme controlDetailFont];
     [self.detailDescriptionLabel setTextColor:[self.theme detailColor]];
 
