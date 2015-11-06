@@ -107,7 +107,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
         let delegate = MockAppSwitchDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform:self.expectationWithDescription("Delegate received didPerformAppSwitch"))
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
 
         payPalDriver.authorizeAccountWithCompletion { _ -> Void in }
 
@@ -155,7 +155,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
         let delegate = MockAppSwitchDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform:self.expectationWithDescription("Delegate received didPerformAppSwitch"))
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
 
         payPalDriver.authorizeAccountWithCompletion { _ -> Void in }
 
@@ -177,7 +177,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
         let delegate = MockAppSwitchDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform:self.expectationWithDescription("Delegate received didPerformAppSwitch"))
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
 
         payPalDriver.authorizeAccountWithAdditionalScopes(Set(["foo", "bar"])) { _ -> Void in }
 
@@ -200,7 +200,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         payPalDriver.requestFactory = mockRequestFactory
         let mockRequest = mockRequestFactory.authorizationRequest
         let delegate = MockAppSwitchDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform:self.expectationWithDescription("Delegate received didPerformAppSwitch"))
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
         
         payPalDriver.authorizeAccountWithCompletion { _ -> Void in }
         
@@ -223,7 +223,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         payPalDriver.requestFactory = mockRequestFactory
         let mockRequest = mockRequestFactory.authorizationRequest
         let delegate = MockAppSwitchDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform:self.expectationWithDescription("Delegate received didPerformAppSwitch"))
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
         
         payPalDriver.authorizeAccountWithCompletion { _ -> Void in }
         
@@ -281,7 +281,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         payPalDriver.requestFactory = mockRequestFactory
         let delegate = MockAppSwitchDelegate(willPerform: expectationWithDescription("willPerformAppSwitch called"), didPerform: expectationWithDescription("didPerformAppSwitch called"))
         delegate.willProcess = expectationWithDescription("willProcessPaymentInfo called")
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PayPalOneTouchResultType.Success
@@ -305,7 +305,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         payPalDriver.requestFactory = mockRequestFactory
         let delegate = MockAppSwitchDelegate()
         delegate.willPerformAppSwitch = expectationWithDescription("willPerformAppSwitch called")
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PayPalOneTouchResultType.Success
@@ -649,7 +649,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
         let delegate = MockAppSwitchDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform: expectationWithDescription("Delegate received didPerformAppSwitch"))
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
         let request = BTPayPalRequest(amount: "1")
@@ -744,7 +744,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         let delegate = MockAppSwitchDelegate()
         delegate.willProcess = expectationWithDescription("willProcessPaymentInfo called")
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
@@ -1101,7 +1101,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
         let delegate = MockAppSwitchDelegate(willPerform: self.expectationWithDescription("Delegate received willPerformAppSwitch"), didPerform: expectationWithDescription("Delegate received didPerformAppSwitch"))
-        payPalDriver.delegate = delegate
+        payPalDriver.appSwitchDelegate = delegate
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         
         let request = BTPayPalRequest()

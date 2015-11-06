@@ -509,8 +509,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillSwitchNotification object:self userInfo:nil];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     
-    if ([self.delegate respondsToSelector:@selector(appSwitcherWillPerformAppSwitch:)]) {
-        [self.delegate appSwitcherWillPerformAppSwitch:self];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillPerformAppSwitch:)]) {
+        [self.appSwitchDelegate appSwitcherWillPerformAppSwitch:self];
     }
 }
 
@@ -533,8 +533,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchDidSwitchNotification object:self userInfo:@{ BTAppSwitchNotificationTargetKey : @(appSwitchTarget) } ];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     
-    if ([self.delegate respondsToSelector:@selector(appSwitcher:didPerformSwitchToTarget:)]) {
-        [self.delegate appSwitcher:self didPerformSwitchToTarget:appSwitchTarget];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcher:didPerformSwitchToTarget:)]) {
+        [self.appSwitchDelegate appSwitcher:self didPerformSwitchToTarget:appSwitchTarget];
     }
 }
 
@@ -542,8 +542,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillProcessPaymentInfoNotification object:self userInfo:nil];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     
-    if ([self.delegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
-        [self.delegate appSwitcherWillProcessPaymentInfo:self];
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
+        [self.appSwitchDelegate appSwitcherWillProcessPaymentInfo:self];
     }
 }
 

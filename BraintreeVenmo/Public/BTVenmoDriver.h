@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 
 /// An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating
 /// your UI
-@property (nonatomic, weak) id<BTAppSwitchDelegate> delegate;
+@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 
 @end
 
