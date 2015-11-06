@@ -1,6 +1,5 @@
 #import "BTClient+Testing.h"
 #import <PureLayout/PureLayout.h>
-#import "PayPalMobile.h"
 
 #import "BTCoinbaseAcceptanceSpecViewController.h"
 

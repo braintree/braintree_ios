@@ -19,6 +19,37 @@
   * Deprecate `ABRecordRef` properties: `billingAddress` and `shippingAddress`
   * Add `PKContact` properties: `billingContact` and `shippingContact`
 
+## 3.9.2-pre6 (2015-08-28)
+* PayPal
+  * Fix canOpenUrl warnings in iOS9
+* Added `PayerId` and `ClientMetadataId` to `BTPayPalPaymentMethod`
+
+## 3.9.2-pre5 (2015-08-19)
+* PayPal
+  * Fix Billing Agreements support
+  * Update PayPal One Touch Core
+
+## 3.9.2-pre4 (2015-08-04)
+* PayPal
+  * Update support for PayPal Checkout
+  * Add support for PayPal Billing Agreement authorization
+  * Update PayPal One Touch Core
+
+## 4.0.0-pre2 (2015-06-23)
+
+* PayPal
+  * For single payments, `BTPayPalPaymentMethod` now provides `firstName`, `lastName`, `phone`, `billingAddress`, and `shippingAddress` properties.
+  * For future payments, add support for additional scopes.
+  * Add demo for PayPal Checkout and scopes.
+* Change @import to #import (#124).
+* Add accessibility label to BTUICTAControl.
+
+## 4.0.0-pre1
+
+* Replace mSDK with One Touch Core
+  * This replaces PayPal in-app login with browser switch for future payments consent
+  * This adds the capability to perform checkout (single payments) with One Touch
+
 ## 3.9.3 (2015-08-31)
 
 * Xcode 7 support
@@ -43,7 +74,7 @@
   * Improve mSDK screen blurring when app is backgrounded. NOTE: This change requires that you add `Accelerate.framework` to your project
   * Bug fixes
 
-## 3.9.0 (2015-06-12)
+## 3.9.1 (2015-06-12)
 
 * Add support for additional scopes during PayPal authorization
   * Specifically supporting the `address` scope

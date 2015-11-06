@@ -7,14 +7,14 @@
 #import "BTMockApplePayPaymentAuthorizationViewController.h"
 
 #import "BTClient_Internal.h"
-#import "BTClient+BTPayPal.h"
 
 #import "BTPayPalAppSwitchHandler.h"
 #import "BTVenmoAppSwitchHandler.h"
-#import "BTPayPalViewController.h"
 
-#import "BTCoinbase.h"
+#import "BTCoinbaseDriver.h"
 #import "BTCoinbaseOAuth.h"
+
+#import "BTPayPalDriver.h"
 
 typedef void (^BTPaymentsSpecHelperBlock)(id, NSError *);
 
@@ -64,6 +64,10 @@ typedef void (^BTPaymentsSpecHelperBlock)(id, NSError *);
 @interface BTPaymentProvider () <PKPaymentAuthorizationViewControllerDelegate>
 @end
 
+@interface BTPaymentProvider (TestAdditions)
+@property (nonatomic, strong) BTPayPalAppSwitchHandler *payPalAppSwitchHandler;
+@end
+
 SpecBegin(BTPaymentProvider)
 
 __block BTPaymentProvider *provider;
@@ -75,13 +79,7 @@ beforeEach(^{
     configuration = [OCMockObject mockForClass:[BTConfiguration class]];
 
     client = [OCMockObject mockForClass:[BTClient class]];
-    [[client stub] btPayPal_preparePayPalMobileWithError:(NSError * __autoreleasing *)[OCMArg anyPointer]];
     [[client stub] postAnalyticsEvent:OCMOCK_ANY];
-
-    // Use `expect` because we change the value of `btPayPal_isPayPalEnabled` depending on the test.
-    [[[client expect] andReturnValue:@YES] btPayPal_isPayPalEnabled];
-    // Code within this `beforeEach` block will call `btPayPal_isPayPalEnabled` twice.
-    [[[client expect] andReturnValue:@YES] btPayPal_isPayPalEnabled];
 
     [[[client stub] andReturn:configuration] configuration];
 
@@ -95,6 +93,9 @@ beforeEach(^{
 afterEach(^{
     [client verify];
     [client stopMocking];
+
+    [configuration verify];
+    [configuration stopMocking];
 
     [delegate verify];
     [delegate stopMocking];
@@ -188,13 +189,23 @@ describe(@"createPaymentMethod:", ^{
             });
 
             it(@"invokes an app switch delegate method", ^{
+                [[[configuration stub] andReturnValue:@YES] payPalEnabled];
+                
+                [[[payPalAppSwitchHandler stub] andReturnValue:@(YES)] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:((NSError __autoreleasing **)[OCMArg anyPointer])];
+                
+                provider.payPalAppSwitchHandler = payPalAppSwitchHandler;
+                
                 [[delegate expect] paymentMethodCreatorWillPerformAppSwitch:provider];
                 provider.delegate = delegate;
                 [provider createPaymentMethod:BTPaymentProviderTypePayPal];
                 expect([provider status]).to.equal(BTPaymentProviderStatusInitialized);
+                
+                provider.payPalAppSwitchHandler = nil;
             });
 
             it(@"invokes didcancel delegate method", ^{
+                [[[configuration stub] andReturnValue:@YES] payPalEnabled];
+                
                 [[delegate expect] paymentMethodCreatorDidCancel:provider];
                 provider.delegate = delegate;
                 [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreatorDidCancel:nil];
@@ -220,36 +231,6 @@ describe(@"createPaymentMethod:", ^{
                 provider.delegate = delegate;
                 [(id<BTPaymentMethodCreationDelegate>)provider paymentMethodCreatorWillProcess:provider];
                 expect([provider status]).to.equal(BTPaymentProviderStatusProcessing);
-            });
-        });
-
-        context(@"and app switch is unavailable", ^{
-
-            beforeEach(^{
-                [[[payPalAppSwitchHandler stub] andReturnValue:@NO] initiateAppSwitchWithClient:OCMOCK_ANY delegate:OCMOCK_ANY error:(NSError *__autoreleasing *)[OCMArg anyPointer]];
-            });
-
-            it(@"returns YES and invokes view controller delegate method", ^{
-                [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
-                    return [obj isKindOfClass:[UIViewController class]];
-                }]];
-                provider.delegate = delegate;
-
-                [provider createPaymentMethod:BTPaymentProviderTypePayPal];
-            });
-
-            it(@"provider has the right state and cancels view controller", ^{
-                [[delegate expect] paymentMethodCreator:provider requestsPresentationOfViewController:[OCMArg checkWithBlock:^BOOL(id obj) {
-                    return [obj isKindOfClass:[UIViewController class]];
-                }]];
-                [[delegate expect] paymentMethodCreatorDidCancel:[OCMArg isNotNil]];
-                [[delegate expect] paymentMethodCreator:[OCMArg checkWithBlock:^BOOL(id obj) {
-                    return [(BTPaymentProvider *)obj status] == BTPaymentProviderStatusCanceled;
-                }]
-                      requestsDismissalOfViewController:nil];
-                provider.delegate = delegate;
-                [provider createPaymentMethod:BTPaymentProviderTypePayPal];
-                [(id<BTPayPalViewControllerDelegate>)provider payPalViewControllerDidCancel:nil];
             });
         });
     });
@@ -306,7 +287,7 @@ describe(@"createPaymentMethod:", ^{
         __block id stubCoinbase;
 
         beforeEach(^{
-            stubCoinbase = [OCMockObject mockForClass:[BTCoinbase class]];
+            stubCoinbase = [OCMockObject mockForClass:[BTCoinbaseDriver class]];
             [[BTAppSwitch sharedInstance] addAppSwitching:stubCoinbase forApp:BTAppTypeCoinbase];
         });
 
@@ -448,13 +429,13 @@ describe(@"createPaymentMethod:", ^{
 describe(@"canCreatePaymentMethodWithProviderType:", ^{
     context(@"paypal", ^{
         it(@"always returns YES when the client (token) enables paypal", ^{
-            [[[client stub] andReturnValue:@YES] btPayPal_isPayPalEnabled];
+            [[[configuration stub] andReturnValue:@YES] payPalEnabled];
             BOOL canCreatePayPal = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal];
             expect(canCreatePayPal).to.beTruthy();
         });
 
         it(@"returns NO when the client (token) does not enable paypal", ^{
-            [[[client expect] andReturnValue:@(NO)] btPayPal_isPayPalEnabled];
+            [[[configuration stub] andReturnValue:@(NO)] payPalEnabled];
             BOOL canCreatePayPal = [provider canCreatePaymentMethodWithProviderType:BTPaymentProviderTypePayPal];
             expect(canCreatePayPal).to.beFalsy();
         });

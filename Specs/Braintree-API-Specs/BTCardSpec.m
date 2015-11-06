@@ -1,5 +1,6 @@
 #import "BTMutableCardPaymentMethod.h"
 
+// TODO: Investigate and remove
 SpecBegin(BTCardPaymentMethod)
 
 describe(@"init", ^{

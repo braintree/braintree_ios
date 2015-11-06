@@ -1,5 +1,7 @@
 @import AddressBook;
 
+// TODO: Remove this after looking into the transition from BTApplePayPaymentMethod to BTTokenizedApplePayPayment
+
 #import "BTApplePayPaymentMethod.h"
 #import "BTMutableApplePayPaymentMethod.h"
 

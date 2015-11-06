@@ -1,9 +1,9 @@
-#import "BTClient.h"
+#import "Braintree-Version.h"
 
-SpecBegin(BTVersionSpec)
+SpecBegin(BTVersion)
 
 it(@"returns the current version", ^{
-    expect([BTClient libraryVersion]).to.match(@"\\d+\\.\\d+\\.\\d+");
+    expect(BRAINTREE_VERSION).to.match(@"\\d+\\.\\d+\\.\\d+");
 });
 
 SpecEnd

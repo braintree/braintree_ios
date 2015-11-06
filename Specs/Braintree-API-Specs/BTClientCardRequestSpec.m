@@ -1,6 +1,7 @@
 #import "BTClientCardRequest.h"
 #import "BTClientCardTokenizationRequest.h"
 
+// TODO: Investigate and remove, consider moving to a new BTCardSpec that tests the new BTCard
 SpecBegin(BTClientCardRequest)
 
 describe(@"cardPaymentMethodParameters", ^{

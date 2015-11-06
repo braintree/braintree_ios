@@ -8,6 +8,7 @@
 #import "BTLogger_Internal.h"
 #import "BTClientSpecHelper.h"
 
+// TODO: Restore these tests
 
 SharedExamplesBegin(BTClient)
 

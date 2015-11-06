@@ -1,5 +1,7 @@
 #import "BTMutableCardPaymentMethod.h"
 
+// TODO: move or remove these tests after deprecated BTCardPaymentMethod/BTMutableCardPaymentMethod in favor of BTTokenizedCard
+
 SpecBegin(BTMutableCardPaymentMethod)
 
 describe(@"init", ^{

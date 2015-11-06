@@ -3,6 +3,7 @@
 
 @class BTClient;
 
+// TODO: Figure out what to do with this class
 @interface BTClientSpecHelper : NSObject
 
 + (BTClient *)asyncClientForTestCase:(XCTestCase *)testCase withOverrides:(NSDictionary *)overrides;

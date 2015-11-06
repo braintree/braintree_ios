@@ -1,5 +1,7 @@
 #import "BTAPIResponseParser.h"
 
+// TODO: Remove this test, ensure full coverage that was provided here is now in BTJSON
+
 SpecBegin(BTAPIResponseParser)
 
 context(@"type safe value parsing", ^{
