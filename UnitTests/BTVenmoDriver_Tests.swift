@@ -147,7 +147,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             "merchantId": "merchant_id" ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
         let delegate = MockAppSwitchDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
-        venmoDriver.delegate = delegate
+        venmoDriver.appSwitchDelegate = delegate
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
         venmoDriver.application = fakeApplication
@@ -283,7 +283,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
         let delegate = MockAppSwitchDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
         delegate.willProcess = expectationWithDescription("willProcess called")
-        venmoDriver.delegate = delegate
+        venmoDriver.appSwitchDelegate = delegate
         mockAPIClient = venmoDriver.apiClient as! MockAPIClient
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
         venmoDriver.application = FakeApplication()
@@ -306,7 +306,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
         let delegate = MockAppSwitchDelegate(willPerform: expectationWithDescription("willPerform called"), didPerform: expectationWithDescription("didPerform called"))
         delegate.willProcess = expectationWithDescription("willProcess called")
-        venmoDriver.delegate = delegate
+        venmoDriver.appSwitchDelegate = delegate
         mockAPIClient = venmoDriver.apiClient as! MockAPIClient
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
         venmoDriver.application = FakeApplication()

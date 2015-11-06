@@ -189,7 +189,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
     OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
@@ -401,7 +401,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
 
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
@@ -427,7 +427,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -457,7 +457,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -484,7 +484,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     
@@ -522,7 +522,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -559,7 +559,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
 
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
@@ -586,7 +586,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -613,7 +613,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
     delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
     delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.delegate = delegate;
+    payPalDriver.appSwitchDelegate = delegate;
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 

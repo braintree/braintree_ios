@@ -157,7 +157,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 #pragma mark - Delegate
 
 /// An optional delegate for receiving notifications about the lifecycle of a PayPal app switch for updating your UI
-@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> delegate;
+@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 
 /// A required delegate to control the presentation and dismissal of view controllers
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
