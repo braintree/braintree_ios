@@ -2,48 +2,53 @@
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-Welcome to Braintree's v.zero SDK for iOS. This library will help you accept card, PayPal, and Venmo payments in your iOS app.
+Welcome to Braintree's v.zero SDK for iOS. This library will help you accept card and PayPal payments in your iOS app.
 
-The Braintree iOS SDK requires Xcode 7 and a Base SDK of iOS 9.0. It permits a Deployment Target of iOS 7.0 or higher.
+**The Braintree iOS SDK requires Xcode 7+ and a Base SDK of iOS 9+**. It permits a Deployment Target of iOS 7.0 or higher.
 
 ![Screenshot of v.zero](screenshot.png)
 
 ## Getting Started
 
-:rotating_light: **These instructions are for installing the SDK 4.0 beta** :rotating_light:
+The current version is 4.0. If you are upgrading from version 3.x, take a look at our [Braintree iOS 3.x to 4.x Migration Guide](https://developers.braintreepayments.com/reference/general/client-sdk-migration/ios).
+
+If you're looking to integrate 4.0 and you need to accept payments with Venmo, please contact [Braintree Support](mailto:support@braintreepayments.com) about joining the beta program for Pay with Venmo. Version 3.x of the iOS SDK supports a way to accept payments via Venmo, and support in version 4 is coming soon. 
 
 We recommend using either [CocoaPods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
-
-If you're upgrading from v3.x, read the [Braintree iOS Migration Guide](https://developers.braintreepayments.com/reference/general/client-sdk-migration/ios) for an overview of the architectural changes.
 
 ### CocoaPods
 
 Add to your `Podfile`:
 ```
-pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
+pod 'Braintree'
 ```
-Then run `pod install`. This includes everything you need to accept card, PayPal, and Venmo payments. It also includes our Drop-in UI and payment button.
+Then run `pod install`. This includes everything you need to accept card and PayPal payments. It also includes our Drop-in UI and payment button.
 
 Customize your integration by specifying additional components. For example, add Apple Pay support:
 ```
-pod 'Braintree', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
-pod 'Braintree/Apple-Pay', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
+pod 'Braintree'
+pod 'Braintree/Apple-Pay'
 ```
 
 You can also strip down your integration to only support credit and debit cards:
 ```
-pod 'Braintree/Card', :git => 'https://github.com/braintree/braintree_ios.git', :branch => '4.0-beta'
+pod 'Braintree/Card'
 ```
 
 See our [`Podspec`](Braintree.podspec) for more information.
 
+Although we recommend upgrading to the latest version of our SDK, you can choose to remain on the 3.x version, e.g.
+```
+pod 'Braintree', '~> 3.9'
+```
+
 ### Carthage
 
-Add `github "braintree/braintree_ios" "4.0-beta"` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
+Add `github "braintree/braintree_ios"` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
 ### Static Library
 
-We plan to offer a static library of the Braintree SDK.
+Coming soon: we will be offering a static library of the Braintree SDK.
 
 ### Manual Integration
 
@@ -51,7 +56,7 @@ Follow the [manual integration instructions](https://github.braintreeps.com/brai
 
 ## Supporting iOS 9
 
-**Xcode 7 is required.**
+Support for iOS 9 requires a few configuration changes with your Xcode project, detailed below.
 
 ### App Transport Security
 
@@ -69,14 +74,10 @@ If your app supports payments from PayPal:
 * `com.paypal.ppclient.touch.v1`
 * `com.paypal.ppclient.touch.v2`
 
-If your app supports payments from Venmo:
-* `com.venmo.touch.v1`
-
-For example, if your app supports both PayPal and Venmo, you could add the following:
+For example, if your app supports PayPal, you could add the following:
 ```
   <key>LSApplicationQueriesSchemes</key>
   <array>
-    <string>com.venmo.touch.v1</string>
     <string>com.paypal.ppclient.touch.v1</string>
     <string>com.paypal.ppclient.touch.v2</string>
   </array>
