@@ -20,23 +20,23 @@ PODS:
   - AFNetworking/UIKit (2.6.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (4.0.0-rc1):
-    - Braintree/Card (= 4.0.0-rc1)
-    - Braintree/Core (= 4.0.0-rc1)
-    - Braintree/PayPal (= 4.0.0-rc1)
-    - Braintree/UI (= 4.0.0-rc1)
-  - Braintree/3D-Secure (4.0.0-rc1):
+  - Braintree (4.0.0):
+    - Braintree/Card (= 4.0.0)
+    - Braintree/Core (= 4.0.0)
+    - Braintree/PayPal (= 4.0.0)
+    - Braintree/UI (= 4.0.0)
+  - Braintree/3D-Secure (4.0.0):
     - Braintree/Card
     - Braintree/Core
-  - Braintree/Apple-Pay (4.0.0-rc1):
+  - Braintree/Apple-Pay (4.0.0):
     - Braintree/Core
-  - Braintree/Card (4.0.0-rc1):
+  - Braintree/Card (4.0.0):
     - Braintree/Core
-  - Braintree/Core (4.0.0-rc1)
-  - Braintree/DataCollector (4.0.0-rc1)
-  - Braintree/PayPal (4.0.0-rc1):
+  - Braintree/Core (4.0.0)
+  - Braintree/DataCollector (4.0.0)
+  - Braintree/PayPal (4.0.0):
     - Braintree/Core
-  - Braintree/UI (4.0.0-rc1):
+  - Braintree/UI (4.0.0):
     - Braintree/Card
     - Braintree/Core
   - CardIO (5.2.1)
@@ -85,11 +85,11 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: .
+    :path: "."
 
 SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
-  Braintree: ea530d27cc4fdbb4530755b97fc5d8cccab9a8e1
+  Braintree: 660cca560c01a7464626ee1e18c971d6491a3889
   CardIO: 710a4877315b3caa02dba01857aaa184fcbe21ad
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   FLEX: 3c390976e788d3d447b614ea1714ffc8fc914cf3
