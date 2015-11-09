@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
   s.compiler_flags = "-Wall -Werror -Wextra"
 
-  s.default_subspecs = %w[Core Card PayPal Venmo UI]
+  s.default_subspecs = %w[Core Card PayPal UI]
 
   s.subspec "Core" do |s|
     s.source_files  = "BraintreeCore/**/*.{h,m}"
@@ -56,13 +56,6 @@ Pod::Spec.new do |s|
     s.vendored_library = "BraintreePayPal/PayPalOneTouchCore/libPayPalOneTouchCore.a"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
     s.dependency "Braintree/Core"
-  end
-
-  s.subspec "Venmo" do |s|
-    s.source_files = "BraintreeVenmo/**/*.{h,m}"
-    s.public_header_files = "BraintreeVenmo/Public/*.h"
-    s.dependency "Braintree/Core"
-    s.dependency "Braintree/Card"
   end
 
   s.subspec "UI" do |s|
