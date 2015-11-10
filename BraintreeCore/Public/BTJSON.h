@@ -10,7 +10,7 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
     BTJSONErrorAccessInvalid = 2,
 };
 
-/// A basic wrapper around JSON objects that make it run-time type safety more natural
+/// A type-safe wrapper around JSON
 ///
 /// http://www.json.org/
 ///
@@ -20,7 +20,7 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 ///
 /// Most notably, type casting occurs via the as* nullable methods; errors are deferred and can be checked explicitly using isError and asError.
 ///
-/// ## Example data:
+/// ## Example Data:
 ///    {
 ///      "foo": "bar",
 ///      "baz": [1, 2, 3]
@@ -47,6 +47,8 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 ///     json["foo"][0] = "bar" // json.asJSON => { "foo": ["bar"] }
 ///     json["baz"] = [ 1, 2, 3 ] // json.asJSON => { "foo": ["bar"], "baz": [1,2,3] }
 ///     json["quux"] = NSSet() // json.isError => true, json.asJSON => throws NSError(domain: BTJSONErrorDomain, code: BTJSONErrorInvalidData)
+///
+
 @interface BTJSON : NSObject
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
