@@ -14,7 +14,7 @@ We've made some big changes in the Braintree iOS SDK version 4.0, which will sim
   - Block-based APIs
   - Written in Obj-C, but audited to integrate well with Swift apps
 - More integration options: CocoaPods, Carthage, static library, manual
-- Support for tokenization keys
+- Support for [tokenization keys](https://developers.braintreepayments.com/guides/authorization/tokenization-key)
 
 ## Core changes
 
@@ -47,7 +47,7 @@ We've made some big changes in the Braintree iOS SDK version 4.0, which will sim
 
 ## Other payment options
 
-- Coinbase is not available in the 4.0 version at this time. To join the Coinbase beta, contact [coinbase@braintreepayments.com](mailto:coinbase@braintreepayments.com)
+- Coinbase is not available in the 4.0 version at this time. To join the Coinbase beta, contact [coinbase@braintreepayments.com](mailto:coinbase@braintreepayments.com).
 - `Braintree-PayPal.h` has been replaced with `BraintreePayPal.h`
 
 ## Anti-fraud changes

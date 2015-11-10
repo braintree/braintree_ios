@@ -6,7 +6,7 @@
 * The public API has changed significantly in this release. For details, see the [v4 Migration Guide](Docs/Braintree-4.0-Migration-Guide.md) and the public header files.
 * APIs have been refactored to use completion blocks instead of delegate methods.
 * BTPaymentProvider has been removed. Instead, use payment option frameworks. For example, import BraintreeApplePay and use BTApplePayClient.
-* Added support for Tokenization Key in addition to Client Token. See the Braintree Documentation for more info about Tokenization Keys.
+* Added support for [Tokenization Keys](https://developers.braintreepayments.com/guides/authorization/tokenization-key) in addition to Client Tokens.
 * All methods and properties have been updated with nullability annotations.
 * Added support for Carthage in addition to CocoaPods.
 * PayPal One Touch is greatly improved in this release. It's slimmer and provides a better user experience, with browser switch on iOS 8 and SFSafariViewController on iOS 9.
