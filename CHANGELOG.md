@@ -1,5 +1,23 @@
 # Braintree iOS SDK Release Notes
 
+## 4.0.0 (2015-11-09)
+
+* Remodel the iOS SDK into frameworks with smaller filesize and greater flexibility.
+* The public API has changed significantly in this release. For details, see the [v4 Migration Guide](https://developers.braintreepayments.com/reference/general/client-sdk-migration/ios) and the public header files.
+* APIs have been refactored to use completion blocks instead of delegate methods.
+* BTPaymentProvider has been removed. Instead, use payment option frameworks. For example, import BraintreeApplePay and use BTApplePayClient.
+* Added support for Tokenization Key in addition to Client Token. See the Braintree Documentation for more info about Tokenization Keys.
+* All methods and properties have been updated with nullability annotations.
+* Added support for Carthage in addition to CocoaPods.
+* PayPal One Touch is greatly improved in this release. It's slimmer and provides a better user experience, with browser switch on iOS 8 and SFSafariViewController on iOS 9.
+* Added support for PayPal billing agreements (the New Vault Flow) and one-time payments.
+* Drop-in is now part of the new BraintreeUI framework. BraintreeUI has been refactored for greater flexibility; it will automatically exclude any payment options that are not included in your build (as determined by CocoaPods subspecs or Carthage frameworks).
+* Venmo One Touch has been excluded from this version. To join the beta for Pay with Venmo, contact Braintree Support.
+* BTData has been renamed to BTDataCollector.
+* BTPaymentMethod has been renamed to BTPaymentMethodNonce.
+
+As always, feel free to [open an Issue](https://github.com/braintree/braintree_ios/issues/new) with any questions or suggestions that you have.
+
 ## 3.9.6 (2015-10-08)
 
 * Update Kount DeviceCollectorSDK to v2.6.2 to [fix #175](https://github.com/braintree/braintree_ios/issues/175) (thanks, @keith)
