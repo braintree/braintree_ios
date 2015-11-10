@@ -3,7 +3,7 @@
 ## 4.0.0 (2015-11-09)
 
 * Remodel the iOS SDK into frameworks with smaller filesize and greater flexibility.
-* The public API has changed significantly in this release. For details, see the [v4 Migration Guide](https://developers.braintreepayments.com/reference/general/client-sdk-migration/ios) and the public header files.
+* The public API has changed significantly in this release. For details, see the [v4 Migration Guide](Docs/Braintree-4.0-Migration-Guide.md) and the public header files.
 * APIs have been refactored to use completion blocks instead of delegate methods.
 * BTPaymentProvider has been removed. Instead, use payment option frameworks. For example, import BraintreeApplePay and use BTApplePayClient.
 * Added support for Tokenization Key in addition to Client Token. See the Braintree Documentation for more info about Tokenization Keys.
