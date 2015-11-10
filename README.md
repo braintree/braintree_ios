@@ -10,7 +10,7 @@ Welcome to Braintree's v.zero SDK for iOS. This library will help you accept car
 
 ## Getting Started
 
-The current version is 4.0. If you are upgrading from version 3.x, take a look at our [Braintree iOS 3.x to 4.x Migration Guide](https://developers.braintreepayments.com/reference/general/client-sdk-migration/ios).
+The current version is 4.0. If you are upgrading from version 3.x, take a look at our [Braintree iOS 3.x to 4.x Migration Guide](Docs/Braintree-4.0-Migration-Guide.md).
 
 If you're looking to integrate 4.0 and you need to accept payments with Venmo, please contact [Braintree Support](mailto:support@braintreepayments.com) about joining the beta program for Pay with Venmo. Version 3.x of the iOS SDK supports a way to accept payments via Venmo, and support in version 4 is coming soon. 
 
