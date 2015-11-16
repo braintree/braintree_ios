@@ -67,10 +67,12 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     // IMPORTANT: Copy http so that tests using FakeHTTP will work.
     copiedClient.http = self.http;
 
-    BTMutableClientMetadata *mutableMetadata = [self.metadata mutableCopy];
-    mutableMetadata.source = source;
-    mutableMetadata.integration = integration;
-    copiedClient->_metadata = [mutableMetadata copy];
+    if (copiedClient) {
+        BTMutableClientMetadata *mutableMetadata = [self.metadata mutableCopy];
+        mutableMetadata.source = source;
+        mutableMetadata.integration = integration;
+        copiedClient->_metadata = [mutableMetadata copy];
+    }
 
     return copiedClient;
 }
