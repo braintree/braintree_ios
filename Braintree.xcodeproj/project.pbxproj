@@ -2388,6 +2388,7 @@
 				1607FE45192D974C0099D504 /* Frameworks */,
 				1607FE46192D974C0099D504 /* Resources */,
 				593DDE3B11878DB424A88119 /* Copy Pods Resources */,
+				9B928042FFEA11F881C77E33 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2408,6 +2409,7 @@
 				1607FE5B192D97570099D504 /* Frameworks */,
 				1607FE5C192D97570099D504 /* Resources */,
 				692EB62D7FE47C0D9B86F252 /* Copy Pods Resources */,
+				55C50F75B34C0445F2B25A27 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2428,6 +2430,7 @@
 				1607FE87192D97FF0099D504 /* Frameworks */,
 				1607FE88192D97FF0099D504 /* Resources */,
 				9C168C064D258912AFE1A536 /* Copy Pods Resources */,
+				26E925C8689167A4BBDFA7E1 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2448,6 +2451,7 @@
 				161E0C791A9EA83400D7285A /* Frameworks */,
 				161E0C7A1A9EA83400D7285A /* Resources */,
 				AAA84B4804905878C01A4C43 /* Copy Pods Resources */,
+				9A98EE793D6C4060BAE17176 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2468,6 +2472,7 @@
 				162174DC192D9220008DC35D /* Frameworks */,
 				162174DD192D9220008DC35D /* Resources */,
 				BA8EDECA8592E17BF7D3792D /* Copy Pods Resources */,
+				01B604DD5F24ADE6387BA356 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2487,6 +2492,7 @@
 				1621753C192D94BB008DC35D /* Frameworks */,
 				1621753D192D94BB008DC35D /* Resources */,
 				C313465382989B0B389EF6E5 /* Copy Pods Resources */,
+				F49A4EBD38930A3C11FCBA02 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2507,6 +2513,7 @@
 				16217550192D94C7008DC35D /* Frameworks */,
 				16217551192D94C7008DC35D /* Resources */,
 				7B22C9692095F5D3A330079F /* Copy Pods Resources */,
+				7A6E0E89FF4016DEE2BC1A4F /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2527,6 +2534,7 @@
 				16968167192D9A3200120846 /* Frameworks */,
 				16968168192D9A3200120846 /* Resources */,
 				E14CF77FB583573B70B93F4A /* Copy Pods Resources */,
+				0880FA72EDDD22949A3EB0D6 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2547,6 +2555,7 @@
 				16E20A631A703F86002BCC34 /* Frameworks */,
 				16E20A641A703F86002BCC34 /* Resources */,
 				32BAB7CAD3468CD475F02B75 /* Copy Pods Resources */,
+				04B6DCDAD1F6EC42101C5B5E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2567,6 +2576,7 @@
 				2D30F12E1A7C49E2004BA8C3 /* Frameworks */,
 				2D30F12F1A7C49E2004BA8C3 /* Resources */,
 				6E3EBB62A31B80C2A41E8A9D /* Copy Pods Resources */,
+				D0D18345A9EDBEDF2BC689C4 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2587,6 +2597,7 @@
 				2D9DDB3219B8171800C53140 /* Frameworks */,
 				2D9DDB3319B8171800C53140 /* Resources */,
 				D40E1564F8F9C439088367B7 /* Copy Pods Resources */,
+				18819920CDE36A72A8021EAD /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2606,6 +2617,7 @@
 				2DCFAA651A800ACB00FA2ECC /* Frameworks */,
 				2DCFAA661A800ACB00FA2ECC /* Resources */,
 				4FB16CF961ABAB60973A1812 /* Copy Pods Resources */,
+				D0379F0D4EB264D5221F6181 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2626,6 +2638,7 @@
 				A72B37FA19633826009AD2F5 /* Frameworks */,
 				A72B37FB19633826009AD2F5 /* Resources */,
 				093E5187EAF481983CF87500 /* Copy Pods Resources */,
+				91EE18AD748BDF13A4E99A3E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2646,6 +2659,7 @@
 				A75DA35E1921394200D997A2 /* Frameworks */,
 				A75DA35F1921394200D997A2 /* Resources */,
 				68FECD8FB55F8E877EA25372 /* Copy Pods Resources */,
+				ACCE40A51247FD9911AFC49B /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2666,6 +2680,7 @@
 				A7B7432719A3E093000A6A7A /* Frameworks */,
 				A7B7432819A3E093000A6A7A /* Resources */,
 				E37B16244F22151178046A57 /* Copy Pods Resources */,
+				72C0A16ED6D85D00FF7C9B74 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2944,6 +2959,51 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		01B604DD5F24ADE6387BA356 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		04B6DCDAD1F6EC42101C5B5E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0880FA72EDDD22949A3EB0D6 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		093E5187EAF481983CF87500 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2989,6 +3049,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		18819920CDE36A72A8021EAD /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		1F2BDC4AAD5713D9AE616542 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3002,6 +3077,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		26E925C8689167A4BBDFA7E1 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		32BAB7CAD3468CD475F02B75 /* Copy Pods Resources */ = {
@@ -3047,6 +3137,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		55C50F75B34C0445F2B25A27 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		593DDE3B11878DB424A88119 /* Copy Pods Resources */ = {
@@ -3154,6 +3259,36 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay/Pods-Braintree-Apple-Pay-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		72C0A16ED6D85D00FF7C9B74 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A6E0E89FF4016DEE2BC1A4F /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7B22C9692095F5D3A330079F /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3167,6 +3302,51 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		91EE18AD748BDF13A4E99A3E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9A98EE793D6C4060BAE17176 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B928042FFEA11F881C77E33 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9C168C064D258912AFE1A536 /* Copy Pods Resources */ = {
@@ -3214,6 +3394,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		ACCE40A51247FD9911AFC49B /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BA8EDECA8592E17BF7D3792D /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3242,6 +3437,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0379F0D4EB264D5221F6181 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D0D18345A9EDBEDF2BC689C4 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay/Pods-Braintree-Apple-Pay-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D40E1564F8F9C439088367B7 /* Copy Pods Resources */ = {
@@ -3377,6 +3602,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F49A4EBD38930A3C11FCBA02 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
