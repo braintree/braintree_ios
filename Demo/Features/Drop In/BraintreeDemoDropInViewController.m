@@ -51,6 +51,7 @@
     paymentRequest.shouldHideCallToAction = NO;
     BTDropInViewController *dropIn = [[BTDropInViewController alloc] initWithAPIClient:self.apiClient];
     dropIn.delegate = self;
+    dropIn.paymentRequest = paymentRequest;
     dropIn.title = @"Check Out";
 
     self.progressBlock(@"Fetching payment methods...");
@@ -84,6 +85,7 @@
         }];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
+        self.completionBlock(paymentMethodNonce);
     }
 }
 
