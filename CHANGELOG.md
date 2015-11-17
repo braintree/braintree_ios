@@ -8,9 +8,6 @@
   * Fixed a bug that prevented card types from being parsed.
   * Updated Demo to use paymentRequest and always call completionBlock.
 * Resolved an analyzer warning in BTAPIClient.m.
-* Improved 3.x to 4.0 migration guide.
-* Cleaned up documentation.
-* Added reference SVGs for vector art, e.g. card network logos.
 
 ## 4.0.0 (2015-11-09)
 
