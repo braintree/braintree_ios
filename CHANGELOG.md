@@ -1,5 +1,17 @@
 # Braintree iOS SDK Release Notes
 
+## 4.0.1 (2015-11-17)
+
+* Drop-in fixes
+  * Fixed a bug that prevented cards from being vaulted.
+    * Note: [BTCard's behavior has changed slightly](https://github.com/braintree/braintree_ios/commit/18b67d3).
+  * Fixed a bug that prevented card types from being parsed.
+  * Updated Demo to use paymentRequest and always call completionBlock.
+* Resolved an analyzer warning in BTAPIClient.m.
+* Improved 3.x to 4.0 migration guide.
+* Cleaned up documentation.
+* Added reference SVGs for vector art, e.g. card network logos.
+
 ## 4.0.0 (2015-11-09)
 
 * Remodel the iOS SDK into frameworks with smaller filesize and greater flexibility.
