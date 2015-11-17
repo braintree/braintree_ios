@@ -425,12 +425,12 @@
 
 #pragma mark BTDropInViewControllerDelegate implementation
 
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce * )paymentMethod {
+- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce *)paymentMethodNonce {
     [viewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 
-    NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethodNonces];
-    [newPaymentMethods insertObject:paymentMethod atIndex:0];
-    self.paymentMethodNonces = newPaymentMethods;
+    NSMutableArray *newPaymentMethodNonces = [NSMutableArray arrayWithArray:self.paymentMethodNonces];
+    [newPaymentMethodNonces insertObject:paymentMethodNonce atIndex:0];
+    self.paymentMethodNonces = newPaymentMethodNonces;
 }
 
 - (void)dropInViewControllerDidCancel:(BTDropInViewController *)viewController {
@@ -461,10 +461,10 @@
     }
 }
 
-- (void)informDelegateDidAddPaymentInfo:(BTPaymentMethodNonce * )paymentMethod {
+- (void)informDelegateDidAddPaymentInfo:(BTPaymentMethodNonce *)paymentMethodNonce {
     if ([self.delegate respondsToSelector:@selector(dropInViewController:didSucceedWithTokenization:)]) {
         [self.delegate dropInViewController:self
-                didSucceedWithTokenization:paymentMethod];
+                didSucceedWithTokenization:paymentMethodNonce];
     }
 }
 
@@ -545,7 +545,7 @@
 - (void)setSelectedPaymentMethodNonceIndex:(NSInteger)selectedPaymentMethodNonceIndex {
     _selectedPaymentMethodNonceIndex = selectedPaymentMethodNonceIndex;
     if (_selectedPaymentMethodNonceIndex != NSNotFound) {
-        BTPaymentMethodNonce * defaultPaymentMethod = [self selectedPaymentMethod];
+        BTPaymentMethodNonce *defaultPaymentMethod = [self selectedPaymentMethod];
         BTUIPaymentOptionType paymentMethodType = [BTUI paymentOptionTypeForPaymentInfoType:defaultPaymentMethod.type];
         self.dropInContentView.selectedPaymentMethodView.type = paymentMethodType;
         self.dropInContentView.selectedPaymentMethodView.detailDescription = defaultPaymentMethod.localizedDescription;

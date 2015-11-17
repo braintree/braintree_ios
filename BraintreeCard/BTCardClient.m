@@ -29,7 +29,7 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
             [client tokenizeCard:card completion:completionBlock];
         }];
 
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"Card" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"CreditCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
             return [BTCardNonce cardNonceWithJSON:creditCard];
         }];
     }

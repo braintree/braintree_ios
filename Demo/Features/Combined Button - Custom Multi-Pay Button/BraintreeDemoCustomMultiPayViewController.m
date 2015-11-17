@@ -113,7 +113,7 @@
 #pragma mark - Private methods
 
 - (void)tokenizeType:(NSString *)type {
-    [[BTTokenizationService sharedService] tokenizeType:type options:@{ BTTokenizationServiceViewPresentingDelegateOption: self } withAPIClient:self.apiClient completion:^(BTPaymentMethodNonce *  _Nonnull paymentMethodNonce, NSError * _Nonnull error) {
+    [[BTTokenizationService sharedService] tokenizeType:type options:@{ BTTokenizationServiceViewPresentingDelegateOption: self } withAPIClient:self.apiClient completion:^(BTPaymentMethodNonce * _Nonnull paymentMethodNonce, NSError * _Nonnull error) {
         if (paymentMethodNonce) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [paymentMethodNonce debugDescription]);
