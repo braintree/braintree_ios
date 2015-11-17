@@ -10,9 +10,9 @@
 
 - (void)testParameters_standardProperties {
     BTCard *card = [[BTCard alloc] initWithNumber:@"4111111111111111"
-                                                                        expirationMonth:@"12"
-                                                                         expirationYear:@"2038"
-                                                                                    cvv:@"123"];
+                                  expirationMonth:@"12"
+                                   expirationYear:@"2038"
+                                              cvv:@"123"];
     BTJSON *parameters = [[BTJSON alloc] initWithValue:card.parameters];
     XCTAssertEqualObjects(parameters[@"number"].asString, @"4111111111111111");
     XCTAssertEqualObjects(parameters[@"expiration_date"].asString, @"12/2038");
@@ -27,14 +27,20 @@
     XCTAssertTrue(parameters[@"options"][@"validate"].isTrue);
 }
 
+- (void)testParameters_whenShouldValidateIsTrueInParameters_encodesParametersCorrectly {
+    BTCard *card = [[BTCard alloc] initWithParameters:@{@"options": @{@"validate": @YES}}];
+    BTJSON *parameters = [[BTJSON alloc] initWithValue:card.parameters];
+    XCTAssertTrue(parameters[@"options"][@"validate"].isTrue);
+}
+
 - (void)testParameters_encodesAllParametersIncludingAdditionalParameters {
     BTCard *card =
     [[BTCard alloc] initWithParameters:@{
-                                                            @"billing_address": @{
-                                                                    @"street_address": @"724 Evergreen Terrace" }
-                                                            }];
+                                         @"billing_address": @{
+                                                 @"street_address": @"724 Evergreen Terrace" }
+                                         }];
 
-    card.number =@"4111111111111111";
+    card.number = @"4111111111111111";
     card.expirationMonth = @"12";
     card.expirationYear = @"2038";
     card.postalCode = @"40404";

@@ -14,6 +14,15 @@
 - (nonnull instancetype)initWithParameters:(NSDictionary *)parameters {
     if (self = [super init]) {
         _mutableParameters = [parameters mutableCopy];
+        _number = parameters[@"number"];
+        NSArray *components = [parameters[@"expiration_date"] componentsSeparatedByString:@"/"];
+        if (components.count == 2) {
+            _expirationMonth = components[0];
+            _expirationYear = components[1];
+        }
+        _postalCode = parameters[@"billing_address"][@"postal_code"];
+        _cvv = parameters[@"cvv"];
+        _shouldValidate = [parameters[@"options"][@"validate"] boolValue];
     }
     return self;
 }
@@ -46,16 +55,19 @@
         p[@"cvv"] = self.cvv;
     }
     if (self.postalCode) {
-        if (![p[@"billing_address"] isKindOfClass:[NSDictionary class]]) {
-            p[@"billing_address"] = @{ @"postal_code": self.postalCode };
-        } else if ([p[@"billing_address"] isKindOfClass:[NSDictionary class]]) {
-            NSMutableDictionary *billingAddress = [p[@"billing_address"] mutableCopy];
-            billingAddress[@"postal_code"] = self.postalCode;
-            p[@"billing_address"] = [billingAddress copy];
+        NSMutableDictionary *billingAddressDictionary = [NSMutableDictionary new];
+        if ([p[@"billing_address"] isKindOfClass:[NSDictionary class]]) {
+            [billingAddressDictionary addEntriesFromDictionary:p[@"billing_address"]];
         }
+        billingAddressDictionary[@"postal_code"] = self.postalCode;
+        p[@"billing_address"] = [billingAddressDictionary copy];
     }
-    p[@"options"] = @{ @"validate": @(self.shouldValidate) };
-
+    NSMutableDictionary *optionsDictionary = [NSMutableDictionary new];
+    if ([p[@"options"] isKindOfClass:[NSDictionary class]]) {
+        [optionsDictionary addEntriesFromDictionary:p[@"options"]];
+    }
+    optionsDictionary[@"validate"] = @(self.shouldValidate);
+    p[@"options"] = [optionsDictionary copy];
     return [p copy];
 }
 
