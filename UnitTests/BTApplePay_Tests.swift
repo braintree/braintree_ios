@@ -1,6 +1,8 @@
 import PassKit
 import XCTest
 
+@available(iOS 8.0, *)
+
 class BTApplePay_Tests: XCTestCase {
 
     var mockClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!

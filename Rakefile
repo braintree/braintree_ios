@@ -52,6 +52,10 @@ class << self
     %x{git describe}.strip
   end
 
+  def current_branch
+    %x{git rev-parse --abbrev-ref HEAD}.strip
+  end
+
   def xcodebuild(scheme, command, configuration, ios_version, options={})
     default_options = {
       :build_settings => {}
@@ -72,6 +76,8 @@ namespace :spec do
   desc 'Run unit tests'
   task :unit do
     run_test_scheme! 'UnitTests'
+    run_test_scheme! 'UnitTests-StaticLibrary'
+    run_test_scheme! 'UnitTests-CocoaPods'
     # TODO: Get tests working on iOS 8.4 Simulator
     #run_test_scheme! 'UnitTests', 8.4
   end
@@ -101,13 +107,30 @@ namespace :spec do
 end
 
 namespace :demo do
-  def build_demo! scheme
-    run! xcodebuild(scheme, 'build', 'Release', nil)
-  end
-
   desc 'Verify that the demo app builds successfully'
   task :build do
-    build_demo! 'Demo'
+    run! xcodebuild('Demo', 'build', 'Release', nil)
+  end
+end
+
+desc 'Run Carthage update'
+namespace :carthage do
+  def generate_cartfile
+    File.write('./Cartfile', "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
+  end
+
+  task :generate do
+    generate_cartfile
+  end
+
+  task :clean do
+    run! 'rm -rf Carthage && rm Cartfile && rm Cartfile.resolved'
+  end
+
+  task :test do
+    generate_cartfile
+    run! "carthage update"
+    run! "xcodebuild -project 'Demo/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' build -sdk 'iphonesimulator'"
   end
 end
 
@@ -123,6 +146,9 @@ namespace :sanity_checks do
 
   desc 'Verify that all demo apps Build successfully'
   task :build_demo => 'demo:build'
+
+  desc 'Verify that Carthage builds successfully'
+  task :build_carthage => 'carthage:update'
 end
 
 

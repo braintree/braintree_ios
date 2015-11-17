@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '8.0'
+platform :ios, '7.0'
 
 workspace 'Braintree.xcworkspace'
 
@@ -15,24 +15,27 @@ def demo_pods
   pod 'iOS-Slide-Menu'
 end
 
-target 'Demo' do
-  link_with 'Demo', 'Demo-StaticLibrary'
-  demo_pods
-end
-
-target 'Demo-CocoaPods' do
-  demo_pods
-  pod 'Braintree', :path => '.'
-  pod 'Braintree/3D-Secure', :path => '.'
-  pod 'Braintree/Apple-Pay', :path => '.'
-  pod 'Braintree/DataCollector', :path => '.'
-end
-
-target 'Test-Deps' do
-  link_with 'UnitTests', 'IntegrationTests', 'UnitTests-StaticLibrary', 'UnitTests-CocoaPods'
+def test_pods
   pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
   pod 'OHHTTPStubs'
 end
 
+target 'Demo' do
+  link_with 'Demo', 'Demo-StaticLibrary'
+  demo_pods
+end
+
+target 'Test-Deps' do
+  link_with 'UnitTests', 'IntegrationTests', 'UnitTests-StaticLibrary'
+  test_pods
+end
+
+target 'UnitTests-CocoaPods' do
+  test_pods
+  pod 'Braintree', :path => '.'
+  pod 'Braintree/3D-Secure', :path => '.'
+  pod 'Braintree/Apple-Pay', :path => '.'
+  pod 'Braintree/DataCollector', :path => '.'
+end

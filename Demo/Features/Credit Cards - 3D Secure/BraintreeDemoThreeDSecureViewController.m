@@ -5,19 +5,10 @@
 #import <BraintreeUI/BraintreeUI.h>
 
 @interface BraintreeDemoThreeDSecureViewController () <BTViewControllerPresentingDelegate>
-@property (nonatomic, strong) BTThreeDSecureDriver *threeDSecure;
 @property (nonatomic, strong) BTUICardFormView *cardFormView;
 @end
 
 @implementation BraintreeDemoThreeDSecureViewController
-
-- (instancetype)initWithAuthorization:(NSString *)authorization {
-    self = [super initWithAuthorization:authorization];
-    if (self) {
-        _threeDSecure = [[BTThreeDSecureDriver alloc] initWithAPIClient:self.apiClient delegate:self];
-    }
-    return self;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -80,7 +71,9 @@
 
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
 
-        [self.threeDSecure verifyCardWithNonce:tokenizedCard.nonce
+        BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithAPIClient:self.apiClient delegate:self];
+
+        [threeDSecure verifyCardWithNonce:tokenizedCard.nonce
                                         amount:[NSDecimalNumber decimalNumberWithString:@"10"]
                                     completion:^(BTThreeDSecureCardNonce * _Nullable threeDSecureCard, NSError * _Nullable error)
          {

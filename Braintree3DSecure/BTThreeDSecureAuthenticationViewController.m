@@ -1,12 +1,8 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
-#import "BTURLUtils.h"
 #import "BTThreeDSecureResponse.h"
 #import "BTWebViewController.h"
-#if __has_include("BraintreeCard.h")
+#import "BTURLUtils.h"
 #import "BTCardNonce_Internal.h"
-#else
-#import <BraintreeCard/BTCardNonce_Internal.h>
-#endif
 
 @interface BTThreeDSecureAuthenticationViewController ()
 @end
