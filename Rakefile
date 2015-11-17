@@ -213,6 +213,8 @@ namespace :release do
     say "* [ ] You have already reviewed the diff between the current release and the last tag, noting breaking changes in the semver and CHANGELOG."
     say "* [ ] You updated the Braintree docs and website."
     say "* [ ] Tests are passing, manual verifications complete."
+    say "* [ ] Email is composed and ready to send to braintree-sdk-announce@googlegroups.com"
+
     abort(1) unless ask "Ready to release? "
   end
 
