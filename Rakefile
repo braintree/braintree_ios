@@ -76,8 +76,8 @@ namespace :spec do
   desc 'Run unit tests'
   task :unit do
     run_test_scheme! 'UnitTests'
-    run_test_scheme! 'UnitTests-StaticLibrary'
-    run_test_scheme! 'UnitTests-CocoaPods'
+    # run_test_scheme! 'UnitTests-StaticLibrary'
+    # run_test_scheme! 'UnitTests-CocoaPods'
     # TODO: Get tests working on iOS 8.4 Simulator
     #run_test_scheme! 'UnitTests', 8.4
   end
