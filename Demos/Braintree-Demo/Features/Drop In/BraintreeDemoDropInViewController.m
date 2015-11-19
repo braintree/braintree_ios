@@ -77,6 +77,7 @@
         }];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
+        self.completionBlock(paymentMethod);
     }
 }
 
