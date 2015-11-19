@@ -32,7 +32,7 @@ The setup and initialization of the SDK has changed slightly. The `Braintree` cl
 ```objectivec
 #import "BraintreeCore.h"
 
-BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"<#client_token_or_authorization_token#>"];
+BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"<#client_token_or_tokenization_key#>"];
 ```
 
 `BTAPIClient` can also be initialized with a [tokenization key](https://developers.braintreepayments.com/guides/authorization/tokenization-key).
