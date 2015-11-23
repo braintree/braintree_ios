@@ -239,10 +239,56 @@ class BTJSON_Tests: XCTestCase {
 
         XCTAssertTrue(obj.isObject);
     }
+
     func testIsObjectForNonObject() {
         let JSON = "[]".dataUsingEncoding(NSUTF8StringEncoding)!
         let obj = BTJSON(data: JSON)
 
         XCTAssertFalse(obj.isObject);
+    }
+
+    func testLargerMixedJSONWithEmoji() {
+        let JSON = ("{" +
+            "\"aString\": \"Hello, JSON 😍!\"," +
+            "\"anArray\": [1, 2, 3 ]," +
+            "\"aSetOfValues\": [\"a\", \"b\", \"c\"]," +
+            "\"aSetWithDuplicates\": [\"a\", \"a\", \"b\", \"b\" ]," +
+            "\"aLookupDictionary\": {" +
+            "\"foo\": { \"definition\": \"A meaningless word\"," +
+            "\"letterCount\": 3," +
+            "\"meaningful\": false }" +
+            "}," +
+            "\"aURL\": \"https://test.example.com:1234/path\"," +
+            "\"anInvalidURL\": \":™£¢://://://???!!!\"," +
+            "\"aTrue\": true," +
+            "\"aFalse\": false" +
+            "}").dataUsingEncoding(NSUTF8StringEncoding)!
+        let obj = BTJSON(data: JSON)
+
+        XCTAssertEqual(obj["aString"].asString(), "Hello, JSON 😍!")
+        XCTAssertNil(obj["notAString"].asString()) // nil for absent keys
+        XCTAssertNil(obj["anArray"].asString()) // nil for invalid values
+        XCTAssertEqual(obj["anArray"].asArray()!, [1, 2, 3])
+        XCTAssertNil(obj["notAnArray"].asArray()) // nil for absent keys
+        XCTAssertNil(obj["aString"].asArray()) // nil for invalid values
+        // sets can be parsed as arrays:
+        XCTAssertEqual(obj["aSetOfValues"].asArray()!, ["a", "b", "c"])
+        XCTAssertEqual(obj["aSetWithDuplicates"].asArray()!, ["a", "a", "b", "b"])
+        let dictionary = obj["aLookupDictionary"].asDictionary()!
+        let foo = dictionary["foo"]! as! Dictionary<String, AnyObject>
+        XCTAssertEqual((foo["definition"] as! String), "A meaningless word")
+        let letterCount = foo["letterCount"] as! NSNumber
+        XCTAssertEqual(letterCount, 3)
+        XCTAssertFalse(foo["meaningful"] as! Bool)
+        XCTAssertNil(obj["notADictionary"].asDictionary())
+        XCTAssertNil(obj["aString"].asDictionary())
+        XCTAssertEqual(obj["aURL"].asURL(), NSURL(string: "https://test.example.com:1234/path"))
+        XCTAssertNil(obj["notAURL"].asURL())
+        XCTAssertNil(obj["aString"].asURL())
+        XCTAssertNil(obj["anInvalidURL"].asURL()) // nil for invalid URLs
+        // nested resources:
+        let btJson = obj["aLookupDictionary"]
+        XCTAssertEqual(btJson["foo"]["definition"].asString(), "A meaningless word")
+        XCTAssert(btJson["aString"]["anything"].isError) // indicates error when value type is invalid
     }
 }

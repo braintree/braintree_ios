@@ -52,6 +52,11 @@ class BTAppSwitch_Tests: XCTestCase {
         let sourceApplication : String? = nil
         BTAppSwitch.handleOpenURL(NSURL(string: "fake://url")!, sourceApplication: sourceApplication)
     }
+    
+    func testHandleOpenURL_withNoAppSwitching() {
+        let handled = BTAppSwitch().handleOpenURL(NSURL(string: "scheme://")!, sourceApplication: "com.yourcompany.hi")
+        XCTAssertFalse(handled)
+    }
 }
 
 class MockAppSwitchHander: BTAppSwitchHandler {

@@ -48,6 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Unregisters a class that knows how to handle a return from app switch
 - (void)unregisterAppSwitchHandler:(Class<BTAppSwitchHandler>)handler;
 
+- (BOOL)handleOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
+
 @end
 
 #pragma mark - BTAppSwitchDelegate

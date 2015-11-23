@@ -487,8 +487,6 @@
 		A7ABD6891B702FF000A1223C /* good_site_request.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD66F1B702FF000A1223C /* good_site_request.pem */; };
 		A7ABD68A1B702FF000A1223C /* https_server.rb in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6701B702FF000A1223C /* https_server.rb */; };
 		A7ABD68B1B702FF000A1223C /* make_certs.sh in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6711B702FF000A1223C /* make_certs.sh */; };
-		A7ABD68C1B702FF000A1223C /* braintree-api-integration-specs-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6731B702FF000A1223C /* braintree-api-integration-specs-Info.plist */; };
-		A7ABD68D1B702FF000A1223C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6751B702FF000A1223C /* InfoPlist.strings */; };
 		A7ABD68E1B702FF000A1223C /* BraintreeCard_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */; };
 		A7B1C1431B66B3D000ED063C /* BTConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = A7B1C1411B66B3D000ED063C /* BTConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7B1C1441B66B3D000ED063C /* BTConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B1C1421B66B3D000ED063C /* BTConfiguration.m */; };
@@ -1165,9 +1163,6 @@
 		A7ABD66F1B702FF000A1223C /* good_site_request.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = good_site_request.pem; sourceTree = "<group>"; };
 		A7ABD6701B702FF000A1223C /* https_server.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = https_server.rb; sourceTree = "<group>"; };
 		A7ABD6711B702FF000A1223C /* make_certs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = make_certs.sh; sourceTree = "<group>"; };
-		A7ABD6731B702FF000A1223C /* braintree-api-integration-specs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "braintree-api-integration-specs-Info.plist"; sourceTree = "<group>"; };
-		A7ABD6741B702FF000A1223C /* braintree-api-integration-specs-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "braintree-api-integration-specs-Prefix.pch"; sourceTree = "<group>"; };
-		A7ABD6761B702FF000A1223C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BraintreeCard_IntegrationTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A7B035B519D6273400750F8A /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.0.sdk/System/Library/Frameworks/PassKit.framework; sourceTree = DEVELOPER_DIR; };
 		A7B1C1411B66B3D000ED063C /* BTConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTConfiguration.h; sourceTree = "<group>"; };
@@ -2204,7 +2199,6 @@
 			isa = PBXGroup;
 			children = (
 				A7ABD6641B702FF000A1223C /* SSL */,
-				A7ABD6721B702FF000A1223C /* Supporting Files */,
 				A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */,
 				A7ABD6611B702FF000A1223C /* BTHTTPSSLPinning_IntegrationTests.m */,
 				A7ABD6631B702FF000A1223C /* good_root_cert.der */,
@@ -2230,16 +2224,6 @@
 				A7ABD6711B702FF000A1223C /* make_certs.sh */,
 			);
 			path = SSL;
-			sourceTree = "<group>";
-		};
-		A7ABD6721B702FF000A1223C /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				A7ABD6751B702FF000A1223C /* InfoPlist.strings */,
-				A7ABD6731B702FF000A1223C /* braintree-api-integration-specs-Info.plist */,
-				A7ABD6741B702FF000A1223C /* braintree-api-integration-specs-Prefix.pch */,
-			);
-			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		A7C8230F1B4DAAFB009D45D6 /* Helpers */ = {
@@ -2988,13 +2972,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7ABD6881B702FF000A1223C /* good_site_key.pem in Resources */,
-				A7ABD68D1B702FF000A1223C /* InfoPlist.strings in Resources */,
 				A7ABD6821B702FF000A1223C /* evil_site_cert.pem in Resources */,
 				A7ABD6891B702FF000A1223C /* good_site_request.pem in Resources */,
 				A7ABD6811B702FF000A1223C /* evil_root_key.pem in Resources */,
 				A7ABD6801B702FF000A1223C /* evil_root_cert.pem in Resources */,
 				A7ABD6851B702FF000A1223C /* good_root_cert.pem in Resources */,
-				A7ABD68C1B702FF000A1223C /* braintree-api-integration-specs-Info.plist in Resources */,
 				A7ABD68A1B702FF000A1223C /* https_server.rb in Resources */,
 				A7ABD6861B702FF000A1223C /* good_root_key.pem in Resources */,
 				A7ABD6831B702FF000A1223C /* evil_site_key.pem in Resources */,
@@ -3965,15 +3947,6 @@
 				A79AFA5F1B56F823007B1DF1 /* zh-Hans */,
 			);
 			name = "Three-D-Secure.strings";
-			path = .;
-			sourceTree = "<group>";
-		};
-		A7ABD6751B702FF000A1223C /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A7ABD6761B702FF000A1223C /* en */,
-			);
-			name = InfoPlist.strings;
 			path = .;
 			sourceTree = "<group>";
 		};
