@@ -7,7 +7,7 @@ class BTCardNonce_Tests: XCTestCase {
     }
 
     func testCardWithJSON_createsCardWithExpectedValues() {
-        let tokenizedCard = BTCardNonce(JSON: BTJSON(value: [
+        let cardNonce = BTCardNonce(JSON: BTJSON(value: [
             "description": "Visa ending in 11",
             "details": [
                 "cardType": "Visa",
@@ -16,15 +16,15 @@ class BTCardNonce_Tests: XCTestCase {
             "nonce": "fake-nonce",
             ]))
 
-        XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
-        XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.Visa)
-        XCTAssertEqual(tokenizedCard.lastTwo, "11")
-        XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
-        XCTAssertEqual(tokenizedCard.type, "Visa")
+        XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
+        XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.Visa)
+        XCTAssertEqual(cardNonce.lastTwo, "11")
+        XCTAssertEqual(cardNonce.nonce, "fake-nonce")
+        XCTAssertEqual(cardNonce.type, "Visa")
     }
 
     func testCardWithJSON_ignoresCaseWhenParsingCardType() {
-        let tokenizedCard = BTCardNonce(JSON: BTJSON(value: [
+        let cardNonce = BTCardNonce(JSON: BTJSON(value: [
             "description": "Visa ending in 11",
             "details": [
                 "cardType": "vIsA",
@@ -33,11 +33,11 @@ class BTCardNonce_Tests: XCTestCase {
             "nonce": "fake-nonce",
             ]))
 
-        XCTAssertEqual(tokenizedCard.localizedDescription, "Visa ending in 11")
-        XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.Visa)
-        XCTAssertEqual(tokenizedCard.lastTwo, "11")
-        XCTAssertEqual(tokenizedCard.nonce, "fake-nonce")
-        XCTAssertEqual(tokenizedCard.type, "Visa")
+        XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
+        XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.Visa)
+        XCTAssertEqual(cardNonce.lastTwo, "11")
+        XCTAssertEqual(cardNonce.nonce, "fake-nonce")
+        XCTAssertEqual(cardNonce.type, "Visa")
     }
 
     func testCardWithJSON_parsesAllCardTypesCorrectly() {
@@ -95,10 +95,10 @@ class BTCardNonce_Tests: XCTestCase {
                 ],
                 "nonce": "fake-nonce",
             ]
-            let tokenizedCard = BTCardNonce(JSON: BTJSON(value: jsonValue))
+            let cardNonce = BTCardNonce(JSON: BTJSON(value: jsonValue))
 
-            XCTAssertEqual(tokenizedCard.cardNetwork, cardNetworks[i])
-            XCTAssertEqual(tokenizedCard.type, cardTypes[i])
+            XCTAssertEqual(cardNonce.cardNetwork, cardNetworks[i])
+            XCTAssertEqual(cardNonce.type, cardTypes[i])
         }
     }
 }

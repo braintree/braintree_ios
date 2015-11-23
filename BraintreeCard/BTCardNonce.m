@@ -2,22 +2,15 @@
 
 @implementation BTCardNonce
 
-@synthesize nonce = _paymentMethodNonce;
-@synthesize localizedDescription = _localizedDescription;
-@synthesize type = _type;
-
-- (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
-                               description:(NSString *)description
-                               cardNetwork:(BTCardNetwork)cardNetwork
-                                   lastTwo:(NSString *)lastTwo
+- (instancetype)initWithNonce:(NSString *)nonce
+                  description:(NSString *)description
+                  cardNetwork:(BTCardNetwork)cardNetwork
+                      lastTwo:(NSString *)lastTwo
 {
-    self = [self init];
+    self = [super initWithNonce:nonce localizedDescription:description type:[BTCardNonce stringFromCardNetwork:cardNetwork]];
     if (self) {
-        _paymentMethodNonce = nonce;
-        _localizedDescription = description;
         _cardNetwork = cardNetwork;
         _lastTwo = lastTwo;
-        _type = [BTCardNonce stringFromCardNetwork:_cardNetwork];
     }
     return self;
 }
@@ -57,23 +50,23 @@
 + (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON {
     // Normalize the card network string in cardJSON to be lowercase so that our enum mapping is case insensitive
     BTJSON *cardType = [[BTJSON alloc] initWithValue:cardJSON[@"details"][@"cardType"].asString.lowercaseString];
-    return [[[self class] alloc] initWithPaymentMethodNonce:cardJSON[@"nonce"].asString
-                                                description:cardJSON[@"description"].asString
-                                                cardNetwork:[cardType asEnum:@{
-                                                                               @"american express": @(BTCardNetworkAMEX),
-                                                                               @"diners club": @(BTCardNetworkDinersClub),
-                                                                               @"china unionpay": @(BTCardNetworkUnionPay),
-                                                                               @"discover": @(BTCardNetworkDiscover),
-                                                                               @"maestro": @(BTCardNetworkMaestro),
-                                                                               @"mastercard": @(BTCardNetworkMasterCard),
-                                                                               @"jcb": @(BTCardNetworkJCB),
-                                                                               @"laser": @(BTCardNetworkLaser),
-                                                                               @"solo": @(BTCardNetworkSolo),
-                                                                               @"switch": @(BTCardNetworkSwitch),
-                                                                               @"uk maestro": @(BTCardNetworkUKMaestro),
-                                                                               @"visa": @(BTCardNetworkVisa),}
-                                                                   orDefault:BTCardNetworkUnknown]
-                                                    lastTwo:cardJSON[@"details"][@"lastTwo"].asString];
+    return [[[self class] alloc] initWithNonce:cardJSON[@"nonce"].asString
+                                   description:cardJSON[@"description"].asString
+                                   cardNetwork:[cardType asEnum:@{
+                                                                  @"american express": @(BTCardNetworkAMEX),
+                                                                  @"diners club": @(BTCardNetworkDinersClub),
+                                                                  @"china unionpay": @(BTCardNetworkUnionPay),
+                                                                  @"discover": @(BTCardNetworkDiscover),
+                                                                  @"maestro": @(BTCardNetworkMaestro),
+                                                                  @"mastercard": @(BTCardNetworkMasterCard),
+                                                                  @"jcb": @(BTCardNetworkJCB),
+                                                                  @"laser": @(BTCardNetworkLaser),
+                                                                  @"solo": @(BTCardNetworkSolo),
+                                                                  @"switch": @(BTCardNetworkSwitch),
+                                                                  @"uk maestro": @(BTCardNetworkUKMaestro),
+                                                                  @"visa": @(BTCardNetworkVisa),}
+                                                      orDefault:BTCardNetworkUnknown]
+                                       lastTwo:cardJSON[@"details"][@"lastTwo"].asString];
 }
 
 @end

@@ -9,9 +9,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTApplePayCardNonce : BTPaymentMethodNonce
 
-- (instancetype)initWithPaymentMethodNonce:(NSString *)paymentMethodNonce
-                               description:(NSString *)localizedDescription;
-
 @end
 
 NS_ASSUME_NONNULL_END

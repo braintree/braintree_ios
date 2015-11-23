@@ -14,13 +14,13 @@
 
 @implementation BTThreeDSecureCardNonce
 
-- (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
-                               description:(NSString *)description
-                               cardNetwork:(BTCardNetwork)cardNetwork
-                                   lastTwo:(NSString *)lastTwo
-                          threeDSecureJSON:(BTJSON *)threeDSecureJSON
+- (instancetype)initWithNonce:(NSString *)nonce
+                  description:(NSString *)description
+                  cardNetwork:(BTCardNetwork)cardNetwork
+                      lastTwo:(NSString *)lastTwo
+             threeDSecureJSON:(BTJSON *)threeDSecureJSON
 {
-    self = [super initWithPaymentMethodNonce:nonce description:description cardNetwork:cardNetwork lastTwo:lastTwo];
+    self = [super initWithNonce:nonce description:description cardNetwork:cardNetwork lastTwo:lastTwo];
     if (self) {
         _threeDSecureJSON = threeDSecureJSON;
     }

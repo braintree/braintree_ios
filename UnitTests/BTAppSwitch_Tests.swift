@@ -33,8 +33,9 @@ class BTAppSwitch_Tests: XCTestCase {
         MockAppSwitchHander.cannedCanHandle = true
         let expectedURL = NSURL(string: "fake://url")!
 
-        BTAppSwitch.handleOpenURL(expectedURL, sourceApplication: "not important")
-
+        let handled = BTAppSwitch.handleOpenURL(expectedURL, sourceApplication: "not important")
+        
+        XCTAssert(handled)
         XCTAssertEqual(MockAppSwitchHander.lastHandleAppSwitchReturnURL!, expectedURL)
     }
 
@@ -45,6 +46,13 @@ class BTAppSwitch_Tests: XCTestCase {
         BTAppSwitch.handleOpenURL(NSURL(string: "fake://url")!, sourceApplication: "not important")
 
         XCTAssertNil(MockAppSwitchHander.lastHandleAppSwitchReturnURL)
+    }
+
+    func testHandleOpenURL_whenHandlerCantHandleOpenURL_returnsFalse() {
+        appSwitch.registerAppSwitchHandler(MockAppSwitchHander.self)
+        MockAppSwitchHander.cannedCanHandle = false
+
+        XCTAssertFalse(BTAppSwitch.handleOpenURL(NSURL(string: "fake://url")!, sourceApplication: "not important"))
     }
     
     func testHandleOpenURL_acceptsOptionalSourceApplication() {

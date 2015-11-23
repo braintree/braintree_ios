@@ -13,11 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Internal
 
-- (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
-                               description:(nullable NSString *)description
-                               cardNetwork:(BTCardNetwork)cardNetwork
-                                   lastTwo:(nullable NSString *)lastTwo
-                          threeDSecureJSON:(BTJSON *)threeDSecureJSON;
+- (instancetype)initWithNonce:(NSString *)nonce
+                  description:(nullable NSString *)description
+                  cardNetwork:(BTCardNetwork)cardNetwork
+                      lastTwo:(nullable NSString *)lastTwo
+             threeDSecureJSON:(BTJSON *)threeDSecureJSON;
 
 @end
 

@@ -13,6 +13,19 @@ NS_ASSUME_NONNULL_BEGIN
 /// used on your server to reference the data in Braintree operations, such as Transaction.sale.
 @interface BTPaymentMethodNonce : NSObject
 
+/// Initialize a new Payment Method Nonce.
+///
+/// @param nonce       A transactable payment method nonce.
+/// @param description A human-readable description.
+/// @param type        A string identifying the type of the payment method.
+/// @return A Payment Method Nonce, or `nil` if nonce is nil.
+- (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(nullable NSString *)description type:(NSString *)type;
+
+/// Initialize a new Payment Method Nonce.
+///
+/// @param nonce       A transactable payment method nonce.
+/// @param description A human-readable description.
+/// @return A Payment Method Nonce, or `nil` if nonce is nil.
 - (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(nullable NSString *)description;
 
 /// The one-time use payment method nonce

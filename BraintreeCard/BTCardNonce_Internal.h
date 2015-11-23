@@ -5,10 +5,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTCardNonce ()
 
-- (instancetype)initWithPaymentMethodNonce:(nonnull NSString *)nonce
-                               description:(nullable NSString *)description
-                               cardNetwork:(BTCardNetwork)cardNetwork
-                                   lastTwo:(nullable NSString *)lastTwo;
+- (instancetype)initWithNonce:(nonnull NSString *)nonce
+                  description:(nullable NSString *)description
+                  cardNetwork:(BTCardNetwork)cardNetwork
+                      lastTwo:(nullable NSString *)lastTwo;
 
 @end
 

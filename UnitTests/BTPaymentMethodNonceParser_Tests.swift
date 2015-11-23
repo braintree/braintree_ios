@@ -1,6 +1,6 @@
 import XCTest
 
-class BTTokenizationParser_Tests: XCTestCase {
+class BTPaymentMethodNonceParser_Tests: XCTestCase {
     
     var parser : BTPaymentMethodNonceParser = BTPaymentMethodNonceParser()
 

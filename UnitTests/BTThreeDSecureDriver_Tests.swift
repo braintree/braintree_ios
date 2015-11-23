@@ -61,16 +61,41 @@ class BTThreeDSecureDriver_Tests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    func testVerification_callsCompletion() {
+    func testVerification_withEnrolledCardThatDoesntRequireAuthentication_callsCompletionWithACard() {
+        let responseBody = [
+            "paymentMethod": [
+                "consumed": false,
+                "description": "ending in 02",
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "02",
+                ],
+                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
+                "threeDSecureInfo": [
+                    "enrolled": "Y",
+                    "liabilityShiftPossible": true,
+                    "liabilityShifted": true,
+                    "status": "authenticate_successful",
+                ],
+                "type": "CreditCard",
+            ],
+            "success": true,
+            "threeDSecureInfo":     [
+                "liabilityShiftPossible": true,
+                "liabilityShifted": true,
+            ]
+        ]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+
         let threeDSecureDriver = BTThreeDSecureDriver.init(APIClient: mockAPIClient, delegate:viewControllerPresentingDelegate )
         
         let expectation = expectationWithDescription("willCallCompletion")
         
         threeDSecureDriver.verifyCardWithNonce(originalNonce_lookupEnrolledAuthenticationNotRequired, amount: NSDecimalNumber.one(), completion: { (tokenizedCard, error) -> Void in
-            XCTAssertNotNil(tokenizedCard)
+            XCTAssert(isANonce(tokenizedCard!.nonce))
             XCTAssertNil(error)
-            XCTAssertFalse(tokenizedCard!.liabilityShifted)
-            XCTAssertFalse(tokenizedCard!.liabilityShiftPossible)
+            XCTAssert(tokenizedCard!.liabilityShifted)
+            XCTAssert(tokenizedCard!.liabilityShiftPossible)
             expectation.fulfill()
         })
 
