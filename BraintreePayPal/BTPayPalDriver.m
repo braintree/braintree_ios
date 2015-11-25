@@ -317,7 +317,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 - (void)setAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock
                  forPaymentType:(BTPayPalPaymentType)paymentType {
     appSwitchReturnBlock = ^(NSURL *url) {
-        [self informDelegatePresentingViewControllerNeedsDismissal];
+        if (self.safariViewController) {
+            [self informDelegatePresentingViewControllerNeedsDismissal];
+        }
+
         [self informDelegateWillProcessAppSwitchReturn];
         
         // Before parsing the return URL, check whether the user cancelled by breaking
