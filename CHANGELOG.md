@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 4.0.2 (2015-11-30)
+
+* Prevent calling requestsDismissalOfViewController on iOS 8 when there is nothing to dismiss. (Merge [#199](https://github.com/braintree/braintree_ios/pull/199) - thanks, @Reflejo!)
+* Drop-in Add Payment Method fixes
+  * Show/hide CVV and postal code fields without flicker
+  * Use Save bar button item in upper right to add additional payment methods
+* `BTPayPalDriver` will not call `BTAppSwitchDelegate` callback methods when `SFSafariViewController` is presented (Issue [#188](https://github.com/braintree/braintree_ios/issues/188))
+
 ## 4.0.1 (2015-11-17)
 
 * Drop-in fixes
