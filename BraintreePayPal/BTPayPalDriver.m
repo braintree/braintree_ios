@@ -112,9 +112,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         } else if (self.apiClient.tokenizationKey) {
             request.additionalPayloadAttributes = @{ @"client_key": self.apiClient.tokenizationKey };
         }
-        
-        
-        [self informDelegateWillPerformAppSwitch];
+
+        if (![SFSafariViewController class]) {
+            [self informDelegateWillPerformAppSwitch];
+        }
         [request performWithAdapterBlock:^(BOOL success, NSURL *url, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
             self.clientMetadataId = clientMetadataId;
             
@@ -122,7 +123,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             
             if (success) {
                 [self performSwitchRequest:url];
-                [self informDelegateDidPerformAppSwitchToTarget:target];
+                if (![SFSafariViewController class]) {
+                    [self informDelegateDidPerformAppSwitchToTarget:target];
+                }
             } else {
                 if (completionBlock) completionBlock(nil, error);
             }
@@ -291,10 +294,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                                                                             environment:[self payPalEnvironmentForRemoteConfiguration:configuration.json]
                                                                       callbackURLScheme:self.returnURLScheme];
                       }
-                      
-                      
-                      [self informDelegateWillPerformAppSwitch];
-                      
+
+                      if (![SFSafariViewController class]) {
+                          [self informDelegateWillPerformAppSwitch];
+                      }
                       [request performWithAdapterBlock:^(BOOL success, NSURL *url, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
                           self.clientMetadataId = clientMetadataId;
                           
@@ -305,7 +308,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                           }
                           if (success) {
                               [self performSwitchRequest:url];
-                              [self informDelegateDidPerformAppSwitchToTarget:target];
+                              if (![SFSafariViewController class]) {
+                                  [self informDelegateDidPerformAppSwitchToTarget:target];
+                              }
                           } else {
                               if (completionBlock) completionBlock(nil, error);
                           }
@@ -319,9 +324,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     appSwitchReturnBlock = ^(NSURL *url) {
         if (self.safariViewController) {
             [self informDelegatePresentingViewControllerNeedsDismissal];
+        } else {
+            [self informDelegateWillProcessAppSwitchReturn];
         }
-
-        [self informDelegateWillProcessAppSwitchReturn];
         
         // Before parsing the return URL, check whether the user cancelled by breaking
         // out of the PayPal app switch flow (e.g. "Done" button in SFSafariViewController)
@@ -389,11 +394,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 }
 
 
-- (void)performSwitchRequest:(NSURL*) appSwitchURL {
+- (void)performSwitchRequest:(NSURL *)appSwitchURL {
     if ([SFSafariViewController class]) {
         [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
-    }
-    else {
+    } else {
         [[UIApplication sharedApplication] openURL:appSwitchURL];
     }
 }
