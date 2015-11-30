@@ -56,17 +56,15 @@
 
     self.progressBlock(@"Fetching payment methods...");
 
-    [dropIn fetchPaymentMethodsOnCompletion:^{
-        if ([BraintreeDemoSettings useModalPresentation]) {
-            self.progressBlock(@"Presenting Drop In Modally");
-            dropIn.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(tappedCancel)];
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:dropIn];
-            [self presentViewController:nav animated:YES completion:nil];
-        } else {
-            self.progressBlock(@"Pushing Drop In on nav stack");
-            [self.navigationController pushViewController:dropIn animated:YES];
-        }
-    }];
+    if ([BraintreeDemoSettings useModalPresentation]) {
+        self.progressBlock(@"Presenting Drop In Modally");
+        dropIn.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(tappedCancel)];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:dropIn];
+        [self presentViewController:nav animated:YES completion:nil];
+    } else {
+        self.progressBlock(@"Pushing Drop In on nav stack");
+        [self.navigationController pushViewController:dropIn animated:YES];
+    }
 }
 
 

@@ -106,7 +106,26 @@ class BTDropInViewController_Tests: XCTestCase {
         // of the call to action control.
         XCTAssertNotNil(dropInViewController.navigationItem.rightBarButtonItem)
     }
-    
+
+    func testDropIn_addPaymentMethodViewController_hidesCTA() {
+        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
+        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        let addPaymentMethodDropInViewController = dropInViewController.addPaymentMethodDropInViewController()
+        XCTAssertTrue(addPaymentMethodDropInViewController.paymentRequest!.shouldHideCallToAction)
+        XCTAssertNotNil(addPaymentMethodDropInViewController.navigationItem.rightBarButtonItem)
+
+        let didLoadExpectation = self.expectationWithDescription("Add payment method view controller did finish loading")
+        let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
+        addPaymentMethodDropInViewController.delegate = testDelegate
+
+        let window = UIWindow()
+        let viewController = UIViewController()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+        viewController.presentViewController(addPaymentMethodDropInViewController, animated: false, completion: nil)
+        self.waitForExpectationsWithTimeout(5, handler: nil)
+    }
+
     // MARK: - Metadata
     
     func testAPIClientMetadata_afterInstantiation_hasIntegrationSetToDropIn() {

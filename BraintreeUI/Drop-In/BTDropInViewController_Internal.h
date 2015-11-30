@@ -5,4 +5,6 @@
 
 @property (nonatomic, strong) BTDropInContentView *dropInContentView;
 
+- (BTDropInViewController *)addPaymentMethodDropInViewController;
+
 @end
