@@ -1,49 +1,56 @@
 import XCTest
 
 @objc class MockAppSwitchDelegate : NSObject, BTAppSwitchDelegate {
-    var willPerformAppSwitch : XCTestExpectation? = nil
-    var didPerformAppSwitch : XCTestExpectation? = nil
-    var willProcess : XCTestExpectation? = nil
+    var willPerformAppSwitchExpectation : XCTestExpectation? = nil
+    var didPerformAppSwitchExpectation : XCTestExpectation? = nil
+    var willProcessAppSwitchExpectation : XCTestExpectation? = nil
+    // XCTestExpectations verify that delegates callbacks are made; the below bools verify that they are NOT made
+    var willPerformAppSwitchCalled = false
+    var didPerformAppSwitchCalled = false
+    var willProcessAppSwitchCalled = false
     var lastAppSwitcher : AnyObject? = nil
 
     override init() { }
 
     init(willPerform: XCTestExpectation?, didPerform: XCTestExpectation?) {
-        willPerformAppSwitch = willPerform
-        didPerformAppSwitch = didPerform
+        willPerformAppSwitchExpectation = willPerform
+        didPerformAppSwitchExpectation = didPerform
     }
 
     @objc func appSwitcherWillPerformAppSwitch(appSwitcher: AnyObject) {
         lastAppSwitcher = appSwitcher
-        willPerformAppSwitch?.fulfill()
+        willPerformAppSwitchExpectation?.fulfill()
+        willPerformAppSwitchCalled = true
     }
 
     @objc func appSwitcher(appSwitcher: AnyObject, didPerformSwitchToTarget target: BTAppSwitchTarget) {
         lastAppSwitcher = appSwitcher
-        didPerformAppSwitch?.fulfill()
+        didPerformAppSwitchExpectation?.fulfill()
+        didPerformAppSwitchCalled = true
     }
 
     @objc func appSwitcherWillProcessPaymentInfo(appSwitcher: AnyObject) {
         lastAppSwitcher = appSwitcher
-        willProcess?.fulfill()
+        willProcessAppSwitchExpectation?.fulfill()
+        willProcessAppSwitchCalled = true
     }
 }
 
 @objc class MockViewControllerPresentationDelegate : NSObject, BTViewControllerPresentingDelegate {
-    var requestsPresentationOfViewController : XCTestExpectation? = nil
-    var requestsDismissalOfViewController : XCTestExpectation? = nil
+    var requestsPresentationOfViewControllerExpectation : XCTestExpectation? = nil
+    var requestsDismissalOfViewControllerExpectation : XCTestExpectation? = nil
     var lastViewController : UIViewController? = nil
     var lastPaymentDriver : AnyObject? = nil
 
     func paymentDriver(driver: AnyObject, requestsDismissalOfViewController viewController: UIViewController) {
         lastPaymentDriver = driver
         lastViewController = viewController
-        requestsDismissalOfViewController?.fulfill()
+        requestsDismissalOfViewControllerExpectation?.fulfill()
     }
 
     func paymentDriver(driver: AnyObject, requestsPresentationOfViewController viewController: UIViewController) {
         lastPaymentDriver = driver
         lastViewController = viewController
-        requestsPresentationOfViewController?.fulfill()
+        requestsPresentationOfViewControllerExpectation?.fulfill()
     }
 }
