@@ -2,7 +2,9 @@
 
 ## 4.0.2 (2015-11-30)
 
-* Fix Drop-in view controller to display customer's vaulted payment methods by default
+* If the Client Token has a Customer ID, Drop-in will automatically fetch the customer's vaulted payment methods.
+  * A bug in 4.0.0-4.0.1 prevented Drop-in from fetching payment methods even if a Customer ID is provided in the Client Token; apps needed to call `fetchPaymentMethodsOnCompletion` before presenting Drop-in.
+  * You can still call `fetchPaymentMethodsOnCompletion` to pre-fetch payment methods, so that Drop-in doesn't need to show its own loading activity indicator.
 * Prevent calling requestsDismissalOfViewController on iOS 8 when there is nothing to dismiss. (Merge [#199](https://github.com/braintree/braintree_ios/pull/199) - thanks, @Reflejo!)
 * Drop-in Add Payment Method fixes
   * Show/hide CVV and postal code fields without flicker
