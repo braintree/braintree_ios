@@ -2,6 +2,7 @@
 
 ## 4.0.2 (2015-11-30)
 
+* Fix Drop-in view controller to display customer's vaulted payment methods by default
 * Prevent calling requestsDismissalOfViewController on iOS 8 when there is nothing to dismiss. (Merge [#199](https://github.com/braintree/braintree_ios/pull/199) - thanks, @Reflejo!)
 * Drop-in Add Payment Method fixes
   * Show/hide CVV and postal code fields without flicker
