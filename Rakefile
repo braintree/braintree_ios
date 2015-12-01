@@ -11,7 +11,7 @@ desc "Run default set of tasks"
 task :spec => %w[spec:all]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
-task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
+task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
 
 desc "Publish code and pod to public github.com"
 task :publish => %w[publish:push publish:push_pod publish:cocoadocs]
@@ -115,7 +115,7 @@ end
 desc 'Run Carthage update'
 namespace :carthage do
   def generate_cartfile
-    File.write('./Cartfile', "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
+    File.write("./Cartfile", "git \"file://#{Dir.pwd}\" \"#{current_branch}\"")
   end
 
   task :generate do
@@ -123,7 +123,7 @@ namespace :carthage do
   end
 
   task :clean do
-    run! 'rm -rf Carthage && rm Cartfile && rm Cartfile.resolved'
+    run! 'rm -rf Carthage && rm Cartfile && rm Cartfile.resolved && rm -rf ~/Library/Developers/Xcode/DerivedData'
   end
 
   task :test do
@@ -134,7 +134,7 @@ namespace :carthage do
 end
 
 desc 'Run all sanity checks'
-task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo]
+task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo sanity_checks:carthage_test]
 
 namespace :sanity_checks do
   desc 'Check for pending tests'
@@ -147,7 +147,7 @@ namespace :sanity_checks do
   task :build_demo => 'demo:build'
 
   desc 'Verify that Carthage builds successfully'
-  task :build_carthage => 'carthage:update'
+  task :carthage_test => %w[carthage:test carthage:clean]
 end
 
 
