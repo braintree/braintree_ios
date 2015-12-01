@@ -54,8 +54,6 @@
     dropIn.paymentRequest = paymentRequest;
     dropIn.title = @"Check Out";
 
-    self.progressBlock(@"Fetching payment methods...");
-
     if ([BraintreeDemoSettings useModalPresentation]) {
         self.progressBlock(@"Presenting Drop In Modally");
         dropIn.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(tappedCancel)];

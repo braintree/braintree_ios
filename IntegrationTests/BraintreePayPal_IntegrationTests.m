@@ -12,7 +12,7 @@ id OCMArgCheckURLSchemeBeginsWith(NSString *string) {
     }];
 }
 
-@interface BTPayPalDriverTestDelegate : NSObject <BTAppSwitchDelegate>
+@interface BTAppSwitchTestDelegate : NSObject <BTAppSwitchDelegate>
 @property (nonatomic, strong) XCTestExpectation *willPerform;
 @property (nonatomic, strong) XCTestExpectation *didPerform;
 @property (nonatomic, strong) XCTestExpectation *willProcess;
@@ -20,7 +20,7 @@ id OCMArgCheckURLSchemeBeginsWith(NSString *string) {
 @property (nonatomic, assign) BTAppSwitchTarget lastTarget;
 @end
 
-@implementation BTPayPalDriverTestDelegate
+@implementation BTAppSwitchTestDelegate
 
 - (void)appSwitcherWillPerformAppSwitch:(id)appSwitcher {
     self.lastAppSwitcher = appSwitcher;
@@ -39,6 +39,30 @@ id OCMArgCheckURLSchemeBeginsWith(NSString *string) {
 }
 
 @end
+
+@interface BTViewControllerPresentingTestDelegate : NSObject <BTViewControllerPresentingDelegate>
+@property (nonatomic, strong) XCTestExpectation *requestsPresentationExpectation;
+@property (nonatomic, strong) XCTestExpectation *requestsDismissalExpectation;
+@property (nonatomic, strong) id lastDriver;
+@property (nonatomic, strong) id lastViewController;
+@end
+
+@implementation BTViewControllerPresentingTestDelegate
+
+- (void)paymentDriver:(id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+    self.lastDriver = driver;
+    self.lastViewController = viewController;
+    [self.requestsDismissalExpectation fulfill];
+}
+
+- (void)paymentDriver:(id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+    self.lastDriver = driver;
+    self.lastViewController = viewController;
+    [self.requestsPresentationExpectation fulfill];
+}
+
+@end
+
 
 @interface BraintreePayPal_IntegrationTests : XCTestCase
 @property (nonatomic, strong) NSNumber *didReceiveCompletionCallback;
@@ -179,17 +203,24 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
 - (void)testAnalytics_whenInitiatingFuturePayments_postsExpectedEventBeforePerformingAppSwitch {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
+
+
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     // BTPayPalDriver copies APIClient, so we have to mock the API client after the call to initWithAPIClient
     id partialMockAPIClient = OCMPartialMock(payPalDriver.apiClient);
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
 
-    // App switch target iOS app
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
     OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
@@ -198,7 +229,11 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    OCMVerify([partialMockAPIClient sendAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"]);
+    if (NSClassFromString(@"SFSafariViewController")) {
+        OCMVerify([partialMockAPIClient sendAnalyticsEvent:@"ios.paypal-future-payments.webswitch.initiate.started"]);
+    } else {
+        OCMVerify([partialMockAPIClient sendAnalyticsEvent:@"ios.paypal-future-payments.appswitch.initiate.started"]);
+    }
 }
 
 #pragma mark - Return URL handling
@@ -207,10 +242,16 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
 
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
@@ -233,10 +274,16 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -261,10 +308,16 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -288,10 +341,16 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     
@@ -326,10 +385,16 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -363,10 +428,16 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
 
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
         XCTAssertNotNil(tokenizedPayPalAccount);
@@ -390,10 +461,16 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
@@ -417,10 +494,16 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    BTPayPalDriverTestDelegate *delegate = [[BTPayPalDriverTestDelegate alloc] init];
-    delegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-    delegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-    payPalDriver.appSwitchDelegate = delegate;
+    BTViewControllerPresentingTestDelegate *viewControllerPresentingDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    BTAppSwitchTestDelegate *appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
+    if (NSClassFromString(@"SFSafariViewController")) {
+        viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
+        payPalDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate;
+    } else {
+        appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+        appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+        payPalDriver.appSwitchDelegate = appSwitchDelegate;
+    }
     id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
 
