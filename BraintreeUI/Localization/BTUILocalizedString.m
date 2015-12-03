@@ -97,4 +97,8 @@
     return NSLocalizedStringWithDefaultValue(@"COINBASE", [self localizationTable], [self localizationBundle], @"Coinbase", @"Coinbase (as a standalone term, referring to the bitcoin wallet company)");
 }
 
++ (NSString *)PAYMENT_METHOD_TYPE_VENMO {
+    return NSLocalizedStringWithDefaultValue(@"VENMO", [self localizationTable], [self localizationBundle], @"Venmo", @"Venmo (as a standalone term, referring to Venmo the company)");
+}
+
 @end

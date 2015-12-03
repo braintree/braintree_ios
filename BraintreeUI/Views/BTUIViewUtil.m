@@ -61,6 +61,8 @@
           return BTUILocalizedString(PAYPAL_CARD_BRAND);
     case BTUIPaymentOptionTypeCoinbase:
           return BTUILocalizedString(PAYMENT_METHOD_TYPE_COINBASE);
+    case BTUIPaymentOptionTypeVenmo:
+          return BTUILocalizedString(PAYMENT_METHOD_TYPE_VENMO);
     }
     
 }

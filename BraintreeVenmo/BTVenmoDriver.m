@@ -1,0 +1,286 @@
+#import "BTConfiguration+Venmo.h"
+#if __has_include("BTLogger_Internal.h")
+#import "BTLogger_Internal.h"
+#else
+#import <BraintreeCore/BTLogger_Internal.h>
+#endif
+#import "BTVenmoDriver_Internal.h"
+#import "BTVenmoAccountNonce_Internal.h"
+#import "BTAPIClient_Internal.h"
+#import "BTVenmoAppSwitchRequestURL.h"
+#import "BTVenmoAppSwitchReturnURL.h"
+#import "Braintree-Version.h"
+#import <UIKit/UIKit.h>
+
+@interface BTVenmoDriver ()
+
+@property (nonatomic, copy) void (^appSwitchCompletionBlock)(BTVenmoAccountNonce *, NSError *);
+
+@end
+
+NSString * const BTVenmoDriverErrorDomain = @"com.braintreepayments.BTVenmoDriverErrorDomain";
+
+@implementation BTVenmoDriver
+
+static BTVenmoDriver *appSwitchedDriver;
+
++ (void)load {
+    if (self == [BTVenmoDriver class]) {
+        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
+        [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
+            BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
+            [driver authorizeAccountWithCompletion:completionBlock];
+        }];
+        
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"Venmo" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
+            return [BTVenmoAccountNonce venmoAccountWithJSON:venmoJSON];
+        }];
+    }
+}
+
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
+    if (self = [super init]) {
+        _apiClient = [apiClient copyWithSource:BTClientMetadataSourceVenmoApp integration:apiClient.metadata.integration];
+    }
+    return self;
+}
+
+- (instancetype)init {
+    return nil;
+}
+
+#pragma mark - Accessors
+
+- (id)application {
+    if (!_application) {
+        _application = [UIApplication sharedApplication];
+    }
+    return _application;
+}
+
+- (NSBundle *)bundle {
+    if (!_bundle) {
+        _bundle = [NSBundle mainBundle];
+    }
+    return _bundle;
+}
+
+- (NSString *)returnURLScheme {
+    if (!_returnURLScheme) {
+        _returnURLScheme = [BTAppSwitch sharedInstance].returnURLScheme;
+    }
+    return _returnURLScheme;
+}
+
+#pragma mark - Tokenization
+
+- (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                             code:BTVenmoDriverErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTVenmoDriver failed because BTAPIClient is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
+    
+    if (self.returnURLScheme == nil || [self.returnURLScheme isEqualToString:@""]) {
+        [[BTLogger sharedLogger] critical:@"Venmo requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]"];
+        NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                    code:BTVenmoDriverErrorTypeAppNotAvailable
+                                userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
+        completionBlock(nil, error);
+        return;
+    } else if (![NSBundle mainBundle].bundleIdentifier || ![self.returnURLScheme hasPrefix:[NSBundle mainBundle].bundleIdentifier]) {
+        [[BTLogger sharedLogger] critical:@"Venmo requires [BTAppSwitch setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@) ", [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme];
+    }
+
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *configurationError) {
+        if (configurationError) {
+            completionBlock(nil, configurationError);
+            return;
+        }
+        
+        NSError *error;
+        if (![self verifyAppSwitchWithConfiguration:configuration error:&error]) {
+            completionBlock(nil, error);
+            return;
+        }
+        
+        BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
+        metadata.source = BTClientMetadataSourceVenmoApp;
+        NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+        
+        if (configuration.json[@"merchantId"].isError) {
+            completionBlock(nil, configuration.json[@"merchantId"].asError);
+        }
+        
+        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:configuration.json[@"merchantId"].asString
+                                                                        accessToken:configuration.venmoAccessToken
+                                                                         sdkVersion:BRAINTREE_VERSION
+                                                                    returnURLScheme:self.returnURLScheme
+                                                                  bundleDisplayName:bundleDisplayName
+                                                                        environment:configuration.json[@"environment"].asString];
+        
+        [self informDelegateWillPerformAppSwitch];
+        BOOL success = [self.application openURL:appSwitchURL];
+        if (success) {
+            [self informDelegateDidPerformAppSwitch];
+            self.appSwitchCompletionBlock = completionBlock;
+            appSwitchedDriver = self;
+            [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.success"];
+        } else {
+            [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.failure"];
+            error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                        code:BTVenmoDriverErrorTypeAppSwitchFailed
+                                    userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
+            completionBlock(nil, error);
+        }
+    }];
+}
+
+#pragma mark - App switch
+
+- (BOOL)isiOSAppAvailableForAppSwitch {
+    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
+}
+
++ (void)handleAppSwitchReturnURL:(NSURL *)url {
+    [appSwitchedDriver handleOpenURL:url];
+    appSwitchedDriver = nil;
+}
+
++ (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
+    return [BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:sourceApplication];
+}
+
+- (void)handleOpenURL:(NSURL *)url {
+    BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
+    
+    switch (returnURL.state) {
+        case BTVenmoAppSwitchReturnURLStateSucceeded: {
+            
+            NSError *error = nil;
+            if (!returnURL.nonce) {
+                error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing nonce"}];
+            }else if (!returnURL.username) {
+                error = [NSError errorWithDomain:BTVenmoDriverErrorDomain code:BTVenmoDriverErrorTypeInvalidReturnURL userInfo:@{NSLocalizedDescriptionKey: @"Return URL is missing username"}];
+            }
+            
+            if (error) {
+                [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.client-failure"];
+                self.appSwitchCompletionBlock(nil, error);
+                self.appSwitchCompletionBlock = nil;
+                return;
+            }
+            
+            [self informDelegateWillProcessAppSwitchReturn];
+            [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.success"];
+            
+            BTJSON *json = [[BTJSON alloc] initWithValue:@{
+                                                           @"nonce": returnURL.nonce,
+                                                           @"username": returnURL.username,
+                                                           @"description": returnURL.username
+                                                           }];
+            BTVenmoAccountNonce *card = [BTVenmoAccountNonce venmoAccountWithJSON:json];
+            self.appSwitchCompletionBlock(card, nil);
+            self.appSwitchCompletionBlock = nil;
+            
+            break;
+        }
+        case BTVenmoAppSwitchReturnURLStateFailed: {
+            [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.failed"];
+            self.appSwitchCompletionBlock(nil, returnURL.error);
+            self.appSwitchCompletionBlock = nil;
+            break;
+        }
+        case BTVenmoAppSwitchReturnURLStateCanceled: {
+            [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.cancel"];
+            self.appSwitchCompletionBlock(nil, nil);
+            self.appSwitchCompletionBlock = nil;
+            break;
+        }
+        default:
+            // should not happen
+            break;
+    }
+}
+
+#pragma mark - Helpers
+
+- (BOOL)verifyAppSwitchWithConfiguration:(BTConfiguration *)configuration error:(NSError * __autoreleasing *)error {
+    
+    if (![BTConfiguration isBetaEnabledPaymentOption:@"venmo"]) {
+        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.beta-not-enabled"];
+        if (error) {
+            *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                         code:BTVenmoDriverErrorTypeDisabled
+                                     userInfo:@{ NSLocalizedDescriptionKey:@"The Venmo beta override has been enabled. See [BTConfiguration setVenmoBetaEnabled:] for more information." }];
+        }
+        return NO;
+    }
+    
+    if (!configuration.isVenmoEnabled) {
+        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.disabled"];
+        if (error) {
+            *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                         code:BTVenmoDriverErrorTypeDisabled
+                                     userInfo:@{ NSLocalizedDescriptionKey:@"Venmo is not enabled for this merchant account." }];
+        }
+        return NO;
+    }
+    
+    if (![self isiOSAppAvailableForAppSwitch]) {
+        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.unavailable"];
+        if (error) {
+            *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                         code:BTVenmoDriverErrorTypeAppNotAvailable
+                                     userInfo:@{ NSLocalizedDescriptionKey:@"The Venmo app is not installed on this device, or it is not configured or available for app switch." }];
+        }
+        return NO;
+    }
+    
+    NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    if (!bundleDisplayName) {
+        if (error) {
+            *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                         code:BTVenmoDriverErrorTypeBundleDisplayNameMissing
+                                     userInfo:@{NSLocalizedDescriptionKey: @"CFBundleDisplayName must be non-nil. Please set 'Bundle display name' in your Info.plist."}];
+        }
+        return NO;
+    }
+    
+    return YES;
+}
+
+#pragma mark - Delegate Informers
+
+- (void)informDelegateWillPerformAppSwitch {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillSwitchNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillPerformAppSwitch:)]) {
+        [self.appSwitchDelegate appSwitcherWillPerformAppSwitch:self];
+    }
+}
+
+- (void)informDelegateDidPerformAppSwitch {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchDidSwitchNotification object:self userInfo:@{ BTAppSwitchNotificationTargetKey : @(BTAppSwitchTargetNativeApp) } ];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcher:didPerformSwitchToTarget:)]) {
+        [self.appSwitchDelegate appSwitcher:self didPerformSwitchToTarget:BTAppSwitchTargetNativeApp];
+    }
+}
+
+- (void)informDelegateWillProcessAppSwitchReturn {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppSwitchWillProcessPaymentInfoNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appSwitcherWillProcessPaymentInfo:)]) {
+        [self.appSwitchDelegate appSwitcherWillProcessPaymentInfo:self];
+    }
+}
+
+
+@end
+

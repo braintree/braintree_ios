@@ -64,8 +64,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 - (void)setupViews {
     self.clipsToBounds = YES;
     self.enabledPaymentOptions = [NSOrderedSet orderedSetWithArray:@[@"PayPal",
-                                                                     @"Venmo",
-                                                                     @"Coinbase"
+                                                                     @"Venmo"
                                                                      ]];
 
     BTUIHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTUIHorizontalButtonStackCollectionViewFlowLayout alloc] init];
@@ -142,6 +141,15 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [super updateConstraints];
 }
 
+#pragma mark - Accessors
+
+- (id)application {
+    if (!_application) {
+        _application = [UIApplication sharedApplication];
+    }
+    return _application;
+}
+
 #pragma mark PaymentButton State
 
 - (void)setEnabledPaymentOptions:(NSOrderedSet *)enabledPaymentOptions {
@@ -158,7 +166,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [self.paymentButtonsCollectionView reloadData];
 }
 
-/// Collection of payment option strings, e.g. "PayPal", "Coinbase"
+/// Collection of payment option strings, e.g. "PayPal"
 - (NSOrderedSet *)filteredEnabledPaymentOptions {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *paymentOption, __unused NSDictionary<NSString *,id> * _Nullable bindings) {
         if (![[BTTokenizationService sharedService] isTypeAvailable:paymentOption]) {
@@ -174,8 +182,11 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         } else if ([paymentOption isEqualToString:@"Venmo"]) {
             // Directly from BTConfiguration+Venmo.m. Be sure to keep these files in sync! This
             // is intentionally not DRY so that BraintreeUI does not depend on BraintreeVenmo.
-            BTJSON *venmoConfiguration = self.configuration.json[@"venmo"];
-            return venmoConfiguration.isString && ![venmoConfiguration.asString isEqualToString:@"off"];
+            BTJSON *venmoAccessToken = self.configuration.json[@"payWithVenmo"][@"accessToken"];
+            NSURLComponents *components = [NSURLComponents componentsWithString:@"com.venmo.touch.v2://x-callback-url/vzero/auth"];
+            
+            BOOL isVenmoAppInstalled = [[self application] canOpenURL:components.URL];
+            return venmoAccessToken.isString && [BTConfiguration isBetaEnabledPaymentOption:@"venmo"] && isVenmoAppInstalled;
         }
         // Payment option is available in the tokenization service, but BTPaymentButton does not know how
         // to check Configuration for whether it is enabled. Default to YES.

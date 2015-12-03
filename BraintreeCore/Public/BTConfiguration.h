@@ -14,6 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable instancetype)init __attribute__((unavailable("Please use initWithJSON: instead.")));
 
+/// Returns true if the corresponding beta flag is set
+/// Otherwise returns false
++ (BOOL)isBetaEnabledPaymentOption:(NSString*)paymentOption;
+
+/// Set a corresponding beta flag
++ (void)setBetaPaymentOption:(NSString*)paymentOption isEnabled:(BOOL)isEnabled;
+
 @end
 
 NS_ASSUME_NONNULL_END

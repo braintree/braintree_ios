@@ -15,4 +15,5 @@ typedef NS_ENUM(NSInteger, BTUIPaymentOptionType) {
     BTUIPaymentOptionTypeUKMaestro,
     BTUIPaymentOptionTypePayPal,
     BTUIPaymentOptionTypeCoinbase,
+    BTUIPaymentOptionTypeVenmo,
 };

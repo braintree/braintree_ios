@@ -3,7 +3,7 @@
 #import <PureLayout/PureLayout.h>
 #import <BraintreeCore/BraintreeCore.h>
 #import <BraintreeUI/BraintreeUI.h>
-
+#import <BraintreeVenmo/BraintreeVenmo.h>
 #import "BraintreeDemoSettings.h"
 
 @interface BraintreeDemoDropInViewController () <BTDropInViewControllerDelegate>
@@ -23,7 +23,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    [BTConfiguration enableVenmo:true]; // Assume the user is whitelisted for the beta
+    
     self.title = @"Drop In";
 
     UIButton *dropInButton = [UIButton buttonWithType:UIButtonTypeSystem];
