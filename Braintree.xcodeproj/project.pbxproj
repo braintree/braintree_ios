@@ -2756,15 +2756,12 @@
 					};
 					2D941D371B59C76A0016EFB4 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					2D941D871B5D9E8C0016EFB4 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					2DE12F081B59BE0100EA1BCF = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					417404481BB084D3008A5DEA = {
 						CreatedOnToolsVersion = 7.0;
@@ -2777,7 +2774,6 @@
 					};
 					A76B198A1B79707700452CFA = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 						SystemCapabilities = {
 							com.apple.OMC = {
 								enabled = 1;
@@ -2786,11 +2782,9 @@
 					};
 					A76D7BFF1BB1CAB00000FA6A = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					A77344F61B7A93A10083EC8D = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					A7ABD6521B702FD800A1223C = {
 						CreatedOnToolsVersion = 7.0;
@@ -2798,11 +2792,9 @@
 					};
 					A7C889731B5EF5DE007A0E9C = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 					A7C8898F1B5F043B007A0E9C = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43253H4X22;
 					};
 				};
 			};
@@ -4754,6 +4746,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -4778,6 +4771,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
