@@ -114,6 +114,7 @@
 		413533B01BF6C7510005D1BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A76B19AA1B79708900452CFA /* Main.storyboard */; };
 		413533B11BF6C7510005D1BA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A76B1A061B79708A00452CFA /* InfoPlist.strings */; };
 		413533C11BF6C7980005D1BA /* libBraintree.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 417404491BB084D3008A5DEA /* libBraintree.a */; };
+		413616EB1C1217F000D4C4A5 /* BTUIVenmoMonogramCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 035945561BE96345002116BB /* BTUIVenmoMonogramCardView.m */; };
 		4149C91D1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4149C91C1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift */; };
 		415924B21BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 415924B01BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m */; };
 		415924B41BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 415924B31BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -813,10 +814,8 @@
 		2CDCE86975684EFC94DA10AB /* libPods-Braintree-Data-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Data-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreePayPal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D941D3A1B59C76A0016EFB4 /* BraintreePayPal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreePayPal.h; sourceTree = "<group>"; };
-		2D941D3C1B59C76A0016EFB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D941D881B5D9E8C0016EFB4 /* Braintree3DSecure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Braintree3DSecure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D941D8A1B5D9E8C0016EFB4 /* Braintree3DSecure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree3DSecure.h; sourceTree = "<group>"; };
-		2D941D8C1B5D9E8C0016EFB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DE12F0B1B59BE0100EA1BCF /* BraintreeCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BraintreeCore.h; sourceTree = "<group>"; };
 		2DE12F0D1B59BE0100EA1BCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -950,7 +949,6 @@
 		A76B1A091B79708A00452CFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		A76B1A0A1B79708A00452CFA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A76D7C001BB1CAB00000FA6A /* BraintreeDataCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeDataCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A76D7C041BB1CAB00000FA6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A76D7C1E1BB1CBD50000FA6A /* BraintreeDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDataCollector.h; sourceTree = "<group>"; };
 		A76D7C1F1BB1CBD50000FA6A /* BTDataCollector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDataCollector.h; sourceTree = "<group>"; };
 		A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDataCollector.m; sourceTree = "<group>"; };
@@ -960,7 +958,6 @@
 		A76D7C3C1BB31ABB0000FA6A /* DeviceCollectorSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceCollectorSDK.h; sourceTree = "<group>"; };
 		A77344F71B7A93A10083EC8D /* BraintreeUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77344F91B7A93A10083EC8D /* BraintreeUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeUI.h; sourceTree = "<group>"; };
-		A77344FB1B7A93A10083EC8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A77345071B7A93D00083EC8D /* BTUILocalizedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUILocalizedString.h; sourceTree = "<group>"; };
 		A77345081B7A93D00083EC8D /* BTUILocalizedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUILocalizedString.m; sourceTree = "<group>"; };
 		A773450A1B7A93D00083EC8D /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/UI.strings; sourceTree = "<group>"; };
@@ -1227,7 +1224,6 @@
 		A7C8230C1B4DAAB2009D45D6 /* BTSpecHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSpecHelper.h; sourceTree = "<group>"; };
 		A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSpecHelper.m; sourceTree = "<group>"; };
 		A7C889741B5EF5DE007A0E9C /* BraintreeApplePay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeApplePay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7C889781B5EF5DE007A0E9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7C8897C1B5EF62C007A0E9C /* BTApplePayClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTApplePayClient.h; sourceTree = "<group>"; };
 		A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTApplePayClient.m; sourceTree = "<group>"; };
 		A7C8897E1B5EF62C007A0E9C /* BTApplePayCardNonce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTApplePayCardNonce.h; sourceTree = "<group>"; };
@@ -1236,7 +1232,6 @@
 		A7C889891B5EF737007A0E9C /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		A7C889901B5F043B007A0E9C /* BraintreeCard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeCard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7C889921B5F043B007A0E9C /* BraintreeCard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeCard.h; sourceTree = "<group>"; };
-		A7C889941B5F043B007A0E9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7C8899C1B5F0471007A0E9C /* BTCardClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardClient.h; sourceTree = "<group>"; };
 		A7C8899D1B5F0471007A0E9C /* BTCardClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCardClient.m; sourceTree = "<group>"; };
 		A7C8899E1B5F0471007A0E9C /* BTCard_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCard_Internal.h; sourceTree = "<group>"; };
@@ -1246,7 +1241,6 @@
 		A7C889A21B5F0471007A0E9C /* BTCardNonce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCardNonce.m; sourceTree = "<group>"; };
 		A7C889D71B5F0ACB007A0E9C /* BTCardNonce_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardNonce_Internal.h; sourceTree = "<group>"; };
 		A7C889F11B5F0B30007A0E9C /* BraintreeVenmo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraintreeVenmo.h; sourceTree = "<group>"; };
-		A7C889F31B5F0B30007A0E9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7C889F81B5F0B6A007A0E9C /* Braintree-Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-Version.h"; sourceTree = "<group>"; };
 		A7C889FA1B5F0C00007A0E9C /* BTVenmoDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoDriver.h; sourceTree = "<group>"; };
 		A7C889FB1B5F0C00007A0E9C /* BTVenmoDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTVenmoDriver.m; sourceTree = "<group>"; };
@@ -1498,7 +1492,6 @@
 				A734D95B1B4C4B1000FE0E1B /* BTPayPalRequestFactory.m */,
 				16E17D1B1B3DE4580024F9AB /* BTPayPalAccountNonce.m */,
 				A7102E191B5085BB0007D40A /* BTPayPalAccountNonce_Internal.h */,
-				2D941D3C1B59C76A0016EFB4 /* Info.plist */,
 			);
 			path = BraintreePayPal;
 			sourceTree = "<group>";
@@ -1518,7 +1511,6 @@
 				A79AFA771B56F8C3007B1DF1 /* BTThreeDSecureCardNonce.m */,
 				A79AFA451B56F822007B1DF1 /* BTWebViewController.h */,
 				A79AFA461B56F822007B1DF1 /* BTWebViewController.m */,
-				2D941D8C1B5D9E8C0016EFB4 /* Info.plist */,
 				A79AFA471B56F822007B1DF1 /* Localization */,
 				41D6E2A91B8D24A400A3C2AE /* Public */,
 			);
@@ -2025,7 +2017,6 @@
 			isa = PBXGroup;
 			children = (
 				A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */,
-				A76D7C041BB1CAB00000FA6A /* Info.plist */,
 				A76D7C251BB1D31A0000FA6A /* Kount */,
 				A76D7C1D1BB1CBBF0000FA6A /* Public */,
 				A76D7C2C1BB1D35A0000FA6A /* README.md */,
@@ -2055,7 +2046,6 @@
 			isa = PBXGroup;
 			children = (
 				A77345EA1B7A9E340083EC8D /* Drop-In */,
-				A77344FB1B7A93A10083EC8D /* Info.plist */,
 				A77345061B7A93D00083EC8D /* Localization */,
 				A773451F1B7A93D00083EC8D /* Models */,
 				412FE0581B97A7F6008AAABE /* Public */,
@@ -2373,7 +2363,6 @@
 				A7C8897D1B5EF62C007A0E9C /* BTApplePayClient.m */,
 				A7B1C14E1B66E46900ED063C /* BTConfiguration+ApplePay.m */,
 				A7C8897F1B5EF62C007A0E9C /* BTApplePayCardNonce.m */,
-				A7C889781B5EF5DE007A0E9C /* Info.plist */,
 				41D6E2A81B8D242B00A3C2AE /* Public */,
 			);
 			path = BraintreeApplePay;
@@ -2388,7 +2377,6 @@
 				A7C8899D1B5F0471007A0E9C /* BTCardClient.m */,
 				A7C889D71B5F0ACB007A0E9C /* BTCardNonce_Internal.h */,
 				A7C889A21B5F0471007A0E9C /* BTCardNonce.m */,
-				A7C889941B5F043B007A0E9C /* Info.plist */,
 				41777D451B8D01510026F987 /* Public */,
 			);
 			path = BraintreeCard;
@@ -2406,7 +2394,6 @@
 				A7F96D0D1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.m */,
 				A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */,
 				A7C889FB1B5F0C00007A0E9C /* BTVenmoDriver.m */,
-				A7C889F31B5F0B30007A0E9C /* Info.plist */,
 				41777D471B8D028C0026F987 /* Public */,
 			);
 			path = BraintreeVenmo;
@@ -3639,6 +3626,7 @@
 				417404941BB08629008A5DEA /* BTPaymentMethodNonce.m in Sources */,
 				417404951BB08629008A5DEA /* BTTokenizationService.m in Sources */,
 				417404961BB08629008A5DEA /* BTPaymentMethodNonceParser.m in Sources */,
+				413616EB1C1217F000D4C4A5 /* BTUIVenmoMonogramCardView.m in Sources */,
 				417404971BB08629008A5DEA /* BTURLUtils.m in Sources */,
 				417404741BB085F1008A5DEA /* BTCardClient.m in Sources */,
 				417404751BB085F1008A5DEA /* BTCard.m in Sources */,
@@ -4287,7 +4275,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreePayPal/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -4297,7 +4285,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreePayPal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SRCROOT = "$(PROJECT_DIR)/$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -4340,7 +4327,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreePayPal/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -4350,7 +4337,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.BraintreePayPal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SRCROOT = "$(PROJECT_DIR)/$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4399,7 +4385,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Braintree3DSecure/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -4449,7 +4435,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Braintree3DSecure/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5131,7 +5117,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeDataCollector/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5185,7 +5171,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeDataCollector/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5245,7 +5231,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeUI/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5295,7 +5281,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeUI/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5351,7 +5337,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeVenmo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5401,7 +5387,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeVenmo/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5548,7 +5534,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeApplePay/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5598,7 +5584,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeApplePay/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5654,7 +5640,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeCard/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5705,7 +5691,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeCard/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
