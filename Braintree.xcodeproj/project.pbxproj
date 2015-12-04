@@ -492,8 +492,6 @@
 		A7ABD6891B702FF000A1223C /* good_site_request.pem in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD66F1B702FF000A1223C /* good_site_request.pem */; };
 		A7ABD68A1B702FF000A1223C /* https_server.rb in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6701B702FF000A1223C /* https_server.rb */; };
 		A7ABD68B1B702FF000A1223C /* make_certs.sh in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6711B702FF000A1223C /* make_certs.sh */; };
-		A7ABD68C1B702FF000A1223C /* braintree-api-integration-specs-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6731B702FF000A1223C /* braintree-api-integration-specs-Info.plist */; };
-		A7ABD68D1B702FF000A1223C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7ABD6751B702FF000A1223C /* InfoPlist.strings */; };
 		A7ABD68E1B702FF000A1223C /* BraintreeCard_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD6771B702FF000A1223C /* BraintreeCard_IntegrationTests.m */; };
 		A7B1C1431B66B3D000ED063C /* BTConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = A7B1C1411B66B3D000ED063C /* BTConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7B1C1441B66B3D000ED063C /* BTConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B1C1421B66B3D000ED063C /* BTConfiguration.m */; };
@@ -3152,13 +3150,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7ABD6881B702FF000A1223C /* good_site_key.pem in Resources */,
-				A7ABD68D1B702FF000A1223C /* InfoPlist.strings in Resources */,
 				A7ABD6821B702FF000A1223C /* evil_site_cert.pem in Resources */,
 				A7ABD6891B702FF000A1223C /* good_site_request.pem in Resources */,
 				A7ABD6811B702FF000A1223C /* evil_root_key.pem in Resources */,
 				A7ABD6801B702FF000A1223C /* evil_root_cert.pem in Resources */,
 				A7ABD6851B702FF000A1223C /* good_root_cert.pem in Resources */,
-				A7ABD68C1B702FF000A1223C /* braintree-api-integration-specs-Info.plist in Resources */,
 				A7ABD68A1B702FF000A1223C /* https_server.rb in Resources */,
 				A7ABD6861B702FF000A1223C /* good_root_key.pem in Resources */,
 				A7ABD6831B702FF000A1223C /* evil_site_key.pem in Resources */,
