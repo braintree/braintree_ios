@@ -23,6 +23,7 @@ SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
 VERSION_FILE = "BraintreeCore/Braintree-Version.h"
 DEMO_PLIST = "Demo/Supporting Files/Braintree-Demo-Info.plist"
+FRAMEWORKS_PLIST = "BraintreeCore/Info.plist"
 PUBLIC_REMOTE_NAME = "public"
 
 class << self
@@ -243,7 +244,7 @@ namespace :release do
     abort(1) unless ask "Ready to release? "
   end
 
-  desc "Check that working directoy is clean"
+  desc "Check that working directory is clean"
   task :check_working_directory do
     run! "echo 'Checking for uncommitted changes' && git diff --exit-code"
   end
@@ -265,9 +266,11 @@ namespace :release do
     File.open(VERSION_FILE, "w") { |f| f.puts version_header }
 
     run! "pod update Braintree Braintree/Apple-Pay Braintree/DataCollector Braintree/3D-Secure"
-    run! "plutil -replace CFBundleVersion -string #{current_version} -- '#{DEMO_PLIST}'"
-    run! "plutil -replace CFBundleShortVersionString -string #{current_version} -- '#{DEMO_PLIST}'"
-    run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' #{VERSION_FILE}"
+    [DEMO_PLIST, FRAMEWORKS_PLIST].each do |plist|
+      run! "plutil -replace CFBundleVersion -string #{current_version} -- '#{plist}'"
+      run! "plutil -replace CFBundleShortVersionString -string #{current_version} -- '#{plist}'"
+    end
+    run "git commit -m 'Bump pod version to #{version}' -- #{PODSPEC} Podfile.lock '#{DEMO_PLIST}' '#{FRAMEWORKS_PLIST}' #{VERSION_FILE}"
   end
 
   desc  "Test."
