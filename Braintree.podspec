@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.requires_arc     = true
   s.compiler_flags = "-Wall -Werror -Wextra"
 
-  s.default_subspecs = %w[Core Card PayPal Venmo UI]
+  s.default_subspecs = %w[Core Card PayPal UI]
 
   s.subspec "Core" do |s|
     s.source_files  = "BraintreeCore/**/*.{h,m}"
