@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 4.1.0 (2015-12-07)
+* Limited release of Pay With Venmo
+  * Contact [pay-with-venmo@braintreepayments.com](mailto:pay-with-venmo@braintreepayments.com) if you are interested in early access
+* Fix for Carthage integrations: remove reference to Braintree developer team from Xcode framework targets
+* Streamlined vector graphics for JCB logo to reduce build time of BraintreeUI
+
 ## 4.0.2 (2015-11-30)
 
 * If the Client Token has a Customer ID, Drop-in will automatically fetch the customer's vaulted payment methods.
