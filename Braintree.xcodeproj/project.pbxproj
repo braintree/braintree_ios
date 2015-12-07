@@ -480,7 +480,6 @@
 		A7A094FF1B839CC900D732CC /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */; };
 		A7A095011B839CE400D732CC /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889891B5EF737007A0E9C /* PassKit.framework */; };
 		A7A6DD071B4308EB008857E1 /* BTPayPalDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */; };
-		A7A9C6C51B83AFE500F5EBBA /* BraintreePayPal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */; };
 		A7A9C6D01B83C6D600F5EBBA /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FA1B79708900452CFA /* BraintreeDemoBTUIVenmoButtonViewController.m */; };
 		A7A9C6D11B83C84A00F5EBBA /* BraintreeVenmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; };
 		A7A9C6D51B83C98000F5EBBA /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FD1B79708A00452CFA /* BraintreeDemoCustomVenmoButtonViewController.m */; };
@@ -1438,7 +1437,6 @@
 				413533711BF6C7260005D1BA /* BraintreeDataCollector.framework in Frameworks */,
 				413533611BF6C71D0005D1BA /* Braintree3DSecure.framework in Frameworks */,
 				A7A095011B839CE400D732CC /* PassKit.framework in Frameworks */,
-				A7A9C6C51B83AFE500F5EBBA /* BraintreePayPal.framework in Frameworks */,
 				A7A9C6D11B83C84A00F5EBBA /* BraintreeVenmo.framework in Frameworks */,
 				5DFA1C25B207FC5B01B94A5F /* libPods-Demo.a in Frameworks */,
 				4135336D1BF6C7240005D1BA /* BraintreeUI.framework in Frameworks */,
