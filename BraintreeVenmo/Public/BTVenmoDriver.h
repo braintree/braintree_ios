@@ -3,11 +3,6 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#if __has_include("BraintreeCard.h")
-#import "BTCardNonce.h"
-#else
-#import <BraintreeCard/BTCardNonce.h>
-#endif
 #import "BTVenmoAccountNonce.h"
 #import <Foundation/Foundation.h>
 
