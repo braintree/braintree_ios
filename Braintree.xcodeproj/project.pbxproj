@@ -213,28 +213,6 @@
 		4174053A1BB086B3008A5DEA /* BTUIVenmoWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345841B7A93D00083EC8D /* BTUIVenmoWordmarkVectorArtView.m */; };
 		4174053C1BB086B3008A5DEA /* BTUIVisaVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345861B7A93D00083EC8D /* BTUIVisaVectorArtView.m */; };
 		4174053E1BB086B3008A5DEA /* BTUIViewUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345351B7A93D00083EC8D /* BTUIViewUtil.m */; };
-		4174055E1BB0875E008A5DEA /* BraintreeDemoDemoContainmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19AF1B79708900452CFA /* BraintreeDemoDemoContainmentViewController.m */; };
-		4174055F1BB0875E008A5DEA /* BraintreeDemoCardTokenizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D31B79708900452CFA /* BraintreeDemoCardTokenizationViewController.m */; };
-		417405601BB0875E008A5DEA /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FD1B79708A00452CFA /* BraintreeDemoCustomVenmoButtonViewController.m */; };
-		417405611BB0875E008A5DEA /* BraintreeDemoSlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B31B79708900452CFA /* BraintreeDemoSlideNavigationController.m */; };
-		417405621BB0875E008A5DEA /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */; };
-		417405631BB0875E008A5DEA /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E61B79708900452CFA /* BraintreeDemoCustomPayPalButtonViewController.m */; };
-		417405641BB0875E008A5DEA /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E31B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.m */; };
-		417405651BB0875E008A5DEA /* BraintreeDemoCustomMultiPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D01B79708900452CFA /* BraintreeDemoCustomMultiPayViewController.m */; };
-		417405661BB0875E008A5DEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B1A0A1B79708A00452CFA /* main.m */; };
-		417405671BB0875E008A5DEA /* BraintreeDemoIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B11B79708900452CFA /* BraintreeDemoIntegrationViewController.m */; };
-		417405681BB0875E008A5DEA /* BraintreeDemoThreeDSecureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D71B79708900452CFA /* BraintreeDemoThreeDSecureViewController.m */; };
-		417405691BB0875E008A5DEA /* BraintreeDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19AD1B79708900452CFA /* BraintreeDemoAppDelegate.m */; };
-		4174056A1BB0875E008A5DEA /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E01B79708900452CFA /* BraintreeDemoBTUIPayPalButtonViewController.m */; };
-		4174056B1BB0875E008A5DEA /* BraintreeDemoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B81B79708900452CFA /* BraintreeDemoSettings.m */; };
-		4174056C1BB0875E008A5DEA /* BraintreeDemoMerchantAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B1A011B79708A00452CFA /* BraintreeDemoMerchantAPI.m */; };
-		4174056D1BB0875E008A5DEA /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FA1B79708900452CFA /* BraintreeDemoBTUIVenmoButtonViewController.m */; };
-		4174056E1BB0875E008A5DEA /* BraintreeDemoPayPalScopesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19EC1B79708900452CFA /* BraintreeDemoPayPalScopesViewController.m */; };
-		4174056F1BB0875E008A5DEA /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19A91B79708900452CFA /* BraintreeDemoPaymentButtonBaseViewController.m */; };
-		417405701BB0875E008A5DEA /* BraintreeDemoBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19A71B79708900452CFA /* BraintreeDemoBaseViewController.m */; };
-		417405711BB0875E008A5DEA /* BraintreeDemoDropInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DA1B79708900452CFA /* BraintreeDemoDropInViewController.m */; };
-		417405721BB0875E008A5DEA /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7334F241BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.m */; };
-		417405731BB0875E008A5DEA /* BraintreeDemoBTPaymentButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19CD1B79708900452CFA /* BraintreeDemoBTPaymentButtonViewController.m */; };
 		417405C31BB08979008A5DEA /* libPayPalOneTouchCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7A6DD1C1B431313008857E1 /* libPayPalOneTouchCore.a */; };
 		418456E81BE42F1600C32391 /* BTViewControllerPresentingDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 418456E71BE42F0B00C32391 /* BTViewControllerPresentingDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		41913D9F1BB9D504004EF1BB /* BTUIPaymentOptionType.h in Headers */ = {isa = PBXBuildFile; fileRef = 41913D9D1BB9D503004EF1BB /* BTUIPaymentOptionType.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -441,6 +419,40 @@
 		A77346261B7AA4F10083EC8D /* BTErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = A77346251B7AA4F10083EC8D /* BTErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77346301B7BB1A70083EC8D /* BTTokenizationService.h in Headers */ = {isa = PBXBuildFile; fileRef = A773462E1B7BB1A60083EC8D /* BTTokenizationService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77346311B7BB1A70083EC8D /* BTTokenizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = A773462F1B7BB1A70083EC8D /* BTTokenizationService.m */; };
+		A775AFCE1C1608A80003A6E6 /* BTAnalyticsMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A726BFE11B56D5E900B5C8F0 /* BTAnalyticsMetadataSpec.m */; };
+		A775AFCF1C1608A80003A6E6 /* BTAPIClient_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A743CD201B449D8400757C9B /* BTAPIClient_Tests.m */; };
+		A775AFD01C1608A80003A6E6 /* BTCard_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */; };
+		A775AFD11C1608A80003A6E6 /* BTClientMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AF9F21B56DB54007B1DF1 /* BTClientMetadataSpec.m */; };
+		A775AFD21C1608A80003A6E6 /* BTClientTokenSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A98D1B8797FD00D2461B /* BTClientTokenSpec.m */; };
+		A775AFD31C1608A80003A6E6 /* BTHTTPSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C823071B4DA9D7009D45D6 /* BTHTTPSpec.m */; };
+		A775AFD41C1608A80003A6E6 /* BTTokenizationService_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A72A814C1B7BEADF00E4D6FA /* BTTokenizationService_Tests.m */; };
+		A775AFD51C1608A80003A6E6 /* BTVenmoAppSwitchReturnURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A71F7DDF1B616BA0005DA1B0 /* BTVenmoAppSwitchReturnURLSpec.m */; };
+		A775AFD61C1608A80003A6E6 /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A71F7DE01B616BA0005DA1B0 /* BTVenmoAppSwitchURLSpec.m */; };
+		A775AFD71C1608A80003A6E6 /* BTFakeHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 848470E11BE81893009B12AE /* BTFakeHTTP.m */; };
+		A775AFD81C1608A80003A6E6 /* BTHTTPTestProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D4630C1B4B16C100A09C46 /* BTHTTPTestProtocol.m */; };
+		A775AFD91C1608A80003A6E6 /* BTSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */; };
+		A775AFDA1C1608A80003A6E6 /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A734A9901B87989400D2461B /* BTTestClientTokenFactory.m */; };
+		A775AFDB1C1608A80003A6E6 /* FakePayPalClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */; };
+		A775AFDC1C1608B30003A6E6 /* BTAPIClient_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B68F01BCF083E0039634F /* BTAPIClient_SwiftTests.swift */; };
+		A775AFDD1C1608B30003A6E6 /* BTApplePay_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D64ABB1B4C93B6005168EF /* BTApplePay_Tests.swift */; };
+		A775AFDE1C1608B30003A6E6 /* BTAppSwitch_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CCE2AD1B67F26C006EA661 /* BTAppSwitch_Tests.swift */; };
+		A775AFDF1C1608B30003A6E6 /* BTCardClient_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */; };
+		A775AFE01C1608B30003A6E6 /* BTCardTokenizationRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79033971B45C968004C8234 /* BTCardTokenizationRequest_Tests.swift */; };
+		A775AFE11C1608B30003A6E6 /* BTCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78496591BD962260081531A /* BTCheckoutRequest_Tests.swift */; };
+		A775AFE21C1608B30003A6E6 /* BTDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */; };
+		A775AFE31C1608B30003A6E6 /* BTDropInViewController_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B787BC1BAA20DB001AD351 /* BTDropInViewController_Tests.swift */; };
+		A775AFE41C1608B30003A6E6 /* BTJSON_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CD2E9E1B4077FC00E68495 /* BTJSON_Tests.swift */; };
+		A775AFE51C1608B30003A6E6 /* BTPayPalDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */; };
+		A775AFE61C1608B30003A6E6 /* BTThreeDSecureDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74BCF021BE14C7000DC1CAE /* BTThreeDSecureDriver_Tests.swift */; };
+		A775AFE71C1608B30003A6E6 /* BTPaymentMethodNonceParser_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4149C91C1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift */; };
+		A775AFE81C1608B30003A6E6 /* BTCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */; };
+		A775AFE91C1608B30003A6E6 /* BTURLUtils_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E93E571B601EE900957223 /* BTURLUtils_Tests.swift */; };
+		A775AFEA1C1608B30003A6E6 /* BTVenmoDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F7DE61B6180A3005DA1B0 /* BTVenmoDriver_Tests.swift */; };
+		A775AFEB1C1608B30003A6E6 /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B4AD561B4EFC76002FB23E /* MockAPIClient.swift */; };
+		A775AFEC1C1608B30003A6E6 /* MockDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D6746C1B84073300ED6C00 /* MockDelegates.swift */; };
+		A775AFED1C1608C40003A6E6 /* BTVenmoAppSwitchReturnURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A71F7DDF1B616BA0005DA1B0 /* BTVenmoAppSwitchReturnURLSpec.m */; };
+		A775AFEE1C1608C40003A6E6 /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A71F7DE01B616BA0005DA1B0 /* BTVenmoAppSwitchURLSpec.m */; };
+		A775AFEF1C1608CE0003A6E6 /* BTVenmoDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71F7DE61B6180A3005DA1B0 /* BTVenmoDriver_Tests.swift */; };
 		A77AA2A61B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F96D0A1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.h */; };
 		A77AA2A71B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D0B1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.m */; };
 		A77AA2A81B618CFB00217B73 /* BTVenmoAppSwitchReturnURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F96D0C1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.h */; };
@@ -539,6 +551,29 @@
 		A7ECA5E51BEBD34100437A4F /* BTDropInViewController_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A7ECA5E41BEBD34100437A4F /* BTDropInViewController_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A7F179FE1BE98E0E00E91646 /* BTPaymentRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F179FD1BE98E0E00E91646 /* BTPaymentRequest.m */; };
 		A7F17A001BE98E1E00E91646 /* BTPaymentRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F179FF1BE98E1E00E91646 /* BTPaymentRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A7F570061C160C820007D018 /* BraintreeDemoBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19A71B79708900452CFA /* BraintreeDemoBaseViewController.m */; };
+		A7F570071C160C820007D018 /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19A91B79708900452CFA /* BraintreeDemoPaymentButtonBaseViewController.m */; };
+		A7F570081C160C820007D018 /* BraintreeDemoSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B81B79708900452CFA /* BraintreeDemoSettings.m */; };
+		A7F570091C160C820007D018 /* BraintreeDemoDemoContainmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19AF1B79708900452CFA /* BraintreeDemoDemoContainmentViewController.m */; };
+		A7F5700A1C160C820007D018 /* BraintreeDemoIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B11B79708900452CFA /* BraintreeDemoIntegrationViewController.m */; };
+		A7F5700B1C160C820007D018 /* BraintreeDemoSlideNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19B31B79708900452CFA /* BraintreeDemoSlideNavigationController.m */; };
+		A7F5700C1C160C820007D018 /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */; };
+		A7F5700D1C160C820007D018 /* BraintreeDemoBTPaymentButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19CD1B79708900452CFA /* BraintreeDemoBTPaymentButtonViewController.m */; };
+		A7F5700E1C160C820007D018 /* BraintreeDemoCustomMultiPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D01B79708900452CFA /* BraintreeDemoCustomMultiPayViewController.m */; };
+		A7F5700F1C160C820007D018 /* BraintreeDemoCardTokenizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D31B79708900452CFA /* BraintreeDemoCardTokenizationViewController.m */; };
+		A7F570101C160C820007D018 /* BraintreeDemoThreeDSecureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D71B79708900452CFA /* BraintreeDemoThreeDSecureViewController.m */; };
+		A7F570111C160C820007D018 /* BraintreeDemoDropInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DA1B79708900452CFA /* BraintreeDemoDropInViewController.m */; };
+		A7F570121C160C820007D018 /* BraintreeDemoBTDataCollectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DD1B79708900452CFA /* BraintreeDemoBTDataCollectorViewController.m */; };
+		A7F570131C160C820007D018 /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7334F241BA38B0C0083C411 /* BraintreeDemoPayPalBillingAgreementViewController.m */; };
+		A7F570141C160C820007D018 /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E01B79708900452CFA /* BraintreeDemoBTUIPayPalButtonViewController.m */; };
+		A7F570151C160C820007D018 /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E31B79708900452CFA /* BraintreeDemoPayPalOneTimePaymentViewController.m */; };
+		A7F570161C160C820007D018 /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19E61B79708900452CFA /* BraintreeDemoCustomPayPalButtonViewController.m */; };
+		A7F570171C160C820007D018 /* BraintreeDemoPayPalScopesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19EC1B79708900452CFA /* BraintreeDemoPayPalScopesViewController.m */; };
+		A7F570181C160C900007D018 /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FA1B79708900452CFA /* BraintreeDemoBTUIVenmoButtonViewController.m */; };
+		A7F570191C160C900007D018 /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FD1B79708A00452CFA /* BraintreeDemoCustomVenmoButtonViewController.m */; };
+		A7F5701A1C160C900007D018 /* BraintreeDemoMerchantAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B1A011B79708A00452CFA /* BraintreeDemoMerchantAPI.m */; };
+		A7F5701B1C160C900007D018 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B1A0A1B79708A00452CFA /* main.m */; };
+		A7F5701C1C160CDF0007D018 /* BraintreeDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19AD1B79708900452CFA /* BraintreeDemoAppDelegate.m */; };
 		A8945A54F2B9FE1EB4F044B7 /* libPods-Test-Deps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3677CEDD938F25BE7096B6C /* libPods-Test-Deps.a */; };
 		A8C218447B7348315B784B34 /* libPods-Test-Deps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3677CEDD938F25BE7096B6C /* libPods-Test-Deps.a */; };
 /* End PBXBuildFile section */
@@ -3537,6 +3572,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7F570091C160C820007D018 /* BraintreeDemoDemoContainmentViewController.m in Sources */,
+				A7F5700C1C160C820007D018 /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
+				A7F570171C160C820007D018 /* BraintreeDemoPayPalScopesViewController.m in Sources */,
+				A7F570151C160C820007D018 /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */,
+				A7F570181C160C900007D018 /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */,
+				A7F570131C160C820007D018 /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */,
+				A7F5701B1C160C900007D018 /* main.m in Sources */,
+				A7F570111C160C820007D018 /* BraintreeDemoDropInViewController.m in Sources */,
+				A7F570141C160C820007D018 /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */,
+				A7F5700E1C160C820007D018 /* BraintreeDemoCustomMultiPayViewController.m in Sources */,
+				A7F570101C160C820007D018 /* BraintreeDemoThreeDSecureViewController.m in Sources */,
+				A7F570121C160C820007D018 /* BraintreeDemoBTDataCollectorViewController.m in Sources */,
+				A7F5700F1C160C820007D018 /* BraintreeDemoCardTokenizationViewController.m in Sources */,
+				A7F570161C160C820007D018 /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */,
+				A7F5700B1C160C820007D018 /* BraintreeDemoSlideNavigationController.m in Sources */,
+				A7F570071C160C820007D018 /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
+				A7F5700A1C160C820007D018 /* BraintreeDemoIntegrationViewController.m in Sources */,
+				A7F570061C160C820007D018 /* BraintreeDemoBaseViewController.m in Sources */,
+				A7F5701A1C160C900007D018 /* BraintreeDemoMerchantAPI.m in Sources */,
+				A7F570191C160C900007D018 /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */,
+				A7F5701C1C160CDF0007D018 /* BraintreeDemoAppDelegate.m in Sources */,
+				A7F570081C160C820007D018 /* BraintreeDemoSettings.m in Sources */,
+				A7F5700D1C160C820007D018 /* BraintreeDemoBTPaymentButtonViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3649,6 +3707,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A775AFEF1C1608CE0003A6E6 /* BTVenmoDriver_Tests.swift in Sources */,
+				A775AFED1C1608C40003A6E6 /* BTVenmoAppSwitchReturnURLSpec.m in Sources */,
+				A775AFEE1C1608C40003A6E6 /* BTVenmoAppSwitchURLSpec.m in Sources */,
 				41BC33DD1BF6948C00161106 /* BTFakeHTTP.m in Sources */,
 				41BC33DE1BF6948C00161106 /* BTPaymentMethodNonceParser_Tests.swift in Sources */,
 				41BC33DF1BF6948C00161106 /* BTPayPalDriver_Tests.swift in Sources */,
@@ -3684,28 +3745,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4174055E1BB0875E008A5DEA /* BraintreeDemoDemoContainmentViewController.m in Sources */,
-				4174055F1BB0875E008A5DEA /* BraintreeDemoCardTokenizationViewController.m in Sources */,
-				417405601BB0875E008A5DEA /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */,
-				417405611BB0875E008A5DEA /* BraintreeDemoSlideNavigationController.m in Sources */,
-				417405621BB0875E008A5DEA /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
-				417405631BB0875E008A5DEA /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */,
-				417405641BB0875E008A5DEA /* BraintreeDemoPayPalOneTimePaymentViewController.m in Sources */,
-				417405651BB0875E008A5DEA /* BraintreeDemoCustomMultiPayViewController.m in Sources */,
-				417405661BB0875E008A5DEA /* main.m in Sources */,
-				417405671BB0875E008A5DEA /* BraintreeDemoIntegrationViewController.m in Sources */,
-				417405681BB0875E008A5DEA /* BraintreeDemoThreeDSecureViewController.m in Sources */,
-				417405691BB0875E008A5DEA /* BraintreeDemoAppDelegate.m in Sources */,
-				4174056A1BB0875E008A5DEA /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */,
-				4174056B1BB0875E008A5DEA /* BraintreeDemoSettings.m in Sources */,
-				4174056C1BB0875E008A5DEA /* BraintreeDemoMerchantAPI.m in Sources */,
-				4174056D1BB0875E008A5DEA /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */,
-				4174056E1BB0875E008A5DEA /* BraintreeDemoPayPalScopesViewController.m in Sources */,
-				4174056F1BB0875E008A5DEA /* BraintreeDemoPaymentButtonBaseViewController.m in Sources */,
-				417405701BB0875E008A5DEA /* BraintreeDemoBaseViewController.m in Sources */,
-				417405711BB0875E008A5DEA /* BraintreeDemoDropInViewController.m in Sources */,
-				417405721BB0875E008A5DEA /* BraintreeDemoPayPalBillingAgreementViewController.m in Sources */,
-				417405731BB0875E008A5DEA /* BraintreeDemoBTPaymentButtonViewController.m in Sources */,
+				A775AFDC1C1608B30003A6E6 /* BTAPIClient_SwiftTests.swift in Sources */,
+				A775AFDD1C1608B30003A6E6 /* BTApplePay_Tests.swift in Sources */,
+				A775AFDE1C1608B30003A6E6 /* BTAppSwitch_Tests.swift in Sources */,
+				A775AFDF1C1608B30003A6E6 /* BTCardClient_Tests.swift in Sources */,
+				A775AFE01C1608B30003A6E6 /* BTCardTokenizationRequest_Tests.swift in Sources */,
+				A775AFE11C1608B30003A6E6 /* BTCheckoutRequest_Tests.swift in Sources */,
+				A775AFE21C1608B30003A6E6 /* BTDataCollector_Tests.swift in Sources */,
+				A775AFE31C1608B30003A6E6 /* BTDropInViewController_Tests.swift in Sources */,
+				A775AFE41C1608B30003A6E6 /* BTJSON_Tests.swift in Sources */,
+				A775AFE51C1608B30003A6E6 /* BTPayPalDriver_Tests.swift in Sources */,
+				A775AFE61C1608B30003A6E6 /* BTThreeDSecureDriver_Tests.swift in Sources */,
+				A775AFE71C1608B30003A6E6 /* BTPaymentMethodNonceParser_Tests.swift in Sources */,
+				A775AFE81C1608B30003A6E6 /* BTCardNonce_Tests.swift in Sources */,
+				A775AFE91C1608B30003A6E6 /* BTURLUtils_Tests.swift in Sources */,
+				A775AFEA1C1608B30003A6E6 /* BTVenmoDriver_Tests.swift in Sources */,
+				A775AFEB1C1608B30003A6E6 /* MockAPIClient.swift in Sources */,
+				A775AFEC1C1608B30003A6E6 /* MockDelegates.swift in Sources */,
+				A775AFCE1C1608A80003A6E6 /* BTAnalyticsMetadataSpec.m in Sources */,
+				A775AFCF1C1608A80003A6E6 /* BTAPIClient_Tests.m in Sources */,
+				A775AFD01C1608A80003A6E6 /* BTCard_Internal_Tests.m in Sources */,
+				A775AFD11C1608A80003A6E6 /* BTClientMetadataSpec.m in Sources */,
+				A775AFD21C1608A80003A6E6 /* BTClientTokenSpec.m in Sources */,
+				A775AFD31C1608A80003A6E6 /* BTHTTPSpec.m in Sources */,
+				A775AFD41C1608A80003A6E6 /* BTTokenizationService_Tests.m in Sources */,
+				A775AFD51C1608A80003A6E6 /* BTVenmoAppSwitchReturnURLSpec.m in Sources */,
+				A775AFD61C1608A80003A6E6 /* BTVenmoAppSwitchURLSpec.m in Sources */,
+				A775AFD71C1608A80003A6E6 /* BTFakeHTTP.m in Sources */,
+				A775AFD81C1608A80003A6E6 /* BTHTTPTestProtocol.m in Sources */,
+				A775AFD91C1608A80003A6E6 /* BTSpecHelper.m in Sources */,
+				A775AFDA1C1608A80003A6E6 /* BTTestClientTokenFactory.m in Sources */,
+				A775AFDB1C1608A80003A6E6 /* FakePayPalClasses.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -38,4 +38,5 @@ target 'UnitTests-CocoaPods' do
   pod 'Braintree/3D-Secure', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/DataCollector', :path => '.'
+  pod 'Braintree/Venmo', :path => '.'
 end
