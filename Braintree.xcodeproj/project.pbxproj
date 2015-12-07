@@ -480,13 +480,9 @@
 		A7A094FF1B839CC900D732CC /* BraintreeDemoApplePayPassKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19C41B79708900452CFA /* BraintreeDemoApplePayPassKitViewController.m */; };
 		A7A095011B839CE400D732CC /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889891B5EF737007A0E9C /* PassKit.framework */; };
 		A7A6DD071B4308EB008857E1 /* BTPayPalDriver_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */; };
-		A7A9C6C21B83AFCC00F5EBBA /* BraintreeApplePay.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A7C889741B5EF5DE007A0E9C /* BraintreeApplePay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7A9C6C51B83AFE500F5EBBA /* BraintreePayPal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */; };
-		A7A9C6C61B83AFE500F5EBBA /* BraintreePayPal.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2D941D381B59C76A0016EFB4 /* BraintreePayPal.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A7A9C6CD1B83B88800F5EBBA /* BraintreeCore.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7A9C6D01B83C6D600F5EBBA /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FA1B79708900452CFA /* BraintreeDemoBTUIVenmoButtonViewController.m */; };
 		A7A9C6D11B83C84A00F5EBBA /* BraintreeVenmo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; };
-		A7A9C6D21B83C84A00F5EBBA /* BraintreeVenmo.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A7A9C6D51B83C98000F5EBBA /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19FD1B79708A00452CFA /* BraintreeDemoCustomVenmoButtonViewController.m */; };
 		A7A9C6D61B83CC6F00F5EBBA /* BraintreeDemoCardTokenizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19D31B79708900452CFA /* BraintreeDemoCardTokenizationViewController.m */; };
 		A7ABD6791B702FF000A1223C /* BTAPIClient_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7ABD65E1B702FF000A1223C /* BTAPIClient_IntegrationTests.m */; };
@@ -705,13 +701,6 @@
 			remoteGlobalIDString = A77AA29B1B618C7700217B73;
 			remoteInfo = BraintreeVenmo;
 		};
-		A73088391B8694D7009487BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A75DA344192138F000D997A2 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 413533761BF6C7510005D1BA;
-			remoteInfo = "Demo-StaticLibrary";
-		};
 		A75319F11B715C4200E27B89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A75DA344192138F000D997A2 /* Project object */;
@@ -789,6 +778,55 @@
 			remoteGlobalIDString = A7C8898F1B5F043B007A0E9C;
 			remoteInfo = BraintreeCard;
 		};
+		A7F5701D1C1611AA0007D018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
+			remoteInfo = BraintreeCore;
+		};
+		A7F5701F1C1611B20007D018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
+			remoteInfo = BraintreeCore;
+		};
+		A7F570211C1611CA0007D018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DE12F081B59BE0100EA1BCF;
+			remoteInfo = BraintreeCore;
+		};
+		A7F570231C1612690007D018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 417404481BB084D3008A5DEA;
+			remoteInfo = Braintree;
+		};
+		A7F570251C1614AA0007D018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2D941D871B5D9E8C0016EFB4;
+			remoteInfo = Braintree3DSecure;
+		};
+		A7F570271C1614AA0007D018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7C8898F1B5F043B007A0E9C;
+			remoteInfo = BraintreeCard;
+		};
+		A7F570291C1614AA0007D018 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
+			remoteInfo = BraintreeDataCollector;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -807,19 +845,6 @@
 				4135336E1BF6C7240005D1BA /* BraintreeUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		417404471BB084D3008A5DEA /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-				A7A9C6CD1B83B88800F5EBBA /* BraintreeCore.framework in CopyFiles */,
-				A7A9C6C61B83AFE500F5EBBA /* BraintreePayPal.framework in CopyFiles */,
-				A7A9C6D21B83C84A00F5EBBA /* BraintreeVenmo.framework in CopyFiles */,
-				A7A9C6C21B83AFCC00F5EBBA /* BraintreeApplePay.framework in CopyFiles */,
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -2724,6 +2749,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7F570241C1612690007D018 /* PBXTargetDependency */,
 			);
 			name = "Demo-StaticLibrary";
 			productName = "Braintree-Demo";
@@ -2736,7 +2762,6 @@
 			buildPhases = (
 				417404451BB084D3008A5DEA /* Sources */,
 				417404461BB084D3008A5DEA /* Frameworks */,
-				417404471BB084D3008A5DEA /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -2805,12 +2830,14 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7F570261C1614AA0007D018 /* PBXTargetDependency */,
+				A7F570281C1614AA0007D018 /* PBXTargetDependency */,
+				A7F5702A1C1614AA0007D018 /* PBXTargetDependency */,
 				A77344FD1B7A93A10083EC8D /* PBXTargetDependency */,
 				A7A9C6C41B83AFCC00F5EBBA /* PBXTargetDependency */,
 				A7A9C6C81B83AFE600F5EBBA /* PBXTargetDependency */,
 				A7A9C6CF1B83B88800F5EBBA /* PBXTargetDependency */,
 				A7A9C6D41B83C84B00F5EBBA /* PBXTargetDependency */,
-				A730883A1B8694D7009487BA /* PBXTargetDependency */,
 			);
 			name = Demo;
 			productName = "Braintree-Demo";
@@ -2847,6 +2874,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7F570221C1611CA0007D018 /* PBXTargetDependency */,
 			);
 			name = BraintreeUI;
 			productName = BraintreeUI;
@@ -2913,6 +2941,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7F5701E1C1611AA0007D018 /* PBXTargetDependency */,
 			);
 			name = BraintreeApplePay;
 			productName = BraintreeApplePay;
@@ -2931,6 +2960,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A7F570201C1611B20007D018 /* PBXTargetDependency */,
 			);
 			name = BraintreeCard;
 			productName = BraintreeCard;
@@ -4005,11 +4035,6 @@
 			target = A77AA29B1B618C7700217B73 /* BraintreeVenmo */;
 			targetProxy = A715595F1B72C2A7007DE6F0 /* PBXContainerItemProxy */;
 		};
-		A730883A1B8694D7009487BA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 413533761BF6C7510005D1BA /* Demo-StaticLibrary */;
-			targetProxy = A73088391B8694D7009487BA /* PBXContainerItemProxy */;
-		};
 		A75319F21B715C4200E27B89 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
@@ -4079,6 +4104,41 @@
 			isa = PBXTargetDependency;
 			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
 			targetProxy = A7C88A291B5F109B007A0E9C /* PBXContainerItemProxy */;
+		};
+		A7F5701E1C1611AA0007D018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
+			targetProxy = A7F5701D1C1611AA0007D018 /* PBXContainerItemProxy */;
+		};
+		A7F570201C1611B20007D018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
+			targetProxy = A7F5701F1C1611B20007D018 /* PBXContainerItemProxy */;
+		};
+		A7F570221C1611CA0007D018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DE12F081B59BE0100EA1BCF /* BraintreeCore */;
+			targetProxy = A7F570211C1611CA0007D018 /* PBXContainerItemProxy */;
+		};
+		A7F570241C1612690007D018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 417404481BB084D3008A5DEA /* Braintree */;
+			targetProxy = A7F570231C1612690007D018 /* PBXContainerItemProxy */;
+		};
+		A7F570261C1614AA0007D018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2D941D871B5D9E8C0016EFB4 /* Braintree3DSecure */;
+			targetProxy = A7F570251C1614AA0007D018 /* PBXContainerItemProxy */;
+		};
+		A7F570281C1614AA0007D018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
+			targetProxy = A7F570271C1614AA0007D018 /* PBXContainerItemProxy */;
+		};
+		A7F5702A1C1614AA0007D018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
+			targetProxy = A7F570291C1614AA0007D018 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
