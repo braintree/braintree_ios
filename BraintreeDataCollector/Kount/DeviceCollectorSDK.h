@@ -40,8 +40,6 @@
  * pass these values into *skipList* and they will be skipped.
  */
 
-// Device ID Collector
-#define DC_COLLECTOR_DEVICE_ID      @"COLLECTOR_DEVICE_ID"
 // Geo Location Collector
 #define DC_COLLECTOR_GEO_LOCATION   @"COLLECTOR_GEO_LOCATION"
 
@@ -145,4 +143,3 @@
  */
 - (void) setDelegate:(id<DeviceCollectorSDKDelegate>) delegate;
 @end // end @interface DeviceCollectorSDK
-
