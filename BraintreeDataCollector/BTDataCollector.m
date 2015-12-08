@@ -28,15 +28,11 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 - (void)setUpKountWithDebugOn:(BOOL)debugLogging {
     self.kount = [[DeviceCollectorSDK alloc] initWithDebugOn:debugLogging];
     [self.kount setDelegate:self];
-    
-    NSArray *skipList;
+
     CLAuthorizationStatus locationStatus = [CLLocationManager authorizationStatus];
-    if ((locationStatus == kCLAuthorizationStatusAuthorizedWhenInUse || locationStatus == kCLAuthorizationStatusAuthorizedAlways) && [CLLocationManager locationServicesEnabled]) {
-        skipList = @[DC_COLLECTOR_DEVICE_ID];
-    } else {
-        skipList = @[DC_COLLECTOR_DEVICE_ID, DC_COLLECTOR_GEO_LOCATION];
+    if ((locationStatus != kCLAuthorizationStatusAuthorizedWhenInUse && locationStatus != kCLAuthorizationStatusAuthorizedAlways) || ![CLLocationManager locationServicesEnabled]) {
+        [self.kount setSkipList:@[DC_COLLECTOR_GEO_LOCATION]];
     }
-    [self.kount setSkipList:skipList];
 }
 
 #pragma mark - Public methods
