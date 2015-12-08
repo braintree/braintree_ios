@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.1.1 (2015-12-08)
+* Bug fix for Drop-in view controller showing empty `BTPaymentButton`
+* Update Kount to 2.6.2
+
 ## 4.1.0 (2015-12-07)
 * Limited release of Pay With Venmo
   * Contact [pay-with-venmo@braintreepayments.com](mailto:pay-with-venmo@braintreepayments.com) if you are interested in early access
