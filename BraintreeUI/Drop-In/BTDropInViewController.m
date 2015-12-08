@@ -97,6 +97,7 @@
         }
 
         self.dropInContentView.paymentButton.configuration = configuration;
+        self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
 
         if (![self isAddPaymentMethodDropInViewController]) {
             [self fetchPaymentMethodsOnCompletion:^{}];
