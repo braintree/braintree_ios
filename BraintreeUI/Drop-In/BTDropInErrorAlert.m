@@ -59,6 +59,9 @@
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (void)alertView:(__unused UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0 && self.cancelBlock) {
         self.cancelBlock();
@@ -66,6 +69,7 @@
         self.retryBlock();
     }
 }
+#pragma clang diagnostic pop
 
 - (NSString *)title {
     return _title ?: BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
