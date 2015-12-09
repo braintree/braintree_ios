@@ -58,7 +58,7 @@
 }
 
 - (instancetype)initWithClientToken:(BTClientToken *)clientToken {
-    return [self initWithBaseURL:clientToken.json[@"clientApiUrl"].asURL authorizationFingerprint:clientToken.authorizationFingerprint];
+    return [self initWithBaseURL:[clientToken.json[@"clientApiUrl"] asURL] authorizationFingerprint:clientToken.authorizationFingerprint];
 }
 
 - (instancetype)copyWithZone:(NSZone *)zone {

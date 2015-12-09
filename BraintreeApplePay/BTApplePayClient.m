@@ -18,8 +18,8 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 + (void)load {
     if (self == [BTApplePayClient class]) {
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"ApplePayCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull applePayCard) {
-            NSString *cardType = applePayCard[@"details"][@"cardType"] ? applePayCard[@"details"][@"cardType"].asString : @"ApplePayCard";
-            return [[BTApplePayCardNonce alloc] initWithNonce:applePayCard[@"nonce"].asString localizedDescription:applePayCard[@"description"].asString type:cardType];
+            NSString *cardType = applePayCard[@"details"][@"cardType"] ? [applePayCard[@"details"][@"cardType"] asString] : @"ApplePayCard";
+            return [[BTApplePayCardNonce alloc] initWithNonce:[applePayCard[@"nonce"] asString] localizedDescription:[applePayCard[@"description"] asString] type:cardType];
         }];
     }
 }
@@ -62,8 +62,8 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
             return;
         }
 
-        if (!configuration.json[@"applePay"][@"status"].isString ||
-            [configuration.json[@"applePay"][@"status"].asString isEqualToString:@"off"]) {
+        if (![configuration.json[@"applePay"][@"status"] isString] ||
+            [[configuration.json[@"applePay"][@"status"] asString] isEqualToString:@"off"]) {
             NSError *error = [NSError errorWithDomain:BTApplePayErrorDomain
                                                  code:BTApplePayErrorTypeUnsupported
                                              userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again." }];
@@ -90,8 +90,8 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
                       }
 
                       BTJSON *applePayCard = body[@"applePayCards"][0];
-                      NSString *cardType = applePayCard[@"details"][@"cardType"] ? applePayCard[@"details"][@"cardType"].asString : @"ApplePayCard";
-                      BTApplePayCardNonce *tokenized = [[BTApplePayCardNonce alloc] initWithNonce:applePayCard[@"nonce"].asString localizedDescription:applePayCard[@"description"].asString type:cardType];
+                      NSString *cardType = applePayCard[@"details"][@"cardType"] ? [applePayCard[@"details"][@"cardType"] asString] : @"ApplePayCard";
+                      BTApplePayCardNonce *tokenized = [[BTApplePayCardNonce alloc] initWithNonce:[applePayCard[@"nonce"] asString] localizedDescription:[applePayCard[@"description"] asString] type:cardType];
 
                       completionBlock(tokenized, nil);
                       [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.success"];

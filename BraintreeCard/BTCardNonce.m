@@ -49,9 +49,9 @@
 
 + (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON {
     // Normalize the card network string in cardJSON to be lowercase so that our enum mapping is case insensitive
-    BTJSON *cardType = [[BTJSON alloc] initWithValue:cardJSON[@"details"][@"cardType"].asString.lowercaseString];
-    return [[[self class] alloc] initWithNonce:cardJSON[@"nonce"].asString
-                                   description:cardJSON[@"description"].asString
+    BTJSON *cardType = [[BTJSON alloc] initWithValue:[cardJSON[@"details"][@"cardType"] asString].lowercaseString];
+    return [[[self class] alloc] initWithNonce:[cardJSON[@"nonce"] asString]
+                                   description:[cardJSON[@"description"] asString]
                                    cardNetwork:[cardType asEnum:@{
                                                                   @"american express": @(BTCardNetworkAMEX),
                                                                   @"diners club": @(BTCardNetworkDinersClub),
@@ -66,7 +66,7 @@
                                                                   @"uk maestro": @(BTCardNetworkUKMaestro),
                                                                   @"visa": @(BTCardNetworkVisa),}
                                                       orDefault:BTCardNetworkUnknown]
-                                       lastTwo:cardJSON[@"details"][@"lastTwo"].asString];
+                                       lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]];
 }
 
 @end

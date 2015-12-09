@@ -11,7 +11,7 @@
 }
 
 - (NSString*)venmoAccessToken {
-    return self.json[@"payWithVenmo"][@"accessToken"].asString;
+    return [self.json[@"payWithVenmo"][@"accessToken"] asString];
 }
 
 @end

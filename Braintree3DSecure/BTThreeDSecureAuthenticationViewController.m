@@ -81,10 +81,10 @@
         BTJSON *authBody = [[BTJSON alloc] initWithValue:[NSJSONSerialization JSONObjectWithData:[jsonAuthResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL]];
 
         BTThreeDSecureResponse *authResponse = [[BTThreeDSecureResponse alloc] init];
-        authResponse.success = authBody[@"success"].isTrue;
-        authResponse.threeDSecureInfo = authBody[@"threeDSecureInfo"].asDictionary;
+        authResponse.success = [authBody[@"success"] isTrue];
+        authResponse.threeDSecureInfo = [authBody[@"threeDSecureInfo"] asDictionary];
         authResponse.tokenizedCard = [BTThreeDSecureCardNonce cardNonceWithJSON:authBody[@"paymentMethod"]];
-        authResponse.errorMessage = authBody[@"error"][@"message"].asString;
+        authResponse.errorMessage = [authBody[@"error"][@"message"] asString];
 
         [self didCompleteAuthentication:authResponse];
 

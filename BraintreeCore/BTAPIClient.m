@@ -40,7 +40,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 return nil;
             }
             
-            NSURL *baseURL = self.clientToken.json[@"clientApiUrl"].asURL;
+            NSURL *baseURL = [self.clientToken.json[@"clientApiUrl"] asURL];
             _http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
             
             [self sendAnalyticsEvent:@"ios.started.client-token"];
@@ -210,7 +210,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             return;
         }
 
-        NSURL *analyticsURL = configuration.json[@"analytics"][@"url"].asURL;
+        NSURL *analyticsURL = [configuration.json[@"analytics"][@"url"] asURL];
         if (analyticsURL) {
             if (!self.analyticsHttp) {
                 if (self.clientToken) {

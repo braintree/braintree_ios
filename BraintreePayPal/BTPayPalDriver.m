@@ -101,8 +101,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         
         PayPalOneTouchAuthorizationRequest *request =
         [self.requestFactory requestWithScopeValues:[self.defaultOAuth2Scopes setByAddingObjectsFromSet:(additionalScopes ? additionalScopes : [NSSet set])]
-                                         privacyURL:configuration.json[@"paypal"][@"privacyUrl"].asURL
-                                       agreementURL:configuration.json[@"paypal"][@"userAgreementUrl"].asURL
+                                         privacyURL:[configuration.json[@"paypal"][@"privacyUrl"] asURL]
+                                       agreementURL:[configuration.json[@"paypal"][@"userAgreementUrl"] asURL]
                                            clientID:[self paypalClientIdWithRemoteConfiguration:configuration.json]
                                         environment:[self payPalEnvironmentForRemoteConfiguration:configuration.json]
                                   callbackURLScheme:self.returnURLScheme];
@@ -205,7 +205,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         
         // Currency code should only be used for Hermes Checkout (one-time payment).
         // For BA, currency should not be used.
-        NSString *currencyCode = request.currencyCode ?: configuration.json[@"paypal"][@"currencyIsoCode"].asString;
+        NSString *currencyCode = request.currencyCode ?: [configuration.json[@"paypal"][@"currencyIsoCode"] asString];
         if (!isBillingAgreement && currencyCode) {
             parameters[@"currency_iso_code"] = currencyCode;
         }
@@ -271,15 +271,15 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                           [self setExpressCheckoutAppSwitchReturnBlock:completionBlock];
                       }
                       
-                      NSString *payPalClientID = configuration.json[@"paypal"][@"clientId"].asString;
+                      NSString *payPalClientID = [configuration.json[@"paypal"][@"clientId"] asString];
                       
                       if (!payPalClientID && [self payPalEnvironmentForRemoteConfiguration:configuration.json] == PayPalEnvironmentMock) {
                           payPalClientID = @"FAKE-PAYPAL-CLIENT-ID";
                       }
                       
-                      NSURL *approvalUrl = body[@"paymentResource"][@"redirectUrl"].asURL;
+                      NSURL *approvalUrl = [body[@"paymentResource"][@"redirectUrl"] asURL];
                       if (approvalUrl == nil) {
-                          approvalUrl = body[@"agreementSetup"][@"approvalUrl"].asURL;
+                          approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
                       }
                       
                       PayPalOneTouchCheckoutRequest *request = nil;
@@ -403,7 +403,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 }
 
 - (NSString *)payPalEnvironmentForRemoteConfiguration:(BTJSON *)configuration {
-    NSString *btPayPalEnvironmentName = configuration[@"paypal"][@"environment"].asString;
+    NSString *btPayPalEnvironmentName = [configuration[@"paypal"][@"environment"] asString];
     if ([btPayPalEnvironmentName isEqualToString:@"offline"]) {
         return PayPalEnvironmentMock;
     } else if ([btPayPalEnvironmentName isEqualToString:@"live"]) {
@@ -416,10 +416,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 }
 
 - (NSString *)paypalClientIdWithRemoteConfiguration:(BTJSON *)configuration {
-    if ([configuration[@"paypal"][@"environment"].asString isEqualToString:@"offline"] && !configuration[@"paypal"][@"clientId"].isString) {
+    if ([[configuration[@"paypal"][@"environment"] asString] isEqualToString:@"offline"] && ![configuration[@"paypal"][@"clientId"] isString]) {
         return @"mock-paypal-client-id";
     } else {
-        return configuration[@"paypal"][@"clientId"].asString;
+        return [configuration[@"paypal"][@"clientId"] asString];
     }
 }
 
@@ -445,13 +445,13 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     }
     
     BTPostalAddress *address = [[BTPostalAddress alloc] init];
-    address.recipientName = addressJSON[@"recipientName"].asString; // Likely to be nil
-    address.streetAddress = addressJSON[@"street1"].asString;
-    address.extendedAddress = addressJSON[@"street2"].asString;
-    address.locality = addressJSON[@"city"].asString;
-    address.region = addressJSON[@"state"].asString;
-    address.postalCode = addressJSON[@"postalCode"].asString;
-    address.countryCodeAlpha2 = addressJSON[@"country"].asString;
+    address.recipientName = [addressJSON[@"recipientName"] asString]; // Likely to be nil
+    address.streetAddress = [addressJSON[@"street1"] asString];
+    address.extendedAddress = [addressJSON[@"street2"] asString];
+    address.locality = [addressJSON[@"city"] asString];
+    address.region = [addressJSON[@"state"] asString];
+    address.postalCode = [addressJSON[@"postalCode"] asString];
+    address.countryCodeAlpha2 = [addressJSON[@"country"] asString];
     
     return address;
 }
@@ -462,32 +462,34 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     }
     
     BTPostalAddress *address = [[BTPostalAddress alloc] init];
-    address.recipientName = addressJSON[@"recipientName"].asString; // Likely to be nil
-    address.streetAddress = addressJSON[@"line1"].asString;
-    address.extendedAddress = addressJSON[@"line2"].asString;
-    address.locality = addressJSON[@"city"].asString;
-    address.region = addressJSON[@"state"].asString;
-    address.postalCode = addressJSON[@"postalCode"].asString;
-    address.countryCodeAlpha2 = addressJSON[@"countryCode"].asString;
+    address.recipientName = [addressJSON[@"recipientName"] asString]; // Likely to be nil
+    address.streetAddress = [addressJSON[@"line1"] asString];
+    address.extendedAddress = [addressJSON[@"line2"] asString];
+    address.locality = [addressJSON[@"city"] asString];
+    address.region = [addressJSON[@"state"] asString];
+    address.postalCode = [addressJSON[@"postalCode"] asString];
+    address.countryCodeAlpha2 = [addressJSON[@"countryCode"] asString];
     
     return address;
 }
 
 + (BTPayPalAccountNonce *)payPalAccountFromJSON:(BTJSON *)payPalAccount {
-    NSString *nonce = payPalAccount[@"nonce"].asString;
-    NSString *description = payPalAccount[@"description"].asString;
+    NSString *nonce = [payPalAccount[@"nonce"] asString];
+    NSString *description = [payPalAccount[@"description"] asString];
     
     BTJSON *details = payPalAccount[@"details"];
     
-    NSString *email = details[@"email"].asString;
-    NSString *clientMetadataId = details[@"correlationId"].asString;
+    NSString *email = [details[@"email"] asString];
+    NSString *clientMetadataId = [details[@"correlationId"] asString];
     // Allow email to be under payerInfo
-    if (details[@"payerInfo"][@"email"].isString) { email = details[@"payerInfo"][@"email"].asString; }
+    if ([details[@"payerInfo"][@"email"] isString]) {
+        email = [details[@"payerInfo"][@"email"] asString];
+    }
     
-    NSString *firstName = details[@"payerInfo"][@"firstName"].asString;
-    NSString *lastName = details[@"payerInfo"][@"lastName"].asString;
-    NSString *phone = details[@"payerInfo"][@"phone"].asString;
-    NSString *payerId = details[@"payerInfo"][@"payerId"].asString;
+    NSString *firstName = [details[@"payerInfo"][@"firstName"] asString];
+    NSString *lastName = [details[@"payerInfo"][@"lastName"] asString];
+    NSString *phone = [details[@"payerInfo"][@"phone"] asString];
+    NSString *payerId = [details[@"payerInfo"][@"payerId"] asString];
     
     BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
     BTPostalAddress *billingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
@@ -583,7 +585,7 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 #pragma mark - Preflight check
 
 - (BOOL)verifyAppSwitchWithRemoteConfiguration:(BTJSON *)configuration error:(NSError * __autoreleasing *)error {
-    if (!configuration[@"paypalEnabled"].isTrue) {
+    if (![configuration[@"paypalEnabled"] isTrue]) {
         [self.apiClient sendAnalyticsEvent:@"ios.paypal-otc.preflight.disabled"];
         if (error != NULL) {
             *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain

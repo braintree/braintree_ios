@@ -109,7 +109,7 @@
             [errorAlert show];
         }
 
-        NSArray *challenges = configuration.json[@"challenges"].asArray;
+        NSArray *challenges = [configuration.json[@"challenges"] asArray];
 
         static NSString *cvvChallenge = @"cvv";
         static NSString *postalCodeChallenge = @"postal_code";
@@ -585,7 +585,7 @@
                          BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
                          errorAlert.title = error.localizedDescription;
                          BTJSON *errorBody = error.userInfo[BTHTTPJSONResponseBodyKey];
-                         errorAlert.message = errorBody[@"error"][@"message"].asString;
+                         errorAlert.message = [errorBody[@"error"][@"message"] asString];
                          errorAlert.cancelBlock = ^{
                              [self informDelegateDidCancel];
                              if (completionBlock) completionBlock();
@@ -599,9 +599,9 @@
                      }
 
                      NSMutableArray *paymentMethodNonces = [NSMutableArray array];
-                     for (NSDictionary *paymentInfo in body[@"paymentMethods"].asArray) {
+                     for (NSDictionary *paymentInfo in [body[@"paymentMethods"] asArray]) {
                          BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
-                         BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:paymentInfoJSON[@"type"].asString];
+                         BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:[paymentInfoJSON[@"type"] asString]];
                          if (paymentMethodNonce) [paymentMethodNonces addObject:paymentMethodNonce];
                      }
                      self.paymentMethodNonces = [paymentMethodNonces copy];

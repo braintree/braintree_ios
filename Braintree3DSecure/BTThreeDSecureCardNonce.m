@@ -34,11 +34,11 @@
 }
 
 - (BOOL)liabilityShifted {
-    return self.threeDSecureJSON[@"liabilityShifted"].isTrue;
+    return [self.threeDSecureJSON[@"liabilityShifted"] isTrue];
 }
 
 - (BOOL)liabilityShiftPossible {
-    return self.threeDSecureJSON[@"liabilityShiftPossible"].isTrue;
+    return [self.threeDSecureJSON[@"liabilityShiftPossible"] isTrue];
 }
 
 @end

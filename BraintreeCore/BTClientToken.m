@@ -24,8 +24,8 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
     if (self = [super init]) {
         // Client token must be decoded first because the other values are retrieved from it
         _json = [self decodeClientToken:clientToken error:error];
-        _authorizationFingerprint = _json[BTClientTokenKeyAuthorizationFingerprint].asString;
-        _configURL = _json[BTClientTokenKeyConfigURL].asURL;
+        _authorizationFingerprint = [_json[BTClientTokenKeyAuthorizationFingerprint] asString];
+        _configURL = [_json[BTClientTokenKeyConfigURL] asURL];
         _originalValue = clientToken;
 
         if (![self validateClientToken:error]) {
