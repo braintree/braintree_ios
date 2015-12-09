@@ -24,9 +24,9 @@
 }
 
 + (instancetype)venmoAccountWithJSON:(BTJSON *)venmoAccountJSON {
-    return [[[self class] alloc] initWithPaymentMethodNonce:venmoAccountJSON[@"nonce"].asString
-                                                description:venmoAccountJSON[@"description"].asString
-                                                   username:venmoAccountJSON[@"username"].asString];
+    return [[[self class] alloc] initWithPaymentMethodNonce:[venmoAccountJSON[@"nonce"] asString]
+                                                description:[venmoAccountJSON[@"description"] asString]
+                                                   username:[venmoAccountJSON[@"username"] asString]];
 }
 
 @end

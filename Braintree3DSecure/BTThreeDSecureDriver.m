@@ -97,7 +97,7 @@
         NSMutableDictionary *requestParameters = [@{ @"amount": amount } mutableCopy];
 
         if (configuration.json[@"merchantAccountId"]) {
-            requestParameters[@"merchant_account_id"] = configuration.json[@"merchantAccountId"].asString;
+            requestParameters[@"merchant_account_id"] = [configuration.json[@"merchantAccountId"] asString];
         }
         NSString *urlSafeNonce = [nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
@@ -113,14 +113,14 @@
                               NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
                               BTJSON *errorBody = error.userInfo[BTHTTPJSONResponseBodyKey];
 
-                              if (errorBody[@"error"][@"message"].isString) {
-                                  userInfo[NSLocalizedDescriptionKey] = errorBody[@"error"][@"message"].asString;
+                              if ([errorBody[@"error"][@"message"] isString]) {
+                                  userInfo[NSLocalizedDescriptionKey] = [errorBody[@"error"][@"message"] asString];
                               }
-                              if (errorBody[@"threeDSecureInfo"].isObject) {
-                                  userInfo[BTThreeDSecureInfoKey] = errorBody[@"threeDSecureInfo"].asDictionary;
+                              if ([errorBody[@"threeDSecureInfo"] isObject]) {
+                                  userInfo[BTThreeDSecureInfoKey] = [errorBody[@"threeDSecureInfo"] asDictionary];
                               }
-                              if (errorBody[@"error"].isObject) {
-                                  userInfo[BTThreeDSecureValidationErrorsKey] = errorBody[@"error"].asDictionary;
+                              if ([errorBody[@"error"] isObject]) {
+                                  userInfo[BTThreeDSecureValidationErrorsKey] = [errorBody[@"error"] asDictionary];
                               }
 
                               error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
@@ -135,10 +135,10 @@
                       BTJSON *lookupJSON = body[@"lookup"];
 
                       BTThreeDSecureLookupResult *lookup = [[BTThreeDSecureLookupResult alloc] init];
-                      lookup.acsURL = lookupJSON[@"acsUrl"].asURL;
-                      lookup.PAReq = lookupJSON[@"pareq"].asString;
-                      lookup.MD = lookupJSON[@"md"].asString;
-                      lookup.termURL = lookupJSON[@"termUrl"].asURL;
+                      lookup.acsURL = [lookupJSON[@"acsUrl"] asURL];
+                      lookup.PAReq = [lookupJSON[@"pareq"] asString];
+                      lookup.MD = [lookupJSON[@"md"] asString];
+                      lookup.termURL = [lookupJSON[@"termUrl"] asURL];
                       lookup.tokenizedCard = [BTThreeDSecureCardNonce cardNonceWithJSON:body[@"paymentMethod"]];
 
                       completionBlock(lookup, nil);

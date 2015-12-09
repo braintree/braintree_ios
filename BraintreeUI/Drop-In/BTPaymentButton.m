@@ -178,7 +178,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         }
 
         if ([paymentOption isEqualToString:@"PayPal"]) {
-            return self.configuration.json[@"paypalEnabled"].isTrue;
+            return [self.configuration.json[@"paypalEnabled"] isTrue];
         } else if ([paymentOption isEqualToString:@"Venmo"]) {
             // Directly from BTConfiguration+Venmo.m. Be sure to keep these files in sync! This
             // is intentionally not DRY so that BraintreeUI does not depend on BraintreeVenmo.
