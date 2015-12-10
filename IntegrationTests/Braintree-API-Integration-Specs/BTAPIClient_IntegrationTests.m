@@ -17,7 +17,7 @@
 - (void)testFetchConfiguration_returnsTheConfiguration {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [client fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertEqualObjects(configuration.json[@"merchantId"].asString, @"integration_merchant_id");
+        XCTAssertEqualObjects([configuration.json[@"merchantId"] asString], @"integration_merchant_id");
         XCTAssertNil(error);
         [expectation fulfill];
     }];
