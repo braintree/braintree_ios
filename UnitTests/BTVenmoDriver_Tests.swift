@@ -226,40 +226,6 @@ class BTVenmoDriver_Tests: XCTestCase {
         self.waitForExpectationsWithTimeout(2, handler: nil)
     }
 
-    func testAuthorizeAccount_whenUsingJWTAndAppSwitchSucceeds_tokenizesVenmoAccount() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["environment":"sandbox",
-            "payWithVenmo" : ["accessToken" : "access-token"],
-            "merchantId": "merchant_id" ])
-        // Test setup sets up mockAPIClient with a tokenization key, we want a client token JWT
-        mockAPIClient.tokenizationKey = nil
-        // Note: for this test, it doesn't really matter that we provide a real JWT, since
-        // BTVenmoDriver's implementation branches on whether a tokenization key exists or not, and
-        // the stub API client will return a canned value
-        mockAPIClient.clientJWT = "some-fake-JWT"
-        let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
-        mockAPIClient = venmoDriver.apiClient as! MockAPIClient
-        BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
-        venmoDriver.application = FakeApplication()
-        venmoDriver.bundle = FakeBundle()
-
-        let expectation = self.expectationWithDescription("Callback")
-        venmoDriver.authorizeAccountWithCompletion { (venmoAccount, error) -> Void in
-            guard let venmoAccount = venmoAccount else {
-                XCTFail("Received an error: \(error)")
-                return
-            }
-
-            XCTAssertNil(error)
-            XCTAssertEqual(venmoAccount.nonce, "fake-nonce")
-            XCTAssertEqual(venmoAccount.localizedDescription, "fake-username")
-            XCTAssertEqual(venmoAccount.username, "fake-username")
-            expectation.fulfill()
-        }
-        BTVenmoDriver.handleAppSwitchReturnURL(NSURL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
-
-        self.waitForExpectationsWithTimeout(2, handler: nil)
-    }
-
     func testAuthorizeAccount_whenAppSwitchSucceeds_makesDelegateCallbacks() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["environment":"sandbox",
             "payWithVenmo" : ["accessToken" : "access-token"],

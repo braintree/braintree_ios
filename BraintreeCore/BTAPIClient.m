@@ -62,8 +62,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         NSAssert(NO, @"Cannot copy an API client that does not specify a client token or tokenization key");
     }
 
-    copiedClient.clientJWT = self.clientJWT;
-
     // IMPORTANT: Copy http so that tests using FakeHTTP will work.
     copiedClient.http = self.http;
     copiedClient.cachedRemoteConfiguration = self.cachedRemoteConfiguration;
