@@ -76,7 +76,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
         XCTAssertNil(error);
 
         XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
-        XCTAssertTrue(configuration.json[@"test"].isTrue);
+        XCTAssertTrue([configuration.json[@"test"] isTrue]);
         [expectation fulfill];
     }];
 
@@ -142,7 +142,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
         XCTAssertNil(error);
 
         XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
-        XCTAssertTrue(configuration.json[@"test"].isTrue);
+        XCTAssertTrue([configuration.json[@"test"] isTrue]);
 
         [expectation1 fulfill];
     }];
@@ -154,7 +154,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
         XCTAssertNil(error);
 
         XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
-        XCTAssertTrue(configuration.json[@"test"].isTrue);
+        XCTAssertTrue([configuration.json[@"test"] isTrue]);
 
         [expectation2 fulfill];
     }];

@@ -91,7 +91,7 @@ class BTJSON_Tests: XCTestCase {
         XCTAssertNil(obj["not present"].asString())
         XCTAssertNil(obj[0].asString())
 
-        XCTAssertFalse(obj["not present"].isError)
+        XCTAssertFalse(obj["not present"].isError as Bool)
 
         XCTAssertTrue(obj[0].isError)
     }
@@ -110,7 +110,7 @@ class BTJSON_Tests: XCTestCase {
 
         let error = string[0]["key"][0]
 
-        XCTAssertTrue(error.isError)
+        XCTAssertTrue(error.isError as Bool)
         XCTAssertEqual((error.asError()?.domain)!, NSCocoaErrorDomain)
     }
 
@@ -122,7 +122,7 @@ class BTJSON_Tests: XCTestCase {
         XCTAssertEqual(nested["numbers"][1].asString()!, "two")
         XCTAssertEqual(nested["numbers"][2]["tens"].asNumber()!, NSDecimalNumber.zero())
         XCTAssertEqual(nested["numbers"][2]["ones"].asNumber()!, NSDecimalNumber.one())
-        XCTAssertTrue(nested["truthy"].isTrue)
+        XCTAssertTrue(nested["truthy"].isTrue as Bool)
     }
 
     func testTrueBoolInterpretation() {
@@ -289,6 +289,6 @@ class BTJSON_Tests: XCTestCase {
         // nested resources:
         let btJson = obj["aLookupDictionary"]
         XCTAssertEqual(btJson["foo"]["definition"].asString(), "A meaningless word")
-        XCTAssert(btJson["aString"]["anything"].isError) // indicates error when value type is invalid
+        XCTAssert(btJson["aString"]["anything"].isError as Bool) // indicates error when value type is invalid
     }
 }

@@ -62,11 +62,11 @@
 }
 
 + (NSURLRequest *)parseRequestFromTestResponseBody:(BTJSON *)responseBody {
-    return [NSKeyedUnarchiver unarchiveObjectWithData:[[NSData alloc] initWithBase64EncodedString:responseBody[@"request"].asString options:0]];
+    return [NSKeyedUnarchiver unarchiveObjectWithData:[[NSData alloc] initWithBase64EncodedString:[responseBody[@"request"] asString] options:0]];
 }
 
 + (NSString *)parseRequestBodyFromTestResponseBody:(BTJSON *)responseBody {
-    return responseBody[@"requestBody"].asString;
+    return [responseBody[@"requestBody"] asString];
 }
 
 @end

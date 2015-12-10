@@ -143,8 +143,8 @@ NSURLSession *testURLSession() {
             XCTAssertNotNil(response);
             XCTAssertNil(error);
 
-            expect(body[@"clientId"].asString).to.equal(@"a-client-id");
-            expect(body[@"nest"][@"nested"].asString).to.equal(@"nested-value");
+            expect([body[@"clientId"] asString]).to.equal(@"a-client-id");
+            expect([body[@"nest"][@"nested"] asString]).to.equal(@"nested-value");
             done();
         }];
     });
@@ -316,7 +316,7 @@ NSURLSession *testURLSession() {
             NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponseBody:body];
             expect(httpRequest.URL.path).to.match(@"/200.json$");
             BTJSON *json = [[BTJSON alloc] initWithData:[httpRequestBody dataUsingEncoding:NSUTF8StringEncoding]];
-            expect(json[@"param"].asString).to.equal(@"value");
+            expect([json[@"param"] asString]).to.equal(@"value");
             expect(httpRequest.HTTPMethod).to.equal(@"POST");
             expect(httpRequest.URL.query).to.beNil();
             done();
@@ -352,7 +352,7 @@ NSURLSession *testURLSession() {
             NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponseBody:body];
             expect(httpRequest.URL.path).to.match(@"200.json$");
             BTJSON *json = [[BTJSON alloc] initWithData:[httpRequestBody dataUsingEncoding:NSUTF8StringEncoding]];
-            expect(json[@"param"].asString).to.equal(@"value");
+            expect([json[@"param"] asString]).to.equal(@"value");
             expect(httpRequest.HTTPMethod).to.equal(@"PUT");
             expect(httpRequest.URL.query).to.beNil();
             done();
@@ -828,7 +828,7 @@ NSURLSession *testURLSession() {
             XCTAssertNotNil(response);
             XCTAssertNil(error);
 
-            expect(body[@"status"].asString).to.equal(@"OK");
+            expect([body[@"status"] asString]).to.equal(@"OK");
 
             [OHHTTPStubs removeStub:stub];
             done();
