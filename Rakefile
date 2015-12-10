@@ -130,7 +130,7 @@ namespace :carthage do
   task :test do
     generate_cartfile
     run! "carthage update"
-    run! "xcodebuild -project 'Demo/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' build -sdk 'iphonesimulator'"
+    run! "xcodebuild -project 'Demo/CarthageTest/CarthageTest.xcodeproj' -scheme 'CarthageTest' clean build"
   end
 end
 
