@@ -25,6 +25,8 @@
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [client fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        // Note: client token uses a different merchant ID than the merchant whose tokenization key
+        // we use in the other test
         XCTAssertEqualObjects([configuration.json[@"merchantId"] asString], @"348pk9cgf3bgyw2b");
         XCTAssertNil(error);
         [expectation fulfill];
@@ -33,13 +35,22 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testPostAnalytics_whenCalled_isSuccessful {
-    BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+- (void)testSendAnalyticsEvent_withTokenizationKey_isSuccessful {
+    [self validateSendAnalyticsEventWithAPIClient:[[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY]];
+}
+
+- (void)testSendAnalyticsEvent_withClientToken_isSuccessful {
+    [self validateSendAnalyticsEventWithAPIClient:[[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN]];
+}
+
+#pragma mark - Helpers
+
+- (void)validateSendAnalyticsEventWithAPIClient:(BTAPIClient *)apiClient {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Post analytics event"];
 
     // Analytics require an authorization fingerprint, needs support for tokenization key
     NSString *event = @"hello world! 🐴";
-    [client sendAnalyticsEvent:event completion:^(NSError *error) {
+    [apiClient sendAnalyticsEvent:event completion:^(NSError *error) {
         XCTAssertNil(error);
         [expectation fulfill];
     }];
