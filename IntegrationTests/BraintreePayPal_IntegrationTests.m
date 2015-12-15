@@ -277,10 +277,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     [self stubDelegatesForPayPalDriver:payPalDriver];
 
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
-        XCTAssertNotNil(tokenizedPayPalAccount);
-        XCTAssertNil(error);
-    }];
+    [payPalDriver authorizeAccountWithCompletion:^(__unused BTPayPalAccountNonce *tokenizedPayPalAccount, __unused NSError *error) { }];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
@@ -288,21 +285,20 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     OCMVerify([partialMockAPIClient sendAnalyticsEvent:expectedEvent]);
 }
 
-- (void)testAnalytics_afterTokenizingPayment_postsExpectedEvent {
+// RSS 12-15-15: OCMock 3.2 has a bug that causes the NSInvocation argument for the partially mocked
+// BTAPIClient to be released prematurely, which causes a crash when we attempt to verify the analytics
+// event was called with the correct event name. This is a TODO until this either gets fixed or we create a better way
+// to verify analytics events.
+- (void)pendAnalytics_afterTokenizingPayment_postsExpectedEvent {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
     // BTPayPalDriver copies APIClient, so we have to mock the API client after the call to initWithAPIClient
     id partialMockAPIClient = OCMPartialMock(payPalDriver.apiClient);
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-//    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     [self stubDelegatesForPayPalDriver:payPalDriver];
 
-//    OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     __block XCTestExpectation *expectation;
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
-        XCTAssertNotNil(tokenizedPayPalAccount);
-        XCTAssertNil(error);
+    [payPalDriver authorizeAccountWithCompletion:^(__unused BTPayPalAccountNonce *tokenizedPayPalAccount, __unused NSError *error) {
         [expectation fulfill];
     }];
 
