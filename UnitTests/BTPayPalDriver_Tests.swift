@@ -820,7 +820,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Cancel
-        payPalDriver.setExpressCheckoutAppSwitchReturnBlock ({ (tokenizedCheckout, error) -> Void in
+        payPalDriver.setOneTimePaymentAppSwitchReturnBlock ({ (tokenizedCheckout, error) -> Void in
             XCTAssertNil(tokenizedCheckout)
             XCTAssertNil(error)
             continuationExpectation.fulfill()
@@ -843,7 +843,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Error
         BTPayPalDriver.payPalClass().cannedResult()?.cannedError = NSError(domain: "", code: 0, userInfo: nil)
 
-        payPalDriver.setExpressCheckoutAppSwitchReturnBlock ({ (tokenizedCheckout, error) -> Void in
+        payPalDriver.setOneTimePaymentAppSwitchReturnBlock ({ (tokenizedCheckout, error) -> Void in
             XCTAssertNil(tokenizedCheckout)
             XCTAssertEqual(error!, BTPayPalDriver.payPalClass().cannedResult()?.error!)
             continuationExpectation.fulfill()
@@ -860,7 +860,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
 
-        payPalDriver.setExpressCheckoutAppSwitchReturnBlock ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturnBlock ({ _ -> Void in })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -883,7 +883,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
 
-        payPalDriver.setExpressCheckoutAppSwitchReturnBlock ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturnBlock ({ _ -> Void in })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -898,7 +898,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.payPalClass().cannedResult()?.cannedError = fakeError
 
         let expectation = self.expectationWithDescription("App switch completion callback")
-        payPalDriver.setExpressCheckoutAppSwitchReturnBlock ({ (tokenizedCheckout, error) -> Void in
+        payPalDriver.setOneTimePaymentAppSwitchReturnBlock ({ (tokenizedCheckout, error) -> Void in
             guard let error = error else {
                 XCTFail()
                 return
@@ -1022,7 +1022,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         stubPayPalClass.cannedResult()?.cannedType = .Success
         stubPayPalClass.setCannedIsWalletAppAvailable(true)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
-        payPalDriver.setExpressCheckoutAppSwitchReturnBlock ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturnBlock ({ _ -> Void in })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -1043,7 +1043,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         stubPayPalClass.cannedResult()?.cannedType = .Success
         stubPayPalClass.setCannedIsWalletAppAvailable(false)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
-        payPalDriver.setExpressCheckoutAppSwitchReturnBlock ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturnBlock ({ _ -> Void in })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -1065,7 +1065,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .Success
 
-        payPalDriver.setExpressCheckoutAppSwitchReturnBlock ({ (tokenizedPayPalAccount, error) -> Void in
+        payPalDriver.setOneTimePaymentAppSwitchReturnBlock ({ (tokenizedPayPalAccount, error) -> Void in
             assertionBlock(tokenizedPayPalAccount, error)
         })
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)

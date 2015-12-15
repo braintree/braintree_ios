@@ -154,7 +154,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     [self requestExpressCheckout:request isBillingAgreement:NO completion:completionBlock];
 }
 
-- (void)setExpressCheckoutAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
+- (void)setOneTimePaymentAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
     [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeCheckout];
 }
 
@@ -268,7 +268,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                       if (isBillingAgreement) {
                           [self setBillingAgreementAppSwitchReturnBlock:completionBlock];
                       } else {
-                          [self setExpressCheckoutAppSwitchReturnBlock:completionBlock];
+                          [self setOneTimePaymentAppSwitchReturnBlock:completionBlock];
                       }
                       
                       NSString *payPalClientID = [configuration.json[@"paypal"][@"clientId"] asString];

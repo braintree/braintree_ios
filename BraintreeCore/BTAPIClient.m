@@ -13,23 +13,31 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 @implementation BTAPIClient
 
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization {
+    return [self initWithAuthorization:authorization sendAnalyticsEvent:YES];
+}
+
+/// A private initializer to toggle whether the started analytics event should be sent.
+/// Without this, copyWithSource:integration: will send a duplicate event.
+- (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent {
     if(![authorization isKindOfClass:[NSString class]]) {
         NSString *reason = @"BTClient could not initialize because the provided authorization was invalid";
         [[BTLogger sharedLogger] error:reason];
         return nil;
     }
-    
+
     if (self = [super init]) {
         _metadata = [[BTClientMetadata alloc] init];
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
-        
+
         NSURL *baseURL = [BTAPIClient baseURLFromTokenizationKey:authorization];
         if (baseURL) {
             _tokenizationKey = authorization;
 
             _http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:authorization];
-            
-            [self sendAnalyticsEvent:@"ios.started.client-key"];
+
+            if (sendAnalyticsEvent) {
+                [self sendAnalyticsEvent:@"ios.started.client-key"];
+            }
         } else {
             NSError *error;
             _clientToken = [[BTClientToken alloc] initWithClientToken:authorization error:&error];
@@ -39,11 +47,13 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 [[BTLogger sharedLogger] error:reason];
                 return nil;
             }
-            
+
             NSURL *baseURL = [self.clientToken.json[@"clientApiUrl"] asURL];
             _http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-            
-            [self sendAnalyticsEvent:@"ios.started.client-token"];
+
+            if (sendAnalyticsEvent) {
+                [self sendAnalyticsEvent:@"ios.started.client-token"];
+            }
         }
     }
     return self;
@@ -55,9 +65,9 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     BTAPIClient *copiedClient;
 
     if (self.clientToken) {
-        copiedClient = [[[self class] alloc] initWithAuthorization:self.clientToken.originalValue];
+        copiedClient = [[[self class] alloc] initWithAuthorization:self.clientToken.originalValue sendAnalyticsEvent:NO];
     } else if (self.tokenizationKey) {
-        copiedClient = [[[self class] alloc] initWithAuthorization:self.tokenizationKey];
+        copiedClient = [[[self class] alloc] initWithAuthorization:self.tokenizationKey sendAnalyticsEvent:NO];
     } else {
         NSAssert(NO, @"Cannot copy an API client that does not specify a client token or tokenization key");
     }

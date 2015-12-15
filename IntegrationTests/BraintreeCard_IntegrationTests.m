@@ -11,7 +11,7 @@ describe(@"tokenizeCard:completion:", ^{
 
     context(@"with validation disabled", ^{
         beforeEach(^{
-            BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
+            BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
             client = [[BTCardClient alloc] initWithAPIClient:apiClient];
         });
 
@@ -38,8 +38,8 @@ describe(@"tokenizeCard:completion:", ^{
             card.expirationYear = @"2018";
 
             XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-            [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenized, NSError * _Nullable error) {
-                expect(tokenized.nonce.isANonce).to.beTruthy();
+            [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+                expect(tokenizedCard.nonce.isANonce).to.beTruthy();
                 expect(error).to.beNil();
                 [expectation fulfill];
             }];
@@ -49,24 +49,24 @@ describe(@"tokenizeCard:completion:", ^{
     });
 
     context(@"with validation enabled", ^{
+        __block BTCard *card;
+
+        beforeEach(^{
+            card = [[BTCard alloc] init];
+            card.shouldValidate = YES;
+            card.number = @"4111111111111111";
+            card.expirationMonth = @"12";
+            card.expirationYear = @"2018";
+        });
 
         context(@"and API client uses tokenization key", ^{
 
-            beforeEach(^{
-                BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration_merchant_id"];
-                client = [[BTCardClient alloc] initWithAPIClient:apiClient];
-            });
-
             it(@"returns an authorization error", ^{
-                BTCard *card = [[BTCard alloc] init];
-                card.shouldValidate = YES;
-                card.number = @"4111111111111111";
-                card.expirationMonth = @"12";
-                card.expirationYear = @"2018";
+                client = [[BTCardClient alloc] initWithAPIClient:[[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY]];
 
                 XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-                [client tokenizeCard:card completion:^(BTCardNonce *tokenized, NSError *error) {
-                    XCTAssertNil(tokenized);
+                [client tokenizeCard:card completion:^(BTCardNonce *tokenizedCard, NSError *error) {
+                    XCTAssertNil(tokenizedCard);
                     expect(error.domain).to.equal(BTHTTPErrorDomain);
                     expect(error.code).to.equal(BTHTTPErrorCodeClientError);
                     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey];
@@ -74,6 +74,21 @@ describe(@"tokenizeCard:completion:", ^{
                     [expectation fulfill];
                 }];
                 
+                [self waitForExpectationsWithTimeout:5 handler:nil];
+            });
+        });
+
+        context(@"and API client uses client token", ^{
+            it(@"returns a tokenized card", ^{
+                client = [[BTCardClient alloc] initWithAPIClient:[[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN]];
+
+                XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
+                [client tokenizeCard:card completion:^(BTCardNonce *tokenizedCard, NSError *error) {
+                    expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+                    expect(error).to.beNil();
+                    [expectation fulfill];
+                }];
+
                 [self waitForExpectationsWithTimeout:5 handler:nil];
             });
         });
