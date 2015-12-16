@@ -52,7 +52,9 @@ Coming soon: we will be offering a static library of the Braintree SDK.
 
 ### Manual Integration
 
-Follow the [manual integration instructions](https://github.braintreeps.com/braintree/braintree-ios/blob/master/Docs/Manual%20Integration.md).
+For v3 integrations, please follow the [v3 manual integration instructions](https://github.com/braintree/braintree_ios/blob/3.x/Docs/Manual%20Integration.md).
+
+Complete v4 manual integration instructions are in-progress. Note that apps targeting iOS 8+ may use pull in the project and use the framework targets directly.
 
 ## Supporting iOS 9
 
