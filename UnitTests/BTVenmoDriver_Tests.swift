@@ -6,6 +6,7 @@ class FakeApplication {
     var openURLWasCalled : Bool = false
     var cannedOpenURLSuccess : Bool = true
     var cannedCanOpenURL : Bool = true
+    var canOpenURLWhitelist : [NSURL] = []
 
     @objc func openURL(url: NSURL) -> Bool {
         lastOpenURL = url
@@ -14,6 +15,11 @@ class FakeApplication {
     }
 
     @objc func canOpenURL(url: NSURL) -> Bool {
+        for whitelistURL in canOpenURLWhitelist {
+            if whitelistURL.scheme == url.scheme {
+                return true
+            }
+        }
         return cannedCanOpenURL
     }
 }
@@ -339,6 +345,52 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertEqual(venmoDriver.apiClient.metadata.integration, BTClientMetadataIntegrationType.Custom)
         XCTAssertEqual(venmoDriver.apiClient.metadata.source, BTClientMetadataSourceType.VenmoApp)
     }
+
+    // MARK: - BTAppSwitchHandler
+
+    func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_returnsTrue() {
+        let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
+        mockAPIClient = venmoDriver.apiClient as! MockAPIClient
+        BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+        fakeApplication.canOpenURLWhitelist.append(NSURL(string: "com.venmo.touch.v2://x-callback-url/path")!)
+        venmoDriver.application = fakeApplication
+
+        XCTAssertTrue(venmoDriver.isiOSAppAvailableForAppSwitch())
+    }
+
+    func testIsiOSAppSwitchAvailable_whenApplicationCantOpenVenmoURL_returnsFalse() {
+        let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
+        BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+        venmoDriver.application = fakeApplication
+
+        XCTAssertFalse(venmoDriver.isiOSAppAvailableForAppSwitch())
+    }
+
+    let venmoProductionSourceApplication = "net.kortina.labs.Venmo"
+    let venmoDebugSourceApplication = "net.kortina.labs.Venmo.debug"
+    let fakeWalletSourceApplication = "com.paypal.PPClient.Debug"
+
+    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsVenmoDebugApp_returnsTrue() {
+        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturnURL(NSURL(string: "")!, sourceApplication: venmoProductionSourceApplication))
+    }
+
+    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsVenmoProductionApp_returnsTrue() {
+        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturnURL(NSURL(string: "")!, sourceApplication: venmoDebugSourceApplication))
+    }
+
+    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsFakeWalletAppAndURLIsValid_returnsTrue() {
+        XCTAssertTrue(BTVenmoDriver.canHandleAppSwitchReturnURL(NSURL(string: "doesntmatter://x-callback-url/vzero/auth/venmo/stuffffff")!, sourceApplication: fakeWalletSourceApplication))
+    }
+
+    func testCanHandleAppSwitchReturnURL_whenSourceApplicationIsNotVenmo_returnsFalse() {
+        XCTAssertFalse(BTVenmoDriver.canHandleAppSwitchReturnURL(NSURL(string: "")!, sourceApplication: "invalid.source.application"))
+    }
+
+    // Note: testing of handleAppSwitchReturnURL is done implicitly while testing authorizeAccountWithCompletion
 
     // MARK: - Drop-in
 

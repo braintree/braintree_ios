@@ -26,6 +26,7 @@
 #import "BTFakeHTTP.h"
 #import "BTDropInViewController_Internal.h"
 #import "BTPaymentButton_Internal.h"
+#import "BTThreeDSecureLookupResult.h"
 
 #import "BTSpecHelper.h"
 #import <OCMock/OCMock.h>
