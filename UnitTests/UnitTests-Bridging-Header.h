@@ -30,4 +30,5 @@
 
 #import "BTSpecHelper.h"
 #import <OCMock/OCMock.h>
+#import "BTTestClientTokenFactory.h"
 

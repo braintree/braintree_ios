@@ -419,7 +419,6 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     }];
 
     [self waitForExpectationsWithTimeout:2 handler:nil];
-
 }
 
 #pragma mark - Helpers
