@@ -516,6 +516,9 @@
 		A7B1C1531B66F79900ED063C /* BTAppSwitch.h in Headers */ = {isa = PBXBuildFile; fileRef = A7B1C1511B66F79900ED063C /* BTAppSwitch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7B1C1541B66F79900ED063C /* BTAppSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B1C1521B66F79900ED063C /* BTAppSwitch.m */; };
 		A7B4AD571B4EFC76002FB23E /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B4AD561B4EFC76002FB23E /* MockAPIClient.swift */; };
+		A7B7989C1C233C57001327FA /* BTConfiguration_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */; };
+		A7B7989D1C233C57001327FA /* BTConfiguration_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */; };
+		A7B7989E1C233C57001327FA /* BTConfiguration_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */; };
 		A7C823081B4DA9D7009D45D6 /* BTHTTPSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C823071B4DA9D7009D45D6 /* BTHTTPSpec.m */; };
 		A7C8230E1B4DAAB2009D45D6 /* BTSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */; };
 		A7C889801B5EF62C007A0E9C /* BTApplePayClient.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8897C1B5EF62C007A0E9C /* BTApplePayClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1287,6 +1290,7 @@
 		A7B1C1511B66F79900ED063C /* BTAppSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTAppSwitch.h; sourceTree = "<group>"; };
 		A7B1C1521B66F79900ED063C /* BTAppSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAppSwitch.m; sourceTree = "<group>"; };
 		A7B4AD561B4EFC76002FB23E /* MockAPIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
+		A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTConfiguration_Tests.swift; sourceTree = "<group>"; };
 		A7C823071B4DA9D7009D45D6 /* BTHTTPSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTHTTPSpec.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A7C8230C1B4DAAB2009D45D6 /* BTSpecHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSpecHelper.h; sourceTree = "<group>"; };
 		A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSpecHelper.m; sourceTree = "<group>"; };
@@ -1543,6 +1547,7 @@
 				A7C8230F1B4DAAFB009D45D6 /* Helpers */,
 				16CD2EA01B4077FC00E68495 /* Info.plist */,
 				A7E6E8E11B420D0C004CFA95 /* UnitTests-Bridging-Header.h */,
+				A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -3536,6 +3541,7 @@
 				A71F7DE51B616BA0005DA1B0 /* BTVenmoAppSwitchURLSpec.m in Sources */,
 				A72A814D1B7BEADF00E4D6FA /* BTTokenizationService_Tests.m in Sources */,
 				A7A094F61B8276E500D732CC /* BTCardNonce_Tests.swift in Sources */,
+				A7B7989C1C233C57001327FA /* BTConfiguration_Tests.swift in Sources */,
 				A734A9911B87989400D2461B /* BTTestClientTokenFactory.m in Sources */,
 				A734A98E1B8797FD00D2461B /* BTClientTokenSpec.m in Sources */,
 				A7D6746D1B84073300ED6C00 /* MockDelegates.swift in Sources */,
@@ -3750,6 +3756,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A775AFEF1C1608CE0003A6E6 /* BTVenmoDriver_Tests.swift in Sources */,
+				A7B7989D1C233C57001327FA /* BTConfiguration_Tests.swift in Sources */,
 				A775AFED1C1608C40003A6E6 /* BTVenmoAppSwitchReturnURLSpec.m in Sources */,
 				A775AFEE1C1608C40003A6E6 /* BTVenmoAppSwitchURLSpec.m in Sources */,
 				41BC33DD1BF6948C00161106 /* BTFakeHTTP.m in Sources */,
@@ -3789,6 +3796,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A775AFDC1C1608B30003A6E6 /* BTAPIClient_SwiftTests.swift in Sources */,
+				A7B7989E1C233C57001327FA /* BTConfiguration_Tests.swift in Sources */,
 				A775AFDD1C1608B30003A6E6 /* BTApplePay_Tests.swift in Sources */,
 				A775AFDE1C1608B30003A6E6 /* BTAppSwitch_Tests.swift in Sources */,
 				A775AFDF1C1608B30003A6E6 /* BTCardClient_Tests.swift in Sources */,

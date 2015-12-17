@@ -16,6 +16,7 @@
 #import "BTApplePayClient_Internal.h"
 #import "BTCard_Internal.h"
 #import "BTCardClient_Internal.h"
+#import "BTConfiguration.h"
 #import "BTPayPalDriver_Internal.h"
 #import "BTVenmoDriver_Internal.h"
 #import "BTThreeDSecureDriver_Internal.h"
