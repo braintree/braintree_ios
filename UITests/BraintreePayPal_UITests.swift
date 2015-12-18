@@ -15,7 +15,6 @@ class BraintreePayPal_FuturePayment_UITests: BTUITest {
     
     override func tearDown() {
         super.tearDown()
-        
     }
     
     func testPayPal_futurePayment_receivesNonce() {

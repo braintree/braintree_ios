@@ -20,8 +20,7 @@ extension XCUIElement {
     func forceTapElement() {
         if self.hittable {
             self.tap()
-        }
-        else {
+        } else {
             let coordinate: XCUICoordinate = self.coordinateWithNormalizedOffset(CGVectorMake(0.0, 0.0))
             coordinate.tap()
         }
