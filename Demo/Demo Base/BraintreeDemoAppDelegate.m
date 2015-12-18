@@ -1,4 +1,5 @@
 #import "BraintreeDemoAppDelegate.h"
+#import "BraintreeDemoSettings.h"
 #import <HockeySDK/HockeySDK.h>
 #import <BraintreeCore/BraintreeCore.h>
 
@@ -58,6 +59,23 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
 }
 
 - (void)registerDefaultsFromSettings {
+    // Check for testing arguments
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-EnvironmentSandbox"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant forKey:BraintreeDemoSettingsEnvironmentDefaultsKey];
+    }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-EnvironmentProduction"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant forKey:BraintreeDemoSettingsEnvironmentDefaultsKey];
+    }
+    
+    for (NSString* arg in [[NSProcessInfo processInfo] arguments]) {
+        if ([arg containsString:@"-Integration:"]) {
+            NSString* testIntegration = [arg stringByReplacingOccurrencesOfString:@"-Integration:" withString:@""];
+            [[NSUserDefaults standardUserDefaults] setObject:testIntegration forKey:@"BraintreeDemoSettingsIntegration"];
+            break;
+        }
+    }
+    // End checking for testing arguments
+    
+    
     NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
     if(!settingsBundle) {
         NSLog(@"Could not find Settings.bundle");
