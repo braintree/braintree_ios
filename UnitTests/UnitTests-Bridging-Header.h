@@ -28,6 +28,7 @@
 #import "BTDropInViewController_Internal.h"
 #import "BTPaymentButton_Internal.h"
 #import "BTThreeDSecureLookupResult.h"
+#import "Braintree-Version.h"
 
 #import "BTSpecHelper.h"
 #import <OCMock/OCMock.h>
