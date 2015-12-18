@@ -1,6 +1,6 @@
 import XCTest
 
-class UITests: XCTestCase {
+class BraintreePayPal_UITests: XCTestCase {
         
     override func setUp() {
         super.setUp()
@@ -20,7 +20,7 @@ class UITests: XCTestCase {
         super.tearDown()
     }
     
-    func testPayPalFuturePayment() {
+    func testPayPal_futurePayment() {
         let app = XCUIApplication()
         app.navigationBars.elementBoundByIndex(0).buttons["Settings"].tap()
         app.tables.staticTexts["Integration"].tap()
