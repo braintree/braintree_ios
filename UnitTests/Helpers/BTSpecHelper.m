@@ -1,4 +1,5 @@
 #import "BTSpecHelper.h"
+#import <OCMock/OCMock.h>
 
 #ifdef DEBUG
 BTTestMode_t BTTestMode = BTTestModeDebug;
@@ -26,3 +27,12 @@ BOOL isANonce(NSString *nonce) {
 
     return [regex numberOfMatchesInString:nonce options:0 range:NSMakeRange(0, [nonce length])] > 0;
 }
+
+@implementation BTOCMockHelper
+
+- (void)stubApplicationCanOpenURL {
+    id stubApplication = OCMPartialMock([UIApplication sharedApplication]);
+    OCMStub([stubApplication canOpenURL:[OCMArg any]]).andReturn(YES);
+}
+
+@end

@@ -24,9 +24,16 @@
                    bundleDisplayName:(NSString *)bundleName
                          environment:(NSString *)environment
 {
-    NSMutableDictionary *appSwitchParameters = [@{@"x-success": [self returnURLWithScheme:scheme result:@"success"],
-                                                  @"x-error": [self returnURLWithScheme:scheme result:@"error"],
-                                                  @"x-cancel": [self returnURLWithScheme:scheme result:@"cancel"],
+    NSURL *successReturnURL = [self returnURLWithScheme:scheme result:@"success"];
+    NSURL *errorReturnURL = [self returnURLWithScheme:scheme result:@"error"];
+    NSURL *cancelReturnURL = [self returnURLWithScheme:scheme result:@"cancel"];
+    if (!successReturnURL || !errorReturnURL || !cancelReturnURL || !merchantID || !accessToken || !sdkVersion || !scheme || !bundleName || !environment) {
+        return nil;
+    }
+
+    NSMutableDictionary *appSwitchParameters = [@{@"x-success": successReturnURL,
+                                                  @"x-error": errorReturnURL,
+                                                  @"x-cancel": cancelReturnURL,
                                                   @"x-source": bundleName,
                                                   @"braintree_merchant_id": merchantID,
                                                   @"braintree_access_token": accessToken,

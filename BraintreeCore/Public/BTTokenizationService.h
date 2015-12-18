@@ -5,6 +5,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const BTTokenizationServiceErrorDomain;
+extern NSString * const BTTokenizationServiceAppSwitchDelegateOption;
 extern NSString * const BTTokenizationServiceViewPresentingDelegateOption;
 extern NSString * const BTTokenizationServicePayPalScopesOption;
 
@@ -57,7 +58,7 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
        withAPIClient:(BTAPIClient *)apiClient
           completion:(void(^)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error))completion;
 
-@property (nonatomic, readonly, strong) NSArray *allTypes;
+@property (nonatomic, readonly, strong) NSArray <NSString *> *allTypes;
 
 @end
 

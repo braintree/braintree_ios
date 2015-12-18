@@ -43,6 +43,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
             driver.viewControllerPresentingDelegate = options[BTTokenizationServiceViewPresentingDelegateOption];
+            driver.appSwitchDelegate = options[BTTokenizationServiceAppSwitchDelegateOption];
             [driver authorizeAccountWithAdditionalScopes:options[BTTokenizationServicePayPalScopesOption] completion:completionBlock];
         }];
         

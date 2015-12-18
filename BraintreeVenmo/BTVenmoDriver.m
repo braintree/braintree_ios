@@ -29,6 +29,7 @@ static BTVenmoDriver *appSwitchedDriver;
         [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
         [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
+            driver.appSwitchDelegate = options[BTTokenizationServiceAppSwitchDelegateOption];
             [driver authorizeAccountWithCompletion:completionBlock];
         }];
         
@@ -120,6 +121,13 @@ static BTVenmoDriver *appSwitchedDriver;
                                                                     returnURLScheme:self.returnURLScheme
                                                                   bundleDisplayName:bundleDisplayName
                                                                         environment:[configuration.json[@"environment"] asString]];
+        if (!appSwitchURL) {
+            error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                        code:BTVenmoDriverErrorTypeInvalidRequestURL
+                                    userInfo:@{NSLocalizedDescriptionKey: @"Failed to create Venmo app switch request URL."}];
+            completionBlock(nil, error);
+            return;
+        }
         
         [self informDelegateWillPerformAppSwitch];
         BOOL success = [self.application openURL:appSwitchURL];
