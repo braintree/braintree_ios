@@ -92,5 +92,81 @@ class BraintreeDropIn_CardForm_UITests: BTUITest {
         
         XCTAssertFalse(elementsQuery.textFields["Invalid: MM/YY"].exists);
     }
+    
+    func testDropIn_paypalIntegration() {
+        let app = XCUIApplication()
+        
+        app.buttons["Buy Now"].tap()
+        
+        let elementsQuery = app.collectionViews["Payment Options"].cells.elementAtIndex(0)
+        elementsQuery.tap()
+        sleep(2)
+        
+        self.waitForElementToAppear(app.webViews.textFields["Email"])
+        
+        app.webViews.textFields["Email"].forceTapElement()
+        sleep(1)
+        app.webViews.textFields["Email"].typeText("test@paypal.com")
+        
+        app.webViews.secureTextFields["Password"].forceTapElement()
+        sleep(1)
+        app.webViews.secureTextFields["Password"].typeText("1234")
+        
+        app.webViews.buttons["Log In"].forceTapElement()
+        
+        self.waitForElementToAppear(app.webViews.buttons["Agree"])
+        
+        app.webViews.buttons["Agree"].forceTapElement()
+        
+        self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
+        
+        XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists);
+    }
+}
 
+class BraintreeDropIn_PayPal_UITests: BTUITest {
+    
+    override func setUp() {
+        super.setUp()
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments.append("-EnvironmentSandbox")
+        app.launchArguments.append("-Integration:BraintreeDemoDropInViewController")
+        app.launch()
+        
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+    }
+    
+    func testDropIn_paypal_receivesNonce() {
+        let app = XCUIApplication()
+        
+        app.buttons["Buy Now"].tap()
+        
+        let elementsQuery = app.collectionViews["Payment Options"].cells.elementBoundByIndex(0)
+        elementsQuery.tap()
+        sleep(2)
+        
+        self.waitForElementToAppear(app.webViews.textFields["Email"])
+        
+        app.webViews.textFields["Email"].forceTapElement()
+        sleep(1)
+        app.webViews.textFields["Email"].typeText("test@paypal.com")
+        
+        app.webViews.secureTextFields["Password"].forceTapElement()
+        sleep(1)
+        app.webViews.secureTextFields["Password"].typeText("1234")
+        
+        app.webViews.buttons["Log In"].forceTapElement()
+        
+        self.waitForElementToAppear(app.webViews.buttons["Agree"])
+        
+        app.webViews.buttons["Agree"].forceTapElement()
+        
+        self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
+        
+        XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists);
+    }
 }
