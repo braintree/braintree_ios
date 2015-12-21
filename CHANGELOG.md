@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.7 (2015-12-21)
+
+* Ignore `UIAlertView` deprecation warning in `BTDropInErrorAlert`
+
 ## 3.9.6 (2015-10-08)
 
 * Update Kount DeviceCollectorSDK to v2.6.2 to [fix #175](https://github.com/braintree/braintree_ios/issues/175) (thanks, @keith)
