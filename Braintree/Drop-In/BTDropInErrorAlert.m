@@ -67,7 +67,10 @@
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)alertView:(__unused UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+#pragma clang diagnostic pop
     if (buttonIndex == 0 && self.cancelBlock) {
         self.cancelBlock();
     } else if (buttonIndex == 1 && self.retryBlock) {
