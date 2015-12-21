@@ -495,11 +495,11 @@ describe(@"3D Secure View Controller", ^{
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
                 [system waitForTimeInterval:1];
+                [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
+                [tester waitForTimeInterval:TIME_TO_WAIT_FOR_KEYBOARD];
+                [tester enterTextIntoCurrentFirstResponder:@"1234"];
                 [tester tapViewWithAccessibilityLabel:@"Submit"];
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
-                [system waitForTimeInterval:1];
-                [tester waitForViewWithAccessibilityLabel:@"Incorrect, Please try again"];
-                [system waitForApplicationToSetNetworkActivityIndicatorVisible:NO];
             }];
         });
 

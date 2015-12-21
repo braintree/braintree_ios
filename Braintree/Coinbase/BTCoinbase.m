@@ -56,9 +56,6 @@
 
 // In this context, "AppSwitch" includes both browser switch and provider app switch
 - (BOOL)initiateAppSwitchWithClient:(BTClient *)client delegate:(id<BTAppSwitchingDelegate>)delegate error:(NSError *__autoreleasing *)error {
-
-    [BTCoinbaseOAuth setBaseURL:[client.configuration.coinbaseEnvironment isEqualToString:@"shared_sandbox"] ? [NSURL URLWithString:@"https://sandbox.coinbase.com/"] : nil];
-
     self.client = client;
     self.delegate = delegate;
 
