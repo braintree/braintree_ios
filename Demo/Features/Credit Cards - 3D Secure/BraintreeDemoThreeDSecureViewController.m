@@ -82,12 +82,13 @@
                  return;
              }
 
+             self.completionBlock(threeDSecureCard);
+             
              if (threeDSecureCard.liabilityShiftPossible && threeDSecureCard.liabilityShifted) {
                  self.progressBlock(@"Liability shift possible and liability shifted");
              } else {
                  self.progressBlock(@"3D Secure authentication was attempted but liability shift is not possible");
              }
-             self.completionBlock(threeDSecureCard);
          }];
     }];
 }

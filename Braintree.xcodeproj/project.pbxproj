@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0325AC241C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */; };
 		033800101C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0338000F1C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift */; };
 		035945571BE96345002116BB /* BTUIVenmoMonogramCardView.h in Headers */ = {isa = PBXBuildFile; fileRef = 035945551BE96345002116BB /* BTUIVenmoMonogramCardView.h */; };
 		035945581BE96345002116BB /* BTUIVenmoMonogramCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 035945561BE96345002116BB /* BTUIVenmoMonogramCardView.m */; };
@@ -859,6 +860,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeThreeDSecure_UITests.swift; sourceTree = "<group>"; };
 		0338000F1C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDropIn_UITests.swift; sourceTree = "<group>"; };
 		035945551BE96345002116BB /* BTUIVenmoMonogramCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIVenmoMonogramCardView.h; sourceTree = "<group>"; };
 		035945561BE96345002116BB /* BTUIVenmoMonogramCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIVenmoMonogramCardView.m; sourceTree = "<group>"; };
@@ -1538,8 +1540,9 @@
 			children = (
 				0338000F1C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift */,
 				0384E94C1C23BAFF001A3380 /* BraintreePayPal_UITests.swift */,
-				03F8B26A1C23976100FD184B /* Info.plist */,
+				0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */,
 				0384E9501C23C111001A3380 /* Helpers */,
+				03F8B26A1C23976100FD184B /* Info.plist */,
 			);
 			path = UITests;
 			sourceTree = "<group>";
@@ -3584,6 +3587,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				033800101C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift in Sources */,
+				0325AC241C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift in Sources */,
 				0384E94D1C23BAFF001A3380 /* BraintreePayPal_UITests.swift in Sources */,
 				0384E94F1C23C108001A3380 /* BTUITest.swift in Sources */,
 			);

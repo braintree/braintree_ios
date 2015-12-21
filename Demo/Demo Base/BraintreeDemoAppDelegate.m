@@ -66,6 +66,12 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
         [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant forKey:BraintreeDemoSettingsEnvironmentDefaultsKey];
     }
     
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-TokenizationKey"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"BraintreeDemoUseTokenizationKey"];
+    }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-ClientToken"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:FALSE forKey:@"BraintreeDemoUseTokenizationKey"];
+    }
+    
     for (NSString* arg in [[NSProcessInfo processInfo] arguments]) {
         if ([arg containsString:@"-Integration:"]) {
             NSString* testIntegration = [arg stringByReplacingOccurrencesOfString:@"-Integration:" withString:@""];

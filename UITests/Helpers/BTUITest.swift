@@ -1,6 +1,6 @@
 import XCTest
 
-class BTUITest: XCTestCase {
+extension XCTestCase {
     func waitForElementToAppear(element: XCUIElement, timeout: NSTimeInterval = 10,  file: String = __FILE__, line: UInt = __LINE__) {
         let existsPredicate = NSPredicate(format: "exists == true")
         

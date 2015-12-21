@@ -1,12 +1,18 @@
+/*
+IMPORTRANT
+Hardware keyboard should be disabled on simulator for tests to run reliably.
+*/
+
 import XCTest
 
-class BraintreeDropIn_CardForm_UITests: BTUITest {
+class BraintreeDropIn_TokenizationKey_CardForm_UITests: XCTestCase {
     
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
+        app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoDropInViewController")
         app.launch()
         
@@ -19,16 +25,24 @@ class BraintreeDropIn_CardForm_UITests: BTUITest {
     func testDropIn_cardInput_receivesNonce() {
         let app = XCUIApplication()
         
-        app.buttons["Buy Now"].tap()
+        app.buttons["Buy Now"].forceTapElement()
         
         let elementsQuery = app.scrollViews.otherElements
-        elementsQuery.textFields["MM/YY"].tap()
-        elementsQuery.textFields["MM/YY"].typeText("1119")
-        let cardNumberTextField = elementsQuery.textFields["Card Number"]
-        cardNumberTextField.tap()
-        cardNumberTextField.typeText("4111111111111111")
-        elementsQuery.buttons["$19 - Subscribe Now"].tap()
         
+        let cardNumberTextField = elementsQuery.textFields["Card Number"]
+        cardNumberTextField.forceTapElement()
+        sleep(1)
+        cardNumberTextField.typeText("4111111111111111")
+        
+        elementsQuery.staticTexts["Pay with a card"].forceTapElement()
+        sleep(1)
+        
+        elementsQuery.textFields["MM/YY"].forceTapElement()
+        sleep(1)
+        elementsQuery.textFields["MM/YY"].typeText("1119")
+
+        elementsQuery.buttons["$19 - Subscribe Now"].forceTapElement()
+
         self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
         
         XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists);
@@ -37,11 +51,12 @@ class BraintreeDropIn_CardForm_UITests: BTUITest {
     func testDropIn_cardInput_showsInvalidState_withInvalidCardNumber() {
         let app = XCUIApplication()
         
-        app.buttons["Buy Now"].tap()
+        app.buttons["Buy Now"].forceTapElement()
         
         let elementsQuery = app.scrollViews.otherElements
         let cardNumberTextField = elementsQuery.textFields["Card Number"]
-        cardNumberTextField.tap()
+        cardNumberTextField.forceTapElement()
+        sleep(1)
         cardNumberTextField.typeText("4141414141414141")
         
         self.waitForElementToAppear(elementsQuery.textFields["Invalid: Card Number"])
@@ -50,10 +65,11 @@ class BraintreeDropIn_CardForm_UITests: BTUITest {
     func testDropIn_cardInput_showsInvalidState_withInvalidExpirationDate() {
         let app = XCUIApplication()
         
-        app.buttons["Buy Now"].tap()
+        app.buttons["Buy Now"].forceTapElement()
         
         let elementsQuery = app.scrollViews.otherElements
-        elementsQuery.textFields["MM/YY"].tap()
+        elementsQuery.textFields["MM/YY"].forceTapElement()
+        sleep(1)
         elementsQuery.textFields["MM/YY"].typeText("1111")
         
         self.waitForElementToAppear(elementsQuery.textFields["Invalid: MM/YY"])
@@ -62,11 +78,12 @@ class BraintreeDropIn_CardForm_UITests: BTUITest {
     func testDropIn_cardInput_hidesInvalidCardNumberState_withDeletion() {
         let app = XCUIApplication()
         
-        app.buttons["Buy Now"].tap()
+        app.buttons["Buy Now"].forceTapElement()
         
         let elementsQuery = app.scrollViews.otherElements
         let cardNumberTextField = elementsQuery.textFields["Card Number"]
-        cardNumberTextField.tap()
+        cardNumberTextField.forceTapElement()
+        sleep(1)
         cardNumberTextField.typeText("4141414141414141")
         
         self.waitForElementToAppear(elementsQuery.textFields["Invalid: Card Number"])
@@ -79,11 +96,12 @@ class BraintreeDropIn_CardForm_UITests: BTUITest {
     func testDropIn_cardInput_hidesInvalidExpirationState_withDeletion() {
         let app = XCUIApplication()
         
-        app.buttons["Buy Now"].tap()
+        app.buttons["Buy Now"].forceTapElement()
         
         let elementsQuery = app.scrollViews.otherElements
         let expirationField = elementsQuery.textFields["MM/YY"]
-        expirationField.tap()
+        expirationField.forceTapElement()
+        sleep(1)
         expirationField.typeText("1111")
         
         self.waitForElementToAppear(elementsQuery.textFields["Invalid: MM/YY"])
@@ -92,45 +110,63 @@ class BraintreeDropIn_CardForm_UITests: BTUITest {
         
         XCTAssertFalse(elementsQuery.textFields["Invalid: MM/YY"].exists);
     }
-    
-    func testDropIn_paypalIntegration() {
-        let app = XCUIApplication()
-        
-        app.buttons["Buy Now"].tap()
-        
-        let elementsQuery = app.collectionViews["Payment Options"].cells.elementAtIndex(0)
-        elementsQuery.tap()
-        sleep(2)
-        
-        self.waitForElementToAppear(app.webViews.textFields["Email"])
-        
-        app.webViews.textFields["Email"].forceTapElement()
-        sleep(1)
-        app.webViews.textFields["Email"].typeText("test@paypal.com")
-        
-        app.webViews.secureTextFields["Password"].forceTapElement()
-        sleep(1)
-        app.webViews.secureTextFields["Password"].typeText("1234")
-        
-        app.webViews.buttons["Log In"].forceTapElement()
-        
-        self.waitForElementToAppear(app.webViews.buttons["Agree"])
-        
-        app.webViews.buttons["Agree"].forceTapElement()
-        
-        self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
-        
-        XCTAssertTrue(app.buttons["Got a nonce. Tap to make a transaction."].exists);
-    }
 }
 
-class BraintreeDropIn_PayPal_UITests: BTUITest {
+class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
     
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
+        app.launchArguments.append("-ClientToken")
+        app.launchArguments.append("-Integration:BraintreeDemoDropInViewController")
+        app.launch()
+        
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+    }
+    
+    func testDropIn_cardInput_displaysErrorForFailedValidation() {
+        let app = XCUIApplication()
+        
+        app.buttons["Buy Now"].forceTapElement()
+        
+        let elementsQuery = app.scrollViews.otherElements
+        
+        let cardNumberTextField = elementsQuery.textFields["Card Number"]
+        cardNumberTextField.forceTapElement()
+        sleep(1)
+        cardNumberTextField.typeText("5105105105105100")
+        
+        elementsQuery.staticTexts["Pay with a card"].forceTapElement()
+        sleep(1)
+        
+        elementsQuery.textFields["MM/YY"].forceTapElement()
+        sleep(1)
+        elementsQuery.textFields["MM/YY"].typeText("1119")
+        
+        elementsQuery.buttons["$19 - Subscribe Now"].forceTapElement()
+        
+        self.waitForElementToAppear(app.alerts.staticTexts["Credit card verification failed"])
+        
+        XCTAssertTrue(app.alerts.staticTexts["Credit card verification failed"].exists);
+    }
+    
+   
+}
+
+
+class BraintreeDropIn_PayPal_UITests: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments.append("-EnvironmentSandbox")
+        app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoDropInViewController")
         app.launch()
         
@@ -143,27 +179,30 @@ class BraintreeDropIn_PayPal_UITests: BTUITest {
     func testDropIn_paypal_receivesNonce() {
         let app = XCUIApplication()
         
-        app.buttons["Buy Now"].tap()
+        app.buttons["Buy Now"].forceTapElement()
         
         let elementsQuery = app.collectionViews["Payment Options"].cells.elementBoundByIndex(0)
-        elementsQuery.tap()
+        elementsQuery.forceTapElement()
         sleep(2)
         
-        self.waitForElementToAppear(app.webViews.textFields["Email"])
+        let webviewElementsQuery = app.webViews.element.otherElements
+        let emailTextField = webviewElementsQuery.textFields["Email"]
         
-        app.webViews.textFields["Email"].forceTapElement()
+        self.waitForElementToAppear(emailTextField)
+        emailTextField.forceTapElement()
         sleep(1)
-        app.webViews.textFields["Email"].typeText("test@paypal.com")
+        emailTextField.typeText("test@paypal.com")
         
-        app.webViews.secureTextFields["Password"].forceTapElement()
+        let passwordTextField = webviewElementsQuery.secureTextFields["Password"]
+        passwordTextField.forceTapElement()
         sleep(1)
-        app.webViews.secureTextFields["Password"].typeText("1234")
+        passwordTextField.typeText("1234")
         
-        app.webViews.buttons["Log In"].forceTapElement()
+        webviewElementsQuery.buttons["Log In"].forceTapElement()
         
-        self.waitForElementToAppear(app.webViews.buttons["Agree"])
+        self.waitForElementToAppear(webviewElementsQuery.buttons["Agree"])
         
-        app.webViews.buttons["Agree"].forceTapElement()
+        webviewElementsQuery.buttons["Agree"].forceTapElement()
         
         self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
         
