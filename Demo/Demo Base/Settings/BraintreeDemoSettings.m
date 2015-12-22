@@ -37,6 +37,10 @@ NSString *BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey = @"BraintreeDemo
     }
 }
 
++ (NSString *)authorizationOverride {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsAuthorizationOverride"];
+}
+
 + (BOOL)useTokenizationKey {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"BraintreeDemoUseTokenizationKey"];
 }
