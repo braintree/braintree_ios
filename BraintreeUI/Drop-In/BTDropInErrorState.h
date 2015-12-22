@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-/// Interprets NSError objects of domainBTBraintreeAPIErrorDomain, code
-/// BTCustomerInputErrorInvalid for Drop-In UI Components.
+/// Interprets NSError objects of domain BTHTTPErrorDomain, code
+/// BTHTTPErrorCodeClientError (status code 422) for Drop-In UI Components.
 @interface BTDropInErrorState : NSObject
 
 /// Initializes a new error state object returned by
