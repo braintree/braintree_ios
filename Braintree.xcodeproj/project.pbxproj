@@ -524,6 +524,9 @@
 		A7B861C11C24B19300A2422E /* BTVersion_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */; };
 		A7B861C21C24B32A00A2422E /* BTThreeDSecureLookupResult_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF0F5F1C20E80A00B3ADC6 /* BTThreeDSecureLookupResult_Tests.swift */; };
 		A7B861C31C24B32A00A2422E /* BTThreeDSecureLookupResult_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF0F5F1C20E80A00B3ADC6 /* BTThreeDSecureLookupResult_Tests.swift */; };
+		A7BC50BB1C29E4CD0024C870 /* BTLogger_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BC50BA1C29E4CD0024C870 /* BTLogger_Internal_Tests.m */; };
+		A7BC50BC1C29E4CD0024C870 /* BTLogger_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BC50BA1C29E4CD0024C870 /* BTLogger_Internal_Tests.m */; };
+		A7BC50BD1C29E4CD0024C870 /* BTLogger_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7BC50BA1C29E4CD0024C870 /* BTLogger_Internal_Tests.m */; };
 		A7C823081B4DA9D7009D45D6 /* BTHTTPSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C823071B4DA9D7009D45D6 /* BTHTTPSpec.m */; };
 		A7C8230E1B4DAAB2009D45D6 /* BTSpecHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */; };
 		A7C889801B5EF62C007A0E9C /* BTApplePayClient.h in Headers */ = {isa = PBXBuildFile; fileRef = A7C8897C1B5EF62C007A0E9C /* BTApplePayClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1297,6 +1300,7 @@
 		A7B7989B1C233C57001327FA /* BTConfiguration_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTConfiguration_Tests.swift; sourceTree = "<group>"; };
 		A7B7989F1C238FC0001327FA /* BTTokenizationService_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTTokenizationService_Tests.swift; sourceTree = "<group>"; };
 		A7B861BE1C24B19300A2422E /* BTVersion_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTVersion_Tests.swift; sourceTree = "<group>"; };
+		A7BC50BA1C29E4CD0024C870 /* BTLogger_Internal_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTLogger_Internal_Tests.m; sourceTree = "<group>"; };
 		A7C823071B4DA9D7009D45D6 /* BTHTTPSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BTHTTPSpec.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A7C8230C1B4DAAB2009D45D6 /* BTSpecHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTSpecHelper.h; sourceTree = "<group>"; };
 		A7C8230D1B4DAAB2009D45D6 /* BTSpecHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTSpecHelper.m; sourceTree = "<group>"; };
@@ -1555,6 +1559,7 @@
 				A7C8230F1B4DAAFB009D45D6 /* Helpers */,
 				16CD2EA01B4077FC00E68495 /* Info.plist */,
 				A7E6E8E11B420D0C004CFA95 /* UnitTests-Bridging-Header.h */,
+				A7BC50BA1C29E4CD0024C870 /* BTLogger_Internal_Tests.m */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -3566,6 +3571,7 @@
 				A7D64ABC1B4C93B6005168EF /* BTApplePay_Tests.swift in Sources */,
 				A75147E11B4217A00005BBBA /* BTCardClient_Tests.swift in Sources */,
 				A7B4AD571B4EFC76002FB23E /* MockAPIClient.swift in Sources */,
+				A7BC50BB1C29E4CD0024C870 /* BTLogger_Internal_Tests.m in Sources */,
 				844ED5E71BCC3F0B002B590C /* BTDataCollector_Tests.swift in Sources */,
 				A790339C1B45E16E004C8234 /* BTCard_Internal_Tests.m in Sources */,
 				A784965A1BD962260081531A /* BTCheckoutRequest_Tests.swift in Sources */,
@@ -3795,6 +3801,7 @@
 				A7B861C21C24B32A00A2422E /* BTThreeDSecureLookupResult_Tests.swift in Sources */,
 				41BC33F41BF6948C00161106 /* BTCardClient_Tests.swift in Sources */,
 				41BC33F51BF6948C00161106 /* MockAPIClient.swift in Sources */,
+				A7BC50BC1C29E4CD0024C870 /* BTLogger_Internal_Tests.m in Sources */,
 				41BC33F61BF6948C00161106 /* BTDataCollector_Tests.swift in Sources */,
 				41BC33F71BF6948C00161106 /* BTCard_Internal_Tests.m in Sources */,
 				41BC33F81BF6948C00161106 /* BTCheckoutRequest_Tests.swift in Sources */,
@@ -3837,6 +3844,7 @@
 				A7B861C31C24B32A00A2422E /* BTThreeDSecureLookupResult_Tests.swift in Sources */,
 				A775AFD71C1608A80003A6E6 /* BTFakeHTTP.m in Sources */,
 				A775AFD81C1608A80003A6E6 /* BTHTTPTestProtocol.m in Sources */,
+				A7BC50BD1C29E4CD0024C870 /* BTLogger_Internal_Tests.m in Sources */,
 				A775AFD91C1608A80003A6E6 /* BTSpecHelper.m in Sources */,
 				A775AFDA1C1608A80003A6E6 /* BTTestClientTokenFactory.m in Sources */,
 				A775AFDB1C1608A80003A6E6 /* FakePayPalClasses.m in Sources */,
