@@ -1,11 +1,10 @@
 import XCTest
 
 class BTThreeDSecureDriver_Tests: XCTestCase {
-    
+
     let originalNonce_lookupEnrolledAuthenticationNotRequired = "some-credit-card-nonce-where-3ds-succeeds-without-user-authentication"
     let originalNonce_lookupEnrolledAuthenticationRequired = "some-credit-card-nonce-where-3ds-succeeds-after-user-authentication"
     let originalNonce_lookupCardNotEnrolled = "some-credit-card-nonce-where-card-is-not-enrolled-for-3ds"
-    let originalNonce_lookupFails = "some-credit-card-nonce-where-3ds-fails"
     let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
     var observers : [NSObjectProtocol] = []
@@ -58,7 +57,7 @@ class BTThreeDSecureDriver_Tests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    func testVerification_withEnrolledCardThatDoesntRequireAuthentication_callsCompletionWithACard() {
+    func testVerification_withCardThatDoesntRequireAuthentication_callsCompletionWithACard() {
         let responseBody = [
             "paymentMethod": [
                 "consumed": false,
@@ -140,7 +139,7 @@ class BTThreeDSecureDriver_Tests: XCTestCase {
         XCTAssertNotNil(mockDelegate.lastViewController)
     }
 
-    func testVerification_withCardIsNotEnrolled_requestsPresentationOfViewController() {
+    func testVerification_whenCardIsNotEnrolled_returnsCardWithNewNonceAndCorrectLiabilityShiftInformation() {
         let responseBody = [
             "paymentMethod": [
                 "consumed": false,
@@ -154,7 +153,7 @@ class BTThreeDSecureDriver_Tests: XCTestCase {
                     "enrolled": "N",
                     "liabilityShiftPossible": false,
                     "liabilityShifted": false,
-                    "status": "authenticate_successful",
+                    "status": "authenticate_successful_issuer_not_participating",
                 ],
                 "type": "CreditCard",
             ],
@@ -168,12 +167,13 @@ class BTThreeDSecureDriver_Tests: XCTestCase {
         let threeDSecureDriver = BTThreeDSecureDriver.init(APIClient: mockAPIClient, delegate:viewControllerPresentingDelegate)
 
         let expectation = expectationWithDescription("Card is tokenized")
-        threeDSecureDriver.verifyCardWithNonce(originalNonce_lookupEnrolledAuthenticationRequired, amount: NSDecimalNumber.one()) { (tokenizedCard, error) -> Void in
+        threeDSecureDriver.verifyCardWithNonce(originalNonce_lookupCardNotEnrolled, amount: NSDecimalNumber.one()) { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
                 XCTFail()
                 return
             }
             XCTAssertTrue(isANonce(tokenizedCard.nonce))
+            XCTAssertNotEqual(tokenizedCard.nonce, self.originalNonce_lookupCardNotEnrolled);
             XCTAssertNil(error)
             XCTAssertFalse(tokenizedCard.liabilityShifted)
             XCTAssertFalse(tokenizedCard.liabilityShiftPossible)
