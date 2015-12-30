@@ -228,6 +228,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         [[BTLogger sharedLogger] warning:@"BTPaymentButton encountered an unexpected payment option value: %@", paymentOption];
         return cell;
     }
+    
+    cell.accessibilityLabel = paymentOption;
     paymentButton.translatesAutoresizingMaskIntoConstraints = NO;
 
     cell.paymentButton = paymentButton;

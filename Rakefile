@@ -82,6 +82,11 @@ namespace :spec do
     run_test_scheme! 'UnitTests', 8.4
   end
 
+  desc 'Run UI tests'
+  task :ui do
+    run_test_scheme! 'UITests'
+  end
+
   namespace :api do
     def with_https_server &block
       begin

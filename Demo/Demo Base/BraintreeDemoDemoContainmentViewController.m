@@ -123,6 +123,11 @@
     }
 
     self.title = @"Braintree";
+    
+    if ([BraintreeDemoSettings authorizationOverride]) {
+        self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:[BraintreeDemoSettings authorizationOverride]];
+        return;
+    }
 
     if ([BraintreeDemoSettings useTokenizationKey]) {
         [self updateStatus:@"Using Tokenization Key"];

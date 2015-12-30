@@ -1,4 +1,5 @@
 #import "BraintreeDemoAppDelegate.h"
+#import "BraintreeDemoSettings.h"
 #import <HockeySDK/HockeySDK.h>
 #import <BraintreeCore/BraintreeCore.h>
 
@@ -58,6 +59,32 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
 }
 
 - (void)registerDefaultsFromSettings {
+    // Check for testing arguments
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-EnvironmentSandbox"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant forKey:BraintreeDemoSettingsEnvironmentDefaultsKey];
+    }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-EnvironmentProduction"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant forKey:BraintreeDemoSettingsEnvironmentDefaultsKey];
+    }
+    
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-TokenizationKey"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"BraintreeDemoUseTokenizationKey"];
+    }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-ClientToken"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:FALSE forKey:@"BraintreeDemoUseTokenizationKey"];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"BraintreeDemoSettingsAuthorizationOverride"];
+    for (NSString* arg in [[NSProcessInfo processInfo] arguments]) {
+        if ([arg rangeOfString:@"-Integration:"].location != NSNotFound) {
+            NSString* testIntegration = [arg stringByReplacingOccurrencesOfString:@"-Integration:" withString:@""];
+            [[NSUserDefaults standardUserDefaults] setObject:testIntegration forKey:@"BraintreeDemoSettingsIntegration"];
+        } else if ([arg rangeOfString:@"-Authorization:"].location != NSNotFound) {
+            NSString* testIntegration = [arg stringByReplacingOccurrencesOfString:@"-Authorization:" withString:@""];
+            [[NSUserDefaults standardUserDefaults] setObject:testIntegration forKey:@"BraintreeDemoSettingsAuthorizationOverride"];
+        }
+    }
+    // End checking for testing arguments
+    
+    
     NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
     if(!settingsBundle) {
         NSLog(@"Could not find Settings.bundle");

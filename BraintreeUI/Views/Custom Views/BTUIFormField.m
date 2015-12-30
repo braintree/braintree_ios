@@ -152,12 +152,19 @@ const CGFloat formFieldBottomMargin = 11;
 
 - (void)updateAppearance {
     UIColor *textColor;
+    NSString *currentAccessibilityLabel = self.textField.accessibilityLabel;
     if (!self.displayAsValid){
         textColor = self.theme.errorForegroundColor;
         self.backgroundColor = self.theme.errorBackgroundColor;
+        if (currentAccessibilityLabel != nil) {
+            self.textField.accessibilityLabel = [self addInvalidAccessibilityToString:currentAccessibilityLabel];
+        }
     } else {
         textColor = self.theme.textFieldTextColor;
         self.backgroundColor = [UIColor clearColor];
+        if (currentAccessibilityLabel != nil) {
+            self.textField.accessibilityLabel = [self stripInvalidAccessibilityFromString:currentAccessibilityLabel];
+        }
     }
 
     NSMutableAttributedString *mutableText = [[NSMutableAttributedString alloc] initWithAttributedString:self.textField.attributedText];
@@ -392,6 +399,16 @@ const CGFloat formFieldBottomMargin = 11;
 
 - (BOOL)hasText {
     return [self.textField hasText];
+}
+
+#pragma mark Accessibility Helpers
+
+- (NSString *)stripInvalidAccessibilityFromString:(NSString *)str {
+    return [str stringByReplacingOccurrencesOfString:@"Invalid: " withString:@""];
+}
+
+- (NSString *)addInvalidAccessibilityToString:(NSString *)str {
+    return [NSString stringWithFormat:@"Invalid: %@", [self stripInvalidAccessibilityFromString:str]];
 }
 
 @end
