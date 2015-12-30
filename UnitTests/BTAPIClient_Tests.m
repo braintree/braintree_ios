@@ -118,9 +118,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     apiClient.http = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        //XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
-        // FIXME: Flaky test - sometimes this is 2, so just check that the count is >= 1.
-        XCTAssert(fake.GETRequestCount >= (NSUInteger)1);
+        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
         XCTAssertNil(configuration);
         XCTAssertEqual(error, anError);
         [expectation fulfill];
@@ -421,7 +419,6 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     }];
 
     [self waitForExpectationsWithTimeout:2 handler:nil];
-
 }
 
 #pragma mark - Helpers

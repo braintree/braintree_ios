@@ -10,6 +10,22 @@
     return [[BTFakeHTTP alloc] initWithBaseURL:[[NSURL alloc] init] authorizationFingerprint:@""];
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+    BTFakeHTTP *copiedHTTP = [super copyWithZone:zone];
+
+    copiedHTTP.GETRequestCount = self.GETRequestCount;
+    copiedHTTP.POSTRequestCount = self.POSTRequestCount;
+    copiedHTTP.lastRequestEndpoint = self.lastRequestEndpoint;
+    copiedHTTP.lastRequestParameters = [self.lastRequestParameters copy];
+    copiedHTTP.stubMethod = self.stubMethod;
+    copiedHTTP.stubEndpoint = self.stubEndpoint;
+    copiedHTTP.cannedResponse = self.cannedResponse;
+    copiedHTTP.cannedStatusCode = self.cannedStatusCode;
+    copiedHTTP.cannedError = self.cannedError;
+
+    return copiedHTTP;
+}
+
 - (void)stubRequest:(NSString *)httpMethod toEndpoint:(NSString *)endpoint respondWith:(id)value statusCode:(NSUInteger)statusCode {
     self.stubMethod = httpMethod;
     self.stubEndpoint = endpoint;
