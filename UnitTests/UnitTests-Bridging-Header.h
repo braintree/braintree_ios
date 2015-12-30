@@ -16,6 +16,7 @@
 #import "BTApplePayClient_Internal.h"
 #import "BTCard_Internal.h"
 #import "BTCardClient_Internal.h"
+#import "BTConfiguration.h"
 #import "BTPayPalDriver_Internal.h"
 #import "BTVenmoDriver_Internal.h"
 #import "BTThreeDSecureDriver_Internal.h"
@@ -26,7 +27,9 @@
 #import "BTFakeHTTP.h"
 #import "BTDropInViewController_Internal.h"
 #import "BTPaymentButton_Internal.h"
+#import "BTThreeDSecureLookupResult.h"
+#import "Braintree-Version.h"
 
 #import "BTSpecHelper.h"
 #import <OCMock/OCMock.h>
-
+#import "BTTestClientTokenFactory.h"

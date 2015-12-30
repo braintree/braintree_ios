@@ -43,6 +43,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         [[BTTokenizationService sharedService] registerType:@"PayPal" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
             driver.viewControllerPresentingDelegate = options[BTTokenizationServiceViewPresentingDelegateOption];
+            driver.appSwitchDelegate = options[BTTokenizationServiceAppSwitchDelegateOption];
             [driver authorizeAccountWithAdditionalScopes:options[BTTokenizationServicePayPalScopesOption] completion:completionBlock];
         }];
         
@@ -154,7 +155,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     [self requestExpressCheckout:request isBillingAgreement:NO completion:completionBlock];
 }
 
-- (void)setExpressCheckoutAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
+- (void)setOneTimePaymentAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
     [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeCheckout];
 }
 
@@ -268,7 +269,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                       if (isBillingAgreement) {
                           [self setBillingAgreementAppSwitchReturnBlock:completionBlock];
                       } else {
-                          [self setExpressCheckoutAppSwitchReturnBlock:completionBlock];
+                          [self setOneTimePaymentAppSwitchReturnBlock:completionBlock];
                       }
                       
                       NSString *payPalClientID = [configuration.json[@"paypal"][@"clientId"] asString];

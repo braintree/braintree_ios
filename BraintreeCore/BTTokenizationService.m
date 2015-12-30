@@ -2,6 +2,7 @@
 
 NSString * const BTTokenizationServiceErrorDomain = @"com.braintreepayments.BTTokenizationServiceErrorDomain";
 NSString * const BTTokenizationServiceViewPresentingDelegateOption = @"viewControllerPresentingDelegate";
+NSString * const BTTokenizationServiceAppSwitchDelegateOption = @"BTTokenizationServiceAppSwitchDelegateOption";
 NSString * const BTTokenizationServicePayPalScopesOption = @"BTPaymentRequest.additionalPayPalScopes";
 
 @interface BTTokenizationService ()
