@@ -403,11 +403,11 @@ const CGFloat formFieldBottomMargin = 11;
 
 #pragma mark Accessibility Helpers
 
-- (NSString*)stripInvalidAccessibilityFromString:(NSString*)str {
+- (NSString *)stripInvalidAccessibilityFromString:(NSString *)str {
     return [str stringByReplacingOccurrencesOfString:@"Invalid: " withString:@""];
 }
 
-- (NSString*)addInvalidAccessibilityToString:(NSString*)str {
+- (NSString *)addInvalidAccessibilityToString:(NSString *)str {
     return [NSString stringWithFormat:@"Invalid: %@", [self stripInvalidAccessibilityFromString:str]];
 }
 

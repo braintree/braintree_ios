@@ -8,7 +8,6 @@ import XCTest
 
 class BraintreeThreeDSecure_UITests: XCTestCase {
     
-    
     override func setUp() {
         continueAfterFailure = false
         
@@ -96,7 +95,119 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         
         XCTAssertTrue(app.buttons["3D Secure authentication was attempted but liability shift is not possible"].exists);
     }
+
+    func testThreeDSecure_bypassesAuthentication_notEnrolled() {
+        let app = XCUIApplication()
+        let cardNumberTextField = app.textFields["Card Number"]
+        cardNumberTextField.tap()
+        cardNumberTextField.typeText("4000000000000051")
+        app.textFields["MM/YY"].typeText("122020")
+        app.buttons["Tokenize and Verify New Card"].tap()
+        sleep(2)
+        
+        self.waitForElementToAppear(app.buttons["Liability shift possible and liability shifted"])
+        
+        XCTAssertTrue(app.buttons["Liability shift possible and liability shifted"].exists);
+    }
     
+    func testThreeDSecure_bypassesAuthentication_lookupFailed() {
+        let app = XCUIApplication()
+        let cardNumberTextField = app.textFields["Card Number"]
+        cardNumberTextField.tap()
+        cardNumberTextField.typeText("4000000000000077")
+        app.textFields["MM/YY"].typeText("122020")
+        app.buttons["Tokenize and Verify New Card"].tap()
+        sleep(2)
+        
+        self.waitForElementToAppear(app.buttons["3D Secure authentication was attempted but liability shift is not possible"])
+        
+        XCTAssertTrue(app.buttons["3D Secure authentication was attempted but liability shift is not possible"].exists);
+    }
+
+    func testThreeDSecure_incorrectPassword() {
+        let app = XCUIApplication()
+        let cardNumberTextField = app.textFields["Card Number"]
+        cardNumberTextField.tap()
+        cardNumberTextField.typeText("4000000000000028")
+        app.textFields["MM/YY"].typeText("122020")
+        app.buttons["Tokenize and Verify New Card"].tap()
+        sleep(2)
+        
+        let elementsQuery = app.otherElements["Authentication"]
+        let passwordTextField = elementsQuery.childrenMatchingType(.Other).childrenMatchingType(.SecureTextField).element
+        
+        passwordTextField.tap()
+        sleep(1)
+        passwordTextField.typeText("bad")
+        
+        elementsQuery.buttons["Submit"].tap()
+        
+        self.waitForElementToAppear(elementsQuery.staticTexts["Account Authentication Blocked"])
+
+        elementsQuery.buttons["Continue"].forceTapElement()
+        
+        self.waitForElementToAppear(app.buttons["3D Secure authentication was attempted but liability shift is not possible"])
+        
+        XCTAssertTrue(app.buttons["3D Secure authentication was attempted but liability shift is not possible"].exists);
+    }
+    
+    func testThreeDSecure_displaysLoading() {
+        let app = XCUIApplication()
+        let cardNumberTextField = app.textFields["Card Number"]
+        cardNumberTextField.tap()
+        cardNumberTextField.typeText("4000000000000101")
+        app.textFields["MM/YY"].typeText("122020")
+        app.buttons["Tokenize and Verify New Card"].tap()
+        sleep(2)
+        
+        self.waitForElementToAppear(app.otherElements["Visa Summary Page"])
+        
+        self.waitForElementToAppear(app.buttons["Liability shift possible and liability shifted"])
+    
+        XCTAssertTrue(app.buttons["Liability shift possible and liability shifted"].exists);
+    }
+    
+    func testThreeDSecure_returnsNonce_whenIssuerDown() {
+        let app = XCUIApplication()
+        let cardNumberTextField = app.textFields["Card Number"]
+        cardNumberTextField.tap()
+        cardNumberTextField.typeText("4000000000000036")
+        app.textFields["MM/YY"].typeText("122020")
+        app.buttons["Tokenize and Verify New Card"].tap()
+        sleep(2)
+        
+        let elementsQuery = app.otherElements["Authentication"]
+        self.waitForElementToAppear(elementsQuery.staticTexts["System Error"])
+        elementsQuery.buttons["Continue"].forceTapElement()
+        
+        self.waitForElementToAppear(app.buttons["3D Secure authentication was attempted but liability shift is not possible"])
+        
+        XCTAssertTrue(app.buttons["3D Secure authentication was attempted but liability shift is not possible"].exists);
+    }
+
+    func testThreeDSecure_acceptsPassword_failsToAuthenticateNonce_dueToCardinalError() {
+        let app = XCUIApplication()
+        let cardNumberTextField = app.textFields["Card Number"]
+        cardNumberTextField.tap()
+        cardNumberTextField.typeText("4000000000000093")
+        app.textFields["MM/YY"].typeText("122020")
+        app.buttons["Tokenize and Verify New Card"].tap()
+        sleep(2)
+        
+        let elementsQuery = app.otherElements["Authentication"]
+        let passwordTextField = elementsQuery.childrenMatchingType(.Other).childrenMatchingType(.SecureTextField).element
+        
+        passwordTextField.tap()
+        sleep(1)
+        passwordTextField.typeText("1234")
+        
+        elementsQuery.buttons["Submit"].tap()
+        
+        self.waitForElementToAppear(app.buttons["3D Secure authentication was attempted but liability shift is not possible"])
+        
+        XCTAssertTrue(app.buttons["3D Secure authentication was attempted but liability shift is not possible"].exists);
+    }
+
     func testThreeDSecure_returnsToApp_whenCancelTapped() {
         let app = XCUIApplication()
         let cardNumberTextField = app.textFields["Card Number"]
