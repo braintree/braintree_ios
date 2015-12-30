@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+#import "BTSpecDependencies.h"
 #import "UIColor+BTUI.h"
 
 SpecBegin(BTUI_UIColor)
