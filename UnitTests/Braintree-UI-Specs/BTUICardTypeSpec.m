@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+#import "BTSpecDependencies.h"
 #import "BTUICardType.h"
 #import "EXPMatchers+haveKerning.h"
 #import "BTUIViewUtil.h"
@@ -55,42 +57,42 @@ describe(@"BTUICardType", ^{
     describe(@"payment method type for card type", ^{
         it(@"recognizes Visa", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Visa"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeVisa);
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeVisa);
         });
 
         it(@"recognizes MasterCard", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"MasterCard"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeMasterCard);
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeMasterCard);
         });
 
         it(@"recognizes Amex", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"American Express"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeAMEX);
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeAMEX);
         });
 
         it(@"recognizes Discover", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Discover"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeDiscover);
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeDiscover);
         });
 
         it(@"recognizes JCB", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"JCB"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeJCB);
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeJCB);
         });
 
         it(@"recognizes Maestro", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Maestro"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeMaestro);
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeMaestro);
         });
 
         it(@"recognizes Diners Club", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Diners Club"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeDinersClub);
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeDinersClub);
         });
 
         it(@"ignores unknown card brands", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Unknown Card Brand"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentMethodTypeUnknown);
+            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeUnknown);
         });
     });
 

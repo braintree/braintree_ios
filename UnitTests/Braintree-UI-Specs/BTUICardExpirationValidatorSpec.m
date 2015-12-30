@@ -1,3 +1,5 @@
+#import <UIKit/UIKit.h>
+#import "BTSpecDependencies.h"
 #import "BTUICardExpirationValidator.h"
 
 SpecBegin(BTUICardExpirationValidator)
@@ -8,7 +10,7 @@ describe(@"month:year:validForDate:", ^{
 
         beforeEach(^{
             NSDateComponents *components = [[NSDateComponents alloc] init];
-            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             components.day = 2;
             components.month = 5;
             components.year = 2014;
@@ -47,7 +49,7 @@ describe(@"month:year:validForDate:", ^{
         __block NSDate *endOfYearToday;
         beforeEach(^{
             NSDateComponents *components = [[NSDateComponents alloc] init];
-            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             components.day = 1;
             components.month = 12;
             components.year = 2014;
@@ -65,7 +67,7 @@ describe(@"month:year:validForDate:", ^{
 
         beforeEach(^{
             NSDateComponents *components = [[NSDateComponents alloc] init];
-            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             components.day = 2;
             components.month = 5;
             components.year = 2014;
@@ -88,7 +90,7 @@ describe(@"month:year:validForDate:", ^{
 
         beforeEach(^{
             NSDateComponents *components = [[NSDateComponents alloc] init];
-            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+            components.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             components.day = 2;
             components.month = 2;
             components.year = 2014;
