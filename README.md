@@ -76,6 +76,9 @@ If your app supports payments from PayPal:
 * `com.paypal.ppclient.touch.v1`
 * `com.paypal.ppclient.touch.v2`
 
+If your app supports payments from Venmo:
+* `com.venmo.touch.v2`
+
 For example, if your app supports PayPal, you could add the following:
 ```
   <key>LSApplicationQueriesSchemes</key>
