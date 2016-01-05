@@ -278,6 +278,7 @@
 		844ED5E71BCC3F0B002B590C /* BTDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */; };
 		848470E21BE81893009B12AE /* BTFakeHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 848470E11BE81893009B12AE /* BTFakeHTTP.m */; };
 		8498EC1B1BB46D4B007FFDEC /* BTCardClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		A5CEB3371C3C51E000DF2C5E /* BraintreeVenmo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A71559421B729297007DE6F0 /* BTIntegrationTestsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A71559411B729297007DE6F0 /* BTIntegrationTestsHelper.m */; };
 		A71559481B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A71559471B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m */; };
 		A71754301BDEF1EC00002676 /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A717542F1BDEF1EC00002676 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -882,6 +883,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A5CEB3371C3C51E000DF2C5E /* BraintreeVenmo.framework in Embed Frameworks */,
 				413533621BF6C71D0005D1BA /* Braintree3DSecure.framework in Embed Frameworks */,
 				4135336A1BF6C7210005D1BA /* BraintreeCard.framework in Embed Frameworks */,
 				413533721BF6C7260005D1BA /* BraintreeDataCollector.framework in Embed Frameworks */,
