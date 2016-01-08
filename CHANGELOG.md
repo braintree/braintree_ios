@@ -1,15 +1,22 @@
 # Braintree iOS SDK Release Notes
 
+## 4.1.3 (2016-01-08)
+
+* Prevent crash when `BTPayPalDriver` instantiates `SFSafariViewController` with an invalid URL, and return an error instead
+
 ## 4.1.2 (2015-12-09)
+
 * Workaround for Swift compiler bug that causes `BTJSON` to conflict with Alamofire (see Issue [#195](https://github.com/braintree/braintree_ios/issues/195))
   * For the merchant apps that read their configuration directly from `BTJSON` via Objective-C, you may need to switch from dot syntax to square brackets to call `BTJSON` methods
 * Ignore `UIAlertView` deprecation warning in `BTDropInErrorAlert`
 
 ## 4.1.1 (2015-12-08)
+
 * Bug fix for Drop-in view controller showing empty `BTPaymentButton`
 * Update Kount to 2.6.2
 
 ## 4.1.0 (2015-12-07)
+
 * Limited release of Pay With Venmo
   * Contact [pay-with-venmo@braintreepayments.com](mailto:pay-with-venmo@braintreepayments.com) if you are interested in early access
 * Fix for Carthage integrations: remove reference to Braintree developer team from Xcode framework targets
