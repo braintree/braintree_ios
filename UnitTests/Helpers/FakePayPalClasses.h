@@ -37,6 +37,7 @@
 @property (nonatomic, assign) PayPalOneTouchRequestTarget cannedTarget;
 @property (nonatomic, strong, nullable) NSString *cannedMetadataId;
 @property (nonatomic, assign) BOOL appSwitchPerformed;
+@property (nonatomic, strong, nullable) NSURL *cannedURL;
 @end
 
 #pragma mark - FakePayPalBillingAgreementRequest

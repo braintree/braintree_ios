@@ -458,6 +458,41 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         XCTAssertFalse(mockAppSwitchDelegate.willProcessAppSwitchCalled)
     }
 
+    func testAuthorization_whenSwitchingToSFSafariViewControllerAndURLIsNotHTTP_callsBackWithError() {
+        guard #available(iOS 9.0, *) else {
+            return
+        }
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline"
+            ] ])
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
+        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PayPalOneTouchResultType.Success
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        payPalDriver.returnURLScheme = "foo://"
+        let stubPayPalRequestFactory = FakePayPalRequestFactory()
+        stubPayPalRequestFactory.authorizationRequest.cannedURL = NSURL(string: "garbage://garbage")
+        payPalDriver.requestFactory = stubPayPalRequestFactory
+        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
+        let mockAppSwitchDelegate = MockAppSwitchDelegate()
+        payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
+
+        let expectation = expectationWithDescription("Callback invoked")
+        payPalDriver.authorizeAccountWithCompletion { (tokenizedPayPalAccount, error) -> Void in
+            guard let error = error else {
+                XCTFail()
+                return
+            }
+            XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
     func testAuthorization_whenAppSwitchResultIsError_returnsUnderlyingError() {
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient

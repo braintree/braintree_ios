@@ -120,7 +120,7 @@ static BOOL cannedIsWalletAppAvailable = YES;
 
 - (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
-    adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"http://example.com"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
+    adapterBlock(self.cannedSuccess, self.cannedURL ? self.cannedURL : [NSURL URLWithString:@"http://example.com"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
 }
 
 @end
