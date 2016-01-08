@@ -93,6 +93,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testFuturePayments_withClientToken_tokenizesPayPalAccount {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    id stubDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    payPalDriver.viewControllerPresentingDelegate = stubDelegate;
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenized PayPal Account"];
