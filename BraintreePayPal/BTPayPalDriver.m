@@ -122,7 +122,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             
             [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:BTPayPalPaymentTypeFuturePayments withSuccess:success target:target];
 
-            [self handlePayPalRequestWithSuccess:success error:error requestURL:url target:target completion:completionBlock];
+            [self handlePayPalRequestWithSuccess:success error:error requestURL:url target:target paymentType:BTPayPalPaymentTypeFuturePayments completion:completionBlock];
         }];
     }];
 }
@@ -301,7 +301,12 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                               [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:BTPayPalPaymentTypeCheckout withSuccess:success target:target];
                           }
 
-                          [self handlePayPalRequestWithSuccess:success error:error requestURL:url target:target completion:completionBlock];
+                          [self handlePayPalRequestWithSuccess:success
+                                                         error:error
+                                                    requestURL:url
+                                                        target:target
+                                                   paymentType:isBillingAgreement ? BTPayPalPaymentTypeBillingAgreement : BTPayPalPaymentTypeCheckout
+                                                    completion:completionBlock];
                       }];
                   }];
     }];
@@ -385,6 +390,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                                  error:(NSError *)error
                             requestURL:(NSURL *)url
                                 target:(PayPalOneTouchRequestTarget)target
+                           paymentType:(BTPayPalPaymentType)paymentType
                             completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock
 {
     if (success) {
@@ -395,6 +401,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                                                 userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Attempted to open an invalid URL in SFSafariViewController: %@://", url.scheme],
                                                             NSLocalizedRecoverySuggestionErrorKey: @"Try again or contact Braintree Support." }];
             if (completionBlock) completionBlock(nil, urlError);
+
+            NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.error.safariviewcontrollerbadscheme.%@", [self.class eventStringForPaymentType:paymentType], [self.class eventStringForRequestTarget:target], url.scheme];
+            [self.apiClient sendAnalyticsEvent:eventName];
+
             return;
         }
         [self performSwitchRequest:url];
