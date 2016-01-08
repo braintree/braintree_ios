@@ -3,6 +3,7 @@
 ## 4.1.3 (2016-01-08)
 
 * Prevent crash when `BTPayPalDriver` instantiates `SFSafariViewController` with an invalid URL, and return an error instead
+* Update `BTTokenizationService` `allTypes` property to be `NSArray <NSString *>`
 
 ## 4.1.2 (2015-12-09)
 
