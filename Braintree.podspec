@@ -50,12 +50,10 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PayPal" do |s|
-    s.source_files = "BraintreePayPal/**/*.{h,m}"
-    s.public_header_files = "BraintreePayPal/Public/**/*.h"
-    s.frameworks = "CoreLocation", "MessageUI", "SystemConfiguration"
-    s.vendored_library = "BraintreePayPal/PayPalOneTouchCore/libPayPalOneTouchCore.a"
-    s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
+    s.source_files = "BraintreePayPal/*.{h,m}"
+    s.public_header_files = "BraintreePayPal/Public/*.h"
     s.dependency "Braintree/Core"
+    s.dependency "Braintree/PayPalOneTouch"
   end
 
   s.subspec "Venmo" do |s|
@@ -84,5 +82,20 @@ Pod::Spec.new do |s|
     s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree3DSecure/Localization/*.lproj" }
   end
 
+  s.subspec "PayPalOneTouch" do |s|
+    s.source_files = "BraintreePayPal/PayPalOneTouch/**/*.{h,m}"
+    s.public_header_files = "BraintreePayPal/PayPalOneTouch/Public/*.h"
+    s.frameworks = "UIKit"
+    s.weak_frameworks = "SafariServices"
+    s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
+    s.dependency "Braintree/PayPalDataCollector"
+  end
+
+  s.subspec "PayPalDataCollector" do |s|
+    s.source_files = "BraintreePayPal/PayPalDataCollector/**/*.{h,m}", "BraintreePayPal/PayPalUtils/**/*.{h,m}"
+    s.public_header_files = "BraintreePayPal/PayPalDataCollector/Public/*.h", "BraintreePayPal/PayPalDataCollector/Risk/*.h"
+    s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
+    s.vendored_library = "BraintreePayPal/PayPalDataCollector/Risk/libPPRiskComponent.a"
+  end
 end
 

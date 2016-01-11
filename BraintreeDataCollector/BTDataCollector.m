@@ -38,7 +38,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 #pragma mark - Public methods
 
 + (NSString *)payPalClientMetadataId {
-    Class paypalClass = NSClassFromString(@"PayPalOneTouchCore");
+    Class paypalClass = NSClassFromString(@"PPDataCollector");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     if (paypalClass && [paypalClass respondsToSelector:@selector(clientMetadataID)]) {

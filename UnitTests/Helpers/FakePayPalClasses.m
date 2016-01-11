@@ -6,8 +6,8 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        _cannedType = PayPalOneTouchResultTypeSuccess;
-        _cannedTarget = PayPalOneTouchRequestTargetUnknown;
+        _cannedType = PPOTResultTypeSuccess;
+        _cannedTarget = PPOTRequestTargetUnknown;
     }
     return self;
 }
@@ -16,11 +16,11 @@
     return self.cannedError;
 }
 
-- (PayPalOneTouchResultType)type {
+- (PPOTResultType)type {
     return self.cannedType;
 }
 
-- (PayPalOneTouchRequestTarget)target {
+- (PPOTRequestTarget)target {
     return self.cannedTarget;
 }
 
@@ -58,7 +58,7 @@ static BOOL cannedIsWalletAppAvailable = YES;
 }
 
 
-+ (void)parseResponseURL:(__unused NSURL *)url completionBlock:(PayPalOneTouchCompletionBlock)completionBlock {
++ (void)parseResponseURL:(__unused NSURL *)url completionBlock:(PPOTCompletionBlock)completionBlock {
     completionBlock([self cannedResult]);
 }
 
@@ -90,14 +90,14 @@ static BOOL cannedIsWalletAppAvailable = YES;
 - (instancetype)init {
     if (self = [super init]) {
         _cannedError = nil;
-        _cannedTarget = PayPalOneTouchRequestTargetBrowser;
+        _cannedTarget = PPOTRequestTargetBrowser;
         _cannedSuccess = YES;
         _cannedMetadataId = @"fake-canned-metadata-id";
     }
     return self;
 }
 
-- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
+- (void)performWithAdapterBlock:(PPOTRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
     adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"http://example.com"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
 }
@@ -111,14 +111,14 @@ static BOOL cannedIsWalletAppAvailable = YES;
 - (instancetype)init {
     if (self = [super init]) {
         _cannedError = nil;
-        _cannedTarget = PayPalOneTouchRequestTargetBrowser;
+        _cannedTarget = PPOTRequestTargetBrowser;
         _cannedSuccess = YES;
         _cannedMetadataId = @"fake-canned-metadata-id";
     }
     return self;
 }
 
-- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
+- (void)performWithAdapterBlock:(PPOTRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
     adapterBlock(self.cannedSuccess, self.cannedURL ? self.cannedURL : [NSURL URLWithString:@"http://example.com"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
 }
@@ -132,14 +132,14 @@ static BOOL cannedIsWalletAppAvailable = YES;
 - (instancetype)init {
     if (self = [super init]) {
         _cannedError = nil;
-        _cannedTarget = PayPalOneTouchRequestTargetBrowser;
+        _cannedTarget = PPOTRequestTargetBrowser;
         _cannedSuccess = YES;
         _cannedMetadataId = @"fake-canned-metadata-id";
     }
     return self;
 }
 
-- (void)performWithAdapterBlock:(PayPalOneTouchRequestAdapterBlock)adapterBlock {
+- (void)performWithAdapterBlock:(PPOTRequestAdapterBlock)adapterBlock {
     self.appSwitchPerformed = YES;
     adapterBlock(self.cannedSuccess, [NSURL URLWithString:@"http://example.com"], self.cannedTarget, self.cannedMetadataId, self.cannedError);
 }
@@ -159,28 +159,28 @@ static BOOL cannedIsWalletAppAvailable = YES;
     return self;
 }
 
-- (PayPalOneTouchCheckoutRequest *)checkoutRequestWithApprovalURL:(__unused NSURL *)approvalURL
-                                                         clientID:(__unused NSString *)clientID
-                                                      environment:(__unused NSString *)environment
-                                                callbackURLScheme:(__unused NSString *)callbackURLScheme
+- (PPOTCheckoutRequest *)checkoutRequestWithApprovalURL:(__unused NSURL *)approvalURL
+                                               clientID:(__unused NSString *)clientID
+                                            environment:(__unused NSString *)environment
+                                      callbackURLScheme:(__unused NSString *)callbackURLScheme
 {
     return self.checkoutRequest;
 }
 
-- (PayPalOneTouchBillingAgreementRequest *)billingAgreementRequestWithApprovalURL:(__unused NSURL *)approvalURL
-                                                                         clientID:(__unused NSString *)clientID
-                                                                      environment:(__unused NSString *)environment
-                                                                callbackURLScheme:(__unused NSString *)callbackURLScheme
+- (PPOTBillingAgreementRequest *)billingAgreementRequestWithApprovalURL:(__unused NSURL *)approvalURL
+                                                                    clientID:(__unused NSString *)clientID
+                                                            environment:(__unused NSString *)environment
+                                                      callbackURLScheme:(__unused NSString *)callbackURLScheme
 {
     return self.billingAgreementRequest;
 }
 
-- (PayPalOneTouchAuthorizationRequest *)requestWithScopeValues:(NSSet *)scopeValues
-                                                    privacyURL:(__unused NSURL *)privacyURL
-                                                  agreementURL:(__unused NSURL *)agreementURL
-                                                      clientID:(__unused NSString *)clientID
-                                                   environment:(__unused NSString *)environment
-                                             callbackURLScheme:(__unused NSString *)callbackURLScheme
+- (PPOTAuthorizationRequest *)requestWithScopeValues:(NSSet *)scopeValues
+                                          privacyURL:(__unused NSURL *)privacyURL
+                                        agreementURL:(__unused NSURL *)agreementURL
+                                            clientID:(__unused NSString *)clientID
+                                         environment:(__unused NSString *)environment
+                                   callbackURLScheme:(__unused NSString *)callbackURLScheme
 {
     self.lastScopeValues = scopeValues;
     return self.authorizationRequest;

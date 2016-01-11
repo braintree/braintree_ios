@@ -1,18 +1,18 @@
 #import "BTPayPalRequestFactory.h"
-#import "PayPalOneTouchCore.h"
-#import "PayPalOneTouchRequest.h"
+#import "PPOTCore.h"
+#import "PPOTRequest.h"
 
 #pragma mark - FakePayPalOneTouchCoreResult
 
-@interface FakePayPalOneTouchCoreResult : PayPalOneTouchCoreResult
+@interface FakePayPalOneTouchCoreResult : PPOTResult
 @property (nonatomic, strong, nullable) NSError *cannedError;
-@property (nonatomic, assign) PayPalOneTouchResultType cannedType;
-@property (nonatomic, assign) PayPalOneTouchRequestTarget cannedTarget;
+@property (nonatomic, assign) PPOTResultType cannedType;
+@property (nonatomic, assign) PPOTRequestTarget cannedTarget;
 @end
 
 #pragma mark - FakePayPalOneTouchCore
 
-@interface FakePayPalOneTouchCore : PayPalOneTouchCore
+@interface FakePayPalOneTouchCore : PPOTCore
 + (nullable FakePayPalOneTouchCoreResult *)cannedResult;
 + (void)setCannedResult:(nullable FakePayPalOneTouchCoreResult *)result;
 + (BOOL)cannedIsWalletAppAvailable;
@@ -21,20 +21,20 @@
 
 #pragma mark - FakePayPalCheckoutRequest
 
-@interface FakePayPalCheckoutRequest : PayPalOneTouchCheckoutRequest
+@interface FakePayPalCheckoutRequest : PPOTCheckoutRequest
 @property (nonatomic, strong, nullable) NSError *cannedError;
 @property (nonatomic, assign) BOOL cannedSuccess;
-@property (nonatomic, assign) PayPalOneTouchRequestTarget cannedTarget;
+@property (nonatomic, assign) PPOTRequestTarget cannedTarget;
 @property (nonatomic, strong, nullable) NSString *cannedMetadataId;
 @property (nonatomic, assign) BOOL appSwitchPerformed;
 @end
 
 #pragma mark - FakePayPalAuthorizationRequest
 
-@interface FakePayPalAuthorizationRequest : PayPalOneTouchAuthorizationRequest
+@interface FakePayPalAuthorizationRequest : PPOTAuthorizationRequest
 @property (nonatomic, strong, nullable) NSError *cannedError;
 @property (nonatomic, assign) BOOL cannedSuccess;
-@property (nonatomic, assign) PayPalOneTouchRequestTarget cannedTarget;
+@property (nonatomic, assign) PPOTRequestTarget cannedTarget;
 @property (nonatomic, strong, nullable) NSString *cannedMetadataId;
 @property (nonatomic, assign) BOOL appSwitchPerformed;
 @property (nonatomic, strong, nullable) NSURL *cannedURL;
@@ -42,10 +42,10 @@
 
 #pragma mark - FakePayPalBillingAgreementRequest
 
-@interface FakePayPalBillingAgreementRequest : PayPalOneTouchBillingAgreementRequest
+@interface FakePayPalBillingAgreementRequest : PPOTBillingAgreementRequest
 @property (nonatomic, strong, nullable) NSError *cannedError;
 @property (nonatomic, assign) BOOL cannedSuccess;
-@property (nonatomic, assign) PayPalOneTouchRequestTarget cannedTarget;
+@property (nonatomic, assign) PPOTRequestTarget cannedTarget;
 @property (nonatomic, strong, nullable) NSString *cannedMetadataId;
 @property (nonatomic, assign) BOOL appSwitchPerformed;
 @end

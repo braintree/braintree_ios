@@ -39,4 +39,6 @@ target 'UnitTests-CocoaPods' do
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/DataCollector', :path => '.'
   pod 'Braintree/Venmo', :path => '.'
+  pod 'Braintree/PayPalOneTouch', :path => '.'
+  pod 'Braintree/PayPalDataCollector', :path => '.'
 end
