@@ -1,7 +1,7 @@
 #import "BTPayPalDriver_Internal.h"
 
-#import "PayPalOneTouchRequest.h"
-#import "PayPalOneTouchCore.h"
+#import "PPOTRequest.h"
+#import "PPOTCore.h"
 
 #if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 + (void)load {
     if (self == [BTPayPalDriver class]) {
-        PayPalClass = [PayPalOneTouchCore class];
+        PayPalClass = [PPOTCore class];
         
         [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
         
@@ -100,7 +100,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             return;
         }
         
-        PayPalOneTouchAuthorizationRequest *request =
+        PPOTAuthorizationRequest *request =
         [self.requestFactory requestWithScopeValues:[self.defaultOAuth2Scopes setByAddingObjectsFromSet:(additionalScopes ? additionalScopes : [NSSet set])]
                                          privacyURL:[configuration.json[@"paypal"][@"privacyUrl"] asURL]
                                        agreementURL:[configuration.json[@"paypal"][@"userAgreementUrl"] asURL]
@@ -117,7 +117,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         if (![SFSafariViewController class]) {
             [self informDelegateWillPerformAppSwitch];
         }
-        [request performWithAdapterBlock:^(BOOL success, NSURL *url, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
+        [request performWithAdapterBlock:^(BOOL success, NSURL *url, PPOTRequestTarget target, NSString *clientMetadataId, NSError *error) {
             self.clientMetadataId = clientMetadataId;
             
             [self sendAnalyticsEventForInitiatingOneTouchForPaymentType:BTPayPalPaymentTypeFuturePayments withSuccess:success target:target];
@@ -276,7 +276,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                           approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
                       }
                       
-                      PayPalOneTouchCheckoutRequest *request = nil;
+                      PPOTCheckoutRequest *request = nil;
                       if (isBillingAgreement) {
                           request = [self.requestFactory billingAgreementRequestWithApprovalURL:approvalUrl
                                                                                        clientID:payPalClientID
@@ -292,7 +292,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                       if (![SFSafariViewController class]) {
                           [self informDelegateWillPerformAppSwitch];
                       }
-                      [request performWithAdapterBlock:^(BOOL success, NSURL *url, PayPalOneTouchRequestTarget target, NSString *clientMetadataId, NSError *error) {
+                      [request performWithAdapterBlock:^(BOOL success, NSURL *url, PPOTRequestTarget target, NSString *clientMetadataId, NSError *error) {
                           self.clientMetadataId = clientMetadataId;
                           
                           if (isBillingAgreement) {
@@ -328,21 +328,21 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             return;
         }
         
-        [[self.class payPalClass] parseResponseURL:url completionBlock:^(PayPalOneTouchCoreResult *result) {
+        [[self.class payPalClass] parseResponseURL:url completionBlock:^(PPOTResult *result) {
             
             [self sendAnalyticsEventForHandlingOneTouchResult:result forPaymentType:paymentType];
             
             switch (result.type) {
-                case PayPalOneTouchResultTypeError:
+                case PPOTResultTypeError:
                     if (completionBlock) completionBlock(nil, result.error);
                     break;
-                case PayPalOneTouchResultTypeCancel:
+                case PPOTResultTypeCancel:
                     if (result.error) {
                         [[BTLogger sharedLogger] error:@"PayPal error: %@", result.error];
                     }
                     if (completionBlock) completionBlock(nil, nil);
                     break;
-                case PayPalOneTouchResultTypeSuccess: {
+                case PPOTResultTypeSuccess: {
                     
                     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
                     parameters[@"paypal_account"] = [result.response mutableCopy];
@@ -389,7 +389,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 - (void)handlePayPalRequestWithSuccess:(BOOL)success
                                  error:(NSError *)error
                             requestURL:(NSURL *)url
-                                target:(PayPalOneTouchRequestTarget)target
+                                target:(PPOTRequestTarget)target
                            paymentType:(BTPayPalPaymentType)paymentType
                             completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock
 {
@@ -544,17 +544,17 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     }
 }
 
-- (void)informDelegateDidPerformAppSwitchToTarget:(PayPalOneTouchRequestTarget)target {
+- (void)informDelegateDidPerformAppSwitchToTarget:(PPOTRequestTarget)target {
     BTAppSwitchTarget appSwitchTarget;
     switch (target) {
-        case PayPalOneTouchRequestTargetBrowser:
+        case PPOTRequestTargetBrowser:
             appSwitchTarget = BTAppSwitchTargetWebBrowser;
             break;
-        case PayPalOneTouchRequestTargetOnDeviceApplication:
+        case PPOTRequestTargetOnDeviceApplication:
             appSwitchTarget = BTAppSwitchTargetNativeApp;
             break;
-        case PayPalOneTouchRequestTargetNone:
-        case PayPalOneTouchRequestTargetUnknown:
+        case PPOTRequestTargetNone:
+        case PPOTRequestTargetUnknown:
             appSwitchTarget = BTAppSwitchTargetUnknown;
             // Should never happen
             break;
@@ -664,22 +664,22 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
     }
 }
 
-+ (NSString *)eventStringForRequestTarget:(PayPalOneTouchRequestTarget)requestTarget {
++ (NSString *)eventStringForRequestTarget:(PPOTRequestTarget)requestTarget {
     switch (requestTarget) {
-        case PayPalOneTouchRequestTargetNone:
+        case PPOTRequestTargetNone:
             return @"none";
-        case PayPalOneTouchRequestTargetUnknown:
+        case PPOTRequestTargetUnknown:
             return @"unknown";
-        case PayPalOneTouchRequestTargetOnDeviceApplication:
+        case PPOTRequestTargetOnDeviceApplication:
             return @"appswitch";
-        case PayPalOneTouchRequestTargetBrowser:
+        case PPOTRequestTargetBrowser:
             return @"webswitch";
     }
 }
 
 - (void)sendAnalyticsEventForInitiatingOneTouchForPaymentType:(BTPayPalPaymentType)paymentType
                                                   withSuccess:(BOOL)success
-                                                       target:(PayPalOneTouchRequestTarget)target
+                                                       target:(PPOTRequestTarget)target
 {
     if (paymentType == BTPayPalPaymentTypeUnknown) return;
     
@@ -688,21 +688,21 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
     [self.apiClient sendAnalyticsEvent:eventName];
 }
 
-- (void)sendAnalyticsEventForHandlingOneTouchResult:(PayPalOneTouchCoreResult *)result forPaymentType:(BTPayPalPaymentType)paymentType {
+- (void)sendAnalyticsEventForHandlingOneTouchResult:(PPOTResult *)result forPaymentType:(BTPayPalPaymentType)paymentType {
     if (paymentType == BTPayPalPaymentTypeUnknown) return;
     
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@", [self.class eventStringForPaymentType:paymentType], [self.class eventStringForRequestTarget:result.target]];
     
     switch (result.type) {
-        case PayPalOneTouchResultTypeError:
+        case PPOTResultTypeError:
             return [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"%@.failed", eventName]];
-        case PayPalOneTouchResultTypeCancel:
+        case PPOTResultTypeCancel:
             if (result.error) {
                 return [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"%@.canceled-with-error", eventName]];
             } else {
                 return [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"%@.canceled", eventName]];
             }
-        case PayPalOneTouchResultTypeSuccess:
+        case PPOTResultTypeSuccess:
             return [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"%@.succeeded", eventName]];
     }
 }
@@ -728,7 +728,7 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 }
 
 + (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return appSwitchReturnBlock != nil && [PayPalOneTouchCore canParseURL:url sourceApplication:sourceApplication];
+    return appSwitchReturnBlock != nil && [PPOTCore canParseURL:url sourceApplication:sourceApplication];
 }
 
 + (void)handleAppSwitchReturnURL:(NSURL *)url {
@@ -756,7 +756,7 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 static Class PayPalClass;
 
 + (void)setPayPalClass:(Class)payPalClass {
-    if ([payPalClass isSubclassOfClass:[PayPalOneTouchCore class]]) {
+    if ([payPalClass isSubclassOfClass:[PPOTCore class]]) {
         PayPalClass = payPalClass;
     }
 }

@@ -21,7 +21,8 @@ task :distribute => %w[distribute:build distribute:hockeyapp]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
-VERSION_FILE = "BraintreeCore/Braintree-Version.h"
+BRAINTREE_VERSION_FILE = "BraintreeCore/Braintree-Version.h"
+PAYPAL_ONE_TOUCH_VERSION_FILE = "BraintreePayPal/PayPalUtils/PPOTVersion.h"
 DEMO_PLIST = "Demo/Supporting Files/Braintree-Demo-Info.plist"
 FRAMEWORKS_PLIST = "BraintreeCore/Info.plist"
 PUBLIC_REMOTE_NAME = "public"
@@ -266,9 +267,13 @@ namespace :release do
     podspec.gsub!(/(s\.version\s*=\s*)"#{SEMVER}"/, "\\1\"#{version}\"")
     File.open(PODSPEC, "w") { |f| f.puts podspec }
 
-    version_header = File.read(VERSION_FILE)
+    version_header = File.read(BRAINTREE_VERSION_FILE)
     version_header.gsub!(SEMVER, version)
-    File.open(VERSION_FILE, "w") { |f| f.puts version_header }
+    File.open(BRAINTREE_VERSION_FILE, "w") { |f| f.puts version_header }
+
+    version_header = File.read(PAYPAL_ONE_TOUCH_VERSION_FILE)
+    version_header.gsub!(SEMVER, version)
+    File.open(PAYPAL_ONE_TOUCH_VERSION_FILE, "w") { |f| f.puts version_header }
 
     run! "pod update Braintree Braintree/Apple-Pay Braintree/DataCollector Braintree/3D-Secure"
     [DEMO_PLIST, FRAMEWORKS_PLIST].each do |plist|

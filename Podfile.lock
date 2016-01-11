@@ -36,6 +36,10 @@ PODS:
   - Braintree/DataCollector (4.1.3)
   - Braintree/PayPal (4.1.3):
     - Braintree/Core
+    - Braintree/PayPalOneTouch
+  - Braintree/PayPalDataCollector (4.1.3)
+  - Braintree/PayPalOneTouch (4.1.3):
+    - Braintree/PayPalDataCollector
   - Braintree/UI (4.1.3):
     - Braintree/Card
     - Braintree/Core
@@ -73,6 +77,8 @@ DEPENDENCIES:
   - Braintree/3D-Secure (from `.`)
   - Braintree/Apple-Pay (from `.`)
   - Braintree/DataCollector (from `.`)
+  - Braintree/PayPalDataCollector (from `.`)
+  - Braintree/PayPalOneTouch (from `.`)
   - Braintree/Venmo (from `.`)
   - CardIO
   - Expecta
@@ -92,7 +98,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Braintree: fcbadcdbaae84a82e5e69e10c021af3c403cbe08
+  Braintree: 7ac2e12d41f084849f06eabba1d6598eca8edd87
   CardIO: 2460db0f4936f3441b08d51e3904b436d77ec8fc
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472

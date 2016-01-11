@@ -10,6 +10,7 @@
 #import "Braintree3DSecure.h"
 #import "BraintreeDataCollector.h"
 #import "BraintreeUI.h"
+#import "PayPalOneTouch.h"
 
 // Internal headers for testing
 #import "BTAPIClient_Internal.h"

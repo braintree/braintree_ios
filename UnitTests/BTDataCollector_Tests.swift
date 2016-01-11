@@ -88,7 +88,7 @@ class BTDataCollector_Tests: XCTestCase {
         // This is just a guess of a reasonable id length. In practice, the id
         // typically has a length of 32.
         XCTAssert((dictionary["correlation_id"] as! String).characters.count >= 32)
-        
+
         waitForExpectationsWithTimeout(5, handler: nil)
     }
 }
