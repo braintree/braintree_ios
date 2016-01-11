@@ -18,6 +18,26 @@ class BTDropInViewController_Tests: XCTestCase {
         }
     }
 
+    var window : UIWindow!
+    var viewController : UIViewController!
+
+    override func setUp() {
+        super.setUp()
+
+        window = UIWindow(frame: UIApplication.sharedApplication().windows[0].frame)
+        viewController = UIViewController()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+    }
+
+    override func tearDown() {
+        viewController.dismissViewControllerAnimated(false, completion: nil)
+        window = nil
+        UIApplication.sharedApplication().windows[0].makeKeyAndVisible()
+
+        super.tearDown()
+    }
+
     func testInitializesWithCheckoutRequestCorrectly() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let request = BTPaymentRequest()
@@ -35,11 +55,10 @@ class BTDropInViewController_Tests: XCTestCase {
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
         dropInViewController.delegate = testDelegate
 
-        let window = UIWindow()
-        let viewController = UIViewController()
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        }
+
         self.waitForExpectationsWithTimeout(5, handler: nil)
     }
     
@@ -65,11 +84,9 @@ class BTDropInViewController_Tests: XCTestCase {
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
         dropInViewController.delegate = testDelegate
 
-        let window = UIWindow()
-        let viewController = UIViewController()
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        }
         self.waitForExpectationsWithTimeout(5, handler: nil)
     }
 
@@ -90,11 +107,9 @@ class BTDropInViewController_Tests: XCTestCase {
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
         dropInViewController.delegate = testDelegate
 
-        let window = UIWindow()
-        let viewController = UIViewController()
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        }
         self.waitForExpectationsWithTimeout(5, handler: nil)
 
         let newRequest = BTPaymentRequest()
@@ -110,7 +125,7 @@ class BTDropInViewController_Tests: XCTestCase {
     func testDropIn_addPaymentMethodViewController_hidesCTA() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let dropInViewController = BTDropInViewController(APIClient: apiClient)
-        let addPaymentMethodDropInViewController = dropInViewController.addPaymentMethodDropInViewController()
+	        let addPaymentMethodDropInViewController = dropInViewController.addPaymentMethodDropInViewController()
         XCTAssertTrue(addPaymentMethodDropInViewController.paymentRequest!.shouldHideCallToAction)
         XCTAssertNotNil(addPaymentMethodDropInViewController.navigationItem.rightBarButtonItem)
 
@@ -118,11 +133,10 @@ class BTDropInViewController_Tests: XCTestCase {
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
         addPaymentMethodDropInViewController.delegate = testDelegate
 
-        let window = UIWindow()
-        let viewController = UIViewController()
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
-        viewController.presentViewController(addPaymentMethodDropInViewController, animated: false, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.viewController.presentViewController(addPaymentMethodDropInViewController, animated: false, completion: nil)
+        }
+
         self.waitForExpectationsWithTimeout(5, handler: nil)
     }
 

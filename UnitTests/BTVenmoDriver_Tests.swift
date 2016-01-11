@@ -33,16 +33,27 @@ class FakeBundle : NSBundle {
 class BTVenmoDriver_Tests: XCTestCase {
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     var observers : [NSObjectProtocol] = []
-    
+    var window : UIWindow!
+    var viewController : UIViewController!
+
     override func setUp() {
         super.setUp()
 
         mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+
+        window = UIWindow(frame: UIApplication.sharedApplication().windows[0].frame)
+        viewController = UIViewController()
+        window.rootViewController = viewController
     }
 
     override func tearDown() {
         for observer in observers { NSNotificationCenter.defaultCenter().removeObserver(observer)
         }
+
+        viewController.dismissViewControllerAnimated(false, completion: nil)
+        window = nil
+        UIApplication.sharedApplication().windows[0].makeKeyAndVisible()
+
         super.tearDown()
     }
     
@@ -450,11 +461,11 @@ class BTVenmoDriver_Tests: XCTestCase {
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation)
         dropInViewController.delegate = testDelegate
         
-        let window = UIWindow()
-        let viewController = UIViewController()
-        window.rootViewController = viewController
         window.makeKeyAndVisible()
-        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        }
+
         self.waitForExpectationsWithTimeout(5, handler: nil)
 
         let filteredEnabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.filteredEnabledPaymentOptions()
@@ -476,13 +487,12 @@ class BTVenmoDriver_Tests: XCTestCase {
         
         dropInViewController.delegate = testDelegate
 
-        
-        let window = UIWindow()
-        let viewController = UIViewController()
-        window.rootViewController = viewController
         window.makeKeyAndVisible()
         dropInViewController.dropInContentView.paymentButton.application = FakeApplication()
-        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        }
+
         self.waitForExpectationsWithTimeout(5, handler: nil)
 
         let filteredEnabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.filteredEnabledPaymentOptions()

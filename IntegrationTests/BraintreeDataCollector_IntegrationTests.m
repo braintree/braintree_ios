@@ -35,7 +35,7 @@
     NSString *deviceData = [self.data collectFraudData];
     
     XCTAssertTrue([deviceData containsString:@"correlation_id"]);
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 - (void)testCollectCardFraudData_returnsFraudDataWithNoPayPalFraudData {
@@ -51,7 +51,7 @@
     XCTAssertNotNil(deviceData);
     XCTAssertFalse([deviceData containsString:@"correlation_id"]);
     
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
 #pragma clang diagnostic pop

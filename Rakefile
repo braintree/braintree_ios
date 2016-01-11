@@ -76,11 +76,12 @@ namespace :spec do
   end
 
   desc 'Run unit tests'
-  task :unit do
-    run_test_scheme! 'UnitTests'
-    # run_test_scheme! 'UnitTests-StaticLibrary'
-    # run_test_scheme! 'UnitTests-CocoaPods'
-    run_test_scheme! 'UnitTests', 8.4
+  task :unit, [:ios_version] do |t, args|
+    if args[:ios_version]
+      run_test_scheme! 'UnitTests', args[:ios_version]
+    else
+      run_test_scheme! 'UnitTests'
+    end
   end
 
   desc 'Run UI tests'
@@ -109,7 +110,7 @@ namespace :spec do
   end
 
   desc 'Run all spec schemes'
-  task :all => %w[spec:unit spec:api:integration]
+  task :all => %w[spec:unit spec:api:integration spec:ui]
 end
 
 namespace :demo do
