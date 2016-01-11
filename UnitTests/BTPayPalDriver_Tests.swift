@@ -470,7 +470,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
                 "environment": "offline"
             ] ])
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
-        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PayPalOneTouchResultType.Success
+        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PPOTResultType.Success
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
         payPalDriver.returnURLScheme = "foo://"
         let stubPayPalRequestFactory = FakePayPalRequestFactory()
