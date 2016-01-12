@@ -281,6 +281,7 @@
 
     BTPaymentMethod *paymentMethod = [self selectedPaymentMethod];
     if (paymentMethod != nil) {
+        [self showLoadingState:NO];
         [self informDelegateWillComplete];
         [self informDelegateDidAddPaymentMethod:paymentMethod];
     } else if (!self.dropInContentView.cardForm.hidden) {
