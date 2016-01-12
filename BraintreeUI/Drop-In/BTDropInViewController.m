@@ -307,6 +307,7 @@
 
     BTPaymentMethodNonce *paymentInfo = [self selectedPaymentMethod];
     if (paymentInfo != nil) {
+        [self showLoadingState:NO];
         [self informDelegateWillComplete];
         [self informDelegateDidAddPaymentInfo:paymentInfo];
     } else if (!self.dropInContentView.cardForm.hidden) {
