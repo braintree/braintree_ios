@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BTAPIClient, BTUI, BTPaymentRequest, BTPaymentMethodNonce;
+@class BTAPIClient, BTUI, BTPaymentRequest, BTPaymentMethodNonce, BTCard;
 @protocol BTDropInViewControllerDelegate;
 
 /// A view controller that provides a quick and easy payment experience.
@@ -34,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return A new Drop-in view controller that is ready to be presented.
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
+/// The API Client used for communication with Braintree servers.
+@property (nonatomic, strong) BTAPIClient *apiClient;
+
 /// The BTPaymentRequest that defines the Drop-in experience.
 ///
 /// The properties of this payment request are used to customize Drop-in.
@@ -62,8 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param completionBlock A block that gets called on completion.
 - (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock;
 
-/// The API Client used for communication with Braintree servers.
-@property (nonatomic, strong) BTAPIClient *apiClient;
+/// Setting this property to a `BTCard` will pre-populate the Drop In card form with a card number and expiration date.
+- (void)setCard:(BTCard *)card;
 
 @end
 

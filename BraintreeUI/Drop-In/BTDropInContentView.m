@@ -149,7 +149,7 @@
     [self updateLayout];
 }
 
-- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate {
+- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate onCompletion:(void(^)())completionBlock {
     if (!animate) {
         [self setState:newState];
     } else {
@@ -172,6 +172,9 @@
                         self.cardForm.alpha = 1.0f;
                         self.cardFormSectionHeader.alpha = 1.0f;
                         self.ctaControl.alpha = 1.0f;
+                        if (completionBlock) {
+                            completionBlock();
+                        }
                     }];
                 }];
                 return;
@@ -192,6 +195,9 @@
                         self.selectedPaymentMethodView.alpha = 1.0f;
                         self.changeSelectedPaymentMethodButton.alpha = 1.0f;
                         self.ctaControl.alpha = 1.0f;
+                        if (completionBlock) {
+                            completionBlock();
+                        }
                     }];
                 }];
                 return;
@@ -199,6 +205,10 @@
         }
         [self setState:newState];
     }
+}
+
+- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate {
+    [self setState:newState animate:animate onCompletion:nil];
 }
 
 - (void)setHidePaymentButton:(BOOL)hidePaymentButton {

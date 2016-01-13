@@ -1,4 +1,5 @@
 #import "BTAPIClient_Internal.h"
+#import "BTCard.h"
 #import "BTDropInViewController_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTDropInErrorAlert.h"
@@ -511,6 +512,25 @@
     self.dropInContentView.ctaControl.callToAction = callToActionText;
 }
 
+- (void)setCard:(BTCard *)card {
+    _card = card;
+    self.dropInContentView.cardForm.number = card.number;
+
+    static NSDateFormatter *dateFormatter;
+
+    if (card.expirationMonth && card.expirationYear) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!dateFormatter) {
+                dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"MM/yyyy"];
+            }
+
+            NSString *expirationDate = [NSString stringWithFormat:@"%@/%@", card.expirationMonth, card.expirationYear];
+            [self.dropInContentView.cardForm setExpirationDate:[dateFormatter dateFromString:expirationDate]];
+        });
+    }
+}
+
 #pragma mark Data
 
 - (void)setPaymentMethodNonces:(NSArray *)paymentMethodNonces {
@@ -529,9 +549,11 @@
         if (elapsed < self.theme.minimumVisibilityTime) {
             NSTimeInterval delay = self.theme.minimumVisibilityTime - elapsed;
 
+            __weak typeof(self) weakSelf = self;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.dropInContentView setState:newState animate:YES];
-                [self updateValidity];
+                [self.dropInContentView setState:newState animate:YES onCompletion:^{
+                    [weakSelf updateValidity];
+                }];
             });
             return;
         }
