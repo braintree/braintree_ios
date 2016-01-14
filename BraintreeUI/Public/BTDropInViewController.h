@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BTAPIClient, BTUI, BTPaymentRequest, BTPaymentMethodNonce, BTCard;
+@class BTAPIClient, BTUI, BTPaymentRequest, BTPaymentMethodNonce;
 @protocol BTDropInViewControllerDelegate;
 
 /// A view controller that provides a quick and easy payment experience.
