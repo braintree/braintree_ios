@@ -24,16 +24,13 @@ class BTDropInViewController_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        window = UIWindow(frame: UIApplication.sharedApplication().windows[0].frame)
-        viewController = UIViewController()
-        window.rootViewController = viewController
-        window.makeKeyAndVisible()
+        viewController = UIApplication.sharedApplication().windows[0].rootViewController
     }
 
     override func tearDown() {
-        viewController.dismissViewControllerAnimated(false, completion: nil)
-        window = nil
-        UIApplication.sharedApplication().windows[0].makeKeyAndVisible()
+        if viewController.presentedViewController != nil {
+            viewController.dismissViewControllerAnimated(false, completion: nil)
+        }
 
         super.tearDown()
     }
