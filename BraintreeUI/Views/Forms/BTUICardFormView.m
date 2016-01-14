@@ -122,6 +122,12 @@
     [self.expiryField setText:expirationDateString];
 }
 
+- (void)setExpirationMonth:(NSInteger)expirationMonth year:(NSInteger)expirationYear {
+    NSString *expirationMonthString = expirationMonth < 10 ? [NSString stringWithFormat:@"0%ld", expirationMonth] : [NSString stringWithFormat:@"%ld", expirationMonth];
+    NSString *expirationYearString = expirationYear < 100 ? [NSString stringWithFormat:@"20%ld", expirationYear] : [NSString stringWithFormat:@"%ld", expirationYear];
+    self.expiryField.text = [NSString stringWithFormat:@"%@%@", expirationMonthString, expirationYearString];
+}
+
 - (void)setup {
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];

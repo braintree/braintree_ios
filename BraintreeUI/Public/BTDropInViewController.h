@@ -65,8 +65,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param completionBlock A block that gets called on completion.
 - (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock;
 
-/// Setting this property to a `BTCard` will pre-populate the Drop In card form with a card number and expiration date.
-- (void)setCard:(BTCard *)card;
+/// Sets the card number in the card form.
+- (void)setCardNumber:(nullable NSString *)cardNumber;
+
+/// Sets the expiration month and year in the card form.
+///
+/// @note The expiration date uses the Gregorian calendar.
+///
+/// @param expirationMonth The expiration month as a one- or two-digit number.
+/// @param expirationYear The expiration year as a four-digit number.
+- (void)setCardExpirationMonth:(NSInteger)expirationMonth year:(NSInteger)expirationYear;
 
 @end
 

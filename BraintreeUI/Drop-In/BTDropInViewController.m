@@ -512,23 +512,12 @@
     self.dropInContentView.ctaControl.callToAction = callToActionText;
 }
 
-- (void)setCard:(BTCard *)card {
-    _card = card;
-    self.dropInContentView.cardForm.number = card.number;
+- (void)setCardNumber:(NSString *)cardNumber {
+    self.dropInContentView.cardForm.number = cardNumber;
+}
 
-    static NSDateFormatter *dateFormatter;
-
-    if (card.expirationMonth && card.expirationYear) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!dateFormatter) {
-                dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"MM/yyyy"];
-            }
-
-            NSString *expirationDate = [NSString stringWithFormat:@"%@/%@", card.expirationMonth, card.expirationYear];
-            [self.dropInContentView.cardForm setExpirationDate:[dateFormatter dateFromString:expirationDate]];
-        });
-    }
+- (void)setCardExpirationMonth:(NSInteger)expirationMonth year:(NSInteger)expirationYear {
+    [self.dropInContentView.cardForm setExpirationMonth:expirationMonth year:expirationYear];
 }
 
 #pragma mark Data
