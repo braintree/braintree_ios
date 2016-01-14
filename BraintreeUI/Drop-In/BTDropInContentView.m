@@ -149,7 +149,7 @@
     [self updateLayout];
 }
 
-- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate onCompletion:(void(^)())completionBlock {
+- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate completion:(void(^)())completionBlock {
     if (!animate) {
         [self setState:newState];
     } else {
@@ -208,7 +208,7 @@
 }
 
 - (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate {
-    [self setState:newState animate:animate onCompletion:nil];
+    [self setState:newState animate:animate completion:nil];
 }
 
 - (void)setHidePaymentButton:(BOOL)hidePaymentButton {
