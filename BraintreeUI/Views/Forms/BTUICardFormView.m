@@ -123,8 +123,8 @@
 }
 
 - (void)setExpirationMonth:(NSInteger)expirationMonth year:(NSInteger)expirationYear {
-    NSString *expirationMonthString = expirationMonth < 10 ? [NSString stringWithFormat:@"0%ld", expirationMonth] : [NSString stringWithFormat:@"%ld", expirationMonth];
-    NSString *expirationYearString = expirationYear < 100 ? [NSString stringWithFormat:@"20%ld", expirationYear] : [NSString stringWithFormat:@"%ld", expirationYear];
+    NSString *expirationMonthString = expirationMonth < 10 ? [NSString stringWithFormat:@"0%ld", (long)expirationMonth] : [NSString stringWithFormat:@"%ld", (long)expirationMonth];
+    NSString *expirationYearString = expirationYear < 100 ? [NSString stringWithFormat:@"20%ld", (long)expirationYear] : [NSString stringWithFormat:@"%ld", (long)expirationYear];
     self.expiryField.text = [NSString stringWithFormat:@"%@%@", expirationMonthString, expirationYearString];
 }
 
