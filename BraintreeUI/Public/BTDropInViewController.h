@@ -34,6 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return A new Drop-in view controller that is ready to be presented.
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
+/// The API Client used for communication with Braintree servers.
+@property (nonatomic, strong) BTAPIClient *apiClient;
+
 /// The BTPaymentRequest that defines the Drop-in experience.
 ///
 /// The properties of this payment request are used to customize Drop-in.
@@ -62,8 +65,16 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param completionBlock A block that gets called on completion.
 - (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock;
 
-/// The API Client used for communication with Braintree servers.
-@property (nonatomic, strong) BTAPIClient *apiClient;
+/// Sets the card number in the card form.
+- (void)setCardNumber:(nullable NSString *)cardNumber;
+
+/// Sets the expiration month and year in the card form.
+///
+/// @note The expiration date uses the Gregorian calendar.
+///
+/// @param expirationMonth The expiration month as a one- or two-digit number.
+/// @param expirationYear The expiration year as a four-digit number.
+- (void)setCardExpirationMonth:(NSInteger)expirationMonth year:(NSInteger)expirationYear;
 
 @end
 

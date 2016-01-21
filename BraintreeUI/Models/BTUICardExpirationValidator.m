@@ -9,9 +9,14 @@
 @implementation BTUICardExpirationValidator
 
 + (BOOL)month:(NSUInteger)month year:(NSUInteger)year validForDate:(NSDate *)date {
+    // Creating NSCalendar is expensive, so cache it!
+    static NSCalendar *gregorianCalendar;
+    if (!gregorianCalendar) {
+        gregorianCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:kBTNSGregorianCalendarIdentifier];
+    }
 
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-    dateComponents.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:kBTNSGregorianCalendarIdentifier];
+    dateComponents.calendar = gregorianCalendar;
     dateComponents.year = ((year % 2000) + 2000) ;
     dateComponents.month = month;
     NSInteger newMonth = (dateComponents.month + 1);

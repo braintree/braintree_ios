@@ -33,27 +33,20 @@ class FakeBundle : NSBundle {
 class BTVenmoDriver_Tests: XCTestCase {
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     var observers : [NSObjectProtocol] = []
-    var window : UIWindow!
     var viewController : UIViewController!
 
     override func setUp() {
         super.setUp()
-
+        viewController = UIApplication.sharedApplication().windows[0].rootViewController
         mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-
-        window = UIWindow(frame: UIApplication.sharedApplication().windows[0].frame)
-        viewController = UIViewController()
-        window.rootViewController = viewController
     }
 
     override func tearDown() {
-        for observer in observers { NSNotificationCenter.defaultCenter().removeObserver(observer)
+        if viewController.presentedViewController != nil {
+            viewController.dismissViewControllerAnimated(false, completion: nil)
         }
 
-        viewController.dismissViewControllerAnimated(false, completion: nil)
-        window = nil
-        UIApplication.sharedApplication().windows[0].makeKeyAndVisible()
-
+        for observer in observers { NSNotificationCenter.defaultCenter().removeObserver(observer) }
         super.tearDown()
     }
     
@@ -460,11 +453,8 @@ class BTVenmoDriver_Tests: XCTestCase {
         // Must be assigned here for a strong reference. The delegate property of the BTDropInViewController is a weak reference.
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation)
         dropInViewController.delegate = testDelegate
-        
-        window.makeKeyAndVisible()
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
-        }
+
+        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
 
         self.waitForExpectationsWithTimeout(5, handler: nil)
 
@@ -487,11 +477,9 @@ class BTVenmoDriver_Tests: XCTestCase {
         
         dropInViewController.delegate = testDelegate
 
-        window.makeKeyAndVisible()
         dropInViewController.dropInContentView.paymentButton.application = FakeApplication()
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
-        }
+
+        viewController.presentViewController(dropInViewController, animated: false, completion: nil)
 
         self.waitForExpectationsWithTimeout(5, handler: nil)
 
