@@ -109,24 +109,11 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testFuturePayments_whenPayPalIsNotEnabledInControlPanel_returnsError {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_testing_integration2_merchant_id"];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
-        XCTAssertNil(tokenizedPayPalAccount);
-        XCTAssertEqualObjects(error.domain, BTPayPalDriverErrorDomain);
-        XCTAssertEqual(error.code, BTPayPalDriverErrorTypeDisabled);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
 - (void)testFuturePayments_whenReturnURLSchemeIsMissing_returnsError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    id stubDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    payPalDriver.viewControllerPresentingDelegate = stubDelegate;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
@@ -142,6 +129,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testFuturePayments_whenReturnURLSchemeIsInvalid_returnsError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    id stubDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    payPalDriver.viewControllerPresentingDelegate = stubDelegate;
     [BTAppSwitch sharedInstance].returnURLScheme = @"not-my-app-bundle-id";
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
@@ -158,6 +147,8 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 - (void)testFuturePayments_onCancelledAppSwitchAuthorization_callsBackWithNoTokenizedAccountOrError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    id stubDelegate = [[BTViewControllerPresentingTestDelegate alloc] init];
+    payPalDriver.viewControllerPresentingDelegate = stubDelegate;
 
     self.didReceiveCompletionCallback = nil;
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
@@ -279,6 +270,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
     [self stubDelegatesForPayPalDriver:payPalDriver];
 
+    // FIXME: use new method signature that forces future payments
     [payPalDriver authorizeAccountWithCompletion:^(__unused BTPayPalAccountNonce *tokenizedPayPalAccount, __unused NSError *error) { }];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
