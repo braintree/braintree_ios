@@ -4,95 +4,93 @@
 #import <Expecta/Expecta.h>
 #import <Specta/Specta.h>
 
-SpecBegin(BTCardClient_Integration)
+@interface BTCardClient_IntegrationTests : XCTestCase
+@end
 
-describe(@"tokenizeCard:completion:", ^{
-    __block BTCardClient *client;
+@implementation BTCardClient_IntegrationTests
 
-    context(@"with validation disabled", ^{
-        beforeEach(^{
-            BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-            client = [[BTCardClient alloc] initWithAPIClient:apiClient];
-        });
+- (void)testTokenizeCard_whenCardHasValidationDisabledAndCardIsInvalid_tokenizesSuccessfully {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+    BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
+    BTCard *card = [self invalidCard];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
+    [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(error).to.beNil();
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
 
-        it(@"creates an unlocked card with a nonce using an invalid card", ^{
-            BTCard *card = [[BTCard alloc] init];
-            card.number = @"INVALID_CARD";
-            card.expirationMonth = @"XX";
-            card.expirationYear = @"YYYY";
+- (void)testTokenizeCard_whenCardHasValidationDisabledAndCardIsValid_tokenizesSuccessfully {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+    BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
+    BTCard *card = [self validCard];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
+    [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(error).to.beNil();
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
 
-            XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-            [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenized, NSError * _Nullable error) {
-                expect(tokenized.nonce.isANonce).to.beTruthy();
-                expect(error).to.beNil();
-                [expectation fulfill];
-            }];
 
-            [self waitForExpectationsWithTimeout:5 handler:nil];
-        });
+- (void)testTokenizeCard_whenCardHasValidationEnabledAndCardIsInvalid_failsWithError {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+    BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
+    BTCard *card = [self invalidCard];
+    card.shouldValidate = YES;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
+    [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+        XCTAssertNil(tokenizedCard);
+        expect(error.domain).to.equal(BTHTTPErrorDomain);
+        expect(error.code).to.equal(BTHTTPErrorCodeClientError);
+        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey];
+        expect(httpResponse.statusCode).to.equal(403);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
 
-        it(@"creates an unlocked card with a nonce using a valid card", ^{
-            BTCard *card = [[BTCard alloc] init];
-            card.number = @"4111111111111111";
-            card.expirationMonth = @"12";
-            card.expirationYear = @"2018";
+- (void)testTokenizeCard_whenCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+    BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
+    BTCard *card = [self validCard];
+    card.shouldValidate = YES;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
+    [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(error).to.beNil();
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
 
-            XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-            [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-                expect(tokenizedCard.nonce.isANonce).to.beTruthy();
-                expect(error).to.beNil();
-                [expectation fulfill];
-            }];
+#pragma mark - Helpers
 
-            [self waitForExpectationsWithTimeout:5 handler:nil];
-        });
-    });
+- (BTCard *)invalidCard {
+    BTCard *card = [[BTCard alloc] init];
+    card.number = @"INVALID_CARD";
+    card.expirationMonth = @"XX";
+    card.expirationYear = @"YYYY";
+    return card;
+}
 
-    context(@"with validation enabled", ^{
-        __block BTCard *card;
+- (BTCard *)validCard {
+    BTCard *card = [[BTCard alloc] init];
+    card.number = @"4111111111111111";
+    card.expirationMonth = @"12";
+    card.expirationYear = @"2018";
+    return card;
+}
 
-        beforeEach(^{
-            card = [[BTCard alloc] init];
-            card.shouldValidate = YES;
-            card.number = @"4111111111111111";
-            card.expirationMonth = @"12";
-            card.expirationYear = @"2018";
-        });
-
-        context(@"and API client uses tokenization key", ^{
-
-            it(@"returns an authorization error", ^{
-                client = [[BTCardClient alloc] initWithAPIClient:[[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY]];
-
-                XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-                [client tokenizeCard:card completion:^(BTCardNonce *tokenizedCard, NSError *error) {
-                    XCTAssertNil(tokenizedCard);
-                    expect(error.domain).to.equal(BTHTTPErrorDomain);
-                    expect(error.code).to.equal(BTHTTPErrorCodeClientError);
-                    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)error.userInfo[BTHTTPURLResponseKey];
-                    expect(httpResponse.statusCode).to.equal(403);
-                    [expectation fulfill];
-                }];
-                
-                [self waitForExpectationsWithTimeout:5 handler:nil];
-            });
-        });
-
-        context(@"and API client uses client token", ^{
-            it(@"returns a tokenized card", ^{
-                client = [[BTCardClient alloc] initWithAPIClient:[[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN]];
-
-                XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
-                [client tokenizeCard:card completion:^(BTCardNonce *tokenizedCard, NSError *error) {
-                    expect(tokenizedCard.nonce.isANonce).to.beTruthy();
-                    expect(error).to.beNil();
-                    [expectation fulfill];
-                }];
-
-                [self waitForExpectationsWithTimeout:5 handler:nil];
-            });
-        });
-    });
-});
-
-SpecEnd
+@end
