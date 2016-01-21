@@ -98,7 +98,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenized PayPal Account"];
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:YES completion:^(BTPayPalAccountNonce * _Nonnull tokenizedPayPalAccount, NSError * _Nonnull error) {
         XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
         XCTAssertNil(error);
         [expectation fulfill];
@@ -116,7 +116,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     payPalDriver.viewControllerPresentingDelegate = stubDelegate;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:YES completion:^(BTPayPalAccountNonce * _Nonnull tokenizedPayPalAccount, NSError * _Nonnull error) {
         XCTAssertNil(tokenizedPayPalAccount);
         XCTAssertEqualObjects(error.domain, BTPayPalDriverErrorDomain);
         XCTAssertEqual(error.code, BTPayPalDriverErrorTypeIntegrationReturnURLScheme);
@@ -134,7 +134,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     [BTAppSwitch sharedInstance].returnURLScheme = @"not-my-app-bundle-id";
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:YES completion:^(BTPayPalAccountNonce * _Nonnull tokenizedPayPalAccount, NSError * _Nonnull error) {
         XCTAssertNil(tokenizedPayPalAccount);
         XCTAssertEqualObjects(error.domain, BTPayPalDriverErrorDomain);
         XCTAssertEqual(error.code, BTPayPalDriverErrorTypeIntegrationReturnURLScheme);
@@ -151,7 +151,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     payPalDriver.viewControllerPresentingDelegate = stubDelegate;
 
     self.didReceiveCompletionCallback = nil;
-    [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce *tokenizedPayPalAccount, NSError *error) {
+    [payPalDriver authorizeAccountWithAdditionalScopes:[NSSet set] forceFuturePaymentFlow:YES completion:^(BTPayPalAccountNonce * _Nonnull tokenizedPayPalAccount, NSError * _Nonnull error) {
         XCTAssertNil(tokenizedPayPalAccount);
         XCTAssertNil(error);
         self.didReceiveCompletionCallback = @(YES);
@@ -254,53 +254,6 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture]];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-#pragma mark - Analytics
-
-// MARK: Analytics
-
-- (void)testAnalytics_whenInitiatingFuturePayments_postsExpectedEventBeforePerformingAppSwitch {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    // BTPayPalDriver copies APIClient, so we have to mock the API client after the call to initWithAPIClient
-    id partialMockAPIClient = OCMPartialMock(payPalDriver.apiClient);
-    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
-    OCMStub([mockApplication canOpenURL:[OCMArg any]]).andReturn(YES);
-    [self stubDelegatesForPayPalDriver:payPalDriver];
-
-    // FIXME: use new method signature that forces future payments
-    [payPalDriver authorizeAccountWithCompletion:^(__unused BTPayPalAccountNonce *tokenizedPayPalAccount, __unused NSError *error) { }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-
-    NSString *expectedEvent = NSClassFromString(@"SFSafariViewController") ? @"ios.paypal-future-payments.webswitch.initiate.started" : @"ios.paypal-future-payments.appswitch.initiate.started";
-    OCMVerify([partialMockAPIClient sendAnalyticsEvent:expectedEvent]);
-}
-
-- (void)testAnalytics_afterTokenizingPayment_postsExpectedEvent {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
-    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
-    // BTPayPalDriver copies APIClient, so we have to mock the API client after the call to initWithAPIClient
-    id partialMockAPIClient = OCMPartialMock(payPalDriver.apiClient);
-    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
-    [self stubDelegatesForPayPalDriver:payPalDriver];
-
-    // FIXME: use new method signature that forces future payments
-    __block XCTestExpectation *expectation;
-    [payPalDriver authorizeAccountWithCompletion:^(__unused BTPayPalAccountNonce *tokenizedPayPalAccount, __unused NSError *error) {
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-
-    expectation = [self expectationWithDescription:@"Tokenized PayPal Account"];
-    [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture]];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-
-    OCMVerify([partialMockAPIClient sendAnalyticsEvent:@"ios.paypal-future-payments.tokenize.succeeded"]);
 }
 
 #pragma mark - Return URL handling

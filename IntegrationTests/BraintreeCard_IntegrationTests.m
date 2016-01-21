@@ -40,7 +40,7 @@
 }
 
 
-- (void)testTokenizeCard_whenCardHasValidationEnabledAndCardIsInvalid_failsWithError {
+- (void)testTokenizeCard_whenUsingTokenizationKeyAndCardHasValidationEnabled_failsWithAuthorizationError {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
     BTCard *card = [self invalidCard];
@@ -59,8 +59,8 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testTokenizeCard_whenCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+- (void)testTokenizeCard_whenUsingClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
     BTCard *card = [self validCard];
     card.shouldValidate = YES;
