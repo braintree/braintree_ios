@@ -1,4 +1,5 @@
 #import "BTAPIClient_Internal.h"
+#import "BTCard.h"
 #import "BTDropInViewController_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTDropInErrorAlert.h"
@@ -511,6 +512,14 @@
     self.dropInContentView.ctaControl.callToAction = callToActionText;
 }
 
+- (void)setCardNumber:(NSString *)cardNumber {
+    self.dropInContentView.cardForm.number = cardNumber;
+}
+
+- (void)setCardExpirationMonth:(NSInteger)expirationMonth year:(NSInteger)expirationYear {
+    [self.dropInContentView.cardForm setExpirationMonth:expirationMonth year:expirationYear];
+}
+
 #pragma mark Data
 
 - (void)setPaymentMethodNonces:(NSArray *)paymentMethodNonces {
@@ -529,9 +538,11 @@
         if (elapsed < self.theme.minimumVisibilityTime) {
             NSTimeInterval delay = self.theme.minimumVisibilityTime - elapsed;
 
+            __weak typeof(self) weakSelf = self;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.dropInContentView setState:newState animate:YES];
-                [self updateValidity];
+                [self.dropInContentView setState:newState animate:YES completion:^{
+                    [weakSelf updateValidity];
+                }];
             });
             return;
         }

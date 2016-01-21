@@ -186,23 +186,10 @@ class BraintreeDropIn_PayPal_UITests: XCTestCase {
         sleep(2)
         
         let webviewElementsQuery = app.webViews.element.otherElements
-        let emailTextField = webviewElementsQuery.textFields["Email"]
         
-        self.waitForElementToAppear(emailTextField)
-        emailTextField.forceTapElement()
-        sleep(1)
-        emailTextField.typeText("test@paypal.com")
+        self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
         
-        let passwordTextField = webviewElementsQuery.secureTextFields["Password"]
-        passwordTextField.forceTapElement()
-        sleep(1)
-        passwordTextField.typeText("1234")
-        
-        webviewElementsQuery.buttons["Log In"].forceTapElement()
-        
-        self.waitForElementToAppear(webviewElementsQuery.buttons["Agree"])
-        
-        webviewElementsQuery.buttons["Agree"].forceTapElement()
+        webviewElementsQuery.links["Proceed with Sandbox Purchase"].forceTapElement()
         
         self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])
         
