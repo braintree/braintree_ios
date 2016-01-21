@@ -45,6 +45,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Exposed for testing, the safariViewController instance used for the paypal flow on iOS >=9
 @property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
 
+/// Used to test the Future Payments flow by force
+- (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes forceFuturePaymentFlow:(BOOL)forceFuturePaymentFlow completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

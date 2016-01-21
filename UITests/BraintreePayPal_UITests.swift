@@ -13,9 +13,9 @@ class BraintreePayPal_FuturePayment_UITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-TokenizationKey")
-        app.launchArguments.append("-Integration:BraintreeDemoCustomPayPalButtonViewController")
+        app.launchArguments.append("-Integration:BraintreeDemoPayPalForceFuturePaymentViewController")
         app.launch()
-        app.buttons["PayPal (custom button)"].forceTapElement()
+        app.buttons["PayPal (future payment button)"].forceTapElement()
         sleep(2)
     }
     
@@ -63,7 +63,7 @@ class BraintreePayPal_FuturePayment_UITests: XCTestCase {
         // Reevaluate the elements query after the page load to get the close button
         app.webViews.buttons.elementBoundByIndex(0).forceTapElement()
         
-        self.waitForElementToAppear(app.buttons["PayPal (custom button)"])
+        self.waitForElementToAppear(app.buttons["PayPal (future payment button)"])
         
         XCTAssertTrue(app.buttons["Canceled 🔰"].exists);
     }
