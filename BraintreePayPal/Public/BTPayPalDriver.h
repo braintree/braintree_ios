@@ -122,7 +122,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes
                                   completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
-
 /// Check out with PayPal to create a single-use PayPal payment method nonce.
 ///
 /// You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your

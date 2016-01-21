@@ -17,6 +17,7 @@
 			<string>BraintreeDemoDropInViewController</string>
 			<key>Titles</key>
 			<array>
+				<string>PayPal - Future Payment</string>
 				<string>PayPal - Billing Agreement</string>
 				<string>PayPal - Scopes</string>
 				<string>PayPal - One-Time Payment</string>
@@ -35,6 +36,7 @@
 			</array>
 			<key>Values</key>
 			<array>
+				<string>BraintreeDemoPayPalForceFuturePaymentViewController</string>
 				<string>BraintreeDemoPayPalBillingAgreementViewController</string>
 				<string>BraintreeDemoPayPalScopesViewController</string>
 				<string>BraintreeDemoPayPalOneTimePaymentViewController</string>
