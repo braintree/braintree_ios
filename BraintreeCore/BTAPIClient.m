@@ -16,8 +16,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     return [self initWithAuthorization:authorization sendAnalyticsEvent:YES];
 }
 
-/// A private initializer to toggle whether the started analytics event should be sent.
-/// Without this, copyWithSource:integration: will send a duplicate event.
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent {
     if(![authorization isKindOfClass:[NSString class]]) {
         NSString *reason = @"BTClient could not initialize because the provided authorization was invalid";
