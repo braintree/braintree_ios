@@ -1,6 +1,7 @@
 # Braintree v.zero SDK for iOS
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Travis CI build status](https://travis-ci.org/braintree/braintree_ios.svg?branch=master)](https://travis-ci.org/braintree/braintree_ios)
 
 Welcome to Braintree's v.zero SDK for iOS. This library will help you accept card and PayPal payments in your iOS app.
 
