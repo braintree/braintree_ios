@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// This property is exposed to enable the use of other UIView initializers, e.g.
 /// when using Storyboards.
-@property (nonatomic, copy) void(^completion)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error);
+@property (nonatomic, copy) void(^completion)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error);
 
 /// Set of payment options as strings, e.g. `@"PayPal"`, `@"Venmo"`. By default, this is configured
 /// to the set of payment options that have been included in the client-side app integration,
