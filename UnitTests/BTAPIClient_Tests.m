@@ -29,33 +29,33 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 #pragma mark - Initialization
 
 - (void)testInitialization_withValidTokenizationKey_setsTokenizationKey {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     XCTAssertEqualObjects(apiClient.tokenizationKey, @"development_tokenization_key");
 }
 
 - (void)testInitialization_withInvalidTokenizationKey_returnsNil {
-    XCTAssertNil([[BTAPIClient alloc] initWithAuthorization:@"not_a_valid_tokenization_key"]);
+    XCTAssertNil([[BTAPIClient alloc] initWithAuthorization:@"not_a_valid_tokenization_key" sendAnalyticsEvent:NO]);
 }
 
 - (void)testInitialization_withValidClientToken_setsClientToken {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:ValidClientToken];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:ValidClientToken sendAnalyticsEvent:NO];
     XCTAssertEqualObjects(apiClient.clientToken.originalValue, ValidClientToken);
 }
 
 - (void)testInitialization_withInvalidClientToken_returnsNil {
-    XCTAssertNil([[BTAPIClient alloc] initWithAuthorization:@"invalidclienttoken"]);
+    XCTAssertNil([[BTAPIClient alloc] initWithAuthorization:@"invalidclienttoken" sendAnalyticsEvent:NO]);
 }
 
 #pragma mark - Environment Base URL
 
 - (void)testBaseURL_isDeterminedByTokenizationKey {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"http://localhost:3000/merchants/key/client_api");
 
-    apiClient = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_tokenization_key"];
+    apiClient = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_tokenization_key" sendAnalyticsEvent:NO];
     XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://sandbox.braintreegateway.com/merchants/key/client_api");
 
-    apiClient = [[BTAPIClient alloc] initWithAuthorization:@"production_tokenization_key"];
+    apiClient = [[BTAPIClient alloc] initWithAuthorization:@"production_tokenization_key" sendAnalyticsEvent:NO];
     XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://api.braintreegateway.com:443/merchants/key/client_api");
 }
 
@@ -64,7 +64,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (void)testAPIClient_canGetRemoteConfiguration {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
 
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
@@ -86,7 +86,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (void)testConfiguration_whenServerRespondsWithNon200StatusCode_returnsAPIClientError {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
 
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"error_message": @"Something bad happened" } statusCode:503];
@@ -108,7 +108,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (void)testConfiguration_whenNetworkHasError_returnsNetworkErrorInCallback {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
 
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
@@ -128,7 +128,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 }
 
 - (void)testConfiguration_whenCalledSerially_performOnlyOneRequest {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
 
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
@@ -163,7 +163,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 #pragma mark - Dispatch Queue
 
 - (void)testCallbacks_useMainDispatchQueue {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeHTTP *fake = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
     // Override apiClient.http so that requests don't fail
     apiClient.http = fake;
@@ -314,7 +314,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 #pragma mark - Analytics tests
 
 - (void)testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
     apiClient.http = stubConfigurationHTTP;
     BTFakeHTTP *mockAnalyticsHttp = [BTFakeHTTP fakeHTTP];
@@ -332,7 +332,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 }
 
 - (void)testSendAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
     apiClient.http = stubConfigurationHTTP;
     [stubConfigurationHTTP stubRequest:@"GET"
@@ -355,7 +355,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 }
 
 - (void)testSendAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalBrowser integration:BTClientMetadataIntegrationCustom];
     BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
     BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
@@ -388,7 +388,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 }
 
 - (void)testPOST_usesMetadataSourceAndIntegration {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
     BTFakeHTTP *mockHTTP = [BTFakeHTTP fakeHTTP];
     BTFakeHTTP *stubAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
@@ -424,7 +424,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 #pragma mark - Helpers
 
 - (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     fake.cannedResponse = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;
