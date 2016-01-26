@@ -97,7 +97,6 @@
             [[BTLogger sharedLogger] critical:@"ERROR: Drop-in delegate not set"];
         }
 
-        self.dropInContentView.paymentButton.configuration = configuration;
         self.dropInContentView.hidePaymentButton = !self.dropInContentView.paymentButton.hasAvailablePaymentMethod;
 
         if (![self isAddPaymentMethodDropInViewController]) {
@@ -671,8 +670,8 @@
 }
 
 - (void)paymentButtonDidCompleteTokenization:(BTPaymentMethodNonce *)paymentMethodNonce
-              fromViewController:(UIViewController *)viewController
-                           error:(NSError *)error {
+                          fromViewController:(UIViewController *)viewController
+                                       error:(NSError *)error {
     if (error) {
         NSString *savePaymentMethodErrorAlertTitle = error.localizedDescription ?: BTDropInLocalizedString(ERROR_ALERT_CONNECTION_ERROR);
         
