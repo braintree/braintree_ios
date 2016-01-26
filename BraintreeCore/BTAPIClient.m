@@ -1,4 +1,5 @@
 #import "BTAnalyticsMetadata.h"
+#import "BTAnalyticsService.h"
 #import "BTAPIClient_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTClientToken.h"
@@ -26,6 +27,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     if (self = [super init]) {
         _metadata = [[BTClientMetadata alloc] init];
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
+        _analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:self];
 
         NSURL *baseURL = [BTAPIClient baseURLFromTokenizationKey:authorization];
         if (baseURL) {
@@ -206,51 +208,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 }
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind completion:(void(^)(NSError *error))completionBlock {
-    long timestampInSeconds = round([[NSDate date] timeIntervalSince1970]);
-
-    [self fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error){
-        if (error) {
-            [[BTLogger sharedLogger] warning:[NSString stringWithFormat:@"Failed to send analytics event. Remote configuration fetch failed. %@", error.localizedDescription]];
-            if (completionBlock) completionBlock(error);
-            return;
-        }
-
-        NSURL *analyticsURL = [configuration.json[@"analytics"][@"url"] asURL];
-        if (analyticsURL) {
-            if (!self.analyticsHttp) {
-                if (self.clientToken) {
-                    self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
-                } else if (self.tokenizationKey) {
-                    self.analyticsHttp = [[BTHTTP alloc] initWithBaseURL:analyticsURL tokenizationKey:self.tokenizationKey];
-                }
-                NSAssert(self.analyticsHttp != nil, @"Must have clientToken or tokenizationKey");
-                self.analyticsHttp.dispatchQueue = dispatch_get_main_queue();
-            }
-            // A special value passed in by unit tests to prevent BTHTTP from actually posting
-            if ([self.analyticsHttp.baseURL isEqual:[NSURL URLWithString:@"test://do-not-send.url"]]) {
-                if (completionBlock) completionBlock(nil);
-                return;
-            }
-
-            NSMutableDictionary *parameters = [@{ @"analytics": @[@{ @"kind": eventKind,
-                                                                     @"timestamp": @(timestampInSeconds)}],
-                                                  @"_meta": self.metaParameters } mutableCopy];
-            if (self.clientToken.authorizationFingerprint) {
-                parameters[@"authorization_fingerprint"] = self.clientToken.authorizationFingerprint;
-            }
-            if (self.tokenizationKey) {
-                parameters[@"tokenization_key"] = self.tokenizationKey;
-            }
-            [self.analyticsHttp POST:@"/"
-                          parameters:parameters
-                          completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-                              if (completionBlock) completionBlock(error);
-                          }];
-        } else {
-            [[BTLogger sharedLogger] debug:@"Skipping sending analytics event - analytics is disabled in remote configuration"];
-            if (completionBlock) completionBlock(nil);
-        }
-    }];
+    [self.analyticsService sendAnalyticsEvent:eventKind completion:completionBlock];
 }
 
 - (NSDictionary *)metaParameters {

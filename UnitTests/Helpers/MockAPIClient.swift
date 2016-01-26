@@ -1,4 +1,4 @@
-class MockAPIClient : BTAPIClient {
+@objc class MockAPIClient : BTAPIClient {
     var lastPOSTPath = ""
     var lastPOSTParameters = [:] as [NSObject : AnyObject]?
     var lastGETPath = ""

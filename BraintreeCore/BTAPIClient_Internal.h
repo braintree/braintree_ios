@@ -4,6 +4,8 @@
 #import "BTJSON.h"
 #import "BTHTTP.h"
 
+@class BTAnalyticsService;
+
 @interface BTAPIClient ()
 @property (nonatomic, copy) NSString *tokenizationKey;
 @property (nonatomic, strong) BTClientToken *clientToken;
@@ -12,8 +14,8 @@
 /// Client metadata that is used for tracking the client session
 @property (nonatomic, readonly, strong) BTClientMetadata *metadata;
 
-/// Exposed for testing to verify interaction between analytics client and the network
-@property (nonatomic, strong) BTHTTP *analyticsHttp;
+/// Exposed for testing analytics
+@property (nonatomic, strong) BTAnalyticsService *analyticsService;
 
 /// Analytics should only be posted by internal clients.
 - (void)sendAnalyticsEvent:(NSString *)eventName;

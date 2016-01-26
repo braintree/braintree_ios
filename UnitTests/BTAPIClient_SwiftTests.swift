@@ -21,56 +21,6 @@ class BTAPIClient_SwiftTests: XCTestCase {
         XCTAssertEqual(apiClient?.clientToken.originalValue, clientToken)
     }
     
-    // MARK: - Analytics Tests
-    
-    func testAPIClientSendAnalyticsEvent_whenRemoteConfigurationHasEmptyAnalyticsURL_doesNotSendEvent() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let fakeHttp = BTFakeHTTP()!
-        fakeHttp.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: ["analytics": ["url": ""]], statusCode: 200)
-        apiClient.http = fakeHttp
-        
-        let expectation = expectationWithDescription("Callback invoked")
-        apiClient.sendAnalyticsEvent("test.analytics.event") { (error) -> Void in
-            XCTAssertEqual(error.domain, BTHTTPErrorDomain)
-            XCTAssertEqual(error.code, BTHTTPErrorCode.MissingBaseURL.rawValue)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(2, handler: nil)
-    }
-    
-    func testSendAnalyticsEvent_whenSuccessful_sendsCorrectAnalyticsParameters() {
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        let mockAnalyticsHTTP = BTFakeHTTP()!
-        let stubConfigurationHTTP = BTFakeHTTP()!
-        apiClient.analyticsHttp = mockAnalyticsHTTP
-        apiClient.http = stubConfigurationHTTP
-        stubConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: ["analytics": ["url": "test://do-not-send.url"]], statusCode: 200)
-        let metadata = apiClient.metadata
-        let expectation = self.expectationWithDescription("Sends analytics event")
-        
-        // As a sanity check, intentionally generate timestamp a different way
-        let unixTimestampVia2001ReferenceDate = NSDate.timeIntervalSinceReferenceDate() + NSTimeIntervalSince1970
-        
-        apiClient.sendAnalyticsEvent("an.analytics.event") { (error) -> Void in
-            XCTAssertNil(error)
-            XCTAssertEqual(metadata.source, BTClientMetadataSourceType.Unknown) // Default
-            XCTAssertEqual(metadata.integration, BTClientMetadataIntegrationType.Custom) // Default
-            XCTAssertEqual(mockAnalyticsHTTP.lastRequestEndpoint, "/")
-            XCTAssertEqual(mockAnalyticsHTTP.lastRequestParameters!["analytics"]![0]["kind"], "an.analytics.event")
-            
-            let timestamp = (mockAnalyticsHTTP.lastRequestParameters!["analytics"]![0] as! NSDictionary)["timestamp"]!.longValue
-            XCTAssert(abs(Double(timestamp) - unixTimestampVia2001ReferenceDate) < 2) // Typically ~0.4
-            
-            let meta = mockAnalyticsHTTP.lastRequestParameters!["_meta"] as! NSDictionary
-            XCTAssertEqual(meta["integration"] as? String, metadata.integrationString)
-            XCTAssertEqual(meta["source"] as? String, metadata.sourceString)
-            XCTAssertEqual(meta["sessionId"] as? String, metadata.sessionId)
-            expectation.fulfill()
-        }
-        self.waitForExpectationsWithTimeout(2, handler: nil)
-    }
-
     // MARK: - Copy
 
     func testCopyWithSource_whenUsingClientToken_usesSameClientToken() {
