@@ -20,4 +20,12 @@
 /// @return a client metadata ID to send as a header
 + (nonnull NSString *)clientMetadataID;
 
+/// Collects device data for PayPal.
+///
+/// This should be used when the user is paying with PayPal or Venmo only.
+///
+/// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`,
+///         for PayPal transactions. This JSON serialized string contains a PayPal fraud ID.
++ (nonnull NSString *)collectPayPalDeviceData;
+
 @end

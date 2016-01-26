@@ -54,25 +54,6 @@ class BTDataCollector_Tests: XCTestCase {
         XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedFailureReasonErrorKey] as? String, nil)
     }
     
-    func testPayPalClientMetadataId() {
-        let clientMetadataId = BTDataCollector.payPalClientMetadataId()
-        // Ensure clientMetadataId is not nil and has a length of at least 12.
-        // This is just a guess of a reasonable id length. In practice, the id
-        // should have a length of 32.
-        XCTAssert(clientMetadataId!.characters.count >= 12)
-    }
-    
-    func testCollectPayPalClientMetadataId() {
-        let dataCollector = BTDataCollector(environment: .Sandbox)
-        let deviceData = dataCollector.collectPayPalClientMetadataId()
-        let data = deviceData.dataUsingEncoding(NSUTF8StringEncoding)
-        let dictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! Dictionary<String, AnyObject>
-        // Ensure correlation_id (clientMetadataId) is not nil and has a length of at least 12.
-        // This is just a guess of a reasonable id length. In practice, the id
-        // typically has a length of 32.
-        XCTAssert((dictionary["correlation_id"] as! String).characters.count >= 32)
-    }
-    
     /// Ensure that both Kount and PayPal data can be collected together
     func testCollectFraudData() {
         let dataCollector = BTDataCollector(environment: .Sandbox)
