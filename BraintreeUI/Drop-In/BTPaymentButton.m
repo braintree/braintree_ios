@@ -69,15 +69,17 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     self.paymentButtonsCollectionView.hidden = YES;
 
     [self.apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration * _Nullable configuration, __unused NSError * _Nullable error) {
-        [self.activityIndicatorView stopAnimating];
-        self.paymentButtonsCollectionView.hidden = NO;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.activityIndicatorView stopAnimating];
+            self.paymentButtonsCollectionView.hidden = NO;
 
-        if (error) {
-            self.completion(nil, error);
-            return;
-        }
+            if (error) {
+                self.completion(nil, error);
+                return;
+            }
 
-        self.configuration = configuration;
+            self.configuration = configuration;
+        });
     }];
 }
 
