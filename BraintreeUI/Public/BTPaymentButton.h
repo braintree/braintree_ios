@@ -11,24 +11,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Initialize a BTPaymentButton.
 ///
-/// @param apiClient A BTAPIClient used for communicating with Braintree servers. Required.
+/// @param apiClient A `BTAPIClient` used for communicating with Braintree servers. Required.
 /// @param completion A completion block. Required.
 ///
 /// @return A new BTPaymentButton.
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient completion:(void(^)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error))completion;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient
+                       completion:(void(^)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error))completion;
 
-/// The BTAPIClient used for communicating with Braintree servers.
+/// The `BTAPIClient` used for communicating with Braintree servers.
 ///
 /// This property is exposed to enable the use of other UIView initializers, e.g.
 /// when using Storyboards.
-@property (nonatomic, strong) BTAPIClient *apiClient;
+@property (nonatomic, strong, nullable) BTAPIClient *apiClient;
 
-/// The BTPaymentRequest that customizes the payment experience.
-@property (nonatomic, strong) BTPaymentRequest *paymentRequest;
+/// The `BTPaymentRequest` that customizes the payment experience.
+@property (nonatomic, strong, nullable) BTPaymentRequest *paymentRequest;
 
 /// The completion block to handle the result of a payment authorization flow.
 ///
-/// This property is exposed to enable the use of other UIView initializers, e.g.
+/// This property is exposed to enable the use of other `UIView` initializers, e.g.
 /// when using Storyboards.
 @property (nonatomic, copy) void(^completion)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error);
 
@@ -39,12 +40,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Setting this property will force the button to reload.
 @property (nonatomic, strong) NSOrderedSet *enabledPaymentOptions;
 
-/// Configuration from a BTAPIClient. By default, BTPaymentButton will display all payment options
-/// included in the client-side app integration. Provide configuration in order to hide payment
-/// options that are not enabled in the server-side Braintree Control Panel.
+/// The configuration from a `BTAPIClient`. This is automatically fetched when the payment button
+/// is initialized with a `BTAPIClient`, but it can be `nil` if the `BTAPIClient` has not yet been
+/// set or if the configuration fetch fails.
 ///
-/// Setting this property will force the button to reload.
-@property (nonatomic, strong) BTConfiguration *configuration;
+/// Setting this property will force the button to reload using the new configuration.
+@property (nonatomic, strong, nullable) BTConfiguration *configuration;
 
 /// Optional delegate for receiving payment lifecycle messages from a payment option
 /// that may initiate an app or browser switch to authorize payments.
