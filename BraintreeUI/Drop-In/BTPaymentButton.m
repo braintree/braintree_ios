@@ -16,7 +16,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 @interface BTPaymentButton () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UICollectionView *paymentButtonsCollectionView;
-
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, strong) UIView *topBorder;
 @property (nonatomic, strong) UIView *bottomBorder;
 
@@ -28,9 +28,10 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
                        completion:(void(^)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error))completion
 {
     if (self = [super init]) {
-        [self setupViews];
         _apiClient = apiClient;
         _completion = [completion copy];
+        [self setupViews];
+        [self fetchConfiguration];
     }
     return self;
 }
@@ -45,6 +46,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     self = [super initWithFrame:frame];
     if (self) {
         [self setupViews];
+        [self fetchConfiguration];
     }
     return self;
 }
@@ -53,12 +55,32 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setupViews];
+        [self fetchConfiguration];
     }
     return self;
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)fetchConfiguration {
+    [self.activityIndicatorView startAnimating];
+    self.paymentButtonsCollectionView.hidden = YES;
+
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration * _Nullable configuration, __unused NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.activityIndicatorView stopAnimating];
+            self.paymentButtonsCollectionView.hidden = NO;
+
+            if (error) {
+                self.completion(nil, error);
+                return;
+            }
+
+            self.configuration = configuration;
+        });
+    }];
 }
 
 - (void)setupViews {
@@ -92,6 +114,10 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [self addSubview:self.paymentButtonsCollectionView];
     [self addSubview:self.topBorder];
     [self addSubview:self.bottomBorder];
+
+    _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_activityIndicatorView];
 }
 
 - (CGSize)intrinsicContentSize {
@@ -138,6 +164,21 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
                                                                  metrics:metrics
                                                                    views:views]];
 
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicatorView
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1
+                                                      constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.activityIndicatorView
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1
+                                                      constant:0]];
+
     [super updateConstraints];
 }
 
@@ -148,6 +189,11 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         _application = [UIApplication sharedApplication];
     }
     return _application;
+}
+
+- (void)setApiClient:(BTAPIClient *)apiClient {
+    _apiClient = apiClient;
+    [self fetchConfiguration];
 }
 
 #pragma mark PaymentButton State
