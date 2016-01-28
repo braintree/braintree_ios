@@ -7,6 +7,7 @@
 #import "BTLogger_Internal.h"
 #import "BTUIVenmoButton.h"
 #import "BTUIPayPalButton.h"
+#import "BTUIPayPalCompactButton.h"
 #import "BTUICoinbaseButton.h"
 #import "BTUIHorizontalButtonStackCollectionViewFlowLayout.h"
 #import "BTUIPaymentButtonCollectionViewCell.h"
@@ -265,7 +266,11 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
     UIControl *paymentButton;
     if ([paymentOption isEqualToString:@"PayPal"]) {
-        paymentButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
+        if (self.filteredEnabledPaymentOptions.count == 1) {
+            paymentButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
+        } else {
+            paymentButton = [[BTUIPayPalCompactButton alloc] initWithFrame:cell.bounds];
+        }
     } else if ([paymentOption isEqualToString:@"Venmo"]) {
         paymentButton = [[BTUIVenmoButton alloc] initWithFrame:cell.bounds];
     } else if ([paymentOption isEqualToString:@"Coinbase"]) {

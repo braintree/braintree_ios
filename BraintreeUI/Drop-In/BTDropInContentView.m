@@ -4,6 +4,9 @@
 
 @interface BTDropInContentView () <UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSArray *verticalLayoutConstraints;
+/// An array of `NSLayoutConstraint` horizontal constraints on the payment button.
+/// These constraints may need to be updated when
+@property (nonatomic, strong) NSArray *paymentButtonConstraints;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 @property (nonatomic, strong) NSLayoutConstraint *heightConstraint;
 @end
@@ -37,8 +40,6 @@
                                                                                  metrics:@{@"borderWidth": @(self.theme.borderWidth)}
                                                                                    views:@{@"border": summaryBorderBottom}]];
 
-        self.paymentButton = [[BTPaymentButton alloc] init];
-
         self.cardFormSectionHeader = [[UILabel alloc] init];
 
         self.cardForm = [[BTUICardFormView alloc] init];
@@ -55,25 +56,19 @@
         // Add Constraints & Subviews
 
         // Full-Width Views
-        for (UIView *view in @[self.paymentButton, self.selectedPaymentMethodView, self.summaryView, self.ctaControl, self.cardForm]) {
-            [self addSubview:view];
-            view.translatesAutoresizingMaskIntoConstraints = NO;
-            [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view]|"
-                                                                         options:0
-                                                                         metrics:nil
-                                                                           views:@{@"view": view}]];
+        for (UIView *view in @[self.summaryView, self.ctaControl, self.cardForm]) {
+            [self addSubview:view withHorizontalMargins:NO];
         }
 
         // Not quite full-width views
         for (UIView *view in @[self.cardFormSectionHeader, self.changeSelectedPaymentMethodButton]) {
-            [self addSubview:view];
-            view.translatesAutoresizingMaskIntoConstraints = NO;
-            [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[view]-(horizontalMargin)-|"
-                                                                         options:0
-                                                                         metrics:@{@"horizontalMargin": @(self.theme.horizontalMargin)}
-                                                                           views:@{@"view": view}]];
+            [self addSubview:view withHorizontalMargins:YES];
         }
 
+        self.paymentButton = [[BTPaymentButton alloc] init];
+        // The payment button horizontal constraints may be updated to add a margin to the button *after*
+        // fetching the configuration, so keep a reference to them to update them in updateConstraints
+        self.paymentButtonConstraints = [self addSubview:self.paymentButton withHorizontalMargins:NO];
 
         self.state = BTDropInContentViewStateForm;
 
@@ -86,11 +81,36 @@
     return self;
 }
 
+/// Adds a subview, and returns an array of constraints applied to the subview
+- (NSArray *)addSubview:(UIView *)view withHorizontalMargins:(BOOL)useHorizontalMargins {
+    [self addSubview:view];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *metrics = useHorizontalMargins ? @{@"horizontalMargin": @(self.theme.horizontalMargin)} : @{@"horizontalMargin": @(0)};
+    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(horizontalMargin)-[view]-(horizontalMargin)-|"
+                                                                   options:0
+                                                                   metrics:metrics
+                                                                     views:@{@"view": view}];
+    [self addConstraints:constraints];
+    return constraints;
+}
+
 - (void)updateConstraints {
 
     if (self.verticalLayoutConstraints != nil) {
         [self removeConstraints:self.verticalLayoutConstraints];
     }
+
+    CGFloat paymentButtonMargin;
+    if ([self.paymentButton.enabledPaymentOptions isEqualToOrderedSet:[NSOrderedSet orderedSetWithArray:@[@"PayPal"]]]) {
+        paymentButtonMargin = self.theme.horizontalMargin;
+    } else {
+        paymentButtonMargin = 0;
+    }
+    for (NSLayoutConstraint *constraint in self.paymentButtonConstraints) {
+        constraint.constant = paymentButtonMargin;
+    }
+    [self.paymentButton setNeedsLayout];
+    [self.paymentButton layoutIfNeeded];
 
     NSDictionary *viewBindings = @{
                                    @"activityView": self.activityView,

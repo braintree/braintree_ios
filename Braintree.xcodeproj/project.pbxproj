@@ -225,7 +225,7 @@
 		417405301BB086B3008A5DEA /* BTUIMaestroVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A773457A1B7A93D00083EC8D /* BTUIMaestroVectorArtView.m */; };
 		417405321BB086B3008A5DEA /* BTUIMasterCardVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A773457C1B7A93D00083EC8D /* BTUIMasterCardVectorArtView.m */; };
 		417405341BB086B3008A5DEA /* BTUIPayPalMonogramCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = A773457E1B7A93D00083EC8D /* BTUIPayPalMonogramCardView.m */; };
-		417405361BB086B3008A5DEA /* BTUIPayPalWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345801B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.m */; };
+		417405361BB086B3008A5DEA /* BTUIPayPalWordmarkCompactVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345801B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.m */; };
 		417405381BB086B3008A5DEA /* BTUIUnknownCardVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345821B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.m */; };
 		4174053A1BB086B3008A5DEA /* BTUIVenmoWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345841B7A93D00083EC8D /* BTUIVenmoWordmarkVectorArtView.m */; };
 		4174053C1BB086B3008A5DEA /* BTUIVisaVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345861B7A93D00083EC8D /* BTUIVisaVectorArtView.m */; };
@@ -334,6 +334,10 @@
 		A5D3A5861C209776003A25A1 /* PPFPTIDataTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */; };
 		A5D3A5871C209776003A25A1 /* PPFPTITrackerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */; };
 		A5D3A5A41C20BEE1003A25A1 /* PayPalOneTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A50C3B6F1C1A29C500612D90 /* PayPalOneTouch.framework */; };
+		A70241B91C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A70241B71C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h */; };
+		A70241BA1C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */; };
+		A70241BD1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A70241BB1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h */; };
+		A70241BE1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A70241BC1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.m */; };
 		A71559421B729297007DE6F0 /* BTIntegrationTestsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A71559411B729297007DE6F0 /* BTIntegrationTestsHelper.m */; };
 		A71559481B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A71559471B72B085007DE6F0 /* BraintreeApplePay_IntegrationTests.m */; };
 		A71754301BDEF1EC00002676 /* BTURLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = A717542F1BDEF1EC00002676 /* BTURLUtils.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -495,8 +499,8 @@
 		A77345DF1B7A93D00083EC8D /* BTUIMasterCardVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A773457C1B7A93D00083EC8D /* BTUIMasterCardVectorArtView.m */; };
 		A77345E01B7A93D00083EC8D /* BTUIPayPalMonogramCardView.h in Headers */ = {isa = PBXBuildFile; fileRef = A773457D1B7A93D00083EC8D /* BTUIPayPalMonogramCardView.h */; };
 		A77345E11B7A93D00083EC8D /* BTUIPayPalMonogramCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = A773457E1B7A93D00083EC8D /* BTUIPayPalMonogramCardView.m */; };
-		A77345E21B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A773457F1B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.h */; };
-		A77345E31B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345801B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.m */; };
+		A77345E21B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A773457F1B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.h */; };
+		A77345E31B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345801B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.m */; };
 		A77345E41B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345811B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.h */; };
 		A77345E51B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345821B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.m */; };
 		A77345E61B7A93D00083EC8D /* BTUIVenmoWordmarkVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345831B7A93D00083EC8D /* BTUIVenmoWordmarkVectorArtView.h */; };
@@ -1302,6 +1306,10 @@
 		A50C3BC41C1B3F1500612D90 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPFPTIDataTest.m; sourceTree = "<group>"; };
 		A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPFPTITrackerTest.m; sourceTree = "<group>"; };
+		A70241B71C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalWordmarkVectorArtView.h; sourceTree = "<group>"; };
+		A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalWordmarkVectorArtView.m; sourceTree = "<group>"; };
+		A70241BB1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTUIPayPalCompactButton.h; path = "../Views/Payments Components/BTUIPayPalCompactButton.h"; sourceTree = "<group>"; };
+		A70241BC1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalCompactButton.m; sourceTree = "<group>"; };
 		A7102E191B5085BB0007D40A /* BTPayPalAccountNonce_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPayPalAccountNonce_Internal.h; sourceTree = "<group>"; };
 		A71559401B729297007DE6F0 /* BTIntegrationTestsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTIntegrationTestsHelper.h; sourceTree = "<group>"; };
 		A71559411B729297007DE6F0 /* BTIntegrationTestsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTIntegrationTestsHelper.m; sourceTree = "<group>"; };
@@ -1518,8 +1526,8 @@
 		A773457C1B7A93D00083EC8D /* BTUIMasterCardVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIMasterCardVectorArtView.m; sourceTree = "<group>"; };
 		A773457D1B7A93D00083EC8D /* BTUIPayPalMonogramCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalMonogramCardView.h; sourceTree = "<group>"; };
 		A773457E1B7A93D00083EC8D /* BTUIPayPalMonogramCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalMonogramCardView.m; sourceTree = "<group>"; };
-		A773457F1B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalWordmarkVectorArtView.h; sourceTree = "<group>"; };
-		A77345801B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalWordmarkVectorArtView.m; sourceTree = "<group>"; };
+		A773457F1B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalWordmarkCompactVectorArtView.h; sourceTree = "<group>"; };
+		A77345801B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalWordmarkCompactVectorArtView.m; sourceTree = "<group>"; };
 		A77345811B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIUnknownCardVectorArtView.h; sourceTree = "<group>"; };
 		A77345821B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIUnknownCardVectorArtView.m; sourceTree = "<group>"; };
 		A77345831B7A93D00083EC8D /* BTUIVenmoWordmarkVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIVenmoWordmarkVectorArtView.h; sourceTree = "<group>"; };
@@ -2152,6 +2160,7 @@
 				A773455C1B7A93D00083EC8D /* BTUICTAControl.h */,
 				A773455E1B7A93D00083EC8D /* BTUIPaymentMethodView.h */,
 				41913D9D1BB9D503004EF1BB /* BTUIPaymentOptionType.h */,
+				A70241BB1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h */,
 				A77345601B7A93D00083EC8D /* BTUIPayPalButton.h */,
 				A77345621B7A93D00083EC8D /* BTUISummaryView.h */,
 				41913D9E1BB9D503004EF1BB /* BTUIThemedView.h */,
@@ -2892,6 +2901,7 @@
 				A773455F1B7A93D00083EC8D /* BTUIPaymentMethodView.m */,
 				A77345631B7A93D00083EC8D /* BTUISummaryView.m */,
 				A77345651B7A93D00083EC8D /* BTUIVenmoButton.m */,
+				A70241BC1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.m */,
 			);
 			path = "Payments Components";
 			sourceTree = "<group>";
@@ -2921,10 +2931,12 @@
 				A773457A1B7A93D00083EC8D /* BTUIMaestroVectorArtView.m */,
 				A773457B1B7A93D00083EC8D /* BTUIMasterCardVectorArtView.h */,
 				A773457C1B7A93D00083EC8D /* BTUIMasterCardVectorArtView.m */,
+				A70241B71C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h */,
+				A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */,
 				A773457D1B7A93D00083EC8D /* BTUIPayPalMonogramCardView.h */,
 				A773457E1B7A93D00083EC8D /* BTUIPayPalMonogramCardView.m */,
-				A773457F1B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.h */,
-				A77345801B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.m */,
+				A773457F1B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.h */,
+				A77345801B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.m */,
 				A77345811B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.h */,
 				A77345821B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.m */,
 				035945551BE96345002116BB /* BTUIVenmoMonogramCardView.h */,
@@ -3287,6 +3299,7 @@
 				A77345B41B7A93D00083EC8D /* BTUICardExpiryField.h in Headers */,
 				A77345CE1B7A93D00083EC8D /* BTUICoinbaseMonogramCardView.h in Headers */,
 				A77345DC1B7A93D00083EC8D /* BTUIMaestroVectorArtView.h in Headers */,
+				A70241B91C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h in Headers */,
 				A773459B1B7A93D00083EC8D /* BTMockApplePayPaymentAuthorizationViewController.h in Headers */,
 				A77346121B7A9E340083EC8D /* BTDropInContentView.h in Headers */,
 				A77345B21B7A93D00083EC8D /* BTUICardCvvField.h in Headers */,
@@ -3316,6 +3329,7 @@
 				A77345E01B7A93D00083EC8D /* BTUIPayPalMonogramCardView.h in Headers */,
 				A7F17A001BE98E1E00E91646 /* BTPaymentRequest.h in Headers */,
 				A77345CA1B7A93D00083EC8D /* BTUIAmExVectorArtView.h in Headers */,
+				A70241BD1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h in Headers */,
 				A773458C1B7A93D00083EC8D /* BTUICardExpirationValidator.h in Headers */,
 				A77345901B7A93D00083EC8D /* BTUICardType.h in Headers */,
 				A77345C01B7A93D00083EC8D /* BTUICTAControl.h in Headers */,
@@ -3327,7 +3341,7 @@
 				A77344FA1B7A93A10083EC8D /* BraintreeUI.h in Headers */,
 				035945571BE96345002116BB /* BTUIVenmoMonogramCardView.h in Headers */,
 				A77345B61B7A93D00083EC8D /* BTUICardNumberField.h in Headers */,
-				A77345E21B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.h in Headers */,
+				A77345E21B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.h in Headers */,
 				A77345B81B7A93D00083EC8D /* BTUICardPostalCodeField.h in Headers */,
 				A77345DA1B7A93D00083EC8D /* BTUIJCBVectorArtView.h in Headers */,
 				A77345D01B7A93D00083EC8D /* BTUICoinbaseWordmarkVectorArtView.h in Headers */,
@@ -4555,7 +4569,7 @@
 				417405301BB086B3008A5DEA /* BTUIMaestroVectorArtView.m in Sources */,
 				417405321BB086B3008A5DEA /* BTUIMasterCardVectorArtView.m in Sources */,
 				417405341BB086B3008A5DEA /* BTUIPayPalMonogramCardView.m in Sources */,
-				417405361BB086B3008A5DEA /* BTUIPayPalWordmarkVectorArtView.m in Sources */,
+				417405361BB086B3008A5DEA /* BTUIPayPalWordmarkCompactVectorArtView.m in Sources */,
 				417405381BB086B3008A5DEA /* BTUIUnknownCardVectorArtView.m in Sources */,
 				4174053A1BB086B3008A5DEA /* BTUIVenmoWordmarkVectorArtView.m in Sources */,
 				4174053C1BB086B3008A5DEA /* BTUIVisaVectorArtView.m in Sources */,
@@ -4903,6 +4917,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A70241BA1C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m in Sources */,
 				A77345DB1B7A93D00083EC8D /* BTUIJCBVectorArtView.m in Sources */,
 				A773461F1B7A9E340083EC8D /* BTPaymentButton.m in Sources */,
 				A77345C91B7A93D00083EC8D /* BTUIVenmoButton.m in Sources */,
@@ -4912,6 +4927,7 @@
 				A77345D31B7A93D00083EC8D /* BTUICVVBackVectorArtView.m in Sources */,
 				A77345931B7A93D00083EC8D /* BTUIUtil.m in Sources */,
 				A77345D91B7A93D00083EC8D /* BTUIDiscoverVectorArtView.m in Sources */,
+				A70241BE1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.m in Sources */,
 				A77345C31B7A93D00083EC8D /* BTUIPaymentMethodView.m in Sources */,
 				A77345B91B7A93D00083EC8D /* BTUICardPostalCodeField.m in Sources */,
 				A77345E51B7A93D00083EC8D /* BTUIUnknownCardVectorArtView.m in Sources */,
@@ -4953,7 +4969,7 @@
 				A77345BD1B7A93D00083EC8D /* BTUICardHint.m in Sources */,
 				A77345DF1B7A93D00083EC8D /* BTUIMasterCardVectorArtView.m in Sources */,
 				A77345A61B7A93D00083EC8D /* BTUIFloatLabel.m in Sources */,
-				A77345E31B7A93D00083EC8D /* BTUIPayPalWordmarkVectorArtView.m in Sources */,
+				A77345E31B7A93D00083EC8D /* BTUIPayPalWordmarkCompactVectorArtView.m in Sources */,
 				A77345DD1B7A93D00083EC8D /* BTUIMaestroVectorArtView.m in Sources */,
 				A77345E71B7A93D00083EC8D /* BTUIVenmoWordmarkVectorArtView.m in Sources */,
 				A773459A1B7A93D00083EC8D /* BTMockApplePayPaymentAuthorizationView.m in Sources */,
