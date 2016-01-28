@@ -267,7 +267,12 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     UIControl *paymentButton;
     if ([paymentOption isEqualToString:@"PayPal"]) {
         if (self.filteredEnabledPaymentOptions.count == 1) {
-            paymentButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
+            BTUIPayPalButton *payPalButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
+            payPalButton.layer.cornerRadius = 5.0;
+            self.topBorder.hidden = YES;
+            self.bottomBorder.hidden = YES;
+            collectionView.backgroundColor = [UIColor clearColor];
+            paymentButton = payPalButton;
         } else {
             paymentButton = [[BTUIPayPalCompactButton alloc] initWithFrame:cell.bounds];
         }
@@ -282,20 +287,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     
     cell.accessibilityLabel = paymentOption;
     paymentButton.translatesAutoresizingMaskIntoConstraints = NO;
-
     cell.paymentButton = paymentButton;
 
-    [cell.contentView addSubview:paymentButton];
-
-    NSDictionary *views = @{ @"paymentButton": paymentButton };
-    [cell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[paymentButton]|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:views]];
-    [cell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[paymentButton]|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:views]];
     return cell;
 }
 
