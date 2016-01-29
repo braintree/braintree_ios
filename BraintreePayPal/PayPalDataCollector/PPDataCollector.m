@@ -58,7 +58,6 @@
     NSData *data = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&error];
     if (!data) {
         NSLog(@"ERROR: Failed to create deviceData string, error = %@", error);
-        return @"";
     }
     
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
