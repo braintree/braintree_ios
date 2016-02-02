@@ -276,7 +276,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     if ([paymentOption isEqualToString:@"PayPal"]) {
         if (self.enabledPaymentOptions.count == 1) {
             BTUIPayPalButton *payPalButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
-            payPalButton.layer.cornerRadius = 5.0;
+            payPalButton.layer.cornerRadius = self.theme.cornerRadius;
             self.topBorder.hidden = YES;
             self.bottomBorder.hidden = YES;
             collectionView.backgroundColor = [UIColor clearColor];
