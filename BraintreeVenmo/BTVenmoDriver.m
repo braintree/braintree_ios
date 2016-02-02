@@ -222,7 +222,7 @@ static BTVenmoDriver *appSwitchedDriver;
         if (error) {
             *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                          code:BTVenmoDriverErrorTypeDisabled
-                                     userInfo:@{ NSLocalizedDescriptionKey:@"The Venmo beta override has been enabled. See [BTConfiguration setVenmoBetaEnabled:] for more information." }];
+                                     userInfo:@{ NSLocalizedDescriptionKey:@"The Venmo beta override has not been enabled. See [BTConfiguration setVenmoBetaEnabled:] for more information." }];
         }
         return NO;
     }
