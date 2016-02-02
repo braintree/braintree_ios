@@ -5,6 +5,7 @@
 NSString *BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind = @"BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind";
 
 @interface BTUIHorizontalButtonStackCollectionViewFlowLayout ()
+@property (nonatomic, strong) NSMutableArray *cachedLayoutAttributes;
 @end
 
 @implementation BTUIHorizontalButtonStackCollectionViewFlowLayout
@@ -18,36 +19,47 @@ NSString *BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorV
 }
 
 - (void)prepareLayout {
-    [super prepareLayout];
-
     NSAssert(self.collectionView.numberOfSections == 1, @"Must have 1 section");
-    NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
-    CGFloat totalWidth = self.collectionView.frame.size.width;
 
-    if (numberOfItems == 0) {
-        return;
-    }
-
-    self.itemSize = CGSizeMake(totalWidth/numberOfItems, self.collectionView.frame.size.height);
+    [self calculateAndCacheLayoutAttributes];
 }
 
-- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect {
-    NSMutableArray *layoutAttributes = [[super layoutAttributesForElementsInRect:rect] mutableCopy];
+- (CGSize)collectionViewContentSize {
+    /// The collection view should never scroll
+    return self.collectionView.frame.size;
+}
 
-    NSInteger numberOfItems = [self.collectionView numberOfItemsInSection:0];
-    if (numberOfItems == 0) {
-        return layoutAttributes;
+- (NSArray *)layoutAttributesForElementsInRect:(__unused CGRect)rect {
+    return [self.cachedLayoutAttributes copy];
+}
+
+#pragma mark - Helpers
+
+- (void)calculateAndCacheLayoutAttributes {
+    self.cachedLayoutAttributes = [NSMutableArray array];
+
+    NSInteger numberOfButtons = [self.collectionView numberOfItemsInSection:0];
+    CGFloat totalWidth = CGRectGetWidth(self.collectionView.frame);
+    CGFloat totalHeight = CGRectGetHeight(self.collectionView.frame);
+    CGSize buttonSize = CGSizeMake(totalWidth / numberOfButtons, totalHeight);
+
+    for (NSInteger i = 0; i < numberOfButtons; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:0];
+        UICollectionViewLayoutAttributes *cellLayoutAttributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+        CGRect cellFrame = CGRectMake(buttonSize.width * i, 0, buttonSize.width, buttonSize.height);
+        cellLayoutAttributes.frame = cellFrame;
+        [self.cachedLayoutAttributes addObject:cellLayoutAttributes];
     }
 
-    NSArray *layoutAttributesWithoutLastElement = [layoutAttributes subarrayWithRange:NSMakeRange(0, [layoutAttributes count] > 0 ? [layoutAttributes count] - 1 : 0)];
-    for (UICollectionViewLayoutAttributes *attributes in layoutAttributesWithoutLastElement) {
-        UICollectionViewLayoutAttributes *separatorAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind
-                                                                                                                            withIndexPath:attributes.indexPath];
-        separatorAttributes.frame = CGRectMake(attributes.frame.origin.x + attributes.frame.size.width, attributes.frame.origin.y, 1/2.0f, attributes.frame.size.height);
-        [layoutAttributes addObject:separatorAttributes];
+    if (numberOfButtons > 1) {
+        NSArray *layoutAttributesWithoutLastElement = [self.cachedLayoutAttributes subarrayWithRange:NSMakeRange(0, [self.cachedLayoutAttributes count] > 0 ? [self.cachedLayoutAttributes count] - 1 : 0)];
+        for (UICollectionViewLayoutAttributes *attributes in layoutAttributesWithoutLastElement) {
+            UICollectionViewLayoutAttributes *separatorAttributes = [UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:BTHorizontalButtonStackCollectionViewFlowLayoutLineSeparatorDecoratorViewKind
+                                                                                                                                withIndexPath:attributes.indexPath];
+            separatorAttributes.frame = CGRectMake(attributes.frame.origin.x + attributes.frame.size.width, attributes.frame.origin.y, 1/2.0f, attributes.frame.size.height);
+            [self.cachedLayoutAttributes addObject:separatorAttributes];
+        }
     }
-
-    return layoutAttributes;
 }
 
 @end
