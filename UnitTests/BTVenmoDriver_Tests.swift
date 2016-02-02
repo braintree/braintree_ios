@@ -459,8 +459,8 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         self.waitForExpectationsWithTimeout(5, handler: nil)
 
-        let filteredEnabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.filteredEnabledPaymentOptions()
-        XCTAssertFalse(filteredEnabledPaymentOptions.containsObject("Venmo"))
+        let enabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.enabledPaymentOptions
+        XCTAssertFalse(enabledPaymentOptions.containsObject("Venmo"))
     }
 
     // Flaky
@@ -485,8 +485,8 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         self.waitForExpectationsWithTimeout(5, handler: nil)
 
-        let filteredEnabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.filteredEnabledPaymentOptions()
-        XCTAssertTrue(filteredEnabledPaymentOptions.containsObject("Venmo"))
+        let enabledPaymentOptions = dropInViewController.dropInContentView.paymentButton.enabledPaymentOptions
+        XCTAssertTrue(enabledPaymentOptions.containsObject("Venmo"))
     }
 }
 
