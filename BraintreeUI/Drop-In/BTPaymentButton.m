@@ -20,6 +20,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, strong) UIView *topBorder;
 @property (nonatomic, strong) UIView *bottomBorder;
+@property (nonatomic, assign) BOOL skipConfigurationValidation;
 
 @end
 
@@ -203,6 +204,10 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         _enabledPaymentOptions = [NSOrderedSet orderedSetWithArray:@[ @"PayPal", @"Venmo" ]];
     }
 
+    if (self.skipConfigurationValidation) {
+        return _enabledPaymentOptions;
+    }
+
     /// Filter the availability of payment options by checking the merchant configuration
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *paymentOption, __unused NSDictionary<NSString *,id> * _Nullable bindings) {
         return [self isPaymentOptionAvailable:paymentOption];
@@ -212,6 +217,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 - (void)setEnabledPaymentOptions:(NSOrderedSet *)enabledPaymentOptions {
     _enabledPaymentOptions = enabledPaymentOptions;
+    self.skipConfigurationValidation = YES;
 
     [self invalidateIntrinsicContentSize];
     [self.paymentButtonsCollectionView reloadData];
