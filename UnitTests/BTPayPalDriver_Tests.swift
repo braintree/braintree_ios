@@ -1262,7 +1262,25 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         }
         XCTAssertTrue(lastPostParameters["currency_iso_code"] == nil)
     }
-    
+
+    func testBillingAgreement_whenRequestHasBillingAgreementDescription_sendsDescriptionInParameters() {
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
+        let request = BTPayPalRequest()
+        request.billingAgreementDescription = "My Billing Agreement description"
+
+        payPalDriver.requestBillingAgreement(request) { _ -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["description"] as? String, "My Billing Agreement description")
+    }
+
     func testBillingAgreement_whenSetupBillingAgreementCreationSuccessful_performsPayPalRequestAppSwitch() {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
         let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)

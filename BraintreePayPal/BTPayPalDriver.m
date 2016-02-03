@@ -193,6 +193,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             if (request.amount != nil) {
                 parameters[@"amount"] = request.amount;
             }
+        } else {
+            if (request.billingAgreementDescription.length > 0) {
+                parameters[@"description"] = request.billingAgreementDescription;
+            }
         }
         
         experienceProfile[@"no_shipping"] = @(!request.isShippingAddressRequired);

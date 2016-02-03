@@ -38,6 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
 @property (nonatomic, nullable, strong) BTPostalAddress *shippingAddressOverride;
 
+/// Optional: Display a custom description to the user for a billing agreement.
+@property (nonatomic, nullable, copy) NSString *billingAgreementDescription;
+
 @end
 
 NS_ASSUME_NONNULL_END
