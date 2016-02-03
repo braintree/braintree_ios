@@ -38,15 +38,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 #pragma mark - Public methods
 
 + (NSString *)payPalClientMetadataId {
-    Class paypalClass = NSClassFromString(@"PPDataCollector");
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    if (paypalClass && [paypalClass respondsToSelector:@selector(clientMetadataID)]) {
-        return [paypalClass performSelector:@selector(clientMetadataID)];
-    }
-#pragma clang diagnostic pop
-
-    return nil;
+    return [BTDataCollector generatePayPalClientMetadataId];
 }
 
 /// At this time, this method only collects data with Kount. However, it is possible that in the future,
@@ -78,7 +70,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
         [self.kount collect:deviceSessionId];
     }
     if (includePayPal) {
-        NSString *payPalClientMetadataId = [BTDataCollector payPalClientMetadataId];
+        NSString *payPalClientMetadataId = [BTDataCollector generatePayPalClientMetadataId];
         if (payPalClientMetadataId) {
             dataDictionary[@"correlation_id"] = payPalClientMetadataId;
         }
@@ -110,6 +102,18 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 }
 
 #pragma mark - Private methods
+
++ (NSString *)generatePayPalClientMetadataId {
+    Class paypalClass = NSClassFromString(@"PPDataCollector");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    if (paypalClass && [paypalClass respondsToSelector:@selector(clientMetadataID)]) {
+        return [paypalClass performSelector:@selector(clientMetadataID)];
+    }
+#pragma clang diagnostic pop
+    
+    return nil;
+}
 
 /// Generates a new session ID
 - (NSString *)sessionId {

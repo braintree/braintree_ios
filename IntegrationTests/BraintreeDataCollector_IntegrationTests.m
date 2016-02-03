@@ -54,8 +54,6 @@
     [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
-#pragma clang diagnostic pop
-
 - (void)testCollectPayPalClientMetadataId_returnsClientMetadataId {
     id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
     self.data.delegate = delegate;
@@ -69,5 +67,6 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+#pragma clang diagnostic pop
 
 @end

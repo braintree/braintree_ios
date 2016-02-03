@@ -30,7 +30,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /// Generates a new PayPal fraud ID if PayPal is integrated; otherwise returns `nil`.
 ///
 /// @return A PayPal fraud ID
-+ (nullable NSString *)payPalClientMetadataId;
++ (nullable NSString *)payPalClientMetadataId DEPRECATED_MSG_ATTRIBUTE("Integrate PayPalDataCollector and use [PPDataCollector collectPayPalDeviceData] instead.");
 
 /// Collects device data for Kount.
 ///
@@ -49,11 +49,11 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 
 /// Collects device data for PayPal.
 ///
-/// This should be used when the user is paying with PayPal only.
+/// This should be used when the user is paying with PayPal or Venmo only.
 ///
 /// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`,
 ///         for PayPal transactions. This JSON serialized string contains a PayPal fraud ID.
-- (NSString *)collectPayPalClientMetadataId;
+- (NSString *)collectPayPalClientMetadataId DEPRECATED_MSG_ATTRIBUTE("Integrate PayPalDataCollector and use [PPDataCollector collectPayPalDeviceData] instead.");
 
 /// Collects device data using Kount and PayPal.
 ///

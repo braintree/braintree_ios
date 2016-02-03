@@ -71,8 +71,11 @@
 }
 
 - (IBAction)tappedCollectDyson {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.dataLabel.text = [BTDataCollector payPalClientMetadataId];
     self.progressBlock(@"Collected PayPal clientMetadataID!");
+#pragma clang diagnostic pop
 }
 
 - (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {

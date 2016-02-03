@@ -47,4 +47,20 @@
     return [[PPDataCollector clientMetadataIDProvider] clientMetadataID:nil];
 }
 
++ (nonnull NSString *)collectPayPalDeviceData {
+    NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
+    NSString *payPalClientMetadataId = [PPDataCollector clientMetadataID];
+    if (payPalClientMetadataId) {
+        dataDictionary[@"correlation_id"] = payPalClientMetadataId;
+    }
+    
+    NSError *error;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&error];
+    if (!data) {
+        NSLog(@"ERROR: Failed to create deviceData string, error = %@", error);
+    }
+    
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
 @end
