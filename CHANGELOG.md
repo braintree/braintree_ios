@@ -1,5 +1,21 @@
 # Braintree iOS SDK Release Notes
 
+## 4.2.0 (2016-02-04)
+
+* Open source PayPal One Touch library
+  * Source code for PayPal One Touch library is now included in Braintree iOS SDK repository
+  * Added CocoaPods subspecs for PayPalOneTouch and PayPalDataCollector
+* Improve `BTPaymentButton`
+  * Payment button displays payment options based on configuration
+  * Shows loading activity indicator when fetching configuration
+  * Updated style for PayPal button when PayPal is the only available payment option
+  * Can manually configure available payment options via `enabledPaymentOptions` property
+* Added `setCardNumber:` and `setCardExpirationMonth:year:` to `BTDropInViewController`
+  * Drop-in card form can be prepopulated, e.g. by card.io
+* Deprecate `BTDataCollector` `payPalClientMetadataID` and `collectPayPalClientMetadataId`
+  * Use `PPDataCollector` `collectPayPalDeviceData` when you only need to collect PayPal device data
+* Add Travis CI to run tests
+
 ## 4.1.3 (2016-01-08)
 
 * Prevent crash when `BTPayPalDriver` instantiates `SFSafariViewController` with an invalid URL, and return an error instead
