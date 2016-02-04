@@ -7,7 +7,4 @@
 /// UIApplication is not possible, since it enforces that only one instance can ever exist
 @property (nonatomic, strong) id application;
 
-/// Collection of payment option strings, e.g. "PayPal", "Coinbase"
-- (NSOrderedSet *)filteredEnabledPaymentOptions;
-
 @end

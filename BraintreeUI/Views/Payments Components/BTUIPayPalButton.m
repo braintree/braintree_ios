@@ -2,11 +2,10 @@
 #import "BTUIPayPalButton.h"
 #import "BTUIPayPalWordmarkVectorArtView.h"
 
-@interface BTUIPayPalButton ()
-@property (nonatomic, strong) BTUIPayPalWordmarkVectorArtView *payPalWordmark;
-@end
-
 @implementation BTUIPayPalButton
+
+#define PAYPAL_BUTTON_COLOR [UIColor colorWithRed:0 green:156/255.0 blue:222/255.0 alpha:1]
+#define PAYPAL_BUTTON_HIGHLIGHTED [UIColor colorWithRed:0 green:138/255.0 blue:197/255.0 alpha:1]
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -30,7 +29,7 @@
     self.userInteractionEnabled = YES;
     self.clipsToBounds = YES;
     self.opaque = NO;
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = PAYPAL_BUTTON_COLOR;
 
     self.payPalWordmark = [[BTUIPayPalWordmarkVectorArtView alloc] initWithPadding];
     self.payPalWordmark.userInteractionEnabled = NO;
@@ -74,9 +73,9 @@
                           delay:0.0f
                         options:UIViewAnimationOptionBeginFromCurrentState animations:^{
                             if (highlighted) {
-                                self.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
+                                self.backgroundColor = PAYPAL_BUTTON_HIGHLIGHTED;
                             } else {
-                                self.backgroundColor = [UIColor whiteColor];
+                                self.backgroundColor = PAYPAL_BUTTON_COLOR;
                             }
                         }
                      completion:nil];

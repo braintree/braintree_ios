@@ -7,6 +7,7 @@
 #import "BTLogger_Internal.h"
 #import "BTUIVenmoButton.h"
 #import "BTUIPayPalButton.h"
+#import "BTUIPayPalCompactButton.h"
 #import "BTUICoinbaseButton.h"
 #import "BTUIHorizontalButtonStackCollectionViewFlowLayout.h"
 #import "BTUIPaymentButtonCollectionViewCell.h"
@@ -19,6 +20,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 @property (nonatomic, strong) UIView *topBorder;
 @property (nonatomic, strong) UIView *bottomBorder;
+@property (nonatomic, assign) BOOL skipConfigurationValidation;
 
 @end
 
@@ -85,9 +87,6 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 - (void)setupViews {
     self.clipsToBounds = YES;
-    self.enabledPaymentOptions = [NSOrderedSet orderedSetWithArray:@[@"PayPal",
-                                                                     @"Venmo"
-                                                                     ]];
 
     BTUIHorizontalButtonStackCollectionViewFlowLayout *layout = [[BTUIHorizontalButtonStackCollectionViewFlowLayout alloc] init];
     layout.minimumInteritemSpacing = 0.0f;
@@ -121,7 +120,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 }
 
 - (CGSize)intrinsicContentSize {
-    CGFloat height = self.filteredEnabledPaymentOptions.count > 0 ? 44 : 0;
+    CGFloat height = self.enabledPaymentOptions.count > 0 ? 44 : 0;
 
     return CGSizeMake(UIViewNoIntrinsicMetric, height);
 }
@@ -198,8 +197,27 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
 #pragma mark PaymentButton State
 
+@synthesize enabledPaymentOptions = _enabledPaymentOptions;
+
+- (NSOrderedSet *)enabledPaymentOptions {
+    if (!_enabledPaymentOptions) {
+        _enabledPaymentOptions = [NSOrderedSet orderedSetWithArray:@[ @"PayPal", @"Venmo" ]];
+    }
+
+    if (self.skipConfigurationValidation) {
+        return _enabledPaymentOptions;
+    }
+
+    /// Filter the availability of payment options by checking the merchant configuration
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *paymentOption, __unused NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [self isPaymentOptionAvailable:paymentOption];
+    }];
+    return [_enabledPaymentOptions filteredOrderedSetUsingPredicate:predicate];
+}
+
 - (void)setEnabledPaymentOptions:(NSOrderedSet *)enabledPaymentOptions {
     _enabledPaymentOptions = enabledPaymentOptions;
+    self.skipConfigurationValidation = YES;
 
     [self invalidateIntrinsicContentSize];
     [self.paymentButtonsCollectionView reloadData];
@@ -212,48 +230,45 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     [self.paymentButtonsCollectionView reloadData];
 }
 
-/// Collection of payment option strings, e.g. "PayPal"
-- (NSOrderedSet *)filteredEnabledPaymentOptions {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *paymentOption, __unused NSDictionary<NSString *,id> * _Nullable bindings) {
-        if (![[BTTokenizationService sharedService] isTypeAvailable:paymentOption]) {
-            return NO; // If the payment option's framework is not present, it should never be shown
-        }
+- (BOOL)isPaymentOptionAvailable:(NSString *)paymentOption {
+    if (![[BTTokenizationService sharedService] isTypeAvailable:paymentOption]) {
+        return NO; // If the payment option's framework is not present, it should never be shown
+    }
 
-        if (self.configuration == nil) {
-            return YES; // Without Configuration, we can't do additional filtering.
-        }
+    if (self.configuration == nil) {
+        return YES; // Without Configuration, we can't do additional filtering.
+    }
 
-        if ([paymentOption isEqualToString:@"PayPal"]) {
-            return [self.configuration.json[@"paypalEnabled"] isTrue];
-        } else if ([paymentOption isEqualToString:@"Venmo"]) {
-            // Directly from BTConfiguration+Venmo.m. Be sure to keep these files in sync! This
-            // is intentionally not DRY so that BraintreeUI does not depend on BraintreeVenmo.
-            BTJSON *venmoAccessToken = self.configuration.json[@"payWithVenmo"][@"accessToken"];
-            NSURLComponents *components = [NSURLComponents componentsWithString:@"com.venmo.touch.v2://x-callback-url/vzero/auth"];
-            
-            BOOL isVenmoAppInstalled = [[self application] canOpenURL:components.URL];
-            return venmoAccessToken.isString && [BTConfiguration isBetaEnabledPaymentOption:@"venmo"] && isVenmoAppInstalled;
-        }
-        // Payment option is available in the tokenization service, but BTPaymentButton does not know how
-        // to check Configuration for whether it is enabled. Default to YES.
-        return YES;
-    }];
-    return [self.enabledPaymentOptions filteredOrderedSetUsingPredicate:predicate];
+    if ([paymentOption isEqualToString:@"PayPal"]) {
+        return [self.configuration.json[@"paypalEnabled"] isTrue];
+    } else if ([paymentOption isEqualToString:@"Venmo"]) {
+        // Directly from BTConfiguration+Venmo.m. Be sure to keep these files in sync! This
+        // is intentionally not DRY so that BraintreeUI does not depend on BraintreeVenmo.
+        BTJSON *venmoAccessToken = self.configuration.json[@"payWithVenmo"][@"accessToken"];
+        NSURLComponents *components = [NSURLComponents componentsWithString:@"com.venmo.touch.v2://x-callback-url/vzero/auth"];
+
+        BOOL isVenmoAppInstalled = [[self application] canOpenURL:components.URL];
+        return venmoAccessToken.isString && [BTConfiguration isBetaEnabledPaymentOption:@"venmo"] && isVenmoAppInstalled;
+    }
+    // Payment option is available in the tokenization service, but BTPaymentButton does not know how
+    // to check Configuration for whether it is enabled. Default to YES.
+    return YES;
+
 }
 
 - (BOOL)hasAvailablePaymentMethod {
-    return self.filteredEnabledPaymentOptions.count > 0 ? YES : NO;
+    return self.enabledPaymentOptions.count > 0 ? YES : NO;
 }
 
 - (NSString *)paymentOptionForIndexPath:(NSIndexPath *)indexPath {
-    return self.filteredEnabledPaymentOptions[indexPath.row];
+    return self.enabledPaymentOptions[indexPath.row];
 }
 
 #pragma mark UICollectionViewDataSource methods
 
 - (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(__unused NSInteger)section {
     NSParameterAssert(section == 0);
-    return [self.filteredEnabledPaymentOptions count];
+    return [self.enabledPaymentOptions count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -265,7 +280,16 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
 
     UIControl *paymentButton;
     if ([paymentOption isEqualToString:@"PayPal"]) {
-        paymentButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
+        if (self.enabledPaymentOptions.count == 1) {
+            BTUIPayPalButton *payPalButton = [[BTUIPayPalButton alloc] initWithFrame:cell.bounds];
+            payPalButton.layer.cornerRadius = self.theme.cornerRadius;
+            self.topBorder.hidden = YES;
+            self.bottomBorder.hidden = YES;
+            collectionView.backgroundColor = [UIColor clearColor];
+            paymentButton = payPalButton;
+        } else {
+            paymentButton = [[BTUIPayPalCompactButton alloc] initWithFrame:cell.bounds];
+        }
     } else if ([paymentOption isEqualToString:@"Venmo"]) {
         paymentButton = [[BTUIVenmoButton alloc] initWithFrame:cell.bounds];
     } else if ([paymentOption isEqualToString:@"Coinbase"]) {
@@ -277,20 +301,8 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
     
     cell.accessibilityLabel = paymentOption;
     paymentButton.translatesAutoresizingMaskIntoConstraints = NO;
-
     cell.paymentButton = paymentButton;
 
-    [cell.contentView addSubview:paymentButton];
-
-    NSDictionary *views = @{ @"paymentButton": paymentButton };
-    [cell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[paymentButton]|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:views]];
-    [cell.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[paymentButton]|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:views]];
     return cell;
 }
 

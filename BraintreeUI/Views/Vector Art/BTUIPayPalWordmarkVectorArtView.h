@@ -12,13 +12,13 @@
 ///  This view includes built-in padding to ensure consistent typographical baseline alignment with Venmo and Coinbase wordmarks.
 ///
 ///  @return A PayPal Wordmark with padding
-- (BTUIPayPalWordmarkVectorArtView *)initWithPadding;
+- (instancetype)initWithPadding;
 
 ///  Initializes a PayPal Wordmark
 ///
 ///  This view does not include built-in padding.
 ///
 ///  @return A PayPal Wordmark
-- (BTUIPayPalWordmarkVectorArtView *)init;
+- (instancetype)init;
 
 @end

@@ -572,6 +572,7 @@
     [self.navigationItem.rightBarButtonItem setEnabled:valid];
     [UIView animateWithDuration:self.theme.quickTransitionDuration animations:^{
         self.dropInContentView.ctaControl.enabled = valid;
+        self.dropInContentView.paymentButton.alpha = valid ? 0.3 : 1.0;
     }];
 }
 

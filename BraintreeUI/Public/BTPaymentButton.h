@@ -37,8 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// to the set of payment options that have been included in the client-side app integration,
 /// e.g. via frameworks.
 ///
-/// Setting this property will force the button to reload.
-@property (nonatomic, strong) NSOrderedSet *enabledPaymentOptions;
+/// Setting this property will force the button to reload and display the specified payment options,
+/// even if the payment option is disabled in the Control Panel.
+@property (nonatomic, strong) NSOrderedSet <NSString *> *enabledPaymentOptions;
 
 /// The configuration from a `BTAPIClient`. This is automatically fetched when the payment button
 /// is initialized with a `BTAPIClient`, but it can be `nil` if the `BTAPIClient` has not yet been

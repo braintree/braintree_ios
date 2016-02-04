@@ -132,7 +132,8 @@
 }
 
 - (CGFloat)borderWidth {
-    return 0.5f;
+    CGFloat screenScale = [UIScreen mainScreen].scale;
+    return 1 / screenScale;
 }
 
 - (CGFloat)formattedEntryKerning {
