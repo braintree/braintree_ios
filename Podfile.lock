@@ -45,6 +45,7 @@ PODS:
     - Braintree/Core
   - Braintree/Venmo (4.1.3):
     - Braintree/Core
+    - Braintree/PayPalDataCollector
   - CardIO (5.2.2)
   - Expecta (1.0.5)
   - FLEX (2.1.1)
@@ -94,11 +95,11 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: .
+    :path: "."
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Braintree: 7ac2e12d41f084849f06eabba1d6598eca8edd87
+  Braintree: bc8c8ac454867ff4f240d5917e623ebdff5b17a1
   CardIO: 2460db0f4936f3441b08d51e3904b436d77ec8fc
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
