@@ -50,7 +50,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec "PayPal" do |s|
-    s.source_files = "BraintreePayPal/*.{h,m}"
+    s.source_files = "BraintreePayPal/*.{h,m}", "BraintreePayPal/Public/*.h"
     s.public_header_files = "BraintreePayPal/Public/*.h"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalOneTouch"
