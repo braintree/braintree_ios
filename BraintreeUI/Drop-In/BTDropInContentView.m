@@ -56,7 +56,7 @@
         // Add Constraints & Subviews
 
         // Full-Width Views
-        for (UIView *view in @[self.summaryView, self.ctaControl, self.cardForm]) {
+        for (UIView *view in @[self.selectedPaymentMethodView, self.summaryView, self.ctaControl, self.cardForm]) {
             [self addSubview:view withHorizontalMargins:NO];
         }
 
