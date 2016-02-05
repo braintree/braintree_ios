@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.2.1 (2016-02-05)
+
+* Fix deprecation warning/error in PayPal One Touch for apps that target >= iOS 9.0
+
 ## 4.2.0 (2016-02-04)
 
 * Open source PayPal One Touch library
