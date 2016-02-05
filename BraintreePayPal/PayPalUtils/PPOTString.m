@@ -29,13 +29,12 @@ static const short _base64DecodingTable[256] = {
 @implementation PPOTString
 
 + (NSString *)stringByURLEncodingAllCharactersInString:(NSString *)aString {
-
-    NSString *encodedString = (__bridge_transfer NSString * ) CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                                                      (__bridge CFStringRef)aString,
-                                                                                                      NULL,
-                                                                                                      (CFStringRef)@"&()<>@,;:\\\"/[]?=+$|^~`{}",
-                                                                                                      kCFStringEncodingUTF8);
-    return encodedString;
+    NSString *reservedCharacters = @"&()<>@,;:\\\"/[]?=+$|^~`{}";
+    
+    NSMutableCharacterSet *URLQueryPartAllowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    [URLQueryPartAllowedCharacterSet removeCharactersInString:reservedCharacters];
+    
+    return [aString stringByAddingPercentEncodingWithAllowedCharacters:URLQueryPartAllowedCharacterSet];
 }
 
 // This base 64 encoding adapted from Colloquy's BSD-licensed Chat Core library
