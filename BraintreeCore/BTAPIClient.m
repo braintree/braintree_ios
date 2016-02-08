@@ -2,6 +2,7 @@
 #import "BTAPIClient_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTClientToken.h"
+#import "BTReporting.h"
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 
@@ -53,6 +54,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 [self sendAnalyticsEvent:@"ios.started.client-token"];
             }
         }
+        [self setUpCrashReporting];
     }
     return self;
 }
@@ -267,6 +269,23 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     [metaParameters addEntriesFromDictionary:clientMetadataParameters];
 
     return [metaParameters copy];
+}
+
+#pragma mark - Crash reporting
+
+- (void)setUpCrashReporting {
+    // TODO: check for race conditions
+    NSString *crashReport = [[NSUserDefaults standardUserDefaults] objectForKey:BTCrashReportKey];
+    if (crashReport) {
+        [self sendAnalyticsEvent:@"crash.ios" completion:^(NSError *error) {
+            if (!error) {
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:BTCrashReportKey];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }];
+    }
+    // Touch the shared instance to setup
+    [BTReporting sharedInstance];
 }
 
 #pragma mark - HTTP Operations
