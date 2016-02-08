@@ -35,21 +35,25 @@
 
 - (void)testParameters_encodesAllParametersIncludingAdditionalParameters {
     BTCard *card =
-    [[BTCard alloc] initWithParameters:@{
-                                         @"billing_address": @{
-                                                 @"street_address": @"724 Evergreen Terrace" }
-                                         }];
+    [[BTCard alloc] initWithParameters:@{}];
 
     card.number = @"4111111111111111";
     card.expirationMonth = @"12";
     card.expirationYear = @"2038";
     card.postalCode = @"40404";
+    card.streetAddress = @"724 Evergreen Terrace";
+    card.locality = @"some locality";
+    card.region = @"some region";
+    card.countryName = @"some country name";
 
     BTJSON *parameters = [[BTJSON alloc] initWithValue:card.parameters];
     XCTAssertEqualObjects([parameters[@"number"] asString], @"4111111111111111");
     XCTAssertEqualObjects([parameters[@"expiration_date"] asString], @"12/2038");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"postal_code"] asString], @"40404");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"street_address"] asString], @"724 Evergreen Terrace");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"locality"] asString], @"some locality");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"region"] asString], @"some region");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"country_name"] asString], @"some country name");
 }
 
 @end
