@@ -27,6 +27,7 @@
         _locality = parameters[@"billing_address"][@"locality"];
         _region = parameters[@"billing_address"][@"region"];
         _countryName = parameters[@"billing_address"][@"country_name"];
+        _countryCodeAlpha2 = parameters[@"billing_address"][@"country_code_alpha2"];
         
         _shouldValidate = [parameters[@"options"][@"validate"] boolValue];
     }
@@ -84,6 +85,10 @@
     
     if (self.countryName) {
         billingAddressDictionary[@"country_name"] = self.countryName;
+    }
+    
+    if (self.countryCodeAlpha2) {
+        billingAddressDictionary[@"country_code_alpha2"] = self.countryCodeAlpha2;
     }
     
     p[@"billing_address"] = [billingAddressDictionary copy];

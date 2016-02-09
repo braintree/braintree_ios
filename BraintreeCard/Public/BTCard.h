@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *locality;
 @property (nonatomic, nullable, copy) NSString *region;
 @property (nonatomic, nullable, copy) NSString *countryName;
+@property (nonatomic, nullable, copy) NSString *countryCodeAlpha2;
 
 /// Controls whether or not to return validations and/or verification results. By default, this is
 /// not enabled.
