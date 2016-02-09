@@ -8,6 +8,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 @interface BTAPIClient ()
 @property (nonatomic, strong) dispatch_queue_t configurationQueue;
+@property (nonatomic, strong) dispatch_queue_t crashReportingQueue;
 @property (nonatomic, strong) BTJSON *cachedRemoteConfiguration;
 @end
 
@@ -27,6 +28,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     if (self = [super init]) {
         _metadata = [[BTClientMetadata alloc] init];
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
+        _crashReportingQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient.crashreporting", DISPATCH_QUEUE_SERIAL);
 
         NSURL *baseURL = [BTAPIClient baseURLFromTokenizationKey:authorization];
         if (baseURL) {
@@ -54,7 +56,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 [self sendAnalyticsEvent:@"ios.started.client-token"];
             }
         }
-        [self setUpCrashReporting];
+        [self checkCrashReport];
     }
     return self;
 }
@@ -273,19 +275,18 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 #pragma mark - Crash reporting
 
-- (void)setUpCrashReporting {
-    // TODO: check for race conditions
-    NSString *crashReport = [[NSUserDefaults standardUserDefaults] objectForKey:BTCrashReportKey];
-    if (crashReport) {
-        [self sendAnalyticsEvent:@"crash.ios" completion:^(NSError *error) {
-            if (!error) {
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:BTCrashReportKey];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-        }];
-    }
-    // Touch the shared instance to setup
-    [BTReporting sharedInstance];
+- (void)checkCrashReport {
+    dispatch_async(self.crashReportingQueue, ^{
+        NSString *crashReport = [[NSUserDefaults standardUserDefaults] objectForKey:BTCrashReportKey];
+        if (crashReport) {
+            [self sendAnalyticsEvent:@"crash.ios" completion:^(NSError *error) {
+                if (!error) {
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:BTCrashReportKey];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+            }];
+        }
+    });
 }
 
 #pragma mark - HTTP Operations

@@ -27,6 +27,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
 
     [BTAppSwitch setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
     NSSetUncaughtExceptionHandler(&demoExceptionHandler);
+    [BTReporting enable];
     return YES;
 }
 

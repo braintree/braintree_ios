@@ -6,16 +6,12 @@ NSString * const BTCrashReportKey = @"com.braintreepayments.BTCrashReportKey";
 
 NSUncaughtExceptionHandler *wrappedHandler;
 
-+ (instancetype)sharedInstance {
-    static BTReporting *instance;
++ (void)enable {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [self new];
         wrappedHandler = NSGetUncaughtExceptionHandler();
         NSSetUncaughtExceptionHandler(&uncaughtExceptionWrapper);
     });
-
-    return instance;
 }
 
 void uncaughtExceptionWrapper(NSException *exception) {
