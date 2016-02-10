@@ -8,7 +8,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 @interface BTAPIClient ()
 @property (nonatomic, strong) dispatch_queue_t configurationQueue;
-@property (nonatomic, strong) dispatch_queue_t crashReportingQueue;
 @property (nonatomic, strong) BTJSON *cachedRemoteConfiguration;
 @end
 
@@ -28,7 +27,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     if (self = [super init]) {
         _metadata = [[BTClientMetadata alloc] init];
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
-        _crashReportingQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient.crashreporting", DISPATCH_QUEUE_SERIAL);
 
         NSURL *baseURL = [BTAPIClient baseURLFromTokenizationKey:authorization];
         if (baseURL) {
@@ -275,16 +273,34 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 #pragma mark - Crash reporting
 
+/// A shared dispatch queue for preventing race conditions when sending crash reports
+- (dispatch_queue_t)crashReportingQueue {
+    static dispatch_queue_t sharedCrashReportingQueue;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedCrashReportingQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient.crashreporting", DISPATCH_QUEUE_SERIAL);
+    });
+
+    return sharedCrashReportingQueue;
+}
+
 - (void)checkCrashReport {
-    dispatch_async(self.crashReportingQueue, ^{
+    dispatch_async([self crashReportingQueue], ^{
         NSString *crashReport = [[NSUserDefaults standardUserDefaults] objectForKey:BTCrashReportKey];
+
         if (crashReport) {
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
             [self sendAnalyticsEvent:@"crash.ios" completion:^(NSError *error) {
                 if (!error) {
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:BTCrashReportKey];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                 }
+                dispatch_semaphore_signal(semaphore);
             }];
+
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         }
     });
 }
