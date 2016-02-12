@@ -19,7 +19,7 @@ class BTDataCollector_Tests: XCTestCase {
         let dictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! Dictionary<String, AnyObject>
         XCTAssert((dictionary["device_session_id"] as! String).characters.count >= 32)
         XCTAssertEqual(dictionary["fraud_merchant_id"] as? String, "600000") // BTDataCollectorSharedMerchantId
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectationsWithTimeout(10, handler: nil)
     }
     
     func testFailsWithInvalidCollectorUrlAndCallsDelegateMethod() {
@@ -28,7 +28,7 @@ class BTDataCollector_Tests: XCTestCase {
         dataCollector.delegate = testDelegate
         dataCollector.setCollectorUrl("fake url which should fail")
         dataCollector.collectCardFraudData()
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectationsWithTimeout(10, handler: nil)
         
         // Note: Kount provides NSError, so BTDataCollectorKountErrorDomain is not used.
         XCTAssertEqual(testDelegate!.error!.domain, "URL validation failed")
@@ -46,7 +46,7 @@ class BTDataCollector_Tests: XCTestCase {
         dataCollector.delegate = testDelegate
         dataCollector.setFraudMerchantId("fake merchant id which should fail")
         dataCollector.collectCardFraudData()
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectationsWithTimeout(10, handler: nil)
         
         XCTAssertEqual(testDelegate!.error!.domain, "Merchant ID validation failed")
         XCTAssertEqual(testDelegate!.error!.code, Int(DC_ERR_INVALID_MERCHANT))
@@ -70,7 +70,7 @@ class BTDataCollector_Tests: XCTestCase {
         // typically has a length of 32.
         XCTAssert((dictionary["correlation_id"] as! String).characters.count >= 32)
 
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectationsWithTimeout(10, handler: nil)
     }
 }
 
