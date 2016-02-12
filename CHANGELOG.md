@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.2.2 (2016-02-11)
+
+* Fix crash that occurs when downgrading Braintree from 4.2.x to previous versions
+
 ## 4.2.1 (2016-02-05)
 
 * Fix deprecation warning/error in PayPal One Touch for apps that target >= iOS 9.0
