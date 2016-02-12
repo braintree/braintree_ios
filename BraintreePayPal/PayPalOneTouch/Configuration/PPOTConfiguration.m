@@ -67,8 +67,7 @@
 #define kPPOTCoderKeyConfigurationCheckoutRecipes             CARDIO_STR(@"checkoutRecipes")
 #define kPPOTCoderKeyConfigurationBillingAgreementRecipes     CARDIO_STR(@"billingAgreementRecipes")
 
-#define kPPOTKeychainConfiguration              CARDIO_STR(@"PayPal_OTC_Config")
-
+#define kPPOTKeychainConfiguration              CARDIO_STR(@"PayPal_OTC_Configuration")
 
 #define LOG_ERROR_AND_RETURN_NIL  { PPSDKLog(@"Bad configuration: error %d", __LINE__); return nil; }
 
