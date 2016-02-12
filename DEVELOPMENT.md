@@ -21,7 +21,7 @@ There are several components that comprise this SDK:
 
 * `Braintree` is the top-level entry point to the SDK. You are here.
 * [Braintree-Drop-In](Braintree/Drop-In) composes API with Credit Card and PayPal UI to create a "three liner" payment form. (See also BTDropInViewControler.h)
-* [Braintree-Payments-UI](Braintree/UI) is a set of reusable UI componenets related to payments.
+* [Braintree-Payments-UI](Braintree/UI) is a set of reusable UI components related to payments.
 * [Braintree-PayPal](Braintree/PayPal) provides a PayPal button and view controller. (See also `BTPayPalButton`.)
 * [Braintree-API](Braintree/api) provides the networking and communications layer. (See also `BTClient`.)
   * This component is intended to avoid any dependency on `UIKit` and could easily be ported to OS X.
