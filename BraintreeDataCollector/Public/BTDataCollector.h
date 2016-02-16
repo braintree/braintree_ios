@@ -29,8 +29,11 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 
 /// Generates a new PayPal fraud ID if PayPal is integrated; otherwise returns `nil`.
 ///
-/// @return A PayPal fraud ID
-+ (nullable NSString *)payPalClientMetadataId DEPRECATED_MSG_ATTRIBUTE("Integrate PayPalDataCollector and use [PPDataCollector collectPayPalDeviceData] instead.");
+/// @warning This returns a raw client metadata ID, which is not the correct format for device data
+/// when creating a transaction. Instead, use `[PPDataCollector collectPayPalDeviceData]`.
+///
+/// @return a client metadata ID to send as a header
++ (nullable NSString *)payPalClientMetadataId DEPRECATED_MSG_ATTRIBUTE("Integrate PayPalDataCollector and use [PPDataCollector clientMetadataID] instead.");
 
 /// Collects device data for Kount.
 ///
@@ -58,7 +61,8 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /// Collects device data using Kount and PayPal.
 ///
 /// This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
-/// use `-collectCardFraudData`. To collect data for PayPal, use `+payPalFraudID`.
+/// use `-collectCardFraudData`. To collect data for PayPal, integrate PayPalDataCollector and use
+/// `[PPDataCollector collectPayPalDeviceData]`.
 ///
 /// For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
 /// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
