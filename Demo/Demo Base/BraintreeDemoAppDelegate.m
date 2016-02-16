@@ -26,7 +26,8 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     [self registerDefaultsFromSettings];
 
     [BTAppSwitch setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
-
+    NSSetUncaughtExceptionHandler(&demoExceptionHandler);
+    [BTReporting enable];
     return YES;
 }
 
@@ -105,7 +106,6 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsToRegister];
 }
 
-
 #if DEBUG
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
@@ -115,5 +115,10 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     }
 }
 #endif
+
+//Demo global exception handler
+void demoExceptionHandler(NSException *exception) {
+    NSLog(@"BRAINTREE DEMO CRASHED: %@", exception.reason);
+}
 
 @end

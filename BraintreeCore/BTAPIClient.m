@@ -2,6 +2,7 @@
 #import "BTAPIClient_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTClientToken.h"
+#import "BTReporting.h"
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 
@@ -53,6 +54,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 [self sendAnalyticsEvent:@"ios.started.client-token"];
             }
         }
+        [self checkCrashReport];
     }
     return self;
 }
@@ -267,6 +269,40 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     [metaParameters addEntriesFromDictionary:clientMetadataParameters];
 
     return [metaParameters copy];
+}
+
+#pragma mark - Crash reporting
+
+/// A shared dispatch queue for preventing race conditions when sending crash reports
+- (dispatch_queue_t)crashReportingQueue {
+    static dispatch_queue_t sharedCrashReportingQueue;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedCrashReportingQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient.crashreporting", DISPATCH_QUEUE_SERIAL);
+    });
+
+    return sharedCrashReportingQueue;
+}
+
+- (void)checkCrashReport {
+    dispatch_async([self crashReportingQueue], ^{
+        NSString *crashReport = [[NSUserDefaults standardUserDefaults] objectForKey:BTCrashReportKey];
+
+        if (crashReport) {
+            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+            [self sendAnalyticsEvent:@"crash.ios" completion:^(NSError *error) {
+                if (!error) {
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:BTCrashReportKey];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                }
+                dispatch_semaphore_signal(semaphore);
+            }];
+
+            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        }
+    });
 }
 
 #pragma mark - HTTP Operations
