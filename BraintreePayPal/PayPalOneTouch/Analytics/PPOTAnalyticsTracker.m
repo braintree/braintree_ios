@@ -289,13 +289,6 @@
     NSDictionary *params = fptiDataDictionary[@"events"][@"event_params"];
     NSString *nameStr = params[@"page"];
 
-    [[BTLogger sharedLogger] debug:@"\n=================== To Analytics Tracking ===================="
-        @"\n=> %@"
-        @"\n%@"
-        @"\n==============================================================",
-        nameStr,
-        params];
-
     NSArray *pageComponents = [nameStr componentsSeparatedByString:@":"];
     NSString *environment = pageComponents[[pageComponents count] - 2];
 
@@ -313,14 +306,6 @@
     NSError *error;
     NSData *fptiJSONData = [NSJSONSerialization dataWithJSONObject:fptiDataDictionary options:0 error:&error];
     if (fptiJSONData == nil && error != NULL) {
-        [[BTLogger sharedLogger] debug:@"\n=================== Analytics Tracking Error ===================="
-              @"\n=> %@"
-              @"\n%@"
-              @"\n%@"
-              @"\n==============================================================",
-              [error domain],
-              [error localizedDescription],
-              [error description]];
         // ignore the error
     } else {
         [request setHTTPBody:fptiJSONData];
