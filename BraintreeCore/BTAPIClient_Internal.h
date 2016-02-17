@@ -1,10 +1,9 @@
+#import "BTAnalyticsService.h"
 #import "BTAPIClient.h"
 #import "BTClientMetadata.h"
 #import "BTClientToken.h"
 #import "BTJSON.h"
 #import "BTHTTP.h"
-
-@class BTAnalyticsService;
 
 @interface BTAPIClient ()
 @property (nonatomic, copy) NSString *tokenizationKey;

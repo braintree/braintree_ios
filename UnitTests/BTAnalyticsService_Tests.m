@@ -1,4 +1,3 @@
-#import "BTAnalyticsMetadata.h"
 #import "BTAnalyticsService.h"
 #import "BTKeychain.h"
 #import "Braintree-Version.h"
@@ -16,17 +15,14 @@
 
 #pragma mark - Analytics tests
 
-- (void)testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
-    MockAPIClient *stubAPIClient = [[MockAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
-    stubAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] initWithValue:@{
-                                                                                    @"analytics" : @{
-                                                                                            }
-                                                                                    }];
+- (void)testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_returnsError {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:nil];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
     [analyticsService sendAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
-        XCTAssertNotNil(error);
+        XCTAssertEqual(error.domain, BTAnalyticsServiceErrorDomain);
+        XCTAssertEqual(error.code, (NSInteger)BTAnalyticsServiceErrorTypeMissingAnalyticsURL);
         [expectation fulfill];
     }];
 
@@ -34,12 +30,7 @@
 }
 
 - (void)testSendAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
-    MockAPIClient *stubAPIClient = [[MockAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
-    stubAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] initWithValue:@{
-                                                                                    @"analytics" : @{
-                                                                                            @"url" : @"test://do-not-send.url"
-                                                                                            }
-                                                                                    }];
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
@@ -52,51 +43,168 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
-- (void)testSendAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
-    MockAPIClient *stubAPIClient = [[MockAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
-    stubAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] initWithValue:@{
-                                                                                    @"analytics" : @{
-                                                                                            @"url" : @"test://do-not-send.url"
-                                                                                            }
-                                                                                    }];
+- (void)testSendAnalyticsEvent_whenNumberOfQueuedEventsMeetsThreshold_sendsAnalyticsEvent {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
+    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
+    analyticsService.flushThreshold = 1;
+    analyticsService.http = mockAnalyticsHTTP;
+
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+
+    XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
+    XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+    [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
+}
+
+- (void)testSendAnalyticsEvent_whenFlushThresholdIsGreaterThanNumberOfBatchedEvents_doesNotSendAnalyticsEvent {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
+    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
+    analyticsService.flushThreshold = 2;
+    analyticsService.http = mockAnalyticsHTTP;
+    
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+
+    XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 0);
+}
+
+- (void)testSendAnalyticsEventCompletion_whenCalled_sendsAllEvents {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
+    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
+    analyticsService.flushThreshold = 5;
+    analyticsService.http = mockAnalyticsHTTP;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends batched request"];
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
+    [analyticsService sendAnalyticsEvent:@"another.analytics.event" completion:^(NSError *error) {
+        XCTAssertNil(error);
+        XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"another.analytics.event");
+        [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
+- (void)testFlush_whenCalled_sendsAllQueuedEvents {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
+    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
+    analyticsService.flushThreshold = 5;
+    analyticsService.http = mockAnalyticsHTTP;
+    
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
+    [analyticsService sendAnalyticsEvent:@"another.analytics.event"];
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends batched request"];
+    [analyticsService flush:^(NSError *error) {
+        XCTAssertNil(error);
+        XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"another.analytics.event");
+        [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
+- (void)testAnalyticsService_whenAPIClientConfigurationFails_returnsError {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
+    NSError *stubbedError = [NSError errorWithDomain:@"SomeError" code:1 userInfo:nil];
+    stubAPIClient.cannedConfigurationResponseError = stubbedError;
     BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
     BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
     analyticsService.http = mockAnalyticsHTTP;
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked with error"];
     [analyticsService sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
-        XCTAssertNil(error);
+        XCTAssertEqualObjects(error, stubbedError);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+    
+    expectation = [self expectationWithDescription:@"Callback invoked with error"];
+    [analyticsService flush:^(NSError *error) {
+        XCTAssertEqualObjects(error, stubbedError);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
 
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
-        NSDictionary *_meta = mockAnalyticsHTTP.lastRequestParameters[@"_meta"];
-        XCTAssertEqualObjects(_meta[@"deviceManufacturer"], @"Apple");
-        XCTAssertEqualObjects(_meta[@"deviceModel"], [self deviceModel]);
-        XCTAssertEqualObjects(_meta[@"deviceAppGeneratedPersistentUuid"], [self deviceAppGeneratedPersistentUuid]);
-        XCTAssertEqualObjects(_meta[@"deviceScreenOrientation"], @"Portrait");
-        XCTAssertEqualObjects(_meta[@"integration"], @"custom");
-        XCTAssertEqualObjects(_meta[@"iosBaseSDK"], [@(__IPHONE_OS_VERSION_MAX_ALLOWED) stringValue]);
-        XCTAssertEqualObjects(_meta[@"iosDeploymentTarget"], [@(__IPHONE_OS_VERSION_MIN_REQUIRED) stringValue]);
-        XCTAssertEqualObjects(_meta[@"iosDeviceName"], [[UIDevice currentDevice] name]);
-        XCTAssertTrue((BOOL)_meta[@"isSimulator"] == TARGET_IPHONE_SIMULATOR);
-        XCTAssertEqualObjects(_meta[@"merchantAppId"], @"com.braintreepayments.Demo");
-        XCTAssertEqualObjects(_meta[@"merchantAppName"], @"Braintree iOS SDK Demo");
-        XCTAssertEqualObjects(_meta[@"merchantAppVersion"], BRAINTREE_VERSION);
-        XCTAssertEqualObjects(_meta[@"sdkVersion"], BRAINTREE_VERSION);
-        XCTAssertEqualObjects(_meta[@"platform"], @"iOS");
-        XCTAssertEqualObjects(_meta[@"platformVersion"], [[UIDevice currentDevice] systemVersion]);
-        XCTAssertNotNil(_meta[@"sessionId"]);
-        XCTAssertEqualObjects(_meta[@"source"], @"unknown");
+- (void)testAnalyticsService_afterConfigurationError_maintainsQueuedEventsUntilConfigurationIsSuccessful {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
+    NSError *stubbedError = [NSError errorWithDomain:@"SomeError" code:1 userInfo:nil];
+    stubAPIClient.cannedConfigurationResponseError = stubbedError;
+    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
+    analyticsService.http = mockAnalyticsHTTP;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked with error"];
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
+        XCTAssertEqualObjects(error, stubbedError);
         [expectation fulfill];
     }];
 
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+    
+    stubAPIClient.cannedConfigurationResponseError = nil;
+    
+    expectation = [self expectationWithDescription:@"Callback invoked with error"];
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
+        XCTAssertNil(error);
+        XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+        [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
+        [expectation fulfill];
+    }];
+    
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
 #pragma mark - Helpers
 
-// Note: ripped from BTAnalyticsMetadata
+- (MockAPIClient *)stubbedAPIClientWithAnalyticsURL:(NSString *)analyticsURL {
+    MockAPIClient *stubAPIClient = [[MockAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    if (analyticsURL) {
+         stubAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] initWithValue:@{ @"analytics" : @{ @"url" : analyticsURL } }];
+    } else {
+        stubAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] initWithValue:@{}];
+    }
+    return stubAPIClient;
+}
 
+- (void)validateMetaParameters:(NSDictionary *)metaParameters {
+    XCTAssertEqualObjects(metaParameters[@"deviceManufacturer"], @"Apple");
+    XCTAssertEqualObjects(metaParameters[@"deviceModel"], [self deviceModel]);
+    XCTAssertEqualObjects(metaParameters[@"deviceAppGeneratedPersistentUuid"], [self deviceAppGeneratedPersistentUuid]);
+    XCTAssertEqualObjects(metaParameters[@"deviceScreenOrientation"], @"Portrait");
+    XCTAssertEqualObjects(metaParameters[@"integration"], @"custom");
+    XCTAssertEqualObjects(metaParameters[@"iosBaseSDK"], [@(__IPHONE_OS_VERSION_MAX_ALLOWED) stringValue]);
+    XCTAssertEqualObjects(metaParameters[@"iosDeploymentTarget"], [@(__IPHONE_OS_VERSION_MIN_REQUIRED) stringValue]);
+    XCTAssertEqualObjects(metaParameters[@"iosDeviceName"], [[UIDevice currentDevice] name]);
+    XCTAssertTrue((BOOL)metaParameters[@"isSimulator"] == TARGET_IPHONE_SIMULATOR);
+    XCTAssertEqualObjects(metaParameters[@"merchantAppId"], @"com.braintreepayments.Demo");
+    XCTAssertEqualObjects(metaParameters[@"merchantAppName"], @"Braintree iOS SDK Demo");
+    XCTAssertEqualObjects(metaParameters[@"merchantAppVersion"], BRAINTREE_VERSION);
+    XCTAssertEqualObjects(metaParameters[@"sdkVersion"], BRAINTREE_VERSION);
+    XCTAssertEqualObjects(metaParameters[@"platform"], @"iOS");
+    XCTAssertEqualObjects(metaParameters[@"platformVersion"], [[UIDevice currentDevice] systemVersion]);
+    XCTAssertNotNil(metaParameters[@"sessionId"]);
+    XCTAssertEqualObjects(metaParameters[@"source"], @"unknown");
+}
+
+// Ripped from BTAnalyticsMetadata
 - (NSString *)deviceModel {
     struct utsname systemInfo;
 
@@ -107,6 +215,7 @@
     return code;
 }
 
+// Ripped from BTAnalyticsMetadata
 - (NSString *)deviceAppGeneratedPersistentUuid {
     @try {
         static NSString *deviceAppGeneratedPersistentUuidKeychainKey = @"deviceAppGeneratedPersistentUuid";

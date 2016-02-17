@@ -27,7 +27,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     if (self = [super init]) {
         _metadata = [[BTClientMetadata alloc] init];
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
-        _analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:self];
+
 
         NSURL *baseURL = [BTAPIClient baseURLFromTokenizationKey:authorization];
         if (baseURL) {
@@ -202,6 +202,26 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 }
 
 #pragma mark - Analytics
+
+@synthesize analyticsService = _analyticsService;
+
+/// By default, the `BTAnalyticsService` instance is static/shared so that only one queue of events exists.
+/// The "singleton" is managed here because the analytics service depends on `BTAPIClient`.
+- (BTAnalyticsService *)analyticsService {
+    static BTAnalyticsService *analyticsService;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:self];
+        analyticsService.flushThreshold = 5;
+    });
+    if (_analyticsService) return _analyticsService;
+    return analyticsService;
+}
+
+// The analytics service may be overridden by unit tests
+- (void)setAnalyticsService:(BTAnalyticsService *)analyticsService {
+    _analyticsService = analyticsService;
+}
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind {
     [self sendAnalyticsEvent:eventKind completion:nil];
