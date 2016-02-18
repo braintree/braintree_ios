@@ -47,7 +47,7 @@
         return self
     }
 
-    override func sendAnalyticsEvent(name: String!, completion completionBlock: ((NSError!) -> Void)!) {
+    override func sendAnalyticsEvent(name: String!) {
         postedAnalyticsEvents.append(name)
     }
 }

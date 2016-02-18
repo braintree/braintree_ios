@@ -51,6 +51,7 @@
     analyticsService.http = mockAnalyticsHTTP;
 
     [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
+    // Pause briefly to allow analytics service to dispatch async blocks
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 
     XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
@@ -116,6 +117,23 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
+- (void)testFlush_whenThereAreNoQueuedEvents_doesNotPOST {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
+    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
+    analyticsService.flushThreshold = 5;
+    analyticsService.http = mockAnalyticsHTTP;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends batched request"];
+    [analyticsService flush:^(NSError *error) {
+        XCTAssertNil(error);
+        XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 0);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
 - (void)testAnalyticsService_whenAPIClientConfigurationFails_returnsError {
     MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
     NSError *stubbedError = [NSError errorWithDomain:@"SomeError" code:1 userInfo:nil];
@@ -170,6 +188,26 @@
     }];
     
     [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
+- (void)testAnalyticsService_whenAppIsBackgrounded_sendsQueuedAnalyticsEvents {
+    MockAPIClient *stubAPIClient = [self stubbedAPIClientWithAnalyticsURL:@"test://do-not-send.url"];
+    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
+    BTAnalyticsService *analyticsService = [[BTAnalyticsService alloc] initWithAPIClient:stubAPIClient];
+    analyticsService.flushThreshold = 5;
+    analyticsService.http = mockAnalyticsHTTP;
+    
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
+    [analyticsService sendAnalyticsEvent:@"another.analytics.event"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationWillResignActiveNotification object:nil];
+
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+    
+    XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
+    XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
+    XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+    XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"another.analytics.event");
+    [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
 }
 
 #pragma mark - Helpers

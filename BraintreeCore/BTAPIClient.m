@@ -224,11 +224,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 }
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind {
-    [self sendAnalyticsEvent:eventKind completion:nil];
-}
-
-- (void)sendAnalyticsEvent:(NSString *)eventKind completion:(void(^)(NSError *error))completionBlock {
-    [self.analyticsService sendAnalyticsEvent:eventKind completion:completionBlock];
+    [self.analyticsService sendAnalyticsEvent:eventKind];
 }
 
 - (NSDictionary *)metaParameters {

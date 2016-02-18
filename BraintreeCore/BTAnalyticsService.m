@@ -4,6 +4,7 @@
 #import "BTClientMetadata.h"
 #import "BTHTTP.h"
 #import "BTLogger_Internal.h"
+#import <UIKit/UIKit.h>
 
 #pragma mark - BTAnalyticsEvent
 
@@ -116,8 +117,13 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
         _sessionsQueue = dispatch_queue_create("com.braintreepayments.BTAnalyticsService", DISPATCH_QUEUE_SERIAL);
         _apiClient = apiClient;
         _flushThreshold = 1;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResign:) name:UIApplicationWillResignActiveNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Public methods
@@ -132,7 +138,6 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
     [self flush:completionBlock];
 }
 
-/// Precondition: this should be executed on the events dispatch queue
 - (void)flush:(void (^)(NSError *))completionBlock {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         if (error) {
@@ -156,7 +161,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 self.http = [[BTHTTP alloc] initWithBaseURL:analyticsURL tokenizationKey:self.apiClient.tokenizationKey];
             }
             if (!self.http) {
-                NSError *error = [NSError errorWithDomain:BTAnalyticsServiceErrorDomain code:BTAnalyticsServiceErrorTypeInvalidAPIClient userInfo:@{ NSLocalizedDescriptionKey : @"API client must have clientToken or tokenizationKey" }];
+                NSError *error = [NSError errorWithDomain:BTAnalyticsServiceErrorDomain code:BTAnalyticsServiceErrorTypeInvalidAPIClient userInfo:@{ NSLocalizedDescriptionKey : @"API client must have client token or tokenization key" }];
                 [[BTLogger sharedLogger] warning:error.localizedDescription];
                 if (completionBlock) completionBlock(error);
                 return;
@@ -169,6 +174,11 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
         }
         
         dispatch_async(self.sessionsQueue, ^{
+            if (self.analyticsSessions.count == 0) {
+                if (completionBlock) completionBlock(nil);
+                return;
+            }
+            
             for (NSString *sessionID in self.analyticsSessions.allKeys) {
                 BTAnalyticsSession *session = self.analyticsSessions[sessionID];
                 
@@ -201,6 +211,27 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
             }
         });
     }];
+}
+
+#pragma mark - Private methods
+
+- (void)appWillResign:(NSNotification *)notification {
+    UIApplication *application = notification.object;
+    
+    __block UIBackgroundTaskIdentifier bgTask;
+    bgTask = [application beginBackgroundTaskWithName:@"BTAnalyticsService" expirationHandler:^{
+        [[BTLogger sharedLogger] warning:@"Analytics service background task expired"];
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    }];
+    
+    // Start the long-running task and return immediately.
+    dispatch_async(self.sessionsQueue, ^{
+        [self flush:^(__unused NSError * _Nullable error) {
+            [application endBackgroundTask:bgTask];
+            bgTask = UIBackgroundTaskInvalid;
+        }];
+    });
 }
 
 #pragma mark - Helpers
@@ -243,11 +274,11 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
 
 - (void)checkFlushThreshold {
     __block NSUInteger eventCount = 0;
-    
+
     dispatch_sync(self.sessionsQueue, ^{
-        [self.analyticsSessions enumerateKeysAndObjectsUsingBlock:^(__unused NSString * _Nonnull key, BTAnalyticsSession * _Nonnull analyticsSession, __unused BOOL * _Nonnull stop) {
+        for (BTAnalyticsSession *analyticsSession in self.analyticsSessions.allValues) {
             eventCount += analyticsSession.events.count;
-        }];
+        }
     });
     
     if (eventCount >= self.flushThreshold) {

@@ -26,6 +26,10 @@
 
 @implementation BTFakeAnalyticsService
 
+- (void)sendAnalyticsEvent:(NSString *)eventKind {
+    self.lastEvent = eventKind;
+}
+
 - (void)sendAnalyticsEvent:(NSString *)eventKind completion:(__unused void (^)(NSError *))completionBlock {
     self.lastEvent = eventKind;
 }

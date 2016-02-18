@@ -19,9 +19,6 @@
 /// Analytics should only be posted by internal clients.
 - (void)sendAnalyticsEvent:(NSString *)eventName;
 
-/// Exposed to provide a more testable API for sending analytics, since it involves asynchronous operations
-- (void)sendAnalyticsEvent:(NSString *)eventName completion:(void(^)(NSError *error))completionBlock;
-
 /// An internal initializer to toggle whether to send an analytics event during initialization.
 /// This prevents copyWithSource:integration: from sending a duplicate event. It can also be used
 /// to suppress excessive network chatter during testing.
