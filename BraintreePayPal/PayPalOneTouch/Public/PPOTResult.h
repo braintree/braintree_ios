@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, PPOTErrorCode) {
     PPOTErrorCodeParsingFailed = -1001,
     PPOTErrorCodeNoTargetAppFound = -1002,
     PPOTErrorCodeOpenURLFailed = -1003,
+    PPOTErrorCodePersistedDataFetchFailed = -1004,
 };
 
 typedef NS_ENUM(NSInteger, PPOTResultType) {

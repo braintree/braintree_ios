@@ -30,6 +30,8 @@
         return NO;
     }
 
+    BOOL success = YES;
+
     key = [self keychainKeyForKey:key];
 
 #if TARGET_IPHONE_SIMULATOR
@@ -37,7 +39,7 @@
     // we decided to simply use user defaults
     [[NSUserDefaults standardUserDefaults] setValue:data ? data : [NSData data] forKey:key];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    return YES;
+    return success;
 #else
 
     // First check if it already exists, by creating a search dictionary and requesting that
@@ -56,32 +58,30 @@
             NSMutableDictionary *addDict = existsQueryDictionary;
             [addDict setObject:data forKey:(__bridge id)kSecValueData];
             [addDict setObject:(__bridge id)kSecAttrAccessibleWhenUnlockedThisDeviceOnly forKey:(__bridge id)kSecAttrAccessible];
-#if DEBUG
+
             res = SecItemAdd((__bridge CFDictionaryRef)addDict, NULL);
-            PPAssert1(res == errSecSuccess, @"Received %d from SecItemAdd!", (int)res);
-#else
-            SecItemAdd((__bridge CFDictionaryRef)addDict, NULL);
-#endif
+            if (res != errSecSuccess) {
+                success = NO;
+            }
         }
     } else if (res == errSecSuccess) {
         if(data) {
             // Modify an existing one
             // Actually pull it now off the keychain at this point.
             NSDictionary *attributeDict = [NSDictionary dictionaryWithObject:data forKey:(__bridge id)kSecValueData];
-#if DEBUG
+
             res = SecItemUpdate((__bridge CFDictionaryRef)existsQueryDictionary, (__bridge CFDictionaryRef)attributeDict);
-            PPAssert1(res == errSecSuccess, @"SecItemUpdated returned %d!", (int)res);
-#else
-            SecItemUpdate((__bridge CFDictionaryRef)existsQueryDictionary, (__bridge CFDictionaryRef)attributeDict);
-#endif
+            if (res != errSecSuccess) {
+                success = NO;
+            }
         } else {
             SecItemDelete((__bridge CFDictionaryRef)existsQueryDictionary);
         }
     } else {
-        PPAssert1(NO, @"Received %d from SecItemCopyMatching!", (int)res);
+        success = NO;
     }
 
-    return YES;
+    return success;
 #endif
 }
 

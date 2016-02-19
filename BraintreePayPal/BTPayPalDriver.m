@@ -703,6 +703,9 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
     
     switch (result.type) {
         case PPOTResultTypeError:
+            if (result.error.code == PPOTErrorCodePersistedDataFetchFailed) {
+                return [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"%@.failed-keychain", eventName]];
+            }
             return [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"%@.failed", eventName]];
         case PPOTResultTypeCancel:
             if (result.error) {
