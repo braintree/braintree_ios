@@ -89,6 +89,7 @@ Pod::Spec.new do |s|
     s.frameworks = "UIKit"
     s.weak_frameworks = "SafariServices"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
+    s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
   end
 

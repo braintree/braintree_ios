@@ -10,6 +10,7 @@
 #import "PPOTMacros.h"
 #import "PPOTSimpleKeychain.h"
 #import "PPOTURLSession.h"
+#import "BTLogger_Internal.h"
 
 #import <libkern/OSAtomic.h>
 
@@ -383,7 +384,7 @@ static BOOL alwaysUseHardcodedConfiguration = NO;
                          else {
                              dataString = @"<no data received>";
                          }
-                         NSLog(@"Downloaded JSON config\n-> HTTP status: %ld\n-> file contents:\n%@\n", (long)response.statusCode, dataString);
+                         [[BTLogger sharedLogger] debug:@"Downloaded JSON config\n-> HTTP status: %ld\n-> file contents:\n%@\n", (long)response.statusCode, dataString];
 #endif
                          PPOTConfiguration *configuration = data ? [[PPOTConfiguration alloc] initWithJSON:data] : nil;
                          if (configuration) {
@@ -435,7 +436,7 @@ static BOOL alwaysUseHardcodedConfiguration = NO;
                                                       length:configuration_otc_config_ios_json_len];
 #if DEBUG
     NSString *str = [[NSString alloc] initWithData:defaultConfigurationJSON encoding:NSUTF8StringEncoding];
-    NSLog(@"Using default JSON config %@\n", str);
+    [[BTLogger sharedLogger] debug:@"Using default JSON config %@\n", str];
 #endif
 
     PPOTConfiguration *defaultConfiguration = [[PPOTConfiguration alloc] initWithJSON:defaultConfigurationJSON];
