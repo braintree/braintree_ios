@@ -79,7 +79,11 @@
 
         result.target = configurationRecipe.target;
     } else {
-        result = [self resultWithError];
+        if (!persistentRequestData) {
+            result = [self resultWithPersistedRequestDataFetchError];
+        } else {
+            result = [self resultWithError];
+        }
         result.target = PPOTRequestTargetUnknown;
         analyticsError = result.error;
     }
@@ -143,9 +147,20 @@
 }
 
 + (PPOTResult *)resultWithError {
+    NSError *error = [self errorUserInfo:@{kPPOTAppSwitchMessageKey:CARDIO_STR(@"App Switch Invalid URL")}];
+    return [self resultWithSpecificError:error];
+}
+
++ (PPOTResult *)resultWithPersistedRequestDataFetchError {
+    NSDictionary *userInfo = @{kPPOTAppSwitchMessageKey:CARDIO_STR(@"Could not retrieve persisted request data")};
+    NSError *error = [PPOTError errorWithErrorCode:PPOTErrorCodePersistedDataFetchFailed userInfo:userInfo];
+    return [self resultWithSpecificError:error];
+}
+
++ (PPOTResult *)resultWithSpecificError:(NSError *)error {
     PPOTResult *result = [PPOTResult new];
     result.type = PPOTResultTypeError;
-    result.error = [self errorUserInfo:@{kPPOTAppSwitchMessageKey:CARDIO_STR(@"App Switch Invalid URL")}];
+    result.error = error;
     return result;
 }
 
