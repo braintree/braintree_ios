@@ -12,18 +12,25 @@ extern NSString * const BTVenmoDriverErrorDomain;
 
 typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
     BTVenmoDriverErrorTypeUnknown = 0,
+    
     /// Venmo is disabled in configuration
     BTVenmoDriverErrorTypeDisabled,
+    
     /// App is not installed on device
     BTVenmoDriverErrorTypeAppNotAvailable,
+    
     /// Bundle display name must be present
     BTVenmoDriverErrorTypeBundleDisplayNameMissing,
+    
     /// UIApplication failed to switch to Venmo app
     BTVenmoDriverErrorTypeAppSwitchFailed,
+    
     /// Return URL was invalid
     BTVenmoDriverErrorTypeInvalidReturnURL,
+    
     /// Braintree SDK is integrated incorrectly
     BTVenmoDriverErrorTypeIntegration,
+    
     /// Request URL was invalid, configuration may be missing required values
     BTVenmoDriverErrorTypeInvalidRequestURL,
 };
