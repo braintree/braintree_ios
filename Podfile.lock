@@ -39,6 +39,7 @@ PODS:
     - Braintree/PayPalOneTouch
   - Braintree/PayPalDataCollector (4.2.2)
   - Braintree/PayPalOneTouch (4.2.2):
+    - Braintree/Core
     - Braintree/PayPalDataCollector
   - Braintree/UI (4.2.2):
     - Braintree/Card
@@ -95,11 +96,11 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Braintree:
-    :path: "."
+    :path: .
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Braintree: e6b47d02618769479da1da00f18fd3f6a18c12a8
+  Braintree: a8b4b8b0cd766f1cf6d192af36c10f3d99d69688
   CardIO: 2460db0f4936f3441b08d51e3904b436d77ec8fc
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
