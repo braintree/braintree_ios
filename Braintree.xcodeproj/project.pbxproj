@@ -135,6 +135,7 @@
 		413533B01BF6C7510005D1BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A76B19AA1B79708900452CFA /* Main.storyboard */; };
 		413533B11BF6C7510005D1BA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A76B1A061B79708A00452CFA /* InfoPlist.strings */; };
 		413616EB1C1217F000D4C4A5 /* BTUIVenmoMonogramCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 035945561BE96345002116BB /* BTUIVenmoMonogramCardView.m */; };
+		413CDF4F1C779ED400B89FCA /* BTDataCollector_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 413CDF4E1C779ED400B89FCA /* BTDataCollector_Internal.h */; };
 		4149C91D1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4149C91C1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift */; };
 		415924B21BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 415924B01BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m */; };
 		415924B41BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 415924B31BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1222,6 +1223,7 @@
 		41211EF91BA0E47400DB1705 /* BTPaymentMethodNonce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTPaymentMethodNonce.h; sourceTree = "<group>"; };
 		412FE0561B9799EE008AAABE /* BTApplePayClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTApplePayClient_Internal.h; sourceTree = "<group>"; };
 		413533BF1BF6C7510005D1BA /* Demo-StaticLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Demo-StaticLibrary.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		413CDF4E1C779ED400B89FCA /* BTDataCollector_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDataCollector_Internal.h; sourceTree = "<group>"; };
 		4149C91C1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Tests.swift; sourceTree = "<group>"; };
 		415924B01BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentMethodNonceParser.m; sourceTree = "<group>"; };
 		415924B31BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTPaymentMethodNonceParser.h; sourceTree = "<group>"; };
@@ -2740,6 +2742,7 @@
 			isa = PBXGroup;
 			children = (
 				A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */,
+				413CDF4E1C779ED400B89FCA /* BTDataCollector_Internal.h */,
 				A76D7C251BB1D31A0000FA6A /* Kount */,
 				A76D7C1D1BB1CBBF0000FA6A /* Public */,
 				A76D7C2C1BB1D35A0000FA6A /* README.md */,
@@ -3282,6 +3285,7 @@
 				A76D7C201BB1CBD50000FA6A /* BraintreeDataCollector.h in Headers */,
 				A76D7C3D1BB31ABB0000FA6A /* DeviceCollectorSDK.h in Headers */,
 				A76D7C211BB1CBD50000FA6A /* BTDataCollector.h in Headers */,
+				413CDF4F1C779ED400B89FCA /* BTDataCollector_Internal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

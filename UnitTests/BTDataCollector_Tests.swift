@@ -1,4 +1,5 @@
 import XCTest
+import PayPalDataCollector
 
 class BTDataCollector_Tests: XCTestCase {
     
@@ -14,7 +15,12 @@ class BTDataCollector_Tests: XCTestCase {
         let dataCollector = BTDataCollector(environment: .Sandbox)
         testDelegate = TestDelegateForBTDataCollector(didStartExpectation: expectationWithDescription("didStart"), didCompleteExpectation: expectationWithDescription("didComplete"))
         dataCollector.delegate = testDelegate
+        let stubKount = FakeDeviceCollectorSDK()
+        stubKount.overrideDelegate = dataCollector
+        dataCollector.kount = stubKount
+
         let jsonString = dataCollector.collectCardFraudData()
+
         let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
         let dictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! Dictionary<String, AnyObject>
         XCTAssert((dictionary["device_session_id"] as! String).characters.count >= 32)
@@ -28,7 +34,7 @@ class BTDataCollector_Tests: XCTestCase {
         dataCollector.delegate = testDelegate
         dataCollector.setCollectorUrl("fake url which should fail")
         dataCollector.collectCardFraudData()
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectationsWithTimeout(2, handler: nil)
         
         // Note: Kount provides NSError, so BTDataCollectorKountErrorDomain is not used.
         XCTAssertEqual(testDelegate!.error!.domain, "URL validation failed")
@@ -46,7 +52,7 @@ class BTDataCollector_Tests: XCTestCase {
         dataCollector.delegate = testDelegate
         dataCollector.setFraudMerchantId("fake merchant id which should fail")
         dataCollector.collectCardFraudData()
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectationsWithTimeout(2, handler: nil)
         
         XCTAssertEqual(testDelegate!.error!.domain, "Merchant ID validation failed")
         XCTAssertEqual(testDelegate!.error!.code, Int(DC_ERR_INVALID_MERCHANT))
@@ -59,7 +65,13 @@ class BTDataCollector_Tests: XCTestCase {
         let dataCollector = BTDataCollector(environment: .Sandbox)
         testDelegate = TestDelegateForBTDataCollector(didStartExpectation: expectationWithDescription("didStart"), didCompleteExpectation: expectationWithDescription("didComplete"))
         dataCollector.delegate = testDelegate
+        let stubKount = FakeDeviceCollectorSDK()
+        stubKount.overrideDelegate = dataCollector
+        dataCollector.kount = stubKount
+        BTDataCollector.setPayPalDataCollectorClass(FakePPDataCollector.self)
+        
         let jsonString = dataCollector.collectFraudData()
+        
         let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
         let dictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! Dictionary<String, AnyObject>
         XCTAssert((dictionary["device_session_id"] as! String).characters.count >= 32)
@@ -68,9 +80,9 @@ class BTDataCollector_Tests: XCTestCase {
         // Ensure correlation_id (clientMetadataId) is not nil and has a length of at least 12.
         // This is just a guess of a reasonable id length. In practice, the id
         // typically has a length of 32.
-        XCTAssert((dictionary["correlation_id"] as! String).characters.count >= 32)
+        XCTAssertEqual(dictionary["correlation_id"] as? String, "fakeclientmetadataid")
 
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
 }
 
@@ -102,5 +114,38 @@ class TestDelegateForBTDataCollector: NSObject, BTDataCollectorDelegate {
     func dataCollector(dataCollector: BTDataCollector, didFailWithError error: NSError) {
         self.error = error
         self.didFailExpectation?.fulfill()
+    }
+}
+
+class FakeDeviceCollectorSDK: DeviceCollectorSDK {
+    
+    var lastCollectSessionID: String?
+    var overrideDelegate: DeviceCollectorSDKDelegate?
+    var forceError = false
+    
+    override func collect(sessionId: String!) {
+        lastCollectSessionID = sessionId
+        if let delegate = overrideDelegate {
+            delegate.onCollectorStart?()
+            if forceError {
+                delegate.onCollectorError?(1981, withError: NSError(domain: "Fake", code: 1981, userInfo: nil))
+            } else {
+                delegate.onCollectorSuccess?()
+            }
+        }
+    }
+    
+    override func setDelegate(delegate: DeviceCollectorSDKDelegate!) {
+        overrideDelegate = delegate
+    }
+}
+
+class FakePPDataCollector: PPDataCollector {
+    
+    static var didGetClientMetadataID = false
+    
+    override class func clientMetadataID() -> String {
+        didGetClientMetadataID = true
+        return "fakeclientmetadataid"
     }
 }
