@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.2.3 (2016-02-22)
+
+* Remove assertion from PayPal One Touch Core when reading from Keychain fails
+* Remove NSLog() from PayPal One Touch Core
+
 ## 4.2.2 (2016-02-11)
 
 * Fix crash that occurs when downgrading Braintree from 4.2.x to previous versions
