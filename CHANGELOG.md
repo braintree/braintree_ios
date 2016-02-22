@@ -4,6 +4,7 @@
 
 * Remove assertion from PayPal One Touch Core when reading from Keychain fails
 * Remove NSLog() from PayPal One Touch Core
+* Fix nullability annotation in `PPFPTITracker.h` to squelch error in Xcode 7.3 Beta
 
 ## 4.2.2 (2016-02-11)
 
