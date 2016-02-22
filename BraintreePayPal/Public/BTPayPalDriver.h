@@ -12,18 +12,17 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString *const BTPayPalDriverErrorDomain;
 
 typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
-
     BTPayPalDriverErrorTypeUnknown = 0,
 
     /// PayPal is disabled in configuration
     BTPayPalDriverErrorTypeDisabled,
 
     /// App switch is not configured appropriately. You must specify a
-    /// valid returnURLScheme via BTAppSwitch before attempting an app switch.
+    /// valid returnURLScheme via BTAppSwitch before attempting an app switch
     BTPayPalDriverErrorTypeIntegrationReturnURLScheme,
 
     /// UIApplication failed to switch despite it being available.
-    /// `[UIApplication openURL:]` returned `NO` when `YES` was expected.
+    /// `[UIApplication openURL:]` returned `NO` when `YES` was expected
     BTPayPalDriverErrorTypeAppSwitchFailed,
 
     /// Invalid configuration, e.g. bad CFBundleDisplayName
