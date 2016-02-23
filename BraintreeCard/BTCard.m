@@ -90,8 +90,10 @@
     if (self.countryCodeAlpha2) {
         billingAddressDictionary[@"country_code_alpha2"] = self.countryCodeAlpha2;
     }
-    
-    p[@"billing_address"] = [billingAddressDictionary copy];
+
+    if (billingAddressDictionary.count > 0) {
+        p[@"billing_address"] = [billingAddressDictionary copy];
+    }
     
     NSMutableDictionary *optionsDictionary = [NSMutableDictionary new];
     if ([p[@"options"] isKindOfClass:[NSDictionary class]]) {
