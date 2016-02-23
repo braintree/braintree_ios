@@ -33,7 +33,7 @@
 
 
 /// The delegate which actually sends the data
-@property (nonatomic, weak, readwrite) id<PPFPTINetworkAdapterDelegate> networkAdapterDelegate;
+@property (nonatomic, weak, readwrite, nullable) id<PPFPTINetworkAdapterDelegate> networkAdapterDelegate;
 
 /// Sends an event with various metrics and data
 ///

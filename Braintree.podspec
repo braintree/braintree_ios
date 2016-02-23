@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "4.2.2"
+  s.version          = "4.2.3"
   s.summary          = "Braintree v.zero: A modern foundation for accepting payments"
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
@@ -89,6 +89,7 @@ Pod::Spec.new do |s|
     s.frameworks = "UIKit"
     s.weak_frameworks = "SafariServices"
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
+    s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
   end
 

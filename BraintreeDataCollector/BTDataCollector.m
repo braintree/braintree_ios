@@ -1,8 +1,6 @@
-#import "BTDataCollector.h"
-#import "DeviceCollectorSDK.h"
+#import "BTDataCollector_Internal.h"
 
-@interface BTDataCollector () <DeviceCollectorSDKDelegate>
-@property (nonatomic, strong) DeviceCollectorSDK *kount;
+@interface BTDataCollector ()
 @property (nonatomic, assign) BTDataCollectorEnvironment environment;
 @property (nonatomic, copy) NSString *fraudMerchantId;
 @end
@@ -14,6 +12,12 @@ static NSString *BTDataCollectorSharedMerchantId = @"600000";
 NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDataCollectorKountErrorDomain";
 
 #pragma mark - Initialization and setup
+
++ (void)load {
+    if (self == [BTDataCollector class]) {
+        PayPalDataCollectorClass = NSClassFromString(@"PPDataCollector");
+    }
+}
 
 - (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment {
     if (self = [super init]) {
@@ -103,12 +107,20 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 
 #pragma mark - Private methods
 
+static Class PayPalDataCollectorClass;
+
++ (void)setPayPalDataCollectorClass:(Class)payPalDataCollectorClass {
+    // +load will always set PayPalDataCollectorClass
+    if ([payPalDataCollectorClass isSubclassOfClass:NSClassFromString(@"PPDataCollector")]) {
+        PayPalDataCollectorClass = payPalDataCollectorClass;
+    }
+}
+
 + (NSString *)generatePayPalClientMetadataId {
-    Class paypalClass = NSClassFromString(@"PPDataCollector");
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-    if (paypalClass && [paypalClass respondsToSelector:@selector(clientMetadataID)]) {
-        return [paypalClass performSelector:@selector(clientMetadataID)];
+    if (PayPalDataCollectorClass && [PayPalDataCollectorClass respondsToSelector:@selector(clientMetadataID)]) {
+        return [PayPalDataCollectorClass performSelector:@selector(clientMetadataID)];
     }
 #pragma clang diagnostic pop
     

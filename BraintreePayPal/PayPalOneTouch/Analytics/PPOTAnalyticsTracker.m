@@ -19,6 +19,7 @@
 #import "PPFPTIData.h"
 #import "PPFPTITracker.h"
 #import "PPOTAnalyticsDefines.h"
+#import "BTLogger_Internal.h"
 
 #define kTimeForSession           (30 * 60) // How long should an Omniture session last.
 #define kKeychainIdentifierForUDID @"PayPal_OTC_Analytics_UDID"
@@ -284,18 +285,9 @@
 #pragma mark - PPFPTINetworkAdapterDelegate
 
 - (void)sendRequestWithData:(nonnull __attribute__((unused)) PPFPTIData*)fptiData {
-#if SEND_FPTI_INFO
-
     NSDictionary *fptiDataDictionary = [fptiData dataAsDictionary];
     NSDictionary *params = fptiDataDictionary[@"events"][@"event_params"];
     NSString *nameStr = params[@"page"];
-
-#if DEBUG_ANALYTICS
-    NSLog(@"\n=================== To Analytics Tracking ===================="
-          @"\n=> %@"
-          @"\n%@"
-          @"\n==============================================================", nameStr, params);
-#endif
 
     NSArray *pageComponents = [nameStr componentsSeparatedByString:@":"];
     NSString *environment = pageComponents[[pageComponents count] - 2];
@@ -314,24 +306,11 @@
     NSError *error;
     NSData *fptiJSONData = [NSJSONSerialization dataWithJSONObject:fptiDataDictionary options:0 error:&error];
     if (fptiJSONData == nil && error != NULL) {
-#if DEBUG_ANALYTICS
-        NSLog(@"\n=================== Analytics Tracking Error ===================="
-              @"\n=> %@"
-              @"\n%@"
-              @"\n%@"
-              @"\n==============================================================",
-              [error domain],
-              [error localizedDescription],
-              [error description]);
-#endif
         // ignore the error
     } else {
         [request setHTTPBody:fptiJSONData];
         [self.urlSession sendRequest:request completionBlock:nil];
     }
-#else
-    return;
-#endif
 }
 
 #pragma mark -
