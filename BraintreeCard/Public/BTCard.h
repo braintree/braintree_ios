@@ -25,6 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// The postal code associated with the card's billing address
 @property (nonatomic, nullable, copy) NSString *postalCode;
 
+/// Additional parameters associated with the card's billing address
+@property (nonatomic, nullable, copy) NSString *streetAddress;
+@property (nonatomic, nullable, copy) NSString *locality;
+@property (nonatomic, nullable, copy) NSString *region;
+@property (nonatomic, nullable, copy) NSString *countryName;
+@property (nonatomic, nullable, copy) NSString *countryCodeAlpha2;
+
 /// Controls whether or not to return validations and/or verification results. By default, this is
 /// not enabled.
 ///
