@@ -35,31 +35,4 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testSendAnalyticsEvent_withTokenizationKey_isSuccessful {
-    [self validateSendAnalyticsEventWithAPIClient:[[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY]];
-}
-
-- (void)testSendAnalyticsEvent_withClientToken_isSuccessful {
-    [self validateSendAnalyticsEventWithAPIClient:[[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN]];
-}
-
-#pragma mark - Helpers
-
-- (void)validateSendAnalyticsEventWithAPIClient:(BTAPIClient *)apiClient {
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Post analytics event"];
-
-    // Analytics require an authorization fingerprint, needs support for tokenization key
-    NSString *event = @"hello world! 🐴";
-    [apiClient sendAnalyticsEvent:event completion:^(NSError *error) {
-        XCTAssertNil(error);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-// Testing that analytics "is successful but does not send the event when analytics URL is omitted from the client token"
-// is covered by the unit test:
-//   testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent
-
 @end
