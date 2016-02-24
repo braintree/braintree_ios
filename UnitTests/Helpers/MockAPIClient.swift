@@ -1,4 +1,4 @@
-class MockAPIClient : BTAPIClient {
+@objc class MockAPIClient : BTAPIClient {
     var lastPOSTPath = ""
     var lastPOSTParameters = [:] as [NSObject : AnyObject]?
     var lastGETPath = ""
@@ -47,7 +47,7 @@ class MockAPIClient : BTAPIClient {
         return self
     }
 
-    override func sendAnalyticsEvent(name: String!, completion completionBlock: ((NSError!) -> Void)!) {
+    override func sendAnalyticsEvent(name: String!) {
         postedAnalyticsEvents.append(name)
     }
 }

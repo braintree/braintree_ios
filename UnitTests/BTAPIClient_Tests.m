@@ -6,6 +6,7 @@
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
 #import "BTFakeHTTP.h"
+#import "BTAnalyticsService.h"
 
 @interface StubBTClientMetadata : BTClientMetadata
 @property (nonatomic, assign) BTClientMetadataIntegrationType integration;
@@ -17,6 +18,22 @@
 @synthesize integration = _integration;
 @synthesize source = _source;
 @synthesize sessionId = _sessionId;
+@end
+
+@interface BTFakeAnalyticsService : BTAnalyticsService
+@property (nonatomic, copy) NSString *lastEvent;
+@end
+
+@implementation BTFakeAnalyticsService
+
+- (void)sendAnalyticsEvent:(NSString *)eventKind {
+    self.lastEvent = eventKind;
+}
+
+- (void)sendAnalyticsEvent:(NSString *)eventKind completion:(__unused void (^)(NSError *))completionBlock {
+    self.lastEvent = eventKind;
+}
+
 @end
 
 @interface BTAPIClient_Tests : XCTestCase
@@ -311,89 +328,28 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-#pragma mark - Analytics tests
+//#pragma mark - Analytics tests
 
-- (void)testSendAnalyticsEvent_whenRemoteConfigurationHasNoAnalyticsURL_doesNotSendEvent {
+- (void)testAnalyticsService_isCreatedDuringInitialization {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
-    apiClient.http = stubConfigurationHTTP;
-    BTFakeHTTP *mockAnalyticsHttp = [BTFakeHTTP fakeHTTP];
-    apiClient.analyticsHttp = mockAnalyticsHttp;
-    [stubConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{} statusCode:200];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
-    [apiClient sendAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
-        XCTAssertTrue(mockAnalyticsHttp.POSTRequestCount == 0);
-        XCTAssertNil(error);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:2 handler:nil];
+    XCTAssertTrue([apiClient.analyticsService isKindOfClass:[BTAnalyticsService class]]);
 }
 
-- (void)testSendAnalyticsEvent_whenRemoteConfigurationHasAnalyticsURL_setsUpAnalyticsHTTPToUseBaseURL {
+- (void)testSendAnalyticsEvent_whenCalled_callsAnalyticsService {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
-    apiClient.http = stubConfigurationHTTP;
-    [stubConfigurationHTTP stubRequest:@"GET"
-                            toEndpoint:@"/client_api/v1/configuration"
-                           respondWith:@{
-                                         @"analytics" : @{
-                                                 @"url" : @"test://do-not-send.url"
-                                                 } }
-                            statusCode:200];
+    BTFakeAnalyticsService *mockAnalyticsService = [[BTFakeAnalyticsService alloc] init];
+    apiClient.analyticsService = mockAnalyticsService;
 
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Uses analytics base URL"];
-    [apiClient sendAnalyticsEvent:@"any.analytics.event" completion:^(NSError *error) {
-        XCTAssertNil(error);
-        
-        XCTAssertEqualObjects(apiClient.analyticsHttp.baseURL.absoluteString, @"test://do-not-send.url");
-        [expectation fulfill];
-    }];
+    [apiClient sendAnalyticsEvent:@"blahblah"];
 
-    [self waitForExpectationsWithTimeout:2 handler:nil];
-}
-
-- (void)testSendAnalyticsEvent_whenSuccessful_sendsAnalyticsEvent {
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalBrowser integration:BTClientMetadataIntegrationCustom];
-    BTFakeHTTP *mockAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
-    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
-    apiClient.analyticsHttp = mockAnalyticsHTTP;
-    apiClient.http = stubConfigurationHTTP;
-    [stubConfigurationHTTP stubRequest:@"GET"
-                            toEndpoint:@"/client_api/v1/configuration"
-                           respondWith:@{
-                                         @"analytics" : @{
-                                                 @"url" : @"test://do-not-send.url"
-                                                 } }
-                            statusCode:200];
-    BTClientMetadata *metadata = apiClient.metadata;
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
-    [apiClient sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
-        XCTAssertNil(error);
-        
-        XCTAssertEqual(metadata.source, BTClientMetadataSourcePayPalBrowser);
-        XCTAssertEqual(metadata.integration, BTClientMetadataIntegrationCustom);
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"_meta"][@"integration"], metadata.integrationString);
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"_meta"][@"source"], metadata.sourceString);
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"_meta"][@"sessionId"], metadata.sessionId);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:2 handler:nil];
+    XCTAssertEqualObjects(mockAnalyticsService.lastEvent, @"blahblah");
 }
 
 - (void)testPOST_usesMetadataSourceAndIntegration {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
     BTFakeHTTP *mockHTTP = [BTFakeHTTP fakeHTTP];
-    BTFakeHTTP *stubAnalyticsHTTP = [BTFakeHTTP fakeHTTP];
     apiClient.http = mockHTTP;
-    apiClient.analyticsHttp = stubAnalyticsHTTP;
     [mockHTTP stubRequest:@"GET"
                toEndpoint:@"/client_api/v1/configuration"
               respondWith:@{

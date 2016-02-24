@@ -166,7 +166,7 @@
 
         if ([parameters isKindOfClass:[NSDictionary class]]) {
             bodyData = [NSJSONSerialization dataWithJSONObject:parameters
-                                                       options:NSJSONWritingPrettyPrinted
+                                                       options:0
                                                          error:&jsonSerializationError];
         }
 

@@ -437,7 +437,7 @@ NSURLSession *testURLSession() {
             XCTAssertNil(error);
 
             NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponseBody:body];
-            expect(httpRequestBody).to.equal(@"{\n  \"authorization_fingerprint\" : \"test-authorization-fingerprint\"\n}");
+            expect(httpRequestBody).to.equal(@"{\"authorization_fingerprint\":\"test-authorization-fingerprint\"}");
 
             done();
         }];
@@ -470,7 +470,7 @@ NSURLSession *testURLSession() {
             XCTAssertNil(error);
             
             NSString *httpRequestBody = [BTHTTPTestProtocol parseRequestBodyFromTestResponseBody:body];
-            expect(httpRequestBody).to.equal(@"{\n  \"authorization_fingerprint\" : \"test-authorization-fingerprint\"\n}");
+            expect(httpRequestBody).to.equal(@"{\"authorization_fingerprint\":\"test-authorization-fingerprint\"}");
 
             done();
         }];
