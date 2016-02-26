@@ -19,7 +19,11 @@
 #import "PPFPTIData.h"
 #import "PPFPTITracker.h"
 #import "PPOTAnalyticsDefines.h"
+#if __has_include("BraintreeCore.h")
 #import "BTLogger_Internal.h"
+#else
+#import <BraintreeCore/BTLogger_Internal.h>
+#endif
 
 #define kTimeForSession           (30 * 60) // How long should an Omniture session last.
 #define kKeychainIdentifierForUDID @"PayPal_OTC_Analytics_UDID"

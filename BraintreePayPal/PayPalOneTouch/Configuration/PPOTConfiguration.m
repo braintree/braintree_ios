@@ -10,8 +10,11 @@
 #import "PPOTMacros.h"
 #import "PPOTSimpleKeychain.h"
 #import "PPOTURLSession.h"
+#if __has_include("BraintreeCore.h")
 #import "BTLogger_Internal.h"
-
+#else
+#import <BraintreeCore/BTLogger_Internal.h>
+#endif
 #import <libkern/OSAtomic.h>
 
 #include "PPDefaultConfigurationJSON.h"
