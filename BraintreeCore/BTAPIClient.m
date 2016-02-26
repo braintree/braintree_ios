@@ -59,6 +59,12 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         
         // BTHTTP's default NSURLSession does not cache responses, but we want the BTHTTP instance that fetches configuration to cache aggressively
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        static NSURLCache *configurationCache;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            configurationCache = [[NSURLCache alloc] initWithMemoryCapacity:1 * 1024 * 1024 diskCapacity:0 diskPath:nil];
+        });
+        configuration.URLCache = configurationCache;
         configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
         _configurationHTTP.session = [NSURLSession sessionWithConfiguration:configuration];
     }
