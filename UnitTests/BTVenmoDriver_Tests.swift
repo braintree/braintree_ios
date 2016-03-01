@@ -402,7 +402,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         let fakeHttp = BTFakeHTTP()!
         fakeHttp.cannedResponse = BTJSON(value: configurationDictionary)
         fakeHttp.cannedStatusCode = 200
-        apiClient.http = fakeHttp
+        apiClient.configurationHTTP = fakeHttp
         return apiClient
     }
     
@@ -411,7 +411,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         let fakeHttp = BTFakeHTTP()!
         fakeHttp.cannedResponse = configurationJson
         fakeHttp.cannedStatusCode = 200
-        apiClient.http = fakeHttp
+        apiClient.configurationHTTP = fakeHttp
         return apiClient
     }
 

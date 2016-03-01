@@ -8,7 +8,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 @interface BTAPIClient ()
 @property (nonatomic, strong) dispatch_queue_t configurationQueue;
-@property (nonatomic, strong) BTHTTP *configurationHTTP;
 @end
 
 @implementation BTAPIClient

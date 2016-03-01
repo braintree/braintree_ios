@@ -86,7 +86,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
 
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertNotNil(configuration);
@@ -107,7 +107,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"error_message": @"Something bad happened" } statusCode:503];
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         // Note: GETRequestCount will be 1 or 2 depending on whether the analytics event for the API client initialization
@@ -132,7 +132,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
                                            code:NSURLErrorCannotConnectToHost
                                        userInfo:nil];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
@@ -149,7 +149,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"First fetch configuration"];
 
@@ -183,6 +183,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeHTTP *fake = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
     // Override apiClient.http so that requests don't fail
+    apiClient.configurationHTTP = fake;
     apiClient.http = fake;
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"Fetch configuration"];
@@ -384,7 +385,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     fake.cannedResponse = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     return apiClient;
 }

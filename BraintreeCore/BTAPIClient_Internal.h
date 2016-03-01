@@ -9,6 +9,7 @@
 @property (nonatomic, copy) NSString *tokenizationKey;
 @property (nonatomic, strong) BTClientToken *clientToken;
 @property (nonatomic, strong) BTHTTP *http;
+@property (nonatomic, strong) BTHTTP *configurationHTTP;
 
 /// Client metadata that is used for tracking the client session
 @property (nonatomic, readonly, strong) BTClientMetadata *metadata;
