@@ -2,8 +2,10 @@
 #import "BTAPIClient.h"
 #import "BTClientMetadata.h"
 #import "BTClientToken.h"
-#import "BTJSON.h"
 #import "BTHTTP.h"
+#import "BTJSON.h"
+
+@class BTPaymentMethodNonce;
 
 @interface BTAPIClient ()
 @property (nonatomic, copy) NSString *tokenizationKey;
@@ -24,5 +26,11 @@
 /// This prevents copyWithSource:integration: from sending a duplicate event. It can also be used
 /// to suppress excessive network chatter during testing.
 - (instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
+
+/// Fetches payment methods. Must be using client token.
+///
+/// @param sortedDefaultFirst Sort payment method nonces with the default payment method first.
+/// @param completionBlock Callback that returns an array of payment method nonces
+- (void)fetchPaymentMethodNoncesSorted:(BOOL)sortDefaultFirst completion:(void(^)(NSArray <BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error))completionBlock;
 
 @end

@@ -12,6 +12,9 @@
     var cannedHTTPURLResponse : NSHTTPURLResponse? = nil
     var cannedResponseBody : BTJSON? = nil
 
+    var fetchedPaymentMethods = false
+    var fetchPaymentMethodsSorting = false
+
     override func GET(path: String, parameters: [NSObject : AnyObject]?, completion completionBlock: ((BTJSON?, NSHTTPURLResponse?, NSError?) -> Void)?) {
         lastGETPath = path
         lastGETParameters = parameters
@@ -40,6 +43,12 @@
         completionBlock(BTConfiguration(JSON: responseBody), cannedConfigurationResponseError)
     }
 
+    override func fetchPaymentMethodNoncesSorted(sortDefaultFirst: Bool, completion completionBlock: (([BTPaymentMethodNonce]!, NSError!) -> Void)!) {
+        fetchedPaymentMethods = true
+        fetchPaymentMethodsSorting = sortDefaultFirst
+        completionBlock([], nil)
+    }
+
     /// BTAPIClient gets copied by other classes like BTPayPalDriver, BTVenmoDriver, etc.
     /// This copy causes MockAPIClient to lose its stubbed data (canned responses), so the
     /// workaround for tests is to stub copyWithSource:integration: to *not* copy itself
@@ -49,5 +58,9 @@
 
     override func sendAnalyticsEvent(name: String!) {
         postedAnalyticsEvents.append(name)
+    }
+
+    func didFetchPaymentMethods(sorted sorted: Bool) -> Bool {
+        return fetchedPaymentMethods && fetchPaymentMethodsSorting == sorted
     }
 }

@@ -153,6 +153,48 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     XCTAssertTrue(cache.memoryCapacity > 0);
 }
 
+#pragma mark - Payment Methods
+
+- (void)testFetchPaymentMethods_performsGETWithCorrectParameter {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:ValidClientToken sendAnalyticsEvent:NO];
+
+    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
+    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/payment_methods" respondWith:@{ } statusCode:200];
+    apiClient.http = fake;
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
+    [apiClient fetchPaymentMethodNoncesSorted:YES completion:^(__unused NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, __unused NSError *error) {
+        XCTAssertEqualObjects(fake.lastRequestEndpoint, @"v1/payment_methods");
+        XCTAssertEqualObjects(fake.lastRequestParameters[@"default_first"], @(YES));
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+
+    expectation = [self expectationWithDescription:@"Callback invoked"];
+    [apiClient fetchPaymentMethodNoncesSorted:NO completion:^(__unused NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, __unused NSError *error) {
+        XCTAssertEqualObjects(fake.lastRequestEndpoint, @"v1/payment_methods");
+        XCTAssertEqualObjects(fake.lastRequestParameters[@"default_first"], @(NO));
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
+- (void)testFetchPaymentMethods_withTokenizationKey_returnsError {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Error returned"];
+    [apiClient fetchPaymentMethodNoncesSorted:YES completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
+        XCTAssertNil(paymentMethodNonces);
+        XCTAssertEqualObjects(error.domain, BTAPIClientErrorDomain);
+        XCTAssertEqual(error.code, BTAPIClientErrorTypeNotAuthorized);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
 #pragma mark - Dispatch Queue
 
 - (void)testCallbacks_useMainDispatchQueue {

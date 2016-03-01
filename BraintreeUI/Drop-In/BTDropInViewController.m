@@ -577,48 +577,39 @@
 }
 
 - (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock {
-    if (self.apiClient.tokenizationKey) {
-        // Necessary to stop loading indicator
+    // Check for proper authorization before fetching payment methods to suppress errors when using tokenization key
+    if (!self.apiClient.clientToken) {
         self.paymentMethodNonces = @[];
-        if (completionBlock) completionBlock();
+        if (completionBlock) {
+            completionBlock();
+        }
         return;
     }
-    
-    BOOL networkActivityIndicatorState = [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible];
+
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
-    [self.apiClient GET:@"v1/payment_methods"
-             parameters:nil
-             completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorState];
 
-                     if (error) {
-                         BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
-                         errorAlert.title = error.localizedDescription;
-                         BTJSON *errorBody = error.userInfo[BTHTTPJSONResponseBodyKey];
-                         errorAlert.message = [errorBody[@"error"][@"message"] asString];
-                         errorAlert.cancelBlock = ^{
-                             [self informDelegateDidCancel];
-                             if (completionBlock) completionBlock();
-                         };
-                         errorAlert.retryBlock = ^{
-                             [self fetchPaymentMethodsOnCompletion:completionBlock];
-                         };
-                         [errorAlert show];
+    [self.apiClient fetchPaymentMethodNoncesSorted:self.paymentRequest.showDefaultPaymentMethodNonceFirst completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-                         return;
-                     }
-
-                     NSMutableArray *paymentMethodNonces = [NSMutableArray array];
-                     for (NSDictionary *paymentInfo in [body[@"paymentMethods"] asArray]) {
-                         BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
-                         BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:[paymentInfoJSON[@"type"] asString]];
-                         if (paymentMethodNonce) [paymentMethodNonces addObject:paymentMethodNonce];
-                     }
-                     self.paymentMethodNonces = [paymentMethodNonces copy];
-                     if (completionBlock) completionBlock();
-                 });
+        if (error) {
+             BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
+             errorAlert.title = error.localizedDescription;
+             BTJSON *errorBody = error.userInfo[BTHTTPJSONResponseBodyKey];
+             errorAlert.message = [errorBody[@"error"][@"message"] asString];
+             errorAlert.cancelBlock = ^{
+                 [self informDelegateDidCancel];
+                 if (completionBlock) completionBlock();
+             };
+             errorAlert.retryBlock = ^{
+                 [self fetchPaymentMethodsOnCompletion:completionBlock];
+             };
+             [errorAlert show];
+        } else {
+            self.paymentMethodNonces = [paymentMethodNonces copy];
+            if (completionBlock) {
+                completionBlock();
+            }
+        }
     }];
 }
 
