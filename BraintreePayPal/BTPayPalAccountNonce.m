@@ -13,10 +13,6 @@
 
 @implementation BTPayPalAccountNonce
 
-@synthesize nonce = _nonce;
-@synthesize localizedDescription = _localizedDescription;
-@synthesize type = _type;
-
 - (instancetype)initWithNonce:(NSString *)nonce
                   description:(NSString *)description
                         email:(NSString *)email
@@ -27,10 +23,9 @@
               shippingAddress:(BTPostalAddress *)shippingAddress
              clientMetadataId:(NSString *)clientMetadataId
                       payerId:(NSString *)payerId
+                    isDefault:(BOOL)isDefault
 {
-    if (self = [super init]) {
-        _nonce = nonce;
-        _localizedDescription = description;
+    if (self = [super initWithNonce:nonce localizedDescription:description type:@"PayPal" isDefault:isDefault]) {
         _email = email;
         _firstName = firstName;
         _lastName = lastName;
@@ -39,7 +34,6 @@
         _shippingAddress = [shippingAddress copy];
         _clientMetadataId = clientMetadataId;
         _payerId = payerId;
-        _type = @"PayPal";
     }
     return self;
 }

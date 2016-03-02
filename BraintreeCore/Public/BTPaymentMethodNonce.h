@@ -28,6 +28,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return A Payment Method Nonce, or `nil` if nonce is nil.
 - (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(nullable NSString *)description;
 
+/// Initialize a new Payment Method Nonce.
+///
+/// @param nonce       A transactable payment method nonce.
+/// @param description A human-readable description.
+/// @param type        A string identifying the type of the payment method.
+/// @param isDefault   A boolean indicating whether this is a default payment method.
+/// @return A Payment Method Nonce, or `nil` if nonce is nil.
+- (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(NSString *)description type:(nonnull NSString *)type isDefault:(BOOL)isDefault;
+
 /// The one-time use payment method nonce
 @property (nonatomic, readonly, copy) NSString *nonce;
 
@@ -36,6 +45,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// The type of the tokenized data, e.g. PayPal, Venmo, MasterCard, Visa, Amex
 @property (nonatomic, readonly, copy) NSString *type;
+
+/// True if this nonce is the customer's default payment method, otherwise false.
+@property (nonatomic, readonly, assign) BOOL isDefault;
 
 @end
 

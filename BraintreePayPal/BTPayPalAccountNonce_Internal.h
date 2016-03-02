@@ -16,6 +16,7 @@
                billingAddress:(BTPostalAddress *)billingAddress
               shippingAddress:(BTPostalAddress *)shippingAddress
              clientMetadataId:(NSString *)clientMetadataId
-                      payerId:(NSString *)payerId;
+                      payerId:(NSString *)payerId
+                    isDefault:(BOOL)isDefault;
 
 @end

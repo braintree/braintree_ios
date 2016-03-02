@@ -8,7 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithNonce:(nonnull NSString *)nonce
                   description:(nullable NSString *)description
                   cardNetwork:(BTCardNetwork)cardNetwork
-                      lastTwo:(nullable NSString *)lastTwo;
+                      lastTwo:(nullable NSString *)lastTwo
+                    isDefault:(BOOL)isDefault;
 
 @end
 

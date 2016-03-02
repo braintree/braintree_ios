@@ -19,8 +19,9 @@
                   cardNetwork:(BTCardNetwork)cardNetwork
                       lastTwo:(NSString *)lastTwo
              threeDSecureJSON:(BTJSON *)threeDSecureJSON
+                    isDefault:(BOOL)isDefault
 {
-    self = [super initWithNonce:nonce description:description cardNetwork:cardNetwork lastTwo:lastTwo];
+    self = [super initWithNonce:nonce description:description cardNetwork:cardNetwork lastTwo:lastTwo isDefault:isDefault];
     if (self) {
         _threeDSecureJSON = threeDSecureJSON;
     }

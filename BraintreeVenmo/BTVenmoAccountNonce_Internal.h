@@ -9,7 +9,9 @@
 
 - (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
                                description:(NSString *)description
-                                  username:(NSString *)username;
+                                  username:(NSString *)username
+                                 isDefault:(BOOL)isDefault;
 
 + (instancetype)venmoAccountWithJSON:(BTJSON *)venmoAccountJSON;
+
 @end

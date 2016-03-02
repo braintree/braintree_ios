@@ -300,6 +300,9 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PPOTResultType.Success
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["paypalAccounts": [
+            ["nonce": "fake-nonce"]
+            ] ] )
 
         payPalDriver.setAuthorizationAppSwitchReturnBlock { _ -> Void in }
         BTPayPalDriver.handleAppSwitchReturnURL(NSURL(string: "bar://hello/world")!)
@@ -557,6 +560,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         assertSuccessfulAuthorizationResponse([
             "paypalAccounts": [
                 [
+                    "nonce": "fake-nonce",
                     "details": [
                         "email": "not-hello@world.com",
                         "payerInfo": [
@@ -574,6 +578,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         assertSuccessfulAuthorizationResponse([
             "paypalAccounts": [
                 [
+                    "nonce": "fake-nonce",
                     "description": "PayPal",
                     "details": [
                         "email": "hello@world.com",
@@ -1020,6 +1025,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         assertSuccessfulCheckoutResponse([
             "paypalAccounts": [
                 [
+                    "nonce": "fake-nonce",
                     "details": [
                         "email": "not-hello@world.com",
                         "payerInfo": [
@@ -1037,6 +1043,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         assertSuccessfulCheckoutResponse([
             "paypalAccounts": [
                 [
+                    "nonce": "fake-nonce",
                     "description": "PayPal",
                     "details": [
                         "email": "hello@world.com",
