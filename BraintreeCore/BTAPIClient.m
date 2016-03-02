@@ -84,8 +84,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         NSAssert(NO, @"Cannot copy an API client that does not specify a client token or tokenization key");
     }
 
-    copiedClient.http = [self.http copy];
-    copiedClient.configurationHTTP = [self.configurationHTTP copy];
+    copiedClient.http = self.http;
+    copiedClient.configurationHTTP = self.configurationHTTP;
 
     if (copiedClient) {
         BTMutableClientMetadata *mutableMetadata = [self.metadata mutableCopy];
