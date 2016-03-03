@@ -4,14 +4,16 @@ typedef NS_OPTIONS(NSUInteger, BTUICardFormOptionalFields) {
     BTUICardFormOptionalFieldsNone       = 0,
     BTUICardFormOptionalFieldsCvv        = 1 << 0,
     BTUICardFormOptionalFieldsPostalCode = 1 << 1,
-    BTUICardFormOptionalFieldsAll        = BTUICardFormOptionalFieldsCvv | BTUICardFormOptionalFieldsPostalCode
+    BTUICardFormOptionalFieldsPhoneNumber= 1 << 2,
+    BTUICardFormOptionalFieldsAll        = BTUICardFormOptionalFieldsCvv | BTUICardFormOptionalFieldsPostalCode | BTUICardFormOptionalFieldsPhoneNumber
 };
 
 typedef NS_ENUM(NSUInteger, BTUICardFormField) {
     BTUICardFormFieldNumber = 0,
     BTUICardFormFieldExpiration,
     BTUICardFormFieldCvv,
-    BTUICardFormFieldPostalCode
+    BTUICardFormFieldPostalCode,
+    BTUICardFormFieldPhoneNumber,
 };
 
 @protocol BTUICardFormViewDelegate;
@@ -40,6 +42,8 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 
 @property (nonatomic, copy, readonly) NSString *expirationMonth;
 @property (nonatomic, copy, readonly) NSString *expirationYear;
+
+@property (nonatomic, copy, readonly) NSString *phoneNumber;
 
 /// Sets the card form view's expiration date
 ///

@@ -23,6 +23,8 @@
         return BTUIPaymentOptionTypeMaestro;
     } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_DINERS_CLUB)]) {
         return BTUIPaymentOptionTypeDinersClub;
+    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_UNION_PAY)]) {
+        return BTUIPaymentOptionTypeUnionPay;
     } else {
         return BTUIPaymentOptionTypeUnknown;
     }
