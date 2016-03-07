@@ -138,6 +138,10 @@
     self.expiryField.text = [NSString stringWithFormat:@"%@%@", expirationMonthString, expirationYearString];
 }
 
+- (NSString *)phoneNumber {
+    return self.phoneNumberField.text;
+}
+
 - (void)setup {
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];

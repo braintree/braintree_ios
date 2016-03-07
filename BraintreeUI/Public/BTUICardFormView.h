@@ -40,9 +40,11 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 /// @note this field is only visible when specified in `optionalFields`
 @property (nonatomic, copy) NSString *postalCode;
 
+/// The card expiration month
 @property (nonatomic, copy, readonly) NSString *expirationMonth;
+/// The card expiration year
 @property (nonatomic, copy, readonly) NSString *expirationYear;
-
+/// A phone number
 @property (nonatomic, copy, readonly) NSString *phoneNumber;
 
 /// Sets the card form view's expiration date

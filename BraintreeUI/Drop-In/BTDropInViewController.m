@@ -302,6 +302,10 @@
     [self presentViewController:navController animated:YES completion:nil];
 }
 
+- (void)dismissAuthCodeController:(__unused id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)tappedSubmitForm {
     [self showLoadingState:YES];
 
@@ -326,6 +330,28 @@
             }
             if (cardForm.postalCode) {
                 options[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
+            }
+            if (cardForm.phoneNumber) {
+                options[@"phone_number"] = cardForm.phoneNumber;
+
+                __weak typeof(self) weakSelf = self;
+                void (^challengeBlock)(void (^)(NSString *)) = ^(void (^challengeBlock)(NSString *authCode)) {
+                    // Present the auth code challenge view controller
+                    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(16, 44, 200, 44)];
+                    UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(16, 96, 50, 44)];
+                    [submitButton setTitle:@"Submit" forState:UIControlStateNormal];
+                    [submitButton addTarget:weakSelf action:@selector(dismissAuthCodeController:) forControlEvents:UIControlEventTouchUpInside];
+
+                    UIViewController *authCodeChallengeViewController = [[UIViewController alloc] init];
+
+                    [authCodeChallengeViewController.view addSubview:textField];
+                    [authCodeChallengeViewController.view addSubview:submitButton];
+
+                    [weakSelf presentViewController:authCodeChallengeViewController animated:YES completion:^{
+                        challengeBlock(@"1234");
+                    }];
+                };
+                options[@"authCodeChallengeBlock"] = challengeBlock;
             }
             options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
 
