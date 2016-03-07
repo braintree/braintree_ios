@@ -94,11 +94,6 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
 
              // Get the Union Pay enrollment ID
              NSString *enrollmentID = [body[@"unionPayEnrollmentId"] asString];
-             BOOL enrollmentRequired = [body[@"enrollmentRequired"] isTrue];
-             if (!enrollmentRequired) {
-                 [self tokenizeCard:card completion:completionBlock];
-                 return;
-             }
              
              challenge(^(NSString *authCode) {
                  NSMutableDictionary *unionPayEnrollment = [NSMutableDictionary dictionary];
