@@ -46,8 +46,76 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     return nil;
 }
 
+- (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completionBlock {
+    [self tokenizeCard:card options:nil completion:completionBlock];
+}
+
 - (void)tokenizeCard:(BTCard *)card
-          completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completionBlock {
+         phoneNumber:(NSString *)phoneNumber
+   authCodeChallenge:(void (^)(void (^ _Nonnull)(NSString * _Nullable)))challenge
+          completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock
+{
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
+                                             code:BTCardClientErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because BTAPIClient is nil."}];
+        completionBlock(nil, error);
+        return;
+    }
+    
+    if (true) {     // TODO: Check if it's Union Pay
+        NSMutableDictionary *enrollmentParameters = [NSMutableDictionary dictionary];
+        if (card.number) {
+            enrollmentParameters[@"number"] = card.number;
+        }
+        if (card.expirationMonth) {
+            enrollmentParameters[@"expiration_month"] = card.expirationMonth;
+        }
+        if (card.expirationYear) {
+            enrollmentParameters[@"expiration_year"] = card.expirationYear;
+        }
+        enrollmentParameters[@"mobile_country_code"] = @"1";
+        if (phoneNumber) {
+            enrollmentParameters[@"mobile_number"] = phoneNumber;
+        }
+        
+
+        // TODO: Should we check if there's a phone number and error immediately if not, or should
+        // we allow this to be handled downstream by the gateway?
+        
+        [self.apiClient POST:@"v1/union_pay_enrollments" // TODO: enrollment API endpoint
+                  parameters:@{ @"union_pay_enrollment": enrollmentParameters }
+                  completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
+         {
+             if (error) {
+                 completionBlock(nil, [self validationErrorOrError:error]);
+                 return;
+             }
+
+             // Get the Union Pay enrollment ID
+             NSString *enrollmentID = [body[@"unionPayEnrollmentId"] asString];
+             BOOL enrollmentRequired = [body[@"enrollmentRequired"] isTrue];
+             if (!enrollmentRequired) {
+                 [self tokenizeCard:card completion:completionBlock];
+                 return;
+             }
+             
+             challenge(^(NSString *authCode) {
+                 NSMutableDictionary *unionPayEnrollment = [NSMutableDictionary dictionary];
+                 if (authCode) {
+                     unionPayEnrollment[@"sms_code"] = authCode;
+                 }
+                 if (enrollmentID) {
+                     unionPayEnrollment[@"id"] = enrollmentID;
+                 }
+                 [self tokenizeCard:card options:unionPayEnrollment completion:completionBlock];
+             });
+        }];
+    }
+}
+
+- (void)tokenizeCard:(BTCard *)card options:(NSDictionary *)options completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock
+{
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                              code:BTCardClientErrorTypeIntegration
@@ -63,40 +131,49 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
                              @"integration" : self.apiClient.metadata.integrationString,
                              @"sessionId" : self.apiClient.metadata.sessionId,
                              };
+    if (options) {
+        if (!parameters[@"options"]) {
+            parameters[@"options"] = options;
+        } else {
+            NSMutableDictionary *mutableOptions = [options mutableCopy];
+            [mutableOptions addEntriesFromDictionary:parameters[@"options"]];
+            parameters[@"options"] = mutableOptions;
+        }
+    }
     
     [self.apiClient POST:@"v1/payment_methods/credit_cards"
               parameters:parameters
-              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-                  if (error != nil) {
+              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
+     {
+         if (error != nil) {
+             completionBlock(nil, [self validationErrorOrError:error]);
+             [self sendAnalyticsEventWithSuccess:NO];
+             return;
+         }
+         
+         BTJSON *creditCard = body[@"creditCards"][0];
+         if (creditCard.isError) {
+             completionBlock(nil, creditCard.asError);
+             [self sendAnalyticsEventWithSuccess:NO];
+         } else {
+             completionBlock([BTCardNonce cardNonceWithJSON:creditCard], nil);
+             [self sendAnalyticsEventWithSuccess:YES];
+         }
+     }];
+}
 
-                      // Check if the error is a card validation error, and provide add'l error info
-                      // about the validation errors in the userInfo
-                      NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
-                      if (response.statusCode == 422) {
-                          BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
-                          NSDictionary *userInfo = jsonResponse.asDictionary ? @{ BTCustomerInputBraintreeValidationErrorsKey : jsonResponse.asDictionary } : @{};
-                          NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                                         code:BTErrorCustomerInputInvalid
-                                                                     userInfo:userInfo];
-                          completionBlock(nil, validationError);
-                      } else {
-                          completionBlock(nil, error);
-                      }
-                      
-                      [self sendAnalyticsEventWithSuccess:NO];
-
-                      return;
-                  }
-
-                  BTJSON *creditCard = body[@"creditCards"][0];
-                  if (creditCard.isError) {
-                      completionBlock(nil, creditCard.asError);
-                      [self sendAnalyticsEventWithSuccess:NO];
-                  } else {
-                      completionBlock([BTCardNonce cardNonceWithJSON:creditCard], nil);
-                      [self sendAnalyticsEventWithSuccess:YES];
-                  }
-              }];
+/// Returns a validation error if the error is a 422, otherwise it just passes back the original error
+- (NSError *)validationErrorOrError:(NSError *)error {
+    NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+    if (response.statusCode == 422) {
+        BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
+        NSDictionary *userInfo = jsonResponse.asDictionary ? @{ BTCustomerInputBraintreeValidationErrorsKey : jsonResponse.asDictionary } : @{};
+        NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                       code:BTErrorCustomerInputInvalid
+                                                   userInfo:userInfo];
+        return validationError;
+    }
+    return error;
 }
 
 #pragma mark - Analytics

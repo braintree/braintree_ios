@@ -36,6 +36,17 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 ///        will describe the failure.
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
+typedef void (^AuthCodeChallengeBlock)(NSString * _Nullable authCode);
+
+/// Tokenize a card, and use the phone number to enroll the card with Union Pay.
+/// If it's not a Union Pay card, the phone number will be ignored.
+- (void)tokenizeCard:(BTCard *)card
+         phoneNumber:(nullable NSString *)phoneNumber
+   authCodeChallenge:(void (^)(AuthCodeChallengeBlock challengeCompletion))challenge
+          completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
+
+
+
 @end
 
 NS_ASSUME_NONNULL_END
