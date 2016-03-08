@@ -7,6 +7,7 @@
 
 #import "BTCard.h"
 #import "BTCardNonce.h"
+#import "BTCardTokenizationRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -36,16 +37,16 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 ///        will describe the failure.
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
 
-typedef void (^AuthCodeChallengeBlock)(NSString * _Nullable authCode);
-
-/// Tokenize a card, and use the phone number to enroll the card with Union Pay.
-/// If it's not a Union Pay card, the phone number will be ignored.
-- (void)tokenizeCard:(BTCard *)card
-         phoneNumber:(nullable NSString *)phoneNumber
-   authCodeChallenge:(void (^)(AuthCodeChallengeBlock challengeCompletion))challenge
-          completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completionBlock;
-
-
+/// Tokenizes a card.
+///
+/// @param request A card tokenization request.
+/// @param challenge A challenge block. TODO
+/// @param completionBlock A completion block that is invoked when card tokenization has completed. If tokenization succeeds,
+///        `tokenizedCard` will contain a nonce and `error` will be `nil`; if it fails, `tokenizedCard` will be `nil` and `error`
+///        will describe the failure.
+- (void)tokenizeCard:(BTCardTokenizationRequest *)request
+   authCodeChallenge:(void (^)(void (^challenge)(NSString * _Nullable authCode)))challenge
+          completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completion;
 
 @end
 

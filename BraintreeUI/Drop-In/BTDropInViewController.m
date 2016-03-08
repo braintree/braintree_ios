@@ -332,7 +332,8 @@
                 options[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
             }
             if (cardForm.phoneNumber) {
-                options[@"phone_number"] = cardForm.phoneNumber;
+                options[@"mobilePhoneNumber"] = cardForm.phoneNumber;
+                options[@"mobileCountryCode"] = @"1";
 
                 __weak typeof(self) weakSelf = self;
                 void (^challengeBlock)(void (^)(NSString *)) = ^(__unused void (^challengeBlock)(NSString *authCode)) {
@@ -346,11 +347,12 @@
 
                     [weakSelf presentViewController:alertController animated:YES completion:nil];
                 };
-                options[@"authCodeChallengeBlock"] = challengeBlock;
+                options[@"authCodeChallenge"] = challengeBlock;
             }
             options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
 
-            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
+            NSString *tokenizationType = cardForm.phoneNumber == nil ? @"Card" : @"UnionPayCard";
+            [[BTTokenizationService sharedService] tokenizeType:tokenizationType options:options withAPIClient:client completion:^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
                 [self showLoadingState:NO];
 
                 if (error) {

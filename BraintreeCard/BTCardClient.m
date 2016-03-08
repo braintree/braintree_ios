@@ -25,16 +25,17 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     if (self == [BTCardClient class]) {
         [[BTTokenizationService sharedService] registerType:@"Card" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
-            if (options[@"phone_number"]) {
-                NSMutableDictionary *mutableOptions = [options mutableCopy];
-                [mutableOptions removeObjectForKey:@"authCodeChallengeBlock"];
-                [mutableOptions removeObjectForKey:@"phone_number"];
-                BTCard *card = [[BTCard alloc] initWithParameters:mutableOptions];
-                [client tokenizeCard:card phoneNumber:options[@"phone_number"] authCodeChallenge:options[@"authCodeChallengeBlock"] completion:completionBlock];
-            } else {
-                BTCard *card = [[BTCard alloc] initWithParameters:options];
-                [client tokenizeCard:card completion:completionBlock];
-            }
+            [client tokenizeCard:[[BTCard alloc] initWithParameters:options] completion:completionBlock];
+        }];
+        
+        [[BTTokenizationService sharedService] registerType:@"UnionPayCard" withTokenizationBlock:^(BTAPIClient * _Nonnull apiClient, NSDictionary * _Nullable options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
+            BTCard *card = [[BTCard alloc] initWithParameters:options];
+            BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithCard:card];
+            request.mobilePhoneNumber = options[@"mobilePhoneNumber"];
+            request.mobileCountryCode = options[@"mobileCountryCode"];
+            
+            BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
+            [client tokenizeCard:request authCodeChallenge:options[@"authCodeChallenge"] completion:completionBlock];
         }];
 
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"CreditCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull creditCard) {
@@ -58,63 +59,66 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     [self tokenizeCard:card options:nil completion:completionBlock];
 }
 
-- (void)tokenizeCard:(BTCard *)card
-         phoneNumber:(NSString *)phoneNumber
+- (void)tokenizeCard:(BTCardTokenizationRequest *)request
    authCodeChallenge:(void (^)(void (^ _Nonnull)(NSString * _Nullable)))challenge
-          completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock
+          completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completion
 {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                              code:BTCardClientErrorTypeIntegration
                                          userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because BTAPIClient is nil."}];
-        completionBlock(nil, error);
+        completion(nil, error);
+        return;
+    }
+    if (!request.card) {
+        NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
+                                             code:BTCardClientErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because the request did not have a card."}];
+        completion(nil, error);
         return;
     }
     
-    if (true) {     // TODO: Check if it's Union Pay
-        NSMutableDictionary *enrollmentParameters = [NSMutableDictionary dictionary];
-        if (card.number) {
-            enrollmentParameters[@"number"] = card.number;
-        }
-        if (card.expirationMonth) {
-            enrollmentParameters[@"expiration_month"] = card.expirationMonth;
-        }
-        if (card.expirationYear) {
-            enrollmentParameters[@"expiration_year"] = card.expirationYear;
-        }
-        enrollmentParameters[@"mobile_country_code"] = @"1";
-        if (phoneNumber) {
-            enrollmentParameters[@"mobile_number"] = phoneNumber;
-        }
-        
-
-        // TODO: Should we check if there's a phone number and error immediately if not, or should
-        // we allow this to be handled downstream by the gateway?
-        
-        [self.apiClient POST:@"v1/union_pay_enrollments" // TODO: enrollment API endpoint
-                  parameters:@{ @"union_pay_enrollment": enrollmentParameters }
-                  completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
-         {
-             if (error) {
-                 completionBlock(nil, [self validationErrorOrError:error]);
-                 return;
-             }
-
-             // Get the Union Pay enrollment ID
-             NSString *enrollmentID = [body[@"unionPayEnrollmentId"] asString];
-             
-             challenge(^(NSString *authCode) {
-                 NSMutableDictionary *unionPayEnrollment = [NSMutableDictionary dictionary];
-                 if (authCode) {
-                     unionPayEnrollment[@"sms_code"] = authCode;
-                 }
-                 if (enrollmentID) {
-                     unionPayEnrollment[@"id"] = enrollmentID;
-                 }
-                 [self tokenizeCard:card options:unionPayEnrollment completion:completionBlock];
-             });
-        }];
+    NSMutableDictionary *enrollmentParameters = [NSMutableDictionary dictionary];
+    BTCard *card = request.card;
+    if (card.number) {
+        enrollmentParameters[@"number"] = card.number;
     }
+    if (card.expirationMonth) {
+        enrollmentParameters[@"expiration_month"] = card.expirationMonth;
+    }
+    if (card.expirationYear) {
+        enrollmentParameters[@"expiration_year"] = card.expirationYear;
+    }
+    if (request.mobileCountryCode) {
+        enrollmentParameters[@"mobile_country_code"] = request.mobileCountryCode;
+    }
+    if (request.mobilePhoneNumber) {
+        enrollmentParameters[@"mobile_number"] = request.mobilePhoneNumber;
+    }
+    
+    [self.apiClient POST:@"v1/union_pay_enrollments" // TODO: enrollment API endpoint
+              parameters:@{ @"union_pay_enrollment": enrollmentParameters }
+              completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
+     {
+         if (error) {
+             completion(nil, [self validationErrorOrError:error]);
+             return;
+         }
+         
+         // Get the Union Pay enrollment ID
+         NSString *enrollmentID = [body[@"unionPayEnrollmentId"] asString];
+         
+         challenge(^(NSString *authCode) {
+             NSMutableDictionary *unionPayEnrollment = [NSMutableDictionary dictionary];
+             if (authCode) {
+                 unionPayEnrollment[@"sms_code"] = authCode;
+             }
+             if (enrollmentID) {
+                 unionPayEnrollment[@"id"] = enrollmentID;
+             }
+             [self tokenizeCard:card options:unionPayEnrollment completion:completion];
+         });
+     }];
 }
 
 - (void)tokenizeCard:(BTCard *)card options:(NSDictionary *)options completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock

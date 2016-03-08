@@ -83,6 +83,8 @@
 		2DE12F5C1B59C36900EA1BCF /* BTURLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A6DD511B445A29008857E1 /* BTURLUtils.m */; };
 		4107EB231C88C75000F32D81 /* BTUICardPhoneNumberField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4107EB211C88C75000F32D81 /* BTUICardPhoneNumberField.h */; };
 		4107EB241C88C75000F32D81 /* BTUICardPhoneNumberField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4107EB221C88C75000F32D81 /* BTUICardPhoneNumberField.m */; };
+		41135B801C8F822200ADA1A0 /* BTCardTokenizationRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 41135B7E1C8F822200ADA1A0 /* BTCardTokenizationRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		41135B811C8F822200ADA1A0 /* BTCardTokenizationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 41135B7F1C8F822200ADA1A0 /* BTCardTokenizationRequest.m */; };
 		411D1C001BB0B528000E7D8C /* Braintree3DSecure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D941D881B5D9E8C0016EFB4 /* Braintree3DSecure.framework */; };
 		411D1C011BB0B528000E7D8C /* BraintreeApplePay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889741B5EF5DE007A0E9C /* BraintreeApplePay.framework */; };
 		411D1C021BB0B528000E7D8C /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
@@ -1065,6 +1067,8 @@
 		3E30C5FE1F5450A242279524 /* libPods-Braintree-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4107EB211C88C75000F32D81 /* BTUICardPhoneNumberField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUICardPhoneNumberField.h; sourceTree = "<group>"; };
 		4107EB221C88C75000F32D81 /* BTUICardPhoneNumberField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUICardPhoneNumberField.m; sourceTree = "<group>"; };
+		41135B7E1C8F822200ADA1A0 /* BTCardTokenizationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardTokenizationRequest.h; sourceTree = "<group>"; };
+		41135B7F1C8F822200ADA1A0 /* BTCardTokenizationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCardTokenizationRequest.m; sourceTree = "<group>"; };
 		41211EF61BA0E45300DB1705 /* BTPaymentMethodNonce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentMethodNonce.m; sourceTree = "<group>"; };
 		41211EF91BA0E47400DB1705 /* BTPaymentMethodNonce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTPaymentMethodNonce.h; sourceTree = "<group>"; };
 		412FE0561B9799EE008AAABE /* BTApplePayClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTApplePayClient_Internal.h; sourceTree = "<group>"; };
@@ -2025,10 +2029,11 @@
 		41777D451B8D01510026F987 /* Public */ = {
 			isa = PBXGroup;
 			children = (
-				A7C8899C1B5F0471007A0E9C /* BTCardClient.h */,
-				A7C8899F1B5F0471007A0E9C /* BTCard.h */,
-				A7C889A11B5F0471007A0E9C /* BTCardNonce.h */,
 				A7C889921B5F043B007A0E9C /* BraintreeCard.h */,
+				A7C8899F1B5F0471007A0E9C /* BTCard.h */,
+				A7C8899C1B5F0471007A0E9C /* BTCardClient.h */,
+				A7C889A11B5F0471007A0E9C /* BTCardNonce.h */,
+				41135B7E1C8F822200ADA1A0 /* BTCardTokenizationRequest.h */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -2968,6 +2973,7 @@
 				A7C8899D1B5F0471007A0E9C /* BTCardClient.m */,
 				A7C889D71B5F0ACB007A0E9C /* BTCardNonce_Internal.h */,
 				A7C889A21B5F0471007A0E9C /* BTCardNonce.m */,
+				41135B7F1C8F822200ADA1A0 /* BTCardTokenizationRequest.m */,
 				41777D451B8D01510026F987 /* Public */,
 			);
 			path = BraintreeCard;
@@ -3235,6 +3241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8498EC1B1BB46D4B007FFDEC /* BTCardClient_Internal.h in Headers */,
+				41135B801C8F822200ADA1A0 /* BTCardTokenizationRequest.h in Headers */,
 				A7C889AA1B5F04AE007A0E9C /* BraintreeCard.h in Headers */,
 				A7C889D81B5F0ACB007A0E9C /* BTCardNonce_Internal.h in Headers */,
 				A7C889A81B5F0471007A0E9C /* BTCardNonce.h in Headers */,
@@ -4493,6 +4500,7 @@
 			files = (
 				A7C889A71B5F0471007A0E9C /* BTCard.m in Sources */,
 				A7C889A91B5F0471007A0E9C /* BTCardNonce.m in Sources */,
+				41135B811C8F822200ADA1A0 /* BTCardTokenizationRequest.m in Sources */,
 				A7C889A41B5F0471007A0E9C /* BTCardClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -51,7 +51,7 @@
 #pragma mark -
 
 - (NSDictionary *)parameters {
-    NSMutableDictionary *p = [self.mutableParameters mutableCopy];
+    NSMutableDictionary *p = [NSMutableDictionary dictionary];
     if (self.number) {
         p[@"number"] = self.number;
     }
