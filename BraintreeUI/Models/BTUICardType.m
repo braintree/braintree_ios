@@ -131,7 +131,7 @@
         BTUICardType *visa = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_VISA) prefixes:@[@"4"]];
         BTUICardType *mastercard = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_MASTER_CARD)
                                                               prefixes:@[@"51", @"52", @"53", @"54", @"55"]];
-        BTUICardType *discover = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_DISCOVER) prefixes:@[@"6011", @"65", @"644", @"645", @"646", @"647", @"648", @"649", @"622"]];
+        BTUICardType *discover = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_DISCOVER) prefixes:@[@"6011", @"65", @"644", @"645", @"646", @"647", @"648", @"649"]];
         BTUICardType *jcb = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_JCB) prefixes:@[@"35"]];
 
         BTUICardType *amex = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_AMERICAN_EXPRESS)
@@ -213,7 +213,8 @@
 }
 
 - (BOOL)validNumber:(NSString *)number {
-    return ([self completeNumber:number] && [BTUIUtil luhnValid:number]);
+    return ([self completeNumber:number] &&
+            ([BTUIUtil luhnValid:number] || [self.brand isEqualToString:BTUILocalizedString(CARD_TYPE_UNION_PAY)]));
 }
 
 - (BOOL)completeNumber:(NSString *)number {
