@@ -25,11 +25,14 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     if (self == [BTCardClient class]) {
         [[BTTokenizationService sharedService] registerType:@"Card" withTokenizationBlock:^(BTAPIClient *apiClient, NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
-            BTCard *card = [[BTCard alloc] initWithParameters:options];
-            void (^challengeBlock)(void (^ _Nonnull)(NSString * _Nullable)) = options[@"authCodeChallengeBlock"];
             if (options[@"phone_number"]) {
-                [client tokenizeCard:card phoneNumber:options[@"phone_number"] authCodeChallenge:challengeBlock completion:completionBlock];
+                NSMutableDictionary *mutableOptions = [options mutableCopy];
+                [mutableOptions removeObjectForKey:@"authCodeChallengeBlock"];
+                [mutableOptions removeObjectForKey:@"phone_number"];
+                BTCard *card = [[BTCard alloc] initWithParameters:mutableOptions];
+                [client tokenizeCard:card phoneNumber:options[@"phone_number"] authCodeChallenge:options[@"authCodeChallengeBlock"] completion:completionBlock];
             } else {
+                BTCard *card = [[BTCard alloc] initWithParameters:options];
                 [client tokenizeCard:card completion:completionBlock];
             }
         }];

@@ -335,21 +335,16 @@
                 options[@"phone_number"] = cardForm.phoneNumber;
 
                 __weak typeof(self) weakSelf = self;
-                void (^challengeBlock)(void (^)(NSString *)) = ^(void (^challengeBlock)(NSString *authCode)) {
-                    // Present the auth code challenge view controller
-                    UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(16, 44, 200, 44)];
-                    UIButton *submitButton = [[UIButton alloc] initWithFrame:CGRectMake(16, 96, 50, 44)];
-                    [submitButton setTitle:@"Submit" forState:UIControlStateNormal];
-                    [submitButton addTarget:weakSelf action:@selector(dismissAuthCodeController:) forControlEvents:UIControlEventTouchUpInside];
+                void (^challengeBlock)(void (^)(NSString *)) = ^(__unused void (^challengeBlock)(NSString *authCode)) {
 
-                    UIViewController *authCodeChallengeViewController = [[UIViewController alloc] init];
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"SMS Auth Code" message:@"An authorization code has been sent to your mobile phone number. Please enter it here" preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addTextFieldWithConfigurationHandler:nil];
+                    [alertController addAction:[UIAlertAction actionWithTitle:@"Submit" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
+                        UITextField *codeTextField = [alertController.textFields firstObject];
+                        challengeBlock(codeTextField.text);
+                    }]];
 
-                    [authCodeChallengeViewController.view addSubview:textField];
-                    [authCodeChallengeViewController.view addSubview:submitButton];
-
-                    [weakSelf presentViewController:authCodeChallengeViewController animated:YES completion:^{
-                        challengeBlock(@"1234");
-                    }];
+                    [weakSelf presentViewController:alertController animated:YES completion:nil];
                 };
                 options[@"authCodeChallengeBlock"] = challengeBlock;
             }
