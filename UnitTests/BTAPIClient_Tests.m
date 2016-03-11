@@ -86,7 +86,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
 
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertNotNil(configuration);
@@ -107,7 +107,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"error_message": @"Something bad happened" } statusCode:503];
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         // Note: GETRequestCount will be 1 or 2 depending on whether the analytics event for the API client initialization
@@ -132,7 +132,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
                                            code:NSURLErrorCannotConnectToHost
                                        userInfo:nil];
     [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
@@ -144,37 +144,13 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testConfiguration_whenCalledSerially_performOnlyOneRequest {
+- (void)testConfigurationHTTP_byDefault_usesAnInMemoryCache {
+    // We don't want configuration to cache configuration responses past the lifetime of the app
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-
-    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
-    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
-    apiClient.http = fake;
-
-    XCTestExpectation *expectation1 = [self expectationWithDescription:@"First fetch configuration"];
-
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
-        XCTAssertTrue([configuration.json[@"test"] isTrue]);
-
-        [expectation1 fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-
-    XCTestExpectation *expectation2 = [self expectationWithDescription:@"Second fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
-        XCTAssertTrue([configuration.json[@"test"] isTrue]);
-
-        [expectation2 fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
+    NSURLCache *cache = apiClient.configurationHTTP.session.configuration.URLCache;
+    
+    XCTAssertTrue(cache.diskCapacity == 0);
+    XCTAssertTrue(cache.memoryCapacity > 0);
 }
 
 #pragma mark - Dispatch Queue
@@ -183,6 +159,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeHTTP *fake = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
     // Override apiClient.http so that requests don't fail
+    apiClient.configurationHTTP = fake;
     apiClient.http = fake;
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"Fetch configuration"];
@@ -384,7 +361,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     fake.cannedResponse = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;
-    apiClient.http = fake;
+    apiClient.configurationHTTP = fake;
 
     return apiClient;
 }

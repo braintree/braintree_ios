@@ -8,7 +8,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 @interface BTAPIClient ()
 @property (nonatomic, strong) dispatch_queue_t configurationQueue;
-@property (nonatomic, strong) BTJSON *cachedRemoteConfiguration;
 @end
 
 @implementation BTAPIClient
@@ -33,7 +32,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             _tokenizationKey = authorization;
 
             _http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:authorization];
-
+            _configurationHTTP = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:authorization];
+            
             if (sendAnalyticsEvent) {
                 [self sendAnalyticsEvent:@"ios.started.client-key"];
             }
@@ -49,12 +49,25 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
             NSURL *baseURL = [self.clientToken.json[@"clientApiUrl"] asURL];
             _http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
+            _configurationHTTP = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
 
             if (sendAnalyticsEvent) {
                 [self sendAnalyticsEvent:@"ios.started.client-token"];
             }
         }
+        
+        // BTHTTP's default NSURLSession does not cache responses, but we want the BTHTTP instance that fetches configuration to cache aggressively
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+        static NSURLCache *configurationCache;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            configurationCache = [[NSURLCache alloc] initWithMemoryCapacity:1 * 1024 * 1024 diskCapacity:0 diskPath:nil];
+        });
+        configuration.URLCache = configurationCache;
+        configuration.requestCachePolicy = NSURLRequestReturnCacheDataElseLoad;
+        _configurationHTTP.session = [NSURLSession sessionWithConfiguration:configuration];
     }
+    
     return self;
 }
 
@@ -71,8 +84,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         NSAssert(NO, @"Cannot copy an API client that does not specify a client token or tokenization key");
     }
 
-    copiedClient.http = [self.http copy];
-    copiedClient.cachedRemoteConfiguration = self.cachedRemoteConfiguration;
+    copiedClient.http = self.http;
+    copiedClient.configurationHTTP = self.configurationHTTP;
 
     if (copiedClient) {
         BTMutableClientMetadata *mutableMetadata = [self.metadata mutableCopy];
@@ -165,36 +178,31 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     //       queue is a background queue to guarantee atomic access to the remote configuration resource.
     dispatch_async(self.configurationQueue, ^{
         __block NSError *fetchError;
-
-        if (self.cachedRemoteConfiguration == nil) {
-            dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-            [self.http GET:@"v1/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-                if (error) {
-                    fetchError = error;
-                } else if (response.statusCode != 200) {
-                    NSError *configurationDomainError =
-                    [NSError errorWithDomain:BTAPIClientErrorDomain
-                                        code:BTAPIClientErrorTypeConfigurationUnavailable
-                                    userInfo:@{
-                                               NSLocalizedFailureReasonErrorKey: @"Unable to fetch remote configuration from Braintree API at this time."
-                                               }];
-                    fetchError = configurationDomainError;
-                } else {
-                    self.cachedRemoteConfiguration = body;
-                }
-
-                // Important: Unlock semaphore in all cases
-                dispatch_semaphore_signal(semaphore);
-            }];
-
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        }
+        
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        __block BTConfiguration *configuration;
+        [self.configurationHTTP GET:@"v1/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            if (error) {
+                fetchError = error;
+            } else if (response.statusCode != 200) {
+                NSError *configurationDomainError =
+                [NSError errorWithDomain:BTAPIClientErrorDomain
+                                    code:BTAPIClientErrorTypeConfigurationUnavailable
+                                userInfo:@{
+                                           NSLocalizedFailureReasonErrorKey: @"Unable to fetch remote configuration from Braintree API at this time."
+                                           }];
+                fetchError = configurationDomainError;
+            } else {
+                configuration = [[BTConfiguration alloc] initWithJSON:body];
+            }
+            
+            // Important: Unlock semaphore in all cases
+            dispatch_semaphore_signal(semaphore);
+        }];
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            BTConfiguration *configuration;
-            if (self.cachedRemoteConfiguration) {
-                configuration = [[BTConfiguration alloc] initWithJSON:self.cachedRemoteConfiguration];
-            }
             completionBlock(configuration, fetchError);
         });
     });
