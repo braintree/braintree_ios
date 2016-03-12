@@ -5,6 +5,8 @@
 
 @implementation BTUICardPhoneNumberField
 
+#define MAX_PHONE_NUMBER_DIGITS 11
+
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -16,7 +18,7 @@
 }
 
 - (BOOL)valid {
-    return self.textField.text.length > 0;
+    return self.textField.text.length == MAX_PHONE_NUMBER_DIGITS;
 }
 
 - (NSString *)phoneNumber {
@@ -31,6 +33,15 @@
     if ([self.delegate respondsToSelector:@selector(formFieldDidChange:)]) {
         [self.delegate formFieldDidChange:self];
     }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSUInteger oldLength = [textField.text length];
+    NSUInteger replacementLength = [string length];
+    NSUInteger rangeLength = range.length;
+    
+    NSUInteger newLength = oldLength - rangeLength + replacementLength;
+    return newLength <= MAX_PHONE_NUMBER_DIGITS;
 }
 
 @end

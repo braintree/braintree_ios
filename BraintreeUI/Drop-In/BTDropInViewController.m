@@ -333,7 +333,8 @@
             }
             if (cardForm.phoneNumber) {
                 options[@"mobilePhoneNumber"] = cardForm.phoneNumber;
-                options[@"mobileCountryCode"] = @"1";
+                // TODO: read this from the phone number field
+                options[@"mobileCountryCode"] = @"62";
 
                 __weak typeof(self) weakSelf = self;
                 void (^challengeBlock)(void (^)(NSString *)) = ^(__unused void (^challengeBlock)(NSString *authCode)) {
