@@ -209,7 +209,8 @@
 #pragma mark - Validation
 
 - (BOOL)validAndNecessarilyCompleteNumber:(NSString *)number {
-    return (number.length == self.validNumberLengths.lastIndex && [BTUIUtil luhnValid:number]);
+    return (number.length == self.validNumberLengths.lastIndex &&
+            ([BTUIUtil luhnValid:number] || [self.brand isEqualToString:BTUILocalizedString(CARD_TYPE_UNION_PAY)]));
 }
 
 - (BOOL)validNumber:(NSString *)number {
