@@ -93,13 +93,14 @@
 
 - (void)setOptionalFields:(BTUICardFormOptionalFields)optionalFields {
     _optionalFields = optionalFields;
-    NSMutableArray *fields = [NSMutableArray arrayWithObjects:self.numberField, self.expiryField, nil];
+    NSMutableArray *fields = [NSMutableArray arrayWithObjects:self.numberField, self.expiryField, self.cvvField, nil];
 
-    self.cvvField.hidden = self.postalCodeField.hidden = self.phoneNumberField.hidden = YES;
-    if (optionalFields & BTUICardFormOptionalFieldsCvv) {
-        [fields addObject:self.cvvField];
-        self.cvvField.hidden = NO;
-    }
+     self.postalCodeField.hidden = self.phoneNumberField.hidden = YES;
+    self.cvvField.hidden = NO;
+//    if (optionalFields & BTUICardFormOptionalFieldsCvv) {
+//        [fields addObject:self.cvvField];
+//        self.cvvField.hidden = NO;
+//    }
     if (optionalFields & BTUICardFormOptionalFieldsPostalCode) {
         [fields addObject:self.postalCodeField];
         self.postalCodeField.hidden = NO;

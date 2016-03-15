@@ -493,6 +493,8 @@
 		A77AA2B31B618D6200217B73 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
 		A77AA2B41B618D6200217B73 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		A77AA2B61B61936A00217B73 /* BTVenmoDriver_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		A78422731C98920500D3EBFF /* BTUIUnionPayVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A78422711C98920500D3EBFF /* BTUIUnionPayVectorArtView.h */; };
+		A78422741C98920500D3EBFF /* BTUIUnionPayVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A78422721C98920500D3EBFF /* BTUIUnionPayVectorArtView.m */; };
 		A784965A1BD962260081531A /* BTCheckoutRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A78496591BD962260081531A /* BTCheckoutRequest_Tests.swift */; };
 		A79033981B45C968004C8234 /* BTCardTokenizationRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79033971B45C968004C8234 /* BTCardTokenizationRequest_Tests.swift */; };
 		A790339C1B45E16E004C8234 /* BTCard_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */; };
@@ -1433,6 +1435,8 @@
 		A773462F1B7BB1A70083EC8D /* BTTokenizationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTokenizationService.m; sourceTree = "<group>"; };
 		A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeVenmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoDriver_Internal.h; sourceTree = "<group>"; };
+		A78422711C98920500D3EBFF /* BTUIUnionPayVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIUnionPayVectorArtView.h; sourceTree = "<group>"; };
+		A78422721C98920500D3EBFF /* BTUIUnionPayVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIUnionPayVectorArtView.m; sourceTree = "<group>"; };
 		A78496591BD962260081531A /* BTCheckoutRequest_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCheckoutRequest_Tests.swift; sourceTree = "<group>"; };
 		A79033971B45C968004C8234 /* BTCardTokenizationRequest_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCardTokenizationRequest_Tests.swift; sourceTree = "<group>"; };
 		A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCard_Internal_Tests.m; sourceTree = "<group>"; };
@@ -2778,6 +2782,8 @@
 				A77345841B7A93D00083EC8D /* BTUIVenmoWordmarkVectorArtView.m */,
 				A77345851B7A93D00083EC8D /* BTUIVisaVectorArtView.h */,
 				A77345861B7A93D00083EC8D /* BTUIVisaVectorArtView.m */,
+				A78422711C98920500D3EBFF /* BTUIUnionPayVectorArtView.h */,
+				A78422721C98920500D3EBFF /* BTUIUnionPayVectorArtView.m */,
 			);
 			path = "Vector Art";
 			sourceTree = "<group>";
@@ -3132,6 +3138,7 @@
 				41913DA01BB9D504004EF1BB /* BTUIThemedView.h in Headers */,
 				A77345AA1B7A93D00083EC8D /* BTUIScrollView.h in Headers */,
 				A77345B01B7A93D00083EC8D /* BTUIVectorArtView.h in Headers */,
+				A78422731C98920500D3EBFF /* BTUIUnionPayVectorArtView.h in Headers */,
 				A77345AC1B7A93D00083EC8D /* BTUITextField.h in Headers */,
 				A77345B41B7A93D00083EC8D /* BTUICardExpiryField.h in Headers */,
 				A77345CE1B7A93D00083EC8D /* BTUICoinbaseMonogramCardView.h in Headers */,
@@ -4415,6 +4422,7 @@
 				A77345D11B7A93D00083EC8D /* BTUICoinbaseWordmarkVectorArtView.m in Sources */,
 				A773458A1B7A93D00083EC8D /* BTUILocalizedString.m in Sources */,
 				A77345B71B7A93D00083EC8D /* BTUICardNumberField.m in Sources */,
+				A78422741C98920500D3EBFF /* BTUIUnionPayVectorArtView.m in Sources */,
 				A7F179FE1BE98E0E00E91646 /* BTPaymentRequest.m in Sources */,
 				A77345AB1B7A93D00083EC8D /* BTUIScrollView.m in Sources */,
 				A77345D51B7A93D00083EC8D /* BTUICVVFrontVectorArtView.m in Sources */,

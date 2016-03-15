@@ -13,6 +13,7 @@
 #import "BTUIPayPalMonogramCardView.h"
 #import "BTUICoinbaseMonogramCardView.h"
 #import "BTUIVenmoMonogramCardView.h"
+#import "BTUIUnionPayVectorArtView.h"
 
 @implementation BTUI
 
@@ -275,10 +276,11 @@
             return [BTUIAmExVectorArtView new];
         case BTUIPaymentOptionTypeVenmo:
             return [BTUIVenmoMonogramCardView new];
+        case BTUIPaymentOptionTypeUnionPay:
+            return [BTUIUnionPayVectorArtView new];
         case BTUIPaymentOptionTypeSolo:
         case BTUIPaymentOptionTypeLaser:
         case BTUIPaymentOptionTypeSwitch:
-        case BTUIPaymentOptionTypeUnionPay:
         case BTUIPaymentOptionTypeUnknown:
             return [BTUIUnknownCardVectorArtView new];
     }

@@ -56,7 +56,7 @@
                                    cardNetwork:[cardType asEnum:@{
                                                                   @"american express": @(BTCardNetworkAMEX),
                                                                   @"diners club": @(BTCardNetworkDinersClub),
-                                                                  @"china unionpay": @(BTCardNetworkUnionPay),
+                                                                  @"unionpay": @(BTCardNetworkUnionPay),
                                                                   @"discover": @(BTCardNetworkDiscover),
                                                                   @"maestro": @(BTCardNetworkMaestro),
                                                                   @"mastercard": @(BTCardNetworkMasterCard),
