@@ -23,22 +23,12 @@ def test_pods
 end
 
 target 'Demo' do
-  link_with 'Demo', 'Demo-StaticLibrary'
+  link_with 'Demo'
   demo_pods
 end
 
 target 'Test-Deps' do
-  link_with 'UnitTests', 'IntegrationTests', 'UnitTests-StaticLibrary'
+  link_with 'UnitTests', 'IntegrationTests'
   test_pods
 end
 
-target 'UnitTests-CocoaPods' do
-  test_pods
-  pod 'Braintree', :path => '.'
-  pod 'Braintree/3D-Secure', :path => '.'
-  pod 'Braintree/Apple-Pay', :path => '.'
-  pod 'Braintree/DataCollector', :path => '.'
-  pod 'Braintree/Venmo', :path => '.'
-  pod 'Braintree/PayPalOneTouch', :path => '.'
-  pod 'Braintree/PayPalDataCollector', :path => '.'
-end

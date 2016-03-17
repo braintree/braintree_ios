@@ -20,33 +20,6 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (4.2.3):
-    - Braintree/Card (= 4.2.3)
-    - Braintree/Core (= 4.2.3)
-    - Braintree/PayPal (= 4.2.3)
-    - Braintree/UI (= 4.2.3)
-  - Braintree/3D-Secure (4.2.3):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/Apple-Pay (4.2.3):
-    - Braintree/Core
-  - Braintree/Card (4.2.3):
-    - Braintree/Core
-  - Braintree/Core (4.2.3)
-  - Braintree/DataCollector (4.2.3)
-  - Braintree/PayPal (4.2.3):
-    - Braintree/Core
-    - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.2.3)
-  - Braintree/PayPalOneTouch (4.2.3):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
-  - Braintree/UI (4.2.3):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/Venmo (4.2.3):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
   - CardIO (5.2.2)
   - Expecta (1.0.5)
   - FLEX (2.1.1)
@@ -75,13 +48,6 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.0)
-  - Braintree (from `.`)
-  - Braintree/3D-Secure (from `.`)
-  - Braintree/Apple-Pay (from `.`)
-  - Braintree/DataCollector (from `.`)
-  - Braintree/PayPalDataCollector (from `.`)
-  - Braintree/PayPalOneTouch (from `.`)
-  - Braintree/Venmo (from `.`)
   - CardIO
   - Expecta
   - FLEX
@@ -94,13 +60,8 @@ DEPENDENCIES:
   - PureLayout
   - Specta
 
-EXTERNAL SOURCES:
-  Braintree:
-    :path: "."
-
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Braintree: 05791bdc6d43c3faf2f802dd2d687e9f619f7f57
   CardIO: 2460db0f4936f3441b08d51e3904b436d77ec8fc
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
