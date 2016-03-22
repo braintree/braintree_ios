@@ -67,7 +67,7 @@ class BTCardNonce_Tests: XCTestCase {
             "laser",
             "solo",
             "switch",
-            "china unionpay",
+            "unionpay",
             "uk maestro",
             "visa",
         ]
