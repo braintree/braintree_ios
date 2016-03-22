@@ -242,6 +242,38 @@ class BTCardClient_Tests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
 
+    func testUnionPayFetchCapabilities_whenSuccessful_returnsCardCapabilities() {
+        let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
+        let stubHTTP = BTFakeHTTP()!
+        stubHTTP.stubRequest("GET", toEndpoint: "v1/credit_cards/capabilities", respondWith: [
+            "isUnionPay": true,
+            "isDebit": false,
+            "unionPay": [
+                "supportsTwoStepAuthAndCapture": true,
+                "isUnionPayEnrollmentRequired":f
+                ]
+            ], statusCode: 201)
+        apiClient.http = stubHTTP
+        let cardClient = BTCardClient(APIClient: apiClient)
+        let cardNumber = "411111111111111"
+
+        let expectation = expectationWithDescription("Callback invoked")
+        cardClient.fetchCapabilities(cardNumber) { (cardCapabilities, error) -> Void in
+            guard let cardCapabilities = cardCapabilities else {
+                XCTFail("Expected union pay capabilities")
+                return
+            }
+            XCTAssertNil(error)
+            XCTAssertEqual(true, cardCapabilities.isUnionPay)
+            XCTAssertEqual(false, cardCapabilities.isDebit)
+            XCTAssertEqual(true, cardCapabilities.supportsTwoStepAuthAndCapture)
+            XCTAssertEqual(false, cardCapabilities.isUnionPayEnrollmentRequired)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
     // MARK: - _meta parameter
     
     func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {

@@ -489,6 +489,9 @@
 		A77346261B7AA4F10083EC8D /* BTErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = A77346251B7AA4F10083EC8D /* BTErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77346301B7BB1A70083EC8D /* BTTokenizationService.h in Headers */ = {isa = PBXBuildFile; fileRef = A773462E1B7BB1A60083EC8D /* BTTokenizationService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77346311B7BB1A70083EC8D /* BTTokenizationService.m in Sources */ = {isa = PBXBuildFile; fileRef = A773462F1B7BB1A70083EC8D /* BTTokenizationService.m */; };
+		A77426581CA20793003CACBA /* BTCardCapabilities.m in Sources */ = {isa = PBXBuildFile; fileRef = A77426561CA20793003CACBA /* BTCardCapabilities.m */; };
+		A774265A1CA207AE003CACBA /* BTCardCapabilities.h in Headers */ = {isa = PBXBuildFile; fileRef = A77426591CA207AE003CACBA /* BTCardCapabilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A774265B1CA207D2003CACBA /* BTCardCapabilities.m in Sources */ = {isa = PBXBuildFile; fileRef = A77426561CA20793003CACBA /* BTCardCapabilities.m */; };
 		A77AA2A61B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F96D0A1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.h */; };
 		A77AA2A71B618CFB00217B73 /* BTVenmoAppSwitchRequestURL.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F96D0B1B604C1C005A4A09 /* BTVenmoAppSwitchRequestURL.m */; };
 		A77AA2A81B618CFB00217B73 /* BTVenmoAppSwitchReturnURL.h in Headers */ = {isa = PBXBuildFile; fileRef = A7F96D0C1B604C1C005A4A09 /* BTVenmoAppSwitchReturnURL.h */; };
@@ -1467,6 +1470,8 @@
 		A77346251B7AA4F10083EC8D /* BTErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTErrors.h; sourceTree = "<group>"; };
 		A773462E1B7BB1A60083EC8D /* BTTokenizationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTTokenizationService.h; sourceTree = "<group>"; };
 		A773462F1B7BB1A70083EC8D /* BTTokenizationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTTokenizationService.m; sourceTree = "<group>"; };
+		A77426561CA20793003CACBA /* BTCardCapabilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCardCapabilities.m; sourceTree = "<group>"; };
+		A77426591CA207AE003CACBA /* BTCardCapabilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardCapabilities.h; sourceTree = "<group>"; };
 		A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeVenmo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A77AA2B51B61936A00217B73 /* BTVenmoDriver_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTVenmoDriver_Internal.h; sourceTree = "<group>"; };
 		A78422711C98920500D3EBFF /* BTUIUnionPayVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIUnionPayVectorArtView.h; sourceTree = "<group>"; };
@@ -2054,8 +2059,9 @@
 		4164B9891C9B6553006AE861 /* BraintreeUnionPay */ = {
 			isa = PBXGroup;
 			children = (
-				4164B9AE1C9B665D006AE861 /* Public */,
+				A77426561CA20793003CACBA /* BTCardCapabilities.m */,
 				4164B9B91C9B6988006AE861 /* BTCardClient+UnionPay.m */,
+				4164B9AE1C9B665D006AE861 /* Public */,
 			);
 			path = BraintreeUnionPay;
 			sourceTree = "<group>";
@@ -2064,6 +2070,7 @@
 			isa = PBXGroup;
 			children = (
 				4164B9AF1C9B6690006AE861 /* BraintreeUnionPay.h */,
+				A77426591CA207AE003CACBA /* BTCardCapabilities.h */,
 				4164B9B81C9B6988006AE861 /* BTCardClient+UnionPay.h */,
 			);
 			path = Public;
@@ -3138,6 +3145,7 @@
 			files = (
 				4164B9B01C9B6690006AE861 /* BraintreeUnionPay.h in Headers */,
 				4164B9BA1C9B6988006AE861 /* BTCardClient+UnionPay.h in Headers */,
+				A774265A1CA207AE003CACBA /* BTCardCapabilities.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4248,6 +4256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4164B9BB1C9B6988006AE861 /* BTCardClient+UnionPay.m in Sources */,
+				A77426581CA20793003CACBA /* BTCardCapabilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4305,6 +4314,7 @@
 				4174051A1BB0869D008A5DEA /* BTUIPaymentMethodView.m in Sources */,
 				4174051B1BB0869D008A5DEA /* BTUISummaryView.m in Sources */,
 				4174051C1BB0869D008A5DEA /* BTUIVenmoButton.m in Sources */,
+				A774265B1CA207D2003CACBA /* BTCardCapabilities.m in Sources */,
 				4174051E1BB0869D008A5DEA /* BTUIAmExVectorArtView.m in Sources */,
 				417405201BB0869D008A5DEA /* BTUICVVBackVectorArtView.m in Sources */,
 				417405221BB0869D008A5DEA /* BTUICVVFrontVectorArtView.m in Sources */,

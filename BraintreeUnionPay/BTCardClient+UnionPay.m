@@ -1,5 +1,6 @@
 #import "BTCardClient+UnionPay.h"
 #import "BTCardClient_Internal.h"
+#import "BTCardCapabilities.h"
 #if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
 #else
@@ -100,6 +101,23 @@
              [self tokenizeCard:card options:unionPayEnrollment completion:completion];
          });
      }];
+}
+
+- (void)fetchCapabilities:(NSString *)cardNumber completion:(void (^)(BTCardCapabilities * _Nullable, NSError * _Nullable))completion {
+
+    [self.apiClient GET:@"v1/credit_cards/capabilities" parameters:@{@"number": cardNumber} completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+
+        if (error) {
+            completion(nil, error);
+        } else {
+            BTCardCapabilities *cardCapabilities = [[BTCardCapabilities alloc] init]; // new BTCardCapabilities()
+            cardCapabilities.isUnionPay = [body[@"isUnionPay"] isTrue];
+            cardCapabilities.isDebit = [body[@"isDebit"] isTrue];
+            cardCapabilities.supportsTwoStepAuthAndCapture = [body[@"unionPay"][@"supportsTwoStepAuthAndCapture"] isTrue];
+            cardCapabilities.isUnionPayEnrollmentRequired = [body[@"unionPay"][@"isUnionPayEnrollmentRequired"] isTrue];
+            completion(cardCapabilities, nil);
+        }
+    }];
 }
 
 @end
