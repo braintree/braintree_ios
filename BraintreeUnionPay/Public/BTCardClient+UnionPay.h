@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///        `tokenizedCard` will contain a nonce and `error` will be `nil`; if it fails, `tokenizedCard` will be `nil` and `error`
 ///        will describe the failure.
 - (void)tokenizeCard:(BTCardTokenizationRequest *)request
-   authCodeChallenge:(void (^)(void (^challenge)(NSString * _Nullable authCode)))challenge
+   authCodeChallenge:(void (^)(void (^challengeResponse)(NSString * _Nullable authCode)))challenge
           completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completion;
 
 @end

@@ -1,5 +1,10 @@
 #import "BTCardClient+UnionPay.h"
 #import "BTCardClient_Internal.h"
+#if __has_include("BraintreeCore.h")
+#import "BTAPIClient_Internal.h"
+#else
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#endif
 
 @implementation BTCardClient (UnionPay)
 
@@ -25,6 +30,14 @@
         NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
                                              code:BTCardClientErrorTypeIntegration
                                          userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because BTAPIClient is nil."}];
+        completion(nil, error);
+        return;
+    }
+    if (self.apiClient.tokenizationKey) {
+        NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
+                                             code:BTCardClientErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"Cannot use tokenization key with tokenizeCard:authCodeChallenge:completion:",
+                                                    NSLocalizedRecoverySuggestionErrorKey: @"Use a client token to initialize BTAPIClient"}];
         completion(nil, error);
         return;
     }

@@ -43,7 +43,8 @@
     self.GETRequestCount++;
     self.lastRequestEndpoint = endpoint;
     self.lastRequestParameters = parameters;
-    
+    self.lastRequestMethod = @"GET";
+
     if (self.cannedError) {
         [self dispatchBlock:^{
             completionBlock(nil, nil, self.cannedError);
@@ -63,6 +64,7 @@
     self.POSTRequestCount++;
     self.lastRequestEndpoint = endpoint;
     self.lastRequestParameters = parameters;
+    self.lastRequestMethod = @"POST";
     
     if (self.cannedError) {
         [self dispatchBlock:^{

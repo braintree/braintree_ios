@@ -6,6 +6,7 @@
 @property (nonatomic, assign) NSUInteger GETRequestCount;
 @property (nonatomic, assign) NSUInteger POSTRequestCount;
 @property (nonatomic, copy, nullable) NSString *lastRequestEndpoint;
+@property (nonatomic, copy, nullable) NSString *lastRequestMethod;
 @property (nonatomic, strong, nullable) NSDictionary *lastRequestParameters;
 @property (nonatomic, copy, nullable) NSString *stubMethod;
 @property (nonatomic, copy, nullable) NSString *stubEndpoint;
