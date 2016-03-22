@@ -520,6 +520,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     NSString *lastName = [details[@"payerInfo"][@"lastName"] asString];
     NSString *phone = [details[@"payerInfo"][@"phone"] asString];
     NSString *payerId = [details[@"payerInfo"][@"payerId"] asString];
+    BOOL isDefault = [payPalAccount[@"default"] isTrue];
     
     BTPostalAddress *shippingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"shippingAddress"]];
     BTPostalAddress *billingAddress = [self.class shippingOrBillingAddressFromJSON:details[@"payerInfo"][@"billingAddress"]];
@@ -536,7 +537,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         description = email;
     }
     
-    BTPayPalAccountNonce *tokenizedPayPalAccount = [[BTPayPalAccountNonce alloc] initWithNonce:nonce description:description email:email firstName:firstName lastName:lastName phone:phone billingAddress:billingAddress shippingAddress:shippingAddress clientMetadataId:clientMetadataId payerId:payerId];
+    BTPayPalAccountNonce *tokenizedPayPalAccount = [[BTPayPalAccountNonce alloc] initWithNonce:nonce description:description email:email firstName:firstName lastName:lastName phone:phone billingAddress:billingAddress shippingAddress:shippingAddress clientMetadataId:clientMetadataId payerId:payerId isDefault:isDefault];
     
     return tokenizedPayPalAccount;
 }

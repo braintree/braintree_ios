@@ -1,8 +1,10 @@
 #import "BTAnalyticsMetadata.h"
 #import "BTAnalyticsService.h"
 #import "BTAPIClient_Internal.h"
-#import "BTLogger_Internal.h"
 #import "BTClientToken.h"
+#import "BTLogger_Internal.h"
+#import "BTPaymentMethodNonce.h"
+#import "BTPaymentMethodNonceParser.h"
 
 NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErrorDomain";
 
@@ -157,6 +159,41 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
 
     return [NSString stringWithFormat:@"/merchants/%@/client_api", merchantID];
+}
+
+# pragma mark - Payment Methods
+
+- (void)fetchPaymentMethodNoncesSorted:(BOOL)sortDefaultFirst completion:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completionBlock {
+
+    if (!self.clientToken) {
+        NSError *error = [NSError errorWithDomain:BTAPIClientErrorDomain code:BTAPIClientErrorTypeNotAuthorized userInfo:@{ NSLocalizedDescriptionKey : @"Cannot fetch payment method nonces with a tokenization key", NSLocalizedRecoverySuggestionErrorKey : @"This endpoint requires a client token for authorization"}];
+        if (completionBlock) {
+            completionBlock(nil, error);
+        }
+        return;
+    }
+
+    [self GET:@"v1/payment_methods"
+             parameters:@{@"default_first": @(sortDefaultFirst)}
+             completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     if (completionBlock) {
+                         if (error) {
+                             completionBlock(nil, error);
+                         } else {
+                             NSMutableArray *paymentMethodNonces = [NSMutableArray array];
+                             for (NSDictionary *paymentInfo in [body[@"paymentMethods"] asArray]) {
+                                 BTJSON *paymentInfoJSON = [[BTJSON alloc] initWithValue:paymentInfo];
+                                 BTPaymentMethodNonce *paymentMethodNonce = [[BTPaymentMethodNonceParser sharedParser] parseJSON:paymentInfoJSON withParsingBlockForType:[paymentInfoJSON[@"type"] asString]];
+                                 if (paymentMethodNonce) {
+                                     [paymentMethodNonces addObject:paymentMethodNonce];
+                                 }
+                             }
+                             completionBlock(paymentMethodNonces, nil);
+                         }
+                     }
+                 });
+    }];
 }
 
 #pragma mark - Remote Configuration

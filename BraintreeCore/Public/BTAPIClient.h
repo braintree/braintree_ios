@@ -9,7 +9,12 @@ extern NSString *const BTAPIClientErrorDomain;
 
 typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
     BTAPIClientErrorTypeUnknown = 0,
+
+    /// Configuration fetch failed
     BTAPIClientErrorTypeConfigurationUnavailable,
+
+    /// The authorization provided to the API client is insufficient
+    BTAPIClientErrorTypeNotAuthorized,
 };
 
 /// This class acts as the entry point for accessing the Braintree APIs

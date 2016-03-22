@@ -6,8 +6,9 @@
                   description:(NSString *)description
                   cardNetwork:(BTCardNetwork)cardNetwork
                       lastTwo:(NSString *)lastTwo
+                    isDefault:(BOOL)isDefault
 {
-    self = [super initWithNonce:nonce localizedDescription:description type:[BTCardNonce stringFromCardNetwork:cardNetwork]];
+    self = [super initWithNonce:nonce localizedDescription:description type:[BTCardNonce stringFromCardNetwork:cardNetwork] isDefault:isDefault];
     if (self) {
         _cardNetwork = cardNetwork;
         _lastTwo = lastTwo;
@@ -66,7 +67,8 @@
                                                                   @"uk maestro": @(BTCardNetworkUKMaestro),
                                                                   @"visa": @(BTCardNetworkVisa),}
                                                       orDefault:BTCardNetworkUnknown]
-                                       lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]];
+                                       lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]
+                                     isDefault:[cardJSON[@"default"] isTrue]];
 }
 
 @end

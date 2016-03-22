@@ -52,7 +52,10 @@
     }
     // Unregistered types should fall back to parsing basic nonce and description from JSON
     if (![json[@"nonce"] isString]) return nil;
-    return [[BTPaymentMethodNonce alloc] initWithNonce:[json[@"nonce"] asString] localizedDescription:[json[@"description"] asString]];
+    return [[BTPaymentMethodNonce alloc] initWithNonce:[json[@"nonce"] asString]
+                                  localizedDescription:[json[@"description"] asString]
+                                                  type:@"Unknown"
+                                             isDefault:[json[@"default"] isTrue]];
 }
 
 @end

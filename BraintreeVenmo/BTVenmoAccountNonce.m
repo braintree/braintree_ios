@@ -6,19 +6,13 @@
 
 @implementation BTVenmoAccountNonce
 
-@synthesize nonce = _paymentMethodNonce;
-@synthesize localizedDescription = _localizedDescription;
-@synthesize type = _type;
-
 - (instancetype)initWithPaymentMethodNonce:(NSString *)nonce
                                description:(NSString *)description
                                   username:(NSString *)username
+                                 isDefault:(BOOL)isDefault
 {
-    if (self = [super init]) {
-        _paymentMethodNonce = nonce;
-        _localizedDescription = description;
+    if (self = [super initWithNonce:nonce localizedDescription:description type:@"Venmo" isDefault:isDefault]) {
         _username = username;
-        _type = @"Venmo";
     }
     return self;
 }
@@ -26,7 +20,8 @@
 + (instancetype)venmoAccountWithJSON:(BTJSON *)venmoAccountJSON {
     return [[[self class] alloc] initWithPaymentMethodNonce:[venmoAccountJSON[@"nonce"] asString]
                                                 description:[venmoAccountJSON[@"description"] asString]
-                                                   username:[venmoAccountJSON[@"username"] asString]];
+                                                   username:[venmoAccountJSON[@"username"] asString]
+                                                  isDefault:[venmoAccountJSON[@"default"] isTrue]];
 }
 
 @end

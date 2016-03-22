@@ -67,12 +67,14 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             "securityQuestions": ["cvv"],
             "threeDSecureInfo": NSNull(),
             "type": "CreditCard",
+            "default": true
             ])
 
         let cardNonce = sharedParser.parseJSON(creditCardJSON, withParsingBlockForType:"CreditCard")!
 
         XCTAssertEqual(cardNonce.nonce, "0099b1d0-7a1c-44c3-b1e4-297082290bb9")
         XCTAssertEqual(cardNonce.type, "AMEX")
+        XCTAssertTrue(cardNonce.isDefault)
     }
 
     func testSharedParser_whenTypeIsPayPal_returnsPayPalAccountNonce() {
@@ -87,13 +89,15 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             "nonce": "a-nonce",
             "securityQuestions": [],
             "type": "PayPalAccount",
+            "default": true
         ])
 
-        let payPalAccountNonce = sharedParser.parseJSON(payPalAccountJSON, withParsingBlockForType: "PayPalAccount") as? BTPayPalAccountNonce
+        let payPalAccountNonce = sharedParser.parseJSON(payPalAccountJSON, withParsingBlockForType: "PayPalAccount") as! BTPayPalAccountNonce
 
-        XCTAssertEqual(payPalAccountNonce?.nonce, "a-nonce")
-        XCTAssertEqual(payPalAccountNonce?.type, "PayPal")
-        XCTAssertEqual(payPalAccountNonce?.email, "jane.doe@example.com")
+        XCTAssertEqual(payPalAccountNonce.nonce, "a-nonce")
+        XCTAssertEqual(payPalAccountNonce.type, "PayPal")
+        XCTAssertEqual(payPalAccountNonce.email, "jane.doe@example.com")
+        XCTAssertTrue(payPalAccountNonce.isDefault)
     }
 
     func testSharedParser_whenTypeIsVenmo_returnsVenmoAccountNonce() {
@@ -107,13 +111,15 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             "nonce": "a-nonce",
             "securityQuestions": [],
             "type": "venmoAccount",
+            "default": true
             ])
 
-        let venmoAccountNonce = sharedParser.parseJSON(venmoAccountJSON, withParsingBlockForType: "Venmo") as? BTVenmoAccountNonce
+        let venmoAccountNonce = sharedParser.parseJSON(venmoAccountJSON, withParsingBlockForType: "Venmo") as! BTVenmoAccountNonce
 
-        XCTAssertEqual(venmoAccountNonce?.nonce, "a-nonce")
-        XCTAssertEqual(venmoAccountNonce?.type, "Venmo")
-        XCTAssertEqual(venmoAccountNonce?.username, "jane.doe.username@example.com")
+        XCTAssertEqual(venmoAccountNonce.nonce, "a-nonce")
+        XCTAssertEqual(venmoAccountNonce.type, "Venmo")
+        XCTAssertEqual(venmoAccountNonce.username, "jane.doe.username@example.com")
+        XCTAssertTrue(venmoAccountNonce.isDefault)
     }
 
     func testSharedParser_whenTypeIsApplePayCard_returnsApplePayCardNonce() {
@@ -146,11 +152,13 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             "isLocked": false,
             "nonce": "a-nonce",
             "type": "asdfasdfasdf",
+            "default": true
             ])
 
-        let unknownNonce = sharedParser.parseJSON(JSON, withParsingBlockForType: "asdfasdfasdf")
+        let unknownNonce = sharedParser.parseJSON(JSON, withParsingBlockForType: "asdfasdfasdf")!
 
-        XCTAssertEqual(unknownNonce?.nonce, "a-nonce")
-        XCTAssertEqual(unknownNonce?.type, "Unknown")
+        XCTAssertEqual(unknownNonce.nonce, "a-nonce")
+        XCTAssertEqual(unknownNonce.type, "Unknown")
+        XCTAssertTrue(unknownNonce.isDefault)
     }
 }

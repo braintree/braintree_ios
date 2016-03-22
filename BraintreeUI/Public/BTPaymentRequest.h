@@ -64,6 +64,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Used by PayPal.
 @property (nonatomic, assign) BOOL noShipping;
 
+/// Show a customer's vaulted payment methods with the default payment method nonce first, followed by
+/// the remaining payment methods sorted by most recent usage. Defaults to true.
+///
+/// @note Must be using client token with a customer ID
+@property (nonatomic, assign) BOOL showDefaultPaymentMethodNonceFirst;
+
 /// Optional: A valid shipping address to be displayed in the transaction flow.
 /// An error will occur if this address is not valid.
 ///

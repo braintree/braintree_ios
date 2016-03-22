@@ -17,7 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
                   description:(nullable NSString *)description
                   cardNetwork:(BTCardNetwork)cardNetwork
                       lastTwo:(nullable NSString *)lastTwo
-             threeDSecureJSON:(BTJSON *)threeDSecureJSON;
+             threeDSecureJSON:(BTJSON *)threeDSecureJSON
+                    isDefault:(BOOL)isDefault;
 
 @end
 
