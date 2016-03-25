@@ -159,7 +159,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
 }
 
 - (NSArray<NSString *> *)asStringArray {
-    NSArray *array = self.asArray;
+    NSArray <NSString *> *array = (NSArray <NSString *> *)self.asArray;
 
     for (id obj in array) {
         if (![obj isKindOfClass:[NSString class]]) {

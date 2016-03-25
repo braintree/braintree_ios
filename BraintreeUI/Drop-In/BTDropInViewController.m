@@ -109,7 +109,7 @@
             [errorAlert show];
         }
 
-        NSArray *challenges = [configuration.json[@"challenges"] asArray];
+        NSArray <NSString *> *challenges = [configuration.json[@"challenges"] asStringArray];
 
         static NSString *cvvChallenge = @"cvv";
         static NSString *postalCodeChallenge = @"postal_code";
