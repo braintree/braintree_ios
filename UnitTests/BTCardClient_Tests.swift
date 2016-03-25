@@ -98,7 +98,7 @@ class BTCardClient_Tests: XCTestCase {
         let mockHTTP = BTFakeHTTP()!
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
         let request = BTCardTokenizationRequest(card: card)
         request.mobileCountryCode = "62"
         request.mobilePhoneNumber = "867530911"
@@ -114,6 +114,7 @@ class BTCardClient_Tests: XCTestCase {
             XCTAssertEqual(enrollmentParameters["expiration_year"] as? String, "2038")
             XCTAssertEqual(enrollmentParameters["mobile_country_code"] as? String, "62")
             XCTAssertEqual(enrollmentParameters["mobile_number"] as? String, "867530911")
+            XCTAssertEqual(enrollmentParameters["cvv"] as? String, "123")
         } else {
             XCTFail()
         }
@@ -250,7 +251,7 @@ class BTCardClient_Tests: XCTestCase {
             "isDebit": false,
             "unionPay": [
                 "supportsTwoStepAuthAndCapture": true,
-                "isUnionPayEnrollmentRequired":f
+                "isUnionPayEnrollmentRequired":false
                 ]
             ], statusCode: 201)
         apiClient.http = stubHTTP

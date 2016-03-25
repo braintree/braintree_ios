@@ -61,6 +61,9 @@
     if (card.expirationYear) {
         enrollmentParameters[@"expiration_year"] = card.expirationYear;
     }
+    if (card.cvv) {
+        enrollmentParameters[@"cvv"] = card.cvv;
+    }
     if (request.mobileCountryCode) {
         enrollmentParameters[@"mobile_country_code"] = request.mobileCountryCode;
     }
