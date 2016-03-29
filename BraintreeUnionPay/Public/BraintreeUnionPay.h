@@ -11,3 +11,4 @@ FOUNDATION_EXPORT const unsigned char BraintreeUnionPayVersionString[];
 #endif
 #import "BTCardCapabilities.h"
 #import "BTCardClient+UnionPay.h"
+#import "BTUnionPayRequest.h"

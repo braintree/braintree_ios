@@ -31,6 +31,7 @@
 #import "BTDropInViewController_Internal.h"
 #import "BTPaymentButton_Internal.h"
 #import "BTThreeDSecureLookupResult.h"
+#import "BTUnionPayRequest_Internal.h"
 #import "Braintree-Version.h"
 
 #import "BTSpecHelper.h"

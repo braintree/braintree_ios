@@ -4,10 +4,8 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-
 #import "BTCard.h"
 #import "BTCardNonce.h"
-#import "BTCardTokenizationRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
