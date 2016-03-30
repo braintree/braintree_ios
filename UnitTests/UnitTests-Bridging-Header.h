@@ -18,6 +18,7 @@
 #import "BTCard_Internal.h"
 #import "BTCardClient_Internal.h"
 #import "BTCardClient+UnionPay.h"
+#import "BTCardTokenizationRequest_Internal.h"
 #import "BTConfiguration.h"
 #import "BTDataCollector_Internal.h"
 #import "BTPayPalDriver_Internal.h"
@@ -31,7 +32,6 @@
 #import "BTDropInViewController_Internal.h"
 #import "BTPaymentButton_Internal.h"
 #import "BTThreeDSecureLookupResult.h"
-#import "BTUnionPayRequest_Internal.h"
 #import "Braintree-Version.h"
 
 #import "BTSpecHelper.h"

@@ -1,12 +1,13 @@
 #import "BTCardClient+UnionPay.h"
 #import "BTCardCapabilities.h"
-#import "BTUnionPayRequest_Internal.h"
 #if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
 #import "BTCardClient_Internal.h"
+#import "BTCardTokenizationRequest_Internal.h"
 #else
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCard/BTCardClient_Internal.h>
+#import <BraintreeCard/BTCardTokenizationRequest_Internal.h>
 #endif
 
 @implementation BTCardClient (UnionPay)
@@ -16,11 +17,11 @@
         [[BTTokenizationService sharedService] registerType:@"UnionPayCard" withTokenizationBlock:^(BTAPIClient * _Nonnull apiClient, NSDictionary * _Nullable options, void (^completion)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
             BTCard *card = [[BTCard alloc] initWithParameters:options];
-            BTUnionPayRequest *request = [[BTUnionPayRequest alloc] initWithCard:card mobilePhoneNumber: options[@"mobilePhoneNumber"]];
+            BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithCard:card];
             request.mobileCountryCode = options[@"mobileCountryCode"];
-            request.enrollmentAuthCode = options[@"authCodeChallenge"];
-            
-            [client tokenizeUnionPayCard:request options:nil completion:completion];
+            request.enrollmentAuthCode = options[@"enrollmentAuthCode"];
+
+            [client tokenizeCard:request options:nil completion:completion];
         }];
     }
 }
@@ -35,7 +36,7 @@
         if (error) {
             completion(nil, error);
         } else {
-            BTCardCapabilities *cardCapabilities = [[BTCardCapabilities alloc] init]; // new BTCardCapabilities()
+            BTCardCapabilities *cardCapabilities = [[BTCardCapabilities alloc] init];
             cardCapabilities.isUnionPay = [body[@"isUnionPay"] isTrue];
             cardCapabilities.isDebit = [body[@"isDebit"] isTrue];
             cardCapabilities.supportsTwoStepAuthAndCapture = [body[@"unionPay"][@"supportsTwoStepAuthAndCapture"] isTrue];
@@ -45,8 +46,8 @@
     }];
 }
 
-- (void)enrollUnionPayCard:(BTUnionPayRequest *)request
-                completion:(void (^)(NSString * _Nullable, NSError * _Nullable))completion
+- (void)enrollCard:(BTCardTokenizationRequest *)request
+        completion:(void (^)(NSError * _Nullable))completion
 {
     NSMutableDictionary *enrollmentParameters = [NSMutableDictionary dictionary];
     BTCard *card = request.card;
@@ -82,47 +83,16 @@
                  NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
                                                                 code:BTErrorCustomerInputInvalid
                                                             userInfo:userInfo];
-                 completion(nil, validationError);
+                 completion(validationError);
              } else {
-                 completion(nil, error);
+                 completion(error);
              }
              return;
          }
-        
-         completion([body[@"unionPayEnrollmentId"] asString], nil);
+
+         request.enrollmentID = [body[@"unionPayEnrollmentId"] asString];
+         completion(nil);
      }];
-}
-
-- (void)tokenizeUnionPayCard:(BTUnionPayRequest *)request
-                     options:(NSDictionary *)options
-                  completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completion
-{
-    if (!self.apiClient) {
-        NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
-                                             code:BTCardClientErrorTypeIntegration
-                                         userInfo:@{NSLocalizedDescriptionKey: @"BTCardClient tokenization failed because BTAPIClient is nil."}];
-        completion(nil, error);
-        return;
-    }
-    if (self.apiClient.tokenizationKey) {
-        NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
-                                             code:BTCardClientErrorTypeIntegration
-                                         userInfo:@{NSLocalizedDescriptionKey: @"Cannot use tokenization key with tokenizeUnionPayCard:options:completion:",
-                                                    NSLocalizedRecoverySuggestionErrorKey: @"Use a client token to authorize BTAPIClient"}];
-        completion(nil, error);
-        return;
-    }
-    
-    NSMutableDictionary *mutableOptions = options ? [options mutableCopy] : [NSMutableDictionary dictionary];
-
-    if (request.enrollmentAuthCode) {
-        mutableOptions[@"sms_code"] = request.enrollmentAuthCode;
-    }
-    if (request.enrollmentID) {
-        mutableOptions[@"id"] = request.enrollmentID;
-    }
-   
-    [self tokenizeCard:request.card options:mutableOptions completion:completion];
 }
 
 @end

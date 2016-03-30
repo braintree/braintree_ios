@@ -348,7 +348,7 @@
 
                     [weakSelf presentViewController:alertController animated:YES completion:nil];
                 };
-                options[@"authCodeChallenge"] = challengeBlock;
+                options[@"enrollmentAuthCode"] = challengeBlock;
             }
             options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
 

@@ -75,12 +75,11 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTUnionPayRequest()
-        request.card = card
+        let request = BTCardTokenizationRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
-        cardClient.enrollUnionPayCard(request) { (enrollmentID, error) -> Void in
-            guard let enrollmentID = enrollmentID else {
+        cardClient.enrollCard(request) { error -> Void in
+            guard let enrollmentID = request.enrollmentID else {
                 XCTFail("Expected union pay enrollment")
                 return
             }
@@ -104,17 +103,16 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTUnionPayRequest()
-        request.card = card
+        let request = BTCardTokenizationRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
-        cardClient.enrollUnionPayCard(request) { (enrollmentID, error) -> Void in
+        cardClient.enrollCard(request) { error -> Void in
             guard let error = error else {
                 XCTFail("Expected union pay error")
                 return
             }
            
-            XCTAssertNil(enrollmentID)
+            XCTAssertNil(request.enrollmentID)
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
             XCTAssertEqual(error.code, BTError.CustomerInputInvalid.rawValue)
            
@@ -140,17 +138,16 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTUnionPayRequest()
-        request.card = card
+        let request = BTCardTokenizationRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
-        cardClient.enrollUnionPayCard(request) { (enrollmentID, error) -> Void in
+        cardClient.enrollCard(request) { error -> Void in
             guard let error = error else {
                 XCTFail("Expected union pay error")
                 return
             }
             
-            XCTAssertNil(enrollmentID)
+            XCTAssertNil(request.enrollmentID)
             XCTAssertEqual(error.domain, "FakeError")
             XCTAssertEqual(error.code, 1)
             expectation.fulfill()
@@ -161,40 +158,16 @@ class BTCardClient_UnionPayTests: XCTestCase {
    
     // MARK: - Tokenization
     
-    func testTokenization_whenAPIClientUsesTokenizationKey_returnsError() {
-        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let cardClient = BTCardClient(APIClient: mockAPIClient)
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTUnionPayRequest()
-        request.card = card
-
-        let expectation = expectationWithDescription("Callback invoked")
-        cardClient.tokenizeUnionPayCard(request, options: nil) { (cardNonce, error) in
-            guard let error = error else {
-                XCTFail("Expected error")
-                return
-            }
-
-            XCTAssertEqual(error.domain, BTCardClientErrorDomain);
-            XCTAssertEqual(error.code, BTCardClientErrorType.Integration.rawValue);
-            XCTAssertEqual(error.localizedDescription, "Cannot use tokenization key with tokenizeUnionPayCard:options:completion:");
-            XCTAssertEqual(error.localizedRecoverySuggestion, "Use a client token to authorize BTAPIClient");
-            expectation.fulfill()
-        }
-
-        waitForExpectationsWithTimeout(2, handler: nil)
-    }
-    
     func testTokenization_POSTsToTokenizationEndpoint() {
         let mockAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
         let cardClient = BTCardClient(APIClient: mockAPIClient)
-        let request = BTUnionPayRequest()
+        let request = BTCardTokenizationRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
         request.enrollmentAuthCode = "12345"
         // This is an internal-only property, but we want to verify that it gets sent when hitting the tokenization endpoint
         request.enrollmentID = "enrollment-id"
 
-        cardClient.tokenizeUnionPayCard(request, options: nil) { (_, _) -> Void in }
+        cardClient.tokenizeCard(request, options: nil) { (_, _) -> Void in }
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/credit_cards")
         
@@ -228,12 +201,12 @@ class BTCardClient_UnionPayTests: XCTestCase {
             ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(APIClient: stubAPIClient)
-        let request = BTUnionPayRequest()
+        let request = BTCardTokenizationRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
         request.enrollmentAuthCode = "12345"
 
         let expectation = expectationWithDescription("Callback invoked with error")
-        cardClient.tokenizeUnionPayCard(request, options: nil) { (cardNonce, error) -> Void in
+        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
             guard let error = error else {
                 XCTFail("Expected error in callback")
                 return
@@ -256,13 +229,13 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let stubAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
         stubAPIClient.cannedResponseError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.ClientError.rawValue, userInfo: nil)
         let cardClient = BTCardClient(APIClient: stubAPIClient)
-        let request = BTUnionPayRequest()
+        let request = BTCardTokenizationRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
         request.enrollmentAuthCode = "12345"
         request.enrollmentID = "fake-enrollment-id"
 
         let expectation = expectationWithDescription("Callback invoked with error")
-        cardClient.tokenizeUnionPayCard(request, options: nil) { (cardNonce, error) -> Void in
+        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
             guard let error = error else {
                 XCTFail("Expected error in callback")
                 return
@@ -276,74 +249,4 @@ class BTCardClient_UnionPayTests: XCTestCase {
 
         waitForExpectationsWithTimeout(2, handler: nil)
     }
-
-    func testTokenization_whenTokenizationIsSuccessful_returnsCardNonce() {
-        let stubAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
-        stubAPIClient.cannedResponseBody = BTJSON(value: [
-            "creditCards": [
-                [
-                    "nonce": "fake-nonce",
-                    "description": "UnionPay ending in 11",
-                    "details": [
-                        "lastTwo" : "11",
-                        "cardType": "unionpay"] ] ] ] )
-        let cardClient = BTCardClient(APIClient: stubAPIClient)
-        let request = BTUnionPayRequest()
-        request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        request.enrollmentAuthCode = "12345"
-        request.enrollmentID = "fake-enrollment-id"
-
-        let expectation = expectationWithDescription("Callback invoked with error")
-        cardClient.tokenizeUnionPayCard(request, options: nil) { (cardNonce, error) -> Void in
-            guard let cardNonce = cardNonce else {
-                XCTFail("Expected card nonce in callback")
-                return
-            }
-            
-            print(cardNonce.nonce)
-            XCTAssertNil(error)
-            XCTAssertEqual(cardNonce.nonce, "fake-nonce")
-            XCTAssertEqual(cardNonce.localizedDescription, "UnionPay ending in 11")
-            XCTAssertEqual(cardNonce.lastTwo, "11")
-            
-            expectation.fulfill()
-        }
-
-        waitForExpectationsWithTimeout(2, handler: nil)
-    }
-
-//    func testTokenization_whenChallengeResponseCallbackInvoked_tokenizesCard() {
-//        let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
-//        let stubHTTP = BTFakeHTTP()!
-//        stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWith: ["unionPayEnrollmentId": "enrollment-id"], statusCode: 201)
-//        let stubbedTokenizationResponseJSON = [
-//            "creditCards": [
-//                [
-//                    "nonce": "fake-nonce",
-//                    "description": "UnionPay ending in 11",
-//                    "details": [
-//                        "lastTwo" : "11",
-//                        "cardType": "unionpay"] ] ] ]
-//        stubHTTP.stubRequest("POST", toEndpoint: "v1/payment_methods/credit_cards", respondWith: stubbedTokenizationResponseJSON, statusCode: 201)
-//        apiClient.http = stubHTTP
-//        let cardClient = BTCardClient(APIClient: apiClient)
-//        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-//        let request = BTUnionPayRequest()
-//        request.card = card
-//        request.mobileCountryCode = "62"
-//        request.mobilePhoneNumber = "867530911"
-//
-//        let expectation = expectationWithDescription("Callback invoked")
-//        cardClient.tokenizeUnionPayCard(request, authCodeChallenge: { $0("12345") }) { (cardNonce, error) -> Void in
-//            guard let cardNonce = cardNonce else {
-//                XCTFail("Expected card nonce")
-//                return
-//            }
-//            XCTAssertNil(error)
-//            XCTAssertEqual(cardNonce.nonce, "fake-nonce")
-//            expectation.fulfill()
-//        }
-//
-//        waitForExpectationsWithTimeout(2, handler: nil)
-//    }
 }

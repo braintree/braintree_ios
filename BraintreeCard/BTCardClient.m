@@ -3,6 +3,7 @@
 #import "BTTokenizationService.h"
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
+#import "BTCardTokenizationRequest_Internal.h"
 #import "BTHTTP.h"
 #import "BTJSON.h"
 #import "BTClientMetadata.h"
@@ -48,12 +49,13 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     return nil;
 }
 
-- (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completionBlock {
-    [self tokenizeCard:card options:nil completion:completionBlock];
+- (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completion {
+    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithCard:card];
+    [self tokenizeCard:request options:nil completion:completion];
 }
 
 
-- (void)tokenizeCard:(BTCard *)card options:(NSDictionary *)options completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock
+- (void)tokenizeCard:(BTCardTokenizationRequest *)request options:(NSDictionary *)options completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock
 {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain
@@ -64,7 +66,9 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     }
     
     NSMutableDictionary *parameters = [NSMutableDictionary new];
-    parameters[@"credit_card"] = card.parameters;
+    if (request.card.parameters) {
+        parameters[@"credit_card"] = request.card.parameters;
+    }
     parameters[@"_meta"] = @{
                              @"source" : self.apiClient.metadata.sourceString,
                              @"integration" : self.apiClient.metadata.integrationString,
@@ -79,7 +83,20 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
             parameters[@"options"] = mutableOptions;
         }
     }
-    
+    if (request.enrollmentAuthCode && request.enrollmentID) {
+        NSDictionary *enrollmentDictionary = @{
+                                               @"sms_code": request.enrollmentAuthCode,
+                                               @"id": request.enrollmentID
+                                               };
+        if (!parameters[@"options"]) {
+            parameters[@"options"] = enrollmentDictionary;
+        } else {
+            NSMutableDictionary *mutableOptions = [parameters[@"options"] mutableCopy];
+            [mutableOptions addEntriesFromDictionary:enrollmentDictionary];
+            parameters[@"options"] = mutableOptions;
+        }
+    }
+
     [self.apiClient POST:@"v1/payment_methods/credit_cards"
               parameters:parameters
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
