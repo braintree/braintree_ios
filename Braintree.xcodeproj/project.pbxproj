@@ -1964,6 +1964,7 @@
 				A7CCE2AD1B67F26C006EA661 /* BTAppSwitch_Tests.swift */,
 				A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */,
 				A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */,
+				41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */,
 				A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */,
 				A79033971B45C968004C8234 /* BTCardTokenizationRequest_Tests.swift */,
 				A78496591BD962260081531A /* BTCheckoutRequest_Tests.swift */,
@@ -1991,7 +1992,6 @@
 				16CD2EA01B4077FC00E68495 /* Info.plist */,
 				A7B462431C3C90DB00048423 /* PayPalOneTouch */,
 				A7E6E8E11B420D0C004CFA95 /* UnitTests-Bridging-Header.h */,
-				41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -5196,6 +5196,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.braintreepayments.Braintree-Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SRCROOT = "$(PROJECT_DIR)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/UnitTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -5241,6 +5242,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.braintreepayments.Braintree-Unit-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SRCROOT = "$(PROJECT_DIR)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/UnitTests-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Demo.app/Demo";

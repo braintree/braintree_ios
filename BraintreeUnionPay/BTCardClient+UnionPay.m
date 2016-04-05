@@ -31,8 +31,10 @@
 - (void)fetchCapabilities:(NSString *)cardNumber
                completion:(void (^)(BTCardCapabilities * _Nullable, NSError * _Nullable))completion
 {
-    [self.apiClient GET:@"v1/credit_cards/capabilities" parameters:@{@"number": cardNumber} completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
-
+    [self.apiClient GET:@"v1/payment_methods/credit_cards/capabilities"
+             parameters:@{@"credit_card" : @{@"number": cardNumber}}
+             completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
+     {
         if (error) {
             completion(nil, error);
         } else {

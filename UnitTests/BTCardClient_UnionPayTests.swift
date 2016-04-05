@@ -3,14 +3,31 @@ import BraintreeUnionPay
 
 class BTCardClient_UnionPayTests: XCTestCase {
    
-    // TODO: add tests  for enroll and fetchCapabilities that tokenization key returns error
-    
     // MARK: - Fetch capabilities
-    
+
+    func testFetchCapabilities_sendsGETRequestToCapabilitiesEndpointWithExpectedPayload() {
+        let mockAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
+        let cardClient = BTCardClient(APIClient: mockAPIClient)
+        let cardNumber = "411111111111111"
+
+        cardClient.fetchCapabilities(cardNumber) { (_, _) -> Void in }
+
+        XCTAssertEqual(mockAPIClient.lastGETPath, "v1/payment_methods/credit_cards/capabilities")
+        guard let lastRequestParameters = mockAPIClient.lastGETParameters as? [String:AnyObject] else {
+            XCTFail()
+            return
+        }
+        guard let cardParameters = lastRequestParameters["credit_card"] as? [String:AnyObject] else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(cardParameters["number"] as? String, cardNumber)
+    }
+
     func testFetchCapabilities_whenSuccessful_returnsCardCapabilities() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
         let stubHTTP = BTFakeHTTP()!
-        stubHTTP.stubRequest("GET", toEndpoint: "v1/credit_cards/capabilities", respondWith: [
+        stubHTTP.stubRequest("GET", toEndpoint: "v1/payment_methods/credit_cards/capabilities", respondWith: [
             "isUnionPay": true,
             "isDebit": false,
             "unionPay": [
@@ -28,6 +45,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
                 XCTFail("Expected union pay capabilities")
                 return
             }
+
             XCTAssertNil(error)
             XCTAssertEqual(true, cardCapabilities.isUnionPay)
             XCTAssertEqual(false, cardCapabilities.isDebit)
@@ -65,7 +83,35 @@ class BTCardClient_UnionPayTests: XCTestCase {
     }
     
     // MARK: - Enrollment
-   
+
+    func testEnrollment_sendsPOSTRequestToEnrollmentEndpointWithExpectedPayload() {
+        let mockAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
+        let cardClient = BTCardClient(APIClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
+        let request = BTCardTokenizationRequest(card: card)
+        request.mobileCountryCode = "123"
+        request.mobilePhoneNumber = "321"
+
+        cardClient.enrollCard(request) { _ -> Void in }
+
+        XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/union_pay_enrollments")
+        guard let parameters = mockAPIClient.lastPOSTParameters as? [String:AnyObject] else {
+            XCTFail()
+            return
+        }
+        guard let enrollment = parameters["union_pay_enrollment"] as? [String:AnyObject] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(enrollment["number"] as? String, card.number!)
+        XCTAssertEqual(enrollment["expiration_month"] as? String, card.expirationMonth!)
+        XCTAssertEqual(enrollment["expiration_year"] as? String, card.expirationYear!)
+        XCTAssertEqual(enrollment["cvv"] as? String, card.cvv!)
+        XCTAssertEqual(enrollment["mobile_country_code"] as? String, request.mobileCountryCode!)
+        XCTAssertEqual(enrollment["mobile_number"] as? String, request.mobilePhoneNumber!)
+    }
+
     func testEnrollUnionPayCard_whenSuccessful_returnsEnrollmentID() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
         let stubHTTP = BTFakeHTTP()!
@@ -172,7 +218,6 @@ class BTCardClient_UnionPayTests: XCTestCase {
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "v1/payment_methods/credit_cards")
         
         if let parameters = mockAPIClient.lastPOSTParameters as? [String:AnyObject] {
-            print(parameters)
             guard let cardParameters = parameters["credit_card"] as? [String:AnyObject] else {
                 XCTFail("Card should be in parameters")
                 return
