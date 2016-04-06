@@ -13,15 +13,15 @@ class BTCardClient_UnionPayTests: XCTestCase {
         cardClient.fetchCapabilities(cardNumber) { (_, _) -> Void in }
 
         XCTAssertEqual(mockAPIClient.lastGETPath, "v1/payment_methods/credit_cards/capabilities")
-        guard let lastRequestParameters = mockAPIClient.lastGETParameters as? [String:AnyObject] else {
+        guard let lastRequestParameters = mockAPIClient.lastGETParameters else {
             XCTFail()
             return
         }
-        guard let cardParameters = lastRequestParameters["credit_card"] as? [String:AnyObject] else {
+        guard let cardNumberInPayload = lastRequestParameters["credit_card[number]"] else {
             XCTFail()
             return
         }
-        XCTAssertEqual(cardParameters["number"] as? String, cardNumber)
+        XCTAssertEqual(cardNumberInPayload, cardNumber)
     }
 
     func testFetchCapabilities_whenSuccessful_parsesCardCapabilitiesFromJSONResponse() {
