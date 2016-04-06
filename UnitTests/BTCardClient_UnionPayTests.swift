@@ -24,7 +24,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         XCTAssertEqual(cardParameters["number"] as? String, cardNumber)
     }
 
-    func testFetchCapabilities_whenSuccessful_returnsCardCapabilities() {
+    func testFetchCapabilities_whenSuccessful_parsesCardCapabilitiesFromJSONResponse() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
         let stubHTTP = BTFakeHTTP()!
         stubHTTP.stubRequest("GET", toEndpoint: "v1/payment_methods/credit_cards/capabilities", respondWith: [
@@ -112,7 +112,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         XCTAssertEqual(enrollment["mobile_number"] as? String, request.mobilePhoneNumber!)
     }
 
-    func testEnrollUnionPayCard_whenSuccessful_returnsEnrollmentID() {
+    func testEnrollCard_whenSuccessful_returnsEnrollmentIDFromJSONResponse() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
         let stubHTTP = BTFakeHTTP()!
         stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWith: [
@@ -137,7 +137,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    func testEnrollUnionPayCard_when422Failure_returnsValidationError() {
+    func testEnrollCard_when422Failure_returnsValidationError() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
         let stubHTTP = BTFakeHTTP()!
         let stubbed422HTTPResponse = NSHTTPURLResponse(URL: NSURL(string: "someendpoint")!, statusCode: 422, HTTPVersion: nil, headerFields: nil)!
@@ -174,9 +174,45 @@ class BTCardClient_UnionPayTests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    // TODO: Add main thread callback test
+    func testEnrollCard_onError_invokesCallbackOnMainThread() {
+        let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
+        let stubHTTP = BTFakeHTTP()!
+        stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWithError: NSError(domain: "CannedError", code: 0, userInfo: nil))
+        apiClient.http = stubHTTP
+        let cardClient = BTCardClient(APIClient: apiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let request = BTCardTokenizationRequest(card: card)
+      
+        let expectation = expectationWithDescription("Callback invoked")
+        cardClient.enrollCard(request) { _ -> Void in
+            XCTAssertTrue(NSThread.isMainThread())
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
     
-    func testEnrollUnionPayCard_whenOtherFailure_returnsError() {
+    func testEnrollCard_onSuccess_invokesCallbackOnMainThread() {
+        let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
+        let stubHTTP = BTFakeHTTP()!
+        stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWith: [
+            "unionPayEnrollmentId": "fake-enrollment-id"
+            ], statusCode: 201)
+        apiClient.http = stubHTTP
+        let cardClient = BTCardClient(APIClient: apiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let request = BTCardTokenizationRequest(card: card)
+      
+        let expectation = expectationWithDescription("Callback invoked")
+        cardClient.enrollCard(request) { _ -> Void in
+            XCTAssertTrue(NSThread.isMainThread())
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testEnrollCard_whenOtherFailure_returnsError() {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken)!
         let stubHTTP = BTFakeHTTP()!
         let stubbedError = NSError(domain: "FakeError", code: 1, userInfo: nil)

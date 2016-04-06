@@ -85,16 +85,24 @@
                  NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
                                                                 code:BTErrorCustomerInputInvalid
                                                             userInfo:userInfo];
-                 completion(validationError);
+                 [self invokeBlock:completion onMainThreadWithError:validationError];
              } else {
-                 completion(error);
+                 [self invokeBlock:completion onMainThreadWithError:error];
              }
              return;
          }
 
          request.enrollmentID = [body[@"unionPayEnrollmentId"] asString];
-         completion(nil);
+         [self invokeBlock:completion onMainThreadWithError:nil];
      }];
+}
+
+#pragma mark - Helper methods
+
+- (void)invokeBlock:(nonnull void (^)(NSError * _Nullable))completion onMainThreadWithError:(nullable NSError *)error {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        completion(error);
+    });
 }
 
 @end

@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fetchCapabilities:(NSString *)cardNumber
                completion:(void (^)(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error))completion;
 
-/// Enrolls a UnionPay card.
+/// Enrolls a UnionPay card. Attempting to enroll non-UnionPay cards will cause an error.
 ///
 /// @param request A card tokenization request that contains a card, mobile phone number, and country code. Cannot be `nil`.
 /// After successful enrollment, the request's `enrollmentID` parameter is set to a unique ID.
