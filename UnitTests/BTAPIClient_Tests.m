@@ -5,6 +5,7 @@
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import "BTFakeHTTP.h"
 #import "BTAnalyticsService.h"
 
@@ -345,6 +346,34 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     }];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testIsUnionPayEnabled_whenGatewayReturnsFalse_isFalse {
+    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPayEnabled": @(NO) }];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
+        XCTAssertFalse(configuration.isUnionPayEnabled);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testIsUnionPayEnabled_whenGatewayReturnsTrue_isTrue {
+    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPayEnabled": @(YES) }];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
+        XCTAssertTrue(configuration.isUnionPayEnabled);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
 //#pragma mark - Analytics tests
