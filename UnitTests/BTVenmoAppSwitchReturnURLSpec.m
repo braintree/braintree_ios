@@ -69,9 +69,10 @@ describe(@"isValidURL:sourceApplication:", ^{
         expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:@"net.kortina.labs.Venmo"]).to.beTruthy();
     });
 
-    it(@"accepts app switches received from Venmo debug builds", ^{
+    it(@"accepts app switches received from other Venmo builds", ^{
         expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:@"net.kortina.labs.Venmo.debug"]).to.beTruthy();
         expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:@"net.kortina.labs.Venmo.internal"]).to.beTruthy();
+        expect([BTVenmoAppSwitchReturnURL isValidURL:url sourceApplication:@"net.kortina.labs.Venmo.some-new-feature"]).to.beTruthy();
     });
 
     it(@"accepts app switches received from PayPal Debug (for developer-facing test wallet)", ^{
