@@ -6,7 +6,7 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.B
 @implementation BTVenmoAppSwitchReturnURL
 
 + (BOOL)isValidURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
-    return [self isVenmoSourceApplication:sourceApplication] || [self isVenmoDebugSourceApplication:sourceApplication] || [self isFakeWalletURL:url andSourceApplication:sourceApplication];
+    return [self isVenmoSourceApplication:sourceApplication] || [self isFakeWalletURL:url andSourceApplication:sourceApplication];
 }
 
 - (instancetype)initWithURL:(NSURL *)url {
@@ -34,11 +34,7 @@ NSString *const BTVenmoAppSwitchReturnURLErrorDomain = @"com.braintreepayments.B
 #pragma mark Internal Helpers
 
 + (BOOL)isVenmoSourceApplication:(NSString *)sourceApplication {
-    return [sourceApplication isEqualToString:@"net.kortina.labs.Venmo"];
-}
-
-+ (BOOL)isVenmoDebugSourceApplication:(NSString *)sourceApplication {
-    return [sourceApplication isEqualToString:@"net.kortina.labs.Venmo.debug"] || [sourceApplication isEqualToString:@"net.kortina.labs.Venmo.internal"];
+    return [sourceApplication hasPrefix:@"net.kortina.labs.Venmo"];
 }
 
 + (BOOL)isFakeWalletURL:(NSURL *)url andSourceApplication:(NSString *)sourceApplication {
