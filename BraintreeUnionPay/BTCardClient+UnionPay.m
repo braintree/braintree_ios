@@ -31,70 +31,98 @@
 - (void)fetchCapabilities:(NSString *)cardNumber
                completion:(void (^)(BTCardCapabilities * _Nullable, NSError * _Nullable))completion
 {
-    [self.apiClient GET:@"v1/payment_methods/credit_cards/capabilities"
-             parameters:@{@"credit_card[number]" : cardNumber}
-             completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
-     {
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
         if (error) {
             completion(nil, error);
-        } else {
-            BTCardCapabilities *cardCapabilities = [[BTCardCapabilities alloc] init];
-            cardCapabilities.isUnionPay = [body[@"isUnionPay"] isTrue];
-            cardCapabilities.isDebit = [body[@"isDebit"] isTrue];
-            cardCapabilities.supportsTwoStepAuthAndCapture = [body[@"unionPay"][@"supportsTwoStepAuthAndCapture"] isTrue];
-            cardCapabilities.isUnionPayEnrollmentRequired = [body[@"unionPay"][@"isUnionPayEnrollmentRequired"] isTrue];
-            completion(cardCapabilities, nil);
+            return;
         }
+        
+        BOOL isUnionPayEnabled = [configuration.json[@"unionPay"][@"enabled"] isTrue];
+        if (!isUnionPayEnabled) {
+            NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain code:BTCardClientErrorTypePaymentOptionNotEnabled userInfo:@{NSLocalizedDescriptionKey: @"UnionPay is not enabled for this merchant"}];
+            completion(nil, error);
+            return;
+        }
+        
+        [self.apiClient GET:@"v1/payment_methods/credit_cards/capabilities"
+                 parameters:@{@"credit_card[number]" : cardNumber}
+                 completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
+         {
+             if (error) {
+                 completion(nil, error);
+             } else {
+                 BTCardCapabilities *cardCapabilities = [[BTCardCapabilities alloc] init];
+                 cardCapabilities.isUnionPay = [body[@"isUnionPay"] isTrue];
+                 cardCapabilities.isDebit = [body[@"isDebit"] isTrue];
+                 cardCapabilities.supportsTwoStepAuthAndCapture = [body[@"unionPay"][@"supportsTwoStepAuthAndCapture"] isTrue];
+                 cardCapabilities.isUnionPayEnrollmentRequired = [body[@"unionPay"][@"isUnionPayEnrollmentRequired"] isTrue];
+                 completion(cardCapabilities, nil);
+             }
+         }];
     }];
 }
 
 - (void)enrollCard:(BTCardTokenizationRequest *)request
         completion:(void (^)(NSError * _Nullable))completion
 {
-    NSMutableDictionary *enrollmentParameters = [NSMutableDictionary dictionary];
-    BTCard *card = request.card;
-    
-    if (card.number) {
-        enrollmentParameters[@"number"] = card.number;
-    }
-    if (card.expirationMonth) {
-        enrollmentParameters[@"expiration_month"] = card.expirationMonth;
-    }
-    if (card.expirationYear) {
-        enrollmentParameters[@"expiration_year"] = card.expirationYear;
-    }
-    if (card.cvv) {
-        enrollmentParameters[@"cvv"] = card.cvv;
-    }
-    if (request.mobileCountryCode) {
-        enrollmentParameters[@"mobile_country_code"] = request.mobileCountryCode;
-    }
-    if (request.mobilePhoneNumber) {
-        enrollmentParameters[@"mobile_number"] = request.mobilePhoneNumber;
-    }
-    
-    [self.apiClient POST:@"v1/union_pay_enrollments"
-              parameters:@{ @"union_pay_enrollment": enrollmentParameters }
-              completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
-     {
-         if (error) {
-             NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
-             if (response.statusCode == 422) {
-                 BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
-                 NSDictionary *userInfo = [jsonResponse asDictionary] ? @{ BTCustomerInputBraintreeValidationErrorsKey : [jsonResponse asDictionary] } : @{};
-                 NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                                code:BTErrorCustomerInputInvalid
-                                                            userInfo:userInfo];
-                 [self invokeBlock:completion onMainThreadWithError:validationError];
-             } else {
-                 [self invokeBlock:completion onMainThreadWithError:error];
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
+        if (error) {
+            completion(error);
+            return;
+        }
+        
+        BOOL isUnionPayEnabled = [configuration.json[@"unionPay"][@"enabled"] isTrue];
+        if (!isUnionPayEnabled) {
+            NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain code:BTCardClientErrorTypePaymentOptionNotEnabled userInfo:@{NSLocalizedDescriptionKey: @"UnionPay is not enabled for this merchant"}];
+            completion(error);
+            return;
+        }
+        
+        NSMutableDictionary *enrollmentParameters = [NSMutableDictionary dictionary];
+        BTCard *card = request.card;
+        
+        if (card.number) {
+            enrollmentParameters[@"number"] = card.number;
+        }
+        if (card.expirationMonth) {
+            enrollmentParameters[@"expiration_month"] = card.expirationMonth;
+        }
+        if (card.expirationYear) {
+            enrollmentParameters[@"expiration_year"] = card.expirationYear;
+        }
+        if (card.cvv) {
+            enrollmentParameters[@"cvv"] = card.cvv;
+        }
+        if (request.mobileCountryCode) {
+            enrollmentParameters[@"mobile_country_code"] = request.mobileCountryCode;
+        }
+        if (request.mobilePhoneNumber) {
+            enrollmentParameters[@"mobile_number"] = request.mobilePhoneNumber;
+        }
+        
+        [self.apiClient POST:@"v1/union_pay_enrollments"
+                  parameters:@{ @"union_pay_enrollment": enrollmentParameters }
+                  completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
+         {
+             if (error) {
+                 NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                 if (response.statusCode == 422) {
+                     BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
+                     NSDictionary *userInfo = [jsonResponse asDictionary] ? @{ BTCustomerInputBraintreeValidationErrorsKey : [jsonResponse asDictionary] } : @{};
+                     NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                                    code:BTErrorCustomerInputInvalid
+                                                                userInfo:userInfo];
+                     [self invokeBlock:completion onMainThreadWithError:validationError];
+                 } else {
+                     [self invokeBlock:completion onMainThreadWithError:error];
+                 }
+                 return;
              }
-             return;
-         }
-
-         request.enrollmentID = [body[@"unionPayEnrollmentId"] asString];
-         [self invokeBlock:completion onMainThreadWithError:nil];
-     }];
+             
+             request.enrollmentID = [body[@"unionPayEnrollmentId"] asString];
+             [self invokeBlock:completion onMainThreadWithError:nil];
+         }];
+    }];
 }
 
 #pragma mark - Helper methods

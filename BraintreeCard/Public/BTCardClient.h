@@ -18,6 +18,9 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
     
     /// Braintree SDK is integrated incorrectly
     BTCardClientErrorTypeIntegration,
+   
+     /// Payment option (e.g. UnionPay) is not enabled for this merchant account
+    BTCardClientErrorTypePaymentOptionNotEnabled,
 };
 
 @interface BTCardClient : NSObject

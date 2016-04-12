@@ -11,6 +11,7 @@
 @property (nonatomic, copy, nullable) NSString *stubMethod;
 @property (nonatomic, copy, nullable) NSString *stubEndpoint;
 @property (nonatomic, strong, nullable) BTJSON *cannedResponse;
+@property (nonatomic, strong, nullable) BTJSON *cannedConfiguration;
 @property (nonatomic, assign) NSUInteger cannedStatusCode;
 @property (nonatomic, strong, nullable) NSError *cannedError;
 

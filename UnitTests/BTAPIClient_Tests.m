@@ -82,18 +82,14 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (void)testAPIClient_canGetRemoteConfiguration {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-
-    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
-    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
-
-    apiClient.configurationHTTP = fake;
+    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"test": @YES }];
+    BTFakeHTTP *mockConfigurationHTTP = (BTFakeHTTP *)apiClient.configurationHTTP;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertNotNil(configuration);
         XCTAssertNil(error);
 
-        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
+        XCTAssertEqual(mockConfigurationHTTP.GETRequestCount, (NSUInteger)1);
         XCTAssertTrue([configuration.json[@"test"] isTrue]);
         [expectation fulfill];
     }];
@@ -430,7 +426,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
-    fake.cannedResponse = [[BTJSON alloc] initWithValue:configurationDictionary];
+    fake.cannedConfiguration = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;
     apiClient.configurationHTTP = fake;
 

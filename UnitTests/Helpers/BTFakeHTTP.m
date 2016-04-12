@@ -55,7 +55,8 @@
                                                                      HTTPVersion:nil
                                                                     headerFields:nil];
         [self dispatchBlock:^{
-            completionBlock(self.cannedResponse, httpResponse, nil);
+            BTJSON *jsonResponse = [endpoint rangeOfString:@"v1/configuration"].location != NSNotFound ? self.cannedConfiguration : self.cannedResponse;
+            completionBlock(jsonResponse, httpResponse, nil);
         }];
     }
 }
