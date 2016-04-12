@@ -28,38 +28,6 @@ class BTDataCollector_Tests: XCTestCase {
         waitForExpectationsWithTimeout(10, handler: nil)
     }
     
-    func testFailsWithInvalidCollectorUrlAndCallsDelegateMethod() {
-        let dataCollector = BTDataCollector(environment: .Sandbox)
-        testDelegate = TestDelegateForBTDataCollector(didFailExpectation: expectationWithDescription("didFail"))
-        dataCollector.delegate = testDelegate
-        dataCollector.setCollectorUrl("fake url which should fail")
-        dataCollector.collectCardFraudData()
-        waitForExpectationsWithTimeout(2, handler: nil)
-        
-        // Note: Kount provides NSError, so BTDataCollectorKountErrorDomain is not used.
-        XCTAssertEqual(testDelegate!.error!.domain, "URL validation failed")
-        XCTAssertEqual(testDelegate!.error!.code, Int(DC_ERR_INVALID_URL))
-        // Similarly, userInfo is not set, so these keys are nil.
-        //XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedDescriptionKey] as? String, "Failed to send data")
-        //XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedFailureReasonErrorKey] as? String, "Invalid collector URL")
-        XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedDescriptionKey] as? String, nil)
-        XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedFailureReasonErrorKey] as? String, nil)
-    }
-    
-    func testFailsWithInvalidMerchantIdAndCallsDelegateMethod() {
-        let dataCollector = BTDataCollector(environment: .Sandbox)
-        testDelegate = TestDelegateForBTDataCollector(didFailExpectation: expectationWithDescription("didFail"))
-        dataCollector.delegate = testDelegate
-        dataCollector.setFraudMerchantId("fake merchant id which should fail")
-        dataCollector.collectCardFraudData()
-        waitForExpectationsWithTimeout(2, handler: nil)
-        
-        XCTAssertEqual(testDelegate!.error!.domain, "Merchant ID validation failed")
-        XCTAssertEqual(testDelegate!.error!.code, Int(DC_ERR_INVALID_MERCHANT))
-        XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedDescriptionKey] as? String, nil)
-        XCTAssertEqual(testDelegate!.error!.userInfo[NSLocalizedFailureReasonErrorKey] as? String, nil)
-    }
-    
     /// Ensure that both Kount and PayPal data can be collected together
     func testCollectFraudData() {
         let dataCollector = BTDataCollector(environment: .Sandbox)
