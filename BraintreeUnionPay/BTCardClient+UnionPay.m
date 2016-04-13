@@ -1,5 +1,6 @@
 #import "BTCardClient+UnionPay.h"
 #import "BTCardCapabilities.h"
+#import "BTConfiguration+UnionPay.h"
 #if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
 #import "BTCardClient_Internal.h"
@@ -37,8 +38,7 @@
             return;
         }
         
-        BOOL isUnionPayEnabled = [configuration.json[@"unionPay"][@"enabled"] isTrue];
-        if (!isUnionPayEnabled) {
+        if (!configuration.isUnionPayEnabled) {
             NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain code:BTCardClientErrorTypePaymentOptionNotEnabled userInfo:@{NSLocalizedDescriptionKey: @"UnionPay is not enabled for this merchant"}];
             completion(nil, error);
             return;
@@ -74,13 +74,13 @@
             return;
         }
         
-        BOOL isUnionPayEnabled = [configuration.json[@"unionPay"][@"enabled"] isTrue];
-        if (!isUnionPayEnabled) {
+        if (!configuration.isUnionPayEnabled) {
             NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain code:BTCardClientErrorTypePaymentOptionNotEnabled userInfo:@{NSLocalizedDescriptionKey: @"UnionPay is not enabled for this merchant"}];
             completion(error);
             return;
         }
-        
+
+        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         NSMutableDictionary *enrollmentParameters = [NSMutableDictionary dictionary];
         BTCard *card = request.card;
         
@@ -102,9 +102,14 @@
         if (request.mobilePhoneNumber) {
             enrollmentParameters[@"mobile_number"] = request.mobilePhoneNumber;
         }
-        
+
+        parameters[@"union_pay_enrollment"] = enrollmentParameters;
+        if (configuration.unionPayMerchantAccountId) {
+            parameters[@"merchantAccountId"] = configuration.unionPayMerchantAccountId;
+        }
+
         [self.apiClient POST:@"v1/union_pay_enrollments"
-                  parameters:@{ @"union_pay_enrollment": enrollmentParameters }
+                  parameters:parameters
                   completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {

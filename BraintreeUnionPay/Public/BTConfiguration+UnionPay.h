@@ -9,4 +9,7 @@
 /// Indicates whether UnionPay is enabled for the merchant account.
 @property (nonatomic, readonly, assign) BOOL isUnionPayEnabled;
 
+/// The merchant account ID to use for UnionPay.
+@property (nonatomic, readonly, copy, nullable) NSString *unionPayMerchantAccountId;
+
 @end

@@ -359,7 +359,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 }
 
 - (void)testIsUnionPayEnabled_whenGatewayReturnsTrue_isTrue {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPayEnabled": @(YES) }];
+    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPay": @{@"enabled": @(YES) } }];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {

@@ -145,4 +145,47 @@ class BTConfiguration_Tests: XCTestCase {
         XCTAssertFalse(configuration.isApplePayEnabled)
     }
 
+    // MARK: - UnionPay category methods
+
+    func testIsUnionPayEnabled_whenUnionPayEnabledFromConfigurationJSONIsTrue_returnsTrue() {
+        let configurationJSON = BTJSON(value: [
+            "unionPay": [ "enabled": true ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertTrue(configuration.isUnionPayEnabled)
+    }
+
+    func testIsUnionPayEnabled_whenUnionPayEnabledFromConfigurationJSONIsFalse_returnsFalse() {
+        let configurationJSON = BTJSON(value: [
+            "unionPay": [ "enabled": false ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertFalse(configuration.isUnionPayEnabled)
+
+    }
+
+    func testIsUnionPayEnabled_whenUnionPayEnabledFromConfigurationJSONIsMissing_returnsFalse() {
+        let configurationJSON = BTJSON(value: [])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertFalse(configuration.isUnionPayEnabled)
+    }
+
+    func testUnionPayMerchantAccountId_whenConfigurationHasMerchantAccountId_returnsMerchantAccountId() {
+        let configurationJSON = BTJSON(value: [
+            "unionPay": [ "merchantAccountId": "merchantAccountId" ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertEqual(configuration.unionPayMerchantAccountId, "merchantAccountId")
+    }
+
+    func testUnionPayMerchantAccountId_whenConfigurationDoesNotHaveMerchantAccountId_returnsNil() {
+        let configuration = BTConfiguration(JSON: BTJSON(value: []))
+
+        XCTAssertNil(configuration.unionPayMerchantAccountId)
+    }
+
 }
