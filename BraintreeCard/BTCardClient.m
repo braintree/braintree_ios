@@ -102,42 +102,50 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
      {
          if (error != nil) {
-             
              NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+             NSError *callbackError = error;
+
              if (response.statusCode == 422) {
                  BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
                  NSDictionary *userInfo = jsonResponse.asDictionary ? @{ BTCustomerInputBraintreeValidationErrorsKey : jsonResponse.asDictionary } : @{};
-                 NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                                code:BTErrorCustomerInputInvalid
-                                                            userInfo:userInfo];
-                 completionBlock(nil, validationError);
-             } else {
-                 completionBlock(nil, error);
+                 callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                     code:BTErrorCustomerInputInvalid
+                                                 userInfo:userInfo];
              }
-             [self sendAnalyticsEventWithSuccess:NO];
+
+             if (request.enrollmentID) {
+                 [self sendUnionPayAnalyticsEvent:NO];
+             } else {
+                 [self sendAnalyticsEventWithSuccess:NO];
+             }
+
+             completionBlock(nil, callbackError);
              return;
          }
          
-         BTJSON *creditCard = body[@"creditCards"][0];
-         if (creditCard.isError) {
-             completionBlock(nil, creditCard.asError);
-             [self sendAnalyticsEventWithSuccess:NO];
+         BTJSON *cardJSON = body[@"creditCards"][0];
+
+         if (request.enrollmentID) {
+             [self sendUnionPayAnalyticsEvent:!cardJSON.isError];
          } else {
-             completionBlock([BTCardNonce cardNonceWithJSON:creditCard], nil);
-             [self sendAnalyticsEventWithSuccess:YES];
+             [self sendAnalyticsEventWithSuccess:!cardJSON.isError];
          }
+
+         // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
+         completionBlock([BTCardNonce cardNonceWithJSON:cardJSON], cardJSON.asError);
      }];
 }
 
 #pragma mark - Analytics
 
 - (void)sendAnalyticsEventWithSuccess:(BOOL)success {
-    BOOL isDropIn = self.apiClient.metadata.source == BTClientMetadataIntegrationDropIn;
-    if (success) {
-        [self.apiClient sendAnalyticsEvent:(isDropIn ? @"ios.dropin.card.failed" : @"ios.custom.card.failed")];
-    } else {
-        [self.apiClient sendAnalyticsEvent:(isDropIn ? @"ios.dropin.card.succeeded" : @"ios.custom.card.succeeded")];
-    }
+    NSString *event = [NSString stringWithFormat:@"ios.%@.card.%@", self.apiClient.metadata.integrationString, success ? @"succeeded" : @"failed"];
+    [self.apiClient sendAnalyticsEvent:event];
+}
+
+- (void)sendUnionPayAnalyticsEvent:(BOOL)success {
+    NSString *event = [NSString stringWithFormat:@"ios.%@.unionpay.nonce-%@", self.apiClient.metadata.integrationString, success ? @"received" : @"failed"];
+    [self.apiClient sendAnalyticsEvent:event];
 }
 
 @end

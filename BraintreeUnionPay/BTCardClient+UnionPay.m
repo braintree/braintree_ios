@@ -49,8 +49,11 @@
                  completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {
+                 [self sendUnionPayEvent:@"capabilities-failed"];
                  completion(nil, error);
              } else {
+                 [self sendUnionPayEvent:@"capabilities-received"];
+
                  BTCardCapabilities *cardCapabilities = [[BTCardCapabilities alloc] init];
                  cardCapabilities.isUnionPay = [body[@"isUnionPay"] isTrue];
                  cardCapabilities.isDebit = [body[@"isDebit"] isTrue];
@@ -105,6 +108,8 @@
                   completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {
+                 [self sendUnionPayEvent:@"enrollment-failed"];
+
                  NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
                  if (response.statusCode == 422) {
                      BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
@@ -118,7 +123,8 @@
                  }
                  return;
              }
-             
+
+             [self sendUnionPayEvent:@"enrollment-succeeded"];
              request.enrollmentID = [body[@"unionPayEnrollmentId"] asString];
              [self invokeBlock:completion onMainThreadWithError:nil];
          }];
@@ -131,6 +137,11 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         completion(error);
     });
+}
+
+- (void)sendUnionPayEvent:(nonnull NSString *)event {
+    NSString *fullEvent = [NSString stringWithFormat:@"ios.%@.unionpay.%@", self.apiClient.metadata.integrationString, event];
+    [self.apiClient sendAnalyticsEvent:fullEvent];
 }
 
 @end
