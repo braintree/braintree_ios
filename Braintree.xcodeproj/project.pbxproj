@@ -18,6 +18,8 @@
 		033800101C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0338000F1C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift */; };
 		035945571BE96345002116BB /* BTUIVenmoMonogramCardView.h in Headers */ = {isa = PBXBuildFile; fileRef = 035945551BE96345002116BB /* BTUIVenmoMonogramCardView.h */; };
 		035945581BE96345002116BB /* BTUIVenmoMonogramCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 035945561BE96345002116BB /* BTUIVenmoMonogramCardView.m */; };
+		0371D13C1CBECACD006A0B5D /* BTUIPayPalWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */; };
+		0371D13D1CBECAEE006A0B5D /* BTUIPayPalCompactButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A70241BC1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.m */; };
 		0384E94D1C23BAFF001A3380 /* BraintreePayPal_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0384E94C1C23BAFF001A3380 /* BraintreePayPal_UITests.swift */; };
 		0384E94F1C23C108001A3380 /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0384E94E1C23C108001A3380 /* BTUITest.swift */; };
 		03D294FF1BE835C8004F90DA /* BTVenmoAccountNonce_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D294FE1BE835C8004F90DA /* BTVenmoAccountNonce_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -4131,6 +4133,8 @@
 				417405381BB086B3008A5DEA /* BTUIUnknownCardVectorArtView.m in Sources */,
 				4174053A1BB086B3008A5DEA /* BTUIVenmoWordmarkVectorArtView.m in Sources */,
 				4174053C1BB086B3008A5DEA /* BTUIVisaVectorArtView.m in Sources */,
+				0371D13D1CBECAEE006A0B5D /* BTUIPayPalCompactButton.m in Sources */,
+				0371D13C1CBECACD006A0B5D /* BTUIPayPalWordmarkVectorArtView.m in Sources */,
 				4174053E1BB086B3008A5DEA /* BTUIViewUtil.m in Sources */,
 				417404D31BB0869C008A5DEA /* BTDropInLocalizedString.m in Sources */,
 				417404D51BB0869C008A5DEA /* BTDropInContentView.m in Sources */,
