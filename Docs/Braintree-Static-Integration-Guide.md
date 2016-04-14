@@ -1,17 +1,17 @@
-Static Integration Guide
+Static Library Integration Guide
 ------------------------------------
 
-Please follow these instructions to integrate Braintree iOS into your app without CocoaPods.
+Please follow these instructions to integrate Braintree iOS into your app using the provided static library.
 
 > Note: We assume that you are using Xcode 7+ and iOS 9.0+ as your Base SDK.
 
 1. Add the Braintree iOS SDK code to your repository
   - [Download the SDK as a ZIP file from GitHub](https://github.com/braintree/braintree_ios/archive/master.zip) and unzip it into your app's root directory in Finder
 2. Open up your app in Xcode
-3. Add Braintree as a Sub Project
-  - Open your project and drag the Braintree.xcodeproj file to your Project Navigator under your project. Be sure to *NOT* have the Braintree.xcodeproj open while doing this step.
+3. Add Braintree as a subproject
+  - Open your project and drag the Braintree.xcodeproj file to your Project Navigator under your project. Be sure *NOT* to have the Braintree.xcodeproj open while doing this step.
   
-  ![Screenshot of adding Braintree as a Sub Project](bt_static_screenshot_sub_project.png)
+  ![Screenshot of adding Braintree as a subproject](bt_static_screenshot_sub_project.png)
   
 4. Add `Braintree` to your build phases (`[Your App Target]` > `Build Phases`)
   - `Target Dependencies`
@@ -36,5 +36,5 @@ Please follow these instructions to integrate Braintree iOS into your app withou
     
     ![Screenshot of updating Header Search Paths](bt_static_screenshot_linker_flags.png)
     
-6. Build and Run your app to test out the integration
+6. `Build and Run` your app to test out the integration
 7. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
