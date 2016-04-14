@@ -256,9 +256,35 @@ class BTCardClient_UnionPayTests: XCTestCase {
         XCTAssertEqual(enrollment["number"] as? String, card.number!)
         XCTAssertEqual(enrollment["expiration_month"] as? String, card.expirationMonth!)
         XCTAssertEqual(enrollment["expiration_year"] as? String, card.expirationYear!)
-        XCTAssertEqual(enrollment["cvv"] as? String, card.cvv!)
         XCTAssertEqual(enrollment["mobile_country_code"] as? String, request.mobileCountryCode!)
         XCTAssertEqual(enrollment["mobile_number"] as? String, request.mobilePhoneNumber!)
+    }
+
+    func testEnrollmentPayload_doesNotContainCVV() {
+        let mockHTTP = BTFakeHTTP()!
+        apiClient.http = mockHTTP
+        let cardClient = BTCardClient(APIClient: apiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
+        let request = BTCardTokenizationRequest(card: card)
+        request.mobileCountryCode = "123"
+        request.mobilePhoneNumber = "321"
+
+        let expectation = expectationWithDescription("Callback invoked")
+        cardClient.enrollCard(request) { _ -> Void in
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(1, handler: nil)
+
+        guard let parameters = mockHTTP.lastRequestParameters as? [String:AnyObject] else {
+            XCTFail()
+            return
+        }
+        guard let enrollment = parameters["union_pay_enrollment"] as? [String:AnyObject] else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertNil(enrollment["cvv"] as? String)
     }
 
     func testEnrollCard_whenSuccessful_returnsEnrollmentIDFromJSONResponse() {
