@@ -93,14 +93,11 @@
 
 - (void)setOptionalFields:(BTUICardFormOptionalFields)optionalFields {
     _optionalFields = optionalFields;
-    NSMutableArray *fields = [NSMutableArray arrayWithObjects:self.numberField, self.expiryField, self.cvvField, nil];
+    
+    NSArray *defaultFields = @[self.numberField, self.expiryField];
+    NSMutableArray *fields = [defaultFields mutableCopy];
 
-     self.postalCodeField.hidden = self.phoneNumberField.hidden = YES;
-    self.cvvField.hidden = NO;
-//    if (optionalFields & BTUICardFormOptionalFieldsCvv) {
-//        [fields addObject:self.cvvField];
-//        self.cvvField.hidden = NO;
-//    }
+    self.cvvField.hidden = self.postalCodeField.hidden = self.phoneNumberField.hidden = YES;
     if (optionalFields & BTUICardFormOptionalFieldsPostalCode) {
         [fields addObject:self.postalCodeField];
         self.postalCodeField.hidden = NO;
@@ -108,6 +105,10 @@
     if (optionalFields & BTUICardFormOptionalFieldsPhoneNumber) {
         [fields addObject:self.phoneNumberField];
         self.phoneNumberField.hidden = NO;
+    }
+    if (optionalFields & BTUICardFormOptionalFieldsCvv) {
+        [fields addObject:self.cvvField];
+        self.cvvField.hidden = NO;
     }
 
     // Set bottom border for fields
@@ -140,7 +141,7 @@
 }
 
 - (NSString *)phoneNumber {
-    return self.phoneNumberField.text;
+    return self.phoneNumberField.text.length > 0 ? self.phoneNumberField.text : nil;
 }
 
 - (void)setup {
@@ -287,17 +288,15 @@
 - (void)formFieldDidChange:(BTUIFormField *)field {
     if (field == self.numberField) {
         self.cvvField.cardType = self.numberField.cardType;
-        BTUIPaymentOptionType paymentMethodType = [BTUIViewUtil paymentMethodTypeForCardType:self.numberField.cardType];
-        if (self.lastPaymentMethodType != paymentMethodType) {
-            if (paymentMethodType == BTUIPaymentOptionTypeUnionPay) {
-                NSLog(@"Recognized Union Pay card!");
-                self.optionalFields |= BTUICardFormOptionalFieldsPhoneNumber;
-            } else if (self.lastPaymentMethodType == BTUIPaymentOptionTypeUnionPay) {
-                NSLog(@"No longer a Union Pay card!");
-                self.optionalFields ^= BTUICardFormOptionalFieldsPhoneNumber;
-            }
-            self.lastPaymentMethodType = paymentMethodType;
-        }
+//        BTUIPaymentOptionType paymentMethodType = [BTUIViewUtil paymentMethodTypeForCardType:self.numberField.cardType];
+//        if (self.lastPaymentMethodType != paymentMethodType) {
+//            if (paymentMethodType == BTUIPaymentOptionTypeUnionPay) {
+//                self.optionalFields |= BTUICardFormOptionalFieldsPhoneNumber;
+//            } else if (self.lastPaymentMethodType == BTUIPaymentOptionTypeUnionPay) {
+//                self.optionalFields ^= BTUICardFormOptionalFieldsPhoneNumber;
+//            }
+//            self.lastPaymentMethodType = paymentMethodType;
+//        }
     }
     [self advanceToNextInvalidFieldFrom:field];
     // Trigger KVO

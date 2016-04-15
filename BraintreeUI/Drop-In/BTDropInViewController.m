@@ -323,13 +323,14 @@
             [self informDelegateWillComplete];
 
             NSMutableDictionary *options = [NSMutableDictionary dictionary];
-            options[@"number"] = cardForm.number;
-            options[@"expiration_date"] = [NSString stringWithFormat:@"%@/%@", cardForm.expirationMonth, cardForm.expirationYear];
+            NSMutableDictionary *cardDictionary = [NSMutableDictionary dictionary];
+            cardDictionary[@"number"] = cardForm.number;
+            cardDictionary[@"expiration_date"] = [NSString stringWithFormat:@"%@/%@", cardForm.expirationMonth, cardForm.expirationYear];
             if (cardForm.cvv) {
-                options[@"cvv"] = cardForm.cvv;
+                cardDictionary[@"cvv"] = cardForm.cvv;
             }
             if (cardForm.postalCode) {
-                options[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
+                cardDictionary[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
             }
             if (cardForm.phoneNumber) {
                 options[@"mobilePhoneNumber"] = cardForm.phoneNumber;
@@ -338,7 +339,6 @@
 
                 __weak typeof(self) weakSelf = self;
                 void (^challengeBlock)(void (^)(NSString *)) = ^(__unused void (^challengeBlock)(NSString *authCode)) {
-
                     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"SMS Auth Code" message:@"An authorization code has been sent to your mobile phone number. Please enter it here" preferredStyle:UIAlertControllerStyleAlert];
                     [alertController addTextFieldWithConfigurationHandler:nil];
                     [alertController addAction:[UIAlertAction actionWithTitle:@"Submit" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
@@ -348,9 +348,10 @@
 
                     [weakSelf presentViewController:alertController animated:YES completion:nil];
                 };
-                options[@"enrollmentAuthCode"] = challengeBlock;
+                options[@"challengeBlock"] = challengeBlock;
             }
-            options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
+            cardDictionary[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
+            options[@"card"] = cardDictionary;
 
             NSString *tokenizationType = cardForm.phoneNumber == nil ? @"Card" : @"UnionPayCard";
             [[BTTokenizationService sharedService] tokenizeType:tokenizationType options:options withAPIClient:client completion:^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
