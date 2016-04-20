@@ -47,6 +47,7 @@
 #define kPPOTConfigurationKeyURL                        CARDIO_STR(@"url")
 #define kPPOTConfigurationKeyCertificateSerialNumber    CARDIO_STR(@"certificate_serial_number")
 #define kPPOTConfigurationKeyCertificate                CARDIO_STR(@"certificate")
+#define kPPOTConfigurationKeyEnvironments               CARDIO_STR(@"environments")
 #define kPPOTConfigurationKeyOAuthRecipes               CARDIO_STR(@"oauth2_recipes_in_decreasing_priority_order")
 #define kPPOTConfigurationKeyCheckoutRecipes            CARDIO_STR(@"checkout_recipes_in_decreasing_priority_order")
 #define kPPOTConfigurationKeyBillingAgreementRecipes    CARDIO_STR(@"billing_agreement_recipes_in_decreasing_priority_order")
@@ -64,6 +65,7 @@
 #define kPPOTCoderKeyConfigurationRecipeURL                         CARDIO_STR(@"url")
 #define kPPOTCoderKeyConfigurationRecipeCertificateSerialNumber     CARDIO_STR(@"certificate_serial_number")
 #define kPPOTCoderKeyConfigurationRecipeCertificate                 CARDIO_STR(@"certificate")
+#define kPPOTCoderKeyConfigurationEnvironments                      CARDIO_STR(@"environments")
 
 #define kPPOTCoderKeyConfigurationDownloadTime                CARDIO_STR(@"downloadTime")
 #define kPPOTCoderKeyConfigurationTimestamp                   CARDIO_STR(@"timestamp")
@@ -75,9 +77,9 @@
 
 #define LOG_ERROR_AND_RETURN_NIL  { PPSDKLog(@"Bad configuration: error %d", __LINE__); return nil; }
 
-#define STRING_FROM_DICTIONARY(STRING, DICTIONARY, KEY) \
+#define STRING_FROM_DICTIONARY(STRING, DICTIONARY, KEY, REQUIRED) \
 NSString *STRING = [PPOTJSONHelper stringFromDictionary:DICTIONARY withKey:KEY]; \
-if (!STRING) LOG_ERROR_AND_RETURN_NIL
+if (REQUIRED && !STRING) LOG_ERROR_AND_RETURN_NIL
 
 #define DICTIONARY_FROM_DICTIONARY(DICTIONARY1, DICTIONARY2, KEY, REQUIRED) \
 NSDictionary *DICTIONARY1 = [PPOTJSONHelper dictionaryFromDictionary:DICTIONARY2 withKey:KEY]; \
@@ -96,8 +98,8 @@ if (REQUIRED && !ARRAY) LOG_ERROR_AND_RETURN_NIL
 @implementation PPOTConfigurationRecipe
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
-    STRING_FROM_DICTIONARY(targetString, dictionary, kPPOTConfigurationKeyTarget)
-    STRING_FROM_DICTIONARY(protocolVersionString, dictionary, kPPOTConfigurationKeyProtocolVersion)
+    STRING_FROM_DICTIONARY(targetString, dictionary, kPPOTConfigurationKeyTarget, YES)
+    STRING_FROM_DICTIONARY(protocolVersionString, dictionary, kPPOTConfigurationKeyProtocolVersion, YES)
     NSNumber *protocolVersionNumber = [NSNumber numberWithInteger:[protocolVersionString integerValue]];
 
     if ((self = [super init])) {
@@ -117,7 +119,7 @@ if (REQUIRED && !ARRAY) LOG_ERROR_AND_RETURN_NIL
             }
             _supportedLocales = uppercasedSupportedLocalesArray;
 
-            STRING_FROM_DICTIONARY(targetAppURLScheme, dictionary, kPPOTConfigurationKeyURLScheme)
+            STRING_FROM_DICTIONARY(targetAppURLScheme, dictionary, kPPOTConfigurationKeyURLScheme, YES)
             if ([targetAppURLScheme rangeOfString:@":"].location != NSNotFound ||
                 [targetAppURLScheme rangeOfString:@"/"].location != NSNotFound) {
                 LOG_ERROR_AND_RETURN_NIL
@@ -134,6 +136,8 @@ if (REQUIRED && !ARRAY) LOG_ERROR_AND_RETURN_NIL
                 LOG_ERROR_AND_RETURN_NIL
             }
             _protocolVersion = protocolVersionNumber;
+            DICTIONARY_FROM_DICTIONARY(environments, dictionary, kPPOTConfigurationKeyEnvironments, NO)
+            _environments = environments;
         }
         else {
             LOG_ERROR_AND_RETURN_NIL
@@ -154,6 +158,8 @@ if (REQUIRED && !ARRAY) LOG_ERROR_AND_RETURN_NIL
             _targetAppURLScheme = [aDecoder decodeObjectForKey:kPPOTCoderKeyConfigurationRecipeTargetAppURLScheme];
             _targetAppBundleIDs = [aDecoder decodeObjectForKey:kPPOTCoderKeyConfigurationRecipeTargetAppBundleIDs];
             _supportedLocales = [aDecoder decodeObjectForKey:kPPOTCoderKeyConfigurationRecipeSupportedLocales];
+        } else if (_target == PPOTRequestTargetBrowser) {
+            _environments = [aDecoder decodeObjectForKey:kPPOTCoderKeyConfigurationEnvironments];
         }
     }
 
@@ -167,6 +173,8 @@ if (REQUIRED && !ARRAY) LOG_ERROR_AND_RETURN_NIL
         [aCoder encodeObject:self.targetAppURLScheme forKey:kPPOTCoderKeyConfigurationRecipeTargetAppURLScheme];
         [aCoder encodeObject:self.targetAppBundleIDs forKey:kPPOTCoderKeyConfigurationRecipeTargetAppBundleIDs];
         [aCoder encodeObject:self.supportedLocales forKey:kPPOTCoderKeyConfigurationRecipeSupportedLocales];
+    } else if (self.target == PPOTRequestTargetBrowser) {
+        [aCoder encodeObject:self.environments forKey:kPPOTCoderKeyConfigurationEnvironments];
     }
 }
 
@@ -448,13 +456,13 @@ static BOOL alwaysUseHardcodedConfiguration = NO;
 }
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary {
-    STRING_FROM_DICTIONARY(os, dictionary, kPPOTConfigurationKeyOs)
+    STRING_FROM_DICTIONARY(os, dictionary, kPPOTConfigurationKeyOs, YES)
 
     if (![os isEqualToString:@"iOS"]) {
         LOG_ERROR_AND_RETURN_NIL
     }
 
-    STRING_FROM_DICTIONARY(fileTimestamp, dictionary, kPPOTConfigurationKeyFileTimestamp)
+    STRING_FROM_DICTIONARY(fileTimestamp, dictionary, kPPOTConfigurationKeyFileTimestamp, YES)
 
     // Currently we only support config file format 1.0.
     // If we ever need to update the file format, then the code here would presumably

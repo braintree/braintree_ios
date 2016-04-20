@@ -21,7 +21,25 @@
 @implementation PPOTCheckoutBrowserSwitchRequest
 
 - (NSURL *)encodedURL {
-    return [NSURL URLWithString:self.approvalURL];
+    NSURLComponents *urlComponents = [NSURLComponents componentsWithString:self.approvalURL];
+    NSString *successURL;
+    NSString *cancelURL;
+    [PPOTAppSwitchUtil redirectURLsForCallbackURLScheme:self.callbackURLScheme withReturnURL:&successURL withCancelURL:&cancelURL];
+
+    NSString *originalQuery = urlComponents.query;
+    if ([originalQuery length] > 0) {
+        originalQuery = [NSString stringWithFormat:@"%@&", originalQuery];
+    } else {
+        originalQuery = @"";
+    }
+    NSString *finalQuery = [NSString stringWithFormat:@"%@%@=%@&%@=%@&%@=%@",
+                            originalQuery,
+                            kPPOTAppSwitchXSourceKey, [PPOTAppSwitchUtil bundleId],
+                            kPPOTAppSwitchXSuccessKey, successURL,
+                            kPPOTAppSwitchXCancelKey, cancelURL];
+    urlComponents.query = finalQuery;
+
+    return urlComponents.URL;
 }
 
 - (void)addDataToPersistentRequestDataDictionary:(NSMutableDictionary *)requestDataDictionary {

@@ -104,28 +104,6 @@ class BTTokenizationService_Tests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
 
-    // This test only verifies that SFSafariViewController is presented
-    func testSingleton_canAuthorizePayPalThroughSFSafariViewController() {
-        if #available(iOS 9.0, *) {
-            let sharedService = BTTokenizationService.sharedService()
-            let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
-            stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-                "paypalEnabled": true,
-                "paypal": [
-                    "environment": "offline",
-                    "privacyUrl": "",
-                    "userAgreementUrl": "",
-                    "environment": "offline",
-                ] ])
-            let mockDelegate = MockViewControllerPresentationDelegate()
-            BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
-
-            sharedService.tokenizeType("PayPal", options: [BTTokenizationServiceViewPresentingDelegateOption: mockDelegate], withAPIClient: stubAPIClient) { _ -> Void in }
-
-            XCTAssertTrue(mockDelegate.lastViewController is SFSafariViewController)
-        }
-    }
-
     func testSingleton_canAuthorizeVenmo() {
         let sharedService = BTTokenizationService.sharedService()
         BTConfiguration.setBetaPaymentOption("venmo", isEnabled: true)

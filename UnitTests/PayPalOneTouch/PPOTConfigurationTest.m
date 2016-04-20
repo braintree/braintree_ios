@@ -85,9 +85,50 @@
                                           }];
     XCTAssertNotNil(configuration);
     XCTAssertNotNil(configuration.prioritizedOAuthRecipes);
-    XCTAssert([configuration.prioritizedOAuthRecipes count] == 2);
+    XCTAssertEqual([configuration.prioritizedOAuthRecipes count], (NSUInteger)2);
     XCTAssert([configuration.prioritizedOAuthRecipes[0] isKindOfClass:[PPOTConfigurationOAuthRecipe class]]);
     XCTAssert([configuration.prioritizedOAuthRecipes[1] isKindOfClass:[PPOTConfigurationOAuthRecipe class]]);
+}
+
+- (void)testBaseURLOverrideIsOptional {
+    PPOTConfiguration *configuration = [PPOTConfiguration configurationWithDictionary:
+                                        @{@"os": @"iOS",
+                                          @"file_timestamp": @"2014-12-19T16:39:57-08:00",
+                                          @"1.0": @{
+                                                  @"oauth2_recipes_in_decreasing_priority_order": @[
+                                                          @{
+                                                              @"protocol": @"0",
+                                                              @"target": @"browser",
+                                                              @"scope": @[@"*"],
+                                                              @"url": @"https://checkout.paypal.com/login",
+                                                              },
+                                                          ],
+                                                  @"billing_agreement_recipes_in_decreasing_priority_order": @[
+                                                          @{
+                                                              @"protocol": @"0",
+                                                              @"target": @"browser",
+                                                              @"environments": @{
+                                                                  @"live": @{
+                                                                      @"base_url_override": @"https://www.paypal.com/mobile/agreements",
+                                                                      }
+                                                                  }
+                                                              },
+                                                          ],
+                                                  }
+                                          }];
+    XCTAssertNotNil(configuration);
+    XCTAssertNotNil(configuration.prioritizedOAuthRecipes);
+    XCTAssertEqual([configuration.prioritizedOAuthRecipes count], (NSUInteger)1);
+    XCTAssert([configuration.prioritizedOAuthRecipes[0] isKindOfClass:[PPOTConfigurationOAuthRecipe class]]);
+    XCTAssertNil(((PPOTConfigurationOAuthRecipe *)configuration.prioritizedOAuthRecipes[0]).environments);
+
+    XCTAssertNotNil(configuration.prioritizedBillingAgreementRecipes);
+    XCTAssertEqual([configuration.prioritizedBillingAgreementRecipes count], (NSUInteger)1);
+    XCTAssert([configuration.prioritizedBillingAgreementRecipes[0] isKindOfClass:[PPOTConfigurationBillingAgreementRecipe class]]);
+    XCTAssertEqualObjects(
+                          ((PPOTConfigurationBillingAgreementRecipe *)configuration.prioritizedBillingAgreementRecipes[0]).environments[@"live"][@"base_url_override"],
+                          @"https://www.paypal.com/mobile/agreements"
+                          );
 }
 
 - (void)testBadOAuthRecipes {

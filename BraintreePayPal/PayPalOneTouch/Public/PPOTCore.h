@@ -35,7 +35,7 @@ typedef void (^PPOTCompletionBlock)(PPOTResult * _Nonnull result);
 /// `- (BOOL)application:openURL:sourceApplication:annotation:` method
 /// to determine if the URL is intended for the One Touch library.
 ///
-/// (To then actually process the URL, call `+ (void)parseOneTouchURL:completionBlock`.)
+/// (To then actually process the URL, call `+ (void)parseResponseURL:completionBlock:`.)
 ///
 /// @param url The URL of the app switch request
 /// @param sourceApplication The bundle ID of the source application
@@ -55,7 +55,7 @@ typedef void (^PPOTCompletionBlock)(PPOTResult * _Nonnull result);
 /// Creating that payment requires, among many other things, a `redirect_urls` object containing two strings:
 /// `return_url` and `cancel_url`.
 ///
-/// @note Both return values will be `nil` if [PPOTCore doesApplicationSupportOneTouchCallbackURLScheme:callbackURLScheme] is not true.
+/// @note Both return values will be `nil` if [PPOTCore doesApplicationSupportOneTouchCallbackURLScheme:] is not true.
 ///
 /// @param callbackURLScheme The URL scheme which the app has registered for One Touch responses.
 /// @param returnURL A string containing the `return_url`.
