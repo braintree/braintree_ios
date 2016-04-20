@@ -2,7 +2,7 @@
 #import <BraintreeUI/BraintreeUI.h>
 #import <BraintreePayPal/BraintreePayPal.h>
 
-@interface BraintreeDemoCustomPayPalButtonViewController () <BTViewControllerPresentingDelegate>
+@interface BraintreeDemoCustomPayPalButtonViewController () <BTAppSwitchDelegate>
 @end
 
 @implementation BraintreeDemoCustomPayPalButtonViewController
@@ -37,7 +37,7 @@
 
 - (void)tappedCustomPayPal {
     BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
-    payPalDriver.viewControllerPresentingDelegate = self;
+    payPalDriver.appSwitchDelegate = self;
     [payPalDriver authorizeAccountWithCompletion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
         if (tokenizedPayPalAccount) {
             self.progressBlock(@"Got a nonce 💎!");
@@ -51,12 +51,28 @@
     }];
 }
 
-- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
-    [self presentViewController:viewController animated:YES completion:nil];
+#pragma mark BTAppSwitchDelegate
+
+- (void)appSwitcherWillPerformAppSwitch:(__unused id)appSwitcher {
+    self.progressBlock(@"paymentDriverWillPerformAppSwitch:");
 }
 
-- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
-    [viewController dismissViewControllerAnimated:YES completion:nil];
+- (void)appSwitcherWillProcessPaymentInfo:(__unused id)appSwitcher {
+    self.progressBlock(@"paymentDriverWillProcessPaymentInfo:");
+}
+
+- (void)appSwitcher:(__unused id)appSwitcher didPerformSwitchToTarget:(BTAppSwitchTarget)target {
+    switch (target) {
+        case BTAppSwitchTargetWebBrowser:
+            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: browser");
+            break;
+        case BTAppSwitchTargetNativeApp:
+            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: app");
+            break;
+        case BTAppSwitchTargetUnknown:
+            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: unknown");
+            break;
+    }
 }
 
 @end

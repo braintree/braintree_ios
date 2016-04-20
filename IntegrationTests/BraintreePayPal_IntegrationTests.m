@@ -483,14 +483,9 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
         self.appSwitchDelegate = [[BTAppSwitchTestDelegate alloc] init];
     }
 
-    if (NSClassFromString(@"SFSafariViewController")) {
-        self.viewControllerPresentingDelegate.requestsPresentationExpectation = [self expectationWithDescription:@"Delegate received requestsPresentation"];
-        payPalDriver.viewControllerPresentingDelegate = self.viewControllerPresentingDelegate;
-    } else {
-        self.appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
-        self.appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
-        payPalDriver.appSwitchDelegate = self.appSwitchDelegate;
-    }
+    self.appSwitchDelegate.willPerform = [self expectationWithDescription:@"Delegate received willPerformAppSwitch"];
+    self.appSwitchDelegate.didPerform = [self expectationWithDescription:@"Delegate received didPerformAppSwitch"];
+    payPalDriver.appSwitchDelegate = self.appSwitchDelegate;
 }
 
 @end

@@ -21,10 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Exposed internally to test BTPayPalDriver app switch return behavior by simulating an app switch return
 - (void)setAuthorizationAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedAccount, NSError * _Nullable error))completionBlock;
 
-- (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL;
-
-- (void)informDelegatePresentingViewControllerNeedsDismissal;
-
 /// Exposed for testing to create stubbed versions of `PayPalOneTouchAuthorizationRequest` and
 /// `PayPalOneTouchCheckoutRequest`
 @property (nonatomic, strong) BTPayPalRequestFactory *requestFactory;
@@ -41,9 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Exposed for testing, the clientMetadataId associated with this request
 @property (nonatomic, strong) NSString *clientMetadataId;
-
-/// Exposed for testing, the safariViewController instance used for the paypal flow on iOS >=9
-@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
 
 /// Used to test the Future Payments flow by force
 - (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes forceFuturePaymentFlow:(BOOL)forceFuturePaymentFlow completion:(void (^)(BTPayPalAccountNonce *, NSError *))completionBlock;

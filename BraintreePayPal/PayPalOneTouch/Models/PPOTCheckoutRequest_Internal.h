@@ -7,6 +7,8 @@
 
 #import "PPOTRequest.h"
 
+@class PPOTConfigurationRecipe;
+
 @interface PPOTCheckoutRequest ()
 
 /// Factory method. Non-empty values for all parameters MUST be provided.
@@ -34,5 +36,11 @@
                                        clientID:(nonnull NSString *)clientID
                                     environment:(nonnull NSString *)environment
                               callbackURLScheme:(nonnull NSString *)callbackURLScheme;
+
+/// Determines the final approval URL to use given a recipe configuration
+///
+/// @param configurationRecipe the configuration recipe which has properties that may change the approval URL
+/// @return the approval URL to use when app switching
+- (nonnull NSURL *)approvalURLForConfigurationRecipe:(nonnull PPOTConfigurationRecipe *)configurationRecipe;
 
 @end
