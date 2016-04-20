@@ -109,7 +109,7 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
                  BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
                  NSDictionary *userInfo = jsonResponse.asDictionary ? @{ BTCustomerInputBraintreeValidationErrorsKey : jsonResponse.asDictionary } : @{};
                  callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                     code:BTErrorCustomerInputInvalid
+                                                     code:BTCardClientErrorTypeCustomerInputInvalid
                                                  userInfo:userInfo];
              }
 

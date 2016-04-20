@@ -117,7 +117,7 @@
                      BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
                      NSDictionary *userInfo = [jsonResponse asDictionary] ? @{ BTCustomerInputBraintreeValidationErrorsKey : [jsonResponse asDictionary] } : @{};
                      NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                                    code:BTErrorCustomerInputInvalid
+                                                                    code:BTCardClientErrorTypeCustomerInputInvalid
                                                                 userInfo:userInfo];
                      [self invokeBlock:completion onMainThreadWithError:validationError];
                  } else {
