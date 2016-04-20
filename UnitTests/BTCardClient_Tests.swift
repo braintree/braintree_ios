@@ -76,7 +76,7 @@ class BTCardClient_Tests: XCTestCase {
             ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(APIClient: stubAPIClient)
-        let request = BTCardTokenizationRequest()
+        let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
 
         let expectation = expectationWithDescription("Callback invoked with error")
@@ -87,7 +87,7 @@ class BTCardClient_Tests: XCTestCase {
             }
             XCTAssertNil(cardNonce)
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error.code, BTError.CustomerInputInvalid.rawValue)
+            XCTAssertEqual(error.code, BTCardClientErrorType.CustomerInputInvalid.rawValue)
             if let json = error.userInfo[BTCustomerInputBraintreeValidationErrorsKey] as? [NSObject:AnyObject] {
                 XCTAssertEqual(json["someError"] as? String, "details")
             } else {
@@ -103,7 +103,7 @@ class BTCardClient_Tests: XCTestCase {
         let stubAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
         stubAPIClient.cannedResponseError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.ClientError.rawValue, userInfo: nil)
         let cardClient = BTCardClient(APIClient: stubAPIClient)
-        let request = BTCardTokenizationRequest()
+        let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
         request.enrollmentAuthCode = "12345"
         request.enrollmentID = "fake-enrollment-id"

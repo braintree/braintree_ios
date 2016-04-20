@@ -4,11 +4,11 @@
 #if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
 #import "BTCardClient_Internal.h"
-#import "BTCardTokenizationRequest_Internal.h"
+#import "BTCardRequest_Internal.h"
 #else
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCard/BTCardClient_Internal.h>
-#import <BraintreeCard/BTCardTokenizationRequest_Internal.h>
+#import <BraintreeCard/BTCardRequest_Internal.h>
 #endif
 
 @implementation BTCardClient (UnionPay)
@@ -18,7 +18,7 @@
         [[BTTokenizationService sharedService] registerType:@"UnionPayCard" withTokenizationBlock:^(BTAPIClient * _Nonnull apiClient, NSDictionary * _Nullable options, void (^completion)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
             BTCard *card = [[BTCard alloc] initWithParameters:options];
-            BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithCard:card];
+            BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
             request.mobileCountryCode = options[@"mobileCountryCode"];
             request.enrollmentAuthCode = options[@"enrollmentAuthCode"];
 
@@ -65,7 +65,7 @@
     }];
 }
 
-- (void)enrollCard:(BTCardTokenizationRequest *)request
+- (void)enrollCard:(BTCardRequest *)request
         completion:(void (^)(NSError * _Nullable))completion
 {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {

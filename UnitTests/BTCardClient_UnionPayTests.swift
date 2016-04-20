@@ -184,7 +184,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.configurationHTTP = stubConfigurationHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
         request.mobileCountryCode = "123"
         request.mobilePhoneNumber = "321"
 
@@ -206,7 +206,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient = clientWithUnionPayEnabled(false)
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
         request.mobileCountryCode = "123"
         request.mobilePhoneNumber = "321"
 
@@ -231,7 +231,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
         request.mobileCountryCode = "123"
         request.mobilePhoneNumber = "321"
 
@@ -265,7 +265,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
         request.mobileCountryCode = "123"
         request.mobilePhoneNumber = "321"
 
@@ -295,7 +295,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
         cardClient.enrollCard(request) { error -> Void in
@@ -322,7 +322,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
         cardClient.enrollCard(request) { error -> Void in
@@ -333,7 +333,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
            
             XCTAssertNil(request.enrollmentID)
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error.code, BTError.CustomerInputInvalid.rawValue)
+            XCTAssertEqual(error.code, BTCardClientErrorType.CustomerInputInvalid.rawValue)
            
             guard let inputErrors = error.userInfo[BTCustomerInputBraintreeValidationErrorsKey] as? [String:String] else {
                 XCTFail("Expected error userInfo to contain validation errors")
@@ -353,7 +353,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
       
         let expectation = expectationWithDescription("Callback invoked")
         cardClient.enrollCard(request) { _ -> Void in
@@ -370,7 +370,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         mockAPIClient.cannedResponseError = NSError(domain: "FakeError", code: 0, userInfo: nil)
         let cardClient = BTCardClient(APIClient: mockAPIClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
       
         let expectation = expectationWithDescription("Callback invoked")
         cardClient.enrollCard(request) { _ -> Void in
@@ -389,7 +389,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
       
         let expectation = expectationWithDescription("Callback invoked")
         cardClient.enrollCard(request) { _ -> Void in
@@ -406,7 +406,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         mockAPIClient.cannedResponseBody = BTJSON(value: ["unionPayEnrollmentId": "fake-enrollment-id"])
         let cardClient = BTCardClient(APIClient: mockAPIClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
       
         let expectation = expectationWithDescription("Callback invoked")
         cardClient.enrollCard(request) { _ -> Void in
@@ -424,7 +424,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        let request = BTCardTokenizationRequest(card: card)
+        let request = BTCardRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
         cardClient.enrollCard(request) { error -> Void in
@@ -448,7 +448,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let mockHTTP = BTFakeHTTP()!
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
-        let request = BTCardTokenizationRequest()
+        let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
         request.enrollmentAuthCode = "12345"
         // This is an internal-only property, but we want to verify that it gets sent when hitting the tokenization endpoint
@@ -494,7 +494,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
                         "lastTwo" : "11",
                         "cardType": "unionpay"] ] ] ] )
         let cardClient = BTCardClient(APIClient: mockAPIClient)
-        let request = BTCardTokenizationRequest()
+        let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
         request.enrollmentAuthCode = "12345"
         request.enrollmentID = "enrollment-id"
@@ -512,7 +512,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let mockAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
         mockAPIClient.cannedResponseError = NSError(domain: "FakeError", code: 0, userInfo: nil)
         let cardClient = BTCardClient(APIClient: mockAPIClient)
-        let request = BTCardTokenizationRequest()
+        let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
         request.enrollmentAuthCode = "12345"
         request.enrollmentID = "enrollment-id"

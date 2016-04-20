@@ -36,7 +36,7 @@
 }
 
 - (void)testEnrollCard_whenSuccessful_returnsEnrollmentID {
-    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
+    BTCardRequest *request = [[BTCardRequest alloc] init];
     request.card = [[BTCard alloc] initWithNumber:@"6222821234560017" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";
@@ -52,7 +52,7 @@
 }
 
 - (void)testEnrollCard_whenCardDoesNotRequireEnrollment_returnsError {
-    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
+    BTCardRequest *request = [[BTCardRequest alloc] init];
     request.card = [[BTCard alloc] initWithNumber:@"6212345678900085" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";
@@ -68,7 +68,7 @@
 }
 
 - (void)testTokenizeCard_withEnrolledUnionPayCard_isSuccessful {
-    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] init];
+    BTCardRequest *request = [[BTCardRequest alloc] init];
     request.card = [[BTCard alloc] initWithNumber:@"6212345678901232" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = @"12345678901";

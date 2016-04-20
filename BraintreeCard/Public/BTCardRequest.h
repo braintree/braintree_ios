@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTCardTokenizationRequest : NSObject
+@interface BTCardRequest : NSObject
 
 - (instancetype)initWithCard:(BTCard *)card;
 

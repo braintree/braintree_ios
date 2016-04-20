@@ -1,6 +1,6 @@
-#import "BTCardTokenizationRequest_Internal.h"
+#import "BTCardRequest_Internal.h"
 
-@implementation BTCardTokenizationRequest
+@implementation BTCardRequest
 
 - (instancetype)initWithCard:(BTCard *)card {
     if (!card) {

@@ -3,7 +3,7 @@
 #import "BTTokenizationService.h"
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
-#import "BTCardTokenizationRequest_Internal.h"
+#import "BTCardRequest_Internal.h"
 #import "BTHTTP.h"
 #import "BTJSON.h"
 #import "BTClientMetadata.h"
@@ -50,12 +50,12 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
 }
 
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completion {
-    BTCardTokenizationRequest *request = [[BTCardTokenizationRequest alloc] initWithCard:card];
+    BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
     [self tokenizeCard:request options:nil completion:completion];
 }
 
 
-- (void)tokenizeCard:(BTCardTokenizationRequest *)request options:(NSDictionary *)options completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock
+- (void)tokenizeCard:(BTCardRequest *)request options:(NSDictionary *)options completion:(void (^)(BTCardNonce * _Nullable, NSError * _Nullable))completionBlock
 {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain

@@ -7,7 +7,7 @@
 #import "BTCard.h"
 #import "BTCardNonce.h"
 
-@class BTCardTokenizationRequest;
+@class BTCardRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 /// @param completion A completion block that is invoked when card tokenization has completed. If tokenization succeeds,
 /// `tokenizedCard` will contain a nonce and `error` will be `nil`; if it fails, `tokenizedCard` will be `nil` and `error`
 /// will describe the failure.
-- (void)tokenizeCard:(BTCardTokenizationRequest *)request
+- (void)tokenizeCard:(BTCardRequest *)request
              options:(nullable NSDictionary *)options
           completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completion;
 

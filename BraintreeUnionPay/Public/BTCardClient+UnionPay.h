@@ -4,7 +4,7 @@
 #import <BraintreeCard/BraintreeCard.h>
 #endif
 
-@class BTCardCapabilities, BTCardTokenizationRequest;
+@class BTCardCapabilities, BTCardRequest;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// After successful enrollment, the request's `enrollmentID` parameter is set to a unique ID.
 /// @param completion A callback block that will be invoked on the main thread when enrollment has completed. If enrollment
 /// succeeds, error` will be `nil`; if it fails, `error` will describe the failure.
-- (void)enrollCard:(BTCardTokenizationRequest *)request
+- (void)enrollCard:(BTCardRequest *)request
         completion:(void (^)(NSError * _Nullable error))completion;
 
 @end

@@ -18,7 +18,7 @@
 #import "BTCard_Internal.h"
 #import "BTCardClient_Internal.h"
 #import "BTCardClient+UnionPay.h"
-#import "BTCardTokenizationRequest_Internal.h"
+#import "BTCardRequest_Internal.h"
 #import "BTConfiguration.h"
 #import "BTDataCollector_Internal.h"
 #import "BTPayPalDriver_Internal.h"

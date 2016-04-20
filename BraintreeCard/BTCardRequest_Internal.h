@@ -1,8 +1,8 @@
-#import "BTCardTokenizationRequest.h"
+#import "BTCardRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTCardTokenizationRequest ()
+@interface BTCardRequest ()
 
 /// The UnionPay enrollment ID
 @property (nonatomic, copy, nullable, readwrite) NSString *enrollmentID;
