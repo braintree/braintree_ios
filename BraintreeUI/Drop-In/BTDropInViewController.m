@@ -432,6 +432,19 @@
         self.cardEntryDidBegin = YES;
     }
 
+// This block of code hides/shows the phone number field as the card type changes to/from UnionPay.
+// It is commented out to keep this behavior from affecting Drop-in until we are ready to support
+// UnionPay there.
+//        BTUIPaymentOptionType paymentMethodType = [BTUIViewUtil paymentMethodTypeForCardType:self.numberField.cardType];
+//        if (self.lastPaymentMethodType != paymentMethodType) {
+//            if (paymentMethodType == BTUIPaymentOptionTypeUnionPay) {
+//                self.optionalFields |= BTUICardFormOptionalFieldsPhoneNumber;
+//            } else if (self.lastPaymentMethodType == BTUIPaymentOptionTypeUnionPay) {
+//                self.optionalFields ^= BTUICardFormOptionalFieldsPhoneNumber;
+//            }
+//            self.lastPaymentMethodType = paymentMethodType;
+//        }
+    
     [self updateValidity];
 }
 

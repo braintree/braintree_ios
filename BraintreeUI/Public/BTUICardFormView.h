@@ -93,12 +93,13 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 /// Delegate protocol for receiving updates about the card form
 @protocol BTUICardFormViewDelegate <NSObject>
 
+@optional
+
 /// The card form data has updated.
 - (void)cardFormViewDidChange:(BTUICardFormView *)cardFormView;
 
-@optional
-
 - (void)cardFormViewDidBeginEditing:(BTUICardFormView *)cardFormView;
 
+- (void)cardFormViewDidEndEditing:(BTUICardFormView *)cardFormView;
 
 @end

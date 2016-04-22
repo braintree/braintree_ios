@@ -102,13 +102,13 @@
         [fields addObject:self.postalCodeField];
         self.postalCodeField.hidden = NO;
     }
-    if (optionalFields & BTUICardFormOptionalFieldsPhoneNumber) {
-        [fields addObject:self.phoneNumberField];
-        self.phoneNumberField.hidden = NO;
-    }
     if (optionalFields & BTUICardFormOptionalFieldsCvv) {
         [fields addObject:self.cvvField];
         self.cvvField.hidden = NO;
+    }
+    if (optionalFields & BTUICardFormOptionalFieldsPhoneNumber) {
+        [fields addObject:self.phoneNumberField];
+        self.phoneNumberField.hidden = NO;
     }
 
     // Set bottom border for fields
@@ -288,25 +288,24 @@
 - (void)formFieldDidChange:(BTUIFormField *)field {
     if (field == self.numberField) {
         self.cvvField.cardType = self.numberField.cardType;
-//        BTUIPaymentOptionType paymentMethodType = [BTUIViewUtil paymentMethodTypeForCardType:self.numberField.cardType];
-//        if (self.lastPaymentMethodType != paymentMethodType) {
-//            if (paymentMethodType == BTUIPaymentOptionTypeUnionPay) {
-//                self.optionalFields |= BTUICardFormOptionalFieldsPhoneNumber;
-//            } else if (self.lastPaymentMethodType == BTUIPaymentOptionTypeUnionPay) {
-//                self.optionalFields ^= BTUICardFormOptionalFieldsPhoneNumber;
-//            }
-//            self.lastPaymentMethodType = paymentMethodType;
-//        }
     }
     [self advanceToNextInvalidFieldFrom:field];
     // Trigger KVO
     self.valid = self.valid;
-    [self.delegate cardFormViewDidChange:self];
+    if ([self.delegate respondsToSelector:@selector(cardFormViewDidChange:)]) {
+        [self.delegate cardFormViewDidChange:self];
+    }
 }
 
 - (void)formFieldDidBeginEditing:(__unused BTUIFormField *)field {
     if ([self.delegate respondsToSelector:@selector(cardFormViewDidBeginEditing:)]) {
         [self.delegate cardFormViewDidBeginEditing:self];
+    }
+}
+
+- (void)formFieldDidEndEditing:(__unused BTUIFormField *)field {
+    if ([self.delegate respondsToSelector:@selector(cardFormViewDidEndEditing:)]) {
+        [self.delegate cardFormViewDidEndEditing:self];
     }
 }
 

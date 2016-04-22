@@ -289,6 +289,9 @@ const CGFloat formFieldBottomMargin = 11;
 
 - (void)textFieldDidEndEditing:(__unused UITextField *)textField {
     [self updateFloatLabelTextColor];
+    if ([self.delegate respondsToSelector:@selector(formFieldDidEndEditing:)]) {
+        [self.delegate formFieldDidEndEditing:self];
+    }
 }
 
 #pragma mark - BTUITextFieldEditDelegate methods

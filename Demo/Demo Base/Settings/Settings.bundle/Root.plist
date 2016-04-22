@@ -33,6 +33,7 @@
 				<string>Credit Cards - 3D Secure</string>
 				<string>Combined - Custom Button</string>
 				<string>Fraud Protection - BTDataCollector</string>
+				<string>UnionPay</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -52,6 +53,7 @@
 				<string>BraintreeDemoThreeDSecureViewController</string>
 				<string>BraintreeDemoCustomMultiPayViewController</string>
 				<string>BraintreeDemoBTDataCollectorViewController</string>
+				<string>BraintreeDemoUnionPayViewController</string>
 			</array>
 		</dict>
 		<dict>
