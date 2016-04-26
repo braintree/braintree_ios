@@ -302,10 +302,6 @@
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)dismissAuthCodeController:(__unused id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)tappedSubmitForm {
     [self showLoadingState:YES];
 
@@ -323,38 +319,17 @@
             [self informDelegateWillComplete];
 
             NSMutableDictionary *options = [NSMutableDictionary dictionary];
-            NSMutableDictionary *cardDictionary = [NSMutableDictionary dictionary];
-            cardDictionary[@"number"] = cardForm.number;
-            cardDictionary[@"expiration_date"] = [NSString stringWithFormat:@"%@/%@", cardForm.expirationMonth, cardForm.expirationYear];
+            options[@"number"] = cardForm.number;
+            options[@"expiration_date"] = [NSString stringWithFormat:@"%@/%@", cardForm.expirationMonth, cardForm.expirationYear];
             if (cardForm.cvv) {
-                cardDictionary[@"cvv"] = cardForm.cvv;
+                options[@"cvv"] = cardForm.cvv;
             }
             if (cardForm.postalCode) {
-                cardDictionary[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
+                options[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
             }
-            if (cardForm.phoneNumber) {
-                options[@"mobilePhoneNumber"] = cardForm.phoneNumber;
-                // TODO: read this from the phone number field
-                options[@"mobileCountryCode"] = @"62";
+            options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
 
-                __weak typeof(self) weakSelf = self;
-                void (^challengeBlock)(void (^)(NSString *)) = ^(__unused void (^challengeBlock)(NSString *authCode)) {
-                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"SMS Auth Code" message:@"An authorization code has been sent to your mobile phone number. Please enter it here" preferredStyle:UIAlertControllerStyleAlert];
-                    [alertController addTextFieldWithConfigurationHandler:nil];
-                    [alertController addAction:[UIAlertAction actionWithTitle:@"Submit" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
-                        UITextField *codeTextField = [alertController.textFields firstObject];
-                        challengeBlock(codeTextField.text);
-                    }]];
-
-                    [weakSelf presentViewController:alertController animated:YES completion:nil];
-                };
-                options[@"challengeBlock"] = challengeBlock;
-            }
-            cardDictionary[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
-            options[@"card"] = cardDictionary;
-
-            NSString *tokenizationType = cardForm.phoneNumber == nil ? @"Card" : @"UnionPayCard";
-            [[BTTokenizationService sharedService] tokenizeType:tokenizationType options:options withAPIClient:client completion:^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
+            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
                 [self showLoadingState:NO];
 
                 if (error) {
@@ -432,19 +407,6 @@
         self.cardEntryDidBegin = YES;
     }
 
-// This block of code hides/shows the phone number field as the card type changes to/from UnionPay.
-// It is commented out to keep this behavior from affecting Drop-in until we are ready to support
-// UnionPay there.
-//        BTUIPaymentOptionType paymentMethodType = [BTUIViewUtil paymentMethodTypeForCardType:self.numberField.cardType];
-//        if (self.lastPaymentMethodType != paymentMethodType) {
-//            if (paymentMethodType == BTUIPaymentOptionTypeUnionPay) {
-//                self.optionalFields |= BTUICardFormOptionalFieldsPhoneNumber;
-//            } else if (self.lastPaymentMethodType == BTUIPaymentOptionTypeUnionPay) {
-//                self.optionalFields ^= BTUICardFormOptionalFieldsPhoneNumber;
-//            }
-//            self.lastPaymentMethodType = paymentMethodType;
-//        }
-    
     [self updateValidity];
 }
 
