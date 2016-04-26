@@ -7,7 +7,9 @@ Please follow these instructions to integrate Braintree iOS into your app using 
 
 1. Add the Braintree iOS SDK code to your repository
   - [Download the SDK as a ZIP file from GitHub](https://github.com/braintree/braintree_ios/archive/master.zip) and unzip it into your app's root directory in Finder
+
 2. Open up your app in Xcode
+
 3. Add Braintree as a subproject
   - Open your project and drag the Braintree.xcodeproj file to your Project Navigator under your project. Be sure *NOT* to have the Braintree.xcodeproj open while doing this step.
   
@@ -46,4 +48,5 @@ Please follow these instructions to integrate Braintree iOS into your app using 
     ![Screenshot of updating Header Search Paths](bt_static_screenshot_linker_flags.png)
     
 7. `Build and Run` your app to test out the integration
+
 8. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
