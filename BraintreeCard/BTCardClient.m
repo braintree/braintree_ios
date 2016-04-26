@@ -75,13 +75,7 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
                              @"sessionId" : self.apiClient.metadata.sessionId,
                              };
     if (options) {
-        if (!parameters[@"options"]) {
-            parameters[@"options"] = options;
-        } else {
-            NSMutableDictionary *mutableOptions = [options mutableCopy];
-            [mutableOptions addEntriesFromDictionary:parameters[@"options"]];
-            parameters[@"options"] = mutableOptions;
-        }
+        parameters[@"options"] = options;
     }
     if (request.enrollmentAuthCode && request.enrollmentID) {
         NSDictionary *enrollmentDictionary = @{
