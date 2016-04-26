@@ -1,3 +1,5 @@
+#pragma message "⚠️ Braintree's UnionPay API for iOS is currently in beta and may change."
+
 #if __has_include("BraintreeCard.h")
 #import "BraintreeCard.h"
 #else
