@@ -24,7 +24,16 @@ Please follow these instructions to integrate Braintree iOS into your app using 
     
     ![Screenshot of adding Braintree to Link Bunary With Libraries](bt_static_screenshot_link_binary.gif)
     
-5. Modify your build settings (`[Your App Target]` > `Build Settings`)
+5. Add `localized strings` to `Copy Bundle Resources` (`[Your App Target]` > `Build Phases`)
+  - In the Project Navigator, locate the `UI.strings` (`Braintree.xcodeproj` > `BraintreeUI` > `Localization` > `UI.strings`)
+  - Drag the `UI.strings` file from the Navigator to the `Copy Bundle Resources` panel and drop it
+  - Repeat for remaining localized strings
+    - `Drop-In.strings` (`Braintree.xcodeproj` > `BraintreeUI` > `Drop-In` > `Localization` > `Drop-In.strings`)
+    - `Three-D-Secure.strings` (`Braintree.xcodeproj` > `Braintree3DSecure` > `Localization` > `Three-D-Secure.strings`)
+  
+  ![Screenshot of adding localized strings to Copy Bundle Resources](bt_static_screenshot_strings.gif)
+  
+6. Modify your build settings (`[Your App Target]` > `Build Settings`)
   - Update `Header Search Paths`
     - Add `$(PROJECT_DIR)/braintree_ios` (or whatever the name of the braintree folder at the top level of your project is)
     - Be sure to select recursive from the drop down at the right
@@ -36,5 +45,5 @@ Please follow these instructions to integrate Braintree iOS into your app using 
     
     ![Screenshot of updating Header Search Paths](bt_static_screenshot_linker_flags.png)
     
-6. `Build and Run` your app to test out the integration
-7. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
+7. `Build and Run` your app to test out the integration
+8. [Integrate the SDK in your checkout form](https://developers.braintreepayments.com/ios/start/overview)
