@@ -49,7 +49,7 @@ Add `github "braintree/braintree_ios"` to your `Cartfile`, and [add the framewor
 
 ### Static Library
 
-Coming soon: we will be offering a static library of the Braintree SDK.
+Please follow the [static library integration instructions](Docs/Braintree-Static-Integration-Guide.md).
 
 ### Manual Integration
 
