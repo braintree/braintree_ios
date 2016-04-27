@@ -222,9 +222,16 @@
                 errorUserInfo[BTHTTPJSONResponseBodyKey] = json;
             }
         }
-
+        
+        BTHTTPErrorCode errorCode = httpResponse.statusCode >= 500 ? BTHTTPErrorCodeServerError : BTHTTPErrorCodeClientError;
+        if (httpResponse.statusCode == 429) {
+            errorCode = BTHTTPErrorCodeRateLimitError;
+            errorUserInfo[NSLocalizedDescriptionKey] = @"You are being rate-limited.";
+            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = @"Please try again in a few minutes.";
+        }
+        
         NSError *error = [NSError errorWithDomain:BTHTTPErrorDomain
-                                                     code:httpResponse.statusCode >= 500 ? BTHTTPErrorCodeServerError : BTHTTPErrorCodeClientError
+                                                     code:errorCode
                                                  userInfo:[errorUserInfo copy]];
         [self callCompletionBlock:completionBlock body:json response:httpResponse error:error];
         return;

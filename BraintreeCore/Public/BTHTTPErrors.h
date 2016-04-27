@@ -20,5 +20,7 @@ typedef NS_ENUM(NSInteger, BTHTTPErrorCode) {
     /// The response was a 403 server error
     BTHTTPErrorCodeServerError,
     /// The BTHTTP instance was missing a base URL
-    BTHTTPErrorCodeMissingBaseURL
+    BTHTTPErrorCodeMissingBaseURL,
+    /// The response was a 429, indicating a rate limiting error
+    BTHTTPErrorCodeRateLimitError
 };
