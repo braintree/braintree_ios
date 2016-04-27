@@ -102,9 +102,7 @@
     if (appSwitchRequest) {
         appSwitchRequest.targetAppURLScheme = configurationRecipe.targetAppURLScheme;
         appSwitchRequest.responseType = PPAppSwitchResponseTypeWeb;
-
-        NSURL *approvalURLForConfig = [self approvalURLForConfigurationRecipe:configurationRecipe];
-        appSwitchRequest.approvalURL = [approvalURLForConfig absoluteString];
+        appSwitchRequest.approvalURL = [self.approvalURL absoluteString];
     }
 
     return appSwitchRequest;
@@ -127,59 +125,6 @@
     }
     
     completionBlock(bestConfigurationRecipe);
-}
-
-#pragma mark - utility methods
-
-- (nonnull NSURL *)approvalURLForConfigurationRecipe:(nonnull PPOTConfigurationRecipe *)configurationRecipe {
-    NSURL *finalApprovalURL = nil;
-    switch (configurationRecipe.target) {
-        case PPOTRequestTargetBrowser: {
-            // if the base URL override exists, then override the portions that are specified
-            NSString *baseURLOverride = [self findBaseURLOverride:configurationRecipe];
-            if ([baseURLOverride length] > 0) {
-                NSURLComponents *approvalURLComponents = [NSURLComponents componentsWithURL:self.approvalURL resolvingAgainstBaseURL:YES];
-                NSURLComponents *baseOverrideURLComponents = [NSURLComponents componentsWithString:baseURLOverride];
-
-                if ([baseOverrideURLComponents.scheme length] > 0) {
-                    approvalURLComponents.scheme = baseOverrideURLComponents.scheme;
-                }
-                if ([baseOverrideURLComponents.host length] > 0) {
-                    approvalURLComponents.host = baseOverrideURLComponents.host;
-                }
-                if (baseOverrideURLComponents.port != nil) {
-                    approvalURLComponents.port = baseOverrideURLComponents.port;
-                }
-                if (baseOverrideURLComponents.path != nil) {
-                    approvalURLComponents.path = baseOverrideURLComponents.path;
-                }
-
-                finalApprovalURL = approvalURLComponents.URL;
-            } else {
-                finalApprovalURL = self.approvalURL;
-            }
-            break;
-        }
-        default: {
-            finalApprovalURL = self.approvalURL;
-            break;
-        }
-    }
-
-    return finalApprovalURL;
-}
-
-- (nullable NSString *)findBaseURLOverride:(nonnull PPOTConfigurationRecipe *)configurationRecipe {
-    if ([configurationRecipe.environments count] <= 0) {
-        return nil;
-    }
-
-    NSDictionary *environmentConfig = configurationRecipe.environments[self.environment];
-    if (environmentConfig == nil) {
-        return nil;
-    }
-
-    return environmentConfig[@"base_url_override"];
 }
 
 @end

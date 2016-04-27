@@ -6,7 +6,6 @@
 //
 
 #import "PPOTRequest_Internal.h"
-#import "PPOTCheckoutRequest_Internal.h"
 #import "PPOTCheckoutAppSwitchRequest.h"
 #import "PPOTCheckoutBrowserSwitchRequest.h"
 #import "PPOTConfiguration.h"
@@ -52,9 +51,7 @@
     if (appSwitchRequest) {
         appSwitchRequest.targetAppURLScheme = configurationRecipe.targetAppURLScheme;
         appSwitchRequest.responseType = PPAppSwitchResponseTypeWeb;
-
-        NSURL *approvalURLForConfig = [self approvalURLForConfigurationRecipe:configurationRecipe];
-        appSwitchRequest.approvalURL = [approvalURLForConfig absoluteString];
+        appSwitchRequest.approvalURL = [self.approvalURL absoluteString];
     }
 
     return appSwitchRequest;

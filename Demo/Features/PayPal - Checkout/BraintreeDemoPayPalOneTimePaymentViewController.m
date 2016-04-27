@@ -2,7 +2,7 @@
 
 #import <BraintreePayPal/BraintreePayPal.h>
 
-@interface BraintreeDemoPayPalOneTimePaymentViewController () <BTAppSwitchDelegate>
+@interface BraintreeDemoPayPalOneTimePaymentViewController () <BTAppSwitchDelegate, BTViewControllerPresentingDelegate>
 
 @end
 
@@ -26,6 +26,7 @@
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     driver.appSwitchDelegate = self;
+    driver.viewControllerPresentingDelegate = self;
     BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"4.30"];
     [driver requestOneTimePayment:request completion:^(BTPayPalAccountNonce * _Nullable payPalAccount, NSError * _Nullable error) {
         [sender setEnabled:YES];
@@ -62,6 +63,14 @@
             self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: unknown");
             break;
     }
+}
+
+- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

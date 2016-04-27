@@ -195,7 +195,7 @@ NSString *const PayPalEnvironmentMock = PPRequestEnvironmentNoNetwork;
 
     switch (configurationRecipe.target) {
         case PPOTRequestTargetOnDeviceApplication: {
-            // Always return a Browser switch URL on >= iOS9 so that it can be opened with Universal Links (which is how it will link to the wallet)
+            // Always return a Browser switch URL on >= iOS9 so that it can be opened with SFSafariViewController or Universal Links (which is how it will link to the wallet)
             if (self.forcedTarget.integerValue == PPOTRequestTargetBrowser || iOS_9_PLUS) {
                 return NO;
             }

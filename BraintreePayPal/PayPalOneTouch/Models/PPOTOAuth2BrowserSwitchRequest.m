@@ -31,9 +31,6 @@
     NSMutableDictionary *payload = [[super payloadDictionary] mutableCopy];
 
     payload[kPPOTAppSwitchKeyIDKey] = FORCE_VALUE_OR_NULL(self.keyID);
-    if (self.appGuid.length) {
-        payload[kPPOTAppSwitchAppGuidKey] = self.appGuid;
-    }
 
     if (self.additionalPayloadAttributes.count) {
         for (id key in self.additionalPayloadAttributes) {

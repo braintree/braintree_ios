@@ -35,12 +35,7 @@
         PPOTConfigurationRecipe *configurationRecipe = persistentRequestData.configurationRecipe;
         PPOTAppSwitchResponse *response = nil;
 
-        // If this was originally intended to be a browser switch, then there is a special code path to use
-        // the original Hermes return URL.
-        // However, in iOS 9, if it was a "browser switch" using the universal link and the Wallet app handles the
-        // opening of the universal link, then we need to decrypt the payload.
-        BOOL isResponseFromWallet = [PPOTResult isResponseFromWalletApp:url];
-        if ([configurationRecipe.protocolVersion integerValue] == 0 && !isResponseFromWallet) {
+        if ([configurationRecipe.protocolVersion integerValue] == 0) {
             // Note: Token (Hermes) validation performed inside of isValidURLAction:
             // TODO: consider moving here
             response = [[PPOTAppSwitchResponse alloc] initWithHermesURL:url
@@ -101,24 +96,6 @@
                                         hermesToken:persistentRequestData.requestData[kPPOTRequestDataDataDictionaryHermesTokenKey]];
 
     completionBlock(result);
-}
-
-+ (BOOL)isResponseFromWalletApp:(NSURL *)responseURL {
-    NSURLComponents* urlComponents = [NSURLComponents componentsWithURL:responseURL resolvingAgainstBaseURL:NO];
-    BOOL isFromWalletApp = NO;
-    BOOL isPayloadPresent = NO;
-    // Wallet app response will contain 2 query parameters: x-source and payload
-    for (NSURLQueryItem *queryItem in urlComponents.queryItems) {
-        if ([queryItem.name isEqualToString:@"x-source"]
-            && ([[queryItem.value lowercaseString] hasPrefix:@"com.paypal.ppclient"]
-                || [[queryItem.value lowercaseString] hasPrefix:@"com.paypal.internal.ppclient"]
-                || [[queryItem.value lowercaseString] hasPrefix:@"com.yourcompany.ppclient"])) {
-            isFromWalletApp = YES;
-        } else if ([queryItem.name isEqualToString:@"payload"]) {
-            isPayloadPresent = YES;
-        }
-    }
-    return isFromWalletApp && isPayloadPresent;
 }
 
 + (PPOTResult *)resultWithSuccess:(PPOTAppSwitchResponse *)response {

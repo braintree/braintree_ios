@@ -11,22 +11,21 @@
 
 @interface PPOTConfigurationRecipe : NSObject <NSCoding>
 @property (nonatomic, assign, readwrite) PPOTRequestTarget target;
-@property (nonatomic, strong, readwrite) NSNumber     *protocolVersion;
-@property (nonatomic, copy, readwrite)   NSArray      *supportedLocales;  // these have been uppercased, to prevent capitalization mistakes
-@property (nonatomic, copy, readwrite)   NSString     *targetAppURLScheme;
-@property (nonatomic, copy, readwrite)   NSArray      *targetAppBundleIDs;
-@property (nonatomic, copy, readwrite)   NSDictionary *environments;
+@property (nonatomic, strong, readwrite) NSNumber *protocolVersion;
+@property (nonatomic, strong, readwrite) NSArray  *supportedLocales;  // these have been uppercased, to prevent capitalization mistakes
+@property (nonatomic, strong, readwrite) NSString *targetAppURLScheme;
+@property (nonatomic, strong, readwrite) NSArray  *targetAppBundleIDs;
 @end
 
 @interface PPOTConfigurationRecipeEndpoint : NSObject <NSCoding>
-@property (nonatomic, copy, readwrite) NSString *url;
-@property (nonatomic, copy, readwrite) NSString *certificateSerialNumber;
-@property (nonatomic, copy, readwrite) NSString *base64EncodedCertificate;
+@property (nonatomic, strong, readwrite) NSString *url;
+@property (nonatomic, strong, readwrite) NSString *certificateSerialNumber;
+@property (nonatomic, strong, readwrite) NSString *base64EncodedCertificate;
 @end
 
 @interface PPOTConfigurationOAuthRecipe : PPOTConfigurationRecipe <NSCoding>
-@property (nonatomic, copy, readwrite) NSSet *scope;
-@property (nonatomic, copy, readwrite) NSDictionary *endpoints; // dictionary of PPOTConfigurationRecipeEndpoint
+@property (nonatomic, strong, readwrite) NSSet *scope;
+@property (nonatomic, strong, readwrite) NSDictionary *endpoints; // dictionary of PPOTConfigurationRecipeEndpoint
 @end
 
 @interface PPOTConfigurationCheckoutRecipe : PPOTConfigurationRecipe <NSCoding>
@@ -57,10 +56,10 @@ typedef void (^PPOTConfigurationCompletionBlock)(PPOTConfiguration *currentConfi
 + (void)useHardcodedConfiguration:(BOOL)useHardcodedConfiguration;
 #endif
 
-@property (nonatomic, copy, readwrite) NSString *fileTimestamp;
-@property (nonatomic, copy, readwrite) NSArray  *prioritizedOAuthRecipes;
-@property (nonatomic, copy, readwrite) NSArray  *prioritizedCheckoutRecipes;
-@property (nonatomic, copy, readwrite) NSArray  *prioritizedBillingAgreementRecipes;
+@property (nonatomic, strong, readwrite) NSString *fileTimestamp;
+@property (nonatomic, strong, readwrite) NSArray  *prioritizedOAuthRecipes;
+@property (nonatomic, strong, readwrite) NSArray  *prioritizedCheckoutRecipes;
+@property (nonatomic, strong, readwrite) NSArray  *prioritizedBillingAgreementRecipes;
 
 @end
 

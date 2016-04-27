@@ -2,7 +2,7 @@
 
 #import <BraintreePayPal/BraintreePayPal.h>
 
-@interface BraintreeDemoPayPalBillingAgreementViewController () <BTAppSwitchDelegate>
+@interface BraintreeDemoPayPalBillingAgreementViewController () <BTAppSwitchDelegate, BTViewControllerPresentingDelegate>
 
 @end
 
@@ -26,6 +26,7 @@
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];
     driver.appSwitchDelegate = self;
+    driver.viewControllerPresentingDelegate = self;
     BTPayPalRequest *checkout = [[BTPayPalRequest alloc] init];
     [driver requestBillingAgreement:checkout completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalCheckout, NSError * _Nullable error) {
         [sender setEnabled:YES];
@@ -62,6 +63,14 @@
             self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: unknown");
             break;
     }
+}
+
+- (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+- (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
