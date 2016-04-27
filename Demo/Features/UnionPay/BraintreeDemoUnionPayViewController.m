@@ -117,11 +117,13 @@
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = self.cardForm.phoneNumber;
 
-    [self.cardClient enrollCard:request completion:^(NSError * _Nullable error) {
+    [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error enrolling card: %@", error.localizedDescription]);
             return;
         }
+        
+        request.enrollmentID = enrollmentID;
 
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"SMS Auth Code" message:@"An authorization code has been sent to your mobile phone number. Please enter it here" preferredStyle:UIAlertControllerStyleAlert];
         [alertController addTextFieldWithConfigurationHandler:nil];

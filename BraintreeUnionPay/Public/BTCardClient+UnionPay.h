@@ -21,14 +21,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fetchCapabilities:(NSString *)cardNumber
                completion:(void (^)(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error))completion;
 
-/// Enrolls a UnionPay card. Attempting to enroll non-UnionPay cards will cause an error.
+/// Enrolls a UnionPay card and returns an enrollment ID. The `enrollmentID` property of `BTCardRequest` must be set to this ID
+/// before the card can be tokenized.
+///
+/// Attempting to enroll cards that do not require enrollment -- including non-UnionPay cards -- will cause an error. This
+/// can be prevented by checking the card's capabilities first.
 ///
 /// @param request A card tokenization request that contains a card, mobile phone number, and country code. Cannot be `nil`.
-/// After successful enrollment, the request's `enrollmentID` parameter is set to a unique ID.
 /// @param completion A callback block that will be invoked on the main thread when enrollment has completed. If enrollment
-/// succeeds, error` will be `nil`; if it fails, `error` will describe the failure.
+/// succeeds, `enrollmentID` will contain the enrollment ID and error` will be `nil`; if it fails, `error` will describe the
+/// failure and `enrollmentID` will be `nil`.
+///
+/// @see -fetchCapabilities:completion:
+/// @see BTCardClient -tokenizeCard:options:completion:
 - (void)enrollCard:(BTCardRequest *)request
-        completion:(void (^)(NSError * _Nullable error))completion;
+        completion:(void (^)(NSString * _Nullable enrollmentID, NSError * _Nullable error))completion;
 
 @end
 

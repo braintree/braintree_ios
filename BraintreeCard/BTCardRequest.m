@@ -1,4 +1,4 @@
-#import "BTCardRequest_Internal.h"
+#import "BTCardRequest.h"
 
 @implementation BTCardRequest
 

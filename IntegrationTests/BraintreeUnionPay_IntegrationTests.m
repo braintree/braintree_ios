@@ -42,9 +42,9 @@
     request.mobilePhoneNumber = @"12345678901";
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [self.cardClient enrollCard:request completion:^(NSError * _Nullable error) {
+    [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
         XCTAssertNil(error);
-        XCTAssertTrue([request.enrollmentID isKindOfClass:[NSString class]]);
+        XCTAssertTrue([enrollmentID isKindOfClass:[NSString class]]);
         [expectation fulfill];
     }];
 
@@ -58,7 +58,8 @@
     request.mobilePhoneNumber = @"12345678901";
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [self.cardClient enrollCard:request completion:^(NSError * _Nullable error) {
+    [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
+        XCTAssertNil(enrollmentID);
         XCTAssertEqualObjects(error.domain, BTCardClientErrorDomain);
         XCTAssertEqual(error.code, BTCardClientErrorTypeCustomerInputInvalid);
         [expectation fulfill];
@@ -74,8 +75,9 @@
     request.mobilePhoneNumber = @"12345678901";
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [self.cardClient enrollCard:request completion:^(NSError * _Nullable error) {
+    [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
         XCTAssertNil(error);
+        request.enrollmentID = enrollmentID;
         request.enrollmentAuthCode = @"11111";
         [expectation fulfill];
     }];

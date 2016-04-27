@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *enrollmentAuthCode;
 
 /// The UnionPay enrollment ID
-@property (nonatomic, copy, nullable, readonly) NSString *enrollmentID;
+@property (nonatomic, copy, nullable) NSString *enrollmentID;
 
 @end
 

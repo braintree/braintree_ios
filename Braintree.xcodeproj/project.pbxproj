@@ -324,7 +324,6 @@
 		A751CAAC1CAC464C008603E5 /* BTCardRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A751CAAA1CAC464C008603E5 /* BTCardRequest.m */; };
 		A751CAAD1CAC464C008603E5 /* BTCardRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = A751CAAA1CAC464C008603E5 /* BTCardRequest.m */; };
 		A751CAAF1CAC4667008603E5 /* BTCardRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A751CAAE1CAC4667008603E5 /* BTCardRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A751CAB81CAC493F008603E5 /* BTCardRequest_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A751CAB71CAC4912008603E5 /* BTCardRequest_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A76B1A0B1B79708A00452CFA /* Braintree-Demo.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = A76B19A31B79708900452CFA /* Braintree-Demo.entitlements */; };
 		A76B1A0C1B79708A00452CFA /* BraintreeDemoBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19A71B79708900452CFA /* BraintreeDemoBaseViewController.m */; };
 		A76B1A0E1B79708A00452CFA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A76B19AA1B79708900452CFA /* Main.storyboard */; };
@@ -1273,7 +1272,6 @@
 		A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCardClient_Tests.swift; sourceTree = "<group>"; };
 		A751CAAA1CAC464C008603E5 /* BTCardRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCardRequest.m; sourceTree = "<group>"; };
 		A751CAAE1CAC4667008603E5 /* BTCardRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardRequest.h; sourceTree = "<group>"; };
-		A751CAB71CAC4912008603E5 /* BTCardRequest_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardRequest_Internal.h; sourceTree = "<group>"; };
 		A75BAC671C1F691C00D66FB5 /* BTIntegrationTestsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTIntegrationTestsConstants.h; sourceTree = "<group>"; };
 		A75BAC681C1F69A300D66FB5 /* IntegrationTests.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntegrationTests.pch; sourceTree = "<group>"; };
 		A75DA3541921394200D997A2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -3115,7 +3113,6 @@
 				A7C8899D1B5F0471007A0E9C /* BTCardClient.m */,
 				A7C889D71B5F0ACB007A0E9C /* BTCardNonce_Internal.h */,
 				A7C889A21B5F0471007A0E9C /* BTCardNonce.m */,
-				A751CAB71CAC4912008603E5 /* BTCardRequest_Internal.h */,
 				A751CAAA1CAC464C008603E5 /* BTCardRequest.m */,
 				41777D451B8D01510026F987 /* Public */,
 			);
@@ -3396,7 +3393,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8498EC1B1BB46D4B007FFDEC /* BTCardClient_Internal.h in Headers */,
-				A751CAB81CAC493F008603E5 /* BTCardRequest_Internal.h in Headers */,
 				A751CAAF1CAC4667008603E5 /* BTCardRequest.h in Headers */,
 				A7C889AA1B5F04AE007A0E9C /* BraintreeCard.h in Headers */,
 				A7C889D81B5F0ACB007A0E9C /* BTCardNonce_Internal.h in Headers */,
