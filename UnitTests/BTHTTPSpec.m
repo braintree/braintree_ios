@@ -756,10 +756,12 @@ NSURLSession *testURLSession() {
         XCTAssertNotNil(response);
         XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
         XCTAssertEqual(error.code, BTHTTPErrorCodeRateLimitError);
-        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, @{@"error": @{@"message": @"You are being rate-limited. Please try again in a few minutes."}});
+        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, @{});
         XCTAssertTrue([error.userInfo[BTHTTPURLResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
-        
+        XCTAssertEqualObjects(error.userInfo[NSLocalizedDescriptionKey], @"You are being rate-limited.");
+        XCTAssertEqualObjects(error.userInfo[NSLocalizedRecoverySuggestionErrorKey], @"Please try again in a few minutes.");
+
         [OHHTTPStubs removeStub:stub];
         [expectation fulfill];
     }];

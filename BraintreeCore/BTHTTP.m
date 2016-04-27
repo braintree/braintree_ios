@@ -226,7 +226,8 @@
         BTHTTPErrorCode errorCode = httpResponse.statusCode >= 500 ? BTHTTPErrorCodeServerError : BTHTTPErrorCodeClientError;
         if (httpResponse.statusCode == 429) {
             errorCode = BTHTTPErrorCodeRateLimitError;
-            errorUserInfo[BTHTTPJSONResponseBodyKey] = [[BTJSON alloc] initWithValue:@{@"error": @{@"message": @"You are being rate-limited. Please try again in a few minutes."}}];
+            errorUserInfo[NSLocalizedDescriptionKey] = @"You are being rate-limited.";
+            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = @"Please try again in a few minutes.";
         }
         
         NSError *error = [NSError errorWithDomain:BTHTTPErrorDomain
