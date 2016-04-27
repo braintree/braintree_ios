@@ -740,6 +740,33 @@ NSURLSession *testURLSession() {
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
+- (void)testResponseCodeParsing_whenStatusCodeIs429_returnsRateLimitError {
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
+    
+    id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        return YES;
+    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:429 headers:@{@"Content-Type": @"application/json"}];
+    }];
+    
+    [http GET:@"429.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertEqualObjects(body.asDictionary, @{});
+        XCTAssertNotNil(response);
+        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqual(error.code, BTHTTPErrorCodeRateLimitError);
+        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, @{@"error": @{@"message": @"You are being rate-limited. Please try again in a few minutes."}});
+        XCTAssertTrue([error.userInfo[BTHTTPURLResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
+        XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
+        
+        [OHHTTPStubs removeStub:stub];
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
 - (void)testResponseCodeParsing_whenStatusCodeIs5xx_returnsError {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
 
