@@ -173,19 +173,4 @@ class BTConfiguration_Tests: XCTestCase {
         XCTAssertFalse(configuration.isUnionPayEnabled)
     }
 
-    func testUnionPayMerchantAccountId_whenConfigurationHasMerchantAccountId_returnsMerchantAccountId() {
-        let configurationJSON = BTJSON(value: [
-            "unionPay": [ "merchantAccountId": "merchantAccountId" ]
-            ])
-        let configuration = BTConfiguration(JSON: configurationJSON)
-
-        XCTAssertEqual(configuration.unionPayMerchantAccountId, "merchantAccountId")
-    }
-
-    func testUnionPayMerchantAccountId_whenConfigurationDoesNotHaveMerchantAccountId_returnsNil() {
-        let configuration = BTConfiguration(JSON: BTJSON(value: []))
-
-        XCTAssertNil(configuration.unionPayMerchantAccountId)
-    }
-
 }

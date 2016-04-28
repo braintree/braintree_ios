@@ -254,7 +254,6 @@ class BTCardClient_UnionPayTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(parameters["merchantAccountId"] as? String, "merchantAccountId")
         XCTAssertEqual(enrollment["number"] as? String, card.number!)
         XCTAssertEqual(enrollment["expiration_month"] as? String, card.expirationMonth!)
         XCTAssertEqual(enrollment["expiration_year"] as? String, card.expirationYear!)
@@ -534,8 +533,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
         let stubbedConfigurationHTTP = BTFakeHTTP()!
         stubbedConfigurationHTTP.cannedConfiguration = BTJSON(value: ["unionPay": [
-            "enabled": unionPayEnabled,
-            "merchantAccountId": "merchantAccountId"
+            "enabled": unionPayEnabled
             ] ])
         stubbedConfigurationHTTP.cannedStatusCode = 200
         apiClient.configurationHTTP = stubbedConfigurationHTTP

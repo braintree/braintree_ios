@@ -80,10 +80,8 @@
             return;
         }
 
-        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         NSMutableDictionary *enrollmentParameters = [NSMutableDictionary dictionary];
         BTCard *card = request.card;
-        
         if (card.number) {
             enrollmentParameters[@"number"] = card.number;
         }
@@ -100,13 +98,8 @@
             enrollmentParameters[@"mobile_number"] = request.mobilePhoneNumber;
         }
 
-        parameters[@"union_pay_enrollment"] = enrollmentParameters;
-        if (configuration.unionPayMerchantAccountId) {
-            parameters[@"merchantAccountId"] = configuration.unionPayMerchantAccountId;
-        }
-
         [self.apiClient POST:@"v1/union_pay_enrollments"
-                  parameters:parameters
+                  parameters:@{ @"union_pay_enrollment": enrollmentParameters }
                   completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {
