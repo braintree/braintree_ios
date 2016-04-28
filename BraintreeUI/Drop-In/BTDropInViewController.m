@@ -685,10 +685,15 @@
         
         [errorAlert show];
     } else if (paymentMethodNonce) {
-        NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethodNonces];
-        [newPaymentMethods insertObject:paymentMethodNonce atIndex:0];
-        self.paymentMethodNonces = newPaymentMethods;
-        [self informDelegateDidAddPaymentInfo:paymentMethodNonce];
+        if ([viewController isKindOfClass:[self class]] && ((BTDropInViewController *)viewController).delegate == self) {
+            // From the inner add payment method view controller
+            [self dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:paymentMethodNonce];
+        } else {
+            NSMutableArray *newPaymentMethods = [NSMutableArray arrayWithArray:self.paymentMethodNonces];
+            [newPaymentMethods insertObject:paymentMethodNonce atIndex:0];
+            self.paymentMethodNonces = newPaymentMethods;
+            [self informDelegateDidAddPaymentInfo:paymentMethodNonce];
+        }
     } else {
         // Refresh payment methods display
         self.paymentMethodNonces = self.paymentMethodNonces;
