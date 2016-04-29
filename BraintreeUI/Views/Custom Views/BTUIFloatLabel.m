@@ -109,6 +109,15 @@
     }
 }
 
+#pragma mark - Theme
+
+- (void)setTheme:(BTUI *)theme {
+  [super setTheme:theme];
+  
+  self.label.font = self.theme.textFieldFloatLabelFont;
+  self.label.textColor = self.theme.textFieldFloatLabelTextColor;
+}
+
 - (NSDictionary *)viewBindings {
     return @{ @"label": self.label };
 }
