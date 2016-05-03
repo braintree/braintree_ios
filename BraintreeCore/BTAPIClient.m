@@ -268,17 +268,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 }
 
 - (NSDictionary *)metaParameters {
-    BTClientMetadata *clientMetadata = self.metadata;
-    NSMutableDictionary *clientMetadataParameters = [NSMutableDictionary dictionary];
-    clientMetadataParameters[@"integration"] = clientMetadata.integrationString;
-    clientMetadataParameters[@"source"] = clientMetadata.sourceString;
-    clientMetadataParameters[@"sessionId"] = clientMetadata.sessionId;
-
-    NSDictionary *analyticsMetadata = [BTAnalyticsMetadata metadata];
-
-    NSMutableDictionary *metaParameters = [NSMutableDictionary dictionary];
-    [metaParameters addEntriesFromDictionary:analyticsMetadata];
-    [metaParameters addEntriesFromDictionary:clientMetadataParameters];
+    NSMutableDictionary *metaParameters = [NSMutableDictionary dictionaryWithDictionary:self.metadata.parameters];
+    [metaParameters addEntriesFromDictionary:[BTAnalyticsMetadata metadata]];
 
     return [metaParameters copy];
 }
