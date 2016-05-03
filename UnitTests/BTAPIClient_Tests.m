@@ -5,6 +5,7 @@
 #import <BraintreeApplePay/BTConfiguration+ApplePay.h>
 #import <BraintreePayPal/BTConfiguration+PayPal.h>
 #import <BraintreeVenmo/BTConfiguration+Venmo.h>
+#import <BraintreeUnionPay/BTConfiguration+UnionPay.h>
 #import "BTFakeHTTP.h"
 #import "BTAnalyticsService.h"
 
@@ -81,18 +82,14 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (void)testAPIClient_canGetRemoteConfiguration {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
 
-    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-
-    BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
-    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith:@{ @"test": @YES } statusCode:200];
-
-    apiClient.configurationHTTP = fake;
+    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"test": @YES }];
+    BTFakeHTTP *mockConfigurationHTTP = (BTFakeHTTP *)apiClient.configurationHTTP;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertNotNil(configuration);
         XCTAssertNil(error);
 
-        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
+        XCTAssertEqual(mockConfigurationHTTP.GETRequestCount, (NSUInteger)1);
         XCTAssertTrue([configuration.json[@"test"] isTrue]);
         [expectation fulfill];
     }];
@@ -347,6 +344,34 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testIsUnionPayEnabled_whenGatewayReturnsFalse_isFalse {
+    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPayEnabled": @(NO) }];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
+        XCTAssertFalse(configuration.isUnionPayEnabled);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
+- (void)testIsUnionPayEnabled_whenGatewayReturnsTrue_isTrue {
+    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"unionPay": @{@"enabled": @(YES) } }];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        XCTAssertNil(error);
+
+        XCTAssertTrue(configuration.isUnionPayEnabled);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:1 handler:nil];
+}
+
 //#pragma mark - Analytics tests
 
 - (void)testAnalyticsService_isCreatedDuringInitialization {
@@ -401,7 +426,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
 - (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
-    fake.cannedResponse = [[BTJSON alloc] initWithValue:configurationDictionary];
+    fake.cannedConfiguration = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;
     apiClient.configurationHTTP = fake;
 

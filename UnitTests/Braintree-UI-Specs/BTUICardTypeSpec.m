@@ -130,6 +130,10 @@ describe(@"BTUICardType", ^{
             expect([BTUICardType cardTypeForNumber:@"3530 1113 3330 0000"]).to.equal([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_JCB)]);
         });
 
+        it(@"should recognize a valid Union Pay", ^{
+            expect([BTUICardType cardTypeForNumber:@"6221 2345 6789 0123 450"]).to.equal([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_UNION_PAY)]);
+        });
+
         it(@"should not recognize a non-number", ^{
             expect([BTUICardType cardTypeForNumber:@"notanumber"]).to.beNil();
         });
@@ -156,7 +160,8 @@ describe(@"BTUICardType", ^{
           @[@"4012000077777777", BTUILocalizedString(CARD_TYPE_VISA)],
           @[@"4012888888881881", BTUILocalizedString(CARD_TYPE_VISA)],
           @[@"4217651111111119", BTUILocalizedString(CARD_TYPE_VISA)],
-          @[@"4500600000000061", BTUILocalizedString(CARD_TYPE_VISA)]
+          @[@"4500600000000061", BTUILocalizedString(CARD_TYPE_VISA)],
+          @[@"6221234567890123450", BTUILocalizedString(CARD_TYPE_UNION_PAY)],
           ];
 
         for (NSArray *testCase in braintreeTestCardNumbers) {
@@ -167,6 +172,13 @@ describe(@"BTUICardType", ^{
                 expect([cardType validNumber:testNumber]).to.beTruthy();
             });
         }
+
+        context(@"when card type is Union Pay", ^{
+            it(@"returns true when number is not Luhn valid", ^{
+                BTUICardType *cardType = [BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_UNION_PAY)];
+                expect([cardType validNumber:@"6221234567890123451"]).to.beTruthy();
+            });
+        });
     });
 
     describe(@"validAndNecessarilyCompleteNumber", ^{

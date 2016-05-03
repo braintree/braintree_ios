@@ -1,8 +1,10 @@
+import BraintreeCore
+
 @objc class MockAPIClient : BTAPIClient {
     var lastPOSTPath = ""
     var lastPOSTParameters = [:] as [NSObject : AnyObject]?
     var lastGETPath = ""
-    var lastGETParameters = [:] as [NSObject : AnyObject]?
+    var lastGETParameters = [:] as [String : String]?
     var postedAnalyticsEvents : [String] = []
 
     var cannedConfigurationResponseBody : BTJSON? = nil
@@ -15,7 +17,7 @@
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
 
-    override func GET(path: String, parameters: [NSObject : AnyObject]?, completion completionBlock: ((BTJSON?, NSHTTPURLResponse?, NSError?) -> Void)?) {
+    override func GET(path: String, parameters: [String : String]?, completion completionBlock: ((BTJSON?, NSHTTPURLResponse?, NSError?) -> Void)?) {
         lastGETPath = path
         lastGETParameters = parameters
 

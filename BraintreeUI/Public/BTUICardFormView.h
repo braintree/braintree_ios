@@ -4,14 +4,16 @@ typedef NS_OPTIONS(NSUInteger, BTUICardFormOptionalFields) {
     BTUICardFormOptionalFieldsNone       = 0,
     BTUICardFormOptionalFieldsCvv        = 1 << 0,
     BTUICardFormOptionalFieldsPostalCode = 1 << 1,
-    BTUICardFormOptionalFieldsAll        = BTUICardFormOptionalFieldsCvv | BTUICardFormOptionalFieldsPostalCode
+    BTUICardFormOptionalFieldsPhoneNumber= 1 << 2,
+    BTUICardFormOptionalFieldsAll        = BTUICardFormOptionalFieldsCvv | BTUICardFormOptionalFieldsPostalCode | BTUICardFormOptionalFieldsPhoneNumber
 };
 
 typedef NS_ENUM(NSUInteger, BTUICardFormField) {
     BTUICardFormFieldNumber = 0,
     BTUICardFormFieldExpiration,
     BTUICardFormFieldCvv,
-    BTUICardFormFieldPostalCode
+    BTUICardFormFieldPostalCode,
+    BTUICardFormFieldPhoneNumber,
 };
 
 @protocol BTUICardFormViewDelegate;
@@ -38,8 +40,12 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 /// @note this field is only visible when specified in `optionalFields`
 @property (nonatomic, copy) NSString *postalCode;
 
+/// The card expiration month
 @property (nonatomic, copy, readonly) NSString *expirationMonth;
+/// The card expiration year
 @property (nonatomic, copy, readonly) NSString *expirationYear;
+/// A phone number
+@property (nonatomic, copy, readonly) NSString *phoneNumber;
 
 /// Sets the card form view's expiration date
 ///
@@ -87,12 +93,13 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 /// Delegate protocol for receiving updates about the card form
 @protocol BTUICardFormViewDelegate <NSObject>
 
+@optional
+
 /// The card form data has updated.
 - (void)cardFormViewDidChange:(BTUICardFormView *)cardFormView;
 
-@optional
-
 - (void)cardFormViewDidBeginEditing:(BTUICardFormView *)cardFormView;
 
+- (void)cardFormViewDidEndEditing:(BTUICardFormView *)cardFormView;
 
 @end

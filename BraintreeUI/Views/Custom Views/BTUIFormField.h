@@ -36,5 +36,6 @@
 @optional
 - (BOOL)formFieldShouldReturn:(BTUIFormField *)formField;
 - (void)formFieldDidBeginEditing:(BTUIFormField *)formField;
+- (void)formFieldDidEndEditing:(BTUIFormField *)formField;
 
 @end

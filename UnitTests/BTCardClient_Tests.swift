@@ -2,27 +2,10 @@ import XCTest
 
 class BTCardClient_Tests: XCTestCase {
     
-    func testTokenization_whenAPIClientIsNil_callsBackWithError() {
-        let mockClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let cardClient = BTCardClient(APIClient: mockClient)
-        cardClient.apiClient = nil
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
-        
-        let expectation = expectationWithDescription("Callback invoked with error")
-        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
-            XCTAssertNil(tokenizedCard)
-            XCTAssertEqual(error!.domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error!.code, BTCardClientErrorType.Integration.rawValue)
-            expectation.fulfill()
-        }
-        
-        self.waitForExpectationsWithTimeout(10, handler: nil)
-    }
-
     func testTokenization_sendsDataToClientAPI() {
         let expectation = self.expectationWithDescription("Tokenize Card")
         let fakeHTTP = FakeHTTP.fakeHTTP()
-        let apiClient = BTAPIClient(authorization: "sandbox_abcd_fake_merchant_id")!
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = fakeHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
 
@@ -46,7 +29,7 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenAPIClientSucceeds_returnsTokenizedCard() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let apiClient = BTAPIClient(authorization: "sandbox_abcd_fake_merchant_id")!
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = FakeHTTP.fakeHTTP()
         let cardClient = BTCardClient(APIClient: apiClient)
 
@@ -70,7 +53,7 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenAPIClientFails_returnsError() {
         let expectation = self.expectationWithDescription("Tokenize Card")
-        let apiClient = BTAPIClient(authorization: "sandbox_abcd_fake_merchant_id")!
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = ErrorHTTP.fakeHTTP()
         let cardClient = BTCardClient(APIClient: apiClient)
 
@@ -84,8 +67,64 @@ class BTCardClient_Tests: XCTestCase {
 
         self.waitForExpectationsWithTimeout(10, handler: nil)
     }
+
+    func testTokenization_whenTokenizationEndpointReturns422_callCompletionWithValidationError() {
+        let stubAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
+        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.ClientError.rawValue, userInfo: [
+            BTHTTPURLResponseKey: NSHTTPURLResponse(URL: NSURL(string: "http://fake")!, statusCode: 422, HTTPVersion: nil, headerFields: nil)!,
+            BTHTTPJSONResponseBodyKey: BTJSON(value: ["someError": "details"])
+            ])
+        stubAPIClient.cannedResponseError = stubError
+        let cardClient = BTCardClient(APIClient: stubAPIClient)
+        let request = BTCardRequest()
+        request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
+
+        let expectation = expectationWithDescription("Callback invoked with error")
+        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
+            guard let error = error else {
+                XCTFail("Expected error in callback")
+                return
+            }
+            XCTAssertNil(cardNonce)
+            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
+            XCTAssertEqual(error.code, BTCardClientErrorType.CustomerInputInvalid.rawValue)
+            if let json = error.userInfo[BTCustomerInputBraintreeValidationErrorsKey] as? [NSObject:AnyObject] {
+                XCTAssertEqual(json["someError"] as? String, "details")
+            } else {
+                XCTFail("Expected JSON response object in userInfo")
+            }
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
     
-    // MARK: _meta parameter
+    func testTokenization_whenTokenizationEndpointReturnsAnyNon422Error_callCompletionWithError() {
+        let stubAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
+        stubAPIClient.cannedResponseError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.ClientError.rawValue, userInfo: nil)
+        let cardClient = BTCardClient(APIClient: stubAPIClient)
+        let request = BTCardRequest()
+        request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
+        request.enrollmentAuthCode = "12345"
+        request.enrollmentID = "fake-enrollment-id"
+
+        let expectation = expectationWithDescription("Callback invoked with error")
+        cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
+            guard let error = error else {
+                XCTFail("Expected error in callback")
+                return
+            }
+            
+            XCTAssertNil(cardNonce)
+            XCTAssertEqual(error.domain, BTHTTPErrorDomain)
+            XCTAssertEqual(error.code, BTHTTPErrorCode.ClientError.rawValue)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    // MARK: - _meta parameter
     
     func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
@@ -111,7 +150,7 @@ class BTCardClient_Tests: XCTestCase {
     }
 }
 
-// MARK: Helpers
+// MARK: - Helpers
 
 class FakeHTTP : BTHTTP {
     struct Request {

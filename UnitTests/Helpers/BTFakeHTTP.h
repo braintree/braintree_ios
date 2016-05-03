@@ -6,10 +6,12 @@
 @property (nonatomic, assign) NSUInteger GETRequestCount;
 @property (nonatomic, assign) NSUInteger POSTRequestCount;
 @property (nonatomic, copy, nullable) NSString *lastRequestEndpoint;
+@property (nonatomic, copy, nullable) NSString *lastRequestMethod;
 @property (nonatomic, strong, nullable) NSDictionary *lastRequestParameters;
 @property (nonatomic, copy, nullable) NSString *stubMethod;
 @property (nonatomic, copy, nullable) NSString *stubEndpoint;
 @property (nonatomic, strong, nullable) BTJSON *cannedResponse;
+@property (nonatomic, strong, nullable) BTJSON *cannedConfiguration;
 @property (nonatomic, assign) NSUInteger cannedStatusCode;
 @property (nonatomic, strong, nullable) NSError *cannedError;
 
