@@ -236,21 +236,6 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
 
 #pragma mark - Helpers
 
-- (NSDictionary *)metaParametersForMetadata:(BTClientMetadata *)metadata {
-    NSMutableDictionary *metadataParameters = [NSMutableDictionary dictionary];
-    metadataParameters[@"integration"] = metadata.integrationString;
-    metadataParameters[@"source"] = metadata.sourceString;
-    metadataParameters[@"sessionId"] = metadata.sessionId;
-    
-    NSDictionary *analyticsMetadata = [BTAnalyticsMetadata metadata];
-    
-    NSMutableDictionary *metaParameters = [NSMutableDictionary dictionary];
-    [metaParameters addEntriesFromDictionary:analyticsMetadata];
-    [metaParameters addEntriesFromDictionary:metadataParameters];
-    
-    return [metaParameters copy];
-}
-
 - (void)enqueueEvent:(NSString *)eventKind {
     long timestampInSeconds = round([[NSDate date] timeIntervalSince1970]);
     BTAnalyticsEvent *event = [BTAnalyticsEvent event:eventKind withTimestamp:timestampInSeconds];
