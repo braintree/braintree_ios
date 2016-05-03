@@ -211,6 +211,17 @@
 
 }
 
+#pragma mark - Theme
+
+- (void)setTheme:(BTUI *)theme {
+  [super setTheme:theme];
+  
+  _numberField.theme = theme;
+  _expiryField.theme = theme;
+  _cvvField.theme = theme;
+  _postalCodeField.theme = theme;
+}
+
 #pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect {
