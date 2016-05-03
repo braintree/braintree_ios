@@ -99,13 +99,22 @@ Pod::Spec.new do |s|
     s.xcconfig = { "OTHER_LDFLAGS" => "-ObjC -lc++" }
     s.dependency "Braintree/Core"
     s.dependency "Braintree/PayPalDataCollector"
+    s.dependency "Braintree/PayPalUtils"
   end
 
   s.subspec "PayPalDataCollector" do |s|
-    s.source_files = "BraintreePayPal/PayPalDataCollector/**/*.{h,m}", "BraintreePayPal/PayPalUtils/**/*.{h,m}"
+    s.source_files = "BraintreePayPal/PayPalDataCollector/**/*.{h,m}"
     s.public_header_files = "BraintreePayPal/PayPalDataCollector/Public/*.h", "BraintreePayPal/PayPalDataCollector/Risk/*.h"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
     s.vendored_library = "BraintreePayPal/PayPalDataCollector/Risk/libPPRiskComponent.a"
+    s.dependency "Braintree/Core"
+    s.dependency "Braintree/PayPalUtils"
+  end
+
+  s.subspec "PayPalUtils" do |s|
+    s.source_files = "BraintreePayPal/PayPalUtils/**/*.{h,m}"
+    s.public_header_files = "BraintreePayPal/PayPalUtils/Public/*.h"
+    s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
   end
 end
 
