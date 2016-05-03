@@ -1,7 +1,7 @@
 import XCTest
 
 extension XCTestCase {
-    func waitForElementToAppear(element: XCUIElement, timeout: NSTimeInterval = 10,  file: String = __FILE__, line: UInt = __LINE__) {
+    func waitForElementToAppear(element: XCUIElement, timeout: NSTimeInterval = 10,  file: String = #file, line: UInt = #line) {
         let existsPredicate = NSPredicate(format: "exists == true")
         
         expectationForPredicate(existsPredicate,
