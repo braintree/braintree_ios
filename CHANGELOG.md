@@ -1,5 +1,23 @@
 # Braintree iOS SDK Release Notes
 
+## 4.3.0 (2016-05-03)
+
+* Add support for UnionPay cards
+  * UnionPay is now in private beta. To request access, email [unionpay@braintreepayments.com](mailto:unionpay@braintreepayments.com).
+* Drop-in displays vaulted payment methods by default first
+  * Payment method nonces have an `isDefault` property
+* Add `BTHTTPErrorCodeRateLimitError` to indicate when Braintree is rate-limiting your app's API requests
+* Update support for static library integrations
+  * Fix issues with missing classes in the Braintree static library target
+  * Add [guide for Static Library integrations](Docs/Braintree-Static-Integration-Guide.md)
+* Use in-memory `NSURLCache` for configuration caching
+* Analytics events are batched together for better performance
+* Update theme of card form child components when using custom theme
+* `PayPalOneTouch` is less chatty when logging to console
+* Add ACKNOWLEDGEMENTS.md
+* Update `PayPalDataCollector` to include latest `libPPRiskComponent.a`
+* Remove unused targets and schemes: `Demo-StaticLibrary`, `UnitTests-CocoaPods`, and `UnitTests-StaticLibrary`
+
 ## 4.2.3 (2016-02-22)
 
 * Remove assertion from PayPal One Touch Core when reading from Keychain fails
