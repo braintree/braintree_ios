@@ -25,6 +25,10 @@
     return NSLocalizedStringWithDefaultValue(@"CARD_NUMBER_PLACEHOLDER", [self localizationTable], [self localizationBundle], @"Card Number", @"Credit card number field placeholder");
 }
 
++ (NSString *)PHONE_NUMBER_PLACEHOLDER {
+    return NSLocalizedStringWithDefaultValue(@"PHONE_NUMBER_PLACEHOLDER", [self localizationTable], [self localizationBundle], @"Phone Number", @"Phone number field placeholder");
+}
+
 + (NSString *)EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR {
     return NSLocalizedStringWithDefaultValue(@"EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR", [self localizationTable], [self localizationBundle], @"MM/YYYY", @"Credit card expiration date field placeholder (MM/YYYY format)");
 }

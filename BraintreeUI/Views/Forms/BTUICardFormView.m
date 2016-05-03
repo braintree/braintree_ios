@@ -2,10 +2,11 @@
 #import "BTUICardNumberField.h"
 #import "BTUICardExpiryField.h"
 #import "BTUICardCvvField.h"
+#import "BTUICardPhoneNumberField.h"
 #import "BTUICardPostalCodeField.h"
 #import "BTUI.h"
 #import "BTUILocalizedString.h"
-
+#import "BTUIViewUtil.h"
 
 @interface BTUICardFormView ()<BTUIFormFieldDelegate>
 
@@ -13,10 +14,12 @@
 @property (nonatomic, strong) BTUICardExpiryField *expiryField;
 @property (nonatomic, strong) BTUICardCvvField *cvvField;
 @property (nonatomic, strong) BTUICardPostalCodeField *postalCodeField;
+@property (nonatomic, strong) BTUICardPhoneNumberField *phoneNumberField;
 
 @property (nonatomic, strong) NSArray *fields;
 @property (nonatomic, strong) NSArray *dynamicConstraints;
 @property (nonatomic, assign, readwrite) BOOL valid;
+@property (nonatomic, assign) BTUIPaymentOptionType lastPaymentMethodType;
 
 @end
 
@@ -65,6 +68,9 @@
         case BTUICardFormFieldPostalCode:
             self.postalCodeField.displayAsValid = NO;
             break;
+        case BTUICardFormFieldPhoneNumber:
+            self.phoneNumberField.displayAsValid = NO;
+            break;
     }
 }
 
@@ -87,16 +93,22 @@
 
 - (void)setOptionalFields:(BTUICardFormOptionalFields)optionalFields {
     _optionalFields = optionalFields;
-    NSMutableArray *fields = [NSMutableArray arrayWithObjects:self.numberField, self.expiryField, nil];
+    
+    NSArray *defaultFields = @[self.numberField, self.expiryField];
+    NSMutableArray *fields = [defaultFields mutableCopy];
 
-    self.cvvField.hidden = self.postalCodeField.hidden = YES;
+    self.cvvField.hidden = self.postalCodeField.hidden = self.phoneNumberField.hidden = YES;
+    if (optionalFields & BTUICardFormOptionalFieldsPostalCode) {
+        [fields addObject:self.postalCodeField];
+        self.postalCodeField.hidden = NO;
+    }
     if (optionalFields & BTUICardFormOptionalFieldsCvv) {
         [fields addObject:self.cvvField];
         self.cvvField.hidden = NO;
     }
-    if (optionalFields & BTUICardFormOptionalFieldsPostalCode) {
-        [fields addObject:self.postalCodeField];
-        self.postalCodeField.hidden = NO;
+    if (optionalFields & BTUICardFormOptionalFieldsPhoneNumber) {
+        [fields addObject:self.phoneNumberField];
+        self.phoneNumberField.hidden = NO;
     }
 
     // Set bottom border for fields
@@ -128,6 +140,10 @@
     self.expiryField.text = [NSString stringWithFormat:@"%@%@", expirationMonthString, expirationYearString];
 }
 
+- (NSString *)phoneNumber {
+    return self.phoneNumberField.text.length > 0 ? self.phoneNumberField.text : nil;
+}
+
 - (void)setup {
     self.opaque = NO;
     self.backgroundColor = [UIColor whiteColor];
@@ -154,6 +170,11 @@
     self.postalCodeField.delegate = self;
     [self addSubview:self.postalCodeField];
     [self setAlphaNumericPostalCode:YES];
+    
+    self.phoneNumberField = [[BTUICardPhoneNumberField alloc] init];
+    self.phoneNumberField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.phoneNumberField.delegate = self;
+    [self addSubview:self.phoneNumberField];
 
     self.vibrate = YES;
     self.optionalFields = BTUICardFormOptionalFieldsAll;
@@ -271,12 +292,20 @@
     [self advanceToNextInvalidFieldFrom:field];
     // Trigger KVO
     self.valid = self.valid;
-    [self.delegate cardFormViewDidChange:self];
+    if ([self.delegate respondsToSelector:@selector(cardFormViewDidChange:)]) {
+        [self.delegate cardFormViewDidChange:self];
+    }
 }
 
 - (void)formFieldDidBeginEditing:(__unused BTUIFormField *)field {
     if ([self.delegate respondsToSelector:@selector(cardFormViewDidBeginEditing:)]) {
         [self.delegate cardFormViewDidBeginEditing:self];
+    }
+}
+
+- (void)formFieldDidEndEditing:(__unused BTUIFormField *)field {
+    if ([self.delegate respondsToSelector:@selector(cardFormViewDidEndEditing:)]) {
+        [self.delegate cardFormViewDidEndEditing:self];
     }
 }
 

@@ -174,9 +174,7 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     switch (self.contentState) {
         case BTPaymentMethodViewStateNormal:
             self.typeLabel.text = [BTUIViewUtil nameForPaymentMethodType:self.type];
-
             self.detailDescriptionLabel.text = self.detailDescription;
-
             [self.iconView removeFromSuperview];
             self.iconView = [self.theme vectorArtViewForPaymentOptionType:self.type];
             [self.iconView setTranslatesAutoresizingMaskIntoConstraints:NO];

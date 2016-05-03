@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// HTTP response and `error` will be `nil`; on failure, `body` and `response` will be
 /// `nil` and `error` will contain the error that occurred.
 - (void)GET:(NSString *)path
- parameters:(nullable NSDictionary *)parameters
+ parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 /// Perfom an HTTP POST on a URL composed of the configured from environment

@@ -35,7 +35,15 @@
 - (void)setCardType:(BTUICardType *)cardType {
     _cardType = cardType;
     self.displayAsValid = [self.textField isFirstResponder] || self.textField.text.length == 0 || self.valid;
-    [self.hint setCardType:[BTUIViewUtil paymentMethodTypeForCardType:cardType] animated:YES];
+    BTUIPaymentOptionType type = [BTUIViewUtil paymentMethodTypeForCardType:cardType];
+    [self.hint setCardType:type animated:YES];
+
+    if (type == BTUIPaymentOptionTypeUnionPay) {
+        [self setThemedPlaceholder:@"CVVM"];
+    } else {
+        [self setThemedPlaceholder:BTUILocalizedString(CVV_FIELD_PLACEHOLDER)];
+    }
+    
     [self updateAppearance];
 }
 

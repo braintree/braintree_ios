@@ -70,16 +70,24 @@ Pod::Spec.new do |s|
     s.resource_bundles = {
       "Braintree-UI-Localization" => ["BraintreeUI/Localization/*.lproj"],
       "Braintree-Drop-In-Localization" => ["BraintreeUI/Drop-In/Localization/*.lproj"] }
-    s.dependency "Braintree/Core"
     s.dependency "Braintree/Card"
+    s.dependency "Braintree/Core"
+  end
+
+  s.subspec "UnionPay" do |s|
+    s.source_files  = "BraintreeUnionPay/**/*.{h,m}"
+    s.public_header_files = "BraintreeUnionPay/Public/*.h"
+    s.frameworks = "UIKit"
+    s.dependency "Braintree/Card"
+    s.dependency "Braintree/Core"
   end
 
   s.subspec "3D-Secure" do |s|
     s.source_files = "Braintree3DSecure/**/*.{h,m}"
     s.public_header_files = "Braintree3DSecure/Public/*.h"
     s.frameworks = "UIKit"
-    s.dependency "Braintree/Core"
     s.dependency "Braintree/Card"
+    s.dependency "Braintree/Core"
     s.resource_bundle = { "Braintree-3D-Secure-Localization" => "Braintree3DSecure/Localization/*.lproj" }
   end
 
