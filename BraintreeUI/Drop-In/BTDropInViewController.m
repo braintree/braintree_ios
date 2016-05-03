@@ -1,5 +1,7 @@
 #import "BTAPIClient_Internal.h"
 #import "BTCard.h"
+#import "BTCardClient.h"
+#import "BTCardRequest.h"
 #import "BTDropInViewController_Internal.h"
 #import "BTLogger_Internal.h"
 #import "BTDropInErrorAlert.h"
@@ -313,27 +315,21 @@
     } else if (!self.dropInContentView.cardForm.hidden) {
         BTUICardFormView *cardForm = self.dropInContentView.cardForm;
 
-        BTAPIClient *client = [self.apiClient copyWithSource:BTClientMetadataSourceForm integration:BTClientMetadataIntegrationDropIn];
-
         if (cardForm.valid) {
             [self informDelegateWillComplete];
 
-            NSMutableDictionary *options = [NSMutableDictionary dictionary];
-            options[@"number"] = cardForm.number;
-            options[@"expiration_date"] = [NSString stringWithFormat:@"%@/%@", cardForm.expirationMonth, cardForm.expirationYear];
-            if (cardForm.cvv) {
-                options[@"cvv"] = cardForm.cvv;
-            }
-            if (cardForm.postalCode) {
-                options[@"billing_address"] = @{ @"postal_code": cardForm.postalCode };
-            }
-            options[@"options"] = @{ @"validate" : @(self.apiClient.tokenizationKey ? NO : YES) };
-
-            [[BTTokenizationService sharedService] tokenizeType:@"Card" options:options withAPIClient:client completion:^(BTPaymentMethodNonce *paymentMethodNonce, NSError *error) {
+            BTCard *card = [[BTCard alloc] initWithNumber:cardForm.number expirationMonth:cardForm.expirationMonth expirationYear:cardForm.expirationYear cvv:cardForm.cvv];
+            card.postalCode = cardForm.postalCode;
+            card.shouldValidate = self.apiClient.tokenizationKey ? NO : YES;
+            BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
+            BTAPIClient *copiedAPIClient = [self.apiClient copyWithSource:BTClientMetadataSourceForm integration:BTClientMetadataIntegrationDropIn];
+            BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:copiedAPIClient];
+            
+            [cardClient tokenizeCard:request options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
                 [self showLoadingState:NO];
 
                 if (error) {
-                    if ([error.domain isEqualToString:@"com.braintreepayments.BTCardClientErrorDomain"] && error.code == BTErrorCustomerInputInvalid) {
+                    if ([error.domain isEqualToString:@"com.braintreepayments.BTCardClientErrorDomain"] && error.code == BTCardClientErrorTypeCustomerInputInvalid) {
                         [self informUserDidFailWithError:error];
                     } else {
                         BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
@@ -349,7 +345,7 @@
                     return;
                 }
 
-                [self informDelegateDidAddPaymentInfo:paymentMethodNonce];
+                [self informDelegateDidAddPaymentInfo:tokenizedCard];
             }];
         } else {
             BTDropInErrorAlert *alert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:self];
