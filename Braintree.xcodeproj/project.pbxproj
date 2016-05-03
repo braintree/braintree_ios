@@ -410,6 +410,7 @@
 		A76D7C3A1BB31A2B0000FA6A /* BTDataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = A76D7C221BB1CBDC0000FA6A /* BTDataCollector.m */; };
 		A76D7C3B1BB31A4B0000FA6A /* libDeviceCollectorLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A76D7C271BB1D31A0000FA6A /* libDeviceCollectorLibrary.a */; };
 		A76D7C3D1BB31ABB0000FA6A /* DeviceCollectorSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = A76D7C3C1BB31ABB0000FA6A /* DeviceCollectorSDK.h */; };
+		A77120521CD95DD50004FFD3 /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
 		A77344FA1B7A93A10083EC8D /* BraintreeUI.h in Headers */ = {isa = PBXBuildFile; fileRef = A77344F91B7A93A10083EC8D /* BraintreeUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A77345891B7A93D00083EC8D /* BTUILocalizedString.h in Headers */ = {isa = PBXBuildFile; fileRef = A77345071B7A93D00083EC8D /* BTUILocalizedString.h */; };
 		A773458A1B7A93D00083EC8D /* BTUILocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = A77345081B7A93D00083EC8D /* BTUILocalizedString.m */; };
@@ -911,6 +912,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = A76D7BFF1BB1CAB00000FA6A;
 			remoteInfo = BraintreeDataCollector;
+		};
+		A77120501CD95DCE0004FFD3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A75DA344192138F000D997A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7C8898F1B5F043B007A0E9C;
+			remoteInfo = BraintreeCard;
 		};
 		A77AA2A41B618CB300217B73 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1891,6 +1899,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A77120521CD95DD50004FFD3 /* BraintreeCard.framework in Frameworks */,
 				412FE05B1B97B03B008AAABE /* BraintreeCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3251,6 +3260,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4164B99F1C9B658E006AE861 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				41472F971CB6D53400AFA75C /* BTConfiguration+UnionPay.h in Headers */,
+				4164B9B01C9B6690006AE861 /* BraintreeUnionPay.h in Headers */,
+				4164B9BA1C9B6988006AE861 /* BTCardClient+UnionPay.h in Headers */,
+				A774265A1CA207AE003CACBA /* BTCardCapabilities.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7EDE475E1CD2C3D00005E22B /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -3266,17 +3286,6 @@
 				03CFEF341CD30B15006D2DA5 /* PPOTPinnedCertificates.h in Headers */,
 				03CFEF301CD30B15006D2DA5 /* PPOTDevice.h in Headers */,
 				03CFEF371CD30B15006D2DA5 /* PPOTTime.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4164B99F1C9B658E006AE861 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				41472F971CB6D53400AFA75C /* BTConfiguration+UnionPay.h in Headers */,
-				4164B9B01C9B6690006AE861 /* BraintreeUnionPay.h in Headers */,
-				4164B9BA1C9B6988006AE861 /* BTCardClient+UnionPay.h in Headers */,
-				A774265A1CA207AE003CACBA /* BTCardCapabilities.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3736,6 +3745,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A77120511CD95DCE0004FFD3 /* PBXTargetDependency */,
 				A7F570221C1611CA0007D018 /* PBXTargetDependency */,
 			);
 			name = BraintreeUI;
@@ -4028,14 +4038,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7EDE476C1CD2C3D00005E22B /* Resources */ = {
+		4164B9A81C9B658E006AE861 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4164B9A81C9B658E006AE861 /* Resources */ = {
+		7EDE476C1CD2C3D00005E22B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4935,6 +4945,11 @@
 			isa = PBXTargetDependency;
 			target = A76D7BFF1BB1CAB00000FA6A /* BraintreeDataCollector */;
 			targetProxy = A76D7C351BB318BF0000FA6A /* PBXContainerItemProxy */;
+		};
+		A77120511CD95DCE0004FFD3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7C8898F1B5F043B007A0E9C /* BraintreeCard */;
+			targetProxy = A77120501CD95DCE0004FFD3 /* PBXContainerItemProxy */;
 		};
 		A77344FD1B7A93A10083EC8D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
