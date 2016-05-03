@@ -276,7 +276,6 @@ namespace :release do
     version_header.gsub!(SEMVER, version)
     File.open(PAYPAL_ONE_TOUCH_VERSION_FILE, "w") { |f| f.puts version_header }
 
-    run! "pod update Braintree Braintree/Apple-Pay Braintree/DataCollector Braintree/3D-Secure"
     [DEMO_PLIST, FRAMEWORKS_PLIST].each do |plist|
       run! "plutil -replace CFBundleVersion -string #{current_version} -- '#{plist}'"
       run! "plutil -replace CFBundleShortVersionString -string #{current_version} -- '#{plist}'"
