@@ -5,7 +5,6 @@
 
 @interface BraintreeDemoCustomVenmoButtonViewController ()
 @property (nonatomic, strong) BTVenmoDriver *venmoDriver;
-@property (nonatomic, strong) UIButton *venmoButton;
 @end
 
 @implementation BraintreeDemoCustomVenmoButtonViewController
@@ -18,15 +17,13 @@
     [self checkVenmoBetaWhitelist];
 }
 
-- (UIView *)paymentButton {
-    if (!self.venmoButton) {
-        self.venmoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.venmoButton setTitle:@"Venmo (custom button)" forState:UIControlStateNormal];
-        [self.venmoButton setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
-        [self.venmoButton setTitleColor:[[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
-        [self.venmoButton addTarget:self action:@selector(tappedCustomVenmo) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return self.venmoButton;
+- (UIView *)createPaymentButton {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:@"Venmo (custom button)" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
+    [button setTitleColor:[[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
+    [button addTarget:self action:@selector(tappedCustomVenmo) forControlEvents:UIControlEventTouchUpInside];
+    return button;
 }
 
 - (void)checkVenmoBetaWhitelist {

@@ -18,7 +18,7 @@
     self.title = @"Custom Payment Button";
 }
 
-- (UIView *)paymentButton {
+- (UIView *)createPaymentButton {
     UIView *view = [[UIView alloc] initForAutoLayout];
 
     UIButton *venmoButton = [UIButton buttonWithType:UIButtonTypeSystem];

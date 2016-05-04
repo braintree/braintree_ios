@@ -31,7 +31,7 @@
     }];
 }
 
-- (UIView *)paymentButton {
+- (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:@"PayPal (Address Scope)" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];

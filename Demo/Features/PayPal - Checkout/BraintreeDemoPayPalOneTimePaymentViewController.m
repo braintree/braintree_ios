@@ -8,7 +8,7 @@
 
 @implementation BraintreeDemoPayPalOneTimePaymentViewController
 
-- (UIView *)paymentButton {
+- (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:@"PayPal one-time payment" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];

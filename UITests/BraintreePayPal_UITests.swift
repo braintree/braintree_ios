@@ -6,11 +6,12 @@ Hardware keyboard should be disabled on simulator for tests to run reliably.
 import XCTest
 
 class BraintreePayPal_FuturePayment_UITests: XCTestCase {
-        
+    var app: XCUIApplication!
+
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        let app = XCUIApplication()
+        app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalForceFuturePaymentViewController")
@@ -18,25 +19,17 @@ class BraintreePayPal_FuturePayment_UITests: XCTestCase {
         app.buttons["PayPal (future payment button)"].forceTapElement()
         sleep(2)
     }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-    
+
     func testPayPal_futurePayment_receivesNonce() {
-        let app = XCUIApplication()
-        
         let webviewElementsQuery = app.webViews.element.otherElements
         let emailTextField = webviewElementsQuery.textFields["Email"]
         
         self.waitForElementToAppear(emailTextField)
         emailTextField.forceTapElement()
-        sleep(1)
         emailTextField.typeText("test@paypal.com")
         
         let passwordTextField = webviewElementsQuery.secureTextFields["Password"]
         passwordTextField.forceTapElement()
-        sleep(1)
         passwordTextField.typeText("1234")
 
         webviewElementsQuery.buttons["Log In"].forceTapElement()
@@ -51,8 +44,6 @@ class BraintreePayPal_FuturePayment_UITests: XCTestCase {
     }
     
     func testPayPal_futurePayment_cancelsSuccessfully() {
-        let app = XCUIApplication()
-        
         let webviewElementsQuery = app.webViews.element.otherElements
         let emailTextField = webviewElementsQuery.textFields["Email"]
         
@@ -70,11 +61,12 @@ class BraintreePayPal_FuturePayment_UITests: XCTestCase {
 }
 
 class BraintreePayPal_SinglePayment_UITests: XCTestCase {
-    
+    var app: XCUIApplication!
+
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        let app = XCUIApplication()
+        app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalOneTimePaymentViewController")
@@ -82,13 +74,8 @@ class BraintreePayPal_SinglePayment_UITests: XCTestCase {
         app.buttons["PayPal one-time payment"].forceTapElement()
         sleep(2)
     }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-    
+
     func testPayPal_singlePayment_receivesNonce() {
-        let app = XCUIApplication()
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
@@ -101,7 +88,6 @@ class BraintreePayPal_SinglePayment_UITests: XCTestCase {
     }
     
     func testPayPal_singlePayment_cancelsSuccessfully() {
-        let app = XCUIApplication()
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])
@@ -115,11 +101,12 @@ class BraintreePayPal_SinglePayment_UITests: XCTestCase {
 }
 
 class BraintreePayPal_BillingAgreement_UITests: XCTestCase {
-    
+    var app: XCUIApplication!
+
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        let app = XCUIApplication()
+        app = XCUIApplication()
         app.launchArguments.append("-EnvironmentSandbox")
         app.launchArguments.append("-TokenizationKey")
         app.launchArguments.append("-Integration:BraintreeDemoPayPalBillingAgreementViewController")
@@ -128,12 +115,7 @@ class BraintreePayPal_BillingAgreement_UITests: XCTestCase {
         sleep(2)
     }
     
-    override func tearDown() {
-        super.tearDown()
-    }
-    
     func testPayPal_billingAgreement_receivesNonce() {
-        let app = XCUIApplication()
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Proceed with Sandbox Purchase"])
@@ -146,7 +128,6 @@ class BraintreePayPal_BillingAgreement_UITests: XCTestCase {
     }
     
     func testPayPal_billingAgreement_cancelsSuccessfully() {
-        let app = XCUIApplication()
         let webviewElementsQuery = app.webViews.element.otherElements
 
         self.waitForElementToAppear(webviewElementsQuery.links["Cancel Sandbox Purchase"])

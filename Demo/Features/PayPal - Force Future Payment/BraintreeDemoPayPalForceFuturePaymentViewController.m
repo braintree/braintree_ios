@@ -27,7 +27,7 @@
     }];
 }
 
-- (UIView *)paymentButton {
+- (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:@"PayPal (future payment button)" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];

@@ -3,6 +3,11 @@
 #import <BraintreeCore/BraintreeCore.h>
 
 @interface BraintreeDemoPaymentButtonBaseViewController : BraintreeDemoBaseViewController
+
 @property (nonatomic, strong) BTAPIClient *apiClient;
-- (UIView *)paymentButton;
+@property (nonatomic, strong) UIView *paymentButton;
+
+/// A factory method that subclasses must implement to return a payment button view.
+- (UIView *)createPaymentButton;
+
 @end

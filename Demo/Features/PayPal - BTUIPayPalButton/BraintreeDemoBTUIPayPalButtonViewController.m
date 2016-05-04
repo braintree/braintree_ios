@@ -28,7 +28,7 @@
     }];
 }
 
-- (UIView *)paymentButton {
+- (UIView *)createPaymentButton {
     BTUIPayPalButton *payPalButton = [[BTUIPayPalButton alloc] init];
     [payPalButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
     return payPalButton;

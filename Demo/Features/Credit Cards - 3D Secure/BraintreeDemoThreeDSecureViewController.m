@@ -22,7 +22,7 @@
     [self.cardFormView autoPinEdgeToSuperviewEdge:ALEdgeRight];
 }
 
-- (UIView *)paymentButton {
+- (UIView *)createPaymentButton {
     UIButton *verifyNewCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [verifyNewCardButton setTitle:@"Tokenize and Verify New Card" forState:UIControlStateNormal];
     [verifyNewCardButton addTarget:self action:@selector(tappedToVerifyNewCard) forControlEvents:UIControlEventTouchUpInside];

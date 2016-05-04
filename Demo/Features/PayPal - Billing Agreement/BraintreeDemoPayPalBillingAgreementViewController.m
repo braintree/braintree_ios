@@ -8,7 +8,7 @@
 
 @implementation BraintreeDemoPayPalBillingAgreementViewController
 
-- (UIView *)paymentButton {
+- (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:@"Billing Agreement with PayPal" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
