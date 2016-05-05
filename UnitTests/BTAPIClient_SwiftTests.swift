@@ -53,6 +53,129 @@ class BTAPIClient_SwiftTests: XCTestCase {
         XCTAssertTrue(copiedApiClient !== apiClient)
     }
 
+    // MARK: - fetchPaymentMethods
+    
+    func testFetchPaymentMethods_performsGETWithCorrectParameter() {
+        let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
+        let mockHTTP = BTFakeHTTP()!
+        mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        apiClient.http = mockHTTP
+       
+        let expectation = expectationWithDescription("Callback invoked")
+        apiClient.fetchPaymentMethodNonces() { _ in
+            XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
+            XCTAssertTrue(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+
+    func testFetchPaymentMethodsInternalMethod_performsGETWithCorrectParameter() {
+        let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
+        let mockHTTP = BTFakeHTTP()!
+        mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
+        apiClient.http = mockHTTP
+       
+        var expectation = expectationWithDescription("Callback invoked")
+        apiClient.fetchPaymentMethodNonces(true) { _ in
+            XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
+            XCTAssertTrue(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+        
+        expectation = expectationWithDescription("Callback invoked")
+        apiClient.fetchPaymentMethodNonces(false) { _ in
+            XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
+            XCTAssertFalse(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testFetchPaymentMethods_returnsPaymentMethodNonces() {
+        let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
+        let stubHTTP = BTFakeHTTP()!
+        let stubbedResponse : [String : AnyObject] = [
+            "paymentMethods": [
+                [
+                    "default" : true,
+                    "description": "ending in 05",
+                    "details": [
+                        "cardType": "American Express",
+                        "lastTwo": "05"
+                    ],
+                    "nonce": "fake-nonce",
+                    "type": "CreditCard"
+                ],
+                [
+                    "default" : false,
+                    "description": "jane.doe@example.com",
+                    "details": [],
+                    "nonce": "fake-nonce",
+                    "type": "PayPalAccount"
+                ]
+            ] ]
+        stubHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: stubbedResponse, statusCode: 200)
+        apiClient.http = stubHTTP
+       
+        let expectation = expectationWithDescription("Callback invoked")
+        apiClient.fetchPaymentMethodNonces(true) { (paymentMethodNonces, error) in
+            guard let paymentMethodNonces = paymentMethodNonces else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertNil(error)
+            XCTAssertEqual(paymentMethodNonces.count, 2)
+            
+            guard let cardNonce = paymentMethodNonces[0] as? BTCardNonce else {
+                XCTFail()
+                return
+            }
+            guard let paypalNonce = paymentMethodNonces[1] as? BTPayPalAccountNonce else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertEqual(cardNonce.nonce, "fake-nonce")
+            XCTAssertEqual(cardNonce.localizedDescription, "ending in 05")
+            XCTAssertEqual(cardNonce.lastTwo, "05")
+            XCTAssertTrue(cardNonce.cardNetwork == BTCardNetwork.AMEX)
+            XCTAssertTrue(cardNonce.isDefault)
+            
+            XCTAssertEqual(paypalNonce.nonce, "fake-nonce")
+            XCTAssertEqual(paypalNonce.localizedDescription, "jane.doe@example.com")
+            XCTAssertFalse(paypalNonce.isDefault)
+            
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testFetchPaymentMethods_withTokenizationKey_returnsError() {
+        let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!
+        
+        let expectation = expectationWithDescription("Error returned")
+        apiClient.fetchPaymentMethodNonces(true) { (paymentMethodNonces, error) -> Void in
+            guard let error = error else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertNil(paymentMethodNonces);
+            XCTAssertEqual(error.domain, BTAPIClientErrorDomain);
+            XCTAssertEqual(error.code, BTAPIClientErrorType.NotAuthorized.rawValue);
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+
     // MARK: - Analytics
     
     func testAnalyticsService_byDefault_isASingleton() {

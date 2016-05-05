@@ -3,6 +3,8 @@
 #import "BTConfiguration.h"
 #import "BTJSON.h"
 
+@class BTPaymentMethodNonce;
+
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString *const BTAPIClientErrorDomain;
@@ -46,6 +48,15 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// configuration for a merchant account from Braintree servers. This configuration is
 /// cached on subsequent calls for better performance.
 - (void)fetchOrReturnRemoteConfiguration:(void (^)(BTConfiguration * _Nullable configuration, NSError * _Nullable error))completionBlock;
+
+/// Fetches a customer's vaulted payment method nonces.
+///
+/// Must be using client token with a customer ID specified.
+///
+/// @param completionBlock Callback that returns an array of payment method nonces.
+/// On success, `paymentMethodNonces` contains the nonces and `error` is `nil`.
+/// On failure, `error` contains the error that occured and `paymentMethodNonces` is `nil`.
+- (void)fetchPaymentMethodNonces:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completion;
 
 /// Perfom an HTTP GET on a URL composed of the configured from environment
 /// and the given path.

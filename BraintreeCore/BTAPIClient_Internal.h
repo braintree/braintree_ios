@@ -30,12 +30,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// to suppress excessive network chatter during testing.
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
 
-/// Fetches payment methods. Must be using client token.
+/// An internal method to fetch a customer's vaulted payment method nonces.
 ///
-/// @param sortedDefaultFirst Sort payment method nonces with the default payment method first.
+/// Must be using client token with a customer ID specified.
+///
+/// @param defaultFirst Sorts the fetched payment method nonces with the default payment method first.
 /// @param completionBlock Callback that returns an array of payment method nonces
 - (void)fetchPaymentMethodNonces:(BOOL)defaultFirst
-                      completion:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completionBlock;
+                      completion:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completion;
 
 @end
 
