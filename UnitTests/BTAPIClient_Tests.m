@@ -160,7 +160,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     apiClient.http = fake;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
-    [apiClient fetchPaymentMethodNoncesSorted:YES completion:^(__unused NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, __unused NSError *error) {
+    [apiClient fetchPaymentMethodNonces:YES completion:^(__unused NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, __unused NSError *error) {
         XCTAssertEqualObjects(fake.lastRequestEndpoint, @"v1/payment_methods");
         XCTAssertEqualObjects(fake.lastRequestParameters[@"default_first"], @(YES));
         [expectation fulfill];
@@ -169,7 +169,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     [self waitForExpectationsWithTimeout:2 handler:nil];
 
     expectation = [self expectationWithDescription:@"Callback invoked"];
-    [apiClient fetchPaymentMethodNoncesSorted:NO completion:^(__unused NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, __unused NSError *error) {
+    [apiClient fetchPaymentMethodNonces:NO completion:^(__unused NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, __unused NSError *error) {
         XCTAssertEqualObjects(fake.lastRequestEndpoint, @"v1/payment_methods");
         XCTAssertEqualObjects(fake.lastRequestParameters[@"default_first"], @(NO));
         [expectation fulfill];
@@ -182,7 +182,7 @@ static NSString * const ValidClientToken = @"eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Error returned"];
-    [apiClient fetchPaymentMethodNoncesSorted:YES completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
+    [apiClient fetchPaymentMethodNonces:YES completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
         XCTAssertNil(paymentMethodNonces);
         XCTAssertEqualObjects(error.domain, BTAPIClientErrorDomain);
         XCTAssertEqual(error.code, BTAPIClientErrorTypeNotAuthorized);

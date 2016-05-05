@@ -163,7 +163,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 # pragma mark - Payment Methods
 
-- (void)fetchPaymentMethodNoncesSorted:(BOOL)sortDefaultFirst completion:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completionBlock {
+- (void)fetchPaymentMethodNonces:(BOOL)defaultFirst completion:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completionBlock {
 
     if (!self.clientToken) {
         NSError *error = [NSError errorWithDomain:BTAPIClientErrorDomain code:BTAPIClientErrorTypeNotAuthorized userInfo:@{ NSLocalizedDescriptionKey : @"Cannot fetch payment method nonces with a tokenization key", NSLocalizedRecoverySuggestionErrorKey : @"This endpoint requires a client token for authorization"}];
@@ -174,7 +174,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
 
     [self GET:@"v1/payment_methods"
-             parameters:@{@"default_first": @(sortDefaultFirst)}
+             parameters:@{@"default_first": @(defaultFirst)}
              completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
                  dispatch_async(dispatch_get_main_queue(), ^{
                      if (completionBlock) {

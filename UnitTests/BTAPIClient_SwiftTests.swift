@@ -20,7 +20,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
     func testAPIClientInitialization_withValidClientToken_returnsClientWithClientToken() {
         let clientToken = BTTestClientTokenFactory.tokenWithVersion(2)
         let apiClient = BTAPIClient(authorization: clientToken)
-        XCTAssertEqual(apiClient?.clientToken.originalValue, clientToken)
+        XCTAssertEqual(apiClient?.clientToken?.originalValue, clientToken)
     }
     
     // MARK: - Copy
@@ -31,7 +31,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
 
         let copiedApiClient = apiClient?.copyWithSource(.Unknown, integration: .Unknown)
 
-        XCTAssertEqual(copiedApiClient?.clientToken.originalValue, clientToken)
+        XCTAssertEqual(copiedApiClient?.clientToken?.originalValue, clientToken)
     }
 
     func testCopyWithSource_whenUsingTokenizationKey_usesSameTokenizationKey() {

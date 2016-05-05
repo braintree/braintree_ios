@@ -45,9 +45,9 @@ import BraintreeCore
         completionBlock(BTConfiguration(JSON: responseBody), cannedConfigurationResponseError)
     }
 
-    override func fetchPaymentMethodNoncesSorted(sortDefaultFirst: Bool, completion completionBlock: (([BTPaymentMethodNonce]!, NSError!) -> Void)!) {
+    override func fetchPaymentMethodNonces(defaultFirst: Bool, completion completionBlock: ([BTPaymentMethodNonce]?, NSError?) -> Void) {
         fetchedPaymentMethods = true
-        fetchPaymentMethodsSorting = sortDefaultFirst
+        fetchPaymentMethodsSorting = defaultFirst
         completionBlock([], nil)
     }
 
@@ -58,7 +58,7 @@ import BraintreeCore
         return self
     }
 
-    override func sendAnalyticsEvent(name: String!) {
+    override func sendAnalyticsEvent(name: String) {
         postedAnalyticsEvents.append(name)
     }
 
