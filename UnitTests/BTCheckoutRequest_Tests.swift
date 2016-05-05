@@ -2,7 +2,7 @@ import XCTest
 
 class BTPaymentRequest_Tests: XCTestCase {
     
-    func testCheckoutRequest_initializesAndCopiesCorrectly() {
+    func testPaymentRequest_initializesAndCopiesCorrectly() {
         let paymentRequest = BTPaymentRequest()
         XCTAssertNil(paymentRequest.summaryTitle)
         XCTAssertNil(paymentRequest.summaryDescription)
@@ -13,6 +13,7 @@ class BTPaymentRequest_Tests: XCTestCase {
         XCTAssertNil(paymentRequest.currencyCode)
         XCTAssertFalse(paymentRequest.noShipping)
         XCTAssertNil(paymentRequest.shippingAddress)
+        XCTAssertFalse(paymentRequest.showDefaultPaymentMethodNonceFirst)
         
         let paymentRequestCopy = paymentRequest.copy() as! BTPaymentRequest
         XCTAssertNil(paymentRequestCopy.summaryTitle)
@@ -24,9 +25,10 @@ class BTPaymentRequest_Tests: XCTestCase {
         XCTAssertNil(paymentRequestCopy.currencyCode)
         XCTAssertFalse(paymentRequestCopy.noShipping)
         XCTAssertNil(paymentRequestCopy.shippingAddress)
+        XCTAssertFalse(paymentRequest.showDefaultPaymentMethodNonceFirst)
     }
     
-    func testCheckoutRequest_valuesAreSetAndCopiedCorrectly() {
+    func testPaymentRequest_valuesAreSetAndCopiedCorrectly() {
         let paymentRequest = BTPaymentRequest()
         paymentRequest.summaryTitle = "My Summary Title"
         paymentRequest.summaryDescription = "My Summary Description"

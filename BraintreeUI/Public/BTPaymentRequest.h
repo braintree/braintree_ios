@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL noShipping;
 
 /// Show a customer's vaulted payment methods with the default payment method nonce first, followed by
-/// the remaining payment methods sorted by most recent usage. Defaults to true.
+/// the remaining payment methods sorted by most recent usage. Defaults to `NO`.
 ///
 /// @note Must be using client token with a customer ID
 @property (nonatomic, assign) BOOL showDefaultPaymentMethodNonceFirst;

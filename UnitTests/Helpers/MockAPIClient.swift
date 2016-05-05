@@ -53,7 +53,7 @@ import BraintreeCore
     
     override func fetchPaymentMethodNonces(defaultFirst: Bool, completion: ([BTPaymentMethodNonce]?, NSError?) -> Void) {
         fetchedPaymentMethods = true
-        fetchPaymentMethodsSorting = defaultFirst
+        fetchPaymentMethodsSorting = false
         completion([], nil)
     }
 
