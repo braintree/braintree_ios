@@ -61,7 +61,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
        
-        let expectation = expectationWithDescription("Callback invoked")
+        var expectation = expectationWithDescription("Callback invoked")
         apiClient.fetchPaymentMethodNonces() { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertTrue(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
@@ -69,15 +69,8 @@ class BTAPIClient_SwiftTests: XCTestCase {
         }
         
         waitForExpectationsWithTimeout(1, handler: nil)
-    }
-
-    func testFetchPaymentMethodsInternalMethod_performsGETWithCorrectParameter() {
-        let apiClient = BTAPIClient(authorization: BTValidTestClientToken, sendAnalyticsEvent: false)!
-        let mockHTTP = BTFakeHTTP()!
-        mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
-        apiClient.http = mockHTTP
        
-        var expectation = expectationWithDescription("Callback invoked")
+        expectation = expectationWithDescription("Callback invoked")
         apiClient.fetchPaymentMethodNonces(true) { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertTrue(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
@@ -123,7 +116,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         apiClient.http = stubHTTP
        
         let expectation = expectationWithDescription("Callback invoked")
-        apiClient.fetchPaymentMethodNonces(true) { (paymentMethodNonces, error) in
+        apiClient.fetchPaymentMethodNonces() { (paymentMethodNonces, error) in
             guard let paymentMethodNonces = paymentMethodNonces else {
                 XCTFail()
                 return
@@ -161,7 +154,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!
         
         let expectation = expectationWithDescription("Error returned")
-        apiClient.fetchPaymentMethodNonces(true) { (paymentMethodNonces, error) -> Void in
+        apiClient.fetchPaymentMethodNonces() { (paymentMethodNonces, error) -> Void in
             guard let error = error else {
                 XCTFail()
                 return
