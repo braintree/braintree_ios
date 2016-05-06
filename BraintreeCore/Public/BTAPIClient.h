@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 /// Must be using client token with a customer ID specified.
 ///
 /// @param completionBlock Callback that returns an array of payment method nonces.
-/// On success, `paymentMethodNonces` contains the nonces and `error` is `nil`.
+/// On success, `paymentMethodNonces` contains the nonces and `error` is `nil`. The default payment method nonce, if one exists, will be first.
 /// On failure, `error` contains the error that occured and `paymentMethodNonces` is `nil`.
 - (void)fetchPaymentMethodNonces:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completion;
 
