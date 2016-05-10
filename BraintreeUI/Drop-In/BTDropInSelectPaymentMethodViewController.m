@@ -49,16 +49,16 @@
     static NSString *paymentMethodCellIdentifier = @"paymentMethodCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:paymentMethodCellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:paymentMethodCellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:paymentMethodCellIdentifier];
     }
 
     BTPaymentMethodNonce *paymentInfo = self.paymentMethodNonces[indexPath.row];
 
-    NSString *typeString = paymentInfo.type;
-    NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", typeString, paymentInfo.localizedDescription ?: @""]];
-    [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlTitleFont range:NSMakeRange(0, [typeString length])];
-    [typeWithDescription addAttribute:NSFontAttributeName value:self.theme.controlDetailFont range:NSMakeRange([typeString length], paymentInfo.localizedDescription.length)];
-    cell.textLabel.attributedText = typeWithDescription;
+    BTUIPaymentOptionType paymentOptionType = [BTUI paymentOptionTypeForPaymentInfoType:paymentInfo.type];
+    NSString *typeString = [BTUIViewUtil nameForPaymentMethodType:paymentOptionType];
+    NSAttributedString *paymentOptionTypeString = [[NSAttributedString alloc] initWithString:typeString attributes:@{ NSFontAttributeName : self.theme.controlTitleFont }];
+    cell.textLabel.attributedText = paymentOptionTypeString;
+    cell.detailTextLabel.text = paymentInfo.localizedDescription;
 
     BTUIVectorArtView *iconArt = [[BTUI braintreeTheme] vectorArtViewForPaymentInfoType:paymentInfo.type];
     UIImage *icon = [iconArt imageOfSize:CGSizeMake(42, 23)];
