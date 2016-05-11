@@ -1,3 +1,9 @@
+#if __has_include("BraintreeCore.h")
+#import "BraintreeCore.h"
+#else
+#import <BraintreeCore/BraintreeCore.h>
+#endif
+
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
@@ -10,6 +16,8 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 @protocol BTDataCollectorDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef void (^BTDataCollectorCallback)(NSString *);
 
 extern NSString * const BTDataCollectorKountErrorDomain;
 
@@ -25,7 +33,13 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 ///
 /// @param environment The desired environment to target. This setting will determine which
 /// default collectorURL is used when collecting fraud data from the device.
-- (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment;
+- (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment DEPRECATED_MSG_ATTRIBUTE("Use [[BTDataCollector alloc] initWithAPIClient:] instead");
+
+/// Initializes a `BTDataCollector` instance with a BTAPIClient.
+///
+/// @param environment The desired environment to target. This setting will determine which
+/// default collectorURL is used when collecting fraud data from the device.
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 /// Generates a new PayPal fraud ID if PayPal is integrated; otherwise returns `nil`.
 ///
@@ -48,7 +62,22 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 ///
 /// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
 ///         This JSON serialized string contains the merchant ID and session ID.
-- (NSString *)collectCardFraudData;
+- (NSString *)collectCardFraudData DEPRECATED_MSG_ATTRIBUTE("Use [BTDataCollector collectCardFraudDataWithCallback] instead");
+
+/// Collects device data for Kount.
+///
+/// This should be used when the user is paying with a card.
+///
+/// For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
+/// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
+/// Normal response time is less than 1 second, and it should never take more than 10 seconds.
+///
+/// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
+/// calling it e.g. when the customer initiates checkout should also be fine.
+///
+/// @param callback is called with a deviceData string that should be passed in to server-side calls, such as `Transaction.sale`
+///        This JSON serialized string contains the merchant ID and session ID.
+- (void)collectCardFraudDataWithCallback:(BTDataCollectorCallback)callback;
 
 /// Collects device data for PayPal.
 ///
@@ -77,7 +106,28 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
 ///         This JSON serialized string contains the merchant ID, session ID, and
 ///         the PayPal fraud ID (if PayPal is available).
-- (NSString *)collectFraudData;
+- (NSString *)collectFraudData DEPRECATED_MSG_ATTRIBUTE("Use [BTDataCollector collectFraudDataWithCallback:] instead");
+
+/// Collects device data using Kount and PayPal.
+///
+/// This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
+/// use `-collectCardFraudData`. To collect data for PayPal, integrate PayPalDataCollector and use
+/// `[PPDataCollector collectPayPalDeviceData]`.
+///
+/// For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
+/// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
+/// Normal response time is less than 1 second, and it should never take more than 10 seconds.
+///
+/// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
+/// calling it e.g. when the customer initiates checkout should also be fine.
+///
+/// Store the return value as deviceData to use with debit/credit card transactions on your server,
+/// e.g. with `Transaction.sale`.
+///
+/// @param callback is called with a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
+///         This JSON serialized string contains the merchant ID, session ID, and
+///         the PayPal fraud ID (if PayPal is available).
+- (void)collectFraudDataWithCallback:(BTDataCollectorCallback)callback;
 
 #pragma mark Direct Integrations
 

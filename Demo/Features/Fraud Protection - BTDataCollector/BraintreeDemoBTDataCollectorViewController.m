@@ -7,9 +7,18 @@
 /// Retain BTDataCollector for entire lifecycle of view controller
 @property (nonatomic, strong) BTDataCollector *dataCollector;
 @property (nonatomic, strong) UILabel *dataLabel;
+@property (nonatomic, strong) BTAPIClient *apiClient;
 @end
 
 @implementation BraintreeDemoBTDataCollectorViewController
+
+- (instancetype)initWithAuthorization:(NSString *)authorization {
+    if (self = [super initWithAuthorization:authorization]) {
+        _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -56,18 +65,22 @@
     [self.dataLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
     [self.dataLabel autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
     
-    self.dataCollector = [[BTDataCollector alloc] initWithEnvironment:BTDataCollectorEnvironmentSandbox];
+    self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:_apiClient];
     self.dataCollector.delegate = self;
 }
 
 - (IBAction)tappedCollect
 {    self.progressBlock(@"Started collecting all data...");
-    self.dataLabel.text = [self.dataCollector collectFraudData];
+    [self.dataCollector collectFraudDataWithCallback:^(NSString * _Nonnull fraudId) {
+        self.dataLabel.text = fraudId;
+    }];
 }
 
 - (IBAction)tappedCollectKount {
     self.progressBlock(@"Started collecting Kount data...");
-    self.dataLabel.text = [self.dataCollector collectCardFraudData];
+    [self.dataCollector collectCardFraudDataWithCallback:^(NSString * _Nonnull fraudId) {
+        self.dataLabel.text = fraudId;
+    }];
 }
 
 - (IBAction)tappedCollectDyson {

@@ -1,8 +1,10 @@
+#import "BTConfiguration+DataCollector.h"
 #import "BTDataCollector_Internal.h"
 
 @interface BTDataCollector ()
 @property (nonatomic, assign) BTDataCollectorEnvironment environment;
 @property (nonatomic, copy) NSString *fraudMerchantId;
+@property (nonatomic, copy) BTAPIClient *apiClient;
 @end
 
 @implementation BTDataCollector
@@ -22,10 +24,18 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 - (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment {
     if (self = [super init]) {
         [self setUpKountWithDebugOn:NO];
-        _environment = environment;
-        [self setCollectorUrl:[self defaultCollectorURL]];
+        [self setCollectorUrl:[self collectorURLForEnvironment:environment]];
         [self setFraudMerchantId:BTDataCollectorSharedMerchantId];
     }
+    return self;
+}
+
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient {
+    if (self = [super init]) {
+        [self setUpKountWithDebugOn:NO];
+        _apiClient = apiClient;
+    }
+    
     return self;
 }
 
@@ -43,6 +53,56 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 
 + (NSString *)payPalClientMetadataId {
     return [BTDataCollector generatePayPalClientMetadataId];
+}
+
+- (void)collectCardFraudDataWithCallback:(BTDataCollectorCallback)callback {
+    [self collectFraudDataForCard:YES forPayPal:NO withCallback:callback];
+}
+
+- (void)collectFraudDataWithCallback:(BTDataCollectorCallback) callback {
+    [self collectFraudDataForCard:YES forPayPal:YES withCallback:callback];
+}
+
+- (void)collectFraudDataForCard:(BOOL)includeCard forPayPal:(BOOL)includePayPal withCallback:(BTDataCollectorCallback)callback {
+    [_apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError * _ __unused) {
+        NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
+        if ([configuration isKountEnabled] && includeCard) {
+            [self setCollectorUrl:[self collectorURLForEnvironment:[self environmentFromString:[configuration.json[@"environment"] asString]]]];
+            
+            NSString *merchantId = self.fraudMerchantId ?: [configuration kountMerchantId];
+            
+            NSString *deviceSessionId = [self sessionId];
+            dataDictionary[@"device_session_id"] = deviceSessionId;
+            dataDictionary[@"fraud_merchant_id"] = merchantId;
+            [self.kount collect:deviceSessionId];
+        }
+        
+        if (includePayPal) {
+            NSString *payPalClientMetadataId = [BTDataCollector generatePayPalClientMetadataId];
+            if (payPalClientMetadataId) {
+                dataDictionary[@"correlation_id"] = payPalClientMetadataId;
+            }
+        }
+        
+        NSError *error;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&error];
+        if (!data) {
+            NSLog(@"ERROR: Failed to create deviceData string, error = %@", error);
+            if (callback) {
+                callback(@"");
+            }
+        }
+        
+        // If only PayPal fraud is being collected, immediately inform the delegate that collection has
+        // finished, since Dyson does not allow us to know when it has officially finished collection.
+        if (!includeCard && includePayPal) {
+            [self onCollectorSuccess];
+        }
+        
+        if (callback) {
+            callback([[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+        }
+    }];
 }
 
 /// At this time, this method only collects data with Kount. However, it is possible that in the future,
@@ -132,9 +192,21 @@ static Class PayPalDataCollectorClass;
     return [[[NSUUID UUID] UUIDString] stringByReplacingOccurrencesOfString:@"-" withString:@""];
 }
 
-- (NSString *)defaultCollectorURL {
+- (BTDataCollectorEnvironment)environmentFromString:(NSString *)environment {
+    if ([environment isEqualToString:@"production"]) {
+        return BTDataCollectorEnvironmentProduction;
+    } else if ([environment isEqualToString:@"sandbox"]) {
+        return BTDataCollectorEnvironmentSandbox;
+    } else if ([environment isEqualToString:@"qa"]) {
+        return BTDataCollectorEnvironmentQA;
+    } else {
+        return BTDataCollectorEnvironmentDevelopment;
+    }
+}
+
+- (NSString *)collectorURLForEnvironment:(BTDataCollectorEnvironment)environment {
     NSString *defaultCollectorURL;
-    switch (self.environment) {
+    switch (environment) {
         case BTDataCollectorEnvironmentDevelopment:
             break;
         case BTDataCollectorEnvironmentQA:

@@ -4,4 +4,6 @@
 
 @interface BraintreeDemoBTDataCollectorViewController : BraintreeDemoBaseViewController
 
+- (instancetype) initWithAuthorization:(NSString *)authorization;
+
 @end

@@ -52,6 +52,102 @@ class BTDataCollector_Tests: XCTestCase {
 
         waitForExpectationsWithTimeout(2, handler: nil)
     }
+    
+    func testCollectCardFraudData_doesNotReturnCorrelationId() {
+        let apiClient = clientThatReturnsConfiguration([
+            "environment":"development",
+            "kount": [
+                "enabled": true,
+                "kountMerchantId": "500000"
+            ]
+        ])
+        
+        let dataCollector = BTDataCollector(APIClient: apiClient)
+        let expectation = expectationWithDescription("Returns fraud data")
+        
+        dataCollector.collectCardFraudDataWithCallback({ (fraudData: String) in
+            let json = BTJSON(data: fraudData.dataUsingEncoding(NSUTF8StringEncoding)!)
+            XCTAssertNil(json["correlation_id"] as? String)
+            expectation.fulfill()
+        })
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testOverrideMerchantId_usesMerchantProvidedId() {
+        let apiClient = clientThatReturnsConfiguration([
+            "environment":"development",
+            "kount": [
+                "enabled": true,
+                "kountMerchantId": "500000"
+            ]
+        ])
+        
+        let dataCollector = BTDataCollector(APIClient: apiClient)
+        dataCollector.setFraudMerchantId("500001")
+        let expectation = expectationWithDescription("Returns fraud data")
+        
+        dataCollector.collectFraudDataWithCallback { (fraudData: String) in
+            let json = BTJSON(data: fraudData.dataUsingEncoding(NSUTF8StringEncoding)!)
+            XCTAssertEqual(json["fraud_merchant_id"].asString(), "500001")
+            XCTAssert(json["device_session_id"].asString()?.characters.count >= 32)
+            XCTAssert(json["correlation_id"].asString()?.characters.count > 0)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testCollectFraudDataWithCallback() {
+        let apiClient = clientThatReturnsConfiguration([
+            "environment":"development",
+            "kount": [
+                "enabled": true,
+                "kountMerchantId": "500000"
+            ]
+        ])
+        
+        let dataCollector = BTDataCollector(APIClient: apiClient)
+        let expectation = expectationWithDescription("Returns fraud data")
+        dataCollector.collectFraudDataWithCallback { (fraudData: String) in
+            let json = BTJSON(data: fraudData.dataUsingEncoding(NSUTF8StringEncoding)!)
+            XCTAssertEqual(json["fraud_merchant_id"].asString(), "500000")
+            XCTAssert(json["device_session_id"].asString()!.characters.count >= 32)
+            XCTAssert(json["correlation_id"].asString()!.characters.count > 0)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testCollectFraudData_doesNotCollectKountDataIfDisabledInConfiguration() {
+        let apiClient = clientThatReturnsConfiguration([
+            "environment":"development"
+        ])
+        
+        let dataCollector = BTDataCollector(APIClient: apiClient)
+        let expectation = expectationWithDescription("Returns fraud data")
+        dataCollector.collectFraudDataWithCallback { (fraudData: String) in
+            let json = BTJSON(data: fraudData.dataUsingEncoding(NSUTF8StringEncoding)!)
+            XCTAssertNil(json["fraud_merchant_id"] as? String)
+            XCTAssertNil(json["device_session_id"] as? String)
+            XCTAssert(json["correlation_id"].asString()?.characters.count > 0)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+}
+
+func clientThatReturnsConfiguration(configuration: Dictionary<String,AnyObject>) -> BTAPIClient {
+    let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)
+    let fakeHttp = BTFakeHTTP(baseURL: NSURL(), tokenizationKey: "");
+    let cannedConfig = BTJSON(value: configuration);
+    fakeHttp.cannedConfiguration = cannedConfig
+    fakeHttp.cannedStatusCode = 200
+    apiClient.configurationHTTP = fakeHttp
+    
+    return apiClient
 }
 
 class TestDelegateForBTDataCollector: NSObject, BTDataCollectorDelegate {
