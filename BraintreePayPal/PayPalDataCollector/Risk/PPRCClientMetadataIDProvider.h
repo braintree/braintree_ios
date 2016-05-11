@@ -25,6 +25,17 @@ typedef void (^PPRCClientMetadataIDProviderNetworkAdapterBlock)(NSURLRequest * _
                        sourceAppVersion:(nonnull NSString *)sourceAppVersion
                     networkAdapterBlock:(nonnull PPRCClientMetadataIDProviderNetworkAdapterBlock)networkAdapterBlock;
 
+/// Initializes the risk component
+///
+/// @param appGuid the application's GUID
+/// @param sourceAppVersion version of the source app/library
+/// @param networkAdapterBlock the adapter block to send requests
+/// @param pairingID the pairing ID to associate with
+- (nonnull instancetype)initWithAppGuid:(nonnull NSString *)appGuid
+                       sourceAppVersion:(nonnull NSString *)sourceAppVersion
+                    networkAdapterBlock:(nonnull PPRCClientMetadataIDProviderNetworkAdapterBlock)networkAdapterBlock
+                              pairingID:(nullable NSString *)pairingID;
+
 /// Generates a client metadata ID
 ///
 /// @param pairingID a pairing ID to associate with this clientMetadataID must be 10-32 chars long or null

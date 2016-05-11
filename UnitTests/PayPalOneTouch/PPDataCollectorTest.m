@@ -28,4 +28,19 @@
     XCTAssert(cmid.length >= 12);
 }
 
+- (void)testClientMetadataValueIsConsistentOnRepeatedTries {
+    NSString *cmid = [PPDataCollector clientMetadataID];
+    XCTAssertEqual(cmid, [PPDataCollector clientMetadataID]);
+    XCTAssertEqual(cmid, [PPDataCollector clientMetadataID]);
+}
+
+- (void)testClientMetadataValueIsRegeneratedOnPairingID {
+    NSString *pairingID = @"random pairing id";
+    NSString *cmid = [PPDataCollector clientMetadataID];
+    XCTAssertNotEqual(cmid, pairingID);
+    XCTAssertEqual(pairingID, [PPDataCollector clientMetadataID:pairingID]);
+    XCTAssertEqual(pairingID, [PPDataCollector clientMetadataID:nil]);
+    XCTAssertEqual(cmid, [PPDataCollector clientMetadataID:cmid]);
+}
+
 @end

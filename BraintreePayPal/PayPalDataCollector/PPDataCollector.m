@@ -15,9 +15,10 @@
 
 @implementation PPDataCollector
 
-+ (PPRCClientMetadataIDProvider *)clientMetadataIDProvider {
++ (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
     static dispatch_once_t onceToken;
     static PPRCClientMetadataIDProvider *clientMetadataIDProvider;
+    __block NSString *clientMetadataID = nil;
 
     dispatch_once(&onceToken, ^{
         // Keep this as a long lived session
@@ -31,20 +32,22 @@
 
         clientMetadataIDProvider = [[PPRCClientMetadataIDProvider alloc] initWithAppGuid:[PPOTDevice appropriateIdentifier]
                                                                         sourceAppVersion:PayPalOTVersion()
-                                                                     networkAdapterBlock:adapterBlock];
+                                                                     networkAdapterBlock:adapterBlock
+                                                                               pairingID:pairingID];
+
+        // the client metadata ID has already been paired, so do not re-pair and just get the existing client metadata ID
+        clientMetadataID = [clientMetadataIDProvider clientMetadataID:nil];
     });
 
-    return clientMetadataIDProvider;
-}
-
-+ (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
-    NSString *clientMetadataID = [[PPDataCollector clientMetadataIDProvider] clientMetadataID:pairingID];
+    if (clientMetadataID == nil) {
+        clientMetadataID = [clientMetadataIDProvider clientMetadataID:pairingID];
+    }
     PPLog(@"ClientMetadataID: %@", clientMetadataID);
     return clientMetadataID;
 }
 
 + (nonnull NSString *)clientMetadataID {
-    return [[PPDataCollector clientMetadataIDProvider] clientMetadataID:nil];
+    return [PPDataCollector clientMetadataID:nil];
 }
 
 + (nonnull NSString *)collectPayPalDeviceData {
