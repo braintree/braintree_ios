@@ -14,33 +14,46 @@
 
 @implementation PPDataCollectorTest
 
-- (void)testDeviceDataContainsCorrelationIdKey {
+- (void)testDeviceData_containsCorrelationId {
+    // Collect client metadata ID with a canned pairing ID to guarantee that the pairing ID
+    // hasn't already been configured by another test. Also, we can then assert the value of
+    // the correlation_id in the JSON object because we know the client metadata ID will be
+    // equal to the pairing ID.
+    [PPDataCollector clientMetadataID:@"expected_correlation_id"];
     NSString *deviceData = [PPDataCollector collectPayPalDeviceData];
     NSData *data = [deviceData dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:NULL];
     NSString *cmid = [dictionary objectForKey:@"correlation_id"];
-    XCTAssert(cmid.length >= 32);
+
+    XCTAssertEqualObjects(cmid, @"expected_correlation_id");
 }
 
-- (void)testClientMetadataDoesNotContainCorrelationIdKey {
+- (void)testClientMetadata_isNotJSON {
     NSString *cmid = [PPDataCollector clientMetadataID];
-    XCTAssertTrue([cmid rangeOfString:@"correlation_id"].location == NSNotFound);
-    XCTAssert(cmid.length >= 12);
+    NSData *cmidJSONData = [cmid dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
+    id json = [NSJSONSerialization JSONObjectWithData:cmidJSONData options:0 error:&error];
+
+    XCTAssertNil(json);
+    XCTAssertNotNil(error);
 }
 
-- (void)testClientMetadataValueIsConsistentOnRepeatedTries {
+- (void)testClientMetadata_isConsistentOnRepeatedTries {
     NSString *cmid = [PPDataCollector clientMetadataID];
-    XCTAssertEqual(cmid, [PPDataCollector clientMetadataID]);
-    XCTAssertEqual(cmid, [PPDataCollector clientMetadataID]);
+    XCTAssertEqualObjects(cmid, [PPDataCollector clientMetadataID]);
 }
 
-- (void)testClientMetadataValueIsRegeneratedOnPairingID {
+- (void)testClientMetadataValue_whenUsingPairingID_isSameWhenSubsequentCallsDoNotSpecifyPairingID {
     NSString *pairingID = @"random pairing id";
+    XCTAssertEqualObjects(pairingID, [PPDataCollector clientMetadataID:pairingID]);
+    XCTAssertEqualObjects(pairingID, [PPDataCollector clientMetadataID]);
+    XCTAssertEqualObjects(pairingID, [PPDataCollector clientMetadataID:nil]);
+}
+
+- (void)testClientMetadataValue_isRegeneratedOnNonNullPairingID {
     NSString *cmid = [PPDataCollector clientMetadataID];
-    XCTAssertNotEqual(cmid, pairingID);
-    XCTAssertEqual(pairingID, [PPDataCollector clientMetadataID:pairingID]);
-    XCTAssertEqual(pairingID, [PPDataCollector clientMetadataID:nil]);
-    XCTAssertEqual(cmid, [PPDataCollector clientMetadataID:cmid]);
+    NSString *cmid2 = [PPDataCollector clientMetadataID:@"some pairing id"];
+    XCTAssertNotEqualObjects(cmid, cmid2);
 }
 
 @end
