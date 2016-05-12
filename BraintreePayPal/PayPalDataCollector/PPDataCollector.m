@@ -5,7 +5,7 @@
 //  Copyright © 2015 PayPal, Inc. All rights reserved.
 //
 
-#import "PPDataCollector.h"
+#import "PPDataCollector_Internal.h"
 #import "PPRCClientMetadataIDProvider.h"
 
 #import "PPOTDevice.h"
@@ -15,7 +15,7 @@
 
 @implementation PPDataCollector
 
-+ (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
++ (NSString *)generateClientMetadataID:(NSString *)pairingID {
     static PPRCClientMetadataIDProvider *clientMetadataIDProvider;
     __block NSString *clientMetadataPairingID = [pairingID copy];
 
@@ -40,13 +40,21 @@
     return clientMetadataID;
 }
 
++ (NSString *)generateClientMetadataID {
+    return [PPDataCollector generateClientMetadataID:nil];
+}
+
++ (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
+    return [self generateClientMetadataID:pairingID];
+}
+
 + (nonnull NSString *)clientMetadataID {
-    return [PPDataCollector clientMetadataID:nil];
+    return [self generateClientMetadataID];
 }
 
 + (nonnull NSString *)collectPayPalDeviceData {
     NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
-    NSString *payPalClientMetadataId = [PPDataCollector clientMetadataID];
+    NSString *payPalClientMetadataId = [PPDataCollector generateClientMetadataID];
     if (payPalClientMetadataId) {
         dataDictionary[@"correlation_id"] = payPalClientMetadataId;
     }

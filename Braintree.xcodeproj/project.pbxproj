@@ -551,6 +551,7 @@
 		A79033981B45C968004C8234 /* BTCard_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79033971B45C968004C8234 /* BTCard_Tests.swift */; };
 		A790339C1B45E16E004C8234 /* BTCard_Internal_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */; };
 		A79AF9F31B56DB54007B1DF1 /* BTClientMetadataSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A79AF9F21B56DB54007B1DF1 /* BTClientMetadataSpec.m */; };
+		A79BB5BF1CE501D500CC6F0E /* PPDataCollector_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A79BB5BE1CE501D500CC6F0E /* PPDataCollector_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A79C9C701BE17BC7007EAF73 /* BTThreeDSecureDriver_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = A79C9C6F1BE17BBF007EAF73 /* BTThreeDSecureDriver_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		A7A094F61B8276E500D732CC /* BTCardNonce_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */; };
 		A7A094F71B8283DF00D732CC /* BraintreeDemoDropInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76B19DA1B79708900452CFA /* BraintreeDemoDropInViewController.m */; };
@@ -1608,6 +1609,7 @@
 		A79AFA7F1B56FEE4007B1DF1 /* BTThreeDSecureDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureDriver.m; sourceTree = "<group>"; };
 		A79AFA841B5721A2007B1DF1 /* BTHTTPErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHTTPErrors.h; sourceTree = "<group>"; };
 		A79AFA861B5721F6007B1DF1 /* BTHTTPErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTPErrors.m; sourceTree = "<group>"; };
+		A79BB5BE1CE501D500CC6F0E /* PPDataCollector_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPDataCollector_Internal.h; sourceTree = "<group>"; };
 		A79C9C6F1BE17BBF007EAF73 /* BTThreeDSecureDriver_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureDriver_Internal.h; sourceTree = "<group>"; };
 		A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCardNonce_Tests.swift; sourceTree = "<group>"; };
 		A7A6DD061B4308EB008857E1 /* BTPayPalDriver_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTPayPalDriver_Tests.swift; sourceTree = "<group>"; };
@@ -2072,18 +2074,18 @@
 		2D941D391B59C76A0016EFB4 /* BraintreePayPal */ = {
 			isa = PBXGroup;
 			children = (
+				A7B1C14A1B66E11C00ED063C /* BTConfiguration+PayPal.m */,
+				A7102E191B5085BB0007D40A /* BTPayPalAccountNonce_Internal.h */,
+				16E17D1B1B3DE4580024F9AB /* BTPayPalAccountNonce.m */,
+				A734D95E1B4C4C0700FE0E1B /* BTPayPalDriver_Internal.h */,
+				16C42B6D1B3DE0550028A3B4 /* BTPayPalDriver.m */,
+				16E17D271B3DFA0F0024F9AB /* BTPayPalRequest.m */,
+				A734D95A1B4C4B1000FE0E1B /* BTPayPalRequestFactory.h */,
+				A734D95B1B4C4B1000FE0E1B /* BTPayPalRequestFactory.m */,
 				A50C3AF81C19F14D00612D90 /* PayPalDataCollector */,
 				A50C3A8C1C19E4F300612D90 /* PayPalOneTouch */,
 				A7B4628C1C3D9B6700048423 /* PayPalUtils */,
 				41777D461B8D02050026F987 /* Public */,
-				A7B1C14A1B66E11C00ED063C /* BTConfiguration+PayPal.m */,
-				16E17D271B3DFA0F0024F9AB /* BTPayPalRequest.m */,
-				16C42B6D1B3DE0550028A3B4 /* BTPayPalDriver.m */,
-				A734D95E1B4C4C0700FE0E1B /* BTPayPalDriver_Internal.h */,
-				A734D95A1B4C4B1000FE0E1B /* BTPayPalRequestFactory.h */,
-				A734D95B1B4C4B1000FE0E1B /* BTPayPalRequestFactory.m */,
-				16E17D1B1B3DE4580024F9AB /* BTPayPalAccountNonce.m */,
-				A7102E191B5085BB0007D40A /* BTPayPalAccountNonce_Internal.h */,
 			);
 			path = BraintreePayPal;
 			sourceTree = "<group>";
@@ -2383,6 +2385,7 @@
 			isa = PBXGroup;
 			children = (
 				A50C3B631C1A288700612D90 /* Info.plist */,
+				A79BB5BE1CE501D500CC6F0E /* PPDataCollector_Internal.h */,
 				A7B4635F1C3DBEFE00048423 /* PPDataCollector.m */,
 				A7B4635C1C3DA7DF00048423 /* Public */,
 				A50C3AF91C19F27A00612D90 /* Risk */,
@@ -3427,6 +3430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7B463661C3DBF5E00048423 /* PPDataCollector.h in Headers */,
+				A79BB5BF1CE501D500CC6F0E /* PPDataCollector_Internal.h in Headers */,
 				A7B462FB1C3D9C2200048423 /* PPRCClientMetadataIDProvider.h in Headers */,
 				A7B463651C3DBF5E00048423 /* PayPalDataCollector.h in Headers */,
 			);

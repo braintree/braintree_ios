@@ -119,8 +119,8 @@ static Class PayPalDataCollectorClass;
 + (NSString *)generatePayPalClientMetadataId {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-    if (PayPalDataCollectorClass && [PayPalDataCollectorClass respondsToSelector:@selector(clientMetadataID)]) {
-        return [PayPalDataCollectorClass performSelector:@selector(clientMetadataID)];
+    if (PayPalDataCollectorClass && [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {
+        return [PayPalDataCollectorClass performSelector:@selector(generateClientMetadataID)];
     }
 #pragma clang diagnostic pop
     
