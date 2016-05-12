@@ -15,36 +15,33 @@
 
 @implementation PPDataCollector
 
-+ (PPRCClientMetadataIDProvider *)clientMetadataIDProvider {
-    static dispatch_once_t onceToken;
++ (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
     static PPRCClientMetadataIDProvider *clientMetadataIDProvider;
+    __block NSString *clientMetadataPairingID = [pairingID copy];
 
+    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        // Keep this as a long lived session
-        PPOTURLSession *session = [PPOTURLSession session];
-
         PPRCClientMetadataIDProviderNetworkAdapterBlock adapterBlock = ^(NSURLRequest *request, PPRCClientMetadataIDProviderNetworkResponseBlock completionBlock) {
-            [session sendRequest:request completionBlock:^(NSData* responseData, NSHTTPURLResponse *response, __attribute__((unused)) NSError *error) {
+            [[PPOTURLSession session] sendRequest:request completionBlock:^(NSData* responseData, NSHTTPURLResponse *response, __unused NSError *error) {
                 completionBlock(response, responseData);
             }];
         };
 
         clientMetadataIDProvider = [[PPRCClientMetadataIDProvider alloc] initWithAppGuid:[PPOTDevice appropriateIdentifier]
                                                                         sourceAppVersion:PayPalOTVersion()
-                                                                     networkAdapterBlock:adapterBlock];
+                                                                     networkAdapterBlock:adapterBlock
+                                                                               pairingID:clientMetadataPairingID];
+        // On first time, do not use a pairing ID to generate the client metadata ID because it's already been paired
+        clientMetadataPairingID = nil;
     });
 
-    return clientMetadataIDProvider;
-}
-
-+ (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
-    NSString *clientMetadataID = [[PPDataCollector clientMetadataIDProvider] clientMetadataID:pairingID];
+    NSString *clientMetadataID = [clientMetadataIDProvider clientMetadataID:clientMetadataPairingID];
     PPLog(@"ClientMetadataID: %@", clientMetadataID);
     return clientMetadataID;
 }
 
 + (nonnull NSString *)clientMetadataID {
-    return [[PPDataCollector clientMetadataIDProvider] clientMetadataID:nil];
+    return [PPDataCollector clientMetadataID:nil];
 }
 
 + (nonnull NSString *)collectPayPalDeviceData {
