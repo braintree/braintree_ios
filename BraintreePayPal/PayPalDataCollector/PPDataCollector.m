@@ -16,16 +16,13 @@
 @implementation PPDataCollector
 
 + (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
-    static dispatch_once_t onceToken;
     static PPRCClientMetadataIDProvider *clientMetadataIDProvider;
-    __block NSString *clientMetadataID = nil;
+    __block NSString *clientMetadataPairingID = [pairingID copy];
 
+    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        // Keep this as a long lived session
-        PPOTURLSession *session = [PPOTURLSession session];
-
         PPRCClientMetadataIDProviderNetworkAdapterBlock adapterBlock = ^(NSURLRequest *request, PPRCClientMetadataIDProviderNetworkResponseBlock completionBlock) {
-            [session sendRequest:request completionBlock:^(NSData* responseData, NSHTTPURLResponse *response, __attribute__((unused)) NSError *error) {
+            [[PPOTURLSession session] sendRequest:request completionBlock:^(NSData* responseData, NSHTTPURLResponse *response, __unused NSError *error) {
                 completionBlock(response, responseData);
             }];
         };
@@ -33,15 +30,12 @@
         clientMetadataIDProvider = [[PPRCClientMetadataIDProvider alloc] initWithAppGuid:[PPOTDevice appropriateIdentifier]
                                                                         sourceAppVersion:PayPalOTVersion()
                                                                      networkAdapterBlock:adapterBlock
-                                                                               pairingID:pairingID];
-
-        // the client metadata ID has already been paired, so do not re-pair and just get the existing client metadata ID
-        clientMetadataID = [clientMetadataIDProvider clientMetadataID:nil];
+                                                                               pairingID:clientMetadataPairingID];
+        // On first time, do not use a pairing ID to generate the client metadata ID because it's already been paired
+        clientMetadataPairingID = nil;
     });
 
-    if (clientMetadataID == nil) {
-        clientMetadataID = [clientMetadataIDProvider clientMetadataID:pairingID];
-    }
+    NSString *clientMetadataID = [clientMetadataIDProvider clientMetadataID:clientMetadataPairingID];
     PPLog(@"ClientMetadataID: %@", clientMetadataID);
     return clientMetadataID;
 }
