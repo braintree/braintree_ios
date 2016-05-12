@@ -32,6 +32,7 @@
 #import "BTPaymentButton_Internal.h"
 #import "BTThreeDSecureLookupResult.h"
 #import "Braintree-Version.h"
+#import "PPDataCollector_Internal.h"
 
 #import "BTSpecHelper.h"
 #import <OCMock/OCMock.h>
