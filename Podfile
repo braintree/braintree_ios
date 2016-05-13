@@ -4,7 +4,7 @@ platform :ios, '7.0'
 
 workspace 'Braintree.xcworkspace'
 
-def demo_pods
+target 'Demo' do
   pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.6.0'
   pod 'CardIO'
@@ -13,22 +13,17 @@ def demo_pods
   pod 'FLEX'
   pod 'InAppSettingsKit'
   pod 'iOS-Slide-Menu'
-end
 
-def test_pods
-  pod 'Specta'
-  pod 'Expecta'
-  pod 'OCMock'
-  pod 'OHHTTPStubs'
-end
+  abstract_target 'Tests' do
+    inherit! :search_paths
 
-target 'Demo' do
-  link_with 'Demo'
-  demo_pods
-end
+    pod 'Specta'
+    pod 'Expecta'
+    pod 'OCMock'
+    pod 'OHHTTPStubs'
 
-target 'Test-Deps' do
-  link_with 'UnitTests', 'IntegrationTests'
-  test_pods
+    target 'UnitTests'
+    target 'IntegrationTests'
+  end
 end
 
