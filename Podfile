@@ -13,17 +13,15 @@ target 'Demo' do
   pod 'FLEX'
   pod 'InAppSettingsKit'
   pod 'iOS-Slide-Menu'
+end
 
-  abstract_target 'Tests' do
-    inherit! :search_paths
+abstract_target 'Tests' do
+  pod 'Specta'
+  pod 'Expecta'
+  pod 'OCMock'
+  pod 'OHHTTPStubs'
 
-    pod 'Specta'
-    pod 'Expecta'
-    pod 'OCMock'
-    pod 'OHHTTPStubs'
-
-    target 'UnitTests'
-    target 'IntegrationTests'
-  end
+  target 'UnitTests'
+  target 'IntegrationTests'
 end
 
