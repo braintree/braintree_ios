@@ -72,8 +72,10 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
         if (request.enrollmentAuthCode && request.enrollmentID) {
             // Convert the immutable options dictionary so to write to it without overwriting any existing options
             mutableCardParameters[@"options"] = [mutableCardParameters[@"options"] mutableCopy];
-            mutableCardParameters[@"options"][@"sms_code"] = request.enrollmentAuthCode;
-            mutableCardParameters[@"options"][@"id"] = request.enrollmentID;
+            mutableCardParameters[@"options"][@"union_pay_enrollment"] = @{
+                                                                           @"id": request.enrollmentID,
+                                                                           @"sms_code": request.enrollmentAuthCode,
+                                                                           };
         }
 
         parameters[@"credit_card"] = [mutableCardParameters copy];
