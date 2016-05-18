@@ -472,8 +472,8 @@ class BTCardClient_UnionPayTests: XCTestCase {
             XCTAssertEqual(cardParameters["expiration_date"] as? String, "12/2038")
             XCTAssertEqual(cardParameters["cvv"] as? String, "123")
             
-            guard let tokenizationOptionsParameters = parameters["options"] as? [String: AnyObject] else {
-                XCTFail("Tokenization options should be present")
+            guard let tokenizationOptionsParameters = cardParameters["options"] as? [String: AnyObject] else {
+                XCTFail("UnionPay Tokenization options should be present")
                 return
             }
             
