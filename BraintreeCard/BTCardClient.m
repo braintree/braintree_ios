@@ -67,7 +67,18 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     
     NSMutableDictionary *parameters = [NSMutableDictionary new];
     if (request.card.parameters) {
-        parameters[@"credit_card"] = request.card.parameters;
+        NSMutableDictionary *mutableCardParameters = [request.card.parameters mutableCopy];
+
+        if (request.enrollmentAuthCode && request.enrollmentID) {
+            // Convert the immutable options dictionary so to write to it without overwriting any existing options
+            mutableCardParameters[@"options"] = [mutableCardParameters[@"options"] mutableCopy];
+            mutableCardParameters[@"options"][@"union_pay_enrollment"] = @{
+                                                                           @"id": request.enrollmentID,
+                                                                           @"sms_code": request.enrollmentAuthCode,
+                                                                           };
+        }
+
+        parameters[@"credit_card"] = [mutableCardParameters copy];
     }
     parameters[@"_meta"] = @{
                              @"source" : self.apiClient.metadata.sourceString,
@@ -76,19 +87,6 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
                              };
     if (options) {
         parameters[@"options"] = options;
-    }
-    if (request.enrollmentAuthCode && request.enrollmentID) {
-        NSDictionary *enrollmentDictionary = @{
-                                               @"sms_code": request.enrollmentAuthCode,
-                                               @"id": request.enrollmentID
-                                               };
-        if (!parameters[@"options"]) {
-            parameters[@"options"] = enrollmentDictionary;
-        } else {
-            NSMutableDictionary *mutableOptions = [parameters[@"options"] mutableCopy];
-            [mutableOptions addEntriesFromDictionary:enrollmentDictionary];
-            parameters[@"options"] = mutableOptions;
-        }
     }
 
     [self.apiClient POST:@"v1/payment_methods/credit_cards"
