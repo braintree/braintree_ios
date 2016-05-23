@@ -64,7 +64,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         var expectation = expectationWithDescription("Callback invoked")
         apiClient.fetchPaymentMethodNonces() { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
-            XCTAssertTrue(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            XCTAssertFalse(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
             expectation.fulfill()
         }
         

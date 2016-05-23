@@ -164,7 +164,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 # pragma mark - Payment Methods
 
 - (void)fetchPaymentMethodNonces:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completion {
-    [self fetchPaymentMethodNonces:YES completion:completion];
+    [self fetchPaymentMethodNonces:NO completion:completion];
 }
 
 - (void)fetchPaymentMethodNonces:(BOOL)defaultFirst completion:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completion {
