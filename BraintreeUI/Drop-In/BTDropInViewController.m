@@ -584,7 +584,7 @@
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
-    [self.apiClient fetchPaymentMethodNoncesSorted:self.paymentRequest.showDefaultPaymentMethodNonceFirst completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
+    [self.apiClient fetchPaymentMethodNonces:self.paymentRequest.showDefaultPaymentMethodNonceFirst completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
         if (error) {

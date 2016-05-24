@@ -157,13 +157,13 @@ class BTDropInViewController_Tests: XCTestCase {
 
     // MARK: - Payment method fetching
 
-    func testFetchPaymentMethods_byDefault_callsAPIClientWithDefaultSortedFirst() {
+    func testFetchPaymentMethods_byDefault_doesNotCallAPIClientWithDefaultSortedFirst() {
         let mockAPIClient = MockAPIClient(authorization: ValidClientToken)!
         let dropIn = BTDropInViewController(APIClient: mockAPIClient)
 
         let expectation = expectationWithDescription("Callback invoked")
         dropIn.fetchPaymentMethodsOnCompletion { () -> Void in
-            XCTAssertTrue(mockAPIClient.didFetchPaymentMethods(sorted: true))
+            XCTAssertTrue(mockAPIClient.didFetchPaymentMethods(sorted: false))
             expectation.fulfill()
         }
 
