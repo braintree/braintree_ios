@@ -246,6 +246,8 @@
 		41D54D301C7F97750051C96B /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
 		41D6E2A71B8D12CD00A3C2AE /* FakePayPalClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 41D6E2A61B8D12CD00A3C2AE /* FakePayPalClasses.m */; };
 		41F1D1FB1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */; };
+		46E2F09F1CF47CF700A5789D /* BTUICardPhoneNumberField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4107EB221C88C75000F32D81 /* BTUICardPhoneNumberField.m */; };
+		46E2F0A01CF47D3300A5789D /* BTUIUnionPayVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A78422721C98920500D3EBFF /* BTUIUnionPayVectorArtView.m */; };
 		6914E2C1F70329BD08DD05FC /* libPods-Tests-IntegrationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10A9708DAE74FC8340A3E5DD /* libPods-Tests-IntegrationTests.a */; };
 		6AE1CACD45945120E0B3B25A /* libPods-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDA8DDBD6A3750B4BAEA036 /* libPods-Demo.a */; };
 		7EDE474E1CD2C3D00005E22B /* PPOTSimpleKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B4632A1C3DA73300048423 /* PPOTSimpleKeychain.m */; };
@@ -4415,6 +4417,7 @@
 				A751CAAC1CAC464C008603E5 /* BTCardRequest.m in Sources */,
 				417405201BB0869D008A5DEA /* BTUICVVBackVectorArtView.m in Sources */,
 				417405221BB0869D008A5DEA /* BTUICVVFrontVectorArtView.m in Sources */,
+				46E2F0A01CF47D3300A5789D /* BTUIUnionPayVectorArtView.m in Sources */,
 				41BC340D1BF695FC00161106 /* BTPaymentRequest.m in Sources */,
 				417405241BB0869D008A5DEA /* BTUICardVectorArtView.m in Sources */,
 				417405261BB0869D008A5DEA /* BTUICoinbaseMonogramCardView.m in Sources */,
@@ -4431,6 +4434,7 @@
 				417404BC1BB0864F008A5DEA /* BTPayPalRequestFactory.m in Sources */,
 				417404BF1BB0864F008A5DEA /* BTPayPalAccountNonce.m in Sources */,
 				4174047D1BB08629008A5DEA /* BTAnalyticsMetadata.m in Sources */,
+				46E2F09F1CF47CF700A5789D /* BTUICardPhoneNumberField.m in Sources */,
 				4174047F1BB08629008A5DEA /* BTAPIClient.m in Sources */,
 				417404811BB08629008A5DEA /* BTAPIPinnedCertificates.m in Sources */,
 				417404821BB08629008A5DEA /* BTAppSwitch.m in Sources */,
