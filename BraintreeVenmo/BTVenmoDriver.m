@@ -117,12 +117,18 @@ static BTVenmoDriver *appSwitchedDriver;
             return;
         }
         
+        BTJSON *venmoMerchantEnvironment = configuration.json[@"payWithVenmo"][@"environment"];
+        if ([venmoMerchantEnvironment isError]) {
+            completionBlock(nil, [venmoMerchantEnvironment asError]);
+            return;
+        }
+        
         NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:[venmoMerchantId asString]
                                                                         accessToken:configuration.venmoAccessToken
                                                                          sdkVersion:BRAINTREE_VERSION
                                                                     returnURLScheme:self.returnURLScheme
                                                                   bundleDisplayName:bundleDisplayName
-                                                                        environment:[configuration.json[@"environment"] asString]];
+                                                                        environment:[venmoMerchantEnvironment asString]];
         if (!appSwitchURL) {
             error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                         code:BTVenmoDriverErrorTypeInvalidRequestURL

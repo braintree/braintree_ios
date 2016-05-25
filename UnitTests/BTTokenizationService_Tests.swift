@@ -133,9 +133,9 @@ class BTTokenizationService_Tests: XCTestCase {
         BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
         let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
         stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "environment": "sandbox",
             "payWithVenmo": [
                 "accessToken": "fake-access-token",
+                "environment": "sandbox",
                 "merchantId": "stubmerchantid",
             ],
         ])

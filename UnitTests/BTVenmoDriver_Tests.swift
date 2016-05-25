@@ -108,8 +108,9 @@ class BTVenmoDriver_Tests: XCTestCase {
     }
 
     func testAuthorization_whenReturnURLSchemeIsNil_logsCriticalMessageAndCallsBackWithError() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["environment":"sandbox",
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
+                "environment":"sandbox",
                 "accessToken": "access-token",
                 "merchantId": "merchant_id" ] ])
         BTConfiguration.enableVenmo(true);
@@ -142,9 +143,10 @@ class BTVenmoDriver_Tests: XCTestCase {
     
     func testAuthorization_whenVenmoIsEnabledInControlPanelAndConfiguredCorrectly_opensVenmoURL() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "environment": "sandbox",
+            "environment": "rockbox",
             "merchantId": "top_level_merchant_id",
             "payWithVenmo" : [
+                "environment":"venmobox",
                 "accessToken": "access-token",
                 "merchantId": "venmo_merchant_id" ]
             ])
@@ -159,12 +161,14 @@ class BTVenmoDriver_Tests: XCTestCase {
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.rangeOfString("venmo_merchant_id"));
+        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.rangeOfString("venmobox"));
         XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.rangeOfString("access-token"));
     }
     
     func testAuthorizeAccount_beforeAppSwitch_informsDelegate() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["environment":"sandbox",
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
+                "environment":"sandbox",
                 "accessToken": "access-token",
                 "merchantId": "merchant_id" ] ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
@@ -183,8 +187,9 @@ class BTVenmoDriver_Tests: XCTestCase {
     }
 
     func testAuthorizeAccount_whenUsingTokenizationKeyAndAppSwitchSucceeds_tokenizesVenmoAccount() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["environment":"sandbox",
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
+                "environment":"sandbox",
                 "accessToken": "access-token",
                 "merchantId": "merchant_id" ] ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
@@ -212,8 +217,9 @@ class BTVenmoDriver_Tests: XCTestCase {
     }
     
     func testAuthorizeAccount_whenUsingClientTokenAndAppSwitchSucceeds_tokenizesVenmoAccount() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["environment":"sandbox",
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
+                "environment":"sandbox",
                 "accessToken": "access-token",
                 "merchantId": "merchant_id" ] ])
         // Test setup sets up mockAPIClient with a tokenization key, we want a client token
@@ -244,8 +250,9 @@ class BTVenmoDriver_Tests: XCTestCase {
     }
 
     func testAuthorizeAccount_whenAppSwitchSucceeds_makesDelegateCallbacks() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["environment":"sandbox",
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
+                "environment":"sandbox",
                 "accessToken": "access-token",
                 "merchantId": "merchant_id" ] ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
@@ -267,8 +274,9 @@ class BTVenmoDriver_Tests: XCTestCase {
     }
 
     func testAuthorizeAccount_whenAppSwitchSucceeds_postsNotifications() {
-        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["environment":"sandbox",
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo" : [
+                "environment":"sandbox",
                 "accessToken": "access-token",
                 "merchantId": "merchant_id" ] ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
@@ -303,8 +311,8 @@ class BTVenmoDriver_Tests: XCTestCase {
     
     func testAuthorizeAccount_whenAppSwitchFails_callsBackWithError() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "environment": "sandbox",
             "payWithVenmo" : [
+                "environment":"sandbox",
                 "accessToken": "access-token",
                 "merchantId": "merchant_id"
             ]
@@ -333,8 +341,8 @@ class BTVenmoDriver_Tests: XCTestCase {
 
     func testAuthorizeAccount_whenAppSwitchCancelled_callsBackWithNoError() {
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "environment":"sandbox",
             "payWithVenmo" : [
+                "environment":"sandbox",
                 "accessToken": "access-token",
                 "merchantId": "merchant_id" ] ])
         let venmoDriver = BTVenmoDriver(APIClient: mockAPIClient)
