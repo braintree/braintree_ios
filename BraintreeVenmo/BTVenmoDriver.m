@@ -111,11 +111,13 @@ static BTVenmoDriver *appSwitchedDriver;
         metadata.source = BTClientMetadataSourceVenmoApp;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
         
-        if ([configuration.json[@"merchantId"] isError]) {
-            completionBlock(nil, [configuration.json[@"merchantId"] asError]);
+        BTJSON *venmoMerchantId = configuration.json[@"payWithVenmo"][@"merchantId"];
+        if ([venmoMerchantId isError]) {
+            completionBlock(nil, [venmoMerchantId asError]);
+            return;
         }
         
-        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:[configuration.json[@"merchantId"] asString]
+        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:[venmoMerchantId asString]
                                                                         accessToken:configuration.venmoAccessToken
                                                                          sdkVersion:BRAINTREE_VERSION
                                                                     returnURLScheme:self.returnURLScheme
