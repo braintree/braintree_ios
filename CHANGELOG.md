@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 4.3.1 (2016-05-25)
+
+* Add public method to fetch a customer's vaulted payment method nonces
+* Drop-in bug fixes
+  * Do not show mobile phone number field
+  * Fix issue where American Express display text is truncated
+* Merge [#241](https://github.com/braintree/braintree_ios/pull/241) - Add missing source files to Braintree static library target. (Thanks @AlexDenisov!)
+
 ## 4.3.0 (2016-05-03)
 
 * Add support for UnionPay cards
