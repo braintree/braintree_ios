@@ -3,7 +3,7 @@
 @implementation BTConfiguration (DataCollector)
 
 - (BOOL)isKountEnabled {
-    return [self.json[@"kount"][@"enabled"] isTrue];
+    return [self.json[@"kount"][@"kountMerchantId"] isString];
 }
 
 -(NSString *)kountMerchantId {
