@@ -21,7 +21,7 @@
     self.cardClient = [[BTCardClient alloc] initWithAPIClient:apiClient];
 }
 
-- (void)testFetchCapabilities_returnsCardCapabilities {
+- (void)pendFetchCapabilities_returnsCardCapabilities {
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
     [self.cardClient fetchCapabilities:@"6212345678901232" completion:^(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error) {
         XCTAssertNil(error);
@@ -35,7 +35,7 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testEnrollCard_whenSuccessful_returnsEnrollmentID {
+- (void)pendEnrollCard_whenSuccessful_returnsEnrollmentID {
     BTCardRequest *request = [[BTCardRequest alloc] init];
     request.card = [[BTCard alloc] initWithNumber:@"6222821234560017" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
     request.mobileCountryCode = @"62";
@@ -51,7 +51,7 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testEnrollCard_whenCardDoesNotRequireEnrollment_returnsError {
+- (void)pendEnrollCard_whenCardDoesNotRequireEnrollment_returnsError {
     BTCardRequest *request = [[BTCardRequest alloc] init];
     request.card = [[BTCard alloc] initWithNumber:@"6212345678900085" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
     request.mobileCountryCode = @"62";
@@ -68,7 +68,7 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testTokenizeCard_withEnrolledUnionPayCard_isSuccessful {
+- (void)pendTokenizeCard_withEnrolledUnionPayCard_isSuccessful {
     BTCardRequest *request = [[BTCardRequest alloc] init];
     request.card = [[BTCard alloc] initWithNumber:@"6212345678901232" expirationMonth:@"12" expirationYear:@"2019" cvv:@"123"];
     request.mobileCountryCode = @"62";
