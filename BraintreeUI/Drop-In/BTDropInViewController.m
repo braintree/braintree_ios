@@ -118,7 +118,7 @@
 
         BTUICardFormOptionalFields optionalFields;
         if ([challenges containsObject:cvvChallenge] && [challenges containsObject:postalCodeChallenge]) {
-            optionalFields = BTUICardFormOptionalFieldsAll;
+            optionalFields = BTUICardFormOptionalFieldsCvv | BTUICardFormFieldPostalCode;
         } else if ([challenges containsObject:cvvChallenge]) {
             optionalFields = BTUICardFormOptionalFieldsCvv;
         } else if ([challenges containsObject:postalCodeChallenge]) {
