@@ -52,6 +52,24 @@ class BTAPIClient_SwiftTests: XCTestCase {
         let copiedApiClient = apiClient?.copyWithSource(.PayPalBrowser, integration: .DropIn)
         XCTAssertTrue(copiedApiClient !== apiClient)
     }
+    
+    // MARK: - fetchOrReturnRemoteConfiguration
+    
+    func testFetchOrReturnRemoteConfiguration_performsGETWithCorrectPayload() {
+        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id", sendAnalyticsEvent: false)!
+        let mockHTTP = BTFakeHTTP()!
+        mockHTTP.stubRequest("GET", toEndpoint: "/v1/configuration", respondWith: [], statusCode: 200)
+        apiClient.configurationHTTP = mockHTTP
+       
+        let expectation = expectationWithDescription("Callback invoked")
+        apiClient.fetchOrReturnRemoteConfiguration() { _ in
+            XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/configuration")
+            XCTAssertEqual(mockHTTP.lastRequestParameters?["configVersion"] as? String, "3")
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
 
     // MARK: - fetchPaymentMethods
     

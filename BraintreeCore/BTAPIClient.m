@@ -221,7 +221,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         __block BTConfiguration *configuration;
-        [self.configurationHTTP GET:@"v1/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self.configurationHTTP GET:@"v1/configuration" parameters:@{ @"configVersion": @"3" } completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
             if (error) {
                 fetchError = error;
             } else if (response.statusCode != 200) {
