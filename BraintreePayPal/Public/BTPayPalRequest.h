@@ -7,6 +7,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
+    BTPayPalRequestIntentAuthorize = 0,
+    BTPayPalRequestIntentSale,
+};
+
 /// A PayPal request specifies options that control the PayPal flow.
 ///
 /// For a one-time payment, the request must specify a transaction amount.
@@ -19,6 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param amount Used for a one-time payment. Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', and is limited to 7 digits before the decimal point.
 /// @return A PayPal request.
 - (instancetype)initWithAmount:(NSString *)amount;
+
+/// Transforms the BTPayPalRequestIntent to a string equivalent.
+///
+/// @param intentType The intent to convert to a string.
+/// @return string representation of the BTPayPalRequestIntent
++ (NSString*)intentTypeToString:(BTPayPalRequestIntent)intentType;
 
 /// Used for a one-time payment.
 ///
@@ -40,6 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Optional: Display a custom description to the user for a billing agreement.
 @property (nonatomic, nullable, copy) NSString *billingAgreementDescription;
+
+/// Optional: Payment intent. Only applies when using checkout flow. Defaults to BTPayPalRequestIntentAuthorize.
+@property (nonatomic) BTPayPalRequestIntent intent;
 
 @end
 

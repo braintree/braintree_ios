@@ -7,6 +7,7 @@
     self = [super init];
     if (self) {
         _shippingAddressRequired = NO;
+        _intent = BTPayPalRequestIntentAuthorize;
     }
     return self;
 }
@@ -20,6 +21,24 @@
         _amount = amount;
     }
     return self;
+}
+
++ (NSString*)intentTypeToString:(BTPayPalRequestIntent)intentType {
+    NSString *result = nil;
+    
+    switch(intentType) {
+        case BTPayPalRequestIntentAuthorize:
+            result = @"authorize";
+            break;
+        case BTPayPalRequestIntentSale:
+            result = @"sale";
+            break;
+        default:
+            result = @"authorize";
+            break;
+    }
+    
+    return result;
 }
 
 @end
