@@ -492,10 +492,9 @@ static BOOL alwaysUseHardcodedConfiguration = NO;
     NSMutableArray *prioritizedRecipes = [NSMutableArray arrayWithCapacity:[recipes count]];
     for (NSDictionary *recipeDictionary in recipes) {
         PPOTConfigurationRecipe *recipe = recipeAdapter(recipeDictionary);
-        if (!recipe) {
-            LOG_ERROR_AND_RETURN_NIL
+        if (recipe) {
+            [prioritizedRecipes addObject:recipe];
         }
-        [prioritizedRecipes addObject:recipe];
     }
     return prioritizedRecipes;
 }
