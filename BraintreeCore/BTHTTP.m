@@ -220,6 +220,10 @@
             json = (data.length == 0) ? [BTJSON new] : [[BTJSON alloc] initWithData:data];
             if (!json.isError) {
                 errorUserInfo[BTHTTPJSONResponseBodyKey] = json;
+                NSString *errorResponseMessage = [json[@"error"][@"message"] asString];
+                if (errorResponseMessage) {
+                    errorUserInfo[NSLocalizedDescriptionKey] = errorResponseMessage;
+                }
             }
         }
         
