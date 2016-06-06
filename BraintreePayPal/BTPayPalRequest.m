@@ -23,7 +23,7 @@
     return self;
 }
 
-+ (NSString*)intentTypeToString:(BTPayPalRequestIntent)intentType {
++ (NSString *)intentTypeToString:(BTPayPalRequestIntent)intentType {
     NSString *result = nil;
     
     switch(intentType) {

@@ -8,7 +8,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
-    BTPayPalRequestIntentAuthorize = 0,
+    BTPayPalRequestIntentAuthorize = 1,
     BTPayPalRequestIntentSale,
 };
 
@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
 ///
 /// @param intentType The intent to convert to a string.
 /// @return string representation of the BTPayPalRequestIntent
-+ (NSString*)intentTypeToString:(BTPayPalRequestIntent)intentType;
++ (NSString *)intentTypeToString:(BTPayPalRequestIntent)intentType;
 
 /// Used for a one-time payment.
 ///
