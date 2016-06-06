@@ -25,7 +25,7 @@
     }];
 }
 
-- (UIControl *)paymentButton {
+- (UIView *)createPaymentButton {
     if (!self.venmoButton) {
         self.venmoButton = [[BTUIVenmoButton alloc] init];
         [self.venmoButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
