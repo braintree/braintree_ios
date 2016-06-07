@@ -190,6 +190,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
         
         if (!isBillingAgreement) {
+            parameters[@"intent"] = [BTPayPalRequest intentTypeToString:request.intent];
             if (request.amount != nil) {
                 parameters[@"amount"] = request.amount;
             }
@@ -248,6 +249,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         }
         
         parameters[@"experience_profile"] = experienceProfile;
+        
+        self.payPalRequest = request;
         
         NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
         
@@ -357,10 +360,14 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                     
                     if (paymentType == BTPayPalPaymentTypeCheckout) {
                         parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
+                        if (self.payPalRequest) {
+                            parameters[@"paypal_account"][@"intent"] = [BTPayPalRequest intentTypeToString:self.payPalRequest.intent];
+                        }
                     }
                     if (self.clientMetadataId) {
                         parameters[@"correlation_id"] = self.clientMetadataId;
                     }
+                    
                     BTClientMetadata *metadata = [self clientMetadata];
                     parameters[@"_meta"] = @{
                                              @"source" : metadata.sourceString,
