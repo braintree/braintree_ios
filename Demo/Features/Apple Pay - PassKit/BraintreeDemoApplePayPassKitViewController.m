@@ -14,7 +14,7 @@
     self.title = @"Apple Pay via PassKit";
 }
 
-- (UIControl *)paymentButton {
+- (UIView *)createPaymentButton {
     if (![PKPaymentAuthorizationViewController class]) {
         self.progressBlock(@"Apple Pay is not available on this version of iOS");
         return nil;
