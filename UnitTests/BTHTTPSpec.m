@@ -799,6 +799,7 @@ NSURLSession *testURLSession() {
         XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, errorBody);
         XCTAssertTrue([error.userInfo[BTHTTPURLResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
         XCTAssertEqualObjects(error.localizedDescription, @"This is an error message from the gateway");
+        XCTAssertEqualObjects(error.localizedRecoverySuggestion, @"Please try again later.");
         XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
 
         [OHHTTPStubs removeStub:stub];

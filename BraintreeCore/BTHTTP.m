@@ -232,6 +232,8 @@
             errorCode = BTHTTPErrorCodeRateLimitError;
             errorUserInfo[NSLocalizedDescriptionKey] = @"You are being rate-limited.";
             errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = @"Please try again in a few minutes.";
+        } else if (httpResponse.statusCode >= 500) {
+            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = @"Please try again later.";
         }
         
         NSError *error = [NSError errorWithDomain:BTHTTPErrorDomain
