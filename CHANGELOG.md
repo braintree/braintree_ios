@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 4.3.2 (2016-06-09)
+* Update Pay with Venmo to use merchant ID and environment from configuration
+* PayPal Checkout supports an intent option, which can be authorize or sale
+  * See `BTPayPalRequest`'s `intent` property
+* Provide better `NSError` descriptions when Braintree services return a 4xx or 5xx HTTP error
+
 ## 4.3.1 (2016-05-25)
 
 * Add public method to fetch a customer's vaulted payment method nonces
