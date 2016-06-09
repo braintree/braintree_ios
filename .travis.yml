@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode7.2
+osx_image: xcode7.3
 
 install:
   - bundle install
@@ -12,7 +12,7 @@ cache:
 before_install:
   - brew update || brew update
   - brew outdated xctool || brew upgrade xctool
-  - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (9.2) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
+  - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (9.3) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
 
 script:
   - echo $SIMULATOR_ID
@@ -21,3 +21,7 @@ script:
   - open -a "simulator" --args -CurrentDeviceUDID $SIMULATOR_ID
   - rake spec:unit
   - rake spec:api:integration
+
+notifications:
+  email:
+    - team-ios@getbraintree.com
