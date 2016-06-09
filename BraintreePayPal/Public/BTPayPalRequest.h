@@ -25,12 +25,6 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
 /// @return A PayPal request.
 - (instancetype)initWithAmount:(NSString *)amount;
 
-/// Transforms the BTPayPalRequestIntent to a string equivalent.
-///
-/// @param intentType The intent to convert to a string.
-/// @return string representation of the BTPayPalRequestIntent
-+ (NSString *)intentTypeToString:(BTPayPalRequestIntent)intentType;
-
 /// Used for a one-time payment.
 ///
 /// Amount must be greater than or equal to zero, may optionally contain exactly 2 decimal places separated by '.', optional thousands separator ',', and is limited to 7 digits before the decimal point.
@@ -52,7 +46,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
 /// Optional: Display a custom description to the user for a billing agreement.
 @property (nonatomic, nullable, copy) NSString *billingAgreementDescription;
 
-/// Optional: Payment intent. Only applies when using checkout flow. Defaults to BTPayPalRequestIntentAuthorize.
+/// Optional: Payment intent. Only applies when using checkout flow. Defaults to `BTPayPalRequestIntentAuthorize`.
 @property (nonatomic) BTPayPalRequestIntent intent;
 
 @end
