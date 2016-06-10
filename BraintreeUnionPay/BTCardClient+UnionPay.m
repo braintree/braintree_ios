@@ -104,18 +104,16 @@
          {
              if (error) {
                  [self sendUnionPayEvent:@"enrollment-failed"];
-
+                
+                 NSError *callbackError = error;
                  NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
                  if (response.statusCode == 422) {
-                     BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
-                     NSDictionary *userInfo = [jsonResponse asDictionary] ? @{ BTCustomerInputBraintreeValidationErrorsKey : [jsonResponse asDictionary] } : @{};
-                     NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                                    code:BTCardClientErrorTypeCustomerInputInvalid
-                                                                userInfo:userInfo];
-                     [self invokeBlock:completion onMainThreadWithEnrollmentID:nil error:validationError];
-                 } else {
-                     [self invokeBlock:completion onMainThreadWithEnrollmentID:nil error:error];
+                     callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                         code:BTCardClientErrorTypeCustomerInputInvalid
+                                                     userInfo:[self.class validationErrorUserInfo:error.userInfo]];
                  }
+                 
+                 [self invokeBlock:completion onMainThreadWithEnrollmentID:nil error:callbackError];
                  return;
              }
 
