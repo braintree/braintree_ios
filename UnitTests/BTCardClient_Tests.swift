@@ -105,7 +105,7 @@ class BTCardClient_Tests: XCTestCase {
         let cardClient = BTCardClient(APIClient: stubAPIClient)
         let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        request.enrollmentAuthCode = "12345"
+        request.smsCode = "12345"
         request.enrollmentID = "fake-enrollment-id"
 
         let expectation = expectationWithDescription("Callback invoked with error")

@@ -20,7 +20,7 @@
             BTCard *card = [[BTCard alloc] initWithParameters:options];
             BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
             request.mobileCountryCode = options[@"mobileCountryCode"];
-            request.enrollmentAuthCode = options[@"enrollmentAuthCode"];
+            request.smsCode = options[@"smsCode"];
 
             [client tokenizeCard:request options:nil completion:completion];
         }];

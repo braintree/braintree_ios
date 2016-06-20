@@ -451,7 +451,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let cardClient = BTCardClient(APIClient: apiClient)
         let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        request.enrollmentAuthCode = "12345"
+        request.smsCode = "12345"
         // This is an internal-only property, but we want to verify that it gets sent when hitting the tokenization endpoint
         request.enrollmentID = "enrollment-id"
 
@@ -502,7 +502,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let cardClient = BTCardClient(APIClient: mockAPIClient)
         let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        request.enrollmentAuthCode = "12345"
+        request.smsCode = "12345"
         request.enrollmentID = "enrollment-id"
 
         let expectation = expectationWithDescription("Callback invoked")
@@ -520,7 +520,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let cardClient = BTCardClient(APIClient: mockAPIClient)
         let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        request.enrollmentAuthCode = "12345"
+        request.smsCode = "12345"
         request.enrollmentID = "enrollment-id"
 
         let expectation = expectationWithDescription("Callback invoked")

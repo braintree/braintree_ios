@@ -78,7 +78,7 @@
     [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
         XCTAssertNil(error);
         request.enrollmentID = enrollmentID;
-        request.enrollmentAuthCode = @"11111";
+        request.smsCode = @"11111";
         [expectation fulfill];
     }];
 

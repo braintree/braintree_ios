@@ -130,7 +130,7 @@
         [alertController addAction:[UIAlertAction actionWithTitle:@"Submit" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
             UITextField *codeTextField = [alertController.textFields firstObject];
             NSString *authCode = codeTextField.text;
-            request.enrollmentAuthCode = authCode;
+            request.smsCode = authCode;
 
             self.progressBlock(@"Tokenizing card");
 

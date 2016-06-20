@@ -69,12 +69,12 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     if (request.card.parameters) {
         NSMutableDictionary *mutableCardParameters = [request.card.parameters mutableCopy];
 
-        if (request.enrollmentAuthCode && request.enrollmentID) {
+        if (request.smsCode && request.enrollmentID) {
             // Convert the immutable options dictionary so to write to it without overwriting any existing options
             mutableCardParameters[@"options"] = [mutableCardParameters[@"options"] mutableCopy];
             mutableCardParameters[@"options"][@"union_pay_enrollment"] = @{
                                                                            @"id": request.enrollmentID,
-                                                                           @"sms_code": request.enrollmentAuthCode,
+                                                                           @"sms_code": request.smsCode,
                                                                            };
         }
 
@@ -88,7 +88,6 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
     if (options) {
         parameters[@"options"] = options;
     }
-
     [self.apiClient POST:@"v1/payment_methods/credit_cards"
               parameters:parameters
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
