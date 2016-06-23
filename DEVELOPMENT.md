@@ -17,24 +17,13 @@ The integration tests require a full Braintree stack running on localhost.
 
 ## Architecture
 
-There are several components that comprise this SDK:
-
-* `Braintree` is the top-level entry point to the SDK. You are here.
-* [Braintree-Drop-In](Braintree/Drop-In) composes API with Credit Card and PayPal UI to create a "three liner" payment form. (See also BTDropInViewControler.h)
-* [Braintree-Payments-UI](Braintree/UI) is a set of reusable UI components related to payments.
-* [Braintree-PayPal](Braintree/PayPal) provides a PayPal button and view controller. (See also `BTPayPalButton`.)
-* [Braintree-API](Braintree/api) provides the networking and communications layer. (See also `BTClient`.)
-  * This component is intended to avoid any dependency on `UIKit` and could easily be ported to OS X.
-
-The individual components may be of interest for advanced integrations and are each available as subspecs.
+See [Frameworks](Frameworks.markdown) for an overview of the components that comprise this SDK.
 
 ## Environmental Assumptions
 
-* Xcode 6 and iOS 8 SDK
-* iOS 7.0 target deployment
-* iPhone and iPad of all sizes and resolutions and the simulator
+* See [Requirements](https://developers.braintreepayments.com/guides/client-sdk/setup/ios/v4#requirements)
+* iPhone and iPad of all sizes and resolutions and the Simulator
 * CocoaPods
-* ARC
 * `BT` namespace is reserved for Braintree
 * Host app does not integrate the [PayPal iOS SDK](https://github.com/paypal/paypal-ios-sdk)
 * Host app does not integrate with the Kount SDK
@@ -45,7 +34,7 @@ The individual components may be of interest for advanced integrations and are e
 
 * Commits should be small but atomic. Tests should always be passing; the product should always function appropriately.
 * Commit messages should be concise and descriptive.
-* Commit messages reference the trello board by ID or URL. (Sorry, these are not externally viewable.)
+* Commit messages may reference the trello board by ID or URL. (Sorry, these are not externally viewable.)
 
 ## Deployment and Code Organization
 
@@ -58,7 +47,7 @@ The individual components may be of interest for advanced integrations and are e
   * These versions are more heavily tested
   * We will provide support for these versions and commit to maintaining backwards compatibility on our servers
 * Pull requests are welcome
-  * Feel free to create an issue on Github before investing development time
+  * Feel free to create an issue on GitHub before investing development time
 * As needed, the Braintree team may develop features privately
   * If our internal and public branches get out of sync, we will reconcile this with merges (as opposed to rebasing)
   * In general, we will try to develop in the open as much as possible
