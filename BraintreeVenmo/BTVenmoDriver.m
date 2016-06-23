@@ -33,7 +33,7 @@ static BTVenmoDriver *appSwitchedDriver;
             [driver authorizeAccountWithCompletion:completionBlock];
         }];
         
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"Venmo" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
             return [BTVenmoAccountNonce venmoAccountWithJSON:venmoJSON];
         }];
     }
