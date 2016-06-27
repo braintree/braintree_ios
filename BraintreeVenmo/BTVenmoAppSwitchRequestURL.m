@@ -23,6 +23,8 @@
                      returnURLScheme:(NSString *)scheme
                    bundleDisplayName:(NSString *)bundleName
                          environment:(NSString *)environment
+                     authFingerprint:(NSString *)authFingerprint
+                            validate:(BOOL)validate
 {
     NSURL *successReturnURL = [self returnURLWithScheme:scheme result:@"success"];
     NSURL *errorReturnURL = [self returnURLWithScheme:scheme result:@"error"];
@@ -39,6 +41,8 @@
                                                   @"braintree_access_token": accessToken,
                                                   @"braintree_sdk": sdkVersion,
                                                   @"braintree_environment": environment,
+                                                  @"braintree_auth_fingerprint": authFingerprint,
+                                                  @"braintree_validate": @(validate)
                                                   } mutableCopy];
 
     NSURLComponents *components = [self appSwitchBaseURLComponents];

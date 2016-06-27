@@ -104,17 +104,16 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
         let sharedParser = BTPaymentMethodNonceParser.sharedParser()
         let venmoAccountJSON = BTJSON(value: [
             "consumed": false,
-            "description": "jane.doe@example.com",
-            "username": "jane.doe.username@example.com",
-            "details": [],
+            "description": "VenmoAccount",
+            "details": ["username": "jane.doe.username@example.com", "cardType": "Discover"],
             "isLocked": false,
             "nonce": "a-nonce",
             "securityQuestions": [],
-            "type": "venmoAccount",
+            "type": "VenmoAccount",
             "default": true
             ])
 
-        let venmoAccountNonce = sharedParser.parseJSON(venmoAccountJSON, withParsingBlockForType: "Venmo") as! BTVenmoAccountNonce
+        let venmoAccountNonce = sharedParser.parseJSON(venmoAccountJSON, withParsingBlockForType: "VenmoAccount") as! BTVenmoAccountNonce
 
         XCTAssertEqual(venmoAccountNonce.nonce, "a-nonce")
         XCTAssertEqual(venmoAccountNonce.type, "Venmo")

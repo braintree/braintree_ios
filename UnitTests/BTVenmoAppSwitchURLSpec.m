@@ -18,7 +18,9 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
                                                                     sdkVersion:@"sdk-version"
                                                                returnURLScheme:@"a.scheme"
                                                              bundleDisplayName:@"An App"
-                                                                   environment:@"sandbox"];
+                                                                   environment:@"sandbox"
+                                                               authFingerprint:@"a.fingerprint"
+                                                                      validate:@(YES)];
 
             NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
             for (NSURLQueryItem *queryItem in urlComponents.queryItems) {
@@ -32,6 +34,10 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
                     expect(queryItem.value).to.equal(@"merchant-id");
                 }else if ([queryItem.name isEqualToString:@"x-source"]) {
                     expect(queryItem.value).to.equal(@"An App");
+                }else if ([queryItem.name isEqualToString:@"braintree_auth_fingerprint"]) {
+                    expect(queryItem.value).to.equal(@"a.fingerprint");
+                }else if ([queryItem.name isEqualToString:@"braintree_validate"]) {
+                    expect(queryItem.value).to.beTruthy();
                 }
             }
         });

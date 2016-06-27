@@ -23,7 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
                                    sdkVersion:(NSString *)sdkVersion
                               returnURLScheme:(NSString *)scheme
                             bundleDisplayName:(NSString *)bundleName
-                                  environment:(NSString *)environment;
+                                  environment:(NSString *)environment
+                              authFingerprint:(NSString *)authFingerprint
+                                     validate:(BOOL)validate;
 
 @end
 

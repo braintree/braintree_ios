@@ -30,7 +30,7 @@ static BTVenmoDriver *appSwitchedDriver;
         [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
             driver.appSwitchDelegate = options[BTTokenizationServiceAppSwitchDelegateOption];
-            [driver authorizeAccountWithCompletion:completionBlock];
+            [driver authorizeAccountWithValidation:YES completion:completionBlock];
         }];
         
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
@@ -76,6 +76,10 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Tokenization
 
 - (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
+    [self authorizeAccountWithValidation:NO completion:completionBlock];
+}
+
+- (void)authorizeAccountWithValidation:(BOOL)validate completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeIntegration
@@ -106,7 +110,7 @@ static BTVenmoDriver *appSwitchedDriver;
             completionBlock(nil, error);
             return;
         }
-        
+
         BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
         metadata.source = BTClientMetadataSourceVenmoApp;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
@@ -122,13 +126,20 @@ static BTVenmoDriver *appSwitchedDriver;
             completionBlock(nil, [venmoMerchantEnvironment asError]);
             return;
         }
-        
+
+        NSString *authFingerprint = self.apiClient.clientToken.authorizationFingerprint;
+        if (authFingerprint == nil) {
+            authFingerprint = @"";
+        }
+
         NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:[venmoMerchantId asString]
                                                                         accessToken:configuration.venmoAccessToken
                                                                          sdkVersion:BRAINTREE_VERSION
                                                                     returnURLScheme:self.returnURLScheme
                                                                   bundleDisplayName:bundleDisplayName
-                                                                        environment:[venmoMerchantEnvironment asString]];
+                                                                        environment:[venmoMerchantEnvironment asString]
+                                                                    authFingerprint:authFingerprint
+                                                                           validate:validate];
         if (!appSwitchURL) {
             error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                         code:BTVenmoDriverErrorTypeInvalidRequestURL
@@ -194,7 +205,7 @@ static BTVenmoDriver *appSwitchedDriver;
             
             BTJSON *json = [[BTJSON alloc] initWithValue:@{
                                                            @"nonce": returnURL.nonce,
-                                                           @"username": returnURL.username,
+                                                           @"details": @{@"username": returnURL.username},
                                                            @"description": returnURL.username
                                                            }];
             BTVenmoAccountNonce *card = [BTVenmoAccountNonce venmoAccountWithJSON:json];
