@@ -5,29 +5,32 @@
 
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoDriver.h"
+#import "Braintree-Version.h"
 #import "BTSpecHelper.h"
 
 SpecBegin(BTVenmoAppSwitchRequestURL)
 
 describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bundleDisplayName:environment:", ^{
-
     context(@"with valid params", ^{
         it(@"returns a URL containing params in query string", ^{
+            
+            BTMutableClientMetadata *meta = [BTMutableClientMetadata new];
+            [meta setSessionId:@"session-id"];
+            [meta setIntegration:BTClientMetadataIntegrationCustom];
+            
             NSURL *url = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:@"merchant-id"
                                                                    accessToken:@"access-token"
-                                                                    sdkVersion:@"sdk-version"
                                                                returnURLScheme:@"a.scheme"
                                                              bundleDisplayName:@"An App"
                                                                    environment:@"sandbox"
                                                                authFingerprint:@"a.fingerprint"
-                                                                      validate:@(YES)];
+                                                                      validate:@(YES)
+                                                                      metadata:meta];
 
             NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
             for (NSURLQueryItem *queryItem in urlComponents.queryItems) {
                 if ([queryItem.name isEqualToString:@"braintree_environment"]) {
                     expect(queryItem.value).to.equal(@"sandbox");
-                }else if ([queryItem.name isEqualToString:@"braintree_sdk"]) {
-                    expect(queryItem.value).to.equal(@"sdk-version");
                 }else if ([queryItem.name isEqualToString:@"braintree_access_token"]) {
                     expect(queryItem.value).to.equal(@"access-token");
                 }else if ([queryItem.name isEqualToString:@"braintree_merchant_id"]) {
@@ -38,6 +41,16 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
                     expect(queryItem.value).to.equal(@"a.fingerprint");
                 }else if ([queryItem.name isEqualToString:@"braintree_validate"]) {
                     expect(queryItem.value).to.beTruthy();
+                }else if ([queryItem.name isEqualToString:@"braintree_sdk_data"]) {
+                    BTJSON *json = [[BTJSON alloc] initWithData:[queryItem.value dataUsingEncoding:NSUTF8StringEncoding]];
+                    expect([json[@"authorization_fingerprint"] asString]).to.equal(@"a.fingerprint");
+                    expect([json[@"validate"] asNumber]).to.beTruthy();
+                    
+                    BTJSON *meta = json[@"_meta"];
+                    expect([meta[@"sessionId"] asString]).to.equal(@"session-id");
+                    expect([meta[@"platform"] asString]).to.equal(@"ios");
+                    expect([meta[@"integration"] asString]).to.equal(@"custom");
+                    expect([meta[@"version"] asString]).to.equal(BRAINTREE_VERSION);
                 }
             }
         });

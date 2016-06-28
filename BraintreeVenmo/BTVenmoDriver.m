@@ -127,19 +127,14 @@ static BTVenmoDriver *appSwitchedDriver;
             return;
         }
 
-        NSString *authFingerprint = self.apiClient.clientToken.authorizationFingerprint;
-        if (authFingerprint == nil) {
-            authFingerprint = @"";
-        }
-
         NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:[venmoMerchantId asString]
                                                                         accessToken:configuration.venmoAccessToken
-                                                                         sdkVersion:BRAINTREE_VERSION
                                                                     returnURLScheme:self.returnURLScheme
                                                                   bundleDisplayName:bundleDisplayName
                                                                         environment:[venmoMerchantEnvironment asString]
-                                                                    authFingerprint:authFingerprint
-                                                                           validate:validate];
+                                                                    authFingerprint:self.apiClient.clientToken.authorizationFingerprint
+                                                                           validate:validate
+                                                                           metadata:[self.apiClient metadata]];
         if (!appSwitchURL) {
             error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                         code:BTVenmoDriverErrorTypeInvalidRequestURL

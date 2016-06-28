@@ -1,9 +1,11 @@
 #import <UIKit/UIKit.h>
 
 #import "BTVenmoAppSwitchRequestURL.h"
+#import "Braintree-Version.h"
 
 #if __has_include("BraintreeCore.h")
 #import "BTURLUtils.h"
+#import "BTClientMetadata.h"
 #else
 #import <BraintreeCore/BTURLUtils.h>
 #endif
@@ -17,20 +19,32 @@
     return [self appSwitchBaseURLComponents].URL;
 }
 
-+ (NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID
-                 accessToken:(NSString *)accessToken
-                          sdkVersion:(NSString *)sdkVersion
-                     returnURLScheme:(NSString *)scheme
-                   bundleDisplayName:(NSString *)bundleName
-                         environment:(NSString *)environment
-                     authFingerprint:(NSString *)authFingerprint
-                            validate:(BOOL)validate
++(NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID
+                        accessToken:(NSString *)accessToken
+                    returnURLScheme:(NSString *)scheme
+                  bundleDisplayName:(NSString *)bundleName
+                        environment:(NSString *)environment
+                    authFingerprint:(NSString *)authFingerprint
+                           validate:(BOOL)validate
+                           metadata:(BTClientMetadata *)metadata
 {
     NSURL *successReturnURL = [self returnURLWithScheme:scheme result:@"success"];
     NSURL *errorReturnURL = [self returnURLWithScheme:scheme result:@"error"];
     NSURL *cancelReturnURL = [self returnURLWithScheme:scheme result:@"cancel"];
-    if (!successReturnURL || !errorReturnURL || !cancelReturnURL || !merchantID || !accessToken || !sdkVersion || !scheme || !bundleName || !environment) {
+    if (!successReturnURL || !errorReturnURL || !cancelReturnURL || !accessToken || !metadata || !scheme || !bundleName || !environment || !merchantID) {
         return nil;
+    }
+    
+    NSMutableDictionary *braintreeData = [@{@"_meta": @{
+                                                    @"sdkVersion": BRAINTREE_VERSION,
+                                                    @"sessionId": [metadata sessionId],
+                                                    @"integration": [metadata integrationString],
+                                                    @"platform": @"ios"
+                                                    },
+                                            @"validate": @(validate),
+                                            } mutableCopy];
+    if (authFingerprint) {
+        braintreeData[@"authorization_fingerprint"] = authFingerprint;
     }
 
     NSMutableDictionary *appSwitchParameters = [@{@"x-success": successReturnURL,
@@ -39,10 +53,8 @@
                                                   @"x-source": bundleName,
                                                   @"braintree_merchant_id": merchantID,
                                                   @"braintree_access_token": accessToken,
-                                                  @"braintree_sdk": sdkVersion,
                                                   @"braintree_environment": environment,
-                                                  @"braintree_auth_fingerprint": authFingerprint,
-                                                  @"braintree_validate": @(validate)
+                                                  @"braintree_sdk_data": braintreeData,
                                                   } mutableCopy];
 
     NSURLComponents *components = [self appSwitchBaseURLComponents];
