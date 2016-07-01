@@ -57,6 +57,7 @@
 		03CFEF3B1CD30C28006D2DA5 /* PayPalUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFEF3A1CD30C28006D2DA5 /* PayPalUtils.h */; };
 		03CFEF3E1CD3124F006D2DA5 /* PayPalUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7EDE47701CD2C3D00005E22B /* PayPalUtils.framework */; };
 		03D294FF1BE835C8004F90DA /* BTVenmoAccountNonce_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D294FE1BE835C8004F90DA /* BTVenmoAccountNonce_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		03D989C01D272CEB00930B0E /* BTUI.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE6D23791D107A8700DBFAF2 /* BTUI.strings */; };
 		03E9EC171CB2E72500A9F2B9 /* BTDropInBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E9EC151CB2E72500A9F2B9 /* BTDropInBaseViewController.m */; };
 		03E9EC181CB2E72500A9F2B9 /* BTDropInBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E9EC151CB2E72500A9F2B9 /* BTDropInBaseViewController.m */; };
 		03F54E121C499E1200F11033 /* BraintreeDemoPayPalForceFuturePaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F54E111C499E1200F11033 /* BraintreeDemoPayPalForceFuturePaymentViewController.m */; };
@@ -760,7 +761,7 @@
 		EE6D23F91D107A8700DBFAF2 /* UIColor+BTK.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23761D107A8700DBFAF2 /* UIColor+BTK.m */; };
 		EE6D23FA1D107A8700DBFAF2 /* BTKLocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23781D107A8700DBFAF2 /* BTKLocalizedString.m */; };
 		EE6D23FB1D107A8700DBFAF2 /* BTKLocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23781D107A8700DBFAF2 /* BTKLocalizedString.m */; };
-		EE6D23FC1D107A8700DBFAF2 /* UI.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE6D23791D107A8700DBFAF2 /* UI.strings */; };
+		EE6D23FC1D107A8700DBFAF2 /* BTUI.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE6D23791D107A8700DBFAF2 /* BTUI.strings */; };
 		EE6D23FD1D107A8700DBFAF2 /* BTKCardExpirationValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = EE6D23901D107A8700DBFAF2 /* BTKCardExpirationValidator.h */; };
 		EE6D23FE1D107A8700DBFAF2 /* BTKCardExpirationValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23911D107A8700DBFAF2 /* BTKCardExpirationValidator.m */; };
 		EE6D23FF1D107A8700DBFAF2 /* BTKCardExpirationValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23911D107A8700DBFAF2 /* BTKCardExpirationValidator.m */; };
@@ -1992,27 +1993,27 @@
 		EE6D23751D107A8700DBFAF2 /* BTKViewUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTKViewUtil.m; sourceTree = "<group>"; };
 		EE6D23761D107A8700DBFAF2 /* UIColor+BTK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BTK.m"; sourceTree = "<group>"; };
 		EE6D23781D107A8700DBFAF2 /* BTKLocalizedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTKLocalizedString.m; sourceTree = "<group>"; };
-		EE6D237A1D107A8700DBFAF2 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D237B1D107A8700DBFAF2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D237C1D107A8700DBFAF2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D237D1D107A8700DBFAF2 /* en_AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_AU; path = en_AU.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D237E1D107A8700DBFAF2 /* en_CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_CA; path = en_CA.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D237F1D107A8700DBFAF2 /* en_GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_GB; path = en_GB.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23801D107A8700DBFAF2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23811D107A8700DBFAF2 /* es_ES */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es_ES; path = es_ES.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23821D107A8700DBFAF2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23831D107A8700DBFAF2 /* fr_CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr_CA; path = fr_CA.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23841D107A8700DBFAF2 /* fr_FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr_FR; path = fr_FR.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23851D107A8700DBFAF2 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23861D107A8700DBFAF2 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23871D107A8700DBFAF2 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23881D107A8700DBFAF2 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D23891D107A8700DBFAF2 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D238A1D107A8700DBFAF2 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D238B1D107A8700DBFAF2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D238C1D107A8700DBFAF2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D238D1D107A8700DBFAF2 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/UI.strings; sourceTree = "<group>"; };
-		EE6D238E1D107A8700DBFAF2 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/UI.strings"; sourceTree = "<group>"; };
+		EE6D237A1D107A8700DBFAF2 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D237B1D107A8700DBFAF2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D237C1D107A8700DBFAF2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D237D1D107A8700DBFAF2 /* en_AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_AU; path = en_AU.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D237E1D107A8700DBFAF2 /* en_CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_CA; path = en_CA.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D237F1D107A8700DBFAF2 /* en_GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en_GB; path = en_GB.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23801D107A8700DBFAF2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23811D107A8700DBFAF2 /* es_ES */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es_ES; path = es_ES.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23821D107A8700DBFAF2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23831D107A8700DBFAF2 /* fr_CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr_CA; path = fr_CA.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23841D107A8700DBFAF2 /* fr_FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr_FR; path = fr_FR.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23851D107A8700DBFAF2 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23861D107A8700DBFAF2 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23871D107A8700DBFAF2 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23881D107A8700DBFAF2 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D23891D107A8700DBFAF2 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D238A1D107A8700DBFAF2 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D238B1D107A8700DBFAF2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D238C1D107A8700DBFAF2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D238D1D107A8700DBFAF2 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BTUI.strings; sourceTree = "<group>"; };
+		EE6D238E1D107A8700DBFAF2 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/BTUI.strings"; sourceTree = "<group>"; };
 		EE6D23901D107A8700DBFAF2 /* BTKCardExpirationValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTKCardExpirationValidator.h; sourceTree = "<group>"; };
 		EE6D23911D107A8700DBFAF2 /* BTKCardExpirationValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTKCardExpirationValidator.m; sourceTree = "<group>"; };
 		EE6D23921D107A8700DBFAF2 /* BTKCardExpiryFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTKCardExpiryFormat.h; sourceTree = "<group>"; };
@@ -3644,7 +3645,7 @@
 			isa = PBXGroup;
 			children = (
 				EE6D23781D107A8700DBFAF2 /* BTKLocalizedString.m */,
-				EE6D23791D107A8700DBFAF2 /* UI.strings */,
+				EE6D23791D107A8700DBFAF2 /* BTUI.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -4743,6 +4744,7 @@
 				A76B1A341B79708A00452CFA /* Main.strings in Resources */,
 				A76B1A2F1B79708A00452CFA /* Images.xcassets in Resources */,
 				A76B1A151B79708A00452CFA /* Settings.bundle in Resources */,
+				03D989C01D272CEB00930B0E /* BTUI.strings in Resources */,
 				A76B1A131B79708A00452CFA /* Launch Screen.storyboard in Resources */,
 				A76B1A0B1B79708A00452CFA /* Braintree-Demo.entitlements in Resources */,
 				A76B1A2C1B79708A00452CFA /* UI.storyboard in Resources */,
@@ -4821,7 +4823,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE6D23FC1D107A8700DBFAF2 /* UI.strings in Resources */,
+				EE6D23FC1D107A8700DBFAF2 /* BTUI.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6033,7 +6035,7 @@
 			path = .;
 			sourceTree = "<group>";
 		};
-		EE6D23791D107A8700DBFAF2 /* UI.strings */ = {
+		EE6D23791D107A8700DBFAF2 /* BTUI.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				EE6D237A1D107A8700DBFAF2 /* da */,
@@ -6058,7 +6060,7 @@
 				EE6D238D1D107A8700DBFAF2 /* tr */,
 				EE6D238E1D107A8700DBFAF2 /* zh-Hans */,
 			);
-			name = UI.strings;
+			name = BTUI.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

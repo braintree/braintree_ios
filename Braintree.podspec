@@ -53,9 +53,6 @@ Pod::Spec.new do |s|
     s.source_files  = "BraintreeDropIn/**/*.{h,m}"
     s.public_header_files = "BraintreeDropIn/Public/*.h"
     s.frameworks = "UIKit"
-    s.resource_bundles = {
-        "BraintreeDropIn-Assets" => ["BraintreeDropIn/*.xcassets"]
-    }
     s.dependency "Braintree/Core"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/UnionPay"
@@ -134,6 +131,8 @@ Pod::Spec.new do |s|
     s.source_files  = "BraintreeUIKit/**/*.{h,m}"
     s.public_header_files = "BraintreeUIKit/Public/*.h"
     s.frameworks = "UIKit"
+    s.resource_bundles = {
+      "Braintree-UIKit-Localization" => ["BraintreeUIKit/Localization/*.lproj"] }
   end
 end
 

@@ -4,7 +4,7 @@
 
 + (NSBundle *)localizationBundle {
 
-    static NSString * bundleName = @"Braintree-UI-Localization";
+    static NSString * bundleName = @"Braintree-UIKit-Localization";
     NSString *localizationBundlePath = [[NSBundle mainBundle] pathForResource:bundleName ofType:@"bundle"];
     if (!localizationBundlePath) {
         localizationBundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:bundleName ofType:@"bundle"];
@@ -14,7 +14,7 @@
 }
 
 + (NSString *)localizationTable {
-    return @"UI";
+    return @"BTUI";
 }
 
 + (NSString *)CARD_NUMBER_PLACEHOLDER {
