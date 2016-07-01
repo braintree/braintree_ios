@@ -8,6 +8,7 @@ extern NSString * const BTTokenizationServiceErrorDomain;
 extern NSString * const BTTokenizationServiceAppSwitchDelegateOption;
 extern NSString * const BTTokenizationServiceViewPresentingDelegateOption;
 extern NSString * const BTTokenizationServicePayPalScopesOption;
+extern NSString * const BTTokenizationServiceApplePayPaymentRequestOption;
 
 typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
     BTTokenizationServiceErrorUnknown = 0,

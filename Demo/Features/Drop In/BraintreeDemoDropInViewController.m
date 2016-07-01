@@ -2,98 +2,246 @@
 
 #import <PureLayout/PureLayout.h>
 #import <BraintreeCore/BraintreeCore.h>
-#import <BraintreeUI/BraintreeUI.h>
+#import <BraintreeDropIn/BraintreeDropIn.h>
 #import <BraintreeVenmo/BraintreeVenmo.h>
+#import <BraintreeUIKit/BraintreeUIKit.h>
 #import "BraintreeDemoSettings.h"
-
-@interface BraintreeDemoDropInViewController () <BTDropInViewControllerDelegate>
-
-@property (nonatomic, strong) BTAPIClient *apiClient;
-
+#import "BTPaymentSelectionViewController.h"
+#import <BraintreeApplePay/BraintreeApplePay.h>
+@interface BraintreeDemoDropInViewController ()
+@property (nonatomic, strong) BTDropInController *dropIn;
+@property (nonatomic, strong) BTKPaymentOptionCardView *paymentMethodTypeIcon;
+@property (nonatomic, strong) UILabel *paymentMethodTypeLabel;
+@property (nonatomic, strong) UILabel *cartLabel;
+@property (nonatomic, strong) UILabel *itemLabel;
+@property (nonatomic, strong) UILabel *priceLabel;
+@property (nonatomic, strong) UILabel *paymentMethodHeaderLabel;
+@property (nonatomic, strong) UIButton *dropInButton;
+@property (nonatomic, strong) UIButton *purchaseButton;
+@property (nonatomic, strong) NSString *authorizationString;
+@property (nonatomic) BOOL useApplePay;
+@property (nonatomic, strong) BTPaymentMethodNonce *selectedNonce;
 @end
 
 @implementation BraintreeDemoDropInViewController
 
 - (instancetype)initWithAuthorization:(NSString *)authorization {
     if (self = [super initWithAuthorization:authorization]) {
-        _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
+
+        self.authorizationString = authorization;
     }
     return self;
 }
 
+- (void) updatePaymentMethod:(BTPaymentMethodNonce*)paymentMethodNonce {
+    self.paymentMethodTypeLabel.hidden = paymentMethodNonce == nil;
+    self.paymentMethodTypeIcon.hidden = paymentMethodNonce == nil;
+    if (paymentMethodNonce != nil) {
+        BTKPaymentOptionType paymentMethodType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethodNonce.type];
+        self.paymentMethodTypeIcon.paymentOptionType = paymentMethodType;
+        [self.paymentMethodTypeLabel setText:paymentMethodNonce.localizedDescription];
+    }
+    [self updatePaymentMethodConstraints];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.cartLabel = [[UILabel alloc] init];
+    [self.cartLabel setText:@"CART"];
+    self.cartLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+    [self.cartLabel setTextColor:[UIColor grayColor]];
+    self.cartLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.cartLabel];
+
+    self.itemLabel = [[UILabel alloc] init];
+    [self.itemLabel setText:@"1 Sock"];
+    self.itemLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.itemLabel];
+
+    self.priceLabel = [[UILabel alloc] init];
+    [self.priceLabel setText:@"$100"];
+    self.priceLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.priceLabel];
+
+    self.paymentMethodHeaderLabel = [[UILabel alloc] init];
+    [self.paymentMethodHeaderLabel setText:@"PAYMENT METHODS"];
+    [self.paymentMethodHeaderLabel setTextColor:[UIColor grayColor]];
+    self.paymentMethodHeaderLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+    self.paymentMethodHeaderLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.paymentMethodHeaderLabel];
+
+    self.dropInButton = [[UIButton alloc] init];
+    [self.dropInButton setTitle:@"Select Payment Method" forState:UIControlStateNormal];
+    [self.dropInButton setTitleColor:self.view.tintColor forState:UIControlStateNormal];
+    self.dropInButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.dropInButton addTarget:self action:@selector(tappedToShowDropIn) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.dropInButton];
+
+    self.purchaseButton = [[UIButton alloc] init];
+    [self.purchaseButton setTitle:@"Complete Purchase" forState:UIControlStateNormal];
+    [self.purchaseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.purchaseButton setTitleColor:[[UIColor whiteColor] colorWithAlphaComponent:0.8] forState:UIControlStateHighlighted];
+    self.purchaseButton.backgroundColor = self.view.tintColor;
+    self.purchaseButton.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self.purchaseButton addTarget:self action:@selector(purchaseButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    self.purchaseButton.layer.cornerRadius = 4.0;
+    [self.view addSubview:self.purchaseButton];
+
+    self.paymentMethodTypeIcon = [BTKPaymentOptionCardView new];
+    self.paymentMethodTypeIcon.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.paymentMethodTypeIcon];
+    self.paymentMethodTypeIcon.hidden = YES;
+
+    self.paymentMethodTypeLabel = [[UILabel alloc] init];
+    self.paymentMethodTypeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.paymentMethodTypeLabel];
+    self.paymentMethodTypeLabel.hidden = YES;
+
+    [self updatePaymentMethodConstraints];
+
+
+    // SHOW SPINNER
+    self.progressBlock(@"Fetching customer's payment methods...");
+    self.useApplePay = NO;
     
-    [BTConfiguration enableVenmo:true]; // Assume the user is whitelisted for the beta
+    [BTDropInController fetchDropInResultForAuthorization:self.authorizationString handler:^(BTDropInResult * _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
+            NSLog(@"Error: %@", error);
+        } else {
+            if (result.paymentOptionType == BTKPaymentOptionTypeApplePay) {
+                self.progressBlock(@"Ready for checkout...");
+                [self setupApplePay];
+            } else {
+                self.useApplePay = NO;
+                self.selectedNonce = result.paymentMethod;
+                self.progressBlock(@"Ready for checkout...");
+                [self updatePaymentMethod:self.selectedNonce];
+            }
+        }
+    }];
+
+    [BTConfiguration enableVenmo:YES]; // Assume the user is whitelisted for the beta
     
-    self.title = @"Drop In";
+//    [BTKAppearance sharedInstance].fontFamily = @"Courier";
+//    [BTKAppearance sharedInstance].placeholderTextColor = [UIColor purpleColor];
+//    [BTKAppearance sharedInstance].formFieldBackgroundColor = [UIColor yellowColor];
+//    [BTKAppearance sharedInstance].primaryTextColor = [UIColor greenColor];
+//    [BTKAppearance sharedInstance].sheetBackgroundColor = [UIColor brownColor];
+//    [BTKAppearance sharedInstance].barBackgroundColor = [UIColor brownColor];
 
-    UIButton *dropInButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    dropInButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [dropInButton addTarget:self action:@selector(tappedToShowDropIn) forControlEvents:UIControlEventTouchUpInside];
-    [dropInButton setBackgroundColor:[UIColor purpleColor]];
-    [dropInButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
-    dropInButton.layer.cornerRadius = 5.0f;
-    dropInButton.contentEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8);
-    [dropInButton setTitle:@"Buy Now" forState:UIControlStateNormal];
-    [dropInButton sizeToFit];
+    BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
+    dropInRequest.canMakeApplePayPayments = [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]];
 
-    [self.view addSubview:dropInButton];
-    [dropInButton autoCenterInSuperview];
+    _dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInResult * _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
+            NSLog(@"Error: %@", error);
+        } else if (result.isCancelled) {
+            NSLog(@"Drop-in was cancelled");
+        } else {
+            if (result.paymentOptionType == BTKPaymentOptionTypeApplePay) {
+                self.progressBlock(@"Ready for checkout...");
+                [self setupApplePay];
+            } else {
+                self.useApplePay = NO;
+                self.selectedNonce = result.paymentMethod;
+                self.progressBlock(@"Ready for checkout...");
+                [self updatePaymentMethod:self.selectedNonce];
+            }
+        }
+        [_dropIn dismissViewControllerAnimated:YES completion:nil];
+    }];
+}
 
-    self.progressBlock(@"Ready to present Drop In");
+- (void) setupApplePay {
+    self.paymentMethodTypeLabel.hidden = NO;
+    self.paymentMethodTypeIcon.hidden = NO;
+    self.paymentMethodTypeIcon.paymentOptionType = BTKPaymentOptionTypeApplePay;
+    [self.paymentMethodTypeLabel setText:@"Apple Pay"];
+    self.useApplePay = YES;
+    [self updatePaymentMethodConstraints];
+}
+
+#pragma mark Constraints
+
+- (void)updatePaymentMethodConstraints {
+    [self.view removeConstraints:self.view.constraints];
+
+    NSDictionary *viewBindings = @{
+                                   @"view": self,
+                                   @"cartLabel": self.cartLabel,
+                                   @"itemLabel": self.itemLabel,
+                                   @"priceLabel": self.priceLabel,
+                                   @"paymentMethodHeaderLabel": self.paymentMethodHeaderLabel,
+                                   @"dropInButton": self.dropInButton,
+                                   @"paymentMethodTypeIcon": self.paymentMethodTypeIcon,
+                                   @"paymentMethodTypeLabel": self.paymentMethodTypeLabel,
+                                   @"purchaseButton":self.purchaseButton
+                                   };
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[cartLabel]-|" options:0 metrics:nil views:viewBindings]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[purchaseButton]-|" options:0 metrics:nil views:viewBindings]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[cartLabel]-[itemLabel]-[paymentMethodHeaderLabel]" options:0 metrics:nil views:viewBindings]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[itemLabel]-[priceLabel]-|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewBindings]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodHeaderLabel]-|" options:0 metrics:nil views:viewBindings]];
+
+    if (!self.paymentMethodTypeIcon.hidden && !self.paymentMethodTypeLabel.hidden) {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[paymentMethodHeaderLabel]-[paymentMethodTypeIcon(28)]-[dropInButton]" options:0 metrics:nil views:viewBindings]];
+
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodTypeIcon(44)]-[paymentMethodTypeLabel]" options:NSLayoutFormatAlignAllCenterY metrics:nil views:viewBindings]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[dropInButton]-|" options:0 metrics:nil views:viewBindings]];
+        [self.dropInButton setTitle:@"Change Payment Method" forState:UIControlStateNormal];
+        self.purchaseButton.backgroundColor = self.view.tintColor;
+        self.purchaseButton.enabled = YES;
+    } else {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[paymentMethodHeaderLabel]-[dropInButton]" options:0 metrics:nil views:viewBindings]];
+
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[dropInButton]-|" options:0 metrics:nil views:viewBindings]];
+        [self.dropInButton setTitle:@"Add Payment Method" forState:UIControlStateNormal];
+        self.purchaseButton.backgroundColor = [UIColor lightGrayColor];
+        self.purchaseButton.enabled = NO;
+    }
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[dropInButton]-(20)-[purchaseButton]" options:0 metrics:nil views:viewBindings]];
+    
+}
+
+#pragma mark Button Handlers
+
+- (void)purchaseButtonPressed {
+    if (self.useApplePay) {
+
+        PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
+        paymentRequest.paymentSummaryItems = @[
+                                               [PKPaymentSummaryItem summaryItemWithLabel:@"Socks" amount:[NSDecimalNumber decimalNumberWithString:@"100"]]
+                                              ];
+        paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover];
+        paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
+        paymentRequest.currencyCode = @"USD";
+        paymentRequest.countryCode = @"US";
+        paymentRequest.merchantIdentifier = @"merchant.com.braintreepayments.sandbox.Braintree-Demo";
+
+        BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:self.authorizationString];
+        BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:client];
+        [applePayClient presentApplePayFromViewController:self withPaymentRequest:paymentRequest completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+            if (tokenizedApplePayPayment != nil && error == nil) {
+                self.completionBlock(tokenizedApplePayPayment);
+                self.transactionBlock();
+            }
+        }];
+    } else {
+        self.completionBlock(self.selectedNonce);
+        self.transactionBlock();
+    }
 }
 
 - (void)tappedToShowDropIn {
-    BTPaymentRequest *paymentRequest = [[BTPaymentRequest alloc] init];
-    paymentRequest.summaryTitle = @"Our Fancy Magazine";
-    paymentRequest.summaryDescription = @"53 Week Subscription";
-    paymentRequest.displayAmount = @"$19.00";
-    paymentRequest.callToActionText = @"$19 - Subscribe Now";
-    paymentRequest.shouldHideCallToAction = NO;
-    BTDropInViewController *dropIn = [[BTDropInViewController alloc] initWithAPIClient:self.apiClient];
-    dropIn.delegate = self;
-    dropIn.paymentRequest = paymentRequest;
-    dropIn.title = @"Check Out";
-
-    if ([BraintreeDemoSettings useModalPresentation]) {
-        self.progressBlock(@"Presenting Drop In Modally");
-        dropIn.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(tappedCancel)];
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:dropIn];
-        [self presentViewController:nav animated:YES completion:nil];
-    } else {
-        self.progressBlock(@"Pushing Drop In on nav stack");
-        [self.navigationController pushViewController:dropIn animated:YES];
-    }
-}
-
-
-- (void)tappedCancel {
-    self.progressBlock(@"Dismissing Drop In");
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - BTDropInViewControllerDelegate
-
-// Renamed from -dropInViewController:didSucceedWithPaymentMethod:
-- (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce *)paymentMethodNonce {
-    if ([BraintreeDemoSettings useModalPresentation]) {
-        [viewController dismissViewControllerAnimated:YES completion:^{
-            self.completionBlock(paymentMethodNonce);
-        }];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-        self.completionBlock(paymentMethodNonce);
-    }
-}
-
-- (void)dropInViewControllerWillComplete:(__unused BTDropInViewController *)viewController {
-    self.progressBlock(@"Drop In Will Complete");
-}
-
-- (void)dropInViewControllerDidCancel:(BTDropInViewController *)viewController {
-    self.progressBlock(@"User Canceled Drop In");
-    [viewController dismissViewControllerAnimated:YES completion:nil];
+    [self presentViewController:self.dropIn animated:YES completion:nil];
 }
 
 @end

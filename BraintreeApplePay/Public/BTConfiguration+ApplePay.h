@@ -9,4 +9,6 @@
 /// Indicates whether Apple Pay is enabled for the merchant account.
 @property (nonatomic, readonly, assign) BOOL isApplePayEnabled;
 
+- (NSArray <NSString *> *) supportedCardNetworks;
+
 @end
