@@ -10,7 +10,7 @@ New Drop-In Docs (Beta)
 - And more...
 
 # Fetch last used payment method
-Usually, you’ll want to check if your user already has existing payment methods using `BTDropInController:fetchDropInResultForAuthorization` to determine if you need to show the Drop-In payment picker. Note that the handler will only return a result when using a client token that was created with a `customer_id`. `BTDropInResult` makes it easy to get a description and icon of the payment method.
+If you user already has an existing payment method, you may not need to show the Drop-In payment picker. You can check if they have an existing payment method using `BTDropInController:fetchDropInResultForAuthorization`. Note that the handler will only return a result when using a client token that was created with a `customer_id`. `BTDropInResult` makes it easy to get a description and icon of the payment method.
 
 ![Example payment method icon and description](saved-paypal-method.png "Example payment method icon and description")
 
@@ -19,6 +19,7 @@ Usually, you’ll want to check if your user already has existing payment method
         if (error != nil) {
             print("ERROR")
         } else {
+            // Use the BTDropInResult properties to update your UI
             let selectedPaymentOptionType = result.selectedPaymentOptionType
             let selectedPaymentMethod = result.selectedPaymentMethod
             let selectedPaymentMethodIcon = result.selectedPaymentIcon
@@ -39,6 +40,7 @@ Present `BTDropInController` to collect the customer's payment information and r
         } else if (result?.cancelled == true) {
             print("CANCELLED")
         } else {
+            // Use the BTDropInResult properties to update your UI
             let selectedPaymentOptionType = result.selectedPaymentOptionType
             let selectedPaymentMethod = result.selectedPaymentMethod
             let selectedPaymentMethodIcon = result.selectedPaymentIcon
@@ -81,5 +83,25 @@ If you support Apple Pay, you'll often want to customize the experience or displ
 # Customization
 Use `BTKAppearance` to customize the appearance of Drop-In and other BraintreeUIKit classes.
 ```swift
+// Example
 BTKAppearance.sharedInstance().primaryTextColor = UIColor.greenColor()
+```
+
+Here is the full list of properties...
+```swift
+@property (nonatomic, strong) UIColor *overlayColor;
+@property (nonatomic, strong) UIColor *tintColor;
+@property (nonatomic, strong) UIColor *barBackgroundColor;
+@property (nonatomic, strong) NSString *fontFamily;
+@property (nonatomic, strong) UIColor *sheetBackgroundColor;
+@property (nonatomic, strong) UIColor *formFieldBackgroundColor;
+@property (nonatomic, strong) UIColor *primaryTextColor;
+@property (nonatomic, strong) UIColor *secondaryTextColor;
+@property (nonatomic, strong) UIColor *disabledColor;
+@property (nonatomic, strong) UIColor *placeholderTextColor;
+@property (nonatomic, strong) UIColor *lineColor;
+@property (nonatomic, strong) UIColor *errorBackgroundColor;
+@property (nonatomic, strong) UIColor *errorForegroundColor;
+@property (nonatomic) UIBlurEffectStyle blurStyle;
+@property (nonatomic) BOOL useBlurs;
 ```
