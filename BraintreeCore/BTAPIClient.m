@@ -177,7 +177,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
 
     [self GET:@"v1/payment_methods"
-             parameters:@{@"default_first": @(defaultFirst)}
+             parameters:@{@"default_first": @(defaultFirst),
+                          @"session_id": self.metadata.sessionId}
              completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
                  dispatch_async(dispatch_get_main_queue(), ^{
                      if (completion) {
