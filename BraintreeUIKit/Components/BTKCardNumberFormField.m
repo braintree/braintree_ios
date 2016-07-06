@@ -104,7 +104,7 @@
         [self updateCardHint];
     }
     
-    self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
+    self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid) || self.state == BTKCardNumberFormFieldStateValidate;
     [self updateValidationButton];
     [self updateAppearance];
     [self setNeedsDisplay];

@@ -392,14 +392,19 @@
     self.cardNumberField.state = BTKCardNumberFormFieldStateLoading;
     [unionPayClient fetchCapabilities:self.cardNumberField.number completion:^(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error) {
         if (error) {
-            // TODO handle error
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Sorry, there was an error. Please review your information and try again." preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                [alertController addAction: alertAction];
+                [self presentViewController:alertController animated:YES completion:nil];
+            });
             self.cardNumberField.state = BTKCardNumberFormFieldStateValidate;
             return;
         }
         self.requiredFields = [NSMutableArray arrayWithArray:@[self.cardNumberField, self.expirationDateField]];
         self.optionalFields = [NSMutableArray new];
         _cardCapabilities = cardCapabilities;
-        
+
         if (cardCapabilities.isUnionPay){
             if (cardCapabilities.isDebit) {
                 [self.requiredFields addObject:self.securityCodeField];

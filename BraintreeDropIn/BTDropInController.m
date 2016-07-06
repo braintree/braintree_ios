@@ -362,7 +362,7 @@
                                                                                                              } else {
                                                                                                                  // When tokenization fails for UnionPay, Drop-In will not report the error back but will instead display an alert
                                                                                                                  // And return to the card form
-                                                                                                                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error Validating" message:@"Unable to verify card. Double check your information and try again." preferredStyle:UIAlertControllerStyleAlert];
+                                                                                                                                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Sorry, there was an error. Please review your information and try again." preferredStyle:UIAlertControllerStyleAlert];
                                                                                                                  UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
                                                                                                                      [navController dismissViewControllerAnimated:NO completion:nil];
                                                                                                                  }];

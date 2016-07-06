@@ -60,7 +60,5 @@
 - (void)formFieldDidBeginEditing:(BTKFormField *)formField;
 /// Did end editing
 - (void)formFieldDidEndEditing:(BTKFormField *)formField;
-/// Called when deleting while empty
-- (void)formFieldDidDeleteWhileEmpty:(BTKFormField *)formField;
 
 @end

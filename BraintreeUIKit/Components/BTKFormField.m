@@ -234,9 +234,7 @@
 }
 
 - (void)textFieldDidDeleteBackward:(__unused BTKFormField *)textField originalText:(__unused NSString *)originalText {
-    if (originalText.length == 0) {
-        [self.delegate formFieldDidDeleteWhileEmpty:self];
-    }
+    // To be implemented by subclasses
 }
 
 - (void)textField:(__unused BTKFormField *)textField willInsertText:(__unused NSString *)text {
