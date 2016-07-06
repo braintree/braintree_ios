@@ -117,34 +117,45 @@
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = self.cardForm.phoneNumber;
 
-    [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
+    [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, BOOL smsCodeRequired, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error enrolling card: %@", error.localizedDescription]);
             return;
         }
         
         request.enrollmentID = enrollmentID;
-
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"SMS Auth Code" message:@"An authorization code has been sent to your mobile phone number. Please enter it here" preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addTextFieldWithConfigurationHandler:nil];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Submit" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
-            UITextField *codeTextField = [alertController.textFields firstObject];
-            NSString *authCode = codeTextField.text;
-            request.smsCode = authCode;
-
-            self.progressBlock(@"Tokenizing card");
-
+        
+        if (smsCodeRequired) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"SMS Auth Code" message:@"An authorization code has been sent to your mobile phone number. Please enter it here" preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addTextFieldWithConfigurationHandler:nil];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Submit" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
+                UITextField *codeTextField = [alertController.textFields firstObject];
+                NSString *authCode = codeTextField.text;
+                request.smsCode = authCode;
+                
+                self.progressBlock(@"Tokenizing card");
+                
+                [self.cardClient tokenizeCard:request options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+                    if (error) {
+                        self.progressBlock([NSString stringWithFormat:@"Error tokenizing card: %@", error.localizedDescription]);
+                        return;
+                    }
+                    
+                    self.completionBlock(tokenizedCard);
+                }];
+            }]];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        } else {
             [self.cardClient tokenizeCard:request options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
                 if (error) {
                     self.progressBlock([NSString stringWithFormat:@"Error tokenizing card: %@", error.localizedDescription]);
                     return;
                 }
-
+                
                 self.completionBlock(tokenizedCard);
             }];
-        }]];
-
-        [self presentViewController:alertController animated:YES completion:nil];
+        }
     }];
 }
 
