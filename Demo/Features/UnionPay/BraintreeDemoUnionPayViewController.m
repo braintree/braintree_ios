@@ -171,12 +171,13 @@
             return;
         }
 
-        if (!cardCapabilities.isSupported) {
-            self.cardForm.optionalFields = self.cardForm.optionalFields ^ BTUICardFormOptionalFieldsPhoneNumber;
-            self.smsButton.hidden = YES;
-        } else {
+        if (cardCapabilities.isSupported) {
             self.cardForm.optionalFields = self.cardForm.optionalFields | BTUICardFormOptionalFieldsPhoneNumber;
             self.smsButton.hidden = NO;
+            self.submitButton.hidden = NO;
+        } else {
+            self.progressBlock([NSString stringWithFormat:@"This UnionPay card cannot be processed, please try another card."]);
+            self.submitButton.hidden = YES;
         }
 
         if (cardCapabilities.isDebit) {
