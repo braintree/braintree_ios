@@ -495,6 +495,49 @@ class BTCardClient_UnionPayTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testTokenization_withoutSmsCode_isSuccessful() {
+        let mockHTTP = BTFakeHTTP()!
+        apiClient.http = mockHTTP
+        let cardClient = BTCardClient(APIClient: apiClient)
+        let request = BTCardRequest()
+        request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
+        // This is an internal-only property, but we want to verify that it gets sent when hitting the tokenization endpoint
+        request.enrollmentID = "enrollment-id"
+
+        let expectation = expectationWithDescription("Callback invoked")
+        cardClient.tokenizeCard(request, options: nil) { (_, _) -> Void in
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(1, handler: nil)
+
+        XCTAssertEqual(mockHTTP.lastRequestMethod, "POST")
+        XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods/credit_cards")
+        if let parameters = mockHTTP.lastRequestParameters as? [String: AnyObject] {
+            guard let cardParameters = parameters["credit_card"] as? [String: AnyObject] else {
+                XCTFail("Card should be in parameters")
+                return
+            }
+            XCTAssertEqual(cardParameters["number"] as? String, "4111111111111111")
+            XCTAssertEqual(cardParameters["expiration_date"] as? String, "12/2038")
+            XCTAssertEqual(cardParameters["cvv"] as? String, "123")
+            
+            guard let tokenizationOptionsParameters = cardParameters["options"] as? [String: AnyObject] else {
+                XCTFail("Tokenization options should be present")
+                return
+            }
+            
+            guard let unionPayEnrollmentParameters = tokenizationOptionsParameters["union_pay_enrollment"] as? [String: AnyObject] else {
+                XCTFail("UnionPay enrollment should be present")
+                return
+            }
+            
+            XCTAssertNil(unionPayEnrollmentParameters["sms_code"])
+            XCTAssertEqual(unionPayEnrollmentParameters["id"] as? String, "enrollment-id")
+        } else {
+            XCTFail()
+        }
+    }
 
     func testTokenization_whenTokenizingUnionPayEnrolledCardSucceeds_sendsAnalyticsEvent() {
         let mockAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
