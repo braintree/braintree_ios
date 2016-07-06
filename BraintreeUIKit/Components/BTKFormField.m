@@ -150,10 +150,10 @@
 
 - (void)drawRect:(CGRect)rect {
     // Draw borders
+    [[BTKAppearance sharedInstance].lineColor setFill];
     CGContextRef context = UIGraphicsGetCurrentContext();
     if (!self.displayAsValid) {
-        [[BTKAppearance sharedInstance].errorForegroundColor setFill];
-        
+
         CGPathRef path = CGPathCreateWithRect(CGRectMake(rect.origin.x, CGRectGetMaxY(rect) - 0.5f, rect.size.width, 0.5f), NULL);
         CGContextAddPath(context, path);
         CGPathRelease(path);
@@ -168,14 +168,12 @@
             CGFloat horizontalMargin = self.bottomBorder ? 0 : 17.0f;
             CGPathRef path = CGPathCreateWithRect(CGRectMake(rect.origin.x + horizontalMargin, CGRectGetMaxY(rect) - 0.5f, rect.size.width - horizontalMargin, 0.5f), NULL);
             CGContextAddPath(context, path);
-            [[BTKAppearance sharedInstance].lineColor setFill];
             CGContextDrawPath(context, kCGPathFill);
             CGPathRelease(path);
         }
         if (self.topBorder) {
             CGPathRef path = CGPathCreateWithRect(CGRectMake(rect.origin.x, 0, rect.size.width, 0.5f), NULL);
             CGContextAddPath(context, path);
-            [[BTKAppearance sharedInstance].lineColor setFill];
             CGContextDrawPath(context, kCGPathFill);
             CGPathRelease(path);
         }
@@ -202,13 +200,11 @@
     NSString *currentAccessibilityLabel = self.textField.accessibilityLabel;
     if (!self.displayAsValid){
         textColor = [BTKAppearance sharedInstance].errorForegroundColor;
-        self.backgroundColor = [BTKAppearance sharedInstance].errorBackgroundColor;
         if (currentAccessibilityLabel != nil) {
             self.textField.accessibilityLabel = [self addInvalidAccessibilityToString:currentAccessibilityLabel];
         }
     } else {
         textColor = [BTKAppearance sharedInstance].primaryTextColor;
-        self.backgroundColor = [BTKAppearance sharedInstance].formFieldBackgroundColor;
         if (currentAccessibilityLabel != nil) {
             self.textField.accessibilityLabel = [self stripInvalidAccessibilityFromString:currentAccessibilityLabel];
         }

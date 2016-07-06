@@ -26,6 +26,7 @@
 @property (nonatomic, strong, readwrite) BTKPostalCodeFormField *postalCodeField;
 @property (nonatomic, strong, readwrite) BTKMobileCountryCodeFormField *mobileCountryCodeField;
 @property (nonatomic, strong, readwrite) BTKMobileNumberFormField *mobilePhoneField;
+@property (nonatomic, strong) UIStackView *cardNumberErrorView;
 @property (nonatomic, strong) UIStackView *cardNumberHeader;
 @property (nonatomic, strong) UIButton* nextButton;
 @property (nonatomic, strong) NSArray <BTKFormField *> *formFields;
@@ -244,6 +245,10 @@
     [self.stackView insertArrangedSubview:self.cardNumberFooter atIndex:(indexOfCardNumberField + 1)];
     
     [self updateFormBorders];
+
+    //Error labels
+    self.cardNumberErrorView = [self newStackViewForError:@"You must provide a valid Card Number."];
+    [self cardNumberErrorHidden:YES];
 }
 
 - (BOOL)textFieldShouldReturn:(__unused UITextField *)textField {
@@ -374,6 +379,19 @@
     return stackView;
 }
 
+- (UIStackView *)newStackViewForError:(NSString*)errorText {
+    UIStackView *newStackView = [self newStackView];
+    UILabel *errorLabel = [UILabel new];
+    errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [BTKAppearance styleSmallLabelPrimary:errorLabel];
+    errorLabel.textColor = [BTKAppearance sharedInstance].errorForegroundColor;
+    errorLabel.text = errorText;
+    newStackView.layoutMargins = UIEdgeInsetsMake(10, 10, 10, 10);
+    newStackView.layoutMarginsRelativeArrangement = true;
+    [newStackView addArrangedSubview:errorLabel];
+    return newStackView;
+}
+
 - (BOOL)isFormValid {
     __block BOOL isFormValid = YES;
     [self.requiredFields enumerateObjectsUsingBlock:^(BTKFormField * _Nonnull formField, __unused NSUInteger idx, BOOL * _Nonnull stop) {
@@ -390,6 +408,7 @@
 - (void)validateButtonPressed:(__unused BTKFormField *)formField {
     BTCardClient *unionPayClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
     self.cardNumberField.state = BTKCardNumberFormFieldStateLoading;
+    self.cardNumberErrorView.hidden = YES;
     [unionPayClient fetchCapabilities:self.cardNumberField.number completion:^(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error) {
         if (error) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -398,6 +417,7 @@
                 [alertController addAction: alertAction];
                 [self presentViewController:alertController animated:YES completion:nil];
             });
+            self.cardNumberErrorView.hidden = NO;
             self.cardNumberField.state = BTKCardNumberFormFieldStateValidate;
             return;
         }
@@ -452,8 +472,18 @@
             self.collapsed = NO;
             [self.expirationDateField becomeFirstResponder];
         }
+        [self cardNumberErrorHidden:self.cardNumberField.displayAsValid];
     }else if (!self.collapsed && formField == self.cardNumberField && !self.isUnionPay) {
         self.collapsed = YES;
+    }
+}
+
+- (void)cardNumberErrorHidden:(BOOL)hidden {
+    NSInteger indexOfCardNumberFormField = [self.stackView.arrangedSubviews indexOfObject:self.cardNumberField];
+    if (indexOfCardNumberFormField != NSNotFound && !hidden) {
+        [self.stackView insertArrangedSubview:self.cardNumberErrorView atIndex:indexOfCardNumberFormField + 1];
+    } else if (self.cardNumberErrorView.superview != nil && hidden) {
+        [self.cardNumberErrorView removeFromSuperview];
     }
 }
 
