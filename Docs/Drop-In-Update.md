@@ -9,23 +9,29 @@ New Drop-In Docs (Beta)
 - Customizable appearance
 - And more...
 
+# Get the new Drop-In
+To get the new Drop-In, add the following to your Podfile:
+```
+pod 'Braintree/DropIn'
+```
+
 # Fetch last used payment method
 If you user already has an existing payment method, you may not need to show the Drop-In payment picker. You can check if they have an existing payment method using `BTDropInController:fetchDropInResultForAuthorization`. Note that the handler will only return a result when using a client token that was created with a `customer_id`. `BTDropInResult` makes it easy to get a description and icon of the payment method.
 
 ![Example payment method icon and description](saved-paypal-method.png "Example payment method icon and description")
 
 ```swift
-    BTDropInController(fetchDropInResultForAuthorization: clientTokenOrTokenizeKey) { (result, error) in
+    BTDropInController.fetchDropInResultForAuthorization(clientTokenOrTokenizationKey, handler: { (result, error) in
         if (error != nil) {
             print("ERROR")
         } else {
             // Use the BTDropInResult properties to update your UI
-            let selectedPaymentOptionType = result.selectedPaymentOptionType
-            let selectedPaymentMethod = result.selectedPaymentMethod
-            let selectedPaymentMethodIcon = result.selectedPaymentIcon
-            let selectedPaymentMethodDescription = result.selectedPaymentDescription
+            let selectedPaymentOptionType = result!.paymentOptionType
+            let selectedPaymentMethod = result!.paymentMethod
+            let selectedPaymentMethodIcon = result!.paymentIcon
+            let selectedPaymentMethodDescription = result!.paymentDescription
         }
-    }
+    })
 ```
 # Show Drop-In
 Present `BTDropInController` to collect the customer's payment information and receive the `nonce` to send to your server. If your customer selected Apple Pay as their preferred payment method then `result.selectedPaymentOptionType == .ApplePay` but the `result.selectedPaymentMethod` will be `nil`.
@@ -41,13 +47,13 @@ Present `BTDropInController` to collect the customer's payment information and r
             print("CANCELLED")
         } else {
             // Use the BTDropInResult properties to update your UI
-            let selectedPaymentOptionType = result.selectedPaymentOptionType
-            let selectedPaymentMethod = result.selectedPaymentMethod
-            let selectedPaymentMethodIcon = result.selectedPaymentIcon
-            let selectedPaymentMethodDescription = result.selectedPaymentDescription
+            let selectedPaymentOptionType = result!.paymentOptionType
+            let selectedPaymentMethod = result!.paymentMethod
+            let selectedPaymentMethodIcon = result!.paymentIcon
+            let selectedPaymentMethodDescription = result!.paymentDescription
         }
         self.dropIn!.dismissViewControllerAnimated(true, completion: nil)
-    }!
+        }!
     self.presentViewController(self.dropIn!, animated: true, completion: nil)
 ```
 
@@ -56,6 +62,11 @@ If there are saved payment methods they will appear:
 ![Example saved payment method](saved-payment-methods.png "Example saved payment method")
 
 # Apple Pay + Drop-In
+Make sure the following is included in your Podfile:
+```
+pod 'Braintree/Apple-Pay'
+```
+
 If you support Apple Pay, you'll often want to customize the experience or display it in the final step of your checkout flow. Use `BTApplePayClient` when appropriate to tokenize the customer's Apple Pay information.
 ```swift
     let paymentRequest = PKPaymentRequest()
@@ -75,7 +86,7 @@ If you support Apple Pay, you'll often want to customize the experience or displ
     let applePayClient = BTApplePayClient(APIClient: client!)
     applePayClient.presentApplePayFromViewController(self, withPaymentRequest: paymentRequest, completion: { (applePayPaymentMethod, error) in
         if (applePayPaymentMethod != nil) {
-            self.showPurchaseAlert(applePayPaymentMethod!.nonce)
+            print("Show purchase alert w/ nonce: \(applePayPaymentMethod!.nonce)")
         }
     })
 ```
