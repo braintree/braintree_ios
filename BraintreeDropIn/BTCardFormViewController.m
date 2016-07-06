@@ -17,9 +17,9 @@
 
 @interface BTCardFormViewController ()
 
-@property (nonatomic, strong) UIScrollView* scrollView;
-@property (nonatomic, strong) UIView* scrollViewContentWrapper;
-@property (nonatomic, strong) UIStackView* stackView;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIView *scrollViewContentWrapper;
+@property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong, readwrite) BTKCardNumberFormField *cardNumberField;
 @property (nonatomic, strong, readwrite) BTKExpiryFormField *expirationDateField;
 @property (nonatomic, strong, readwrite) BTKSecurityCodeFormField *securityCodeField;
@@ -27,19 +27,22 @@
 @property (nonatomic, strong, readwrite) BTKMobileCountryCodeFormField *mobileCountryCodeField;
 @property (nonatomic, strong, readwrite) BTKMobileNumberFormField *mobilePhoneField;
 @property (nonatomic, strong) UIStackView *cardNumberHeader;
-@property (nonatomic, strong) UIButton* nextButton;
+@property (nonatomic, strong) UIButton *nextButton;
 @property (nonatomic, strong) NSArray <BTKFormField *> *formFields;
 @property (nonatomic, strong) NSMutableArray <BTKFormField *> *requiredFields;
 @property (nonatomic, strong) NSMutableArray <BTKFormField *> *optionalFields;
 @property (nonatomic, strong) UIStackView *cardNumberFooter;
 @property (nonatomic, strong) BTKCardListLabel *cardList;
 @property (nonatomic, getter=isCollapsed) BOOL collapsed;
+@property (nonatomic, strong, nullable, readwrite) BTCardCapabilities *cardCapabilities;
 @property (nonatomic) BOOL isUnionPay;
 @end
 
 @implementation BTCardFormViewController
 
 #define ADD_CARD_BAR_BUTTON_ITEM_TAG 8292
+
+#pragma mark - Lifecycle
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient request:(nonnull BTDropInRequest *)request {
     if (self = [super initWithAPIClient:apiClient request:request]) {
@@ -74,13 +77,14 @@
     self.view.translatesAutoresizingMaskIntoConstraints = false;
     self.view.backgroundColor = [UIColor clearColor];
     
-    NSDictionary* viewBindings = @{@"stackView":self.stackView, @"scrollView":self.scrollView, @"scrollViewContentWrapper": self.scrollViewContentWrapper};
+    NSDictionary *viewBindings = @{@"stackView":self.stackView,
+                                   @"scrollView":self.scrollView,
+                                   @"scrollViewContentWrapper": self.scrollViewContentWrapper};
     
-    NSDictionary* metrics = @{};
+    NSDictionary *metrics = @{};
 
     [self.scrollView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor].active = YES;
     [self.scrollView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor].active = YES;
-
     [self.scrollView.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = YES;
     [self.scrollView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
 
@@ -103,9 +107,7 @@
                                                                       metrics:metrics
                                                                         views:viewBindings]];
     
-    UITapGestureRecognizer * tapGesture = [[UITapGestureRecognizer alloc]
-                                           initWithTarget:self
-                                           action:@selector(hideKeyBoard)];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
 
     [self.view addGestureRecognizer:tapGesture];
     
@@ -123,54 +125,7 @@
     [self loadConfiguration];
 }
 
-- (void)resetForm {
-    self.navigationItem.leftBarButtonItem = [[BTKBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.rightBarButtonItem = [[BTKBarButtonItem alloc] initWithTitle:@"Add Card" style:UIBarButtonItemStylePlain target:nil action:nil];
-
-    self.navigationItem.rightBarButtonItem.tag = ADD_CARD_BAR_BUTTON_ITEM_TAG;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-
-    self.title = @"Card Details";
-    for (BTKFormField *formField in self.formFields) {
-        formField.text = @"";
-        formField.hidden = YES;
-    }
-    _collapsed = YES;
-    self.isUnionPay = NO;
-    self.cardNumberField.hidden = NO;
-    [self.cardNumberField resetFormField];
-    self.cardNumberFooter.hidden = NO;
-    self.cardNumberHeader.hidden = NO;
-    [self.cardList emphasizePaymentOption:BTKPaymentOptionTypeUnknown];
-    [self updateFormBorders];
-}
-
-- (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(NSError *)error {
-    [self showLoadingScreen:NO animated:YES];
-    if (!error) {
-        self.collapsed = YES;
-        self.isUnionPay = NO;
-        BTJSON* unionPayJSON = self.configuration.json[@"unionPay"];
-        if (![unionPayJSON isError] && [unionPayJSON[@"enabled"] isTrue] && !self.apiClient.tokenizationKey) {
-            self.isUnionPay = YES;
-            self.cardNumberField.state = BTKCardNumberFormFieldStateValidate;
-            [self.cardNumberField setAccessoryViewHidden:NO animated:NO];
-        }
-
-        NSArray <NSString *> *challenges = [self.configuration.json[@"challenges"] asStringArray];
-        self.requiredFields = [NSMutableArray arrayWithArray:@[self.cardNumberField, self.expirationDateField]];
-        if ([challenges containsObject:@"cvv"]) {
-            [self.requiredFields addObject:self.securityCodeField];
-        }
-        if ([challenges containsObject:@"postal_code"]) {
-            [self.requiredFields addObject:self.postalCodeField];
-        }
-    }
-}
-
--(void)hideKeyBoard {
-    [self.view endEditing:YES];
-}
+#pragma mark - Setup
 
 - (void)setupForm
 {
@@ -246,26 +201,27 @@
     [self updateFormBorders];
 }
 
-- (BOOL)textFieldShouldReturn:(__unused UITextField *)textField {
-    return YES;
-}
+- (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(NSError *)error {
+    [self showLoadingScreen:NO animated:YES];
+    if (!error) {
+        self.collapsed = YES;
+        self.isUnionPay = NO;
+        BTJSON *unionPayJSON = self.configuration.json[@"unionPay"];
+        if (![unionPayJSON isError] && [unionPayJSON[@"enabled"] isTrue] && !self.apiClient.tokenizationKey) {
+            self.isUnionPay = YES;
+            self.cardNumberField.state = BTKCardNumberFormFieldStateValidate;
+            [self.cardNumberField setAccessoryViewHidden:NO animated:NO];
+        }
 
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-    CGRect keyboardRectInWindow = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGSize keyboardSize = [self.view convertRect:keyboardRectInWindow fromView:nil].size;
-    UIEdgeInsets scrollInsets = self.scrollView.contentInset;
-    scrollInsets.bottom = keyboardSize.height;
-    self.scrollView.contentInset = scrollInsets;
-    self.scrollView.scrollIndicatorInsets = scrollInsets;
-}
-
-- (void)keyboardWillHide:(__unused NSNotification *)notification
-{
-    UIEdgeInsets scrollInsets = self.scrollView.contentInset;
-    scrollInsets.bottom = 0.0;
-    self.scrollView.contentInset = scrollInsets;
-    self.scrollView.scrollIndicatorInsets = scrollInsets;
+        NSArray <NSString *> *challenges = [self.configuration.json[@"challenges"] asStringArray];
+        self.requiredFields = [NSMutableArray arrayWithArray:@[self.cardNumberField, self.expirationDateField]];
+        if ([challenges containsObject:@"cvv"]) {
+            [self.requiredFields addObject:self.securityCodeField];
+        }
+        if ([challenges containsObject:@"postal_code"]) {
+            [self.requiredFields addObject:self.postalCodeField];
+        }
+    }
 }
 
 #pragma mark - Custom accessors
@@ -275,7 +231,10 @@
         return nil;
     }
 
-    BTCard *card = [[BTCard alloc] initWithNumber:self.cardNumberField.text expirationMonth:self.expirationDateField.expirationMonth expirationYear:self.expirationDateField.expirationYear cvv:self.securityCodeField.text];
+    BTCard *card = [[BTCard alloc] initWithNumber:self.cardNumberField.text
+                                  expirationMonth:self.expirationDateField.expirationMonth
+                                   expirationYear:self.expirationDateField.expirationYear
+                                              cvv:self.securityCodeField.text];
     card.shouldValidate = self.apiClient.tokenizationKey ? NO : YES;
     BTCardRequest *cardRequest = [[BTCardRequest alloc] initWithCard:card];
 
@@ -318,6 +277,54 @@
     });
 }
 
+#pragma mark - Public methods
+
+- (void)resetForm {
+    self.navigationItem.leftBarButtonItem = [[BTKBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.rightBarButtonItem = [[BTKBarButtonItem alloc] initWithTitle:@"Add Card" style:UIBarButtonItemStylePlain target:nil action:nil];
+
+    self.navigationItem.rightBarButtonItem.tag = ADD_CARD_BAR_BUTTON_ITEM_TAG;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+
+    self.title = @"Card Details";
+    for (BTKFormField *formField in self.formFields) {
+        formField.text = @"";
+        formField.hidden = YES;
+    }
+    _collapsed = YES;
+    self.isUnionPay = NO;
+    self.cardNumberField.hidden = NO;
+    [self.cardNumberField resetFormField];
+    self.cardNumberFooter.hidden = NO;
+    self.cardNumberHeader.hidden = NO;
+    [self.cardList emphasizePaymentOption:BTKPaymentOptionTypeUnknown];
+    [self updateFormBorders];
+}
+
+#pragma mark - Keyboard management
+
+-(void)hideKeyboard {
+    [self.view endEditing:YES];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    CGRect keyboardRectInWindow = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGSize keyboardSize = [self.view convertRect:keyboardRectInWindow fromView:nil].size;
+    UIEdgeInsets scrollInsets = self.scrollView.contentInset;
+    scrollInsets.bottom = keyboardSize.height;
+    self.scrollView.contentInset = scrollInsets;
+    self.scrollView.scrollIndicatorInsets = scrollInsets;
+}
+
+- (void)keyboardWillHide:(__unused NSNotification *)notification
+{
+    UIEdgeInsets scrollInsets = self.scrollView.contentInset;
+    scrollInsets.bottom = 0.0;
+    self.scrollView.contentInset = scrollInsets;
+    self.scrollView.scrollIndicatorInsets = scrollInsets;
+}
+
 #pragma mark - Helper methods
 
 - (void)updateFormBorders {
@@ -350,13 +357,13 @@
     }
 }
 
-- (UIView* )addSpacerToStackView:(UIStackView*)stackView beforeView:(UIView*)view {
+- (UIView *)addSpacerToStackView:(UIStackView*)stackView beforeView:(UIView*)view {
     NSInteger indexOfView = [stackView.arrangedSubviews indexOfObject:view];
     if (indexOfView != NSNotFound) {
-        UIView* spacer = [[UIView alloc] init];
+        UIView *spacer = [[UIView alloc] init];
         spacer.translatesAutoresizingMaskIntoConstraints = NO;
         [stackView insertArrangedSubview:spacer atIndex:indexOfView];
-        NSLayoutConstraint* heightConstraint = [spacer.heightAnchor constraintEqualToConstant:36];
+        NSLayoutConstraint *heightConstraint = [spacer.heightAnchor constraintEqualToConstant:36];
         heightConstraint.priority = UILayoutPriorityDefaultHigh;
         heightConstraint.active = true;
         return spacer;
@@ -385,6 +392,15 @@
     return isFormValid;
 }
 
+- (void)updateSubmitButton {
+    if (!self.collapsed && [self isFormValid] && self.navigationItem.rightBarButtonItem.tag == ADD_CARD_BAR_BUTTON_ITEM_TAG) {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    } else {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+}
+
+#pragma mark - Protocol conformance
 #pragma mark FormField Delegate Methods
 
 - (void)validateButtonPressed:(__unused BTKFormField *)formField {
@@ -398,15 +414,14 @@
         }
         self.requiredFields = [NSMutableArray arrayWithArray:@[self.cardNumberField, self.expirationDateField]];
         self.optionalFields = [NSMutableArray new];
-        _cardCapabilities = cardCapabilities;
+        self.cardCapabilities = cardCapabilities;
         
         if (cardCapabilities.isUnionPay){
             if (cardCapabilities.isDebit) {
                 [self.requiredFields addObject:self.securityCodeField];
                 [self.optionalFields addObject:self.securityCodeField];
                 [self.optionalFields addObject:self.expirationDateField];
-            }
-            else {
+            } else {
                 [self.requiredFields addObject:self.securityCodeField];
             }
         }
@@ -423,23 +438,9 @@
     }];
 }
 
-- (void) updateSubmitButton {
-    if (!self.collapsed && [self isFormValid] && self.navigationItem.rightBarButtonItem.tag == ADD_CARD_BAR_BUTTON_ITEM_TAG) {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    } else {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
-    }
-}
-
 - (void)formFieldDidChange:(BTKFormField *)formField {
     [self updateSubmitButton];
-    
-    if (!self.collapsed && formField == self.cardNumberField && self.isUnionPay) {
-        _cardCapabilities = nil;
-        self.cardNumberField.state = BTKCardNumberFormFieldStateValidate;
-        self.collapsed = YES;
-        return;
-    }
+
     if (self.collapsed && formField == self.cardNumberField && !self.isUnionPay) {
         BTKPaymentOptionType paymentMethodType = [BTKViewUtil paymentMethodTypeForCardType:self.cardNumberField.cardType];
         [self.cardList emphasizePaymentOption:paymentMethodType];
@@ -447,9 +448,20 @@
             self.collapsed = NO;
             [self.expirationDateField becomeFirstResponder];
         }
-    }else if (!self.collapsed && formField == self.cardNumberField && !self.isUnionPay) {
+    }
+    if (!self.collapsed && formField == self.cardNumberField && self.isUnionPay) {
+        if (self.isUnionPay) {
+            self.cardCapabilities = nil;
+            self.cardNumberField.state = BTKCardNumberFormFieldStateValidate;
+        }
         self.collapsed = YES;
     }
+}
+
+#pragma mark UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(__unused UITextField *)textField {
+    return YES;
 }
 
 @end
