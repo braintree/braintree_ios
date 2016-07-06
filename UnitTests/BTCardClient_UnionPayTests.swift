@@ -104,7 +104,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             "isDebit": false,
             "unionPay": [
                 "supportsTwoStepAuthAndCapture": true,
-                "isUnionPayEnrollmentRequired": false
+                "isSupported": true
                 ]
             ], statusCode: 201)
         apiClient.http = stubHTTP
@@ -122,7 +122,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             XCTAssertEqual(true, cardCapabilities.isUnionPay)
             XCTAssertEqual(false, cardCapabilities.isDebit)
             XCTAssertEqual(true, cardCapabilities.supportsTwoStepAuthAndCapture)
-            XCTAssertEqual(false, cardCapabilities.isUnionPayEnrollmentRequired)
+            XCTAssertEqual(true, cardCapabilities.isSupported)
             expectation.fulfill()
         }
         
@@ -137,7 +137,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             "isDebit": false,
             "unionPay": [
                 "supportsTwoStepAuthAndCapture": true,
-                "isUnionPayEnrollmentRequired": false
+                "isSupported": true
                 ]
             ])
         let cardClient = BTCardClient(APIClient: mockAPIClient)

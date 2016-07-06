@@ -171,7 +171,7 @@
             return;
         }
 
-        if (!cardCapabilities.isUnionPayEnrollmentRequired) {
+        if (!cardCapabilities.isSupported) {
             self.cardForm.optionalFields = self.cardForm.optionalFields ^ BTUICardFormOptionalFieldsPhoneNumber;
             self.smsButton.hidden = YES;
         } else {
