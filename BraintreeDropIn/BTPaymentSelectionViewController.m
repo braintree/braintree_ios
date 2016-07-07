@@ -142,12 +142,16 @@
     [self.paymentOptionsTableView removeObserver:self forKeyPath:@"contentSize"];
 }
 
-- (void)observeValueForKeyPath:(__unused NSString *)keyPath ofObject:(__unused id)object change:(__unused NSDictionary<NSString *,id> *)change context:(__unused void *)context {
-    [self.paymentOptionsTableView removeConstraints:self.paymentOptionsTableView.constraints];
-    NSLayoutConstraint* heightConstraint = [self.paymentOptionsTableView.heightAnchor constraintEqualToConstant:self.paymentOptionsTableView.contentSize.height];
-    // Setting the prioprity is necessary to avoid autolayout errors when UIStackView rotates
-    heightConstraint.priority = UILayoutPriorityDefaultHigh;
-    heightConstraint.active = YES;
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary <NSString *, id> *)change context:(void *)context {
+    if ([keyPath isEqualToString:@"contentSize"]) {
+        [self.paymentOptionsTableView removeConstraints:self.paymentOptionsTableView.constraints];
+        NSLayoutConstraint *heightConstraint = [self.paymentOptionsTableView.heightAnchor constraintEqualToConstant:self.paymentOptionsTableView.contentSize.height];
+        // Setting the prioprity is necessary to avoid autolayout errors when UIStackView rotates
+        heightConstraint.priority = UILayoutPriorityDefaultHigh;
+        heightConstraint.active = YES;
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 - (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(NSError *)error {
