@@ -7,27 +7,18 @@
 #endif
 
 #import "BTApplePayClient_Internal.h"
-#import "BTConfiguration+ApplePay.h"
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
 
-// To retain the client that is presenting and tokenization Apple Pay
-static BTApplePayClient *presentingClient;
-
-@interface BTApplePayClient () <PKPaymentAuthorizationViewControllerDelegate>
-
-@property (nonatomic, strong, nullable) BTApplePayCardNonce *tokenizationNonce;
-@property (nonatomic, strong, nullable) NSError *tokenizationError;
-@property (nonatomic, strong, nullable) void (^completionBlock)(BTApplePayCardNonce *tokenizedApplePayPayment, NSError *error);
-
+@interface BTApplePayClient ()
 @end
 
 @implementation BTApplePayClient
 
 + (void)load {
     if (self == [BTApplePayClient class]) {
-        [[BTPaymentMethodNonceParser sharedParser] registerType:@"ApplePay" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull applePayCard) {
-            NSString *cardType = applePayCard[@"details"][@"cardType"] ? [applePayCard[@"details"][@"cardType"] asString] : @"ApplePay";
+        [[BTPaymentMethodNonceParser sharedParser] registerType:@"ApplePayCard" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull applePayCard) {
+            NSString *cardType = applePayCard[@"details"][@"cardType"] ? [applePayCard[@"details"][@"cardType"] asString] : @"ApplePayCard";
             return [[BTApplePayCardNonce alloc] initWithNonce:[applePayCard[@"nonce"] asString] localizedDescription:[applePayCard[@"description"] asString] type:cardType];
         }];
     }
@@ -42,14 +33,6 @@ static BTApplePayClient *presentingClient;
 
 - (instancetype)init {
     return nil;
-}
-
-- (void)presentApplePayFromViewController:(UIViewController *)viewController withPaymentRequest:(PKPaymentRequest *)paymentRequest completion:(void (^)(BTApplePayCardNonce * _Nullable, NSError * _Nullable))completionBlock {
-    presentingClient = self;
-    self.completionBlock = completionBlock;
-    PKPaymentAuthorizationViewController *authViewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
-    authViewController.delegate = self;
-    [viewController presentViewController:authViewController animated:YES completion:nil];
 }
 
 - (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTApplePayCardNonce *, NSError *))completionBlock {
@@ -107,7 +90,7 @@ static BTApplePayClient *presentingClient;
                       }
 
                       BTJSON *applePayCard = body[@"applePayCards"][0];
-                      NSString *cardType = applePayCard[@"details"][@"cardType"] ? [applePayCard[@"details"][@"cardType"] asString] : @"ApplePay";
+                      NSString *cardType = applePayCard[@"details"][@"cardType"] ? [applePayCard[@"details"][@"cardType"] asString] : @"ApplePayCard";
                       BTApplePayCardNonce *tokenized = [[BTApplePayCardNonce alloc] initWithNonce:[applePayCard[@"nonce"] asString] localizedDescription:[applePayCard[@"description"] asString] type:cardType];
 
                       completionBlock(tokenized, nil);
@@ -135,33 +118,4 @@ static BTApplePayClient *presentingClient;
 
     return [mutableParameters copy];
 }
-
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
-                       didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion
-{
-    [self tokenizeApplePayPayment:payment completion:^(__unused BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.tokenizationError = error;
-            self.tokenizationNonce = tokenizedApplePayPayment;
-            if (error) {
-                completion(PKPaymentAuthorizationStatusFailure);
-            } else {
-                completion(PKPaymentAuthorizationStatusSuccess);
-            }
-
-        });
-
-
-    }];
-}
-
-- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
-    [controller dismissViewControllerAnimated:YES completion:^{
-        if(self.completionBlock) {
-            self.completionBlock(self.tokenizationNonce, self.tokenizationError);
-        }
-    }];
-}
-
 @end

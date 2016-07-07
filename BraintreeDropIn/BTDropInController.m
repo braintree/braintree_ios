@@ -45,17 +45,21 @@
     __block BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     
     [apiClient fetchPaymentMethodNonces:NO completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
-        BTDropInResult *result = [BTDropInResult new];
-        if (lastSelectedPaymentOptionType == BTKPaymentOptionTypeApplePay) {
-            result.paymentOptionType = lastSelectedPaymentOptionType;
-        } else if (paymentMethodNonces != nil && paymentMethodNonces.count > 0) {
-            BTPaymentMethodNonce *paymentMethod = paymentMethodNonces.firstObject;
-            result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethod.type];
-            result.paymentMethod = paymentMethod;
-        }
-        handler(result, error);
-        apiClient = nil;
-    }];
+                                       if (error != nil) {
+                                           handler(nil, error);
+                                       } else {
+                                           BTDropInResult *result = [BTDropInResult new];
+                                           if (lastSelectedPaymentOptionType == BTKPaymentOptionTypeApplePay) {
+                                               result.paymentOptionType = lastSelectedPaymentOptionType;
+                                           } else if (paymentMethodNonces != nil && paymentMethodNonces.count > 0) {
+                                               BTPaymentMethodNonce *paymentMethod = paymentMethodNonces.firstObject;
+                                               result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethod.type];
+                                               result.paymentMethod = paymentMethod;
+                                           }
+                                           handler(result, error);
+                                       }
+                                       apiClient = nil;
+                                   }];
 }
 
 #pragma mark - Lifecycle
@@ -71,8 +75,8 @@
         }
         if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
             self.modalPresentationStyle = UIModalPresentationFormSheet;
-            // Incase we want to customize the iPad size...
-            //self.preferredContentSize = CGSizeMake(300, 300);
+            // Customize the iPad size...
+            // self.preferredContentSize = CGSizeMake(600, 400);
         } else {
             self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
             self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -83,18 +87,8 @@
             self.useBlur = NO;
         }
         self.handler = handler;
-        
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(orientationChange)
-                                                     name:UIDeviceOrientationDidChangeNotification
-                                                   object:nil];
     }
     return self;
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -122,7 +116,7 @@
             [self flexViewToFullScreenIfPossible:true animated:NO];
         } else {
             // Move content off screen so it can be animated in when it appears
-            CGFloat sh = CGRectGetHeight([[UIScreen mainScreen] bounds]);
+            CGFloat sh = CGRectGetHeight([[UIScreen mainScreen] bounds]) + [UIApplication sharedApplication].statusBarFrame.size.height;
             self.contentHeightConstraintBottom.constant = sh;
             self.contentHeightConstraint.constant = sh;
             [self.view setNeedsUpdateConstraints];
@@ -142,11 +136,20 @@
     }
 }
 
-- (void)orientationChange {
-    if (self.view.window != nil && !self.isBeingDismissed) {
-        [self flexViewToFullScreenIfPossible:self.wantsFullScreen animated:NO];
-        [self.view setNeedsDisplay];
-    }
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    // before rotating
+    [coordinator animateAlongsideTransition:^(__unused id<UIViewControllerTransitionCoordinatorContext> context) {
+        // while rotating
+        if (self.view.window != nil && !self.isBeingDismissed) {
+            [self flexViewToFullScreenIfPossible:self.wantsFullScreen animated:NO];
+            [self.view setNeedsDisplay];
+            [self.view setNeedsLayout];
+        }
+    } completion:^(__unused id<UIViewControllerTransitionCoordinatorContext> context) {
+        // after rotating
+    }];
 }
 
 #pragma mark - Setup
@@ -281,25 +284,21 @@
 - (void)loadConfiguration {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
         self.configuration = configuration;
-        [self configurationLoaded:configuration error:error];
+        if (!error) {
+            self.paymentSelectionViewController.view.hidden = NO;
+            self.paymentSelectionViewController.view.alpha = 1.0;
+            [self updateToolbarForViewController:self.paymentSelectionViewController];
+        } else {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:error.localizedDescription ?: @"Connection Error" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * __unused _Nonnull action) {
+                if (self.handler) {
+                    self.handler(nil, error);
+                }
+            }];
+            [alertController addAction: alertAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
     }];
-}
-
-- (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(NSError *)error {
-    if (!error) {
-        self.paymentSelectionViewController.view.hidden = NO;
-        self.paymentSelectionViewController.view.alpha = 1.0;
-        [self updateToolbarForViewController:self.paymentSelectionViewController];
-    } else {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:error.localizedDescription ?: @"Connection Error" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * __unused _Nonnull action) {
-            if (self.handler) {
-                self.handler(nil, error);
-            }
-        }];
-        [alertController addAction: alertAction];
-        [self presentViewController:alertController animated:YES completion:nil];
-    }
 }
 
 #pragma mark - View management and actions
@@ -484,7 +483,6 @@
     [self.btToolbar removeFromSuperview];
     [self.contentView addSubview:self.btToolbar];
     
-    self.contentHeightConstraintBottom.constant = 0;
     
     if ([self isFormSheet]) {
         // iPad formSheet
@@ -500,7 +498,9 @@
     [self applyContentViewConstraints];
     
     [self.view setNeedsUpdateConstraints];
-    
+
+    self.contentHeightConstraintBottom.constant = 0;
+
     if (animated) {
         [UIView animateWithDuration:BT_ANIMATION_SLIDE_SPEED delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:7 options:0 animations:^{
             [self.view layoutIfNeeded];
@@ -604,25 +604,15 @@
 #pragma mark BTAppSwitchDelegate
 
 - (void)appSwitcherWillPerformAppSwitch:(__unused id)appSwitcher {
-    //self.progressBlock(@"paymentDriverWillPerformAppSwitch:");
+    // No action
 }
 
 - (void)appSwitcherWillProcessPaymentInfo:(__unused id)appSwitcher {
-    //self.progressBlock(@"paymentDriverWillProcessPaymentInfo:");
+    // No action
 }
 
 - (void)appSwitcher:(__unused id)appSwitcher didPerformSwitchToTarget:(__unused BTAppSwitchTarget)target {
-    //    switch (target) {
-    //        case BTAppSwitchTargetWebBrowser:
-    //            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: browser");
-    //            break;
-    //        case BTAppSwitchTargetNativeApp:
-    //            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: app");
-    //            break;
-    //        case BTAppSwitchTargetUnknown:
-    //            self.progressBlock(@"appSwitcher:didPerformSwitchToTarget: unknown");
-    //            break;
-    //    }
+    // No action
 }
 
 - (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {

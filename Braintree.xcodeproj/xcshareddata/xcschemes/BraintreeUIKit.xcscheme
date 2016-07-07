@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A7DE8E371CE145BE0097B974"
-               BuildableName = "BraintreeUIKIt.framework"
-               BlueprintName = "BraintreeUIKIt"
+               BlueprintIdentifier = "EE6D233E1D10794A00DBFAF2"
+               BuildableName = "BraintreeUIKit.framework"
+               BlueprintName = "BraintreeUIKit"
                ReferencedContainer = "container:Braintree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7DE8E371CE145BE0097B974"
-            BuildableName = "BraintreeUIKIt.framework"
-            BlueprintName = "BraintreeUIKIt"
+            BlueprintIdentifier = "EE6D233E1D10794A00DBFAF2"
+            BuildableName = "BraintreeUIKit.framework"
+            BlueprintName = "BraintreeUIKit"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A7DE8E371CE145BE0097B974"
-            BuildableName = "BraintreeUIKIt.framework"
-            BlueprintName = "BraintreeUIKIt"
+            BlueprintIdentifier = "EE6D233E1D10794A00DBFAF2"
+            BuildableName = "BraintreeUIKit.framework"
+            BlueprintName = "BraintreeUIKit"
             ReferencedContainer = "container:Braintree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

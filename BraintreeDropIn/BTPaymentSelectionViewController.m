@@ -173,7 +173,7 @@
             }
             
             BTJSON *applePayConfiguration = self.configuration.json[@"applePay"];
-            if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"]) {
+            if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"] && self.dropInRequest.showApplePayPaymentOption) {
                 self.applePaymentOptionsData = @[@(BTKPaymentOptionTypeApplePay)];
             }
             

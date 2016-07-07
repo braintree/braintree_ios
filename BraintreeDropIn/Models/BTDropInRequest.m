@@ -15,7 +15,7 @@
     request.currencyCode = self.currencyCode;
     request.noShipping = self.noShipping;
     request.shippingAddress = self.shippingAddress;
-    request.canMakeApplePayPayments = self.canMakeApplePayPayments;
+    request.showApplePayPaymentOption = self.showApplePayPaymentOption;
     return request;
 }
 

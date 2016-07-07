@@ -17,7 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The API Client used for communication with Braintree servers.
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
-@property (nonnull, strong) BTConfiguration *configuration;
+/// The BTConfiguration, set during loadConfiguration.
+@property (nonatomic, strong, nullable) BTConfiguration *configuration;
 
 /// Subclasses should override this method to be notified when the configuration is loaded
 - (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(__unused NSError *)error;

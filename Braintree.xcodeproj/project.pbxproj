@@ -1971,8 +1971,6 @@
 		C97D7BA8D969984E51584B62 /* libPods-Tests-UnitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-UnitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE6D233F1D10794A00DBFAF2 /* BraintreeUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE6D23431D10794A00DBFAF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EE6D234D1D10794B00DBFAF2 /* BraintreeUIKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BraintreeUIKitTests.m; sourceTree = "<group>"; };
-		EE6D234F1D10794B00DBFAF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE6D23631D107A8700DBFAF2 /* BTKCardHint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTKCardHint.m; sourceTree = "<group>"; };
 		EE6D23641D107A8700DBFAF2 /* BTKCardListLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTKCardListLabel.m; sourceTree = "<group>"; };
 		EE6D23651D107A8700DBFAF2 /* BTKCardNumberFormField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTKCardNumberFormField.m; sourceTree = "<group>"; };
@@ -2836,7 +2834,6 @@
 				A7C889F01B5F0B30007A0E9C /* BraintreeVenmo */,
 				A76B19A21B79708900452CFA /* Demo */,
 				EE6D23401D10794A00DBFAF2 /* BraintreeUIKit */,
-				EE6D234C1D10794B00DBFAF2 /* BraintreeUIKitTests */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A7ABD6541B702FD800A1223C /* IntegrationTests */,
 				A75DA3521921394200D997A2 /* Products */,
@@ -3594,15 +3591,6 @@
 				EE6D23431D10794A00DBFAF2 /* Info.plist */,
 			);
 			path = BraintreeUIKit;
-			sourceTree = "<group>";
-		};
-		EE6D234C1D10794B00DBFAF2 /* BraintreeUIKitTests */ = {
-			isa = PBXGroup;
-			children = (
-				EE6D234D1D10794B00DBFAF2 /* BraintreeUIKitTests.m */,
-				EE6D234F1D10794B00DBFAF2 /* Info.plist */,
-			);
-			path = BraintreeUIKitTests;
 			sourceTree = "<group>";
 		};
 		EE6D23621D107A8700DBFAF2 /* Components */ = {

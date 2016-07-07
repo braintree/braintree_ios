@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Optional: If true and Apple Pay is correctly configured, Apple Pay will appear as a selection in the Payment Method options.
 ///
 /// @note Set to the result of [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:]
-@property (nonatomic, assign) BOOL canMakeApplePayPayments;
+@property (nonatomic, assign) BOOL showApplePayPaymentOption;
 
 @end
 

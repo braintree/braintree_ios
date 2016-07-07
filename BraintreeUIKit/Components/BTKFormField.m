@@ -48,22 +48,12 @@
         [self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         self.opaque = NO;
         
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(orientationChange)
-                                                     name:UIDeviceOrientationDidChangeNotification
-                                                   object:nil];
         [self updateConstraints];
     }
     return self;
 }
 
-- (void)orientationChange {
-    [self setNeedsDisplay];
-}
-
 - (void)updateConstraints {
-    
     if (self.layoutConstraints != nil) {
         [self removeConstraints:self.layoutConstraints];
     }
@@ -249,15 +239,10 @@
                              shouldChangeCharactersInRange:NSMakeRange(0, self.textField.text.length)
                                          replacementString:text];
     if (shouldChange) {
-        // RSS & DM: commented out didBeginEditing/didEndEditing callbacks because they affected the
-        // behavior of the expiry input keyboard.
-        //[self.textField.delegate textFieldDidBeginEditing:self.textField];
         [self.textField.editDelegate textField:self.textField willInsertText:text];
         self.textField.text = text;
         [self fieldContentDidChange];
         [self.textField.editDelegate textField:self.textField didInsertText:text];
-        // See above
-        //[self.textField.delegate textFieldDidEndEditing:self.textField];
     }
     [self updateAppearance];
 }

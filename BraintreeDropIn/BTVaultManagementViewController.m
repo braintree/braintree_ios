@@ -10,7 +10,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.view.translatesAutoresizingMaskIntoConstraints = false;
+    self.view.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 @end

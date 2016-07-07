@@ -31,10 +31,6 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
 
-/// TODO
-- (void)presentApplePayFromViewController:(UIViewController*)viewController withPaymentRequest:(PKPaymentRequest *)paymentRequest
-                     completion:(void (^)(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error))completionBlock;
-
 /// Tokenizes an Apple Pay payment.
 ///
 /// @param payment A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`

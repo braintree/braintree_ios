@@ -56,6 +56,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // Using ivar so that setter is not called
     _collapsed = YES;
     self.isUnionPay = NO;
     self.formFields = @[];
@@ -255,6 +256,7 @@
     if (collapsed == self.collapsed) {
         return;
     }
+    // Using ivar so that setter is not called
     _collapsed = collapsed;
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionBeginFromCurrentState animations:^{
@@ -296,6 +298,7 @@
         formField.text = @"";
         formField.hidden = YES;
     }
+    // Using ivar so that setter is not called
     _collapsed = YES;
     self.isUnionPay = NO;
     self.cardNumberField.hidden = NO;
