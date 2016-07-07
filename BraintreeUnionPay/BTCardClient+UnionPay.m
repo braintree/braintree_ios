@@ -70,13 +70,13 @@
 {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
         if (error) {
-            [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:false error:error];
+            [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:NO error:error];
             return;
         }
         
         if (!configuration.isUnionPayEnabled) {
             NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain code:BTCardClientErrorTypePaymentOptionNotEnabled userInfo:@{NSLocalizedDescriptionKey: @"UnionPay is not enabled for this merchant"}];
-            [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:false error:error];
+            [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:NO error:error];
             return;
         }
 
@@ -112,9 +112,9 @@
                      NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
                                                                     code:BTCardClientErrorTypeCustomerInputInvalid
                                                                 userInfo:userInfo];
-                     [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:false error:validationError];
+                     [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:NO error:validationError];
                  } else {
-                     [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:false error:error];
+                     [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:NO error:error];
                  }
                  return;
              }

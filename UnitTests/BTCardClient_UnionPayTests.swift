@@ -496,7 +496,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         }
     }
     
-    func testTokenization_withoutSmsCode_isSuccessful() {
+    func testTokenization_withEnrollmentIDAndNoSMSCode_sendsUnionPayEnrollment() {
         let mockHTTP = BTFakeHTTP()!
         apiClient.http = mockHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
