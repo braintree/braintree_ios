@@ -2,14 +2,15 @@ import XCTest
 
 class BTCardClient_Tests: XCTestCase {
     
-    func testTokenization_sendsDataToClientAPI() {
+    func testTokenization_postsCardDataToClientAPI() {
         let expectation = self.expectationWithDescription("Tokenize Card")
         let fakeHTTP = FakeHTTP.fakeHTTP()
         let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
         apiClient.http = fakeHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
 
-        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.cardholderName = "Brian Tree"
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             XCTAssertEqual(fakeHTTP.lastRequest!.endpoint, "v1/payment_methods/credit_cards")
@@ -18,6 +19,8 @@ class BTCardClient_Tests: XCTestCase {
             if let cardParameters = fakeHTTP.lastRequest!.parameters["credit_card"] as? [String:AnyObject] {
                 XCTAssertEqual(cardParameters["number"] as? String, "4111111111111111")
                 XCTAssertEqual(cardParameters["expiration_date"] as? String, "12/2038")
+                XCTAssertEqual(cardParameters["cvv"] as? String, "1234")
+                XCTAssertEqual(cardParameters["cardholder_name"] as? String, "Brian Tree")
             } else {
                 XCTFail()
             }

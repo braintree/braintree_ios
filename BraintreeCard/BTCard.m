@@ -28,6 +28,7 @@
         _region = parameters[@"billing_address"][@"region"];
         _countryName = parameters[@"billing_address"][@"country_name"];
         _countryCodeAlpha2 = parameters[@"billing_address"][@"country_code_alpha2"];
+        _cardholderName = parameters[@"cardholder_name"];
         
         _shouldValidate = [parameters[@"options"][@"validate"] boolValue];
     }
@@ -60,6 +61,9 @@
     }
     if (self.cvv) {
         p[@"cvv"] = self.cvv;
+    }
+    if (self.cardholderName) {
+        p[@"cardholder_name"] = self.cardholderName;
     }
     
     NSMutableDictionary *billingAddressDictionary = [NSMutableDictionary new];

@@ -37,16 +37,31 @@ class BTCard_Tests: XCTestCase {
             "number": "4111111111111111",
             "expiration_date": "12/20",
             "cvv": "123",
-            "billing_address": ["postal_code": "94949"],
+            "billing_address": [
+                "street_address": "123 Townsend St",
+                "locality": "San Francisco",
+                "region": "CA",
+                "country_name": "United States of America",
+                "country_code_alpha2": "US",
+                "postal_code": "94107"
+            ],
             "options": ["validate": true],
+            "cardholder_name": "Brian Tree"
             ])
 
         XCTAssertEqual(card.number, "4111111111111111")
         XCTAssertEqual(card.expirationMonth, "12")
         XCTAssertEqual(card.expirationYear, "20")
-        XCTAssertEqual(card.postalCode, "94949")
+        XCTAssertEqual(card.postalCode, "94107")
         XCTAssertEqual(card.cvv, "123")
         XCTAssertTrue(card.shouldValidate)
+        XCTAssertEqual(card.cardholderName, "Brian Tree")
+        XCTAssertEqual(card.streetAddress, "123 Townsend St")
+        XCTAssertEqual(card.locality, "San Francisco")
+        XCTAssertEqual(card.region, "CA")
+        XCTAssertEqual(card.countryName, "United States of America")
+        XCTAssertEqual(card.countryCodeAlpha2, "US")
+        XCTAssertEqual(card.postalCode, "94107")
     }
 
     func testInitWithParameters_withEmptyParameters_setsPropertiesToExpectedValues() {
@@ -57,7 +72,13 @@ class BTCard_Tests: XCTestCase {
         XCTAssertNil(card.expirationYear)
         XCTAssertNil(card.postalCode)
         XCTAssertNil(card.cvv)
+        XCTAssertNil(card.cardholderName)
         XCTAssertFalse(card.shouldValidate)
+        XCTAssertNil(card.streetAddress)
+        XCTAssertNil(card.locality)
+        XCTAssertNil(card.region)
+        XCTAssertNil(card.countryName)
+        XCTAssertNil(card.countryCodeAlpha2)
     }
 
     func testInitWithParameters_withCVVAndPostalCode_setsPropertiesToExpectedValues() {
@@ -76,14 +97,35 @@ class BTCard_Tests: XCTestCase {
 
     func testParameters_whenInitializedWithInitWithParameters_returnsExpectedValues() {
         let card = BTCard(parameters: [
+            "number": "4111111111111111",
+            "expiration_date": "12/20",
             "cvv": "123",
-            "billing_address": ["postal_code": "94949"],
+            "billing_address": [
+                "street_address": "123 Townsend St",
+                "locality": "San Francisco",
+                "region": "CA",
+                "country_name": "United States of America",
+                "country_code_alpha2": "US",
+                "postal_code": "94107"
+            ],
+            "options": ["validate": false],
+            "cardholder_name": "Brian Tree"
             ])
 
         XCTAssertEqual(card.parameters() as! Dictionary<String, NSObject>, [
+            "number": "4111111111111111",
+            "expiration_date": "12/20",
             "cvv": "123",
-            "billing_address": ["postal_code": "94949"],
+            "billing_address": [
+                "street_address": "123 Townsend St",
+                "locality": "San Francisco",
+                "region": "CA",
+                "country_name": "United States of America",
+                "country_code_alpha2": "US",
+                "postal_code": "94107"
+            ],
             "options": ["validate": false],
+            "cardholder_name": "Brian Tree"
             ])
     }
 
