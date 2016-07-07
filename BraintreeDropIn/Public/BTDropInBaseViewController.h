@@ -12,15 +12,15 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param apiClient A BTAPIClient used for communicating with Braintree servers. Required.
 ///
 /// @return A new Drop-in view controller that is ready to be presented.
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient request:(BTDropInRequest*)request;
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient request:(BTDropInRequest *)request;
 
 /// The API Client used for communication with Braintree servers.
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
-@property (nonnull, strong) BTConfiguration* configuration;
+@property (nonnull, strong) BTConfiguration *configuration;
 
 /// Subclasses should override this method to be notified when the configuration is loaded
-- (void)configurationLoaded:(__unused BTConfiguration*)configuration error:(__unused NSError*)error;
+- (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(__unused NSError *)error;
 
 /// Load the configuration and then call `configurationLoaded:error:`
 - (void)loadConfiguration;

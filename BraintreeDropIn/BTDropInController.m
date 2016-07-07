@@ -2,17 +2,13 @@
 #import "BTVaultManagementViewController.h"
 #import "BTCardFormViewController.h"
 #import "BTEnrollmentVerificationViewController.h"
-#import "BTAPIClient_Internal.h"
 #if __has_include("BraintreeCard.h")
 #import "BTAPIClient_Internal.h"
 #import "BraintreeCard.h"
+#import "BraintreeUnionPay.h"
 #else
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCard/BraintreeCard.h>
-#endif
-#if __has_include("BraintreeUnionPay.h")
-#import "BraintreeUnionPay.h"
-#else
 #import <BraintreeUnionPay.h>
 #endif
 
@@ -24,18 +20,18 @@
 
 @property (nonatomic, strong) BTConfiguration *configuration;
 @property (nonatomic, strong, readwrite) BTAPIClient *apiClient;
-@property (nonatomic, strong) UIToolbar* btToolbar;
-@property (nonatomic, strong) UIView* contentView;
-@property (nonatomic, strong) UIView* contentClippingView;
-@property (nonatomic, strong) BTVaultManagementViewController* vaultManagementViewController;
-@property (nonatomic, strong) BTPaymentSelectionViewController* paymentSelectionViewController;
-@property (nonatomic, strong) BTCardFormViewController* cardFormViewController;
-@property (nonatomic, strong) NSLayoutConstraint* contentHeightConstraint;
-@property (nonatomic, strong) NSLayoutConstraint* contentHeightConstraintBottom;
+@property (nonatomic, strong) UIToolbar *btToolbar;
+@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIView *contentClippingView;
+@property (nonatomic, strong) BTVaultManagementViewController *vaultManagementViewController;
+@property (nonatomic, strong) BTPaymentSelectionViewController *paymentSelectionViewController;
+@property (nonatomic, strong) BTCardFormViewController *cardFormViewController;
+@property (nonatomic, strong) NSLayoutConstraint *contentHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *contentHeightConstraintBottom;
 @property (nonatomic) BOOL isFullScreen;
 @property (nonatomic) BOOL wantsFullScreen;
 @property (nonatomic) BOOL useBlur;
-@property (nonatomic, strong) UIVisualEffectView* blurredBackgroundView;
+@property (nonatomic, strong) UIVisualEffectView *blurredBackgroundView;
 @property (nonatomic, copy, nullable) BTDropInControllerHandler handler;
 
 @end
@@ -48,24 +44,24 @@
     BTKPaymentOptionType lastSelectedPaymentOptionType = [[NSUserDefaults standardUserDefaults] integerForKey:@"BT_dropInLastSelectedPaymentMethodType"];
     __block BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     
-    [apiClient fetchPaymentMethodNonces:NO
-                                   completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
-                                       BTDropInResult *result = [BTDropInResult new];
-                                       if (lastSelectedPaymentOptionType == BTKPaymentOptionTypeApplePay) {
-                                           result.paymentOptionType = lastSelectedPaymentOptionType;
-                                       } else if (paymentMethodNonces != nil && paymentMethodNonces.count > 0) {
-                                           BTPaymentMethodNonce *paymentMethod = paymentMethodNonces.firstObject;
-                                           result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethod.type];
-                                           result.paymentMethod = paymentMethod;
-                                       }
-                                       handler(result, error);
-                                       apiClient = nil;
-                                   }];
+    [apiClient fetchPaymentMethodNonces:NO completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
+        BTDropInResult *result = [BTDropInResult new];
+        if (lastSelectedPaymentOptionType == BTKPaymentOptionTypeApplePay) {
+            result.paymentOptionType = lastSelectedPaymentOptionType;
+        } else if (paymentMethodNonces != nil && paymentMethodNonces.count > 0) {
+            BTPaymentMethodNonce *paymentMethod = paymentMethodNonces.firstObject;
+            result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethod.type];
+            result.paymentMethod = paymentMethod;
+        }
+        handler(result, error);
+        apiClient = nil;
+    }];
 }
 
 #pragma mark - Lifecycle
 
-- (nullable instancetype)initWithAuthorization:(NSString *)authorization request:(BTDropInRequest *)request
+- (nullable instancetype)initWithAuthorization:(NSString *)authorization
+                                       request:(BTDropInRequest *)request
                                        handler:(BTDropInControllerHandler) handler {
     if (self = [super init]) {
         _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
@@ -173,13 +169,11 @@
     
     self.contentView = [[UIView alloc] init];
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.contentView.backgroundColor = [UIColor clearColor];
     if (self.useBlur) {
         [self.blurredBackgroundView.contentView addSubview: self.contentView];
-        self.contentView.backgroundColor = [UIColor clearColor];
-        
     } else {
         [self.view addSubview: self.contentView];
-        self.contentView.backgroundColor = [UIColor clearColor];
     }
     
     self.contentClippingView = [[UIView alloc] init];
@@ -327,57 +321,57 @@
         [cardClient enrollCard:cardRequest completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
             if (error) {
                 self.handler(nil, error);
-            } else {
-                cardRequest.enrollmentID = enrollmentID;
-                __block UINavigationController *navController;
-                __block BTEnrollmentVerificationViewController *enrollmentController;
-                enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.text
-                                                                                   mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.text
-                                                                                             handler:^(NSString* authCode) {
-                                                                                                 __block UIBarButtonItem* originalRightBarButtonItem = enrollmentController.navigationItem.rightBarButtonItem;
-                                                                                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                                     UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];
-                                                                                                     spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-                                                                                                     [spinner startAnimating];
-                                                                                                     
-                                                                                                     
-                                                                                                     enrollmentController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
-                                                                                                     self.view.userInteractionEnabled = NO;
-                                                                                                 });
-                                                                                                 cardRequest.smsCode = authCode;
-                                                                                                 [cardClient tokenizeCard:cardRequest options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-                                                                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                                         self.view.userInteractionEnabled = YES;
-                                                                                                         enrollmentController.navigationItem.rightBarButtonItem = originalRightBarButtonItem;
-                                                                                                         if (self.handler) {
-                                                                                                             BTDropInResult *result;
-                                                                                                             if (!error) {
-                                                                                                                 result = [[BTDropInResult alloc] init];
-                                                                                                                 result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
-                                                                                                                 result.paymentMethod = tokenizedCard;
-                                                                                                                 [navController dismissViewControllerAnimated:NO completion:^{
-                                                                                                                     
-                                                                                                                     self.handler(result, error);
-                                                                                                                 }];
-                                                                                                             } else {
-                                                                                                                 // When tokenization fails for UnionPay, Drop-In will not report the error back but will instead display an alert
-                                                                                                                 // And return to the card form
-                                                                                                                                 UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Sorry, there was an error. Please review your information and try again." preferredStyle:UIAlertControllerStyleAlert];
-                                                                                                                 UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
-                                                                                                                     [navController dismissViewControllerAnimated:NO completion:nil];
-                                                                                                                 }];
-                                                                                                                 [alertController addAction: alertAction];
-                                                                                                                 [navController presentViewController:alertController animated:YES completion:nil];
-                                                                                                             }
-                                                                                                             
-                                                                                                         }
-                                                                                                     });
-                                                                                                 }];
-                                                                                             }];
-                navController = [[UINavigationController alloc] initWithRootViewController:enrollmentController];
-                navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+                return;
+            }
+
+            cardRequest.enrollmentID = enrollmentID;
+            __block UINavigationController *navController;
+            __block BTEnrollmentVerificationViewController *enrollmentController;
+            enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.text mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.text handler:^(NSString* authCode) {
+                __block UIBarButtonItem *originalRightBarButtonItem = enrollmentController.navigationItem.rightBarButtonItem;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];
+                    spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+                    [spinner startAnimating];
+
+                    enrollmentController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
+                    self.view.userInteractionEnabled = NO;
+                });
+
+                cardRequest.smsCode = authCode;
+                [cardClient tokenizeCard:cardRequest options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.view.userInteractionEnabled = YES;
+                        enrollmentController.navigationItem.rightBarButtonItem = originalRightBarButtonItem;
+                        if (self.handler) {
+                            if (error) {
+                                // When tokenization fails for UnionPay, Drop-In will not report the error back but will instead display an alert
+                                // And return to the card form
+                                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error Validating" message:@"Unable to verify card. Double check your information and try again." preferredStyle:UIAlertControllerStyleAlert];
+                                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
+                                    [navController dismissViewControllerAnimated:NO completion:nil];
+                                }];
+                                [alertController addAction: alertAction];
+                                [navController presentViewController:alertController animated:YES completion:nil];
+                                return;
+                            }
+
+                            BTDropInResult *result = [[BTDropInResult alloc] init];
+                            result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
+                            result.paymentMethod = tokenizedCard;
+                            [navController dismissViewControllerAnimated:NO completion:^{
+                                self.handler(result, error);
+                            }];
+                        }
+                    });
+                }];
+            }];
+
+            navController = [[UINavigationController alloc] initWithRootViewController:enrollmentController];
+            navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+            dispatch_async(dispatch_get_main_queue(), ^{
                 [self presentViewController:navController animated:YES completion:^{
-                    BTJSON* environment = self.configuration.json[@"environment"];
+                    BTJSON *environment = self.configuration.json[@"environment"];
                     if(![environment isError] && [[environment asString] isEqualToString:@"sandbox"]) {
                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Sandbox Sample SMS Code" message:@"Any code passes, example: 12345 \n\nTest incorrect code is: 999999" preferredStyle:UIAlertControllerStyleAlert];
                         UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
@@ -385,22 +379,22 @@
                         [navController presentViewController:alertController animated:YES completion:nil];
                     }
                 }];
-            }
+            });
         }];
         return;
     }
-    
+
     UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];
     spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
     [spinner startAnimating];
-    
+
     NSArray *originalToolbarItems = self.btToolbar.items;
     NSMutableArray *newToolbarItems = [self.btToolbar.items mutableCopy];
     [newToolbarItems removeLastObject];
     [newToolbarItems addObject:[[UIBarButtonItem alloc] initWithCustomView:spinner]];
     [self.btToolbar setItems:newToolbarItems animated:NO];
     self.view.userInteractionEnabled = NO;
-    
+
     [cardClient tokenizeCard:cardRequest options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self.view.userInteractionEnabled = YES;
@@ -416,16 +410,16 @@
 }
 
 - (void)updateToolbarForViewController:(UIViewController*)viewController {
-    UILabel* titleLabel = [[UILabel alloc] init];
+    UILabel *titleLabel = [[UILabel alloc] init];
     [BTKAppearance styleLabelPrimary:titleLabel];
     titleLabel.text = viewController.title ? viewController.title : @"";
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [titleLabel sizeToFit];
-    UIBarButtonItem* barTitle = [[UIBarButtonItem alloc] initWithCustomView:titleLabel];
-    UIBarButtonItem* flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem* fixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem* leftItem = viewController.navigationItem.leftBarButtonItem ? viewController.navigationItem.leftBarButtonItem : fixed;
-    UIBarButtonItem* rightItem = viewController.navigationItem.rightBarButtonItem ? viewController.navigationItem.rightBarButtonItem : fixed;
+    UIBarButtonItem *barTitle = [[UIBarButtonItem alloc] initWithCustomView:titleLabel];
+    UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *fixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    UIBarButtonItem *leftItem = viewController.navigationItem.leftBarButtonItem ? viewController.navigationItem.leftBarButtonItem : fixed;
+    UIBarButtonItem *rightItem = viewController.navigationItem.rightBarButtonItem ? viewController.navigationItem.rightBarButtonItem : fixed;
     [self.btToolbar setItems:@[leftItem, flex, barTitle, flex, rightItem] animated:YES];
 }
 
@@ -445,20 +439,19 @@
 }
 
 - (void)animateToViewController:(UIViewController*)destinationViewController animateForward:(__unused BOOL)animateForward {
-    
     if (!destinationViewController.view.hidden) {
         return;
     }
     
-    UIView* viewToHide = [self visibleViewController].view;
+    UIView *viewToHide = [self visibleViewController].view;
     [viewToHide endEditing:YES];
-    UIView* viewToReveal = destinationViewController.view;
+    UIView *viewToReveal = destinationViewController.view;
     viewToReveal.hidden = NO;
     viewToReveal.alpha = 0.0;
     
-    [UIView animateWithDuration: BT_ANIMATION_TRANSITION_SPEED
-                          delay: 0
-                        options: (UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction)
+    [UIView animateWithDuration:BT_ANIMATION_TRANSITION_SPEED
+                          delay:0
+                        options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction)
                      animations:^{
                          viewToReveal.alpha = 1.0;
                          viewToHide.alpha = 0.0;
@@ -475,12 +468,12 @@
 
 #pragma mark - UI Helpers
 
-- (UIViewController*)visibleViewController {
+- (UIViewController *)visibleViewController {
     if (!self.paymentSelectionViewController.view.hidden) {
         return self.paymentSelectionViewController;
-    }else if (!self.vaultManagementViewController.view.hidden) {
+    } else if (!self.vaultManagementViewController.view.hidden) {
         return self.vaultManagementViewController;
-    }else {
+    } else {
         return self.cardFormViewController;
     }
 }
@@ -519,7 +512,8 @@
 }
 
 - (void)applyContentViewConstraints {
-    NSDictionary* viewBindings = @{@"toolbar":self.btToolbar, @"contentClippingView":self.contentClippingView};
+    NSDictionary *viewBindings = @{@"toolbar": self.btToolbar,
+                                   @"contentClippingView": self.contentClippingView};
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolbar]|"
                                                                       options:0

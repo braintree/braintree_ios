@@ -22,7 +22,8 @@ typedef void (^BTDropInControllerHandler)(BTDropInResult * _Nullable result, NSE
 /// @param handler A callback block that is invoked when tokenization has succeeded or failed.
 ///
 /// @return A Drop-in controller that is ready to be presented, or `nil` if `authorization` is invalid.
-- (nullable instancetype)initWithAuthorization:(NSString *)authorization request:(BTDropInRequest *)request
+- (nullable instancetype)initWithAuthorization:(NSString *)authorization
+                                       request:(BTDropInRequest *)request
                                        handler:(nullable BTDropInControllerHandler)handler;
 
 /// Fetch a BTDropInResult without displaying or initializing a BTDropInController. Works with client tokens that

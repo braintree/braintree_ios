@@ -10,11 +10,11 @@
 
 @implementation BTDropInBaseViewController
 
-- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient request:(BTDropInRequest*)request
+- (instancetype)initWithAPIClient:(BTAPIClient *)apiClient request:(BTDropInRequest *)request
 {
     if (self = [super init]) {
-        self.apiClient = apiClient;
-        self.dropInRequest = request;
+        _apiClient = apiClient;
+        _dropInRequest = request;
     }
     return self;
 }
@@ -61,7 +61,7 @@
     }
 }
 
-- (void)configurationLoaded:(__unused BTConfiguration*)configuration error:(__unused NSError*)error {
+- (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(__unused NSError *)error {
     //Subclasses should override this method
 }
 
