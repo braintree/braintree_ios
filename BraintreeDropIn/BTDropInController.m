@@ -43,6 +43,8 @@
 + (void)fetchDropInResultForAuthorization:(NSString *)authorization handler:(BTDropInControllerHandler)handler {
     BTKPaymentOptionType lastSelectedPaymentOptionType = [[NSUserDefaults standardUserDefaults] integerForKey:@"BT_dropInLastSelectedPaymentMethodType"];
     __block BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
+    apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn2];
+
     
     [apiClient fetchPaymentMethodNonces:NO completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
                                        if (error != nil) {
@@ -68,7 +70,9 @@
                                        request:(BTDropInRequest *)request
                                        handler:(BTDropInControllerHandler) handler {
     if (self = [super init]) {
-        _apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
+        BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:authorization];
+        self.apiClient = [client copyWithSource:client.metadata.source integration:BTClientMetadataIntegrationDropIn2];
+
         _dropInRequest = [request copy];
         if (!_apiClient || !_dropInRequest) {
             return nil;
@@ -126,6 +130,7 @@
         [self flexViewToFullScreenIfPossible:self.wantsFullScreen animated:NO];
         [self.view setNeedsDisplay];
     }
+    [self.apiClient sendAnalyticsEvent:@"ios.dropin2.appear"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -134,6 +139,11 @@
     if (![self isFormSheet] && self.isBeingPresented) {
         [self flexViewToFullScreenIfPossible:false animated:YES];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.apiClient sendAnalyticsEvent:@"ios.dropin2.disappear"];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -502,7 +512,7 @@
     self.contentHeightConstraintBottom.constant = 0;
 
     if (animated) {
-        [UIView animateWithDuration:BT_ANIMATION_SLIDE_SPEED delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:7 options:0 animations:^{
+        [UIView animateWithDuration:BT_ANIMATION_SLIDE_SPEED delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:4 options:0 animations:^{
             [self.view layoutIfNeeded];
         } completion:nil];
     } else {

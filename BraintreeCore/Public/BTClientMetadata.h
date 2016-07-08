@@ -11,6 +11,7 @@ typedef NS_ENUM(NSInteger, BTClientMetadataSourceType) {
 typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
     BTClientMetadataIntegrationCustom,
     BTClientMetadataIntegrationDropIn,
+    BTClientMetadataIntegrationDropIn2,
     BTClientMetadataIntegrationUnknown
 };
 

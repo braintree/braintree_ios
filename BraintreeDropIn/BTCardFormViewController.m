@@ -37,6 +37,8 @@
 @property (nonatomic, getter=isCollapsed) BOOL collapsed;
 @property (nonatomic, strong, nullable, readwrite) BTCardCapabilities *cardCapabilities;
 @property (nonatomic) BOOL isUnionPay;
+@property (nonatomic, assign) BOOL cardEntryDidBegin;
+@property (nonatomic, assign) BOOL cardEntryDidFocus;
 @end
 
 @implementation BTCardFormViewController
@@ -465,10 +467,20 @@
     }];
 }
 
+- (void)formFieldDidBeginEditing:(__unused BTKFormField *)formField {
+    if (!self.cardEntryDidFocus) {
+        [self.apiClient sendAnalyticsEvent:@"ios.dropin2.card.focus"];
+        self.cardEntryDidFocus = YES;
+    }
+}
+
 - (void)formFieldDidChange:(BTKFormField *)formField {
     [self updateSubmitButton];
     [self cardNumberErrorHidden:self.cardNumberField.displayAsValid];
-
+    if (!self.cardEntryDidBegin && formField.text.length > 0) {
+        [self.apiClient sendAnalyticsEvent:@"ios.dropin2.add-card.start"];
+        self.cardEntryDidBegin = YES;
+    }
     if (self.collapsed && formField == self.cardNumberField && !self.isUnionPay) {
         BTKPaymentOptionType paymentMethodType = [BTKViewUtil paymentMethodTypeForCardType:self.cardNumberField.cardType];
         [self.cardList emphasizePaymentOption:paymentMethodType];
