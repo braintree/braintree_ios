@@ -1,6 +1,6 @@
 #import "BTUIPaymentMethodCollectionViewCell.h"
-#import "BTKPaymentOptionCardView.h"
-#import "BTKAppearance.h"
+#import "BTUIKPaymentOptionCardView.h"
+#import "BTUIKAppearance.h"
 
 @implementation BTUIPaymentMethodCollectionViewCell
 
@@ -12,12 +12,12 @@
         [self.contentView removeConstraints:self.contentView.constraints];
         self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
 
-        self.paymentOptionCardView = [[BTKPaymentOptionCardView alloc] init];
+        self.paymentOptionCardView = [[BTUIKPaymentOptionCardView alloc] init];
         self.paymentOptionCardView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:self.paymentOptionCardView];
 
         self.titleLabel = [[UILabel alloc] init];
-        [BTKAppearance styleLabelSecondary:self.titleLabel];
+        [BTUIKAppearance styleLabelSecondary:self.titleLabel];
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
         self.titleLabel.text = @"";
         self.titleLabel.textAlignment = NSTextAlignmentCenter;

@@ -1,12 +1,12 @@
 #import "BTEnrollmentVerificationViewController.h"
-#import "BTKBarButtonItem.h"
+#import "BTUIKBarButtonItem.h"
 
 @interface BTEnrollmentVerificationViewController ()
 
 @property (nonatomic, strong) NSString* mobilePhoneNumber;
 @property (nonatomic, strong) NSString* mobileCountryCode;
 @property (nonatomic, strong) BTEnrollmentHandler handler;
-@property (nonatomic, strong) BTKFormField* smsTextField;
+@property (nonatomic, strong) BTUIKFormField* smsTextField;
 @property (nonatomic, strong) UILabel* smsSentLabel;
 
 @end
@@ -28,28 +28,28 @@
     [super viewDidLoad];
     self.title = @"Confirm Enrollment";
     if (self.navigationController != nil) {
-        self.navigationController.navigationBar.barTintColor = [BTKAppearance sharedInstance].barBackgroundColor;
-        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [BTKAppearance sharedInstance].primaryTextColor, NSFontAttributeName:[UIFont fontWithName:[BTKAppearance sharedInstance].fontFamily size:[UIFont labelFontSize]]}];
+        self.navigationController.navigationBar.barTintColor = [BTUIKAppearance sharedInstance].barBackgroundColor;
+        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [BTUIKAppearance sharedInstance].primaryTextColor, NSFontAttributeName:[UIFont fontWithName:[BTUIKAppearance sharedInstance].fontFamily size:[UIFont labelFontSize]]}];
     }
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
-    self.navigationItem.rightBarButtonItem = [[BTKBarButtonItem alloc] initWithTitle:@"Confirm" style:UIBarButtonItemStyleDone target:self action:@selector(confirm)];
+    self.navigationItem.rightBarButtonItem = [[BTUIKBarButtonItem alloc] initWithTitle:@"Confirm" style:UIBarButtonItemStyleDone target:self action:@selector(confirm)];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.view.backgroundColor = [BTKAppearance sharedInstance].sheetBackgroundColor;
+    self.view.backgroundColor = [BTUIKAppearance sharedInstance].sheetBackgroundColor;
     self.smsSentLabel = [UILabel new];
     self.smsSentLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.smsSentLabel.textAlignment = NSTextAlignmentCenter;
     self.smsSentLabel.text = [NSString stringWithFormat:@"Enter the SMS code sent to\n+%@ %@", self.mobileCountryCode, self.mobilePhoneNumber];
     self.smsSentLabel.numberOfLines = 0;
     [self.view addSubview:self.smsSentLabel];
-    [BTKAppearance styleLabelPrimary:self.smsSentLabel];
+    [BTUIKAppearance styleLabelPrimary:self.smsSentLabel];
 
-    self.smsTextField = [BTKFormField new];
+    self.smsTextField = [BTUIKFormField new];
     self.smsTextField.translatesAutoresizingMaskIntoConstraints = NO;
     self.smsTextField.textField.keyboardType = UIKeyboardTypeNumberPad;
     self.smsTextField.textField.placeholder = @"SMS Code";
     self.smsTextField.delegate = self;
-    self.smsTextField.textField.inputAccessoryView = [[BTKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.smsTextField.textField];
+    self.smsTextField.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.smsTextField.textField];
     [self.view addSubview:self.smsTextField];
 
     NSDictionary* viewBindings = @{
@@ -72,7 +72,7 @@
                                                                         views:viewBindings]];
 }
 
-- (void)formFieldDidChange:(BTKFormField *)formField {
+- (void)formFieldDidChange:(BTUIKFormField *)formField {
     if (formField.text.length > 0) {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     } else {

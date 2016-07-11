@@ -5,7 +5,7 @@
 #import <BraintreeUIKit.h>
 #endif
 
-@interface BTEnrollmentVerificationViewController : UIViewController <UITextFieldDelegate, BTKFormFieldDelegate>
+@interface BTEnrollmentVerificationViewController : UIViewController <UITextFieldDelegate, BTUIKFormFieldDelegate>
 typedef void (^BTEnrollmentHandler)(NSString* authCode);
 
 - (instancetype)initWithPhone:(NSString *)mobilePhoneNumber

@@ -12,7 +12,7 @@
 @interface BraintreeDemoDropInViewController () <PKPaymentAuthorizationViewControllerDelegate>
 
 @property (nonatomic, strong) BTDropInController *dropIn;
-@property (nonatomic, strong) BTKPaymentOptionCardView *paymentMethodTypeIcon;
+@property (nonatomic, strong) BTUIKPaymentOptionCardView *paymentMethodTypeIcon;
 @property (nonatomic, strong) UILabel *paymentMethodTypeLabel;
 @property (nonatomic, strong) UILabel *cartLabel;
 @property (nonatomic, strong) UILabel *itemLabel;
@@ -39,7 +39,7 @@
     self.paymentMethodTypeLabel.hidden = paymentMethodNonce == nil;
     self.paymentMethodTypeIcon.hidden = paymentMethodNonce == nil;
     if (paymentMethodNonce != nil) {
-        BTKPaymentOptionType paymentMethodType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethodNonce.type];
+        BTUIKPaymentOptionType paymentMethodType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethodNonce.type];
         self.paymentMethodTypeIcon.paymentOptionType = paymentMethodType;
         [self.paymentMethodTypeLabel setText:paymentMethodNonce.localizedDescription];
     }
@@ -91,7 +91,7 @@
     self.purchaseButton.layer.cornerRadius = 4.0;
     [self.view addSubview:self.purchaseButton];
 
-    self.paymentMethodTypeIcon = [BTKPaymentOptionCardView new];
+    self.paymentMethodTypeIcon = [BTUIKPaymentOptionCardView new];
     self.paymentMethodTypeIcon.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.paymentMethodTypeIcon];
     self.paymentMethodTypeIcon.hidden = YES;
@@ -111,7 +111,7 @@
             self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
             NSLog(@"Error: %@", error);
         } else {
-            if (result.paymentOptionType == BTKPaymentOptionTypeApplePay) {
+            if (result.paymentOptionType == BTUIKPaymentOptionTypeApplePay) {
                 self.progressBlock(@"Ready for checkout...");
                 [self setupApplePay];
             } else {
@@ -135,7 +135,7 @@
         } else if (result.isCancelled) {
             NSLog(@"Drop-in was cancelled");
         } else {
-            if (result.paymentOptionType == BTKPaymentOptionTypeApplePay) {
+            if (result.paymentOptionType == BTUIKPaymentOptionTypeApplePay) {
                 self.progressBlock(@"Ready for checkout...");
                 [self setupApplePay];
             } else {
@@ -152,7 +152,7 @@
 - (void) setupApplePay {
     self.paymentMethodTypeLabel.hidden = NO;
     self.paymentMethodTypeIcon.hidden = NO;
-    self.paymentMethodTypeIcon.paymentOptionType = BTKPaymentOptionTypeApplePay;
+    self.paymentMethodTypeIcon.paymentOptionType = BTUIKPaymentOptionTypeApplePay;
     [self.paymentMethodTypeLabel setText:@"Apple Pay"];
     self.useApplePay = YES;
     [self updatePaymentMethodConstraints];

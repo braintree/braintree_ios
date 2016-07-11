@@ -8,8 +8,8 @@
 @interface BTDropInPaymentSeletionCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel* label;
-@property (nonatomic, strong) BTKPaymentOptionCardView* iconView;
+@property (nonatomic, strong) BTUIKPaymentOptionCardView* iconView;
 @property (nonatomic, strong) UIView *bottomBorder;
-@property (nonatomic) BTKPaymentOptionType type;
+@property (nonatomic) BTUIKPaymentOptionType type;
 
 @end

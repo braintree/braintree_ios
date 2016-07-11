@@ -41,7 +41,7 @@
 #pragma mark - Prefetch BTDropInResult
 
 + (void)fetchDropInResultForAuthorization:(NSString *)authorization handler:(BTDropInControllerHandler)handler {
-    BTKPaymentOptionType lastSelectedPaymentOptionType = [[NSUserDefaults standardUserDefaults] integerForKey:@"BT_dropInLastSelectedPaymentMethodType"];
+    BTUIKPaymentOptionType lastSelectedPaymentOptionType = [[NSUserDefaults standardUserDefaults] integerForKey:@"BT_dropInLastSelectedPaymentMethodType"];
     __block BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn2];
 
@@ -51,11 +51,11 @@
                                            handler(nil, error);
                                        } else {
                                            BTDropInResult *result = [BTDropInResult new];
-                                           if (lastSelectedPaymentOptionType == BTKPaymentOptionTypeApplePay) {
+                                           if (lastSelectedPaymentOptionType == BTUIKPaymentOptionTypeApplePay) {
                                                result.paymentOptionType = lastSelectedPaymentOptionType;
                                            } else if (paymentMethodNonces != nil && paymentMethodNonces.count > 0) {
                                                BTPaymentMethodNonce *paymentMethod = paymentMethodNonces.firstObject;
-                                               result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethod.type];
+                                               result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethod.type];
                                                result.paymentMethod = paymentMethod;
                                            }
                                            handler(result, error);
@@ -87,7 +87,7 @@
         }
         
         self.useBlur = !UIAccessibilityIsReduceTransparencyEnabled();
-        if (![BTKAppearance sharedInstance].useBlurs) {
+        if (![BTUIKAppearance sharedInstance].useBlurs) {
             self.useBlur = NO;
         }
         self.handler = handler;
@@ -165,15 +165,15 @@
 #pragma mark - Setup
 
 - (void)setUpViews {
-    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[BTDropInController.self]] setTitleTextAttributes:@{NSForegroundColorAttributeName: [BTKAppearance sharedInstance].tintColor, NSFontAttributeName:[UIFont fontWithName:[BTKAppearance sharedInstance].fontFamily size:[UIFont labelFontSize]]} forState:UIControlStateNormal];
-    if ([BTKAppearance sharedInstance].tintColor != nil) {
-        self.view.tintColor = [BTKAppearance sharedInstance].tintColor;
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[BTDropInController.self]] setTitleTextAttributes:@{NSForegroundColorAttributeName: [BTUIKAppearance sharedInstance].tintColor, NSFontAttributeName:[UIFont fontWithName:[BTUIKAppearance sharedInstance].fontFamily size:[UIFont labelFontSize]]} forState:UIControlStateNormal];
+    if ([BTUIKAppearance sharedInstance].tintColor != nil) {
+        self.view.tintColor = [BTUIKAppearance sharedInstance].tintColor;
     }
     self.view.opaque = NO;
-    self.view.backgroundColor = self.useBlur ? [UIColor clearColor] : [BTKAppearance sharedInstance].overlayColor;
+    self.view.backgroundColor = self.useBlur ? [UIColor clearColor] : [BTUIKAppearance sharedInstance].overlayColor;
     self.view.userInteractionEnabled = YES;
     
-    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:[BTKAppearance sharedInstance].blurStyle];
+    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:[BTUIKAppearance sharedInstance].blurStyle];
     self.blurredBackgroundView = [[UIVisualEffectView alloc] initWithEffect:effect];
     self.blurredBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
     if (self.useBlur) {
@@ -192,14 +192,14 @@
     self.contentClippingView = [[UIView alloc] init];
     self.contentClippingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview: self.contentClippingView];
-    self.contentClippingView.backgroundColor = [BTKAppearance sharedInstance].sheetBackgroundColor;
+    self.contentClippingView.backgroundColor = [BTUIKAppearance sharedInstance].sheetBackgroundColor;
     self.contentClippingView.clipsToBounds = true;
     
     self.btToolbar = [[UIToolbar alloc] init];
     self.btToolbar.delegate = self;
     self.btToolbar.userInteractionEnabled = YES;
     self.btToolbar.barStyle = UIBarStyleDefault;
-    self.btToolbar.barTintColor = [BTKAppearance sharedInstance].barBackgroundColor;
+    self.btToolbar.barTintColor = [BTUIKAppearance sharedInstance].barBackgroundColor;
     self.btToolbar.translatesAutoresizingMaskIntoConstraints = false;
     [self.contentView addSubview:self.btToolbar];
 }
@@ -366,7 +366,7 @@
                             }
 
                             BTDropInResult *result = [[BTDropInResult alloc] init];
-                            result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
+                            result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
                             result.paymentMethod = tokenizedCard;
                             [navController dismissViewControllerAnimated:NO completion:^{
                                 self.handler(result, error);
@@ -410,7 +410,7 @@
             [self.btToolbar setItems:originalToolbarItems animated:NO];
             if (self.handler) {
                 BTDropInResult *result = [[BTDropInResult alloc] init];
-                result.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
+                result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
                 result.paymentMethod = tokenizedCard;
                 self.handler(result, error);
             }
@@ -420,7 +420,7 @@
 
 - (void)updateToolbarForViewController:(UIViewController*)viewController {
     UILabel *titleLabel = [[UILabel alloc] init];
-    [BTKAppearance styleLabelPrimary:titleLabel];
+    [BTUIKAppearance styleLabelPrimary:titleLabel];
     titleLabel.text = viewController.title ? viewController.title : @"";
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [titleLabel sizeToFit];
@@ -635,7 +635,7 @@
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)selectionCompletedWithPaymentMethodType:(BTKPaymentOptionType)type nonce:(BTPaymentMethodNonce *)nonce error:(NSError *)error {
+- (void)selectionCompletedWithPaymentMethodType:(BTUIKPaymentOptionType)type nonce:(BTPaymentMethodNonce *)nonce error:(NSError *)error {
     if (error == nil) {
         [[NSUserDefaults standardUserDefaults] setInteger:type forKey:@"BT_dropInLastSelectedPaymentMethodType"];
         if (self.handler != nil) {

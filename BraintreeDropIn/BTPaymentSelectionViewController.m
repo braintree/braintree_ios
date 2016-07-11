@@ -1,9 +1,9 @@
 #import "BTPaymentSelectionViewController.h"
 #import "BTUIPaymentMethodCollectionViewCell.h"
 #import "BTDropInController.h"
-#import "BTKPaymentOptionCardView.h"
-#import "BTKPaymentOptionType.h"
-#import "BTKViewUtil.h"
+#import "BTUIKPaymentOptionCardView.h"
+#import "BTUIKPaymentOptionType.h"
+#import "BTUIKViewUtil.h"
 #import "BTDropInPaymentSeletionCell.h"
 #if __has_include("BraintreeCard.h")
 #import "BTAPIClient_Internal.h"
@@ -41,7 +41,7 @@
     self.title = @"Select Payment Method";
     
     self.paymentMethodNonces = @[];
-    self.paymentOptionsData = @[@(BTKPaymentOptionTypePayPal), @(BTKPaymentOptionTypeUnknown)];
+    self.paymentOptionsData = @[@(BTUIKPaymentOptionTypePayPal), @(BTUIKPaymentOptionTypeUnknown)];
     self.applePaymentOptionsData = @[];
 
     self.view.translatesAutoresizingMaskIntoConstraints = false;
@@ -155,11 +155,11 @@
 }
 
 - (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(NSError *)error {
-    NSMutableArray *activePaymentOptions = [@[@(BTKPaymentOptionTypeUnknown)] mutableCopy];
+    NSMutableArray *activePaymentOptions = [@[@(BTUIKPaymentOptionTypeUnknown)] mutableCopy];
     if (!error) {
         [self fetchPaymentMethodsOnCompletion:^{
             if ([[BTTokenizationService sharedService] isTypeAvailable:@"PayPal"] && [self.configuration.json[@"paypalEnabled"] isTrue]) {
-                [activePaymentOptions addObject:@(BTKPaymentOptionTypePayPal)];
+                [activePaymentOptions addObject:@(BTUIKPaymentOptionTypePayPal)];
             }
             
             // TODO Venmo Account type might change
@@ -168,13 +168,13 @@
                 NSURLComponents *components = [NSURLComponents componentsWithString:@"com.venmo.touch.v2://x-callback-url/vzero/auth"];
                 BOOL isVenmoAppInstalled = [[UIApplication sharedApplication] canOpenURL:components.URL];
                 if (([BTConfiguration isBetaEnabledPaymentOption:@"venmo"] && isVenmoAppInstalled)) {
-                    [activePaymentOptions addObject:@(BTKPaymentOptionTypeVenmo)];
+                    [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeVenmo)];
                 }
             }
             
             BTJSON *applePayConfiguration = self.configuration.json[@"applePay"];
             if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"] && self.dropInRequest.showApplePayPaymentOption) {
-                self.applePaymentOptionsData = @[@(BTKPaymentOptionTypeApplePay)];
+                self.applePaymentOptionsData = @[@(BTUIKPaymentOptionTypeApplePay)];
             }
             
             self.paymentOptionsData = [activePaymentOptions copy];
@@ -243,7 +243,7 @@
     UILabel *sectionLabel = [UILabel new];
     sectionLabel.text = [string uppercaseString];
     sectionLabel.textAlignment = NSTextAlignmentNatural;
-    [BTKAppearance styleLabelSecondary:sectionLabel];
+    [BTUIKAppearance styleLabelSecondary:sectionLabel];
     return sectionLabel;
 }
 
@@ -280,7 +280,7 @@
     NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", paymentInfo.localizedDescription ?: @""]];
     cell.highlighted = NO;
     cell.titleLabel.attributedText = typeWithDescription;
-    cell.paymentOptionCardView.paymentOptionType = [BTKViewUtil paymentOptionTypeForPaymentInfoType:typeString];
+    cell.paymentOptionCardView.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:typeString];
     return cell;
 }
 
@@ -305,7 +305,7 @@
 - (void)collectionView:(__unused UICollectionView *)collectionView didSelectItemAtIndexPath:(__unused NSIndexPath *)indexPath {
     BTUIPaymentMethodCollectionViewCell *cell = (BTUIPaymentMethodCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
     if (self.delegate) {
-        [self.delegate selectionCompletedWithPaymentMethodType:[BTKViewUtil paymentOptionTypeForPaymentInfoType:cell.paymentMethodNonce.type] nonce:cell.paymentMethodNonce error:nil];
+        [self.delegate selectionCompletedWithPaymentMethodType:[BTUIKViewUtil paymentOptionTypeForPaymentInfoType:cell.paymentMethodNonce.type] nonce:cell.paymentMethodNonce error:nil];
     }
 }
 
@@ -323,10 +323,10 @@
 
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    BTKPaymentOptionType option = indexPath.section == 0 ?  ((NSNumber*)self.paymentOptionsData[indexPath.row]).intValue : ((NSNumber*)self.applePaymentOptionsData[indexPath.row]).intValue;
+    BTUIKPaymentOptionType option = indexPath.section == 0 ?  ((NSNumber*)self.paymentOptionsData[indexPath.row]).intValue : ((NSNumber*)self.applePaymentOptionsData[indexPath.row]).intValue;
 
-    cell.label.text = [BTKViewUtil nameForPaymentMethodType:option];
-    if (option == BTKPaymentOptionTypeUnknown) {
+    cell.label.text = [BTUIKViewUtil nameForPaymentMethodType:option];
+    if (option == BTUIKPaymentOptionTypeUnknown) {
         cell.label.text = @"Credit or Debit Card";
     }
     cell.iconView.paymentOptionType = option;
@@ -337,11 +337,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BTDropInPaymentSeletionCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (cell.type == BTKPaymentOptionTypeUnknown) {
+    if (cell.type == BTUIKPaymentOptionTypeUnknown) {
         if ([self.delegate respondsToSelector:@selector(showCardForm:)]){
             [self.delegate performSelector:@selector(showCardForm:) withObject:self];
         }
-    } else if (cell.type == BTKPaymentOptionTypePayPal) {
+    } else if (cell.type == BTUIKPaymentOptionTypePayPal) {
         NSMutableDictionary *options = [NSMutableDictionary dictionary];
         if (self.delegate != nil) {
             options[BTTokenizationServiceViewPresentingDelegateOption] = self.delegate;
@@ -352,24 +352,24 @@
         
         [[BTTokenizationService sharedService] tokenizeType:@"PayPal" options:options withAPIClient:self.apiClient completion:^(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error) {
             if (self.delegate && paymentMethodNonce != nil) {
-                BTKPaymentOptionType type = [BTKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethodNonce.type];
+                BTUIKPaymentOptionType type = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:paymentMethodNonce.type];
                 [self.delegate selectionCompletedWithPaymentMethodType:type nonce:paymentMethodNonce error:error];
             }
         }];
         
-    } else if (cell.type == BTKPaymentOptionTypeVenmo) {
+    } else if (cell.type == BTUIKPaymentOptionTypeVenmo) {
         NSMutableDictionary *options = [NSMutableDictionary dictionary];
         if (self.delegate != nil) {
             options[BTTokenizationServiceViewPresentingDelegateOption] = self.delegate;
         }
         [[BTTokenizationService sharedService] tokenizeType:@"Venmo" options:options withAPIClient:self.apiClient completion:^(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error) {
             if (self.delegate && paymentMethodNonce != nil) {
-                [self.delegate selectionCompletedWithPaymentMethodType:BTKPaymentOptionTypeVenmo nonce:paymentMethodNonce error:error];
+                [self.delegate selectionCompletedWithPaymentMethodType:BTUIKPaymentOptionTypeVenmo nonce:paymentMethodNonce error:error];
             }
         }];
-    } else if(cell.type == BTKPaymentOptionTypeApplePay) {
+    } else if(cell.type == BTUIKPaymentOptionTypeApplePay) {
         if (self.delegate) {
-            [self.delegate selectionCompletedWithPaymentMethodType:BTKPaymentOptionTypeApplePay nonce:nil error:nil];
+            [self.delegate selectionCompletedWithPaymentMethodType:BTUIKPaymentOptionTypeApplePay nonce:nil error:nil];
         }
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

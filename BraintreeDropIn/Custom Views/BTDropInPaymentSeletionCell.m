@@ -1,5 +1,5 @@
 #import "BTDropInPaymentSeletionCell.h"
-#import "UIColor+BTK.h"
+#import "UIColor+BTUIK.h"
 
 @interface BTDropInPaymentSeletionCell()
 
@@ -21,21 +21,21 @@
         self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
 
         self.label = [[UILabel alloc] init];
-        [BTKAppearance styleLabelPrimary:self.label];
+        [BTUIKAppearance styleLabelPrimary:self.label];
         self.label.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:self.label];
 
-        self.iconView = [BTKPaymentOptionCardView new];
+        self.iconView = [BTUIKPaymentOptionCardView new];
         self.iconView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:self.iconView];
         self.backgroundColor = [UIColor clearColor];
 
         self.bottomBorder = [UIView new];
         self.bottomBorder.translatesAutoresizingMaskIntoConstraints = NO;
-        self.bottomBorder.backgroundColor = [BTKAppearance sharedInstance].lineColor;
+        self.bottomBorder.backgroundColor = [BTUIKAppearance sharedInstance].lineColor;
         [self.contentView addSubview:self.bottomBorder];
         UIView *backgroundView = [UIView new];
-        backgroundView.backgroundColor = [[BTKAppearance sharedInstance].sheetBackgroundColor BTK_adjustedBrightness:0.8];
+        backgroundView.backgroundColor = [[BTUIKAppearance sharedInstance].sheetBackgroundColor BTUIK_adjustedBrightness:0.8];
         self.selectedBackgroundView = backgroundView;
         [self applyConstraints];
 

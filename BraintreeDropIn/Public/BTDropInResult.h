@@ -3,7 +3,7 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#import "BTKPaymentOptionType.h"
+#import "BTUIKPaymentOptionType.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, getter=isCancelled) BOOL cancelled;
 
 /// The type of the payment option
-@property (nonatomic, assign) BTKPaymentOptionType paymentOptionType;
+@property (nonatomic, assign) BTUIKPaymentOptionType paymentOptionType;
 
-/// A UIView (BTKPaymentOptionCardView) that represents the payment option
+/// A UIView (BTUIKPaymentOptionCardView) that represents the payment option
 @property (nonatomic, readonly) UIView *paymentIcon;
 
 /// A description of the payment option (e.g `ending in 1234`)

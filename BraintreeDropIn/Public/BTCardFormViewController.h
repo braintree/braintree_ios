@@ -10,27 +10,27 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Contains form elements for entering card information.
-@interface BTCardFormViewController : BTDropInBaseViewController <UITextFieldDelegate, BTKFormFieldDelegate, BTKCardNumberFormFieldDelegate>
+@interface BTCardFormViewController : BTDropInBaseViewController <UITextFieldDelegate, BTUIKFormFieldDelegate, BTUIKCardNumberFormFieldDelegate>
 
 @property (nonatomic, weak) id delegate;
 
 /// The card number form field.
-@property (nonatomic, strong, readonly) BTKCardNumberFormField *cardNumberField;
+@property (nonatomic, strong, readonly) BTUIKCardNumberFormField *cardNumberField;
 
 /// The expiration date form field.
-@property (nonatomic, strong, readonly) BTKExpiryFormField *expirationDateField;
+@property (nonatomic, strong, readonly) BTUIKExpiryFormField *expirationDateField;
 
 /// The security code (ccv) form field.
-@property (nonatomic, strong, readonly) BTKSecurityCodeFormField *securityCodeField;
+@property (nonatomic, strong, readonly) BTUIKSecurityCodeFormField *securityCodeField;
 
 /// The postal code form field.
-@property (nonatomic, strong, readonly) BTKPostalCodeFormField *postalCodeField;
+@property (nonatomic, strong, readonly) BTUIKPostalCodeFormField *postalCodeField;
 
 /// The mobile country code form field.
-@property (nonatomic, strong, readonly) BTKMobileCountryCodeFormField *mobileCountryCodeField;
+@property (nonatomic, strong, readonly) BTUIKMobileCountryCodeFormField *mobileCountryCodeField;
 
 /// The mobile phone number field.
-@property (nonatomic, strong, readonly) BTKMobileNumberFormField *mobilePhoneField;
+@property (nonatomic, strong, readonly) BTUIKMobileNumberFormField *mobilePhoneField;
 
 /// If the form is valid, returns a BTCardRequest using the values of the form fields. Otherwise `nil`.
 @property (nonatomic, strong, nullable, readonly) BTCardRequest *cardRequest;

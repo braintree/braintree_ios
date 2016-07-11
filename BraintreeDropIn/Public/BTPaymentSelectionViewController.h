@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "BTDropInBaseViewController.h"
-#import "BTKPaymentOptionType.h"
+#import "BTUIKPaymentOptionType.h"
 
 @class BTPaymentMethodNonce;
 
@@ -22,10 +22,10 @@
 
 /// Called on the delegate when a payment method is selected
 ///
-/// @param type The BTKPaymentOptionType of the selected payment method
+/// @param type The BTUIKPaymentOptionType of the selected payment method
 /// @param nonce The BTPaymentMethodNonce of the selected payment method. @note This can be `nil` in the case of Apple Pay.
 /// @param error The error that occured during tokenization of a new payment method.
-- (void) selectionCompletedWithPaymentMethodType:(BTKPaymentOptionType) type nonce:(BTPaymentMethodNonce *)nonce error:(NSError *)error;
+- (void) selectionCompletedWithPaymentMethodType:(BTUIKPaymentOptionType) type nonce:(BTPaymentMethodNonce *)nonce error:(NSError *)error;
 
 @end
 

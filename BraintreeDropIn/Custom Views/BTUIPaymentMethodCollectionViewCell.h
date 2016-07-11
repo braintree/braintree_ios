@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 #import "BTPaymentMethodNonce.h"
 
-@class BTKPaymentOptionCardView;
+@class BTUIKPaymentOptionCardView;
 
 @interface BTUIPaymentMethodCollectionViewCell : UICollectionViewCell
-@property (nonatomic, strong) BTKPaymentOptionCardView* paymentOptionCardView;
+@property (nonatomic, strong) BTUIKPaymentOptionCardView* paymentOptionCardView;
 @property (nonatomic, strong) UILabel* titleLabel;
 @property (nonatomic, strong) BTPaymentMethodNonce* paymentMethodNonce;
 
