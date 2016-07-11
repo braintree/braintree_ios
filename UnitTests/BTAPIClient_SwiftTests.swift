@@ -83,6 +83,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         apiClient.fetchPaymentMethodNonces() { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
             XCTAssertFalse(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            XCTAssertEqual(mockHTTP.lastRequestParameters!["session_id"] as? String, apiClient.metadata.sessionId)
             expectation.fulfill()
         }
         
