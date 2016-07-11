@@ -1,4 +1,4 @@
-New Drop-In Docs (Beta)
+Drop-In Update (Beta)
 ------------------------------------
 
 # What's new
@@ -8,6 +8,10 @@ New Drop-In Docs (Beta)
 - Added Apple Pay support
 - Customizable appearance
 - And more...
+
+Please create an [issue](https://github.braintreeps.com/braintree/braintree-ios/issues) with any comments or concerns
+
+**Note** `BraintreeDropIn` requires iOS 9.X+
 
 # Get the new Drop-In
 To get the new Drop-In, add the following to your Podfile:
@@ -34,12 +38,13 @@ If you user already has an existing payment method, you may not need to show the
     })
 ```
 # Show Drop-In
-Present `BTDropInController` to collect the customer's payment information and receive the `nonce` to send to your server. If your customer selected Apple Pay as their preferred payment method then `result.selectedPaymentOptionType == .ApplePay` but the `result.selectedPaymentMethod` will be `nil`.
+Present `BTDropInController` to collect the customer's payment information and receive the `nonce` to send to your server.
 
 ![Example no saved payment method](no-payment-methods.png "Example no saved payment method")
 
 ```swift
-    self.dropIn = BTDropInController(authorization: clientTokenOrTokenizationKey, request: BTDropInRequest())
+    let request =  BTDropInRequest()
+    self.dropIn = BTDropInController(authorization: clientTokenOrTokenizationKey, request: request)
     { (result, error) in
         if (error != nil) {
             print("ERROR")
@@ -67,7 +72,15 @@ Make sure the following is included in your Podfile:
 pod 'Braintree/Apple-Pay'
 ```
 
-If you support Apple Pay, you'll often want to customize the experience or display it in the final step of your checkout flow. Use `BTApplePayClient` when appropriate to tokenize the customer's Apple Pay information.
+Apple Pay can now be displayed as an option in Drop-In by setting the `showApplePayPaymentOption` to `true` on the `BTDropInRequest` object passed to Drop-In. Usually you'll want to make sure that the device can make a payment when setting `showApplePayPaymentOption`.
+
+```swift
+    let request =  BTDropInRequest()
+    request.showApplePayPaymentOption = PKPaymentAuthorizationViewController.canMakePaymentsUsingNetworks([PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex])
+```
+
+**Important** If your customer selected Apple Pay as their preferred payment method then `result.paymentOptionType == .ApplePay` and the `result.paymentMethod` will be `nil`. Selecting Apple Pay does not display the Apple Pay sheet or create a nonce - you will still need to do that at the appropriate time in your app. Use `BTApplePayClient` to tokenize the customer's Apple Pay information.
+
 ```swift
     let paymentRequest = PKPaymentRequest()
     paymentRequest.paymentSummaryItems = [
@@ -92,10 +105,10 @@ If you support Apple Pay, you'll often want to customize the experience or displ
 ```
 
 # Customization
-Use `BTKAppearance` to customize the appearance of Drop-In and other BraintreeUIKit classes.
+Use `BTUIKAppearance` to customize the appearance of Drop-In and other BraintreeUIKit classes.
 ```swift
 // Example
-BTKAppearance.sharedInstance().primaryTextColor = UIColor.greenColor()
+BTUIKAppearance.sharedInstance().primaryTextColor = UIColor.greenColor()
 ```
 
 Here is the full list of properties...
@@ -116,3 +129,26 @@ Here is the full list of properties...
 @property (nonatomic) UIBlurEffectStyle blurStyle;
 @property (nonatomic) BOOL useBlurs;
 ```
+
+# BraintreeUIKit
+
+`BraintreeUIKit` is our new framework that makes our UI classes public and usable by anyone to create very specific checkout experience. This includes `localization`, `vector art`, `form fields` and other utils you might need when working with payments. `BraintreeUIKit` has no dependencies on other Braintree frameworks.
+
+To get the standalone `BraintreeUIKit` framework, add the following to your Podfile:
+```
+pod 'Braintree/UIKit'
+```
+
+```swift
+    // Example: Get a Visa card icon
+    let visaIcon = BTUIKPaymentOptionCardView()
+    visaIcon.paymentOptionType = BTUIKPaymentOptionTypeVisa;
+
+    // Example: Create a generic form field and prepare it for autolayout
+    let favoriteColorFormField = BTUIKFormField()
+    favoriteColorFormField.translatesAutoresizingMaskIntoConstraints = false
+    favoriteColorFormField.textField.placeholder = "Favorite Color"
+    // ... add the form field to your view and use auto layout to position it
+```
+
+Take a look at `BTCardFormViewController.m` to see examples of using the form fields and their delegates.
