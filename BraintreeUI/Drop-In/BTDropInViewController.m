@@ -665,6 +665,7 @@
         
         BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:viewController];
         errorAlert.title = savePaymentMethodErrorAlertTitle;
+        errorAlert.message = error.localizedFailureReason;
         errorAlert.cancelBlock = ^{
             // Use the paymentMethodNonces setter to update state
             self.paymentMethodNonces = self.paymentMethodNonces;
