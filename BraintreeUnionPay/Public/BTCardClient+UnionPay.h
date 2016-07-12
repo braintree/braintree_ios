@@ -28,11 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// can be prevented by checking the card's capabilities first.
 ///
 /// @param request A card tokenization request that contains a card, mobile phone number, and country code. Cannot be `nil`.
-/// @param completion A callback block that will be invoked on the main thread when enrollment has completed. If enrollment
-/// succeeds, `enrollmentID` will contain the enrollment ID, `smsCodeRequired` will be true if the SMS code was sent to the
-/// customer, when false no SMS code is sent and tokenization can happen immediately and error` will be `nil`;
-/// if it fails, `error` will describe the failure, `smsCodeRequired` will be false, and `enrollmentID` will be `nil`.
-///
+/// @param completion A callback block that will be invoked on the main thread when enrollment has completed. When enrollment
+/// succeeds, `error` is `nil`, `enrollmentID` contains the enrollment ID, and `smsCodeRequired` indicates whether an SMS
+/// code was sent to the customer. If an SMS code is not sent, tokenization can occur immediately afterwards.
 /// @see -fetchCapabilities:completion:
 /// @see BTCardClient -tokenizeCard:options:completion:
 - (void)enrollCard:(BTCardRequest *)request
