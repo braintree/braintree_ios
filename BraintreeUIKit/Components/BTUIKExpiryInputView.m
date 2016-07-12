@@ -68,7 +68,7 @@
         
         self.verticalLine = [[UIView alloc] init];
         self.verticalLine.translatesAutoresizingMaskIntoConstraints = NO;
-        self.verticalLine.backgroundColor = [UIColor BTUIK_colorFromHex:@"8D8D8D" alpha:1.0];
+        self.verticalLine.backgroundColor = [UIColor btuik_colorFromHex:@"8D8D8D" alpha:1.0];
         [self addSubview:self.verticalLine];
         
         [self.yearCollectionView reloadData];

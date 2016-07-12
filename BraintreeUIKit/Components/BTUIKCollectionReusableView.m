@@ -11,7 +11,7 @@
         self.label.translatesAutoresizingMaskIntoConstraints = NO;
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.font = [UIFont systemFontOfSize:12];
-        self.label.textColor = [UIColor BTUIK_colorFromHex:@"666666" alpha:1.0];
+        self.label.textColor = [UIColor btuik_colorFromHex:@"666666" alpha:1.0];
         [self addSubview:self.label];
         
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|"

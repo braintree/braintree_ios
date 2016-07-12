@@ -35,7 +35,7 @@
         self.bottomBorder.backgroundColor = [BTUIKAppearance sharedInstance].lineColor;
         [self.contentView addSubview:self.bottomBorder];
         UIView *backgroundView = [UIView new];
-        backgroundView.backgroundColor = [[BTUIKAppearance sharedInstance].sheetBackgroundColor BTUIK_adjustedBrightness:0.8];
+        backgroundView.backgroundColor = [[BTUIKAppearance sharedInstance].sheetBackgroundColor btuik_adjustedBrightness:0.8];
         self.selectedBackgroundView = backgroundView;
         [self applyConstraints];
 

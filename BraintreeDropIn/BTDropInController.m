@@ -336,7 +336,21 @@
             cardRequest.enrollmentID = enrollmentID;
             __block UINavigationController *navController;
             __block BTEnrollmentVerificationViewController *enrollmentController;
-            enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.text mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.text handler:^(NSString* authCode) {
+            enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.text mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.text handler:^(NSString* authCode, BOOL resend) {
+                
+                if (resend) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        // If user elects to resend, show a prompt asking them to verify the card form information and try again
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Resend SMS" message:@"Double check your mobile information and try again." preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
+                            [navController dismissViewControllerAnimated:NO completion:nil];
+                        }];
+                        [alertController addAction: alertAction];
+                        [navController presentViewController:alertController animated:YES completion:nil];
+                    });
+                    return;
+                }
+                
                 __block UIBarButtonItem *originalRightBarButtonItem = enrollmentController.navigationItem.rightBarButtonItem;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];

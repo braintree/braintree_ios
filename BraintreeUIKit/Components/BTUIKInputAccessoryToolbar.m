@@ -11,8 +11,8 @@
         self.barStyle = UIBarStyleDefault;
         self.translucent = YES;
         // TODO David, do we want this hardcoded?
-        self.barTintColor = [UIColor BTUIK_colorFromHex:@"FFFFFF" alpha:0.88];
-        self.tintColor = [UIColor BTUIK_colorFromHex:@"858E99" alpha:1.0];
+        self.barTintColor = [UIColor btuik_colorFromHex:@"FFFFFF" alpha:0.88];
+        self.tintColor = [UIColor btuik_colorFromHex:@"858E99" alpha:1.0];
         self.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return self;

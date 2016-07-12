@@ -17,7 +17,7 @@
         UIView* bgView = [[UIView alloc] initWithFrame:self.frame];
         bgView.layer.cornerRadius = 4;
         self.selectedBackgroundView = bgView;
-        self.selectedBackgroundView.backgroundColor = [UIColor BTUIK_colorFromHex:@"D1D4D9" alpha:1.0];
+        self.selectedBackgroundView.backgroundColor = [UIColor btuik_colorFromHex:@"D1D4D9" alpha:1.0];
         
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|"
                                                                      options:0
