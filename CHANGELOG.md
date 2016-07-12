@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+* (BETA) Various updates to the UnionPay component
+* Improve error messages when Braintree gateway returns 422 validation errors
+
 ## 4.3.2 (2016-06-09)
 * Update Pay with Venmo to use merchant ID and environment from configuration
 * PayPal Checkout supports an intent option, which can be authorize or sale
