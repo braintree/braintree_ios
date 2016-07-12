@@ -58,7 +58,7 @@
                  cardCapabilities.isUnionPay = [body[@"isUnionPay"] isTrue];
                  cardCapabilities.isDebit = [body[@"isDebit"] isTrue];
                  cardCapabilities.supportsTwoStepAuthAndCapture = [body[@"unionPay"][@"supportsTwoStepAuthAndCapture"] isTrue];
-                 cardCapabilities.isSupported = ![body[@"unionPay"][@"isSupported"] isNull] && [body[@"unionPay"][@"isSupported"] isTrue];
+                 cardCapabilities.isSupported = [body[@"unionPay"][@"isSupported"] isTrue];
                  completion(cardCapabilities, nil);
              }
          }];
