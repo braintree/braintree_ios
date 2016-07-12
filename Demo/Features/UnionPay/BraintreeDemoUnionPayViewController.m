@@ -113,13 +113,18 @@
     self.progressBlock(@"Enrolling card");
 
     BTCard *card = [[BTCard alloc] initWithNumber:self.cardForm.number expirationMonth:self.cardForm.expirationMonth expirationYear:self.cardForm.expirationYear cvv:self.cardForm.cvv];
+//    card.shouldValidate = YES;
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
     request.mobileCountryCode = @"62";
     request.mobilePhoneNumber = self.cardForm.phoneNumber;
 
     [self.cardClient enrollCard:request completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
         if (error) {
-            self.progressBlock([NSString stringWithFormat:@"Error enrolling card: %@", error.localizedDescription]);
+            NSMutableString *errorMessage = [NSMutableString stringWithFormat:@"Error enrolling card: %@", error.localizedDescription];
+            if (error.localizedFailureReason) {
+                [errorMessage appendString:[NSString stringWithFormat:@". %@", error.localizedFailureReason]];
+            }
+            self.progressBlock(errorMessage);
             return;
         }
         
@@ -136,7 +141,11 @@
 
             [self.cardClient tokenizeCard:request options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
                 if (error) {
-                    self.progressBlock([NSString stringWithFormat:@"Error tokenizing card: %@", error.localizedDescription]);
+                    NSMutableString *errorMessage = [NSMutableString stringWithFormat:@"Error tokenizing card: %@", error.localizedDescription];
+                    if (error.localizedFailureReason) {
+                        [errorMessage appendString:[NSString stringWithFormat:@". %@", error.localizedFailureReason]];
+                    }
+                    self.progressBlock(errorMessage);
                     return;
                 }
 

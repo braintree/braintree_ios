@@ -73,9 +73,26 @@ class BTCardClient_Tests: XCTestCase {
 
     func testTokenization_whenTokenizationEndpointReturns422_callCompletionWithValidationError() {
         let stubAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
+        let stubJSONResponse = BTJSON(value: [
+            "error" : [
+                "message" : "Credit card is invalid"
+            ],
+            "fieldErrors" : [
+                [
+                    "field" : "creditCard",
+                    "fieldErrors" : [
+                        [
+                            "field" : "number",
+                            "message" : "Credit card number must be 12-19 digits",
+                            "code" : "81716"
+                        ]
+                    ]
+                ]
+            ]
+            ])
         let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.ClientError.rawValue, userInfo: [
             BTHTTPURLResponseKey: NSHTTPURLResponse(URL: NSURL(string: "http://fake")!, statusCode: 422, HTTPVersion: nil, headerFields: nil)!,
-            BTHTTPJSONResponseBodyKey: BTJSON(value: ["someError": "details"])
+            BTHTTPJSONResponseBodyKey: stubJSONResponse
             ])
         stubAPIClient.cannedResponseError = stubError
         let cardClient = BTCardClient(APIClient: stubAPIClient)
@@ -91,11 +108,15 @@ class BTCardClient_Tests: XCTestCase {
             XCTAssertNil(cardNonce)
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
             XCTAssertEqual(error.code, BTCardClientErrorType.CustomerInputInvalid.rawValue)
-            if let json = error.userInfo[BTCustomerInputBraintreeValidationErrorsKey] as? [NSObject:AnyObject] {
-                XCTAssertEqual(json["someError"] as? String, "details")
+            if let json = error.userInfo[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary {
+                XCTAssertEqual(json, stubJSONResponse.asDictionary())
             } else {
-                XCTFail("Expected JSON response object in userInfo")
+                XCTFail("Expected JSON response in userInfo[BTCustomInputBraintreeValidationErrorsKey]")
             }
+            XCTAssertEqual(error.localizedDescription, "Credit card is invalid")
+            XCTAssertEqual(error.localizedFailureReason, "Credit card number must be 12-19 digits")
+            
+            
             expectation.fulfill()
         }
 
