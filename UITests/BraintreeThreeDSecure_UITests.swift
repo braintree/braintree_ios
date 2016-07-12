@@ -4,6 +4,8 @@ Hardware keyboard should be disabled on simulator for tests to run reliably.
 Requires a local gateway.
 */
 
+/*
+ 
 import XCTest
 
 class BraintreeThreeDSecure_UITests: XCTestCase {
@@ -262,3 +264,4 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
     }
  */
 }
+*/

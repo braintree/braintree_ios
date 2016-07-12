@@ -127,13 +127,13 @@
 
     BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
     dropInRequest.showApplePayPaymentOption = [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]];
-
+    dropInRequest.displayCardTypes = @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)];
     _dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
             NSLog(@"Error: %@", error);
         } else if (result.isCancelled) {
-            NSLog(@"Drop-in was cancelled");
+            self.progressBlock(@"Cancelled🎲");
         } else {
             if (result.paymentOptionType == BTUIKPaymentOptionTypeApplePay) {
                 self.progressBlock(@"Ready for checkout...");

@@ -1,4 +1,4 @@
-#import "BraintreeDemoDropInOldViewController.h"
+#import "BraintreeDemoDropInLegacyViewController.h"
 
 #import <PureLayout/PureLayout.h>
 #import <BraintreeCore/BraintreeCore.h>
@@ -6,13 +6,13 @@
 #import <BraintreeVenmo/BraintreeVenmo.h>
 #import "BraintreeDemoSettings.h"
 
-@interface BraintreeDemoDropInOldViewController () <BTDropInViewControllerDelegate>
+@interface BraintreeDemoDropInLegacyViewController () <BTDropInViewControllerDelegate>
 
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
 @end
 
-@implementation BraintreeDemoDropInOldViewController
+@implementation BraintreeDemoDropInLegacyViewController
 
 - (instancetype)initWithAuthorization:(NSString *)authorization {
     if (self = [super initWithAuthorization:authorization]) {
@@ -26,16 +26,16 @@
     
     [BTConfiguration enableVenmo:true]; // Assume the user is whitelisted for the beta
     
-    self.title = @"Drop In (Old)";
+    self.title = @"Drop In (Legacy)";
 
     UIButton *dropInButton = [UIButton buttonWithType:UIButtonTypeSystem];
     dropInButton.translatesAutoresizingMaskIntoConstraints = NO;
     [dropInButton addTarget:self action:@selector(tappedToShowDropIn) forControlEvents:UIControlEventTouchUpInside];
-    [dropInButton setBackgroundColor:[UIColor purpleColor]];
+    [dropInButton setBackgroundColor:[UIColor redColor]];
     [dropInButton setTitleColor:[UIColor whiteColor]forState:UIControlStateNormal];
     dropInButton.layer.cornerRadius = 5.0f;
     dropInButton.contentEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8);
-    [dropInButton setTitle:@"Buy Now (Old)" forState:UIControlStateNormal];
+    [dropInButton setTitle:@"Buy Now" forState:UIControlStateNormal];
     [dropInButton sizeToFit];
 
     [self.view addSubview:dropInButton];

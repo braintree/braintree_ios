@@ -1,4 +1,4 @@
-#pragma message "⚠️ Braintree's DropIn Framework for iOS is currently in beta and may change."
+#pragma message "⚠️ BraintreeDropIn is currently in beta and may change."
 
 #import <UIKit/UIKit.h>
 #import "BTDropInBaseViewController.h"

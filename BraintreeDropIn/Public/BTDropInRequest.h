@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "BTUIKPaymentOptionType.h"
 #if __has_include("BraintreeCore.h")
 #import "BTPostalAddress.h"
 #else
@@ -40,6 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// @note Set to the result of [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:]
 @property (nonatomic, assign) BOOL showApplePayPaymentOption;
+
+/// Optional: An array of BTUIKPaymentOptionType to be displayed
+/// on the card form.
+/// Example: @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)]
+/// Defaults an empty array.
+@property (nonatomic, strong, nonnull) NSArray *displayCardTypes;
 
 @end
 

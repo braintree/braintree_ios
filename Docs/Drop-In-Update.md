@@ -5,7 +5,7 @@ Drop-In Update (Beta)
 - All new UI and integration for Drop-In
 - Fetch a customer's payment method without showing UI
 - UI elements, art, helpers and localization are now accessible
-- Added Apple Pay support
+- Added Apple Pay and UnionPay support to Drop-In
 - Customizable appearance
 - And more...
 
@@ -44,6 +44,7 @@ Present `BTDropInController` to collect the customer's payment information and r
 
 ```swift
     let request =  BTDropInRequest()
+    request.displayCardTypes = [BTUIKPaymentOptionType.Visa.rawValue, BTUIKPaymentOptionType.MasterCard.rawValue]
     self.dropIn = BTDropInController(authorization: clientTokenOrTokenizationKey, request: request)
     { (result, error) in
         if (error != nil) {

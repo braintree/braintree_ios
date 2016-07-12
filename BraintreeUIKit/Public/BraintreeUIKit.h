@@ -1,3 +1,5 @@
+#pragma message "⚠️ BraintreeUIKit is currently in beta and may change."
+
 #import <UIKit/UIKit.h>
 
 //! Project version number for BraintreeUIKit.

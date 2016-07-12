@@ -15,8 +15,9 @@
 		031B94D11C34863200F136C8 /* BTUISpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 031B94C01C34822800F136C8 /* BTUISpec.m */; };
 		0325AC241C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */; };
 		032D3A721C580B09000E5F6B /* PPDataCollectorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 032D3A711C580B09000E5F6B /* PPDataCollectorTest.m */; };
-		033800101C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0338000F1C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift */; };
+		033800101C248B9C00CFF1D9 /* BraintreeDropInLegacy_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0338000F1C248B9C00CFF1D9 /* BraintreeDropInLegacy_UITests.swift */; };
 		034BA82B1CED0FC600C81C0B /* BraintreeUIKIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7DE8E381CE145BE0097B974 /* BraintreeUIKIt.framework */; };
+		034BF58D1D34438C00D7C6D8 /* BraintreeDropIn_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034BF58C1D34438C00D7C6D8 /* BraintreeDropIn_UITests.swift */; };
 		035945571BE96345002116BB /* BTUIVenmoMonogramCardView.h in Headers */ = {isa = PBXBuildFile; fileRef = 035945551BE96345002116BB /* BTUIVenmoMonogramCardView.h */; };
 		035945581BE96345002116BB /* BTUIVenmoMonogramCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 035945561BE96345002116BB /* BTUIVenmoMonogramCardView.m */; };
 		0371D13C1CBECACD006A0B5D /* BTUIPayPalWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */; };
@@ -40,7 +41,7 @@
 		03B368A31CAD950600CDFC9C /* BTUIPaymentMethodCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B368691CAD891B00CDFC9C /* BTUIPaymentMethodCollectionViewCell.m */; };
 		03B368A61CAD950900CDFC9C /* BTDropInPaymentSeletionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B368671CAD891B00CDFC9C /* BTDropInPaymentSeletionCell.m */; };
 		03B368A71CAD950900CDFC9C /* BTUIPaymentMethodCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B368691CAD891B00CDFC9C /* BTUIPaymentMethodCollectionViewCell.m */; };
-		03B368B31CAD95D300CDFC9C /* BraintreeDemoDropInOldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B368B21CAD95D300CDFC9C /* BraintreeDemoDropInOldViewController.m */; };
+		03B368B31CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B368B21CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.m */; };
 		03CBDB9E1D244827003C5E64 /* BTUIKBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CBDB9C1D244827003C5E64 /* BTUIKBarButtonItem.h */; };
 		03CBDB9F1D244827003C5E64 /* BTUIKBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CBDB9D1D244827003C5E64 /* BTUIKBarButtonItem.m */; };
 		03CBDBA01D244827003C5E64 /* BTUIKBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CBDB9D1D244827003C5E64 /* BTUIKBarButtonItem.m */; };
@@ -1349,7 +1350,8 @@
 		031B94C31C34822800F136C8 /* EXPMatchers+haveKerning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+haveKerning.m"; sourceTree = "<group>"; };
 		0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeThreeDSecure_UITests.swift; sourceTree = "<group>"; };
 		032D3A711C580B09000E5F6B /* PPDataCollectorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPDataCollectorTest.m; sourceTree = "<group>"; };
-		0338000F1C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDropIn_UITests.swift; sourceTree = "<group>"; };
+		0338000F1C248B9C00CFF1D9 /* BraintreeDropInLegacy_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDropInLegacy_UITests.swift; sourceTree = "<group>"; };
+		034BF58C1D34438C00D7C6D8 /* BraintreeDropIn_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeDropIn_UITests.swift; sourceTree = "<group>"; };
 		035945551BE96345002116BB /* BTUIVenmoMonogramCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIVenmoMonogramCardView.h; sourceTree = "<group>"; };
 		035945561BE96345002116BB /* BTUIVenmoMonogramCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIVenmoMonogramCardView.m; sourceTree = "<group>"; };
 		0384E94C1C23BAFF001A3380 /* BraintreePayPal_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreePayPal_UITests.swift; sourceTree = "<group>"; };
@@ -1363,8 +1365,8 @@
 		03B368681CAD891B00CDFC9C /* BTUIPaymentMethodCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTUIPaymentMethodCollectionViewCell.h; path = "BraintreeDropIn/Custom Views/BTUIPaymentMethodCollectionViewCell.h"; sourceTree = "<group>"; };
 		03B368691CAD891B00CDFC9C /* BTUIPaymentMethodCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BTUIPaymentMethodCollectionViewCell.m; path = "BraintreeDropIn/Custom Views/BTUIPaymentMethodCollectionViewCell.m"; sourceTree = "<group>"; };
 		03B368831CAD941700CDFC9C /* BraintreeDropIn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeDropIn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		03B368B11CAD95D300CDFC9C /* BraintreeDemoDropInOldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoDropInOldViewController.h; sourceTree = "<group>"; };
-		03B368B21CAD95D300CDFC9C /* BraintreeDemoDropInOldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoDropInOldViewController.m; sourceTree = "<group>"; };
+		03B368B11CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoDropInLegacyViewController.h; sourceTree = "<group>"; };
+		03B368B21CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoDropInLegacyViewController.m; sourceTree = "<group>"; };
 		03CBDB9C1D244827003C5E64 /* BTUIKBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIKBarButtonItem.h; sourceTree = "<group>"; };
 		03CBDB9D1D244827003C5E64 /* BTUIKBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIKBarButtonItem.m; sourceTree = "<group>"; };
 		03CFEF241CD304B0006D2DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2395,8 +2397,8 @@
 		03B368B01CAD95D300CDFC9C /* Drop In Old */ = {
 			isa = PBXGroup;
 			children = (
-				03B368B11CAD95D300CDFC9C /* BraintreeDemoDropInOldViewController.h */,
-				03B368B21CAD95D300CDFC9C /* BraintreeDemoDropInOldViewController.m */,
+				03B368B11CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.h */,
+				03B368B21CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.m */,
 			);
 			path = "Drop In Old";
 			sourceTree = "<group>";
@@ -2431,7 +2433,8 @@
 		03F8B2671C23976000FD184B /* UITests */ = {
 			isa = PBXGroup;
 			children = (
-				0338000F1C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift */,
+				034BF58C1D34438C00D7C6D8 /* BraintreeDropIn_UITests.swift */,
+				0338000F1C248B9C00CFF1D9 /* BraintreeDropInLegacy_UITests.swift */,
 				0384E94C1C23BAFF001A3380 /* BraintreePayPal_UITests.swift */,
 				0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */,
 				0384E9501C23C111001A3380 /* Helpers */,
@@ -4977,7 +4980,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				033800101C248B9C00CFF1D9 /* BraintreeDropIn_UITests.swift in Sources */,
+				033800101C248B9C00CFF1D9 /* BraintreeDropInLegacy_UITests.swift in Sources */,
+				034BF58D1D34438C00D7C6D8 /* BraintreeDropIn_UITests.swift in Sources */,
 				0325AC241C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift in Sources */,
 				0384E94D1C23BAFF001A3380 /* BraintreePayPal_UITests.swift in Sources */,
 				0384E94F1C23C108001A3380 /* BTUITest.swift in Sources */,
@@ -5384,7 +5388,7 @@
 				A76B1A101B79708A00452CFA /* BraintreeDemoDemoContainmentViewController.m in Sources */,
 				A7A9C6D61B83CC6F00F5EBBA /* BraintreeDemoCardTokenizationViewController.m in Sources */,
 				A7A9C6D51B83C98000F5EBBA /* BraintreeDemoCustomVenmoButtonViewController.m in Sources */,
-				03B368B31CAD95D300CDFC9C /* BraintreeDemoDropInOldViewController.m in Sources */,
+				03B368B31CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.m in Sources */,
 				A76B1A121B79708A00452CFA /* BraintreeDemoSlideNavigationController.m in Sources */,
 				A7A094FF1B839CC900D732CC /* BraintreeDemoApplePayPassKitViewController.m in Sources */,
 				A7A094FB1B8295E000D732CC /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */,

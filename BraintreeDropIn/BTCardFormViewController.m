@@ -196,6 +196,7 @@
     self.cardNumberFooter.layoutMarginsRelativeArrangement = true;
     [self.stackView addArrangedSubview:self.cardNumberFooter];
     self.cardList = [BTUIKCardListLabel new];
+    self.cardList.availablePaymentOptions = self.dropInRequest.displayCardTypes;
     [self.cardNumberFooter addArrangedSubview:self.cardList];
     [self addSpacerToStackView:self.cardNumberFooter beforeView:self.cardList];
     

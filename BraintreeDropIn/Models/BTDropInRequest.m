@@ -5,6 +5,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
+        self.displayCardTypes = @[];
     }
     return self;
 }
@@ -16,6 +17,7 @@
     request.noShipping = self.noShipping;
     request.shippingAddress = self.shippingAddress;
     request.showApplePayPaymentOption = self.showApplePayPaymentOption;
+    request.displayCardTypes = [self.displayCardTypes copy];
     return request;
 }
 
