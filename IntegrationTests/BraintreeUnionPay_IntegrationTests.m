@@ -27,7 +27,7 @@
         XCTAssertNil(error);
         XCTAssertFalse(cardCapabilities.isDebit);
         XCTAssertTrue(cardCapabilities.isUnionPay);
-        XCTAssertTrue(cardCapabilities.isUnionPayEnrollmentRequired);
+        XCTAssertTrue(cardCapabilities.isSupported);
         XCTAssertTrue(cardCapabilities.supportsTwoStepAuthAndCapture);
         [expectation fulfill];
     }];
