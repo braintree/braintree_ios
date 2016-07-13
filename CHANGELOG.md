@@ -1,6 +1,11 @@
 # Braintree iOS SDK Release Notes
 
 ## Unreleased
+* (BETA) Release of new `BraintreeDropIn` and `BraintreeUIKit` frameworks
+  * `BraintreeDropIn` bundles our new UI components and Braintree API's for a whole new Drop-In experience
+  * UI components, helpers, vector art and localizations are now public and fully accessible via `BraintreeUIKit`
+  * [Learn more about our Drop-In Update](Docs/Drop-In-Update.md)
+  * Note that our legacy Drop-In (`BraintreeUI`) has not changed
 * (BETA) Various updates to the UnionPay component
 * Improve error messages when Braintree gateway returns 422 validation errors
 
