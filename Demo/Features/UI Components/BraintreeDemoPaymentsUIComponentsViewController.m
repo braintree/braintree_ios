@@ -1,4 +1,4 @@
-#import "BraintreeDemoPaymentsUIComponentsViewController.h"
+#import "BraintreeDemoBraintreeUIKitComponentsViewController.h"
 #import "BTUIPaymentMethodView.h"
 #import "BTUICTAControl.h"
 

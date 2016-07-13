@@ -26,24 +26,24 @@ PODS:
   - HockeySDK (3.8.5):
     - HockeySDK/AllFeaturesLib (= 3.8.5)
   - HockeySDK/AllFeaturesLib (3.8.5)
-  - InAppSettingsKit (2.6)
+  - InAppSettingsKit (2.7.1)
   - iOS-Slide-Menu (1.5)
   - NSURL+QueryDictionary (1.1.0)
-  - OCMock (3.2.2)
-  - OHHTTPStubs (4.6.0):
-    - OHHTTPStubs/Default (= 4.6.0)
-  - OHHTTPStubs/Core (4.6.0)
-  - OHHTTPStubs/Default (4.6.0):
+  - OCMock (3.3)
+  - OHHTTPStubs (5.1.0):
+    - OHHTTPStubs/Default (= 5.1.0)
+  - OHHTTPStubs/Core (5.1.0)
+  - OHHTTPStubs/Default (5.1.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (4.6.0):
+  - OHHTTPStubs/JSON (5.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (4.6.0):
+  - OHHTTPStubs/NSURLSession (5.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (4.6.0)
-  - PureLayout (3.0.1)
+  - OHHTTPStubs/OHPathHelpers (5.1.0)
+  - PureLayout (3.0.2)
   - Specta (1.0.5)
 
 DEPENDENCIES:
@@ -66,14 +66,14 @@ SPEC CHECKSUMS:
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   FLEX: 27b768fcae23a313a1eb115076d429180ca9b472
   HockeySDK: dd11a2b9da3372fd025643bee5bc10c8c613d169
-  InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
+  InAppSettingsKit: 2b9fcdb82cdff2f99c51cae544e9f4df0df7afbf
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
-  OCMock: 18c9b7e67d4c2770e95bb77a9cc1ae0c91fe3835
-  OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
+  OCMock: d68685bde31f69cb61d518dcb39269080c78b5ed
+  OHHTTPStubs: 592f74439d2d72615115cf99a954237a3fbe26e5
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
 PODFILE CHECKSUM: c23de6705a01a1741c52fd56605d7fa6b1a6534d
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.0.1

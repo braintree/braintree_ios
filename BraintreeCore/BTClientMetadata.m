@@ -60,6 +60,8 @@
             return @"custom";
         case BTClientMetadataIntegrationDropIn:
             return @"dropin";
+        case BTClientMetadataIntegrationDropIn2:
+            return @"dropin2";
         case BTClientMetadataIntegrationUnknown:
             return @"unknown";
     }

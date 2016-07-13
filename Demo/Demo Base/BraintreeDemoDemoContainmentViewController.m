@@ -87,6 +87,19 @@
         NSString *nonce = self.latestTokenizedPayment.nonce;
         [self updateStatus:@"Creating Transaction…"];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        if ([self.latestTokenizedPayment.type isEqualToString:@"UnionPay"]){
+            [[BraintreeDemoMerchantAPI sharedService] makeTransactionWithPaymentMethodNonce:nonce
+                                                                          merchantAccountId:@"fake_switch_usd"
+                                                                                 completion:^(NSString *transactionId, NSError *error){
+                                                                                     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                                                                                     self.latestTokenizedPayment = nil;
+                                                                                     if (error) {
+                                                                                         [self updateStatus:error.localizedDescription];
+                                                                                     } else {
+                                                                                         [self updateStatus:transactionId];
+                                                                                     }
+                                                                                 }];
+        } else {
         [[BraintreeDemoMerchantAPI sharedService] makeTransactionWithPaymentMethodNonce:nonce
                                                                              completion:^(NSString *transactionId, NSError *error){
                                                                                  [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -97,6 +110,7 @@
                                                                                      [self updateStatus:transactionId];
                                                                                  }
                                                                              }];
+        }
     }
 }
 
@@ -177,6 +191,7 @@
     [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([_currentDemoViewController class])]];
     _currentDemoViewController.progressBlock = [self progressBlock];
     _currentDemoViewController.completionBlock = [self completionBlock];
+    _currentDemoViewController.transactionBlock = [self transactionBlock];
     
     [self containIntegrationViewController:_currentDemoViewController];
     
@@ -237,6 +252,17 @@
     return block;
 }
 
+- (void (^)())transactionBlock {
+    // This class is responsible for retaining the completion block
+    static id block;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        block = ^(){
+            [self tappedStatus];
+        };
+    });
+    return block;
+}
 
 #pragma mark IASKSettingsDelegate
 
