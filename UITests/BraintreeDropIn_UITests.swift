@@ -124,7 +124,7 @@ class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
         self.waitForElementToBeHittable(cardNumberTextField)
         
         cardNumberTextField.forceTapElement()
-        cardNumberTextField.typeText("5105105105105100")
+        cardNumberTextField.typeText("4111111111111111")
         
         self.waitForElementToBeHittable(app.buttons["Next"])
         app.buttons["Next"].forceTapElement()
@@ -139,42 +139,60 @@ class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
         
         app.buttons["Add Card"].forceTapElement()
         
-        self.waitForElementToAppear(app.staticTexts["ending in 00"])
+        self.waitForElementToAppear(app.staticTexts["ending in 11"])
         
-        XCTAssertTrue(app.staticTexts["ending in 00"].exists);
+        XCTAssertTrue(app.staticTexts["ending in 11"].exists);
     }
     
-    // Needs UP changes
-//    func testDropIn_unionPayCardNumber_receivesNonce() {
-//        self.waitForElementToBeHittable(app.staticTexts["Credit or Debit Card"])
-//        app.staticTexts["Credit or Debit Card"].tap()
-//        
-//        var elementsQuery = app.scrollViews.otherElements
-//        let cardNumberTextField = elementsQuery.textFields["Card Number"]
-//        
-//        self.waitForElementToBeHittable(cardNumberTextField)
-//        
-//        cardNumberTextField.forceTapElement()
-//        cardNumberTextField.typeText("6212345678901232")
-//        
-//        self.waitForElementToBeHittable(app.buttons["Next"])
-//        app.buttons["Next"].forceTapElement()
-//        
-//        elementsQuery = app.scrollViews.otherElements
-//        let expiryTextField = elementsQuery.textFields["MM/YY"]
-//        self.waitForElementToBeHittable(expiryTextField)
-//        expiryTextField.forceTapElement()
-//        
-//        self.waitForElementToBeHittable(app.staticTexts["2019"])
-//        app.staticTexts["11"].forceTapElement()
-//        app.staticTexts["2019"].forceTapElement()
-//        
-//        app.buttons["Add Card"].forceTapElement()
-//        
-//        self.waitForElementToAppear(app.staticTexts["ending in 00"])
-//        
-//        XCTAssertTrue(app.staticTexts["ending in 00"].exists);
-//    }
+    func testDropIn_unionPayCardNumber_receivesNonce() {
+        self.waitForElementToBeHittable(app.staticTexts["Credit or Debit Card"])
+        app.staticTexts["Credit or Debit Card"].tap()
+        
+        let elementsQuery = app.scrollViews.otherElements
+        let cardNumberTextField = elementsQuery.textFields["Card Number"]
+        
+        self.waitForElementToBeHittable(cardNumberTextField)
+        
+        cardNumberTextField.forceTapElement()
+        cardNumberTextField.typeText("6212345678901232")
+        
+        self.waitForElementToBeHittable(app.buttons["Next"])
+        app.buttons["Next"].forceTapElement()
+        
+        let expiryTextField = app.scrollViews.otherElements.textFields["MM/YY"]
+        self.waitForElementToBeHittable(expiryTextField)
+        expiryTextField.forceTapElement()
+        
+        self.waitForElementToBeHittable(app.staticTexts["2019"])
+        app.staticTexts["11"].forceTapElement()
+        app.staticTexts["2019"].forceTapElement()
+        
+        app.staticTexts["Security Code"].forceTapElement()
+        app.typeText("565")
+
+        app.staticTexts["Mobile Country Code"].forceTapElement()
+        app.typeText("65")
+        
+        app.staticTexts["Mobile Number"].forceTapElement()
+        app.typeText("1235566543")
+        
+        app.buttons["Add Card"].forceTapElement()
+        
+        self.waitForElementToBeHittable(app.alerts.buttons["OK"])
+        app.alerts.buttons["OK"].tap()
+        
+        self.waitForElementToBeHittable(app.textFields["SMS Code"])
+        app.textFields["SMS Code"].forceTapElement()
+        app.typeText("12345")
+        
+        self.waitForElementToBeHittable(app.buttons["Confirm"])
+        app.buttons["Confirm"].forceTapElement()
+        
+        self.waitForElementToAppear(app.staticTexts["ending in 32"])
+        
+        XCTAssertTrue(app.staticTexts["ending in 32"].exists);
+        
+    }
 }
 
 

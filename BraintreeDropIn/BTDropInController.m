@@ -326,14 +326,46 @@
     __block BTCardRequest *cardRequest = self.cardFormViewController.cardRequest;
     __block BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
     
-    if (self.cardFormViewController.cardCapabilities != nil && self.cardFormViewController.cardCapabilities.isUnionPayEnrollmentRequired) {
-        [cardClient enrollCard:cardRequest completion:^(NSString * _Nullable enrollmentID, NSError * _Nullable error) {
+    void (^basicTokenizeBlock)() = ^void() {
+        UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];
+        spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        [spinner startAnimating];
+        
+        NSArray *originalToolbarItems = self.btToolbar.items;
+        NSMutableArray *newToolbarItems = [self.btToolbar.items mutableCopy];
+        [newToolbarItems removeLastObject];
+        [newToolbarItems addObject:[[UIBarButtonItem alloc] initWithCustomView:spinner]];
+        [self.btToolbar setItems:newToolbarItems animated:NO];
+        self.view.userInteractionEnabled = NO;
+        
+        [cardClient tokenizeCard:cardRequest options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.view.userInteractionEnabled = YES;
+                [self.btToolbar setItems:originalToolbarItems animated:NO];
+                if (self.handler) {
+                    BTDropInResult *result = [[BTDropInResult alloc] init];
+                    result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
+                    result.paymentMethod = tokenizedCard;
+                    self.handler(result, error);
+                }
+            });
+        }];
+    };
+    
+    if (self.cardFormViewController.cardCapabilities != nil && self.cardFormViewController.cardCapabilities.isUnionPay && self.cardFormViewController.cardCapabilities.isSupported) {
+        [cardClient enrollCard:cardRequest completion:^(NSString * _Nullable enrollmentID, BOOL smsCodeRequired, NSError * _Nullable error) {
             if (error) {
                 self.handler(nil, error);
                 return;
             }
-
+            
             cardRequest.enrollmentID = enrollmentID;
+            
+            if (!smsCodeRequired) {
+                basicTokenizeBlock();
+                return;
+            }
+
             __block UINavigationController *navController;
             __block BTEnrollmentVerificationViewController *enrollmentController;
             enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.text mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.text handler:^(NSString* authCode, BOOL resend) {
@@ -406,30 +438,7 @@
         }];
         return;
     }
-
-    UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];
-    spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    [spinner startAnimating];
-
-    NSArray *originalToolbarItems = self.btToolbar.items;
-    NSMutableArray *newToolbarItems = [self.btToolbar.items mutableCopy];
-    [newToolbarItems removeLastObject];
-    [newToolbarItems addObject:[[UIBarButtonItem alloc] initWithCustomView:spinner]];
-    [self.btToolbar setItems:newToolbarItems animated:NO];
-    self.view.userInteractionEnabled = NO;
-
-    [cardClient tokenizeCard:cardRequest options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.view.userInteractionEnabled = YES;
-            [self.btToolbar setItems:originalToolbarItems animated:NO];
-            if (self.handler) {
-                BTDropInResult *result = [[BTDropInResult alloc] init];
-                result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
-                result.paymentMethod = tokenizedCard;
-                self.handler(result, error);
-            }
-        });
-    }];
+    basicTokenizeBlock();
 }
 
 - (void)updateToolbarForViewController:(UIViewController*)viewController {

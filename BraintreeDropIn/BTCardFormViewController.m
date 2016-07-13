@@ -36,7 +36,7 @@
 @property (nonatomic, strong) BTUIKCardListLabel *cardList;
 @property (nonatomic, getter=isCollapsed) BOOL collapsed;
 @property (nonatomic, strong, nullable, readwrite) BTCardCapabilities *cardCapabilities;
-@property (nonatomic) BOOL isUnionPay;
+@property (nonatomic) BOOL unionPayEnabledMerchant;
 @property (nonatomic, assign) BOOL cardEntryDidBegin;
 @property (nonatomic, assign) BOOL cardEntryDidFocus;
 @end
@@ -60,7 +60,7 @@
     
     // Using ivar so that setter is not called
     _collapsed = YES;
-    self.isUnionPay = NO;
+    self.unionPayEnabledMerchant = NO;
     self.formFields = @[];
     self.view.translatesAutoresizingMaskIntoConstraints = false;
     self.view.backgroundColor = [UIColor clearColor];
@@ -214,22 +214,26 @@
     [self showLoadingScreen:NO animated:YES];
     if (!error) {
         self.collapsed = YES;
-        self.isUnionPay = NO;
+        self.unionPayEnabledMerchant = NO;
         BTJSON *unionPayJSON = self.configuration.json[@"unionPay"];
         if (![unionPayJSON isError] && [unionPayJSON[@"enabled"] isTrue] && !self.apiClient.tokenizationKey) {
-            self.isUnionPay = YES;
+            self.unionPayEnabledMerchant = YES;
             self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
             [self.cardNumberField setAccessoryViewHidden:NO animated:NO];
         }
 
-        NSArray <NSString *> *challenges = [self.configuration.json[@"challenges"] asStringArray];
-        self.requiredFields = [NSMutableArray arrayWithArray:@[self.cardNumberField, self.expirationDateField]];
-        if ([challenges containsObject:@"cvv"]) {
-            [self.requiredFields addObject:self.securityCodeField];
-        }
-        if ([challenges containsObject:@"postal_code"]) {
-            [self.requiredFields addObject:self.postalCodeField];
-        }
+        [self updateRequiredFields];
+    }
+}
+
+- (void)updateRequiredFields {
+    NSArray <NSString *> *challenges = [self.configuration.json[@"challenges"] asStringArray];
+    self.requiredFields = [NSMutableArray arrayWithArray:@[self.cardNumberField, self.expirationDateField]];
+    if ([challenges containsObject:@"cvv"]) {
+        [self.requiredFields addObject:self.securityCodeField];
+    }
+    if ([challenges containsObject:@"postal_code"]) {
+        [self.requiredFields addObject:self.postalCodeField];
     }
 }
 
@@ -247,7 +251,7 @@
     card.shouldValidate = self.apiClient.tokenizationKey ? NO : YES;
     BTCardRequest *cardRequest = [[BTCardRequest alloc] initWithCard:card];
 
-    if (self.cardCapabilities != nil && self.cardCapabilities.isUnionPayEnrollmentRequired) {
+    if (self.cardCapabilities != nil && self.cardCapabilities.isUnionPay && self.cardCapabilities.isSupported) {
         cardRequest.mobileCountryCode = self.mobileCountryCodeField.text;
         cardRequest.mobilePhoneNumber = self.mobilePhoneField.text;
     }
@@ -303,7 +307,7 @@
     }
     // Using ivar so that setter is not called
     _collapsed = YES;
-    self.isUnionPay = NO;
+    self.unionPayEnabledMerchant = NO;
     self.cardNumberField.hidden = NO;
     [self.cardNumberField resetFormField];
     self.cardNumberFooter.hidden = NO;
@@ -442,11 +446,27 @@
             self.cardNumberErrorView.hidden = NO;
             self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
             return;
+        }else if (cardCapabilities.isUnionPay && !cardCapabilities.isSupported) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"That card is not supported. Please try another card." preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                [alertController addAction: alertAction];
+                [self presentViewController:alertController animated:YES completion:nil];
+            });
+            self.cardNumberErrorView.hidden = NO;
+            self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
+            return;
         }
-        self.requiredFields = [NSMutableArray arrayWithArray:@[self.cardNumberField, self.expirationDateField]];
+        if (cardCapabilities.isUnionPay) {
+            self.requiredFields = [NSMutableArray arrayWithArray:@[self.cardNumberField, self.expirationDateField]];
+        } else {
+            [self updateRequiredFields];
+        }
         self.optionalFields = [NSMutableArray new];
         self.cardCapabilities = cardCapabilities;
         if (cardCapabilities.isUnionPay){
+            [self.requiredFields addObject:self.mobileCountryCodeField];
+            [self.requiredFields addObject:self.mobilePhoneField];
             if (cardCapabilities.isDebit) {
                 [self.requiredFields addObject:self.securityCodeField];
                 [self.optionalFields addObject:self.securityCodeField];
@@ -454,11 +474,6 @@
             } else {
                 [self.requiredFields addObject:self.securityCodeField];
             }
-        }
-        
-        if (cardCapabilities.isUnionPayEnrollmentRequired) {
-            [self.requiredFields addObject:self.mobileCountryCodeField];
-            [self.requiredFields addObject:self.mobilePhoneField];
         }
         
         self.cardNumberField.state = BTUIKCardNumberFormFieldStateDefault;
@@ -482,7 +497,7 @@
         [self.apiClient sendAnalyticsEvent:@"ios.dropin2.add-card.start"];
         self.cardEntryDidBegin = YES;
     }
-    if (self.collapsed && formField == self.cardNumberField && !self.isUnionPay) {
+    if (self.collapsed && formField == self.cardNumberField && !self.unionPayEnabledMerchant) {
         BTUIKPaymentOptionType paymentMethodType = [BTUIKViewUtil paymentMethodTypeForCardType:self.cardNumberField.cardType];
         [self.cardList emphasizePaymentOption:paymentMethodType];
         if (formField.valid) {
@@ -490,8 +505,8 @@
             [self.expirationDateField becomeFirstResponder];
         }
     }
-    if (!self.collapsed && formField == self.cardNumberField && self.isUnionPay) {
-        if (self.isUnionPay) {
+    if (!self.collapsed && formField == self.cardNumberField && self.unionPayEnabledMerchant) {
+        if (self.unionPayEnabledMerchant) {
             self.cardCapabilities = nil;
             self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
         }
