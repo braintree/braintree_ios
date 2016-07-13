@@ -63,7 +63,6 @@
 }
 
 - (void)kernExpiration:(NSMutableAttributedString *)input {
-    // TODO: used to be self.theme.formattedEntryKerning/2
     CGFloat kerningValue = 4;
     [input removeAttribute:NSKernAttributeName range:NSMakeRange(0, input.length)];
     

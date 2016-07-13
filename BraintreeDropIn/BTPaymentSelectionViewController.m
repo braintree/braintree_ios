@@ -162,7 +162,7 @@
                 [activePaymentOptions addObject:@(BTUIKPaymentOptionTypePayPal)];
             }
             
-            // TODO Venmo Account type might change
+            // TODO Venmo Account type might change in upcoming PR
             BTJSON *venmoAccessToken = self.configuration.json[@"payWithVenmo"][@"accessToken"];
             if ([[BTTokenizationService sharedService] isTypeAvailable:@"Venmo"] && venmoAccessToken.isString) {
                 NSURLComponents *components = [NSURLComponents componentsWithString:@"com.venmo.touch.v2://x-callback-url/vzero/auth"];
@@ -212,7 +212,7 @@
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         
         if (error) {
-            // Todo handle alert?
+            // no action
         } else {
             self.paymentMethodNonces = [paymentMethodNonces copy];
             if (completionBlock) {
