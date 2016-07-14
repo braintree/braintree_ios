@@ -70,7 +70,7 @@
 
     BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:self.apiClient];
     
-    [driver authorizeAccountWithValidation:YES completion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
+    [driver authorizeAccountAndVault:YES completion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
         if (venmoAccount) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [venmoAccount debugDescription]);

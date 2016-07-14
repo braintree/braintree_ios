@@ -30,7 +30,7 @@ static BTVenmoDriver *appSwitchedDriver;
         [[BTTokenizationService sharedService] registerType:@"Venmo" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:apiClient];
             driver.appSwitchDelegate = options[BTTokenizationServiceAppSwitchDelegateOption];
-            [driver authorizeAccountWithValidation:YES completion:completionBlock];
+            [driver authorizeAccountAndVault:YES completion:completionBlock];
         }];
         
         [[BTPaymentMethodNonceParser sharedParser] registerType:@"VenmoAccount" withParsingBlock:^BTPaymentMethodNonce * _Nullable(BTJSON * _Nonnull venmoJSON) {
@@ -76,10 +76,10 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - Tokenization
 
 - (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
-    [self authorizeAccountWithValidation:NO completion:completionBlock];
+    [self authorizeAccountAndVault:NO completion:completionBlock];
 }
 
-- (void)authorizeAccountWithValidation:(BOOL)validate completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
+- (void)authorizeAccountAndVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeIntegration
@@ -133,7 +133,7 @@ static BTVenmoDriver *appSwitchedDriver;
                                                                   bundleDisplayName:bundleDisplayName
                                                                         environment:[venmoMerchantEnvironment asString]
                                                                     authFingerprint:self.apiClient.clientToken.authorizationFingerprint
-                                                                           validate:validate
+                                                                           validate:vault // vault == validate
                                                                            metadata:[self.apiClient metadata]];
         if (!appSwitchURL) {
             error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
