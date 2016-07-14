@@ -31,6 +31,15 @@
 + (BOOL)isCallbackURLSchemeValid:(NSString *)callbackURLScheme {
     NSString *bundleID = [[self bundleId] lowercaseString];
 
+    // There are issues returning to the app if the return URL begins with a `-`
+    // Allow callback URLs that remove the leading `-`
+    // Ex: An app with Bundle ID `-com.example.myapp` can use the callback URL `com.example.myapp.payments`
+    if (bundleID.length <= 1) {
+        return NO;
+    } else if ([[bundleID substringToIndex:1] isEqualToString:@"-"] && ![[callbackURLScheme lowercaseString] hasPrefix:bundleID]) {
+        bundleID = [bundleID substringFromIndex:1];
+    }
+    
     if (bundleID && ![[callbackURLScheme lowercaseString] hasPrefix:bundleID]) {
         PPSDKLog(@"callback URL scheme must start with %@ ", bundleID);
         return NO;
