@@ -6,6 +6,10 @@
 
 /// The BTUIKPaymentOptionType to display
 @property (nonatomic) BTUIKPaymentOptionType paymentOptionType;
+/// Defaults to 4.0
+@property (nonatomic) float cornerRadius;
+/// Inner padding between art and border. Defaults to 3
+@property (nonatomic) float innerPadding;
 
 /// Set the highlighted state of the view.
 ///

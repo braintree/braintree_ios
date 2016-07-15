@@ -5,8 +5,6 @@
 
 @interface BTUIKSecurityCodeFormField ()
 
-@property (nonatomic, retain) BTUIKCardHint* hint;
-
 @end
 
 @implementation BTUIKSecurityCodeFormField
@@ -16,14 +14,8 @@
     if (self) {
         self.textField.accessibilityLabel = @"Security Code";
         self.formLabel.text = @"Security Code";
-        self.textField.placeholder = @"CVN2";
+        self.textField.placeholder = @"CVV";
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
-        
-        self.hint = [BTUIKCardHint new];
-        [self.hint setHighlighted:YES];
-        self.hint.displayMode = BTUIKCardHintDisplayModeCVVHint;
-        self.accessoryView = self.hint;
-        [self setAccessoryViewHidden:YES animated:NO];
         
         self.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.textField];
     }
@@ -40,8 +32,6 @@
     return self.textField.text;
 }
 
-#pragma mark - Protocol conformance
-
 #pragma mark UITextFieldDelegate
 
 - (void)fieldContentDidChange {
@@ -51,13 +41,11 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     [super textFieldDidBeginEditing:textField];
-    [self setAccessoryViewHidden:NO animated:YES];
     [self updateAppearance];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [super textFieldDidEndEditing:textField];
-    [self setAccessoryViewHidden:YES animated:YES];
     [self updateAppearance];
 }
 

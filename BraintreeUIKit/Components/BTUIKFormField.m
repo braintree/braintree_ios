@@ -328,6 +328,8 @@
     _accessoryView = accessoryView;
     self.accessoryView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.accessoryView];
+    [self.accessoryView setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [self.accessoryView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [self updateConstraints];
 }
 

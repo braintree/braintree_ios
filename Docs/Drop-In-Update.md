@@ -20,7 +20,7 @@ pod 'Braintree/DropIn'
 ```
 
 # Fetch last used payment method
-If you user already has an existing payment method, you may not need to show the Drop-In payment picker. You can check if they have an existing payment method using `BTDropInController:fetchDropInResultForAuthorization`. Note that the handler will only return a result when using a client token that was created with a `customer_id`. `BTDropInResult` makes it easy to get a description and icon of the payment method.
+If your user already has an existing payment method, you may not need to show the Drop-In payment picker. You can check if they have an existing payment method using `BTDropInController:fetchDropInResultForAuthorization`. Note that the handler will only return a result when using a client token that was created with a `customer_id`. `BTDropInResult` makes it easy to get a description and icon of the payment method.
 
 ![Example payment method icon and description](saved-paypal-method.png "Example payment method icon and description")
 
@@ -80,30 +80,7 @@ Apple Pay can now be displayed as an option in Drop-In by setting the `showApple
     request.showApplePayPaymentOption = PKPaymentAuthorizationViewController.canMakePaymentsUsingNetworks([PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex])
 ```
 
-**Important** If your customer selected Apple Pay as their preferred payment method then `result.paymentOptionType == .ApplePay` and the `result.paymentMethod` will be `nil`. Selecting Apple Pay does not display the Apple Pay sheet or create a nonce - you will still need to do that at the appropriate time in your app. Use `BTApplePayClient` to tokenize the customer's Apple Pay information.
-
-```swift
-    let paymentRequest = PKPaymentRequest()
-    paymentRequest.paymentSummaryItems = [
-        PKPaymentSummaryItem.init(label: "Socks", amount: NSDecimalNumber(string: "100"))
-    ]
-    paymentRequest.supportedNetworks = [
-        PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkAmex
-    ]
-    paymentRequest.merchantCapabilities = .Capability3DS
-    paymentRequest.currencyCode = "USD"
-    paymentRequest.countryCode = "US"
-    paymentRequest.merchantIdentifier = "com.braintreepayments.sandbox.Braintree-Demo"
-    
-    let client = BTAPIClient(authorization: self.clientToken!)
-    
-    let applePayClient = BTApplePayClient(APIClient: client!)
-    applePayClient.presentApplePayFromViewController(self, withPaymentRequest: paymentRequest, completion: { (applePayPaymentMethod, error) in
-        if (applePayPaymentMethod != nil) {
-            print("Show purchase alert w/ nonce: \(applePayPaymentMethod!.nonce)")
-        }
-    })
-```
+**Important** If your customer selected Apple Pay as their preferred payment method then `result.paymentOptionType == .ApplePay` and the `result.paymentMethod` will be `nil`. Selecting Apple Pay does not display the Apple Pay sheet or create a nonce - you will still need to do that at the appropriate time in your app. Use `BTApplePayClient` to tokenize the customer's Apple Pay information - (view our official docs for more information)[https://developers.braintreepayments.com/guides/apple-pay/client-side/ios/v4].
 
 # Customization
 Use `BTUIKAppearance` to customize the appearance of Drop-In and other BraintreeUIKit classes.

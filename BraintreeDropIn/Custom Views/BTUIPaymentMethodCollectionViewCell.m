@@ -14,6 +14,8 @@
 
         self.paymentOptionCardView = [[BTUIKPaymentOptionCardView alloc] init];
         self.paymentOptionCardView.translatesAutoresizingMaskIntoConstraints = NO;
+        self.paymentOptionCardView.innerPadding = 15.0;
+        self.paymentOptionCardView.cornerRadius = 8.0;
         [self.contentView addSubview:self.paymentOptionCardView];
 
         self.titleLabel = [[UILabel alloc] init];

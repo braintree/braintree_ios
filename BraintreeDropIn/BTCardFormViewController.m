@@ -504,7 +504,10 @@
             self.collapsed = NO;
             [self.expirationDateField becomeFirstResponder];
         }
+    } else if (!self.collapsed && formField == self.cardNumberField && !self.unionPayEnabledMerchant) {
+        self.collapsed = YES;
     }
+    
     if (!self.collapsed && formField == self.cardNumberField && self.unionPayEnabledMerchant) {
         if (self.unionPayEnabledMerchant) {
             self.cardCapabilities = nil;

@@ -22,7 +22,6 @@
 @property (nonatomic, strong) UIView *scrollViewContentWrapper;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) NSArray *paymentOptionsData;
-@property (nonatomic, strong) NSArray *applePaymentOptionsData;
 @property (nonatomic, strong) UITableView *paymentOptionsTableView;
 @property (nonatomic, strong) NSLayoutConstraint *collectionViewConstraint;
 @property (nonatomic, strong) UILabel *paymentOptionsHeader;
@@ -42,7 +41,6 @@
     
     self.paymentMethodNonces = @[];
     self.paymentOptionsData = @[@(BTUIKPaymentOptionTypePayPal), @(BTUIKPaymentOptionTypeUnknown)];
-    self.applePaymentOptionsData = @[];
 
     self.view.translatesAutoresizingMaskIntoConstraints = false;
     self.view.backgroundColor = [UIColor clearColor];
@@ -174,7 +172,7 @@
             
             BTJSON *applePayConfiguration = self.configuration.json[@"applePay"];
             if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"] && self.dropInRequest.showApplePayPaymentOption) {
-                self.applePaymentOptionsData = @[@(BTUIKPaymentOptionTypeApplePay)];
+                [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeApplePay)];
             }
             
             self.paymentOptionsData = [activePaymentOptions copy];
@@ -312,7 +310,7 @@
 #pragma mark UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(__unused UITableView *)tableView {
-    return self.applePaymentOptionsData.count > 0 ? 2 : 1;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -323,7 +321,7 @@
 
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    BTUIKPaymentOptionType option = indexPath.section == 0 ?  ((NSNumber*)self.paymentOptionsData[indexPath.row]).intValue : ((NSNumber*)self.applePaymentOptionsData[indexPath.row]).intValue;
+    BTUIKPaymentOptionType option = ((NSNumber*)self.paymentOptionsData[indexPath.row]).intValue;
 
     cell.label.text = [BTUIKViewUtil nameForPaymentMethodType:option];
     if (option == BTUIKPaymentOptionTypeUnknown) {
@@ -378,7 +376,7 @@
 #pragma mark UITableViewDataSource
 
 - (NSInteger)tableView:(__unused UITableView *)tableView numberOfRowsInSection:(__unused NSInteger)section {
-    return section == 0 ? [self.paymentOptionsData count] : [self.applePaymentOptionsData count];
+    return [self.paymentOptionsData count];
 }
 
 -(CGFloat)tableView:(__unused UITableView *)tableView heightForHeaderInSection:(__unused NSInteger)section {
