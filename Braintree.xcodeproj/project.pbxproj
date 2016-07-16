@@ -858,7 +858,6 @@
 		EE6D24591D107A8700DBFAF2 /* BTUIKVisaVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23D51D107A8700DBFAF2 /* BTUIKVisaVectorArtView.m */; };
 		EE6D245C1D107AE700DBFAF2 /* BraintreeUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE6D233F1D10794A00DBFAF2 /* BraintreeUIKit.framework */; };
 		EE6D245F1D107B0600DBFAF2 /* BraintreeUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE6D233F1D10794A00DBFAF2 /* BraintreeUIKit.framework */; };
-		EE6D24601D107B2900DBFAF2 /* BraintreeUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE6D233F1D10794A00DBFAF2 /* BraintreeUIKit.framework */; };
 		EE6D24611D107B2900DBFAF2 /* BraintreeUIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EE6D233F1D10794A00DBFAF2 /* BraintreeUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EE8AE1941D146AF0003B073F /* BTUIKMobileCountryCodeFormField.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8AE1921D146AF0003B073F /* BTUIKMobileCountryCodeFormField.m */; };
 		EE8AE1951D146AF0003B073F /* BTUIKMobileCountryCodeFormField.m in Sources */ = {isa = PBXBuildFile; fileRef = EE8AE1921D146AF0003B073F /* BTUIKMobileCountryCodeFormField.m */; };
@@ -2213,7 +2212,6 @@
 				034BA82B1CED0FC600C81C0B /* BraintreeUIKIt.framework in Frameworks */,
 				413533591BF6C7190005D1BA /* BraintreeCore.framework in Frameworks */,
 				413533691BF6C7210005D1BA /* BraintreeCard.framework in Frameworks */,
-				EE6D24601D107B2900DBFAF2 /* BraintreeUIKit.framework in Frameworks */,
 				A7B463191C3DA62300048423 /* PayPalDataCollector.framework in Frameworks */,
 				A76D7C311BB2192D0000FA6A /* CoreLocation.framework in Frameworks */,
 				4164B9BC1C9B6B23006AE861 /* BraintreeUnionPay.framework in Frameworks */,
@@ -4529,7 +4527,7 @@
 			attributes = {
 				CLASSPREFIX = BT;
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0730;
 				TargetAttributes = {
 					03B368821CAD941700CDFC9C = {
 						CreatedOnToolsVersion = 7.3;

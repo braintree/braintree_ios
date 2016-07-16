@@ -368,7 +368,7 @@
 
             __block UINavigationController *navController;
             __block BTEnrollmentVerificationViewController *enrollmentController;
-            enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.text mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.text handler:^(NSString* authCode, BOOL resend) {
+            enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.mobileNumber mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.countryCode handler:^(NSString* authCode, BOOL resend) {
                 
                 if (resend) {
                     dispatch_async(dispatch_get_main_queue(), ^{

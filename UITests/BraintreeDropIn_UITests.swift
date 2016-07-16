@@ -129,7 +129,7 @@ class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
         self.waitForElementToBeHittable(app.buttons["Next"])
         app.buttons["Next"].forceTapElement()
         
-        let expiryTextField = app.scrollViews.otherElements.textFields["MM/YY"]
+        let expiryTextField = app.scrollViews.otherElements.textFields["MM/YYYY"]
         self.waitForElementToBeHittable(expiryTextField)
         expiryTextField.forceTapElement()
         
@@ -159,7 +159,7 @@ class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
         self.waitForElementToBeHittable(app.buttons["Next"])
         app.buttons["Next"].forceTapElement()
         
-        let expiryTextField = app.scrollViews.otherElements.textFields["MM/YY"]
+        let expiryTextField = app.scrollViews.otherElements.textFields["MM/YYYY"]
         self.waitForElementToBeHittable(expiryTextField)
         expiryTextField.forceTapElement()
         

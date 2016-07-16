@@ -18,8 +18,24 @@
 }
 
 - (void)fieldContentDidChange {
-    [self.delegate formFieldDidChange:self];
+    
+    NSMutableString *s = [NSMutableString stringWithString:self.textField.text];
+    NSUInteger slashLocation = [s rangeOfString:@"+"].location;
+    if (slashLocation == NSNotFound) {
+        if (s.length > 0) {
+            [s insertString:@"+" atIndex:0];
+        }
+    } else {
+        if (s.length == 1) {
+            s = [NSMutableString stringWithString:@""];
+        }
+    }
+    
+    NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:s];
+    self.textField.attributedText = result;
+    
     [self updateAppearance];
+    [self.delegate formFieldDidChange:self];
 }
 
 #pragma mark - Custom accessors
@@ -29,7 +45,7 @@
 }
 
 - (NSString *)countryCode {
-    return self.textField.text;
+    return [self.textField.text stringByReplacingOccurrencesOfString:@"+" withString:@""];
 }
 
 @end

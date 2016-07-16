@@ -252,8 +252,8 @@
     BTCardRequest *cardRequest = [[BTCardRequest alloc] initWithCard:card];
 
     if (self.cardCapabilities != nil && self.cardCapabilities.isUnionPay && self.cardCapabilities.isSupported) {
-        cardRequest.mobileCountryCode = self.mobileCountryCodeField.text;
-        cardRequest.mobilePhoneNumber = self.mobilePhoneField.text;
+        cardRequest.mobileCountryCode = self.mobileCountryCodeField.countryCode;
+        cardRequest.mobilePhoneNumber = self.mobilePhoneField.mobileNumber;
     }
 
     return cardRequest;
