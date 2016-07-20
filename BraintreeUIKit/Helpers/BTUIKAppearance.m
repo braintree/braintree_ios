@@ -85,4 +85,8 @@
     return 5.0f;
 }
 
++ (float)horizontalFormContentPadding {
+    return 15.0f;
+}
+
 @end

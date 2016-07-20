@@ -58,5 +58,6 @@
 + (UIColor *)lightGrayBorderColor;
 
 + (float)textFieldOverlayPadding;
++ (float)horizontalFormContentPadding;
 
 @end

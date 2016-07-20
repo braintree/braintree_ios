@@ -98,7 +98,7 @@
     self.vaultedPaymentsHeader.translatesAutoresizingMaskIntoConstraints = NO;
 
     UIStackView *vaultedPaymentsLabelContainerStackView = [self newStackView];
-    vaultedPaymentsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, 15, 0, 15);
+    vaultedPaymentsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
     vaultedPaymentsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
 
     [vaultedPaymentsLabelContainerStackView addArrangedSubview:self.vaultedPaymentsHeader];
@@ -124,7 +124,7 @@
     self.paymentOptionsHeader.translatesAutoresizingMaskIntoConstraints = NO;
 
     UIStackView *paymentOptionsLabelContainerStackView = [self newStackView];
-    paymentOptionsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, 15, 0, 15);
+    paymentOptionsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
     paymentOptionsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
 
     [paymentOptionsLabelContainerStackView addArrangedSubview:self.paymentOptionsHeader];
@@ -301,7 +301,7 @@
 #pragma mark collection view cell paddings
 
 - (UIEdgeInsets)collectionView:(__unused UICollectionView*)collectionView layout:(__unused UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(__unused NSInteger)section {
-    return UIEdgeInsetsMake(0, 15, 0, 15);
+    return UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
 }
 
 - (CGFloat)collectionView:(__unused UICollectionView *)collectionView layout:(__unused UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(__unused NSInteger)section {

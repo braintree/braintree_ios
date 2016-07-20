@@ -49,7 +49,7 @@
     [self.label removeConstraints:self.label.constraints];
     NSDictionary* viewBindings = @{@"contentView":self.contentView, @"label":self.label, @"iconView":self.iconView, @"bottomBorder":self.bottomBorder};
 
-    NSDictionary* metrics = @{@"PADDING":@10};
+    NSDictionary* metrics = @{@"LEADING_PADDING":@([BTUIKAppearance horizontalFormContentPadding])};
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contentView]|"
                                                                  options:0
@@ -78,7 +78,7 @@
                                                                 multiplier:1.0f
                                                                   constant:0.0f]];
 
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(15)-[iconView(50)]-[label]|"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(LEADING_PADDING)-[iconView(50)]-[label]|"
                                                                              options:0
                                                                              metrics:metrics
                                                                                views:viewBindings]];
