@@ -1,5 +1,6 @@
 #import "BTUIKCardListLabel.h"
 #import "BTUIKCardHint.h"
+#import "BTUIKViewUtil.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface BTUIKCardListLabel ()
@@ -40,6 +41,9 @@
 
 - (void)setAvailablePaymentOptions:(NSArray *)availablePaymentOptions {
     _availablePaymentOptions = availablePaymentOptions;
+    if ([BTUIKViewUtil isLanguageLayoutDirectionRightToLeft]) {
+        _availablePaymentOptions = [[_availablePaymentOptions reverseObjectEnumerator] allObjects];
+    }
     [self updateAppearance];
     [self emphasizePaymentOption:self.emphasisedPaymentOption];
 }

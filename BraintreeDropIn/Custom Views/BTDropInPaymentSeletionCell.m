@@ -78,7 +78,7 @@
                                                                 multiplier:1.0f
                                                                   constant:0.0f]];
 
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(0)-[iconView(50)]-[label]|"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(15)-[iconView(50)]-[label]|"
                                                                              options:0
                                                                              metrics:metrics
                                                                                views:viewBindings]];

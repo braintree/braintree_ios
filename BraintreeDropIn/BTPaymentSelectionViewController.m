@@ -83,7 +83,7 @@
                                                                       metrics:metrics
                                                                         views:viewBindings]];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(15)-[stackView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(0)-[stackView]|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:viewBindings]];
@@ -96,9 +96,15 @@
     NSLayoutConstraint *heightConstraint;
     self.vaultedPaymentsHeader = [self sectionHeaderLabelWithString:@"Saved Payment Methods"];
     self.vaultedPaymentsHeader.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.stackView addArrangedSubview:self.vaultedPaymentsHeader];
-    
-    [self addSpacerToStackView:self.stackView beforeView:self.vaultedPaymentsHeader];
+
+    UIStackView *vaultedPaymentsLabelContainerStackView = [self newStackView];
+    vaultedPaymentsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, 15, 0, 15);
+    vaultedPaymentsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
+
+    [vaultedPaymentsLabelContainerStackView addArrangedSubview:self.vaultedPaymentsHeader];
+    [self.stackView addArrangedSubview:vaultedPaymentsLabelContainerStackView];
+
+    [self addSpacerToStackView:self.stackView beforeView:vaultedPaymentsLabelContainerStackView];
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection: UICollectionViewScrollDirectionHorizontal];
@@ -116,9 +122,15 @@
 
     self.paymentOptionsHeader = [self sectionHeaderLabelWithString:@"Payment Methods"];
     self.paymentOptionsHeader.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.stackView addArrangedSubview:self.paymentOptionsHeader];
+
+    UIStackView *paymentOptionsLabelContainerStackView = [self newStackView];
+    paymentOptionsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, 15, 0, 15);
+    paymentOptionsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
+
+    [paymentOptionsLabelContainerStackView addArrangedSubview:self.paymentOptionsHeader];
+    [self.stackView addArrangedSubview:paymentOptionsLabelContainerStackView];
     
-    self.vaultedPaymentsFooter = [self addSpacerToStackView:self.stackView beforeView:self.paymentOptionsHeader];
+    self.vaultedPaymentsFooter = [self addSpacerToStackView:self.stackView beforeView:paymentOptionsLabelContainerStackView];
     
     self.paymentOptionsTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     [self.paymentOptionsTableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
@@ -289,7 +301,7 @@
 #pragma mark collection view cell paddings
 
 - (UIEdgeInsets)collectionView:(__unused UICollectionView*)collectionView layout:(__unused UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(__unused NSInteger)section {
-    return UIEdgeInsetsMake(0, 0, 0, 0);
+    return UIEdgeInsetsMake(0, 15, 0, 15);
 }
 
 - (CGFloat)collectionView:(__unused UICollectionView *)collectionView layout:(__unused UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(__unused NSInteger)section {
