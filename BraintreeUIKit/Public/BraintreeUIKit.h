@@ -29,5 +29,5 @@ FOUNDATION_EXPORT const unsigned char BraintreeUIKitVersionString[];
 #import "BTUIKCardListLabel.h"
 #import "BTUIKPaymentOptionCardView.h"
 #import "BTUIKLocalizedString.h"
-
-
+#import "BTUIKCardExpirationValidator.h"
+#import "BTUIKCardExpiryFormat.h"

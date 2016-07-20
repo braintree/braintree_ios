@@ -28,12 +28,12 @@ If your user already has an existing payment method, you may not need to show th
     BTDropInController.fetchDropInResultForAuthorization(clientTokenOrTokenizationKey, handler: { (result, error) in
         if (error != nil) {
             print("ERROR")
-        } else {
+        } else if let result = result {
             // Use the BTDropInResult properties to update your UI
-            let selectedPaymentOptionType = result!.paymentOptionType
-            let selectedPaymentMethod = result!.paymentMethod
-            let selectedPaymentMethodIcon = result!.paymentIcon
-            let selectedPaymentMethodDescription = result!.paymentDescription
+            let selectedPaymentOptionType = result.paymentOptionType
+            let selectedPaymentMethod = result.paymentMethod
+            let selectedPaymentMethodIcon = result.paymentIcon
+            let selectedPaymentMethodDescription = result.paymentDescription
         }
     })
 ```
@@ -43,24 +43,27 @@ Present `BTDropInController` to collect the customer's payment information and r
 ![Example no saved payment method](no-payment-methods.png "Example no saved payment method")
 
 ```swift
+
+func showDropIn(clientTokenOrTokenizationKey: String) {
     let request =  BTDropInRequest()
     request.displayCardTypes = [BTUIKPaymentOptionType.Visa.rawValue, BTUIKPaymentOptionType.MasterCard.rawValue]
-    self.dropIn = BTDropInController(authorization: clientTokenOrTokenizationKey, request: request)
-    { (result, error) in
+    let dropIn = BTDropInController(authorization: clientTokenOrTokenizationKey, request: request)
+    { (controller, result, error) in
         if (error != nil) {
             print("ERROR")
         } else if (result?.cancelled == true) {
             print("CANCELLED")
-        } else {
+        } else if let result = result {
             // Use the BTDropInResult properties to update your UI
-            let selectedPaymentOptionType = result!.paymentOptionType
-            let selectedPaymentMethod = result!.paymentMethod
-            let selectedPaymentMethodIcon = result!.paymentIcon
-            let selectedPaymentMethodDescription = result!.paymentDescription
+            let selectedPaymentOptionType = result.paymentOptionType
+            let selectedPaymentMethod = result.paymentMethod
+            let selectedPaymentMethodIcon = result.paymentIcon
+            let selectedPaymentMethodDescription = result.paymentDescription
         }
-        self.dropIn!.dismissViewControllerAnimated(true, completion: nil)
+        controller.dismissViewControllerAnimated(true, completion: nil)
         }!
-    self.presentViewController(self.dropIn!, animated: true, completion: nil)
+    self.presentViewController(dropIn, animated: true, completion: nil)
+}
 ```
 
 If there are saved payment methods they will appear:
@@ -110,7 +113,7 @@ Here is the full list of properties...
 
 # BraintreeUIKit
 
-`BraintreeUIKit` is our new framework that makes our UI classes public and usable by anyone to create very specific checkout experience. This includes `localization`, `vector art`, `form fields` and other utils you might need when working with payments. `BraintreeUIKit` has no dependencies on other Braintree frameworks.
+`BraintreeUIKit` is our new framework that makes our UI classes public allowing you to create custom checkout experiences. This includes `localization`, `vector art`, `form fields` and other utils you might need when working with payments. `BraintreeUIKit` has no dependencies on other Braintree frameworks.
 
 To get the standalone `BraintreeUIKit` framework, add the following to your Podfile:
 ```

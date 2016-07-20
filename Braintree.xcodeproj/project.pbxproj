@@ -299,6 +299,8 @@
 		848470E21BE81893009B12AE /* BTFakeHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 848470E11BE81893009B12AE /* BTFakeHTTP.m */; };
 		8498EC1B1BB46D4B007FFDEC /* BTCardClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		9A153D5916D2A67F6D233B49 /* libPods-Tests-UnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C97D7BA8D969984E51584B62 /* libPods-Tests-UnitTests.a */; };
+		A50A90FB1D3FFB340043113F /* BTUIKCardExpirationValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = A50A90F91D3FFB340043113F /* BTUIKCardExpirationValidator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A50A90FC1D3FFB340043113F /* BTUIKCardExpiryFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = A50A90FA1D3FFB340043113F /* BTUIKCardExpiryFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A50C3AF31C19F07B00612D90 /* PPOTCore.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A50C3AA01C19E6A200612D90 /* PPOTCore.h */; };
 		A50C3AF41C19F07B00612D90 /* PPOTResult.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A50C3AA11C19E6A200612D90 /* PPOTResult.h */; };
 		A50C3AF51C19F07B00612D90 /* PPOTRequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A50C3AA21C19E6A200612D90 /* PPOTRequest.h */; };
@@ -763,10 +765,8 @@
 		EE6D23FA1D107A8700DBFAF2 /* BTUIKLocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23781D107A8700DBFAF2 /* BTUIKLocalizedString.m */; };
 		EE6D23FB1D107A8700DBFAF2 /* BTUIKLocalizedString.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23781D107A8700DBFAF2 /* BTUIKLocalizedString.m */; };
 		EE6D23FC1D107A8700DBFAF2 /* BTUI.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE6D23791D107A8700DBFAF2 /* BTUI.strings */; };
-		EE6D23FD1D107A8700DBFAF2 /* BTUIKCardExpirationValidator.h in Headers */ = {isa = PBXBuildFile; fileRef = EE6D23901D107A8700DBFAF2 /* BTUIKCardExpirationValidator.h */; };
 		EE6D23FE1D107A8700DBFAF2 /* BTUIKCardExpirationValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23911D107A8700DBFAF2 /* BTUIKCardExpirationValidator.m */; };
 		EE6D23FF1D107A8700DBFAF2 /* BTUIKCardExpirationValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23911D107A8700DBFAF2 /* BTUIKCardExpirationValidator.m */; };
-		EE6D24001D107A8700DBFAF2 /* BTUIKCardExpiryFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = EE6D23921D107A8700DBFAF2 /* BTUIKCardExpiryFormat.h */; };
 		EE6D24011D107A8700DBFAF2 /* BTUIKCardExpiryFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23931D107A8700DBFAF2 /* BTUIKCardExpiryFormat.m */; };
 		EE6D24021D107A8700DBFAF2 /* BTUIKCardExpiryFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23931D107A8700DBFAF2 /* BTUIKCardExpiryFormat.m */; };
 		EE6D24031D107A8700DBFAF2 /* BTUIKCardType.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23941D107A8700DBFAF2 /* BTUIKCardType.m */; };
@@ -1439,6 +1439,8 @@
 		8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardClient_Internal.h; sourceTree = "<group>"; };
 		95914B3AA739AFCDBDBB1832 /* Pods-Tests-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A181D03B76C8DFC46C10772C /* Pods-Tests-UnitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-UnitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests.release.xcconfig"; sourceTree = "<group>"; };
+		A50A90F91D3FFB340043113F /* BTUIKCardExpirationValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIKCardExpirationValidator.h; sourceTree = "<group>"; };
+		A50A90FA1D3FFB340043113F /* BTUIKCardExpiryFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIKCardExpiryFormat.h; sourceTree = "<group>"; };
 		A50C3A921C19E65700612D90 /* PPFPTIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PPFPTIData.h; path = BraintreePayPal/PayPalOneTouch/Analytics/PPFPTIData.h; sourceTree = "<group>"; };
 		A50C3A931C19E65700612D90 /* PPFPTIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PPFPTIData.m; path = BraintreePayPal/PayPalOneTouch/Analytics/PPFPTIData.m; sourceTree = "<group>"; };
 		A50C3A941C19E65700612D90 /* PPFPTITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PPFPTITracker.h; path = BraintreePayPal/PayPalOneTouch/Analytics/PPFPTITracker.h; sourceTree = "<group>"; };
@@ -2013,9 +2015,7 @@
 		EE6D238C1D107A8700DBFAF2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/BTUI.strings; sourceTree = "<group>"; };
 		EE6D238D1D107A8700DBFAF2 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BTUI.strings; sourceTree = "<group>"; };
 		EE6D238E1D107A8700DBFAF2 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/BTUI.strings"; sourceTree = "<group>"; };
-		EE6D23901D107A8700DBFAF2 /* BTUIKCardExpirationValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIKCardExpirationValidator.h; sourceTree = "<group>"; };
 		EE6D23911D107A8700DBFAF2 /* BTUIKCardExpirationValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIKCardExpirationValidator.m; sourceTree = "<group>"; };
-		EE6D23921D107A8700DBFAF2 /* BTUIKCardExpiryFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIKCardExpiryFormat.h; sourceTree = "<group>"; };
 		EE6D23931D107A8700DBFAF2 /* BTUIKCardExpiryFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIKCardExpiryFormat.m; sourceTree = "<group>"; };
 		EE6D23941D107A8700DBFAF2 /* BTUIKCardType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIKCardType.m; sourceTree = "<group>"; };
 		EE6D23951D107A8700DBFAF2 /* BTUIKUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIKUtil.m; sourceTree = "<group>"; };
@@ -3642,9 +3642,7 @@
 		EE6D238F1D107A8700DBFAF2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				EE6D23901D107A8700DBFAF2 /* BTUIKCardExpirationValidator.h */,
 				EE6D23911D107A8700DBFAF2 /* BTUIKCardExpirationValidator.m */,
-				EE6D23921D107A8700DBFAF2 /* BTUIKCardExpiryFormat.h */,
 				EE6D23931D107A8700DBFAF2 /* BTUIKCardExpiryFormat.m */,
 				EE6D23941D107A8700DBFAF2 /* BTUIKCardType.m */,
 				EE6D23951D107A8700DBFAF2 /* BTUIKUtil.m */,
@@ -3656,8 +3654,9 @@
 			isa = PBXGroup;
 			children = (
 				EE6D23971D107A8700DBFAF2 /* BraintreeUIKit.h */,
-				EE8AE1961D146B28003B073F /* BTUIKMobileCountryCodeFormField.h */,
 				EE6D23981D107A8700DBFAF2 /* BTUIKAppearance.h */,
+				A50A90F91D3FFB340043113F /* BTUIKCardExpirationValidator.h */,
+				A50A90FA1D3FFB340043113F /* BTUIKCardExpiryFormat.h */,
 				EE6D23991D107A8700DBFAF2 /* BTUIKCardHint.h */,
 				EE6D239A1D107A8700DBFAF2 /* BTUIKCardListLabel.h */,
 				EE6D239B1D107A8700DBFAF2 /* BTUIKCardNumberFormField.h */,
@@ -3667,6 +3666,7 @@
 				EE6D239F1D107A8700DBFAF2 /* BTUIKFormField.h */,
 				EE6D23A01D107A8700DBFAF2 /* BTUIKInputAccessoryToolbar.h */,
 				EE6D23A11D107A8700DBFAF2 /* BTUIKLocalizedString.h */,
+				EE8AE1961D146B28003B073F /* BTUIKMobileCountryCodeFormField.h */,
 				EE6D23A21D107A8700DBFAF2 /* BTUIKMobileNumberFormField.h */,
 				EE6D23A31D107A8700DBFAF2 /* BTUIKPaymentOptionCardView.h */,
 				EE6D23A41D107A8700DBFAF2 /* BTUIKPaymentOptionType.h */,
@@ -4021,7 +4021,6 @@
 				EE6D243A1D107A8700DBFAF2 /* BTUIKMaestroVectorArtView.h in Headers */,
 				EE6D24221D107A8700DBFAF2 /* BTUIKCardVectorArtView.h in Headers */,
 				EE6D241B1D107A8700DBFAF2 /* UIColor+BTUIK.h in Headers */,
-				EE6D24001D107A8700DBFAF2 /* BTUIKCardExpiryFormat.h in Headers */,
 				EE6D24111D107A8700DBFAF2 /* BTUIKLocalizedString.h in Headers */,
 				EE6D24141D107A8700DBFAF2 /* BTUIKPaymentOptionType.h in Headers */,
 				EE6D24131D107A8700DBFAF2 /* BTUIKPaymentOptionCardView.h in Headers */,
@@ -4039,6 +4038,7 @@
 				EE6D23E11D107A8700DBFAF2 /* BTUIKExpiryInputCollectionViewCell.h in Headers */,
 				EE6D24161D107A8700DBFAF2 /* BTUIKSecurityCodeFormField.h in Headers */,
 				EE6D24571D107A8700DBFAF2 /* BTUIKVisaVectorArtView.h in Headers */,
+				A50A90FB1D3FFB340043113F /* BTUIKCardExpirationValidator.h in Headers */,
 				EE6D240C1D107A8700DBFAF2 /* BTUIKCardType.h in Headers */,
 				EE6D24251D107A8700DBFAF2 /* BTUIKCoinbaseMonogramCardView.h in Headers */,
 				EE8AE1971D146B28003B073F /* BTUIKMobileCountryCodeFormField.h in Headers */,
@@ -4056,9 +4056,9 @@
 				EE6D24101D107A8700DBFAF2 /* BTUIKInputAccessoryToolbar.h in Headers */,
 				EE6D240F1D107A8700DBFAF2 /* BTUIKFormField.h in Headers */,
 				EE6D24311D107A8700DBFAF2 /* BTUIKDinersClubVectorArtView.h in Headers */,
-				EE6D23FD1D107A8700DBFAF2 /* BTUIKCardExpirationValidator.h in Headers */,
 				EE6D24511D107A8700DBFAF2 /* BTUIKVenmoMonogramCardView.h in Headers */,
 				EE6D240A1D107A8700DBFAF2 /* BTUIKCardListLabel.h in Headers */,
+				A50A90FC1D3FFB340043113F /* BTUIKCardExpiryFormat.h in Headers */,
 				EE6D242E1D107A8700DBFAF2 /* BTUIKCVVFrontVectorArtView.h in Headers */,
 				EE6D24431D107A8700DBFAF2 /* BTUIKPayPalWordmarkCompactVectorArtView.h in Headers */,
 				EE6D24281D107A8700DBFAF2 /* BTUIKCoinbaseWordmarkVectorArtView.h in Headers */,
