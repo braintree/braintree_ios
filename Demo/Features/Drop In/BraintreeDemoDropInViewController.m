@@ -11,7 +11,6 @@
 
 @interface BraintreeDemoDropInViewController () <PKPaymentAuthorizationViewControllerDelegate>
 
-@property (nonatomic, strong) BTDropInController *dropIn;
 @property (nonatomic, strong) BTUIKPaymentOptionCardView *paymentMethodTypeIcon;
 @property (nonatomic, strong) UILabel *paymentMethodTypeLabel;
 @property (nonatomic, strong) UILabel *cartLabel;
@@ -124,29 +123,6 @@
     }];
 
     [BTConfiguration enableVenmo:YES];
-
-    BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
-    dropInRequest.showApplePayPaymentOption = [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]];
-    dropInRequest.displayCardTypes = @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)];
-    _dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInResult * _Nullable result, NSError * _Nullable error) {
-        if (error) {
-            self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
-            NSLog(@"Error: %@", error);
-        } else if (result.isCancelled) {
-            self.progressBlock(@"Cancelled🎲");
-        } else {
-            if (result.paymentOptionType == BTUIKPaymentOptionTypeApplePay) {
-                self.progressBlock(@"Ready for checkout...");
-                [self setupApplePay];
-            } else {
-                self.useApplePay = NO;
-                self.selectedNonce = result.paymentMethod;
-                self.progressBlock(@"Ready for checkout...");
-                [self updatePaymentMethod:self.selectedNonce];
-            }
-        }
-        [_dropIn dismissViewControllerAnimated:YES completion:nil];
-    }];
 }
 
 - (void) setupApplePay {
@@ -242,7 +218,30 @@
 }
 
 - (void)tappedToShowDropIn {
-    [self presentViewController:self.dropIn animated:YES completion:nil];
+    BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
+    dropInRequest.showApplePayPaymentOption = [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]];
+    dropInRequest.displayCardTypes = @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)];
+    BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInController * _Nonnull dropInController, BTDropInResult * _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
+            NSLog(@"Error: %@", error);
+        } else if (result.isCancelled) {
+            self.progressBlock(@"Cancelled🎲");
+        } else {
+            if (result.paymentOptionType == BTUIKPaymentOptionTypeApplePay) {
+                self.progressBlock(@"Ready for checkout...");
+                [self setupApplePay];
+            } else {
+                self.useApplePay = NO;
+                self.selectedNonce = result.paymentMethod;
+                self.progressBlock(@"Ready for checkout...");
+                [self updatePaymentMethod:self.selectedNonce];
+            }
+        }
+        [dropInController dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [self presentViewController:dropIn animated:YES completion:nil];
 }
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate

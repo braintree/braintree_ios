@@ -40,7 +40,7 @@
 
 #pragma mark - Prefetch BTDropInResult
 
-+ (void)fetchDropInResultForAuthorization:(NSString *)authorization handler:(BTDropInControllerHandler)handler {
++ (void)fetchDropInResultForAuthorization:(NSString *)authorization handler:(BTDropInControllerFetchHandler)handler {
     BTUIKPaymentOptionType lastSelectedPaymentOptionType = [[NSUserDefaults standardUserDefaults] integerForKey:@"BT_dropInLastSelectedPaymentMethodType"];
     __block BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn2];
@@ -302,7 +302,7 @@
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:error.localizedDescription ?: @"Connection Error" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * __unused _Nonnull action) {
                 if (self.handler) {
-                    self.handler(nil, error);
+                    self.handler(self, nil, error);
                 }
             }];
             [alertController addAction: alertAction];
@@ -317,7 +317,7 @@
     BTDropInResult *result = [[BTDropInResult alloc] init];
     result.cancelled = YES;
     if (self.handler) {
-        self.handler(result, nil);
+        self.handler(self, result, nil);
     }
 }
 
@@ -346,7 +346,7 @@
                     BTDropInResult *result = [[BTDropInResult alloc] init];
                     result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
                     result.paymentMethod = tokenizedCard;
-                    self.handler(result, error);
+                    self.handler(self, result, error);
                 }
             });
         }];
@@ -355,7 +355,7 @@
     if (self.cardFormViewController.cardCapabilities != nil && self.cardFormViewController.cardCapabilities.isUnionPay && self.cardFormViewController.cardCapabilities.isSupported) {
         [cardClient enrollCard:cardRequest completion:^(NSString * _Nullable enrollmentID, BOOL smsCodeRequired, NSError * _Nullable error) {
             if (error) {
-                self.handler(nil, error);
+                self.handler(self, nil, error);
                 return;
             }
             
@@ -415,7 +415,7 @@
                             result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
                             result.paymentMethod = tokenizedCard;
                             [navController dismissViewControllerAnimated:NO completion:^{
-                                self.handler(result, error);
+                                self.handler(self, result, error);
                             }];
                         }
                     });
@@ -665,7 +665,7 @@
             BTDropInResult *result = [BTDropInResult new];
             result.paymentOptionType = type;
             result.paymentMethod = nonce;
-            self.handler(result, error);
+            self.handler(self, result, error);
         }
     }
 }
