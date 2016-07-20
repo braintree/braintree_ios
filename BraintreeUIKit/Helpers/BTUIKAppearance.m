@@ -23,6 +23,7 @@
         sharedTheme.errorForegroundColor = [BTUIKAppearance errorForegroundColor];
         sharedTheme.blurStyle = UIBlurEffectStyleDark;
         sharedTheme.useBlurs = YES;
+        sharedTheme.postalCodeFormFieldKeyboardType = UIKeyboardTypeNumberPad;
     });
     
     return sharedTheme;

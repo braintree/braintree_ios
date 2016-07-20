@@ -3,6 +3,7 @@
 #import "BTUIKTextField.h"
 #import "BTUIKLocalizedString.h"
 #import "BTUIKInputAccessoryToolbar.h"
+#import "BTUIKAppearance.h"
 
 @implementation BTUIKPostalCodeFormField
 
@@ -12,31 +13,18 @@
         self.textField.accessibilityLabel = BTUIKLocalizedString(POSTAL_CODE_PLACEHOLDER);
         self.formLabel.text = BTUIKLocalizedString(POSTAL_CODE_PLACEHOLDER);
         self.textField.placeholder = @"65350";
-        self.textField.keyboardType = UIKeyboardTypeNumberPad;
+        self.textField.keyboardType = [BTUIKAppearance sharedInstance].postalCodeFormFieldKeyboardType;
         
         self.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.textField];
-        self.nonDigitsSupported = NO;
         self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        self.textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+        self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         self.textField.returnKeyType = UIReturnKeyDone;
     }
     return self;
 }
 
-- (void)setPostalCode:(NSString *)postalCode {
-    if (!self.nonDigitsSupported) {
-        NSString *numericPostalCode = [BTUIKUtil stripNonDigits:postalCode];
-        if (![numericPostalCode isEqualToString:postalCode]) return;
-    }
-    _postalCode = postalCode;
-    self.text = postalCode;
-}
-
-- (void)setNonDigitsSupported:(BOOL)nonDigitsSupported {
-    _nonDigitsSupported = nonDigitsSupported;
-    self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-    self.textField.keyboardType = _nonDigitsSupported ? UIKeyboardTypeNumbersAndPunctuation : UIKeyboardTypeNumberPad;
+- (NSString *)postalCode {
+    return self.textField.text;
 }
 
 - (BOOL)entryComplete {
