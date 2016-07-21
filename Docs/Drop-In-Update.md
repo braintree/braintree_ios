@@ -85,6 +85,19 @@ Apple Pay can now be displayed as an option in Drop-In by setting the `showApple
 
 **Important** If your customer selected Apple Pay as their preferred payment method then `result.paymentOptionType == .ApplePay` and the `result.paymentMethod` will be `nil`. Selecting Apple Pay does not display the Apple Pay sheet or create a nonce - you will still need to do that at the appropriate time in your app. Use `BTApplePayClient` to tokenize the customer's Apple Pay information - (view our official docs for more information)[https://developers.braintreepayments.com/guides/apple-pay/client-side/ios/v4].
 
+# 3D-Secure + Drop-In
+Make sure the following is included in your Podfile:
+```
+pod 'Braintree/3D-Secure'
+```
+The new Drop-In supports 3D-Secure verification. If you have enabled 3D-Secure in the control panel, then just enable it in the BTDropInRequest and set an amount.
+
+```swift
+    let request =  BTDropInRequest()
+    request.threeDSecureVerification = true
+    request.amount = "1.00"
+```
+
 # Customization
 Use `BTUIKAppearance` to customize the appearance of Drop-In and other BraintreeUIKit classes.
 ```swift
