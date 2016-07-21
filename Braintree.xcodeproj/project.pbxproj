@@ -1973,7 +1973,6 @@
 		C2A30982E9553ACDA39F7CAD /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		C97D7BA8D969984E51584B62 /* libPods-Tests-UnitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-UnitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE6D233F1D10794A00DBFAF2 /* BraintreeUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EE6D23431D10794A00DBFAF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE6D23631D107A8700DBFAF2 /* BTUIKCardHint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIKCardHint.m; sourceTree = "<group>"; };
 		EE6D23641D107A8700DBFAF2 /* BTUIKCardListLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIKCardListLabel.m; sourceTree = "<group>"; };
 		EE6D23651D107A8700DBFAF2 /* BTUIKCardNumberFormField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIKCardNumberFormField.m; sourceTree = "<group>"; };
@@ -3589,7 +3588,6 @@
 				EE6D238F1D107A8700DBFAF2 /* Models */,
 				EE6D23961D107A8700DBFAF2 /* Public */,
 				EE6D23AC1D107A8700DBFAF2 /* Vector Art */,
-				EE6D23431D10794A00DBFAF2 /* Info.plist */,
 			);
 			path = BraintreeUIKit;
 			sourceTree = "<group>";
@@ -8346,7 +8344,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeUIKit/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -8397,7 +8395,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = BraintreeUIKit/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/BraintreeCore/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
