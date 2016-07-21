@@ -321,6 +321,19 @@
     }
 }
 
+- (void)completeTokenizeCard:(BTPaymentMethodNonce *)tokenizedCard error:(NSError *)error {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.handler) {
+            BTDropInResult *result = [[BTDropInResult alloc] init];
+            if (tokenizedCard != nil) {
+                result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
+                result.paymentMethod = tokenizedCard;
+            }
+            self.handler(self, result, error);
+        }
+    });
+}
+
 - (void)tokenizeCard:(__unused id)sender {
     [self.view endEditing:YES];
     __block BTCardRequest *cardRequest = self.cardFormViewController.cardRequest;
@@ -342,11 +355,21 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.view.userInteractionEnabled = YES;
                 [self.btToolbar setItems:originalToolbarItems animated:NO];
-                if (self.handler) {
-                    BTDropInResult *result = [[BTDropInResult alloc] init];
-                    result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
-                    result.paymentMethod = tokenizedCard;
-                    self.handler(self, result, error);
+
+                if (self.dropInRequest.threeDSecureVerification && self.dropInRequest.amount != nil
+                    && [self.configuration.json[@"threeDSecureEnabled"] isTrue] && [[BTTokenizationService sharedService] isTypeAvailable:@"ThreeDSecure"]) {
+
+                    NSMutableDictionary *options = [[NSMutableDictionary alloc] init];
+                    options[BTTokenizationServiceViewPresentingDelegateOption] = self;
+                    options[BTTokenizationServiceAmountOption] = [[NSDecimalNumber alloc] initWithString:self.dropInRequest.amount];
+                    options[BTTokenizationServiceNonceOption] = tokenizedCard.nonce;
+
+                    [[BTTokenizationService sharedService] tokenizeType:@"ThreeDSecure" options:options withAPIClient:self.apiClient completion:^(BTPaymentMethodNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+                        [self completeTokenizeCard:tokenizedCard error:error];
+                    }];
+
+                } else {
+                    [self completeTokenizeCard:tokenizedCard error:error];
                 }
             });
         }];
@@ -411,11 +434,8 @@
                                 return;
                             }
 
-                            BTDropInResult *result = [[BTDropInResult alloc] init];
-                            result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
-                            result.paymentMethod = tokenizedCard;
                             [navController dismissViewControllerAnimated:NO completion:^{
-                                self.handler(self, result, error);
+                                [self completeTokenizeCard:tokenizedCard error:error];
                             }];
                         }
                     });

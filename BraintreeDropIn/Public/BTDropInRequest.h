@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Amount must be a non-negative number, may optionally contain exactly 2 decimal places
 /// separated by '.', optional thousands separator ',', limited to 7 digits before the decimal point.
 ///
-/// Used by PayPal.
+/// Used by PayPal single payments and ThreeDSecure.
 @property (nonatomic, copy, nullable) NSString *amount;
 
 /// Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
@@ -47,6 +47,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Example: @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)]
 /// Defaults an empty array.
 @property (nonatomic, strong, nonnull) NSArray *displayCardTypes;
+
+/// Optional: If true and an amount is set, ThreeDSecure will be used to verify the card. ThreeDSecure must be enabled in the control panel.
+/// Defaults to false.
+@property (nonatomic, assign) BOOL threeDSecureVerification;
 
 @end
 

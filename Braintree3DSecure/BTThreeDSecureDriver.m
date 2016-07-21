@@ -22,6 +22,31 @@
 
 @implementation BTThreeDSecureDriver
 
++ (void)load {
+    if (self == [BTThreeDSecureDriver class]) {
+        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
+        [[BTTokenizationService sharedService] registerType:@"ThreeDSecure" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
+            if (options[BTTokenizationServiceViewPresentingDelegateOption] == nil ||
+                [options[BTTokenizationServiceNonceOption] length] == 0 ||
+                options[BTTokenizationServiceAmountOption] == nil) {
+                NSError *error = [NSError errorWithDomain:BTTokenizationServiceErrorDomain
+                                                     code:BTTokenizationServiceErrorTypeNotRegistered
+                                                 userInfo:@{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Invalid parameters"],
+                                                            NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:@"BTThreeDSecureDriver has invalid parameters"],
+                                                            NSLocalizedRecoverySuggestionErrorKey: [NSString stringWithFormat:@"Check options parmeters"]
+                                                            }];
+                completionBlock(nil, error);
+            } else {
+                BTThreeDSecureDriver *driver = [[BTThreeDSecureDriver alloc] initWithAPIClient:apiClient delegate:options[BTTokenizationServiceViewPresentingDelegateOption]];
+
+                [driver verifyCardWithNonce:options[BTTokenizationServiceNonceOption]
+                                           amount:options[BTTokenizationServiceAmountOption]
+                                       completion:completionBlock];
+            }
+        }];
+    }
+}
+
 - (instancetype)init {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"-init is not available for BTThreeDSecureDriver. Use -initWithAPIClient:delegate: instead." userInfo:nil];
 }
@@ -199,5 +224,14 @@
         [self.delegate paymentDriver:self requestsDismissalOfViewController:viewController];
     }
 }
+
++ (BOOL)canHandleAppSwitchReturnURL:(NSURL __unused *)url sourceApplication:(NSString __unused *)sourceApplication {
+    return NO;
+}
+
++ (void)handleAppSwitchReturnURL:(__unused NSURL *)url {
+    // Unused
+}
+
 
 @end

@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note The user authentication view controller is not always necessary to achieve the liabilty
 /// shift. In these cases, your completionBlock will immediately be called.
 
-@interface BTThreeDSecureDriver : NSObject
+@interface BTThreeDSecureDriver : NSObject <BTAppSwitchHandler>
 
 /// Initializes a 3D Secure verification manager
 ///
