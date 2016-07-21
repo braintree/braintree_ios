@@ -4591,7 +4591,6 @@
 					};
 					EE6D233E1D10794A00DBFAF2 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = 43253H4X22;
 					};
 				};
 			};
