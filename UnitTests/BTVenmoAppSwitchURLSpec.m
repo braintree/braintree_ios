@@ -24,7 +24,7 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
                                                              bundleDisplayName:@"An App"
                                                                    environment:@"sandbox"
                                                                authFingerprint:@"a.fingerprint"
-                                                                      validate:@(YES)
+                                                                      validate:YES
                                                                       metadata:meta];
 
             NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
