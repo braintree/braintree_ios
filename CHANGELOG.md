@@ -1,5 +1,14 @@
 # Braintree iOS SDK Release Notes
 
+## 4.4.1 (2016-07-22)
+
+* Update and fix issues in `BraintreeDropIn` based on feedback
+* Make more headers public in `BraintreeUIKit`
+* Fix `BraintreeUIKit` module name for Cocoapods
+* Add support for 3D Secure to `BraintreeDropIn` (see Drop-In docs)
+* Update the [Drop-In docs](Docs/Drop-In-Update.md)
+* Add features to support vaulting Venmo when using Drop-In (coming soon)
+
 ## 4.4.0 (2016-07-14)
 
 * (BETA) Release of new `BraintreeDropIn` and `BraintreeUIKit` frameworks
