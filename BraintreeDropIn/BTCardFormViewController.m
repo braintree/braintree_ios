@@ -252,8 +252,8 @@
     BTCardRequest *cardRequest = [[BTCardRequest alloc] initWithCard:card];
 
     if (self.cardCapabilities != nil && self.cardCapabilities.isUnionPay && self.cardCapabilities.isSupported) {
-        cardRequest.mobileCountryCode = self.mobileCountryCodeField.text;
-        cardRequest.mobilePhoneNumber = self.mobilePhoneField.text;
+        cardRequest.mobileCountryCode = self.mobileCountryCodeField.countryCode;
+        cardRequest.mobilePhoneNumber = self.mobilePhoneField.mobileNumber;
     }
 
     return cardRequest;
@@ -504,7 +504,10 @@
             self.collapsed = NO;
             [self.expirationDateField becomeFirstResponder];
         }
+    } else if (!self.collapsed && formField == self.cardNumberField && !self.unionPayEnabledMerchant) {
+        self.collapsed = YES;
     }
+    
     if (!self.collapsed && formField == self.cardNumberField && self.unionPayEnabledMerchant) {
         if (self.unionPayEnabledMerchant) {
             self.cardCapabilities = nil;

@@ -20,7 +20,7 @@ pod 'Braintree/DropIn'
 ```
 
 # Fetch last used payment method
-If you user already has an existing payment method, you may not need to show the Drop-In payment picker. You can check if they have an existing payment method using `BTDropInController:fetchDropInResultForAuthorization`. Note that the handler will only return a result when using a client token that was created with a `customer_id`. `BTDropInResult` makes it easy to get a description and icon of the payment method.
+If your user already has an existing payment method, you may not need to show the Drop-In payment picker. You can check if they have an existing payment method using `BTDropInController:fetchDropInResultForAuthorization`. Note that the handler will only return a result when using a client token that was created with a `customer_id`. `BTDropInResult` makes it easy to get a description and icon of the payment method.
 
 ![Example payment method icon and description](saved-paypal-method.png "Example payment method icon and description")
 
@@ -28,12 +28,12 @@ If you user already has an existing payment method, you may not need to show the
     BTDropInController.fetchDropInResultForAuthorization(clientTokenOrTokenizationKey, handler: { (result, error) in
         if (error != nil) {
             print("ERROR")
-        } else {
+        } else if let result = result {
             // Use the BTDropInResult properties to update your UI
-            let selectedPaymentOptionType = result!.paymentOptionType
-            let selectedPaymentMethod = result!.paymentMethod
-            let selectedPaymentMethodIcon = result!.paymentIcon
-            let selectedPaymentMethodDescription = result!.paymentDescription
+            let selectedPaymentOptionType = result.paymentOptionType
+            let selectedPaymentMethod = result.paymentMethod
+            let selectedPaymentMethodIcon = result.paymentIcon
+            let selectedPaymentMethodDescription = result.paymentDescription
         }
     })
 ```
@@ -43,24 +43,27 @@ Present `BTDropInController` to collect the customer's payment information and r
 ![Example no saved payment method](no-payment-methods.png "Example no saved payment method")
 
 ```swift
+
+func showDropIn(clientTokenOrTokenizationKey: String) {
     let request =  BTDropInRequest()
     request.displayCardTypes = [BTUIKPaymentOptionType.Visa.rawValue, BTUIKPaymentOptionType.MasterCard.rawValue]
-    self.dropIn = BTDropInController(authorization: clientTokenOrTokenizationKey, request: request)
-    { (result, error) in
+    let dropIn = BTDropInController(authorization: clientTokenOrTokenizationKey, request: request)
+    { (controller, result, error) in
         if (error != nil) {
             print("ERROR")
         } else if (result?.cancelled == true) {
             print("CANCELLED")
-        } else {
+        } else if let result = result {
             // Use the BTDropInResult properties to update your UI
-            let selectedPaymentOptionType = result!.paymentOptionType
-            let selectedPaymentMethod = result!.paymentMethod
-            let selectedPaymentMethodIcon = result!.paymentIcon
-            let selectedPaymentMethodDescription = result!.paymentDescription
+            let selectedPaymentOptionType = result.paymentOptionType
+            let selectedPaymentMethod = result.paymentMethod
+            let selectedPaymentMethodIcon = result.paymentIcon
+            let selectedPaymentMethodDescription = result.paymentDescription
         }
-        self.dropIn!.dismissViewControllerAnimated(true, completion: nil)
-        }!
-    self.presentViewController(self.dropIn!, animated: true, completion: nil)
+        controller.dismissViewControllerAnimated(true, completion: nil)
+        }
+    self.presentViewController(dropIn!, animated: true, completion: nil)
+}
 ```
 
 If there are saved payment methods they will appear:
@@ -80,29 +83,19 @@ Apple Pay can now be displayed as an option in Drop-In by setting the `showApple
     request.showApplePayPaymentOption = PKPaymentAuthorizationViewController.canMakePaymentsUsingNetworks([PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex])
 ```
 
-**Important** If your customer selected Apple Pay as their preferred payment method then `result.paymentOptionType == .ApplePay` and the `result.paymentMethod` will be `nil`. Selecting Apple Pay does not display the Apple Pay sheet or create a nonce - you will still need to do that at the appropriate time in your app. Use `BTApplePayClient` to tokenize the customer's Apple Pay information.
+**Important** If your customer selected Apple Pay as their preferred payment method then `result.paymentOptionType == .ApplePay` and the `result.paymentMethod` will be `nil`. Selecting Apple Pay does not display the Apple Pay sheet or create a nonce - you will still need to do that at the appropriate time in your app. Use `BTApplePayClient` to tokenize the customer's Apple Pay information - (view our official docs for more information)[https://developers.braintreepayments.com/guides/apple-pay/client-side/ios/v4].
+
+# 3D-Secure + Drop-In
+Make sure the following is included in your Podfile:
+```
+pod 'Braintree/3D-Secure'
+```
+The new Drop-In supports 3D-Secure verification. If you have enabled 3D-Secure in the control panel, then just enable it in the BTDropInRequest and set an amount.
 
 ```swift
-    let paymentRequest = PKPaymentRequest()
-    paymentRequest.paymentSummaryItems = [
-        PKPaymentSummaryItem.init(label: "Socks", amount: NSDecimalNumber(string: "100"))
-    ]
-    paymentRequest.supportedNetworks = [
-        PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkDiscover, PKPaymentNetworkAmex
-    ]
-    paymentRequest.merchantCapabilities = .Capability3DS
-    paymentRequest.currencyCode = "USD"
-    paymentRequest.countryCode = "US"
-    paymentRequest.merchantIdentifier = "com.braintreepayments.sandbox.Braintree-Demo"
-    
-    let client = BTAPIClient(authorization: self.clientToken!)
-    
-    let applePayClient = BTApplePayClient(APIClient: client!)
-    applePayClient.presentApplePayFromViewController(self, withPaymentRequest: paymentRequest, completion: { (applePayPaymentMethod, error) in
-        if (applePayPaymentMethod != nil) {
-            print("Show purchase alert w/ nonce: \(applePayPaymentMethod!.nonce)")
-        }
-    })
+    let request =  BTDropInRequest()
+    request.threeDSecureVerification = true
+    request.amount = "1.00"
 ```
 
 # Customization
@@ -133,7 +126,7 @@ Here is the full list of properties...
 
 # BraintreeUIKit
 
-`BraintreeUIKit` is our new framework that makes our UI classes public and usable by anyone to create very specific checkout experience. This includes `localization`, `vector art`, `form fields` and other utils you might need when working with payments. `BraintreeUIKit` has no dependencies on other Braintree frameworks.
+`BraintreeUIKit` is our new framework that makes our UI classes public allowing you to create custom checkout experiences. This includes `localization`, `vector art`, `form fields` and other utils you might need when working with payments. `BraintreeUIKit` has no dependencies on other Braintree frameworks.
 
 To get the standalone `BraintreeUIKit` framework, add the following to your Podfile:
 ```

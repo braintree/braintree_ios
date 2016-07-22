@@ -40,7 +40,7 @@
 
 #pragma mark - Prefetch BTDropInResult
 
-+ (void)fetchDropInResultForAuthorization:(NSString *)authorization handler:(BTDropInControllerHandler)handler {
++ (void)fetchDropInResultForAuthorization:(NSString *)authorization handler:(BTDropInControllerFetchHandler)handler {
     BTUIKPaymentOptionType lastSelectedPaymentOptionType = [[NSUserDefaults standardUserDefaults] integerForKey:@"BT_dropInLastSelectedPaymentMethodType"];
     __block BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn2];
@@ -302,7 +302,7 @@
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:error.localizedDescription ?: @"Connection Error" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * __unused _Nonnull action) {
                 if (self.handler) {
-                    self.handler(nil, error);
+                    self.handler(self, nil, error);
                 }
             }];
             [alertController addAction: alertAction];
@@ -317,8 +317,21 @@
     BTDropInResult *result = [[BTDropInResult alloc] init];
     result.cancelled = YES;
     if (self.handler) {
-        self.handler(result, nil);
+        self.handler(self, result, nil);
     }
+}
+
+- (void)completeTokenizeCard:(BTPaymentMethodNonce *)tokenizedCard error:(NSError *)error {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.handler) {
+            BTDropInResult *result = [[BTDropInResult alloc] init];
+            if (tokenizedCard != nil) {
+                result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
+                result.paymentMethod = tokenizedCard;
+            }
+            self.handler(self, result, error);
+        }
+    });
 }
 
 - (void)tokenizeCard:(__unused id)sender {
@@ -342,11 +355,21 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.view.userInteractionEnabled = YES;
                 [self.btToolbar setItems:originalToolbarItems animated:NO];
-                if (self.handler) {
-                    BTDropInResult *result = [[BTDropInResult alloc] init];
-                    result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
-                    result.paymentMethod = tokenizedCard;
-                    self.handler(result, error);
+
+                if (self.dropInRequest.threeDSecureVerification && self.dropInRequest.amount != nil
+                    && [self.configuration.json[@"threeDSecureEnabled"] isTrue] && [[BTTokenizationService sharedService] isTypeAvailable:@"ThreeDSecure"]) {
+
+                    NSMutableDictionary *options = [[NSMutableDictionary alloc] init];
+                    options[BTTokenizationServiceViewPresentingDelegateOption] = self;
+                    options[BTTokenizationServiceAmountOption] = [[NSDecimalNumber alloc] initWithString:self.dropInRequest.amount];
+                    options[BTTokenizationServiceNonceOption] = tokenizedCard.nonce;
+
+                    [[BTTokenizationService sharedService] tokenizeType:@"ThreeDSecure" options:options withAPIClient:self.apiClient completion:^(BTPaymentMethodNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+                        [self completeTokenizeCard:tokenizedCard error:error];
+                    }];
+
+                } else {
+                    [self completeTokenizeCard:tokenizedCard error:error];
                 }
             });
         }];
@@ -355,7 +378,7 @@
     if (self.cardFormViewController.cardCapabilities != nil && self.cardFormViewController.cardCapabilities.isUnionPay && self.cardFormViewController.cardCapabilities.isSupported) {
         [cardClient enrollCard:cardRequest completion:^(NSString * _Nullable enrollmentID, BOOL smsCodeRequired, NSError * _Nullable error) {
             if (error) {
-                self.handler(nil, error);
+                self.handler(self, nil, error);
                 return;
             }
             
@@ -368,7 +391,7 @@
 
             __block UINavigationController *navController;
             __block BTEnrollmentVerificationViewController *enrollmentController;
-            enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.text mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.text handler:^(NSString* authCode, BOOL resend) {
+            enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.mobileNumber mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.countryCode handler:^(NSString* authCode, BOOL resend) {
                 
                 if (resend) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -411,11 +434,8 @@
                                 return;
                             }
 
-                            BTDropInResult *result = [[BTDropInResult alloc] init];
-                            result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
-                            result.paymentMethod = tokenizedCard;
                             [navController dismissViewControllerAnimated:NO completion:^{
-                                self.handler(result, error);
+                                [self completeTokenizeCard:tokenizedCard error:error];
                             }];
                         }
                     });
@@ -665,7 +685,7 @@
             BTDropInResult *result = [BTDropInResult new];
             result.paymentOptionType = type;
             result.paymentMethod = nonce;
-            self.handler(result, error);
+            self.handler(self, result, error);
         }
     }
 }

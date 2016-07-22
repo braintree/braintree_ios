@@ -56,7 +56,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/UnionPay"
-    s.dependency "Braintree/BraintreeUIKit"
+    s.dependency "Braintree/UIKit"
   end
 
   s.subspec "PayPal" do |s|
@@ -127,7 +127,7 @@ Pod::Spec.new do |s|
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
   end
 
-  s.subspec "BraintreeUIKit" do |s|
+  s.subspec "UIKit" do |s|
     s.source_files  = "BraintreeUIKit/**/*.{h,m}"
     s.public_header_files = "BraintreeUIKit/Public/*.h"
     s.frameworks = "UIKit"

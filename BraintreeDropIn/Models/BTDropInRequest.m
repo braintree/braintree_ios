@@ -18,6 +18,7 @@
     request.shippingAddress = self.shippingAddress;
     request.showApplePayPaymentOption = self.showApplePayPaymentOption;
     request.displayCardTypes = [self.displayCardTypes copy];
+    request.threeDSecureVerification = self.threeDSecureVerification;
     return request;
 }
 

@@ -1,5 +1,3 @@
-#pragma message "⚠️ BraintreeUIKit is currently in beta and may change."
-
 #import <UIKit/UIKit.h>
 
 //! Project version number for BraintreeUIKit.
@@ -29,5 +27,5 @@ FOUNDATION_EXPORT const unsigned char BraintreeUIKitVersionString[];
 #import "BTUIKCardListLabel.h"
 #import "BTUIKPaymentOptionCardView.h"
 #import "BTUIKLocalizedString.h"
-
-
+#import "BTUIKCardExpirationValidator.h"
+#import "BTUIKCardExpiryFormat.h"

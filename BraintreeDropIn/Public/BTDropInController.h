@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// The primary UIViewController for Drop-In. BTDropInController will manage the other UIViewControllers and return a BTDropInResult.
 @interface BTDropInController : UIViewController <UIToolbarDelegate, UIViewControllerTransitioningDelegate,BTAppSwitchDelegate, BTViewControllerPresentingDelegate, BTDropInBaseViewControllerDelegate>
 
-typedef void (^BTDropInControllerHandler)(BTDropInResult * _Nullable result, NSError * _Nullable error);
+typedef void (^BTDropInControllerFetchHandler)(BTDropInResult * _Nullable result, NSError * _Nullable error);
+typedef void (^BTDropInControllerHandler)(BTDropInController * _Nonnull controller, BTDropInResult * _Nullable result, NSError * _Nullable error);
 
 /// Initialize a new Drop-in view controller.
 ///
@@ -31,7 +32,7 @@ typedef void (^BTDropInControllerHandler)(BTDropInResult * _Nullable result, NSE
 ///
 /// @param authorization Your tokenization key or client token.
 /// @param handler The handler for callbacks.
-+ (void)fetchDropInResultForAuthorization:(NSString *)authorization handler:(BTDropInControllerHandler)handler;
++ (void)fetchDropInResultForAuthorization:(NSString *)authorization handler:(BTDropInControllerFetchHandler)handler;
 
 /// The API client used for communication with Braintree servers.
 @property (nonatomic, strong, readonly) BTAPIClient *apiClient;

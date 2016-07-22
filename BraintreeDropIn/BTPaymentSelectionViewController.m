@@ -22,7 +22,6 @@
 @property (nonatomic, strong) UIView *scrollViewContentWrapper;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) NSArray *paymentOptionsData;
-@property (nonatomic, strong) NSArray *applePaymentOptionsData;
 @property (nonatomic, strong) UITableView *paymentOptionsTableView;
 @property (nonatomic, strong) NSLayoutConstraint *collectionViewConstraint;
 @property (nonatomic, strong) UILabel *paymentOptionsHeader;
@@ -42,7 +41,6 @@
     
     self.paymentMethodNonces = @[];
     self.paymentOptionsData = @[@(BTUIKPaymentOptionTypePayPal), @(BTUIKPaymentOptionTypeUnknown)];
-    self.applePaymentOptionsData = @[];
 
     self.view.translatesAutoresizingMaskIntoConstraints = false;
     self.view.backgroundColor = [UIColor clearColor];
@@ -85,7 +83,7 @@
                                                                       metrics:metrics
                                                                         views:viewBindings]];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(15)-[stackView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(0)-[stackView]|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:viewBindings]];
@@ -98,9 +96,15 @@
     NSLayoutConstraint *heightConstraint;
     self.vaultedPaymentsHeader = [self sectionHeaderLabelWithString:@"Saved Payment Methods"];
     self.vaultedPaymentsHeader.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.stackView addArrangedSubview:self.vaultedPaymentsHeader];
-    
-    [self addSpacerToStackView:self.stackView beforeView:self.vaultedPaymentsHeader];
+
+    UIStackView *vaultedPaymentsLabelContainerStackView = [self newStackView];
+    vaultedPaymentsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
+    vaultedPaymentsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
+
+    [vaultedPaymentsLabelContainerStackView addArrangedSubview:self.vaultedPaymentsHeader];
+    [self.stackView addArrangedSubview:vaultedPaymentsLabelContainerStackView];
+
+    [self addSpacerToStackView:self.stackView beforeView:vaultedPaymentsLabelContainerStackView];
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection: UICollectionViewScrollDirectionHorizontal];
@@ -118,9 +122,15 @@
 
     self.paymentOptionsHeader = [self sectionHeaderLabelWithString:@"Payment Methods"];
     self.paymentOptionsHeader.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.stackView addArrangedSubview:self.paymentOptionsHeader];
+
+    UIStackView *paymentOptionsLabelContainerStackView = [self newStackView];
+    paymentOptionsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
+    paymentOptionsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
+
+    [paymentOptionsLabelContainerStackView addArrangedSubview:self.paymentOptionsHeader];
+    [self.stackView addArrangedSubview:paymentOptionsLabelContainerStackView];
     
-    self.vaultedPaymentsFooter = [self addSpacerToStackView:self.stackView beforeView:self.paymentOptionsHeader];
+    self.vaultedPaymentsFooter = [self addSpacerToStackView:self.stackView beforeView:paymentOptionsLabelContainerStackView];
     
     self.paymentOptionsTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     [self.paymentOptionsTableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
@@ -174,7 +184,7 @@
             
             BTJSON *applePayConfiguration = self.configuration.json[@"applePay"];
             if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"] && self.dropInRequest.showApplePayPaymentOption) {
-                self.applePaymentOptionsData = @[@(BTUIKPaymentOptionTypeApplePay)];
+                [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeApplePay)];
             }
             
             self.paymentOptionsData = [activePaymentOptions copy];
@@ -291,7 +301,7 @@
 #pragma mark collection view cell paddings
 
 - (UIEdgeInsets)collectionView:(__unused UICollectionView*)collectionView layout:(__unused UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(__unused NSInteger)section {
-    return UIEdgeInsetsMake(0, 0, 0, 0);
+    return UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
 }
 
 - (CGFloat)collectionView:(__unused UICollectionView *)collectionView layout:(__unused UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(__unused NSInteger)section {
@@ -312,7 +322,7 @@
 #pragma mark UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(__unused UITableView *)tableView {
-    return self.applePaymentOptionsData.count > 0 ? 2 : 1;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -323,7 +333,7 @@
 
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    BTUIKPaymentOptionType option = indexPath.section == 0 ?  ((NSNumber*)self.paymentOptionsData[indexPath.row]).intValue : ((NSNumber*)self.applePaymentOptionsData[indexPath.row]).intValue;
+    BTUIKPaymentOptionType option = ((NSNumber*)self.paymentOptionsData[indexPath.row]).intValue;
 
     cell.label.text = [BTUIKViewUtil nameForPaymentMethodType:option];
     if (option == BTUIKPaymentOptionTypeUnknown) {
@@ -378,7 +388,7 @@
 #pragma mark UITableViewDataSource
 
 - (NSInteger)tableView:(__unused UITableView *)tableView numberOfRowsInSection:(__unused NSInteger)section {
-    return section == 0 ? [self.paymentOptionsData count] : [self.applePaymentOptionsData count];
+    return [self.paymentOptionsData count];
 }
 
 -(CGFloat)tableView:(__unused UITableView *)tableView heightForHeaderInSection:(__unused NSInteger)section {

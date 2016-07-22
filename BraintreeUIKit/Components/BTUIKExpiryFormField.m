@@ -57,7 +57,7 @@
 #pragma mark - Private methods
 
 - (void)updatePlaceholder {
-    NSString *placeholder = [self dateCouldEndWithFourDigitYear:self.textField.text] ? BTUIKLocalizedString(EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR) : BTUIKLocalizedString(EXPIRY_PLACEHOLDER_TWO_DIGIT_YEAR);
+    NSString *placeholder = BTUIKLocalizedString(EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR);
     [self setThemedPlaceholder:placeholder];
     self.textField.accessibilityLabel = placeholder;
 }
