@@ -61,8 +61,8 @@ func showDropIn(clientTokenOrTokenizationKey: String) {
             let selectedPaymentMethodDescription = result.paymentDescription
         }
         controller.dismissViewControllerAnimated(true, completion: nil)
-        }!
-    self.presentViewController(dropIn, animated: true, completion: nil)
+        }
+    self.presentViewController(dropIn!, animated: true, completion: nil)
 }
 ```
 
