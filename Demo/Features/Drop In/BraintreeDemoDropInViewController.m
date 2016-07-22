@@ -221,6 +221,9 @@
     BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
     dropInRequest.showApplePayPaymentOption = [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]];
     dropInRequest.displayCardTypes = @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)];
+    // To test 3DS
+    //dropInRequest.amount = @"10.00";
+    //dropInRequest.threeDSecureVerification = YES;
     BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInController * _Nonnull dropInController, BTDropInResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);

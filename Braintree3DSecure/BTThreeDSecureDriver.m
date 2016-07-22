@@ -225,13 +225,4 @@
     }
 }
 
-+ (BOOL)canHandleAppSwitchReturnURL:(NSURL __unused *)url sourceApplication:(NSString __unused *)sourceApplication {
-    return NO;
-}
-
-+ (void)handleAppSwitchReturnURL:(__unused NSURL *)url {
-    // Unused
-}
-
-
 @end
