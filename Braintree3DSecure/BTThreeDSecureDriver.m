@@ -24,7 +24,6 @@
 
 + (void)load {
     if (self == [BTThreeDSecureDriver class]) {
-        [[BTAppSwitch sharedInstance] registerAppSwitchHandler:self];
         [[BTTokenizationService sharedService] registerType:@"ThreeDSecure" withTokenizationBlock:^(BTAPIClient *apiClient, __unused NSDictionary *options, void (^completionBlock)(BTPaymentMethodNonce *paymentMethodNonce, NSError *error)) {
             if (options[BTTokenizationServiceViewPresentingDelegateOption] == nil ||
                 [options[BTTokenizationServiceNonceOption] length] == 0 ||
