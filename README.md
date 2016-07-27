@@ -1,4 +1,4 @@
-# Braintree v.zero SDK for iOS
+# Braintree iOS SDK
 
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Travis CI build status](https://travis-ci.org/braintree/braintree_ios.svg?branch=master)](https://travis-ci.org/braintree/braintree_ios)
@@ -125,7 +125,7 @@ A demo app is included in project. To run it, run `pod install` and then open `B
 
 ## Feedback
 
-Braintree v.zero is in active development. We appreciate the time you take to try it out and welcome your feedback!
+The Braintree iOS SDK is in active development, we welcome your feedback!
 
 Here are a few ways to get in touch:
 
@@ -134,4 +134,4 @@ Here are a few ways to get in touch:
 
 ### License
 
-The Braintree v.zero SDK is open source and available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+The Braintree iOS SDK is open source and available under the MIT license. See the [LICENSE](LICENSE) file for more info.
