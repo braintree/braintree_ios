@@ -1,26 +1,25 @@
 language: objective-c
-osx_image: xcode7.3
-
-install:
-  - bundle install
-  - pod install
-
 cache:
   - bundler
   - cocoapods
+osx_image: xcode7.3
 
 before_install:
   - brew update || brew update
   - brew outdated xctool || brew upgrade xctool
   - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (9.3) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
 
+install:
+  - bundle install
+  - bundle exec pod install
+
 script:
   - echo $SIMULATOR_ID
   # Launching the simulator before building and testing is necessary to prevent spurious timeouts.
   # Specifying the simulator UDID is also necessary.
-  - open -a "simulator" --args -CurrentDeviceUDID $SIMULATOR_ID
-  - travis_wait rake spec:unit
-  - rake spec:api:integration
+  - open -a "Simulator" --args -CurrentDeviceUDID $SIMULATOR_ID
+  - travis_wait bundle exec rake spec:unit
+  - bundle exec rake spec:api:integration
 
 notifications:
   email:
