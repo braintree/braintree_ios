@@ -2,12 +2,10 @@
 
 @implementation BTConfiguration (Venmo)
 
-+ (void)enableVenmo:(BOOL)isEnabled {
-    [BTConfiguration setBetaPaymentOption:@"venmo" isEnabled:isEnabled];
-}
++ (void)enableVenmo:(BOOL) __unused isEnabled { /* NO OP */ }
 
 - (BOOL)isVenmoEnabled {
-    return (self.venmoAccessToken != nil) && [BTConfiguration isBetaEnabledPaymentOption:@"venmo"];
+    return (self.venmoAccessToken != nil);
 }
 
 - (NSString*)venmoAccessToken {

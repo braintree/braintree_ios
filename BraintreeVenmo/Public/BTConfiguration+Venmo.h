@@ -10,7 +10,7 @@
 /// Force Venmo to be enabled. If false, Drop-In will not display the Venmo button and [BTVenmoDriver authorizationWithCompletion:] will return an error.
 /// When set to true the Venmo button will be visible if it is also setup properly.
 /// Defaults to false during the limited availability phase.
-+ (void)enableVenmo:(BOOL)isEnabled;
++ (void)enableVenmo:(BOOL)isEnabled DEPRECATED_MSG_ATTRIBUTE("Pay with Venmo no longer relies on a user whitelist, thus this method is not needed");
 
 /// Indicates whether Venmo is enabled for the merchant account.
 @property (nonatomic, readonly, assign) BOOL isVenmoEnabled;

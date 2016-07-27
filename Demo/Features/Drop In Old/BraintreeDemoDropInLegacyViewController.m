@@ -24,8 +24,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [BTConfiguration enableVenmo:true]; // Assume the user is whitelisted for the beta
-    
     self.title = @"Drop In (Legacy)";
 
     UIButton *dropInButton = [UIButton buttonWithType:UIButtonTypeSystem];

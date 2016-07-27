@@ -1,8 +1,5 @@
 #import "BTConfiguration.h"
 
-/// Beta flags
-static BOOL venmoBetaFlag = false;
-
 @implementation BTConfiguration
 
 - (instancetype)init {
@@ -16,19 +13,11 @@ static BOOL venmoBetaFlag = false;
     return self;
 }
 
-+ (BOOL)isBetaEnabledPaymentOption:(NSString*)paymentOption {
-    if ([paymentOption.lowercaseString isEqualToString:@"venmo"]) {
-        return venmoBetaFlag;
-    } else {
-        return false;
-    }
++ (BOOL)isBetaEnabledPaymentOption:(NSString*)__unused paymentOption {
+    return false;
 }
 
-+ (void)setBetaPaymentOption:(NSString*)paymentOption isEnabled:(BOOL)isEnabled {
-    if ([paymentOption.lowercaseString isEqualToString:@"venmo"]) {
-        venmoBetaFlag = isEnabled;
-    }
-}
++ (void)setBetaPaymentOption:(NSString*) __unused paymentOption isEnabled:(BOOL) __unused isEnabled { /* NO OP */ }
 
 
 @end

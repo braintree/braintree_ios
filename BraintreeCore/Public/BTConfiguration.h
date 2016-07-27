@@ -16,10 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Returns true if the corresponding beta flag is set
 /// Otherwise returns false
-+ (BOOL)isBetaEnabledPaymentOption:(NSString*)paymentOption;
+///
++ (BOOL)isBetaEnabledPaymentOption:(NSString*)paymentOption DEPRECATED_MSG_ATTRIBUTE("Pay with Venmo is no longer in beta");
 
 /// Set a corresponding beta flag
-+ (void)setBetaPaymentOption:(NSString*)paymentOption isEnabled:(BOOL)isEnabled;
++ (void)setBetaPaymentOption:(NSString*)paymentOption isEnabled:(BOOL)isEnabled DEPRECATED_MSG_ATTRIBUTE("Pay with Venmo is no longer in beta");
 
 @end
 

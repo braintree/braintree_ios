@@ -185,39 +185,8 @@
 
 #pragma mark - Payment option categories
 
-- (void)testIsVenmoEnabledIsFalse_withAccessToken_withBetaOverrideFalse {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"payWithVenmo": @{@"accessToken" : @"access-token"}}];
-    [BTConfiguration enableVenmo:false];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-
-        XCTAssertFalse(configuration.isVenmoEnabled);
-        [expectation fulfill];
-    }];
-
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testIsVenmoEnabledIsTrue_withAccessToken_withBetaOverrideTrue {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"payWithVenmo": @{@"accessToken" : @"access-token"}}];
-    [BTConfiguration enableVenmo:true];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-        
-        XCTAssertTrue(configuration.isVenmoEnabled);
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testIsVenmoEnabledIsFalse_withoutAccessToken_withBetaOverrideFalse {
+- (void)testIsVenmoEnabledIsFalse_withoutAccessToken {
     BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"payWithVenmo": @{}}];
-    [BTConfiguration enableVenmo:false];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
@@ -230,9 +199,8 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
-- (void)testIsVenmoEnabledIsTrue_withoutAccessToken_withBetaOverrideTrue {
+- (void)testIsVenmoEnabledIsTrue_withoutAccessToken {
     BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"payWithVenmo": @{}}];
-    [BTConfiguration enableVenmo:true];
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
