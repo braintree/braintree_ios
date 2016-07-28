@@ -47,6 +47,9 @@
         braintreeData[@"authorization_fingerprint"] = authFingerprint;
     }
 
+    NSData *serializedBraintreeData = [NSJSONSerialization dataWithJSONObject:braintreeData options:0 error:NULL];
+    NSString *base64EncodedBraintreeData = [serializedBraintreeData base64EncodedStringWithOptions:0];
+
     NSMutableDictionary *appSwitchParameters = [@{@"x-success": successReturnURL,
                                                   @"x-error": errorReturnURL,
                                                   @"x-cancel": cancelReturnURL,
@@ -54,7 +57,7 @@
                                                   @"braintree_merchant_id": merchantID,
                                                   @"braintree_access_token": accessToken,
                                                   @"braintree_environment": environment,
-                                                  @"braintree_sdk_data": braintreeData,
+                                                  @"braintree_sdk_data": base64EncodedBraintreeData,
                                                   } mutableCopy];
 
     NSURLComponents *components = [self appSwitchBaseURLComponents];

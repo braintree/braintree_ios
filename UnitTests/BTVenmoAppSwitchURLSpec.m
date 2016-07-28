@@ -42,7 +42,11 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
                 }else if ([queryItem.name isEqualToString:@"braintree_validate"]) {
                     expect(queryItem.value).to.beTruthy();
                 }else if ([queryItem.name isEqualToString:@"braintree_sdk_data"]) {
-                    BTJSON *json = [[BTJSON alloc] initWithData:[queryItem.value dataUsingEncoding:NSUTF8StringEncoding]];
+                    expect(queryItem.value).toNot.beNil();
+
+                    NSData *data = [[NSData alloc] initWithBase64EncodedString:queryItem.value options:0];
+                    BTJSON *json = [[BTJSON alloc] initWithData:data];
+
                     expect([json[@"authorization_fingerprint"] asString]).to.equal(@"a.fingerprint");
                     expect([json[@"validate"] asNumber]).to.beTruthy();
                     
@@ -50,7 +54,7 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
                     expect([meta[@"sessionId"] asString]).to.equal(@"session-id");
                     expect([meta[@"platform"] asString]).to.equal(@"ios");
                     expect([meta[@"integration"] asString]).to.equal(@"custom");
-                    expect([meta[@"version"] asString]).to.equal(BRAINTREE_VERSION);
+                    expect([meta[@"sdkVersion"] asString]).to.equal(BRAINTREE_VERSION);
                 }
             }
         });
