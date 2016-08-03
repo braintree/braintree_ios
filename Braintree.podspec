@@ -47,6 +47,7 @@ Pod::Spec.new do |s|
     s.source_files = "BraintreeDataCollector/**/*.{h,m}"
     s.public_header_files = "BraintreeDataCollector/Public/*.h"
     s.vendored_library = "BraintreeDataCollector/Kount/libDeviceCollectorLibrary.a"
+    s.dependency "Braintree/Core"
   end
 
   s.subspec "DropIn" do |s|

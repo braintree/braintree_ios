@@ -61,7 +61,7 @@ class BTDataCollector_Tests: XCTestCase {
                 "kountMerchantId": "500000"
             ]
         ])
-        
+
         let dataCollector = BTDataCollector(APIClient: apiClient)
         let expectation = expectationWithDescription("Returns fraud data")
         
@@ -139,8 +139,8 @@ class BTDataCollector_Tests: XCTestCase {
     }
 }
 
-func clientThatReturnsConfiguration(configuration: Dictionary<String,AnyObject>) -> BTAPIClient {
-    let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)
+func clientThatReturnsConfiguration(configuration: [String:AnyObject]) -> BTAPIClient {
+    let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!
     let fakeHttp = BTFakeHTTP(baseURL: NSURL(), tokenizationKey: "");
     let cannedConfig = BTJSON(value: configuration);
     fakeHttp.cannedConfiguration = cannedConfig
