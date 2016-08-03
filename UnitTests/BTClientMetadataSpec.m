@@ -25,6 +25,9 @@ describe(@"string values", ^{
     it(@"integration returns expected strings", ^{
         m.integration = BTClientMetadataIntegrationDropIn;
         expect(m.integrationString).to.equal(@"dropin");
+        
+        m.integration = BTClientMetadataIntegrationDropIn2;
+        expect(m.integrationString).to.equal(@"dropin2");
 
         m.integration = BTClientMetadataIntegrationCustom;
         expect(m.integrationString).to.equal(@"custom");

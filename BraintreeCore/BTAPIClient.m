@@ -163,23 +163,27 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 # pragma mark - Payment Methods
 
-- (void)fetchPaymentMethodNoncesSorted:(BOOL)sortDefaultFirst completion:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completionBlock {
+- (void)fetchPaymentMethodNonces:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completion {
+    [self fetchPaymentMethodNonces:NO completion:completion];
+}
 
+- (void)fetchPaymentMethodNonces:(BOOL)defaultFirst completion:(void (^)(NSArray <BTPaymentMethodNonce *> *, NSError *))completion {
     if (!self.clientToken) {
         NSError *error = [NSError errorWithDomain:BTAPIClientErrorDomain code:BTAPIClientErrorTypeNotAuthorized userInfo:@{ NSLocalizedDescriptionKey : @"Cannot fetch payment method nonces with a tokenization key", NSLocalizedRecoverySuggestionErrorKey : @"This endpoint requires a client token for authorization"}];
-        if (completionBlock) {
-            completionBlock(nil, error);
+        if (completion) {
+            completion(nil, error);
         }
         return;
     }
 
     [self GET:@"v1/payment_methods"
-             parameters:@{@"default_first": @(sortDefaultFirst)}
+             parameters:@{@"default_first": @(defaultFirst),
+                          @"session_id": self.metadata.sessionId}
              completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
                  dispatch_async(dispatch_get_main_queue(), ^{
-                     if (completionBlock) {
+                     if (completion) {
                          if (error) {
-                             completionBlock(nil, error);
+                             completion(nil, error);
                          } else {
                              NSMutableArray *paymentMethodNonces = [NSMutableArray array];
                              for (NSDictionary *paymentInfo in [body[@"paymentMethods"] asArray]) {
@@ -189,7 +193,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                                      [paymentMethodNonces addObject:paymentMethodNonce];
                                  }
                              }
-                             completionBlock(paymentMethodNonces, nil);
+                             completion(paymentMethodNonces, nil);
                          }
                      }
                  });
@@ -218,7 +222,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
         __block BTConfiguration *configuration;
-        [self.configurationHTTP GET:@"v1/configuration" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self.configurationHTTP GET:@"v1/configuration" parameters:@{ @"configVersion": @"3" } completion:^(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error) {
             if (error) {
                 fetchError = error;
             } else if (response.statusCode != 200) {

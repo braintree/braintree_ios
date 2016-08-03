@@ -1,5 +1,39 @@
 # Braintree iOS SDK Release Notes
 
+## 4.4.1 (2016-07-22)
+
+* Update and fix issues in `BraintreeDropIn` based on feedback
+* Make more headers public in `BraintreeUIKit`
+* Fix `BraintreeUIKit` module name for Cocoapods
+* Add support for 3D Secure to `BraintreeDropIn` (see Drop-In docs)
+* Update the [Drop-In docs](Docs/Drop-In-Update.md)
+* Add features to support vaulting Venmo when using Drop-In (coming soon)
+
+## 4.4.0 (2016-07-14)
+
+* (BETA) Release of new `BraintreeDropIn` and `BraintreeUIKit` frameworks
+  * `BraintreeDropIn` bundles our new UI components and Braintree API's for a whole new Drop-In experience
+  * UI components, helpers, vector art and localizations are now public and fully accessible via `BraintreeUIKit`
+  * [Learn more about our Drop-In Update](Docs/Drop-In-Update.md)
+  * Note that our legacy Drop-In (`BraintreeUI`) has not changed
+* (BETA) Various updates to the UnionPay component
+* Improve error messages when Braintree gateway returns 422 validation errors
+
+## 4.3.2 (2016-06-09)
+
+* Update Pay with Venmo to use merchant ID and environment from configuration
+* PayPal Checkout supports an intent option, which can be authorize or sale
+  * See `BTPayPalRequest`'s `intent` property
+* Provide better `NSError` descriptions when Braintree services return a 4xx or 5xx HTTP error
+
+## 4.3.1 (2016-05-25)
+
+* Add public method to fetch a customer's vaulted payment method nonces
+* Drop-in bug fixes
+  * Do not show mobile phone number field
+  * Fix issue where American Express display text is truncated
+* Merge [#241](https://github.com/braintree/braintree_ios/pull/241) - Add missing source files to Braintree static library target. (Thanks @AlexDenisov!)
+
 ## 4.3.0 (2016-05-03)
 
 * Add support for UnionPay cards

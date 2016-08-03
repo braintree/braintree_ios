@@ -7,7 +7,7 @@
 
 #import "PPOTSwitchRequest.h"
 #import "PPOTMacros.h"
-#import "PPDataCollector.h"
+#import "PPDataCollector_Internal.h"
 
 @implementation PPOTSwitchRequest
 
@@ -33,7 +33,7 @@
         _environment = environment;
         _responseType = PPAppSwitchResponseTypeUnknown;
         _callbackURLScheme = callbackURLScheme;
-        _clientMetadataID = [PPDataCollector clientMetadataID:pairingId];
+        _clientMetadataID = [PPDataCollector generateClientMetadataID:pairingId];
     }
     return self;
 }

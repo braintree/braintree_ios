@@ -118,7 +118,7 @@
 
         BTUICardFormOptionalFields optionalFields;
         if ([challenges containsObject:cvvChallenge] && [challenges containsObject:postalCodeChallenge]) {
-            optionalFields = BTUICardFormOptionalFieldsAll;
+            optionalFields = BTUICardFormOptionalFieldsCvv | BTUICardFormFieldPostalCode;
         } else if ([challenges containsObject:cvvChallenge]) {
             optionalFields = BTUICardFormOptionalFieldsCvv;
         } else if ([challenges containsObject:postalCodeChallenge]) {
@@ -584,7 +584,7 @@
 
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 
-    [self.apiClient fetchPaymentMethodNoncesSorted:self.paymentRequest.showDefaultPaymentMethodNonceFirst completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
+    [self.apiClient fetchPaymentMethodNonces:self.paymentRequest.showDefaultPaymentMethodNonceFirst completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
         if (error) {
@@ -665,6 +665,7 @@
         
         BTDropInErrorAlert *errorAlert = [[BTDropInErrorAlert alloc] initWithPresentingViewController:viewController];
         errorAlert.title = savePaymentMethodErrorAlertTitle;
+        errorAlert.message = error.localizedFailureReason;
         errorAlert.cancelBlock = ^{
             // Use the paymentMethodNonces setter to update state
             self.paymentMethodNonces = self.paymentMethodNonces;

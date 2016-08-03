@@ -25,7 +25,7 @@
     }];
 }
 
-- (UIControl *)paymentButton {
+- (UIView *)createPaymentButton {
     if (!self.venmoButton) {
         self.venmoButton = [[BTUIVenmoButton alloc] init];
         [self.venmoButton addTarget:self action:@selector(tappedPayPalButton) forControlEvents:UIControlEventTouchUpInside];
@@ -70,7 +70,7 @@
 
     BTVenmoDriver *driver = [[BTVenmoDriver alloc] initWithAPIClient:self.apiClient];
     
-    [driver authorizeAccountWithCompletion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
+    [driver authorizeAccountAndVault:YES completion:^(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error) {
         if (venmoAccount) {
             self.progressBlock(@"Got a nonce 💎!");
             NSLog(@"%@", [venmoAccount debugDescription]);

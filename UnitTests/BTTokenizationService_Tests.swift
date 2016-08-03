@@ -133,10 +133,12 @@ class BTTokenizationService_Tests: XCTestCase {
         BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
         let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
         stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-            "merchantId": "stubmerchantid",
-            "environment": "sandbox",
-            "payWithVenmo": ["accessToken": "fake-access-token"],
-            ])
+            "payWithVenmo": [
+                "accessToken": "fake-access-token",
+                "environment": "sandbox",
+                "merchantId": "stubmerchantid",
+            ],
+        ])
         let mockDelegate = MockAppSwitchDelegate(willPerform: expectationWithDescription("Will authorize Venmo Account"), didPerform: nil)
 
         sharedService.tokenizeType("Venmo", options: [BTTokenizationServiceAppSwitchDelegateOption: mockDelegate], withAPIClient: stubAPIClient) { _ -> Void in }

@@ -104,7 +104,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             "isDebit": false,
             "unionPay": [
                 "supportsTwoStepAuthAndCapture": true,
-                "isUnionPayEnrollmentRequired": false
+                "isSupported": true
                 ]
             ], statusCode: 201)
         apiClient.http = stubHTTP
@@ -122,7 +122,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             XCTAssertEqual(true, cardCapabilities.isUnionPay)
             XCTAssertEqual(false, cardCapabilities.isDebit)
             XCTAssertEqual(true, cardCapabilities.supportsTwoStepAuthAndCapture)
-            XCTAssertEqual(false, cardCapabilities.isUnionPayEnrollmentRequired)
+            XCTAssertEqual(true, cardCapabilities.isSupported)
             expectation.fulfill()
         }
         
@@ -137,7 +137,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
             "isDebit": false,
             "unionPay": [
                 "supportsTwoStepAuthAndCapture": true,
-                "isUnionPayEnrollmentRequired": false
+                "isSupported": true
                 ]
             ])
         let cardClient = BTCardClient(APIClient: mockAPIClient)
@@ -189,7 +189,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         request.mobilePhoneNumber = "321"
 
         let expectation = expectationWithDescription("Callback invoked")
-        cardClient.enrollCard(request) { (enrollmentID, error) -> Void in
+        cardClient.enrollCard(request) { (enrollmentID, smsCodeRequired, error) -> Void in
             guard let error = error else {
                 XCTFail()
                 return
@@ -212,7 +212,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         request.mobilePhoneNumber = "321"
 
         let expectation = expectationWithDescription("Callback invoked")
-        cardClient.enrollCard(request) { (enrollmentID, error) -> Void in
+        cardClient.enrollCard(request) { (enrollmentID, smsCodeRequired, error) -> Void in
             guard let error = error else {
                 XCTFail()
                 return
@@ -288,10 +288,11 @@ class BTCardClient_UnionPayTests: XCTestCase {
         XCTAssertNil(enrollment["cvv"] as? String)
     }
 
-    func testEnrollCard_whenSuccessful_returnsEnrollmentIDFromJSONResponse() {
+    func testEnrollCard_whenSuccessful_returnsEnrollmentIDAndSmsCodeRequiredFromJSONResponse() {
         let stubHTTP = BTFakeHTTP()!
         stubHTTP.stubRequest("POST", toEndpoint: "v1/union_pay_enrollments", respondWith: [
-            "unionPayEnrollmentId": "fake-enrollment-id"
+            "unionPayEnrollmentId": "fake-enrollment-id",
+            "smsCodeRequired": true
             ], statusCode: 201)
         apiClient.http = stubHTTP
         let cardClient = BTCardClient(APIClient: apiClient)
@@ -299,13 +300,14 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let request = BTCardRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
-        cardClient.enrollCard(request) { (enrollmentID, error) -> Void in
+        cardClient.enrollCard(request) { (enrollmentID, smsCodeRequired, error) -> Void in
             guard let enrollmentID = enrollmentID else {
                 XCTFail("Expected UnionPay enrollment")
                 return
             }
             XCTAssertNil(error)
             XCTAssertEqual(enrollmentID, "fake-enrollment-id")
+            XCTAssertTrue(smsCodeRequired)
             expectation.fulfill()
         }
         
@@ -326,13 +328,14 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let request = BTCardRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
-        cardClient.enrollCard(request) { (enrollmentID, error) -> Void in
+        cardClient.enrollCard(request) { (enrollmentID, smsCodeRequired, error) -> Void in
             guard let error = error else {
                 XCTFail("Expected union pay error")
                 return
             }
            
             XCTAssertNil(enrollmentID)
+            XCTAssertFalse(smsCodeRequired)
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
             XCTAssertEqual(error.code, BTCardClientErrorType.CustomerInputInvalid.rawValue)
            
@@ -404,7 +407,10 @@ class BTCardClient_UnionPayTests: XCTestCase {
     func testEnrollCard_onSuccess_sendsAnalyticsEvent() {
         let mockAPIClient = MockAPIClient(authorization: BTValidTestClientToken)!
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: ["unionPay": ["enabled": true]])
-        mockAPIClient.cannedResponseBody = BTJSON(value: ["unionPayEnrollmentId": "fake-enrollment-id"])
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "unionPayEnrollmentId": "fake-enrollment-id",
+            "smsCodeRequired": true
+        ])
         let cardClient = BTCardClient(APIClient: mockAPIClient)
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
         let request = BTCardRequest(card: card)
@@ -428,13 +434,14 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let request = BTCardRequest(card: card)
 
         let expectation = expectationWithDescription("Callback invoked")
-        cardClient.enrollCard(request) { (enrollmentID, error) -> Void in
+        cardClient.enrollCard(request) { (enrollmentID, smsCodeRequired, error) -> Void in
             guard let error = error else {
                 XCTFail("Expected union pay error")
                 return
             }
             
             XCTAssertNil(enrollmentID)
+            XCTAssertFalse(smsCodeRequired)
             XCTAssertEqual(error.domain, "FakeError")
             XCTAssertEqual(error.code, 1)
             expectation.fulfill()
@@ -451,7 +458,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let cardClient = BTCardClient(APIClient: apiClient)
         let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        request.enrollmentAuthCode = "12345"
+        request.smsCode = "12345"
         // This is an internal-only property, but we want to verify that it gets sent when hitting the tokenization endpoint
         request.enrollmentID = "enrollment-id"
 
@@ -472,13 +479,61 @@ class BTCardClient_UnionPayTests: XCTestCase {
             XCTAssertEqual(cardParameters["expiration_date"] as? String, "12/2038")
             XCTAssertEqual(cardParameters["cvv"] as? String, "123")
             
-            guard let tokenizationOptionsParameters = parameters["options"] as? [String: AnyObject] else {
+            guard let tokenizationOptionsParameters = cardParameters["options"] as? [String: AnyObject] else {
                 XCTFail("Tokenization options should be present")
                 return
             }
             
-            XCTAssertEqual(tokenizationOptionsParameters["sms_code"] as? String, "12345")
-            XCTAssertEqual(tokenizationOptionsParameters["id"] as? String, "enrollment-id")
+            guard let unionPayEnrollmentParameters = tokenizationOptionsParameters["union_pay_enrollment"] as? [String: AnyObject] else {
+                XCTFail("UnionPay enrollment should be present")
+                return
+            }
+            
+            XCTAssertEqual(unionPayEnrollmentParameters["sms_code"] as? String, "12345")
+            XCTAssertEqual(unionPayEnrollmentParameters["id"] as? String, "enrollment-id")
+        } else {
+            XCTFail()
+        }
+    }
+    
+    func testTokenization_withEnrollmentIDAndNoSMSCode_sendsUnionPayEnrollment() {
+        let mockHTTP = BTFakeHTTP()!
+        apiClient.http = mockHTTP
+        let cardClient = BTCardClient(APIClient: apiClient)
+        let request = BTCardRequest()
+        request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
+        // This is an internal-only property, but we want to verify that it gets sent when hitting the tokenization endpoint
+        request.enrollmentID = "enrollment-id"
+
+        let expectation = expectationWithDescription("Callback invoked")
+        cardClient.tokenizeCard(request, options: nil) { (_, _) -> Void in
+            expectation.fulfill()
+        }
+        waitForExpectationsWithTimeout(1, handler: nil)
+
+        XCTAssertEqual(mockHTTP.lastRequestMethod, "POST")
+        XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods/credit_cards")
+        if let parameters = mockHTTP.lastRequestParameters as? [String: AnyObject] {
+            guard let cardParameters = parameters["credit_card"] as? [String: AnyObject] else {
+                XCTFail("Card should be in parameters")
+                return
+            }
+            XCTAssertEqual(cardParameters["number"] as? String, "4111111111111111")
+            XCTAssertEqual(cardParameters["expiration_date"] as? String, "12/2038")
+            XCTAssertEqual(cardParameters["cvv"] as? String, "123")
+            
+            guard let tokenizationOptionsParameters = cardParameters["options"] as? [String: AnyObject] else {
+                XCTFail("Tokenization options should be present")
+                return
+            }
+            
+            guard let unionPayEnrollmentParameters = tokenizationOptionsParameters["union_pay_enrollment"] as? [String: AnyObject] else {
+                XCTFail("UnionPay enrollment should be present")
+                return
+            }
+            
+            XCTAssertNil(unionPayEnrollmentParameters["sms_code"])
+            XCTAssertEqual(unionPayEnrollmentParameters["id"] as? String, "enrollment-id")
         } else {
             XCTFail()
         }
@@ -497,7 +552,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let cardClient = BTCardClient(APIClient: mockAPIClient)
         let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        request.enrollmentAuthCode = "12345"
+        request.smsCode = "12345"
         request.enrollmentID = "enrollment-id"
 
         let expectation = expectationWithDescription("Callback invoked")
@@ -515,7 +570,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let cardClient = BTCardClient(APIClient: mockAPIClient)
         let request = BTCardRequest()
         request.card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "123")
-        request.enrollmentAuthCode = "12345"
+        request.smsCode = "12345"
         request.enrollmentID = "enrollment-id"
 
         let expectation = expectationWithDescription("Callback invoked")

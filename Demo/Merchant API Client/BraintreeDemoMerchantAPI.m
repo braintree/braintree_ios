@@ -90,19 +90,29 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
 }
 
 - (void)makeTransactionWithPaymentMethodNonce:(NSString *)paymentMethodNonce completion:(void (^)(NSString *transactionId, NSError *error))completionBlock {
+    [self makeTransactionWithPaymentMethodNonce:paymentMethodNonce
+                         merchantAccountId:nil
+                                completion:completionBlock];
+}
+
+- (void)makeTransactionWithPaymentMethodNonce:(NSString *)paymentMethodNonce merchantAccountId:(NSString *)merchantAccountId completion:(void (^)(NSString *transactionId, NSError *error))completionBlock {
     NSLog(@"Creating a transaction with nonce: %@", paymentMethodNonce);
-    NSDictionary *parameters;
+    NSMutableDictionary *parameters;
 
     switch ([BraintreeDemoSettings threeDSecureRequiredStatus]) {
         case BraintreeDemoTransactionServiceThreeDSecureRequiredStatusDefault:
-            parameters = @{ @"payment_method_nonce": paymentMethodNonce };
+            parameters = [@{ @"payment_method_nonce": paymentMethodNonce } mutableCopy];
             break;
         case BraintreeDemoTransactionServiceThreeDSecureRequiredStatusRequired:
-            parameters = @{ @"payment_method_nonce": paymentMethodNonce, @"three_d_secure_required": @YES, };
+            parameters = [@{ @"payment_method_nonce": paymentMethodNonce, @"three_d_secure_required": @YES, } mutableCopy];
             break;
         case BraintreeDemoTransactionServiceThreeDSecureRequiredStatusNotRequired:
-            parameters = @{ @"payment_method_nonce": paymentMethodNonce, @"three_d_secure_required": @NO, };
+            parameters = [@{ @"payment_method_nonce": paymentMethodNonce, @"three_d_secure_required": @NO, } mutableCopy];
             break;
+    }
+
+    if (merchantAccountId != nil) {
+        [parameters setObject:merchantAccountId forKey:@"merchant_account_id"];
     }
 
     [self.sessionManager POST:@"/nonce/transaction"

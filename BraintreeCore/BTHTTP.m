@@ -220,6 +220,10 @@
             json = (data.length == 0) ? [BTJSON new] : [[BTJSON alloc] initWithData:data];
             if (!json.isError) {
                 errorUserInfo[BTHTTPJSONResponseBodyKey] = json;
+                NSString *errorResponseMessage = [json[@"error"][@"message"] asString];
+                if (errorResponseMessage) {
+                    errorUserInfo[NSLocalizedDescriptionKey] = errorResponseMessage;
+                }
             }
         }
         
@@ -228,6 +232,8 @@
             errorCode = BTHTTPErrorCodeRateLimitError;
             errorUserInfo[NSLocalizedDescriptionKey] = @"You are being rate-limited.";
             errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = @"Please try again in a few minutes.";
+        } else if (httpResponse.statusCode >= 500) {
+            errorUserInfo[NSLocalizedRecoverySuggestionErrorKey] = @"Please try again later.";
         }
         
         NSError *error = [NSError errorWithDomain:BTHTTPErrorDomain

@@ -24,12 +24,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *cvv;
 /// The postal code associated with the card's billing address
 @property (nonatomic, nullable, copy) NSString *postalCode;
+/// Optional: the cardholder's name.
+@property (nonatomic, nullable, copy) NSString *cardholderName;
 
-/// Additional parameters associated with the card's billing address
+/// Optional: the street address associated with the card's billing address
 @property (nonatomic, nullable, copy) NSString *streetAddress;
+/// Optional: the city associated with the card's billing address
 @property (nonatomic, nullable, copy) NSString *locality;
+/// Optional: the state/province associated with the card's billing address
 @property (nonatomic, nullable, copy) NSString *region;
+/// Optional: the country name associated with the card's billing address.
+///
+/// @note Braintree only accepts specific country names.
+/// @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
 @property (nonatomic, nullable, copy) NSString *countryName;
+/// Optional: the ISO 3166-1 alpha-2 country code specified in the card's billing address.
+///
+/// @note Braintree only accepts specific alpha-2 values.
+/// @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
 @property (nonatomic, nullable, copy) NSString *countryCodeAlpha2;
 
 /// Controls whether or not to return validations and/or verification results. By default, this is

@@ -44,11 +44,17 @@ import BraintreeCore
         }
         completionBlock(BTConfiguration(JSON: responseBody), cannedConfigurationResponseError)
     }
-
-    override func fetchPaymentMethodNoncesSorted(sortDefaultFirst: Bool, completion completionBlock: (([BTPaymentMethodNonce]!, NSError!) -> Void)!) {
+    
+    override func fetchPaymentMethodNonces(completion: ([BTPaymentMethodNonce]?, NSError?) -> Void) {
         fetchedPaymentMethods = true
-        fetchPaymentMethodsSorting = sortDefaultFirst
-        completionBlock([], nil)
+        fetchPaymentMethodsSorting = false
+        completion([], nil)
+    }
+    
+    override func fetchPaymentMethodNonces(defaultFirst: Bool, completion: ([BTPaymentMethodNonce]?, NSError?) -> Void) {
+        fetchedPaymentMethods = true
+        fetchPaymentMethodsSorting = false
+        completion([], nil)
     }
 
     /// BTAPIClient gets copied by other classes like BTPayPalDriver, BTVenmoDriver, etc.
@@ -58,7 +64,7 @@ import BraintreeCore
         return self
     }
 
-    override func sendAnalyticsEvent(name: String!) {
+    override func sendAnalyticsEvent(name: String) {
         postedAnalyticsEvents.append(name)
     }
 

@@ -1,6 +1,7 @@
 #import "BraintreeDemoBTDataCollectorViewController.h"
 #import "BTDataCollector.h"
 #import <CoreLocation/CLLocationManager.h>
+#import "PPDataCollector.h"
 #import <PureLayout/PureLayout.h>
 
 @interface BraintreeDemoBTDataCollectorViewController () <BTDataCollectorDelegate>
@@ -35,7 +36,7 @@
     [collectKountButton addTarget:self action:@selector(tappedCollectKount) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton *collectDysonButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [collectDysonButton setTitle:@"Collect Dyson Data" forState:UIControlStateNormal];
+    [collectDysonButton setTitle:@"Collect PayPal Data" forState:UIControlStateNormal];
     [collectDysonButton addTarget:self action:@selector(tappedCollectDyson) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton *obtainLocationPermissionButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -84,11 +85,8 @@
 }
 
 - (IBAction)tappedCollectDyson {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    self.dataLabel.text = [BTDataCollector payPalClientMetadataId];
+    self.dataLabel.text = [PPDataCollector collectPayPalDeviceData];
     self.progressBlock(@"Collected PayPal clientMetadataID!");
-#pragma clang diagnostic pop
 }
 
 - (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {

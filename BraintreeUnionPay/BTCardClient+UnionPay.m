@@ -20,7 +20,7 @@
             BTCard *card = [[BTCard alloc] initWithParameters:options];
             BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
             request.mobileCountryCode = options[@"mobileCountryCode"];
-            request.enrollmentAuthCode = options[@"enrollmentAuthCode"];
+            request.smsCode = options[@"smsCode"];
 
             [client tokenizeCard:request options:nil completion:completion];
         }];
@@ -58,7 +58,7 @@
                  cardCapabilities.isUnionPay = [body[@"isUnionPay"] isTrue];
                  cardCapabilities.isDebit = [body[@"isDebit"] isTrue];
                  cardCapabilities.supportsTwoStepAuthAndCapture = [body[@"unionPay"][@"supportsTwoStepAuthAndCapture"] isTrue];
-                 cardCapabilities.isUnionPayEnrollmentRequired = [body[@"unionPay"][@"isUnionPayEnrollmentRequired"] isTrue];
+                 cardCapabilities.isSupported = [body[@"unionPay"][@"isSupported"] isTrue];
                  completion(cardCapabilities, nil);
              }
          }];
@@ -66,17 +66,17 @@
 }
 
 - (void)enrollCard:(BTCardRequest *)request
-        completion:(nonnull void (^)(NSString * _Nullable, NSError * _Nullable))completion
+        completion:(nonnull void (^)(NSString * _Nullable, BOOL, NSError * _Nullable))completion
 {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
         if (error) {
-            [self invokeBlock:completion onMainThreadWithEnrollmentID:nil error:error];
+            [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:NO error:error];
             return;
         }
         
         if (!configuration.isUnionPayEnabled) {
             NSError *error = [NSError errorWithDomain:BTCardClientErrorDomain code:BTCardClientErrorTypePaymentOptionNotEnabled userInfo:@{NSLocalizedDescriptionKey: @"UnionPay is not enabled for this merchant"}];
-            [self invokeBlock:completion onMainThreadWithEnrollmentID:nil error:error];
+            [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:NO error:error];
             return;
         }
 
@@ -104,32 +104,31 @@
          {
              if (error) {
                  [self sendUnionPayEvent:@"enrollment-failed"];
-
+                
+                 NSError *callbackError = error;
                  NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
                  if (response.statusCode == 422) {
-                     BTJSON *jsonResponse = error.userInfo[BTHTTPJSONResponseBodyKey];
-                     NSDictionary *userInfo = [jsonResponse asDictionary] ? @{ BTCustomerInputBraintreeValidationErrorsKey : [jsonResponse asDictionary] } : @{};
-                     NSError *validationError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                                    code:BTCardClientErrorTypeCustomerInputInvalid
-                                                                userInfo:userInfo];
-                     [self invokeBlock:completion onMainThreadWithEnrollmentID:nil error:validationError];
-                 } else {
-                     [self invokeBlock:completion onMainThreadWithEnrollmentID:nil error:error];
+                     callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                         code:BTCardClientErrorTypeCustomerInputInvalid
+                                                     userInfo:[self.class validationErrorUserInfo:error.userInfo]];
                  }
+                 
+                 [self invokeBlock:completion onMainThreadWithEnrollmentID:nil smsCodeRequired:NO error:callbackError];
                  return;
              }
 
              [self sendUnionPayEvent:@"enrollment-succeeded"];
-             [self invokeBlock:completion onMainThreadWithEnrollmentID:[body[@"unionPayEnrollmentId"] asString] error:nil];
+             BOOL smsCodeRequired = ![body[@"smsCodeRequired"] isNull] && [body[@"smsCodeRequired"] isTrue];
+             [self invokeBlock:completion onMainThreadWithEnrollmentID:[body[@"unionPayEnrollmentId"] asString] smsCodeRequired:smsCodeRequired error:nil];
          }];
     }];
 }
 
 #pragma mark - Helper methods
 
-- (void)invokeBlock:(nonnull void (^)(NSString * _Nullable, NSError * _Nullable))completion onMainThreadWithEnrollmentID:(nullable NSString *)enrollmentID error:(nullable NSError *)error {
+- (void)invokeBlock:(nonnull void (^)(NSString * _Nullable, BOOL, NSError * _Nullable))completion onMainThreadWithEnrollmentID:(nullable NSString *)enrollmentID smsCodeRequired:(BOOL)smsCodeRequired error:(nullable NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
-        completion(enrollmentID, error);
+        completion(enrollmentID, smsCodeRequired, error);
     });
 }
 

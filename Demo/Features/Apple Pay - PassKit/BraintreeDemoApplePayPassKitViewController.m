@@ -1,20 +1,34 @@
 #import "BraintreeDemoApplePayPassKitViewController.h"
 #import "BraintreeDemoSettings.h"
 #import <BraintreeApplePay/BraintreeApplePay.h>
+#import <PureLayout/PureLayout.h>
 
 @import PassKit;
 
 @interface BraintreeDemoApplePayPassKitViewController () <PKPaymentAuthorizationViewControllerDelegate>
+@property (nonatomic, strong) UILabel *label;
 @end
 
 @implementation BraintreeDemoApplePayPassKitViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.label = [[UILabel alloc] init];
+    self.label.numberOfLines = 1;
+    self.label.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:self.label];
+
+    [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton];
+    [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton withOffset:8];
+    [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+    [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    [self.label autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
+
     self.title = @"Apple Pay via PassKit";
 }
 
-- (UIControl *)paymentButton {
+- (UIControl *)createPaymentButton {
     if (![PKPaymentAuthorizationViewController class]) {
         self.progressBlock(@"Apple Pay is not available on this version of iOS");
         return nil;
@@ -147,6 +161,7 @@
             self.progressBlock(error.localizedDescription);
             completion(PKPaymentAuthorizationStatusFailure);
         } else {
+            self.label.text = tokenizedApplePayPayment.nonce;
             self.completionBlock(tokenizedApplePayPayment);
             completion(PKPaymentAuthorizationStatusSuccess);
         }

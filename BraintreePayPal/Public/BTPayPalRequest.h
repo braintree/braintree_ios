@@ -7,6 +7,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
+    BTPayPalRequestIntentAuthorize = 1,
+    BTPayPalRequestIntentSale,
+};
+
 /// A PayPal request specifies options that control the PayPal flow.
 ///
 /// For a one-time payment, the request must specify a transaction amount.
@@ -40,6 +45,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Optional: Display a custom description to the user for a billing agreement.
 @property (nonatomic, nullable, copy) NSString *billingAgreementDescription;
+
+/// Optional: Payment intent. Only applies when using checkout flow. Defaults to `BTPayPalRequestIntentAuthorize`.
+@property (nonatomic) BTPayPalRequestIntent intent;
 
 @end
 

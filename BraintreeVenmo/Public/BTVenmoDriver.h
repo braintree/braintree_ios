@@ -45,14 +45,21 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
+/// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
+///
+/// @param vault Whether to automatically vault the Venmo Account. Vaulting will
+/// only occur if a client token with a customer_id is being used.
+/// @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
+/// On success, you will receive an instance of `BTVenmoAccountNonce`; on failure, an error; on user
+/// cancellation, you will receive `nil` for both parameters.
+- (void)authorizeAccountAndVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock;
 
 /// Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
 ///
 /// @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
 /// On success, you will receive an instance of `BTVenmoAccountNonce`; on failure, an error; on user
 /// cancellation, you will receive `nil` for both parameters.
-- (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock;
-
+- (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use [BTVenmoDriver authorizeAccountAndVault:completion instead");
 
 /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
 - (BOOL)isiOSAppAvailableForAppSwitch;

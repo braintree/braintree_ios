@@ -41,7 +41,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.3.0</string>
+	<string>4.4.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -56,7 +56,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4.3.0</string>
+	<string>4.4.1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>com.braintreepayments.Demo.payments</string>
@@ -83,6 +83,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<false/>
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>UIStatusBarStyle</key>

@@ -190,6 +190,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
         
         if (!isBillingAgreement) {
+            parameters[@"intent"] = [self.class intentTypeToString:request.intent];
             if (request.amount != nil) {
                 parameters[@"amount"] = request.amount;
             }
@@ -248,6 +249,8 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         }
         
         parameters[@"experience_profile"] = experienceProfile;
+        
+        self.payPalRequest = request;
         
         NSString *url = isBillingAgreement ? @"setup_billing_agreement" : @"create_payment_resource";
         
@@ -357,10 +360,14 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                     
                     if (paymentType == BTPayPalPaymentTypeCheckout) {
                         parameters[@"paypal_account"][@"options"] = @{ @"validate": @NO };
+                        if (self.payPalRequest) {
+                            parameters[@"paypal_account"][@"intent"] = [self.class intentTypeToString:self.payPalRequest.intent];
+                        }
                     }
                     if (self.clientMetadataId) {
                         parameters[@"correlation_id"] = self.clientMetadataId;
                     }
+                    
                     BTClientMetadata *metadata = [self clientMetadata];
                     parameters[@"_meta"] = @{
                                              @"source" : metadata.sourceString,
@@ -540,6 +547,24 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     BTPayPalAccountNonce *tokenizedPayPalAccount = [[BTPayPalAccountNonce alloc] initWithNonce:nonce description:description email:email firstName:firstName lastName:lastName phone:phone billingAddress:billingAddress shippingAddress:shippingAddress clientMetadataId:clientMetadataId payerId:payerId isDefault:isDefault];
     
     return tokenizedPayPalAccount;
+}
+
++ (NSString *)intentTypeToString:(BTPayPalRequestIntent)intentType {
+    NSString *result = nil;
+
+    switch(intentType) {
+        case BTPayPalRequestIntentAuthorize:
+            result = @"authorize";
+            break;
+        case BTPayPalRequestIntentSale:
+            result = @"sale";
+            break;
+        default:
+            result = @"authorize";
+            break;
+    }
+
+    return result;
 }
 
 #pragma mark - Delegate Informers

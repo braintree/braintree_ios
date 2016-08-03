@@ -57,9 +57,6 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
 /// Normal response time is less than 1 second, and it should never take more than 10 seconds.
 ///
-/// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
-/// calling it e.g. when the customer initiates checkout should also be fine.
-///
 /// @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`.
 ///         This JSON serialized string contains the merchant ID and session ID.
 - (NSString *)collectCardFraudData DEPRECATED_MSG_ATTRIBUTE("Use [BTDataCollector collectCardFraudDataWithCallback] instead");
@@ -96,9 +93,6 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /// For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
 /// to wait for the completion callback before performing the transaction, the data will be most effective if you do.
 /// Normal response time is less than 1 second, and it should never take more than 10 seconds.
-///
-/// We recommend that you call this method as early as possible, e.g. at app launch. If that's too early,
-/// calling it e.g. when the customer initiates checkout should also be fine.
 ///
 /// Store the return value as deviceData to use with debit/credit card transactions on your server,
 /// e.g. with `Transaction.sale`.

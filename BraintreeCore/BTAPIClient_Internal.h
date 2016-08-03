@@ -5,11 +5,14 @@
 #import "BTHTTP.h"
 #import "BTJSON.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class BTPaymentMethodNonce;
 
 @interface BTAPIClient ()
-@property (nonatomic, copy) NSString *tokenizationKey;
-@property (nonatomic, strong) BTClientToken *clientToken;
+
+@property (nonatomic, copy, nullable) NSString *tokenizationKey;
+@property (nonatomic, strong, nullable) BTClientToken *clientToken;
 @property (nonatomic, strong) BTHTTP *http;
 @property (nonatomic, strong) BTHTTP *configurationHTTP;
 
@@ -25,12 +28,8 @@
 /// An internal initializer to toggle whether to send an analytics event during initialization.
 /// This prevents copyWithSource:integration: from sending a duplicate event. It can also be used
 /// to suppress excessive network chatter during testing.
-- (instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
-
-/// Fetches payment methods. Must be using client token.
-///
-/// @param sortedDefaultFirst Sort payment method nonces with the default payment method first.
-/// @param completionBlock Callback that returns an array of payment method nonces
-- (void)fetchPaymentMethodNoncesSorted:(BOOL)sortDefaultFirst completion:(void(^)(NSArray <BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error))completionBlock;
+- (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
 
 @end
+
+NS_ASSUME_NONNULL_END

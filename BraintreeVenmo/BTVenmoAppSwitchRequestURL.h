@@ -2,6 +2,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class BTClientMetadata;
+
 @interface BTVenmoAppSwitchRequestURL : NSObject
 
 /// The base app switch URL for Venmo
@@ -20,10 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return The resulting URL, or `nil` if any of the parameters are `nil`.
 + (nullable NSURL *)appSwitchURLForMerchantID:(NSString *)merchantID
                                   accessToken:(NSString *)accessToken
-                                   sdkVersion:(NSString *)sdkVersion
                               returnURLScheme:(NSString *)scheme
                             bundleDisplayName:(NSString *)bundleName
-                                  environment:(NSString *)environment;
+                                  environment:(NSString *)environment
+                              authFingerprint:(NSString *)authFingerprint
+                                     validate:(BOOL)validate
+                                     metadata:(BTClientMetadata *)metadata;
 
 @end
 

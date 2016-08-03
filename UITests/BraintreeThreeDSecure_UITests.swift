@@ -4,6 +4,8 @@ Hardware keyboard should be disabled on simulator for tests to run reliably.
 Requires a local gateway.
 */
 
+/*
+ 
 import XCTest
 
 class BraintreeThreeDSecure_UITests: XCTestCase {
@@ -34,6 +36,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
                 guard let clientToken = json["clientToken"] as? String else { return }
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.app.launchArguments.append("-EnvironmentSandbox")
+                    self.app.launchArguments.append("-ClientToken")
                     self.app.launchArguments.append("-Authorization:\(clientToken)")
                     self.app.launchArguments.append("-Integration:BraintreeDemoThreeDSecureViewController")
                     self.app.launch()
@@ -261,3 +264,4 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
     }
  */
 }
+*/

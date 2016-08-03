@@ -207,8 +207,12 @@ class FakeDeviceCollectorSDK: DeviceCollectorSDK {
 class FakePPDataCollector: PPDataCollector {
     
     static var didGetClientMetadataID = false
-    
-    override class func clientMetadataID() -> String {
+
+    override class func generateClientMetadataID() -> String {
+        return generateClientMetadataID(nil)
+    }
+
+    override class func generateClientMetadataID(pairingID: String?) -> String {
         didGetClientMetadataID = true
         return "fakeclientmetadataid"
     }
