@@ -66,7 +66,7 @@
     [self.dataLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
     [self.dataLabel autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
     
-    self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:_apiClient];
+    self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:self.apiClient];
     self.dataCollector.delegate = self;
 }
 

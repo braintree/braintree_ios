@@ -10,6 +10,6 @@
 @property (nonatomic, readonly, assign) BOOL isKountEnabled;
 
 /// Returns the Kount merchant id set in the Gateway
-@property (nonatomic, readonly, assign) NSString* kountMerchantId;
+@property (nonatomic, readonly, assign) NSString *kountMerchantId;
 
 @end

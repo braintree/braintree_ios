@@ -59,14 +59,14 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     [self collectFraudDataForCard:YES forPayPal:NO withCallback:callback];
 }
 
-- (void)collectFraudDataWithCallback:(BTDataCollectorCallback) callback {
+- (void)collectFraudDataWithCallback:(BTDataCollectorCallback)callback {
     [self collectFraudDataForCard:YES forPayPal:YES withCallback:callback];
 }
 
 - (void)collectFraudDataForCard:(BOOL)includeCard forPayPal:(BOOL)includePayPal withCallback:(BTDataCollectorCallback)callback {
-    [_apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError * _ __unused) {
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable __unused _) {
         NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
-        if ([configuration isKountEnabled] && includeCard) {
+        if (configuration.isKountEnabled && includeCard) {
             [self setCollectorUrl:[self collectorURLForEnvironment:[self environmentFromString:[configuration.json[@"environment"] asString]]]];
             
             NSString *merchantId = self.fraudMerchantId ?: [configuration kountMerchantId];
@@ -86,21 +86,23 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
         
         NSError *error;
         NSData *data = [NSJSONSerialization dataWithJSONObject:dataDictionary options:0 error:&error];
+        // Defensive check: JSON serialization should never fail
         if (!data) {
             NSLog(@"ERROR: Failed to create deviceData string, error = %@", error);
             if (callback) {
                 callback(@"");
             }
         }
+        NSString *deviceData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
         // If only PayPal fraud is being collected, immediately inform the delegate that collection has
-        // finished, since Dyson does not allow us to know when it has officially finished collection.
+        // finished, since Magnes does not allow us to know when it has officially finished collection.
         if (!includeCard && includePayPal) {
             [self onCollectorSuccess];
         }
         
         if (callback) {
-            callback([[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+            callback(deviceData);
         }
     }];
 }
@@ -156,7 +158,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
-- (void)setCollectorUrl:(NSString *)url{
+- (void)setCollectorUrl:(NSString *)url {
     [self.kount setCollectorUrl:url];
 }
 
@@ -243,7 +245,7 @@ static Class PayPalDataCollectorClass;
 /// @param errorCode Error code
 /// @param error Triggering error if available
 - (void)onCollectorError:(int)errorCode
-               withError:(NSError*)error {
+               withError:(NSError *)error {
     if (error == nil) {
         error = [NSError errorWithDomain:BTDataCollectorKountErrorDomain
                                     code:errorCode
