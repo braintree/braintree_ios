@@ -55,15 +55,15 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     return [BTDataCollector generatePayPalClientMetadataId];
 }
 
-- (void)collectCardFraudDataWithCallback:(BTDataCollectorCallback)callback {
-    [self collectFraudDataForCard:YES forPayPal:NO withCallback:callback];
+- (void)collectCardFraudData:(void (^)(NSString * _Nonnull))completion {
+    [self collectFraudDataForCard:YES forPayPal:NO withCallback:completion];
 }
 
-- (void)collectFraudDataWithCallback:(BTDataCollectorCallback)callback {
-    [self collectFraudDataForCard:YES forPayPal:YES withCallback:callback];
+- (void)collectFraudData:(void (^)(NSString * _Nonnull))completion {
+    [self collectFraudDataForCard:YES forPayPal:YES withCallback:completion];
 }
 
-- (void)collectFraudDataForCard:(BOOL)includeCard forPayPal:(BOOL)includePayPal withCallback:(BTDataCollectorCallback)callback {
+- (void)collectFraudDataForCard:(BOOL)includeCard forPayPal:(BOOL)includePayPal withCallback:(void (^)(NSString *deviceData))callback {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable __unused _) {
         NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
         if (configuration.isKountEnabled && includeCard) {

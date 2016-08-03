@@ -65,11 +65,11 @@ class BTDataCollector_Tests: XCTestCase {
         let dataCollector = BTDataCollector(APIClient: apiClient)
         let expectation = expectationWithDescription("Returns fraud data")
         
-        dataCollector.collectCardFraudDataWithCallback({ (fraudData: String) in
+        dataCollector.collectCardFraudData { (fraudData: String) in
             let json = BTJSON(data: fraudData.dataUsingEncoding(NSUTF8StringEncoding)!)
             XCTAssertNil(json["correlation_id"] as? String)
             expectation.fulfill()
-        })
+        }
         
         waitForExpectationsWithTimeout(2, handler: nil)
     }
@@ -87,7 +87,7 @@ class BTDataCollector_Tests: XCTestCase {
         dataCollector.setFraudMerchantId("500001")
         let expectation = expectationWithDescription("Returns fraud data")
         
-        dataCollector.collectFraudDataWithCallback { (fraudData: String) in
+        dataCollector.collectFraudData { (fraudData: String) in
             let json = BTJSON(data: fraudData.dataUsingEncoding(NSUTF8StringEncoding)!)
             XCTAssertEqual(json["fraud_merchant_id"].asString(), "500001")
             XCTAssert(json["device_session_id"].asString()?.characters.count >= 32)
@@ -98,18 +98,18 @@ class BTDataCollector_Tests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
-    func testCollectFraudDataWithCallback() {
+    func testCollectFraudDataWithCompletionBlock_whenMerchantHasKountConfiguration_usesConfiguration() {
         let apiClient = clientThatReturnsConfiguration([
-            "environment":"development",
+            "environment": "development",
             "kount": [
                 "enabled": true,
                 "kountMerchantId": "500000"
             ]
         ])
-        
         let dataCollector = BTDataCollector(APIClient: apiClient)
+
         let expectation = expectationWithDescription("Returns fraud data")
-        dataCollector.collectFraudDataWithCallback { (fraudData: String) in
+        dataCollector.collectFraudData { fraudData in
             let json = BTJSON(data: fraudData.dataUsingEncoding(NSUTF8StringEncoding)!)
             XCTAssertEqual(json["fraud_merchant_id"].asString(), "500000")
             XCTAssert(json["device_session_id"].asString()!.characters.count >= 32)
@@ -119,7 +119,7 @@ class BTDataCollector_Tests: XCTestCase {
         
         waitForExpectationsWithTimeout(2, handler: nil)
     }
-    
+
     func testCollectFraudData_doesNotCollectKountDataIfDisabledInConfiguration() {
         let apiClient = clientThatReturnsConfiguration([
             "environment":"development"
@@ -127,7 +127,7 @@ class BTDataCollector_Tests: XCTestCase {
         
         let dataCollector = BTDataCollector(APIClient: apiClient)
         let expectation = expectationWithDescription("Returns fraud data")
-        dataCollector.collectFraudDataWithCallback { (fraudData: String) in
+        dataCollector.collectFraudData { fraudData in
             let json = BTJSON(data: fraudData.dataUsingEncoding(NSUTF8StringEncoding)!)
             XCTAssertNil(json["fraud_merchant_id"] as? String)
             XCTAssertNil(json["device_session_id"] as? String)
@@ -141,8 +141,8 @@ class BTDataCollector_Tests: XCTestCase {
 
 func clientThatReturnsConfiguration(configuration: [String:AnyObject]) -> BTAPIClient {
     let apiClient = BTAPIClient(authorization: "development_tokenization_key", sendAnalyticsEvent: false)!
-    let fakeHttp = BTFakeHTTP(baseURL: NSURL(), tokenizationKey: "");
-    let cannedConfig = BTJSON(value: configuration);
+    let fakeHttp = BTFakeHTTP()!
+    let cannedConfig = BTJSON(value: configuration)
     fakeHttp.cannedConfiguration = cannedConfig
     fakeHttp.cannedStatusCode = 200
     apiClient.configurationHTTP = fakeHttp

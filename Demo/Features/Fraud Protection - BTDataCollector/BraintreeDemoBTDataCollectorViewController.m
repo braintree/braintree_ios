@@ -72,15 +72,15 @@
 
 - (IBAction)tappedCollect
 {    self.progressBlock(@"Started collecting all data...");
-    [self.dataCollector collectFraudDataWithCallback:^(NSString * _Nonnull fraudId) {
-        self.dataLabel.text = fraudId;
+    [self.dataCollector collectFraudData:^(NSString * _Nonnull deviceData) {
+        self.dataLabel.text = deviceData;
     }];
 }
 
 - (IBAction)tappedCollectKount {
     self.progressBlock(@"Started collecting Kount data...");
-    [self.dataCollector collectCardFraudDataWithCallback:^(NSString * _Nonnull fraudId) {
-        self.dataLabel.text = fraudId;
+    [self.dataCollector collectCardFraudData:^(NSString * _Nonnull deviceData) {
+        self.dataLabel.text = deviceData;
     }];
 }
 
