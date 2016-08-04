@@ -231,16 +231,6 @@ static BTVenmoDriver *appSwitchedDriver;
 
 - (BOOL)verifyAppSwitchWithConfiguration:(BTConfiguration *)configuration error:(NSError * __autoreleasing *)error {
     
-    if (![BTConfiguration isBetaEnabledPaymentOption:@"venmo"]) {
-        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.beta-not-enabled"];
-        if (error) {
-            *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
-                                         code:BTVenmoDriverErrorTypeDisabled
-                                     userInfo:@{ NSLocalizedDescriptionKey:@"The Venmo beta override has not been enabled. See [BTConfiguration setVenmoBetaEnabled:] for more information." }];
-        }
-        return NO;
-    }
-    
     if (!configuration.isVenmoEnabled) {
         [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.disabled"];
         if (error) {

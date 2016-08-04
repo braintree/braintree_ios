@@ -177,7 +177,7 @@
             if ([[BTTokenizationService sharedService] isTypeAvailable:@"Venmo"] && venmoAccessToken.isString) {
                 NSURLComponents *components = [NSURLComponents componentsWithString:@"com.venmo.touch.v2://x-callback-url/vzero/auth"];
                 BOOL isVenmoAppInstalled = [[UIApplication sharedApplication] canOpenURL:components.URL];
-                if (([BTConfiguration isBetaEnabledPaymentOption:@"venmo"] && isVenmoAppInstalled)) {
+                if (isVenmoAppInstalled) {
                     [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeVenmo)];
                 }
             }

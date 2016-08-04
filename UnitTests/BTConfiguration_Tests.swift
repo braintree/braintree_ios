@@ -17,24 +17,8 @@ class BTConfiguration_Tests: XCTestCase {
     }
 
     // MARK: - Beta enabled payment option
-
-    func testIsBetaEnabledPaymentOption_byDefault_returnsFalse() {
-        XCTAssertFalse(BTConfiguration.isBetaEnabledPaymentOption("Doesn'tExist"))
-    }
-
-    func testIsBetaEnabledPaymentOption_whenBetaSetToTrue_returnsTrue() {
-        BTConfiguration.setBetaPaymentOption("venmo", isEnabled: true)
-        XCTAssertTrue(BTConfiguration.isBetaEnabledPaymentOption("venmo"))
-    }
-
-    func testIsBetaEnabledPaymentOption_whenBetaSetToFalse_returnsFalse() {
-        BTConfiguration.setBetaPaymentOption("venmo", isEnabled: false)
-        XCTAssertFalse(BTConfiguration.isBetaEnabledPaymentOption("venmo"))
-    }
-
-    func testIsBetaEnabledPaymentOption_whenToggled_returnsCorrectValue() {
-        BTConfiguration.setBetaPaymentOption("venmo", isEnabled: true)
-        BTConfiguration.setBetaPaymentOption("venmo", isEnabled: false)
+    
+    func testIsBetaEnabledPaymentOption_returnsFalse() {
         XCTAssertFalse(BTConfiguration.isBetaEnabledPaymentOption("venmo"))
     }
 
@@ -45,24 +29,13 @@ class BTConfiguration_Tests: XCTestCase {
             "payWithVenmo": [ "accessToken": "some access token" ]
             ])
         let configuration = BTConfiguration(JSON: configurationJSON)
-        BTConfiguration.setBetaPaymentOption("venmo", isEnabled: true)
-
+        
         XCTAssertTrue(configuration.isVenmoEnabled)
     }
 
     func testIsVenmoEnabled_whenBetaVenmoIsEnabledAndAccessTokenNotPresent_returnsFalse() {
         let configurationJSON = BTJSON(value: [
             "payWithVenmo": []
-            ])
-        let configuration = BTConfiguration(JSON: configurationJSON)
-        BTConfiguration.setBetaPaymentOption("venmo", isEnabled: true)
-
-        XCTAssertFalse(configuration.isVenmoEnabled)
-    }
-
-    func testIsVenmoEnabled_whenBetaVenmoIsNotEnabled_returnsFalse() {
-        let configurationJSON = BTJSON(value: [
-            "payWithVenmo": [ "accessToken": "some access token" ]
             ])
         let configuration = BTConfiguration(JSON: configurationJSON)
 
@@ -76,11 +49,6 @@ class BTConfiguration_Tests: XCTestCase {
         let configuration = BTConfiguration(JSON: configurationJSON)
 
         XCTAssertEqual(configuration.venmoAccessToken, "some access token")
-    }
-
-    func testEnableVenmo_whenEnabled_setsVenmoBetaPaymentOptionToTrue() {
-        BTConfiguration.enableVenmo(true)
-        XCTAssertTrue(BTConfiguration.isBetaEnabledPaymentOption("venmo"))
     }
 
     func testEnableVenmo_whenDisabled_setsVenmoBetaPaymentOptionToFalse() {

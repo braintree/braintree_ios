@@ -248,7 +248,7 @@ NSString *BTPaymentButtonPaymentButtonCellIdentifier = @"BTPaymentButtonPaymentB
         NSURLComponents *components = [NSURLComponents componentsWithString:@"com.venmo.touch.v2://x-callback-url/vzero/auth"];
 
         BOOL isVenmoAppInstalled = [[self application] canOpenURL:components.URL];
-        return venmoAccessToken.isString && [BTConfiguration isBetaEnabledPaymentOption:@"venmo"] && isVenmoAppInstalled;
+        return venmoAccessToken.isString && isVenmoAppInstalled;
     }
     // Payment option is available in the tokenization service, but BTPaymentButton does not know how
     // to check Configuration for whether it is enabled. Default to YES.

@@ -121,8 +121,6 @@
             }
         }
     }];
-
-    [BTConfiguration enableVenmo:YES];
 }
 
 - (void) setupApplePay {
