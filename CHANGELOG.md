@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 4.4.2 (2016-08-05)
+
+* Update `DataCollector` API
+  * Add initializer and new data collection methods that take a completion block
+    * New data collection methods use Braintree gateway configuration to configure Kount
+  * Previous API for `BTDataCollector` has been deprecated
+* Remove Venmo user whitelist – all Venmo users may now make merchant purchases using Venmo.
+
 ## 4.4.1 (2016-07-22)
 
 * Update and fix issues in `BraintreeDropIn` based on feedback
