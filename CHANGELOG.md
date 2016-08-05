@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## 4.4.2 (2016-08-05)
+## 4.5.0 (2016-08-05)
 
 * Update `DataCollector` API
   * Add initializer and new data collection methods that take a completion block
