@@ -11,14 +11,13 @@
 
 - (void)setUp {
     [super setUp];
-    
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     self.dataCollector = [[BTDataCollector alloc] initWithEnvironment:BTDataCollectorEnvironmentSandbox];
 }
 
 #pragma mark - collectFraudData:
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 - (void)testCollectFraudData_returnsFraudData {
     id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
@@ -31,6 +30,49 @@
     NSString *deviceData = [self.dataCollector collectFraudData];
     
     XCTAssertTrue([deviceData containsString:@"correlation_id"]);
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+}
+
+// Test is failing because sandbox test merchant is configured with a Kount merchant ID that causes Kount to error.
+- (void)pendCollectFraudDataWithCallback_returnsFraudData {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+    self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:apiClient];
+    id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
+    self.dataCollector.delegate = delegate;
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate received completion callback"];
+    OCMStub([delegate dataCollectorDidComplete:self.dataCollector]).andDo(^(__unused NSInvocation *invocation) {
+        [expectation fulfill];
+    });
+
+    XCTestExpectation *callbackExpectation = [self expectationWithDescription:@"Callback invoked"];
+    [self.dataCollector collectFraudData:^(NSString * _Nonnull deviceData) {
+        XCTAssertTrue([deviceData containsString:@"correlation_id"]);
+        [callbackExpectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:10 handler:nil];
+}
+
+// Test is failing because sandbox test merchant is configured with a Kount merchant ID that causes Kount to error.
+- (void)pendCollectCardFraudDataWithCallback_returnsFraudDataWithNoPayPalFraudData {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_TOKENIZATION_KEY];
+    self.dataCollector = [[BTDataCollector alloc] initWithAPIClient:apiClient];
+
+    id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
+    self.dataCollector.delegate = delegate;
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Delegate received completion callback"];
+    OCMStub([delegate dataCollectorDidComplete:self.dataCollector]).andDo(^(__unused NSInvocation *invocation) {
+        [expectation fulfill];
+    });
+
+    XCTestExpectation *callbackExpectation = [self expectationWithDescription:@"Callback invoked"];
+    [self.dataCollector collectCardFraudData:^(NSString * _Nonnull deviceData) {
+        XCTAssertNotNil(deviceData);
+        XCTAssertFalse([deviceData containsString:@"correlation_id"]);
+        [callbackExpectation fulfill];
+    }];
+    
+
     [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
