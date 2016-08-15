@@ -14,7 +14,9 @@
 
 #define BT_ANIMATION_SLIDE_SPEED 0.35
 #define BT_ANIMATION_TRANSITION_SPEED 0.1
-#define BT_HALF_SHEET_HEIGHT 410
+#define BT_HALF_SHEET_HEIGHT 470
+#define BT_HALF_SHEET_MARGIN 5
+#define BT_HALF_SHEET_CORNER_RADIUS 12
 
 @interface BTDropInController ()
 
@@ -23,15 +25,11 @@
 @property (nonatomic, strong) UIToolbar *btToolbar;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIView *contentClippingView;
-@property (nonatomic, strong) BTVaultManagementViewController *vaultManagementViewController;
 @property (nonatomic, strong) BTPaymentSelectionViewController *paymentSelectionViewController;
-@property (nonatomic, strong) BTCardFormViewController *cardFormViewController;
 @property (nonatomic, strong) NSLayoutConstraint *contentHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *contentHeightConstraintBottom;
-@property (nonatomic) BOOL isFullScreen;
-@property (nonatomic) BOOL wantsFullScreen;
 @property (nonatomic) BOOL useBlur;
-@property (nonatomic, strong) UIVisualEffectView *blurredBackgroundView;
+@property (nonatomic, strong) UIVisualEffectView *blurredContentBackgroundView;
 @property (nonatomic, copy, nullable) BTDropInControllerHandler handler;
 
 @end
@@ -106,18 +104,13 @@
     [super viewWillAppear:animated];
     
     if (self.isBeingPresented) {
-        [self.paymentSelectionViewController showLoadingScreen:YES animated:NO];
         [self.paymentSelectionViewController loadConfiguration];
-        
-        [self.cardFormViewController resetForm];
-        [self.cardFormViewController showLoadingScreen:YES animated:NO];
-        [self.cardFormViewController loadConfiguration];
         
         [self resetDropInState];
         [self loadConfiguration];
         if ([self isFormSheet]) {
             // Position the views in screen before appearing
-            [self flexViewToFullScreenIfPossible:true animated:NO];
+            [self flexViewAnimated:NO];
         } else {
             // Move content off screen so it can be animated in when it appears
             CGFloat sh = CGRectGetHeight([[UIScreen mainScreen] bounds]) + [UIApplication sharedApplication].statusBarFrame.size.height;
@@ -125,9 +118,10 @@
             self.contentHeightConstraint.constant = sh;
             [self.view setNeedsUpdateConstraints];
             [self.view layoutIfNeeded];
+            [self flexViewAnimated:YES];
         }
     } else {
-        [self flexViewToFullScreenIfPossible:self.wantsFullScreen animated:NO];
+        [self flexViewAnimated:NO];
         [self.view setNeedsDisplay];
     }
     [self.apiClient sendAnalyticsEvent:@"ios.dropin2.appear"];
@@ -135,10 +129,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    if (![self isFormSheet] && self.isBeingPresented) {
-        [self flexViewToFullScreenIfPossible:false animated:YES];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -153,7 +143,7 @@
     [coordinator animateAlongsideTransition:^(__unused id<UIViewControllerTransitionCoordinatorContext> context) {
         // while rotating
         if (self.view.window != nil && !self.isBeingDismissed) {
-            [self flexViewToFullScreenIfPossible:self.wantsFullScreen animated:NO];
+            [self flexViewAnimated:NO];
             [self.view setNeedsDisplay];
             [self.view setNeedsLayout];
         }
@@ -170,56 +160,51 @@
         self.view.tintColor = [BTUIKAppearance sharedInstance].tintColor;
     }
     self.view.opaque = NO;
-    self.view.backgroundColor = self.useBlur ? [UIColor clearColor] : [BTUIKAppearance sharedInstance].overlayColor;
+    self.view.backgroundColor = [BTUIKAppearance sharedInstance].overlayColor;
     self.view.userInteractionEnabled = YES;
     
-    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:[BTUIKAppearance sharedInstance].blurStyle];
-    self.blurredBackgroundView = [[UIVisualEffectView alloc] initWithEffect:effect];
-    self.blurredBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
-    if (self.useBlur) {
-        [self.view addSubview:self.blurredBackgroundView];
-    }
     
     self.contentView = [[UIView alloc] init];
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.contentView.backgroundColor = [UIColor clearColor];
-    if (self.useBlur) {
-        [self.blurredBackgroundView.contentView addSubview: self.contentView];
-    } else {
-        [self.view addSubview: self.contentView];
-    }
+    self.contentView.backgroundColor = self.useBlur ? [UIColor clearColor] : [BTUIKAppearance sharedInstance].formBackgroundColor;
+    self.contentView.layer.cornerRadius = BT_HALF_SHEET_CORNER_RADIUS;
+    self.contentView.clipsToBounds = true;
+
+    [self.view addSubview: self.contentView];
     
     self.contentClippingView = [[UIView alloc] init];
     self.contentClippingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview: self.contentClippingView];
-    self.contentClippingView.backgroundColor = [BTUIKAppearance sharedInstance].sheetBackgroundColor;
+    self.contentClippingView.backgroundColor = [UIColor clearColor];
     self.contentClippingView.clipsToBounds = true;
     
     self.btToolbar = [[UIToolbar alloc] init];
     self.btToolbar.delegate = self;
     self.btToolbar.userInteractionEnabled = YES;
     self.btToolbar.barStyle = UIBarStyleDefault;
-    self.btToolbar.barTintColor = [BTUIKAppearance sharedInstance].barBackgroundColor;
+    self.btToolbar.translucent = YES;
+    self.btToolbar.backgroundColor = [UIColor clearColor];
+    [self.btToolbar setBackgroundImage:[UIImage new] forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    self.btToolbar.barTintColor = [UIColor clearColor];
     self.btToolbar.translatesAutoresizingMaskIntoConstraints = false;
     [self.contentView addSubview:self.btToolbar];
+    
+    UIBlurEffect *contentEffect = [UIBlurEffect effectWithStyle:[BTUIKAppearance sharedInstance].blurStyle];
+    self.blurredContentBackgroundView = [[UIVisualEffectView alloc] initWithEffect:contentEffect];
+    self.blurredContentBackgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.blurredContentBackgroundView.hidden = !self.useBlur;
+    [self.contentView addSubview:self.blurredContentBackgroundView];
+    [self.contentView sendSubviewToBack:self.blurredContentBackgroundView];
+    
 }
 
 - (void)setUpChildViewControllers {
-    self.vaultManagementViewController = [[BTVaultManagementViewController alloc] initWithAPIClient:self.apiClient request:self.dropInRequest];
-    [self.contentClippingView addSubview:self.vaultManagementViewController.view];
-    self.vaultManagementViewController.view.hidden = YES;
-    
     self.paymentSelectionViewController = [[BTPaymentSelectionViewController alloc] initWithAPIClient:self.apiClient request:self.dropInRequest];
     self.paymentSelectionViewController.delegate = self;
     [self.contentClippingView addSubview:self.paymentSelectionViewController.view];
     self.paymentSelectionViewController.view.hidden = YES;
     self.paymentSelectionViewController.navigationItem.leftBarButtonItem.target = self;
     self.paymentSelectionViewController.navigationItem.leftBarButtonItem.action = @selector(cancelHit:);
-    
-    self.cardFormViewController = [[BTCardFormViewController alloc] initWithAPIClient:self.apiClient request:self.dropInRequest];
-    self.cardFormViewController.delegate = self;
-    [self.contentClippingView addSubview:self.cardFormViewController.view];
-    self.cardFormViewController.view.hidden = YES;
 }
 
 - (void)setUpConstraints {
@@ -227,26 +212,13 @@
                                    @"view": self,
                                    @"toolbar": self.btToolbar,
                                    @"contentView": self.contentView,
-                                   @"vaultManagementViewController":self.vaultManagementViewController.view,
                                    @"contentClippingView":self.contentClippingView,
-                                   @"paymentSelectionViewController":self.paymentSelectionViewController.view,
-                                   @"cardFormViewController":self.cardFormViewController.view,
-                                   @"blurredBackgroundView":self.blurredBackgroundView
+                                   @"paymentSelectionViewController":self.paymentSelectionViewController.view
                                    };
-    NSDictionary *metrics = @{};
     
-    if (self.useBlur) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[blurredBackgroundView]|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:viewBindings]];
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[blurredBackgroundView]|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:viewBindings]];
-    }
+    NSDictionary *metrics = @{@"BT_HALF_SHEET_MARGIN":@([self sheetInset])};
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[contentView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(BT_HALF_SHEET_MARGIN)-[contentView]-(BT_HALF_SHEET_MARGIN)-|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:viewBindings]];
@@ -258,17 +230,8 @@
     self.contentHeightConstraintBottom = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
     [self.view addConstraint:self.contentHeightConstraintBottom];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[vaultManagementViewController]|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:viewBindings]];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[paymentSelectionViewController]|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:viewBindings]];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[cardFormViewController]|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:viewBindings]];
@@ -278,36 +241,33 @@
                                                                       metrics:metrics
                                                                         views:viewBindings]];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[vaultManagementViewController]|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:viewBindings]];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[cardFormViewController]|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:viewBindings]];
+    [self.blurredContentBackgroundView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor].active = YES;
+    [self.blurredContentBackgroundView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor].active = YES;
+    [self.blurredContentBackgroundView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor].active = YES;
+    [self.blurredContentBackgroundView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor].active = YES;
     
     [self applyContentViewConstraints];
 }
 
 - (void)loadConfiguration {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
-        self.configuration = configuration;
-        if (!error) {
-            self.paymentSelectionViewController.view.hidden = NO;
-            self.paymentSelectionViewController.view.alpha = 1.0;
-            [self updateToolbarForViewController:self.paymentSelectionViewController];
-        } else {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:error.localizedDescription ?: @"Connection Error" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * __unused _Nonnull action) {
-                if (self.handler) {
-                    self.handler(self, nil, error);
-                }
-            }];
-            [alertController addAction: alertAction];
-            [self presentViewController:alertController animated:YES completion:nil];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.configuration = configuration;
+            if (!error) {
+                self.paymentSelectionViewController.view.hidden = NO;
+                self.paymentSelectionViewController.view.alpha = 1.0;
+                [self updateToolbarForViewController:self.paymentSelectionViewController];
+            } else {
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:error.localizedDescription ?: @"Connection Error" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * __unused _Nonnull action) {
+                    if (self.handler) {
+                        self.handler(self, nil, error);
+                    }
+                }];
+                [alertController addAction: alertAction];
+                [self presentViewController:alertController animated:YES completion:nil];
+            }
+        });
     }];
 }
 
@@ -321,7 +281,7 @@
     }
 }
 
-- (void)completeTokenizeCard:(BTPaymentMethodNonce *)tokenizedCard error:(NSError *)error {
+- (void)cardTokenizationCompleted:(BTPaymentMethodNonce *)tokenizedCard error:(NSError *)error sender:(BTCardFormViewController *)sender {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.handler) {
             BTDropInResult *result = [[BTDropInResult alloc] init];
@@ -329,141 +289,16 @@
                 result.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:tokenizedCard.type];
                 result.paymentMethod = tokenizedCard;
             }
-            self.handler(self, result, error);
+            [sender dismissViewControllerAnimated:YES completion:^{
+                self.handler(self, result, error);
+            }];
         }
     });
 }
 
-- (void)tokenizeCard:(__unused id)sender {
-    [self.view endEditing:YES];
-    __block BTCardRequest *cardRequest = self.cardFormViewController.cardRequest;
-    __block BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
-    
-    void (^basicTokenizeBlock)() = ^void() {
-        UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];
-        spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-        [spinner startAnimating];
-        
-        NSArray *originalToolbarItems = self.btToolbar.items;
-        NSMutableArray *newToolbarItems = [self.btToolbar.items mutableCopy];
-        [newToolbarItems removeLastObject];
-        [newToolbarItems addObject:[[UIBarButtonItem alloc] initWithCustomView:spinner]];
-        [self.btToolbar setItems:newToolbarItems animated:NO];
-        self.view.userInteractionEnabled = NO;
-        
-        [cardClient tokenizeCard:cardRequest options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.view.userInteractionEnabled = YES;
-                [self.btToolbar setItems:originalToolbarItems animated:NO];
-
-                if (self.dropInRequest.threeDSecureVerification && self.dropInRequest.amount != nil
-                    && [self.configuration.json[@"threeDSecureEnabled"] isTrue] && [[BTTokenizationService sharedService] isTypeAvailable:@"ThreeDSecure"]) {
-
-                    NSMutableDictionary *options = [[NSMutableDictionary alloc] init];
-                    options[BTTokenizationServiceViewPresentingDelegateOption] = self;
-                    options[BTTokenizationServiceAmountOption] = [[NSDecimalNumber alloc] initWithString:self.dropInRequest.amount];
-                    options[BTTokenizationServiceNonceOption] = tokenizedCard.nonce;
-
-                    [[BTTokenizationService sharedService] tokenizeType:@"ThreeDSecure" options:options withAPIClient:self.apiClient completion:^(BTPaymentMethodNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-                        [self completeTokenizeCard:tokenizedCard error:error];
-                    }];
-
-                } else {
-                    [self completeTokenizeCard:tokenizedCard error:error];
-                }
-            });
-        }];
-    };
-    
-    if (self.cardFormViewController.cardCapabilities != nil && self.cardFormViewController.cardCapabilities.isUnionPay && self.cardFormViewController.cardCapabilities.isSupported) {
-        [cardClient enrollCard:cardRequest completion:^(NSString * _Nullable enrollmentID, BOOL smsCodeRequired, NSError * _Nullable error) {
-            if (error) {
-                self.handler(self, nil, error);
-                return;
-            }
-            
-            cardRequest.enrollmentID = enrollmentID;
-            
-            if (!smsCodeRequired) {
-                basicTokenizeBlock();
-                return;
-            }
-
-            __block UINavigationController *navController;
-            __block BTEnrollmentVerificationViewController *enrollmentController;
-            enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.cardFormViewController.mobilePhoneField.mobileNumber mobileCountryCode:self.cardFormViewController.mobileCountryCodeField.countryCode handler:^(NSString* authCode, BOOL resend) {
-                
-                if (resend) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // If user elects to resend, show a prompt asking them to verify the card form information and try again
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Resend SMS" message:@"Double check your mobile information and try again." preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
-                            [navController dismissViewControllerAnimated:NO completion:nil];
-                        }];
-                        [alertController addAction: alertAction];
-                        [navController presentViewController:alertController animated:YES completion:nil];
-                    });
-                    return;
-                }
-                
-                __block UIBarButtonItem *originalRightBarButtonItem = enrollmentController.navigationItem.rightBarButtonItem;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];
-                    spinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-                    [spinner startAnimating];
-
-                    enrollmentController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
-                    self.view.userInteractionEnabled = NO;
-                });
-
-                cardRequest.smsCode = authCode;
-                [cardClient tokenizeCard:cardRequest options:nil completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        self.view.userInteractionEnabled = YES;
-                        enrollmentController.navigationItem.rightBarButtonItem = originalRightBarButtonItem;
-                        if (self.handler) {
-                            if (error) {
-                                // When tokenization fails for UnionPay, Drop-In will not report the error back but will instead display an alert
-                                // And return to the card form
-                                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Error Validating" message:@"Unable to verify card. Double check your information and try again." preferredStyle:UIAlertControllerStyleAlert];
-                                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
-                                    [navController dismissViewControllerAnimated:NO completion:nil];
-                                }];
-                                [alertController addAction: alertAction];
-                                [navController presentViewController:alertController animated:YES completion:nil];
-                                return;
-                            }
-
-                            [navController dismissViewControllerAnimated:NO completion:^{
-                                [self completeTokenizeCard:tokenizedCard error:error];
-                            }];
-                        }
-                    });
-                }];
-            }];
-
-            navController = [[UINavigationController alloc] initWithRootViewController:enrollmentController];
-            navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self presentViewController:navController animated:YES completion:^{
-                    BTJSON *environment = self.configuration.json[@"environment"];
-                    if(![environment isError] && [[environment asString] isEqualToString:@"sandbox"]) {
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Sandbox Sample SMS Code" message:@"Any code passes, example: 12345 \n\nTest incorrect code is: 999999" preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                        [alertController addAction: alertAction];
-                        [navController presentViewController:alertController animated:YES completion:nil];
-                    }
-                }];
-            });
-        }];
-        return;
-    }
-    basicTokenizeBlock();
-}
-
 - (void)updateToolbarForViewController:(UIViewController*)viewController {
     UILabel *titleLabel = [[UILabel alloc] init];
-    [BTUIKAppearance styleLabelPrimary:titleLabel];
+    [BTUIKAppearance styleLabelBoldPrimary:titleLabel];
     titleLabel.text = viewController.title ? viewController.title : @"";
     titleLabel.textAlignment = NSTextAlignmentCenter;
     [titleLabel sizeToFit];
@@ -476,66 +311,28 @@
 }
 
 - (void)showCardForm:(__unused id)sender {
-    [self animateToViewController:self.cardFormViewController animateForward:false];
-    [self updateToolbarForViewController:self.cardFormViewController];
-}
-
-- (void)showPaymentSelection:(__unused id)sender {
-    [self animateToViewController:self.paymentSelectionViewController animateForward:true];
-    [self updateToolbarForViewController:self.paymentSelectionViewController];
-}
-
-- (void)showVaultManagement:(__unused id)sender {
-    [self animateToViewController:self.vaultManagementViewController animateForward:false];
-    [self updateToolbarForViewController:self.vaultManagementViewController];
-}
-
-- (void)animateToViewController:(UIViewController*)destinationViewController animateForward:(__unused BOOL)animateForward {
-    if (!destinationViewController.view.hidden) {
-        return;
+    BTCardFormViewController* vd = [[BTCardFormViewController alloc] initWithAPIClient:self.apiClient request:self.dropInRequest];
+    vd.delegate = self;
+      UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:vd];
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        navController.modalPresentationStyle = UIModalPresentationPageSheet;
     }
-    
-    UIView *viewToHide = [self visibleViewController].view;
-    [viewToHide endEditing:YES];
-    UIView *viewToReveal = destinationViewController.view;
-    viewToReveal.hidden = NO;
-    viewToReveal.alpha = 0.0;
-    
-    [UIView animateWithDuration:BT_ANIMATION_TRANSITION_SPEED
-                          delay:0
-                        options:(UIViewAnimationOptionCurveLinear | UIViewAnimationOptionAllowUserInteraction)
-                     animations:^{
-                         viewToReveal.alpha = 1.0;
-                         viewToHide.alpha = 0.0;
-                     }
-                     completion:^(BOOL finished) {
-                         if (finished) {
-                             viewToHide.hidden = YES;
-                         }
-                     }
-     ];
-    
-    [self flexViewToFullScreenIfPossible:(destinationViewController == self.vaultManagementViewController || destinationViewController == self.cardFormViewController) animated:true];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - UI Helpers
 
-- (UIViewController *)visibleViewController {
-    if (!self.paymentSelectionViewController.view.hidden) {
-        return self.paymentSelectionViewController;
-    } else if (!self.vaultManagementViewController.view.hidden) {
-        return self.vaultManagementViewController;
-    } else {
-        return self.cardFormViewController;
-    }
+- (float)sheetInset {
+    return [self isFormSheet] ? 0 : BT_HALF_SHEET_MARGIN;
 }
 
-- (void)flexViewToFullScreenIfPossible:(BOOL)fullscreen animated:(BOOL)animated{
-    self.wantsFullScreen = fullscreen;
-    self.isFullScreen = [self supportsHalfSheet] && ![self isFormSheet] ? fullscreen : true;
+- (BOOL)isFullScreen {
+    return ![self supportsHalfSheet] || [self isFormSheet] ;
+}
+
+- (void)flexViewAnimated:(BOOL)animated{
     [self.btToolbar removeFromSuperview];
     [self.contentView addSubview:self.btToolbar];
-    
     
     if ([self isFormSheet]) {
         // iPad formSheet
@@ -545,14 +342,14 @@
         int statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
         int sh = [[UIScreen mainScreen] bounds].size.height;
         int sheetHeight = BT_HALF_SHEET_HEIGHT;
-        self.contentHeightConstraint.constant = self.isFullScreen ? statusBarHeight : (sh - sheetHeight);
+        self.contentHeightConstraint.constant = self.isFullScreen ? statusBarHeight + [self sheetInset] : (sh - sheetHeight - [self sheetInset]);
     }
     
     [self applyContentViewConstraints];
     
     [self.view setNeedsUpdateConstraints];
 
-    self.contentHeightConstraintBottom.constant = 0;
+    self.contentHeightConstraintBottom.constant = -[self sheetInset];
 
     if (animated) {
         [UIView animateWithDuration:BT_ANIMATION_SLIDE_SPEED delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:4 options:0 animations:^{
@@ -602,16 +399,8 @@
 
 - (void)resetDropInState {
     self.configuration = nil;
-    self.vaultManagementViewController.view.hidden = YES;
-    self.vaultManagementViewController.view.alpha = 1.0;
-    self.cardFormViewController.view.hidden = YES;
-    self.cardFormViewController.view.alpha = 1.0;
     self.paymentSelectionViewController.view.hidden = NO;
     self.paymentSelectionViewController.view.alpha = 1.0;
-    self.cardFormViewController.navigationItem.leftBarButtonItem.target = self;
-    self.cardFormViewController.navigationItem.leftBarButtonItem.action = @selector(showPaymentSelection:);
-    self.cardFormViewController.navigationItem.rightBarButtonItem.target = self;
-    self.cardFormViewController.navigationItem.rightBarButtonItem.action = @selector(tokenizeCard:);
 }
 
 // No fullscreen when in landscape or FormSheet modes.

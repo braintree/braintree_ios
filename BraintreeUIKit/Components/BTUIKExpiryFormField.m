@@ -29,8 +29,6 @@
         // Use custom date picker, but fall back to number pad keyboard if inputView is set to nil
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         self.textField.inputView = self.expiryInputView;
-        
-        self.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.textField];
     }
     return self;
 }

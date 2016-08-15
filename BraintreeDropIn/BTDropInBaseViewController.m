@@ -1,5 +1,6 @@
 #import "BTDropInBaseViewController.h"
 #import "BTAPIClient_Internal.h"
+#import "BTUIKAppearance.h"
 
 @interface BTDropInBaseViewController ()
 
@@ -23,7 +24,7 @@
     [super viewDidLoad];
 
     self.activityIndicatorWrapperView = [[UIView alloc] init];
-    self.activityIndicatorWrapperView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.activityIndicatorWrapperView.backgroundColor = [UIColor clearColor];
     self.activityIndicatorWrapperView.hidden = YES;
     [self.view addSubview:self.activityIndicatorWrapperView];
     self.activityIndicatorWrapperView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -33,7 +34,7 @@
 
     self.activityIndicatorView = [UIActivityIndicatorView new];
     self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.activityIndicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    self.activityIndicatorView.activityIndicatorViewStyle = [BTUIKAppearance sharedInstance].activityIndicatorViewStyle;
     [self.activityIndicatorView startAnimating];
     [self.activityIndicatorWrapperView addSubview:self.activityIndicatorView];
     [self.activityIndicatorView.centerXAnchor constraintEqualToAnchor:self.activityIndicatorWrapperView.centerXAnchor].active = YES;

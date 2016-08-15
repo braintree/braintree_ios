@@ -1,5 +1,5 @@
 #import "BTUIKCardNumberFormField.h"
-#import "BTUIKCardHint.h"
+#import "BTUIKPaymentOptionCardView.h"
 #import "BTUIKLocalizedString.h"
 #import "BTUIKUtil.h"
 #import "BTUIKTextField.h"
@@ -10,7 +10,7 @@
 #define TEMP_KERNING 8.0
 
 @interface BTUIKCardNumberFormField ()
-@property (nonatomic, strong) BTUIKCardHint *hint;
+@property (nonatomic, strong) BTUIKPaymentOptionCardView *hint;
 @property (nonatomic, strong) UIButton *validateButton;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingView;
 
@@ -29,19 +29,21 @@
         self.formLabel.text = @"";
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
         
-        self.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.textField];
-
-        self.hint = [BTUIKCardHint new];
-        [self.hint setCardType:BTUIKPaymentOptionTypeUnknown];
+        self.hint = [BTUIKPaymentOptionCardView new];
+        self.hint.paymentOptionType = BTUIKPaymentOptionTypeUnknown;
+        self.hint.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.hint addConstraint:[NSLayoutConstraint constraintWithItem:self.hint attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:[BTUIKAppearance smallIconHeight]]];
+        [self.hint addConstraint:[NSLayoutConstraint constraintWithItem:self.hint attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0f constant:[BTUIKAppearance smallIconWidth]]];
+        
         self.accessoryView = self.hint;
         [self setAccessoryViewHidden:YES animated:NO];
         
         self.validateButton = [UIButton new];
         [self.validateButton setTitle:@"Next" forState:UIControlStateNormal];
         
-        NSAttributedString *normalValidateButtonString = [[NSAttributedString alloc] initWithString:@"Next" attributes:@{NSForegroundColorAttributeName:[BTUIKAppearance sharedInstance].tintColor, NSFontAttributeName:[UIFont fontWithName:[BTUIKAppearance sharedInstance].fontFamily size:[UIFont labelFontSize]]}];
+        NSAttributedString *normalValidateButtonString = [[NSAttributedString alloc] initWithString:@"Next" attributes:@{NSForegroundColorAttributeName:[BTUIKAppearance sharedInstance].tintColor, NSFontAttributeName:[UIFont fontWithName:[BTUIKAppearance sharedInstance].boldFontFamily size:[UIFont labelFontSize]]}];
         [self.validateButton setAttributedTitle:normalValidateButtonString forState:UIControlStateNormal];
-        NSAttributedString *disabledValidateButtonString = [[NSAttributedString alloc] initWithString:@"Next" attributes:@{NSForegroundColorAttributeName:[BTUIKAppearance sharedInstance].disabledColor, NSFontAttributeName:[UIFont fontWithName:[BTUIKAppearance sharedInstance].fontFamily size:[UIFont labelFontSize]]}];
+        NSAttributedString *disabledValidateButtonString = [[NSAttributedString alloc] initWithString:@"Next" attributes:@{NSForegroundColorAttributeName:[BTUIKAppearance sharedInstance].disabledColor, NSFontAttributeName:[UIFont fontWithName:[BTUIKAppearance sharedInstance].boldFontFamily size:[UIFont labelFontSize]]}];
         [self.validateButton setAttributedTitle:disabledValidateButtonString forState:UIControlStateDisabled];
 
         [self.validateButton sizeToFit];
@@ -50,7 +52,7 @@
         [self updateValidationButton];
 
         self.loadingView = [UIActivityIndicatorView new];
-        self.loadingView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        self.loadingView.activityIndicatorViewStyle = [BTUIKAppearance sharedInstance].activityIndicatorViewStyle;
         [self.loadingView sizeToFit];
     }
     return self;
@@ -113,6 +115,8 @@
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.textField.text = _number;
+    [self fieldContentDidChange];
     [super textFieldDidBeginEditing:textField];
     self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
     self.formLabel.text = @"";
@@ -133,8 +137,8 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [super textFieldDidEndEditing:textField];
-    self.displayAsValid = _number.length == 0 || (_cardType != nil && [_cardType validNumber:_number]);
-    self.formLabel.text = _number.length == 0 ? @"" : BTUIKLocalizedString(CARD_NUMBER_PLACEHOLDER);
+    self.displayAsValid = _number.length == 0 || (![self isValidLength] && self.state == BTUIKCardNumberFormFieldStateValidate) || (_cardType != nil && [_cardType validNumber:_number]);
+    self.formLabel.text = _number.length == 0 || (![self isValidLength] && self.state == BTUIKCardNumberFormFieldStateValidate) ? @"" : BTUIKLocalizedString(CARD_NUMBER_PLACEHOLDER);
     [UIView animateWithDuration:0.2 animations:^{
         if ([self isShowingValidateButton]) {
             [self setAccessoryViewHidden:NO animated:NO];
@@ -144,6 +148,10 @@
             } else {
                 [self showCardHintAccessory];
             }
+        }
+        if (_number.length > 7 && ([self isValidLength] || self.state != BTUIKCardNumberFormFieldStateValidate)) {
+            NSString *lastFour = [_number substringFromIndex: [_number length] - 4];
+            self.textField.text = [NSString stringWithFormat:@"•••• %@", lastFour];
         }
         [self updateConstraints];
         [self updateAppearance];
@@ -207,7 +215,7 @@
 
 - (void)updateCardHint {
     BTUIKPaymentOptionType paymentMethodType = [BTUIKViewUtil paymentMethodTypeForCardType:self.cardType];
-    [self.hint setCardType:paymentMethodType animated:YES];
+    self.hint.paymentOptionType = paymentMethodType;
 }
 
 @end

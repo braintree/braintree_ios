@@ -1,5 +1,4 @@
 #import "BTUIKPaymentOptionCardView.h"
-#import "BTUIKViewUtil.h"
 #import "BTUIKVectorArtView.h"
 #import "BTUIKAppearance.h"
 
@@ -15,12 +14,13 @@
 {
     self = [super init];
     if (self) {
+        self.vectorArtSize = BTUIKVectorArtSizeRegular;
         self.cornerRadius = 4.0;
-        self.innerPadding = 3.0;
-        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.innerPadding = 0.0;
+        self.borderWidth = 0.5;
+        self.borderColor = [BTUIKAppearance sharedInstance].lineColor;
+        self.clipsToBounds = YES;
         self.backgroundColor = [UIColor whiteColor];
-        self.layer.borderColor = [BTUIKAppearance grayBorderColor].CGColor;
-        self.layer.borderWidth = 1.0;
     }
     return self;
 }
@@ -38,12 +38,7 @@
 - (void)updateAppearance {
     NSDictionary* viewBindings = @{@"imageView":self.imageView};
     
-    NSDictionary* metrics = @{@"PADDING": self.paymentOptionType == BTUIKPaymentOptionTypeApplePay ? @0 : @(self.innerPadding)};
-    
-    self.layer.borderWidth = self.paymentOptionType == BTUIKPaymentOptionTypeApplePay ? 0.0 : 1.0;
-    
-    self.backgroundColor = self.paymentOptionType == BTUIKPaymentOptionTypeApplePay ? [UIColor clearColor] : [UIColor whiteColor];
-    
+    NSDictionary* metrics = @{@"PADDING": @(self.innerPadding)};
     
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(PADDING)-[imageView]-(PADDING)-|"
                                                                  options:0
@@ -63,19 +58,15 @@
 
 - (void)setPaymentOptionType:(BTUIKPaymentOptionType)paymentOptionType {
     _paymentOptionType = paymentOptionType;
-    self.imageView = [BTUIKViewUtil vectorArtViewForPaymentOptionType:self.paymentOptionType];
+    self.borderWidth = self.paymentOptionType == BTUIKPaymentOptionTypeApplePay ? 0.0 : self.borderWidth;
+    self.imageView = [BTUIKViewUtil vectorArtViewForPaymentOptionType:self.paymentOptionType size:self.vectorArtSize];
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
-    if (self.paymentOptionType == BTUIKPaymentOptionTypeApplePay) {
-        return;
-    }
     if (highlighted) {
         self.layer.borderColor = self.tintColor.CGColor;
-        self.layer.borderWidth = 2.0f;
     } else {
-        self.layer.borderColor = [BTUIKAppearance grayBorderColor].CGColor;
-        self.layer.borderWidth = 1.0f;
+        self.layer.borderColor = self.borderColor.CGColor;
     }
 }
 
@@ -86,6 +77,16 @@
 - (void)setCornerRadius:(float)cornerRadius {
     _cornerRadius = cornerRadius;
     self.layer.cornerRadius = self.cornerRadius;
+}
+
+- (void)setBorderWidth:(float)borderWidth {
+    _borderWidth = borderWidth;
+    self.layer.borderWidth = _borderWidth;
+}
+
+- (void)setBorderColor:(UIColor *)borderColor {
+    _borderColor = borderColor;
+    self.layer.borderColor = _borderColor.CGColor;
 }
 
 - (void)setInnerPadding:(float)innerPadding {

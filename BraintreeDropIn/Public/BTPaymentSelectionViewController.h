@@ -4,7 +4,7 @@
 
 @class BTPaymentMethodNonce;
 
-@protocol BTDropInBaseViewControllerDelegate;
+@protocol BTPaymentSelectionViewControllerDelegate;
 
 /// @class A UIViewController that displays vaulted payment methods for a customer and available payment options
 @interface BTPaymentSelectionViewController : BTDropInBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate>
@@ -14,11 +14,11 @@
 @property (nonatomic, strong) NSArray *paymentMethodNonces;
 
 /// The delegate
-@property (nonatomic, weak) id<BTDropInBaseViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<BTPaymentSelectionViewControllerDelegate> delegate;
 
 @end
 
-@protocol BTDropInBaseViewControllerDelegate <NSObject>
+@protocol BTPaymentSelectionViewControllerDelegate <NSObject>
 
 /// Called on the delegate when a payment method is selected
 ///

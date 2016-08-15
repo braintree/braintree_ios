@@ -158,9 +158,9 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodHeaderLabel]-|" options:0 metrics:nil views:viewBindings]];
 
     if (!self.paymentMethodTypeIcon.hidden && !self.paymentMethodTypeLabel.hidden) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[paymentMethodHeaderLabel]-[paymentMethodTypeIcon(28)]-[dropInButton]" options:0 metrics:nil views:viewBindings]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[paymentMethodHeaderLabel]-[paymentMethodTypeIcon(29)]-[dropInButton]" options:0 metrics:nil views:viewBindings]];
 
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodTypeIcon(44)]-[paymentMethodTypeLabel]" options:NSLayoutFormatAlignAllCenterY metrics:nil views:viewBindings]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodTypeIcon(45)]-[paymentMethodTypeLabel]" options:NSLayoutFormatAlignAllCenterY metrics:nil views:viewBindings]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[dropInButton]-|" options:0 metrics:nil views:viewBindings]];
         [self.dropInButton setTitle:@"Change Payment Method" forState:UIControlStateNormal];
         self.purchaseButton.backgroundColor = self.view.tintColor;
@@ -218,10 +218,11 @@
 - (void)tappedToShowDropIn {
     BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
     dropInRequest.showApplePayPaymentOption = [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]];
-    dropInRequest.displayCardTypes = @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)];
+    dropInRequest.displayCardTypes = @[@(BTUIKPaymentOptionTypeAMEX), @(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)];
     // To test 3DS
     //dropInRequest.amount = @"10.00";
     //dropInRequest.threeDSecureVerification = YES;
+    //[[BTUIKAppearance sharedInstance] darkTheme];
     BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInController * _Nonnull dropInController, BTDropInResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);

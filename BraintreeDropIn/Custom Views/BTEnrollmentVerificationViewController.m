@@ -27,29 +27,34 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Confirm Enrollment";
-    if (self.navigationController != nil) {
-        self.navigationController.navigationBar.barTintColor = [BTUIKAppearance sharedInstance].barBackgroundColor;
-        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [BTUIKAppearance sharedInstance].primaryTextColor, NSFontAttributeName:[UIFont fontWithName:[BTUIKAppearance sharedInstance].fontFamily size:[UIFont labelFontSize]]}];
-    }
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
-    self.navigationItem.rightBarButtonItem = [[BTUIKBarButtonItem alloc] initWithTitle:@"Confirm" style:UIBarButtonItemStyleDone target:self action:@selector(confirm)];
+    
+    self.view.backgroundColor = [BTUIKAppearance sharedInstance].formBackgroundColor;
+    self.navigationController.navigationBar.barTintColor = [BTUIKAppearance sharedInstance].barBackgroundColor;
+    self.navigationController.navigationBar.translucent = NO;
+    [self.navigationController.navigationBar setTitleTextAttributes:@{
+                                                                      NSForegroundColorAttributeName: [BTUIKAppearance sharedInstance].primaryTextColor
+                                                                      }];
+
+    //self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+    BTUIKBarButtonItem *confirmButton = [[BTUIKBarButtonItem alloc] initWithTitle:@"Confirm" style:UIBarButtonItemStyleDone target:self action:@selector(confirm)];
+    confirmButton.bold = YES;
+    self.navigationItem.rightBarButtonItem = confirmButton;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.view.backgroundColor = [BTUIKAppearance sharedInstance].sheetBackgroundColor;
+    self.view.backgroundColor = [BTUIKAppearance sharedInstance].formBackgroundColor;
     self.smsSentLabel = [UILabel new];
     self.smsSentLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.smsSentLabel.textAlignment = NSTextAlignmentCenter;
     self.smsSentLabel.text = [NSString stringWithFormat:@"Enter the SMS code sent to\n+%@ %@", self.mobileCountryCode, self.mobilePhoneNumber];
     self.smsSentLabel.numberOfLines = 0;
     [self.view addSubview:self.smsSentLabel];
-    [BTUIKAppearance styleLabelPrimary:self.smsSentLabel];
+    [BTUIKAppearance styleLargeLabelSecondary:self.smsSentLabel];
 
     self.smsTextField = [BTUIKFormField new];
     self.smsTextField.translatesAutoresizingMaskIntoConstraints = NO;
     self.smsTextField.textField.keyboardType = UIKeyboardTypeNumberPad;
     self.smsTextField.textField.placeholder = @"SMS Code";
     self.smsTextField.delegate = self;
-    self.smsTextField.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.smsTextField.textField];
     [self.view addSubview:self.smsTextField];
     
     NSString *smsButtonText = @"Didn't get an SMS code?";
@@ -72,23 +77,23 @@
                                    @"smsTextField": self.smsTextField,
                                    @"resendSmsButton": self.resendSmsButton
                                    };
-
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[smsSentLabel]|"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:[BTUIKAppearance metrics]
                                                                         views:viewBindings]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[smsTextField]|"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:[BTUIKAppearance metrics]
                                                                         views:viewBindings]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[resendSmsButton]|"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:[BTUIKAppearance metrics]
                                                                         views:viewBindings]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[smsSentLabel]-(20)-[smsTextField(44)]-[resendSmsButton]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(VERTICAL_FORM_SPACE)-[smsSentLabel]-(VERTICAL_FORM_SPACE)-[smsTextField(FORM_CELL_HEIGHT)]-(VERTICAL_FORM_SPACE_TIGHT)-[resendSmsButton]"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:[BTUIKAppearance metrics]
                                                                         views:viewBindings]];
 }
 

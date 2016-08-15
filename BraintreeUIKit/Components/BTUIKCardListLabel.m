@@ -1,6 +1,7 @@
 #import "BTUIKCardListLabel.h"
-#import "BTUIKCardHint.h"
+#import "BTUIKPaymentOptionCardView.h"
 #import "BTUIKViewUtil.h"
+#import "BTUIKAppearance.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface BTUIKCardListLabel ()
@@ -17,7 +18,6 @@
     if (self) {
         self.numberOfLines = 0;
         self.textAlignment = NSTextAlignmentCenter;
-        self.translatesAutoresizingMaskIntoConstraints = NO;
         
         self.emphasisedPaymentOption = BTUIKPaymentOptionTypeUnknown;
         self.availablePaymentOptionAttachments = @[];
@@ -51,14 +51,14 @@
 - (void)updateAppearance {
     NSMutableAttributedString *at = [[NSMutableAttributedString alloc] initWithString:@""];
     NSMutableArray *attachments = [NSMutableArray new];
-    BTUIKCardHint* hint = [BTUIKCardHint new];
-    hint.translatesAutoresizingMaskIntoConstraints = NO;
-    hint.displayMode = BTUIKCardHintDisplayModeCardType;
-    
+    BTUIKPaymentOptionCardView* hint = [BTUIKPaymentOptionCardView new];
+    hint.frame = CGRectMake(0, 0, [BTUIKAppearance smallIconWidth], [BTUIKAppearance smallIconHeight]);
+
     for(NSNumber *paymentType in self.availablePaymentOptions) {
         NSTextAttachment *composeAttachment = [NSTextAttachment new];
         BTUIKPaymentOptionType paymentOption = ((NSNumber*)paymentType).intValue;
-        [hint setCardType:paymentOption];
+        hint.paymentOptionType = paymentOption;
+        [hint setNeedsLayout];
         [hint layoutIfNeeded];
         UIImage* composeImage = [self imageWithView:hint];
         [attachments addObject:composeAttachment];

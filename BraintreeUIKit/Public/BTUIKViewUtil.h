@@ -4,6 +4,14 @@
 
 @class BTUIKVectorArtView;
 
+/// Size for vector art
+typedef NS_ENUM(NSInteger, BTUIKVectorArtSize) {
+    /// Small
+    BTUIKVectorArtSizeRegular,
+    /// Large
+    BTUIKVectorArtSizeLarge,
+};
+
 /// @class Utilities used by other views to get localized strings, a BTUIKPaymentOptionType or artwork
 @interface BTUIKViewUtil : NSObject
 
@@ -37,11 +45,19 @@
 /// @param A string representing a payment option type (e.g `Visa` or `PayPal`)
 /// @return The BTUIKVectorArtView for the string if one can be found. Otherwise the art for a generic card.
 + (BTUIKVectorArtView *)vectorArtViewForPaymentInfoType:(NSString *)typeString;
-/// Get a BTUIKVectorArtView for a payment option.
+
+/// Get a BTUIKVectorArtView for a payment option of BTUIKVectorArtIconSizeRegular.
 ///
 /// @param A BTUIKPaymentOptionType
 /// @return The BTUIKVectorArtView for the BTUIKPaymentOptionType if one can be found. Otherwise the art for a generic card.
 + (BTUIKVectorArtView *)vectorArtViewForPaymentOptionType:(BTUIKPaymentOptionType)type;
+
+/// Get a BTUIKVectorArtView for a payment option.
+///
+/// @param A BTUIKPaymentOptionType
+/// @param size The BTUIKVectorArtSize (Regular or Large)
+/// @return The BTUIKVectorArtView for the BTUIKPaymentOptionType if one can be found. Otherwise the art for a generic card.
++ (BTUIKVectorArtView *)vectorArtViewForPaymentOptionType:(BTUIKPaymentOptionType)type size:(BTUIKVectorArtSize)size;
 
 #pragma mark Right to Left Utilities
 

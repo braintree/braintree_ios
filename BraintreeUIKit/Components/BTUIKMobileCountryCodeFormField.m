@@ -11,8 +11,6 @@
         self.formLabel.text = @"Mobile Country Code";
         self.textField.placeholder = @"+65";
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
-        
-        self.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.textField];
     }
     return self;
 }

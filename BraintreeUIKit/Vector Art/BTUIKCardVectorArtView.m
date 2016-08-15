@@ -5,7 +5,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.artDimensions = CGSizeMake(87.0f, 55.0f);
+        self.artDimensions = CGSizeMake(45.0f, 29.0f);
         self.opaque = NO;
     }
     return self;

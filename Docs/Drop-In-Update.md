@@ -1,6 +1,8 @@
 Drop-In Update (Beta)
 ------------------------------------
 
+![Example saved payment method](saved-payment-methods-dark.png "Example saved payment method")
+
 # What's new
 - All new UI and integration for Drop-In
 - Fetch a customer's payment method without showing UI
@@ -38,9 +40,9 @@ If your user already has an existing payment method, you may not need to show th
     })
 ```
 # Show Drop-In
-Present `BTDropInController` to collect the customer's payment information and receive the `nonce` to send to your server.
+Present `BTDropInController` to collect the customer's payment information and receive the `nonce` to send to your server. Saved payment methods will appear if you specified a `customer_id` when creating your client token.
 
-![Example no saved payment method](no-payment-methods.png "Example no saved payment method")
+![Example saved payment method](saved-payment-methods.png "Example saved payment method")
 
 ```swift
 
@@ -65,10 +67,6 @@ func showDropIn(clientTokenOrTokenizationKey: String) {
     self.presentViewController(dropIn!, animated: true, completion: nil)
 }
 ```
-
-If there are saved payment methods they will appear:
-
-![Example saved payment method](saved-payment-methods.png "Example saved payment method")
 
 # Apple Pay + Drop-In
 Make sure the following is included in your Podfile:
@@ -98,30 +96,18 @@ The new Drop-In supports 3D-Secure verification. If you have enabled 3D-Secure i
     request.amount = "1.00"
 ```
 
+# Themes
+Drop-In is fully customizable, but we also provide `Light` and `Dark` themes. Drop-In will use the `Light` theme by default.
+```swift
+// Set the theme before initializing Drop-In
+BTUIKAppearance.sharedInstance().darkTheme()
+```
+
 # Customization
 Use `BTUIKAppearance` to customize the appearance of Drop-In and other BraintreeUIKit classes.
 ```swift
 // Example
 BTUIKAppearance.sharedInstance().primaryTextColor = UIColor.greenColor()
-```
-
-Here is the full list of properties...
-```swift
-@property (nonatomic, strong) UIColor *overlayColor;
-@property (nonatomic, strong) UIColor *tintColor;
-@property (nonatomic, strong) UIColor *barBackgroundColor;
-@property (nonatomic, strong) NSString *fontFamily;
-@property (nonatomic, strong) UIColor *sheetBackgroundColor;
-@property (nonatomic, strong) UIColor *formFieldBackgroundColor;
-@property (nonatomic, strong) UIColor *primaryTextColor;
-@property (nonatomic, strong) UIColor *secondaryTextColor;
-@property (nonatomic, strong) UIColor *disabledColor;
-@property (nonatomic, strong) UIColor *placeholderTextColor;
-@property (nonatomic, strong) UIColor *lineColor;
-@property (nonatomic, strong) UIColor *errorBackgroundColor;
-@property (nonatomic, strong) UIColor *errorForegroundColor;
-@property (nonatomic) UIBlurEffectStyle blurStyle;
-@property (nonatomic) BOOL useBlurs;
 ```
 
 # BraintreeUIKit

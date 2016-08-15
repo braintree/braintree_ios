@@ -3,6 +3,7 @@
 #import "BTUIPaymentMethodView.h"
 #import "BTUIUnknownCardVectorArtView.h"
 #import "BTUIViewUtil.h"
+#import "BTUIKAppearance.h"
 
 typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     BTPaymentMethodViewStateNormal,
@@ -74,7 +75,7 @@ typedef NS_ENUM(NSInteger, BTPaymentMethodViewState) {
     [self.detailDescriptionLabel setTextColor:[self.theme detailColor]];
 
     // Activity Indicators
-    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:[BTUIKAppearance sharedInstance].activityIndicatorViewStyle];
     self.activityIndicatorView.hidden = YES;
     [self.activityIndicatorView setTranslatesAutoresizingMaskIntoConstraints:NO];
 

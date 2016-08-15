@@ -8,29 +8,64 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedTheme = [BTUIKAppearance new];
-        sharedTheme.overlayColor = [UIColor btuik_colorFromHex:@"000000" alpha:0.7];
-        sharedTheme.tintColor = [UIColor btuik_colorFromHex:@"007aff" alpha:1.0];
-        sharedTheme.barBackgroundColor = [UIColor whiteColor];
-        sharedTheme.fontFamily = [UIFont systemFontOfSize:10].familyName;
-        sharedTheme.sheetBackgroundColor = [UIColor groupTableViewBackgroundColor];
-        sharedTheme.formFieldBackgroundColor = [UIColor whiteColor];
-        sharedTheme.primaryTextColor = [BTUIKAppearance blackTextColor];
-        sharedTheme.secondaryTextColor = [BTUIKAppearance darkGrayTextColor];
-        sharedTheme.disabledColor = [UIColor lightGrayColor];
-        sharedTheme.placeholderTextColor = [UIColor lightGrayColor];
-        sharedTheme.lineColor = [BTUIKAppearance lightGrayBorderColor];
-        sharedTheme.errorBackgroundColor = [BTUIKAppearance errorBackgroundColor];
-        sharedTheme.errorForegroundColor = [BTUIKAppearance errorForegroundColor];
-        sharedTheme.blurStyle = UIBlurEffectStyleDark;
-        sharedTheme.useBlurs = YES;
-        sharedTheme.postalCodeFormFieldKeyboardType = UIKeyboardTypeNumberPad;
+        [sharedTheme lightTheme];
     });
     
     return sharedTheme;
 }
 
+- (void) lightTheme {
+    self.overlayColor = [UIColor btuik_colorFromHex:@"000000" alpha:0.5];
+    self.tintColor = [UIColor btuik_colorFromHex:@"2489F6" alpha:1.0];
+    self.barBackgroundColor = [UIColor whiteColor];
+    self.fontFamily = [UIFont systemFontOfSize:10].fontName;
+    self.boldFontFamily = [UIFont boldSystemFontOfSize:10].fontName;
+    self.formBackgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.formFieldBackgroundColor = [UIColor whiteColor];
+    self.primaryTextColor = [UIColor blackColor];
+    self.secondaryTextColor = [UIColor btuik_colorFromHex:@"666666" alpha:1.0];
+    self.disabledColor = [UIColor lightGrayColor];
+    self.placeholderTextColor = [UIColor lightGrayColor];
+    self.lineColor = [UIColor btuik_colorFromHex:@"BFBFBF" alpha:1.0];
+    self.errorForegroundColor = [UIColor btuik_colorFromHex:@"ff3b30" alpha:1.0];
+    self.blurStyle = UIBlurEffectStyleExtraLight;
+    self.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    self.useBlurs = YES;
+    self.postalCodeFormFieldKeyboardType = UIKeyboardTypeNumberPad;
+}
+
+- (void) darkTheme {
+    self.overlayColor = [UIColor btuik_colorFromHex:@"000000" alpha:0.5];
+    self.tintColor = [UIColor btuik_colorFromHex:@"2489F6" alpha:1.0];
+    self.barBackgroundColor = [UIColor btuik_colorFromHex:@"222222" alpha:1.0];
+    self.fontFamily = [UIFont systemFontOfSize:10].fontName;
+    self.boldFontFamily = [UIFont boldSystemFontOfSize:10].fontName;
+    self.formBackgroundColor = [UIColor btuik_colorFromHex:@"222222" alpha:1.0];
+    self.formFieldBackgroundColor = [UIColor btuik_colorFromHex:@"333333" alpha:1.0];
+    self.primaryTextColor = [UIColor whiteColor];
+    self.secondaryTextColor = [UIColor btuik_colorFromHex:@"999999" alpha:1.0];
+    self.disabledColor = [UIColor lightGrayColor];
+    self.placeholderTextColor = [UIColor btuik_colorFromHex:@"8E8E8E" alpha:1.0];
+    self.lineColor = [UIColor btuik_colorFromHex:@"666666" alpha:1.0];
+    self.errorForegroundColor = [UIColor btuik_colorFromHex:@"ff3b30" alpha:1.0];
+    self.blurStyle = UIBlurEffectStyleDark;
+    self.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+    self.useBlurs = YES;
+    self.postalCodeFormFieldKeyboardType = UIKeyboardTypeNumberPad;
+}
+
 + (void) styleLabelPrimary:(UILabel *)label {
     label.font = [UIFont fontWithName:[BTUIKAppearance sharedInstance].fontFamily size:[UIFont labelFontSize]];
+    label.textColor = [BTUIKAppearance sharedInstance].primaryTextColor;
+}
+
++ (void) styleLabelBoldPrimary:(UILabel *)label {
+    label.font = [UIFont fontWithName:[BTUIKAppearance sharedInstance].boldFontFamily size:[UIFont labelFontSize]];
+    label.textColor = [BTUIKAppearance sharedInstance].primaryTextColor;
+}
+
++ (void) styleSmallLabelBoldPrimary:(UILabel *)label {
+    label.font = [UIFont fontWithName:[BTUIKAppearance sharedInstance].boldFontFamily size:[UIFont smallSystemFontSize]];
     label.textColor = [BTUIKAppearance sharedInstance].primaryTextColor;
 }
 
@@ -49,44 +84,63 @@
     label.textColor = [BTUIKAppearance sharedInstance].secondaryTextColor;
 }
 
-+ (UIColor *)payBlue {
-    return [UIColor btuik_colorFromHex:@"003087" alpha:1.0f];
-}
-
-+ (UIColor *)palBlue {
-    return [UIColor btuik_colorFromHex:@"009CDE" alpha:1.0f];
-}
-
-+ (UIColor *)errorBackgroundColor {
-    return [UIColor btuik_colorWithBytesR:250 G:229 B:232];
-}
-
-+ (UIColor *)errorForegroundColor {
-    return [UIColor btuik_colorWithBytesR:208 G:2 B:27];
-}
-
-+ (UIColor *)blackTextColor {
-    return [UIColor btuik_colorFromHex:@"000000" alpha:1.0];
-}
-
-+ (UIColor *)darkGrayTextColor {
-    return [UIColor btuik_colorFromHex:@"666666" alpha:1.0];
-}
-
-+ (UIColor *)grayBorderColor {
-    return [UIColor btuik_colorFromHex:@"C8C7CC" alpha:1.0];
-}
-
-+ (UIColor *)lightGrayBorderColor {
-    return [UIColor btuik_colorFromHex:@"000000" alpha:0.15];
-}
-
-+ (float)textFieldOverlayPadding {
-    return 5.0f;
++ (void) styleSystemLabelSecondary:(UILabel *)label {
+    label.font = [UIFont fontWithName:[BTUIKAppearance sharedInstance].fontFamily size:[UIFont systemFontSize]];
+    label.textColor = [BTUIKAppearance sharedInstance].secondaryTextColor;
 }
 
 + (float)horizontalFormContentPadding {
     return 15.0f;
+}
+
++ (float)formCellHeight {
+    return 44.0f;
+}
+
++ (float)verticalFormSpace {
+    return 35.0f;
+}
+
++ (float)verticalFormSpaceTight {
+    return 10.0f;
+}
+
++ (float)verticalSectionSpace {
+    return 30.0f;
+}
+
++ (float)smallIconWidth {
+    return 45.0;
+}
+
++ (float)smallIconHeight {
+    return 29.0;
+}
+
++ (float)largeIconWidth {
+    return 100.0;
+}
+
++ (float)largeIconHeight {
+    return 100.0;
+}
+
++ (NSDictionary*)metrics {
+    static NSDictionary *sharedMetrics;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedMetrics = @{@"HORIZONTAL_FORM_PADDING":@([self horizontalFormContentPadding]),
+                          @"FORM_CELL_HEIGHT":@([self formCellHeight]),
+                          @"VERTICAL_FORM_SPACE":@([self verticalFormSpace]),
+                          @"VERTICAL_FORM_SPACE_TIGHT":@([self verticalFormSpaceTight]),
+                          @"VERTICAL_SECTION_SPACE":@([self verticalSectionSpace]),
+                          @"ICON_WIDTH":@([self smallIconWidth]),
+                          @"ICON_HEIGHT":@([self smallIconHeight]),
+                          @"LARGE_ICON_WIDTH":@([self largeIconWidth]),
+                          @"LARGE_ICON_HEIGHT":@([self largeIconHeight])};
+    });
+    
+    return sharedMetrics;
 }
 
 @end
