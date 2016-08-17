@@ -286,7 +286,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                       if (approvalUrl == nil) {
                           approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
                       }
-                      
+
+                      approvalUrl = [self updateApprovalURL:approvalUrl forRequest:request];
+
                       PPOTCheckoutRequest *request = nil;
                       if (isBillingAgreement) {
                           request = [self.requestFactory billingAgreementRequestWithApprovalURL:approvalUrl
@@ -782,6 +784,24 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 }
 
 #pragma mark - Internal
+
+- (NSURL *)updateApprovalURL:(NSURL*)approvalURL forRequest:(BTPayPalRequest *)paypalRequest {
+    if ([[paypalRequest useraction] length] > 0 && approvalURL != nil) {
+        NSURLComponents* approvalURLComponents = [[NSURLComponents alloc] initWithURL:approvalURL resolvingAgainstBaseURL:NO];
+        if (approvalURLComponents != nil) {
+            NSMutableArray *queryItems = [approvalURLComponents.queryItems mutableCopy];
+            if (queryItems == nil) {
+                queryItems = [[NSMutableArray alloc] init];
+            }
+
+            [queryItems addObject:[[NSURLQueryItem alloc] initWithName:@"useraction" value:[paypalRequest useraction]]];
+
+            approvalURLComponents.queryItems = queryItems;
+            return [approvalURLComponents URL];
+        }
+    }
+    return approvalURL;
+}
 
 - (BTPayPalRequestFactory *)requestFactory {
     if (!_requestFactory) {

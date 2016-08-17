@@ -49,6 +49,13 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
 /// Optional: Payment intent. Only applies when using checkout flow. Defaults to `BTPayPalRequestIntentAuthorize`.
 @property (nonatomic) BTPayPalRequestIntent intent;
 
+/// Optional: Changes the call-to-action in the PayPal one-time payment flow. By default the final button will show the localized
+/// word for "Continue" and implies that the final amount billed is not yet known.
+///
+/// Setting this option to `commit` changes the button text to "Pay Now" and page text will convey to
+/// the user that billing will take place immediately.
+@property (nonatomic, nullable, copy) NSString *useraction;
+
 @end
 
 NS_ASSUME_NONNULL_END
