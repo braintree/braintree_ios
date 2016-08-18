@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UILabel *paymentMethodHeaderLabel;
 @property (nonatomic, strong) UIButton *dropInButton;
 @property (nonatomic, strong) UIButton *purchaseButton;
+@property (nonatomic, strong) UISegmentedControl *dropinThemeSwitch;
 @property (nonatomic, strong) NSString *authorizationString;
 @property (nonatomic) BOOL useApplePay;
 @property (nonatomic, strong) BTPaymentMethodNonce *selectedNonce;
@@ -100,6 +101,11 @@
     [self.view addSubview:self.paymentMethodTypeLabel];
     self.paymentMethodTypeLabel.hidden = YES;
 
+    self.dropinThemeSwitch = [[UISegmentedControl alloc] initWithItems:@[@"Light Theme", @"Dark Theme"]];
+    self.dropinThemeSwitch.translatesAutoresizingMaskIntoConstraints = NO;
+    self.dropinThemeSwitch.selectedSegmentIndex = 0;
+    [self.view addSubview:self.dropinThemeSwitch];
+    
     [self updatePaymentMethodConstraints];
 
     self.progressBlock(@"Fetching customer's payment methods...");
@@ -146,7 +152,8 @@
                                    @"dropInButton": self.dropInButton,
                                    @"paymentMethodTypeIcon": self.paymentMethodTypeIcon,
                                    @"paymentMethodTypeLabel": self.paymentMethodTypeLabel,
-                                   @"purchaseButton":self.purchaseButton
+                                   @"purchaseButton":self.purchaseButton,
+                                   @"dropinThemeSwitch":self.dropinThemeSwitch
                                    };
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[cartLabel]-|" options:0 metrics:nil views:viewBindings]];
@@ -174,8 +181,9 @@
         self.purchaseButton.enabled = NO;
     }
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[dropInButton]-(20)-[purchaseButton]" options:0 metrics:nil views:viewBindings]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[dropInButton]-(20)-[purchaseButton]-(20)-[dropinThemeSwitch]" options:0 metrics:nil views:viewBindings]];
     
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[dropinThemeSwitch]-|" options:0 metrics:nil views:viewBindings]];
 }
 
 #pragma mark Button Handlers
@@ -222,7 +230,11 @@
     // To test 3DS
     //dropInRequest.amount = @"10.00";
     //dropInRequest.threeDSecureVerification = YES;
-    //[[BTUIKAppearance sharedInstance] darkTheme];
+    if (self.dropinThemeSwitch.selectedSegmentIndex == 0) {
+        [[BTUIKAppearance sharedInstance] lightTheme];
+    } else {
+        [[BTUIKAppearance sharedInstance] darkTheme];
+    }
     BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInController * _Nonnull dropInController, BTDropInResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
