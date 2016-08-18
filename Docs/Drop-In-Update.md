@@ -100,7 +100,7 @@ The new Drop-In supports 3D-Secure verification. If you have enabled 3D-Secure i
 Drop-In is fully customizable, but we also provide `Light` and `Dark` themes. Drop-In will use the `Light` theme by default.
 ```swift
 // Set the theme before initializing Drop-In
-BTUIKAppearance.sharedInstance().darkTheme()
+BTUIKAppearance.darkTheme()
 ```
 
 # Customization

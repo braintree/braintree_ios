@@ -5,8 +5,8 @@
 /// Shared instance used by Form elements
 + (instancetype) sharedInstance;
 
-- (void) darkTheme;
-- (void) lightTheme;
++ (void) darkTheme;
++ (void) lightTheme;
 
 /// Fallback color for the overlay if blur is disabled
 @property (nonatomic, strong) UIColor *overlayColor;
