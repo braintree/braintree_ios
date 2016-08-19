@@ -836,7 +836,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["intent"] as? String, "sale")
     }
 
-    func testCheckout_whenUserActionIsSetToNull_approvalUrlIsNotModified() {
+    func testCheckout_whenUserActionIsNotSet_approvalUrlIsNotModified() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [
                 "redirectUrl": "https://www.paypal.com/checkout/?EC-Token=EC-Random-Value"
@@ -845,6 +845,33 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
         let request = BTPayPalRequest(amount: "1")
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
+        let mockRequestFactory = FakePayPalRequestFactory()
+        payPalDriver.requestFactory = mockRequestFactory
+
+        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+
+        guard let lastApprovalURL = mockRequestFactory.lastApprovalURL,
+            let approvalURLComponents = NSURLComponents(URL: lastApprovalURL, resolvingAgainstBaseURL: false) else {
+                XCTFail("Did not find the last approval URL")
+                return
+        }
+        XCTAssertEqual(approvalURLComponents.queryItems?.filter({ $0.name == "EC-Token" && $0.value == "EC-Random-Value" }).count, 1,
+                       "Did not find existing query parameter")
+        XCTAssertEqual(approvalURLComponents.queryItems?.filter({ $0.name == "useraction" }).count, 0,
+                       "Found useraction query item when not expected")
+    }
+
+    func testCheckout_whenUserActionIsSetToDefault_approvalUrlIsNotModified() {
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "paymentResource": [
+                "redirectUrl": "https://www.paypal.com/checkout/?EC-Token=EC-Random-Value"
+            ] ])
+        let payPalDriver = BTPayPalDriver(APIClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.userAction = BTPayPalRequestUserAction.Default
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
@@ -871,7 +898,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
         let request = BTPayPalRequest(amount: "1")
-        request.useraction = "commit"
+        request.userAction = BTPayPalRequestUserAction.Commit
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore)
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
