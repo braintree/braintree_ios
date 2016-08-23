@@ -287,7 +287,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                           approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
                       }
 
-                      approvalUrl = [self updateApprovalURL:approvalUrl forRequest:request];
+                      approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
 
                       PPOTCheckoutRequest *request = nil;
                       if (isBillingAgreement) {
@@ -785,7 +785,7 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 
 #pragma mark - Internal
 
-- (NSURL *)updateApprovalURL:(NSURL*)approvalURL forRequest:(BTPayPalRequest *)paypalRequest {
+- (NSURL *)decorateApprovalURL:(NSURL*)approvalURL forRequest:(BTPayPalRequest *)paypalRequest {
     if (approvalURL != nil && paypalRequest.userAction != BTPayPalRequestUserActionDefault) {
         NSURLComponents* approvalURLComponents = [[NSURLComponents alloc] initWithURL:approvalURL resolvingAgainstBaseURL:NO];
         if (approvalURLComponents != nil) {
@@ -812,9 +812,6 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
     switch(userActionType) {
         case BTPayPalRequestUserActionCommit:
             result = @"commit";
-            break;
-        case BTPayPalRequestUserActionDefault:
-            result = @"";
             break;
         default:
             result = @"";
