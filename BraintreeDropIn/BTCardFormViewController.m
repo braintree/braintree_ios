@@ -503,6 +503,7 @@
             }
         }
         
+        self.securityCodeField.textField.placeholder = self.cardNumberField.cardType.securityCodeName;
         self.cardNumberField.state = BTUIKCardNumberFormFieldStateDefault;
         self.collapsed = NO;
         [self.expirationDateField becomeFirstResponder];
