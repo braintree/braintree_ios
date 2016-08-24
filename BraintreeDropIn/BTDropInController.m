@@ -258,14 +258,9 @@
                 self.paymentSelectionViewController.view.alpha = 1.0;
                 [self updateToolbarForViewController:self.paymentSelectionViewController];
             } else {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:error.localizedDescription ?: @"Connection Error" preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * __unused _Nonnull action) {
-                    if (self.handler) {
-                        self.handler(self, nil, error);
-                    }
-                }];
-                [alertController addAction: alertAction];
-                [self presentViewController:alertController animated:YES completion:nil];
+                if (self.handler) {
+                    self.handler(self, nil, error);
+                }
             }
         });
     }];

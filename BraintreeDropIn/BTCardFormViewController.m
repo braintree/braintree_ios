@@ -135,8 +135,7 @@
 
 #pragma mark - Setup
 
-- (void)setupForm
-{
+- (void)setupForm {
     self.nextButton = [[UIButton alloc] init];
     [self.nextButton setTitle:@"Next" forState:UIControlStateNormal];
     self.nextButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -464,22 +463,10 @@
     [self cardNumberErrorHidden:YES];
     [unionPayClient fetchCapabilities:self.cardNumberField.number completion:^(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error) {
         if (error || (!cardCapabilities.isUnionPay && !self.cardNumberField.valid)) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Sorry, there was an error. Please review your information and try again." preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                [alertController addAction: alertAction];
-                [self presentViewController:alertController animated:YES completion:nil];
-            });
             [self cardNumberErrorHidden:NO];
             self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
             return;
         }else if (cardCapabilities.isUnionPay && !cardCapabilities.isSupported) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"That card is not supported. Please try another card." preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                [alertController addAction: alertAction];
-                [self presentViewController:alertController animated:YES completion:nil];
-            });
             [self cardNumberErrorHidden:NO];
             self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
             return;
@@ -614,15 +601,6 @@
             enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.mobilePhoneField.mobileNumber mobileCountryCode:self.mobileCountryCodeField.countryCode handler:^(NSString* authCode, BOOL resend) {
                 
                 if (resend) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        // If user elects to resend, show a prompt asking them to verify the card form information and try again
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Please review your information and try again." preferredStyle:UIAlertControllerStyleAlert];
-                        UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
-                            [navController popViewControllerAnimated:YES];
-                        }];
-                        [alertController addAction: alertAction];
-                        [navController presentViewController:alertController animated:YES completion:nil];
-                    });
                     return;
                 }
                 
@@ -642,14 +620,6 @@
                         self.view.userInteractionEnabled = YES;
                         enrollmentController.navigationItem.rightBarButtonItem = originalRightBarButtonItem;
                         if (error) {
-                            // When tokenization fails for UnionPay, Drop-In will not report the error back but will instead display an alert
-                            // And return to the card form
-                            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"Sorry, there was an error. Please review your information and try again." preferredStyle:UIAlertControllerStyleAlert];
-                            UIAlertAction *alertAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
-                                [navController popViewControllerAnimated:YES];
-                            }];
-                            [alertController addAction: alertAction];
-                            [navController presentViewController:alertController animated:YES completion:nil];
                             return;
                         }
                         
