@@ -177,7 +177,6 @@
 }
 
 + (NSDictionary *)cardsByBrand {
-
     static dispatch_once_t p = 0;
     static NSDictionary *_cardsByBrand = nil;
 
@@ -194,7 +193,6 @@
 #pragma mark - Formatting
 
 - (NSAttributedString *)formatNumber:(NSString *)input kerning:(CGFloat)kerning{
-
     input = [BTUIKUtil stripNonDigits:input];
 
     NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:input];

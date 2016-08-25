@@ -95,12 +95,7 @@
     _number = [BTUIKUtil stripNonDigits:self.textField.text];
     BTUIKCardType *oldCardType = _cardType;
     _cardType = [BTUIKCardType cardTypeForNumber:_number];
-    if (self.cardType != nil) {
-        UITextRange *r = self.textField.selectedTextRange;
-        NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:[self.cardType formatNumber:_number kerning:TEMP_KERNING]];
-        self.textField.attributedText = text;
-        self.textField.selectedTextRange = r;
-    }
+    [self formatCardNumber];
 
     if (self.cardType != oldCardType) {
         [self updateCardHint];
@@ -114,9 +109,17 @@
     [self.delegate formFieldDidChange:self];
 }
 
+- (void)formatCardNumber {
+    if (self.cardType != nil) {
+        UITextRange *r = self.textField.selectedTextRange;
+        NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:[self.cardType formatNumber:_number kerning:TEMP_KERNING]];
+        self.textField.attributedText = text;
+        self.textField.selectedTextRange = r;
+    }
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.textField.text = _number;
-    [self fieldContentDidChange];
     [super textFieldDidBeginEditing:textField];
     self.displayAsValid = self.valid || (!self.isValidLength && self.isPotentiallyValid);
     self.formLabel.text = @"";
@@ -131,8 +134,11 @@
                         }
                         [self updateConstraints];
                         [self updateAppearance];
+                        
+                        if (self.isPotentiallyValid) {
+                            [self formatCardNumber];
+                        }
                     } completion:nil];
-
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {

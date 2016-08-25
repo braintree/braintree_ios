@@ -133,6 +133,11 @@
     self.title = @"Card Details";
 }
 
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear: animated];
+    [self.cardNumberField becomeFirstResponder];
+}
+
 #pragma mark - Setup
 
 - (void)setupForm {
@@ -210,7 +215,7 @@
     [self updateFormBorders];
     
     //Error labels
-    self.cardNumberErrorView = [self newStackViewForError:@"You must provide a valid Card Number."];
+    self.cardNumberErrorView = [self newStackViewForError:@"You must provide a valid card number"];
     [self cardNumberErrorHidden:YES];
     
     //Enrollment footer
@@ -236,10 +241,9 @@
         BTJSON *unionPayJSON = self.configuration.json[@"unionPay"];
         if (![unionPayJSON isError] && [unionPayJSON[@"enabled"] isTrue] && !self.apiClient.tokenizationKey) {
             self.unionPayEnabledMerchant = YES;
-            self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
             [self.cardNumberField setAccessoryViewHidden:NO animated:NO];
         }
-        
+        self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
         [self updateRequiredFields];
     }
 }
@@ -454,19 +458,24 @@
     }
 }
 
-#pragma mark - Protocol conformance
-#pragma mark FormField Delegate Methods
+- (void)advanceFocusFromField:(BTUIKFormField *)currentField {
+    NSUInteger currentIdx = [self.requiredFields indexOfObject:currentField];
+    if ([self.requiredFields indexOfObject:currentField] < [self.requiredFields count]) {
+        [[self.requiredFields objectAtIndex:currentIdx + 1] becomeFirstResponder];
+    }
+}
 
-- (void)validateButtonPressed:(__unused BTUIKFormField *)formField {
-    BTCardClient *unionPayClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
-    self.cardNumberField.state = BTUIKCardNumberFormFieldStateLoading;
+- (void)fetchCardCapabilities {
     [self cardNumberErrorHidden:YES];
+    self.cardNumberField.state = BTUIKCardNumberFormFieldStateLoading;
+    
+    BTCardClient *unionPayClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
     [unionPayClient fetchCapabilities:self.cardNumberField.number completion:^(BTCardCapabilities * _Nullable cardCapabilities, NSError * _Nullable error) {
         if (error || (!cardCapabilities.isUnionPay && !self.cardNumberField.valid)) {
             [self cardNumberErrorHidden:NO];
             self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
             return;
-        }else if (cardCapabilities.isUnionPay && !cardCapabilities.isSupported) {
+        } else if (cardCapabilities.isUnionPay && !cardCapabilities.isSupported) {
             [self cardNumberErrorHidden:NO];
             self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
             return;
@@ -478,9 +487,7 @@
         }
         self.optionalFields = [NSMutableArray new];
         self.cardCapabilities = cardCapabilities;
-        if (cardCapabilities.isUnionPay){
-            [self.requiredFields addObject:self.mobileCountryCodeField];
-            [self.requiredFields addObject:self.mobilePhoneField];
+        if (cardCapabilities.isUnionPay) {
             if (cardCapabilities.isDebit) {
                 [self.requiredFields addObject:self.securityCodeField];
                 [self.optionalFields addObject:self.securityCodeField];
@@ -488,50 +495,16 @@
             } else {
                 [self.requiredFields addObject:self.securityCodeField];
             }
+            [self.requiredFields addObject:self.mobileCountryCodeField];
+            [self.requiredFields addObject:self.mobilePhoneField];
         }
         
         self.securityCodeField.textField.placeholder = self.cardNumberField.cardType.securityCodeName;
         self.cardNumberField.state = BTUIKCardNumberFormFieldStateDefault;
         self.collapsed = NO;
-        [self.expirationDateField becomeFirstResponder];
+        [self advanceFocusFromField:self.cardNumberField];
         [self formFieldDidChange:nil];
     }];
-}
-
-- (void)formFieldDidBeginEditing:(__unused BTUIKFormField *)formField {
-    if (!self.cardEntryDidFocus) {
-        [self.apiClient sendAnalyticsEvent:@"ios.dropin2.card.focus"];
-        self.cardEntryDidFocus = YES;
-    }
-}
-
-- (void)formFieldDidChange:(BTUIKFormField *)formField {
-    [self updateSubmitButton];
-    if (formField == self.cardNumberField && self.cardNumberField.state == BTUIKCardNumberFormFieldStateDefault) {
-        [self cardNumberErrorHidden:self.cardNumberField.displayAsValid];
-    }
-    if (!self.cardEntryDidBegin && formField.text.length > 0) {
-        [self.apiClient sendAnalyticsEvent:@"ios.dropin2.add-card.start"];
-        self.cardEntryDidBegin = YES;
-    }
-    if (self.collapsed && formField == self.cardNumberField && !self.unionPayEnabledMerchant) {
-        BTUIKPaymentOptionType paymentMethodType = [BTUIKViewUtil paymentMethodTypeForCardType:self.cardNumberField.cardType];
-        [self.cardList emphasizePaymentOption:paymentMethodType];
-        if (formField.valid) {
-            self.collapsed = NO;
-            [self.expirationDateField becomeFirstResponder];
-        }
-    } else if (!self.collapsed && formField == self.cardNumberField && !self.unionPayEnabledMerchant) {
-        self.collapsed = YES;
-    }
-    
-    if (!self.collapsed && formField == self.cardNumberField && self.unionPayEnabledMerchant) {
-        if (self.unionPayEnabledMerchant) {
-            self.cardCapabilities = nil;
-            self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
-        }
-        self.collapsed = YES;
-    }
 }
 
 - (void)cardNumberErrorHidden:(BOOL)hidden {
@@ -644,6 +617,75 @@
         return;
     }
     basicTokenizeBlock();
+}
+
+#pragma mark - Protocol conformance
+#pragma mark FormField Delegate Methods
+
+- (void)validateButtonPressed:(__unused BTUIKFormField *)formField {
+    if (!self.unionPayEnabledMerchant) {
+        [self cardNumberErrorHidden:formField.valid];
+        if (formField.valid) {
+            self.cardNumberField.state = BTUIKCardNumberFormFieldStateDefault;
+            self.collapsed = NO;
+            [self advanceFocusFromField:formField];
+        }
+    } else {
+        [self fetchCardCapabilities];
+    }
+}
+
+- (void)formFieldDidBeginEditing:(__unused BTUIKFormField *)formField {
+    if (!self.cardEntryDidFocus) {
+        [self.apiClient sendAnalyticsEvent:@"ios.dropin2.card.focus"];
+        self.cardEntryDidFocus = YES;
+    }
+    
+    if (!self.collapsed && formField == self.cardNumberField) {
+        self.cardNumberField.state = BTUIKCardNumberFormFieldStateValidate;
+        self.collapsed = YES;
+        if (self.unionPayEnabledMerchant) {
+            self.cardCapabilities = nil;
+        }
+    }
+}
+
+- (void)formFieldDidChange:(BTUIKFormField *)formField {
+    [self updateSubmitButton];
+    
+    // When focus moves from card number field, display the error state if the value in the field is invalid
+    if (formField == self.cardNumberField && self.cardNumberField.state == BTUIKCardNumberFormFieldStateDefault) {
+        [self cardNumberErrorHidden:self.cardNumberField.displayAsValid];
+    }
+    
+    // Analytics event - fires when a customer begins enterinf card information
+    if (!self.cardEntryDidBegin && formField.text.length > 0) {
+        [self.apiClient sendAnalyticsEvent:@"ios.dropin2.add-card.start"];
+        self.cardEntryDidBegin = YES;
+    }
+    
+    // Highlight card brand in card hint view according to BIN number
+    if (self.collapsed && formField == self.cardNumberField && !self.unionPayEnabledMerchant) {
+        BTUIKPaymentOptionType paymentMethodType = [BTUIKViewUtil paymentMethodTypeForCardType:self.cardNumberField.cardType];
+        [self.cardList emphasizePaymentOption:paymentMethodType];
+    }
+    
+    // Auto-advance fields when complete
+    if (self.collapsed && formField == self.cardNumberField && formField.text.length > 0) {
+        BTUIKCardType *cardType = self.cardNumberField.cardType;
+        if (cardType != nil && formField.text.length >= cardType.maxNumberLength) {
+            [self validateButtonPressed:formField];
+        }
+    } else if (formField == self.expirationDateField && formField.text.length > 0) {
+        if (formField.text.length >= 5) {
+            [self advanceFocusFromField:formField];
+        }
+    } else if (formField == self.securityCodeField && formField.text.length > 0) {
+        BTUIKCardType *cardType = self.cardNumberField.cardType;
+        if (cardType != nil && formField.text.length >= cardType.validCvvLength) {
+            [self advanceFocusFromField:formField];
+        }
+    }
 }
 
 #pragma mark UITextFieldDelegate
