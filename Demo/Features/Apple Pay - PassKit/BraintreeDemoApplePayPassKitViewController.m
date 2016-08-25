@@ -19,12 +19,14 @@
     self.label.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.label];
 
-    [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton];
-    [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton withOffset:8];
-    [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
-    [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];
-    [self.label autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
-
+    if (self.paymentButton) {
+        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton];
+        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton withOffset:8];
+        [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+        [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];
+        [self.label autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
+    }
+    
     self.title = @"Apple Pay via PassKit";
 }
 
@@ -40,8 +42,8 @@
 
     // Discover and PrivateLabel were added in iOS 9.0
     // At this time, we have not tested these options
-    if (![PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkAmex, PKPaymentNetworkMasterCard, PKPaymentNetworkVisa]]) {
-        self.progressBlock(@"canMakePaymentsUsingNetworks: returns NO, hiding Apple Pay button");
+    if (![PKPaymentAuthorizationViewController canMakePayments]) {
+        self.progressBlock(@"canMakePayments returns NO, hiding Apple Pay button");
         return nil;
     }
 
