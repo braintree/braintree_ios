@@ -461,7 +461,7 @@
 
 - (void)advanceFocusFromField:(BTUIKFormField *)currentField {
     NSUInteger currentIdx = [self.requiredFields indexOfObject:currentField];
-    if ([self.requiredFields indexOfObject:currentField] < [self.requiredFields count]) {
+    if (currentIdx < [self.requiredFields count] - 1) {
         [[self.requiredFields objectAtIndex:currentIdx + 1] becomeFirstResponder];
     }
 }
@@ -519,9 +519,9 @@
 
 - (void)tokenizeCard {
     [self.view endEditing:YES];
+    
     __block BTCardRequest *cardRequest = self.cardRequest;
     __block BTCardClient *cardClient = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
-    
     void (^basicTokenizeBlock)() = ^void() {
         UIActivityIndicatorView *spinner = [UIActivityIndicatorView new];
         spinner.activityIndicatorViewStyle = [BTUIKAppearance sharedInstance].activityIndicatorViewStyle;
@@ -573,7 +573,6 @@
             __block UINavigationController *navController = self.navigationController;
             __block BTEnrollmentVerificationViewController *enrollmentController;
             enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.mobilePhoneField.mobileNumber mobileCountryCode:self.mobileCountryCodeField.countryCode handler:^(NSString* authCode, BOOL resend) {
-                
                 if (resend) {
                     [self.navigationController popViewControllerAnimated:YES];
                     return;
