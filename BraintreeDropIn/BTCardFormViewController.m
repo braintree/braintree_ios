@@ -5,6 +5,7 @@
 #import "BTAPIClient_Internal.h"
 #import "BTUIKBarButtonItem.h"
 #import "BTEnrollmentVerificationViewController.h"
+#import "BTDropInUIUtilities.h"
 #if __has_include("BraintreeCard.h")
 #import "BraintreeCard.h"
 #else
@@ -79,7 +80,7 @@
     self.scrollViewContentWrapper.translatesAutoresizingMaskIntoConstraints = NO;
     [self.scrollView addSubview:self.scrollViewContentWrapper];
     
-    self.stackView = [self newStackView];
+    self.stackView = [BTDropInUIUtilities newStackView];
     [self.scrollViewContentWrapper addSubview:self.stackView];
     
     NSDictionary *viewBindings = @{@"stackView":self.stackView,
@@ -161,7 +162,7 @@
     self.mobilePhoneField = [[BTUIKMobileNumberFormField alloc] init];
     self.mobilePhoneField.delegate = self;
     
-    self.cardNumberHeader = [self newStackView];
+    self.cardNumberHeader = [BTDropInUIUtilities newStackView];
     self.cardNumberHeader.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance verticalFormSpace], 0, [BTUIKAppearance verticalFormSpace]);
     self.cardNumberHeader.layoutMarginsRelativeArrangement = true;
     UILabel *cardNumberHeaderLabel = [[UILabel alloc] init];
@@ -170,7 +171,7 @@
     cardNumberHeaderLabel.text = @"Enter your card details starting with the card number.";
     [BTUIKAppearance styleLargeLabelSecondary:cardNumberHeaderLabel];
     [self.cardNumberHeader addArrangedSubview:cardNumberHeaderLabel];
-    [self addSpacerToStackView:self.cardNumberHeader beforeView:cardNumberHeaderLabel size: [BTUIKAppearance verticalFormSpace]];
+    [BTDropInUIUtilities addSpacerToStackView:self.cardNumberHeader beforeView:cardNumberHeaderLabel size: [BTUIKAppearance verticalFormSpace]];
     [self.stackView addArrangedSubview:self.cardNumberHeader];
     
     self.formFields = @[self.cardNumberField, self.expirationDateField, self.securityCodeField, self.postalCodeField, self.mobileCountryCodeField, self.mobilePhoneField];
@@ -196,11 +197,11 @@
     self.mobileCountryCodeField.hidden = YES;
     self.mobilePhoneField.hidden = YES;
     
-    [self addSpacerToStackView:self.stackView beforeView:self.cardNumberField size: [BTUIKAppearance verticalFormSpace]];
-    [self addSpacerToStackView:self.stackView beforeView:self.expirationDateField size: [BTUIKAppearance verticalFormSpace]];
-    [self addSpacerToStackView:self.stackView beforeView:self.mobileCountryCodeField size: [BTUIKAppearance verticalFormSpace]];
+    [BTDropInUIUtilities addSpacerToStackView:self.stackView beforeView:self.cardNumberField size: [BTUIKAppearance verticalFormSpace]];
+    [BTDropInUIUtilities addSpacerToStackView:self.stackView beforeView:self.expirationDateField size: [BTUIKAppearance verticalFormSpace]];
+    [BTDropInUIUtilities addSpacerToStackView:self.stackView beforeView:self.mobileCountryCodeField size: [BTUIKAppearance verticalFormSpace]];
     
-    self.cardNumberFooter = [self newStackView];
+    self.cardNumberFooter = [BTDropInUIUtilities newStackView];
     self.cardNumberFooter.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance verticalFormSpace], 0, [BTUIKAppearance verticalFormSpace]);
     self.cardNumberFooter.layoutMarginsRelativeArrangement = true;
     [self.stackView addArrangedSubview:self.cardNumberFooter];
@@ -208,7 +209,7 @@
     self.cardList.translatesAutoresizingMaskIntoConstraints = NO;
     self.cardList.availablePaymentOptions = self.dropInRequest.displayCardTypes;
     [self.cardNumberFooter addArrangedSubview:self.cardList];
-    [self addSpacerToStackView:self.cardNumberFooter beforeView:self.cardList size: [BTUIKAppearance horizontalFormContentPadding]];
+    [BTDropInUIUtilities addSpacerToStackView:self.cardNumberFooter beforeView:self.cardList size: [BTUIKAppearance horizontalFormContentPadding]];
     
     NSUInteger indexOfCardNumberField = [self.stackView.arrangedSubviews indexOfObject:self.cardNumberField];
     [self.stackView insertArrangedSubview:self.cardNumberFooter atIndex:(indexOfCardNumberField + 1)];
@@ -216,11 +217,11 @@
     [self updateFormBorders];
     
     //Error labels
-    self.cardNumberErrorView = [self newStackViewForError:@"You must provide a valid card number"];
+    self.cardNumberErrorView = [BTDropInUIUtilities newStackViewForError:@"You must provide a valid card number"];
     [self cardNumberErrorHidden:YES];
     
     //Enrollment footer
-    self.enrollmentFooter = [self newStackView];
+    self.enrollmentFooter = [BTDropInUIUtilities newStackView];
     self.enrollmentFooter.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
     self.enrollmentFooter.layoutMarginsRelativeArrangement = true;
     UILabel *enrollmentFooterLabel = [[UILabel alloc] init];
@@ -229,7 +230,7 @@
     enrollmentFooterLabel.text = @"Enrollment is required for this card. An enrollment number will be sent by SMS.";
     [BTUIKAppearance styleLabelSecondary:enrollmentFooterLabel];
     [self.enrollmentFooter addArrangedSubview:enrollmentFooterLabel];
-    [self addSpacerToStackView:self.enrollmentFooter beforeView:enrollmentFooterLabel size: [BTUIKAppearance verticalFormSpaceTight]];
+    [BTDropInUIUtilities addSpacerToStackView:self.enrollmentFooter beforeView:enrollmentFooterLabel size: [BTUIKAppearance verticalFormSpaceTight]];
     self.enrollmentFooter.hidden = YES;
     [self.stackView addArrangedSubview:self.enrollmentFooter];
 }
@@ -403,42 +404,6 @@
     }
 }
 
-- (UIView *)addSpacerToStackView:(UIStackView*)stackView beforeView:(UIView*)view size:(float)size {
-    NSInteger indexOfView = [stackView.arrangedSubviews indexOfObject:view];
-    if (indexOfView != NSNotFound) {
-        UIView *spacer = [[UIView alloc] init];
-        spacer.translatesAutoresizingMaskIntoConstraints = NO;
-        [stackView insertArrangedSubview:spacer atIndex:indexOfView];
-        NSLayoutConstraint *heightConstraint = [spacer.heightAnchor constraintEqualToConstant:size];
-        heightConstraint.priority = UILayoutPriorityDefaultHigh;
-        heightConstraint.active = true;
-        return spacer;
-    }
-    return nil;
-}
-
-- (UIStackView *)newStackView {
-    UIStackView *stackView = [[UIStackView alloc] init];
-    stackView.translatesAutoresizingMaskIntoConstraints = NO;
-    stackView.axis  = UILayoutConstraintAxisVertical;
-    stackView.distribution  = UIStackViewDistributionFill;
-    stackView.alignment = UIStackViewAlignmentFill;
-    stackView.spacing = 0;
-    return stackView;
-}
-
-- (UIStackView *)newStackViewForError:(NSString*)errorText {
-    UIStackView *newStackView = [self newStackView];
-    UILabel *errorLabel = [UILabel new];
-    errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [BTUIKAppearance styleSmallLabelPrimary:errorLabel];
-    errorLabel.textColor = [BTUIKAppearance sharedInstance].errorForegroundColor;
-    errorLabel.text = errorText;
-    newStackView.layoutMargins = UIEdgeInsetsMake([BTUIKAppearance verticalFormSpaceTight], [BTUIKAppearance horizontalFormContentPadding], [BTUIKAppearance verticalFormSpaceTight], [BTUIKAppearance horizontalFormContentPadding]);
-    newStackView.layoutMarginsRelativeArrangement = true;
-    [newStackView addArrangedSubview:errorLabel];
-    return newStackView;
-}
 
 - (BOOL)isFormValid {
     __block BOOL isFormValid = YES;
@@ -594,6 +559,7 @@
                         self.view.userInteractionEnabled = YES;
                         enrollmentController.navigationItem.rightBarButtonItem = originalRightBarButtonItem;
                         if (error) {
+                            [enrollmentController smsErrorHidden:NO];
                             return;
                         }
                         

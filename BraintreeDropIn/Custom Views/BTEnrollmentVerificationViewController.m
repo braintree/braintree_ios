@@ -1,14 +1,17 @@
 #import "BTEnrollmentVerificationViewController.h"
 #import "BTUIKBarButtonItem.h"
+#import "BTDropInUIUtilities.h"
 
 @interface BTEnrollmentVerificationViewController ()
 
-@property (nonatomic, strong) NSString* mobilePhoneNumber;
-@property (nonatomic, strong) NSString* mobileCountryCode;
+@property (nonatomic, strong) NSString *mobilePhoneNumber;
+@property (nonatomic, strong) NSString *mobileCountryCode;
 @property (nonatomic, strong) BTEnrollmentHandler handler;
-@property (nonatomic, strong) BTUIKFormField* smsTextField;
-@property (nonatomic, strong) UILabel* smsSentLabel;
+@property (nonatomic, strong) BTUIKFormField *smsTextField;
+@property (nonatomic, strong) UILabel *smsSentLabel;
 @property (nonatomic, strong) UIButton *resendSmsButton;
+@property (nonatomic, strong) UIStackView *stackView;
+@property (nonatomic, strong) UIStackView *smsErrorView;
 @end
 
 @implementation BTEnrollmentVerificationViewController
@@ -72,29 +75,42 @@
     [self.resendSmsButton addTarget:self action:@selector(resendTapped) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.resendSmsButton];
 
+    self.stackView = [BTDropInUIUtilities newStackView];
+
+    [self.stackView addArrangedSubview:self.smsSentLabel];
+    [self.stackView addArrangedSubview:self.smsTextField];
+    [self.stackView addArrangedSubview:self.resendSmsButton];
+
+    [BTDropInUIUtilities addSpacerToStackView:self.stackView beforeView:self.smsSentLabel size:[BTUIKAppearance verticalFormSpace]];
+    [BTDropInUIUtilities addSpacerToStackView:self.stackView beforeView:self.smsTextField size:[BTUIKAppearance verticalFormSpace]];
+    [BTDropInUIUtilities addSpacerToStackView:self.stackView beforeView:self.resendSmsButton size:[BTUIKAppearance verticalFormSpaceTight]];
+
+    [self.smsTextField.heightAnchor constraintEqualToConstant:[BTUIKAppearance formCellHeight]].active = YES;
+
+    [self.view addSubview:self.stackView];
+
+    self.smsErrorView = [BTDropInUIUtilities newStackViewForError:@"Invalid SMS Code"];
+    [self smsErrorHidden:YES];
+
     NSDictionary* viewBindings = @{
                                    @"smsSentLabel": self.smsSentLabel,
                                    @"smsTextField": self.smsTextField,
-                                   @"resendSmsButton": self.resendSmsButton
+                                   @"resendSmsButton": self.resendSmsButton,
+                                   @"stackView": self.stackView,
                                    };
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[smsSentLabel]|"
-                                                                      options:0
-                                                                      metrics:[BTUIKAppearance metrics]
-                                                                        views:viewBindings]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[smsTextField]|"
-                                                                      options:0
-                                                                      metrics:[BTUIKAppearance metrics]
-                                                                        views:viewBindings]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[resendSmsButton]|"
-                                                                      options:0
-                                                                      metrics:[BTUIKAppearance metrics]
-                                                                        views:viewBindings]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(VERTICAL_FORM_SPACE)-[smsSentLabel]-(VERTICAL_FORM_SPACE)-[smsTextField(FORM_CELL_HEIGHT)]-(VERTICAL_FORM_SPACE_TIGHT)-[resendSmsButton]"
-                                                                      options:0
-                                                                      metrics:[BTUIKAppearance metrics]
-                                                                        views:viewBindings]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[stackView]" options:0 metrics:[BTUIKAppearance metrics] views:viewBindings]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[stackView]|" options:0 metrics:[BTUIKAppearance metrics] views:viewBindings]];
+}
+
+
+- (void)smsErrorHidden:(BOOL)hidden {
+    NSInteger indexOfSMSCodeFormField = [self.stackView.arrangedSubviews indexOfObject:self.smsTextField];
+    if (indexOfSMSCodeFormField != NSNotFound && !hidden) {
+        [self.stackView insertArrangedSubview:self.smsErrorView atIndex:indexOfSMSCodeFormField + 1];
+    } else if (self.smsErrorView.superview != nil && hidden) {
+        [self.smsErrorView removeFromSuperview];
+    }
 }
 
 - (void)formFieldDidChange:(BTUIKFormField *)formField {
