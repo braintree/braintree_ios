@@ -126,6 +126,8 @@
     [self resetForm];
     [self showLoadingScreen:YES animated:NO];
     [self loadConfiguration];
+
+    [self.cardNumberField becomeFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -135,7 +137,6 @@
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
-    [self.cardNumberField becomeFirstResponder];
 }
 
 #pragma mark - Setup
@@ -574,6 +575,7 @@
             enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.mobilePhoneField.mobileNumber mobileCountryCode:self.mobileCountryCodeField.countryCode handler:^(NSString* authCode, BOOL resend) {
                 
                 if (resend) {
+                    [self.navigationController popViewControllerAnimated:YES];
                     return;
                 }
                 

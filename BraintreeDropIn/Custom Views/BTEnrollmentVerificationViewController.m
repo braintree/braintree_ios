@@ -57,7 +57,7 @@
     self.smsTextField.delegate = self;
     [self.view addSubview:self.smsTextField];
     
-    NSString *smsButtonText = @"Didn't get an SMS code?";
+    NSString *smsButtonText = @"Use a Different Phone Number";
     self.resendSmsButton = [UIButton new];
     self.resendSmsButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.resendSmsButton setTitle:smsButtonText forState:UIControlStateNormal];
