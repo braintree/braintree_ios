@@ -38,6 +38,7 @@
 @property (nonatomic, strong) UIStackView *cardNumberFooter;
 @property (nonatomic, strong) BTUIKCardListLabel *cardList;
 @property (nonatomic, getter=isCollapsed) BOOL collapsed;
+@property (nonatomic, strong) BTUIKFormField *firstResponderFormField;
 @property (nonatomic, strong, nullable, readwrite) BTCardCapabilities *cardCapabilities;
 @property (nonatomic) BOOL unionPayEnabledMerchant;
 @property (nonatomic, assign) BOOL cardEntryDidBegin;
@@ -127,8 +128,8 @@
     [self resetForm];
     [self showLoadingScreen:YES animated:NO];
     [self loadConfiguration];
-
-    [self.cardNumberField becomeFirstResponder];
+    
+    self.firstResponderFormField = self.cardNumberField;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -138,6 +139,10 @@
 
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear: animated];
+    if (self.firstResponderFormField) {
+        [self.firstResponderFormField becomeFirstResponder];
+        self.firstResponderFormField = nil;
+    }
 }
 
 #pragma mark - Setup
@@ -539,6 +544,7 @@
             __block BTEnrollmentVerificationViewController *enrollmentController;
             enrollmentController = [[BTEnrollmentVerificationViewController alloc] initWithPhone:self.mobilePhoneField.mobileNumber mobileCountryCode:self.mobileCountryCodeField.countryCode handler:^(NSString* authCode, BOOL resend) {
                 if (resend) {
+                    self.firstResponderFormField = self.mobilePhoneField;
                     [self.navigationController popViewControllerAnimated:YES];
                     return;
                 }
