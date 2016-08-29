@@ -39,6 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// The BTCardCapabilities used to update the form after checking the card number. Applicable when UnionPay is enabled.
 @property (nonatomic, strong, nullable, readonly) BTCardCapabilities *cardCapabilities;
 
+/// The card network types supported by this merchant
+@property (nonatomic, copy) NSArray *supportedCardTypes;
+
 /// Resets the state of the form fields
 - (void)resetForm;
 
@@ -46,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol BTCardFormViewControllerDelegate <NSObject>
 
-- (void)cardTokenizationCompleted:(BTPaymentMethodNonce * _Nullable )tokenizedCard error:( NSError * _Nullable )error sender:(BTCardFormViewController *) sender;
+- (void)cardTokenizationCompleted:(BTPaymentMethodNonce * _Nullable )tokenizedCard error:(NSError * _Nullable )error sender:(BTCardFormViewController *) sender;
 
 @end
 

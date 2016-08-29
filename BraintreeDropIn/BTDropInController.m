@@ -29,6 +29,7 @@
 @property (nonatomic, strong) NSLayoutConstraint *contentHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *contentHeightConstraintBottom;
 @property (nonatomic) BOOL useBlur;
+@property (nonatomic, copy) NSArray *displayCardTypes;
 @property (nonatomic, strong) UIVisualEffectView *blurredContentBackgroundView;
 @property (nonatomic, copy, nullable) BTDropInControllerHandler handler;
 
@@ -42,7 +43,6 @@
     BTUIKPaymentOptionType lastSelectedPaymentOptionType = [[NSUserDefaults standardUserDefaults] integerForKey:@"BT_dropInLastSelectedPaymentMethodType"];
     __block BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:authorization];
     apiClient = [apiClient copyWithSource:apiClient.metadata.source integration:BTClientMetadataIntegrationDropIn2];
-
     
     [apiClient fetchPaymentMethodNonces:NO completion:^(NSArray<BTPaymentMethodNonce *> *paymentMethodNonces, NSError *error) {
                                        if (error != nil) {
@@ -89,6 +89,7 @@
             self.useBlur = NO;
         }
         self.handler = handler;
+        self.displayCardTypes = @[];
     }
     return self;
 }
@@ -257,6 +258,16 @@
                 self.paymentSelectionViewController.view.hidden = NO;
                 self.paymentSelectionViewController.view.alpha = 1.0;
                 [self updateToolbarForViewController:self.paymentSelectionViewController];
+                
+                NSArray *supportedCardTypes = [configuration.json[@"creditCards"][@"supportedCardTypes"] asArray];
+                NSMutableArray *paymentOptionTypes = [NSMutableArray new];
+                for (NSString *supportedCardType in supportedCardTypes) {
+                    BTUIKPaymentOptionType paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:supportedCardType];
+                    if (paymentOptionType != BTUIKPaymentOptionTypeUnknown) {
+                        [paymentOptionTypes addObject: @(paymentOptionType)];
+                    }
+                }
+                self.displayCardTypes = paymentOptionTypes;
             } else {
                 if (self.handler) {
                     self.handler(self, nil, error);
@@ -307,6 +318,7 @@
 
 - (void)showCardForm:(__unused id)sender {
     BTCardFormViewController* vd = [[BTCardFormViewController alloc] initWithAPIClient:self.apiClient request:self.dropInRequest];
+    vd.supportedCardTypes = self.displayCardTypes;
     vd.delegate = self;
       UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:vd];
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {

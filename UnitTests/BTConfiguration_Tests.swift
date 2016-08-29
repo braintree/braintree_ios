@@ -1,4 +1,5 @@
 import XCTest
+import PassKit
 
 class BTConfiguration_Tests: XCTestCase {
 
@@ -92,6 +93,25 @@ class BTConfiguration_Tests: XCTestCase {
             let configuration = BTConfiguration(JSON: configurationJSON)
 
             XCTAssertTrue(configuration.isApplePayEnabled)
+        }
+    }
+    
+    func testApplePaySupportedNetworks_returnsCorrectPKCardNetworkTypes() {
+        let configurationJSON = BTJSON(value: [
+            "applePay": [
+                "status": "off",
+                // From Gateway::ApplePayService#supportedNetworks:296-300
+                "supportedNetworks": ["visa", "amex", "mastercard", "discover"]
+            ]
+        ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+        let supportedNetworks = configuration.applePaySupportedNetworks;
+       
+        XCTAssertEqual(supportedNetworks[0] as? String, PKPaymentNetworkVisa)
+        XCTAssertEqual(supportedNetworks[1] as? String, PKPaymentNetworkAmex)
+        XCTAssertEqual(supportedNetworks[2] as? String, PKPaymentNetworkMasterCard)
+        if #available(iOS 9, *) {
+            XCTAssertEqual(supportedNetworks[3] as? String, PKPaymentNetworkDiscover)
         }
     }
 

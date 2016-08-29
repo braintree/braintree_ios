@@ -122,7 +122,7 @@
         return BTUIKPaymentOptionTypeDiscover;
     } else if ([typeString isEqualToString:@"UKMaestro"]) {
         return BTUIKPaymentOptionTypeUKMaestro;
-    } else if ([typeString isEqualToString:@"AMEX"]) {
+    } else if ([typeString isEqualToString:@"AMEX"] || [typeString isEqualToString:@"American Express"]) {
         return BTUIKPaymentOptionTypeAMEX;
     } else if ([typeString isEqualToString:@"Solo"]) {
         return BTUIKPaymentOptionTypeSolo;

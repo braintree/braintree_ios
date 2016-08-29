@@ -172,7 +172,6 @@
     if (!error) {
         [self fetchPaymentMethodsOnCompletion:^{
             if ([[BTTokenizationService sharedService] isTypeAvailable:@"PayPal"] && [self.configuration.json[@"paypalEnabled"] isTrue]) {
-                
                 [activePaymentOptions addObject:@(BTUIKPaymentOptionTypePayPal)];
             }
             
@@ -188,10 +187,15 @@
             // Always add Cards
             [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeUnknown)];
             
+#ifdef __BT_APPLE_PAY
             BTJSON *applePayConfiguration = self.configuration.json[@"applePay"];
-            if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"] && self.dropInRequest.showApplePayPaymentOption) {
-                [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeApplePay)];
+            if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"] && !self.dropInRequest.applePayDisabled) {
+                // Short-circuits if BraintreeApplePay is not available at runtime
+                if (__BT_AVAILABLE(@"BTApplePayClient") && [configuration canMakeApplePayPayments]) {
+                    [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeApplePay)];
+                }
             }
+#endif
             
             self.paymentOptionsData = [activePaymentOptions copy];
             [self.savedPaymentMethodsCollectionView reloadData];

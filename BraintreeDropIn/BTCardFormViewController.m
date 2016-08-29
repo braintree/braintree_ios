@@ -53,6 +53,7 @@
     if (self = [super initWithAPIClient:apiClient request:request]) {
         _requiredFields = [NSMutableArray new];
         _optionalFields = [NSMutableArray new];
+        _supportedCardTypes = [NSArray new];
     }
     return self;
 }
@@ -212,7 +213,7 @@
     [self.stackView addArrangedSubview:self.cardNumberFooter];
     self.cardList = [BTUIKCardListLabel new];
     self.cardList.translatesAutoresizingMaskIntoConstraints = NO;
-    self.cardList.availablePaymentOptions = self.dropInRequest.displayCardTypes;
+    self.cardList.availablePaymentOptions = self.supportedCardTypes;
     [self.cardNumberFooter addArrangedSubview:self.cardList];
     [BTDropInUIUtilities addSpacerToStackView:self.cardNumberFooter beforeView:self.cardList size: [BTUIKAppearance horizontalFormContentPadding]];
     
@@ -374,9 +375,7 @@
 
 - (void)cancelTapped {
     [self hideKeyboard];
-    [self dismissViewControllerAnimated:YES completion:^{
-        //noop
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateFormBorders {
@@ -587,9 +586,9 @@
                 
             });
         }];
-        return;
+    } else {
+        basicTokenizeBlock();
     }
-    basicTokenizeBlock();
 }
 
 #pragma mark - Protocol conformance

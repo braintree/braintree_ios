@@ -1937,7 +1937,7 @@
 		A7A6DD2C1B431B75008857E1 /* BTAPIClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAPIClient_Internal.h; sourceTree = "<group>"; };
 		A7A6DD3E1B445550008857E1 /* BTAnalyticsMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAnalyticsMetadata.h; sourceTree = "<group>"; };
 		A7A6DD3F1B445550008857E1 /* BTAnalyticsMetadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAnalyticsMetadata.m; sourceTree = "<group>"; };
-		A7A6DD401B445550008857E1 /* BTHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTHTTP.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A7A6DD401B445550008857E1 /* BTHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTHTTP.h; sourceTree = "<group>"; };
 		A7A6DD411B445550008857E1 /* BTHTTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHTTP.m; sourceTree = "<group>"; };
 		A7A6DD4A1B445A29008857E1 /* BTAPIPinnedCertificates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTAPIPinnedCertificates.h; sourceTree = "<group>"; };
 		A7A6DD4B1B445A29008857E1 /* BTAPIPinnedCertificates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTAPIPinnedCertificates.m; sourceTree = "<group>"; };

@@ -225,8 +225,6 @@
 
 - (void)tappedToShowDropIn {
     BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
-    dropInRequest.showApplePayPaymentOption = [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]];
-    dropInRequest.displayCardTypes = @[@(BTUIKPaymentOptionTypeAMEX), @(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)];
     // To test 3DS
     //dropInRequest.amount = @"10.00";
     //dropInRequest.threeDSecureVerification = YES;
@@ -281,8 +279,7 @@
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion
-{
+                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:self.authorizationString];
     BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:client];
@@ -296,8 +293,6 @@
         }
     }];
 }
-
-
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [controller dismissViewControllerAnimated:YES completion:nil];
