@@ -517,7 +517,7 @@
 
 #pragma mark Data
 
-- (void)setPaymentMethodNonces:(NSArray<BTPaymentMethodNonce*>*)paymentMethodNonces {
+- (void)setPaymentMethodNonces:(NSArray<__kindof BTPaymentMethodNonce*>*)paymentMethodNonces {
 	_paymentMethodNonces = (paymentMethodNonces ? [NSArray<BTPaymentMethodNonce*> arrayWithArray:paymentMethodNonces] : nil);
     BTDropInContentViewStateType newState;
 
