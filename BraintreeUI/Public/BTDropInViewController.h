@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// A view controller that provides a quick and easy payment experience.
 ///
 /// When initialized with a Braintree client, the Drop In will prompt a user for payment details,
-/// based on your Gatweay configuration. The Drop In payment form supports cards and PayPal. When
+/// based on your Gateway configuration. The Drop In payment form supports cards and PayPal. When
 /// using Drop In, you don't need to worry about which methods are already on file with Braintree;
 /// newly created methods are saved as part of the Drop In flow as needed.
 ///
