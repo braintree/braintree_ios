@@ -164,6 +164,7 @@ static BOOL cannedIsWalletAppAvailable = YES;
                                             environment:(__unused NSString *)environment
                                       callbackURLScheme:(__unused NSString *)callbackURLScheme
 {
+    self.lastApprovalURL = [approvalURL copy];
     return self.checkoutRequest;
 }
 
@@ -172,6 +173,7 @@ static BOOL cannedIsWalletAppAvailable = YES;
                                                             environment:(__unused NSString *)environment
                                                       callbackURLScheme:(__unused NSString *)callbackURLScheme
 {
+    self.lastApprovalURL = [approvalURL copy];
     return self.billingAgreementRequest;
 }
 

@@ -12,6 +12,15 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
     BTPayPalRequestIntentSale,
 };
 
+/// The call-to-action in the PayPal one-time payment checkout flow. By default the final button will show the localized
+/// word for "Continue" and implies that the final amount billed is not yet known.
+///
+/// Setting the BTPayPalRequest's userAction to `BTPayPalRequestUserActionCommit` changes the button text to "Pay Now", conveying to the user that billing will take place immediately.
+typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
+    BTPayPalRequestUserActionDefault = 1,
+    BTPayPalRequestUserActionCommit,
+};
+
 /// A PayPal request specifies options that control the PayPal flow.
 ///
 /// For a one-time payment, the request must specify a transaction amount.
@@ -48,6 +57,9 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
 
 /// Optional: Payment intent. Only applies when using checkout flow. Defaults to `BTPayPalRequestIntentAuthorize`.
 @property (nonatomic) BTPayPalRequestIntent intent;
+
+/// Optional: Changes the call-to-action in the PayPal one-time payment checkout flow. Defaults to `BTPayPalRequestUserActionDefault`.
+@property (nonatomic) BTPayPalRequestUserAction userAction;
 
 @end
 
