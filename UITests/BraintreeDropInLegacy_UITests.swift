@@ -35,6 +35,16 @@ class BraintreeDropInLegacy_TokenizationKey_CardForm_UITests: XCTestCase {
         cardNumberTextField.typeText("4111111111111111")
         expiryTextField.typeText("1119")
         
+        let postalCodeField = elementsQuery.textFields["Postal Code"]
+        self.waitForElementToBeHittable(postalCodeField)
+        postalCodeField.forceTapElement()
+        postalCodeField.typeText("12345")
+        
+        let securityCodeField = elementsQuery.textFields["CVV"]
+        self.waitForElementToBeHittable(securityCodeField)
+        securityCodeField.forceTapElement()
+        securityCodeField.typeText("123")
+        
         elementsQuery.buttons["$19 - Subscribe Now"].forceTapElement()
         
         self.waitForElementToAppear(app.buttons["Got a nonce. Tap to make a transaction."])

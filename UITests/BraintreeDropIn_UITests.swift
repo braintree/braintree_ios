@@ -53,6 +53,16 @@ class BraintreeDropIn_TokenizationKey_CardForm_UITests: XCTestCase {
         app.staticTexts["11"].forceTapElement()
         app.staticTexts["2019"].forceTapElement()
         
+        let securityCodeField = elementsQuery.textFields["CVV"]
+        self.waitForElementToBeHittable(securityCodeField)
+        securityCodeField.forceTapElement()
+        securityCodeField.typeText("123")
+        
+        let postalCodeField = elementsQuery.textFields["65350"]
+        self.waitForElementToBeHittable(postalCodeField)
+        postalCodeField.forceTapElement()
+        postalCodeField.typeText("12345")
+        
         app.buttons["Add Card"].forceTapElement()
         
         self.waitForElementToAppear(app.staticTexts["ending in 11"])
@@ -136,6 +146,16 @@ class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
         self.waitForElementToBeHittable(app.staticTexts["2019"])
         app.staticTexts["11"].forceTapElement()
         app.staticTexts["2019"].forceTapElement()
+        
+        let securityCodeField = app.scrollViews.otherElements.textFields["CVV"]
+        self.waitForElementToBeHittable(securityCodeField)
+        securityCodeField.forceTapElement()
+        securityCodeField.typeText("123")
+        
+        let postalCodeField = app.scrollViews.otherElements.textFields["65350"]
+        self.waitForElementToBeHittable(postalCodeField)
+        postalCodeField.forceTapElement()
+        postalCodeField.typeText("12345")
         
         app.buttons["Add Card"].forceTapElement()
         
