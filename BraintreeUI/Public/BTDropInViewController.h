@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note The expiration date uses the Gregorian calendar.
 ///
 /// @param expirationMonth The expiration month as a one- or two-digit number.
-/// @param expirationYear The expiration year as a four-digit number.
+/// @param expirationYear The expiration year as a two-digit number (the latter two digits). For example, if the year is 2018, you would pass in 18.
 - (void)setCardExpirationMonth:(NSInteger)expirationMonth year:(NSInteger)expirationYear;
 
 @end
