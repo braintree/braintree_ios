@@ -1,10 +1,22 @@
 #import <UIKit/UIKit.h>
 #import "BTDropInBaseViewController.h"
-#import "BTUIKPaymentOptionType.h"
+#if __has_include("BraintreeUIKit.h")
+#import "BraintreeUIKit.h"
+#else
+#import <BraintreeUIKit/BraintreeUIKit.h>
+#endif
+
+#if __has_include("BraintreeApplePay.h")
+#define __BT_APPLE_PAY 
+#import "BraintreeApplePay.h"
+#elif __has_include(<BraintreeApplePay/BraintreeApplePay.h>)
+#define __BT_APPLE_PAY
+#import <BraintreeApplePay/BraintreeApplePay.h>
+#endif
 
 @class BTPaymentMethodNonce;
 
-@protocol BTDropInBaseViewControllerDelegate;
+@protocol BTPaymentSelectionViewControllerDelegate;
 
 /// @class A UIViewController that displays vaulted payment methods for a customer and available payment options
 @interface BTPaymentSelectionViewController : BTDropInBaseViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate>
@@ -14,11 +26,11 @@
 @property (nonatomic, strong) NSArray *paymentMethodNonces;
 
 /// The delegate
-@property (nonatomic, weak) id<BTDropInBaseViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<BTPaymentSelectionViewControllerDelegate> delegate;
 
 @end
 
-@protocol BTDropInBaseViewControllerDelegate <NSObject>
+@protocol BTPaymentSelectionViewControllerDelegate <NSObject>
 
 /// Called on the delegate when a payment method is selected
 ///

@@ -16,7 +16,6 @@ FOUNDATION_EXPORT const unsigned char BraintreeUIKitVersionString[];
 #import "BTUIKVectorArtView.h"
 #import "BTUIKCardType.h"
 #import "BTUIKUtil.h"
-#import "BTUIKCardHint.h"
 #import "BTUIKInputAccessoryToolbar.h"
 #import "BTUIKSecurityCodeFormField.h"
 #import "BTUIKPostalCodeFormField.h"

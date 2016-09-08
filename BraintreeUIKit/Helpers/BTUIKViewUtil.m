@@ -13,6 +13,20 @@
 #import "BTUIKUnionPayVectorArtView.h"
 #import "BTUIKApplePayMarkVectorArtView.h"
 
+#import "BTUIKLargeMasterCardVectorArtView.h"
+#import "BTUIKLargeJCBVectorArtView.h"
+#import "BTUIKLargeMaestroVectorArtView.h"
+#import "BTUIKLargeVisaVectorArtView.h"
+#import "BTUIKLargeDiscoverVectorArtView.h"
+#import "BTUIKLargeUnknownCardVectorArtView.h"
+#import "BTUIKLargeDinersClubVectorArtView.h"
+#import "BTUIKLargeAmExVectorArtView.h"
+#import "BTUIKLargePayPalMonogramCardView.h"
+#import "BTUIKLargeCoinbaseMonogramCardView.h"
+#import "BTUIKLargeVenmoMonogramCardView.h"
+#import "BTUIKLargeUnionPayVectorArtView.h"
+#import "BTUIKLargeApplePayMarkVectorArtView.h"
+
 @import AudioToolbox;
 
 @implementation BTUIKViewUtil
@@ -108,7 +122,7 @@
         return BTUIKPaymentOptionTypeDiscover;
     } else if ([typeString isEqualToString:@"UKMaestro"]) {
         return BTUIKPaymentOptionTypeUKMaestro;
-    } else if ([typeString isEqualToString:@"AMEX"]) {
+    } else if ([typeString isEqualToString:@"AMEX"] || [typeString isEqualToString:@"American Express"]) {
         return BTUIKPaymentOptionTypeAMEX;
     } else if ([typeString isEqualToString:@"Solo"]) {
         return BTUIKPaymentOptionTypeSolo;
@@ -132,38 +146,43 @@
 }
 
 + (BTUIKVectorArtView *)vectorArtViewForPaymentOptionType:(BTUIKPaymentOptionType)type {
+    return [self vectorArtViewForPaymentOptionType:type size:BTUIKVectorArtSizeRegular];
+}
+
++ (BTUIKVectorArtView *)vectorArtViewForPaymentOptionType:(BTUIKPaymentOptionType)type size:(BTUIKVectorArtSize)size {
     switch (type) {
         case BTUIKPaymentOptionTypeVisa:
-            return [BTUIKVisaVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKVisaVectorArtView new] : [BTUIKLargeVisaVectorArtView new];
         case BTUIKPaymentOptionTypeMasterCard:
-            return [BTUIKMasterCardVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKMasterCardVectorArtView new] : [BTUIKLargeMasterCardVectorArtView new];
         case BTUIKPaymentOptionTypeCoinbase:
-            return [BTUIKCoinbaseMonogramCardView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKCoinbaseMonogramCardView new] : [BTUIKLargeCoinbaseMonogramCardView new];
         case BTUIKPaymentOptionTypePayPal:
-            return [BTUIKPayPalMonogramCardView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKPayPalMonogramCardView new] : [BTUIKLargePayPalMonogramCardView new];
         case BTUIKPaymentOptionTypeDinersClub:
-            return [BTUIKDinersClubVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKDinersClubVectorArtView new] : [BTUIKLargeDinersClubVectorArtView new];
         case BTUIKPaymentOptionTypeJCB:
-            return [BTUIKJCBVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKJCBVectorArtView new] : [BTUIKLargeJCBVectorArtView new];
         case BTUIKPaymentOptionTypeMaestro:
-            return [BTUIKMaestroVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKMaestroVectorArtView new] : [BTUIKLargeMaestroVectorArtView new];
         case BTUIKPaymentOptionTypeDiscover:
-            return [BTUIKDiscoverVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKDiscoverVectorArtView new] : [BTUIKLargeDiscoverVectorArtView new];
         case BTUIKPaymentOptionTypeUKMaestro:
-            return [BTUIKMaestroVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKMaestroVectorArtView new] : [BTUIKLargeMaestroVectorArtView new];
         case BTUIKPaymentOptionTypeAMEX:
-            return [BTUIKAmExVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKAmExVectorArtView new] : [BTUIKLargeAmExVectorArtView new];
         case BTUIKPaymentOptionTypeVenmo:
-            return [BTUIKVenmoMonogramCardView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKVenmoMonogramCardView new] : [BTUIKLargeVenmoMonogramCardView new];
         case BTUIKPaymentOptionTypeUnionPay:
-            return [BTUIKUnionPayVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKUnionPayVectorArtView new] : [BTUIKLargeUnionPayVectorArtView new];
         case BTUIKPaymentOptionTypeApplePay:
+            // No large apple pay
             return [BTUIKApplePayMarkVectorArtView new];
         case BTUIKPaymentOptionTypeSolo:
         case BTUIKPaymentOptionTypeLaser:
         case BTUIKPaymentOptionTypeSwitch:
         case BTUIKPaymentOptionTypeUnknown:
-            return [BTUIKUnknownCardVectorArtView new];
+            return size == BTUIKVectorArtSizeRegular ? [BTUIKUnknownCardVectorArtView new] : [BTUIKLargeUnknownCardVectorArtView new];
     }
 }
 

@@ -1,6 +1,8 @@
 Drop-In Update (Beta)
 ------------------------------------
 
+![Example saved payment method](saved-payment-methods-dark.png "Example saved payment method")
+
 # What's new
 - All new UI and integration for Drop-In
 - Fetch a customer's payment method without showing UI
@@ -38,9 +40,9 @@ If your user already has an existing payment method, you may not need to show th
     })
 ```
 # Show Drop-In
-Present `BTDropInController` to collect the customer's payment information and receive the `nonce` to send to your server.
+Present `BTDropInController` to collect the customer's payment information and receive the `nonce` to send to your server. Saved payment methods will appear if you specified a `customer_id` when creating your client token.
 
-![Example no saved payment method](no-payment-methods.png "Example no saved payment method")
+![Example saved payment method](saved-payment-methods.png "Example saved payment method")
 
 ```swift
 
@@ -66,21 +68,17 @@ func showDropIn(clientTokenOrTokenizationKey: String) {
 }
 ```
 
-If there are saved payment methods they will appear:
-
-![Example saved payment method](saved-payment-methods.png "Example saved payment method")
-
 # Apple Pay + Drop-In
 Make sure the following is included in your Podfile:
 ```
 pod 'Braintree/Apple-Pay'
 ```
 
-Apple Pay can now be displayed as an option in Drop-In by setting the `showApplePayPaymentOption` to `true` on the `BTDropInRequest` object passed to Drop-In. Usually you'll want to make sure that the device can make a payment when setting `showApplePayPaymentOption`.
+Drop-In is enabled by default in Drop-In. Unless you opt out, by setting `showApplePayPaymentOption = false`, Drop-In will show Apple Pay as a payment option as long as it is enabled in the control panel and the customer's device supports paying with your supported card networks.
 
 ```swift
     let request =  BTDropInRequest()
-    request.showApplePayPaymentOption = PKPaymentAuthorizationViewController.canMakePaymentsUsingNetworks([PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex])
+    request.showApplePayPaymentOption = false // If you'd like to opt out
 ```
 
 **Important** If your customer selected Apple Pay as their preferred payment method then `result.paymentOptionType == .ApplePay` and the `result.paymentMethod` will be `nil`. Selecting Apple Pay does not display the Apple Pay sheet or create a nonce - you will still need to do that at the appropriate time in your app. Use `BTApplePayClient` to tokenize the customer's Apple Pay information - (view our official docs for more information)[https://developers.braintreepayments.com/guides/apple-pay/client-side/ios/v4].
@@ -98,30 +96,18 @@ The new Drop-In supports 3D-Secure verification. If you have enabled 3D-Secure i
     request.amount = "1.00"
 ```
 
+# Themes
+Drop-In is fully customizable, but we also provide `Light` and `Dark` themes. Drop-In will use the `Light` theme by default.
+```swift
+// Set the theme before initializing Drop-In
+BTUIKAppearance.darkTheme()
+```
+
 # Customization
 Use `BTUIKAppearance` to customize the appearance of Drop-In and other BraintreeUIKit classes.
 ```swift
 // Example
 BTUIKAppearance.sharedInstance().primaryTextColor = UIColor.greenColor()
-```
-
-Here is the full list of properties...
-```swift
-@property (nonatomic, strong) UIColor *overlayColor;
-@property (nonatomic, strong) UIColor *tintColor;
-@property (nonatomic, strong) UIColor *barBackgroundColor;
-@property (nonatomic, strong) NSString *fontFamily;
-@property (nonatomic, strong) UIColor *sheetBackgroundColor;
-@property (nonatomic, strong) UIColor *formFieldBackgroundColor;
-@property (nonatomic, strong) UIColor *primaryTextColor;
-@property (nonatomic, strong) UIColor *secondaryTextColor;
-@property (nonatomic, strong) UIColor *disabledColor;
-@property (nonatomic, strong) UIColor *placeholderTextColor;
-@property (nonatomic, strong) UIColor *lineColor;
-@property (nonatomic, strong) UIColor *errorBackgroundColor;
-@property (nonatomic, strong) UIColor *errorForegroundColor;
-@property (nonatomic) UIBlurEffectStyle blurStyle;
-@property (nonatomic) BOOL useBlurs;
 ```
 
 # BraintreeUIKit

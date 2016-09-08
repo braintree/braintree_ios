@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "BTUIKPaymentOptionType.h"
-
+#import "BTUIKViewUtil.h"
 /// @class A UIView containing the BTUIKVectorArtView for a BTUIKPaymentOptionType within a light border.
 @interface BTUIKPaymentOptionCardView : UIView
 
@@ -10,6 +10,13 @@
 @property (nonatomic) float cornerRadius;
 /// Inner padding between art and border. Defaults to 3
 @property (nonatomic) float innerPadding;
+/// Stroke width around card border. Defaults to 1
+@property (nonatomic) float borderWidth;
+/// Stroke color around card border. Defaults to #C8C7CC
+@property (nonatomic, strong) UIColor *borderColor;
+/// Vector art size, defaults to Regular
+@property (nonatomic) BTUIKVectorArtSize vectorArtSize;
+
 
 /// Set the highlighted state of the view.
 ///

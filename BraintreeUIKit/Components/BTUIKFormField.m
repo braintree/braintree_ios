@@ -34,7 +34,7 @@
         [self addSubview:self.textField];
         
         self.formLabel = [[UILabel alloc] init];
-        [BTUIKAppearance styleSmallLabelPrimary:self.formLabel];
+        [BTUIKAppearance styleLabelBoldPrimary:self.formLabel];
         self.formLabel.translatesAutoresizingMaskIntoConstraints = NO;
         self.formLabel.text = @"";
         [self addSubview:self.formLabel];
@@ -65,7 +65,7 @@
         viewBindings[@"accessoryView"] = self.accessoryView;
     }
     
-    NSDictionary* metrics = @{@"PADDING":@10};
+    NSDictionary* metrics = @{@"PADDING":@15};
     
     BOOL hasFormLabel = (self.formLabel.text.length > 0);
     

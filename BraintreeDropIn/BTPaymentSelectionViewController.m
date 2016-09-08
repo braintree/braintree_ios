@@ -13,21 +13,22 @@
 #import <BraintreeCard/BraintreeCard.h>
 #endif
 
-#define SAVED_PAYMENT_METHODS_COLLECTION_WIDTH 130
-#define SAVED_PAYMENT_METHODS_COLLECTION_HEIGHT 110
-#define SAVED_PAYMENT_METHODS_COLLECTION_HEIGHT_PADDING 12
+#define SAVED_PAYMENT_METHODS_COLLECTION_SPACING 6
+#define SAVED_PAYMENT_METHODS_COLLECTION_WIDTH 105
+#define SAVED_PAYMENT_METHODS_COLLECTION_HEIGHT 165
 
 @interface BTPaymentSelectionViewController ()
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIView *scrollViewContentWrapper;
 @property (nonatomic, strong) UIStackView *stackView;
+@property (nonatomic, strong) UIStackView *paymentOptionsLabelContainerStackView;
+@property (nonatomic, strong) UIStackView *vaultedPaymentsLabelContainerStackView;
 @property (nonatomic, strong) NSArray *paymentOptionsData;
 @property (nonatomic, strong) UITableView *paymentOptionsTableView;
-@property (nonatomic, strong) NSLayoutConstraint *collectionViewConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *savedPaymentMethodsCollectionViewConstraint;
 @property (nonatomic, strong) UILabel *paymentOptionsHeader;
 @property (nonatomic, strong) UILabel *vaultedPaymentsHeader;
-@property (nonatomic, strong) UIView *vaultedPaymentsFooter;
-@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UICollectionView *savedPaymentMethodsCollectionView;
 @end
 
 @implementation BTPaymentSelectionViewController
@@ -56,7 +57,6 @@
     [self.scrollView addSubview:self.scrollViewContentWrapper];
     
     self.stackView = [self newStackView];
-    self.stackView.spacing = 8;
     [self.scrollViewContentWrapper addSubview:self.stackView];
     
     self.view.translatesAutoresizingMaskIntoConstraints = false;
@@ -66,8 +66,6 @@
                                    @"scrollView": self.scrollView,
                                    @"scrollViewContentWrapper": self.scrollViewContentWrapper};
     
-    NSDictionary *metrics = @{};
-    
     [self.scrollView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor].active = YES;
     [self.scrollView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor].active = YES;
     
@@ -76,63 +74,62 @@
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[scrollViewContentWrapper]|"
                                                                       options:0
-                                                                      metrics:metrics
+                                                                      metrics:[BTUIKAppearance metrics]
                                                                         views:viewBindings]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollViewContentWrapper(scrollView)]|"
                                                                       options:0
-                                                                      metrics:metrics
+                                                                      metrics:[BTUIKAppearance metrics]
                                                                         views:viewBindings]];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(0)-[stackView]|"
                                                                       options:0
-                                                                      metrics:metrics
+                                                                      metrics:[BTUIKAppearance metrics]
                                                                         views:viewBindings]];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[stackView]-(15)-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(VERTICAL_SECTION_SPACE)-[stackView]-(VERTICAL_FORM_SPACE_TIGHT)-|"
                                                                       options:0
-                                                                      metrics:metrics
+                                                                      metrics:[BTUIKAppearance metrics]
                                                                         views:viewBindings]];
     
     NSLayoutConstraint *heightConstraint;
-    self.vaultedPaymentsHeader = [self sectionHeaderLabelWithString:@"Saved Payment Methods"];
+    self.vaultedPaymentsHeader = [self sectionHeaderLabelWithString:@"Recent"];
     self.vaultedPaymentsHeader.translatesAutoresizingMaskIntoConstraints = NO;
 
-    UIStackView *vaultedPaymentsLabelContainerStackView = [self newStackView];
-    vaultedPaymentsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
-    vaultedPaymentsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
+    self.vaultedPaymentsLabelContainerStackView = [self newStackView];
+    self.vaultedPaymentsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
+    self.vaultedPaymentsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
 
-    [vaultedPaymentsLabelContainerStackView addArrangedSubview:self.vaultedPaymentsHeader];
-    [self.stackView addArrangedSubview:vaultedPaymentsLabelContainerStackView];
+    [self.vaultedPaymentsLabelContainerStackView addArrangedSubview:self.vaultedPaymentsHeader];
+    [self.stackView addArrangedSubview:self.vaultedPaymentsLabelContainerStackView];
 
-    [self addSpacerToStackView:self.stackView beforeView:vaultedPaymentsLabelContainerStackView];
+    //[self addSpacerToStackView:self.stackView beforeView:self.vaultedPaymentsLabelContainerStackView];
     
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setScrollDirection: UICollectionViewScrollDirectionHorizontal];
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
-    self.collectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
-    [self.collectionView registerClass:[BTUIPaymentMethodCollectionViewCell class] forCellWithReuseIdentifier:@"BTUIPaymentMethodCollectionViewCellIdentifier"];
-    self.collectionView.backgroundColor = [UIColor clearColor];
-    heightConstraint = [self.collectionView.heightAnchor constraintEqualToConstant:SAVED_PAYMENT_METHODS_COLLECTION_HEIGHT + SAVED_PAYMENT_METHODS_COLLECTION_HEIGHT_PADDING];
+    self.savedPaymentMethodsCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:flowLayout];
+    self.savedPaymentMethodsCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.savedPaymentMethodsCollectionView.delegate = self;
+    self.savedPaymentMethodsCollectionView.dataSource = self;
+    [self.savedPaymentMethodsCollectionView registerClass:[BTUIPaymentMethodCollectionViewCell class] forCellWithReuseIdentifier:@"BTUIPaymentMethodCollectionViewCellIdentifier"];
+    self.savedPaymentMethodsCollectionView.backgroundColor = [UIColor clearColor];
+    self.savedPaymentMethodsCollectionView.showsHorizontalScrollIndicator = NO;
+    heightConstraint = [self.savedPaymentMethodsCollectionView.heightAnchor constraintEqualToConstant:SAVED_PAYMENT_METHODS_COLLECTION_HEIGHT + [BTUIKAppearance verticalFormSpace]];
     // Setting the prioprity is necessary to avoid autolayout errors when UIStackView rotates
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
-    [self.stackView addArrangedSubview:self.collectionView];
+    [self.stackView addArrangedSubview:self.savedPaymentMethodsCollectionView];
 
-    self.paymentOptionsHeader = [self sectionHeaderLabelWithString:@"Payment Methods"];
+    self.paymentOptionsHeader = [self sectionHeaderLabelWithString:@"Other"];
     self.paymentOptionsHeader.translatesAutoresizingMaskIntoConstraints = NO;
 
-    UIStackView *paymentOptionsLabelContainerStackView = [self newStackView];
-    paymentOptionsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
-    paymentOptionsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
+    self.paymentOptionsLabelContainerStackView = [self newStackView];
+    self.paymentOptionsLabelContainerStackView.layoutMargins = UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], [BTUIKAppearance verticalFormSpaceTight], [BTUIKAppearance horizontalFormContentPadding]);
+    self.paymentOptionsLabelContainerStackView.layoutMarginsRelativeArrangement = true;
 
-    [paymentOptionsLabelContainerStackView addArrangedSubview:self.paymentOptionsHeader];
-    [self.stackView addArrangedSubview:paymentOptionsLabelContainerStackView];
+    [self.paymentOptionsLabelContainerStackView addArrangedSubview:self.paymentOptionsHeader];
+    [self.stackView addArrangedSubview:self.paymentOptionsLabelContainerStackView];
     
-    self.vaultedPaymentsFooter = [self addSpacerToStackView:self.stackView beforeView:paymentOptionsLabelContainerStackView];
-    
-    self.paymentOptionsTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.paymentOptionsTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     [self.paymentOptionsTableView addObserver:self forKeyPath:@"contentSize" options:0 context:NULL];
     self.paymentOptionsTableView.backgroundColor = [UIColor clearColor];
     [self.paymentOptionsTableView registerClass:[BTDropInPaymentSeletionCell class] forCellReuseIdentifier:@"BTDropInPaymentSeletionCell"];
@@ -144,8 +141,14 @@
 
     [self.stackView addArrangedSubview:self.paymentOptionsTableView];
     
-    [self showLoadingScreen:YES animated:NO];
     [self loadConfiguration];
+}
+
+- (void)loadConfiguration {
+    [self showLoadingScreen:YES animated:NO];
+    self.stackView.hidden = YES;
+    [super loadConfiguration];
+    
 }
 
 - (void)dealloc {
@@ -165,14 +168,13 @@
 }
 
 - (void)configurationLoaded:(__unused BTConfiguration *)configuration error:(NSError *)error {
-    NSMutableArray *activePaymentOptions = [@[@(BTUIKPaymentOptionTypeUnknown)] mutableCopy];
+    NSMutableArray *activePaymentOptions = [@[] mutableCopy];
     if (!error) {
         [self fetchPaymentMethodsOnCompletion:^{
             if ([[BTTokenizationService sharedService] isTypeAvailable:@"PayPal"] && [self.configuration.json[@"paypalEnabled"] isTrue]) {
                 [activePaymentOptions addObject:@(BTUIKPaymentOptionTypePayPal)];
             }
             
-            // TODO Venmo Account type might change in upcoming PR
             BTJSON *venmoAccessToken = self.configuration.json[@"payWithVenmo"][@"accessToken"];
             if ([[BTTokenizationService sharedService] isTypeAvailable:@"Venmo"] && venmoAccessToken.isString) {
                 NSURLComponents *components = [NSURLComponents componentsWithString:@"com.venmo.touch.v2://x-callback-url/vzero/auth"];
@@ -181,26 +183,37 @@
                     [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeVenmo)];
                 }
             }
+
+            // Always add Cards
+            [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeUnknown)];
             
+#ifdef __BT_APPLE_PAY
             BTJSON *applePayConfiguration = self.configuration.json[@"applePay"];
-            if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"] && self.dropInRequest.showApplePayPaymentOption) {
-                [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeApplePay)];
+            if ([applePayConfiguration[@"status"] isString] && ![[applePayConfiguration[@"status"] asString] isEqualToString:@"off"] && !self.dropInRequest.applePayDisabled) {
+                // Short-circuits if BraintreeApplePay is not available at runtime
+                if (__BT_AVAILABLE(@"BTApplePayClient") && [configuration canMakeApplePayPayments]) {
+                    [activePaymentOptions addObject:@(BTUIKPaymentOptionTypeApplePay)];
+                }
             }
+#endif
             
             self.paymentOptionsData = [activePaymentOptions copy];
-            [self.collectionView reloadData];
+            [self.savedPaymentMethodsCollectionView reloadData];
             [self.paymentOptionsTableView reloadData];
             if (self.paymentMethodNonces.count == 0) {
-                self.collectionView.hidden = YES;
+                self.savedPaymentMethodsCollectionView.hidden = YES;
                 self.vaultedPaymentsHeader.hidden = YES;
-                self.vaultedPaymentsFooter.hidden = YES;
+                self.paymentOptionsLabelContainerStackView.hidden = YES;
+                self.vaultedPaymentsLabelContainerStackView.hidden = YES;
             } else {
-                self.collectionView.hidden = NO;
+                self.savedPaymentMethodsCollectionView.hidden = NO;
                 self.vaultedPaymentsHeader.hidden = NO;
-                self.vaultedPaymentsFooter.hidden = NO;
-                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+                self.paymentOptionsLabelContainerStackView.hidden = NO;
+                self.vaultedPaymentsLabelContainerStackView.hidden = NO;
+                [self.savedPaymentMethodsCollectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
             }
             [self showLoadingScreen:NO animated:YES];
+            self.stackView.hidden = NO;
         }];
     }
 }
@@ -253,7 +266,7 @@
     UILabel *sectionLabel = [UILabel new];
     sectionLabel.text = [string uppercaseString];
     sectionLabel.textAlignment = NSTextAlignmentNatural;
-    [BTUIKAppearance styleLabelSecondary:sectionLabel];
+    [BTUIKAppearance styleSystemLabelSecondary:sectionLabel];
     return sectionLabel;
 }
 
@@ -274,46 +287,50 @@
 #pragma mark - Protocol conformance
 #pragma mark UICollectionViewDelegate
 
--(NSInteger)numberOfSectionsInCollectionView:(__unused UICollectionView *)collectionView {
+-(NSInteger)numberOfSectionsInCollectionView:(__unused UICollectionView *)savedPaymentMethodsCollectionView {
     return 1;
 }
 
-- (NSInteger)collectionView:(__unused UICollectionView *)collectionView numberOfItemsInSection:(__unused NSInteger)section {
+- (NSInteger)collectionView:(__unused UICollectionView *)savedPaymentMethodsCollectionView numberOfItemsInSection:(__unused NSInteger)section {
     return [self.paymentMethodNonces count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    BTUIPaymentMethodCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BTUIPaymentMethodCollectionViewCellIdentifier" forIndexPath:indexPath];
+- (UICollectionViewCell *)collectionView:(UICollectionView *)savedPaymentMethodsCollectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    BTUIPaymentMethodCollectionViewCell* cell = [savedPaymentMethodsCollectionView dequeueReusableCellWithReuseIdentifier:@"BTUIPaymentMethodCollectionViewCellIdentifier" forIndexPath:indexPath];
     BTPaymentMethodNonce *paymentInfo = self.paymentMethodNonces[indexPath.row];
     cell.paymentMethodNonce = paymentInfo;
     NSString *typeString = paymentInfo.type;
     NSMutableAttributedString *typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", paymentInfo.localizedDescription ?: @""]];
+    if ([paymentInfo isKindOfClass:[BTCardNonce class]]) {
+        typeWithDescription = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"••• ••%@", ((BTCardNonce*)paymentInfo).lastTwo ?: @""]];
+    }
     cell.highlighted = NO;
-    cell.titleLabel.attributedText = typeWithDescription;
+    cell.descriptionLabel.attributedText = typeWithDescription;
+    cell.titleLabel.text = [BTUIKViewUtil nameForPaymentMethodType:[BTUIKViewUtil paymentOptionTypeForPaymentInfoType:typeString]];
     cell.paymentOptionCardView.paymentOptionType = [BTUIKViewUtil paymentOptionTypeForPaymentInfoType:typeString];
     return cell;
 }
 
-- (CGSize)collectionView:(__unused UICollectionView *)collectionView layout:(__unused UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(__unused NSIndexPath *)indexPath {
+- (CGSize)collectionView:(__unused UICollectionView *)savedPaymentMethodsCollectionView layout:(__unused UICollectionViewLayout *)savedPaymentMethodsCollectionViewLayout sizeForItemAtIndexPath:(__unused NSIndexPath *)indexPath {
     return CGSizeMake(SAVED_PAYMENT_METHODS_COLLECTION_WIDTH, SAVED_PAYMENT_METHODS_COLLECTION_HEIGHT);
 }
 
 #pragma mark collection view cell paddings
 
-- (UIEdgeInsets)collectionView:(__unused UICollectionView*)collectionView layout:(__unused UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(__unused NSInteger)section {
+- (UIEdgeInsets)collectionView:(__unused UICollectionView*)savedPaymentMethodsCollectionView layout:(__unused UICollectionViewLayout *)savedPaymentMethodsCollectionViewLayout insetForSectionAtIndex:(__unused NSInteger)section {
     return UIEdgeInsetsMake(0, [BTUIKAppearance horizontalFormContentPadding], 0, [BTUIKAppearance horizontalFormContentPadding]);
 }
 
-- (CGFloat)collectionView:(__unused UICollectionView *)collectionView layout:(__unused UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(__unused NSInteger)section {
-    return 6.0;
+- (CGFloat)collectionView:(__unused UICollectionView *)savedPaymentMethodsCollectionView layout:(__unused UICollectionViewLayout*)savedPaymentMethodsCollectionViewLayout minimumInteritemSpacingForSectionAtIndex:(__unused NSInteger)section {
+    return SAVED_PAYMENT_METHODS_COLLECTION_SPACING;
 }
 
-- (CGFloat)collectionView:(__unused UICollectionView *)collectionView layout:(__unused UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(__unused NSInteger)section {
-    return 6.0;
+- (CGFloat)collectionView:(__unused UICollectionView *)savedPaymentMethodsCollectionView layout:(__unused UICollectionViewLayout*)savedPaymentMethodsCollectionViewLayout minimumLineSpacingForSectionAtIndex:(__unused NSInteger)section {
+    return SAVED_PAYMENT_METHODS_COLLECTION_SPACING;
 }
 
-- (void)collectionView:(__unused UICollectionView *)collectionView didSelectItemAtIndexPath:(__unused NSIndexPath *)indexPath {
-    BTUIPaymentMethodCollectionViewCell *cell = (BTUIPaymentMethodCollectionViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+- (void)collectionView:(__unused UICollectionView *)savedPaymentMethodsCollectionView didSelectItemAtIndexPath:(__unused NSIndexPath *)indexPath {
+    BTUIPaymentMethodCollectionViewCell *cell = (BTUIPaymentMethodCollectionViewCell*)[savedPaymentMethodsCollectionView cellForItemAtIndexPath:indexPath];
     if (self.delegate) {
         [self.delegate selectionCompletedWithPaymentMethodType:[BTUIKViewUtil paymentOptionTypeForPaymentInfoType:cell.paymentMethodNonce.type] nonce:cell.paymentMethodNonce error:nil];
     }
@@ -389,14 +406,6 @@
 
 - (NSInteger)tableView:(__unused UITableView *)tableView numberOfRowsInSection:(__unused NSInteger)section {
     return [self.paymentOptionsData count];
-}
-
--(CGFloat)tableView:(__unused UITableView *)tableView heightForHeaderInSection:(__unused NSInteger)section {
-    return section == 0 ? 0.01 : 30;
-}
-
--(CGFloat)tableView:(__unused UITableView *)tableView heightForFooterInSection:(__unused NSInteger)section {
-    return section == 0 ? 0.01 : 20;
 }
 
 @end

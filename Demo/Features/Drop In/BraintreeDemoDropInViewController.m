@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UILabel *paymentMethodHeaderLabel;
 @property (nonatomic, strong) UIButton *dropInButton;
 @property (nonatomic, strong) UIButton *purchaseButton;
+@property (nonatomic, strong) UISegmentedControl *dropinThemeSwitch;
 @property (nonatomic, strong) NSString *authorizationString;
 @property (nonatomic) BOOL useApplePay;
 @property (nonatomic, strong) BTPaymentMethodNonce *selectedNonce;
@@ -100,6 +101,11 @@
     [self.view addSubview:self.paymentMethodTypeLabel];
     self.paymentMethodTypeLabel.hidden = YES;
 
+    self.dropinThemeSwitch = [[UISegmentedControl alloc] initWithItems:@[@"Light Theme", @"Dark Theme"]];
+    self.dropinThemeSwitch.translatesAutoresizingMaskIntoConstraints = NO;
+    self.dropinThemeSwitch.selectedSegmentIndex = 0;
+    [self.view addSubview:self.dropinThemeSwitch];
+    
     [self updatePaymentMethodConstraints];
 
     self.progressBlock(@"Fetching customer's payment methods...");
@@ -146,7 +152,8 @@
                                    @"dropInButton": self.dropInButton,
                                    @"paymentMethodTypeIcon": self.paymentMethodTypeIcon,
                                    @"paymentMethodTypeLabel": self.paymentMethodTypeLabel,
-                                   @"purchaseButton":self.purchaseButton
+                                   @"purchaseButton":self.purchaseButton,
+                                   @"dropinThemeSwitch":self.dropinThemeSwitch
                                    };
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[cartLabel]-|" options:0 metrics:nil views:viewBindings]];
@@ -158,9 +165,9 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodHeaderLabel]-|" options:0 metrics:nil views:viewBindings]];
 
     if (!self.paymentMethodTypeIcon.hidden && !self.paymentMethodTypeLabel.hidden) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[paymentMethodHeaderLabel]-[paymentMethodTypeIcon(28)]-[dropInButton]" options:0 metrics:nil views:viewBindings]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[paymentMethodHeaderLabel]-[paymentMethodTypeIcon(29)]-[dropInButton]" options:0 metrics:nil views:viewBindings]];
 
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodTypeIcon(44)]-[paymentMethodTypeLabel]" options:NSLayoutFormatAlignAllCenterY metrics:nil views:viewBindings]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[paymentMethodTypeIcon(45)]-[paymentMethodTypeLabel]" options:NSLayoutFormatAlignAllCenterY metrics:nil views:viewBindings]];
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[dropInButton]-|" options:0 metrics:nil views:viewBindings]];
         [self.dropInButton setTitle:@"Change Payment Method" forState:UIControlStateNormal];
         self.purchaseButton.backgroundColor = self.view.tintColor;
@@ -174,8 +181,9 @@
         self.purchaseButton.enabled = NO;
     }
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[dropInButton]-(20)-[purchaseButton]" options:0 metrics:nil views:viewBindings]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[dropInButton]-(20)-[purchaseButton]-(20)-[dropinThemeSwitch]" options:0 metrics:nil views:viewBindings]];
     
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-[dropinThemeSwitch]-|" options:0 metrics:nil views:viewBindings]];
 }
 
 #pragma mark Button Handlers
@@ -217,11 +225,14 @@
 
 - (void)tappedToShowDropIn {
     BTDropInRequest *dropInRequest = [[BTDropInRequest alloc] init];
-    dropInRequest.showApplePayPaymentOption = [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:@[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex]];
-    dropInRequest.displayCardTypes = @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)];
     // To test 3DS
     //dropInRequest.amount = @"10.00";
     //dropInRequest.threeDSecureVerification = YES;
+    if (self.dropinThemeSwitch.selectedSegmentIndex == 0) {
+        [BTUIKAppearance lightTheme];
+    } else {
+        [BTUIKAppearance darkTheme];
+    }
     BTDropInController *dropIn = [[BTDropInController alloc] initWithAuthorization:self.authorizationString request:dropInRequest handler:^(BTDropInController * _Nonnull dropInController, BTDropInResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
@@ -268,8 +279,7 @@
 
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
                        didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion
-{
+                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:self.authorizationString];
     BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:client];
@@ -283,8 +293,6 @@
         }
     }];
 }
-
-
 
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [controller dismissViewControllerAnimated:YES completion:nil];
