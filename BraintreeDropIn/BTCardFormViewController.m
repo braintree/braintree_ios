@@ -278,6 +278,11 @@
                                   expirationMonth:self.expirationDateField.expirationMonth
                                    expirationYear:self.expirationDateField.expirationYear
                                               cvv:self.securityCodeField.securityCode];
+    
+    if ([self.requiredFields containsObject:self.postalCodeField]) {
+        card.postalCode = self.postalCodeField.postalCode;
+    }
+    
     card.shouldValidate = self.apiClient.tokenizationKey ? NO : YES;
     BTCardRequest *cardRequest = [[BTCardRequest alloc] initWithCard:card];
     
