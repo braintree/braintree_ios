@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 4.6.0 (2016-09-09)
+
+* Fix nullability annotations for Xcode 8 Fixes #260
+* Add `userAction` property to `BTPayPalRequest`
+* (BETA) Updates to `BraintreeDropIn`
+
 ## 4.5.0 (2016-08-05)
 
 * Update `DataCollector` API
