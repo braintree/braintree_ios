@@ -776,6 +776,7 @@
 		A7FFE3D21CF3CB5600705DAE /* BraintreeCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C889901B5F043B007A0E9C /* BraintreeCard.framework */; };
 		B61F67801CE4C20F0051A3BD /* BTConfiguration+DataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = B61F677E1CE4C20F0051A3BD /* BTConfiguration+DataCollector.h */; };
 		B61F67811CE4C20F0051A3BD /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
+		B66C02261D87122900D49E93 /* BTDropInUIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = A55BB6051D70B99500570993 /* BTDropInUIUtilities.m */; };
 		B67F983A1D762177007C1903 /* BTMacroTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B67F98391D762177007C1903 /* BTMacroTests.m */; };
 		EE6D23D81D107A8700DBFAF2 /* BTUIKCardListLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23641D107A8700DBFAF2 /* BTUIKCardListLabel.m */; };
 		EE6D23D91D107A8700DBFAF2 /* BTUIKCardListLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EE6D23641D107A8700DBFAF2 /* BTUIKCardListLabel.m */; };
@@ -5432,6 +5433,7 @@
 				417404D31BB0869C008A5DEA /* BTDropInLocalizedString.m in Sources */,
 				EE6D24031D107A8700DBFAF2 /* BTUIKCardType.m in Sources */,
 				03B368931CAD94ED00CDFC9C /* BTDropInController.m in Sources */,
+				B66C02261D87122900D49E93 /* BTDropInUIUtilities.m in Sources */,
 				417404D51BB0869C008A5DEA /* BTDropInContentView.m in Sources */,
 				A74BEE3F1C58005300DDAB52 /* BTAnalyticsService.m in Sources */,
 				417404D71BB0869C008A5DEA /* BTDropInErrorAlert.m in Sources */,
