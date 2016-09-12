@@ -40,6 +40,16 @@ describe(@"BTUICardType", ^{
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MASTER_CARD)]);
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)]);
         });
+        
+        it(@"should recognize Maestro cards starting with 63", ^{
+            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"63"];
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)]);
+        });
+        
+        it(@"should recognize Maestro cards starting with 67", ^{
+            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"67"];
+            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)]);
+        });
 
         it(@"should recognize the start of a Visa", ^{
             NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"4"];
