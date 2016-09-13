@@ -404,6 +404,7 @@
 		A55BB6061D70B99500570993 /* BTDropInUIUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = A55BB6041D70B99500570993 /* BTDropInUIUtilities.h */; };
 		A55BB6071D70B99500570993 /* BTDropInUIUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = A55BB6051D70B99500570993 /* BTDropInUIUtilities.m */; };
 		A5CEB3371C3C51E000DF2C5E /* BraintreeVenmo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A5CEBBB11D8890A20064FD29 /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
 		A5D3A5761C20975F003A25A1 /* PPFPTIDataTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */; };
 		A5D3A5771C20975F003A25A1 /* PPFPTITrackerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */; };
 		A5D3A5A41C20BEE1003A25A1 /* PayPalOneTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A50C3B6F1C1A29C500612D90 /* PayPalOneTouch.framework */; };
@@ -5557,6 +5558,7 @@
 				417404961BB08629008A5DEA /* BTPaymentMethodNonceParser.m in Sources */,
 				413616EB1C1217F000D4C4A5 /* BTUIVenmoMonogramCardView.m in Sources */,
 				417404971BB08629008A5DEA /* BTURLUtils.m in Sources */,
+				A5CEBBB11D8890A20064FD29 /* BTConfiguration+DataCollector.m in Sources */,
 				EE6D23DD1D107A8700DBFAF2 /* BTUIKCollectionReusableView.m in Sources */,
 				417404741BB085F1008A5DEA /* BTCardClient.m in Sources */,
 				03E9EC171CB2E72500A9F2B9 /* BTDropInBaseViewController.m in Sources */,
