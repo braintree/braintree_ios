@@ -156,17 +156,17 @@
 }
 - (void)setHideSummary:(BOOL)hideSummary {
     _hideSummary = hideSummary;
-    [self updateLayout];
+    [self updateContentView];
 }
 
 - (void)setHideCTA:(BOOL)hideCTA {
     _hideCTA = hideCTA;
-    [self updateLayout];
+    [self updateContentView];
 }
 
 - (void)setState:(BTDropInContentViewStateType)state {
     _state = state;
-    [self updateLayout];
+    [self updateContentView];
 }
 
 - (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate completion:(void(^)())completionBlock {
@@ -234,10 +234,10 @@
 - (void)setHidePaymentButton:(BOOL)hidePaymentButton {
     _hidePaymentButton = hidePaymentButton;
     self.paymentButton.hidden = hidePaymentButton;
-    [self updateLayout];
+    [self updateContentView];
 }
 
-- (void)updateLayout {
+- (void)updateContentView {
 
     // Reset all to hidden, just for clarity
     self.activityView.hidden = YES;
