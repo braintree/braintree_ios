@@ -144,20 +144,38 @@ static BTVenmoDriver *appSwitchedDriver;
         }
         
         [self informDelegateWillPerformAppSwitch];
-        BOOL success = [self.application openURL:appSwitchURL];
-        if (success) {
-            [self informDelegateDidPerformAppSwitch];
-            self.appSwitchCompletionBlock = completionBlock;
-            appSwitchedDriver = self;
-            [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.success"];
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+        if ([self.application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+            [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
+                [self invokedOpenURLSuccessfully:success completion:completionBlock];
+            }];
         } else {
-            [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.failure"];
-            error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
-                                        code:BTVenmoDriverErrorTypeAppSwitchFailed
-                                    userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
-            completionBlock(nil, error);
+#endif
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            BOOL success = [self.application openURL:appSwitchURL];
+            [self invokedOpenURLSuccessfully:success completion:completionBlock];
+#pragma clang diagnostic pop
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
         }
+#endif
     }];
+}
+
+- (void)invokedOpenURLSuccessfully:(BOOL)success completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
+    if (success) {
+        [self informDelegateDidPerformAppSwitch];
+        self.appSwitchCompletionBlock = completionBlock;
+        appSwitchedDriver = self;
+        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.success"];
+    } else {
+        [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.initiate.error.failure"];
+        NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
+                                    code:BTVenmoDriverErrorTypeAppSwitchFailed
+                                userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
+        completionBlock(nil, error);
+    }
 }
 
 #pragma mark - App switch

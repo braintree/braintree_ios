@@ -359,6 +359,8 @@ static BOOL alwaysUseHardcodedConfiguration = NO;
 
     static int nobodyIsWorkingOnThisAtTheMoment = 1;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     if (OSAtomicCompareAndSwapInt(1, 0, &nobodyIsWorkingOnThisAtTheMoment)) {
 
         PPOTConfiguration *currentConfiguration = [PPOTConfiguration fetchPersistentConfiguration];
@@ -401,6 +403,7 @@ static BOOL alwaysUseHardcodedConfiguration = NO;
 
         nobodyIsWorkingOnThisAtTheMoment = 1;
     }
+#pragma clang diagnostic pop
 }
 
 + (PPOTConfiguration *)getCurrentConfiguration {
