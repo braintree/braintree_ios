@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## 4.6.1 (2016-09-15)
+
+* Fix conflicting private API name Fixes #265
+* Fix deprecation warnings for Xcode 8 Fixes #267
+* Fix target membership for static library Fixes #264
+* Improve Maestro card number recognition
+
 ## 4.6.0 (2016-09-09)
 
 * Fix nullability annotations for Xcode 8 Fixes #260
