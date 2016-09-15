@@ -151,14 +151,18 @@ static BTVenmoDriver *appSwitchedDriver;
                 [self invokedOpenURLSuccessfully:success completion:completionBlock];
             }];
         } else {
-#endif
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             BOOL success = [self.application openURL:appSwitchURL];
             [self invokedOpenURLSuccessfully:success completion:completionBlock];
 #pragma clang diagnostic pop
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
         }
+#else
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        BOOL success = [self.application openURL:appSwitchURL];
+        [self invokedOpenURLSuccessfully:success completion:completionBlock];
+#pragma clang diagnostic pop
 #endif
     }];
 }

@@ -440,17 +440,18 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         UIApplication *application = [UIApplication sharedApplication];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
         if ([application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
-            [application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(__unused BOOL success) {
-                // do nothing
-            }];
+            [application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:nil];
         } else {
-#endif
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             [application openURL:appSwitchURL];
 #pragma clang diagnostic pop
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
         }
+#else
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [application openURL:appSwitchURL];
+#pragma clang diagnostic pop
 #endif
     }
 }
