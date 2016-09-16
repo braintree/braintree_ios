@@ -160,9 +160,9 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.rangeOfString("venmo_merchant_id"));
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.rangeOfString("venmobox"));
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.rangeOfString("access-token"));
+        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString!.rangeOfString("venmo_merchant_id"));
+        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString!.rangeOfString("venmobox"));
+        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString!.rangeOfString("access-token"));
     }
     
     func testAuthorizeAccount_beforeAppSwitch_informsDelegate() {
