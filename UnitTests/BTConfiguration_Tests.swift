@@ -133,6 +133,62 @@ class BTConfiguration_Tests: XCTestCase {
         XCTAssertFalse(configuration.isApplePayEnabled)
     }
 
+    func testApplePayCountryCode_returnsCountryCode() {
+        let configurationJSON = BTJSON(value: [
+            "applePay": [ "countryCode": "US" ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertEqual(configuration.applePayCountryCode!, "US")
+    }
+
+    func testApplePayCurrencyCode_returnsCurrencyCode() {
+        let configurationJSON = BTJSON(value: [
+            "applePay": [ "currencyCode": "USD" ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertEqual(configuration.applePayCurrencyCode!, "USD")
+    }
+
+    func testApplePayMerchantIdentifier_returnsMerchantIdentifier() {
+        let configurationJSON = BTJSON(value: [
+            "applePay": [ "merchantIdentifier": "com.merchant.braintree-unit-tests" ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertEqual(configuration.applePayMerchantIdentifier!, "com.merchant.braintree-unit-tests")
+    }
+
+    func testApplePaySupportedNetworks_returnsSupportedNetworks() {
+        let configurationJSON = BTJSON(value: [
+            "applePay": [ "supportedNetworks": ["visa", "mastercard", "amex"] ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex])
+    }
+
+    @available(iOS 9.0, *)
+    func testApplePaySupportedNetworks_whenSupportedNetworksIncludesDiscover_returnsSupportedNetworks() {
+        let configurationJSON = BTJSON(value: [
+            "applePay": [ "supportedNetworks": ["discover"] ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetworkDiscover])
+    }
+
+    func testApplePaySupportedNetworks_passesThroughUnknownValuesFromConfiguration() {
+        let configurationJSON = BTJSON(value: [
+            "applePay": [ "supportedNetworks": ["ChinaUnionPay", "Interac", "PrivateLabel"] ]
+            ])
+        let configuration = BTConfiguration(JSON: configurationJSON)
+
+        XCTAssertEqual(configuration.applePaySupportedNetworks!, ["ChinaUnionPay", "Interac", "PrivateLabel"])
+
+    }
+
     // MARK: - UnionPay category methods
 
     func testIsUnionPayEnabled_whenUnionPayEnabledFromConfigurationJSONIsTrue_returnsTrue() {
