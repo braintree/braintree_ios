@@ -30,9 +30,9 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-/// Creates a `PKPaymentRequest` with values from your Braintree account.
+/// Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
 ///
-/// `supportedNetworks` TODO
+/// It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
 ///
 /// @param completion A completion block that returns the payment request or an error. This block is invoked on the main thread.
 - (void)paymentRequest:(void (^)(PKPaymentRequest * _Nullable paymentRequest, NSError * _Nullable error))completion;
