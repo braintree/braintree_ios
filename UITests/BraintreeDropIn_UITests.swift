@@ -37,7 +37,6 @@ class BraintreeDropIn_TokenizationKey_CardForm_UITests: XCTestCase {
     }
     
     func testDropIn_cardInput_receivesNonce() {
-        
         self.waitForElementToBeHittable(app.staticTexts["Credit or Debit Card"])
         app.staticTexts["Credit or Debit Card"].tap()
         
@@ -45,13 +44,21 @@ class BraintreeDropIn_TokenizationKey_CardForm_UITests: XCTestCase {
         let cardNumberTextField = elementsQuery.textFields["Card Number"]
         
         self.waitForElementToBeHittable(cardNumberTextField)
-        
-        cardNumberTextField.forceTapElement()
         cardNumberTextField.typeText("4111111111111111")
         
         self.waitForElementToBeHittable(app.staticTexts["2019"])
         app.staticTexts["11"].forceTapElement()
         app.staticTexts["2019"].forceTapElement()
+        
+        let securityCodeField = elementsQuery.textFields["CVV"]
+        self.waitForElementToBeHittable(securityCodeField)
+        securityCodeField.forceTapElement()
+        securityCodeField.typeText("123")
+        
+        let postalCodeField = elementsQuery.textFields["12345"]
+        self.waitForElementToBeHittable(postalCodeField)
+        postalCodeField.forceTapElement()
+        postalCodeField.typeText("12345")
         
         app.buttons["Add Card"].forceTapElement()
         
@@ -61,7 +68,6 @@ class BraintreeDropIn_TokenizationKey_CardForm_UITests: XCTestCase {
     }
     
     func testDropIn_cardInput_showsInvalidState_withInvalidCardNumber() {
-        
         self.waitForElementToBeHittable(app.staticTexts["Credit or Debit Card"])
         app.staticTexts["Credit or Debit Card"].tap()
         
@@ -69,15 +75,12 @@ class BraintreeDropIn_TokenizationKey_CardForm_UITests: XCTestCase {
         let cardNumberTextField = elementsQuery.textFields["Card Number"]
         
         self.waitForElementToBeHittable(cardNumberTextField)
-        
-        cardNumberTextField.forceTapElement()
         cardNumberTextField.typeText("4141414141414141")
         
-        self.waitForElementToAppear(elementsQuery.textFields["Invalid: Card Number"])
+        self.waitForElementToAppear(elementsQuery.staticTexts["You must provide a valid card number"])
     }
     
     func testDropIn_cardInput_hidesInvalidCardNumberState_withDeletion() {
-        
         self.waitForElementToBeHittable(app.staticTexts["Credit or Debit Card"])
         app.staticTexts["Credit or Debit Card"].tap()
         
@@ -85,11 +88,9 @@ class BraintreeDropIn_TokenizationKey_CardForm_UITests: XCTestCase {
         let cardNumberTextField = elementsQuery.textFields["Card Number"]
         
         self.waitForElementToBeHittable(cardNumberTextField)
-        
-        cardNumberTextField.forceTapElement()
         cardNumberTextField.typeText("4141414141414141")
         
-        self.waitForElementToAppear(elementsQuery.textFields["Invalid: Card Number"])
+        self.waitForElementToAppear(elementsQuery.staticTexts["You must provide a valid card number"])
         
         cardNumberTextField.typeText("\u{8}")
         
@@ -122,26 +123,62 @@ class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
         let cardNumberTextField = elementsQuery.textFields["Card Number"]
         
         self.waitForElementToBeHittable(cardNumberTextField)
-        
-        cardNumberTextField.forceTapElement()
         cardNumberTextField.typeText("4111111111111111")
-        
-        self.waitForElementToBeHittable(app.buttons["Next"])
-        app.buttons["Next"].forceTapElement()
-        
-        let expiryTextField = app.scrollViews.otherElements.textFields["MM/YYYY"]
-        self.waitForElementToBeHittable(expiryTextField)
-        expiryTextField.forceTapElement()
         
         self.waitForElementToBeHittable(app.staticTexts["2019"])
         app.staticTexts["11"].forceTapElement()
         app.staticTexts["2019"].forceTapElement()
+        
+        let securityCodeField = app.scrollViews.otherElements.textFields["CVV"]
+        self.waitForElementToBeHittable(securityCodeField)
+        securityCodeField.forceTapElement()
+        securityCodeField.typeText("123")
+        
+        let postalCodeField = app.scrollViews.otherElements.textFields["12345"]
+        self.waitForElementToBeHittable(postalCodeField)
+        postalCodeField.forceTapElement()
+        postalCodeField.typeText("12345")
         
         app.buttons["Add Card"].forceTapElement()
         
         self.waitForElementToAppear(app.staticTexts["ending in 11"])
         
         XCTAssertTrue(app.staticTexts["ending in 11"].exists);
+    }
+    
+    func testDropIn_nonUnionPayCardNumber_showsNextButton() {
+        self.waitForElementToBeHittable(app.staticTexts["Credit or Debit Card"])
+        app.staticTexts["Credit or Debit Card"].tap()
+        
+        XCTAssertTrue(app.buttons["Next"].exists)
+    }
+    
+    func testDropIn_hidesValidateButtonAfterCardNumberEntered() {
+        self.waitForElementToBeHittable(app.staticTexts["Credit or Debit Card"])
+        app.staticTexts["Credit or Debit Card"].tap()
+        
+        let elementsQuery = app.scrollViews.otherElements
+        let cardNumberTextField = elementsQuery.textFields["Card Number"]
+        
+        self.waitForElementToBeHittable(cardNumberTextField)
+        cardNumberTextField.typeText("4111111111111111")
+        
+        XCTAssertFalse(app.buttons["Next"].exists)
+    }
+    
+    func testDropIn_showsSpinnerDuringUnionPayCapabilitiesFetch() {
+        self.waitForElementToBeHittable(app.staticTexts["Credit or Debit Card"])
+        app.staticTexts["Credit or Debit Card"].tap()
+        
+        let elementsQuery = app.scrollViews.otherElements
+        let cardNumberTextField = elementsQuery.textFields["Card Number"]
+        
+        self.waitForElementToBeHittable(cardNumberTextField)
+        cardNumberTextField.typeText("6212345678901232")
+        
+        self.waitForElementToBeHittable(app.buttons["Next"])
+        app.buttons["Next"].forceTapElement()
+        XCTAssertTrue(app.activityIndicators.count == 1 && app.activityIndicators["In progress"].exists)
     }
     
     func testDropIn_unionPayCardNumber_receivesNonce() {
@@ -152,25 +189,19 @@ class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
         let cardNumberTextField = elementsQuery.textFields["Card Number"]
         
         self.waitForElementToBeHittable(cardNumberTextField)
-        
-        cardNumberTextField.forceTapElement()
         cardNumberTextField.typeText("6212345678901232")
         
         self.waitForElementToBeHittable(app.buttons["Next"])
         app.buttons["Next"].forceTapElement()
         
-        let expiryTextField = app.scrollViews.otherElements.textFields["MM/YYYY"]
+        let expiryTextField = elementsQuery.textFields["MM/YYYY"]
         self.waitForElementToBeHittable(expiryTextField)
-        expiryTextField.forceTapElement()
         
         self.waitForElementToBeHittable(app.staticTexts["2019"])
         app.staticTexts["11"].forceTapElement()
         app.staticTexts["2019"].forceTapElement()
         
-        app.staticTexts["Security Code"].forceTapElement()
-        app.typeText("565")
-
-        app.staticTexts["Mobile Country Code"].forceTapElement()
+        elementsQuery.textFields["Security Code"].typeText("565")
         app.typeText("65")
         
         app.staticTexts["Mobile Number"].forceTapElement()
@@ -191,7 +222,6 @@ class BraintreeDropIn_ClientToken_CardForm_UITests: XCTestCase {
         self.waitForElementToAppear(app.staticTexts["ending in 32"])
         
         XCTAssertTrue(app.staticTexts["ending in 32"].exists);
-        
     }
 }
 

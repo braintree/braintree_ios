@@ -286,7 +286,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                       if (approvalUrl == nil) {
                           approvalUrl = [body[@"agreementSetup"][@"approvalUrl"] asURL];
                       }
-                      
+
+                      approvalUrl = [self decorateApprovalURL:approvalUrl forRequest:request];
+
                       PPOTCheckoutRequest *request = nil;
                       if (isBillingAgreement) {
                           request = [self.requestFactory billingAgreementRequestWithApprovalURL:approvalUrl
@@ -435,7 +437,22 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     if ([SFSafariViewController class]) {
         [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
     } else {
-        [[UIApplication sharedApplication] openURL:appSwitchURL];
+        UIApplication *application = [UIApplication sharedApplication];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+        if ([application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+            [application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:nil];
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            [application openURL:appSwitchURL];
+#pragma clang diagnostic pop
+        }
+#else
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [application openURL:appSwitchURL];
+#pragma clang diagnostic pop
+#endif
     }
 }
 
@@ -782,6 +799,42 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
 }
 
 #pragma mark - Internal
+
+- (NSURL *)decorateApprovalURL:(NSURL*)approvalURL forRequest:(BTPayPalRequest *)paypalRequest {
+    if (approvalURL != nil && paypalRequest.userAction != BTPayPalRequestUserActionDefault) {
+        NSURLComponents* approvalURLComponents = [[NSURLComponents alloc] initWithURL:approvalURL resolvingAgainstBaseURL:NO];
+        if (approvalURLComponents != nil) {
+            NSMutableArray *queryItems = [approvalURLComponents.queryItems mutableCopy];
+            if (queryItems == nil) {
+                queryItems = [[NSMutableArray alloc] init];
+            }
+
+            NSString *userActionValue = [BTPayPalDriver userActionTypeToString:paypalRequest.userAction];
+            if ([userActionValue length] > 0) {
+                [queryItems addObject:[[NSURLQueryItem alloc] initWithName:@"useraction" value:userActionValue]];
+            }
+
+            approvalURLComponents.queryItems = queryItems;
+            return [approvalURLComponents URL];
+        }
+    }
+    return approvalURL;
+}
+
++ (NSString *)userActionTypeToString:(BTPayPalRequestUserAction)userActionType {
+    NSString *result = nil;
+
+    switch(userActionType) {
+        case BTPayPalRequestUserActionCommit:
+            result = @"commit";
+            break;
+        default:
+            result = @"";
+            break;
+    }
+
+    return result;
+}
 
 - (BTPayPalRequestFactory *)requestFactory {
     if (!_requestFactory) {

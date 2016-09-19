@@ -33,8 +33,8 @@
 {
     if (self.includePadding) {
         //// Color Declarations
-        UIColor* payColor = [BTUIKAppearance payBlue]; //[UIColor colorWithRed: 0.005 green: 0.123 blue: 0.454 alpha: 1];
-        UIColor* palColor = [BTUIKAppearance palBlue]; //[UIColor colorWithRed: 0.066 green: 0.536 blue: 0.839 alpha: 1];
+        UIColor* payColor = [UIColor colorWithRed: 0.005 green: 0.123 blue: 0.454 alpha: 1];
+        UIColor* palColor = [UIColor colorWithRed: 0.066 green: 0.536 blue: 0.839 alpha: 1];
 
         //// Assets
         {
@@ -192,8 +192,8 @@
         }
     } else {
         //// Color Declarations
-        UIColor* color0 = [BTUIKAppearance palBlue];
-        UIColor* color1 = [BTUIKAppearance payBlue];
+        UIColor* color1 = [UIColor colorWithRed: 0.005 green: 0.123 blue: 0.454 alpha: 1];
+        UIColor* color0 = [UIColor colorWithRed: 0.066 green: 0.536 blue: 0.839 alpha: 1];
 
         //// PayPal
         {

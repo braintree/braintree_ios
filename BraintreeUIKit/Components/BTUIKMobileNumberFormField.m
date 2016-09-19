@@ -11,8 +11,6 @@
         self.formLabel.text = @"Mobile Number";
         self.textField.placeholder = @"00 0000 0000";
         self.textField.keyboardType = UIKeyboardTypeNumberPad;
-        
-        self.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.textField];
     }
     return self;
 }

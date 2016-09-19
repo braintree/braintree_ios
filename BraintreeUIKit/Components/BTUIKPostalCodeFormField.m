@@ -12,10 +12,9 @@
     if (self) {
         self.textField.accessibilityLabel = BTUIKLocalizedString(POSTAL_CODE_PLACEHOLDER);
         self.formLabel.text = BTUIKLocalizedString(POSTAL_CODE_PLACEHOLDER);
-        self.textField.placeholder = @"65350";
+        self.textField.placeholder = @"12345";
         self.textField.keyboardType = [BTUIKAppearance sharedInstance].postalCodeFormFieldKeyboardType;
         
-        self.textField.inputAccessoryView = [[BTUIKInputAccessoryToolbar alloc] initWithDoneButtonForInput:self.textField];
         self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         self.textField.returnKeyType = UIReturnKeyDone;

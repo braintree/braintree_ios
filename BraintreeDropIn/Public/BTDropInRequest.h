@@ -1,9 +1,13 @@
 #import <Foundation/Foundation.h>
-#import "BTUIKPaymentOptionType.h"
 #if __has_include("BraintreeCore.h")
 #import "BTPostalAddress.h"
 #else
 #import <BraintreeCore/BTPostalAddress.h>
+#endif
+#if __has_include("BraintreeUIKit.h")
+#import "BraintreeUIKit.h"
+#else
+#import <BraintreeUIKit/BraintreeUIKit.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
@@ -37,16 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Optional: A set of PayPal scopes to use when requesting payment via PayPal. Used by Drop-in and payment button.
 @property (nonatomic, strong, nullable) NSSet<NSString *> *additionalPayPalScopes;
 
-/// Optional: If true and Apple Pay is correctly configured, Apple Pay will appear as a selection in the Payment Method options.
-///
-/// @note Set to the result of [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:]
-@property (nonatomic, assign) BOOL showApplePayPaymentOption;
-
-/// Optional: An array of BTUIKPaymentOptionType to be displayed
-/// on the card form.
-/// Example: @[@(BTUIKPaymentOptionTypeVisa), @(BTUIKPaymentOptionTypeMasterCard)]
-/// Defaults an empty array.
-@property (nonatomic, strong, nonnull) NSArray *displayCardTypes;
+/// Optional: Use this parameter to disable Apple Pay. Otherwise if Apple Pay is correctly configured, Apple Pay will appear as a selection in the Payment Method options.
+@property (nonatomic, assign) BOOL applePayDisabled;
 
 /// Optional: If true and an amount is set, ThreeDSecure will be used to verify the card. ThreeDSecure must be enabled in the control panel.
 /// Defaults to false.

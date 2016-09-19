@@ -54,4 +54,7 @@
 /// Max length of the card number
 @property (nonatomic, assign, readonly) NSUInteger maxNumberLength;
 
+/// Brand-specific name for card security code
+@property (nonatomic, assign, readonly) NSString *securityCodeName;
+
 @end

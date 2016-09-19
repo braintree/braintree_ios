@@ -57,4 +57,6 @@
 @property (nonatomic, strong, nonnull) FakePayPalAuthorizationRequest *authorizationRequest;
 @property (nonatomic, strong, nonnull) FakePayPalBillingAgreementRequest *billingAgreementRequest;
 @property (nonatomic, strong, nullable) NSSet<NSObject *> *lastScopeValues;
+@property (nonatomic, strong, nullable) NSURL *lastApprovalURL;
+
 @end

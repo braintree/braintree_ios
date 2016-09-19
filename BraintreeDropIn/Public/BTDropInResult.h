@@ -3,7 +3,11 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#import "BTUIKPaymentOptionType.h"
+#if __has_include("BraintreeUIKit.h")
+#import "BraintreeUIKit.h"
+#else
+#import <BraintreeUIKit/BraintreeUIKit.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

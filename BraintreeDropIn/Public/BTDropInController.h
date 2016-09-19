@@ -5,13 +5,14 @@
 #import "BTDropInResult.h"
 #import "BTDropInRequest.h"
 #import "BTPaymentSelectionViewController.h"
+#import "BTCardFormViewController.h"
 
 @class BTPaymentMethodNonce;
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// The primary UIViewController for Drop-In. BTDropInController will manage the other UIViewControllers and return a BTDropInResult.
-@interface BTDropInController : UIViewController <UIToolbarDelegate, UIViewControllerTransitioningDelegate,BTAppSwitchDelegate, BTViewControllerPresentingDelegate, BTDropInBaseViewControllerDelegate>
+@interface BTDropInController : UIViewController <UIToolbarDelegate, UIViewControllerTransitioningDelegate,BTAppSwitchDelegate, BTViewControllerPresentingDelegate, BTPaymentSelectionViewControllerDelegate, BTCardFormViewControllerDelegate>
 
 typedef void (^BTDropInControllerFetchHandler)(BTDropInResult * _Nullable result, NSError * _Nullable error);
 typedef void (^BTDropInControllerHandler)(BTDropInController * _Nonnull controller, BTDropInResult * _Nullable result, NSError * _Nullable error);
