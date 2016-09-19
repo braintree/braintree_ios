@@ -50,10 +50,6 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
   end
 
-  s.subspec "DropIn" do |s|
-    s.dependency "BraintreeDropIn/DropIn"
-  end
-
   s.subspec "PayPal" do |s|
     s.source_files = "BraintreePayPal/*.{h,m}", "BraintreePayPal/Public/*.h"
     s.public_header_files = "BraintreePayPal/Public/*.h"
@@ -120,10 +116,6 @@ Pod::Spec.new do |s|
     s.source_files = "BraintreePayPal/PayPalUtils/**/*.{h,m}"
     s.public_header_files = "BraintreePayPal/PayPalUtils/Public/*.h"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
-  end
-
-  s.subspec "UIKit" do |s|
-    s.dependency "BraintreeDropIn/UIKit"
   end
 end
 
