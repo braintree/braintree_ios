@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init __attribute__((unavailable("Please use initWithPresentingViewController:")));
 
-- (void)show;
+- (void)showWithDismissalHandler:(void (^)())dismissalHandler;
 
 @end
 
