@@ -1,5 +1,14 @@
 # Braintree iOS SDK Release Notes
 
+## 4.7.0 (2016-09-23)
+
+* Move `BraintreeDropIn` and `BraintreeUIKit` to a new [separate repository](https://github.com/braintree/braintree-ios-drop-in)
+  to allow cleaner separation and iteration for newer versions of Drop-In.
+  * Please see the new repository for updated integration instructions if you were using the Beta Drop-In Update.
+  * If you were using Drop-In from `BraintreeUI`, you do not have to update. However, you may want to check out the
+    new Drop-In for an updated experience.
+* Fix issue with `DataCollector` setting the merchant ID automatically to configure Kount
+
 ## 4.6.1 (2016-09-15)
 
 * Fix conflicting private API name Fixes #265
