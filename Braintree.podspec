@@ -50,16 +50,6 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
   end
 
-  s.subspec "DropIn" do |s|
-    s.source_files  = "BraintreeDropIn/**/*.{h,m}"
-    s.public_header_files = "BraintreeDropIn/Public/*.h"
-    s.frameworks = "UIKit"
-    s.dependency "Braintree/Core"
-    s.dependency "Braintree/Card"
-    s.dependency "Braintree/UnionPay"
-    s.dependency "Braintree/UIKit"
-  end
-
   s.subspec "PayPal" do |s|
     s.source_files = "BraintreePayPal/*.{h,m}", "BraintreePayPal/Public/*.h"
     s.public_header_files = "BraintreePayPal/Public/*.h"
@@ -126,14 +116,6 @@ Pod::Spec.new do |s|
     s.source_files = "BraintreePayPal/PayPalUtils/**/*.{h,m}"
     s.public_header_files = "BraintreePayPal/PayPalUtils/Public/*.h"
     s.frameworks = "MessageUI", "SystemConfiguration", "CoreLocation", "UIKit"
-  end
-
-  s.subspec "UIKit" do |s|
-    s.source_files  = "BraintreeUIKit/**/*.{h,m}"
-    s.public_header_files = "BraintreeUIKit/Public/*.h"
-    s.frameworks = "UIKit"
-    s.resource_bundles = {
-      "Braintree-UIKit-Localization" => ["BraintreeUIKit/Localization/*.lproj"] }
   end
 end
 
