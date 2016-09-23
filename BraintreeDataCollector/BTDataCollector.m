@@ -78,6 +78,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
             [self setCollectorUrl:[self collectorURLForEnvironment:[self environmentFromString:[configuration.json[@"environment"] asString]]]];
             
             NSString *merchantId = self.fraudMerchantId ?: [configuration kountMerchantId];
+            [self.kount setMerchantId:merchantId];
             
             NSString *deviceSessionId = [self sessionId];
             dataDictionary[@"device_session_id"] = deviceSessionId;
@@ -104,7 +105,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
         NSString *deviceData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
         // If only PayPal fraud is being collected, immediately inform the delegate that collection has
-        // finished, since Magnes does not allow us to know when it has officially finished collection.
+        // finished, since PayPal fraud does not allow us to know when it has officially finished collection.
         if (!includeCard && includePayPal) {
             [self onCollectorSuccess];
         }
@@ -139,7 +140,7 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
     }
     
     // If only PayPal fraud is being collected, immediately inform the delegate that collection has
-    // finished, since Dyson does not allow us to know when it has officially finished collection.
+    // finished, since PayPal fraud does not allow us to know when it has officially finished collection.
     if (!includeCard && includePayPal) {
         [self onCollectorSuccess];
     }

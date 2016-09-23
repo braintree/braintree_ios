@@ -120,6 +120,30 @@ class BTDataCollector_Tests: XCTestCase {
         waitForExpectationsWithTimeout(2, handler: nil)
     }
 
+    func testCollectFraudDataWithCompletionBlock_whenMerchantHasKountConfiguration_setsMerchantIDOnKount() {
+        let apiClient = clientThatReturnsConfiguration([
+            "environment": "sandbox",
+            "kount": [
+                "enabled": true,
+                "kountMerchantId": "500000"
+            ]
+        ])
+        let dataCollector = BTDataCollector(APIClient: apiClient)
+        let stubKount = FakeDeviceCollectorSDK()
+        stubKount.overrideDelegate = dataCollector
+        dataCollector.kount = stubKount
+
+        let expectation = expectationWithDescription("Returns fraud data")
+        dataCollector.collectFraudData { fraudData in
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+
+        XCTAssertEqual("500000", stubKount.lastMerchantID)
+        XCTAssertEqual("https://assets.braintreegateway.com/sandbox/data/logo.htm", stubKount.lastCollectorURL)
+    }
+
     func testCollectFraudData_doesNotCollectKountDataIfDisabledInConfiguration() {
         let apiClient = clientThatReturnsConfiguration([
             "environment":"development"
@@ -184,6 +208,8 @@ class TestDelegateForBTDataCollector: NSObject, BTDataCollectorDelegate {
 class FakeDeviceCollectorSDK: DeviceCollectorSDK {
     
     var lastCollectSessionID: String?
+    var lastMerchantID: String?
+    var lastCollectorURL: String?
     var overrideDelegate: DeviceCollectorSDKDelegate?
     var forceError = false
     
@@ -197,6 +223,14 @@ class FakeDeviceCollectorSDK: DeviceCollectorSDK {
                 delegate.onCollectorSuccess?()
             }
         }
+    }
+
+    override func setCollectorUrl(url: String!) {
+        lastCollectorURL = url
+    }
+
+    override func setMerchantId(merc: String!) {
+        lastMerchantID = merc
     }
     
     override func setDelegate(delegate: DeviceCollectorSDKDelegate!) {
