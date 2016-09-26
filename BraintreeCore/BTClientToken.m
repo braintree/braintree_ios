@@ -91,7 +91,7 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
 #pragma mark Client Token Parsing
 
 - (BTJSON *)decodeClientToken:(NSString *)rawClientTokenString error:(NSError * __autoreleasing *)error {
-    NSError *JSONError;
+    NSError *JSONError = nil;
     NSData *base64DecodedClientToken = [[NSData alloc] initWithBase64EncodedString:rawClientTokenString
                                                                            options:0];
 
@@ -104,11 +104,16 @@ NSString * const BTClientTokenErrorDomain = @"com.braintreepayments.BTClientToke
 
     if (!rawClientToken) {
         if (error) {
+            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                 NSLocalizedDescriptionKey: @"Invalid client token. Please ensure your server is generating a valid Braintree ClientToken.",
+                                                 NSLocalizedFailureReasonErrorKey: @"Invalid JSON"
+                                                                                              }];
+            if (JSONError) {
+                userInfo[NSUnderlyingErrorKey] = JSONError;
+            }
             *error = [NSError errorWithDomain:BTClientTokenErrorDomain
                                          code:BTClientTokenErrorInvalid
-                                     userInfo:@{ NSUnderlyingErrorKey: JSONError,
-                                                 NSLocalizedDescriptionKey: @"Invalid client token. Please ensure your server is generating a valid Braintree ClientToken.",
-                                                 NSLocalizedFailureReasonErrorKey: @"Invalid JSON" }];
+                                     userInfo:userInfo];
         }
         return nil;
     }
