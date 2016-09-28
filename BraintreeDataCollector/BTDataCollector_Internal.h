@@ -1,10 +1,10 @@
 #import "BTDataCollector.h"
-#import "DeviceCollectorSDK.h"
+#import "KDataCollector.h"
 
-@interface BTDataCollector () <DeviceCollectorSDKDelegate>
+@interface BTDataCollector ()
 
 /// The Kount SDK device collector, exposed internally for testing
-@property (nonatomic, strong, nonnull) DeviceCollectorSDK *kount;
+@property (nonatomic, strong, nonnull) KDataCollector *kount;
 
 /// The `PPDataCollector` class, exposed internally for injecting test doubles for unit tests
 + (void)setPayPalDataCollectorClass:(nonnull Class)payPalDataCollectorClass;
