@@ -93,7 +93,6 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
             NSString *deviceSessionId = [self sessionId];
             dataDictionary[@"device_session_id"] = deviceSessionId;
             dataDictionary[@"fraud_merchant_id"] = merchantId;
-            // [self.kount collect:deviceSessionId];
             dispatch_group_enter(collectorDispatchGroup);
             [self.kount collectForSession:deviceSessionId completion:^(__unused NSString * _Nonnull sessionID, __unused BOOL success, __unused NSError * _Nullable error) {
                 if (success) {
@@ -141,11 +140,6 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 
 - (NSString *)collectFraudDataForCard:(BOOL)includeCard forPayPal:(BOOL)includePayPal
 {
-    if (self.apiClient) {
-        // In case initialized an API client, but still calling older synchronous method.
-        NSLog(@"You should use the collect*FraudData: method with a completion block instead.");
-    }
-
     [self onCollectorStart];
     NSMutableDictionary *dataDictionary = [NSMutableDictionary new];
     if (includeCard) {
