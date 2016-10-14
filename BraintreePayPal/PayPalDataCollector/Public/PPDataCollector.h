@@ -16,7 +16,7 @@
 ///
 /// @param pairingID a pairing ID to associate with this clientMetadataID must be 10-32 chars long or null
 /// @return a client metadata ID to send as a header
-+ (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID DEPRECATED_MSG_ATTRIBUTE("Use [PPDataCollector collectPayPalDeviceData] to generate a device data string.");
++ (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID;
 
 /// Returns a client metadata ID.
 ///
