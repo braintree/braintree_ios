@@ -20,55 +20,18 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Braintree (4.7.0):
-    - Braintree/Card (= 4.7.0)
-    - Braintree/Core (= 4.7.0)
-    - Braintree/PayPal (= 4.7.0)
-    - Braintree/UI (= 4.7.0)
-  - Braintree/3D-Secure (4.7.0):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/Apple-Pay (4.7.0):
-    - Braintree/Core
-  - Braintree/Card (4.7.0):
-    - Braintree/Core
-  - Braintree/Core (4.7.0)
-  - Braintree/DataCollector (4.7.0):
-    - Braintree/Core
-  - Braintree/PayPal (4.7.0):
-    - Braintree/Core
-    - Braintree/PayPalOneTouch
-  - Braintree/PayPalDataCollector (4.7.0):
-    - Braintree/Core
-    - Braintree/PayPalUtils
-  - Braintree/PayPalOneTouch (4.7.0):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
-    - Braintree/PayPalUtils
-  - Braintree/PayPalUtils (4.7.0)
-  - Braintree/UI (4.7.0):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/UnionPay (4.7.0):
-    - Braintree/Card
-    - Braintree/Core
-  - Braintree/Venmo (4.7.0):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
-  - BraintreeDropIn (4.7.0):
-    - BraintreeDropIn/DropIn (= 4.7.0)
-  - BraintreeDropIn/DropIn (4.7.0):
-    - Braintree/Card (~> 4.0)
-    - Braintree/Core (~> 4.0)
-    - Braintree/UnionPay (~> 4.0)
+  - BraintreeDropIn (5.0.0):
+    - BraintreeDropIn/DropIn (= 5.0.0)
+    - BraintreeDropIn/UIKit (= 5.0.0)
+  - BraintreeDropIn/DropIn (5.0.0):
     - BraintreeDropIn/UIKit
-  - BraintreeDropIn/UIKit (4.7.0)
+  - BraintreeDropIn/UIKit (5.0.0)
   - CardIO (5.4.1)
   - Expecta (1.0.5)
-  - FLEX (2.3.0)
-  - HockeySDK (4.1.1):
-    - HockeySDK/DefaultLib (= 4.1.1)
-  - HockeySDK/DefaultLib (4.1.1)
+  - FLEX (2.4.0)
+  - HockeySDK (4.1.2):
+    - HockeySDK/DefaultLib (= 4.1.2)
+  - HockeySDK/DefaultLib (4.1.2)
   - InAppSettingsKit (2.8)
   - iOS-Slide-Menu (1.5)
   - NSURL+QueryDictionary (1.2.0)
@@ -91,13 +54,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.0)
-  - Braintree (from `.`)
-  - Braintree/3D-Secure (from `.`)
-  - Braintree/Apple-Pay (from `.`)
-  - Braintree/DataCollector (from `.`)
-  - Braintree/UnionPay (from `.`)
-  - Braintree/Venmo (from `.`)
-  - BraintreeDropIn
+  - BraintreeDropIn (from `BraintreeDropIn.podspec`)
   - CardIO
   - Expecta
   - FLEX
@@ -111,17 +68,16 @@ DEPENDENCIES:
   - Specta
 
 EXTERNAL SOURCES:
-  Braintree:
-    :path: "."
+  BraintreeDropIn:
+    :podspec: BraintreeDropIn.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Braintree: 2d53c805e93a5830a4359a757be50fc0f25392a9
-  BraintreeDropIn: 4ede5a3f6fd33f1c165fc9285666da8a95ed72e4
+  BraintreeDropIn: ae3a11224ea5c2063e2163b8218fdb40a2fef517
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  FLEX: ba80ea13d2c784e85e616137fd4eff164781e364
-  HockeySDK: 364679ba00f3447d014dd75cac57e59cc2574318
+  FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
+  HockeySDK: c7523379550a4305cefc1cdfa7b5f9a5a3538180
   InAppSettingsKit: fe3e73f8f9530cdd6270065cd7df7b3773f557e6
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
@@ -130,6 +86,6 @@ SPEC CHECKSUMS:
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-PODFILE CHECKSUM: 056bd1cd60d396d0413ee42b0024b9ac375fa442
+PODFILE CHECKSUM: 5c2f3de134b1194e3fc2419c7c10d85af5b04c6d
 
 COCOAPODS: 1.0.1
