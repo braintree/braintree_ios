@@ -111,7 +111,7 @@
     self.progressBlock(@"Fetching customer's payment methods...");
     self.useApplePay = NO;
     
-    [BTDropInController fetchDropInResultForAuthorization:self.authorizationString handler:^(BTDropInResult * _Nullable result, NSError * _Nullable error) {
+    [BTDropInResult fetchDropInResultForAuthorization:self.authorizationString handler:^(BTDropInResult * _Nullable result, NSError * _Nullable error) {
         if (error) {
             self.progressBlock([NSString stringWithFormat:@"Error: %@", error.localizedDescription]);
             NSLog(@"Error: %@", error);

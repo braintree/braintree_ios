@@ -1,7 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '7.0'
-
+platform :ios, '9.0'
 workspace 'Braintree.xcworkspace'
 
 target 'Demo' do
@@ -15,13 +14,7 @@ target 'Demo' do
   pod 'FLEX'
   pod 'InAppSettingsKit'
   pod 'iOS-Slide-Menu'
-  pod 'BraintreeDropIn'
-  pod 'Braintree', :path => '.'
-  pod 'Braintree/Apple-Pay', :path => '.'
-  pod 'Braintree/3D-Secure', :path => '.'
-  pod 'Braintree/UnionPay', :path => '.'
-  pod 'Braintree/Venmo', :path => '.'
-  pod 'Braintree/DataCollector', :path => '.'
+  pod 'BraintreeDropIn', :podspec => 'BraintreeDropIn.podspec'
 end
 
 abstract_target 'Tests' do
@@ -34,3 +27,12 @@ abstract_target 'Tests' do
   target 'IntegrationTests'
 end
 
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == "BraintreeDropIn"
+      target.build_configurations.each do |config|
+        config.build_settings['HEADER_SEARCH_PATHS'] = '${PODS_ROOT}/../BraintreeCore/Public ${PODS_ROOT}/../BraintreeCard/Public ${PODS_ROOT}/../BraintreeUnionPay/Public ${PODS_ROOT}/Headers/Private ${PODS_ROOT}/Headers/Private/BraintreeDropIn ${PODS_ROOT}/Headers/Public'
+      end
+    end
+  end
+end
