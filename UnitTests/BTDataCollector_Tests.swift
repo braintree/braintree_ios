@@ -16,7 +16,6 @@ class BTDataCollector_Tests: XCTestCase {
         testDelegate = TestDelegateForBTDataCollector(didStartExpectation: expectationWithDescription("didStart"), didCompleteExpectation: expectationWithDescription("didComplete"))
         dataCollector.delegate = testDelegate
         let stubKount = FakeDeviceCollectorSDK()
-        stubKount.overrideDelegate = dataCollector
         dataCollector.kount = stubKount
 
         let jsonString = dataCollector.collectCardFraudData()
@@ -34,7 +33,6 @@ class BTDataCollector_Tests: XCTestCase {
         testDelegate = TestDelegateForBTDataCollector(didStartExpectation: expectationWithDescription("didStart"), didCompleteExpectation: expectationWithDescription("didComplete"))
         dataCollector.delegate = testDelegate
         let stubKount = FakeDeviceCollectorSDK()
-        stubKount.overrideDelegate = dataCollector
         dataCollector.kount = stubKount
         BTDataCollector.setPayPalDataCollectorClass(FakePPDataCollector.self)
         
@@ -130,7 +128,6 @@ class BTDataCollector_Tests: XCTestCase {
         ])
         let dataCollector = BTDataCollector(APIClient: apiClient)
         let stubKount = FakeDeviceCollectorSDK()
-        stubKount.overrideDelegate = dataCollector
         dataCollector.kount = stubKount
 
         let expectation = expectationWithDescription("Returns fraud data")
@@ -140,8 +137,8 @@ class BTDataCollector_Tests: XCTestCase {
 
         waitForExpectationsWithTimeout(2, handler: nil)
 
-        XCTAssertEqual("500000", stubKount.lastMerchantID)
-        XCTAssertEqual("https://assets.braintreegateway.com/sandbox/data/logo.htm", stubKount.lastCollectorURL)
+        XCTAssertEqual(500000, stubKount.merchantID)
+        XCTAssertEqual(KEnvironment.Test, stubKount.environment)
     }
 
     func testCollectFraudData_doesNotCollectKountDataIfDisabledInConfiguration() {
@@ -205,36 +202,18 @@ class TestDelegateForBTDataCollector: NSObject, BTDataCollectorDelegate {
     }
 }
 
-class FakeDeviceCollectorSDK: DeviceCollectorSDK {
+class FakeDeviceCollectorSDK: KDataCollector {
     
     var lastCollectSessionID: String?
-    var lastMerchantID: String?
-    var lastCollectorURL: String?
-    var overrideDelegate: DeviceCollectorSDKDelegate?
     var forceError = false
-    
-    override func collect(sessionId: String!) {
-        lastCollectSessionID = sessionId
-        if let delegate = overrideDelegate {
-            delegate.onCollectorStart?()
-            if forceError {
-                delegate.onCollectorError?(1981, withError: NSError(domain: "Fake", code: 1981, userInfo: nil))
-            } else {
-                delegate.onCollectorSuccess?()
-            }
+
+    override func collectForSession(sessionID: String, completion completionBlock: ((String, Bool, NSError?) -> Void)?) {
+        lastCollectSessionID = sessionID
+        if forceError {
+            completionBlock?("1981", false, NSError(domain: "Fake", code: 1981, userInfo: nil))
+        } else {
+            completionBlock?(sessionID, true, nil)
         }
-    }
-
-    override func setCollectorUrl(url: String!) {
-        lastCollectorURL = url
-    }
-
-    override func setMerchantId(merc: String!) {
-        lastMerchantID = merc
-    }
-    
-    override func setDelegate(delegate: DeviceCollectorSDKDelegate!) {
-        overrideDelegate = delegate
     }
 }
 

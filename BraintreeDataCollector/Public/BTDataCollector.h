@@ -83,14 +83,14 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /// @param fraudMerchantId The fraudMerchantId you have established with your Braintree account manager.
 - (void)setFraudMerchantId:(NSString *)fraudMerchantId;
 
+#pragma mark - Deprecated
+
 /// Set the URL that the Device Collector will use.
 ///
 /// @note If you do not call this method, a generic Braintree value will be used.
 ///
 /// @param url Full URL to device collector 302-redirect page
-- (void)setCollectorUrl:(NSString *)url;
-
-#pragma mark - Deprecated
+- (void)setCollectorUrl:(NSString *)url DEPRECATED_MSG_ATTRIBUTE("The collector URL is no longer used. The environment will be automatically chosen.");
 
 /// Generates a new PayPal fraud ID if PayPal is integrated; otherwise returns `nil`.
 ///
