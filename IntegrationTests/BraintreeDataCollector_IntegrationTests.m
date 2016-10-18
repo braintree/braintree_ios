@@ -1,5 +1,5 @@
 #import "BraintreeDataCollector.h"
-#import "DeviceCollectorSDK.h"
+#import "KDataCollector.h"
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
 
@@ -92,32 +92,14 @@
     [self waitForExpectationsWithTimeout:10 handler:nil];
 }
 
-- (void)testCollectCardFraudData_whenCollectorURLIsInvalid_invokesErrorCallback {
-    id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
-    self.dataCollector.delegate = delegate;
-    [self.dataCollector setCollectorUrl:@"fake url that should fail"];
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Error callback invoked"];
-    OCMStub([delegate dataCollector:self.dataCollector didFailWithError:[OCMArg checkWithBlock:^BOOL(NSError *error) {
-        XCTAssertEqualObjects(error.domain, @"URL validation failed");
-        XCTAssertEqual(error.code, (NSInteger)DC_ERR_INVALID_URL);
-        return YES;
-    }]]).andDo(^(__unused NSInvocation *invocation) {
-        [expectation fulfill];
-    });
-    
-    [self.dataCollector collectCardFraudData];
-    
-    [self waitForExpectationsWithTimeout:10 handler:nil];
-}
-
 - (void)testCollectCardFraudData_whenMerchantIDIsInvalid_invokesErrorCallback {
     id delegate = OCMProtocolMock(@protocol(BTDataCollectorDelegate));
     self.dataCollector.delegate = delegate;
-    [self.dataCollector setFraudMerchantId:@"fake merchant id which should fail"];
+    [self.dataCollector setFraudMerchantId:@"-1"];
     XCTestExpectation *expectation = [self expectationWithDescription:@"Error callback invoked"];
     OCMStub([delegate dataCollector:self.dataCollector didFailWithError:[OCMArg checkWithBlock:^BOOL(NSError *error) {
-        XCTAssertEqualObjects(error.domain, @"Merchant ID validation failed");
-        XCTAssertEqual(error.code, (NSInteger)DC_ERR_INVALID_MERCHANT);
+        XCTAssertEqualObjects(error.localizedDescription, @"Merchant ID formatted incorrectly.");
+        XCTAssertEqual(error.code, (NSInteger)KDataCollectorErrorCodeBadParameter);
         return YES;
     }]]).andDo(^(__unused NSInvocation *invocation) {
         [expectation fulfill];

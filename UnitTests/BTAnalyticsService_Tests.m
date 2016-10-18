@@ -1,8 +1,8 @@
+#import "UnitTests-Swift.h"
 #import "BTAnalyticsService.h"
 #import "BTKeychain.h"
 #import "Braintree-Version.h"
 #import "BTFakeHTTP.h"
-#import "UnitTests-Swift.h"
 #import <XCTest/XCTest.h>
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
@@ -234,7 +234,6 @@
     XCTAssertTrue((BOOL)metaParameters[@"isSimulator"] == TARGET_IPHONE_SIMULATOR);
     XCTAssertEqualObjects(metaParameters[@"merchantAppId"], @"com.braintreepayments.Demo");
     XCTAssertEqualObjects(metaParameters[@"merchantAppName"], @"Braintree iOS SDK Demo");
-    XCTAssertEqualObjects(metaParameters[@"merchantAppVersion"], BRAINTREE_VERSION);
     XCTAssertEqualObjects(metaParameters[@"sdkVersion"], BRAINTREE_VERSION);
     XCTAssertEqualObjects(metaParameters[@"platform"], @"iOS");
     XCTAssertEqualObjects(metaParameters[@"platformVersion"], [[UIDevice currentDevice] systemVersion]);
