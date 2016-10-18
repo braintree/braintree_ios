@@ -337,7 +337,6 @@
 		A50C3B9B1C1A2AD700612D90 /* PPOTRequestFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = A50C3AA31C19E6A200612D90 /* PPOTRequestFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A50C3BCF1C1B453500612D90 /* PayPalOneTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A50C3B6F1C1A29C500612D90 /* PayPalOneTouch.framework */; };
 		A51527331D9C3DC600FF3F77 /* KDataCollector.h in Headers */ = {isa = PBXBuildFile; fileRef = A51527321D9C3DC600FF3F77 /* KDataCollector.h */; };
-		A5CEB3371C3C51E000DF2C5E /* BraintreeVenmo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A77AA29C1B618C7700217B73 /* BraintreeVenmo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A51527381D9EEFE800FF3F77 /* BraintreeDemoDropInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A51527371D9EEFE800FF3F77 /* BraintreeDemoDropInViewController.m */; };
 		A5CEBBB11D8890A20064FD29 /* BTConfiguration+DataCollector.m in Sources */ = {isa = PBXBuildFile; fileRef = B61F677F1CE4C20F0051A3BD /* BTConfiguration+DataCollector.m */; };
 		A5D3A5761C20975F003A25A1 /* PPFPTIDataTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */; };
@@ -4214,7 +4213,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		80EBDB0F9969F80778684056 /* [CP] Check Pods Manifest.lock */ = {
@@ -4229,7 +4228,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		813FB4CFB8D5035A45483333 /* [CP] Check Pods Manifest.lock */ = {
@@ -4244,7 +4243,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		81778A4B594659FDC565260B /* [CP] Check Pods Manifest.lock */ = {

@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 4.7.1 (2016-10-18)
+
+* Update to Kount 3.1
+* Update libPPRiskComponent to latest version
+* Refactored ACKNOWLEDGEMENTS.md with links instead of text
+* Re-add new Drop-In demo from BraintreeDropIn
+* Fix fbinfer warnings
+
 ## 4.7.0 (2016-09-23)
 
 * Move `BraintreeDropIn` and `BraintreeUIKit` to a new [separate repository](https://github.com/braintree/braintree-ios-drop-in)
