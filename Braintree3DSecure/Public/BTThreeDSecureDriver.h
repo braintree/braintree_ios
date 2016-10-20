@@ -54,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return An initialized instance of BTThreeDSecureDriver
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient delegate:(id<BTViewControllerPresentingDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 
-- (nullable instancetype)init __attribute__((unavailable("Please use initWithAPIClient: instead.")));
+- (instancetype)init __attribute__((unavailable("Please use initWithAPIClient: instead.")));
 
 /// Verify a card for a 3D Secure transaction, referring to the card by raw payment method nonce
 ///
