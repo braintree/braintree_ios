@@ -13,8 +13,6 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 The current major version is 4.x. If you are upgrading from version 3.x, take a look at our [Braintree iOS 3.x to 4.x Migration Guide](Docs/Braintree-4.0-Migration-Guide.md).
 
-If you're looking to integrate version 4 and you need to accept payments with Venmo, please contact [Braintree Support](mailto:support@braintreepayments.com) about joining the beta program for Pay with Venmo. If you are using Version 3 of the iOS SDK, it fully supports accepting payments via Venmo One Touch.
-
 We recommend using either [CocoaPods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
 ### CocoaPods
@@ -55,7 +53,7 @@ Please follow the [static library integration instructions](Docs/Braintree-Stati
 
 For v3 integrations, please follow the [v3 manual integration instructions](https://github.com/braintree/braintree_ios/blob/3.x/Docs/Manual%20Integration.md).
 
-Complete v4 manual integration instructions are still in-progress. Note that for apps targeting iOS 8+, you may add `Braintree.xcodeproj` to your Xcode workspace and add the frameworks to the app target **Embedded Binaries** section.
+Note that for apps targeting iOS 8+, you may add `Braintree.xcodeproj` to your Xcode workspace and add the frameworks to the app target **Embedded Binaries** section.
 
 ## Supporting iOS 9
 
@@ -108,7 +106,7 @@ The Braintree SDK works with apps that have [bitcode](https://developer.apple.co
 
 Start with [**'Hello, Client!'**](https://developers.braintreepayments.com/ios/start/hello-client) for instructions on basic setup and usage.
 
-Next, read the [**full documentation**](https://developers.braintreepayments.com/ios/sdk/client) for information about integration options, such as Drop-In UI, custom payment button, and credit card tokenization.
+Next, read the [**full documentation**](https://developers.braintreepayments.com/ios/sdk/client) for information about integration options, such as Drop-In UI, PayPal, and credit card tokenization.
 
 Finally, [**cocoadocs.org/docsets/Braintree**](http://cocoadocs.org/docsets/Braintree) hosts the complete, up-to-date API documentation generated straight from the header files.
 
