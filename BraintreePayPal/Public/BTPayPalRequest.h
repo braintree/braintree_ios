@@ -47,6 +47,36 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic, nullable, copy) NSString *currencyCode;
 
 /// Optional: A locale code to use for the transaction.
+///
+/// Supported locales are:
+///
+/// `da_DK`,
+/// `de_DE`,
+/// `en_AU`,
+/// `en_GB`,
+/// `en_US`,
+/// `es_ES`,
+/// `es_XC`,
+/// `fr_CA`,
+/// `fr_FR`,
+/// `fr_XC`,
+/// `id_ID`,
+/// `it_IT`,
+/// `ja_JP`,
+/// `ko_KR`,
+/// `nl_NL`,
+/// `no_NO`,
+/// `pl_PL`,
+/// `pt_BR`,
+/// `pt_PT`,
+/// `ru_RU`,
+/// `sv_SE`,
+/// `th_TH`,
+/// `tr_TR`,
+/// `zh_CN`,
+/// `zh_HK`,
+/// `zh_TW`,
+/// `zh_XC`.
 @property (nonatomic, nullable, copy) NSString *localeCode;
 
 /// Optional: A valid shipping address to be displayed in the transaction flow. An error will occur if this address is not valid.
