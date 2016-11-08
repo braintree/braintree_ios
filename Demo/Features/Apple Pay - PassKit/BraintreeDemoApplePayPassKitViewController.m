@@ -23,7 +23,6 @@
     [self.view addSubview:self.label];
 
     if (self.paymentButton) {
-        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton];
         [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton withOffset:8];
         [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];

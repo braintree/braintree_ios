@@ -38,8 +38,6 @@
             [supportedNetworks addObject:PKPaymentNetworkAmex];
         } else if (&PKPaymentNetworkDiscover != NULL && [gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"discover"] == NSOrderedSame) { // Very important to check that this constant is available first!
             [supportedNetworks addObject:PKPaymentNetworkDiscover];
-        } else {
-            [supportedNetworks addObject:gatewaySupportedNetwork];
         }
     }
 
