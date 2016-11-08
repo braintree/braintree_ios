@@ -12,6 +12,112 @@ class BTApplePay_Tests: XCTestCase {
         mockClient = MockAPIClient(authorization: "development_tokenization_key")!
     }
 
+    // MARK: - Payment Request
+
+    func testPaymentRequest_whenConfiguredOff_callsBackWithError() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "off"
+            ]
+            ])
+        let applePayClient = BTApplePayClient(APIClient: mockClient)
+
+        let expectation = expectationWithDescription("Callback invoked")
+        applePayClient.paymentRequest { (paymentRequest, error) in
+            XCTAssertEqual(error!.domain, BTApplePayErrorDomain)
+            XCTAssertEqual(error!.code, BTApplePayErrorType.Unsupported.rawValue)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testPaymentRequest_whenConfigurationIsMissingApplePayStatus_callsBackWithError() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [:])
+        let applePayClient = BTApplePayClient(APIClient: mockClient)
+
+        let expectation = expectationWithDescription("Callback invoked")
+        applePayClient.paymentRequest { (paymentRequest, error) in
+            XCTAssertEqual(error!.domain, BTApplePayErrorDomain)
+            XCTAssertEqual(error!.code, BTApplePayErrorType.Unsupported.rawValue)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testPaymentRequest_whenAPIClientIsNil_callsBackWithError() {
+        let applePayClient = BTApplePayClient(APIClient: mockClient)
+        applePayClient.apiClient = nil
+
+        let expectation = expectationWithDescription("Callback invoked")
+        applePayClient.paymentRequest { (paymentRequest, error) in
+            XCTAssertNil(paymentRequest)
+            XCTAssertEqual(error!.domain, BTApplePayErrorDomain)
+            XCTAssertEqual(error!.code, BTApplePayErrorType.Integration.rawValue)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testPaymentRequest_returnsPaymentRequestUsingConfiguration() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production",
+                "countryCode": "BT",
+                "currencyCode": "BTB",
+                "merchantIdentifier": "merchant.com.braintree-unit-tests",
+                "supportedNetworks": ["visa", "mastercard", "amex"]
+            ] ])
+        let applePayClient = BTApplePayClient(APIClient: mockClient)
+
+        let expectation = expectationWithDescription("Callback invoked")
+        applePayClient.paymentRequest { (paymentRequest, error) in
+            guard let paymentRequest = paymentRequest else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertNil(error)
+            XCTAssertEqual(paymentRequest.countryCode, "BT")
+            XCTAssertEqual(paymentRequest.currencyCode, "BTB")
+            XCTAssertEqual(paymentRequest.merchantIdentifier, "merchant.com.braintree-unit-tests")
+            XCTAssertEqual(paymentRequest.supportedNetworks, [PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex])
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+    func testPaymentRequest_whenConfigurationIsMissingValues_returnsPaymentRequestWithValuesUndefined() {
+        mockClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "applePay" : [
+                "status" : "production"
+            ] ])
+        let applePayClient = BTApplePayClient(APIClient: mockClient)
+
+        let expectation = expectationWithDescription("Callback invoked")
+        applePayClient.paymentRequest { (paymentRequest, error) in
+            guard let paymentRequest = paymentRequest else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertNil(error)
+            XCTAssertEqual(paymentRequest.countryCode, "")
+            XCTAssertEqual(paymentRequest.currencyCode, "")
+            XCTAssertEqual(paymentRequest.merchantIdentifier, "")
+            XCTAssertEqual(paymentRequest.supportedNetworks, [])
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+
+
+    // MARK: - Tokenization
+
     func testTokenization_whenConfiguredOff_callsBackWithError() {
         mockClient.cannedConfigurationResponseBody = BTJSON(value: [
             "applePay" : [

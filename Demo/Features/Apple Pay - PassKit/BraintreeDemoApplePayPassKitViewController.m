@@ -7,6 +7,7 @@
 
 @interface BraintreeDemoApplePayPassKitViewController () <PKPaymentAuthorizationViewControllerDelegate>
 @property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) BTApplePayClient *applePayClient;
 @end
 
 @implementation BraintreeDemoApplePayPassKitViewController
@@ -14,13 +15,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.applePayClient = [[BTApplePayClient alloc] initWithAPIClient:self.apiClient];
+
     self.label = [[UILabel alloc] init];
     self.label.numberOfLines = 1;
     self.label.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:self.label];
 
     if (self.paymentButton) {
-        [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton];
         [self.label autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.paymentButton withOffset:8];
         [self.label autoPinEdgeToSuperviewEdge:ALEdgeLeft];
         [self.label autoPinEdgeToSuperviewEdge:ALEdgeRight];
@@ -76,58 +78,44 @@
 - (void)tappedApplePayButton {
     self.progressBlock(@"Constructing PKPaymentRequest");
 
-    PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
+    [self.applePayClient paymentRequest:^(PKPaymentRequest * _Nullable paymentRequest, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock(error.localizedDescription);
+            return;
+        }
 
-    // Requiring PKAddressFieldPostalAddress crashes Simulator
-    //paymentRequest.requiredBillingAddressFields = PKAddressFieldName|PKAddressFieldPostalAddress;
-    paymentRequest.requiredBillingAddressFields = PKAddressFieldName;
+        // Requiring PKAddressFieldPostalAddress crashes Simulator
+        //paymentRequest.requiredBillingAddressFields = PKAddressFieldName|PKAddressFieldPostalAddress;
+        paymentRequest.requiredBillingAddressFields = PKAddressFieldName;
 
-    PKShippingMethod *shippingMethod1 = [PKShippingMethod summaryItemWithLabel:@"✈️ Fast Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"4.99"]];
-    shippingMethod1.detail = @"Fast but expensive";
-    shippingMethod1.identifier = @"fast";
-    PKShippingMethod *shippingMethod2 = [PKShippingMethod summaryItemWithLabel:@"🐢 Slow Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"0.00"]];
-    shippingMethod2.detail = @"Slow but free";
-    shippingMethod2.identifier = @"slow";
-    PKShippingMethod *shippingMethod3 = [PKShippingMethod summaryItemWithLabel:@"💣 Unavailable Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"0xdeadbeef"]];
-    shippingMethod3.detail = @"It will make Apple Pay fail";
-    shippingMethod3.identifier = @"fail";
-    paymentRequest.shippingMethods = @[shippingMethod1, shippingMethod2, shippingMethod3];
-    paymentRequest.requiredShippingAddressFields = PKAddressFieldAll;
-    paymentRequest.paymentSummaryItems = @[
-                                           [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]],
-                                           [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod1.amount],
-                                           [PKPaymentSummaryItem summaryItemWithLabel:@"BRAINTREE" amount:[NSDecimalNumber decimalNumberWithString:@"14.99"]]
-                                           ];
+        PKShippingMethod *shippingMethod1 = [PKShippingMethod summaryItemWithLabel:@"✈️ Fast Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"4.99"]];
+        shippingMethod1.detail = @"Fast but expensive";
+        shippingMethod1.identifier = @"fast";
+        PKShippingMethod *shippingMethod2 = [PKShippingMethod summaryItemWithLabel:@"🐢 Slow Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"0.00"]];
+        shippingMethod2.detail = @"Slow but free";
+        shippingMethod2.identifier = @"slow";
+        PKShippingMethod *shippingMethod3 = [PKShippingMethod summaryItemWithLabel:@"💣 Unavailable Shipping" amount:[NSDecimalNumber decimalNumberWithString:@"0xdeadbeef"]];
+        shippingMethod3.detail = @"It will make Apple Pay fail";
+        shippingMethod3.identifier = @"fail";
+        paymentRequest.shippingMethods = @[shippingMethod1, shippingMethod2, shippingMethod3];
+        paymentRequest.requiredShippingAddressFields = PKAddressFieldAll;
+        paymentRequest.paymentSummaryItems = @[
+                                               [PKPaymentSummaryItem summaryItemWithLabel:@"SOME ITEM" amount:[NSDecimalNumber decimalNumberWithString:@"10"]],
+                                               [PKPaymentSummaryItem summaryItemWithLabel:@"SHIPPING" amount:shippingMethod1.amount],
+                                               [PKPaymentSummaryItem summaryItemWithLabel:@"BRAINTREE" amount:[NSDecimalNumber decimalNumberWithString:@"14.99"]]
+                                               ];
 
-#ifdef __IPHONE_9_0
-    paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover];
-#else
-    paymentRequest.supportedNetworks = @[PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex];
-#endif
-    paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
-    paymentRequest.currencyCode = @"USD";
-    paymentRequest.countryCode = @"US";
-    if ([paymentRequest respondsToSelector:@selector(setShippingType:)]) {
-        paymentRequest.shippingType = PKShippingTypeDelivery;
-    }
+        paymentRequest.merchantCapabilities = PKMerchantCapability3DS;
+        if ([paymentRequest respondsToSelector:@selector(setShippingType:)]) {
+            paymentRequest.shippingType = PKShippingTypeDelivery;
+        }
 
-    switch ([BraintreeDemoSettings currentEnvironment]) {
-        case BraintreeDemoTransactionServiceEnvironmentSandboxBraintreeSampleMerchant:
-            paymentRequest.merchantIdentifier = @"merchant.com.braintreepayments.sandbox.Braintree-Demo";
-            break;
-        case BraintreeDemoTransactionServiceEnvironmentProductionExecutiveSampleMerchant:
-            paymentRequest.merchantIdentifier = @"merchant.com.braintreepayments.Braintree-Demo";
-            break;
-        case BraintreeDemoTransactionServiceEnvironmentCustomMerchant:
-            self.progressBlock(@"Direct Apple Pay integration does not support custom environments in this Demo App");
-            break;
-    }
-
-    PKPaymentAuthorizationViewController *viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
-    viewController.delegate = self;
-
-    self.progressBlock(@"Presenting Apple Pay Sheet");
-    [self presentViewController:viewController animated:YES completion:nil];
+        PKPaymentAuthorizationViewController *viewController = [[PKPaymentAuthorizationViewController alloc] initWithPaymentRequest:paymentRequest];
+        viewController.delegate = self;
+        
+        self.progressBlock(@"Presenting Apple Pay Sheet");
+        [self presentViewController:viewController animated:YES completion:nil];
+    }];
 }
 
 
@@ -157,8 +145,7 @@
                                 completion:(void (^)(PKPaymentAuthorizationStatus status))completion
 {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
-    BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:self.apiClient];
-    [applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+    [self.applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
             completion(PKPaymentAuthorizationStatusFailure);

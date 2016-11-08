@@ -5,8 +5,8 @@
 #import <BraintreeCore/BTAPIClient_Internal.h>
 #import <BraintreeCore/BTPaymentMethodNonce.h>
 #endif
-
 #import "BTApplePayClient_Internal.h"
+#import "BTConfiguration+ApplePay.h"
 
 NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorDomain";
 
@@ -14,6 +14,8 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 @end
 
 @implementation BTApplePayClient
+
+#pragma mark - Initialization
 
 + (void)load {
     if (self == [BTApplePayClient class]) {
@@ -33,6 +35,43 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 
 - (instancetype)init {
     return nil;
+}
+
+#pragma mark - Public methods
+
+- (void)paymentRequest:(void (^)(PKPaymentRequest * _Nullable, NSError * _Nullable))completion {
+    if (!self.apiClient) {
+        NSError *error = [NSError errorWithDomain:BTApplePayErrorDomain
+                                             code:BTApplePayErrorTypeIntegration
+                                         userInfo:@{NSLocalizedDescriptionKey: @"BTAPIClient is nil."}];
+        [self invokeBlock:completion onMainThreadWithPaymentRequest:nil error:error];
+        return;
+    }
+
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
+        if (error) {
+            [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.configuration"];
+            [self invokeBlock:completion onMainThreadWithPaymentRequest:nil error:error];
+            return;
+        }
+
+        if (!configuration.isApplePayEnabled) {
+            NSError *error = [NSError errorWithDomain:BTApplePayErrorDomain
+                                                 code:BTApplePayErrorTypeUnsupported
+                                             userInfo:@{ NSLocalizedDescriptionKey: @"Apple Pay is not enabled for this merchant. Please ensure that Apple Pay is enabled in the control panel and then try saving an Apple Pay payment method again." }];
+            [self invokeBlock:completion onMainThreadWithPaymentRequest:nil error:error];
+            [self.apiClient sendAnalyticsEvent:@"ios.apple-pay.error.disabled"];
+            return;
+        }
+
+        PKPaymentRequest *paymentRequest = [[PKPaymentRequest alloc] init];
+        paymentRequest.countryCode = configuration.applePayCountryCode;
+        paymentRequest.currencyCode = configuration.applePayCurrencyCode;
+        paymentRequest.merchantIdentifier = configuration.applePayMerchantIdentifier;
+        paymentRequest.supportedNetworks = configuration.applePaySupportedNetworks;
+        
+        [self invokeBlock:completion onMainThreadWithPaymentRequest:paymentRequest error:nil];
+    }];
 }
 
 - (void)tokenizeApplePayPayment:(PKPayment *)payment completion:(void (^)(BTApplePayCardNonce *, NSError *))completionBlock {
@@ -99,6 +138,8 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
     }];
 }
 
+#pragma mark - Helpers
+
 - (NSDictionary *)parametersForPaymentToken:(PKPaymentToken *)token {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
 
@@ -118,4 +159,11 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
 
     return [mutableParameters copy];
 }
+
+- (void)invokeBlock:(nonnull void (^)(PKPaymentRequest * _Nullable, NSError * _Nullable))completion onMainThreadWithPaymentRequest:(nullable PKPaymentRequest *)paymentRequest error:(nullable NSError *)error {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        completion(paymentRequest, error);
+    });
+}
+
 @end
