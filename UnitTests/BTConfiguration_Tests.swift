@@ -172,13 +172,13 @@ class BTConfiguration_Tests: XCTestCase {
         XCTAssertEqual(configuration.applePaySupportedNetworks!, [PKPaymentNetworkDiscover])
     }
 
-    func testApplePaySupportedNetworks_passesThroughUnknownValuesFromConfiguration() {
+    func testApplePaySupportedNetworks_doesNotPassesThroughUnknownValuesFromConfiguration() {
         let configurationJSON = BTJSON(value: [
             "applePay": [ "supportedNetworks": ["ChinaUnionPay", "Interac", "PrivateLabel"] ]
             ])
         let configuration = BTConfiguration(JSON: configurationJSON)
 
-        XCTAssertEqual(configuration.applePaySupportedNetworks!, ["ChinaUnionPay", "Interac", "PrivateLabel"])
+        XCTAssertEqual(configuration.applePaySupportedNetworks!, [])
 
     }
 
