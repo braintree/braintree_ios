@@ -7,8 +7,6 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 **The Braintree iOS SDK requires Xcode 7+ and a Base SDK of iOS 9+**. It permits a Deployment Target of iOS 7.0 or higher.
 
-![Screenshot of v.zero](screenshot.png)
-
 ## Getting Started
 
 The current major version is 4.x. If you are upgrading from version 3.x, take a look at our [Braintree iOS 3.x to 4.x Migration Guide](Docs/Braintree-4.0-Migration-Guide.md).
