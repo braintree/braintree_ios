@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 ///
 /// Must be using client token with a customer ID specified.
 ///
-/// @param completionBlock Callback that returns an array of payment method nonces.
+/// @param completion Callback that returns an array of payment method nonces.
 /// On success, `paymentMethodNonces` contains the nonces and `error` is `nil`. The default payment method nonce, if one exists, will be first.
 /// On failure, `error` contains the error that occured and `paymentMethodNonces` is `nil`.
 - (void)fetchPaymentMethodNonces:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completion;
@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 ///
 /// @param defaultFirst Specifies whether to sorts the fetched payment method nonces
 /// with the default payment method or the most recently used payment method first
-/// @param completionBlock Callback that returns an array of payment method nonces
+/// @param completion Callback that returns an array of payment method nonces
 - (void)fetchPaymentMethodNonces:(BOOL)defaultFirst
                       completion:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completion;
 
