@@ -225,7 +225,7 @@
 
 - (BOOL)isPaypalInstalled {
     if ([self.class isAppExtension]) {
-        return false;
+        return NO;
     }
     
     UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
@@ -241,7 +241,7 @@
 
 - (BOOL)isVenmoInstalled {
     if ([self.class isAppExtension]) {
-        return false;
+        return NO;
     }
     
     UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
