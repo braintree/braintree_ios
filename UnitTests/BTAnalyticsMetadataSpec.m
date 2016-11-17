@@ -130,6 +130,12 @@ describe(@"metadata", ^{
             expect([BTAnalyticsMetadata metadata][@"deviceScreenOrientation"]).to.equal(@"FaceUp");
             [mockDevice stopMocking];
         });
+        it(@"returns AppExtension when running in an App Extension", ^{
+            id stubMainBundle = OCMPartialMock([NSBundle mainBundle]);
+            OCMStub([stubMainBundle infoDictionary]).andReturn(@{@"NSExtension": @{}});
+            expect([BTAnalyticsMetadata metadata][@"deviceScreenOrientation"]).to.equal(@"AppExtension");
+            [stubMainBundle stopMocking];
+        });
     });
     describe(@"userInterfaceOrientation", ^{
         it(@"returns the user interface orientation, e.g. Portrait or Landscape", ^{

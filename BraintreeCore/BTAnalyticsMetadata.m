@@ -201,6 +201,9 @@
 }
 
 - (NSString *)deviceScreenOrientation {
+    if ([self.class isAppExtension]) {
+        return @"AppExtension";
+    }
     if ([UIDevice class] == nil) {
         return nil;
     }
@@ -255,15 +258,8 @@
 }
     
 + (BOOL)isAppExtension {
-    static BOOL isExtension;
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        NSDictionary *extensionDictionary = [[NSBundle mainBundle] infoDictionary][@"NSExtension"];
-        isExtension = [extensionDictionary isKindOfClass:[NSDictionary class]];
-    });
-    
-    return isExtension;
+    NSDictionary *extensionDictionary = [[NSBundle mainBundle] infoDictionary][@"NSExtension"];
+    return [extensionDictionary isKindOfClass:[NSDictionary class]];
 }
 
 @end
