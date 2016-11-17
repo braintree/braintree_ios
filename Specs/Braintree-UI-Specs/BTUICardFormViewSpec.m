@@ -122,15 +122,15 @@ describe(@"Card Form", ^{
             it(@"accepts a date and displays as valid", ^{
                 NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
                 dateComponents.month = 1;
-                dateComponents.year = 2016;
+                dateComponents.year = 2020;
                 dateComponents.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 
                 NSDate *date = [dateComponents date];
                 [cardFormView setExpirationDate:date];
                 [system presentView:cardFormView];
-                [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"01/2016"];
+                [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"01/2020"];
 
-                UIAccessibilityElement *element = [[[UIApplication sharedApplication] keyWindow] accessibilityElementWithLabel:@"01/2016"];
+                UIAccessibilityElement *element = [[[UIApplication sharedApplication] keyWindow] accessibilityElementWithLabel:@"01/2020"];
                 BTUIFormField *expiryField = (BTUIFormField *)([UIAccessibilityElement viewContainingAccessibilityElement:element].superview.superview);
                 expect(expiryField.displayAsValid).to.beTruthy();
             });

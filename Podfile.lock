@@ -67,9 +67,9 @@ PODS:
   - HockeySDK/AllFeaturesLib (3.8.2)
   - InAppSettingsKit (2.6)
   - iOS-Slide-Menu (1.4.6)
-  - KIF (3.3.0):
-    - KIF/Core (= 3.3.0)
-  - KIF/Core (3.3.0)
+  - KIF (3.4.2):
+    - KIF/Core (= 3.4.2)
+  - KIF/Core (3.4.2)
   - KIFViewControllerActions (1.0.0):
     - KIF (>= 2.0.0)
   - NSURL+QueryDictionary (1.1.0)
@@ -123,7 +123,7 @@ SPEC CHECKSUMS:
   HockeySDK: 9f4ac41263acf9d8a4d59491a7f17af16529b935
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
-  KIF: 0a82046d06f3648799cac522d2d0f7934214caac
+  KIF: b518c9831453abea5afdbbde3908ec47832d6d56
   KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
   OCHamcrest: e19857683e4eefab64b878668eac04c2f4567118

@@ -8,15 +8,15 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        if ([UIDevice currentDevice].systemVersion.intValue == 9) {
-            [self addTarget:self action:@selector(iOS9_changed) forControlEvents:UIControlEventEditingChanged];
+        if ([UIDevice currentDevice].systemVersion.intValue >= 9) {
+            [self addTarget:self action:@selector(iOS9AndAbove_changed) forControlEvents:UIControlEventEditingChanged];
             self.delegate = self;
         }
     }
     return self;
 }
 
-- (void)iOS9_changed {
+- (void)iOS9AndAbove_changed {
     // We only want to notify when this text field's text length has increased
     if (self.previousText.length >= self.text.length) {
         self.previousText = self.text;
