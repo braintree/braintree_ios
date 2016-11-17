@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.8 (2016-11-17)
+
+* Add support for Discover cards in Apple Pay
+  * Previous versions of v3 have an issue that may cause Apple Pay to fail after adding Apple Pay Discover support in the Braintree Control Panel
+* Update PayPal mSDK to 2.14.1
+
 ## 3.9.7 (2015-12-21)
 
 * Ignore `UIAlertView` deprecation warning in `BTDropInErrorAlert`
