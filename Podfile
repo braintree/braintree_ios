@@ -1,16 +1,18 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
+platform :ios, '7.0'
 workspace 'Braintree.xcworkspace'
 
-target 'Tests' do
-  link_with 'Braintree-Acceptance-Specs',
-            'Braintree-UI-Specs',
-            'Braintree-PayPal-Specs',
-            'Braintree-PayPal-Integration-Specs',
-            'Braintree-Venmo-Specs',
-            'Braintree-Data-Specs',
-            'Braintree-3D-Secure-Specs',
-            'Braintree-Coinbase-Integration-Specs'
+abstract_target 'Tests' do
+  target 'Braintree-Acceptance-Specs'
+  target 'Braintree-UI-Specs'
+  target 'Braintree-PayPal-Specs'
+  target 'Braintree-PayPal-Integration-Specs'
+  target 'Braintree-Venmo-Specs'
+  target 'Braintree-Data-Specs'
+  target 'Braintree-3D-Secure-Specs'
+  target 'Braintree-Coinbase-Integration-Specs'
+
   pod 'Specta', '~> 1.0.3'
   pod 'Expecta', '~> 1.0.2'
   pod 'OCMock', '~> 3.1'
@@ -37,11 +39,12 @@ target 'Braintree-Demo' do
   pod 'iOS-Slide-Menu'
 end
 
-target 'Logic-Tests' do
-  link_with 'Braintree-API-Specs',
-            'Braintree-API-Integration-Specs',
-            'Braintree-Payments-Specs',
-            'Braintree-Specs'
+abstract_target 'Logic-Tests' do
+  target 'Braintree-API-Specs'
+  target 'Braintree-API-Integration-Specs'
+  target 'Braintree-Payments-Specs'
+  target 'Braintree-Specs'
+
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'Braintree/Data', :path => '.'
@@ -56,14 +59,14 @@ target 'Logic-Tests' do
 end
 
 
-target 'Braintree-Apple-Pay-Excluded' do
-  link_with 'Braintree-Apple-Pay-Excluded-Build-Specs'
+abstract_target 'Braintree-Apple-Pay-Excluded' do
+  target 'Braintree-Apple-Pay-Excluded-Build-Specs'
   pod 'Braintree', :path => '.'
   pod 'OCMock', '~> 3.1'
 end
 
-target 'Braintree-Apple-Pay' do
-  link_with 'Braintree-Apple-Pay-Build-Specs'
+abstract_target 'Braintree-Apple-Pay' do
+  target 'Braintree-Apple-Pay-Build-Specs'
   pod 'Braintree', :path => '.'
   pod 'Braintree/Apple-Pay', :path => '.'
   pod 'OCMock', '~> 3.1'
