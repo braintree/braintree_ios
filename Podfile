@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '7.0'
+platform :ios, '8.0'
 workspace 'Braintree.xcworkspace'
 
 abstract_target 'Tests' do
@@ -18,7 +18,7 @@ abstract_target 'Tests' do
   pod 'OCMock', '~> 3.1'
   pod 'OCHamcrest', '~> 3.0.1'
   pod 'OHHTTPStubs', '~> 3.1.0'
-  pod 'KIF'
+  pod 'KIF', '~> 3.5.1'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'KIFViewControllerActions', :git => 'https://github.com/mickeyreiss/KIFViewControllerActions.git'
 end

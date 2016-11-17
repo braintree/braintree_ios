@@ -2,6 +2,7 @@
 #import "BTUICardType.h"
 #import "BTUIFormField.h"
 #import <KIF/KIF.h>
+#import <KIF/KIFAccessibilityEnabler.h>
 #import <KIF/UIAccessibilityElement-KIFAdditions.h>
 #import <PureLayout/PureLayout.h>
 
@@ -20,6 +21,8 @@
     [self.cardFormView autoPinEdgeToSuperviewMargin:ALEdgeLeading];
     [self.cardFormView autoPinEdgeToSuperviewMargin:ALEdgeTrailing];
     [self.cardFormView autoPinToTopLayoutGuideOfViewController:self withInset:10];
+
+    KIFEnableAccessibility();
 }
 
 @end
