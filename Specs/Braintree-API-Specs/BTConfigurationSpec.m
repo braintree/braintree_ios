@@ -39,7 +39,8 @@ NSDictionary *BTConfigurationSpecTestConfiguration() {
                      @"merchantIdentifier": @"apple-pay-merchant-id",
                      @"supportedNetworks": @[ @"visa",
                                               @"mastercard",
-                                              @"amex" ]
+                                              @"amex",
+                                              @"discover" ]
                      
                      },
              @"coinbaseEnabled": @YES,
@@ -73,7 +74,11 @@ context(@"valid configuration", ^{
         expect(configuration.applePayCountryCode).to.equal(@"US");
         expect(configuration.applePayCurrencyCode).to.equal(@"USD");
         expect(configuration.applePayMerchantIdentifier).to.equal(@"apple-pay-merchant-id");
-        expect(configuration.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
+        if (&PKPaymentNetworkDiscover != NULL) {
+            expect(configuration.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex, PKPaymentNetworkDiscover ]);
+        } else {
+            expect(configuration.applePaySupportedNetworks).to.equal(@[ PKPaymentNetworkVisa, PKPaymentNetworkMasterCard, PKPaymentNetworkAmex ]);
+        }
     });
 
     it(@"must contain a client api url", ^{
