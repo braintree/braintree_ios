@@ -20,6 +20,8 @@
             return PKPaymentNetworkVisa;
         } else if ([value isEqualToString:@"mastercard"]) {
             return PKPaymentNetworkMasterCard;
+        } else if (&PKPaymentNetworkDiscover != NULL && [value isEqualToString:@"discover"]) {
+            return PKPaymentNetworkDiscover;
         }
     }
 

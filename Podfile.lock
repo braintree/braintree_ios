@@ -79,7 +79,7 @@ PODS:
     - OHHTTPStubs/Core (= 3.1.11)
   - OHHTTPStubs/Core (3.1.11)
   - PureLayout (2.0.6)
-  - Specta (1.0.3)
+  - Specta (1.0.5)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.0)
@@ -130,6 +130,8 @@ SPEC CHECKSUMS:
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: 5624a5d20d97d46d47e15a68ca8808b59ccf0512
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
-  Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
+  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 0bb2c5bd9a151e12beda4ed8a19a8b48dcb85ff2
+
+COCOAPODS: 1.1.1

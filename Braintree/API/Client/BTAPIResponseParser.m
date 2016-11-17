@@ -79,7 +79,10 @@
     NSArray *originalValue = [self arrayForKey:key];
     NSMutableArray *value = [NSMutableArray arrayWithCapacity:originalValue.count];
     for (id obj in originalValue) {
-        [value addObject:[valueTransformer transformedValue:obj]];
+        id transformedObj = [valueTransformer transformedValue:obj];
+        if (transformedObj != [NSNull null]) {
+            [value addObject:transformedObj];
+        }
     }
     return [value copy];
 }

@@ -7,11 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		006DF886AA8467222145BEE3 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		034EF7CE1AC367EB00CC25D8 /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CB211AC08234007AD979 /* BTTestClientTokenFactory.m */; };
-		0D9D2B8667235033E88D7A23 /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
-		137D150CAF78BC9B8B08D9FF /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		14635ACA2F22A649D38DF214 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		1607FE3B192D96BE0099D504 /* DESIGN.md in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE37192D96BE0099D504 /* DESIGN.md */; };
 		1607FE3E192D96BE0099D504 /* TLDR.md in Resources */ = {isa = PBXBuildFile; fileRef = 1607FE38192D96BE0099D504 /* TLDR.md */; };
 		1607FE49192D974C0099D504 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75DA3621921394200D997A2 /* XCTest.framework */; };
@@ -72,7 +68,6 @@
 		162175A8192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 162175A0192D9505008DC35D /* BTTestClientTokenIntegrationSpec.m */; };
 		162175AA192D9505008DC35D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 162175A4192D9505008DC35D /* InfoPlist.strings */; };
 		162D8DAF199B2D070040B1A4 /* BTURLUtilsSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 162D8DAE199B2D070040B1A4 /* BTURLUtilsSpecs.m */; };
-		162DEF31261EADD377B7424A /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
 		1633577D1AEE103000794AAA /* BraintreeDemoCardHintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 163357771AEE103000794AAA /* BraintreeDemoCardHintViewController.m */; };
 		1633577E1AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 163357791AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.m */; };
 		1633577F1AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1633577A1AEE103000794AAA /* BraintreeDemoCreditCardEntryViewController.xib */; };
@@ -111,6 +106,8 @@
 		16F3A7E21AEC8BE100628DBF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16F3A7E11AEC8BE100628DBF /* Launch Screen.storyboard */; };
 		16F3A7E51AEC909800628DBF /* BraintreeDemoDemoContainmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16F3A7E41AEC909800628DBF /* BraintreeDemoDemoContainmentViewController.m */; };
 		16F3A7E61AEC984D00628DBF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 16A750A91A7053CE00C8FAE4 /* Settings.bundle */; };
+		21651563BC728075739D65DF /* libPods-Logic-Tests-Braintree-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 378076DEA288E7C88BBD4AA9 /* libPods-Logic-Tests-Braintree-Specs.a */; };
+		2BA9839F62141B0A2228ED47 /* libPods-Logic-Tests-Braintree-Payments-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DF0B0F35136BC8081AE72A /* libPods-Logic-Tests-Braintree-Payments-Specs.a */; };
 		2D30F1361A7C49E2004BA8C3 /* BraintreeApplePaySpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D30F1351A7C49E2004BA8C3 /* BraintreeApplePaySpecs.m */; };
 		2D30F13E1A7C4B54004BA8C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D30F13C1A7C4B54004BA8C3 /* InfoPlist.strings */; };
 		2D542EE41938EA9900DB4002 /* BTUI_UIColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D542EE31938EA9900DB4002 /* BTUI_UIColor.m */; };
@@ -121,13 +118,19 @@
 		2DA164C6199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DA164C5199B9D2300D671BA /* BTPayPalAppSwitchHandlerSpec.m */; };
 		2DCDDFCA194F9E1400F691CF /* BTHTTPSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCDDFC9194F9E1400F691CF /* BTHTTPSpec.m */; };
 		2DCFAA6D1A800ACB00FA2ECC /* BraintreeApplePayExcludedSpecs.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DCFAA6C1A800ACB00FA2ECC /* BraintreeApplePayExcludedSpecs.m */; };
-		4D6E3718C43FFC0A67DB16DD /* libPods-Braintree-Apple-Pay-Excluded.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A9DFAAB1262EEC2079633CE3 /* libPods-Braintree-Apple-Pay-Excluded.a */; };
-		694DC76AACE9C9D40FD48593 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		757CF1B2CA5360CBF5F25DDE /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		2F7EFDFF6F449C3270D80243 /* libPods-Tests-Braintree-Coinbase-Integration-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9583CF73311C018B8380D7 /* libPods-Tests-Braintree-Coinbase-Integration-Specs.a */; };
+		348C8FF466A4DED45592A35F /* libPods-Tests-Braintree-3D-Secure-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07AC1F7561698C096567F6AA /* libPods-Tests-Braintree-3D-Secure-Specs.a */; };
+		3884ACF5C5D08FFD2DB3505D /* libPods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1A98A1E83D7FABB73F5D8B9 /* libPods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.a */; };
+		3E243E23080F8E687C5F79A3 /* libPods-Tests-Braintree-Data-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC024DEE13E758D3897102A /* libPods-Tests-Braintree-Data-Specs.a */; };
+		46F2B630DC3C662570D80248 /* libPods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC684DE1DAE32F6D99BD90A8 /* libPods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.a */; };
+		4D4813915C6662E8C3E77F10 /* libPods-Tests-Braintree-PayPal-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 756E45CD60B34308DAF3AA80 /* libPods-Tests-Braintree-PayPal-Specs.a */; };
+		4EE277B6962E9EAB843097CC /* libPods-Tests-Braintree-Acceptance-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8802944584F74BE3A65C6F4 /* libPods-Tests-Braintree-Acceptance-Specs.a */; };
+		60BDB32D5E0865160F82CA9C /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 432304BC3B28E8A4313D6F2B /* libPods-Braintree-Demo.a */; };
+		765DE89FC5FD535B5ACC1C1D /* libPods-Tests-Braintree-UI-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF2931FC42715B5427EBC760 /* libPods-Tests-Braintree-UI-Specs.a */; };
+		7DA4C79B8854AA006275250C /* libPods-Logic-Tests-Braintree-API-Integration-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E159C661FB3E0412AF11760 /* libPods-Logic-Tests-Braintree-API-Integration-Specs.a */; };
 		842E21C71B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842E21C61B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m */; };
 		842E21C81B02708E0036DA66 /* BraintreeDemoBTUICoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962A71AFC26DD00FB3459 /* BraintreeDemoBTUICoinbaseButtonViewController.m */; };
 		842E21C91B0270C90036DA66 /* BraintreeDemoCustomCoinbaseButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 16D962AA1AFC26DD00FB3459 /* BraintreeDemoCustomCoinbaseButtonViewController.m */; };
-		99750FDC809F68C4246BF88E /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
 		A71322C21B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A71322C11B4C71F500F2D326 /* BraintreeDemoScopesPayPalButtonViewController.m */; };
 		A7212B27195355B1004324A2 /* BTDropInErrorStateSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7212B26195355B1004324A2 /* BTDropInErrorStateSpec.m */; };
 		A7281C5819A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7281C5719A5536A00BFD6EC /* BTVenmoAppSwitchURLSpec.m */; };
@@ -171,8 +174,8 @@
 		A7F6CB241AC083E0007AD979 /* BTTestClientTokenFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F6CB211AC08234007AD979 /* BTTestClientTokenFactory.m */; };
 		A7FC1CC61992B38A00636548 /* BTClientStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FC1CC51992B38A00636548 /* BTClientStoreSpec.m */; };
 		A7FF7A4E19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A7FF7A4D19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m */; };
-		AB3A0C96632B07668A8A011A /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
-		BB05EBCD58F647B9EA04C57E /* libPods-Logic-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */; };
+		B0E6EDAA21AFC12C36B3A86E /* libPods-Tests-Braintree-PayPal-Integration-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDEBCF415CBEB60726596290 /* libPods-Tests-Braintree-PayPal-Integration-Specs.a */; };
+		B8CADFF70EE5F5BFBC5B687C /* libPods-Logic-Tests-Braintree-API-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65A3B59832518F62F860FDBE /* libPods-Logic-Tests-Braintree-API-Specs.a */; };
 		CD9ED01B5D4C252AB05947DF /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9ED118397E68366E74F1A8 /* BraintreeDemoBTUIPayPalButtonViewController.m */; };
 		CD9ED3C05BDBA0AD69EEEF08 /* BraintreeDemoBTUIVenmoButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9EDBF566D50C40623E6F89 /* BraintreeDemoBTUIVenmoButtonViewController.m */; };
 		CD9ED3FEF7FF8E133BBF4960 /* BraintreeDemoUIWidgetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9ED247C1B306573CF4AAB2 /* BraintreeDemoUIWidgetsViewController.m */; };
@@ -185,10 +188,7 @@
 		CD9ED8C5A85D7AF64C4F2340 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9EDB10AC950DAC619E8437 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.m */; };
 		CD9EDC3A622EF8D5E829AF4F /* BraintreeDemoBTPaymentButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9ED5EA53A73C612F6D0C19 /* BraintreeDemoBTPaymentButtonViewController.m */; };
 		CD9EDCC2C746987970624D05 /* BraintreeDemoCustomPayPalButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD9ED3C234F6BB9612478007 /* BraintreeDemoCustomPayPalButtonViewController.m */; };
-		D0311966487F62264418B390 /* libPods-Braintree-Apple-Pay.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */; };
-		D5FD96A6B8703344CB77B1B0 /* libPods-Braintree-Demo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */; };
-		FA3D6AAEF7256ABB037A0C9C /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
-		FF778C892A565D2A5757976C /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */; };
+		E98DAE8AE5B1BD8799B979E8 /* libPods-Tests-Braintree-Venmo-Specs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 672428C55FE11D2E21386E15 /* libPods-Tests-Braintree-Venmo-Specs.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -286,11 +286,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0952D25AC13D43208F8288B6 /* libPods-Braintree-AppSwitch-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-AppSwitch-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		133578558B4E45ECA2C2D586 /* libPods-Braintree-PayPal-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		15AD2CC443481E5FA269CB4D /* Pods-Braintree-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo.release.xcconfig"; sourceTree = "<group>"; };
+		01DF0B0F35136BC8081AE72A /* libPods-Logic-Tests-Braintree-Payments-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Logic-Tests-Braintree-Payments-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		07AC1F7561698C096567F6AA /* libPods-Tests-Braintree-3D-Secure-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-Braintree-3D-Secure-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D9583CF73311C018B8380D7 /* libPods-Tests-Braintree-Coinbase-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-Braintree-Coinbase-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F8A773EEB15B84BBFFA7290 /* Pods-Tests-Braintree-Data-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-Data-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-Data-Specs/Pods-Tests-Braintree-Data-Specs.debug.xcconfig"; sourceTree = "<group>"; };
 		1600ABC119B7D04900D25D93 /* BTUIPaymentButtonCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIPaymentButtonCollectionViewCell.h; sourceTree = "<group>"; };
 		1600ABC219B7D04900D25D93 /* BTUIPaymentButtonCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIPaymentButtonCollectionViewCell.m; sourceTree = "<group>"; };
 		1607FE37192D96BE0099D504 /* DESIGN.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = DESIGN.md; sourceTree = "<group>"; };
@@ -632,9 +631,10 @@
 		16F5AF4419B6A7DA0043A412 /* BTUIHorizontalButtonStackCollectionViewFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIHorizontalButtonStackCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		16F5AF4519B6A7DA0043A412 /* BTUIHorizontalButtonStackCollectionViewFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUIHorizontalButtonStackCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		16FDE94F19C24029007718D2 /* BTClientCardRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTClientCardRequest.h; sourceTree = "<group>"; };
-		1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		2A0D9AB11874709D3BEA9582 /* Pods-Braintree-Apple-Pay.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay/Pods-Braintree-Apple-Pay.release.xcconfig"; sourceTree = "<group>"; };
-		2CDCE86975684EFC94DA10AB /* libPods-Braintree-Data-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Data-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22446F4272E3A6F17558D331 /* Pods-Logic-Tests-Braintree-API-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests-Braintree-API-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests-Braintree-API-Specs/Pods-Logic-Tests-Braintree-API-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		22847E347A59EBA061B83ABE /* Pods-Tests-Braintree-Acceptance-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-Acceptance-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-Acceptance-Specs/Pods-Tests-Braintree-Acceptance-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		2AC024DEE13E758D3897102A /* libPods-Tests-Braintree-Data-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-Braintree-Data-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B8B5043E31905C0FFFE797E /* Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs/Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.release.xcconfig"; sourceTree = "<group>"; };
 		2D085DD919463C9200293215 /* UIColor+BTUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+BTUI.h"; sourceTree = "<group>"; };
 		2D085DDA19463C9200293215 /* UIColor+BTUI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BTUI.m"; sourceTree = "<group>"; };
 		2D085DDD1947BF1000293215 /* BTUIPayPalMonogramCardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalMonogramCardView.h; sourceTree = "<group>"; };
@@ -673,9 +673,8 @@
 		2DE0AF621A0D8ADA0004191F /* BTDropInLocalizedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTDropInLocalizedString.h; sourceTree = "<group>"; };
 		2DE0AF631A0D8ADA0004191F /* BTDropInLocalizedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTDropInLocalizedString.m; sourceTree = "<group>"; };
 		2DE9752A19B80D2F009E2198 /* BTPaymentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentProvider.m; sourceTree = "<group>"; };
-		312C642A816448F6A6B7D69B /* libPods-Common.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Common.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		37EBD49E76CC2F7CE2E729DE /* Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig"; sourceTree = "<group>"; };
-		3E30C5FE1F5450A242279524 /* libPods-Braintree-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		31C5E520453CCFDE176A10E8 /* Pods-Tests-Braintree-3D-Secure-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-3D-Secure-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-3D-Secure-Specs/Pods-Tests-Braintree-3D-Secure-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		378076DEA288E7C88BBD4AA9 /* libPods-Logic-Tests-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Logic-Tests-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		410C0F311B34DAA40057C444 /* BTCoinbaseDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCoinbaseDefines.h; sourceTree = "<group>"; };
 		410C0F321B34DAA40057C444 /* BTCoinbaseDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCoinbaseDefines.m; sourceTree = "<group>"; };
 		410C0F341B34DAA40057C444 /* BTCoinbaseOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTCoinbaseOAuth.m; sourceTree = "<group>"; };
@@ -683,21 +682,31 @@
 		41930BE81B337ABA000A75BF /* BTPostalAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPostalAddress.h; sourceTree = "<group>"; };
 		41930BE91B337ADF000A75BF /* BTPostalAddress_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPostalAddress_Internal.h; sourceTree = "<group>"; };
 		41930BEA1B337ADF000A75BF /* BTPostalAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPostalAddress.m; sourceTree = "<group>"; };
-		4FEE5C97D00D4124A961B590 /* libPods-TestWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		543B7387A30D495553758609 /* Pods-Braintree-Apple-Pay.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay/Pods-Braintree-Apple-Pay.debug.xcconfig"; sourceTree = "<group>"; };
+		432304BC3B28E8A4313D6F2B /* libPods-Braintree-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4426F19D413504D016F7A64F /* Pods-Tests-Braintree-UI-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-UI-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-UI-Specs/Pods-Tests-Braintree-UI-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		4B85DC9E38B83A876F068EA9 /* Pods-Tests-Braintree-PayPal-Integration-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-PayPal-Integration-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-PayPal-Integration-Specs/Pods-Tests-Braintree-PayPal-Integration-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		504249EC90530986E1EC267D /* Pods-Logic-Tests-Braintree-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests-Braintree-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests-Braintree-Specs/Pods-Logic-Tests-Braintree-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		5404D2D5AD93F3E3D15DB608 /* Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs/Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		542153E23304C8DB694F747F /* Pods-Logic-Tests-Braintree-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests-Braintree-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests-Braintree-Specs/Pods-Logic-Tests-Braintree-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		59E8AF687256AAA3A718943F /* Pods-Tests-Braintree-PayPal-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-PayPal-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-PayPal-Specs/Pods-Tests-Braintree-PayPal-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		5F029066887D92EC4D2196E0 /* Pods-Braintree-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo.release.xcconfig"; sourceTree = "<group>"; };
+		65A3B59832518F62F860FDBE /* libPods-Logic-Tests-Braintree-API-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Logic-Tests-Braintree-API-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		66D14DB081CD285BEDDE85FD /* Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs/Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		672428C55FE11D2E21386E15 /* libPods-Tests-Braintree-Venmo-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-Braintree-Venmo-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		68040D3EE51B2160195BA457 /* Pods-Braintree-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo.debug.xcconfig"; sourceTree = "<group>"; };
+		6A69A0336897A04443310D62 /* Pods-Tests-Braintree-PayPal-Integration-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-PayPal-Integration-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-PayPal-Integration-Specs/Pods-Tests-Braintree-PayPal-Integration-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		6E0403F17CF45BF151E26AB9 /* Pods-Tests-Braintree-PayPal-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-PayPal-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-PayPal-Specs/Pods-Tests-Braintree-PayPal-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		756E45CD60B34308DAF3AA80 /* libPods-Tests-Braintree-PayPal-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-Braintree-PayPal-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		77037AD319B0112A0097DADE /* BTAppSwitchingDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAppSwitchingDelegate.h; sourceTree = "<group>"; };
-		77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Acceptance-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-UI-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		842E21C51B0190D80036DA66 /* BraintreeDemoIntegrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoIntegrationViewController.h; sourceTree = "<group>"; };
 		842E21C61B0190D80036DA66 /* BraintreeDemoIntegrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoIntegrationViewController.m; sourceTree = "<group>"; };
 		8488D42E1B0E5956004DCAE4 /* BTThreeDSecureInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureInfo.m; sourceTree = "<group>"; };
 		8488D4311B0E5966004DCAE4 /* Braintree-3D-Secure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Braintree-3D-Secure.h"; sourceTree = "<group>"; };
 		8488D4321B0E597B004DCAE4 /* BTThreeDSecureInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureInfo.h; sourceTree = "<group>"; };
-		8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9270469696964D9BABE95E62 /* libPods-TestWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A0D18A73520462F8D2FB1CD /* libPods-Braintree-API-Public-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Public-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		84D3AE40D044AC7E1FD69C65 /* Pods-Logic-Tests-Braintree-Payments-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests-Braintree-Payments-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests-Braintree-Payments-Specs/Pods-Logic-Tests-Braintree-Payments-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		89FFD51D53985240C455A6DE /* Pods-Tests-Braintree-Coinbase-Integration-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-Coinbase-Integration-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-Coinbase-Integration-Specs/Pods-Tests-Braintree-Coinbase-Integration-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		8A7C76A2D97B9126C0FA0E59 /* Pods-Tests-Braintree-UI-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-UI-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-UI-Specs/Pods-Tests-Braintree-UI-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		8E159C661FB3E0412AF11760 /* libPods-Logic-Tests-Braintree-API-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Logic-Tests-Braintree-API-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7021B071921631C0090CE8F /* Braintree_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Braintree_Internal.h; sourceTree = "<group>"; };
 		A70A52D01AA7DECF00CA2AC9 /* BTUICoinbaseWordmarkVectorArtView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTUICoinbaseWordmarkVectorArtView.h; sourceTree = "<group>"; };
 		A70A52D11AA7DECF00CA2AC9 /* BTUICoinbaseWordmarkVectorArtView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTUICoinbaseWordmarkVectorArtView.m; sourceTree = "<group>"; };
@@ -801,10 +810,14 @@
 		A7FF7A4C19C7820C000AFFA4 /* BTPaymentApplePayProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTPaymentApplePayProvider.m; sourceTree = "<group>"; };
 		A7FF7A4D19C7828B000AFFA4 /* BTPaymentApplePayProviderSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentApplePayProviderSpec.m; sourceTree = "<group>"; };
 		A7FF7A4F19C787FC000AFFA4 /* BTPaymentApplePayProvider_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPaymentApplePayProvider_Internal.h; sourceTree = "<group>"; };
-		A9DFAAB1262EEC2079633CE3 /* libPods-Braintree-Apple-Pay-Excluded.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Apple-Pay-Excluded.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3C50A597495438F81DA0348 /* libPods-Braintree-Build.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Build.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Apple-Pay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC1EF1BEA973DF42A5FD84A5 /* Pods-Logic-Tests-Braintree-API-Integration-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests-Braintree-API-Integration-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests-Braintree-API-Integration-Specs/Pods-Logic-Tests-Braintree-API-Integration-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		B855B5B1BD021BC8BE71E002 /* Pods-Tests-Braintree-Data-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-Data-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-Data-Specs/Pods-Tests-Braintree-Data-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		B8802944584F74BE3A65C6F4 /* libPods-Tests-Braintree-Acceptance-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-Braintree-Acceptance-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9E0837382F27B9AEDDFFCB3 /* Pods-Tests-Braintree-3D-Secure-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-3D-Secure-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-3D-Secure-Specs/Pods-Tests-Braintree-3D-Secure-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		BC684DE1DAE32F6D99BD90A8 /* libPods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6172B8A10BC035B98ADC05B /* Pods-Tests-Braintree-Coinbase-Integration-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-Coinbase-Integration-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-Coinbase-Integration-Specs/Pods-Tests-Braintree-Coinbase-Integration-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		C6D6F82BED747C608FA95755 /* Pods-Tests-Braintree-Venmo-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-Venmo-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-Venmo-Specs/Pods-Tests-Braintree-Venmo-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		C85D302DA6BF53D2F490A9AE /* Pods-Tests-Braintree-Acceptance-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-Acceptance-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-Acceptance-Specs/Pods-Tests-Braintree-Acceptance-Specs.release.xcconfig"; sourceTree = "<group>"; };
 		CD9ED07B6BCD0ED391970071 /* BraintreeDemoDeprecatedBTPayPalButtonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoDeprecatedBTPayPalButtonViewController.h; sourceTree = "<group>"; };
 		CD9ED118397E68366E74F1A8 /* BraintreeDemoBTUIPayPalButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoBTUIPayPalButtonViewController.m; sourceTree = "<group>"; };
 		CD9ED183730D5B9080EEFCDD /* BraintreeDemoApplePayPaymentProviderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoApplePayPaymentProviderViewController.h; sourceTree = "<group>"; };
@@ -830,21 +843,14 @@
 		CD9EDF1ED0DA6296CAA32BB1 /* BraintreeDemoCustomVenmoButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoCustomVenmoButtonViewController.m; sourceTree = "<group>"; };
 		CD9EDF64283B10584C4F6278 /* BraintreeDemoCustomMultiPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoCustomMultiPayViewController.h; sourceTree = "<group>"; };
 		CD9EDFA99E97B9BD95E4F877 /* BraintreeDemoBraintreeDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoBraintreeDataViewController.h; sourceTree = "<group>"; };
-		CFEDF3A91EB6C4D446401E1A /* Pods-Braintree-Apple-Pay-Excluded.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Excluded.release.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded.release.xcconfig"; sourceTree = "<group>"; };
-		CFF24E2D258448C0F04FE3F0 /* Pods-Logic-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests.release.xcconfig"; sourceTree = "<group>"; };
-		D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
-		DBED5868ADC94026BA7674E4 /* libPods-Braintree-Payment-Authorization-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payment-Authorization-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Logic-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD999D6FDD21459BA0ADFD5C /* libPods-Braintree-Payments-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DF5D840F7E4FDD1E97CF5318 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E87AEC871A4243CDBDB34507 /* libPods-Braintree-Venmo-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Venmo-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA18037F59BA4BC296136D1C /* libPods-Braintree-API-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EEE50EAA429F4DA691822A24 /* libPods-Braintree-PayPal-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-PayPal-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-API-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FBEFCE8D4BB249FCB2A52FA4 /* libPods-Braintree-Payments-UI-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Payments-UI-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE170CE2F87E4BC199DE13A1 /* libPods-Braintree-Data-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Data-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF2931FC42715B5427EBC760 /* libPods-Tests-Braintree-UI-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-Braintree-UI-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1A98A1E83D7FABB73F5D8B9 /* libPods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E201DEECE6154D7019504D58 /* Pods-Tests-Braintree-Venmo-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-Braintree-Venmo-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-Braintree-Venmo-Specs/Pods-Tests-Braintree-Venmo-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		E234654B5B0875BE6C973947 /* Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs/Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		F1712A2AB2417FB354508CCB /* Pods-Logic-Tests-Braintree-API-Integration-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests-Braintree-API-Integration-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests-Braintree-API-Integration-Specs/Pods-Logic-Tests-Braintree-API-Integration-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		F20AD922059865F24A253B4C /* Pods-Logic-Tests-Braintree-Payments-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests-Braintree-Payments-Specs.release.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests-Braintree-Payments-Specs/Pods-Logic-Tests-Braintree-Payments-Specs.release.xcconfig"; sourceTree = "<group>"; };
+		FB181A423829CAF265943EBC /* Pods-Logic-Tests-Braintree-API-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Logic-Tests-Braintree-API-Specs.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Logic-Tests-Braintree-API-Specs/Pods-Logic-Tests-Braintree-API-Specs.debug.xcconfig"; sourceTree = "<group>"; };
+		FDEBCF415CBEB60726596290 /* libPods-Tests-Braintree-PayPal-Integration-Specs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-Braintree-PayPal-Integration-Specs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -855,7 +861,7 @@
 				1607FE49192D974C0099D504 /* XCTest.framework in Frameworks */,
 				1607FE4B192D974C0099D504 /* UIKit.framework in Frameworks */,
 				1607FE4A192D974C0099D504 /* Foundation.framework in Frameworks */,
-				757CF1B2CA5360CBF5F25DDE /* libPods-Tests.a in Frameworks */,
+				4D4813915C6662E8C3E77F10 /* libPods-Tests-Braintree-PayPal-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -866,7 +872,7 @@
 				1607FE5F192D97570099D504 /* XCTest.framework in Frameworks */,
 				1607FE61192D97570099D504 /* UIKit.framework in Frameworks */,
 				1607FE60192D97570099D504 /* Foundation.framework in Frameworks */,
-				137D150CAF78BC9B8B08D9FF /* libPods-Tests.a in Frameworks */,
+				B0E6EDAA21AFC12C36B3A86E /* libPods-Tests-Braintree-PayPal-Integration-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -877,7 +883,7 @@
 				1607FE8B192D97FF0099D504 /* XCTest.framework in Frameworks */,
 				1607FE8D192D97FF0099D504 /* UIKit.framework in Frameworks */,
 				1607FE8C192D97FF0099D504 /* Foundation.framework in Frameworks */,
-				FF778C892A565D2A5757976C /* libPods-Tests.a in Frameworks */,
+				765DE89FC5FD535B5ACC1C1D /* libPods-Tests-Braintree-UI-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -885,7 +891,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA3D6AAEF7256ABB037A0C9C /* libPods-Tests.a in Frameworks */,
+				2F7EFDFF6F449C3270D80243 /* libPods-Tests-Braintree-Coinbase-Integration-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,7 +902,7 @@
 				162174E2192D9220008DC35D /* CoreGraphics.framework in Frameworks */,
 				162174E3192D9220008DC35D /* UIKit.framework in Frameworks */,
 				162174E0192D9220008DC35D /* Foundation.framework in Frameworks */,
-				D5FD96A6B8703344CB77B1B0 /* libPods-Braintree-Demo.a in Frameworks */,
+				60BDB32D5E0865160F82CA9C /* libPods-Braintree-Demo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -908,7 +914,7 @@
 				16217540192D94BB008DC35D /* XCTest.framework in Frameworks */,
 				16217542192D94BB008DC35D /* UIKit.framework in Frameworks */,
 				16217541192D94BB008DC35D /* Foundation.framework in Frameworks */,
-				162DEF31261EADD377B7424A /* libPods-Logic-Tests.a in Frameworks */,
+				B8CADFF70EE5F5BFBC5B687C /* libPods-Logic-Tests-Braintree-API-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -919,7 +925,7 @@
 				16217554192D94C7008DC35D /* XCTest.framework in Frameworks */,
 				16217556192D94C7008DC35D /* UIKit.framework in Frameworks */,
 				16217555192D94C7008DC35D /* Foundation.framework in Frameworks */,
-				BB05EBCD58F647B9EA04C57E /* libPods-Logic-Tests.a in Frameworks */,
+				7DA4C79B8854AA006275250C /* libPods-Logic-Tests-Braintree-API-Integration-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -930,7 +936,7 @@
 				1696816B192D9A3200120846 /* XCTest.framework in Frameworks */,
 				1696816D192D9A3200120846 /* UIKit.framework in Frameworks */,
 				1696816C192D9A3200120846 /* Foundation.framework in Frameworks */,
-				694DC76AACE9C9D40FD48593 /* libPods-Tests.a in Frameworks */,
+				4EE277B6962E9EAB843097CC /* libPods-Tests-Braintree-Acceptance-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -938,7 +944,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				006DF886AA8467222145BEE3 /* libPods-Tests.a in Frameworks */,
+				348C8FF466A4DED45592A35F /* libPods-Tests-Braintree-3D-Secure-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -946,7 +952,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0311966487F62264418B390 /* libPods-Braintree-Apple-Pay.a in Frameworks */,
+				3884ACF5C5D08FFD2DB3505D /* libPods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -956,7 +962,7 @@
 			files = (
 				2D9DDB3619B8171900C53140 /* XCTest.framework in Frameworks */,
 				2D9DDB3719B8171900C53140 /* Foundation.framework in Frameworks */,
-				AB3A0C96632B07668A8A011A /* libPods-Logic-Tests.a in Frameworks */,
+				2BA9839F62141B0A2228ED47 /* libPods-Logic-Tests-Braintree-Payments-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -964,7 +970,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D6E3718C43FFC0A67DB16DD /* libPods-Braintree-Apple-Pay-Excluded.a in Frameworks */,
+				46F2B630DC3C662570D80248 /* libPods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -975,7 +981,7 @@
 				A72B37FE19633826009AD2F5 /* XCTest.framework in Frameworks */,
 				A72B380019633826009AD2F5 /* UIKit.framework in Frameworks */,
 				A72B37FF19633826009AD2F5 /* Foundation.framework in Frameworks */,
-				14635ACA2F22A649D38DF214 /* libPods-Tests.a in Frameworks */,
+				3E243E23080F8E687C5F79A3 /* libPods-Tests-Braintree-Data-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -986,7 +992,7 @@
 				A75DA3631921394200D997A2 /* XCTest.framework in Frameworks */,
 				A75DA3661921394200D997A2 /* UIKit.framework in Frameworks */,
 				A75DA3641921394200D997A2 /* Foundation.framework in Frameworks */,
-				0D9D2B8667235033E88D7A23 /* libPods-Logic-Tests.a in Frameworks */,
+				21651563BC728075739D65DF /* libPods-Logic-Tests-Braintree-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -997,7 +1003,7 @@
 				A7B7432B19A3E093000A6A7A /* XCTest.framework in Frameworks */,
 				A7B7432D19A3E094000A6A7A /* UIKit.framework in Frameworks */,
 				A7B7432C19A3E093000A6A7A /* Foundation.framework in Frameworks */,
-				99750FDC809F68C4246BF88E /* libPods-Tests.a in Frameworks */,
+				E98DAE8AE5B1BD8799B979E8 /* libPods-Tests-Braintree-Venmo-Specs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2121,19 +2127,39 @@
 			path = Braintree/Coinbase/Vendor;
 			sourceTree = SOURCE_ROOT;
 		};
-		847E11FCFF74B0CCB8E48E73 /* Pods */ = {
+		875BC90B1271C3B7538E9A0B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Demo.debug.xcconfig */,
-				15AD2CC443481E5FA269CB4D /* Pods-Braintree-Demo.release.xcconfig */,
-				969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */,
-				D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */,
-				543B7387A30D495553758609 /* Pods-Braintree-Apple-Pay.debug.xcconfig */,
-				2A0D9AB11874709D3BEA9582 /* Pods-Braintree-Apple-Pay.release.xcconfig */,
-				37EBD49E76CC2F7CE2E729DE /* Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig */,
-				CFEDF3A91EB6C4D446401E1A /* Pods-Braintree-Apple-Pay-Excluded.release.xcconfig */,
-				CFF24E2D258448C0F04FE3F0 /* Pods-Logic-Tests.release.xcconfig */,
-				0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */,
+				66D14DB081CD285BEDDE85FD /* Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.debug.xcconfig */,
+				2B8B5043E31905C0FFFE797E /* Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.release.xcconfig */,
+				E234654B5B0875BE6C973947 /* Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.debug.xcconfig */,
+				5404D2D5AD93F3E3D15DB608 /* Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.release.xcconfig */,
+				68040D3EE51B2160195BA457 /* Pods-Braintree-Demo.debug.xcconfig */,
+				5F029066887D92EC4D2196E0 /* Pods-Braintree-Demo.release.xcconfig */,
+				AC1EF1BEA973DF42A5FD84A5 /* Pods-Logic-Tests-Braintree-API-Integration-Specs.debug.xcconfig */,
+				F1712A2AB2417FB354508CCB /* Pods-Logic-Tests-Braintree-API-Integration-Specs.release.xcconfig */,
+				FB181A423829CAF265943EBC /* Pods-Logic-Tests-Braintree-API-Specs.debug.xcconfig */,
+				22446F4272E3A6F17558D331 /* Pods-Logic-Tests-Braintree-API-Specs.release.xcconfig */,
+				84D3AE40D044AC7E1FD69C65 /* Pods-Logic-Tests-Braintree-Payments-Specs.debug.xcconfig */,
+				F20AD922059865F24A253B4C /* Pods-Logic-Tests-Braintree-Payments-Specs.release.xcconfig */,
+				504249EC90530986E1EC267D /* Pods-Logic-Tests-Braintree-Specs.debug.xcconfig */,
+				542153E23304C8DB694F747F /* Pods-Logic-Tests-Braintree-Specs.release.xcconfig */,
+				31C5E520453CCFDE176A10E8 /* Pods-Tests-Braintree-3D-Secure-Specs.debug.xcconfig */,
+				B9E0837382F27B9AEDDFFCB3 /* Pods-Tests-Braintree-3D-Secure-Specs.release.xcconfig */,
+				22847E347A59EBA061B83ABE /* Pods-Tests-Braintree-Acceptance-Specs.debug.xcconfig */,
+				C85D302DA6BF53D2F490A9AE /* Pods-Tests-Braintree-Acceptance-Specs.release.xcconfig */,
+				C6172B8A10BC035B98ADC05B /* Pods-Tests-Braintree-Coinbase-Integration-Specs.debug.xcconfig */,
+				89FFD51D53985240C455A6DE /* Pods-Tests-Braintree-Coinbase-Integration-Specs.release.xcconfig */,
+				0F8A773EEB15B84BBFFA7290 /* Pods-Tests-Braintree-Data-Specs.debug.xcconfig */,
+				B855B5B1BD021BC8BE71E002 /* Pods-Tests-Braintree-Data-Specs.release.xcconfig */,
+				6A69A0336897A04443310D62 /* Pods-Tests-Braintree-PayPal-Integration-Specs.debug.xcconfig */,
+				4B85DC9E38B83A876F068EA9 /* Pods-Tests-Braintree-PayPal-Integration-Specs.release.xcconfig */,
+				59E8AF687256AAA3A718943F /* Pods-Tests-Braintree-PayPal-Specs.debug.xcconfig */,
+				6E0403F17CF45BF151E26AB9 /* Pods-Tests-Braintree-PayPal-Specs.release.xcconfig */,
+				8A7C76A2D97B9126C0FA0E59 /* Pods-Tests-Braintree-UI-Specs.debug.xcconfig */,
+				4426F19D413504D016F7A64F /* Pods-Tests-Braintree-UI-Specs.release.xcconfig */,
+				C6D6F82BED747C608FA95755 /* Pods-Tests-Braintree-Venmo-Specs.debug.xcconfig */,
+				E201DEECE6154D7019504D58 /* Pods-Tests-Braintree-Venmo-Specs.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2178,7 +2204,7 @@
 				16E7B02D19E637340057ABB7 /* Specs */,
 				A75DA3531921394200D997A2 /* Frameworks */,
 				A75DA3521921394200D997A2 /* Products */,
-				847E11FCFF74B0CCB8E48E73 /* Pods */,
+				875BC90B1271C3B7538E9A0B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2211,36 +2237,22 @@
 				A75DA3541921394200D997A2 /* Foundation.framework */,
 				A75DA3621921394200D997A2 /* XCTest.framework */,
 				A75DA3651921394200D997A2 /* UIKit.framework */,
-				D53D4594A5D24D05BB007B99 /* libPods-Braintree-Specs.a */,
 				162174E1192D9220008DC35D /* CoreGraphics.framework */,
-				EA18037F59BA4BC296136D1C /* libPods-Braintree-API-Demo.a */,
-				99F1CFF4EF194CB6963B1867 /* libPods-Braintree-API-Integration-Specs.a */,
-				9A0D18A73520462F8D2FB1CD /* libPods-Braintree-API-Public-Specs.a */,
-				F1E8C0EE549E44D7BF4BA731 /* libPods-Braintree-API-Specs.a */,
-				056170AD4ACC47C1B438CA86 /* libPods-Braintree-Demo.a */,
-				77D685170288473A8E7C887B /* libPods-Braintree-PayPal-Acceptance-Specs.a */,
-				C3BE0463D1E244DC96FB2BD0 /* libPods-Braintree-PayPal-Demo.a */,
-				EEE50EAA429F4DA691822A24 /* libPods-Braintree-PayPal-Integration-Specs.a */,
-				133578558B4E45ECA2C2D586 /* libPods-Braintree-PayPal-Specs.a */,
-				7EEF928818B3451B86263FE4 /* libPods-Braintree-Payments-UI-Demo.a */,
-				FBEFCE8D4BB249FCB2A52FA4 /* libPods-Braintree-Payments-UI-Specs.a */,
-				FE170CE2F87E4BC199DE13A1 /* libPods-Braintree-Data-Specs.a */,
-				2CDCE86975684EFC94DA10AB /* libPods-Braintree-Data-Demo.a */,
-				0952D25AC13D43208F8288B6 /* libPods-Braintree-AppSwitch-Specs.a */,
-				4FEE5C97D00D4124A961B590 /* libPods-TestWalletTests.a */,
-				9270469696964D9BABE95E62 /* libPods-TestWallet.a */,
-				E87AEC871A4243CDBDB34507 /* libPods-Braintree-Venmo-Specs.a */,
-				DBED5868ADC94026BA7674E4 /* libPods-Braintree-Payment-Authorization-Specs.a */,
-				DD999D6FDD21459BA0ADFD5C /* libPods-Braintree-Payments-Specs.a */,
-				FFDBD0F3DF164AD1B1A34073 /* libPods-Tests.a */,
-				B3C50A597495438F81DA0348 /* libPods-Braintree-Build.a */,
-				8996DAC5FFA842F2AF3A20D4 /* libPods-Braintree-Dev.a */,
-				312C642A816448F6A6B7D69B /* libPods-Common.a */,
-				DF5D840F7E4FDD1E97CF5318 /* libPods.a */,
-				3E30C5FE1F5450A242279524 /* libPods-Braintree-UI-Demo.a */,
-				BD718FF76B9CA1ED800EAFE5 /* libPods-Braintree-Apple-Pay.a */,
-				A9DFAAB1262EEC2079633CE3 /* libPods-Braintree-Apple-Pay-Excluded.a */,
-				DCB88ED84A6F03DA5EEC2848 /* libPods-Logic-Tests.a */,
+				E1A98A1E83D7FABB73F5D8B9 /* libPods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.a */,
+				BC684DE1DAE32F6D99BD90A8 /* libPods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.a */,
+				432304BC3B28E8A4313D6F2B /* libPods-Braintree-Demo.a */,
+				8E159C661FB3E0412AF11760 /* libPods-Logic-Tests-Braintree-API-Integration-Specs.a */,
+				65A3B59832518F62F860FDBE /* libPods-Logic-Tests-Braintree-API-Specs.a */,
+				01DF0B0F35136BC8081AE72A /* libPods-Logic-Tests-Braintree-Payments-Specs.a */,
+				378076DEA288E7C88BBD4AA9 /* libPods-Logic-Tests-Braintree-Specs.a */,
+				07AC1F7561698C096567F6AA /* libPods-Tests-Braintree-3D-Secure-Specs.a */,
+				B8802944584F74BE3A65C6F4 /* libPods-Tests-Braintree-Acceptance-Specs.a */,
+				0D9583CF73311C018B8380D7 /* libPods-Tests-Braintree-Coinbase-Integration-Specs.a */,
+				2AC024DEE13E758D3897102A /* libPods-Tests-Braintree-Data-Specs.a */,
+				FDEBCF415CBEB60726596290 /* libPods-Tests-Braintree-PayPal-Integration-Specs.a */,
+				756E45CD60B34308DAF3AA80 /* libPods-Tests-Braintree-PayPal-Specs.a */,
+				CF2931FC42715B5427EBC760 /* libPods-Tests-Braintree-UI-Specs.a */,
+				672428C55FE11D2E21386E15 /* libPods-Tests-Braintree-Venmo-Specs.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2383,12 +2395,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1607FE57192D974C0099D504 /* Build configuration list for PBXNativeTarget "Braintree-PayPal-Specs" */;
 			buildPhases = (
-				0005583A9FBE0A24A1CC060C /* Check Pods Manifest.lock */,
+				66563AED24E53BE21F979FB3 /* [CP] Check Pods Manifest.lock */,
 				1607FE44192D974C0099D504 /* Sources */,
 				1607FE45192D974C0099D504 /* Frameworks */,
 				1607FE46192D974C0099D504 /* Resources */,
-				593DDE3B11878DB424A88119 /* Copy Pods Resources */,
-				9B928042FFEA11F881C77E33 /* Embed Pods Frameworks */,
+				8C0F3D3DFBD8677CB3F36CF5 /* [CP] Embed Pods Frameworks */,
+				422D7AC763DE10DA808AFF37 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2404,12 +2416,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1607FE6B192D97570099D504 /* Build configuration list for PBXNativeTarget "Braintree-PayPal-Integration-Specs" */;
 			buildPhases = (
-				EE4704B3A091C6BD5835E972 /* Check Pods Manifest.lock */,
+				B3F3EC26FC9D78DA8BAB69F2 /* [CP] Check Pods Manifest.lock */,
 				1607FE5A192D97570099D504 /* Sources */,
 				1607FE5B192D97570099D504 /* Frameworks */,
 				1607FE5C192D97570099D504 /* Resources */,
-				692EB62D7FE47C0D9B86F252 /* Copy Pods Resources */,
-				55C50F75B34C0445F2B25A27 /* Embed Pods Frameworks */,
+				BD92791E1BC225FAA019E797 /* [CP] Embed Pods Frameworks */,
+				CD5A75F88AB8421CE47CFB74 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2425,12 +2437,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1607FE97192D98000099D504 /* Build configuration list for PBXNativeTarget "Braintree-UI-Specs" */;
 			buildPhases = (
-				D61C524A6964B52441884F59 /* Check Pods Manifest.lock */,
+				0ABB5969E1FFE4DDB5DDECAA /* [CP] Check Pods Manifest.lock */,
 				1607FE86192D97FF0099D504 /* Sources */,
 				1607FE87192D97FF0099D504 /* Frameworks */,
 				1607FE88192D97FF0099D504 /* Resources */,
-				9C168C064D258912AFE1A536 /* Copy Pods Resources */,
-				26E925C8689167A4BBDFA7E1 /* Embed Pods Frameworks */,
+				34B6B0B50AEDB72AC82C8808 /* [CP] Embed Pods Frameworks */,
+				7C01814F88A3F1D603D57FDE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2446,12 +2458,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 161E0C821A9EA83400D7285A /* Build configuration list for PBXNativeTarget "Braintree-Coinbase-Integration-Specs" */;
 			buildPhases = (
-				F127969B8FA5A71E268C0090 /* Check Pods Manifest.lock */,
+				5FDF15B18FECA9185D0BB451 /* [CP] Check Pods Manifest.lock */,
 				161E0C781A9EA83400D7285A /* Sources */,
 				161E0C791A9EA83400D7285A /* Frameworks */,
 				161E0C7A1A9EA83400D7285A /* Resources */,
-				AAA84B4804905878C01A4C43 /* Copy Pods Resources */,
-				9A98EE793D6C4060BAE17176 /* Embed Pods Frameworks */,
+				CC8F317072337C4CD5A70D38 /* [CP] Embed Pods Frameworks */,
+				B5FC58FA96ADB4779DCF405C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2467,12 +2479,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16217504192D9220008DC35D /* Build configuration list for PBXNativeTarget "Braintree-Demo" */;
 			buildPhases = (
-				359E5F49A507B1521FFB6F8C /* Check Pods Manifest.lock */,
+				D7EAE114BCBDBD3AA97AE095 /* [CP] Check Pods Manifest.lock */,
 				162174DB192D9220008DC35D /* Sources */,
 				162174DC192D9220008DC35D /* Frameworks */,
 				162174DD192D9220008DC35D /* Resources */,
-				BA8EDECA8592E17BF7D3792D /* Copy Pods Resources */,
-				01B604DD5F24ADE6387BA356 /* Embed Pods Frameworks */,
+				ED2419534D5FA414C35E0EB9 /* [CP] Embed Pods Frameworks */,
+				BD2B44C9A69B474C5CC84D84 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2487,12 +2499,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1621754E192D94BB008DC35D /* Build configuration list for PBXNativeTarget "Braintree-API-Specs" */;
 			buildPhases = (
-				6719645DC92B06C4C5D12BA0 /* Check Pods Manifest.lock */,
+				1624FD93954F30A4D5187EF8 /* [CP] Check Pods Manifest.lock */,
 				1621753B192D94BB008DC35D /* Sources */,
 				1621753C192D94BB008DC35D /* Frameworks */,
 				1621753D192D94BB008DC35D /* Resources */,
-				C313465382989B0B389EF6E5 /* Copy Pods Resources */,
-				F49A4EBD38930A3C11FCBA02 /* Embed Pods Frameworks */,
+				5F2674EE2D4AE8542FEF177A /* [CP] Embed Pods Frameworks */,
+				9A1D4E605F9028CFCB777211 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2508,12 +2520,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16217560192D94C7008DC35D /* Build configuration list for PBXNativeTarget "Braintree-API-Integration-Specs" */;
 			buildPhases = (
-				DB3E31C1E61AACFEE18986B2 /* Check Pods Manifest.lock */,
+				C27A7AF80FF3FD2CD138DC59 /* [CP] Check Pods Manifest.lock */,
 				1621754F192D94C7008DC35D /* Sources */,
 				16217550192D94C7008DC35D /* Frameworks */,
 				16217551192D94C7008DC35D /* Resources */,
-				7B22C9692095F5D3A330079F /* Copy Pods Resources */,
-				7A6E0E89FF4016DEE2BC1A4F /* Embed Pods Frameworks */,
+				C0CB763ABA8CE750ED5C79F1 /* [CP] Embed Pods Frameworks */,
+				E755D94F4E347AFB4FC3F492 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2529,12 +2541,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16968179192D9A3200120846 /* Build configuration list for PBXNativeTarget "Braintree-Acceptance-Specs" */;
 			buildPhases = (
-				E47E6953D33EF5CA37B07AE8 /* Check Pods Manifest.lock */,
+				69E17BBD16D2A710002E8F28 /* [CP] Check Pods Manifest.lock */,
 				16968166192D9A3200120846 /* Sources */,
 				16968167192D9A3200120846 /* Frameworks */,
 				16968168192D9A3200120846 /* Resources */,
-				E14CF77FB583573B70B93F4A /* Copy Pods Resources */,
-				0880FA72EDDD22949A3EB0D6 /* Embed Pods Frameworks */,
+				C463A99252F56F1C52938C8E /* [CP] Embed Pods Frameworks */,
+				7C6360270BF5FD1FCD8A0453 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2550,12 +2562,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16E20A6E1A703F87002BCC34 /* Build configuration list for PBXNativeTarget "Braintree-3D-Secure-Specs" */;
 			buildPhases = (
-				1F2BDC4AAD5713D9AE616542 /* Check Pods Manifest.lock */,
+				9472DF9FE0AC84C9CE44E40E /* [CP] Check Pods Manifest.lock */,
 				16E20A621A703F86002BCC34 /* Sources */,
 				16E20A631A703F86002BCC34 /* Frameworks */,
 				16E20A641A703F86002BCC34 /* Resources */,
-				32BAB7CAD3468CD475F02B75 /* Copy Pods Resources */,
-				04B6DCDAD1F6EC42101C5B5E /* Embed Pods Frameworks */,
+				24E5226BB1AC4FE0EADA0BA3 /* [CP] Embed Pods Frameworks */,
+				F4D9113793434716635415D4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2571,12 +2583,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D30F1371A7C49E2004BA8C3 /* Build configuration list for PBXNativeTarget "Braintree-Apple-Pay-Build-Specs" */;
 			buildPhases = (
-				E13119870ECDBE8C03E64829 /* Check Pods Manifest.lock */,
+				B9E96B0108834B0FDF86DCA1 /* [CP] Check Pods Manifest.lock */,
 				2D30F12D1A7C49E2004BA8C3 /* Sources */,
 				2D30F12E1A7C49E2004BA8C3 /* Frameworks */,
 				2D30F12F1A7C49E2004BA8C3 /* Resources */,
-				6E3EBB62A31B80C2A41E8A9D /* Copy Pods Resources */,
-				D0D18345A9EDBEDF2BC689C4 /* Embed Pods Frameworks */,
+				A67E2DAF70D0A672BE6294B7 /* [CP] Embed Pods Frameworks */,
+				63CA98E0E83A5F3FCF81122A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2592,12 +2604,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D9DDB4219B8171A00C53140 /* Build configuration list for PBXNativeTarget "Braintree-Payments-Specs" */;
 			buildPhases = (
-				9E53CB7A187AE8DB023D3ED3 /* Check Pods Manifest.lock */,
+				275D2380441AFA6909730C1B /* [CP] Check Pods Manifest.lock */,
 				2D9DDB3119B8171800C53140 /* Sources */,
 				2D9DDB3219B8171800C53140 /* Frameworks */,
 				2D9DDB3319B8171800C53140 /* Resources */,
-				D40E1564F8F9C439088367B7 /* Copy Pods Resources */,
-				18819920CDE36A72A8021EAD /* Embed Pods Frameworks */,
+				42EB515693CA82788C9E6AE9 /* [CP] Embed Pods Frameworks */,
+				3015F537B8EF3509C6C3D152 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2612,12 +2624,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2DCFAA6E1A800ACB00FA2ECC /* Build configuration list for PBXNativeTarget "Braintree-Apple-Pay-Excluded-Build-Specs" */;
 			buildPhases = (
-				608A0D5DC2863A57A0E75CB5 /* Check Pods Manifest.lock */,
+				F0B34881FA65C740637E3769 /* [CP] Check Pods Manifest.lock */,
 				2DCFAA641A800ACB00FA2ECC /* Sources */,
 				2DCFAA651A800ACB00FA2ECC /* Frameworks */,
 				2DCFAA661A800ACB00FA2ECC /* Resources */,
-				4FB16CF961ABAB60973A1812 /* Copy Pods Resources */,
-				D0379F0D4EB264D5221F6181 /* Embed Pods Frameworks */,
+				27D79A67B270ED97EB1FFA07 /* [CP] Embed Pods Frameworks */,
+				F9DBFEBDAE40AB406E6FFDF6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2633,12 +2645,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A72B380C19633826009AD2F5 /* Build configuration list for PBXNativeTarget "Braintree-Data-Specs" */;
 			buildPhases = (
-				168C1BC99BE3B4D5D473D2B3 /* Check Pods Manifest.lock */,
+				AB968FEBC89AF719FF0E2F24 /* [CP] Check Pods Manifest.lock */,
 				A72B37F919633826009AD2F5 /* Sources */,
 				A72B37FA19633826009AD2F5 /* Frameworks */,
 				A72B37FB19633826009AD2F5 /* Resources */,
-				093E5187EAF481983CF87500 /* Copy Pods Resources */,
-				91EE18AD748BDF13A4E99A3E /* Embed Pods Frameworks */,
+				561D39D07FAA6C74E4AD0C45 /* [CP] Embed Pods Frameworks */,
+				947C889552EA351DDC813287 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2654,12 +2666,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A75DA3751921394200D997A2 /* Build configuration list for PBXNativeTarget "Braintree-Specs" */;
 			buildPhases = (
-				63002D4C01FD1D7F080926C5 /* Check Pods Manifest.lock */,
+				8A83555180B40090BA02C75F /* [CP] Check Pods Manifest.lock */,
 				A75DA35D1921394200D997A2 /* Sources */,
 				A75DA35E1921394200D997A2 /* Frameworks */,
 				A75DA35F1921394200D997A2 /* Resources */,
-				68FECD8FB55F8E877EA25372 /* Copy Pods Resources */,
-				ACCE40A51247FD9911AFC49B /* Embed Pods Frameworks */,
+				9AAE10B41F949AE26A7AECA1 /* [CP] Embed Pods Frameworks */,
+				AACEA058A03755097A7915EB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2675,12 +2687,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7B7433719A3E094000A6A7A /* Build configuration list for PBXNativeTarget "Braintree-Venmo-Specs" */;
 			buildPhases = (
-				150CCDBC28B2D428844FA42A /* Check Pods Manifest.lock */,
+				1521295404A07A4A520DE758 /* [CP] Check Pods Manifest.lock */,
 				A7B7432619A3E093000A6A7A /* Sources */,
 				A7B7432719A3E093000A6A7A /* Frameworks */,
 				A7B7432819A3E093000A6A7A /* Resources */,
-				E37B16244F22151178046A57 /* Copy Pods Resources */,
-				72C0A16ED6D85D00FF7C9B74 /* Embed Pods Frameworks */,
+				AD33B473FD54C04DD53414AF /* [CP] Embed Pods Frameworks */,
+				0CE1A6E3C8227A12B4D8A5AC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2944,479 +2956,494 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0005583A9FBE0A24A1CC060C /* Check Pods Manifest.lock */ = {
+		0ABB5969E1FFE4DDB5DDECAA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		01B604DD5F24ADE6387BA356 /* Embed Pods Frameworks */ = {
+		0CE1A6E3C8227A12B4D8A5AC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-Venmo-Specs/Pods-Tests-Braintree-Venmo-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		04B6DCDAD1F6EC42101C5B5E /* Embed Pods Frameworks */ = {
+		1521295404A07A4A520DE758 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		0880FA72EDDD22949A3EB0D6 /* Embed Pods Frameworks */ = {
+		1624FD93954F30A4D5187EF8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		093E5187EAF481983CF87500 /* Copy Pods Resources */ = {
+		24E5226BB1AC4FE0EADA0BA3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-3D-Secure-Specs/Pods-Tests-Braintree-3D-Secure-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		150CCDBC28B2D428844FA42A /* Check Pods Manifest.lock */ = {
+		275D2380441AFA6909730C1B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		168C1BC99BE3B4D5D473D2B3 /* Check Pods Manifest.lock */ = {
+		27D79A67B270ED97EB1FFA07 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs/Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		18819920CDE36A72A8021EAD /* Embed Pods Frameworks */ = {
+		3015F537B8EF3509C6C3D152 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests-Braintree-Payments-Specs/Pods-Logic-Tests-Braintree-Payments-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1F2BDC4AAD5713D9AE616542 /* Check Pods Manifest.lock */ = {
+		34B6B0B50AEDB72AC82C8808 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-UI-Specs/Pods-Tests-Braintree-UI-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		26E925C8689167A4BBDFA7E1 /* Embed Pods Frameworks */ = {
+		422D7AC763DE10DA808AFF37 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-PayPal-Specs/Pods-Tests-Braintree-PayPal-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		32BAB7CAD3468CD475F02B75 /* Copy Pods Resources */ = {
+		42EB515693CA82788C9E6AE9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests-Braintree-Payments-Specs/Pods-Logic-Tests-Braintree-Payments-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		359E5F49A507B1521FFB6F8C /* Check Pods Manifest.lock */ = {
+		561D39D07FAA6C74E4AD0C45 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-Data-Specs/Pods-Tests-Braintree-Data-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4FB16CF961ABAB60973A1812 /* Copy Pods Resources */ = {
+		5F2674EE2D4AE8542FEF177A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests-Braintree-API-Specs/Pods-Logic-Tests-Braintree-API-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		55C50F75B34C0445F2B25A27 /* Embed Pods Frameworks */ = {
+		5FDF15B18FECA9185D0BB451 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		593DDE3B11878DB424A88119 /* Copy Pods Resources */ = {
+		63CA98E0E83A5F3FCF81122A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs/Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		608A0D5DC2863A57A0E75CB5 /* Check Pods Manifest.lock */ = {
+		66563AED24E53BE21F979FB3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		63002D4C01FD1D7F080926C5 /* Check Pods Manifest.lock */ = {
+		69E17BBD16D2A710002E8F28 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6719645DC92B06C4C5D12BA0 /* Check Pods Manifest.lock */ = {
+		7C01814F88A3F1D603D57FDE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-UI-Specs/Pods-Tests-Braintree-UI-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		68FECD8FB55F8E877EA25372 /* Copy Pods Resources */ = {
+		7C6360270BF5FD1FCD8A0453 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-Acceptance-Specs/Pods-Tests-Braintree-Acceptance-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		692EB62D7FE47C0D9B86F252 /* Copy Pods Resources */ = {
+		8A83555180B40090BA02C75F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6E3EBB62A31B80C2A41E8A9D /* Copy Pods Resources */ = {
+		8C0F3D3DFBD8677CB3F36CF5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay/Pods-Braintree-Apple-Pay-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-PayPal-Specs/Pods-Tests-Braintree-PayPal-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		72C0A16ED6D85D00FF7C9B74 /* Embed Pods Frameworks */ = {
+		9472DF9FE0AC84C9CE44E40E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		7A6E0E89FF4016DEE2BC1A4F /* Embed Pods Frameworks */ = {
+		947C889552EA351DDC813287 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-Data-Specs/Pods-Tests-Braintree-Data-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7B22C9692095F5D3A330079F /* Copy Pods Resources */ = {
+		9A1D4E605F9028CFCB777211 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests-Braintree-API-Specs/Pods-Logic-Tests-Braintree-API-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		91EE18AD748BDF13A4E99A3E /* Embed Pods Frameworks */ = {
+		9AAE10B41F949AE26A7AECA1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests-Braintree-Specs/Pods-Logic-Tests-Braintree-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9A98EE793D6C4060BAE17176 /* Embed Pods Frameworks */ = {
+		A67E2DAF70D0A672BE6294B7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs/Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9B928042FFEA11F881C77E33 /* Embed Pods Frameworks */ = {
+		AACEA058A03755097A7915EB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests-Braintree-Specs/Pods-Logic-Tests-Braintree-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9C168C064D258912AFE1A536 /* Copy Pods Resources */ = {
+		AB968FEBC89AF719FF0E2F24 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		9E53CB7A187AE8DB023D3ED3 /* Check Pods Manifest.lock */ = {
+		AD33B473FD54C04DD53414AF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-Venmo-Specs/Pods-Tests-Braintree-Venmo-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AAA84B4804905878C01A4C43 /* Copy Pods Resources */ = {
+		B3F3EC26FC9D78DA8BAB69F2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		ACCE40A51247FD9911AFC49B /* Embed Pods Frameworks */ = {
+		B5FC58FA96ADB4779DCF405C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-Coinbase-Integration-Specs/Pods-Tests-Braintree-Coinbase-Integration-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		BA8EDECA8592E17BF7D3792D /* Copy Pods Resources */ = {
+		B9E96B0108834B0FDF86DCA1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BD2B44C9A69B474C5CC84D84 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3424,199 +3451,184 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C313465382989B0B389EF6E5 /* Copy Pods Resources */ = {
+		BD92791E1BC225FAA019E797 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-PayPal-Integration-Specs/Pods-Tests-Braintree-PayPal-Integration-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D0379F0D4EB264D5221F6181 /* Embed Pods Frameworks */ = {
+		C0CB763ABA8CE750ED5C79F1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded/Pods-Braintree-Apple-Pay-Excluded-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests-Braintree-API-Integration-Specs/Pods-Logic-Tests-Braintree-API-Integration-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D0D18345A9EDBEDF2BC689C4 /* Embed Pods Frameworks */ = {
+		C27A7AF80FF3FD2CD138DC59 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay/Pods-Braintree-Apple-Pay-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		D40E1564F8F9C439088367B7 /* Copy Pods Resources */ = {
+		C463A99252F56F1C52938C8E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-Acceptance-Specs/Pods-Tests-Braintree-Acceptance-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D61C524A6964B52441884F59 /* Check Pods Manifest.lock */ = {
+		CC8F317072337C4CD5A70D38 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-Coinbase-Integration-Specs/Pods-Tests-Braintree-Coinbase-Integration-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DB3E31C1E61AACFEE18986B2 /* Check Pods Manifest.lock */ = {
+		CD5A75F88AB8421CE47CFB74 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-PayPal-Integration-Specs/Pods-Tests-Braintree-PayPal-Integration-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E13119870ECDBE8C03E64829 /* Check Pods Manifest.lock */ = {
+		D7EAE114BCBDBD3AA97AE095 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		E14CF77FB583573B70B93F4A /* Copy Pods Resources */ = {
+		E755D94F4E347AFB4FC3F492 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests-Braintree-API-Integration-Specs/Pods-Logic-Tests-Braintree-API-Integration-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E37B16244F22151178046A57 /* Copy Pods Resources */ = {
+		ED2419534D5FA414C35E0EB9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Demo/Pods-Braintree-Demo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E47E6953D33EF5CA37B07AE8 /* Check Pods Manifest.lock */ = {
+		F0B34881FA65C740637E3769 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		EE4704B3A091C6BD5835E972 /* Check Pods Manifest.lock */ = {
+		F4D9113793434716635415D4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests-Braintree-3D-Secure-Specs/Pods-Tests-Braintree-3D-Secure-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F127969B8FA5A71E268C0090 /* Check Pods Manifest.lock */ = {
+		F9DBFEBDAE40AB406E6FFDF6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		F49A4EBD38930A3C11FCBA02 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Logic-Tests/Pods-Logic-Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs/Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -4034,7 +4046,7 @@
 /* Begin XCBuildConfiguration section */
 		1607FE58192D974C0099D504 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = 59E8AF687256AAA3A718943F /* Pods-Tests-Braintree-PayPal-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4082,7 +4094,7 @@
 		};
 		1607FE59192D974C0099D504 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = 6E0403F17CF45BF151E26AB9 /* Pods-Tests-Braintree-PayPal-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4124,7 +4136,7 @@
 		};
 		1607FE6C192D97570099D504 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = 6A69A0336897A04443310D62 /* Pods-Tests-Braintree-PayPal-Integration-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4172,7 +4184,7 @@
 		};
 		1607FE6D192D97570099D504 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = 4B85DC9E38B83A876F068EA9 /* Pods-Tests-Braintree-PayPal-Integration-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4214,7 +4226,7 @@
 		};
 		1607FE98192D98000099D504 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = 8A7C76A2D97B9126C0FA0E59 /* Pods-Tests-Braintree-UI-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4262,7 +4274,7 @@
 		};
 		1607FE99192D98000099D504 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = 4426F19D413504D016F7A64F /* Pods-Tests-Braintree-UI-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4304,7 +4316,7 @@
 		};
 		16217505192D9220008DC35D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1DEAEF498A3A6102ADFDB404 /* Pods-Braintree-Demo.debug.xcconfig */;
+			baseConfigurationReference = 68040D3EE51B2160195BA457 /* Pods-Braintree-Demo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4386,7 +4398,7 @@
 		};
 		16217506192D9220008DC35D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 15AD2CC443481E5FA269CB4D /* Pods-Braintree-Demo.release.xcconfig */;
+			baseConfigurationReference = 5F029066887D92EC4D2196E0 /* Pods-Braintree-Demo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4462,7 +4474,7 @@
 		};
 		1621754C192D94BB008DC35D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */;
+			baseConfigurationReference = FB181A423829CAF265943EBC /* Pods-Logic-Tests-Braintree-API-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4509,7 +4521,7 @@
 		};
 		1621754D192D94BB008DC35D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CFF24E2D258448C0F04FE3F0 /* Pods-Logic-Tests.release.xcconfig */;
+			baseConfigurationReference = 22446F4272E3A6F17558D331 /* Pods-Logic-Tests-Braintree-API-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4550,7 +4562,7 @@
 		};
 		16217561192D94C7008DC35D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */;
+			baseConfigurationReference = AC1EF1BEA973DF42A5FD84A5 /* Pods-Logic-Tests-Braintree-API-Integration-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4596,7 +4608,7 @@
 		};
 		16217562192D94C7008DC35D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CFF24E2D258448C0F04FE3F0 /* Pods-Logic-Tests.release.xcconfig */;
+			baseConfigurationReference = F1712A2AB2417FB354508CCB /* Pods-Logic-Tests-Braintree-API-Integration-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4636,7 +4648,7 @@
 		};
 		1696817A192D9A3200120846 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = 22847E347A59EBA061B83ABE /* Pods-Tests-Braintree-Acceptance-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4686,7 +4698,7 @@
 		};
 		1696817B192D9A3200120846 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = C85D302DA6BF53D2F490A9AE /* Pods-Tests-Braintree-Acceptance-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4730,7 +4742,7 @@
 		};
 		16E20A6F1A703F87002BCC34 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = 31C5E520453CCFDE176A10E8 /* Pods-Tests-Braintree-3D-Secure-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4779,7 +4791,7 @@
 		};
 		16E20A701A703F87002BCC34 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = B9E0837382F27B9AEDDFFCB3 /* Pods-Tests-Braintree-3D-Secure-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4823,7 +4835,7 @@
 		};
 		2D30F1381A7C49E2004BA8C3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 543B7387A30D495553758609 /* Pods-Braintree-Apple-Pay.debug.xcconfig */;
+			baseConfigurationReference = 66D14DB081CD285BEDDE85FD /* Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4873,7 +4885,7 @@
 		};
 		2D30F1391A7C49E2004BA8C3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A0D9AB11874709D3BEA9582 /* Pods-Braintree-Apple-Pay.release.xcconfig */;
+			baseConfigurationReference = 2B8B5043E31905C0FFFE797E /* Pods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -4918,7 +4930,7 @@
 		};
 		2D9DDB4319B8171A00C53140 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */;
+			baseConfigurationReference = 84D3AE40D044AC7E1FD69C65 /* Pods-Logic-Tests-Braintree-Payments-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -4960,7 +4972,7 @@
 		};
 		2D9DDB4419B8171A00C53140 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CFF24E2D258448C0F04FE3F0 /* Pods-Logic-Tests.release.xcconfig */;
+			baseConfigurationReference = F20AD922059865F24A253B4C /* Pods-Logic-Tests-Braintree-Payments-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -5001,7 +5013,7 @@
 		};
 		2DCFAA6F1A800ACB00FA2ECC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 37EBD49E76CC2F7CE2E729DE /* Pods-Braintree-Apple-Pay-Excluded.debug.xcconfig */;
+			baseConfigurationReference = E234654B5B0875BE6C973947 /* Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -5051,7 +5063,7 @@
 		};
 		2DCFAA701A800ACB00FA2ECC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CFEDF3A91EB6C4D446401E1A /* Pods-Braintree-Apple-Pay-Excluded.release.xcconfig */;
+			baseConfigurationReference = 5404D2D5AD93F3E3D15DB608 /* Pods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -5096,7 +5108,7 @@
 		};
 		A72B380A19633826009AD2F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = 0F8A773EEB15B84BBFFA7290 /* Pods-Tests-Braintree-Data-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -5145,7 +5157,7 @@
 		};
 		A72B380B19633826009AD2F5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = B855B5B1BD021BC8BE71E002 /* Pods-Tests-Braintree-Data-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -5222,7 +5234,7 @@
 		};
 		A75DA3761921394200D997A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F7931709275A7F21E17341B /* Pods-Logic-Tests.debug.xcconfig */;
+			baseConfigurationReference = 504249EC90530986E1EC267D /* Pods-Logic-Tests-Braintree-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -5269,7 +5281,7 @@
 		};
 		A75DA3771921394200D997A2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CFF24E2D258448C0F04FE3F0 /* Pods-Logic-Tests.release.xcconfig */;
+			baseConfigurationReference = 542153E23304C8DB694F747F /* Pods-Logic-Tests-Braintree-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -5310,7 +5322,7 @@
 		};
 		A78825801AFD38BA00437E9B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = C6172B8A10BC035B98ADC05B /* Pods-Tests-Braintree-Coinbase-Integration-Specs.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -5325,7 +5337,7 @@
 		};
 		A78825811AFD38BA00437E9B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = 89FFD51D53985240C455A6DE /* Pods-Tests-Braintree-Coinbase-Integration-Specs.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -5339,7 +5351,7 @@
 		};
 		A7B7433819A3E094000A6A7A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 969A317D3E928CBA6D7929D7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = C6D6F82BED747C608FA95755 /* Pods-Tests-Braintree-Venmo-Specs.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -5387,7 +5399,7 @@
 		};
 		A7B7433919A3E094000A6A7A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5801C637620CDE8C49686A4 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = E201DEECE6154D7019504D58 /* Pods-Tests-Braintree-Venmo-Specs.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_LOADER = "$(TEST_HOST)";

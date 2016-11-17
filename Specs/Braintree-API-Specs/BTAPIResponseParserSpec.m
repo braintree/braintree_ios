@@ -145,6 +145,13 @@ context(@"type safe value parsing", ^{
                 NSArray *transformedValue = [testParser arrayForKey:@"anArray" withValueTransformer:mockTransformer];
                 expect(transformedValue).to.equal(@[@"Transformed Value", @"Transformed Value", @"Transformed Value"]);
             });
+            it(@"omits values that transform to NSNull", ^{
+                id mockTransformer = [OCMockObject mockForProtocol:@protocol(BTValueTransforming)];
+                [[[mockTransformer stub] andReturn:[NSNull null]] transformedValue:OCMOCK_ANY];
+
+                NSArray *transformedValue = [testParser arrayForKey:@"anArray" withValueTransformer:mockTransformer];
+                expect(transformedValue).to.equal(@[]);
+            });
         });
         
         describe(@"integerForKey:withValueTransformer:", ^{
