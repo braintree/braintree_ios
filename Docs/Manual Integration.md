@@ -10,7 +10,7 @@ your Base SDK.
   - Use git: `git submodule add https://github.com/braintree/braintree_ios.git`
   - Alternatively, you can [download braintree_ios from Github](https://github.com/braintree/braintree_ios/archive/master.zip) and unzip it into your app's root directory in Finder
 2. Open up your app in Xcode
-3. Create a a new framework target called `Braintree` (please use this exact name)
+3. Create a new framework target called `Braintree` (please use this exact name)
   - In Xcode, select `File` > `New` > `Target`
   - Click `Framework & Library`
   - Click `Cocoa Touch Framework` and `Next`
