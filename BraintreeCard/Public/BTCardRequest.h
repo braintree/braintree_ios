@@ -11,18 +11,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - UnionPay properties
 
-/// The mobile phone number to use to verify the enrollment via SMS.
+/*!
+ @brief The mobile phone number to use to verify the enrollment via SMS.
+*/
 @property (nonatomic, copy, nullable) NSString *mobilePhoneNumber;
 
-/// The country code for the mobile phone number. This string should only contain digits.
-/// By default, this is set to 62.
+/*!
+ @brief The country code for the mobile phone number. This string should only contain digits.
+ @remarks By default, this is set to 62.
+*/
 @property (nonatomic, copy, nullable) NSString *mobileCountryCode;
 
-/// The enrollment verification code sent via SMS to the mobile phone number. The code is
-/// needed to tokenize a UnionPay card that requires enrollment.
+/*!
+ @brief The enrollment verification code sent via SMS to the mobile phone number. The code is needed to tokenize a UnionPay card that requires enrollment.
+*/
 @property (nonatomic, copy, nullable) NSString *smsCode;
 
-/// The UnionPay enrollment ID
+/*!
+ @brief The UnionPay enrollment ID
+*/
 @property (nonatomic, copy, nullable) NSString *enrollmentID;
 
 @end

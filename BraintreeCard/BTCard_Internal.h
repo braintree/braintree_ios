@@ -3,8 +3,6 @@
 
 @interface BTCard ()
 
-/// @name Parameters
-
 - (NSDictionary *)parameters;
 
 @end

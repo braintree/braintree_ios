@@ -3,7 +3,10 @@
 #import "BTUICardType.h"
 #import "BTUIPaymentOptionType.h"
 
-/// Utilities used by other views
+/*!
+ @class BTUIViewUtil
+ @brief Utilities used by other views
+*/
 @interface BTUIViewUtil : NSObject
 
 + (BTUIPaymentOptionType)paymentMethodTypeForCardType:(BTUICardType *)cardType;

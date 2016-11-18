@@ -9,22 +9,31 @@
 
 @interface PPOTOAuth2BrowserSwitchRequest : PPOTOAuth2SwitchRequest
 
-/// endpoint to which the browser should be directed
+/*!
+ @brief endpoint to which the browser should be directed
+*/
 @property (nonatomic) NSString *endpoint;
 
-///  the serial number extracted from the X.509 cert, which was used to encrypt the payloadEnc field.
+/*!
+ @brief the serial number extracted from the X.509 cert, which was used to encrypt the payloadEnc field.
+*/
 @property (nonatomic) NSString *keyID;
 
-/// a one time unique ID generated for this payment request
+/*!
+ @brief a one time unique ID generated for this payment request
+*/
 @property (nonatomic, readonly) NSString *msgID;
 
-/// hexadecimal representation of 256-bit symmetric AES key
+/*!
+ @brief hexadecimal representation of 256-bit symmetric AES key
+*/
 @property (nonatomic) NSString *encryptionKey;
 
-/// additional key/value pairs that OTC will add to the payload
-///
-/// (For example, the Braintree client_token, which is required by the
-///  temporary Braintree Future Payments consent webpage.)
+/*!
+ @brief additional key/value pairs that OTC will add to the payload
+
+ @discussion (For example, the Braintree client_token, which is required by the temporary Braintree Future Payments consent webpage.)
+*/
 @property (nonatomic) NSDictionary *additionalPayloadAttributes;
 
 @property (nonatomic) NSData *certificate;

@@ -804,17 +804,13 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
     if (approvalURL != nil && paypalRequest.userAction != BTPayPalRequestUserActionDefault) {
         NSURLComponents* approvalURLComponents = [[NSURLComponents alloc] initWithURL:approvalURL resolvingAgainstBaseURL:NO];
         if (approvalURLComponents != nil) {
-            NSMutableArray *queryItems = [approvalURLComponents.queryItems mutableCopy];
-            if (queryItems == nil) {
-                queryItems = [[NSMutableArray alloc] init];
-            }
-
             NSString *userActionValue = [BTPayPalDriver userActionTypeToString:paypalRequest.userAction];
             if ([userActionValue length] > 0) {
-                [queryItems addObject:[[NSURLQueryItem alloc] initWithName:@"useraction" value:userActionValue]];
+                NSString *query = [approvalURLComponents query];
+                NSString *delimiter = [query length] == 0 ? @"" : @"&";
+                query = [NSString stringWithFormat:@"%@%@useraction=%@", query, delimiter, userActionValue];
+                approvalURLComponents.query = query;
             }
-
-            approvalURLComponents.queryItems = queryItems;
             return [approvalURLComponents URL];
         }
     }
