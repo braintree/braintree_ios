@@ -1,5 +1,6 @@
 #import "BTClient+Testing.h"
 #import "BTCoinbaseAcceptanceSpecViewController.h"
+#import <KIF/KIFAccessibilityEnabler.h>
 
 SpecBegin(BTCoinbaseAcceptance)
 
@@ -20,6 +21,8 @@ beforeAll(^{
                                                                  }];
                                }];
     [self waitForExpectationsWithTimeout:10 handler:nil];
+
+    KIFEnableAccessibility();
 });
 
 afterAll(^{

@@ -40,12 +40,10 @@
 #pragma mark BTPaymentMethodCreationDelegate
 
 - (void)paymentMethodCreator:(__unused id)sender requestsPresentationOfViewController:(UIViewController *)viewController {
-    self.progressBlock([NSString stringWithFormat:@"Presenting View Controller: %@", viewController]);
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)paymentMethodCreator:(__unused id)sender requestsDismissalOfViewController:(UIViewController *)viewController {
-    self.progressBlock([NSString stringWithFormat:@"Dismissing View Controller: %@", viewController]);
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

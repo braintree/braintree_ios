@@ -1,11 +1,16 @@
 #import "BTDropInViewController.h"
 #import "BTClient+Testing.h"
+#import <KIF/KIFAccessibilityEnabler.h>
 
 #import "BTUIPaymentButtonCollectionViewCell.h"
 #import "BTUICoinbaseButton.h"
 #import "BTCoinbase.h"
 
 SpecBegin(DropIn_Acceptance)
+
+beforeAll(^{
+    KIFEnableAccessibility();
+});
 
 // IMPORTANT:
 // When running the tests with Xcode, these values do not need

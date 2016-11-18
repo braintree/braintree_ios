@@ -1,7 +1,7 @@
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTClient+Testing.h"
 #import "BTClient_Internal.h"
-
+#import <KIF/KIFAccessibilityEnabler.h>
 #import "KIFUITestActor+BTWebView.h"
 #import "EXPMatchers+BTBeANonce.h"
 
@@ -140,6 +140,10 @@
 
 SpecBegin(BTThreeDSecureAuthenticationViewController_Acceptance)
 
+beforeAll(^{
+    KIFEnableAccessibility();
+});
+
 describe(@"3D Secure View Controller", ^{
     __block BTThreeDSecureAuthenticationViewController_AcceptanceSpecHelper *helper;
     beforeEach(^{
@@ -220,7 +224,7 @@ describe(@"3D Secure View Controller", ^{
             __block BOOL calledDidFail = NO;
             __block BOOL calledDidFinish = NO;
 
-            [helper lookupNumber:@"4000000000000010"
+            [helper lookupNumber:@"4000000000000028"
                            andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
 
@@ -234,7 +238,7 @@ describe(@"3D Secure View Controller", ^{
                          didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                              expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                              expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
-                             expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                             expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment.");
                              expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @YES, });
                              calledDidFail = YES;
                          }
@@ -302,7 +306,7 @@ describe(@"3D Secure View Controller", ^{
         });
 
         context(@"User enters incorrect password - Y,N,Y", ^{
-            it(@"it presents the failure to the user and fails to authenticate the nonce", ^{
+            it(@"it fails to authenticate the nonce", ^{
                 __block BOOL calledDidFail;
                 __block BOOL calledDidFinish;
 
@@ -316,13 +320,11 @@ describe(@"3D Secure View Controller", ^{
                                    [tester tapUIWebviewXPathElement:@"//input[@name=\"external.field.password\"]"];
                                    [tester enterTextIntoCurrentFirstResponder:@"bad"];
                                    [tester tapViewWithAccessibilityLabel:@"Submit"];
-                                   [tester waitForViewWithAccessibilityLabel:@"Account Authentication Blocked"];
-                                   [tester tapViewWithAccessibilityLabel:@"Continue"];
                                } didAuthenticate:nil
                              didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                                  expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                                  expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
-                                 expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                                 expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment.");
                                  expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @YES});
                                  calledDidFail = YES;
                              } didFinish:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
@@ -379,7 +381,7 @@ describe(@"3D Secure View Controller", ^{
                              didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                                  expect(error.domain).to.equal(BTThreeDSecureErrorDomain);
                                  expect(error.code).to.equal(BTThreeDSecureFailedAuthenticationErrorCode);
-                                 expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment");
+                                 expect(error.localizedDescription).to.equal(@"Failed to authenticate, please try a different form of payment.");
                                  expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShifted": @NO, @"liabilityShiftPossible": @YES, });
                                  calledDidFail = YES;
                              }
@@ -395,6 +397,7 @@ describe(@"3D Secure View Controller", ^{
             });
         });
 
+        // Test is currently failing - test card number for "Issuer Down" scenario does not behave as expected
         context(@"issuer is down - Y,U", ^{
             it(@"returns a nonce without asking user for authentication", ^{
                 __block BOOL calledDidFail = NO;
@@ -403,9 +406,6 @@ describe(@"3D Secure View Controller", ^{
                 [helper lookupNumber:@"4000000000000036"
                                andDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
                                    [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-
-                                   [tester waitForViewWithAccessibilityLabel:@"System Error" traits:UIAccessibilityTraitStaticText];
-                                   [tester tapViewWithAccessibilityLabel:@"Continue"];
                                } didAuthenticate:nil
                              didFail:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController, NSError *error) {
                                  calledDidFail = YES;
@@ -502,41 +502,42 @@ describe(@"3D Secure View Controller", ^{
                 [system waitForApplicationToSetNetworkActivityIndicatorVisible:YES];
             }];
         });
-
-        it(@"closes the popup when the user taps Cancel in the nav bar", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-
-                [tester tapViewWithAccessibilityLabel:@"Help"];
-                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
-                [tester tapViewWithAccessibilityLabel:@"Cancel"];
-
-                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-            }];
-        });
-        
-        it(@"closes the popup when the user taps a close link", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-                
-                [tester tapViewWithAccessibilityLabel:@"Help"];
-                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
-                [tester tapUIWebviewXPathElement:@"//a[text()=\"Social Security Number\"]"];
-                [tester tapUIWebviewXPathElement:@"(//a[contains(text(), \"Return\")])[last()]"];
-
-                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-            }];
-        });
-
-        it(@"uses the html title tag for the view controllers title", ^{
-            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
-                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
-
-                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
-
-                expect(threeDSecureViewController.title).to.equal(@"Authentication");
-            }];
-        });
+// Sandbox 3DS web page no longer displays Help page - now tokenizes instantly
+//
+//        it(@"closes the popup when the user taps Cancel in the nav bar", ^{
+//            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+//                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+//
+//                [tester tapViewWithAccessibilityLabel:@"Help"];
+//                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
+//                [tester tapViewWithAccessibilityLabel:@"Cancel"];
+//
+//                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+//            }];
+//        });
+//        
+//        it(@"closes the popup when the user taps a close link", ^{
+//            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+//                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+//                
+//                [tester tapViewWithAccessibilityLabel:@"Help"];
+//                [tester waitForViewWithAccessibilityLabel:@"Social Security Number"];
+//                [tester tapUIWebviewXPathElement:@"//a[text()=\"Social Security Number\"]"];
+//                [tester tapUIWebviewXPathElement:@"(//a[contains(text(), \"Return\")])[last()]"];
+//
+//                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+//            }];
+//        });
+//
+//        it(@"uses the html title tag for the view controllers title", ^{
+//            [helper lookupHappyPathAndDo:^(BTThreeDSecureAuthenticationViewController *threeDSecureViewController) {
+//                [system presentViewController:threeDSecureViewController withinNavigationControllerWithNavigationBarClass:nil toolbarClass:nil configurationBlock:nil];
+//
+//                [tester waitForViewWithAccessibilityLabel:@"Please submit your Verified by Visa password." traits:UIAccessibilityTraitStaticText];
+//
+//                expect(threeDSecureViewController.title).to.equal(@"Authentication");
+//            }];
+//        });
     });
 });
 

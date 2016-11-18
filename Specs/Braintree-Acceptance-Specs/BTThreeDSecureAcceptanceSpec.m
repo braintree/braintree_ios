@@ -1,7 +1,12 @@
 #import "BTThreeDSecure.h"
 #import "BTClient+Testing.h"
+#import <KIF/KIFAccessibilityEnabler.h>
 
 SpecBegin(BTThreeDSecure)
+
+beforeAll(^{
+    KIFEnableAccessibility();
+});
 
 describe(@"verifyCardWithNonce:amount:", ^{
     __block BTClient *client;
