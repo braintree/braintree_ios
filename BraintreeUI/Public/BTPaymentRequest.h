@@ -81,6 +81,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL noShipping;
 
 /*!
+ @brief When set to `YES`, this controls whether to present additional modal view controllers from the root view controller of the application's key window. Defaults to `NO`.
+
+ @remarks Setting this to `YES` can fix issues with blank `SFSafariViewControllers`, which can occur when apps use multiple `UIWindow` instances.
+*/
+@property (nonatomic, assign) BOOL presentViewControllersFromTop;
+
+/*!
  @brief Show a customer's vaulted payment methods with the default payment method nonce first, followed by the remaining payment methods sorted by most recent usage. Defaults to `NO`.
 
  @remarks Must be using client token with a customer ID

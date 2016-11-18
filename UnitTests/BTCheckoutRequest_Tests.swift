@@ -12,6 +12,7 @@ class BTPaymentRequest_Tests: XCTestCase {
         XCTAssertNil(paymentRequest.amount)
         XCTAssertNil(paymentRequest.currencyCode)
         XCTAssertFalse(paymentRequest.noShipping)
+        XCTAssertFalse(paymentRequest.presentViewControllersFromTop)
         XCTAssertNil(paymentRequest.shippingAddress)
         XCTAssertFalse(paymentRequest.showDefaultPaymentMethodNonceFirst)
         
@@ -24,6 +25,7 @@ class BTPaymentRequest_Tests: XCTestCase {
         XCTAssertNil(paymentRequestCopy.amount)
         XCTAssertNil(paymentRequestCopy.currencyCode)
         XCTAssertFalse(paymentRequestCopy.noShipping)
+        XCTAssertFalse(paymentRequestCopy.presentViewControllersFromTop)
         XCTAssertNil(paymentRequestCopy.shippingAddress)
         XCTAssertFalse(paymentRequest.showDefaultPaymentMethodNonceFirst)
     }
@@ -38,6 +40,7 @@ class BTPaymentRequest_Tests: XCTestCase {
         paymentRequest.amount = "123.45"
         paymentRequest.currencyCode = "USD"
         paymentRequest.noShipping = true
+        paymentRequest.presentViewControllersFromTop = true
         let shippingAddress = BTPostalAddress()
         paymentRequest.shippingAddress = shippingAddress
         
@@ -49,6 +52,7 @@ class BTPaymentRequest_Tests: XCTestCase {
         XCTAssertEqual("123.45", paymentRequest.amount)
         XCTAssertEqual("USD", paymentRequest.currencyCode)
         XCTAssertTrue(paymentRequest.noShipping)
+        XCTAssertTrue(paymentRequest.presentViewControllersFromTop)
         XCTAssertEqual(shippingAddress, paymentRequest.shippingAddress)
         
         let paymentRequestCopy = paymentRequest.copy() as! BTPaymentRequest
@@ -60,6 +64,7 @@ class BTPaymentRequest_Tests: XCTestCase {
         XCTAssertEqual("123.45", paymentRequestCopy.amount)
         XCTAssertEqual("USD", paymentRequestCopy.currencyCode)
         XCTAssertTrue(paymentRequestCopy.noShipping)
+        XCTAssertTrue(paymentRequestCopy.presentViewControllersFromTop)
         XCTAssertEqual(shippingAddress, paymentRequestCopy.shippingAddress)
     }
 }

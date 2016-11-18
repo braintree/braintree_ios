@@ -710,8 +710,8 @@
 #pragma mark - BTViewControllerPresentingDelegate
 
 - (void)paymentDriver:(__unused id)driver requestsPresentationOfViewController:(UIViewController *)viewController {
-    UIViewController *topViewController = [BTDropInUtil topViewController];
-    [topViewController presentViewController:viewController animated:YES completion:nil];
+    UIViewController *presentingViewController = self.paymentRequest.presentViewControllersFromTop? [BTDropInUtil topViewController] : self;
+    [presentingViewController presentViewController:viewController animated:YES completion:nil];
 }
 
 - (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(__unused UIViewController *)viewController {
