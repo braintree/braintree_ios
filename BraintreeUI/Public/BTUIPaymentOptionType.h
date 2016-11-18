@@ -1,4 +1,6 @@
-/// Credit card types
+/*!
+ @brief Credit card types
+*/
 typedef NS_ENUM(NSInteger, BTUIPaymentOptionType) {
     BTUIPaymentOptionTypeUnknown = 0,
     BTUIPaymentOptionTypeAMEX,

@@ -1,13 +1,17 @@
 #import <Foundation/Foundation.h>
 
-/// An error domain for 3D Secure errors
-///
-/// @see BTThreeDSecure
+/*!
+ @brief An error domain for 3D Secure errors
+
+ @see BTThreeDSecure
+*/
 extern NSString * const BTThreeDSecureErrorDomain;
 extern NSString * const BTThreeDSecureInfoKey;
 extern NSString * const BTThreeDSecureValidationErrorsKey;
 
- /// Error codes that describe errors that occur during 3D Secure
+/*!
+ @brief Error codes that describe errors that occur during 3D Secure
+*/
 typedef NS_ENUM(NSInteger, BTThreeDSecureErrorType){
 
     BTThreeDSecureErrorTypeUnknown = 0,
