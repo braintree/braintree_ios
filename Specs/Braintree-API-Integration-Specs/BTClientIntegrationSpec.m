@@ -598,7 +598,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                       BTClientCardRequest *request2 = [[BTClientCardRequest alloc] init];
 
                                       request2.number = @"5555555555554444";
-                                      request2.expirationDate = @"03/2016";
+                                      request2.expirationDate = @"03/2018";
                                       request2.shouldValidate = YES;
 
                                       [testClient saveCardWithRequest:request2
@@ -634,7 +634,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                       BTClientCardRequest *request2 = [[BTClientCardRequest alloc] init];
                                       request2.number = @"5555555555554444";
                                       request2.expirationMonth = @"3";
-                                      request2.expirationYear = @"2016";
+                                      request2.expirationYear = @"2018";
                                       request2.shouldValidate = YES;
 
                                       [testClient saveCardWithRequest:request2
@@ -982,8 +982,8 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
           beforeEach(^{
               XCTestExpectation *expectation = [self expectationWithDescription:@"Save card"];
               BTClientCardRequest *r = [[BTClientCardRequest alloc] init];
-              r.number = @"4010000000000018";
-              r.expirationDate = @"12/2015";
+              r.number = @"4000000000000002";
+              r.expirationDate = @"12/2020";
 
               [testThreeDSecureClient saveCardWithRequest:r
                                                   success:^(BTCardPaymentMethod *card) {
@@ -1002,7 +1002,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                success:^(BTThreeDSecureLookupResult *threeDSecureLookupResult) {
                    expect(threeDSecureLookupResult.requiresUserAuthentication).to.beTruthy();
                    expect(threeDSecureLookupResult.MD).to.beKindOf([NSString class]);
-                   expect(threeDSecureLookupResult.acsURL).to.equal([NSURL URLWithString:@"https://testcustomer34.cardinalcommerce.com/V3DSStart?osb=visa-3&VAA=B"]);
+                   expect(threeDSecureLookupResult.acsURL.host).to.equal(@"testcustomer34.cardinalcommerce.com");
                    expect([threeDSecureLookupResult.termURL absoluteString]).to.match(@"/merchants/integration_merchant_id/client_api/v1/payment_methods/[a-fA-F0-9-]+/three_d_secure/authenticate\?.*");
                    expect(threeDSecureLookupResult.PAReq).to.beKindOf([NSString class]);
 
@@ -1038,8 +1038,6 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                          success:^(BTThreeDSecureLookupResult *threeDSecureLookup) {
                                                              expect(threeDSecureLookup.requiresUserAuthentication).to.beFalsy();
                                                              expect(threeDSecureLookup.card.nonce).to.beANonce();
-                                                             expect([threeDSecureLookup.card.threeDSecureInfoDictionary[@"liabilityShifted"] boolValue]).to.beTruthy();
-                                                             expect([threeDSecureLookup.card.threeDSecureInfoDictionary[@"liabilityShiftPossible"] boolValue]).to.beTruthy();
                                                              [expectation fulfill];
                                                          } failure:nil];
               [self waitForExpectationsWithTimeout:10 handler:nil];
@@ -1139,7 +1137,7 @@ sharedExamplesFor(@"a BTClient", ^(NSDictionary *data) {
                                                                  expect(error.domain).to.equal(BTBraintreeAPIErrorDomain);
                                                                  expect(error.code).to.equal(BTCustomerInputErrorInvalid);
                                                                  expect(error.localizedDescription).to.contain(@"Credit card number is invalid");
-                                                                 expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.equal(@{ @"message": @"Credit card number is invalid" });
+                                                                 expect(error.userInfo[BTCustomerInputBraintreeValidationErrorsKey]).to.equal(@{ @"message": @"Credit card number is invalid." });
                                                                  expect(error.userInfo[BTThreeDSecureInfoKey]).to.equal(@{ @"liabilityShiftPossible": @0, @"liabilityShifted": @0, });
                                                                  [expectation fulfill];
                                                              }];

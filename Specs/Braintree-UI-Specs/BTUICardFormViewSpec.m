@@ -157,13 +157,13 @@ describe(@"Card Form", ^{
             it(@"can be set when visible", ^{
                 NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
                 dateComponents.month = 1;
-                dateComponents.year = 2016;
+                dateComponents.year = 2018;
                 dateComponents.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
                 NSDate *date = [dateComponents date];
 
                 [system presentView:cardFormView];
                 [cardFormView setExpirationDate:date];
-                [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"01/2016"];
+                [[tester usingTimeout:1] waitForViewWithAccessibilityLabel:@"01/2018"];
             });
         });
 

@@ -41,7 +41,7 @@ describe(@"text field behavior", ^{
         [textField autoSetDimension:ALDimensionHeight toSize:44];
         [tester tapViewWithAccessibilityLabel:@"Some Field"];
         [tester enterTextIntoCurrentFirstResponder:@"Hello, World!"];
-
+        [tester waitForTimeInterval:1];
         expect(textField.text).to.equal(@"Hello, World!");
     });
 });
