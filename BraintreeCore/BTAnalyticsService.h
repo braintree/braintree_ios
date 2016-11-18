@@ -16,29 +16,39 @@ typedef NS_ENUM(NSUInteger, BTAnalyticsServiceErrorType) {
 
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
-// Defaults to 1, can be overridden
+/*!
+ @brief Defaults to 1, can be overridden
+*/
 @property (nonatomic, assign) NSUInteger flushThreshold;
 
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
-/// Tracks an event.
-///
-/// @note Events are queued and sent in batches to the analytics service, based on the status of the app
-/// and the number of queued events. After exiting this method, there is no guarantee that the event has been
-/// sent.
+/*!
+ @brief Tracks an event.
+
+ @discussion Events are queued and sent in batches to the analytics service, based on the status of the app
+ and the number of queued events. After exiting this method, there is no guarantee that the event has been
+ sent.
+*/
 - (void)sendAnalyticsEvent:(NSString *)eventKind;
 
-/// Tracks an event and sends it to the analytics service. It will also flush any queued events.
-///
-/// @param completionBlock A callback that is invoked when the analytics service has completed.
+/*!
+ @brief Tracks an event and sends it to the analytics service. It will also flush any queued events.
+
+ @param completionBlock A callback that is invoked when the analytics service has completed.
+*/
 - (void)sendAnalyticsEvent:(NSString *)eventKind completion:(nullable void(^)(NSError * _Nullable))completionBlock;
 
-/// Sends all queued events to the analytics service.
-///
-/// @param completionBlock A callback that is invoked when the analytics service has completed.
+/*!
+ @brief Sends all queued events to the analytics service.
+
+ @param completionBlock A callback that is invoked when the analytics service has completed.
+*/
 - (void)flush:(nullable void (^)(NSError * _Nullable error))completionBlock;
 
-/// The HTTP client for communication with the analytics service endpoint. Exposed for testing.
+/*!
+ @brief The HTTP client for communication with the analytics service endpoint. Exposed for testing.
+*/
 @property (nonatomic, strong) BTHTTP *http;
 
 @end
