@@ -147,7 +147,7 @@ namespace :spec do
       run! xcodebuild('Braintree-Apple-Pay-Build-Specs', 'test', 'Debug', nil)
       run "xcodebuild test -scheme Braintree-Apple-Pay-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
         build_dir = result.split("=")[-1].strip
-        run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Braintree.a | grep PKPay" do |result|
+        run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Braintree-Apple-Pay-Build-Specs.a | grep PKPay" do |result|
           fail("Missing expected Apple Pay symbols") if result.strip.empty?
         end
       end
@@ -158,7 +158,7 @@ namespace :spec do
       run! xcodebuild('Braintree-Apple-Pay-Excluded-Build-Specs', 'test', 'Debug', nil)
       run "xcodebuild test -scheme Braintree-Apple-Pay-Excluded-Build-Specs -workspace Braintree.xcworkspace -sdk iphonesimulator -configuration Debug -showBuildSettings | grep CONFIGURATION_BUILD_DIR" do |result|
         build_dir = result.split("=")[-1].strip
-        run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Excluded-Braintree.a | grep PKPay" do |result|
+        run "nm #{build_dir}/libPods-Braintree-Apple-Pay-Excluded-Braintree-Apple-Pay-Excluded-Build-Specs.a | grep PKPay" do |result|
           fail("Contains verboten Apple Pay symbols!") unless result.strip.empty?
         end
       end
