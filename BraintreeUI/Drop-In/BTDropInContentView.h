@@ -10,7 +10,9 @@ typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
     BTDropInContentViewStateActivity
 };
 
-/// A thin view layer that manages Drop In subviews and their layout.
+/*!
+ @brief A thin view layer that manages Drop In subviews and their layout.
+*/
 @interface BTDropInContentView : BTUIThemedView
 
 @property (nonatomic, strong) BTUISummaryView *summaryView;
@@ -22,16 +24,24 @@ typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
 @property (nonatomic, strong) BTUIPaymentMethodView *selectedPaymentMethodView;
 @property (nonatomic, strong) UIButton *changeSelectedPaymentMethodButton;
 
-/// Whether to hide the call to action
+/*!
+ @brief Whether to hide the call to action
+*/
 @property (nonatomic, assign) BOOL hideCTA;
 
-/// Whether to hide the summary banner view
+/*!
+ @brief Whether to hide the summary banner view
+*/
 @property (nonatomic, assign) BOOL hideSummary;
 
-/// The current state
+/*!
+ @brief The current state
+*/
 @property (nonatomic, assign) BTDropInContentViewStateType state;
 
-///  Whether the paymentButton control is hidden
+/*!
+ @brief Whether the paymentButton control is hidden
+*/
 @property (nonatomic, assign) BOOL hidePaymentButton;
 
 - (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate;
