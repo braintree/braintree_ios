@@ -12,13 +12,15 @@
 /// Retrieves singleton instance.
 + (nonnull PPOTAnalyticsTracker *)sharedManager;
 
-/// Tracks a "page"/action taken.
-///
-/// @param pagename the page or "action" taken
-/// @param environment the environment (production, sandbox, etc.)
-/// @param clientID the client ID of the request
-/// @param error an optional error that occurred
-/// @param hermesToken web token
+/*!
+ @brief Tracks a "page"/action taken.
+
+ @param pagename the page or "action" taken
+ @param environment the environment (production, sandbox, etc.)
+ @param clientID the client ID of the request
+ @param error an optional error that occurred
+ @param hermesToken web token
+*/
 - (void)trackPage:(nonnull NSString *)pagename
       environment:(nonnull NSString *)environment
          clientID:(nullable NSString *)clientID

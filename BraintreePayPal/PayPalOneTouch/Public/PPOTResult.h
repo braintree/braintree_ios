@@ -31,20 +31,29 @@ typedef NS_ENUM(NSInteger, PPOTResultType) {
     PPOTResultTypeSuccess,
 };
 
-/// The result of parsing the One Touch return URL
+/*!
+ @brief The result of parsing the One Touch return URL
+*/
 @interface PPOTResult : NSObject
 
-/// The status of the app switch
+/*!
+ @brief The status of the app switch
+*/
 @property (nonatomic, readonly, assign) PPOTResultType type;
 
-/// When One Touch is successful, the response dictionary
-/// containing information that your server will need to process.
+/*!
+ @brief When One Touch is successful, the response dictionary containing information that your server will need to process.
+*/
 @property (nullable, nonatomic, readonly, copy) NSDictionary *response;
 
-/// When One Touch encounters an error, it is reported here. Otherwise this property will be `nil`.
+/*!
+ @brief When One Touch encounters an error, it is reported here. Otherwise this property will be `nil`.
+*/
 @property (nullable, nonatomic, readonly, copy) NSError *error;
 
-/// The target app that is now switching back.
+/*!
+ @brief The target app that is now switching back.
+*/
 @property (nonatomic, readonly, assign) PPOTRequestTarget target;
 
 @end
