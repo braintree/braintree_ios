@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
  @brief Tokenizes a card.
 
  @param card The card to tokenize. It must have a valid number and expiration date.
- @param completionBlock A completion block that is invoked when card tokenization has completed. If tokenization succeeds,
+ @param completion A completion block that is invoked when card tokenization has completed. If tokenization succeeds,
         `tokenizedCard` will contain a nonce and `error` will be `nil`; if it fails, `tokenizedCard` will be `nil` and `error`
         will describe the failure.
 */

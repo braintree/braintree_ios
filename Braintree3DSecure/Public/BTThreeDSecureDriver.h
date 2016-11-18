@@ -51,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
  @brief Initializes a 3D Secure verification manager
 
  @param apiClient The Braintree API Client
+ @param delegate The BTViewControllerPresentingDelegate
 
  @return An initialized instance of BTThreeDSecureDriver
 */

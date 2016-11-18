@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
  Do *not* dismiss the view controller in this method. See threeDSecureViewControllerDidFinish:.
 
  @param viewController  The 3D Secure view controller
- @param card            The new payment method that should be used for creating a 3D Secure transaction
+ @param tokenizedCard            The new payment method that should be used for creating a 3D Secure transaction
  @param completionBlock A block that must be called upon completion of any asynchronous work that processes the received card
 */
 - (void)threeDSecureViewController:(BTThreeDSecureAuthenticationViewController *)viewController
