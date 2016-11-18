@@ -23,6 +23,7 @@
     request.amount = self.amount;
     request.currencyCode = self.currencyCode;
     request.noShipping = self.noShipping;
+    request.presentViewControllersFromTop = self.presentViewControllersFromTop;
     request.shippingAddress = self.shippingAddress;
     request.showDefaultPaymentMethodNonceFirst = self.showDefaultPaymentMethodNonceFirst;
     return request;

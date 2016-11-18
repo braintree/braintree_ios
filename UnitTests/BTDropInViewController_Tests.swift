@@ -138,6 +138,33 @@ class BTDropInViewController_Tests: XCTestCase {
         self.waitForExpectationsWithTimeout(5, handler: nil)
     }
 
+    func testDropIn_whenPresentViewControllersFromTopIsTrue_presentsViewControllersFromTopViewController() {
+        let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
+        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        let paymentRequest = BTPaymentRequest()
+        paymentRequest.presentViewControllersFromTop = true
+        dropInViewController.paymentRequest = paymentRequest
+        let mockViewController = UIViewController()
+        let windowRootController = UIViewController()
+        let secondWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+        secondWindow.rootViewController = windowRootController
+        secondWindow.makeKeyAndVisible()
+        secondWindow.windowLevel = 100
+        let topSecondTopController = BTDropInUtil.topViewController()
+
+        dropInViewController.paymentDriver(nil, requestsPresentationOfViewController: mockViewController)
+
+        let expectation = expectationWithDescription("Sleeping for presentation")
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) { () -> Void in
+            sleep(1)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(2, handler: nil)
+
+        XCTAssertEqual(mockViewController.presentingViewController, topSecondTopController)
+    }
+
     // MARK: - Metadata
 
     func testAPIClientMetadata_afterInstantiation_hasIntegrationSetToDropIn() {
