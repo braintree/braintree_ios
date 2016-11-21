@@ -9,7 +9,9 @@
 
 @interface PPOTAnalyticsTracker : NSObject
 
-/// Retrieves singleton instance.
+/*!
+ @brief Retrieves singleton instance.
+*/
 + (nonnull PPOTAnalyticsTracker *)sharedManager;
 
 /*!

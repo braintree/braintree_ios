@@ -80,7 +80,6 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  This class will handle switching out of your app to the PayPal app or the browser (including the call to
  `-[UIApplication openURL:]`).
 */
-
 @interface BTPayPalDriver : NSObject <BTAppSwitchHandler>
 
 

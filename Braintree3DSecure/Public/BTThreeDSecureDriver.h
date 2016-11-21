@@ -92,7 +92,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Delegate
 
-/// A delegate that presents and dismisses a view controller, as necessary, for the 3D Secure verification flow.
+/*!
+ @brief A delegate that presents and dismisses a view controller, as necessary, for the 3D Secure verification flow.
+*/
 @property (nonatomic, weak) id<BTViewControllerPresentingDelegate> delegate;
 
 @end
