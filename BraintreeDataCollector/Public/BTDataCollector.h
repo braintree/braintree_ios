@@ -87,7 +87,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /*!
  @brief Set your fraud merchant id.
 
- @remarks If you do not call this method, a generic Braintree value will be used.
+ @note If you do not call this method, a generic Braintree value will be used.
 
  @param fraudMerchantId The fraudMerchantId you have established with your Braintree account manager.
 */
@@ -98,7 +98,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /*!
  @brief Set the URL that the Device Collector will use.
 
- @remarks If you do not call this method, a generic Braintree value will be used.
+ @note If you do not call this method, a generic Braintree value will be used.
 
  @param url Full URL to device collector 302-redirect page
 */
@@ -107,7 +107,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /*!
  @brief Generates a new PayPal fraud ID if PayPal is integrated; otherwise returns `nil`.
 
- @remarks This returns a raw client metadata ID, which is not the correct format for device datawhen creating a transaction. Instead, use `[PPDataCollector collectPayPalDeviceData]`.
+ @note This returns a raw client metadata ID, which is not the correct format for device datawhen creating a transaction. Instead, use `[PPDataCollector collectPayPalDeviceData]`.
 
  @return a client metadata ID to send as a header
 */

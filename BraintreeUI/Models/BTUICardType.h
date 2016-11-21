@@ -35,7 +35,7 @@
 
 /*!
  @brief Check is a number is valid and necessarily complete
- @remarks (i.e. it can't get any longer)
+ @note (i.e. it can't get any longer)
  */
 - (BOOL)validAndNecessarilyCompleteNumber:(NSString *)number;
 
@@ -46,7 +46,7 @@
 
 /*!
  @brief Format a number based on type
- @remarks Does NOT validate
+ @note Does NOT validate
  */
 - (NSAttributedString *)formatNumber:(NSString *)input;
 - (NSAttributedString *)formatNumber:(NSString *)input kerning:(CGFloat)kerning;

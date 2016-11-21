@@ -12,7 +12,7 @@
 /*!
  @brief Returns a client metadata ID.
 
- @remarks This returns a raw client metadata ID, which is not the correct format for device data
+ @note This returns a raw client metadata ID, which is not the correct format for device data
  when creating a transaction. Instead, it is recommended to use `collectPayPalDeviceData`.
 
  @param pairingID a pairing ID to associate with this clientMetadataID must be 10-32 chars long or null
@@ -23,7 +23,7 @@
 /*!
  @brief Returns a client metadata ID.
 
- @remarks This returns a raw client metadata ID, which is not the correct format for device data
+ @note This returns a raw client metadata ID, which is not the correct format for device data
  when creating a transaction. Instead, it is recommended to use `collectPayPalDeviceData`.
 
  @return a client metadata ID to send as a header

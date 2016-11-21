@@ -10,7 +10,7 @@
 
 /*!
  @brief Delegate that, if set, receives messages when scrollRectToVisible is called
- @remarks If nil, scrollRectToVisible is simply a no-op.
+ @note If nil, scrollRectToVisible is simply a no-op.
 */
 @property (nonatomic, weak) id<BTUIScrollViewScrollRectToVisibleDelegate> scrollRectToVisibleDelegate;
 

@@ -108,7 +108,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
  @discussion You may use this hook to prepare your UI for app switch return. Keep in mind that
  users may manually switch back to your app via the iOS task manager.
 
- @remarks You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
+ @note You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
 
  @param appSwitcher The app switcher instance performing user authentication
  @param target The destination that was actually used for this app switch
@@ -124,7 +124,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
  In the case of an app switch, this message indicates that the user has returned to this app;
  this is usually after handleAppSwitchReturnURL: is called in your UIApplicationDelegate.
 
- @remarks You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
+ @note You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
 
  @param appSwitcher The app switcher
 */
@@ -137,7 +137,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 /*!
  @protocol BTAppSwitchHandler
  @brief A protocol for handling the return from switching out of an app to gather payment information.
- @remarks The app may switch out to Mobile Safari or to a native app.
+ @note The app may switch out to Mobile Safari or to a native app.
 */
 @protocol BTAppSwitchHandler
 
