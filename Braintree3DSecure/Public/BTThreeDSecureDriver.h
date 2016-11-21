@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
  to proceed with transaction creation, using the original payment method nonce, this transaction
  will not be associated with a 3D Secure Verification.
 
- @remarks The user authentication view controller is not always necessary to achieve the liabilty
+ @note The user authentication view controller is not always necessary to achieve the liabilty
  shift. In these cases, your completionBlock will immediately be called.
 */
 @interface BTThreeDSecureDriver : NSObject
@@ -78,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  On user cancellation, you will receive `nil` for both parameters.
 
- @remarks This method performs an asynchronous operation and may request presentation of a view
+ @note This method performs an asynchronous operation and may request presentation of a view
        controller via the delegate. It is the caller's responsibility to present an activity
        indication to the user in the meantime.
 
@@ -92,7 +92,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Delegate
 
-/// A delegate that presents and dismisses a view controller, as necessary, for the 3D Secure verification flow.
+/*!
+ @brief A delegate that presents and dismisses a view controller, as necessary, for the 3D Secure verification flow.
+*/
 @property (nonatomic, weak) id<BTViewControllerPresentingDelegate> delegate;
 
 @end

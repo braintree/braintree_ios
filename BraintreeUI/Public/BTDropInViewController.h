@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @brief The BTPaymentRequest that defines the Drop-in experience.
 
- @remarks The properties of this payment request are used to customize Drop-in.
+ @note The properties of this payment request are used to customize Drop-in.
 */
 @property (nonatomic, strong, nullable) BTPaymentRequest *paymentRequest;
 
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @brief Sets the expiration month and year in the card form.
 
- @remarks The expiration date uses the Gregorian calendar.
+ @note The expiration date uses the Gregorian calendar.
 
  @param expirationMonth The expiration month as a one- or two-digit number.
  @param expirationYear The expiration year as a four-digit number.

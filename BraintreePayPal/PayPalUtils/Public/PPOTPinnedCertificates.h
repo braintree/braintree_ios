@@ -9,9 +9,11 @@
 
 @interface PPOTPinnedCertificates : NSObject
 
-/// Returns the set of trusted root certificates
-///
-/// @return An array of trusted certificates encoded in the DER format, encapsulated in NSData objects.
+/*!
+ @brief Returns the set of trusted root certificates
+
+ @return An array of trusted certificates encoded in the DER format, encapsulated in NSData objects.
+*/
 + (NSArray *)trustedCertificates;
 
 @end

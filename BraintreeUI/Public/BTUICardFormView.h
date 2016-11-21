@@ -35,14 +35,14 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 /*!
  @brief The card CVV
 
- @remarks this field is only visible when specified in `optionalFields`
+ @note this field is only visible when specified in `optionalFields`
 */
 @property (nonatomic, copy) NSString *cvv;
 
 /*!
  @brief The card billing address postal code for AVS verifications
 
- @remarks this field is only visible when specified in `optionalFields`
+ @note this field is only visible when specified in `optionalFields`
 */
 @property (nonatomic, copy) NSString *postalCode;
 
@@ -94,7 +94,7 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 
 /*!
  @brief Configure whether to support complete alphanumeric postal codes. Defaults to YES
- @remarks If NO, allows only digit entry.
+ @note If NO, allows only digit entry.
 */
 @property (nonatomic, assign) BOOL alphaNumericPostalCode;
 

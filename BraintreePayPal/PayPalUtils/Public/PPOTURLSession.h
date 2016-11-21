@@ -5,26 +5,38 @@
 
 #import <Foundation/Foundation.h>
 
-/// Request completion callback type
+/*!
+ @brief Request completion callback type
+*/
 typedef void(^PPOTURLSessionCompletionBlock)(NSData * _Nullable data, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error);
 
-/// A URL session to manage network connections
+/*!
+ @brief A URL session to manage network connections
+*/
 @interface PPOTURLSession: NSObject
 
-/// @return a session to send requests
+/*!
+ @return a session to send requests
+*/
 + (nonnull PPOTURLSession *)session;
 
-/// @return a session to send requests with a specific timeout for requests
+/*!
+ @return a session to send requests with a specific timeout for requests
+*/
 + (nonnull PPOTURLSession *)sessionWithTimeoutIntervalForRequest:(NSTimeInterval)timeoutIntervalForRequest;
 
-/// Sends a URL request
-///
-/// @param request the request to send
-/// @param completionBlock the completion block invoked for the response
+/*!
+ @brief Sends a URL request
+
+ @param request the request to send
+ @param completionBlock the completion block invoked for the response
+*/
 - (void)sendRequest:(nonnull NSURLRequest *)request
     completionBlock:(nullable PPOTURLSessionCompletionBlock)completionBlock;
 
-/// Attempts to stop the session from accepting any future requests
+/*!
+ @brief Attempts to stop the session from accepting any future requests
+*/
 - (void)finishTasksAndInvalidate;
 
 @end

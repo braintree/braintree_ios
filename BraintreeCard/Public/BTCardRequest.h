@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /*!
  @brief The country code for the mobile phone number. This string should only contain digits.
- @remarks By default, this is set to 62.
+ @note By default, this is set to 62.
 */
 @property (nonatomic, copy, nullable) NSString *mobileCountryCode;
 

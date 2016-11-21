@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 
  @see BTThreeDSecureDriver
  
- @remarks Do not initialize this view controller directly. Instead, use `BTThreeDSecureDriver` to initiate the 3D Secure flow.
+ @note Do not initialize this view controller directly. Instead, use `BTThreeDSecureDriver` to initiate the 3D Secure flow.
 */
 @interface BTThreeDSecureAuthenticationViewController : BTWebViewController
 

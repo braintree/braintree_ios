@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
  dynamically through the Control Panel. It also contains configuration options for the
  Braintree SDK Core components.
 
- @remarks This method is asynchronous because it requires a network call to fetch the
+ @note This method is asynchronous because it requires a network call to fetch the
  configuration for a merchant account from Braintree servers. This configuration is
  cached on subsequent calls for better performance.
 */

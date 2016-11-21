@@ -7,7 +7,9 @@
 
 #import <Foundation/Foundation.h>
 
-/// Represents the analytics data and metadata for the analytics request.
+/*!
+ @brief Represents the analytics data and metadata for the analytics request.
+*/
 @interface PPFPTIData: NSObject
 
 /*!

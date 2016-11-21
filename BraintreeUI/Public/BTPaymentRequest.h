@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @brief A string representation of the grand total amount
 
- @remarks For example, "$12.95"
+ @note For example, "$12.95"
 */
 @property (nonatomic, copy) NSString *displayAmount;
 
@@ -62,35 +62,35 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion Amount must be a non-negative number, may optionally contain exactly 2 decimal places
  separated by '.', optional thousands separator ',', limited to 7 digits before the decimal point.
 
- @remarks Used by PayPal.
+ @note Used by PayPal.
 */
 @property (nonatomic, copy, nullable) NSString *amount;
 
 /*!
  @brief Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
 
- @remarks Used by PayPal.
+ @note Used by PayPal.
 */
 @property (nonatomic, copy, nullable) NSString *currencyCode;
 
 /*!
  @brief Defaults to false. When set to true, the shipping address selector will not be displayed.
 
- @remarks Used by PayPal.
+ @note Used by PayPal.
 */
 @property (nonatomic, assign) BOOL noShipping;
 
 /*!
  @brief When set to `YES`, this controls whether to present additional modal view controllers from the root view controller of the application's key window. Defaults to `NO`.
 
- @remarks Setting this to `YES` can fix issues with blank `SFSafariViewControllers`, which can occur when apps use multiple `UIWindow` instances.
+ @note Setting this to `YES` can fix issues with blank `SFSafariViewControllers`, which can occur when apps use multiple `UIWindow` instances.
 */
 @property (nonatomic, assign) BOOL presentViewControllersFromTop;
 
 /*!
  @brief Show a customer's vaulted payment methods with the default payment method nonce first, followed by the remaining payment methods sorted by most recent usage. Defaults to `NO`.
 
- @remarks Must be using client token with a customer ID
+ @note Must be using client token with a customer ID
 */
 @property (nonatomic, assign) BOOL showDefaultPaymentMethodNonceFirst;
 
@@ -98,7 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
  @brief Optional: A valid shipping address to be displayed in the transaction flow.
  @discussion An error will occur if this address is not valid.
 
- @remarks Used by PayPal.
+ @note Used by PayPal.
 */
 @property (nonatomic, strong, nullable) BTPostalAddress *shippingAddress;
 

@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @brief Optional delegate for receiving payment lifecycle messages from a payment driverthat requires presentation of a view controller to authorize a payment.
 
- @remarks Required by PayPal.
+ @note Required by PayPal.
 */
 @property (nonatomic, weak, nullable) id <BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
