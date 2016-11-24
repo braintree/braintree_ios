@@ -1,4 +1,3 @@
-#if BT_ENABLE_APPLE_PAY
 #import "BTMockApplePayPaymentAuthorizationView.h"
 
 @interface BTMockApplePayPaymentAuthorizationView () <UITableViewDataSource, UITableViewDelegate>
@@ -97,4 +96,3 @@ NSString *const BTMockApplePayPaymentAuthorizationControlCell =  @"BTMockApplePa
 }
 
 @end
-#endif

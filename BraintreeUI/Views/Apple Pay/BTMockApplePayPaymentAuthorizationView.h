@@ -1,11 +1,10 @@
-#if BT_ENABLE_APPLE_PAY
 #import <UIKit/UIKit.h>
 
 @protocol BTMockApplePayPaymentAuthorizationViewDelegate;
 
 @interface BTMockApplePayPaymentAuthorizationView : UIView
 
-- (instancetype)initWithDelegate:(id<BTMockApplePayPaymentAuthorizationViewDelegate>)delegate NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDelegate:(id<BTMockApplePayPaymentAuthorizationViewDelegate>)delegate;
 
 @end
 
@@ -15,4 +14,3 @@
 - (void)mockApplePayPaymentAuthorizationViewDidCancel:(BTMockApplePayPaymentAuthorizationView *)view;
 
 @end
-#endif
