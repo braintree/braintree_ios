@@ -5,11 +5,11 @@
 
 @import QuartzCore;
 
-const CGFloat formFieldTopMargin = 7;
-const CGFloat formFieldLabelHeight = 15;
-const CGFloat formFieldVerticalSpace = 1;
-const CGFloat formFieldTextFieldHeight = 20;
-const CGFloat formFieldBottomMargin = 11;
+static const CGFloat formFieldTopMargin = 7;
+static const CGFloat formFieldLabelHeight = 15;
+static const CGFloat formFieldVerticalSpace = 1;
+static const CGFloat formFieldTextFieldHeight = 20;
+static const CGFloat formFieldBottomMargin = 11;
 
 @interface BTUIFormField ()<BTUITextFieldEditDelegate>
 
