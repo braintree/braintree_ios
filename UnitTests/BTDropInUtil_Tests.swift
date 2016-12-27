@@ -6,7 +6,7 @@ class BTDropInUtil_Tests: XCTestCase {
         XCTAssertNotNil(topInitialTopController, "Top UIViewController should not be nil")
 
         let windowRootController = UIViewController()
-        let secondWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+        let secondWindow = UIWindow(frame: UIScreen.main.bounds)
         secondWindow.rootViewController = windowRootController
         secondWindow.makeKeyAndVisible()
         secondWindow.windowLevel = 100

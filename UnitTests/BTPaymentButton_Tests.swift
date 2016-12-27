@@ -8,12 +8,12 @@ class BTPaymentButton_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        viewController = UIApplication.sharedApplication().windows[0].rootViewController
+        viewController = UIApplication.shared.windows[0].rootViewController
     }
 
     override func tearDown() {
         if viewController.presentedViewController != nil {
-            viewController.dismissViewControllerAnimated(false, completion: nil)
+            viewController.dismiss(animated: false, completion: nil)
         }
 
         super.tearDown()
@@ -21,35 +21,35 @@ class BTPaymentButton_Tests: XCTestCase {
 
     func testPaymentButton_whenUsingTokenizationKey_doesNotCrash() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        let paymentButton = BTPaymentButton(APIClient: apiClient) { _ in }
+        let paymentButton = BTPaymentButton(apiClient: apiClient) { _ in }
         let paymentButtonViewController = UIViewController()
         paymentButtonViewController.view.addSubview(paymentButton)
 
-        viewController.presentViewController(paymentButtonViewController, animated: true, completion: nil)
+        viewController.present(paymentButtonViewController, animated: true, completion: nil)
     }
 
     func testPaymentButton_byDefault_hasAllPaymentOptions() {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let paymentButton = BTPaymentButton(APIClient: stubAPIClient) { _ in }
+        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _ in }
 
         XCTAssertEqual(paymentButton.enabledPaymentOptions, NSOrderedSet(array: ["PayPal", "Venmo"]))
     }
 
     func testPaymentButton_whenPayPalIsEnabledInConfiguration_checksConfigurationForPaymentOptionAvailability() {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let paymentButton = BTPaymentButton(APIClient: stubAPIClient) { _ in }
-        paymentButton.configuration = BTConfiguration(JSON: BTJSON(value: [ "paypalEnabled": true ]))
+        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _ in }
+        paymentButton.configuration = BTConfiguration(json: BTJSON(value: [ "paypalEnabled": true ]))
 
         XCTAssertEqual(paymentButton.enabledPaymentOptions, NSOrderedSet(array: ["PayPal"]))
     }
 
     func testPaymentButton_whenVenmoIsEnabledInConfiguration_checksConfigurationForPaymentOptionAvailability() {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let paymentButton = BTPaymentButton(APIClient: stubAPIClient) { _ in }
+        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _ in }
         let fakeApplication = FakeApplication()
         fakeApplication.cannedCanOpenURL = true
         paymentButton.application = fakeApplication
-        paymentButton.configuration = BTConfiguration(JSON: BTJSON(value: [ "payWithVenmo": ["accessToken": "ACCESS_TOKEN"] ]))
+        paymentButton.configuration = BTConfiguration(json: BTJSON(value: [ "payWithVenmo": ["accessToken": "ACCESS_TOKEN"] ]))
         BTConfiguration.setBetaPaymentOption("venmo", isEnabled: true)
 
         XCTAssertEqual(paymentButton.enabledPaymentOptions, NSOrderedSet(array: ["Venmo"]))
@@ -57,8 +57,8 @@ class BTPaymentButton_Tests: XCTestCase {
 
     func testPaymentButton_whenEnabledPaymentOptionsIsSetManually_skipsConfigurationValidation() {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let paymentButton = BTPaymentButton(APIClient: stubAPIClient) { _ in }
-        paymentButton.configuration = BTConfiguration(JSON: BTJSON(value: [ "paypalEnabled": false ]))
+        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _ in }
+        paymentButton.configuration = BTConfiguration(json: BTJSON(value: [ "paypalEnabled": false ]))
 
         paymentButton.enabledPaymentOptions = NSOrderedSet(array: ["PayPal"])
         XCTAssertEqual(paymentButton.enabledPaymentOptions, NSOrderedSet(array: ["PayPal"]))

@@ -18,51 +18,51 @@ class BTAppSwitch_Tests: XCTestCase {
     }
 
     func testHandleOpenURL_whenHandlerIsRegistered_invokesCanHandleAppSwitchReturnURL() {
-        appSwitch.registerAppSwitchHandler(MockAppSwitchHandler)
-        let expectedURL = NSURL(string: "fake://url")!
+        appSwitch.register(MockAppSwitchHandler.self)
+        let expectedURL = URL(string: "fake://url")!
         let expectedSourceApplication = "fakeSourceApplication"
 
-        BTAppSwitch.handleOpenURL(expectedURL, sourceApplication: expectedSourceApplication)
+        BTAppSwitch.handleOpen(expectedURL, sourceApplication: expectedSourceApplication)
 
         XCTAssertEqual(MockAppSwitchHandler.lastCanHandleURL!, expectedURL)
         XCTAssertEqual(MockAppSwitchHandler.lastCanHandleSourceApplication!, expectedSourceApplication)
     }
 
     func testHandleOpenURL_whenHandlerCanHandleOpenURL_invokesHandleAppSwitchReturnURL() {
-        appSwitch.registerAppSwitchHandler(MockAppSwitchHandler)
+        appSwitch.register(MockAppSwitchHandler.self)
         MockAppSwitchHandler.cannedCanHandle = true
-        let expectedURL = NSURL(string: "fake://url")!
+        let expectedURL = URL(string: "fake://url")!
 
-        let handled = BTAppSwitch.handleOpenURL(expectedURL, sourceApplication: "not important")
+        let handled = BTAppSwitch.handleOpen(expectedURL, sourceApplication: "not important")
         
         XCTAssert(handled)
         XCTAssertEqual(MockAppSwitchHandler.lastHandleAppSwitchReturnURL!, expectedURL)
     }
 
     func testHandleOpenURL_whenHandlerCantHandleOpenURL_doesNotInvokeHandleAppSwitchReturnURL() {
-        appSwitch.registerAppSwitchHandler(MockAppSwitchHandler)
+        appSwitch.register(MockAppSwitchHandler.self)
         MockAppSwitchHandler.cannedCanHandle = false
 
-        BTAppSwitch.handleOpenURL(NSURL(string: "fake://url")!, sourceApplication: "not important")
+        BTAppSwitch.handleOpen(URL(string: "fake://url")!, sourceApplication: "not important")
 
         XCTAssertNil(MockAppSwitchHandler.lastHandleAppSwitchReturnURL)
     }
 
     func testHandleOpenURL_whenHandlerCantHandleOpenURL_returnsFalse() {
-        appSwitch.registerAppSwitchHandler(MockAppSwitchHandler)
+        appSwitch.register(MockAppSwitchHandler.self)
         MockAppSwitchHandler.cannedCanHandle = false
 
-        XCTAssertFalse(BTAppSwitch.handleOpenURL(NSURL(string: "fake://url")!, sourceApplication: "not important"))
+        XCTAssertFalse(BTAppSwitch.handleOpen(URL(string: "fake://url")!, sourceApplication: "not important"))
     }
     
     func testHandleOpenURL_acceptsOptionalSourceApplication() {
         // This doesn't assert any behavior about nil source application. It only checks that the code will compile!
         let sourceApplication : String? = nil
-        BTAppSwitch.handleOpenURL(NSURL(string: "fake://url")!, sourceApplication: sourceApplication)
+        BTAppSwitch.handleOpen(URL(string: "fake://url")!, sourceApplication: sourceApplication)
     }
     
     func testHandleOpenURL_withNoAppSwitching() {
-        let handled = BTAppSwitch.handleOpenURL(NSURL(string: "scheme://")!, sourceApplication: "com.yourcompany.hi")
+        let handled = BTAppSwitch.handleOpen(URL(string: "scheme://")!, sourceApplication: "com.yourcompany.hi")
         XCTAssertFalse(handled)
     }
 
@@ -70,17 +70,17 @@ class BTAppSwitch_Tests: XCTestCase {
 
 class MockAppSwitchHandler: BTAppSwitchHandler {
     static var cannedCanHandle = false
-    static var lastCanHandleURL : NSURL? = nil
+    static var lastCanHandleURL : URL? = nil
     static var lastCanHandleSourceApplication : String? = nil
-    static var lastHandleAppSwitchReturnURL : NSURL? = nil
+    static var lastHandleAppSwitchReturnURL : URL? = nil
 
-    @objc static func canHandleAppSwitchReturnURL(url: NSURL, sourceApplication: String) -> Bool {
+    @objc static func canHandleAppSwitchReturn(_ url: URL, sourceApplication: String) -> Bool {
         lastCanHandleURL = url
         lastCanHandleSourceApplication = sourceApplication
         return cannedCanHandle
     }
 
-    @objc static func handleAppSwitchReturnURL(url: NSURL) {
+    @objc static func handleAppSwitchReturn(_ url: URL) {
         lastHandleAppSwitchReturnURL = url
     }
 }
