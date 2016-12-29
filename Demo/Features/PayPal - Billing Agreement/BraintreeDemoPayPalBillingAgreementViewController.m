@@ -3,10 +3,19 @@
 #import <BraintreePayPal/BraintreePayPal.h>
 
 @interface BraintreeDemoPayPalBillingAgreementViewController () <BTAppSwitchDelegate, BTViewControllerPresentingDelegate>
+@property(nonatomic, strong) UITextView *infoTextView;
 
 @end
 
 @implementation BraintreeDemoPayPalBillingAgreementViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    self.infoTextView = [[UITextView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width / 2) - 100, (self.view.bounds.size.width / 8) * 7, 200, 100)];
+    [self.view addSubview:self.infoTextView];
+    self.infoTextView.backgroundColor = [UIColor clearColor];
+}
 
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -20,7 +29,7 @@
 
 - (void)tappedPayPalCheckout:(UIButton *)sender {
     self.progressBlock(@"Tapped PayPal - initiating checkout using BTPayPalDriver");
-
+    self.infoTextView.text = @"";
     [sender setTitle:@"Processing..." forState:UIControlStateDisabled];
     [sender setEnabled:NO];
 
@@ -70,6 +79,7 @@
 }
 
 - (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(UIViewController *)viewController {
+    self.infoTextView.text = @"DismissalOfViewController Called";
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
