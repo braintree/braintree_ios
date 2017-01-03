@@ -7,7 +7,7 @@ class BTCardNonce_Tests: XCTestCase {
     }
 
     func testCardWithJSON_createsCardWithExpectedValues() {
-        let cardNonce = BTCardNonce(JSON: BTJSON(value: [
+        let cardNonce = BTCardNonce(json: BTJSON(value: [
             "description": "Visa ending in 11",
             "details": [
                 "cardType": "Visa",
@@ -17,14 +17,14 @@ class BTCardNonce_Tests: XCTestCase {
             ]))
 
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
-        XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.Visa)
+        XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
         XCTAssertEqual(cardNonce.type, "Visa")
     }
 
     func testCardWithJSON_ignoresCaseWhenParsingCardType() {
-        let cardNonce = BTCardNonce(JSON: BTJSON(value: [
+        let cardNonce = BTCardNonce(json: BTJSON(value: [
             "description": "Visa ending in 11",
             "details": [
                 "cardType": "vIsA",
@@ -34,7 +34,7 @@ class BTCardNonce_Tests: XCTestCase {
             ]))
 
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
-        XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.Visa)
+        XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
         XCTAssertEqual(cardNonce.nonce, "fake-nonce")
         XCTAssertEqual(cardNonce.type, "Visa")
@@ -42,19 +42,19 @@ class BTCardNonce_Tests: XCTestCase {
 
     func testCardWithJSON_parsesAllCardTypesCorrectly() {
         let cardNetworks = [
-            BTCardNetwork.Unknown,
+            BTCardNetwork.unknown,
             BTCardNetwork.AMEX,
-            BTCardNetwork.DinersClub,
-            BTCardNetwork.Discover,
-            BTCardNetwork.Maestro,
-            BTCardNetwork.MasterCard,
+            BTCardNetwork.dinersClub,
+            BTCardNetwork.discover,
+            BTCardNetwork.maestro,
+            BTCardNetwork.masterCard,
             BTCardNetwork.JCB,
-            BTCardNetwork.Laser,
-            BTCardNetwork.Solo,
-            BTCardNetwork.Switch,
-            BTCardNetwork.UnionPay,
-            BTCardNetwork.UKMaestro,
-            BTCardNetwork.Visa,
+            BTCardNetwork.laser,
+            BTCardNetwork.solo,
+            BTCardNetwork.switch,
+            BTCardNetwork.unionPay,
+            BTCardNetwork.ukMaestro,
+            BTCardNetwork.visa,
         ]
         let cardTypeJSONValues = [
             "some unrecognized type",
@@ -94,8 +94,8 @@ class BTCardNonce_Tests: XCTestCase {
                     "lastTwo": "11",
                 ],
                 "nonce": "fake-nonce",
-            ]
-            let cardNonce = BTCardNonce(JSON: BTJSON(value: jsonValue))
+            ] as [String : Any]
+            let cardNonce = BTCardNonce(json: BTJSON(value: jsonValue))
 
             XCTAssertEqual(cardNonce.cardNetwork, cardNetworks[i])
             XCTAssertEqual(cardNonce.type, cardTypes[i])

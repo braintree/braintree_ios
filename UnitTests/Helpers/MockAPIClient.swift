@@ -1,8 +1,8 @@
 import BraintreeCore
 
-@objc class MockAPIClient : BTAPIClient {
+class MockAPIClient : BTAPIClient {
     var lastPOSTPath = ""
-    var lastPOSTParameters = [:] as [NSObject : AnyObject]?
+    var lastPOSTParameters = [:] as [AnyHashable: Any]?
     var lastGETPath = ""
     var lastGETParameters = [:] as [String : String]?
     var postedAnalyticsEvents : [String] = []
@@ -11,13 +11,13 @@ import BraintreeCore
     var cannedConfigurationResponseError : NSError? = nil
 
     var cannedResponseError : NSError? = nil
-    var cannedHTTPURLResponse : NSHTTPURLResponse? = nil
+    var cannedHTTPURLResponse : HTTPURLResponse? = nil
     var cannedResponseBody : BTJSON? = nil
 
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
-
-    override func GET(path: String, parameters: [String : String]?, completion completionBlock: ((BTJSON?, NSHTTPURLResponse?, NSError?) -> Void)?) {
+    
+    override func get(_ path: String, parameters: [String : String]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
         lastGETParameters = parameters
 
@@ -27,7 +27,7 @@ import BraintreeCore
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
 
-    override func POST(path: String, parameters: [NSObject : AnyObject]?, completion completionBlock: ((BTJSON?, NSHTTPURLResponse?, NSError?) -> Void)?) {
+    override func post(_ path: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
         lastPOSTParameters = parameters
 
@@ -37,21 +37,21 @@ import BraintreeCore
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
 
-    override func fetchOrReturnRemoteConfiguration(completionBlock: (BTConfiguration?, NSError?) -> Void) {
+    override func fetchOrReturnRemoteConfiguration(_ completionBlock: @escaping (BTConfiguration?, Error?) -> Void) {
         guard let responseBody = cannedConfigurationResponseBody else {
             completionBlock(nil, cannedConfigurationResponseError)
             return
         }
-        completionBlock(BTConfiguration(JSON: responseBody), cannedConfigurationResponseError)
+        completionBlock(BTConfiguration(json: responseBody), cannedConfigurationResponseError)
     }
-    
-    override func fetchPaymentMethodNonces(completion: ([BTPaymentMethodNonce]?, NSError?) -> Void) {
+
+    override func fetchPaymentMethodNonces(_ completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
         fetchedPaymentMethods = true
         fetchPaymentMethodsSorting = false
         completion([], nil)
     }
     
-    override func fetchPaymentMethodNonces(defaultFirst: Bool, completion: ([BTPaymentMethodNonce]?, NSError?) -> Void) {
+    override func fetchPaymentMethodNonces(_ defaultFirst: Bool, completion: @escaping ([BTPaymentMethodNonce]?, Error?) -> Void) {
         fetchedPaymentMethods = true
         fetchPaymentMethodsSorting = false
         completion([], nil)
@@ -60,15 +60,15 @@ import BraintreeCore
     /// BTAPIClient gets copied by other classes like BTPayPalDriver, BTVenmoDriver, etc.
     /// This copy causes MockAPIClient to lose its stubbed data (canned responses), so the
     /// workaround for tests is to stub copyWithSource:integration: to *not* copy itself
-    override func copyWithSource(source: BTClientMetadataSourceType, integration: BTClientMetadataIntegrationType) -> Self {
+    override func copy(with source: BTClientMetadataSourceType, integration: BTClientMetadataIntegrationType) -> Self {
         return self
     }
 
-    override func sendAnalyticsEvent(name: String) {
+    override func sendAnalyticsEvent(_ name: String) {
         postedAnalyticsEvents.append(name)
     }
 
-    func didFetchPaymentMethods(sorted sorted: Bool) -> Bool {
+    func didFetchPaymentMethods(sorted: Bool) -> Bool {
         return fetchedPaymentMethods && fetchPaymentMethodsSorting == sorted
     }
 }

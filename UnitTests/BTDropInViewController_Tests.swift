@@ -9,11 +9,11 @@ class BTDropInViewController_Tests: XCTestCase {
             self.didLoadExpectation = didLoadExpectation
         }
 
-        @objc func dropInViewController(viewController: BTDropInViewController, didSucceedWithTokenization paymentMethodNonce: BTPaymentMethodNonce) {}
+        @objc func drop(_ viewController: BTDropInViewController, didSucceedWithTokenization paymentMethodNonce: BTPaymentMethodNonce) {}
 
-        @objc func dropInViewControllerDidCancel(viewController: BTDropInViewController) {}
+        @objc func drop(inViewControllerDidCancel viewController: BTDropInViewController) {}
 
-        @objc func dropInViewControllerDidLoad(viewController: BTDropInViewController) {
+        @objc func drop(inViewControllerDidLoad viewController: BTDropInViewController) {
             didLoadExpectation.fulfill()
         }
     }
@@ -25,12 +25,12 @@ class BTDropInViewController_Tests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        viewController = UIApplication.sharedApplication().windows[0].rootViewController
+        viewController = UIApplication.shared.windows[0].rootViewController
     }
 
     override func tearDown() {
         if viewController.presentedViewController != nil {
-            viewController.dismissViewControllerAnimated(false, completion: nil)
+            viewController.dismiss(animated: false, completion: nil)
         }
 
         super.tearDown()
@@ -39,7 +39,7 @@ class BTDropInViewController_Tests: XCTestCase {
     func testInitializesWithCheckoutRequestCorrectly() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let request = BTPaymentRequest()
-        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        let dropInViewController = BTDropInViewController(apiClient: apiClient)
         dropInViewController.paymentRequest = request
         XCTAssertEqual(request, dropInViewController.paymentRequest)
         XCTAssertEqual(apiClient.tokenizationKey, dropInViewController.apiClient.tokenizationKey)
@@ -49,15 +49,15 @@ class BTDropInViewController_Tests: XCTestCase {
         XCTAssertNil(dropInViewController.navigationItem.leftBarButtonItem)
         XCTAssertNil(dropInViewController.navigationItem.rightBarButtonItem)
 
-        let didLoadExpectation = self.expectationWithDescription("Drop-in did finish loading")
+        let didLoadExpectation = self.expectation(description: "Drop-in did finish loading")
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
         dropInViewController.delegate = testDelegate
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        DispatchQueue.main.async { () -> Void in
+            self.viewController.present(dropInViewController, animated: false, completion: nil)
         }
 
-        self.waitForExpectationsWithTimeout(5, handler: nil)
+        self.waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testInitializesWithoutCheckoutRequestCorrectly() {
@@ -68,7 +68,7 @@ class BTDropInViewController_Tests: XCTestCase {
         // added as a navigation bar button item. The default value is false.
         request.shouldHideCallToAction = true
 
-        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        let dropInViewController = BTDropInViewController(apiClient: apiClient)
         dropInViewController.paymentRequest = request
 
         XCTAssertEqual(request, dropInViewController.paymentRequest)
@@ -78,20 +78,20 @@ class BTDropInViewController_Tests: XCTestCase {
         // There will be a rightBarButtonItem instead of a call to action control because it has been set to hide.
         XCTAssertNotNil(dropInViewController.navigationItem.rightBarButtonItem)
 
-        let didLoadExpectation = self.expectationWithDescription("Drop-in did finish loading")
+        let didLoadExpectation = self.expectation(description: "Drop-in did finish loading")
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
         dropInViewController.delegate = testDelegate
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        DispatchQueue.main.async { () -> Void in
+            self.viewController.present(dropInViewController, animated: false, completion: nil)
         }
-        self.waitForExpectationsWithTimeout(5, handler: nil)
+        self.waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testDropIn_canSetNewCheckoutRequestAfterPresentation() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
         let request = BTPaymentRequest()
-        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        let dropInViewController = BTDropInViewController(apiClient: apiClient)
         dropInViewController.paymentRequest = request
         XCTAssertEqual(request, dropInViewController.paymentRequest)
         XCTAssertEqual(apiClient.tokenizationKey, dropInViewController.apiClient.tokenizationKey)
@@ -101,14 +101,14 @@ class BTDropInViewController_Tests: XCTestCase {
         XCTAssertNil(dropInViewController.navigationItem.leftBarButtonItem)
         XCTAssertNil(dropInViewController.navigationItem.rightBarButtonItem)
 
-        let didLoadExpectation = self.expectationWithDescription("Drop-in did finish loading")
+        let didLoadExpectation = self.expectation(description: "Drop-in did finish loading")
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
         dropInViewController.delegate = testDelegate
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.viewController.presentViewController(dropInViewController, animated: false, completion: nil)
+        DispatchQueue.main.async { () -> Void in
+            self.viewController.present(dropInViewController, animated: false, completion: nil)
         }
-        self.waitForExpectationsWithTimeout(5, handler: nil)
+        self.waitForExpectations(timeout: 5, handler: nil)
 
         let newRequest = BTPaymentRequest()
         newRequest.shouldHideCallToAction = true
@@ -122,45 +122,45 @@ class BTDropInViewController_Tests: XCTestCase {
 
     func testDropIn_addPaymentMethodViewController_hidesCTA() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        let dropInViewController = BTDropInViewController(APIClient: apiClient)
-        let addPaymentMethodDropInViewController = dropInViewController.addPaymentMethodDropInViewController()
-        XCTAssertTrue(addPaymentMethodDropInViewController.paymentRequest!.shouldHideCallToAction)
-        XCTAssertNotNil(addPaymentMethodDropInViewController.navigationItem.rightBarButtonItem)
+        let dropInViewController = BTDropInViewController(apiClient: apiClient)
+        let addPaymentMethodDropInViewController = dropInViewController.addPaymentMethod()
+        XCTAssertTrue((addPaymentMethodDropInViewController?.paymentRequest!.shouldHideCallToAction)!)
+        XCTAssertNotNil(addPaymentMethodDropInViewController?.navigationItem.rightBarButtonItem)
 
-        let didLoadExpectation = self.expectationWithDescription("Add payment method view controller did finish loading")
+        let didLoadExpectation = self.expectation(description: "Add payment method view controller did finish loading")
         let testDelegate = BTDropInViewControllerTestDelegate(didLoadExpectation: didLoadExpectation) // for strong reference
-        addPaymentMethodDropInViewController.delegate = testDelegate
+        addPaymentMethodDropInViewController?.delegate = testDelegate
 
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            self.viewController.presentViewController(addPaymentMethodDropInViewController, animated: false, completion: nil)
+        DispatchQueue.main.async { () -> Void in
+            self.viewController.present(addPaymentMethodDropInViewController!, animated: false, completion: nil)
         }
 
-        self.waitForExpectationsWithTimeout(5, handler: nil)
+        self.waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testDropIn_whenPresentViewControllersFromTopIsTrue_presentsViewControllersFromTopViewController() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        let dropInViewController = BTDropInViewController(APIClient: apiClient)
+        let dropInViewController = BTDropInViewController(apiClient: apiClient)
         let paymentRequest = BTPaymentRequest()
         paymentRequest.presentViewControllersFromTop = true
         dropInViewController.paymentRequest = paymentRequest
         let mockViewController = UIViewController()
         let windowRootController = UIViewController()
-        let secondWindow = UIWindow(frame: UIScreen.mainScreen().bounds)
+        let secondWindow = UIWindow(frame: UIScreen.main.bounds)
         secondWindow.rootViewController = windowRootController
         secondWindow.makeKeyAndVisible()
         secondWindow.windowLevel = 100
         let topSecondTopController = BTDropInUtil.topViewController()
 
-        dropInViewController.paymentDriver(nil, requestsPresentationOfViewController: mockViewController)
+        dropInViewController.paymentDriver(nil, requestsPresentationOf: mockViewController)
 
-        let expectation = expectationWithDescription("Sleeping for presentation")
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0)) { () -> Void in
+        let expectation = self.expectation(description: "Sleeping for presentation")
+        DispatchQueue.global(qos: .background).async {
             sleep(1)
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertEqual(mockViewController.presentingViewController, topSecondTopController)
     }
@@ -169,47 +169,47 @@ class BTDropInViewController_Tests: XCTestCase {
 
     func testAPIClientMetadata_afterInstantiation_hasIntegrationSetToDropIn() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        let dropIn = BTDropInViewController(APIClient: apiClient)
+        let dropIn = BTDropInViewController(apiClient: apiClient)
 
-        XCTAssertEqual(dropIn.apiClient.metadata.integration, BTClientMetadataIntegrationType.DropIn)
+        XCTAssertEqual(dropIn.apiClient.metadata.integration, BTClientMetadataIntegrationType.dropIn)
     }
 
     func testAPIClientMetadata_afterInstantiation_hasSourceSetToOriginalAPIClientMetadataSource() {
         var apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        apiClient = apiClient.copyWithSource(BTClientMetadataSourceType.Unknown, integration: BTClientMetadataIntegrationType.Custom)
-        let dropIn = BTDropInViewController(APIClient: apiClient)
+        apiClient = apiClient.copy(with: BTClientMetadataSourceType.unknown, integration: BTClientMetadataIntegrationType.custom)
+        let dropIn = BTDropInViewController(apiClient: apiClient)
 
-        XCTAssertEqual(dropIn.apiClient.metadata.source, BTClientMetadataSourceType.Unknown)
+        XCTAssertEqual(dropIn.apiClient.metadata.source, BTClientMetadataSourceType.unknown)
     }
 
     // MARK: - Payment method fetching
 
     func testFetchPaymentMethods_byDefault_doesNotCallAPIClientWithDefaultSortedFirst() {
         let mockAPIClient = MockAPIClient(authorization: ValidClientToken)!
-        let dropIn = BTDropInViewController(APIClient: mockAPIClient)
+        let dropIn = BTDropInViewController(apiClient: mockAPIClient)
 
-        let expectation = expectationWithDescription("Callback invoked")
-        dropIn.fetchPaymentMethodsOnCompletion { () -> Void in
+        let expectation = self.expectation(description: "Callback invoked")
+        dropIn.fetchPaymentMethods { () -> Void in
             XCTAssertTrue(mockAPIClient.didFetchPaymentMethods(sorted: false))
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
     func testFetchPaymentMethods_sortDefaultFirstOverriden_callsAPIClientWithDefaultSortedFirst() {
         let mockAPIClient = MockAPIClient(authorization: ValidClientToken)!
         let paymentRequest = BTPaymentRequest()
         paymentRequest.showDefaultPaymentMethodNonceFirst = false
-        let dropIn = BTDropInViewController(APIClient: mockAPIClient)
+        let dropIn = BTDropInViewController(apiClient: mockAPIClient)
         dropIn.paymentRequest = paymentRequest
 
-        let expectation = expectationWithDescription("Callback invoked")
-        dropIn.fetchPaymentMethodsOnCompletion { () -> Void in
+        let expectation = self.expectation(description: "Callback invoked")
+        dropIn.fetchPaymentMethods { () -> Void in
             XCTAssertTrue(mockAPIClient.didFetchPaymentMethods(sorted: false))
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
 }
