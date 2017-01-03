@@ -101,7 +101,8 @@ class BTJSON_Tests: XCTestCase {
         let obj = BTJSON(data: JSON)
 
         XCTAssertTrue(obj.isError)
-        XCTAssertEqual((obj.asError()?._domain)!, NSCocoaErrorDomain)
+        guard let error = obj as? NSError else {return}
+        XCTAssertEqual(error.domain, NSCocoaErrorDomain)
     }
 
     func testMultipleErrorsTakesFirst() {
@@ -111,7 +112,8 @@ class BTJSON_Tests: XCTestCase {
         let error = (((string[0])["key"] as! BTJSON)[0])
 
         XCTAssertTrue(error.isError as Bool)
-        XCTAssertEqual((error.asError()?._domain)!, NSCocoaErrorDomain)
+        guard let err = error as? NSError else {return}
+        XCTAssertEqual(err.domain, NSCocoaErrorDomain)
     }
 
     func testNestedObjects() {

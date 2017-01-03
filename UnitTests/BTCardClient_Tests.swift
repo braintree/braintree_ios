@@ -101,14 +101,11 @@ class BTCardClient_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked with error")
         cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
-            guard let error = error else {
-                XCTFail("Expected error in callback")
-                return
-            }
             XCTAssertNil(cardNonce)
-            XCTAssertEqual(error._domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error._code, BTCardClientErrorType.customerInputInvalid.rawValue)
-            if let json = (error._userInfo as! NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary {
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
+            XCTAssertEqual(error.code, BTCardClientErrorType.customerInputInvalid.rawValue)
+            if let json = (error.userInfo as NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary {
                 XCTAssertEqual(json, (stubJSONResponse as BTJSON).asDictionary()! as NSDictionary)
             } else {
                 XCTFail("Expected JSON response in userInfo[BTCustomInputBraintreeValidationErrorsKey]")
@@ -134,14 +131,10 @@ class BTCardClient_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked with error")
         cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
-            guard let error = error else {
-                XCTFail("Expected error in callback")
-                return
-            }
-            
             XCTAssertNil(cardNonce)
-            XCTAssertEqual(error._domain, BTHTTPErrorDomain)
-            XCTAssertEqual(error._code, BTHTTPErrorCode.clientError.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTHTTPErrorDomain)
+            XCTAssertEqual(error.code, BTHTTPErrorCode.clientError.rawValue)
             expectation.fulfill()
         }
 

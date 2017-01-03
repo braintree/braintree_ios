@@ -57,8 +57,9 @@ class BTVenmoDriver_Tests: XCTestCase {
         let expectation = self.expectation(description: "Callback invoked with error")
         venmoDriver.authorizeAccountAndVault(false) { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
-            XCTAssertEqual(error!._domain, BTVenmoDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTVenmoDriverErrorType.integration.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTVenmoDriverErrorDomain)
+            XCTAssertEqual(error.code, BTVenmoDriverErrorType.integration.rawValue)
             expectation.fulfill()
         }
         
@@ -86,8 +87,9 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "tokenization callback")
         venmoDriver.authorizeAccountAndVault(false) { (tokenizedCard, error) -> Void in
-            XCTAssertEqual(error!._domain, BTVenmoDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTVenmoDriverErrorType.disabled.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTVenmoDriverErrorDomain)
+            XCTAssertEqual(error.code, BTVenmoDriverErrorType.disabled.rawValue)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
@@ -100,8 +102,9 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "tokenization callback")
         venmoDriver.authorizeAccountAndVault(false) { (tokenizedCard, error) -> Void in
-            XCTAssertEqual(error!._domain, BTVenmoDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTVenmoDriverErrorType.disabled.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTVenmoDriverErrorDomain)
+            XCTAssertEqual(error.code, BTVenmoDriverErrorType.disabled.rawValue)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
@@ -131,8 +134,9 @@ class BTVenmoDriver_Tests: XCTestCase {
         
         let expectation = self.expectation(description: "authorization callback")
         venmoDriver.authorizeAccountAndVault(false) { (venmoAccount, error) -> Void in
-            XCTAssertEqual(error!._domain, BTVenmoDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTVenmoDriverErrorType.appNotAvailable.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTVenmoDriverErrorDomain)
+            XCTAssertEqual(error.code, BTVenmoDriverErrorType.appNotAvailable.rawValue)
             expectation.fulfill()
         }
         
@@ -325,13 +329,9 @@ class BTVenmoDriver_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
         venmoDriver.authorizeAccountAndVault(false) { (venmoAccount, error) -> Void in
-            guard let error = error else {
-                XCTFail("Did not receive expected error")
-                return
-            }
-
             XCTAssertNil(venmoAccount)
-            XCTAssertEqual(error._domain, "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain")
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, "com.braintreepayments.BTVenmoAppSwitchReturnURLErrorDomain")
             expectation.fulfill()
         }
         BTVenmoDriver.handleAppSwitchReturn(URL(string: "scheme://x-callback-url/vzero/auth/venmo/error")!)

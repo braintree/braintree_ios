@@ -28,8 +28,9 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let expectation = self.expectation(description: "Authorization fails with error")
         payPalDriver.authorizeAccount { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
-            XCTAssertEqual(error!._domain, BTPayPalDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTPayPalDriverErrorType.integration.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalDriverErrorType.integration.rawValue)
             expectation.fulfill()
         }
         
@@ -57,8 +58,9 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "authorization callback")
         payPalDriver.authorizeAccount { (tokenizedPayPalAccount, error) -> Void in
-            XCTAssertEqual(error!._domain, BTPayPalDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTPayPalDriverErrorType.disabled.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalDriverErrorType.disabled.rawValue)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
@@ -83,8 +85,9 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         
         let expectation = self.expectation(description: "authorization callback")
         payPalDriver.authorizeAccount { (tokenizedPayPalAccount, error) -> Void in
-            XCTAssertEqual(error!._domain, BTPayPalDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTPayPalDriverErrorType.integrationReturnURLScheme.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalDriverErrorType.integrationReturnURLScheme.rawValue)
             expectation.fulfill()
         }
         
@@ -490,11 +493,8 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
         payPalDriver.authorizeAccount { (tokenizedPayPalAccount, error) -> Void in
-            guard let error = error else {
-                XCTFail()
-                return
-            }
-            XCTAssertEqual(error._domain, BTPayPalDriverErrorDomain)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
             expectation.fulfill()
         }
 
@@ -690,8 +690,9 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         payPalDriver.requestOneTimePayment(request) { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
-            XCTAssertEqual(error!._domain, BTPayPalDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTPayPalDriverErrorType.integration.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalDriverErrorType.integration.rawValue)
             expectation.fulfill()
         }
         
@@ -1344,8 +1345,9 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let expectation = self.expectation(description: "Billing Agreement fails with error")
         payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
-            XCTAssertEqual(error!._domain, BTPayPalDriverErrorDomain)
-            XCTAssertEqual(error!._code, BTPayPalDriverErrorType.integration.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
+            XCTAssertEqual(error.code, BTPayPalDriverErrorType.integration.rawValue)
             expectation.fulfill()
         }
         

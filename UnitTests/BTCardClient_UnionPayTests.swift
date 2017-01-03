@@ -57,14 +57,10 @@ class BTCardClient_UnionPayTests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
         cardClient.fetchCapabilities(cardNumber) { (cardNonce, error) -> Void in
-            guard let error = error else {
-                XCTFail()
-                return
-            }
-            
             XCTAssertNil(cardNonce)
-            XCTAssertEqual(error._domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error._code, BTCardClientErrorType.paymentOptionNotEnabled.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
+            XCTAssertEqual(error.code, BTCardClientErrorType.paymentOptionNotEnabled.rawValue)
             XCTAssertEqual(error.localizedDescription, "UnionPay is not enabled for this merchant")
             expectation.fulfill()
         }
@@ -162,14 +158,10 @@ class BTCardClient_UnionPayTests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
         cardClient.fetchCapabilities(cardNumber) { (cardCapabilities, error) -> Void in
-            guard let error = error else {
-                XCTFail("Expected error")
-                return
-            }
-            
             XCTAssertNil(cardCapabilities)
-            XCTAssertEqual(error._domain, stubbedError.domain)
-            XCTAssertEqual(error._code, stubbedError.code)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, stubbedError.domain)
+            XCTAssertEqual(error.code, stubbedError.code)
             expectation.fulfill()
         }
         
@@ -213,14 +205,10 @@ class BTCardClient_UnionPayTests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
         cardClient.enrollCard(request) { (enrollmentID, smsCodeRequired, error) -> Void in
-            guard let error = error else {
-                XCTFail()
-                return
-            }
-           
             XCTAssertNil(enrollmentID)
-            XCTAssertEqual(error._domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error._code, BTCardClientErrorType.paymentOptionNotEnabled.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
+            XCTAssertEqual(error.code, BTCardClientErrorType.paymentOptionNotEnabled.rawValue)
             XCTAssertEqual(error.localizedDescription, "UnionPay is not enabled for this merchant")
             expectation.fulfill()
         }
@@ -329,15 +317,11 @@ class BTCardClient_UnionPayTests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
         cardClient.enrollCard(request) { (enrollmentID, smsCodeRequired, error) -> Void in
-            guard let error = error else {
-                XCTFail("Expected union pay error")
-                return
-            }
-           
             XCTAssertNil(enrollmentID)
             XCTAssertFalse(smsCodeRequired)
-            XCTAssertEqual(error._domain, BTCardClientErrorDomain)
-            XCTAssertEqual(error._code, BTCardClientErrorType.customerInputInvalid.rawValue)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, BTCardClientErrorDomain)
+            XCTAssertEqual(error.code, BTCardClientErrorType.customerInputInvalid.rawValue)
            
             guard let inputErrors = (error._userInfo as! NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary else {
                 XCTFail("Expected error userInfo to contain validation errors")
@@ -435,15 +419,11 @@ class BTCardClient_UnionPayTests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
         cardClient.enrollCard(request) { (enrollmentID, smsCodeRequired, error) -> Void in
-            guard let error = error else {
-                XCTFail("Expected union pay error")
-                return
-            }
-            
             XCTAssertNil(enrollmentID)
             XCTAssertFalse(smsCodeRequired)
-            XCTAssertEqual(error._domain, "FakeError")
-            XCTAssertEqual(error._code, 1)
+            guard let error = error as? NSError else {return}
+            XCTAssertEqual(error.domain, "FakeError")
+            XCTAssertEqual(error.code, 1)
             expectation.fulfill()
         }
         
