@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic) BTPayPalRequestIntent intent;
 
 /*!
- @brief Optional: Changes the call-to-action in the PayPal one-time payment checkout flow. Defaults to `BTPayPalRequestUserActionDefault`.
+ @brief Optional: Changes the call-to-action in the PayPal flow. This option works for both checkout and vault flows. Defaults to BTPayPalRequestUserActionDefault.
 */
 @property (nonatomic) BTPayPalRequestUserAction userAction;
 
