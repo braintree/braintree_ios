@@ -54,3 +54,18 @@ import XCTest
         requestsPresentationOfViewControllerExpectation?.fulfill()
     }
 }
+
+@objc class MockPayPalApprovalHandlerDelegate : NSObject, BTPayPalApprovalHandler {
+    var handleApprovalExpectation : XCTestExpectation? = nil
+    var url : NSURL? = nil
+    var cancel : Bool = false
+
+    func handleApproval(_ request: PPOTRequest, paypalApprovalDelegate delegate: BTPayPalApprovalDelegate) {
+        if (cancel) {
+            delegate.onApprovalCancel()
+        } else {
+            delegate.onApprovalComplete(url as! URL)
+        }
+        handleApprovalExpectation?.fulfill()
+    }
+}
