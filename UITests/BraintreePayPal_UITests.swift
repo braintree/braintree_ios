@@ -147,14 +147,14 @@ class BraintreePayPal_BillingAgreement_UITests: XCTestCase {
         XCTAssertTrue(app.buttons["Cancelled"].exists);
     }
 
-    func testPayPal_billingAgreement_cancelsSuccessfully_withoutCallingDismissalDelegateMethod_whenTappingSFSafariViewControllerDoneButton() {
+    func testPayPal_billingAgreement_cancelsSuccessfully_whenTappingSFSafariViewControllerDoneButton() {
         self.waitForElementToAppear(app.buttons["Done"])
 
         app.buttons["Done"].forceTapElement()
 
         self.waitForElementToAppear(app.buttons["Billing Agreement with PayPal"])
 
-        XCTAssertFalse(app.textViews["DismissalOfViewController Called"].exists);
+        XCTAssertTrue(app.textViews["DismissalOfViewController Called"].exists);
         XCTAssertTrue(app.buttons["Cancelled"].exists);
     }
 }
