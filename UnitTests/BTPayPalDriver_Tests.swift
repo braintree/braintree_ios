@@ -840,6 +840,26 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["intent"] as? String, "sale")
     }
 
+    func testCheckout_whenIntentIsSetToOrder_postsPaymentResourceWithIntent() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        request.intent = .order;
+        request.isShippingAddressRequired = true
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["intent"] as? String, "order")
+    }
+
     func testCheckout_whenUserActionIsNotSet_approvalUrlIsNotModified() {
         mockAPIClient.cannedResponseBody = BTJSON(value: [
             "paymentResource": [

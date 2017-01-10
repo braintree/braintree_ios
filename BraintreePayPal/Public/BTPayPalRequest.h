@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
     BTPayPalRequestIntentAuthorize = 1,
     BTPayPalRequestIntentSale,
+    BTPayPalRequestIntentOrder,
 };
 
 /*!
