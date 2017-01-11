@@ -2,17 +2,17 @@ language: objective-c
 cache:
   - bundler
   - cocoapods
-osx_image: xcode8.1
+osx_image: xcode8.2
 
 before_install:
   - brew update || brew update
   - brew outdated xctool || brew upgrade xctool
-  - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (9.3) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
+  - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 7 \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
 
 install:
   - bundle install
   - bundle exec pod repo update --silent
-  - bundle exec pod install || { rm -rf ./Pods; bundle exec pod install; }
+  - bundle exec pod install || { rm -rf ./Pods; bundle exec pod update BraintreeDropIn; bundle exec pod install; }
 
 script:
   - echo $SIMULATOR_ID
@@ -24,4 +24,4 @@ script:
 
 notifications:
   email:
-    - team-ios@getbraintree.com
+  #  - team-ios@getbraintree.com
