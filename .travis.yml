@@ -1,7 +1,7 @@
 sudo: true
 language: objective-c
 cache:
-  - bundler
+  #- bundler
   #- cocoapods
 osx_image: xcode8.2
 
@@ -11,9 +11,10 @@ before_install:
   - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (10.1) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
 
 install:
-  - bundle install
+  #- bundle install
   #- bundle exec pod repo update --silent
-  - bundle exec pod install || { rm -rf ./Pods; bundle exec pod install; }
+  - rm -rf ./Pods
+  - pod install
 
 script:
   - echo $SIMULATOR_ID
@@ -24,6 +25,6 @@ script:
   #- bundle exec rake spec:api:integration
   - set -o pipefail && xcodebuild test -workspace Braintree.xcworkspace -scheme "IntegrationTests" -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' | xcpretty -c
 
-notifications:
-  email:
+#notifications:
+#  email:
   #  - team-ios@getbraintree.com
