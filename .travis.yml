@@ -2,7 +2,7 @@ sudo: true
 language: objective-c
 cache:
   - bundler
-  #- cocoapods
+  - cocoapods
 osx_image: xcode8.2
 
 before_install:
@@ -12,7 +12,7 @@ before_install:
 
 install:
   - bundle install
-  #- bundle exec pod repo update --silent
+  - bundle exec pod repo update --silent
   - bundle exec pod install || { rm -rf ./Pods; bundle exec pod install; }
 
 script:
@@ -20,7 +20,7 @@ script:
   # Launching the simulator before building and testing is necessary to prevent spurious timeouts.
   # Specifying the simulator UDID is also necessary.
   - open -a "simulator" --args -CurrentDeviceUDID $SIMULATOR_ID
-  - set -o pipefail && xcodebuild test -workspace Braintree.xcworkspace -scheme "UnitTests" -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' | xcpretty -c
+  - travis_wait set -o pipefail && xcodebuild test -workspace Braintree.xcworkspace -scheme "UnitTests" -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' | xcpretty -c
   #- bundle exec rake spec:api:integration
 
 notifications:
