@@ -13,6 +13,8 @@ before_install:
 install:
   #- bundle install
   #- bundle exec pod repo update --silent
+  - gem install cocoapods --no-ri --no-rdoc
+  - gem install xcpretty --no-ri --no-rdoc
   - rm -rf ./Pods
   - pod install
 
