@@ -18,7 +18,7 @@ install:
 script:
   - echo $SIMULATOR_ID
   - open -a "simulator" --args -CurrentDeviceUDID $SIMULATOR_ID
-  - set -o pipefail && xcodebuild test -workspace Braintree.xcworkspace -scheme \"UnitTests\" -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' | xcpretty -c
+  - set -o pipefail && xcodebuild test -workspace Braintree.xcworkspace -scheme "UnitTests" -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' | xcpretty -c
 
 notifications:
   email:
