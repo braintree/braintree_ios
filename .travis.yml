@@ -27,6 +27,6 @@ script:
   #- bundle exec rake spec:api:integration
   - set -o pipefail && xcodebuild test -workspace Braintree.xcworkspace -scheme "IntegrationTests" -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.1' | xcpretty -c
 
-#notifications:
-#  email:
+notifications:
+  email:
   #  - team-ios@getbraintree.com
