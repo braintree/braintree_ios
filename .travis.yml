@@ -8,7 +8,7 @@ osx_image: xcode8.2
 before_install:
   - brew update || brew update
   - brew outdated xctool || brew upgrade xctool
-  - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (10.1) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
+  - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (10.2) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
 
 install:
   - bundle install
@@ -20,8 +20,8 @@ script:
   # Launching the simulator before building and testing is necessary to prevent spurious timeouts.
   # Specifying the simulator UDID is also necessary.
   - open -a "simulator" --args -CurrentDeviceUDID $SIMULATOR_ID
-  - travis_wait bundle exec rake spec:unit
-  - bundle exec rake spec:api:integration
+  - travis_wait bundle exec set -o pipefail && xcodebuild test -workspace Braintree.xcworkspace -scheme "UnitTests" -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=10.2' | xcpretty -c
+  #- bundle exec rake spec:api:integration
 
 notifications:
   email:
