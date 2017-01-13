@@ -40,7 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (instancetype)initWithClientToken:(BTClientToken *)clientToken;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullability"
 - (nullable instancetype)init __attribute__((unavailable("Please use initWithBaseURL:authorizationFingerprint: instead.")));
+#pragma clang diagnostic pop
 
 // For testing
 @property (nonatomic, strong) NSURLSession *session;

@@ -112,7 +112,7 @@ class BTCard_Tests: XCTestCase {
             "cardholder_name": "Brian Tree"
             ])
 
-        XCTAssertEqual(card.parameters() as! Dictionary<String, NSObject>, [
+        XCTAssertEqual(card.parameters() as NSObject, [
             "number": "4111111111111111",
             "expiration_date": "12/20",
             "cvv": "123",
@@ -126,7 +126,7 @@ class BTCard_Tests: XCTestCase {
             ],
             "options": ["validate": false],
             "cardholder_name": "Brian Tree"
-            ])
+            ] as NSObject)
     }
 
     func testParameters_whenInitializedWithCustomParameters_returnsExpectedValues() {
@@ -136,21 +136,21 @@ class BTCard_Tests: XCTestCase {
             "options": ["foo": "bar"],
             ])
 
-        XCTAssertEqual(card.parameters() as! Dictionary<String, NSObject>, [
+        XCTAssertEqual(card.parameters() as NSObject, [
             "cvv": "123",
             "billing_address": ["postal_code": "94949"],
             "options": [
                 "foo": "bar",
                 "validate": false,
             ],
-            ])
+            ] as NSObject)
     }
 
     func testParameters_whenShouldValidateIsSetToNewValue_returnsExpectedValues() {
         let card = BTCard(parameters: ["options": ["validate": false]])
         card.shouldValidate = true
-        XCTAssertEqual(card.parameters() as! Dictionary<String, NSObject>, [
+        XCTAssertEqual(card.parameters() as NSObject, [
             "options": [ "validate": true ],
-            ])
+            ] as NSObject)
     }
 }
