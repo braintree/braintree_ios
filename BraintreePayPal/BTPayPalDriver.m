@@ -576,6 +576,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         case BTPayPalRequestIntentSale:
             result = @"sale";
             break;
+        case BTPayPalRequestIntentOrder:
+            result = @"order";
+            break;
         default:
             result = @"authorize";
             break;

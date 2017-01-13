@@ -7,9 +7,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/*!
+ @brief Payment intent.
+
+ @discussion Must be set to sale for immediate payment, authorize to authorize a payment for capture later, or order to create an order. Defaults to authorize. Only works in the Single Payment flow.
+
+  @see https://developer.paypal.com/docs/integration/direct/payments/capture-payment/ Capture payments later
+  @see https://developer.paypal.com/docs/integration/direct/payments/create-process-order/ Create and process orders
+*/
 typedef NS_ENUM(NSInteger, BTPayPalRequestIntent) {
     BTPayPalRequestIntentAuthorize = 1,
     BTPayPalRequestIntentSale,
+    BTPayPalRequestIntentOrder,
 };
 
 /*!
