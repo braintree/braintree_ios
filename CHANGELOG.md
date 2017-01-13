@@ -1,6 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 4.7.4 (2017-01-13)
+
+* Update UnitTests to Swift 3
+* Update PayPal header docs
+* Update CocoaDocs and remove styling
+
 ## 4.7.3 (2016-11-18)
+
 * Allow `BraintreeCore` to be compatible with App Extensions
 * Fix `BraintreePayPal` use of `queryItems` for iOS 7 compatibility
 * Present SFSafariViewControllers from the top UIViewController via Drop-in to avoid blank SFSafariViewController
