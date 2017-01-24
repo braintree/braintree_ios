@@ -1,4 +1,4 @@
-#import "BTAnalyticsMetaData.h"
+#import "BTAnalyticsMetadata.h"
 
 #import "Braintree-Version.h"
 #import "BTKeychain.h"
