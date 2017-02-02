@@ -3,7 +3,7 @@ Manual Integration Without CocoaPods
 
 Please follow these instructions to integrate Braintree iOS into your app without CocoaPods.
 
-> Note: We assume that you are using Xcode 7+ and iOS 9.0+ as your Base SDK.
+> Note: We assume that you are using Xcode 8+ and iOS 9.0+ as your Base SDK.
 
 1. Add the Braintree iOS SDK code to your repository
   - Use git: `git submodule add https://github.com/braintree/braintree_ios.git`

@@ -5,7 +5,7 @@
 
 Welcome to Braintree's iOS SDK. This library will help you accept card and alternative payments in your iOS app.
 
-**The Braintree iOS SDK requires Xcode 7+ and a Base SDK of iOS 9+**. It permits a Deployment Target of iOS 7.0 or higher.
+**The Braintree iOS SDK requires Xcode 8+ and a Base SDK of iOS 9+**. It permits a Deployment Target of iOS 7.0 or higher.
 
 ## Getting Started
 
