@@ -19,8 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
  @param scheme          The return URL scheme, e.g. "com.yourcompany.Your-App.payments"
  @param bundleName      The bundle display name for the current app
  @param environment     The environment, e.g. "production" or "sandbox"
- @param authFingerprint The Braintree authFingerprint
- @param validate        Bool for Braintree validation
  @param metadata        Additional braintree metadata
 
  @return The resulting URL, or `nil` if any of the parameters are `nil`.
@@ -30,8 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
                               returnURLScheme:(NSString *)scheme
                             bundleDisplayName:(NSString *)bundleName
                                   environment:(NSString *)environment
-                              authFingerprint:(NSString *)authFingerprint
-                                     validate:(BOOL)validate
                                      metadata:(BTClientMetadata *)metadata;
 
 @end

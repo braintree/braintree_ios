@@ -25,4 +25,9 @@
 */
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
+/*!
+ @brief Stored property used to determine whether a venmo account nonce should be vaulted after an app switch return
+ */
+@property (nonatomic, assign) BOOL shouldVault;
+
 @end

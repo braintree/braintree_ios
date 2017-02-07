@@ -23,8 +23,6 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
                                                                returnURLScheme:@"a.scheme"
                                                              bundleDisplayName:@"An App"
                                                                    environment:@"sandbox"
-                                                               authFingerprint:@"a.fingerprint"
-                                                                      validate:YES
                                                                       metadata:meta];
 
             NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
@@ -46,9 +44,6 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
 
                     NSData *data = [[NSData alloc] initWithBase64EncodedString:queryItem.value options:0];
                     BTJSON *json = [[BTJSON alloc] initWithData:data];
-
-                    expect([json[@"authorization_fingerprint"] asString]).to.equal(@"a.fingerprint");
-                    expect([json[@"validate"] asNumber]).to.beTruthy();
                     
                     BTJSON *meta = json[@"_meta"];
                     expect([meta[@"sessionId"] asString]).to.equal(@"session-id");

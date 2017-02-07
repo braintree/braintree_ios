@@ -24,8 +24,6 @@
                     returnURLScheme:(NSString *)scheme
                   bundleDisplayName:(NSString *)bundleName
                         environment:(NSString *)environment
-                    authFingerprint:(NSString *)authFingerprint
-                           validate:(BOOL)validate
                            metadata:(BTClientMetadata *)metadata
 {
     NSURL *successReturnURL = [self returnURLWithScheme:scheme result:@"success"];
@@ -40,12 +38,8 @@
                                                     @"sessionId": [metadata sessionId],
                                                     @"integration": [metadata integrationString],
                                                     @"platform": @"ios"
-                                                    },
-                                            @"validate": @(validate),
+                                                    }
                                             } mutableCopy];
-    if (authFingerprint) {
-        braintreeData[@"authorization_fingerprint"] = authFingerprint;
-    }
 
     NSData *serializedBraintreeData = [NSJSONSerialization dataWithJSONObject:braintreeData options:0 error:NULL];
     NSString *base64EncodedBraintreeData = [serializedBraintreeData base64EncodedStringWithOptions:0];
