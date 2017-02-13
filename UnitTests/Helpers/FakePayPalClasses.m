@@ -25,7 +25,7 @@
 }
 
 - (NSDictionary *)response {
-    return @{ @"foo" : @"bar" };
+    return @{ @"foo" : @"bar", @"correlation_id" : @"a-correlation-id" };
 }
 
 @end

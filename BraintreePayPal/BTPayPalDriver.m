@@ -367,7 +367,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                         }
                     }
                     if (self.clientMetadataId) {
-                        parameters[@"correlation_id"] = self.clientMetadataId;
+                        parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataId;
                     }
                     
                     BTClientMetadata *metadata = [self clientMetadata];

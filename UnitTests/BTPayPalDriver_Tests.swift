@@ -319,8 +319,8 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(lastPostParameters["correlation_id"] as? String, "a-correlation-id")
         let paypalAccount = lastPostParameters["paypal_account"] as! NSDictionary
+        XCTAssertEqual(paypalAccount["correlation_id"] as? String, "a-correlation-id")
         XCTAssertTrue(paypalAccount["intent"] == nil)
         XCTAssertEqual(paypalAccount, FakePayPalOneTouchCoreResult().response as AnyObject as! NSDictionary)
     }
