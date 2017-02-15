@@ -231,7 +231,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
  Braintree transaction from your server in order to actually move money!
 
  @param request A PayPal request
- @param handler A BTPayPalApprovalHandler for custom authorizatin and approval
+ @param handler A BTPayPalApprovalHandler for custom authorization and approval
  @param completionBlock This completion will be invoked exactly once when checkout is complete or an error occurs.
  */
 - (void)requestBillingAgreement:(BTPayPalRequest *)request handler:(id<BTPayPalApprovalHandler>)handler
