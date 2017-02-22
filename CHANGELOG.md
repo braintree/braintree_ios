@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 4.7.5 (2017-02-22)
+
+* Fix issue where PayPal correlation_id was not set correctly
+* Add support for custom PayPal authentication handler
+* Update docs to specify Xcode 8+ requirement
+* Fix header import in BTAnalyticsMetadata.m
+* Additional tuning for Travis CI
+
 ## 4.7.4 (2017-01-13)
 
 * Update UnitTests to Swift 3
