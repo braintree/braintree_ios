@@ -56,6 +56,25 @@
 
 @end
 
+@interface BTPayPalApprovalHandlerTestDelegate : NSObject <BTPayPalApprovalHandler>
+@property (nonatomic, strong) XCTestExpectation *handleApprovalExpectation;
+@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, assign) BOOL cancel;
+@end
+
+@implementation BTPayPalApprovalHandlerTestDelegate
+
+- (void)handleApproval:(__unused PPOTRequest *)request paypalApprovalDelegate:(id<BTPayPalApprovalDelegate>)delegate {
+    if (self.cancel) {
+        [delegate onApprovalCancel];
+    } else {
+        [delegate onApprovalComplete:self.url];
+    }
+    [self.handleApprovalExpectation fulfill];
+}
+
+@end
+
 
 @interface BraintreePayPal_IntegrationTests : XCTestCase
 @property (nonatomic, strong) NSNumber *didReceiveCompletionCallback;
@@ -210,6 +229,73 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testOneTimePayment_withClientToken_tokenizesPayPalAccount_withCustomHandler {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
+    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+
+    __block BTPayPalApprovalHandlerTestDelegate *testApproval = [BTPayPalApprovalHandlerTestDelegate new];
+    testApproval.handleApprovalExpectation = [self expectationWithDescription:@"Delegate received handleApproval:paypalApprovalDelegate:"];
+    testApproval.url = [NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture];
+
+    __block XCTestExpectation *tokenizationExpectation;
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request handler:testApproval completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
+        XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
+        XCTAssertNil(error);
+        XCTAssertNotNil(testApproval);
+        [tokenizationExpectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+
+    tokenizationExpectation = [self expectationWithDescription:@"Tokenize one-time payment"];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testOneTimePayment_withClientToken_returnsErrorWithMalformedURL_withCustomHandler {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
+    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+
+    __block BTPayPalApprovalHandlerTestDelegate *testApproval = [BTPayPalApprovalHandlerTestDelegate new];
+    testApproval.handleApprovalExpectation = [self expectationWithDescription:@"Delegate received handleApproval:paypalApprovalDelegate:"];
+    testApproval.url = [NSURL URLWithString:@"bad://url"];
+
+    __block XCTestExpectation *tokenizationExpectation;
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request handler:testApproval completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
+        XCTAssertNil(tokenizedPayPalAccount);
+        XCTAssertNotNil(error);
+        XCTAssertNotNil(testApproval);
+        [tokenizationExpectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testOneTimePayment_withClientToken_cancels_withCustomHandler {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
+    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+
+    __block BTPayPalApprovalHandlerTestDelegate *testApproval = [BTPayPalApprovalHandlerTestDelegate new];
+    testApproval.handleApprovalExpectation = [self expectationWithDescription:@"Delegate received handleApproval:paypalApprovalDelegate:"];
+    testApproval.cancel = YES;
+
+    __block XCTestExpectation *tokenizationExpectation;
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] initWithAmount:@"1.00"];
+    [payPalDriver requestOneTimePayment:request handler:testApproval completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
+        XCTAssertNil(tokenizedPayPalAccount);
+        XCTAssertNil(error);
+        XCTAssertNotNil(testApproval);
+        [tokenizationExpectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 #pragma mark - Billing Agreement
 
 - (void)testBillingAgreement_withTokenizationKey_tokenizesPayPalAccount {
@@ -228,7 +314,7 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    tokenizationExpectation = [self expectationWithDescription:@"Tokenize one-time payment"];
+    tokenizationExpectation = [self expectationWithDescription:@"Tokenize billing agreement payment"];
     [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture]];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
@@ -250,8 +336,75 @@ NSString * const OneTouchCoreAppSwitchSuccessURLFixture = @"com.braintreepayment
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 
-    tokenizationExpectation = [self expectationWithDescription:@"Tokenize one-time payment"];
+    tokenizationExpectation = [self expectationWithDescription:@"Tokenize billing agreement payment"];
     [BTPayPalDriver handleAppSwitchReturnURL:[NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture]];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testBillingAgreement_withClientToken_tokenizesPayPalAccount_withCustomHandler {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
+    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+
+    __block BTPayPalApprovalHandlerTestDelegate *testApproval = [BTPayPalApprovalHandlerTestDelegate new];
+    testApproval.handleApprovalExpectation = [self expectationWithDescription:@"Delegate received handleApproval:paypalApprovalDelegate:"];
+    testApproval.url = [NSURL URLWithString:OneTouchCoreAppSwitchSuccessURLFixture];
+
+    __block XCTestExpectation *tokenizationExpectation;
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] init];
+    [payPalDriver requestBillingAgreement:request handler:testApproval completion:^(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error) {
+        XCTAssertTrue(tokenizedPayPalAccount.nonce.isANonce);
+        XCTAssertNil(error);
+        XCTAssertNotNil(testApproval);
+        [tokenizationExpectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+
+    tokenizationExpectation = [self expectationWithDescription:@"Tokenize billing agreement payment"];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testBillingAgreement_withClientToken_returnsErrorWithMalformedURL_withCustomHandler {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
+    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+
+    __block BTPayPalApprovalHandlerTestDelegate *testApproval = [BTPayPalApprovalHandlerTestDelegate new];
+    testApproval.handleApprovalExpectation = [self expectationWithDescription:@"Delegate received handleApproval:paypalApprovalDelegate:"];
+    testApproval.url = [NSURL URLWithString:@"bad://url"];
+
+    __block XCTestExpectation *tokenizationExpectation = [self expectationWithDescription:@"Tokenize billing agreement payment"];
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] init];
+    [payPalDriver requestBillingAgreement:request handler:testApproval completion:^(__unused BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount,__unused  NSError * _Nullable error) {
+        XCTAssertNil(tokenizedPayPalAccount);
+        XCTAssertNotNil(error);
+        XCTAssertNotNil(testApproval);
+        [tokenizationExpectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testBillingAgreement_withClientToken_cancels_withCustomHandler {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN];
+    BTPayPalDriver *payPalDriver = [[BTPayPalDriver alloc] initWithAPIClient:apiClient];
+    [BTAppSwitch sharedInstance].returnURLScheme = @"com.braintreepayments.Demo.payments";
+
+    __block BTPayPalApprovalHandlerTestDelegate *testApproval = [BTPayPalApprovalHandlerTestDelegate new];
+    testApproval.handleApprovalExpectation = [self expectationWithDescription:@"Delegate received handleApproval:paypalApprovalDelegate:"];
+    testApproval.cancel = YES;
+
+    __block XCTestExpectation *tokenizationExpectation = [self expectationWithDescription:@"Tokenize billing agreement payment"];
+    BTPayPalRequest *request = [[BTPayPalRequest alloc] init];
+    [payPalDriver requestBillingAgreement:request handler:testApproval completion:^(__unused BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount,__unused  NSError * _Nullable error) {
+        XCTAssertNil(tokenizedPayPalAccount);
+        XCTAssertNil(error);
+        XCTAssertNotNil(testApproval);
+        [tokenizationExpectation fulfill];
+    }];
 
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }

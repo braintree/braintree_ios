@@ -1144,6 +1144,29 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         self.waitForExpectations(timeout: 5, handler: nil)
     }
 
+    func testCheckout_whenUsingCustomHandler_callsHandleApprovalDelegateMethod() {
+        guard #available(iOS 9.0, *) else {
+            return
+        }
+
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        let handler = MockPayPalApprovalHandlerDelegate()
+        handler.url = NSURL(string: "some://url")
+
+        handler.handleApprovalExpectation = self.expectation(description: "Delegate received handleApproval")
+        let blockExpectation = self.expectation(description: "Completion block reached")
+        payPalDriver.requestOneTimePayment(BTPayPalRequest(amount: "1"), handler: handler) { (_, _) in
+            XCTAssertNotNil(handler);
+            blockExpectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 2, handler: nil)
+    }
+
     func testtokenizedPayPalAccount_containsPayerInfo() {
         let checkoutResponse = [
             "paypalAccounts": [
@@ -1618,6 +1641,29 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
         
         XCTAssertFalse(mockAppSwitchDelegate.willProcessAppSwitchCalled)
+    }
+
+    func testBillingAgreement_whenUsingCustomHandler_callsHandleApprovalDelegateMethod() {
+        guard #available(iOS 9.0, *) else {
+            return
+        }
+
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        let handler = MockPayPalApprovalHandlerDelegate()
+        handler.url = NSURL(string: "some://url")
+
+        handler.handleApprovalExpectation = self.expectation(description: "Delegate received handleApproval")
+        let blockExpectation = self.expectation(description: "Completion block reached")
+        payPalDriver.requestBillingAgreement(BTPayPalRequest(), handler: handler) { (_, _) in
+            XCTAssertNotNil(handler);
+            blockExpectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 2, handler: nil)
     }
 }
 

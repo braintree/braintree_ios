@@ -138,9 +138,12 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 #pragma mark - Billing Agreement
 
 - (void)requestBillingAgreement:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestExpressCheckout:request isBillingAgreement:YES completion:completionBlock];
+    [self requestExpressCheckout:request isBillingAgreement:YES handler:nil completion:completionBlock];
 }
 
+- (void)requestBillingAgreement:(BTPayPalRequest *)request handler:(id<BTPayPalApprovalHandler>)handler completion:(void (^)(BTPayPalAccountNonce * _Nullable, NSError * _Nullable))completionBlock {
+    [self requestExpressCheckout:request isBillingAgreement:YES handler:handler completion:completionBlock];
+}
 
 - (void)setBillingAgreementAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
     [self setAppSwitchReturnBlock:completionBlock forPaymentType:BTPayPalPaymentTypeBillingAgreement];
@@ -149,7 +152,11 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 #pragma mark - Express Checkout (One-Time Payments)
 
 - (void)requestOneTimePayment:(BTPayPalRequest *)request completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
-    [self requestExpressCheckout:request isBillingAgreement:NO completion:completionBlock];
+    [self requestExpressCheckout:request isBillingAgreement:NO handler:nil completion:completionBlock];
+}
+
+- (void)requestOneTimePayment:(BTPayPalRequest *)request handler:(id<BTPayPalApprovalHandler>)handler completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
+    [self requestExpressCheckout:request isBillingAgreement:NO handler:handler completion:completionBlock];
 }
 
 - (void)setOneTimePaymentAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock {
@@ -161,6 +168,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 /// A "Hermes checkout" is used by both Billing Agreements and Express Checkout
 - (void)requestExpressCheckout:(BTPayPalRequest *)request
            isBillingAgreement:(BOOL)isBillingAgreement
+                       handler:(id<BTPayPalApprovalHandler>)handler
                    completion:(void (^)(BTPayPalAccountNonce *tokenizedCheckout, NSError *error))completionBlock {
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTPayPalDriverErrorDomain
@@ -302,9 +310,16 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                                                                       callbackURLScheme:self.returnURLScheme];
                       }
 
+                      // Call custom handler and return before beginning the default approval process
+                      if (handler != nil) {
+                          [handler handleApproval:request paypalApprovalDelegate:self];
+                          return;
+                      }
+
                       if (![SFSafariViewController class]) {
                           [self informDelegateWillPerformAppSwitch];
                       }
+
                       [request performWithAdapterBlock:^(BOOL success, NSURL *url, PPOTRequestTarget target, NSString *clientMetadataId, NSError *error) {
                           self.clientMetadataId = clientMetadataId;
                           
@@ -799,6 +814,16 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
         _returnURLScheme = [[BTAppSwitch sharedInstance] returnURLScheme];
     }
     return _returnURLScheme;
+}
+
+#pragma mark - BTPayPalApprovalHandler delegate methods
+
+- (void)onApprovalComplete:(NSURL *)url {
+    [self.class handleAppSwitchReturnURL:url];
+}
+
+- (void)onApprovalCancel {
+    [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
 }
 
 #pragma mark - Internal
