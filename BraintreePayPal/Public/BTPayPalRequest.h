@@ -123,6 +123,12 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 */
 @property (nonatomic) BTPayPalRequestUserAction userAction;
 
+/*!
+ @brief Optional: Offers PayPal Credit if the customer qualifies. Defaults to false. Only available with PayPal Checkout.
+ */
+@property (nonatomic) BOOL offerCredit;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

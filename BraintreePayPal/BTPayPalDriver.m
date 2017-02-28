@@ -202,6 +202,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             if (request.amount != nil) {
                 parameters[@"amount"] = request.amount;
             }
+            parameters[@"offer_paypal_credit"] = @(request.offerCredit);
         } else {
             if (request.billingAgreementDescription.length > 0) {
                 parameters[@"description"] = request.billingAgreementDescription;

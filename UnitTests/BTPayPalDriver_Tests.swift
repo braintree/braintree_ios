@@ -967,6 +967,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
+        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
         XCTAssertEqual(lastPostParameters["line2"] as? String, "Apt. 0")
@@ -976,6 +977,23 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["country_code"] as? String, "US")
     }
 
+    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithOfferCredit() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        request.offerCredit = true
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, true)
+    }
+    
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
