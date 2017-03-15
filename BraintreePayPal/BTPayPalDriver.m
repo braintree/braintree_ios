@@ -407,7 +407,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                          
                          BTJSON *payPalAccount = body[@"paypalAccounts"][0];
                          BTPayPalAccountNonce *tokenizedAccount = [self.class payPalAccountFromJSON:payPalAccount];
-                         
+
+                         [self sendAnalyticsEventIfCreditFinancingInNonce:tokenizedAccount forPaymentType:paymentType];
+
                          if (completionBlock) completionBlock(tokenizedAccount, nil);
                      }];
                     
@@ -800,8 +802,13 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
     if (paymentType == BTPayPalPaymentTypeUnknown) return;
     
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.initiate.%@", [self.class eventStringForPaymentType:paymentType], [self.class eventStringForRequestTarget:target], success ? @"started" : @"failed"];
-    
     [self.apiClient sendAnalyticsEvent:eventName];
+
+    if (paymentType == BTPayPalPaymentTypeCheckout && self.payPalRequest.offerCredit) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.credit.offered.%@", [self.class eventStringForPaymentType:BTPayPalPaymentTypeCheckout], [self.class eventStringForRequestTarget:target], success ? @"started" : @"failed"];
+
+        [self.apiClient sendAnalyticsEvent:eventName];
+    }
 }
 
 - (void)sendAnalyticsEventForHandlingOneTouchResult:(PPOTResult *)result forPaymentType:(BTPayPalPaymentType)paymentType {
@@ -823,6 +830,14 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
             }
         case PPOTResultTypeSuccess:
             return [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"%@.succeeded", eventName]];
+    }
+}
+
+- (void)sendAnalyticsEventIfCreditFinancingInNonce:(BTPayPalAccountNonce *)payPalAccountNonce forPaymentType:(BTPayPalPaymentType)paymentType {
+    if ([payPalAccountNonce creditFinancing]) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.credit.accepted", [self.class eventStringForPaymentType:paymentType]];
+
+        [self.apiClient sendAnalyticsEvent:eventName];
     }
 }
 

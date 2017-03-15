@@ -157,7 +157,7 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             return
         }
         XCTAssertEqual(totalCost.currency, "ABC")
-        XCTAssertEqual(totalCost.value, "789.02")
+        XCTAssertEqual(totalCost.value, "789.01")
 
         guard let totalInterest = creditFinancing.totalInterest else {
             XCTFail("Expected total interest details")
