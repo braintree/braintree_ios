@@ -35,6 +35,7 @@
 				<string>Combined - Custom Button</string>
 				<string>Fraud Protection - BTDataCollector</string>
 				<string>UnionPay</string>
+				<string>PayPal Credit</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -56,6 +57,7 @@
 				<string>BraintreeDemoCustomMultiPayViewController</string>
 				<string>BraintreeDemoBTDataCollectorViewController</string>
 				<string>BraintreeDemoUnionPayViewController</string>
+				<string>BraintreeDemoPayPalCreditPaymentViewController</string>
 			</array>
 		</dict>
 		<dict>

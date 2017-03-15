@@ -174,29 +174,29 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             "description": "jane.doe@example.com",
             "details": [
                 "email": "jane.doe@example.com",
+                "creditFinancingOffered": [
+                    "cardAmountImmutable": true,
+                    "monthlyPayment": [
+                        "currency": "USD",
+                        "value": "13.88",
+                    ],
+                    "payerAcceptance": true,
+                    "term": 18,
+                    "totalCost": [
+                        "currency": "USD",
+                        "value": "250.00",
+                    ],
+                    "totalInterest": [
+                        "currency": "USD",
+                        "value": "0.00",
+                    ],
+                ],
             ],
             "isLocked": false,
             "nonce": "a-nonce",
             "securityQuestions": [],
             "type": "PayPalAccount",
             "default": true,
-            "creditFinancingOffered": [
-                "cardAmountImmutable": true,
-                "monthlyPayment": [
-                    "currency": "USD",
-                    "value": "13.88",
-                ],
-                "payerAcceptance": true,
-                "term": 18,
-                "totalCost": [
-                    "currency": "USD",
-                    "value": "250.00",
-                ],
-                "totalInterest": [
-                    "currency": "USD",
-                    "value": "0.00",
-                ],
-            ]
           ])
 
         let payPalAccountNonce = sharedParser.parseJSON(payPalAccountJSON, withParsingBlockForType: "PayPalAccount") as! BTPayPalAccountNonce

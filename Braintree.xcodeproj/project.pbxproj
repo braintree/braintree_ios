@@ -347,6 +347,7 @@
 		A5FE18331E79A05D00CBE9C7 /* BTPayPalCreditFinancing.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE18301E799EDF00CBE9C7 /* BTPayPalCreditFinancing.m */; };
 		A5FE18351E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE18341E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m */; };
 		A5FE18361E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE18341E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m */; };
+		A5FE183D1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE183C1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m */; };
 		A70241B91C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A70241B71C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h */; };
 		A70241BA1C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */; };
 		A70241BD1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A70241BB1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h */; };
@@ -1291,6 +1292,8 @@
 		A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPFPTITrackerTest.m; sourceTree = "<group>"; };
 		A5FE18301E799EDF00CBE9C7 /* BTPayPalCreditFinancing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalCreditFinancing.m; sourceTree = "<group>"; };
 		A5FE18341E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalCreditFinancingAmount.m; sourceTree = "<group>"; };
+		A5FE183B1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalCreditPaymentViewController.h; sourceTree = "<group>"; };
+		A5FE183C1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalCreditPaymentViewController.m; sourceTree = "<group>"; };
 		A70241B71C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalWordmarkVectorArtView.h; sourceTree = "<group>"; };
 		A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalWordmarkVectorArtView.m; sourceTree = "<group>"; };
 		A70241BB1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTUIPayPalCompactButton.h; path = "../Views/Payments Components/BTUIPayPalCompactButton.h"; sourceTree = "<group>"; };
@@ -2415,6 +2418,15 @@
 			path = "Drop In";
 			sourceTree = "<group>";
 		};
+		A5FE18371E79D57F00CBE9C7 /* PayPal - Credit */ = {
+			isa = PBXGroup;
+			children = (
+				A5FE183B1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.h */,
+				A5FE183C1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m */,
+			);
+			path = "PayPal - Credit";
+			sourceTree = "<group>";
+		};
 		A715593F1B729297007DE6F0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2575,6 +2587,7 @@
 				A7334F221BA38AF50083C411 /* PayPal - Billing Agreement */,
 				A76B19DE1B79708900452CFA /* PayPal - BTUIPayPalButton */,
 				A76B19E11B79708900452CFA /* PayPal - Checkout */,
+				A5FE18371E79D57F00CBE9C7 /* PayPal - Credit */,
 				A76B19E41B79708900452CFA /* PayPal - Custom Button */,
 				03F54E0F1C499E1200F11033 /* PayPal - Force Future Payment */,
 				A76B19EA1B79708900452CFA /* PayPal - Scopes */,
@@ -4693,6 +4706,7 @@
 				A76B1A351B79708A00452CFA /* main.m in Sources */,
 				A76B1A111B79708A00452CFA /* BraintreeDemoIntegrationViewController.m in Sources */,
 				A73088361B86872C009487BA /* BraintreeDemoThreeDSecureViewController.m in Sources */,
+				A5FE183D1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m in Sources */,
 				A76B1A0F1B79708A00452CFA /* BraintreeDemoAppDelegate.m in Sources */,
 				A7A094F81B828F4600D732CC /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */,
 				A76B1A141B79708A00452CFA /* BraintreeDemoSettings.m in Sources */,

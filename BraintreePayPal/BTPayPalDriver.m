@@ -610,7 +610,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         description = email;
     }
 
-    BTPayPalCreditFinancing *creditFinancing =  [self.class creditFinancingFromJSON:payPalAccount[@"creditFinancingOffered"]];
+    BTPayPalCreditFinancing *creditFinancing =  [self.class creditFinancingFromJSON:details[@"creditFinancingOffered"]];
 
     BTPayPalAccountNonce *tokenizedPayPalAccount = [[BTPayPalAccountNonce alloc] initWithNonce:nonce
                                                                                    description:description
