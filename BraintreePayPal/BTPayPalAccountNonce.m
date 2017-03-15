@@ -9,6 +9,7 @@
 @property (nonatomic, readwrite, strong) BTPostalAddress *shippingAddress;
 @property (nonatomic, readwrite, copy) NSString *clientMetadataId;
 @property (nonatomic, readwrite, copy) NSString *payerId;
+@property (nonatomic, readwrite, strong) BTPayPalCreditFinancing *creditFinancing;
 @end
 
 @implementation BTPayPalAccountNonce
@@ -24,6 +25,7 @@
              clientMetadataId:(NSString *)clientMetadataId
                       payerId:(NSString *)payerId
                     isDefault:(BOOL)isDefault
+              creditFinancing:(BTPayPalCreditFinancing *)creditFinancing
 {
     if (self = [super initWithNonce:nonce localizedDescription:description type:@"PayPal" isDefault:isDefault]) {
         _email = email;
@@ -34,6 +36,7 @@
         _shippingAddress = [shippingAddress copy];
         _clientMetadataId = clientMetadataId;
         _payerId = payerId;
+        _creditFinancing = creditFinancing;
     }
     return self;
 }
