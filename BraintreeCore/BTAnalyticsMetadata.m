@@ -124,8 +124,7 @@
 }
 
 - (NSString *)iosDeploymentTarget {
-    double versionNumber = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"MinimumOSVersion"] doubleValue] * 10000;
-    return [NSString stringWithFormat:@"%lu", (unsigned long)versionNumber];
+    return [@(__IPHONE_OS_VERSION_MIN_REQUIRED) stringValue];
 }
 
 - (NSString *)iosBaseSDK {
