@@ -940,7 +940,91 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(approvalURLComponents.queryItems?.filter({ $0.name == "useraction" && $0.value == "commit" }).count, 1,
                        "Did not find useraction query item")
     }
-    
+
+    func testCheckout_whenDisplayNameIsNotSet_doesNotPostPaymentResourceWithBrandName() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        XCTAssertNil(request.displayName)
+
+        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(experienceProfile.keys.contains("brand_name"))
+    }
+
+    func testCheckout_whenDisplayNameIsSet_postsPaymentResourceWithDisplayName() {
+        let merchantName = "My Random Merchant Name"
+
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        request.displayName = merchantName
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(experienceProfile["brand_name"] as? String, merchantName)
+    }
+
+    func testCheckout_whenDisplayNameIsSetInConfiguration_postsPaymentResourceWithConfigurationBrandName() {
+        let merchantName = "My Random Merchant Name"
+
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "displayName": merchantName
+            ]
+        ])
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        request.displayName = merchantName
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(experienceProfile["brand_name"] as? String, merchantName)
+    }
+
     func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithShippingAddress() {
         let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient

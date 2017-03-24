@@ -209,7 +209,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         }
         
         experienceProfile[@"no_shipping"] = @(!request.isShippingAddressRequired);
-        
+
+        experienceProfile[@"brand_name"] = request.displayName ?: [configuration.json[@"paypal"][@"displayName"] asString];
+
         if (request.localeCode != nil) {
             experienceProfile[@"locale_code"] = request.localeCode;
         }

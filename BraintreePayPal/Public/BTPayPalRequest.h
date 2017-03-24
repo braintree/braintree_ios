@@ -123,6 +123,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 */
 @property (nonatomic) BTPayPalRequestUserAction userAction;
 
+/*!
+ @brief Optional: The merchant name displayed inside of the PayPal flow; defaults to the company name on your Braintree account
+*/
+@property (nonatomic, nullable, copy) NSString *displayName;
+
 @end
 
 NS_ASSUME_NONNULL_END
