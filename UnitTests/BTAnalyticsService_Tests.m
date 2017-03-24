@@ -223,13 +223,16 @@
 }
 
 - (void)validateMetaParameters:(NSDictionary *)metaParameters {
+    NSString *unitTestDeploymentTargetVersion = [@(__IPHONE_OS_VERSION_MIN_REQUIRED) stringValue];
+    NSString *unitTestBaseSDKVersion = [@(__IPHONE_OS_VERSION_MAX_ALLOWED) stringValue];
+
     XCTAssertEqualObjects(metaParameters[@"deviceManufacturer"], @"Apple");
     XCTAssertEqualObjects(metaParameters[@"deviceModel"], [self deviceModel]);
     XCTAssertEqualObjects(metaParameters[@"deviceAppGeneratedPersistentUuid"], [self deviceAppGeneratedPersistentUuid]);
     XCTAssertEqualObjects(metaParameters[@"deviceScreenOrientation"], @"Portrait");
     XCTAssertEqualObjects(metaParameters[@"integration"], @"custom");
-    XCTAssertEqualObjects(metaParameters[@"iosBaseSDK"], [@(__IPHONE_OS_VERSION_MAX_ALLOWED) stringValue]);
-    XCTAssertEqualObjects(metaParameters[@"iosDeploymentTarget"], [@(__IPHONE_OS_VERSION_MIN_REQUIRED) stringValue]);
+    XCTAssertEqualObjects(metaParameters[@"iosBaseSDK"], unitTestBaseSDKVersion);
+    XCTAssertEqualObjects(metaParameters[@"iosDeploymentTarget"], unitTestDeploymentTargetVersion);
     XCTAssertEqualObjects(metaParameters[@"iosDeviceName"], [[UIDevice currentDevice] name]);
     XCTAssertTrue((BOOL)metaParameters[@"isSimulator"] == TARGET_IPHONE_SIMULATOR);
     XCTAssertEqualObjects(metaParameters[@"merchantAppId"], @"com.braintreepayments.Demo");
