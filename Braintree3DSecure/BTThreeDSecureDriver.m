@@ -191,6 +191,7 @@
 
     self.upgradedTokenizedCard = nil;
     self.completionBlockAfterAuthenticating(nil, error);
+    [self informDelegateRequestsDismissalOfViewController:viewController];
 }
 
 - (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController {
