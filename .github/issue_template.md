@@ -1,14 +1,10 @@
-#### Developer Info
-<!--- Please answer all applicable questions to help us resolve your issue as quickly as possible -->
+### General information
 
-<!--- Example: 4.7.2 -->
-- Braintree SDK version:
+* SDK/Library version: <!-- Example: 4.7.2 -->
+* Environment: <!-- Is this issue in Sandbox or Production? -->
+* iOS Version and Device: <!-- Example: iOS 9.3 on an iPhone 6s -->
+* Integration type and version: <!-- Example: CocoaPods 1.1.1, Carthage 0.18.1 -->
 
-<!--- Example: CocoaPods 1.1.1, Carthage 0.18.1 -->
-- Integration type and version:
+### Issue description
 
-<!--- Is this issue in Sandbox or Production? -->
-- Environment:
-
-#### Issue Details
-> Please include as many details (logs, images, steps to reproduce) as you can to help us reproduce this issue faster.
+<!-- To help us quickly reproduce your issue, include as many details as possible, such as logs, steps to reproduce, and so on.  If the issue reports a new feature, follow the [user story](https://en.wikipedia.org/wiki/User_story) format to clearly describe the use case. -->

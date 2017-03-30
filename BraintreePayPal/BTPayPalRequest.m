@@ -10,6 +10,7 @@
         _offerCredit = NO;
         _intent = BTPayPalRequestIntentAuthorize;
         _userAction = BTPayPalRequestUserActionDefault;
+        _landingPageType = BTPayPalRequestLandingPageTypeDefault;
     }
     return self;
 }

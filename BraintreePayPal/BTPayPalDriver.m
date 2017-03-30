@@ -210,7 +210,14 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         }
         
         experienceProfile[@"no_shipping"] = @(!request.isShippingAddressRequired);
-        
+
+        experienceProfile[@"brand_name"] = request.displayName ?: [configuration.json[@"paypal"][@"displayName"] asString];
+
+        NSString *landingPageTypeValue = [self.class landingPageTypeToString:request.landingPageType];
+        if (landingPageTypeValue != nil) {
+            experienceProfile[@"landing_page_type"] = landingPageTypeValue;
+        }
+
         if (request.localeCode != nil) {
             experienceProfile[@"locale_code"] = request.localeCode;
         }
@@ -649,6 +656,17 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     }
 
     return result;
+}
+
++ (NSString *)landingPageTypeToString:(BTPayPalRequestLandingPageType)landingPageType {
+    switch(landingPageType) {
+        case BTPayPalRequestLandingPageTypeLogin:
+            return @"login";
+        case BTPayPalRequestLandingPageTypeBilling:
+            return @"billing";
+        default:
+            return nil;
+    }
 }
 
 #pragma mark - Delegate Informers
