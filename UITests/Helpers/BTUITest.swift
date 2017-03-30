@@ -1,30 +1,30 @@
 import XCTest
 
 extension XCTestCase {
-    func waitForElementToAppear(element: XCUIElement, timeout: NSTimeInterval = 10,  file: String = #file, line: UInt = #line) {
+    func waitForElementToAppear(_ element: XCUIElement, timeout: TimeInterval = 10,  file: String = #file, line: UInt = #line) {
         let existsPredicate = NSPredicate(format: "exists == true")
         
-        expectationForPredicate(existsPredicate,
-                                evaluatedWithObject: element, handler: nil)
+        expectation(for: existsPredicate,
+                                evaluatedWith: element, handler: nil)
         
-        waitForExpectationsWithTimeout(timeout) { (error) -> Void in
+        waitForExpectations(timeout: timeout) { (error) -> Void in
             if (error != nil) {
                 let message = "Failed to find \(element) after \(timeout) seconds."
-                self.recordFailureWithDescription(message, inFile: file, atLine: line, expected: true)
+                self.recordFailure(withDescription: message, inFile: file, atLine: line, expected: true)
             }
         }
     }
     
-    func waitForElementToBeHittable(element: XCUIElement, timeout: NSTimeInterval = 10,  file: String = #file, line: UInt = #line) {
+    func waitForElementToBeHittable(_ element: XCUIElement, timeout: TimeInterval = 10,  file: String = #file, line: UInt = #line) {
         let existsPredicate = NSPredicate(format: "exists == true && hittable == true")
         
-        expectationForPredicate(existsPredicate,
-                                evaluatedWithObject: element, handler: nil)
+        expectation(for: existsPredicate,
+                                evaluatedWith: element, handler: nil)
         
-        waitForExpectationsWithTimeout(timeout) { (error) -> Void in
+        waitForExpectations(timeout: timeout) { (error) -> Void in
             if (error != nil) {
                 let message = "Failed to find \(element) after \(timeout) seconds."
-                self.recordFailureWithDescription(message, inFile: file, atLine: line, expected: true)
+                self.recordFailure(withDescription: message, inFile: file, atLine: line, expected: true)
             }
         }
     }
@@ -32,10 +32,10 @@ extension XCTestCase {
 
 extension XCUIElement {
     func forceTapElement() {
-        if self.hittable {
+        if self.isHittable {
             self.tap()
         } else {
-            let coordinate: XCUICoordinate = self.coordinateWithNormalizedOffset(CGVectorMake(0.0, 0.0))
+            let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.0, dy: 0.0))
             coordinate.tap()
         }
     }

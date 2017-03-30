@@ -169,7 +169,7 @@ class BraintreeDropInLegacy_PayPal_UITests: XCTestCase {
     func testDropInLegacy_paypal_receivesNonce() {
         
         let elementsQuery = app.collectionViews["Payment Options"].cells
-        let paypalButton = elementsQuery.elementBoundByIndex(0)
+        let paypalButton = elementsQuery.element(boundBy: 0)
         paypalButton.forceTapElement()
         sleep(3)
         

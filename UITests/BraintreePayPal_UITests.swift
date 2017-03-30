@@ -54,7 +54,7 @@ class BraintreePayPal_FuturePayment_UITests: XCTestCase {
         // Close button has no accessibility helper
         // Purposely don't use the webviewElementsQuery variable
         // Reevaluate the elements query after the page load to get the close button
-        app.webViews.buttons.elementBoundByIndex(0).forceTapElement()
+        app.webViews.buttons.element(boundBy: 0).forceTapElement()
         
         self.waitForElementToAppear(app.buttons["PayPal (future payment button)"])
         

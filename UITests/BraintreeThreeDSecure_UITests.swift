@@ -31,7 +31,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.childrenMatchingType(.Other).childrenMatchingType(.SecureTextField).element
+        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
 
         passwordTextField.tap()
         sleep(1)
@@ -54,7 +54,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.childrenMatchingType(.Other).childrenMatchingType(.SecureTextField).element
+        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
 
         passwordTextField.tap()
         sleep(1)
@@ -106,7 +106,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.childrenMatchingType(.Other).childrenMatchingType(.SecureTextField).element
+        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
         
         passwordTextField.tap()
         sleep(1)
@@ -151,7 +151,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.childrenMatchingType(.Other).childrenMatchingType(.SecureTextField).element
+        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
 
         passwordTextField.tap()
         sleep(1)
@@ -175,7 +175,7 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.childrenMatchingType(.Other).childrenMatchingType(.SecureTextField).element
+        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
 
         passwordTextField.tap()
         sleep(1)
