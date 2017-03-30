@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## 4.8.0 (2017-03-30)
+
+* Enable PayPal Credit
+* Add support for `displayName` and `landing_page_type` PayPal options
+* Fix issue with 3DS error callbacks [#318](https://github.com/braintree/braintree_ios/issues/318)
+* Resolve build error in Xcode 8.3
+
 ## 4.7.5 (2017-02-22)
 
 * Fix issue where PayPal correlation_id was not set correctly
