@@ -202,6 +202,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             if (request.amount != nil) {
                 parameters[@"amount"] = request.amount;
             }
+            parameters[@"offer_paypal_credit"] = @(request.offerCredit);
         } else {
             if (request.billingAgreementDescription.length > 0) {
                 parameters[@"description"] = request.billingAgreementDescription;
@@ -413,7 +414,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                          
                          BTJSON *payPalAccount = body[@"paypalAccounts"][0];
                          BTPayPalAccountNonce *tokenizedAccount = [self.class payPalAccountFromJSON:payPalAccount];
-                         
+
+                         [self sendAnalyticsEventIfCreditFinancingInNonce:tokenizedAccount forPaymentType:paymentType];
+
                          if (completionBlock) completionBlock(tokenizedAccount, nil);
                      }];
                     
@@ -549,6 +552,39 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     return address;
 }
 
++ (BTPayPalCreditFinancingAmount *)creditFinancingAmountFromJSON:(BTJSON *)amountJSON {
+    if (!amountJSON.isObject) {
+        return nil;
+    }
+
+    NSString *currency = [amountJSON[@"currency"] asString];
+    NSString *value = [amountJSON[@"value"] asString];
+
+    return [[BTPayPalCreditFinancingAmount alloc] initWithCurrency:currency value:value];
+}
+
++ (BTPayPalCreditFinancing *)creditFinancingFromJSON:(BTJSON *)creditFinancingOfferedJSON {
+    if (!creditFinancingOfferedJSON.isObject) {
+        return nil;
+    }
+
+    BOOL isCardAmountImmutable = [creditFinancingOfferedJSON[@"cardAmountImmutable"] isTrue];
+
+    BTPayPalCreditFinancingAmount *monthlyPayment = [self.class creditFinancingAmountFromJSON:creditFinancingOfferedJSON[@"monthlyPayment"]];
+
+    BOOL payerAcceptance = [creditFinancingOfferedJSON[@"payerAcceptance"] isTrue];
+    NSInteger term = [creditFinancingOfferedJSON[@"term"] asIntegerOrZero];
+    BTPayPalCreditFinancingAmount *totalCost = [self.class creditFinancingAmountFromJSON:creditFinancingOfferedJSON[@"totalCost"]];
+    BTPayPalCreditFinancingAmount *totalInterest = [self.class creditFinancingAmountFromJSON:creditFinancingOfferedJSON[@"totalInterest"]];
+
+    return [[BTPayPalCreditFinancing alloc] initWithCardAmountImmutable:isCardAmountImmutable
+                                                         monthlyPayment:monthlyPayment
+                                                        payerAcceptance:payerAcceptance
+                                                                   term:term
+                                                              totalCost:totalCost
+                                                          totalInterest:totalInterest];
+}
+
 + (BTPayPalAccountNonce *)payPalAccountFromJSON:(BTJSON *)payPalAccount {
     NSString *nonce = [payPalAccount[@"nonce"] asString];
     NSString *description = [payPalAccount[@"description"] asString];
@@ -582,8 +618,21 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     if ([description caseInsensitiveCompare:@"PayPal"] == NSOrderedSame) {
         description = email;
     }
-    
-    BTPayPalAccountNonce *tokenizedPayPalAccount = [[BTPayPalAccountNonce alloc] initWithNonce:nonce description:description email:email firstName:firstName lastName:lastName phone:phone billingAddress:billingAddress shippingAddress:shippingAddress clientMetadataId:clientMetadataId payerId:payerId isDefault:isDefault];
+
+    BTPayPalCreditFinancing *creditFinancing =  [self.class creditFinancingFromJSON:details[@"creditFinancingOffered"]];
+
+    BTPayPalAccountNonce *tokenizedPayPalAccount = [[BTPayPalAccountNonce alloc] initWithNonce:nonce
+                                                                                   description:description
+                                                                                         email:email
+                                                                                     firstName:firstName
+                                                                                      lastName:lastName
+                                                                                         phone:phone
+                                                                                billingAddress:billingAddress
+                                                                               shippingAddress:shippingAddress
+                                                                              clientMetadataId:clientMetadataId
+                                                                                       payerId:payerId
+                                                                                     isDefault:isDefault
+                                                                               creditFinancing:creditFinancing];
     
     return tokenizedPayPalAccount;
 }
@@ -771,8 +820,13 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
     if (paymentType == BTPayPalPaymentTypeUnknown) return;
     
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.initiate.%@", [self.class eventStringForPaymentType:paymentType], [self.class eventStringForRequestTarget:target], success ? @"started" : @"failed"];
-    
     [self.apiClient sendAnalyticsEvent:eventName];
+
+    if (paymentType == BTPayPalPaymentTypeCheckout && self.payPalRequest.offerCredit) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.credit.offered.%@", [self.class eventStringForPaymentType:BTPayPalPaymentTypeCheckout], [self.class eventStringForRequestTarget:target], success ? @"started" : @"failed"];
+
+        [self.apiClient sendAnalyticsEvent:eventName];
+    }
 }
 
 - (void)sendAnalyticsEventForHandlingOneTouchResult:(PPOTResult *)result forPaymentType:(BTPayPalPaymentType)paymentType {
@@ -794,6 +848,14 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
             }
         case PPOTResultTypeSuccess:
             return [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"%@.succeeded", eventName]];
+    }
+}
+
+- (void)sendAnalyticsEventIfCreditFinancingInNonce:(BTPayPalAccountNonce *)payPalAccountNonce forPaymentType:(BTPayPalPaymentType)paymentType {
+    if ([payPalAccountNonce creditFinancing]) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.credit.accepted", [self.class eventStringForPaymentType:paymentType]];
+
+        [self.apiClient sendAnalyticsEvent:eventName];
     }
 }
 

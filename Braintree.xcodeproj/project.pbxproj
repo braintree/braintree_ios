@@ -343,6 +343,12 @@
 		A5D3A5761C20975F003A25A1 /* PPFPTIDataTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */; };
 		A5D3A5771C20975F003A25A1 /* PPFPTITrackerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */; };
 		A5D3A5A41C20BEE1003A25A1 /* PayPalOneTouch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A50C3B6F1C1A29C500612D90 /* PayPalOneTouch.framework */; };
+		A5F444AE1E89906700B2B4F7 /* BTPayPalCreditFinancing.h in Headers */ = {isa = PBXBuildFile; fileRef = A5F444AD1E89903E00B2B4F7 /* BTPayPalCreditFinancing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5FE18311E799EDF00CBE9C7 /* BTPayPalCreditFinancing.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE18301E799EDF00CBE9C7 /* BTPayPalCreditFinancing.m */; };
+		A5FE18331E79A05D00CBE9C7 /* BTPayPalCreditFinancing.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE18301E799EDF00CBE9C7 /* BTPayPalCreditFinancing.m */; };
+		A5FE18351E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE18341E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m */; };
+		A5FE18361E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE18341E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m */; };
+		A5FE183D1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5FE183C1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m */; };
 		A70241B91C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h in Headers */ = {isa = PBXBuildFile; fileRef = A70241B71C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h */; };
 		A70241BA1C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m in Sources */ = {isa = PBXBuildFile; fileRef = A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */; };
 		A70241BD1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A70241BB1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h */; };
@@ -1286,6 +1292,11 @@
 		A51527371D9EEFE800FF3F77 /* BraintreeDemoDropInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoDropInViewController.m; sourceTree = "<group>"; };
 		A5D3A56E1C20975F003A25A1 /* PPFPTIDataTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPFPTIDataTest.m; sourceTree = "<group>"; };
 		A5D3A56F1C20975F003A25A1 /* PPFPTITrackerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPFPTITrackerTest.m; sourceTree = "<group>"; };
+		A5F444AD1E89903E00B2B4F7 /* BTPayPalCreditFinancing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTPayPalCreditFinancing.h; sourceTree = "<group>"; };
+		A5FE18301E799EDF00CBE9C7 /* BTPayPalCreditFinancing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalCreditFinancing.m; sourceTree = "<group>"; };
+		A5FE18341E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalCreditFinancingAmount.m; sourceTree = "<group>"; };
+		A5FE183B1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoPayPalCreditPaymentViewController.h; sourceTree = "<group>"; };
+		A5FE183C1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoPayPalCreditPaymentViewController.m; sourceTree = "<group>"; };
 		A70241B71C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTUIPayPalWordmarkVectorArtView.h; sourceTree = "<group>"; };
 		A70241B81C598BA200875DB8 /* BTUIPayPalWordmarkVectorArtView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIPayPalWordmarkVectorArtView.m; sourceTree = "<group>"; };
 		A70241BB1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BTUIPayPalCompactButton.h; path = "../Views/Payments Components/BTUIPayPalCompactButton.h"; sourceTree = "<group>"; };
@@ -2077,6 +2088,8 @@
 				A7B1C14A1B66E11C00ED063C /* BTConfiguration+PayPal.m */,
 				A7102E191B5085BB0007D40A /* BTPayPalAccountNonce_Internal.h */,
 				16E17D1B1B3DE4580024F9AB /* BTPayPalAccountNonce.m */,
+				A5FE18301E799EDF00CBE9C7 /* BTPayPalCreditFinancing.m */,
+				A5FE18341E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m */,
 				A734D95E1B4C4C0700FE0E1B /* BTPayPalDriver_Internal.h */,
 				16C42B6D1B3DE0550028A3B4 /* BTPayPalDriver.m */,
 				16E17D271B3DFA0F0024F9AB /* BTPayPalRequest.m */,
@@ -2239,6 +2252,7 @@
 				16C42B6C1B3DE0550028A3B4 /* BTPayPalDriver.h */,
 				16E17D1A1B3DE4570024F9AB /* BTPayPalAccountNonce.h */,
 				2D941D3A1B59C76A0016EFB4 /* BraintreePayPal.h */,
+				A5F444AD1E89903E00B2B4F7 /* BTPayPalCreditFinancing.h */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -2410,6 +2424,15 @@
 			path = "Drop In";
 			sourceTree = "<group>";
 		};
+		A5FE18371E79D57F00CBE9C7 /* PayPal - Credit */ = {
+			isa = PBXGroup;
+			children = (
+				A5FE183B1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.h */,
+				A5FE183C1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m */,
+			);
+			path = "PayPal - Credit";
+			sourceTree = "<group>";
+		};
 		A715593F1B729297007DE6F0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2570,6 +2593,7 @@
 				A7334F221BA38AF50083C411 /* PayPal - Billing Agreement */,
 				A76B19DE1B79708900452CFA /* PayPal - BTUIPayPalButton */,
 				A76B19E11B79708900452CFA /* PayPal - Checkout */,
+				A5FE18371E79D57F00CBE9C7 /* PayPal - Credit */,
 				A76B19E41B79708900452CFA /* PayPal - Custom Button */,
 				03F54E0F1C499E1200F11033 /* PayPal - Force Future Payment */,
 				A76B19EA1B79708900452CFA /* PayPal - Scopes */,
@@ -3189,6 +3213,7 @@
 				2D941D411B59C8E60016EFB4 /* BTPayPalRequest.h in Headers */,
 				2D941D441B59C8E60016EFB4 /* BTPayPalDriver.h in Headers */,
 				2D941D4B1B59C8E60016EFB4 /* BTPayPalAccountNonce_Internal.h in Headers */,
+				A5F444AE1E89906700B2B4F7 /* BTPayPalCreditFinancing.h in Headers */,
 				2D941D461B59C8E60016EFB4 /* BTPayPalRequestFactory.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4395,7 +4420,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5FE18361E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m in Sources */,
 				A7B1C14C1B66E11C00ED063C /* BTConfiguration+PayPal.m in Sources */,
+				A5FE18311E799EDF00CBE9C7 /* BTPayPalCreditFinancing.m in Sources */,
 				2D941D451B59C8E60016EFB4 /* BTPayPalDriver.m in Sources */,
 				2D941D421B59C8E60016EFB4 /* BTPayPalRequest.m in Sources */,
 				2D941D4D1B59C8E60016EFB4 /* BTPayPalAccountNonce.m in Sources */,
@@ -4497,6 +4524,7 @@
 				4174050A1BB0869C008A5DEA /* BTUIThemedView.m in Sources */,
 				A76D7C3A1BB31A2B0000FA6A /* BTDataCollector.m in Sources */,
 				4174050C1BB0869C008A5DEA /* BTUIVectorArtView.m in Sources */,
+				A5FE18331E79A05D00CBE9C7 /* BTPayPalCreditFinancing.m in Sources */,
 				4174050E1BB0869C008A5DEA /* BTUICardCvvField.m in Sources */,
 				417405101BB0869C008A5DEA /* BTUICardExpiryField.m in Sources */,
 				417405121BB0869D008A5DEA /* BTUICardNumberField.m in Sources */,
@@ -4516,6 +4544,7 @@
 				417405221BB0869D008A5DEA /* BTUICVVFrontVectorArtView.m in Sources */,
 				46E2F0A01CF47D3300A5789D /* BTUIUnionPayVectorArtView.m in Sources */,
 				41BC340D1BF695FC00161106 /* BTPaymentRequest.m in Sources */,
+				A5FE18351E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m in Sources */,
 				417405241BB0869D008A5DEA /* BTUICardVectorArtView.m in Sources */,
 				417405261BB0869D008A5DEA /* BTUICoinbaseMonogramCardView.m in Sources */,
 				417405281BB0869D008A5DEA /* BTUICoinbaseWordmarkVectorArtView.m in Sources */,
@@ -4685,6 +4714,7 @@
 				A76B1A351B79708A00452CFA /* main.m in Sources */,
 				A76B1A111B79708A00452CFA /* BraintreeDemoIntegrationViewController.m in Sources */,
 				A73088361B86872C009487BA /* BraintreeDemoThreeDSecureViewController.m in Sources */,
+				A5FE183D1E79D5E700CBE9C7 /* BraintreeDemoPayPalCreditPaymentViewController.m in Sources */,
 				A76B1A0F1B79708A00452CFA /* BraintreeDemoAppDelegate.m in Sources */,
 				A7A094F81B828F4600D732CC /* BraintreeDemoBTUIPayPalButtonViewController.m in Sources */,
 				A76B1A141B79708A00452CFA /* BraintreeDemoSettings.m in Sources */,

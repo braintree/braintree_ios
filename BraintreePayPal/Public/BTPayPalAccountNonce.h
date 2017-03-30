@@ -4,6 +4,7 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
+#import "BTPayPalCreditFinancing.h"
 
 @interface BTPayPalAccountNonce : BTPaymentMethodNonce
 
@@ -48,5 +49,12 @@
  @discussion Will be provided for Billing Agreement and Checkout.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *payerId;
+
+/*!
+ @brief Optional. Credit financing details if the customer pays with PayPal Credit.
+
+ @discussion Will be provided for Checkout.
+ */
+@property (nonatomic, nullable, readonly, strong) BTPayPalCreditFinancing *creditFinancing;
 
 @end

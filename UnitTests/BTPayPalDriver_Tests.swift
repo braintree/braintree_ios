@@ -1123,6 +1123,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
+        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
         XCTAssertEqual(lastPostParameters["line2"] as? String, "Apt. 0")
@@ -1130,6 +1131,52 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(lastPostParameters["state"] as? String, "CA")
         XCTAssertEqual(lastPostParameters["postal_code"] as? String, "12345")
         XCTAssertEqual(lastPostParameters["country_code"] as? String, "US")
+    }
+
+    func testCheckout_whenPayPalCreditOffered_performsSwitchCorrectly() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        request.offerCredit = true
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+
+        let mockRequestFactory = FakePayPalRequestFactory()
+        payPalDriver.requestFactory = mockRequestFactory
+        // Depending on whether it's iOS 9 or not, we use different stub delegates to wait for the app switch to occur
+        let stubViewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        let stubAppSwitchDelegate = MockAppSwitchDelegate()
+        if #available(iOS 9.0, *) {
+            stubViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
+            payPalDriver.viewControllerPresentingDelegate = stubViewControllerPresentingDelegate
+        } else {
+            stubAppSwitchDelegate.willPerformAppSwitchExpectation =  expectation(description: "Delegate received willPerformAppSwitch")
+            stubAppSwitchDelegate.didPerformAppSwitchExpectation = expectation(description: "Delegate received didPerformAppSwitch")
+            payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
+        }
+
+        payPalDriver.requestOneTimePayment(request) { _ in }
+
+        self.waitForExpectations(timeout: 2, handler: nil)
+        XCTAssertTrue(mockRequestFactory.checkoutRequest.appSwitchPerformed)
+
+        // Ensure the payment resource had the correct parameters
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, true)
+
+        // Make sure analytics event was sent when switch occurred
+        let postedAnalyticsEvents = mockAPIClient.postedAnalyticsEvents
+
+        if #available(iOS 9.0, *) {
+            XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.webswitch.credit.offered.started"))
+        } else {
+            XCTAssertTrue(postedAnalyticsEvents.contains("ios.paypal-single-payment.appswitch.credit.offered.started"))
+        }
     }
 
     func testCheckout_whenPayPalPaymentCreationSuccessful_performsAppSwitch() {
@@ -1260,6 +1307,73 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let options = paypalAccount["options"] as! NSDictionary
         let validate = (options["validate"] as! NSNumber).boolValue
         XCTAssertFalse(validate)
+    }
+
+    func testCheckout_whenCreditFinancingNotReturned_shouldNotSendCreditAcceptedAnalyticsEvent() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        mockAPIClient.cannedResponseBody = BTJSON(value: [ "paypalAccounts":
+            [
+                [
+                    "description": "jane.doe@example.com",
+                    "details": [
+                        "email": "jane.doe@example.com",
+                    ],
+                    "nonce": "a-nonce",
+                    "type": "PayPalAccount",
+                    ]
+                ]
+        ])
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
+        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
+
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
+
+        XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
+    }
+
+    func testCheckout_whenCreditFinancingReturned_shouldSendCreditAcceptedAnalyticsEvent() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        mockAPIClient.cannedResponseBody = BTJSON(value: [ "paypalAccounts":
+            [
+                [
+                    "description": "jane.doe@example.com",
+                    "details": [
+                        "email": "jane.doe@example.com",
+                        "creditFinancingOffered": [
+                            "cardAmountImmutable": true,
+                            "monthlyPayment": [
+                                "currency": "USD",
+                                "value": "13.88",
+                            ],
+                            "payerAcceptance": true,
+                            "term": 18,
+                            "totalCost": [
+                                "currency": "USD",
+                                "value": "250.00",
+                            ],
+                            "totalInterest": [
+                                "currency": "USD",
+                                "value": "0.00",
+                            ],
+                        ],
+                    ],
+                    "nonce": "a-nonce",
+                    "type": "PayPalAccount",
+                ]
+            ]
+        ])
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
+        payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
+
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
     }
 
     func testCheckout_whenAppSwitchSucceeds_makesDelegateCallback() {
