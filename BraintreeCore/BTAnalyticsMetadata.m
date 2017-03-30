@@ -129,7 +129,7 @@
     NSInteger majorVersionNumber = [[rawVersionArray objectAtIndex:0] integerValue] * 10000;
     NSInteger minorVersionNumber = [[rawVersionArray objectAtIndex:1] integerValue] * 100;
     
-    return [NSString stringWithFormat:@"%ld", majorVersionNumber + minorVersionNumber];
+    return [NSString stringWithFormat:@"%i", (int)majorVersionNumber + (int)minorVersionNumber];
 }
 
 - (NSString *)iosBaseSDK {
