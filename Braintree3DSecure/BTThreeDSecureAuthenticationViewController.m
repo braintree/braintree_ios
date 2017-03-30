@@ -65,8 +65,7 @@
                                          userInfo:userInfo];
         if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
             [self.delegate threeDSecureViewController:self didFailWithError:error];
-        }
-        if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+        } else if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
             [self.delegate threeDSecureViewControllerDidFinish:self];
         }
     }

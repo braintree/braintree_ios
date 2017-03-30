@@ -6,6 +6,8 @@
 
 @interface BraintreeDemoThreeDSecureViewController () <BTViewControllerPresentingDelegate>
 @property (nonatomic, strong) BTUICardFormView *cardFormView;
+@property (nonatomic, strong) UILabel *callbackCountLabel;
+@property (nonatomic) int callbackCount;
 @end
 
 @implementation BraintreeDemoThreeDSecureViewController
@@ -34,6 +36,16 @@
 
     [verifyNewCardButton autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
 
+    self.callbackCountLabel = [[UILabel alloc] initForAutoLayout];
+    self.callbackCountLabel.textAlignment = NSTextAlignmentCenter;
+    self.callbackCountLabel.font = [UIFont systemFontOfSize:UIFont.smallSystemFontSize];
+    [threeDSecureButtonsContainer addSubview:self.callbackCountLabel];
+    [self.callbackCountLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:verifyNewCardButton withOffset:20];
+    [self.callbackCountLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft];
+    [self.callbackCountLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
+    self.callbackCount = 0;
+    [self updateCallbackCount];
+
     return threeDSecureButtonsContainer;
 }
 
@@ -55,8 +67,15 @@
     return card;
 }
 
+- (void)updateCallbackCount {
+    self.callbackCountLabel.text = [NSString stringWithFormat:@"Callback Count: %i", self.callbackCount];
+}
+
 /// "Tokenize and Verify New Card"
 - (void)tappedToVerifyNewCard {
+    self.callbackCount = 0;
+    [self updateCallbackCount];
+
     BTCard *card = [self newCard];
 
     self.progressBlock([NSString stringWithFormat:@"Tokenizing card ending in %@", [card.number substringFromIndex:(card.number.length - 4)]]);
@@ -74,20 +93,23 @@
         BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithAPIClient:self.apiClient delegate:self];
 
         [threeDSecure verifyCardWithNonce:tokenizedCard.nonce
-                                        amount:[NSDecimalNumber decimalNumberWithString:@"10"]
+                                   amount:[NSDecimalNumber decimalNumberWithString:@"10"]
                                     completion:^(BTThreeDSecureCardNonce * _Nullable threeDSecureCard, NSError * _Nullable error)
          {
+             self.callbackCount++;
+             [self updateCallbackCount];
              if (error) {
                  self.progressBlock(error.localizedDescription);
-                 return;
-             }
+             } else if (threeDSecureCard) {
+                 self.completionBlock(threeDSecureCard);
 
-             self.completionBlock(threeDSecureCard);
-             
-             if (threeDSecureCard.liabilityShiftPossible && threeDSecureCard.liabilityShifted) {
-                 self.progressBlock(@"Liability shift possible and liability shifted");
+                 if (threeDSecureCard.liabilityShiftPossible && threeDSecureCard.liabilityShifted) {
+                     self.progressBlock(@"Liability shift possible and liability shifted");
+                 } else {
+                     self.progressBlock(@"3D Secure authentication was attempted but liability shift is not possible");
+                 }
              } else {
-                 self.progressBlock(@"3D Secure authentication was attempted but liability shift is not possible");
+                 self.progressBlock(@"Cancelled🎲");
              }
          }];
     }];
