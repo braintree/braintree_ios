@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.9 (2017-04-03)
+
+* Resolved build errors in Xcode 8.3 caused by incorrect case of imports [fix #324](https://github.com/braintree/braintree_ios/issues/324) (thanks, @alamantia)
+
 ## 3.9.8 (2016-11-17)
 
 * Add support for Discover cards in Apple Pay
