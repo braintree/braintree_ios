@@ -45,7 +45,7 @@
 /// This message is sent when a payment method has been authorized and is available.
 ///
 /// @param button The requesting `BTPayPalButton`
-///  @param nonce   The nonce representing proof of an authorized payment method
+///  @param paymentMethod The nonce representing proof of an authorized payment method
 - (void)payPalButton:(BTPayPalButton *)button didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)paymentMethod;
 
 /// This message is sent when the payment method could not be created.

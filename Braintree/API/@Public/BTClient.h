@@ -106,7 +106,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 #if BT_ENABLE_APPLE_PAY
 /// Save a payment method created via Apple Pay
 ///
-/// @param applePayRequest A BTClientApplePayRequest
+/// @param payment A `PKPayment` instance
 /// @param successBlock success callback for handling the resulting payment method
 /// @param failureBlock failure callback for handling errors
 - (void)saveApplePayPayment:(PKPayment *)payment
@@ -117,7 +117,7 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// Save a paypal payment method to Braintree
 ///
 /// @param authCode Authorization Code
-/// @param applicationCorrelationID PayPal App Correlation Id (See `-[BTClient btPayPal_applicationCorrelationId]` and https://github.com/paypal/PayPal-iOS-SDK/blob/master/docs/future_payments_mobile.md#obtain-an-application-correlation-id.)
+/// @param applicationCorrelationId PayPal App Correlation Id (See `-[BTClient btPayPal_applicationCorrelationId]` and https://github.com/paypal/PayPal-iOS-SDK/blob/master/docs/future_payments_mobile.md#obtain-an-application-correlation-id.)
 /// @param successBlock success callback for handling the resulting new PayPal account payment method
 /// @param failureBlock failure callback for handling errors
 - (void)savePaypalPaymentMethodWithAuthCode:(NSString *)authCode
@@ -196,12 +196,12 @@ typedef void (^BTClientFailureBlock)(NSError *error);
 /// @param expirationYear card expiration year (e.g. @"2018")`
 /// @param cvv card's cvv three or four digit verification code (optional, depending on your Gateway settings)
 /// @param postalCode card's postal code for address verification (optional, depending on your Gateway settings)
-/// @param validate whether details should be validated before creating a nonce for them
+/// @param shouldValidate whether details should be validated before creating a nonce for them
 /// @param successBlock success callback for handling the resulting new card
 /// @param failureBlock failure callback for handling errors
 ///
 /// @see challenges
-- (void)saveCardWithNumber:(NSString *)creditCardNumber
+- (void)saveCardWithNumber:(NSString *)cardNumber
            expirationMonth:(NSString *)expirationMonth
             expirationYear:(NSString *)expirationYear
                        cvv:(nullable NSString *)cvv

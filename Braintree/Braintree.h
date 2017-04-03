@@ -131,8 +131,6 @@ typedef void (^BraintreeCompletionBlock)(Braintree *__nullable braintree, NSErro
 ///
 /// @see BTDropInViewController
 /// @see BTPaymentButton
-///
-/// @param type     the payment type to authorize, such as PayPal or Venmo
 /// @param delegate a delegate that receives lifecycle updates about the payment method authorization
 - (BTPaymentProvider *)paymentProviderWithDelegate:(id<BTPaymentMethodCreationDelegate>)delegate;
 

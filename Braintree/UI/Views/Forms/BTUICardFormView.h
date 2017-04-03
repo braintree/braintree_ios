@@ -49,7 +49,7 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 
 /// Immediately present a top level error message to the user.
 ///
-/// @param field Field to mark invalid.
+/// @param message An error message.
 - (void)showTopLevelError:(NSString *)message;
 
 /// Immediately present a field-level error to the user.

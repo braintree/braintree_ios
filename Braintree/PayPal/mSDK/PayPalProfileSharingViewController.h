@@ -32,7 +32,7 @@ typedef void (^PayPalProfileSharingDelegateCompletionBlock)(void);
 ///     PayPalProfileSharingViewController:userWillLogInWithAuthorization:completionBlock: method.
 /// Your code MUST dismiss the PayPalProfileSharingViewController.
 /// @param profileSharingViewController The PayPalProfileSharingViewController where the user successfully consented.
-/// @param authorization The authorization response, which you will return to your server.
+/// @param profileSharingAuthorization The authorization response, which you will return to your server.
 - (void)payPalProfileSharingViewController:(nonnull PayPalProfileSharingViewController *)profileSharingViewController
              userDidLogInWithAuthorization:(nonnull NSDictionary *)profileSharingAuthorization;
 
@@ -43,7 +43,7 @@ typedef void (^PayPalProfileSharingDelegateCompletionBlock)(void);
 /// Your code MUST finish by calling the completionBlock.
 /// Your code must NOT dismiss the PayPalProfileSharingViewController.
 /// @param profileSharingViewController The PayPalProfileSharingViewController where the user successfully consented.
-/// @param authorization The authorization response, which you will return to your server.
+/// @param profileSharingAuthorization The authorization response, which you will return to your server.
 /// @param completionBlock Block to execute when your processing is done.
 - (void)payPalProfileSharingViewController:(nonnull PayPalProfileSharingViewController *)profileSharingViewController
             userWillLogInWithAuthorization:(nonnull NSDictionary *)profileSharingAuthorization

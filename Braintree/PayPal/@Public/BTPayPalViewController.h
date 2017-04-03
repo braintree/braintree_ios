@@ -48,7 +48,7 @@
 /// has been created. You can send its nonce value to your server for creating a transaction, subscription, etc.
 ///
 /// @param viewController The `BTPayPalViewController` that did create the nonce
-/// @param PayPal account payment method that contains a nonce
+/// @param payPalPaymentMethod PayPal account payment method that contains a nonce
 - (void)payPalViewController:(BTPayPalViewController *)viewController didCreatePayPalPaymentMethod:(BTPayPalPaymentMethod *)payPalPaymentMethod;
 
 /// The PayPal View Controller will send this message when a nonce could not be created.

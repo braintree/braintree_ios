@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
 /**
  * @abstract Device Collector SDK for iOS
  * @discussion This SDK is used to implement the Device Collector in your
@@ -146,3 +148,4 @@
 - (void) setDelegate:(id<DeviceCollectorSDKDelegate>) delegate;
 @end // end @interface DeviceCollectorSDK
 
+#pragma clang diagnostic pop

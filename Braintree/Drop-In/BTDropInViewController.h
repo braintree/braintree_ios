@@ -113,7 +113,6 @@
 /// irreversable. Upon receiving this message, you should dismiss Drop In.
 ///
 /// @param viewController The Drop In view controller informing its delegate of failure.
-/// @param error An error that describes the failure.
 - (void)dropInViewControllerDidCancel:(BTDropInViewController *)viewController;
 
 @optional

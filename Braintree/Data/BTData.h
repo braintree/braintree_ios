@@ -29,8 +29,6 @@ typedef NS_ENUM(NSInteger, BTDataEnvironment) {
 @interface BTData : NSObject
 
 /// Set a BTDataDelegate to receive notifications about collector events.
-///
-/// @param delegate Object to notify
 @property (nonatomic, weak) id<BTDataDelegate> delegate;
 
 /// Initialize a BTData instance for use alongside an existing BTClient instance

@@ -66,7 +66,7 @@ typedef NS_ENUM(NSInteger, PayPalPaymentIntent) {
 
 /// Convenience utility.
 /// Returns the total of (quantity * price) for all of the items.
-/// @param array of PayPalItem objects.
+/// @param items Array of PayPalItem objects.
 + (nonnull NSDecimalNumber *)totalPriceForItems:(nonnull NSArray *)items;
 
 /// Item name. 127 characters max. Required.
@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, PayPalPaymentIntent) {
 
 /// Convenience constructor.
 /// See the documentation of the individual properties for more detail.
-/// @param receipientName Name of recipient.
+/// @param recipientName Name of recipient.
 /// @param line1 First line of address.
 /// @param line2 Second line of address, if any.
 /// @param city City.
