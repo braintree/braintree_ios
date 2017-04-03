@@ -11,7 +11,7 @@ desc "Run default set of tasks"
 task :spec => %w[spec:unit spec:api:unit spec:ui:unit spec:paypal:unit spec:venmo:unit spec:payments spec:data spec:acceptance]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
-task :release => %w[release:assumptions release:check_working_directory release:bump_version release:test release:lint_podspec release:tag release:push_private]
+task :release => %w[release:assumptions release:check_working_directory release:test release:lint_podspec release:bump_version release:tag release:push_private]
 
 desc "Publish code and pod to public github.com"
 task :publish => %w[publish:push publish:push_pod publish:cocoadocs]

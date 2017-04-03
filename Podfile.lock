@@ -70,7 +70,7 @@ PODS:
   - KIF (3.5.1):
     - KIF/Core (= 3.5.1)
   - KIF/Core (3.5.1)
-  - KIFViewControllerActions (1.0.0):
+  - KIFViewControllerActions (1.0.2):
     - KIF (>= 2.0.0)
   - NSURL+QueryDictionary (1.1.0)
   - OCHamcrest (3.0.1)
@@ -95,7 +95,7 @@ DEPENDENCIES:
   - InAppSettingsKit
   - iOS-Slide-Menu
   - KIF (~> 3.5.1)
-  - KIFViewControllerActions (from `https://github.com/mickeyreiss/KIFViewControllerActions.git`)
+  - KIFViewControllerActions
   - NSURL+QueryDictionary (~> 1.0)
   - OCHamcrest (~> 3.0.1)
   - OCMock (~> 3.1)
@@ -106,13 +106,6 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Braintree:
     :path: "."
-  KIFViewControllerActions:
-    :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
-
-CHECKOUT OPTIONS:
-  KIFViewControllerActions:
-    :commit: 10d8d3a7bac839d75b8cec894326eae957372245
-    :git: https://github.com/mickeyreiss/KIFViewControllerActions.git
 
 SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
@@ -124,7 +117,7 @@ SPEC CHECKSUMS:
   InAppSettingsKit: cc56d3ec45f11352a16d5b210da8a3fa1b9d05ed
   iOS-Slide-Menu: 3a8b157f87694fce888899f169e05b433575ff90
   KIF: 082eb65279e51c3092923802849eb796a04982ab
-  KIFViewControllerActions: 73085acd975ebbfc954f7895ca1aaa9faa36b3c6
+  KIFViewControllerActions: 923795dc4bd4ca5657841ce7455ce67447693861
   NSURL+QueryDictionary: dd0a5fec689a9b4780b6fa0e0225c01ca3ea653e
   OCHamcrest: e19857683e4eefab64b878668eac04c2f4567118
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
@@ -132,6 +125,6 @@ SPEC CHECKSUMS:
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-PODFILE CHECKSUM: 55b82445153a2b82e291d3399a2cec81e94a4bee
+PODFILE CHECKSUM: e1ef26897c875fbd8ec4d1e343d3d927753583b8
 
 COCOAPODS: 1.1.1
