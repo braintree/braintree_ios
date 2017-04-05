@@ -27,5 +27,6 @@ typedef NS_ENUM(NSInteger, BraintreeDemoTransactionServiceThreeDSecureRequiredSt
 + (BOOL)useModalPresentation;
 + (BOOL)customerPresent;
 + (NSString *)customerIdentifier;
++ (NSString *)clientTokenVersion;
 
 @end

@@ -82,6 +82,12 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
             [[NSUserDefaults standardUserDefaults] setObject:testIntegration forKey:@"BraintreeDemoSettingsAuthorizationOverride"];
         }
     }
+    
+    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-ClientTokenVersion2"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"2" forKey:@"BraintreeDemoSettingsClientTokenVersionDefaultsKey"];
+    }else if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-ClientTokenVersion3"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"3" forKey:@"BraintreeDemoSettingsClientTokenVersionDefaultsKey"];
+    }
     // End checking for testing arguments
     
     

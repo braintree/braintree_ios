@@ -70,7 +70,7 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
 }
 
 - (void)createCustomerAndFetchClientTokenWithCompletion:(void (^)(NSString *, NSError *))completionBlock {
-    NSMutableDictionary *parameters = [@{} mutableCopy];
+    NSMutableDictionary *parameters = [@{@"version":[BraintreeDemoSettings clientTokenVersion]} mutableCopy];
     if ([BraintreeDemoSettings customerPresent]) {
         if ([BraintreeDemoSettings customerIdentifier].length > 0) {
             parameters[@"customer_id"] = [BraintreeDemoSettings customerIdentifier];
