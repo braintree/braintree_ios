@@ -232,19 +232,7 @@
 }
 
 - (BOOL)isPaypalInstalled {
-    if ([self.class isAppExtension]) {
-        return NO;
-    }
-    
-    UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
-    static BOOL paypalInstalled;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSURL *paypalV1URL = [NSURL URLWithString:@"com.paypal.ppclient.touch.v1://"];
-        NSURL *paypalV2URL = [NSURL URLWithString:@"com.paypal.ppclient.touch.v2://"];
-        paypalInstalled = [sharedApplication canOpenURL:paypalV1URL] || [sharedApplication canOpenURL:paypalV2URL];
-    });
-    return paypalInstalled;
+    return NO;
 }
 
 - (BOOL)isVenmoInstalled {

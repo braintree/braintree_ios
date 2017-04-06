@@ -57,21 +57,6 @@
     return NO;
 }
 
-+ (BOOL)isAuthenticatorInstalledForTargetAppURLScheme:(NSString *)targetAppURLScheme {
-    BOOL installed = NO;
-    NSURL *urlToCheck = STR_TO_URL_SCHEME(targetAppURLScheme);
-    if ([[UIApplication sharedApplication] canOpenURL:urlToCheck]) {
-        installed = YES;
-    }
-
-    NSString *page = installed ? kAnalyticsAppSwitchWalletPresent : kAnalyticsAppSwitchWalletAbsent;
-    NSString *protocol = [self protocolFromTargetAppURLScheme:targetAppURLScheme];
-    page = [page stringByAppendingString:protocol];
-    [[PPOTAnalyticsTracker sharedManager] trackPage:page environment:@"" clientID:@"" error:nil hermesToken:nil];
-
-    return installed;
-}
-
 + (NSString *)protocolFromTargetAppURLScheme:(NSString *)targetAppURLScheme {
     NSArray *components = [targetAppURLScheme componentsSeparatedByString:@"."];
     return components[[components count] - 1];

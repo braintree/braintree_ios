@@ -21,9 +21,6 @@
 
 #define kPPOTSafariViewService            CARDIO_STR(@"com.apple.safariviewservice")
 #define kPPOTSafariSourceApplication      CARDIO_STR(@"com.apple.mobilesafari")
-#define kPPOTWalletURLSchemeV1            CARDIO_STR(@"com.paypal.ppclient.touch.v1")
-#define kPPOTWalletURLSchemeV2            CARDIO_STR(@"com.paypal.ppclient.touch.v2")
-#define kPPOTWalletURLSchemeV3            CARDIO_STR(@"com.paypal.ppclient.touch.v3")
 
 @implementation PPOTCore
 
@@ -45,15 +42,7 @@
 + (BOOL)isWalletAppInstalled {
     [PPOTConfiguration updateCacheAsNecessary]; // called by all public methods
 
-    if (iOS_9_PLUS) {
-        // Don't check canOpenUrl and don't fire analytics because we can't find out if the app is installed
-        return NO;
-    }
-    else {
-        return ([PPOTAppSwitchUtil isAuthenticatorInstalledForTargetAppURLScheme:kPPOTWalletURLSchemeV1] ||
-                [PPOTAppSwitchUtil isAuthenticatorInstalledForTargetAppURLScheme:kPPOTWalletURLSchemeV2] ||
-                [PPOTAppSwitchUtil isAuthenticatorInstalledForTargetAppURLScheme:kPPOTWalletURLSchemeV3] );
-    }
+    return NO;
 }
 
 + (BOOL)canParseURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication {
