@@ -235,7 +235,6 @@ NSString * const BTDataCollectorKountErrorDomain = @"com.braintreepayments.BTDat
 
 /// An error occurred.
 ///
-/// @param errorCode Error code
 /// @param error Triggering error if available
 - (void)onCollectorError:(NSError *)error {
     if ([self.delegate respondsToSelector:@selector(dataCollector:didFailWithError:)]) {
