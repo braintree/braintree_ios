@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.8.1 (2017-04-07)
+
+* Optimize BTAPIClient:initWithAuthorization: when using a client token
+* Fix invalid documentation tags
+
 ## 4.8.0 (2017-03-30)
 
 * Enable PayPal Credit
