@@ -281,6 +281,10 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     [self.analyticsService sendAnalyticsEvent:eventKind];
 }
 
+- (void)sendInternalAnalyticsEvent:(NSString *)eventName {
+    [self sendAnalyticsEvent:eventName];
+}
+
 - (NSDictionary *)metaParameters {
     NSMutableDictionary *metaParameters = [NSMutableDictionary dictionaryWithDictionary:self.metadata.parameters];
     [metaParameters addEntriesFromDictionary:[BTAnalyticsMetadata metadata]];
