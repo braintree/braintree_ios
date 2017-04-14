@@ -107,11 +107,6 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Use initWithAuthorization: instead.")));
 
-/*!
- @brief Analytics should only be posted by internal clients.
- */
-- (void)sendInternalAnalyticsEvent:(NSString *)eventName;
-
 @end
 
 NS_ASSUME_NONNULL_END
