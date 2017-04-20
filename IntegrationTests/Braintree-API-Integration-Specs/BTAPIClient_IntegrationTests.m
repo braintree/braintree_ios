@@ -35,4 +35,19 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testFetchConfiguration_withVersionThreeClientToken_returnsTheConfiguration {
+    BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN_VERSION_3];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
+    [client fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+        // Note: client token uses a different merchant ID than the merchant whose tokenization key
+        // we use in the other test
+        XCTAssertEqualObjects([configuration.json[@"merchantId"] asString], @"dcpspy2brwdjr3qn");
+        XCTAssertNil(error);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 @end

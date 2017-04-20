@@ -67,13 +67,13 @@
 
 - (void)testBaseURL_isDeterminedByTokenizationKey {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
-    XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"http://localhost:3000/merchants/key/client_api");
+    XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"http://localhost:3000/merchants/key/client_api");
 
     apiClient = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_tokenization_key" sendAnalyticsEvent:NO];
-    XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://sandbox.braintreegateway.com/merchants/key/client_api");
+    XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"https://sandbox.braintreegateway.com/merchants/key/client_api");
 
     apiClient = [[BTAPIClient alloc] initWithAuthorization:@"production_tokenization_key" sendAnalyticsEvent:NO];
-    XCTAssertEqualObjects(apiClient.http.baseURL.absoluteString, @"https://api.braintreegateway.com:443/merchants/key/client_api");
+    XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"https://api.braintreegateway.com:443/merchants/key/client_api");
 }
 
 #pragma mark - Configuration
@@ -131,7 +131,8 @@
     apiClient.configurationHTTP = fake;
 
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertEqual(fake.GETRequestCount, (NSUInteger)1);
+        // BTAPIClient fetches the config when initialized so there can potentially be 2 requests here
+        XCTAssertLessThanOrEqual(fake.GETRequestCount, (NSUInteger)2);
         XCTAssertNil(configuration);
         XCTAssertEqual(error, anError);
         [expectation fulfill];

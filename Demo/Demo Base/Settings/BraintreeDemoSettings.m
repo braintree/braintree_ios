@@ -62,4 +62,8 @@ NSString *BraintreeDemoSettingsThreeDSecureRequiredDefaultsKey = @"BraintreeDemo
     return [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoCustomerIdentifier"];
 }
 
++ (NSString *)clientTokenVersion {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:@"BraintreeDemoSettingsClientTokenVersionDefaultsKey"];
+}
+
 @end

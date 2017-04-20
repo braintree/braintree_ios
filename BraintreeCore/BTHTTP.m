@@ -111,7 +111,8 @@
 
 - (void)httpRequest:(NSString *)method path:(NSString *)aPath parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     
-    if (!self.baseURL || [self.baseURL.absoluteString isEqualToString:@""]) {
+    BOOL hasHttpPrefix = aPath != nil && [aPath hasPrefix:@"http"];
+    if (!hasHttpPrefix && (!self.baseURL || [self.baseURL.absoluteString isEqualToString:@""])) {
         NSMutableDictionary *errorUserInfo = [NSMutableDictionary new];
         if (method) errorUserInfo[@"method"] = method;
         if (aPath) errorUserInfo[@"path"] = aPath;
@@ -123,7 +124,11 @@
     BOOL isNotDataURL = ![self.baseURL.scheme isEqualToString:@"data"];
     NSURL *fullPathURL;
     if (aPath && isNotDataURL) {
-        fullPathURL = [self.baseURL URLByAppendingPathComponent:aPath];
+        if (hasHttpPrefix) {
+            fullPathURL = [NSURL URLWithString:aPath];
+        } else {
+            fullPathURL = [self.baseURL URLByAppendingPathComponent:aPath];
+        }
     } else {
         fullPathURL = self.baseURL;
     }

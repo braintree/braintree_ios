@@ -192,6 +192,37 @@
 			<key>DefaultValue</key>
 			<false/>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Client Token Version</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Client Token Version</string>
+			<key>Key</key>
+			<string>BraintreeDemoSettingsClientTokenVersionDefaultsKey</string>
+			<key>Values</key>
+			<array>
+				<integer>2</integer>
+				<integer>3</integer>
+			</array>
+			<key>DefaultValue</key>
+			<integer>2</integer>
+			<key>Titles</key>
+			<array>
+				<string>v2</string>
+				<string>v3</string>
+			</array>
+			<key>ShortTitles</key>
+			<array>
+				<string>v2</string>
+				<string>v3</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

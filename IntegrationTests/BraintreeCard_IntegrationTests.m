@@ -94,6 +94,22 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testTokenizeCard_whenUsingVersionThreeClientTokenAndCardHasValidationEnabledAndCardIsValid_tokenizesSuccessfully {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN_VERSION_3];
+    BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
+    BTCard *card = [self validCard];
+    card.shouldValidate = YES;
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
+    [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(error).to.beNil();
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 #pragma mark - Helpers
 
 - (BTCard *)invalidCard {
