@@ -29,8 +29,18 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         _metadata = [[BTClientMetadata alloc] init];
         _configurationQueue = dispatch_queue_create("com.braintreepayments.BTAPIClient", DISPATCH_QUEUE_SERIAL);
 
-        NSURL *baseURL = [BTAPIClient baseURLFromTokenizationKey:authorization];
-        if (baseURL) {
+        NSRegularExpression *isTokenizationKeyRegExp = [NSRegularExpression regularExpressionWithPattern:@"^[a-zA-Z0-9]+_[a-zA-Z0-9]+_[a-zA-Z0-9_]+$" options:0 error:NULL];
+        NSTextCheckingResult *tokenizationKeyMatch = [isTokenizationKeyRegExp firstMatchInString:authorization options:0 range: NSMakeRange(0, authorization.length)];
+
+        if (tokenizationKeyMatch) {
+            NSURL *baseURL = [BTAPIClient baseURLFromTokenizationKey:authorization];
+
+            if (!baseURL) {
+                NSString *reason = @"BTClient could not initialize because the provided tokenization key was invalid";
+                [[BTLogger sharedLogger] error:reason];
+                return nil;
+            }
+
             _tokenizationKey = authorization;
 
             _configurationHTTP = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:authorization];

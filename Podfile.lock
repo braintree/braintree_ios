@@ -29,28 +29,28 @@ PODS:
   - CardIO (5.4.1)
   - Expecta (1.0.5)
   - FLEX (2.4.0)
-  - HockeySDK (4.1.2):
-    - HockeySDK/DefaultLib (= 4.1.2)
-  - HockeySDK/DefaultLib (4.1.2)
-  - InAppSettingsKit (2.8)
+  - HockeySDK (4.1.4):
+    - HockeySDK/DefaultLib (= 4.1.4)
+  - HockeySDK/DefaultLib (4.1.4)
+  - InAppSettingsKit (2.8.1)
   - iOS-Slide-Menu (1.5)
   - NSURL+QueryDictionary (1.2.0)
-  - OCMock (3.3.1)
-  - OHHTTPStubs (5.2.1):
-    - OHHTTPStubs/Default (= 5.2.1)
-  - OHHTTPStubs/Core (5.2.1)
-  - OHHTTPStubs/Default (5.2.1):
+  - OCMock (3.4)
+  - OHHTTPStubs (6.0.0):
+    - OHHTTPStubs/Default (= 6.0.0)
+  - OHHTTPStubs/Core (6.0.0)
+  - OHHTTPStubs/Default (6.0.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (5.2.1):
+  - OHHTTPStubs/JSON (6.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (5.2.1):
+  - OHHTTPStubs/NSURLSession (6.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (5.2.1)
+  - OHHTTPStubs/OHPathHelpers (6.0.0)
   - PureLayout (3.0.2)
-  - Specta (1.0.5)
+  - Specta (1.0.6)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6.0)
@@ -73,7 +73,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: aa6cd03fe4daa40cc1819a51c9e7524e654cb1df
+    :commit: ca87c76f9ce266e93ce3c05ffca36499c17320df
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
@@ -82,15 +82,15 @@ SPEC CHECKSUMS:
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
-  HockeySDK: c7523379550a4305cefc1cdfa7b5f9a5a3538180
-  InAppSettingsKit: fe3e73f8f9530cdd6270065cd7df7b3773f557e6
+  HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
+  InAppSettingsKit: 94d2fba3ccd700fc4e32c6d09fabcc0af2426744
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
-  OCMock: f3f61e6eaa16038c30caa5798c5e49d3307b6f22
-  OHHTTPStubs: 3a42f25c00563b71355ac73112ba2324e9e6cef4
+  OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
+  OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465
 
 PODFILE CHECKSUM: df889492e38d7a8241a2cdd5fab45a0179812726
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

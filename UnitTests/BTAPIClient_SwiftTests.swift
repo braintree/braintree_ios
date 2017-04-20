@@ -29,6 +29,13 @@ class BTAPIClient_SwiftTests: XCTestCase {
         XCTAssertEqual(apiClient?.clientToken?.originalValue, clientToken)
     }
 
+    func testAPIClientInitialization_withValidClientToken_performanceMeetsExpectations() {
+        let clientToken = BTTestClientTokenFactory.token(withVersion: 2)
+        self.measure() {
+            _ = BTAPIClient(authorization: clientToken!)
+        }
+    }
+
     // MARK: - Copy
 
     func testCopyWithSource_whenUsingClientToken_usesSameClientToken() {

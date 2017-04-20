@@ -80,7 +80,7 @@ typedef NS_ENUM(NSUInteger, BTUICardFormField) {
 /*!
  @brief Immediately present a top level error message to the user.
 
- @param field Field to mark invalid.
+ @param message The error message to present
 */
 - (void)showTopLevelError:(NSString *)message;
 

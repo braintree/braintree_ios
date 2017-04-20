@@ -41,7 +41,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 /*!
  @brief Initializes a `BTDataCollector` instance with a BTAPIClient.
 
- @param environment The desired environment to target. This setting will determine which default collectorURL is used when collecting fraud data from the device.
+ @param apiClient The API client which can retrieve remote configuration for the data collector.
 */
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
