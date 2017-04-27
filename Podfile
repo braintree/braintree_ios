@@ -6,7 +6,6 @@ workspace 'Braintree.xcworkspace'
 target 'Demo' do
   platform :ios, '9.0'
 
-  pod 'HockeySDK'
   pod 'AFNetworking', '~> 2.6.0'
   pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'

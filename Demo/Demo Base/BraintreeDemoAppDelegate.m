@@ -1,6 +1,5 @@
 #import "BraintreeDemoAppDelegate.h"
 #import "BraintreeDemoSettings.h"
-#import <HockeySDK/HockeySDK.h>
 #import <BraintreeCore/BraintreeCore.h>
 
 #if DEBUG
@@ -12,18 +11,6 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
 @implementation BraintreeDemoAppDelegate
 
 - (BOOL)application:(__unused UIApplication *)application didFinishLaunchingWithOptions:(__unused NSDictionary *)launchOptions {
-    /* 
-    // Add when using Hockey
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"7134982f3df6419a0eb52b16e7d6d175"];
-    [[BITHockeyManager sharedHockeyManager] startManager];
-    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-    if ([[[NSProcessInfo processInfo] arguments] containsObject:@"-enableUpdateCheck"]) {
-        [[BITHockeyManager sharedHockeyManager] updateManager].checkForUpdateOnLaunch = YES;
-    } else {
-        [[BITHockeyManager sharedHockeyManager] updateManager].checkForUpdateOnLaunch = NO;
-    }
-    [[BITHockeyManager sharedHockeyManager] updateManager].updateSetting = BITUpdateCheckDaily;
-    */
     [self setupAppearance];
     [self registerDefaultsFromSettings];
 

@@ -29,9 +29,6 @@ PODS:
   - CardIO (5.4.1)
   - Expecta (1.0.5)
   - FLEX (2.4.0)
-  - HockeySDK (4.1.4):
-    - HockeySDK/DefaultLib (= 4.1.4)
-  - HockeySDK/DefaultLib (4.1.4)
   - InAppSettingsKit (2.8.1)
   - iOS-Slide-Menu (1.5)
   - NSURL+QueryDictionary (1.2.0)
@@ -58,7 +55,6 @@ DEPENDENCIES:
   - CardIO
   - Expecta
   - FLEX
-  - HockeySDK
   - InAppSettingsKit
   - iOS-Slide-Menu
   - NSURL+QueryDictionary (~> 1.0)
@@ -78,11 +74,10 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  BraintreeDropIn: 3dd4539753a417a8325f580730d39848b758e505
+  BraintreeDropIn: 6664683a0e2f1c8de206f423f41c0bcdae935976
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
-  HockeySDK: 78a3f8bb9100277b531defc56c970369a3ca267a
   InAppSettingsKit: 94d2fba3ccd700fc4e32c6d09fabcc0af2426744
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
@@ -91,6 +86,6 @@ SPEC CHECKSUMS:
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465
 
-PODFILE CHECKSUM: df889492e38d7a8241a2cdd5fab45a0179812726
+PODFILE CHECKSUM: 5c0f6d7472cce11fd35b3c4a01b851c0799076c5
 
 COCOAPODS: 1.2.0
