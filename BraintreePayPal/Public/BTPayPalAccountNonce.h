@@ -53,7 +53,7 @@
 /*!
  @brief Optional. Credit financing details if the customer pays with PayPal Credit.
 
- @discussion Will be provided for Checkout.
+ @discussion Will be provided for Billing Agreement and Checkout.
  */
 @property (nonatomic, nullable, readonly, strong) BTPayPalCreditFinancing *creditFinancing;
 
