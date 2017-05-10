@@ -320,7 +320,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 - (void)dealloc
 {
-    if(self.http && self.http.session) {
+    if (self.http && self.http.session) {
         [self.http.session finishTasksAndInvalidate];
     }
 }
