@@ -42,33 +42,35 @@
 }
 
 - (void)didCompleteAuthentication:(BTThreeDSecureResponse *)response {
-    if (response.success) {
-        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateCard:completion:)]) {
-            [self.delegate threeDSecureViewController:self
-                                  didAuthenticateCard:response.tokenizedCard
-                                           completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
-                                               if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
-                                                   [self.delegate threeDSecureViewControllerDidFinish:self];
-                                               }
-                                           }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (response.success) {
+            if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didAuthenticateCard:completion:)]) {
+                [self.delegate threeDSecureViewController:self
+                                      didAuthenticateCard:response.tokenizedCard
+                                               completion:^(__unused BTThreeDSecureViewControllerCompletionStatus status) {
+                                                   if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+                                                       [self.delegate threeDSecureViewControllerDidFinish:self];
+                                                   }
+                                               }];
+            }
+        } else {
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
+            if (response.threeDSecureInfo) {
+                userInfo[BTThreeDSecureInfoKey] = response.threeDSecureInfo;
+            }
+            if (response.errorMessage) {
+                userInfo[NSLocalizedDescriptionKey] = response.errorMessage;
+            }
+            NSError *error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
+                                                 code:BTThreeDSecureErrorTypeFailedAuthentication
+                                             userInfo:userInfo];
+            if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
+                [self.delegate threeDSecureViewController:self didFailWithError:error];
+            } else if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
+                [self.delegate threeDSecureViewControllerDidFinish:self];
+            }
         }
-    } else {
-        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-        if (response.threeDSecureInfo) {
-            userInfo[BTThreeDSecureInfoKey] = response.threeDSecureInfo;
-        }
-        if (response.errorMessage) {
-            userInfo[NSLocalizedDescriptionKey] = response.errorMessage;
-        }
-        NSError *error = [NSError errorWithDomain:BTThreeDSecureErrorDomain
-                                             code:BTThreeDSecureErrorTypeFailedAuthentication
-                                         userInfo:userInfo];
-        if ([self.delegate respondsToSelector:@selector(threeDSecureViewController:didFailWithError:)]) {
-            [self.delegate threeDSecureViewController:self didFailWithError:error];
-        } else if ([self.delegate respondsToSelector:@selector(threeDSecureViewControllerDidFinish:)]) {
-            [self.delegate threeDSecureViewControllerDidFinish:self];
-        }
-    }
+    });
 }
 
 #pragma mark UIWebViewDelegate

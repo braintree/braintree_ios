@@ -196,15 +196,19 @@
 }
 
 - (void)threeDSecureViewControllerDidFinish:(BTThreeDSecureAuthenticationViewController *)viewController {
-    if (self.upgradedTokenizedCard) {
-        self.completionBlockAfterAuthenticating(self.upgradedTokenizedCard, nil);
-    } else {
-        self.completionBlockAfterAuthenticating(nil, nil);
-        [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.canceled"];
-    }
+    if (self.completionBlockAfterAuthenticating != nil) {
+        if (self.upgradedTokenizedCard) {
+            self.completionBlockAfterAuthenticating(self.upgradedTokenizedCard, nil);
+        } else {
+            self.completionBlockAfterAuthenticating(nil, nil);
+            [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.canceled"];
+        }
 
-    self.completionBlockAfterAuthenticating = nil;
-    [self informDelegateRequestsDismissalOfViewController:viewController];
+        self.completionBlockAfterAuthenticating = nil;
+        [self informDelegateRequestsDismissalOfViewController:viewController];
+    } else {
+        [self.apiClient sendAnalyticsEvent:@"ios.threedsecure.error.finished-without-handler"];
+    }
 }
 
 - (void)threeDSecureViewController:(__unused BTThreeDSecureAuthenticationViewController *)viewController

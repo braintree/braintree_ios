@@ -183,5 +183,54 @@ class BTThreeDSecureDriver_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
+
+    func testError_whenFinishIsCalledMoreThanOnce_sendsErrorAnalyticsEvent() {
+        let responseBody = [
+            "paymentMethod": [
+                "consumed": false,
+                "description": "ending in 02",
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "02",
+                ],
+                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
+                "threeDSecureInfo": [
+                    "enrolled": "N",
+                    "liabilityShiftPossible": false,
+                    "liabilityShifted": false,
+                    "status": "authenticate_successful_issuer_not_participating",
+                ],
+                "type": "CreditCard",
+            ],
+            "success": true,
+            "threeDSecureInfo":     [
+                "liabilityShiftPossible": false,
+                "liabilityShifted": false,
+            ]
+            ] as [String : Any]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+        let threeDSecureDriver = BTThreeDSecureDriver.init(apiClient: mockAPIClient, delegate:viewControllerPresentingDelegate)
+
+        let expectation = self.expectation(description: "Card is tokenized")
+        threeDSecureDriver.verifyCard(withNonce: originalNonce_lookupCardNotEnrolled, amount: NSDecimalNumber.one) { (tokenizedCard, error) -> Void in
+            guard let tokenizedCard = tokenizedCard else {
+                XCTFail()
+                return
+            }
+            XCTAssertTrue(isANonce(tokenizedCard.nonce))
+            XCTAssertNotEqual(tokenizedCard.nonce, self.originalNonce_lookupCardNotEnrolled);
+            XCTAssertNil(error)
+            XCTAssertFalse(tokenizedCard.liabilityShifted)
+            XCTAssertFalse(tokenizedCard.liabilityShiftPossible)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        let threeDSecureAuthenticationViewController = BTThreeDSecureAuthenticationViewController.init(lookupResult: BTThreeDSecureLookupResult.init())
+        threeDSecureDriver.perform(#selector(threeDSecureDriver.threeDSecureViewControllerDidFinish(_:)), with: threeDSecureAuthenticationViewController)
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.threedsecure.error.finished-without-handler")
+    }
 }
 
