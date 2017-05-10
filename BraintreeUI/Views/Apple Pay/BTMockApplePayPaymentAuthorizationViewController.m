@@ -1,4 +1,3 @@
-#if BT_ENABLE_APPLE_PAY
 #import "BTMockApplePayPaymentAuthorizationViewController.h"
 
 #import "BTMockApplePayPaymentAuthorizationView.h"
@@ -65,4 +64,3 @@
 }
 
 @end
-#endif
