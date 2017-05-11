@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## 4.8.2 (2017-05-11)
+
+* Add PayPal Credit support to PayPal Billing Agreements flow
+* Add V3 Client Token support
+* Enable client side vaulting of Venmo nonces
+* Fix potential memory leak issue [#312](https://github.com/braintree/braintree_ios/issues/312)
+* Fix bug causing random crashes in 3DS flow [#329](https://github.com/braintree/braintree_ios/issues/329)
+
 ## 4.8.1 (2017-04-07)
 
 * Optimize BTAPIClient:initWithAuthorization: when using a client token
