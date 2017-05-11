@@ -202,12 +202,13 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             if (request.amount != nil) {
                 parameters[@"amount"] = request.amount;
             }
-            parameters[@"offer_paypal_credit"] = @(request.offerCredit);
         } else {
             if (request.billingAgreementDescription.length > 0) {
                 parameters[@"description"] = request.billingAgreementDescription;
             }
         }
+        
+        parameters[@"offer_paypal_credit"] = @(request.offerCredit);
         
         experienceProfile[@"no_shipping"] = @(!request.isShippingAddressRequired);
 
@@ -822,8 +823,8 @@ static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontro
     NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.initiate.%@", [self.class eventStringForPaymentType:paymentType], [self.class eventStringForRequestTarget:target], success ? @"started" : @"failed"];
     [self.apiClient sendAnalyticsEvent:eventName];
 
-    if (paymentType == BTPayPalPaymentTypeCheckout && self.payPalRequest.offerCredit) {
-        NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.credit.offered.%@", [self.class eventStringForPaymentType:BTPayPalPaymentTypeCheckout], [self.class eventStringForRequestTarget:target], success ? @"started" : @"failed"];
+    if ((paymentType == BTPayPalPaymentTypeCheckout || paymentType == BTPayPalPaymentTypeBillingAgreement) && self.payPalRequest.offerCredit) {
+        NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.credit.offered.%@", [self.class eventStringForPaymentType:paymentType], [self.class eventStringForRequestTarget:target], success ? @"started" : @"failed"];
 
         [self.apiClient sendAnalyticsEvent:eventName];
     }
