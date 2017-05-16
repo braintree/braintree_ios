@@ -1,0 +1,57 @@
+/* Credit card number field placeholder */
+"CARD_NUMBER_PLACEHOLDER" = "카드 번호";
+
+/* American Express card brand */
+"CARD_TYPE_AMERICAN_EXPRESS" = "American Express";
+
+/* Diners Club card brand */
+"CARD_TYPE_DINERS_CLUB" = "Diners Club";
+
+/* Discover card brand */
+"CARD_TYPE_DISCOVER" = "Discover";
+
+/* JCB card brand */
+"CARD_TYPE_JCB" = "JCB";
+
+/* Laser card brand */
+"CARD_TYPE_LASER" = "Laser";
+
+/* Maestro card brand */
+"CARD_TYPE_MAESTRO" = "Maestro";
+
+/* MasterCard card brand */
+"CARD_TYPE_MASTER_CARD" = "MasterCard";
+
+/* Solo card brand */
+"CARD_TYPE_SOLO" = "Solo";
+
+/* Switch card brand */
+"CARD_TYPE_SWITCH" = "Switch";
+
+/* UnionPay card brand */
+"CARD_TYPE_UNION_PAY" = "UnionPay";
+
+/* Visa card brand */
+"CARD_TYPE_VISA" = "Visa";
+
+/* CVV (credit card security code) field placeholder */
+"CVV_FIELD_PLACEHOLDER" = "CVV";
+
+/* Credit card expiration date field placeholder (MM/YYYY format) */
+"EXPIRY_PLACEHOLDER_FOUR_DIGIT_YEAR" = "MM/YYYY";
+
+/* Credit card expiration date field placeholder (MM/YY format) */
+"EXPIRY_PLACEHOLDER_TWO_DIGIT_YEAR" = "MM/YY";
+
+/* PayPal (as a standalone term, referring to the payment method type, analogous to Visa or Discover */
+"PAYPAL" = "PayPal";
+
+/* PayPal payment method name */
+"PAYPAL_CARD_BRAND" = "PayPal";
+
+/* Credit card billing postal code field placeholder */
+"POSTAL_CODE_PLACEHOLDER" = "우편번호";
+
+/* OK Button on card form alert view for top level errors */
+"TOP_LEVEL_ERROR_ALERT_VIEW_OK_BUTTON_TEXT" = "확인";
+
