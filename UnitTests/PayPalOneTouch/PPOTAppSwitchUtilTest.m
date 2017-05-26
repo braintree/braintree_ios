@@ -16,18 +16,6 @@
 
 @implementation PPOTAppSwitchUtilTest
 
-- (void)setUp {
-    [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    [super tearDown];
-}
-
-
-
 - (void)testAppSwitchNotPossible {
     BOOL possible = [PPOTAppSwitchUtil isCallbackURLSchemeValid:@"com.scheme.bla"];
     XCTAssertFalse(possible, @"app switch should not be possible when unit tests running");
@@ -79,7 +67,7 @@
     XCTAssertTrue(parseQueryStringDict.count == 1, @"count should be 0");
 }
 
-- (void)testJSonEncodingDecoding {
+- (void)testJsonEncodingDecoding {
     NSDictionary *dict1 = @{@"key1": @1, @"key2": @"some.strings", @"key2": @{@"dict1": @"value"}, @"key3": @[@"el1", @"el2"]};
 
     NSString *encoded = [PPOTJSONHelper base64EncodedJSONStringWithDictionary:dict1];
@@ -98,15 +86,11 @@
 }
 
 - (void)testInvalidURL {
-
     XCTAssertFalse([PPOTAppSwitchUtil isValidURLAction:nil], @"should fail");
 
     NSString *urlTest = @"com.test.mytest://test?payload=e30%3D&x-source=(null)&x-success=com.test.callback://success&x-cancel=com.test.callback://cancel";
     NSURL *url = [NSURL URLWithString:urlTest];
     XCTAssertFalse([PPOTAppSwitchUtil isValidURLAction:url], @"should fail");
 }
-
-
-
 
 @end
