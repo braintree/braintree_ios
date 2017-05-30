@@ -46,7 +46,6 @@
     [self setObject:@([m isSimulator]) forKey:@"isSimulator" inDictionary:data];
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
     [self setObject:[m userInterfaceOrientation] forKey:@"userInterfaceOrientation" inDictionary:data];
-    [self setObject:@([m isPaypalInstalled]) forKey:@"paypalInstalled" inDictionary:data];
     [self setObject:@([m isVenmoInstalled]) forKey:@"venmoInstalled" inDictionary:data];
 
     return [NSDictionary dictionaryWithDictionary:data];
@@ -229,10 +228,6 @@
         default:
             return @"Unknown";
     }
-}
-
-- (BOOL)isPaypalInstalled {
-    return NO;
 }
 
 - (BOOL)isVenmoInstalled {
