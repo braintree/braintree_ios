@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.8.3 (2017-05-30)
+
+* Fix Pay with Venmo bug
+
 ## 4.8.2 (2017-05-11)
 
 * Add PayPal Credit support to PayPal Billing Agreements flow
