@@ -49,7 +49,7 @@ describe(@"appSwitchURLForMerchantID:accessToken:sdkVersion:returnURLScheme:bund
                     expect([meta[@"sessionId"] asString]).to.equal(@"session-id");
                     expect([meta[@"platform"] asString]).to.equal(@"ios");
                     expect([meta[@"integration"] asString]).to.equal(@"custom");
-                    expect([meta[@"sdkVersion"] asString]).to.equal(BRAINTREE_VERSION);
+                    expect([meta[@"version"] asString]).to.equal(BRAINTREE_VERSION);
                 }
             }
         });
