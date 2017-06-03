@@ -9,6 +9,8 @@
 
 /*!
  @brief Completion block for receiving the result of preflighting a request
+ 
+ Target can be `PPOTRequestTargetBrowser`, `PPOTRequestTargetOnDeviceApplication`, or `PPPOTRequestTargetNone`
 */
 typedef void (^PPOTRequestPreflightCompletionBlock) (PPOTRequestTarget target);
 
