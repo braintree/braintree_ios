@@ -7,4 +7,14 @@
                     animated:(__unused BOOL)animated
 {}
 
+- (void)setEnableShadow:(__unused BOOL)enable
+{}
+
+- (void)setEnableSwipeGesture:(__unused BOOL)markEnableSwipeGesture
+{}
+
+- (void)setDefaults {
+    [super setEnableShadow:YES];
+    [super setEnableSwipeGesture:YES];
+}
 @end

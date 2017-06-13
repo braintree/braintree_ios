@@ -55,6 +55,7 @@
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:ivc];
     self.rightMenu = nc;
     [BraintreeDemoSlideNavigationController sharedInstance].rightMenu = self.rightMenu;
+    [(BraintreeDemoSlideNavigationController *)[BraintreeDemoSlideNavigationController sharedInstance] setDefaults];
 }
 
 - (BOOL)slideNavigationControllerShouldDisplayRightMenu {

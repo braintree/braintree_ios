@@ -277,25 +277,23 @@
     }
 }
 
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
-                       didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion {
+- (void)paymentAuthorizationViewControllerDidFinish:(__unused PKPaymentAuthorizationViewController *)controller {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion {
     self.progressBlock(@"Apple Pay Did Authorize Payment");
     BTAPIClient *client = [[BTAPIClient alloc] initWithAuthorization:self.authorizationString];
     BTApplePayClient *applePayClient = [[BTApplePayClient alloc] initWithAPIClient:client];
     [applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
         if (error) {
             self.progressBlock(error.localizedDescription);
-            completion(PKPaymentAuthorizationStatusFailure);
+            completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusFailure errors:nil]);
         } else {
             self.completionBlock(tokenizedApplePayPayment);
-            completion(PKPaymentAuthorizationStatusSuccess);
+            completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusSuccess errors:nil]);
         }
     }];
-}
-
-- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
-    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)paymentAuthorizationViewControllerWillAuthorizePayment:(__unused PKPaymentAuthorizationViewController *)controller {
