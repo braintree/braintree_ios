@@ -69,19 +69,14 @@ The Braintree Gateway domain complies with this policy.
 
 If your app is compiled with iOS 9 SDK and integrates payment options with an app-switch workflow, you must add URL schemes to the whitelist in your application's plist.
 
-If your app supports payments from PayPal:
-* `com.paypal.ppclient.touch.v1`
-* `com.paypal.ppclient.touch.v2`
-
 If your app supports payments from Venmo:
 * `com.venmo.touch.v2`
 
-For example, if your app supports PayPal, you could add the following:
+For example, if your app supports Venmo, you could add the following:
 ```
   <key>LSApplicationQueriesSchemes</key>
   <array>
-    <string>com.paypal.ppclient.touch.v1</string>
-    <string>com.paypal.ppclient.touch.v2</string>
+    <string>com.venmo.touch.v2</string>
   </array>
 ```
 

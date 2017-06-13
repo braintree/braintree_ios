@@ -46,7 +46,6 @@
     [self setObject:@([m isSimulator]) forKey:@"isSimulator" inDictionary:data];
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
     [self setObject:[m userInterfaceOrientation] forKey:@"userInterfaceOrientation" inDictionary:data];
-    [self setObject:@([m isPaypalInstalled]) forKey:@"paypalInstalled" inDictionary:data];
     [self setObject:@([m isVenmoInstalled]) forKey:@"venmoInstalled" inDictionary:data];
 
     return [NSDictionary dictionaryWithDictionary:data];
@@ -229,22 +228,6 @@
         default:
             return @"Unknown";
     }
-}
-
-- (BOOL)isPaypalInstalled {
-    if ([self.class isAppExtension]) {
-        return NO;
-    }
-    
-    UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
-    static BOOL paypalInstalled;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSURL *paypalV1URL = [NSURL URLWithString:@"com.paypal.ppclient.touch.v1://"];
-        NSURL *paypalV2URL = [NSURL URLWithString:@"com.paypal.ppclient.touch.v2://"];
-        paypalInstalled = [sharedApplication canOpenURL:paypalV1URL] || [sharedApplication canOpenURL:paypalV2URL];
-    });
-    return paypalInstalled;
 }
 
 - (BOOL)isVenmoInstalled {

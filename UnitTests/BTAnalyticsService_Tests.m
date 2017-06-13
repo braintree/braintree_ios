@@ -242,7 +242,6 @@
     XCTAssertEqualObjects(metaParameters[@"platformVersion"], [[UIDevice currentDevice] systemVersion]);
     XCTAssertNotNil(metaParameters[@"sessionId"]);
     XCTAssertEqualObjects(metaParameters[@"source"], @"unknown");
-    XCTAssertTrue([metaParameters[@"paypalInstalled"] isKindOfClass:[NSNumber class]]);
     XCTAssertTrue([metaParameters[@"venmoInstalled"] isKindOfClass:[NSNumber class]]);
 }
 

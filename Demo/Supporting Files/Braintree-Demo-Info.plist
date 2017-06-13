@@ -61,8 +61,6 @@
 	<array>
 		<string>com.braintreepayments.Demo.payments</string>
 		<string>com.venmo.touch.v2</string>
-		<string>com.paypal.ppclient.touch.v1</string>
-		<string>com.paypal.ppclient.touch.v2</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
