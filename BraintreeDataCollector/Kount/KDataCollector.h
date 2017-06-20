@@ -39,21 +39,21 @@ extern NSString *const KDataCollectorVersion;
 typedef NS_ENUM(NSInteger, KLocationCollectorConfig) {
     
     // Request permission if not currently authorized (default)
-    KLocationCollectorConfigRequestPermission = 0, 
+    KLocationCollectorConfigRequestPermission = 0,
     
     // Only collect if app already has location permissions
     // (use in cases where requesting permission is done by the app itself)
-    KLocationCollectorConfigPassive,           
+    KLocationCollectorConfigPassive,
     
     // Skip location collection
-    KLocationCollectorConfigSkip,          
+    KLocationCollectorConfigSkip,
 };
 
 // Configuration settings Kount collection environment
 typedef NS_ENUM(NSInteger, KEnvironment) {
     
     // Unknown Environment
-    KEnvironmentUnknown = 0, 
+    KEnvironmentUnknown = 0,
     
     // Test Environment
     KEnvironmentTest,
@@ -100,5 +100,4 @@ typedef NS_ENUM(NSInteger, KEnvironment) {
 NS_ASSUME_NONNULL_END
 
 @end
-
 
