@@ -30,6 +30,18 @@ class FakeBundle : Bundle {
     }
 }
 
+class FakeDevice : UIDevice {
+    var fakeSystemVersion:String = "8.9"
+    override var systemVersion: String {
+        get {
+            return fakeSystemVersion
+        }
+        set(newSystemVersion) {
+            fakeSystemVersion = newSystemVersion
+        }
+    }
+}
+
 class BTVenmoDriver_Tests: XCTestCase {
     var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
     var observers : [NSObjectProtocol] = []
@@ -567,6 +579,48 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.application = fakeApplication
 
         XCTAssertFalse(venmoDriver.isiOSAppAvailableForAppSwitch())
+    }
+
+    func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_andIosLessThan9_returnsFalse() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        mockAPIClient = venmoDriver.apiClient as! MockAPIClient
+        BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+        fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://x-callback-url/path")!)
+        venmoDriver.application = fakeApplication
+        let fakeDevice = FakeDevice()
+        venmoDriver.device = fakeDevice
+
+        XCTAssertFalse(venmoDriver.isiOSAppAvailableForAppSwitch())
+    }
+
+    func testIsiOSAppSwitchAvailable_whenApplicationCantOpenVenmoURL_andIosEqualTo9_3_returnsFalse() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+        venmoDriver.application = fakeApplication
+        let fakeDevice = FakeDevice()
+        fakeDevice.systemVersion = "9.3"
+        venmoDriver.device = fakeDevice
+
+        XCTAssertFalse(venmoDriver.isiOSAppAvailableForAppSwitch())
+    }
+
+    func testIsiOSAppSwitchAvailable_whenApplicationCanOpenVenmoURL_andIosEqualTo11_1_returnsTrue() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        mockAPIClient = venmoDriver.apiClient as! MockAPIClient
+        BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        fakeApplication.cannedCanOpenURL = false
+        fakeApplication.canOpenURLWhitelist.append(URL(string: "com.venmo.touch.v2://x-callback-url/path")!)
+        venmoDriver.application = fakeApplication
+        let fakeDevice = FakeDevice()
+        fakeDevice.systemVersion = "11.1"
+        venmoDriver.device = fakeDevice
+
+        XCTAssertTrue(venmoDriver.isiOSAppAvailableForAppSwitch())
     }
 
     let venmoProductionSourceApplication = "net.kortina.labs.Venmo"
