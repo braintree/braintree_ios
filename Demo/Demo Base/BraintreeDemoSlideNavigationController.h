@@ -2,6 +2,4 @@
 
 @interface BraintreeDemoSlideNavigationController : SlideNavigationController
 
-- (void)setDefaults;
-
 @end
