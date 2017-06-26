@@ -19,7 +19,7 @@ describe(@"metadata", ^{
 
     describe(@"platformVersion", ^{
         it(@"returns the iOS version, e.g. 7.0", ^{
-            expect([BTAnalyticsMetadata metadata][@"platformVersion"]).to.match(@"^\\d+\\.\\d+$");
+            expect([BTAnalyticsMetadata metadata][@"platformVersion"]).to.match(@"^\\d+\\.\\d+(\\.\\d+)?$");
         });
     });
 
