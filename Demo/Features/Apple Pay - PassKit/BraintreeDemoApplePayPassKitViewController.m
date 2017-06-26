@@ -121,6 +121,42 @@
 
 #pragma mark PKPaymentAuthorizationViewControllerDelegate
 
+- (void)paymentAuthorizationViewControllerDidFinish:(__unused PKPaymentAuthorizationViewController *)controller {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment handler:(void (^)(PKPaymentAuthorizationResult * _Nonnull))completion {
+    self.progressBlock(@"Apple Pay Did Authorize Payment");
+    [self.applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock(error.localizedDescription);
+            completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusFailure errors:nil]);
+        } else {
+            self.label.text = tokenizedApplePayPayment.nonce;
+            self.completionBlock(tokenizedApplePayPayment);
+            completion([[PKPaymentAuthorizationResult alloc] initWithStatus:PKPaymentAuthorizationStatusSuccess errors:nil]);
+        }
+    }];
+}
+#endif
+
+- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
+                       didAuthorizePayment:(PKPayment *)payment
+                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion {
+    self.progressBlock(@"Apple Pay Did Authorize Payment");
+    [self.applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
+        if (error) {
+            self.progressBlock(error.localizedDescription);
+            completion(PKPaymentAuthorizationStatusFailure);
+        } else {
+            self.label.text = tokenizedApplePayPayment.nonce;
+            self.completionBlock(tokenizedApplePayPayment);
+            completion(PKPaymentAuthorizationStatusSuccess);
+        }
+    }];
+}
+
 - (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
                    didSelectShippingMethod:(PKShippingMethod *)shippingMethod
                                 completion:(void (^)(PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem *> * _Nonnull))completion
@@ -138,29 +174,6 @@
     } else {
         completion(PKPaymentAuthorizationStatusSuccess, @[testItem]);
     }
-}
-
-- (void)paymentAuthorizationViewController:(__unused PKPaymentAuthorizationViewController *)controller
-                       didAuthorizePayment:(PKPayment *)payment
-                                completion:(void (^)(PKPaymentAuthorizationStatus status))completion
-{
-    self.progressBlock(@"Apple Pay Did Authorize Payment");
-    [self.applePayClient tokenizeApplePayPayment:payment completion:^(BTApplePayCardNonce * _Nullable tokenizedApplePayPayment, NSError * _Nullable error) {
-        if (error) {
-            self.progressBlock(error.localizedDescription);
-            completion(PKPaymentAuthorizationStatusFailure);
-        } else {
-            self.label.text = tokenizedApplePayPayment.nonce;
-            self.completionBlock(tokenizedApplePayPayment);
-            completion(PKPaymentAuthorizationStatusSuccess);
-        }
-    }];
-}
-
-
-
-- (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
-    [controller dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)paymentAuthorizationViewControllerWillAuthorizePayment:(__unused PKPaymentAuthorizationViewController *)controller {

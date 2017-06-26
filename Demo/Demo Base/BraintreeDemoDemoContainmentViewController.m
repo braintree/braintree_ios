@@ -21,6 +21,11 @@
 @implementation BraintreeDemoDemoContainmentViewController
 
 - (void)viewDidLoad {
+    self.title = @"Braintree";
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action: @selector(tappedRefresh)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain target:self action: @selector(tappedSettings)];
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self.navigationController setToolbarHidden:NO];
     [super viewDidLoad];
     [self setupToolbar];
     [self reloadIntegration];
