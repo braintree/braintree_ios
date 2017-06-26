@@ -16,6 +16,11 @@
 @property (nonatomic, strong) NSBundle *bundle;
 
 /*!
+ @brief Defaults to [UIDevice currentDevice], but exposed for unit tests to inject different devices
+ */
+@property (nonatomic, strong) UIDevice *device;
+
+/*!
  @brief Defaults to use [BTAppSwitchHandler sharedInstance].returnURLScheme, but exposed for unit tests to stub returnURLScheme.
 */
 @property (nonatomic, copy) NSString *returnURLScheme;

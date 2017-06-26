@@ -66,6 +66,13 @@ static BTVenmoDriver *appSwitchedDriver;
     return _bundle;
 }
 
+- (UIDevice *)device {
+    if (!_device) {
+        _device = [UIDevice currentDevice];
+    }
+    return _device;
+}
+
 - (NSString *)returnURLScheme {
     if (!_returnURLScheme) {
         _returnURLScheme = [BTAppSwitch sharedInstance].returnURLScheme;
@@ -211,7 +218,8 @@ static BTVenmoDriver *appSwitchedDriver;
 #pragma mark - App switch
 
 - (BOOL)isiOSAppAvailableForAppSwitch {
-    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]];
+    BOOL isAtLeastIos9 = ([[self.device systemVersion] intValue] >= 9);
+    return [self.application canOpenURL:[BTVenmoAppSwitchRequestURL baseAppSwitchURL]] && isAtLeastIos9;
 }
 
 + (void)handleAppSwitchReturnURL:(NSURL *)url {
