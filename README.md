@@ -20,10 +20,18 @@ Welcome to Braintree's iOS SDK. This library will help you accept card and alter
 
 We recommend using either [CocoaPods](https://github.com/CocoaPods/CocoaPods) or [Carthage](https://github.com/Carthage/Carthage) to integrate the Braintree SDK with your project.
 
-#### CocoaPods Example
+#### CocoaPods
 ```
+# Includes Cards and PayPal
 pod 'Braintree'
+
+# Optionally include additional Pods
+pod 'Braintree/DataCollector'
+pod 'Braintree/Venmo'
 ```
+
+#### Carthage
+Add `github "braintree/braintree_ios"` to your `Cartfile`, and [add the frameworks to your project](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
 
 ## Documentation
 
