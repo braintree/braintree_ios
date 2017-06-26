@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 4.8.4 (2017-06-26)
+
+* Update to Kount 3.2
+* Update Demo to support Xcode9 (Beta 1) and iOS11
+* Update README
+
 ## 4.8.3 (2017-05-30)
 
 * Fix Pay with Venmo bug
