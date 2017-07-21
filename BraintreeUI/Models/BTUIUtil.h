@@ -4,7 +4,7 @@
 
 + (BOOL)luhnValid:(NSString *)cardNumber;
 
-/*!
+/**
  @brief Strips non-digit characters from a string.
 
  @param input The string to strip.

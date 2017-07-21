@@ -1,4 +1,4 @@
-/*!
+/**
  @brief Card type
  */
 typedef NS_ENUM(NSInteger, BTCardNetwork) {

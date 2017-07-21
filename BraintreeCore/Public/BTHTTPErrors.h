@@ -1,21 +1,21 @@
 #import <Foundation/Foundation.h>
 
-/*!
+/**
  @brief The error domain for BTHTTP errors
 */
 extern NSString * const BTHTTPErrorDomain;
 
-/*!
+/**
  @brief Key for userInfo dictionary that contains the NSHTTPURLResponse from server when it returns an HTTP error
 */
 extern NSString * const BTHTTPURLResponseKey;
 
-/*!
+/**
  @brief Key for userInfo dictionary that contains the BTJSON body of the HTTP error response
 */
 extern NSString * const BTHTTPJSONResponseBodyKey;
 
-/*!
+/**
  @brief BTHTTP error codes
 */
 typedef NS_ENUM(NSInteger, BTHTTPErrorCode) {

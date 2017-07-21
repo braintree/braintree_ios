@@ -9,14 +9,14 @@
 
 @interface PPOTEncryptionHelper : NSObject
 
-/*!
+/**
  @brief Generates a random 256-bit key to encrypt data with
 
  @return a 256-bit encryption key
 */
 + (nonnull NSData *)generate256BitKey;
 
-/*!
+/**
  @brief Encrypt the data using the encryption key.
 
  @param plainData the data to encrypt
@@ -25,7 +25,7 @@
 */
 + (nullable NSData *)encryptAESCTRData:(nonnull NSData *)plainData encryptionKey:(nonnull NSData *)key;
 
-/*!
+/**
  @brief Decrypt the data using the encryption key.
 
  @param cipherData the encrypted data
@@ -34,7 +34,7 @@
 */
 + (nullable NSData *)decryptAESCTRData:(nonnull NSData *)cipherData encryptionKey:(nonnull NSData *)key;
 
-/*!
+/**
  @brief Encrypts data using the given certificate
 
  @param plainData the data to encrypt

@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 
 @interface BTVenmoDriver : NSObject <BTAppSwitchHandler>
 
-/*!
+/**
  @brief Initialize a new Venmo driver instance.
 
  @param apiClient The API client
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-/*!
+/**
  @brief Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
 
  @param vault Whether to automatically vault the Venmo Account. Vaulting will only occur if a client token with a customer_id is being used.
@@ -57,7 +57,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 */
 - (void)authorizeAccountAndVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock;
 
-/*!
+/**
  @brief Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
 
  @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
@@ -66,12 +66,12 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 */
 - (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use [BTVenmoDriver authorizeAccountAndVault:completion instead");
 
-/*!
+/**
  @brief Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
 */
 - (BOOL)isiOSAppAvailableForAppSwitch;
 
-/*!
+/**
  @brief An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating your UI
 */
 @property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;

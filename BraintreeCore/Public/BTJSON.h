@@ -10,7 +10,7 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
     BTJSONErrorAccessInvalid = 2,
 };
 
-/*!
+/**
  @brief A type-safe wrapper around JSON
 
  @see http://www.json.org/
@@ -61,14 +61,14 @@ typedef NS_ENUM(NSInteger, BTJSONErrorCode) {
 
 /// @name Subscripting
 
-/*!
+/**
  @brief Indexes into the JSON as if the current value is an object
 
  @discussion Notably, this method will always return successfully; however, if the value is not an object, the JSON will wrap an error.
 */
 - (id)objectForKeyedSubscript:(NSString *)key;
 
-/*!
+/**
  @brief Indexes into the JSON as if the current value is an array
 
  @discussion Notably, this method will always return successfully; however, if the value is not an array, the JSON will wrap an error.

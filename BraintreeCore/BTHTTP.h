@@ -6,17 +6,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BTHTTPResponse, BTClientToken;
 
-/*!
+/**
  @brief Performs HTTP methods on the Braintree Client API
 */
 @interface BTHTTP : NSObject<NSCopying>
 
-/*!
+/**
  @brief An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
 */
 @property (nonatomic, nullable, strong) NSArray<NSData *> *pinnedCertificates;
 
-/*!
+/**
  @brief Initialize `BTHTTP` with the authorization fingerprint from a client token
 
  @param URL The base URL for the Braintree Client API
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithBaseURL:(NSURL *)URL
        authorizationFingerprint:(NSString *)authorizationFingerprint NS_DESIGNATED_INITIALIZER;
 
-/*!
+/**
  @brief Initialize `BTHTTP` with a tokenization key
 
  @param URL The base URL for the Braintree Client API
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (instancetype)initWithBaseURL:(NSURL *)URL tokenizationKey:(NSString *)tokenizationKey NS_DESIGNATED_INITIALIZER;
 
-/*!
+/**
  @brief A convenience initializer to initialize `BTHTTP` with a client token
 
  @param clientToken A client token
@@ -49,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSURLSession *session;
 @property (nonatomic, readonly, strong) NSURL *baseURL;
 
-/*!
+/**
  @brief Queue that callbacks are dispatched onto, main queue if not otherwise specified
 */
 @property (nonatomic, strong) dispatch_queue_t dispatchQueue;

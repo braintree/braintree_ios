@@ -3,7 +3,7 @@
 #import "BTUICardType.h"
 #import "BTUIPaymentOptionType.h"
 
-/*!
+/**
  @class BTUIViewUtil
  @brief Utilities used by other views
 */

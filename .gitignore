@@ -34,3 +34,7 @@ EverybodyVenmo.mobileprovision
 .hockeyapp
 
 *.pid
+
+# Generated HTML docs
+
+Docs/html

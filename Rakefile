@@ -158,84 +158,6 @@ namespace :sanity_checks do
   task :carthage_test => %w[carthage:test carthage:clean]
 end
 
-
-
-def apple_doc_command
-  %W[/usr/local/bin/appledoc
-      -o appledocs
-      --project-name Braintree
-      --project-version '#{current_version_with_sha}'
-      --project-company Braintree
-      --docset-bundle-id '%COMPANYID'
-      --docset-bundle-name Braintree
-      --docset-desc 'Braintree iOS SDK (%VERSION)'
-      --index-desc README.md
-      --include LICENSE
-      --include CHANGELOG.md
-      --print-information-block-titles
-      --company-id com.braintreepayments
-      --prefix-merged-sections
-      --no-merge-categories
-      --warn-missing-company-id
-      --warn-undocumented-object
-      --warn-undocumented-member
-      --warn-empty-description
-      --warn-unknown-directive
-      --warn-invalid-crossref
-      --warn-missing-arg
-      --no-repeat-first-par
-  ].join(' ')
-end
-
-def apple_doc_files
-  %x{find Braintree -name "*.h"}.split("\n").reject { |name| name =~ /mSDK/}.map { |name| name.gsub(' ', '\\ ')}.join(' ')
-end
-
-desc "Generate documentation via appledoc"
-task :docs => 'docs:generate'
-
-namespace :appledoc do
-  task :check do
-    unless File.exists?('/usr/local/bin/appledoc')
-      puts "appledoc not found at /usr/local/bin/appledoc: Install via homebrew and try again: `brew install --HEAD appledoc`"
-      exit 1
-    end
-  end
-end
-
-namespace :docs do
-  desc "Generate apple docs as html"
-  task :generate => 'appledoc:check' do
-    command = apple_doc_command << " --no-create-docset --keep-intermediate-files --create-html #{apple_doc_files}"
-    run(command)
-    puts "Generated HTML documentationa at appledocs/html"
-  end
-
-  desc "Check that documentation can be built from the source code via appledoc successfully."
-  task :check => 'appledoc:check' do
-    command = apple_doc_command << " --no-create-html --verbose 5 #{apple_doc_files}"
-    exitstatus = run(command)
-    if exitstatus == 0
-      puts "appledoc generation completed successfully!"
-    elsif exitstatus == 1
-      puts "appledoc generation produced warnings"
-    elsif exitstatus == 2
-      puts "! appledoc generation encountered an error"
-      exit(exitstatus)
-    else
-      puts "!! appledoc generation failed with a fatal error"
-    end
-    exit(exitstatus)
-  end
-
-  desc "Generate & install a docset into Xcode from the current sources"
-  task :install => 'appledoc:check' do
-    command = apple_doc_command << " --install-docset #{apple_doc_files}"
-    run(command)
-  end
-end
-
-
 namespace :release do
   desc "Print out pre-release checklist"
   task :assumptions do
@@ -352,3 +274,37 @@ namespace :gen do
   end
 end
 
+def jazzy_command
+  %W[jazzy
+      --objc
+      --clean
+      --author Braintree
+      --author_url http://braintreepayments.com
+      --github_url https://github.com/braintree/braintree_ios
+      --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version}
+      --sdk iphonesimulator
+      --module-version #{current_version}
+      --output Docs/html
+      --umbrella-header Braintree-Umbrella-Header.h
+      --framework-root .
+      --min-acl private
+      --module Braintree
+  ].join(' ')
+end
+
+desc "Generate documentation via jazzy"
+task :docs => %w[docs:clean docs:generate]
+
+namespace :docs do
+  
+  task :clean do
+    run! 'rm -rf Docs/html'
+  end
+  
+  desc "Generate docs with jazzy"
+  task :generate do
+    run(jazzy_command)
+    puts "Generated HTML documentation at Docs/html"
+  end
+  
+end
