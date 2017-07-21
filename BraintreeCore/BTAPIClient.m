@@ -130,10 +130,11 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     NSURLComponents *components = [[NSURLComponents alloc] init];
     components.scheme = [BTAPIClient schemeForEnvironmentString:environment];
     NSString *host = [BTAPIClient hostForEnvironmentString:environment];
-    NSArray *hostComponents = [host componentsSeparatedByString:@":"];
+    NSArray <NSString *> *hostComponents = [host componentsSeparatedByString:@":"];
     components.host = hostComponents[0];
     if (hostComponents.count > 1) {
-        components.port = hostComponents[1];
+        NSString *portString = hostComponents[1];
+        components.port = @(portString.integerValue);
     }
     components.path = [BTAPIClient clientApiBasePathForMerchantID:merchantID];
     if (!components.host || !components.path) {
