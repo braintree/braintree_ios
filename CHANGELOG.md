@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.8.5 (2017-07-21)
+
+* Fix bug that caused a crash on iOS11 (Beta 3) when using a Tokenization Key in production (Thanks @peterstuart)
+
 ## 4.8.4 (2017-06-26)
 
 * Update to Kount 3.2
