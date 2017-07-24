@@ -9,7 +9,7 @@ produces client tokens that point to Braintree's Sandbox Environment.
 
 ## Tests
 
-There are a number of test targets for each section of the project. You can run all tests on the command line with `bundle && rake spec:all`. 
+There are a number of test targets for each section of the project. You can run all tests on the command line with `bundle && rake spec:all`.
 
 It's a good idea to run `rake`, which runs all unit tests, before committing.
 
@@ -17,7 +17,7 @@ The integration tests require a full Braintree stack running on localhost.
 
 ## Architecture
 
-See [Frameworks](Frameworks.markdown) for an overview of the components that comprise this SDK.
+See [Frameworks](Docs/Frameworks.md) for an overview of the components that comprise this SDK.
 
 ## Environmental Assumptions
 
