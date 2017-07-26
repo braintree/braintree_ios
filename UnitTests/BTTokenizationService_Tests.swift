@@ -105,23 +105,28 @@ class BTTokenizationService_Tests: XCTestCase {
 
     // This test only verifies that SFSafariViewController is presented
     func testSingleton_canAuthorizePayPalThroughSFSafariViewController() {
-        if #available(iOS 9.0, *) {
-            let sharedService = BTTokenizationService.shared()
-            let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
-            stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
-                "paypalEnabled": true,
-                "paypal": [
-                    "environment": "offline",
-                    "privacyUrl": "",
-                    "userAgreementUrl": "",
-                ] ])
-            let mockDelegate = MockViewControllerPresentationDelegate()
-            BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
-
-            sharedService.tokenizeType("PayPal", options: [BTTokenizationServiceViewPresentingDelegateOption: mockDelegate], with: stubAPIClient) { _ -> Void in }
-
-            XCTAssertTrue(mockDelegate.lastViewController is SFSafariViewController)
+        guard #available(iOS 9.0, *) else {
+            return
         }
+
+        if #available(iOS 11.0, *) {
+            return
+        }
+        let sharedService = BTTokenizationService.shared()
+        let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
+        stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "paypalEnabled": true,
+            "paypal": [
+                "environment": "offline",
+                "privacyUrl": "",
+                "userAgreementUrl": "",
+            ] ])
+        let mockDelegate = MockViewControllerPresentationDelegate()
+        BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
+
+        sharedService.tokenizeType("PayPal", options: [BTTokenizationServiceViewPresentingDelegateOption: mockDelegate], with: stubAPIClient) { _ -> Void in }
+
+        XCTAssertTrue(mockDelegate.lastViewController is SFSafariViewController)
     }
 
     func testSingleton_canAuthorizeVenmo() {

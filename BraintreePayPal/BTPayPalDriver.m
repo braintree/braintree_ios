@@ -118,9 +118,18 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             request.additionalPayloadAttributes = @{ @"client_key": self.apiClient.tokenizationKey };
         }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 9.0, *)) {
+            // will use in-app browser
+        } else {
+            [self informDelegateWillPerformAppSwitch];
+        }
+#else
         if (![SFSafariViewController class]) {
             [self informDelegateWillPerformAppSwitch];
         }
+#endif
+
         [request performWithAdapterBlock:^(BOOL success, NSURL *url, PPOTRequestTarget target, NSString *clientMetadataId, NSError *error) {
             self.clientMetadataId = clientMetadataId;
             
@@ -325,9 +334,17 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                           return;
                       }
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+                      if (@available(iOS 9.0, *)) {
+                          // will use in-app browser
+                      } else {
+                          [self informDelegateWillPerformAppSwitch];
+                      }
+#else
                       if (![SFSafariViewController class]) {
                           [self informDelegateWillPerformAppSwitch];
                       }
+#endif
 
                       [request performWithAdapterBlock:^(BOOL success, NSURL *url, PPOTRequestTarget target, NSString *clientMetadataId, NSError *error) {
                           self.clientMetadataId = clientMetadataId;
@@ -352,6 +369,17 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 - (void)setAppSwitchReturnBlock:(void (^)(BTPayPalAccountNonce *tokenizedAccount, NSError *error))completionBlock
                  forPaymentType:(BTPayPalPaymentType)paymentType {
     appSwitchReturnBlock = ^(NSURL *url) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 11.0, *)) {
+            if (self.safariAuthenticationSession) {
+                // do nothing
+            } else if (self.safariViewController) {
+                [self informDelegatePresentingViewControllerNeedsDismissal];
+            } else {
+                [self informDelegateWillProcessAppSwitchReturn];
+            }
+        } else
+#endif
         if (self.safariViewController) {
             [self informDelegatePresentingViewControllerNeedsDismissal];
         } else {
@@ -438,30 +466,63 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 {
     if (success) {
         // Defensive programming in case PayPal One Touch returns a non-HTTP URL so that SFSafariViewController doesn't crash
-        if ([SFSafariViewController class] && ![url.scheme.lowercaseString hasPrefix:@"http"]) {
-            NSError *urlError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
-                                                    code:BTPayPalDriverErrorTypeUnknown
-                                                userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Attempted to open an invalid URL in SFSafariViewController: %@://", url.scheme],
-                                                            NSLocalizedRecoverySuggestionErrorKey: @"Try again or contact Braintree Support." }];
-            if (completionBlock) completionBlock(nil, urlError);
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 9.0, *)) {
+#else
+        if ([SFSafariViewController class]) {
+#endif
+            if (![url.scheme.lowercaseString hasPrefix:@"http"]) {
+                NSError *urlError = [NSError errorWithDomain:BTPayPalDriverErrorDomain
+                                                        code:BTPayPalDriverErrorTypeUnknown
+                                                    userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Attempted to open an invalid URL in SFSafariViewController: %@://", url.scheme],
+                                                                NSLocalizedRecoverySuggestionErrorKey: @"Try again or contact Braintree Support." }];
+                if (completionBlock) completionBlock(nil, urlError);
 
-            NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.error.safariviewcontrollerbadscheme.%@", [self.class eventStringForPaymentType:paymentType], [self.class eventStringForRequestTarget:target], url.scheme];
-            [self.apiClient sendAnalyticsEvent:eventName];
+                NSString *eventName = [NSString stringWithFormat:@"ios.%@.%@.error.safariviewcontrollerbadscheme.%@", [self.class eventStringForPaymentType:paymentType], [self.class eventStringForRequestTarget:target], url.scheme];
+                [self.apiClient sendAnalyticsEvent:eventName];
 
-            return;
+                return;
+            }
         }
         [self performSwitchRequest:url];
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 9.0, *)) {
+            // use in-app browser
+        } else {
+            [self informDelegateDidPerformAppSwitchToTarget:target];
+        }
+#else
         if (![SFSafariViewController class]) {
             [self informDelegateDidPerformAppSwitchToTarget:target];
         }
+#endif
     } else {
         if (completionBlock) completionBlock(nil, error);
     }
 }
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    if (@available(iOS 11.0, *)) {
+        self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:appSwitchURL callbackURLScheme:self.returnURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+            if (error) {
+                // TODO Make sure it is the cancel error
+                // Send analytics event?
+                [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
+                return;
+            }
+            [BTAppSwitch handleOpenURL:callbackURL sourceApplication:@"com.apple.safariviewservice"];
+        }];
+        if (self.safariAuthenticationSession != nil) {
+            self.isSFAuthenticationSessionStarted = [self.safariAuthenticationSession start];
+        }
+    } else if (@available(iOS 9.0, *)) {
+        [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
+#else
     if ([SFSafariViewController class]) {
         [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
+#endif
     } else {
         UIApplication *application = [UIApplication sharedApplication];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
