@@ -8,6 +8,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 
 #import "BTAPIClient.h"
 #import "BTAppSwitch.h"
+#import "BTBinData.h"
 #import "BTClientMetadata.h"
 #import "BTClientToken.h"
 #import "BTConfiguration.h"

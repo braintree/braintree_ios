@@ -239,6 +239,17 @@ class BTApplePay_Tests: XCTestCase {
                 [
                     "nonce" : "an-apple-pay-nonce",
                     "description": "a description",
+                    "binData": [
+                        "prepaid": "Yes",
+                        "healthcare": "Yes",
+                        "debit": "No",
+                        "durbinRegulated": "No",
+                        "commercial": "Yes",
+                        "payroll": "No",
+                        "issuingBank": "US",
+                        "countryOfIssuance": "Something",
+                        "productId": "123"
+                    ]
                 ]
             ]
             ])
@@ -250,6 +261,15 @@ class BTApplePay_Tests: XCTestCase {
             XCTAssertNil(error)
             XCTAssertEqual(tokenizedPayment!.localizedDescription, "a description")
             XCTAssertEqual(tokenizedPayment!.nonce, "an-apple-pay-nonce")
+            XCTAssertEqual(tokenizedPayment!.binData.prepaid, "Yes")
+            XCTAssertEqual(tokenizedPayment!.binData.healthcare, "Yes")
+            XCTAssertEqual(tokenizedPayment!.binData.debit, "No")
+            XCTAssertEqual(tokenizedPayment!.binData.durbinRegulated, "No")
+            XCTAssertEqual(tokenizedPayment!.binData.commercial, "Yes")
+            XCTAssertEqual(tokenizedPayment!.binData.payroll, "No")
+            XCTAssertEqual(tokenizedPayment!.binData.issuingBank, "US")
+            XCTAssertEqual(tokenizedPayment!.binData.countryOfIssuance, "Something")
+            XCTAssertEqual(tokenizedPayment!.binData.productId, "123")
             expectation.fulfill()
         }
 
