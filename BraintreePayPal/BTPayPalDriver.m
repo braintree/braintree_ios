@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 };
 
 @interface BTPayPalDriver () <SFSafariViewControllerDelegate>
+@property (nonatomic, assign) BOOL becameActiveAfterSFAuthenticationSessionModal;
 @end
 
 @implementation BTPayPalDriver
@@ -57,12 +58,24 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     if (self = [super init]) {
         BTClientMetadataSourceType source = [self isiOSAppAvailableForAppSwitch] ? BTClientMetadataSourcePayPalApp : BTClientMetadataSourcePayPalBrowser;
         _apiClient = [apiClient copyWithSource:source integration:apiClient.metadata.integration];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     }
     return self;
 }
 
 - (instancetype)init {
     return nil;
+}
+
+- (void)applicationDidBecomeActive:(__unused NSNotification *)notification
+{
+    if (self.isSFAuthenticationSessionStarted) {
+        self.becameActiveAfterSFAuthenticationSessionModal = YES;
+    }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Authorization (Future Payments)
@@ -390,6 +403,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         // out of the PayPal app switch flow (e.g. "Done" button in SFSafariViewController)
         if ([url.absoluteString isEqualToString:SFSafariViewControllerFinishedURL]) {
             if (completionBlock) completionBlock(nil, nil);
+            appSwitchReturnBlock = nil;
             return;
         }
         
@@ -507,14 +521,26 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     if (@available(iOS 11.0, *)) {
         self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:appSwitchURL callbackURLScheme:self.returnURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
             if (error) {
-                // TODO Make sure it is the cancel error
-                // Send analytics event?
+                // TODO Send analytics event?
+                // Verify that this approach for validating works
+                if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
+                    if (self.becameActiveAfterSFAuthenticationSessionModal) {
+                        // From Web View
+                        NSLog(@"Record cancel from auth web view");
+                    } else {
+                        // From Modal
+                        NSLog(@"Record cancel from modal");
+                    }
+                }
+
                 [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
                 return;
             }
             [BTAppSwitch handleOpenURL:callbackURL sourceApplication:@"com.apple.safariviewservice"];
+            self.safariAuthenticationSession = nil;
         }];
         if (self.safariAuthenticationSession != nil) {
+            self.becameActiveAfterSFAuthenticationSessionModal = NO;
             self.isSFAuthenticationSessionStarted = [self.safariAuthenticationSession start];
         }
     } else if (@available(iOS 9.0, *)) {
