@@ -11,9 +11,9 @@
             _durbinRegulated = [json[@"durbinRegulated"] asString] ? [json[@"durbinRegulated"] asString] : @"Unknown";
             _commercial = [json[@"commercial"] asString] ? [json[@"commercial"] asString] : @"Unknown";
             _payroll = [json[@"payroll"] asString] ? [json[@"payroll"] asString] : @"Unknown";
-            _issuingBank = [json[@"issuingBank"] asString] ? [json[@"issuingBank"] asString] : @"Unknown";
-            _countryOfIssuance = [json[@"countryOfIssuance"] asString] ? [json[@"countryOfIssuance"] asString] : @"Unknown";
-            _productId = [json[@"productId"] asString] ? [json[@"productId"] asString] : @"Unknown";
+            _issuingBank = [json[@"issuingBank"] asString] ? [json[@"issuingBank"] asString] : @"";
+            _countryOfIssuance = [json[@"countryOfIssuance"] asString] ? [json[@"countryOfIssuance"] asString] : @"";
+            _productId = [json[@"productId"] asString] ? [json[@"productId"] asString] : @"";
         }
     }
     return self;

@@ -47,9 +47,9 @@ class BTBinData_Tests: XCTestCase {
         XCTAssertEqual(binData.durbinRegulated, "Unknown")
         XCTAssertEqual(binData.commercial, "Unknown")
         XCTAssertEqual(binData.payroll, "Unknown")
-        XCTAssertEqual(binData.issuingBank, "Unknown")
-        XCTAssertEqual(binData.countryOfIssuance, "Unknown")
-        XCTAssertEqual(binData.productId, "Unknown")
+        XCTAssertEqual(binData.issuingBank, "")
+        XCTAssertEqual(binData.countryOfIssuance, "")
+        XCTAssertEqual(binData.productId, "")
     }
     
     func testBinData_withPartialJSON() {
@@ -66,7 +66,7 @@ class BTBinData_Tests: XCTestCase {
         XCTAssertEqual(binData.durbinRegulated, "Unknown")
         XCTAssertEqual(binData.commercial, "Unknown")
         XCTAssertEqual(binData.payroll, "Unknown")
-        XCTAssertEqual(binData.issuingBank, "Unknown")
+        XCTAssertEqual(binData.issuingBank, "")
         XCTAssertEqual(binData.countryOfIssuance, "Something")
         XCTAssertEqual(binData.productId, "123")
     }
