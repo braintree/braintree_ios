@@ -76,6 +76,25 @@
 #pragma mark UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+
+    // BANK-ID
+    NSString *customScheme = @"bankid";
+    if([[[request URL] scheme] isEqualToString:customScheme]) {
+        UIApplication *application = [UIApplication sharedApplication];
+        if ([application canOpenURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@://", customScheme]]]) {
+
+            NSString *bankIDUrl = [[request URL] absoluteString];
+            NSRange range = [bankIDUrl rangeOfString:@"redirect="];
+            if(range.length > 0 ) {
+                bankIDUrl = [bankIDUrl substringToIndex:range.location];
+                bankIDUrl = [NSString stringWithFormat:@"%@redirect=hungrig://", bankIDUrl];
+            }
+
+            [application openURL:[NSURL URLWithString: bankIDUrl]];
+            return NO;
+        }
+    }
+
     if (navigationType == UIWebViewNavigationTypeFormSubmitted && [request.URL.path rangeOfString:@"authentication_complete_frame"].location != NSNotFound) {
         
         NSString *jsonAuthResponse = [BTURLUtils dictionaryForQueryString:request.URL.query][@"auth_response"];
