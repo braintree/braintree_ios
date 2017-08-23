@@ -33,6 +33,7 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
     if (self) {
         self.webView = [[UIWebView alloc] init];
         self.webView.accessibilityIdentifier = @"Web View";
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
         [self.webView loadRequest:request];
     }
     return self;
