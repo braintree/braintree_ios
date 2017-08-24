@@ -86,8 +86,12 @@
             NSString *bankIDUrl = [[request URL] absoluteString];
             NSRange range = [bankIDUrl rangeOfString:@"redirect="];
             if(range.length > 0 ) {
-                bankIDUrl = [bankIDUrl substringToIndex:range.location];
-                bankIDUrl = [NSString stringWithFormat:@"%@redirect=hungrig://", bankIDUrl];
+
+                NSString *returnURLScheme = [BTAppSwitch sharedInstance].returnURLScheme;
+                if(returnURLScheme != nil && returnURLScheme.length > 0) {
+                    bankIDUrl = [bankIDUrl substringToIndex:range.location];
+                    bankIDUrl = [NSString stringWithFormat:@"%@redirect=%@://", bankIDUrl, returnURLScheme];
+                }
             }
 
             [application openURL:[NSURL URLWithString: bankIDUrl]];
