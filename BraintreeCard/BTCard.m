@@ -29,6 +29,8 @@
         _countryName = parameters[@"billing_address"][@"country_name"];
         _countryCodeAlpha2 = parameters[@"billing_address"][@"country_code_alpha2"];
         _cardholderName = parameters[@"cardholder_name"];
+        _firstName = parameters[@"billing_address"][@"first_name"];
+        _lastName = parameters[@"billing_address"][@"last_name"];
         
         _shouldValidate = [parameters[@"options"][@"validate"] boolValue];
     }
@@ -69,6 +71,14 @@
     NSMutableDictionary *billingAddressDictionary = [NSMutableDictionary new];
     if ([p[@"billing_address"] isKindOfClass:[NSDictionary class]]) {
         [billingAddressDictionary addEntriesFromDictionary:p[@"billing_address"]];
+    }
+    
+    if (self.firstName) {
+        billingAddressDictionary[@"first_name"] = self.firstName;
+    }
+    
+    if (self.lastName) {
+        billingAddressDictionary[@"last_name"] = self.lastName;
     }
 
     if (self.postalCode) {
