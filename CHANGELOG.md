@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.8.7 (2017-08-30)
+
+* Add firstName and lastName to BTCard
+
 ## 4.8.6 (2017-08-17)
 
 * Add additional bin data to card based payment methods
