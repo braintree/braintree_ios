@@ -38,6 +38,8 @@ class BTCard_Tests: XCTestCase {
             "expiration_date": "12/20",
             "cvv": "123",
             "billing_address": [
+                "first_name": "Joe",
+                "last_name": "Smith",
                 "street_address": "123 Townsend St",
                 "locality": "San Francisco",
                 "region": "CA",
@@ -56,6 +58,8 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(card.cvv, "123")
         XCTAssertTrue(card.shouldValidate)
         XCTAssertEqual(card.cardholderName, "Brian Tree")
+        XCTAssertEqual(card.firstName, "Joe")
+        XCTAssertEqual(card.lastName, "Smith")
         XCTAssertEqual(card.streetAddress, "123 Townsend St")
         XCTAssertEqual(card.locality, "San Francisco")
         XCTAssertEqual(card.region, "CA")
@@ -101,6 +105,8 @@ class BTCard_Tests: XCTestCase {
             "expiration_date": "12/20",
             "cvv": "123",
             "billing_address": [
+                "first_name": "Joe",
+                "last_name": "Smith",
                 "street_address": "123 Townsend St",
                 "locality": "San Francisco",
                 "region": "CA",
@@ -117,6 +123,8 @@ class BTCard_Tests: XCTestCase {
             "expiration_date": "12/20",
             "cvv": "123",
             "billing_address": [
+                "first_name": "Joe",
+                "last_name": "Smith",
                 "street_address": "123 Townsend St",
                 "locality": "San Francisco",
                 "region": "CA",
