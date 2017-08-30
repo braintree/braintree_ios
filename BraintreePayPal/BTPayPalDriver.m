@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 @interface BTPayPalDriver () <SFSafariViewControllerDelegate>
 @property (nonatomic, assign) BOOL becameActiveAfterSFAuthenticationSessionModal;
+@property (nonatomic, assign) BOOL disableSFAuthenticationSession;
 @end
 
 @implementation BTPayPalDriver
@@ -104,7 +105,9 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             if (completionBlock) completionBlock(nil, error);
             return;
         }
-        
+
+        self.disableSFAuthenticationSession = [configuration.json[@"paypalAuthOff"] isTrue];
+
         if (configuration.isBillingAgreementsEnabled && !forceFuturePaymentFlow) {
             // Switch to Billing Agreements flow
             BTPayPalRequest *payPalRequest = [[BTPayPalRequest alloc] init]; // Drop-in only supports Vault flow, which does not use currency code or amount
@@ -216,6 +219,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             return;
         }
         
+        self.disableSFAuthenticationSession = [configuration.json[@"paypalAuthOff"] isTrue];
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
         
@@ -519,29 +523,38 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 - (void)performSwitchRequest:(NSURL *)appSwitchURL {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 11.0, *)) {
-        self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:appSwitchURL callbackURLScheme:self.returnURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
-            if (error) {
-                // TODO Send analytics event?
-                // Verify that this approach for validating works
-                if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
-                    if (self.becameActiveAfterSFAuthenticationSessionModal) {
-                        // From Web View
-                        NSLog(@"Record cancel from auth web view");
-                    } else {
-                        // From Modal
-                        NSLog(@"Record cancel from modal");
+        if (self.disableSFAuthenticationSession) {
+            [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
+        } else {
+            // Append "force-one-touch" query param when One Touch functions correctly
+            NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
+            NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&force-one-touch=1"];
+            urlComponents.query = queryForAuthSession;
+            self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL callbackURLScheme:self.returnURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+                if (error) {
+                    if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
+                        if (self.becameActiveAfterSFAuthenticationSessionModal) {
+                            [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.cancel.web"];
+                        } else {
+                            [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.cancel.modal"];
+                        }
                     }
-                }
 
-                [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
-                return;
+                    [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
+                    return;
+                }
+                [BTAppSwitch handleOpenURL:callbackURL sourceApplication:@"com.apple.safariviewservice"];
+                self.safariAuthenticationSession = nil;
+            }];
+            if (self.safariAuthenticationSession != nil) {
+                self.becameActiveAfterSFAuthenticationSessionModal = NO;
+                self.isSFAuthenticationSessionStarted = [self.safariAuthenticationSession start];
+                if (self.isSFAuthenticationSessionStarted) {
+                    [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.succeeded"];
+                } else {
+                    [self.apiClient sendAnalyticsEvent:@"ios.sfauthsession.start.failed"];
+                }
             }
-            [BTAppSwitch handleOpenURL:callbackURL sourceApplication:@"com.apple.safariviewservice"];
-            self.safariAuthenticationSession = nil;
-        }];
-        if (self.safariAuthenticationSession != nil) {
-            self.becameActiveAfterSFAuthenticationSessionModal = NO;
-            self.isSFAuthenticationSessionStarted = [self.safariAuthenticationSession start];
         }
     } else if (@available(iOS 9.0, *)) {
         [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
