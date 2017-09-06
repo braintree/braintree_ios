@@ -524,13 +524,13 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 11.0, *)) {
         if (self.disableSFAuthenticationSession) {
-            [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
-        } else {
             // Append "force-one-touch" query param when One Touch functions correctly
             NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
             NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&force-one-touch=1"];
             urlComponents.query = queryForAuthSession;
-            self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL callbackURLScheme:self.returnURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+            [self informDelegatePresentingViewControllerRequestPresent:urlComponents.URL];
+        } else {
+            self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:appSwitchURL callbackURLScheme:self.returnURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
                 if (error) {
                     if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
                         if (self.becameActiveAfterSFAuthenticationSessionModal) {
