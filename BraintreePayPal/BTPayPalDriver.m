@@ -19,6 +19,7 @@
 #import "BTConfiguration+PayPal.h"
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
+NSString *const BTSFAuthenticationSessionDisabled = @"sfAuthenticationSessionDisabled";
 
 static void (^appSwitchReturnBlock)(NSURL *url);
 
@@ -106,7 +107,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             return;
         }
 
-        self.disableSFAuthenticationSession = [configuration.json[@"paypalAuthOff"] isTrue];
+        self.disableSFAuthenticationSession = [configuration.json[BTSFAuthenticationSessionDisabled] isTrue];
 
         if (configuration.isBillingAgreementsEnabled && !forceFuturePaymentFlow) {
             // Switch to Billing Agreements flow
@@ -219,7 +220,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             return;
         }
         
-        self.disableSFAuthenticationSession = [configuration.json[@"paypalAuthOff"] isTrue];
+        self.disableSFAuthenticationSession = [configuration.json[BTSFAuthenticationSessionDisabled] isTrue];
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
         
@@ -526,7 +527,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         if (self.disableSFAuthenticationSession) {
             // Append "force-one-touch" query param when One Touch functions correctly
             NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
-            NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&force-one-touch=1"];
+            NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=1"];
             urlComponents.query = queryForAuthSession;
             [self informDelegatePresentingViewControllerRequestPresent:urlComponents.URL];
         } else {
