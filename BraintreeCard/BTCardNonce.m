@@ -7,11 +7,13 @@
                   cardNetwork:(BTCardNetwork)cardNetwork
                       lastTwo:(NSString *)lastTwo
                     isDefault:(BOOL)isDefault
+                     cardJSON:(BTJSON *)cardJSON
 {
     self = [super initWithNonce:nonce localizedDescription:description type:[BTCardNonce stringFromCardNetwork:cardNetwork] isDefault:isDefault];
     if (self) {
         _cardNetwork = cardNetwork;
         _lastTwo = lastTwo;
+        _binData = [[BTBinData alloc] initWithJSON:cardJSON[@"binData"]];
     }
     return self;
 }
@@ -68,7 +70,9 @@
                                                                   @"visa": @(BTCardNetworkVisa),}
                                                       orDefault:BTCardNetworkUnknown]
                                        lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]
-                                     isDefault:[cardJSON[@"default"] isTrue]];
+                                     isDefault:[cardJSON[@"default"] isTrue]
+                                      cardJSON:cardJSON];
+
 }
 
 @end

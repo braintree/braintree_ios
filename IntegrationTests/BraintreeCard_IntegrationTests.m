@@ -51,6 +51,15 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(tokenizedCard.binData.prepaid).toNot.beNil();
+        expect(tokenizedCard.binData.healthcare).toNot.beNil();
+        expect(tokenizedCard.binData.debit).toNot.beNil();
+        expect(tokenizedCard.binData.durbinRegulated).toNot.beNil();
+        expect(tokenizedCard.binData.commercial).toNot.beNil();
+        expect(tokenizedCard.binData.payroll).toNot.beNil();
+        expect(tokenizedCard.binData.issuingBank).toNot.beNil();
+        expect(tokenizedCard.binData.countryOfIssuance).toNot.beNil();
+        expect(tokenizedCard.binData.productId).toNot.beNil();
         expect(error).to.beNil();
         [expectation fulfill];
     }];
