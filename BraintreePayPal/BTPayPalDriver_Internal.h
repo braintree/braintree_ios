@@ -75,9 +75,14 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 /*!
- @brief Exposed for testing, the isSafariAuthenticationSessionStarted
+ @brief Exposed for testing, for determining if SFAuthenticationSession was started
  */
 @property (nonatomic, assign) BOOL isSFAuthenticationSessionStarted;
+
+/*!
+ @brief Exposed for testing, for disabling SFAuthenticationSession and use SFSafariViewController or Safari
+ */
+@property (nonatomic, assign) BOOL disableSFAuthenticationSession;
 
 /*!
  @brief Used to test the Future Payments flow by force

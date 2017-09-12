@@ -32,7 +32,6 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 @interface BTPayPalDriver () <SFSafariViewControllerDelegate>
 @property (nonatomic, assign) BOOL becameActiveAfterSFAuthenticationSessionModal;
-@property (nonatomic, assign) BOOL disableSFAuthenticationSession;
 @end
 
 @implementation BTPayPalDriver
@@ -107,7 +106,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             return;
         }
 
-        self.disableSFAuthenticationSession = [configuration.json[BTSFAuthenticationSessionDisabled] isTrue];
+        self.disableSFAuthenticationSession = [configuration.json[BTSFAuthenticationSessionDisabled] isTrue] || self.disableSFAuthenticationSession;
 
         if (configuration.isBillingAgreementsEnabled && !forceFuturePaymentFlow) {
             // Switch to Billing Agreements flow
@@ -220,7 +219,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             return;
         }
         
-        self.disableSFAuthenticationSession = [configuration.json[BTSFAuthenticationSessionDisabled] isTrue];
+        self.disableSFAuthenticationSession = [configuration.json[BTSFAuthenticationSessionDisabled] isTrue] || self.disableSFAuthenticationSession;
         NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
         NSMutableDictionary *experienceProfile = [NSMutableDictionary dictionary];
         
