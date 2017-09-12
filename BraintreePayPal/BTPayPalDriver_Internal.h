@@ -72,12 +72,12 @@ NS_ASSUME_NONNULL_BEGIN
  @brief Exposed for testing, the safariAuthenticationSession instance used for the PayPal flow on iOS >=11
  */
 @property (nonatomic, strong, nullable) SFAuthenticationSession *safariAuthenticationSession NS_AVAILABLE_IOS(11_0);
+#endif
 
 /*!
  @brief Exposed for testing, the isSafariAuthenticationSessionStarted
  */
 @property (nonatomic, assign) BOOL isSFAuthenticationSessionStarted;
-#endif
 
 /*!
  @brief Used to test the Future Payments flow by force
