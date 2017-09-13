@@ -27,7 +27,7 @@ PODS:
     - BraintreeDropIn/UIKit
   - BraintreeDropIn/UIKit (99.99.99-github-master)
   - CardIO (5.4.1)
-  - Expecta (1.0.5)
+  - Expecta (1.0.6)
   - FLEX (2.4.0)
   - InAppSettingsKit (2.8.1)
   - iOS-Slide-Menu (1.5)
@@ -76,7 +76,7 @@ SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
-  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   InAppSettingsKit: 94d2fba3ccd700fc4e32c6d09fabcc0af2426744
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
@@ -88,4 +88,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 5c0f6d7472cce11fd35b3c4a01b851c0799076c5
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.3.1
