@@ -1,4 +1,5 @@
 import XCTest
+import BraintreeCore
 
 class BTPaymentMethodNonceParser_Tests: XCTestCase {
     
