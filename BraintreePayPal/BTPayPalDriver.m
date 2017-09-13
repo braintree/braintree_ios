@@ -523,14 +523,17 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 - (void)performSwitchRequest:(NSURL *)appSwitchURL {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 11.0, *)) {
+        NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
+
         if (self.disableSFAuthenticationSession) {
             // Append "force-one-touch" query param when One Touch functions correctly
-            NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
             NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=1"];
             urlComponents.query = queryForAuthSession;
             [self informDelegatePresentingViewControllerRequestPresent:urlComponents.URL];
         } else {
-            self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:appSwitchURL callbackURLScheme:self.returnURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
+            NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=2"];
+            urlComponents.query = queryForAuthSession;
+            self.safariAuthenticationSession = [[SFAuthenticationSession alloc] initWithURL:urlComponents.URL callbackURLScheme:self.returnURLScheme completionHandler:^(NSURL * _Nullable callbackURL, NSError * _Nullable error) {
                 if (error) {
                     if (error.domain == SFAuthenticationErrorDomain && error.code == SFAuthenticationErrorCanceledLogin) {
                         if (self.becameActiveAfterSFAuthenticationSessionModal) {
@@ -557,10 +560,16 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             }
         }
     } else if (@available(iOS 9.0, *)) {
-        [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
+        NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
+        NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=1"];
+        urlComponents.query = queryForAuthSession;
+        [self informDelegatePresentingViewControllerRequestPresent:urlComponents.URL];
 #else
     if ([SFSafariViewController class]) {
-        [self informDelegatePresentingViewControllerRequestPresent:appSwitchURL];
+        NSURLComponents *urlComponents = [NSURLComponents componentsWithURL:appSwitchURL resolvingAgainstBaseURL:NO];
+        NSString *queryForAuthSession = [urlComponents.query stringByAppendingString:@"&bt_int_type=1"];
+        urlComponents.query = queryForAuthSession;
+        [self informDelegatePresentingViewControllerRequestPresent:urlComponents.URL];
 #endif
     } else {
         UIApplication *application = [UIApplication sharedApplication];
