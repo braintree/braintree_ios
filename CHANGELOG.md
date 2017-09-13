@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.9.0 (2017-09-13)
+
+* Add support for `SFAuthenticationSession` for PayPal payments
+
 ## 4.8.7 (2017-08-30)
 
 * Add firstName and lastName to BTCard
