@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, strong) BTBinData *binData;
 
-- (instancetype)initWithNonce:(NSString *)nonce localizedDescription:(NSString *)description type:(NSString *)type json:(BTJSON *)json; DEPRECATED_MSG_ATTRIBUTE("This method does not configure the isDefault parameter and defaults to NO");
+- (instancetype)initWithNonce:(NSString *)nonce localizedDescription:(NSString *)description type:(NSString *)type json:(BTJSON *)json DEPRECATED_MSG_ATTRIBUTE("This method does not configure the isDefault parameter and defaults to NO");
 
 - (instancetype)initWithNonce:(NSString *)nonce
          localizedDescription:(NSString *)description
