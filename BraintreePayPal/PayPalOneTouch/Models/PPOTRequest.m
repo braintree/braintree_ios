@@ -116,7 +116,6 @@ NSString *const PayPalEnvironmentMock = PPRequestEnvironmentNoNetwork;
             if (appSwitchRequest) {
                 appSwitchURL = [appSwitchRequest encodedURL];
                 requestClientMetadataId = appSwitchRequest.clientMetadataID;
-                PPLog(@"URL to open %@", appSwitchURL);
 
                 NSString *analyticsPage = nil;
                 if ([[appSwitchURL.absoluteString lowercaseString] hasPrefix:kPPOTAppSwitchSchemeToCheck]) {

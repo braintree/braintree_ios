@@ -167,6 +167,10 @@ class BraintreeDropInLegacy_PayPal_UITests: XCTestCase {
     }
     
     func testDropInLegacy_paypal_receivesNonce() {
+        if #available(iOS 11.0, *) {
+            // SFSafariAuthenticationSession flow cannot be fully automated, so returning early
+            return
+        }
         
         let elementsQuery = app.collectionViews["Payment Options"].cells
         let paypalButton = elementsQuery.element(boundBy: 0)

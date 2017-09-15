@@ -1,5 +1,17 @@
 # Braintree iOS SDK Release Notes
 
+## 4.9.0 (2017-09-13)
+
+* Add support for `SFAuthenticationSession` for PayPal payments
+
+## 4.8.7 (2017-08-30)
+
+* Add firstName and lastName to BTCard
+
+## 4.8.6 (2017-08-17)
+
+* Add additional bin data to card based payment methods
+
 ## 4.8.5 (2017-07-21)
 
 * Fix bug that caused a crash on iOS11 (Beta 3) when using a Tokenization Key in production (Thanks @peterstuart)

@@ -4,7 +4,7 @@ The Braintree iOS SDK is organized into a family of frameworks.
 
 ### Differences from Braintree-iOS 3.x
 * Frameworks and Carthage support
-* Client key and JWT instead of client token
+* Tokenization key support
 * `BTAPIClient` instead of `BTClient`
 * `BTTokenized` instead of `BTPaymentMethod`
 * Refactored tests and added tests in Swift
@@ -16,7 +16,7 @@ This is the core set of models and networking needed to use Braintree in an app 
 
 <sub>PRIMARY CLASS:</sub>
 ### `BTAPIClient`: Braintree API client
-* Authentication with client key / JWT
+* Authentication with tokenization key / client token
 * Access configuration from gateway
 * Analytics
 * HTTP methods on Braintree API endpoints
@@ -42,9 +42,6 @@ The Braintree iOS SDK currently supports 6 payment options.
 5. `Braintree3DSecure`: 3D Secure
   * Depends on `BraintreeCard`
   * Use `BTViewControllerPresentingDelegate` (required) for cases when a view controller must be presented for buyer verification
-6. `BraintreeCoinbase`: Coinbase
-  * No dependencies other than `BraintreeCore`
-
 
 ## BraintreeCard
 
@@ -63,7 +60,7 @@ Tokenizes credit or debit cards.
 
 A pre-built payment form and payment button.
 
-Optionally uses these payment option frameworks, if present: `BraintreeCard`, `BraintreePayPal`, `BraintreeVenmo`, `BraintreeCoinbase`.
+Optionally uses these payment option frameworks, if present: `BraintreeCard`, `BraintreePayPal`, `BraintreeVenmo`.
 
 ### Features
 
@@ -96,16 +93,6 @@ Accept payments with a credit or debit card from the Venmo app via Venmo One Tou
 
 * `BTVenmoDriver`: Coordinates switching to the Venmo app for the buyer to select a card
 * `BTVenmoTokenizedCard`: A tokenized card from Venmo that contains a payment method nonce
-
-
-## BraintreeCoinbase
-
-Accept bitcoin payments via Coinbase.
-
-## Features
-
-* `BTCoinbaseDriver`: Coordinates paying with Coinbase by switching to the Coinbase app or the web browser
-* `BTTokenizedCoinbaseAccount`: A tokenized Coinbase account that contains a payment method nonce
 
 
 ## BraintreeApplePay
