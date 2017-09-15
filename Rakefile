@@ -293,7 +293,7 @@ def jazzy_command
 end
 
 desc "Generate documentation via jazzy"
-task :docs => %w[docs:clean docs:generate]
+task :docs => %w[docs:clean docs:generate docs:publish docs:clean]
 
 namespace :docs do
 
@@ -304,6 +304,18 @@ namespace :docs do
   desc "Generate docs with jazzy"
   task :generate do
     run(jazzy_command)
+    puts "Generated HTML documentation at docs_output"
+  end
+
+  task :publish do
+    run! 'git branch -D gh-pages'
+    run! 'git add docs_output'
+    run! 'git commit -m "Publish docs to github pages"'
+    run! 'git subtree split --prefix docs_output -b gh-pages'
+    # TODO Push to public github as well
+    run! 'git push -f origin gh-pages:gh-pages'
+    run! 'git reset HEAD~'
+    run! 'git branch -D gh-pages'
     puts "Generated HTML documentation at docs_output"
   end
 
