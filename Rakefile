@@ -307,6 +307,7 @@ namespace :docs do
     run 'git branch -D gh-pages'
     run! 'git add docs_output'
     run! 'git commit -m "Publish docs to github pages"'
+    puts "Generating git subtree, this will take a moment..."
     run! 'git subtree split --prefix docs_output -b gh-pages'
     # TODO Push to public github as well
     run! 'git push -f origin gh-pages:gh-pages'
