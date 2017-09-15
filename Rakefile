@@ -287,7 +287,6 @@ def jazzy_command
       --output docs_output
       --umbrella-header Braintree-Umbrella-Header.h
       --framework-root .
-      --min-acl private
       --module Braintree
   ].join(' ')
 end
@@ -296,10 +295,6 @@ desc "Generate documentation via jazzy"
 task :docs => %w[docs:generate docs:publish docs:clean]
 
 namespace :docs do
-
-  task :clean do
-    run! 'rm -rf docs_output'
-  end
 
   desc "Generate docs with jazzy"
   task :generate do
@@ -317,7 +312,11 @@ namespace :docs do
     run! 'git push -f origin gh-pages:gh-pages'
     run! 'git reset HEAD~'
     run! 'git branch -D gh-pages'
-    puts "Generated HTML documentation at docs_output"
+    puts "Published docs to gh-pages branch"
+  end
+
+  task :clean do
+    run! 'rm -rf docs_output'
   end
 
 end
