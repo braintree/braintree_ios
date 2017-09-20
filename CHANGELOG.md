@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.9.1 (2017-09-20)
+
+* Update libPPRiskComponent to latest version
+
 ## 4.9.0 (2017-09-13)
 
 * Add support for `SFAuthenticationSession` for PayPal payments
