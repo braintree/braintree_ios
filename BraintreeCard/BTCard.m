@@ -33,6 +33,7 @@
         _cardholderName = parameters[@"cardholder_name"];
         _firstName = parameters[@"billing_address"][@"first_name"];
         _lastName = parameters[@"billing_address"][@"last_name"];
+        _company = parameters[@"billing_address"][@"company"];
         
         _shouldValidate = [parameters[@"options"][@"validate"] boolValue];
     }
@@ -81,6 +82,10 @@
     
     if (self.lastName) {
         billingAddressDictionary[@"last_name"] = self.lastName;
+    }
+
+    if (self.company) {
+        billingAddressDictionary[@"company"] = self.company;
     }
 
     if (self.postalCode) {

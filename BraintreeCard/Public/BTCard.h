@@ -60,6 +60,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *lastName;
 
 /*!
+ @brief Optional: company name associated with the card.
+ */
+@property (nonatomic, nullable, copy) NSString *company;
+
+/*!
  @brief Optional: the street address associated with the card's billing address
 */
 @property (nonatomic, nullable, copy) NSString *streetAddress;
