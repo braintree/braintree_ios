@@ -42,6 +42,7 @@ class BTCard_Tests: XCTestCase {
                 "last_name": "Smith",
                 "company": "Company",
                 "street_address": "123 Townsend St",
+                "extended_street_address": "Unit 1",
                 "locality": "San Francisco",
                 "region": "CA",
                 "country_name": "United States of America",
@@ -65,6 +66,7 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(card.lastName, "Smith")
         XCTAssertEqual(card.company, "Company")
         XCTAssertEqual(card.streetAddress, "123 Townsend St")
+        XCTAssertEqual(card.extendedStreetAddress, "Unit 1")
         XCTAssertEqual(card.locality, "San Francisco")
         XCTAssertEqual(card.region, "CA")
         XCTAssertEqual(card.countryName, "United States of America")
@@ -117,6 +119,7 @@ class BTCard_Tests: XCTestCase {
                 "last_name": "Smith",
                 "compnay": "Company",
                 "street_address": "123 Townsend St",
+                "extended_street_address": "Unit 1",
                 "locality": "San Francisco",
                 "region": "CA",
                 "country_name": "United States of America",
@@ -136,6 +139,7 @@ class BTCard_Tests: XCTestCase {
                 "last_name": "Smith",
                 "compnay": "Company",
                 "street_address": "123 Townsend St",
+                "extended_street_address": "Unit 1",
                 "locality": "San Francisco",
                 "region": "CA",
                 "country_name": "United States of America",

@@ -70,6 +70,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *streetAddress;
 
 /*!
+ @brief Optional: the extended street address associated with the card's billing address
+ */
+@property (nonatomic, nullable, copy) NSString *extendedStreetAddress;
+
+/*!
  @brief Optional: the city associated with the card's billing address
 */
 @property (nonatomic, nullable, copy) NSString *locality;
