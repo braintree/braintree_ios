@@ -24,7 +24,7 @@
         _cvv = parameters[@"cvv"];
         
         _streetAddress = parameters[@"billing_address"][@"street_address"];
-        _extendedStreetAddress = parameters[@"billing_address"][@"extended_street_address"];
+        _extendedAddress = parameters[@"billing_address"][@"extended_address"];
         _locality = parameters[@"billing_address"][@"locality"];
         _region = parameters[@"billing_address"][@"region"];
         _countryName = parameters[@"billing_address"][@"country_name"];
@@ -97,8 +97,8 @@
         billingAddressDictionary[@"street_address"] = self.streetAddress;
     }
 
-    if (self.extendedStreetAddress) {
-        billingAddressDictionary[@"extended_street_address"] = self.extendedStreetAddress;
+    if (self.extendedAddress) {
+        billingAddressDictionary[@"extended_address"] = self.extendedAddress;
     }
     
     if (self.locality) {
