@@ -90,6 +90,22 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @property (nonatomic, nullable, copy) NSString *countryCodeAlpha2;
 
+/*!
+ @brief Optional: The ISO 3166-1 alpha-3 country code specified in the card's billing address.
+ 
+ @note Braintree only accepts specific alpha-3 values.
+ @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
+ */
+@property (nonatomic, nullable, copy) NSString *countryCodeAlpha3;
+
+/*!
+ @brief Optional: The ISO 3166-1 numeric country code specified in the card's billing address.
+ 
+ @note Braintree only accepts specific numeric values.
+ @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
+ */
+@property (nonatomic, nullable, copy) NSString *countryCodeNumeric;
+
 /*! 
  @brief Controls whether or not to return validations and/or verification results. By default, this is not enabled.
 

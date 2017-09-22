@@ -46,6 +46,8 @@
     card.region = @"some region";
     card.countryName = @"some country name";
     card.countryCodeAlpha2 = @"US";
+    card.countryCodeAlpha3 = @"USA";
+    card.countryCodeNumeric = @"840";
 
     BTJSON *parameters = [[BTJSON alloc] initWithValue:card.parameters];
     XCTAssertEqualObjects([parameters[@"number"] asString], @"4111111111111111");
@@ -56,6 +58,8 @@
     XCTAssertEqualObjects([parameters[@"billing_address"][@"region"] asString], @"some region");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"country_name"] asString], @"some country name");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"country_code_alpha2"] asString], @"US");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"country_code_alpha3"] asString], @"USA");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"country_code_numeric"] asString], @"840");
 }
 
 @end

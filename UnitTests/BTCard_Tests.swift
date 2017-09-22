@@ -45,6 +45,8 @@ class BTCard_Tests: XCTestCase {
                 "region": "CA",
                 "country_name": "United States of America",
                 "country_code_alpha2": "US",
+                "country_code_alpha3": "USA",
+                "country_code_numeric": "840",
                 "postal_code": "94107"
             ],
             "options": ["validate": true],
@@ -65,6 +67,8 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(card.region, "CA")
         XCTAssertEqual(card.countryName, "United States of America")
         XCTAssertEqual(card.countryCodeAlpha2, "US")
+        XCTAssertEqual(card.countryCodeAlpha3, "USA")
+        XCTAssertEqual(card.countryCodeNumeric, "840")
         XCTAssertEqual(card.postalCode, "94107")
     }
 
@@ -83,6 +87,8 @@ class BTCard_Tests: XCTestCase {
         XCTAssertNil(card.region)
         XCTAssertNil(card.countryName)
         XCTAssertNil(card.countryCodeAlpha2)
+        XCTAssertNil(card.countryCodeAlpha3)
+        XCTAssertNil(card.countryCodeNumeric)
     }
 
     func testInitWithParameters_withCVVAndPostalCode_setsPropertiesToExpectedValues() {

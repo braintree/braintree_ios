@@ -28,6 +28,8 @@
         _region = parameters[@"billing_address"][@"region"];
         _countryName = parameters[@"billing_address"][@"country_name"];
         _countryCodeAlpha2 = parameters[@"billing_address"][@"country_code_alpha2"];
+        _countryCodeAlpha3 = parameters[@"billing_address"][@"country_code_alpha3"];
+        _countryCodeNumeric = parameters[@"billing_address"][@"country_code_numeric"];
         _cardholderName = parameters[@"cardholder_name"];
         _firstName = parameters[@"billing_address"][@"first_name"];
         _lastName = parameters[@"billing_address"][@"last_name"];
@@ -103,6 +105,14 @@
     
     if (self.countryCodeAlpha2) {
         billingAddressDictionary[@"country_code_alpha2"] = self.countryCodeAlpha2;
+    }
+
+    if (self.countryCodeAlpha3) {
+        billingAddressDictionary[@"country_code_alpha3"] = self.countryCodeAlpha3;
+    }
+
+    if (self.countryCodeNumeric) {
+        billingAddressDictionary[@"country_code_numeric"] = self.countryCodeNumeric;
     }
 
     if (billingAddressDictionary.count > 0) {
