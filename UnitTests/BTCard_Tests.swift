@@ -117,7 +117,7 @@ class BTCard_Tests: XCTestCase {
             "billing_address": [
                 "first_name": "Joe",
                 "last_name": "Smith",
-                "compnay": "Company",
+                "company": "Company",
                 "street_address": "123 Townsend St",
                 "extended_address": "Unit 1",
                 "locality": "San Francisco",
@@ -137,7 +137,7 @@ class BTCard_Tests: XCTestCase {
             "billing_address": [
                 "first_name": "Joe",
                 "last_name": "Smith",
-                "compnay": "Company",
+                "company": "Company",
                 "street_address": "123 Townsend St",
                 "extended_address": "Unit 1",
                 "locality": "San Francisco",
