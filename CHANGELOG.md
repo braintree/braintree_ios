@@ -1,5 +1,13 @@
 # Braintree iOS SDK Release Notes
 
+## UNRELEASED
+
+* Add additional billing address params to card builder
+  * Country Code Alpha 3
+  * Country Code Numeric
+  * Company
+  * Extended Address
+
 ## 4.9.1 (2017-09-20)
 
 * Update libPPRiskComponent to latest version
