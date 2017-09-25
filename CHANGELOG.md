@@ -1,7 +1,8 @@
 # Braintree iOS SDK Release Notes
 
-## UNRELEASED
+## 4.9.2 (2017-09-25)
 
+* Fix Xcode9 build warnings
 * Add additional billing address params to card builder
   * Country Code Alpha 3
   * Country Code Numeric
