@@ -586,7 +586,7 @@
     }];
 }
 
-- (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock {
+- (void)fetchPaymentMethodsOnCompletion:(void(^)(void))completionBlock {
     // Check for proper authorization before fetching payment methods to suppress errors when using tokenization key
     if (!self.apiClient.clientToken) {
         self.paymentMethodNonces = @[];

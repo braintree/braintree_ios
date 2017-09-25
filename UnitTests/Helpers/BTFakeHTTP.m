@@ -83,7 +83,7 @@
 }
 
 /// Helper method to dispatch callbacks to dispatchQueue
-- (void)dispatchBlock:(void(^)())block {
+- (void)dispatchBlock:(void(^)(void))block {
     if (self.dispatchQueue) {
         dispatch_async(self.dispatchQueue, ^{
             block();

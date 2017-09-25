@@ -257,7 +257,7 @@
     return block;
 }
 
-- (void (^)())transactionBlock {
+- (void (^)(void))transactionBlock {
     // This class is responsible for retaining the completion block
     static id block;
     static dispatch_once_t onceToken;

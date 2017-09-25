@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param completionBlock A block that gets called on completion.
 */
-- (void)fetchPaymentMethodsOnCompletion:(void(^)())completionBlock;
+- (void)fetchPaymentMethodsOnCompletion:(void(^)(void))completionBlock;
 
 /*!
  @brief Sets the card number in the card form.

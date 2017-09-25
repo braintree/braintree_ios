@@ -3,7 +3,7 @@
 
 @interface BTDropInErrorAlert () <UIAlertViewDelegate>
 
-@property (nonatomic, copy, nullable) void (^dismissalHandler)();
+@property (nonatomic, copy, nullable) void (^dismissalHandler)(void);
 
 @end
 
@@ -18,7 +18,7 @@
 }
 
 
-- (void)showWithDismissalHandler:(void (^)())dismissalHandler {
+- (void)showWithDismissalHandler:(void (^)(void))dismissalHandler {
     NSString *localizedOK = BTDropInLocalizedString(ERROR_ALERT_OK_BUTTON_TEXT);
     NSString *localizedCancel = BTDropInLocalizedString(ERROR_ALERT_CANCEL_BUTTON_TEXT);
     self.dismissalHandler = dismissalHandler;
