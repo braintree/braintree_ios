@@ -95,7 +95,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         var expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces() { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
-            XCTAssertFalse(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "false")
             XCTAssertEqual(mockHTTP.lastRequestParameters!["session_id"] as? String, apiClient.metadata.sessionId)
             expectation.fulfill()
         }
@@ -105,7 +105,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(true) { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
-            XCTAssertTrue(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "true")
             expectation.fulfill()
         }
         
@@ -114,7 +114,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(false) { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
-            XCTAssertFalse(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "false")
             expectation.fulfill()
         }
         
@@ -211,7 +211,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         var expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces() { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
-            XCTAssertFalse(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "false")
             XCTAssertEqual(mockHTTP.lastRequestParameters!["session_id"] as? String, apiClient.metadata.sessionId)
             expectation.fulfill()
         }
@@ -221,7 +221,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(true) { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
-            XCTAssertTrue(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "true")
             expectation.fulfill()
         }
 
@@ -230,7 +230,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         expectation = self.expectation(description: "Callback invoked")
         apiClient.fetchPaymentMethodNonces(false) { _ in
             XCTAssertEqual(mockHTTP.lastRequestEndpoint, "v1/payment_methods")
-            XCTAssertFalse(mockHTTP.lastRequestParameters!["default_first"] as! Bool)
+            XCTAssertEqual(mockHTTP.lastRequestParameters!["default_first"] as? String, "false")
             expectation.fulfill()
         }
 
