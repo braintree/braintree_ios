@@ -40,11 +40,15 @@ class BTCard_Tests: XCTestCase {
             "billing_address": [
                 "first_name": "Joe",
                 "last_name": "Smith",
+                "company": "Company",
                 "street_address": "123 Townsend St",
+                "extended_address": "Unit 1",
                 "locality": "San Francisco",
                 "region": "CA",
                 "country_name": "United States of America",
                 "country_code_alpha2": "US",
+                "country_code_alpha3": "USA",
+                "country_code_numeric": "840",
                 "postal_code": "94107"
             ],
             "options": ["validate": true],
@@ -60,11 +64,15 @@ class BTCard_Tests: XCTestCase {
         XCTAssertEqual(card.cardholderName, "Brian Tree")
         XCTAssertEqual(card.firstName, "Joe")
         XCTAssertEqual(card.lastName, "Smith")
+        XCTAssertEqual(card.company, "Company")
         XCTAssertEqual(card.streetAddress, "123 Townsend St")
+        XCTAssertEqual(card.extendedAddress, "Unit 1")
         XCTAssertEqual(card.locality, "San Francisco")
         XCTAssertEqual(card.region, "CA")
         XCTAssertEqual(card.countryName, "United States of America")
         XCTAssertEqual(card.countryCodeAlpha2, "US")
+        XCTAssertEqual(card.countryCodeAlpha3, "USA")
+        XCTAssertEqual(card.countryCodeNumeric, "840")
         XCTAssertEqual(card.postalCode, "94107")
     }
 
@@ -83,6 +91,8 @@ class BTCard_Tests: XCTestCase {
         XCTAssertNil(card.region)
         XCTAssertNil(card.countryName)
         XCTAssertNil(card.countryCodeAlpha2)
+        XCTAssertNil(card.countryCodeAlpha3)
+        XCTAssertNil(card.countryCodeNumeric)
     }
 
     func testInitWithParameters_withCVVAndPostalCode_setsPropertiesToExpectedValues() {
@@ -107,7 +117,9 @@ class BTCard_Tests: XCTestCase {
             "billing_address": [
                 "first_name": "Joe",
                 "last_name": "Smith",
+                "company": "Company",
                 "street_address": "123 Townsend St",
+                "extended_address": "Unit 1",
                 "locality": "San Francisco",
                 "region": "CA",
                 "country_name": "United States of America",
@@ -125,7 +137,9 @@ class BTCard_Tests: XCTestCase {
             "billing_address": [
                 "first_name": "Joe",
                 "last_name": "Smith",
+                "company": "Company",
                 "street_address": "123 Townsend St",
+                "extended_address": "Unit 1",
                 "locality": "San Francisco",
                 "region": "CA",
                 "country_name": "United States of America",
