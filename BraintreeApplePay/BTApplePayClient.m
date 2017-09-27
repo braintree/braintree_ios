@@ -146,7 +146,11 @@ NSString *const BTApplePayErrorDomain = @"com.braintreepayments.BTApplePayErrorD
     mutableParameters[@"paymentData"] = [token.paymentData base64EncodedStringWithOptions:0];
     mutableParameters[@"transactionIdentifier"] = token.transactionIdentifier;
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    if (@available(iOS 9.0, watchOS 3.0, *)) {
+#else
     if ([PKPaymentMethod class]) {
+#endif
         mutableParameters[@"paymentInstrumentName"] = token.paymentMethod.displayName;
         mutableParameters[@"paymentNetwork"] = token.paymentMethod.network;
     } else {

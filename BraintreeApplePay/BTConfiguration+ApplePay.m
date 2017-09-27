@@ -36,9 +36,17 @@
             [supportedNetworks addObject:PKPaymentNetworkMasterCard];
         } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"amex"] == NSOrderedSame) {
             [supportedNetworks addObject:PKPaymentNetworkAmex];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"discover"] == NSOrderedSame) { // Very important to check that this constant is available first!
+            if (@available(iOS 9.0, watchOS 3.0, *)) {
+                [supportedNetworks addObject:PKPaymentNetworkDiscover];
+            }
+        }
+#else
         } else if (&PKPaymentNetworkDiscover != NULL && [gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"discover"] == NSOrderedSame) { // Very important to check that this constant is available first!
             [supportedNetworks addObject:PKPaymentNetworkDiscover];
         }
+#endif
     }
 
     return [supportedNetworks copy];
