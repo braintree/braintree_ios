@@ -37,7 +37,7 @@
         } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"amex"] == NSOrderedSame) {
             [supportedNetworks addObject:PKPaymentNetworkAmex];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"discover"] == NSOrderedSame) { // Very important to check that this constant is available first!
+        } else if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"discover"] == NSOrderedSame) {
             if (@available(iOS 9.0, watchOS 3.0, *)) {
                 [supportedNetworks addObject:PKPaymentNetworkDiscover];
             }
