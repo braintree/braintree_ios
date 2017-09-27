@@ -240,20 +240,24 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
     long timestampInSeconds = round([[NSDate date] timeIntervalSince1970]);
     BTAnalyticsEvent *event = [BTAnalyticsEvent event:eventKind withTimestamp:timestampInSeconds];
 
-    BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
-                                                             source:self.apiClient.metadata.sourceString
-                                                        integration:self.apiClient.metadata.integrationString];
-    if (!session) {
-        [[BTLogger sharedLogger] warning:@"Missing analytics session metadata - will not send event %@", event.kind];
-        return;
-    }
-    
-    dispatch_async(self.sessionsQueue, ^{
-        if (!self.analyticsSessions[session.sessionID]) {
-            self.analyticsSessions[session.sessionID] = session;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // The session should only be constructed on the main thread in order for metadata analytics
+        // to be properly collected due to UIApplication calls.
+        BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
+                                                                 source:self.apiClient.metadata.sourceString
+                                                            integration:self.apiClient.metadata.integrationString];
+        if (!session) {
+            [[BTLogger sharedLogger] warning:@"Missing analytics session metadata - will not send event %@", event.kind];
+            return;
         }
-        
-        [self.analyticsSessions[session.sessionID].events addObject:event];
+
+        dispatch_async(self.sessionsQueue, ^{
+            if (!self.analyticsSessions[session.sessionID]) {
+                self.analyticsSessions[session.sessionID] = session;
+            }
+
+            [self.analyticsSessions[session.sessionID].events addObject:event];
+        });
     });
 }
 
