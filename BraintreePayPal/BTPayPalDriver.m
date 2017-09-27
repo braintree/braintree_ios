@@ -574,7 +574,11 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     } else {
         UIApplication *application = [UIApplication sharedApplication];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 10.0, *)) {
+#else
         if ([application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+#endif
             [application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:nil];
         } else {
 #pragma clang diagnostic push
@@ -825,8 +829,14 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL {
     if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 9.0, *)) {
+#endif
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
         self.safariViewController.delegate = self;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        }
+#endif
         [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
     } else {
         [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];

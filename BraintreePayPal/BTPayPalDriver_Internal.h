@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @brief Exposed for testing, the safariViewController instance used for the PayPal flow on iOS 9 and 10
 */
-@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController;
+@property (nonatomic, strong, nullable) SFSafariViewController *safariViewController  NS_AVAILABLE_IOS(9_0);
 
  #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
 /*!
