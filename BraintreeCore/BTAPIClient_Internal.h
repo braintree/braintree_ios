@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) BTAnalyticsService *analyticsService;
 
 /*!
- @brief Sends this event and all queued analytics events. Used by internal clients.
+ @brief Sends this event and all queued analytics events. Use `queueAnalyticsEvent` for low priority events.
 */
 - (void)sendAnalyticsEvent:(NSString *)eventName;
 
