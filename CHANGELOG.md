@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.9.3 (2017-09-28)
+
+* Update Xcode 9 code for availability checking
+* Fix analytics thread issue
+
 ## 4.9.2 (2017-09-25)
 
 * Fix Xcode9 build warnings
