@@ -244,37 +244,35 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
     long timestampInSeconds = round([[NSDate date] timeIntervalSince1970]);
     BTAnalyticsEvent *event = [BTAnalyticsEvent event:eventKind withTimestamp:timestampInSeconds];
 
+    BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
+                                                             source:self.apiClient.metadata.sourceString
+                                                        integration:self.apiClient.metadata.integrationString];
+    if (!session) {
+        [[BTLogger sharedLogger] warning:@"Missing analytics session metadata - will not send event %@", event.kind];
+        return;
+    }
 
-        BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
-                                                                 source:self.apiClient.metadata.sourceString
-                                                            integration:self.apiClient.metadata.integrationString];
-        if (!session) {
-            [[BTLogger sharedLogger] warning:@"Missing analytics session metadata - will not send event %@", event.kind];
-            return;
+    dispatch_async(self.sessionsQueue, ^{
+        if (!self.analyticsSessions[session.sessionID]) {
+            self.analyticsSessions[session.sessionID] = session;
         }
 
-        dispatch_async(self.sessionsQueue, ^{
-            if (!self.analyticsSessions[session.sessionID]) {
-                self.analyticsSessions[session.sessionID] = session;
-            }
-
-            [self.analyticsSessions[session.sessionID].events addObject:event];
-        });
-    
+        [self.analyticsSessions[session.sessionID].events addObject:event];
+    });
 }
 
 - (void)checkFlushThreshold {
     __block NSUInteger eventCount = 0;
 
-        dispatch_sync(self.sessionsQueue, ^{
-            for (BTAnalyticsSession *analyticsSession in self.analyticsSessions.allValues) {
-                eventCount += analyticsSession.events.count;
-            }
-        });
-        
-        if (eventCount >= self.flushThreshold) {
-            [self flush:nil];
+    dispatch_sync(self.sessionsQueue, ^{
+        for (BTAnalyticsSession *analyticsSession in self.analyticsSessions.allValues) {
+            eventCount += analyticsSession.events.count;
         }
+    });
+
+    if (eventCount >= self.flushThreshold) {
+        [self flush:nil];
+    }
 }
 
 @end
