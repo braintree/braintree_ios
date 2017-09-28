@@ -103,6 +103,9 @@
     
     [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
     [analyticsService sendAnalyticsEvent:@"another.analytics.event"];
+    // Pause briefly to allow analytics service to dispatch async blocks
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
+    
     XCTestExpectation *expectation = [self expectationWithDescription:@"Sends batched request"];
     [analyticsService flush:^(NSError *error) {
         XCTAssertNil(error);
@@ -199,6 +202,8 @@
     
     [analyticsService sendAnalyticsEvent:@"an.analytics.event"];
     [analyticsService sendAnalyticsEvent:@"another.analytics.event"];
+    // Pause briefly to allow analytics service to dispatch async blocks
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
     [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationWillResignActiveNotification object:nil];
 
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];

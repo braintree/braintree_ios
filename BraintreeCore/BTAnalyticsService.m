@@ -129,13 +129,17 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
 #pragma mark - Public methods
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind {
-    [self enqueueEvent:eventKind];
-    [self checkFlushThreshold];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self enqueueEvent:eventKind];
+        [self checkFlushThreshold];
+    });
 }
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind completion:(__unused void(^)(NSError *error))completionBlock {
-    [self enqueueEvent:eventKind];
-    [self flush:completionBlock];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self enqueueEvent:eventKind];
+        [self flush:completionBlock];
+    });
 }
 
 - (void)flush:(void (^)(NSError *))completionBlock {
@@ -240,24 +244,20 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
     long timestampInSeconds = round([[NSDate date] timeIntervalSince1970]);
     BTAnalyticsEvent *event = [BTAnalyticsEvent event:eventKind withTimestamp:timestampInSeconds];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // The session should only be constructed on the main thread in order for metadata analytics
-        // to be properly collected due to UIApplication calls.
-        BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
-                                                                 source:self.apiClient.metadata.sourceString
-                                                            integration:self.apiClient.metadata.integrationString];
-        if (!session) {
-            [[BTLogger sharedLogger] warning:@"Missing analytics session metadata - will not send event %@", event.kind];
-            return;
+    BTAnalyticsSession *session = [BTAnalyticsSession sessionWithID:self.apiClient.metadata.sessionId
+                                                             source:self.apiClient.metadata.sourceString
+                                                        integration:self.apiClient.metadata.integrationString];
+    if (!session) {
+        [[BTLogger sharedLogger] warning:@"Missing analytics session metadata - will not send event %@", event.kind];
+        return;
+    }
+
+    dispatch_async(self.sessionsQueue, ^{
+        if (!self.analyticsSessions[session.sessionID]) {
+            self.analyticsSessions[session.sessionID] = session;
         }
 
-        dispatch_async(self.sessionsQueue, ^{
-            if (!self.analyticsSessions[session.sessionID]) {
-                self.analyticsSessions[session.sessionID] = session;
-            }
-
-            [self.analyticsSessions[session.sessionID].events addObject:event];
-        });
+        [self.analyticsSessions[session.sessionID].events addObject:event];
     });
 }
 
@@ -269,7 +269,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
             eventCount += analyticsSession.events.count;
         }
     });
-    
+
     if (eventCount >= self.flushThreshold) {
         [self flush:nil];
     }
