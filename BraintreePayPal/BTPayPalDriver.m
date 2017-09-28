@@ -397,7 +397,12 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             }
         } else
 #endif
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 9.0, *)) {
+#else
         if (self.safariViewController) {
+#endif
             [self informDelegatePresentingViewControllerNeedsDismissal];
         } else {
             [self informDelegateWillProcessAppSwitchReturn];
@@ -574,7 +579,11 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     } else {
         UIApplication *application = [UIApplication sharedApplication];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 10.0, *)) {
+#else
         if ([application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+#endif
             [application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:nil];
         } else {
 #pragma clang diagnostic push
@@ -825,9 +834,15 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 - (void)informDelegatePresentingViewControllerRequestPresent:(NSURL*) appSwitchURL {
     if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsPresentationOfViewController:)]) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 9.0, *)) {
+#endif
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
         self.safariViewController.delegate = self;
         [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        }
+#endif
     } else {
         [[BTLogger sharedLogger] critical:@"Unable to display View Controller to continue PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
@@ -835,8 +850,14 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 - (void)informDelegatePresentingViewControllerNeedsDismissal {
     if (self.viewControllerPresentingDelegate != nil && [self.viewControllerPresentingDelegate respondsToSelector:@selector(paymentDriver:requestsDismissalOfViewController:)]) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 9.0, *)) {
+#endif
         [self.viewControllerPresentingDelegate paymentDriver:self requestsDismissalOfViewController:self.safariViewController];
         self.safariViewController = nil;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        }
+#endif
     } else {
         [[BTLogger sharedLogger] critical:@"Unable to dismiss View Controller to end PayPal flow. BTPayPalDriver needs a viewControllerPresentingDelegate<BTViewControllerPresentingDelegate> to be set."];
     }
@@ -846,7 +867,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 
 static NSString * const SFSafariViewControllerFinishedURL = @"sfsafariviewcontroller://finished";
 
-- (void)safariViewControllerDidFinish:(__unused SFSafariViewController *)controller {
+- (void)safariViewControllerDidFinish:(__unused SFSafariViewController *)controller API_AVAILABLE(ios(9.0))  {
     [self.class handleAppSwitchReturnURL:[NSURL URLWithString:SFSafariViewControllerFinishedURL]];
 }
 
