@@ -46,7 +46,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             _configurationHTTP = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:authorization];
             
             if (sendAnalyticsEvent) {
-                [self sendAnalyticsEvent:@"ios.started.client-key"];
+                [self queueAnalyticsEvent:@"ios.started.client-key"];
             }
         } else {
             NSError *error;
@@ -61,7 +61,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             _configurationHTTP = [[BTHTTP alloc] initWithClientToken:self.clientToken];
 
             if (sendAnalyticsEvent) {
-                [self sendAnalyticsEvent:@"ios.started.client-token"];
+                [self queueAnalyticsEvent:@"ios.started.client-token"];
             }
         }
         
@@ -289,6 +289,10 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 }
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind {
+    [self.analyticsService sendAnalyticsEvent:eventKind completion:nil];
+}
+
+- (void)queueAnalyticsEvent:(NSString *)eventKind {
     [self.analyticsService sendAnalyticsEvent:eventKind];
 }
 

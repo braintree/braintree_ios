@@ -24,16 +24,19 @@
 
 @interface BTFakeAnalyticsService : BTAnalyticsService
 @property (nonatomic, copy) NSString *lastEvent;
+@property (nonatomic, assign) BOOL didLastFlush;
 @end
 
 @implementation BTFakeAnalyticsService
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind {
     self.lastEvent = eventKind;
+    self.didLastFlush = NO;
 }
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind completion:(__unused void (^)(NSError *))completionBlock {
     self.lastEvent = eventKind;
+    self.didLastFlush = YES;
 }
 
 @end
@@ -305,7 +308,7 @@
     XCTAssertTrue([apiClient.analyticsService isKindOfClass:[BTAnalyticsService class]]);
 }
 
-- (void)testSendAnalyticsEvent_whenCalled_callsAnalyticsService {
+- (void)testSendAnalyticsEvent_whenCalled_callsAnalyticsService_doesFlush {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     BTFakeAnalyticsService *mockAnalyticsService = [[BTFakeAnalyticsService alloc] init];
     apiClient.analyticsService = mockAnalyticsService;
@@ -313,6 +316,18 @@
     [apiClient sendAnalyticsEvent:@"blahblah"];
 
     XCTAssertEqualObjects(mockAnalyticsService.lastEvent, @"blahblah");
+    XCTAssertTrue(mockAnalyticsService.didLastFlush);
+}
+
+- (void)testQueueAnalyticsEvent_whenCalled_callsAnalyticsService_doesNotFlush {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
+    BTFakeAnalyticsService *mockAnalyticsService = [[BTFakeAnalyticsService alloc] init];
+    apiClient.analyticsService = mockAnalyticsService;
+
+    [apiClient queueAnalyticsEvent:@"blahblahqueue"];
+
+    XCTAssertEqualObjects(mockAnalyticsService.lastEvent, @"blahblahqueue");
+    XCTAssertFalse(mockAnalyticsService.didLastFlush);
 }
 
 - (void)testPOST_usesMetadataSourceAndIntegration {
