@@ -121,7 +121,11 @@ static NSString *BTWebViewControllerPopupCloseDummyURLScheme = @"com.braintreepa
         // Not a real error; occurs when webView:shouldStartLoadWithRequest:navigationType: returns NO
         return;
     } else {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 8.0,*)) {
+#else
         if ([UIAlertController class]) {
+#endif
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:error.localizedDescription
                                                                            message:nil
                                                                     preferredStyle:UIAlertControllerStyleAlert];

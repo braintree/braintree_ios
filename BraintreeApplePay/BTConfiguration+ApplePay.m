@@ -9,7 +9,16 @@
 }
 
 - (BOOL)canMakeApplePayPayments {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    if (@available(iOS 8.0, watchOS 3.0, *)) {
+#endif
     return [PKPaymentAuthorizationViewController canMakePaymentsUsingNetworks:self.applePaySupportedNetworks];
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    } else {
+        return NO;
+    }
+#endif
 }
 
 - (NSString *)applePayCountryCode {
@@ -29,6 +38,9 @@
 
     NSMutableArray <PKPaymentNetwork> *supportedNetworks = [NSMutableArray new];
 
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    if (@available(iOS 8.0, watchOS 3.0, *)) {
+#endif
     for (NSString *gatewaySupportedNetwork in gatewaySupportedNetworks) {
         if ([gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"visa"] == NSOrderedSame) {
             [supportedNetworks addObject:PKPaymentNetworkVisa];
@@ -46,6 +58,10 @@
         } else if (&PKPaymentNetworkDiscover != NULL && [gatewaySupportedNetwork localizedCaseInsensitiveCompare:@"discover"] == NSOrderedSame) { // Very important to check that this constant is available first!
             [supportedNetworks addObject:PKPaymentNetworkDiscover];
         }
+#endif
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    }
 #endif
     }
 
