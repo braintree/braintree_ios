@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.9.4 (2017-10-02)
+
+* Fix Xcode9 compatibility issues with iOS 7.0
+
 ## 4.9.3 (2017-09-28)
 
 * Update Xcode 9 code for availability checking
