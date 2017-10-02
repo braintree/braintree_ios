@@ -182,10 +182,17 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 if (completionBlock) completionBlock(nil);
                 return;
             }
-            
+
+            BOOL willPostAnalyticsEvent = NO;
+
             for (NSString *sessionID in self.analyticsSessions.allKeys) {
                 BTAnalyticsSession *session = self.analyticsSessions[sessionID];
-                
+                if (session.events.count == 0) {
+                    continue;
+                }
+
+                willPostAnalyticsEvent = YES;
+
                 NSMutableDictionary *metadataParameters = [NSMutableDictionary dictionary];
                 [metadataParameters addEntriesFromDictionary:session.metadataParameters];
                 metadataParameters[@"sessionId"] = session.sessionID;
@@ -204,14 +211,19 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 if (self.apiClient.tokenizationKey) {
                     postParameters[@"tokenization_key"] = self.apiClient.tokenizationKey;
                 }
+
+                [session.events removeAllObjects];
+
                 [self.http POST:@"/" parameters:postParameters completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-                    if (!error) {
-                        [self.analyticsSessions removeObjectForKey:sessionID];
-                    } else {
+                    if (error != nil) {
                         [[BTLogger sharedLogger] warning:@"Failed to flush analytics events: %@", error.localizedDescription];
                     }
                     if (completionBlock) completionBlock(error);
                 }];
+            }
+
+            if (!willPostAnalyticsEvent && completionBlock) {
+                completionBlock(nil);
             }
         });
     }];
