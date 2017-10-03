@@ -172,7 +172,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.application = fakeApplication
         venmoDriver.bundle = FakeBundle()
 
-        venmoDriver.authorizeAccountAndVault(false) { _ -> Void in }
+        venmoDriver.authorizeAccountAndVault(false) { _,_  -> Void in }
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
@@ -195,7 +195,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.application = fakeApplication
         venmoDriver.bundle = FakeBundle()
 
-        venmoDriver.authorizeAccountAndVault(false) { _ -> Void in
+        venmoDriver.authorizeAccountAndVault(false) { _,_  -> Void in
             XCTAssertEqual(delegate.lastAppSwitcher as? BTVenmoDriver, venmoDriver)
         }
 
@@ -280,7 +280,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.bundle = FakeBundle()
 
         let expectation = self.expectation(description: "Callback")
-        venmoDriver.authorizeAccountAndVault(false) { _ -> Void in
+        venmoDriver.authorizeAccountAndVault(false) { _,_  -> Void in
             XCTAssertEqual(delegate.lastAppSwitcher as? BTVenmoDriver, venmoDriver)
             expectation.fulfill()
         }
@@ -313,7 +313,7 @@ class BTVenmoDriver_Tests: XCTestCase {
             didAppSwitchNotificationExpectation.fulfill()
             })
 
-        venmoDriver.authorizeAccountAndVault(false) { _ -> Void in }
+        venmoDriver.authorizeAccountAndVault(false) { _,_  -> Void in }
 
         let willProcessNotificationExpectation = expectation(description: "willProcess notification received")
         observers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.BTAppSwitchWillProcessPaymentInfo, object: nil, queue: nil) { (notification) -> Void in

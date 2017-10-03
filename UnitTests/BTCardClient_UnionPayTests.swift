@@ -226,7 +226,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         request.mobilePhoneNumber = "321"
 
         let expectation = self.expectation(description: "Callback invoked")
-        cardClient.enrollCard(request) { _ -> Void in
+        cardClient.enrollCard(request) { _,_,_  -> Void in
             expectation.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -259,7 +259,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         request.mobilePhoneNumber = "321"
 
         let expectation = self.expectation(description: "Callback invoked")
-        cardClient.enrollCard(request) { _ -> Void in
+        cardClient.enrollCard(request) { _,_,_  -> Void in
             expectation.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -344,7 +344,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let request = BTCardRequest(card: card)
       
         let expectation = self.expectation(description: "Callback invoked")
-        cardClient.enrollCard(request) { _ -> Void in
+        cardClient.enrollCard(request) { _,_,_  -> Void in
             XCTAssertTrue(Thread.isMainThread)
             expectation.fulfill()
         }
@@ -361,7 +361,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let request = BTCardRequest(card: card)
       
         let expectation = self.expectation(description: "Callback invoked")
-        cardClient.enrollCard(request) { _ -> Void in
+        cardClient.enrollCard(request) { _,_,_  -> Void in
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.custom.unionpay.enrollment-failed")
             expectation.fulfill()
         }
@@ -380,7 +380,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let request = BTCardRequest(card: card)
       
         let expectation = self.expectation(description: "Callback invoked")
-        cardClient.enrollCard(request) { _ -> Void in
+        cardClient.enrollCard(request) { _,_,_  -> Void in
             XCTAssertTrue(Thread.isMainThread)
             expectation.fulfill()
         }
@@ -400,7 +400,7 @@ class BTCardClient_UnionPayTests: XCTestCase {
         let request = BTCardRequest(card: card)
       
         let expectation = self.expectation(description: "Callback invoked")
-        cardClient.enrollCard(request) { _ -> Void in
+        cardClient.enrollCard(request) { _,_,_  -> Void in
             XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.custom.unionpay.enrollment-succeeded")
             expectation.fulfill()
         }

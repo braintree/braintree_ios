@@ -149,7 +149,7 @@ class BTCardClient_Tests: XCTestCase {
         let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
         
         let expectation = self.expectation(description: "Tokenized card")
-        cardClient.tokenizeCard(card) { _ -> Void in
+        cardClient.tokenizeCard(card) { _,_  -> Void in
             expectation.fulfill()
         }
 
