@@ -2,6 +2,7 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
+#import "BraintreeAmericanExpress.h"
 #import "BraintreeCore.h"
 #import "BraintreeCard.h"
 #import "BraintreeApplePay.h"
