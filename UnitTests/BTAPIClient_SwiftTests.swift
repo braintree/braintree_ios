@@ -205,6 +205,9 @@ class BTAPIClient_SwiftTests: XCTestCase {
         let mockHTTP = BTFakeHTTP()!
         mockHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/payment_methods", respondWith: [], statusCode: 200)
         apiClient.http = mockHTTP
+        let mockConfigurationHTTP = BTFakeHTTP()!
+        mockConfigurationHTTP.stubRequest("GET", toEndpoint: "/client_api/v1/configuration", respondWith: [], statusCode: 200)
+        apiClient.configurationHTTP = mockConfigurationHTTP
 
         XCTAssertEqual((apiClient.clientToken!.json["version"] as! BTJSON).asIntegerOrZero(), 3)
 

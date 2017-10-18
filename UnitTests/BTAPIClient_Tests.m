@@ -161,6 +161,7 @@
     // Override apiClient.http so that requests don't fail
     apiClient.configurationHTTP = fake;
     apiClient.http = fake;
+    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{ } statusCode:200];
 
     XCTestExpectation *expectation1 = [self expectationWithDescription:@"Fetch configuration"];
     [apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, __unused NSError *error) {
@@ -342,6 +343,10 @@
                                     @"url" : @"test://do-not-send.url"
                                     } }
                statusCode:200];
+    BTFakeHTTP *mockConfigurationHTTP = [BTFakeHTTP fakeHTTP];
+    apiClient.configurationHTTP = mockConfigurationHTTP;
+    [mockConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{ } statusCode:200];
+
     BTClientMetadata *metadata = apiClient.metadata;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
@@ -362,6 +367,60 @@
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
+#pragma mark - Timeouts
+
+- (void)testGETCallback_returnFetchConfigErrors {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
+    BTFakeHTTP *fakeConfigurationHTTP = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
+    BTFakeHTTP *fakeHTTP = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
+    // Override apiClient.http so that requests don't fail
+    apiClient.configurationHTTP = fakeConfigurationHTTP;
+    apiClient.http = fakeHTTP;
+
+    NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
+                                           code:NSURLErrorCannotConnectToHost
+                                       userInfo:nil];
+    [fakeConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
+
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"GET request"];
+
+    [apiClient GET:@"/example" parameters:@{} completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNil(response);
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(anError, error);
+
+        [expectation1 fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testPOSTCallback_returnFetchConfigErrors {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
+    BTFakeHTTP *fakeConfigurationHTTP = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
+    BTFakeHTTP *fakeHTTP = [[BTFakeHTTP alloc] initWithBaseURL:apiClient.http.baseURL authorizationFingerprint:@""];
+    // Override apiClient.http so that requests don't fail
+    apiClient.configurationHTTP = fakeConfigurationHTTP;
+    apiClient.http = fakeHTTP;
+
+    NSError *anError = [NSError errorWithDomain:NSURLErrorDomain
+                                           code:NSURLErrorCannotConnectToHost
+                                       userInfo:nil];
+    [fakeConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWithError:anError];
+
+    XCTestExpectation *expectation1 = [self expectationWithDescription:@"GET request"];
+
+    [apiClient POST:@"/example" parameters:@{} completion:^(__unused BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNil(response);
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(anError, error);
+
+        [expectation1 fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 #pragma mark - Helpers
 
 - (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {
@@ -369,6 +428,8 @@
     BTFakeHTTP *fake = [BTFakeHTTP fakeHTTP];
     fake.cannedConfiguration = [[BTJSON alloc] initWithValue:configurationDictionary];
     fake.cannedStatusCode = 200;
+    [fake stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: configurationDictionary statusCode:200];
+
     apiClient.configurationHTTP = fake;
 
     return apiClient;

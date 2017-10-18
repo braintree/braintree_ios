@@ -307,12 +307,22 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 - (void)GET:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     [self fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration * _Nullable configuration, __unused NSError * _Nullable error) {
+        if (error != nil) {
+            completionBlock(nil, nil, error);
+            return;
+        }
+
         [self.http GET:endpoint parameters:parameters completion:completionBlock];
     }];
 }
 
 - (void)POST:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     [self fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration * _Nullable configuration, __unused NSError * _Nullable error) {
+        if (error != nil) {
+            completionBlock(nil, nil, error);
+            return;
+        }
+
         NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
         mutableParameters[@"_meta"] = [self metaParameters];
         [mutableParameters addEntriesFromDictionary:parameters];
