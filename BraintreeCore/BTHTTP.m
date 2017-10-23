@@ -133,6 +133,9 @@
         fullPathURL = self.baseURL;
     }
 
+    if (parameters == nil) {
+        parameters = [NSDictionary dictionary];
+    }
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     if (self.authorizationFingerprint) {
         mutableParameters[@"authorization_fingerprint"] = self.authorizationFingerprint;

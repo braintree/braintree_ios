@@ -225,6 +225,7 @@
     size_t keyBlockSize = SecKeyGetBlockSize(publicKeyRef);
     if (plainData.length > keyBlockSize) {
         PPSDKLog(@"encryptRSAData: data too big to encrypt");
+        CFRelease(publicKeyRef);
         return nil;
     }
     size_t cipherTextLen = keyBlockSize;
