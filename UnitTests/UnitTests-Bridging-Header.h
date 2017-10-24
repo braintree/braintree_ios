@@ -35,6 +35,7 @@
 #import "Braintree-Version.h"
 #import "PPDataCollector_Internal.h"
 #import "BTDropInUtil.h"
+#import "BTAmericanExpressClient_Internal.h"
 
 #import "BTSpecHelper.h"
 #import <OCMock/OCMock.h>

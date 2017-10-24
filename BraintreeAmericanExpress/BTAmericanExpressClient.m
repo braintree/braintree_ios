@@ -27,9 +27,7 @@ NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmerica
 
 #pragma mark - Public methods
 
-- (void)getRewardsBalance:(NSDictionary *)options completion:(void (^)(NSDictionary *, NSError *))completionBlock {
-    NSString *nonce = options[@"nonce"];
-    NSString *currencyIsoCode = options [@"currencyIsoCode"];
+- (void)getRewardsBalanceForNonce:(NSString *)nonce currencyIsoCode:(NSString *)currencyIsoCode completion:(void (^)(BTAmericanExpressRewardsBalance *, NSError *))completionBlock {
     if (!nonce) {
         NSError *error = [NSError errorWithDomain:BTAmericanExpressErrorDomain
                                              code:BTAmericanExpressErrorTypeInvalidParameters
@@ -47,11 +45,6 @@ NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmerica
     NSMutableDictionary *parameters = [NSMutableDictionary new];
     parameters[@"currencyIsoCode"] = currencyIsoCode;
     parameters[@"paymentMethodNonce"] = nonce;
-    parameters[@"_meta"] = @{
-                             @"source" : self.apiClient.metadata.sourceString,
-                             @"integration" : self.apiClient.metadata.integrationString,
-                             @"sessionId" : self.apiClient.metadata.sessionId,
-                             };
     
     [self.apiClient GET:@"v1/payment_methods/amex_rewards_balance"
              parameters:parameters
@@ -61,9 +54,9 @@ NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmerica
                      [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.error"];
                      return;
                  }
-                 NSDictionary *payload = [body asDictionary];
+                 BTAmericanExpressRewardsBalance *rewardsBalance = [[BTAmericanExpressRewardsBalance alloc] initWithJson:body];
                  [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.success"];
-                 completionBlock(payload, nil);
+                 completionBlock(rewardsBalance, nil);
      }];
 }
 

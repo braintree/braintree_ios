@@ -38,6 +38,10 @@
 		0371D13D1CBECAEE006A0B5D /* BTUIPayPalCompactButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A70241BC1C5A9A2F00875DB8 /* BTUIPayPalCompactButton.m */; };
 		0384E94D1C23BAFF001A3380 /* BraintreePayPal_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0384E94C1C23BAFF001A3380 /* BraintreePayPal_UITests.swift */; };
 		0384E94F1C23C108001A3380 /* BTUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0384E94E1C23C108001A3380 /* BTUITest.swift */; };
+		039A8BD51F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m in Sources */ = {isa = PBXBuildFile; fileRef = 039A8BD41F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m */; };
+		039A8BD71F9E627100D607E7 /* BTAmericanExpressRewardsBalance.h in Headers */ = {isa = PBXBuildFile; fileRef = 039A8BD61F9E626200D607E7 /* BTAmericanExpressRewardsBalance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039A8BD81F9E627A00D607E7 /* BTAmericanExpressRewardsBalance.m in Sources */ = {isa = PBXBuildFile; fileRef = 039A8BD41F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m */; };
+		039A8BDA1F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */; };
 		03B368B31CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03B368B21CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.m */; };
 		03CFEF301CD30B15006D2DA5 /* PPOTDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFEF261CD30B15006D2DA5 /* PPOTDevice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03CFEF311CD30B15006D2DA5 /* PPOTEncryptionHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 03CFEF271CD30B15006D2DA5 /* PPOTEncryptionHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1198,6 +1202,9 @@
 		035945561BE96345002116BB /* BTUIVenmoMonogramCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUIVenmoMonogramCardView.m; sourceTree = "<group>"; };
 		0384E94C1C23BAFF001A3380 /* BraintreePayPal_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreePayPal_UITests.swift; sourceTree = "<group>"; };
 		0384E94E1C23C108001A3380 /* BTUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BTUITest.swift; path = Helpers/BTUITest.swift; sourceTree = "<group>"; };
+		039A8BD41F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTAmericanExpressRewardsBalance.m; sourceTree = "<group>"; };
+		039A8BD61F9E626200D607E7 /* BTAmericanExpressRewardsBalance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTAmericanExpressRewardsBalance.h; sourceTree = "<group>"; };
+		039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTAmericanExpressRewardsBalance_Tests.swift; sourceTree = "<group>"; };
 		03B368B11CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BraintreeDemoDropInLegacyViewController.h; sourceTree = "<group>"; };
 		03B368B21CAD95D300CDFC9C /* BraintreeDemoDropInLegacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BraintreeDemoDropInLegacyViewController.m; sourceTree = "<group>"; };
 		03CFEF241CD304B0006D2DA5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2033,6 +2040,7 @@
 			children = (
 				0357C4911F9690A900E63851 /* BTAmericanExpressClient_Internal.h */,
 				0357C48B1F96882500E63851 /* BTAmericanExpressClient.m */,
+				039A8BD41F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m */,
 				0357C48C1F96882500E63851 /* Public */,
 			);
 			path = BraintreeAmericanExpress;
@@ -2042,6 +2050,7 @@
 			isa = PBXGroup;
 			children = (
 				0357C4991F96A2F400E63851 /* BraintreeAmericanExpress.h */,
+				039A8BD61F9E626200D607E7 /* BTAmericanExpressRewardsBalance.h */,
 				0357C48D1F96882500E63851 /* BTAmericanExpressClient.h */,
 			);
 			path = Public;
@@ -2127,6 +2136,7 @@
 				A790339B1B45E16E004C8234 /* BTCard_Internal_Tests.m */,
 				A79033971B45C968004C8234 /* BTCard_Tests.swift */,
 				0357C49B1F97ED1F00E63851 /* BTAmericanExpressClient_Tests.swift */,
+				039A8BD91F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift */,
 				A75147E01B4217A00005BBBA /* BTCardClient_Tests.swift */,
 				41F1D1FA1CAA005500DA34CB /* BTCardClient_UnionPayTests.swift */,
 				A7A094F51B8276E500D732CC /* BTCardNonce_Tests.swift */,
@@ -3293,6 +3303,7 @@
 				0357C49A1F96A30700E63851 /* BraintreeAmericanExpress.h in Headers */,
 				0357C4901F96884F00E63851 /* BTAmericanExpressClient.h in Headers */,
 				0357C4921F9690EB00E63851 /* BTAmericanExpressClient_Internal.h in Headers */,
+				039A8BD71F9E627100D607E7 /* BTAmericanExpressRewardsBalance.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4488,6 +4499,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				039A8BD51F9E624400D607E7 /* BTAmericanExpressRewardsBalance.m in Sources */,
 				0357C48E1F96882500E63851 /* BTAmericanExpressClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4520,6 +4532,7 @@
 				842B68F11BCF083E0039634F /* BTAPIClient_SwiftTests.swift in Sources */,
 				031B94D11C34863200F136C8 /* BTUISpec.m in Sources */,
 				031B94D01C3485ED00F136C8 /* EXPMatchers+haveKerning.m in Sources */,
+				039A8BDA1F9E993500D607E7 /* BTAmericanExpressRewardsBalance_Tests.swift in Sources */,
 				A7E93E581B601EE900957223 /* BTURLUtils_Tests.swift in Sources */,
 				A7B462501C3C911200048423 /* PPOTConfigurationTest.m in Sources */,
 				A79AF9F31B56DB54007B1DF1 /* BTClientMetadataSpec.m in Sources */,
@@ -4680,6 +4693,7 @@
 				A76D7C3A1BB31A2B0000FA6A /* BTDataCollector.m in Sources */,
 				4174050C1BB0869C008A5DEA /* BTUIVectorArtView.m in Sources */,
 				A5FE18331E79A05D00CBE9C7 /* BTPayPalCreditFinancing.m in Sources */,
+				039A8BD81F9E627A00D607E7 /* BTAmericanExpressRewardsBalance.m in Sources */,
 				4174050E1BB0869C008A5DEA /* BTUICardCvvField.m in Sources */,
 				417405101BB0869C008A5DEA /* BTUICardExpiryField.m in Sources */,
 				417405121BB0869D008A5DEA /* BTUICardNumberField.m in Sources */,

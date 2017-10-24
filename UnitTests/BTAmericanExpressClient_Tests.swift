@@ -2,41 +2,48 @@ import XCTest
 
 class BTAmericanExpressClient_Tests: XCTestCase {
 
-    func testGetRewardsBalance_returnsInvalidParametersErrorWhenNonceNotPresent() {
-        let expectation = self.expectation(description: "Options Error")
-        let fakeHTTP = FakeHTTP.fakeHTTP()
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        apiClient.http = fakeHTTP
-        let amexClient = BTAmericanExpressClient(apiClient: apiClient)
+    var mockAPIClient : MockAPIClient = MockAPIClient(authorization: "development_client_key")!
+    var amexClient : BTAmericanExpressClient? = nil
 
-        let options = Dictionary<String, Any>()
-        amexClient.getRewardsBalance(options) { (payload, error) in
-            XCTAssertNil(payload)
-            guard let error = error as? NSError else {return}
-            XCTAssertEqual(error.domain, BTAmericanExpressErrorDomain)
-            XCTAssertEqual(error.code, BTAmericanExpressErrorType.invalidParameters.rawValue)
+    override func setUp() {
+        super.setUp()
+        mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        amexClient = BTAmericanExpressClient(apiClient: mockAPIClient)
+   }
+    
+    func testGetRewardsBalance_returnsSendsAnalyticsEventOnSuccess() {
+        let responseBody = [
+            "conversionRate": "0.0070",
+            "currencyAmount": "316795.03",
+            "currencyIsoCode": "USD",
+            "requestId": "715f4712-8690-49ed-8cc5-d7fb1c2d",
+            "rewardsAmount": "45256433",
+            "rewardsUnit": "Points",
+            ] as [String : Any]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+        
+        let expectation = self.expectation(description: "Amex rewards balance response")
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD", completion: { (rewardsBalance, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(rewardsBalance)
             expectation.fulfill()
-        }
-
-        self.waitForExpectations(timeout: 10, handler: nil)
+        })
+        waitForExpectations(timeout: 2, handler: nil)
+        
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.success")
     }
+    
+    func testGetRewardsBalance_returnsSendsAnalyticsEventOnError() {
+        mockAPIClient.cannedResponseError = NSError(domain: "foo", code: 100, userInfo: nil)
 
-    func testGetRewardsBalance_returnsInvalidParametersErrorWhenCurrencyIsoCodeNotPresent() {
-        let expectation = self.expectation(description: "Options Error")
-        let fakeHTTP = FakeHTTP.fakeHTTP()
-        let apiClient = BTAPIClient(authorization: "development_tokenization_key")!
-        apiClient.http = fakeHTTP
-        let amexClient = BTAmericanExpressClient(apiClient: apiClient)
-
-        let options = ["nonce": "face-nonce"]
-        amexClient.getRewardsBalance(options) { (payload, error) in
-            XCTAssertNil(payload)
-            guard let error = error as? NSError else {return}
-            XCTAssertEqual(error.domain, BTAmericanExpressErrorDomain)
-            XCTAssertEqual(error.code, BTAmericanExpressErrorType.invalidParameters.rawValue)
+        let expectation = self.expectation(description: "Amex rewards balance response")
+        amexClient!.getRewardsBalance(forNonce: "fake-nonce", currencyIsoCode: "USD", completion: { (rewardsBalance, error) in
+            XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedResponseError!)
+            XCTAssertNil(rewardsBalance)
             expectation.fulfill()
-        }
-
-        self.waitForExpectations(timeout: 10, handler: nil)
+        })
+        waitForExpectations(timeout: 2, handler: nil)
+        
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.error")
     }
 }

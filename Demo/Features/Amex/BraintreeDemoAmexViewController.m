@@ -40,8 +40,7 @@
         }
 
         self.progressBlock(@"Amex - getting rewards balance");
-        NSDictionary *options = @{@"nonce": tokenized.nonce, @"currencyIsoCode": @"USD"};
-        [self.amexClient getRewardsBalance:options completion:^(__unused NSDictionary * _Nullable payload, NSError * _Nullable error) {
+        [self.amexClient getRewardsBalanceForNonce:tokenized.nonce currencyIsoCode:@"USD" completion:^(__unused BTAmericanExpressRewardsBalance * _Nullable rewardsBalance, NSError * _Nullable error) {
             if (error) {
                 self.progressBlock(error.localizedDescription);
             } else {

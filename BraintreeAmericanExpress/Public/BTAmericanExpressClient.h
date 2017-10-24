@@ -3,6 +3,7 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
+#import "BTAmericanExpressRewardsBalance.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -29,13 +30,14 @@ typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
 /*!
  @brief Gets the rewards balance associated with a Braintree nonce
  
- @param options The NSDictionary containing the options. Required options at the top level: `nonce` and `currencyIsoCode`
+ @param nonce The nonce that represents a card that will be used to get the rewards balance
+ @param currencyIsoCode The currencyIsoCode to use. Example: 'USD'
  @param completionBlock A completion block that is invoked when the request has completed. If the request succeeds,
- `payload` will contain a information about the rewards balance and `error` will be `nil` (see exceptions in note);
- if it fails, `payload` will be `nil` and `error` will describe the failure.
- @note If the nonce is associated with an ineligible card or a card with insufficient points, the payload will contain this information nested under `error` in the payload dictionary.
+ `rewardsBalance` will contain a information about the rewards balance and `error` will be `nil` (see exceptions in note);
+ if it fails, `rewardsBalance` will be `nil` and `error` will describe the failure.
+ @note If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
  */
-- (void)getRewardsBalance:(NSDictionary *)options completion:(void (^)(NSDictionary * _Nullable payload, NSError * _Nullable error))completionBlock NS_AVAILABLE_IOS(8_0);
+- (void)getRewardsBalanceForNonce:(NSString *)nonce currencyIsoCode:(NSString *)currencyIsoCode completion:(void (^)(BTAmericanExpressRewardsBalance * _Nullable rewardsBalance, NSError * _Nullable error))completionBlock NS_AVAILABLE_IOS(8_0);
 
 @end
 

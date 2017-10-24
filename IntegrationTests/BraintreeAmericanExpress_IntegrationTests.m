@@ -21,15 +21,16 @@
         expect(error).to.beNil();
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
         NSString *nonce = tokenizedCard.nonce;
-        NSDictionary *options = @{@"nonce": nonce, @"currencyIsoCode": @"USD"};
-        [amexClient getRewardsBalance:options completion:^(NSDictionary * _Nullable payload, NSError * _Nullable error) {
+        [amexClient getRewardsBalanceForNonce:nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance * _Nullable payload, NSError * _Nullable error) {
             expect(error).to.beNil();
-            expect(payload[@"conversionRate"]).toNot.beNil();
-            expect(payload[@"currencyAmount"]).toNot.beNil();
-            expect(payload[@"currencyIsoCode"]).toNot.beNil();
-            expect(payload[@"requestId"]).toNot.beNil();
-            expect(payload[@"rewardsAmount"]).toNot.beNil();
-            expect(payload[@"rewardsUnit"]).toNot.beNil();
+            expect(payload.conversionRate).toNot.beNil();
+            expect(payload.currencyAmount).toNot.beNil();
+            expect(payload.currencyIsoCode).toNot.beNil();
+            expect(payload.requestId).toNot.beNil();
+            expect(payload.rewardsAmount).toNot.beNil();
+            expect(payload.rewardsUnit).toNot.beNil();
+            expect(payload.errorCode).to.beNil();
+            expect(payload.errorMessage).to.beNil();
             [expectation fulfill];
         }];
     }];
@@ -48,18 +49,16 @@
         expect(error).to.beNil();
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
         NSString *nonce = tokenizedCard.nonce;
-        NSDictionary *options = @{@"nonce": nonce, @"currencyIsoCode": @"USD"};
-        [amexClient getRewardsBalance:options completion:^(NSDictionary * _Nullable payload, NSError * _Nullable error) {
+        [amexClient getRewardsBalanceForNonce:nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance * _Nullable payload, NSError * _Nullable error) {
             expect(error).to.beNil();
-            expect(payload[@"conversionRate"]).to.beNil();
-            expect(payload[@"currencyAmount"]).to.beNil();
-            expect(payload[@"currencyIsoCode"]).to.beNil();
-            expect(payload[@"requestId"]).to.beNil();
-            expect(payload[@"rewardsAmount"]).to.beNil();
-            expect(payload[@"rewardsUnit"]).to.beNil();
-            
-            expect(payload[@"error"][@"code"]).to.match(@"INQ2003");
-            expect(payload[@"error"][@"message"]).toNot.beNil();
+            expect(payload.conversionRate).to.beNil();
+            expect(payload.currencyAmount).to.beNil();
+            expect(payload.currencyIsoCode).to.beNil();
+            expect(payload.requestId).to.beNil();
+            expect(payload.rewardsAmount).to.beNil();
+            expect(payload.rewardsUnit).to.beNil();
+            expect(payload.errorCode).to.match(@"INQ2003");
+            expect(payload.errorMessage).toNot.beNil();
             [expectation fulfill];
         }];
     }];
@@ -78,17 +77,16 @@
         expect(error).to.beNil();
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
         NSString *nonce = tokenizedCard.nonce;
-        NSDictionary *options = @{@"nonce": nonce, @"currencyIsoCode": @"USD"};
-        [amexClient getRewardsBalance:options completion:^(NSDictionary * _Nullable payload, NSError * _Nullable error) {
+        [amexClient getRewardsBalanceForNonce:nonce currencyIsoCode:@"USD" completion:^(BTAmericanExpressRewardsBalance * _Nullable payload, NSError * _Nullable error) {
             expect(error).to.beNil();
-            expect(payload[@"conversionRate"]).to.beNil();
-            expect(payload[@"currencyAmount"]).to.beNil();
-            expect(payload[@"currencyIsoCode"]).to.beNil();
-            expect(payload[@"requestId"]).to.beNil();
-            expect(payload[@"rewardsAmount"]).to.beNil();
-            expect(payload[@"rewardsUnit"]).to.beNil();
-            expect(payload[@"error"][@"code"]).to.match(@"INQ2002");
-            expect(payload[@"error"][@"message"]).toNot.beNil();
+            expect(payload.conversionRate).to.beNil();
+            expect(payload.currencyAmount).to.beNil();
+            expect(payload.currencyIsoCode).to.beNil();
+            expect(payload.requestId).to.beNil();
+            expect(payload.rewardsAmount).to.beNil();
+            expect(payload.rewardsUnit).to.beNil();
+            expect(payload.errorCode).to.match(@"INQ2002");
+            expect(payload.errorMessage).toNot.beNil();
             [expectation fulfill];
         }];
     }];
