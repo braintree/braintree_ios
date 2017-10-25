@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  @brief Initialize with JSON from Braintree
  */
-- (instancetype)initWithJson:(BTJSON *)json;
+- (instancetype)initWithJSON:(BTJSON *)json;
 
 @end
 

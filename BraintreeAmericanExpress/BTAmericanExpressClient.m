@@ -41,7 +41,7 @@ NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmerica
                      [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.error"];
                      return;
                  }
-                 BTAmericanExpressRewardsBalance *rewardsBalance = [[BTAmericanExpressRewardsBalance alloc] initWithJson:body];
+                 BTAmericanExpressRewardsBalance *rewardsBalance = [[BTAmericanExpressRewardsBalance alloc] initWithJSON:body];
                  [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.success"];
                  completionBlock(rewardsBalance, nil);
      }];

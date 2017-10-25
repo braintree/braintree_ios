@@ -2,7 +2,7 @@
 
 @implementation BTAmericanExpressRewardsBalance
 
-- (instancetype)initWithJson:(BTJSON *)json
+- (instancetype)initWithJSON:(BTJSON *)json
 {
     if (self = [super init]) {
         _errorCode = [json[@"error"][@"code"] asString];

@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
  @param nonce A nonce representing a card that will be used to look up the rewards balance
  @param currencyIsoCode The currencyIsoCode to use. Example: 'USD'
  @param completionBlock A completion block that is invoked when the request has completed. If the request succeeds,
- `rewardsBalance` will contain a information about the rewards balance and `error` will be `nil` (see exceptions in note);
+ `rewardsBalance` will contain information about the rewards balance and `error` will be `nil` (see exceptions in note);
  if it fails, `rewardsBalance` will be `nil` and `error` will describe the failure.
  @note If the nonce is associated with an ineligible card or a card with insufficient points, the rewardsBalance will contain this information as `errorMessage` and `errorCode`.
  */
