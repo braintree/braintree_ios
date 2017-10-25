@@ -10,9 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 extern NSString * const BTAmericanExpressErrorDomain;
 typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
     BTAmericanExpressErrorTypeUnknown = 0,
-
-    /// Invalid parameters
-    BTAmericanExpressErrorTypeInvalidParameters,
 };
 
 @interface BTAmericanExpressClient : NSObject
@@ -28,9 +25,9 @@ typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
 /*!
- @brief Gets the rewards balance associated with a Braintree nonce
+ @brief Gets the rewards balance associated with a Braintree nonce. Only for American Express cards.
  
- @param nonce The nonce that represents a card that will be used to get the rewards balance
+ @param nonce A nonce representing a card that will be used to look up the rewards balance
  @param currencyIsoCode The currencyIsoCode to use. Example: 'USD'
  @param completionBlock A completion block that is invoked when the request has completed. If the request succeeds,
  `rewardsBalance` will contain a information about the rewards balance and `error` will be `nil` (see exceptions in note);

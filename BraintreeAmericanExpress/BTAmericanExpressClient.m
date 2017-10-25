@@ -28,24 +28,11 @@ NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmerica
 #pragma mark - Public methods
 
 - (void)getRewardsBalanceForNonce:(NSString *)nonce currencyIsoCode:(NSString *)currencyIsoCode completion:(void (^)(BTAmericanExpressRewardsBalance *, NSError *))completionBlock {
-    if (!nonce) {
-        NSError *error = [NSError errorWithDomain:BTAmericanExpressErrorDomain
-                                             code:BTAmericanExpressErrorTypeInvalidParameters
-                                         userInfo:@{ NSLocalizedDescriptionKey: @"Invalid Parameters: A 'nonce' is required in the options." }];
-        completionBlock(nil, error);
-        return;
-    } else if (!currencyIsoCode) {
-        NSError *error = [NSError errorWithDomain:BTAmericanExpressErrorDomain
-                                             code:BTAmericanExpressErrorTypeInvalidParameters
-                                         userInfo:@{ NSLocalizedDescriptionKey: @"Invalid Parameters: A 'currencyIsoCode' is required in the options." }];
-        completionBlock(nil, error);
-        return;
-    }
-    
     NSMutableDictionary *parameters = [NSMutableDictionary new];
     parameters[@"currencyIsoCode"] = currencyIsoCode;
     parameters[@"paymentMethodNonce"] = nonce;
     
+    [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.start"];
     [self.apiClient GET:@"v1/payment_methods/amex_rewards_balance"
              parameters:parameters
              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {

@@ -30,6 +30,7 @@ class BTAmericanExpressClient_Tests: XCTestCase {
         })
         waitForExpectations(timeout: 2, handler: nil)
         
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.success")
     }
     
@@ -43,7 +44,8 @@ class BTAmericanExpressClient_Tests: XCTestCase {
             expectation.fulfill()
         })
         waitForExpectations(timeout: 2, handler: nil)
-        
+
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents[mockAPIClient.postedAnalyticsEvents.count - 2], "ios.amex.rewards-balance.start")
         XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.amex.rewards-balance.error")
     }
 }
