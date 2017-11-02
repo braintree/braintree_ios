@@ -37,8 +37,8 @@ NSString *const BTAmericanExpressErrorDomain = @"com.braintreepayments.BTAmerica
              parameters:parameters
              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
                  if (error) {
-                     completionBlock(nil, error);
                      [self.apiClient sendAnalyticsEvent:@"ios.amex.rewards-balance.error"];
+                     completionBlock(nil, error);
                      return;
                  }
                  BTAmericanExpressRewardsBalance *rewardsBalance = [[BTAmericanExpressRewardsBalance alloc] initWithJSON:body];
