@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 4.9.5 (2017-11-03)
+
+* Fix a timeout issue on configuration fetch
+* Static analysis fixes
+* Add BraintreeAmericanExpress module and getRewardsBalance method
+
 ## 4.9.4 (2017-10-02)
 
 * Fix Xcode9 compatibility issues with iOS 7.0
