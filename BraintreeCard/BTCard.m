@@ -24,13 +24,17 @@
         _cvv = parameters[@"cvv"];
         
         _streetAddress = parameters[@"billing_address"][@"street_address"];
+        _extendedAddress = parameters[@"billing_address"][@"extended_address"];
         _locality = parameters[@"billing_address"][@"locality"];
         _region = parameters[@"billing_address"][@"region"];
         _countryName = parameters[@"billing_address"][@"country_name"];
         _countryCodeAlpha2 = parameters[@"billing_address"][@"country_code_alpha2"];
+        _countryCodeAlpha3 = parameters[@"billing_address"][@"country_code_alpha3"];
+        _countryCodeNumeric = parameters[@"billing_address"][@"country_code_numeric"];
         _cardholderName = parameters[@"cardholder_name"];
         _firstName = parameters[@"billing_address"][@"first_name"];
         _lastName = parameters[@"billing_address"][@"last_name"];
+        _company = parameters[@"billing_address"][@"company"];
         
         _shouldValidate = [parameters[@"options"][@"validate"] boolValue];
     }
@@ -81,12 +85,20 @@
         billingAddressDictionary[@"last_name"] = self.lastName;
     }
 
+    if (self.company) {
+        billingAddressDictionary[@"company"] = self.company;
+    }
+
     if (self.postalCode) {
         billingAddressDictionary[@"postal_code"] = self.postalCode;
     }
     
     if (self.streetAddress) {
         billingAddressDictionary[@"street_address"] = self.streetAddress;
+    }
+
+    if (self.extendedAddress) {
+        billingAddressDictionary[@"extended_address"] = self.extendedAddress;
     }
     
     if (self.locality) {
@@ -103,6 +115,14 @@
     
     if (self.countryCodeAlpha2) {
         billingAddressDictionary[@"country_code_alpha2"] = self.countryCodeAlpha2;
+    }
+
+    if (self.countryCodeAlpha3) {
+        billingAddressDictionary[@"country_code_alpha3"] = self.countryCodeAlpha3;
+    }
+
+    if (self.countryCodeNumeric) {
+        billingAddressDictionary[@"country_code_numeric"] = self.countryCodeNumeric;
     }
 
     if (billingAddressDictionary.count > 0) {

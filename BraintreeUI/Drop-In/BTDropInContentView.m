@@ -169,7 +169,7 @@
     [self updateContentView];
 }
 
-- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate completion:(void(^)())completionBlock {
+- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate completion:(void(^)(void))completionBlock {
     if (!animate) {
         [self setState:newState];
     } else {

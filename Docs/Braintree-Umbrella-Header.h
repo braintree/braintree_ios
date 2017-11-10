@@ -45,3 +45,9 @@
 #else
 #import <BraintreeVenmo/BraintreeVenmo.h>
 #endif
+
+#if __has_include("BraintreeAmericanExpress.h")
+#import "BraintreeAmericanExpress.h"
+#else
+#import <BraintreeAmericanExpress/BraintreeAmericanExpress.h>
+#endif

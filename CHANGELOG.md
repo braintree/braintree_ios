@@ -1,5 +1,33 @@
 # Braintree iOS SDK Release Notes
 
+## 4.9.5 (2017-11-03)
+
+* Fix a timeout issue on configuration fetch
+* Static analysis fixes
+* Add BraintreeAmericanExpress module and getRewardsBalance method
+
+## 4.9.4 (2017-10-02)
+
+* Fix Xcode9 compatibility issues with iOS 7.0
+
+## 4.9.3 (2017-09-28)
+
+* Update Xcode 9 code for availability checking
+* Fix analytics thread issue
+
+## 4.9.2 (2017-09-25)
+
+* Fix Xcode9 build warnings
+* Add additional billing address params to card builder
+  * Country Code Alpha 3
+  * Country Code Numeric
+  * Company
+  * Extended Address
+
+## 4.9.1 (2017-09-20)
+
+* Update libPPRiskComponent to latest version
+
 ## 4.9.0 (2017-09-13)
 
 * Add support for `SFAuthenticationSession` for PayPal payments

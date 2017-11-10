@@ -194,7 +194,7 @@ NSString * const BTJSONErrorDomain = @"com.briantreepayments.BTJSONErrorDomain";
     id key = self.value;
     NSNumber *value = mapping[key];
 
-    if (!value || ![value isKindOfClass:[NSNumber class]]) {
+    if (value == nil || ![value isKindOfClass:[NSNumber class]]) {
         return defaultValue;
     }
 

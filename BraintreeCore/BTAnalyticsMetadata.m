@@ -32,10 +32,17 @@
 #endif
     [self setObject:[m deviceManufacturer] forKey:@"deviceManufacturer" inDictionary:data];
     [self setObject:[m deviceModel] forKey:@"deviceModel" inDictionary:data];
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    if (@available(iOS 8.0, watchOS 2.0, *)) {
+#endif
     if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kBTCLAuthorizationStatusAuthorized) {
         [self setObject:@([m deviceLocationLatitude]) forKey:@"deviceLocationLatitude" inDictionary:data];
         [self setObject:@([m deviceLocationLongitude]) forKey:@"deviceLocationLongitude" inDictionary:data];
     }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    }
+#endif
     [self setObject:[m iosDeviceName] forKey:@"iosDeviceName" inDictionary:data];
     [self setObject:[m iosSystemName] forKey:@"iosSystemName" inDictionary:data];
     [self setObject:[m iosBaseSDK] forKey:@"iosBaseSDK" inDictionary:data];

@@ -36,6 +36,7 @@
 				<string>Fraud Protection - BTDataCollector</string>
 				<string>UnionPay</string>
 				<string>PayPal Credit</string>
+				<string>Amex</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -58,6 +59,7 @@
 				<string>BraintreeDemoBTDataCollectorViewController</string>
 				<string>BraintreeDemoUnionPayViewController</string>
 				<string>BraintreeDemoPayPalCreditPaymentViewController</string>
+				<string>BraintreeDemoAmexViewController</string>
 			</array>
 		</dict>
 		<dict>

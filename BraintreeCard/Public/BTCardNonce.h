@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @property (nonatomic, nullable, readonly, copy) NSString *lastTwo;
 
-/*!
+/**
  @brief The BIN data for the card number associated with this nonce.
  */
 @property (nonatomic, readonly, strong) BTBinData *binData;

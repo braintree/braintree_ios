@@ -285,7 +285,7 @@ def jazzy_command
       --sdk iphonesimulator
       --module-version #{current_version}
       --output docs_output
-      --umbrella-header Braintree-Umbrella-Header.h
+      --umbrella-header Docs/Braintree-Umbrella-Header.h
       --framework-root .
       --module Braintree
   ].join(' ')

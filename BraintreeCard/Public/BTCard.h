@@ -60,9 +60,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *lastName;
 
 /**
+ @brief Optional: company name associated with the card.
+ */
+@property (nonatomic, nullable, copy) NSString *company;
+
+/**
  @brief Optional: the street address associated with the card's billing address
 */
 @property (nonatomic, nullable, copy) NSString *streetAddress;
+
+/**
+ @brief Optional: the extended address associated with the card's billing address
+ */
+@property (nonatomic, nullable, copy) NSString *extendedAddress;
 
 /**
  @brief Optional: the city associated with the card's billing address
@@ -90,7 +100,23 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @property (nonatomic, nullable, copy) NSString *countryCodeAlpha2;
 
-/** 
+/**
+ @brief Optional: The ISO 3166-1 alpha-3 country code specified in the card's billing address.
+
+ @note Braintree only accepts specific alpha-3 values.
+ @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
+ */
+@property (nonatomic, nullable, copy) NSString *countryCodeAlpha3;
+
+/**
+ @brief Optional: The ISO 3166-1 numeric country code specified in the card's billing address.
+
+ @note Braintree only accepts specific numeric values.
+ @see https://developers.braintreepayments.com/reference/general/countries#list-of-countries
+ */
+@property (nonatomic, nullable, copy) NSString *countryCodeNumeric;
+
+/**
  @brief Controls whether or not to return validations and/or verification results. By default, this is not enabled.
 
  @note Use this flag with caution. By enabling client-side validation, certain tokenize card requests may result in adding the card to the vault. These semantics are not currently documented.

@@ -46,6 +46,6 @@ typedef NS_ENUM(NSUInteger, BTDropInContentViewStateType) {
 
 - (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate;
 
-- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate completion:(void(^)())completionBlock;
+- (void)setState:(BTDropInContentViewStateType)newState animate:(BOOL)animate completion:(void(^)(void))completionBlock;
 
 @end

@@ -21,7 +21,7 @@ class BTPaymentButton_Tests: XCTestCase {
 
     func testPaymentButton_whenUsingTokenizationKey_doesNotCrash() {
         let apiClient = BTAPIClient(authorization: "development_testing_integration_merchant_id")!
-        let paymentButton = BTPaymentButton(apiClient: apiClient) { _ in }
+        let paymentButton = BTPaymentButton(apiClient: apiClient) { _,_  in }
         let paymentButtonViewController = UIViewController()
         paymentButtonViewController.view.addSubview(paymentButton)
 
@@ -30,14 +30,14 @@ class BTPaymentButton_Tests: XCTestCase {
 
     func testPaymentButton_byDefault_hasAllPaymentOptions() {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _ in }
+        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _,_  in }
 
         XCTAssertEqual(paymentButton.enabledPaymentOptions, NSOrderedSet(array: ["PayPal", "Venmo"]))
     }
 
     func testPaymentButton_whenPayPalIsEnabledInConfiguration_checksConfigurationForPaymentOptionAvailability() {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _ in }
+        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _,_  in }
         paymentButton.configuration = BTConfiguration(json: BTJSON(value: [ "paypalEnabled": true ]))
 
         XCTAssertEqual(paymentButton.enabledPaymentOptions, NSOrderedSet(array: ["PayPal"]))
@@ -45,7 +45,7 @@ class BTPaymentButton_Tests: XCTestCase {
 
     func testPaymentButton_whenVenmoIsEnabledInConfiguration_checksConfigurationForPaymentOptionAvailability() {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _ in }
+        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _,_  in }
         let fakeApplication = FakeApplication()
         fakeApplication.cannedCanOpenURL = true
         paymentButton.application = fakeApplication
@@ -57,7 +57,7 @@ class BTPaymentButton_Tests: XCTestCase {
 
     func testPaymentButton_whenEnabledPaymentOptionsIsSetManually_skipsConfigurationValidation() {
         let stubAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
-        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _ in }
+        let paymentButton = BTPaymentButton(apiClient: stubAPIClient) { _,_  in }
         paymentButton.configuration = BTConfiguration(json: BTJSON(value: [ "paypalEnabled": false ]))
 
         paymentButton.enabledPaymentOptions = NSOrderedSet(array: ["PayPal"])

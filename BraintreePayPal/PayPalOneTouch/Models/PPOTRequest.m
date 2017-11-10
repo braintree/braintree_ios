@@ -166,7 +166,7 @@ NSString *const PayPalEnvironmentMock = PPRequestEnvironmentNoNetwork;
 
 #pragma mark - configuration methods
 
-- (void)determineConfigurationRecipe:(void (^)())completionBlock {
+- (void)determineConfigurationRecipe:(void (^)(void))completionBlock {
     PPAssert(completionBlock, @"establishConfigurationRecipe: completionBlock is required");
 
     if (self.configurationRecipe) {
