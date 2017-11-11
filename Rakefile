@@ -277,7 +277,6 @@ end
 def jazzy_command
   %W[jazzy
       --objc
-      --clean
       --author Braintree
       --author_url http://braintreepayments.com
       --github_url https://github.com/braintree/braintree_ios
@@ -285,8 +284,8 @@ def jazzy_command
       --sdk iphonesimulator
       --module-version #{current_version}
       --output docs_output
-      --umbrella-header Docs/Braintree-Umbrella-Header.h
-      --framework-root .
+      --xcodebuild-arguments --objc,Docs/Braintree-Umbrella-Header.h,--,-x,objective-c,-isysroot,$(xcrun --show-sdk-path),-I,$(pwd)
+      --min-acl internal
       --module Braintree
   ].join(' ')
 end
