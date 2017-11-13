@@ -290,8 +290,11 @@ def jazzy_command
   ].join(' ')
 end
 
-desc "Generate documentation via jazzy"
-task :docs => %w[docs:generate docs:publish docs:clean]
+desc "Generate documentation via jazzy and push to GHE"
+task :docs_internal => %w[docs:generate docs:publish docs:internal docs:clean]
+
+desc "Generate documentation via jazzy and push to GH"
+task :docs_external => %w[docs:generate docs:publish docs:external docs:clean]
 
 namespace :docs do
 
@@ -308,14 +311,20 @@ namespace :docs do
     run! 'git commit -m "Publish docs to github pages"'
     puts "Generating git subtree, this will take a moment..."
     run! 'git subtree split --prefix docs_output -b gh-pages'
-    # TODO Push to public github as well
+  end
+
+  task:internal do
     run! 'git push -f origin gh-pages:gh-pages'
-    run! 'git reset HEAD~'
-    run! 'git branch -D gh-pages'
-    puts "Published docs to gh-pages branch"
+  end
+
+  task:external do
+    run! 'git push -f public gh-pages:gh-pages'
   end
 
   task :clean do
+    run! 'git reset HEAD~'
+    run! 'git branch -D gh-pages'
+    puts "Published docs to gh-pages branch"
     run! 'rm -rf docs_output'
   end
 
