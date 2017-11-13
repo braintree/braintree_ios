@@ -259,7 +259,7 @@ static BTVenmoDriver *appSwitchedDriver;
             
             [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.success"];
             
-            if (self.shouldVault) {
+            if (self.shouldVault && self.apiClient.clientToken != nil) {
                 [self vaultVenmoAccountNonce:returnURL.nonce];
             } else {
                 [self informDelegateWillProcessAppSwitchReturn];
