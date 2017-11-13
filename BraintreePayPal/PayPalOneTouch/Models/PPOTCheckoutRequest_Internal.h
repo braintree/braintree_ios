@@ -9,7 +9,7 @@
 
 @interface PPOTCheckoutRequest ()
 
-/*!
+/**
  @brief Factory method. Non-empty values for all parameters MUST be provided.
 
  @param approvalURL Client has already created a payment on PayPal server; this is the resulting HATEOS ApprovalURL
@@ -23,7 +23,7 @@
                                     environment:(nonnull NSString *)environment
                               callbackURLScheme:(nonnull NSString *)callbackURLScheme;
 
-/*!
+/**
  @brief Factory method. Only pairingId can be nil.
 
  @param approvalURL Client has already created a payment on PayPal server; this is the resulting HATEOS ApprovalURL

@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTApplePayCardNonce : BTPaymentMethodNonce
 
-/*!
+/**
  @brief The BIN data for the card number associated with this nonce.
  */
 @property (nonatomic, readonly, strong) BTBinData *binData;

@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
 
 @interface BTApplePayClient : NSObject
 
-/*!
+/**
  @brief Creates an Apple Pay client.
 
  @param apiClient An API client
@@ -32,7 +32,7 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-/*!
+/**
  @brief Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
 
  @discussion It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
@@ -41,7 +41,7 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
 */
 - (void)paymentRequest:(void (^)(PKPaymentRequest * _Nullable paymentRequest, NSError * _Nullable error))completion  NS_AVAILABLE_IOS(8_0);
 
-/*!
+/**
  @brief Tokenizes an Apple Pay payment.
 
  @param payment A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`

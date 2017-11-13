@@ -2,12 +2,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*!
+/**
  @brief Protocol for receiving payment lifecycle messages from a payment driver that requires presentation of a view controller to authorize a payment.
 */
 @protocol BTViewControllerPresentingDelegate <NSObject>
 
-/*!
+/**
  @brief The payment driver requires presentation of a view controller in order to proceed.
 
  @discussion Your implementation should present the viewController modally, e.g. via
@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (void)paymentDriver:(id)driver requestsPresentationOfViewController:(UIViewController *)viewController;
 
-/*!
+/**
  @brief The payment driver requires dismissal of a view controller.
 
  @discussion Your implementation should dismiss the viewController, e.g. via

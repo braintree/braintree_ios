@@ -69,12 +69,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: 4fcdab20b9f0d20072b3fe53ccb941d06d41e274
+    :commit: 9fdaac060f72f55d06e0b4ffa884ef6a8fef48fc
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  BraintreeDropIn: 6664683a0e2f1c8de206f423f41c0bcdae935976
+  BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079

@@ -6,7 +6,7 @@
 
 @interface BTConfiguration (PayPal)
 
-/*!
+/**
  @brief Indicates whether PayPal is enabled for the merchant account.
 */
 @property (nonatomic, readonly, assign) BOOL isPayPalEnabled;

@@ -6,7 +6,7 @@
 
 @interface BTConfiguration (UnionPay)
 
-/*!
+/**
  @brief Indicates whether UnionPay is enabled for the merchant account.
 */
 @property (nonatomic, readonly, assign) BOOL isUnionPayEnabled;

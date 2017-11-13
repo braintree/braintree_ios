@@ -37,27 +37,27 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
     BTPayPalDriverErrorTypeIntegration,
 };
 
-/*!
+/**
  @brief Protocol to handle custom PayPal Approval via BTPayPalApprovalHandler
 */
 @protocol BTPayPalApprovalDelegate
-/*!
+/**
  @brief Use when custom approval has completed with success or error
 */
 - (void)onApprovalComplete:(NSURL *) url;
 
-/*!
+/**
  @brief Use when custom approval was canceled
 */
 - (void)onApprovalCancel;
 @end
 
-/*!
+/**
  @brief Protocol for custom authentication and authorization of PayPal.
 */
 @protocol BTPayPalApprovalHandler
 
-/*!
+/**
  @brief Handle approval request for PayPal and carry out custom authentication and authorization.
 
  @discussion Use the delegate to handle success/error/cancel flows.
@@ -70,7 +70,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)handleApproval:(PPOTRequest*)request paypalApprovalDelegate:(id<BTPayPalApprovalDelegate>)delegate;
 @end
 
-/*! 
+/** 
  @brief BTPayPalDriver enables you to obtain permission to charge your customers' PayPal accounts via app switch to the PayPal app and the browser.
 
  @note To make PayPal available, you must ensure that PayPal is enabled in your Braintree control panel.
@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 @interface BTPayPalDriver : NSObject <BTAppSwitchHandler, BTPayPalApprovalDelegate>
 
 
-/*!
+/**
  @brief Initialize a new PayPal driver instance.
 
  @param apiClient The API client
@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-/*!
+/**
  @brief Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser.
 
  @discussion On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
@@ -144,7 +144,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)authorizeAccountWithCompletion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 
-/*!
+/**
  @brief Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser with additional scopes (e.g. address).
 
  @discussion  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
@@ -162,7 +162,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)authorizeAccountWithAdditionalScopes:(NSSet<NSString *> *)additionalScopes
                                   completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
-/*!
+/**
  @brief Check out with PayPal to create a single-use PayPal payment method nonce.
 
  @discussion You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
@@ -181,7 +181,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
                    completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 
-/*!
+/**
  @brief Check out with PayPal to create a single-use PayPal payment method nonce.
 
  @discussion You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
@@ -200,7 +200,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)requestOneTimePayment:(BTPayPalRequest *)request handler:(id<BTPayPalApprovalHandler>)handler
                    completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
-/*!
+/**
  @brief Create a PayPal Billing Agreement for repeat purchases.
 
  @discussion You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
@@ -218,7 +218,7 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 - (void)requestBillingAgreement:(BTPayPalRequest *)request
                      completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
-/*!
+/**
  @brief Create a PayPal Billing Agreement for repeat purchases.
 
  @discussion You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
@@ -239,12 +239,12 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 #pragma mark - Delegate
 
-/*!
+/**
  @brief An optional delegate for receiving notifications about the lifecycle of a PayPal app switch for updating your UI
 */
 @property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 
-/*!
+/**
  @brief A required delegate to control the presentation and dismissal of view controllers
 */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;

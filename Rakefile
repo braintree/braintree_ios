@@ -158,84 +158,6 @@ namespace :sanity_checks do
   task :carthage_test => %w[carthage:test carthage:clean]
 end
 
-
-
-def apple_doc_command
-  %W[/usr/local/bin/appledoc
-      -o appledocs
-      --project-name Braintree
-      --project-version '#{current_version_with_sha}'
-      --project-company Braintree
-      --docset-bundle-id '%COMPANYID'
-      --docset-bundle-name Braintree
-      --docset-desc 'Braintree iOS SDK (%VERSION)'
-      --index-desc README.md
-      --include LICENSE
-      --include CHANGELOG.md
-      --print-information-block-titles
-      --company-id com.braintreepayments
-      --prefix-merged-sections
-      --no-merge-categories
-      --warn-missing-company-id
-      --warn-undocumented-object
-      --warn-undocumented-member
-      --warn-empty-description
-      --warn-unknown-directive
-      --warn-invalid-crossref
-      --warn-missing-arg
-      --no-repeat-first-par
-  ].join(' ')
-end
-
-def apple_doc_files
-  %x{find Braintree -name "*.h"}.split("\n").reject { |name| name =~ /mSDK/}.map { |name| name.gsub(' ', '\\ ')}.join(' ')
-end
-
-desc "Generate documentation via appledoc"
-task :docs => 'docs:generate'
-
-namespace :appledoc do
-  task :check do
-    unless File.exists?('/usr/local/bin/appledoc')
-      puts "appledoc not found at /usr/local/bin/appledoc: Install via homebrew and try again: `brew install --HEAD appledoc`"
-      exit 1
-    end
-  end
-end
-
-namespace :docs do
-  desc "Generate apple docs as html"
-  task :generate => 'appledoc:check' do
-    command = apple_doc_command << " --no-create-docset --keep-intermediate-files --create-html #{apple_doc_files}"
-    run(command)
-    puts "Generated HTML documentationa at appledocs/html"
-  end
-
-  desc "Check that documentation can be built from the source code via appledoc successfully."
-  task :check => 'appledoc:check' do
-    command = apple_doc_command << " --no-create-html --verbose 5 #{apple_doc_files}"
-    exitstatus = run(command)
-    if exitstatus == 0
-      puts "appledoc generation completed successfully!"
-    elsif exitstatus == 1
-      puts "appledoc generation produced warnings"
-    elsif exitstatus == 2
-      puts "! appledoc generation encountered an error"
-      exit(exitstatus)
-    else
-      puts "!! appledoc generation failed with a fatal error"
-    end
-    exit(exitstatus)
-  end
-
-  desc "Generate & install a docset into Xcode from the current sources"
-  task :install => 'appledoc:check' do
-    command = apple_doc_command << " --install-docset #{apple_doc_files}"
-    run(command)
-  end
-end
-
-
 namespace :release do
   desc "Print out pre-release checklist"
   task :assumptions do
@@ -352,3 +274,58 @@ namespace :gen do
   end
 end
 
+def jazzy_command
+  %W[jazzy
+      --objc
+      --author Braintree
+      --author_url http://braintreepayments.com
+      --github_url https://github.com/braintree/braintree_ios
+      --github-file-prefix https://github.com/braintree/braintree_ios/tree/#{current_version}
+      --sdk iphonesimulator
+      --module-version #{current_version}
+      --output docs_output
+      --xcodebuild-arguments --objc,Docs/Braintree-Umbrella-Header.h,--,-x,objective-c,-isysroot,$(xcrun --show-sdk-path),-I,$(pwd)
+      --min-acl internal
+      --module Braintree
+  ].join(' ')
+end
+
+desc "Generate documentation via jazzy and push to GHE"
+task :docs_internal => %w[docs:generate docs:publish docs:internal docs:clean]
+
+desc "Generate documentation via jazzy and push to GH"
+task :docs_external => %w[docs:generate docs:publish docs:external docs:clean]
+
+namespace :docs do
+
+  desc "Generate docs with jazzy"
+  task :generate do
+    run! 'rm -rf docs_output'
+    run(jazzy_command)
+    puts "Generated HTML documentation at docs_output"
+  end
+
+  task :publish do
+    run 'git branch -D gh-pages'
+    run! 'git add docs_output'
+    run! 'git commit -m "Publish docs to github pages"'
+    puts "Generating git subtree, this will take a moment..."
+    run! 'git subtree split --prefix docs_output -b gh-pages'
+  end
+
+  task:internal do
+    run! 'git push -f origin gh-pages:gh-pages'
+  end
+
+  task:external do
+    run! 'git push -f public gh-pages:gh-pages'
+  end
+
+  task :clean do
+    run! 'git reset HEAD~'
+    run! 'git branch -D gh-pages'
+    puts "Published docs to gh-pages branch"
+    run! 'rm -rf docs_output'
+  end
+
+end

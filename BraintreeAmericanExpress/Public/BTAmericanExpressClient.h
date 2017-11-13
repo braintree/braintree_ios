@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
 
 @interface BTAmericanExpressClient : NSObject
 
-/*!
+/**
  @brief Creates an American Express client.
 
  @param apiClient An API client
@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, BTAmericanExpressErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-/*!
+/**
  @brief Gets the rewards balance associated with a Braintree nonce. Only for American Express cards.
  
  @param nonce A nonce representing a card that will be used to look up the rewards balance
