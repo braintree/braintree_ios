@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.9.6 (2017-11-13)
+
+* Fix issue where Venmo attempted to vault when using a Tokenization Key
+
 ## 4.9.5 (2017-11-03)
 
 * Fix a timeout issue on configuration fetch
