@@ -239,6 +239,7 @@ class BTApplePay_Tests: XCTestCase {
                 [
                     "nonce" : "an-apple-pay-nonce",
                     "description": "a description",
+                    "default": true,
                     "binData": [
                         "prepaid": "Yes",
                         "healthcare": "Yes",
@@ -261,6 +262,7 @@ class BTApplePay_Tests: XCTestCase {
             XCTAssertNil(error)
             XCTAssertEqual(tokenizedPayment!.localizedDescription, "a description")
             XCTAssertEqual(tokenizedPayment!.nonce, "an-apple-pay-nonce")
+            XCTAssertTrue(tokenizedPayment!.isDefault)
             XCTAssertEqual(tokenizedPayment!.binData.prepaid, "Yes")
             XCTAssertEqual(tokenizedPayment!.binData.healthcare, "Yes")
             XCTAssertEqual(tokenizedPayment!.binData.debit, "No")
