@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
     BTTokenizationServiceErrorTypeNotRegistered,
 };
 
-/*!
+/**
  @class BTTokenizationService
  @brief A tokenization service that supports registration of tokenizers at runtime.
 
@@ -25,12 +25,12 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
 */
 @interface BTTokenizationService : NSObject
 
-/*!
+/**
  @brief The singleton instance of the tokenization service
 */
 + (instancetype)sharedService;
 
-/*!
+/**
  @brief Registers a block to execute for a given type when `tokenizeType:withAPIClient:completion:` or`tokenizeType:options:withAPIClient:completion:` are invoked.
 
  @param type A type string to identify the tokenization block. Providing a type that has already
@@ -39,12 +39,12 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
 */
 - (void)registerType:(NSString *)type withTokenizationBlock:(void(^)(BTAPIClient *apiClient, NSDictionary * _Nullable options, void(^)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error)))tokenizationBlock;
 
-/*!
+/**
  @brief Indicates whether a type has been registered with a valid tokenization block.
 */
 - (BOOL)isTypeAvailable:(NSString *)type;
 
-/*!
+/**
  @brief Perform tokenization for the given type. This will execute the tokenization block that has been registered for the type.
 
  @param type The tokenization type to perform
@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, BTTokenizationServiceError) {
        withAPIClient:(BTAPIClient *)apiClient
           completion:(void(^)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error))completion;
 
-/*!
+/**
  @brief Perform tokenization for the given type. This will execute the tokenization block that has been registered for the type.
 
  @param type The tokenization type to perform

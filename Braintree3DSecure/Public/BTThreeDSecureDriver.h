@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol BTThreeDSecureDriverDelegate;
-/*!
+/**
  @brief 3D Secure Verification Driver
 
  @discussion 3D Secure is a protocol that enables cardholders and issuers to add a layer of security
@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @interface BTThreeDSecureDriver : NSObject
 
-/*!
+/**
  @brief Initializes a 3D Secure verification manager
 
  @param apiClient The Braintree API Client
@@ -59,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient: instead.")));
 
-/*!
+/**
  @brief Verify a card for a 3D Secure transaction, referring to the card by raw payment method nonce
 
  @discussion This method is useful for implementations where 3D Secure verification occurs after generating
@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Delegate
 
-/*!
+/**
  @brief A delegate that presents and dismisses a view controller, as necessary, for the 3D Secure verification flow.
 */
 @property (nonatomic, weak) id<BTViewControllerPresentingDelegate> delegate;

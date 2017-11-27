@@ -153,9 +153,15 @@ static BTVenmoDriver *appSwitchedDriver;
         
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
         if ([self.application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            if (@available(iOS 10.0, *)) {
+#endif
             [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
                 [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
             }];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+            }
+#endif
         } else {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -253,7 +259,7 @@ static BTVenmoDriver *appSwitchedDriver;
             
             [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.appswitch.handle.success"];
             
-            if (self.shouldVault) {
+            if (self.shouldVault && self.apiClient.clientToken != nil) {
                 [self vaultVenmoAccountNonce:returnURL.nonce];
             } else {
                 [self informDelegateWillProcessAppSwitchReturn];

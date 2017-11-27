@@ -9,7 +9,7 @@
 
 @interface PPDataCollector : NSObject
 
-/*!
+/**
  @brief Returns a client metadata ID.
 
  @note This returns a raw client metadata ID, which is not the correct format for device data
@@ -20,7 +20,7 @@
 */
 + (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID;
 
-/*!
+/**
  @brief Returns a client metadata ID.
 
  @note This returns a raw client metadata ID, which is not the correct format for device data
@@ -30,7 +30,7 @@
 */
 + (nonnull NSString *)clientMetadataID DEPRECATED_MSG_ATTRIBUTE("Use [PPDataCollector collectPayPalDeviceData] to generate a device data string.");
 
-/*!
+/**
  @brief Collects device data for PayPal.
 
  @discussion This should be used when the user is paying with PayPal or Venmo only.

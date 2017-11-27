@@ -291,7 +291,7 @@ class BTApplePay_Tests: XCTestCase {
         let payment = MockPKPayment()
         
         let expectation = self.expectation(description: "Tokenized card")
-        applePayClient.tokenizeApplePay(payment) { _ -> Void in
+        applePayClient.tokenizeApplePay(payment) { _,_  -> Void in
             expectation.fulfill()
         }
         

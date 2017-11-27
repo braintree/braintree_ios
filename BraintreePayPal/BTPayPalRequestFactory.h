@@ -4,7 +4,7 @@
 
 @interface BTPayPalRequestFactory : NSObject
 
-/*!
+/**
  @brief Creates PayPal Express Checkout requests
 */
 - (PPOTCheckoutRequest *)checkoutRequestWithApprovalURL:(NSURL *)approvalURL
@@ -12,7 +12,7 @@
                                             environment:(NSString *)environment
                                       callbackURLScheme:(NSString *)callbackURLScheme;
 
-/*!
+/**
  @brief Creates PayPal Billing Agreement requests
 */
 - (PPOTBillingAgreementRequest *)billingAgreementRequestWithApprovalURL:(NSURL *)approvalURL
@@ -20,7 +20,7 @@
                                                             environment:(NSString *)environment
                                                       callbackURLScheme:(NSString *)callbackURLScheme;
 
-/*!
+/**
  @brief Creates PayPal Future Payment requests
 */
 - (PPOTAuthorizationRequest *)requestWithScopeValues:(NSSet *)scopeValues

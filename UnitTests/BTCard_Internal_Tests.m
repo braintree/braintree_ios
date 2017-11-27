@@ -41,21 +41,29 @@
     card.expirationMonth = @"12";
     card.expirationYear = @"2038";
     card.postalCode = @"40404";
+    card.company = @"Company";
     card.streetAddress = @"724 Evergreen Terrace";
+    card.extendedAddress = @"Unit 1";
     card.locality = @"some locality";
     card.region = @"some region";
     card.countryName = @"some country name";
     card.countryCodeAlpha2 = @"US";
+    card.countryCodeAlpha3 = @"USA";
+    card.countryCodeNumeric = @"840";
 
     BTJSON *parameters = [[BTJSON alloc] initWithValue:card.parameters];
     XCTAssertEqualObjects([parameters[@"number"] asString], @"4111111111111111");
     XCTAssertEqualObjects([parameters[@"expiration_date"] asString], @"12/2038");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"postal_code"] asString], @"40404");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"company"] asString], @"Company");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"street_address"] asString], @"724 Evergreen Terrace");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"extended_address"] asString], @"Unit 1");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"locality"] asString], @"some locality");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"region"] asString], @"some region");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"country_name"] asString], @"some country name");
     XCTAssertEqualObjects([parameters[@"billing_address"][@"country_code_alpha2"] asString], @"US");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"country_code_alpha3"] asString], @"USA");
+    XCTAssertEqualObjects([parameters[@"billing_address"][@"country_code_numeric"] asString], @"840");
 }
 
 @end

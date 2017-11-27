@@ -129,13 +129,17 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
 #pragma mark - Public methods
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind {
-    [self enqueueEvent:eventKind];
-    [self checkFlushThreshold];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self enqueueEvent:eventKind];
+        [self checkFlushThreshold];
+    });
 }
 
 - (void)sendAnalyticsEvent:(NSString *)eventKind completion:(__unused void(^)(NSError *error))completionBlock {
-    [self enqueueEvent:eventKind];
-    [self flush:completionBlock];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self enqueueEvent:eventKind];
+        [self flush:completionBlock];
+    });
 }
 
 - (void)flush:(void (^)(NSError *))completionBlock {
@@ -178,10 +182,17 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 if (completionBlock) completionBlock(nil);
                 return;
             }
-            
+
+            BOOL willPostAnalyticsEvent = NO;
+
             for (NSString *sessionID in self.analyticsSessions.allKeys) {
                 BTAnalyticsSession *session = self.analyticsSessions[sessionID];
-                
+                if (session.events.count == 0) {
+                    continue;
+                }
+
+                willPostAnalyticsEvent = YES;
+
                 NSMutableDictionary *metadataParameters = [NSMutableDictionary dictionary];
                 [metadataParameters addEntriesFromDictionary:session.metadataParameters];
                 metadataParameters[@"sessionId"] = session.sessionID;
@@ -200,14 +211,19 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 if (self.apiClient.tokenizationKey) {
                     postParameters[@"tokenization_key"] = self.apiClient.tokenizationKey;
                 }
+
+                [session.events removeAllObjects];
+
                 [self.http POST:@"/" parameters:postParameters completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
-                    if (!error) {
-                        [self.analyticsSessions removeObjectForKey:sessionID];
-                    } else {
+                    if (error != nil) {
                         [[BTLogger sharedLogger] warning:@"Failed to flush analytics events: %@", error.localizedDescription];
                     }
                     if (completionBlock) completionBlock(error);
                 }];
+            }
+
+            if (!willPostAnalyticsEvent && completionBlock) {
+                completionBlock(nil);
             }
         });
     }];
@@ -247,12 +263,12 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
         [[BTLogger sharedLogger] warning:@"Missing analytics session metadata - will not send event %@", event.kind];
         return;
     }
-    
+
     dispatch_async(self.sessionsQueue, ^{
         if (!self.analyticsSessions[session.sessionID]) {
             self.analyticsSessions[session.sessionID] = session;
         }
-        
+
         [self.analyticsSessions[session.sessionID].events addObject:event];
     });
 }
@@ -265,7 +281,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
             eventCount += analyticsSession.events.count;
         }
     });
-    
+
     if (eventCount >= self.flushThreshold) {
         [self flush:nil];
     }

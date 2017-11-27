@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, BTClientMetadataIntegrationType) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*!
+/**
  @class BTClientMetadata
  @brief Represents the metadata associated with a session for posting along with payment data during tokenization
 
@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) BTClientMetadataIntegrationType integration;
 @property (nonatomic, assign, readonly) BTClientMetadataSourceType source;
 
-/*!
+/**
  @brief Auto-generated UUID
 */
 @property (nonatomic, copy, readonly) NSString *sessionId;

@@ -3,7 +3,7 @@
 
 @protocol BTUIFormFieldDelegate;
 
-/*!
+/**
  @class BTUIFormField
  @brief A form field is a UI component for entering a text value
 
@@ -25,7 +25,7 @@
 @property (nonatomic, assign) BOOL bottomBorder;
 @property (nonatomic, assign, readwrite) BOOL backspace;
 
-/*!
+/**
  @brief The text displayed by the field
 */
 @property (nonatomic, copy) NSString *text;

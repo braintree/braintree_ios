@@ -7,8 +7,8 @@ class MockAPIClient : BTAPIClient {
     var lastGETParameters = [:] as [String : String]?
     var postedAnalyticsEvents : [String] = []
 
-    var cannedConfigurationResponseBody : BTJSON? = nil
-    var cannedConfigurationResponseError : NSError? = nil
+    @objc var cannedConfigurationResponseBody : BTJSON? = nil
+    @objc var cannedConfigurationResponseError : NSError? = nil
 
     var cannedResponseError : NSError? = nil
     var cannedHTTPURLResponse : HTTPURLResponse? = nil

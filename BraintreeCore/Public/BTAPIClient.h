@@ -19,14 +19,14 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
     BTAPIClientErrorTypeNotAuthorized,
 };
 
-/*!
+/**
  @class BTAPIClient
  @brief This class acts as the entry point for accessing the Braintree APIs via common HTTP methods performed on API endpoints.
  @discussion It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 */
 @interface BTAPIClient : NSObject
 
-/*!
+/**
  @brief Initialize a new API client.
 
  @param authorization Your tokenization key or client token. Passing an invalid value may return `nil`.
@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 */
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization;
 
-/*!
+/**
  @brief Create a copy of an existing API client, but specify a new source and integration type.
  @discussion This provides a way to override an API client's source and integration metadata, which
  is captured and sent to Braintree as part of the analytics we track.
@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 - (instancetype)copyWithSource:(BTClientMetadataSourceType)source
                    integration:(BTClientMetadataIntegrationType)integration;
 
-/*!
+/**
  @brief Provides configuration data as a `BTJSON` object.
 
  @discussion The configuration data can be used by supported payment options to configure themselves
@@ -55,7 +55,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 */
 - (void)fetchOrReturnRemoteConfiguration:(void (^)(BTConfiguration * _Nullable configuration, NSError * _Nullable error))completionBlock;
 
-/*!
+/**
  @brief Fetches a customer's vaulted payment method nonces.
 
  @discussion Must be using client token with a customer ID specified.
@@ -66,7 +66,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 */
 - (void)fetchPaymentMethodNonces:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completion;
 
-/*!
+/**
  @brief Fetches a customer's vaulted payment method nonces.
 
  @discussion Must be using client token with a customer ID specified.
@@ -77,7 +77,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
 - (void)fetchPaymentMethodNonces:(BOOL)defaultFirst
                       completion:(void(^)(NSArray <BTPaymentMethodNonce *> * _Nullable paymentMethodNonces, NSError * _Nullable error))completion;
 
-/*!
+/**
  @brief Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
 
  @param path The endpoint URI path.
@@ -91,7 +91,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientErrorType) {
  parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
-/*!
+/**
  @brief Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
 
  @param path The endpoint URI path.

@@ -37,7 +37,15 @@ NSString * const BTAppSwitchNotificationTargetKey = @"BTAppSwitchNotificationTar
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
 + (BOOL)handleOpenURL:(NSURL *)url options:(NSDictionary *)options {
-    return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    if (@available(iOS 9.0, *)) {
+#endif
+        return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+    }
+    // This code should technically never run due to the way the compiler macros are setup, but need to return a value here.
+    return [[[self class] sharedInstance] handleOpenURL:url sourceApplication:@""];
+#endif
 }
 #else
 + (BOOL)handleOpenURL:(NSURL *)url options:(__unused NSDictionary *)options {

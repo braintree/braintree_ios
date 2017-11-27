@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-/*!
+/**
  @brief An error domain for 3D Secure errors
 
  @see BTThreeDSecure
@@ -9,7 +9,7 @@ extern NSString * const BTThreeDSecureErrorDomain;
 extern NSString * const BTThreeDSecureInfoKey;
 extern NSString * const BTThreeDSecureValidationErrorsKey;
 
-/*!
+/**
  @brief Error codes that describe errors that occur during 3D Secure
 */
 typedef NS_ENUM(NSInteger, BTThreeDSecureErrorType){

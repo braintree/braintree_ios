@@ -123,7 +123,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
         }
 
-        payPalDriver.authorizeAccount { _ -> Void in }
+        payPalDriver.authorizeAccount { _,_  -> Void in }
 
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -148,7 +148,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.authorizeAccount { _ -> Void in
+        payPalDriver.authorizeAccount { _,_  -> Void in
         }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
@@ -189,7 +189,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
         }
 
-        payPalDriver.authorizeAccount { _ -> Void in }
+        payPalDriver.authorizeAccount { _,_  -> Void in }
 
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -228,7 +228,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
         }
 
-        payPalDriver.authorizeAccount(withAdditionalScopes: Set(["foo", "bar"])) { _ -> Void in }
+        payPalDriver.authorizeAccount(withAdditionalScopes: Set(["foo", "bar"])) { _,_  -> Void in }
 
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -268,7 +268,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
         }
         
-        payPalDriver.authorizeAccount { _ -> Void in }
+        payPalDriver.authorizeAccount { _,_  -> Void in }
         
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -308,7 +308,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
         }
         
-        payPalDriver.authorizeAccount { _ -> Void in }
+        payPalDriver.authorizeAccount { _,_  -> Void in }
         
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -348,7 +348,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             ["nonce": "fake-nonce"]
             ] ] )
         
-        payPalDriver.setAuthorizationAppSwitchReturn { _ -> Void in }
+        payPalDriver.setAuthorizationAppSwitchReturn { _,_  -> Void in }
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -384,8 +384,8 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = PPOTResultType.success
         
-        payPalDriver.authorizeAccount { _ -> Void in }
-        payPalDriver.setAuthorizationAppSwitchReturn { _ -> Void in }
+        payPalDriver.authorizeAccount { _,_  -> Void in }
+        payPalDriver.setAuthorizationAppSwitchReturn { _,_  -> Void in }
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         waitForExpectations(timeout: 2, handler: nil)
@@ -422,14 +422,14 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
             didAppSwitchNotificationExpectation.fulfill()
         })
 
-        payPalDriver.authorizeAccount { _ -> Void in }
+        payPalDriver.authorizeAccount { _,_  -> Void in }
 
         let willProcessNotificationExpectation = expectation(description: "willProcess notification received")
         observers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.BTAppSwitchWillProcessPaymentInfo, object: nil, queue: nil) { (notification) -> Void in
             willProcessNotificationExpectation.fulfill()
         })
 
-        payPalDriver.setAuthorizationAppSwitchReturn { _ -> Void in }
+        payPalDriver.setAuthorizationAppSwitchReturn { _,_  -> Void in }
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
 
         waitForExpectations(timeout: 2, handler: nil)
@@ -458,7 +458,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         mockViewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = expectation(description: "Delegate received requestsPresentationOfViewController")
         payPalDriver.viewControllerPresentingDelegate = mockViewControllerPresentingDelegate
         
-        payPalDriver.authorizeAccount { _ -> Void in }
+        payPalDriver.authorizeAccount { _,_  -> Void in }
         waitForExpectations(timeout: 2, handler: nil)
         
         // Test dismissal of view controller
@@ -501,7 +501,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let mockAppSwitchDelegate = MockAppSwitchDelegate()
         payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
         
-        payPalDriver.authorizeAccount { _ -> Void in }
+        payPalDriver.authorizeAccount { _,_  -> Void in }
         waitForExpectations(timeout: 2, handler: nil)
         
         XCTAssertFalse(mockAppSwitchDelegate.willPerformAppSwitchCalled)
@@ -652,7 +652,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         stubPayPalClass.cannedResult()?.cannedType = .success
         stubPayPalClass.setCannedIsWalletAppAvailable(true)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
-        payPalDriver.setAuthorizationAppSwitchReturn { _ -> Void in }
+        payPalDriver.setAuthorizationAppSwitchReturn { _,_  -> Void in }
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -673,7 +673,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         stubPayPalClass.cannedResult()?.cannedType = .success
         stubPayPalClass.setCannedIsWalletAppAvailable(false)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
-        payPalDriver.setAuthorizationAppSwitchReturn { _ -> Void in }
+        payPalDriver.setAuthorizationAppSwitchReturn { _,_  -> Void in }
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -769,7 +769,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let request = BTPayPalRequest(amount: "1")
         request.currencyCode = "GBP"
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -790,7 +790,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.currencyCode = "GBP"
         // no_shipping = true should be the default.
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -812,7 +812,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.currencyCode = "GBP"
         request.isShippingAddressRequired = true
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -835,7 +835,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.isShippingAddressRequired = true
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -856,7 +856,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.isShippingAddressRequired = true
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -876,7 +876,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.isShippingAddressRequired = true
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -896,7 +896,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.isShippingAddressRequired = true
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -915,7 +915,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(BTPayPalRequestLandingPageType.default, request.landingPageType)
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -939,7 +939,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.landingPageType = .billing
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -963,7 +963,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.landingPageType = .login
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -991,7 +991,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         guard let lastApprovalURL = mockRequestFactory.lastApprovalURL,
             let approvalURLComponents = URLComponents(url: lastApprovalURL, resolvingAgainstBaseURL: false) else {
@@ -1018,7 +1018,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         guard let lastApprovalURL = mockRequestFactory.lastApprovalURL,
             let approvalURLComponents = URLComponents(url: lastApprovalURL, resolvingAgainstBaseURL: false) else {
@@ -1045,7 +1045,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let mockRequestFactory = FakePayPalRequestFactory()
         payPalDriver.requestFactory = mockRequestFactory
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         guard let lastApprovalURL = mockRequestFactory.lastApprovalURL,
             let approvalURLComponents = URLComponents(url: lastApprovalURL, resolvingAgainstBaseURL: false) else {
@@ -1069,7 +1069,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         XCTAssertNil(request.displayName)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1095,7 +1095,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.displayName = merchantName
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1128,7 +1128,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         request.displayName = merchantName
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1158,7 +1158,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         address.postalCode = "12345"
         request.shippingAddressOverride = address
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1205,7 +1205,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
         }
 
-        payPalDriver.requestOneTimePayment(request) { _ in }
+        payPalDriver.requestOneTimePayment(request) { _,_  in }
 
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -1255,7 +1255,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         }
 
         let request = BTPayPalRequest(amount: "1")
-        payPalDriver.requestOneTimePayment(request) { _ -> Void in }
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
 
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -1333,7 +1333,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
         
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -1355,7 +1355,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
         payPalDriver.payPalRequest.intent = .sale
         
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -1389,7 +1389,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
         payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
 
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
@@ -1431,7 +1431,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
         payPalDriver.payPalRequest = BTPayPalRequest(amount: "1.34")
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
 
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-single-payment.credit.accepted"))
@@ -1446,7 +1446,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
 
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
 
         waitForExpectations(timeout: 2, handler: nil)
@@ -1613,7 +1613,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         stubPayPalClass.cannedResult()?.cannedType = .success
         stubPayPalClass.setCannedIsWalletAppAvailable(true)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -1634,7 +1634,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         stubPayPalClass.cannedResult()?.cannedType = .success
         stubPayPalClass.setCannedIsWalletAppAvailable(false)
         BTPayPalDriver.setPayPalClass(stubPayPalClass)
-        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setOneTimePaymentAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
 
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -1751,7 +1751,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
 
-        payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _,_  -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1787,7 +1787,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
             payPalDriver.appSwitchDelegate = stubAppSwitchDelegate
         }
         
-        payPalDriver.requestBillingAgreement(request) { _ in }
+        payPalDriver.requestBillingAgreement(request) { _,_  in }
 
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -1822,7 +1822,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
         
-        payPalDriver.setBillingAgreementAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setBillingAgreementAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertEqual(mockAPIClient.lastPOSTPath, "/v1/payment_methods/paypal_accounts")
@@ -1846,7 +1846,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         payPalDriver.returnURLScheme = "foo://"
         BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
         
-        payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(BTPayPalRequest()) { _,_  -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1865,7 +1865,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let request = BTPayPalRequest()
         request.currencyCode = "GBP"
         
-        payPalDriver.requestBillingAgreement(request) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
         
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1883,7 +1883,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let request = BTPayPalRequest()
         request.billingAgreementDescription = "My Billing Agreement description"
 
-        payPalDriver.requestBillingAgreement(request) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
 
         XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
         guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
@@ -1915,7 +1915,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         }
         
         let request = BTPayPalRequest()
-        payPalDriver.requestBillingAgreement(request) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
 
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -2025,7 +2025,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let mockAppSwitchDelegate = MockAppSwitchDelegate()
         payPalDriver.appSwitchDelegate = mockAppSwitchDelegate
         
-        payPalDriver.requestBillingAgreement(BTPayPalRequest(amount: "1")) { _ -> Void in }
+        payPalDriver.requestBillingAgreement(BTPayPalRequest(amount: "1")) { _,_  -> Void in }
 
         if #available(iOS 11.0, *) {
             XCTAssertNotNil(payPalDriver.safariAuthenticationSession)
@@ -2097,7 +2097,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
         payPalDriver.payPalRequest = BTPayPalRequest()
         
-        payPalDriver.setBillingAgreementAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setBillingAgreementAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertFalse(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
@@ -2139,7 +2139,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         BTPayPalDriver.payPalClass().cannedResult()?.cannedType = .success
         payPalDriver.payPalRequest = BTPayPalRequest()
         
-        payPalDriver.setBillingAgreementAppSwitchReturn ({ _ -> Void in })
+        payPalDriver.setBillingAgreementAppSwitchReturn ({ _,_  -> Void in })
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))

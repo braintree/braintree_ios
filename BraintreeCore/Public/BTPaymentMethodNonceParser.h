@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/*!
+/**
  @class BTPaymentMethodNonceParser
  @brief A JSON parser that parses `BTJSON` into concrete `BTPaymentMethodNonce` objects. It supports registration of parsers at runtime.
 
@@ -13,24 +13,24 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @interface BTPaymentMethodNonceParser : NSObject
 
-/*!
+/**
  @brief The singleton instance
 */
 + (instancetype)sharedParser;
 
-/*!
+/**
  @brief An array of the tokenization types currently registered
 */
 @property (nonatomic, readonly, strong) NSArray<NSString *> *allTypes;
 
-/*!
+/**
  @brief Indicates whether a tokenization type is currently registered
 
  @param type The tokenization type string
 */
 - (BOOL)isTypeAvailable:(NSString *)type;
 
-/*!
+/**
  @brief Registers a parsing block for a tokenization type.
 
  @param type The tokenization type string
@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (void)registerType:(NSString *)type withParsingBlock:(BTPaymentMethodNonce * _Nullable (^)(BTJSON *json))jsonParsingBlock;
 
-/*!
+/**
  @brief Parses tokenized payment information that has been serialized to JSON, and returns a `BTPaymentMethodNonce` object.
  
  @discussion The `BTPaymentMethodNonce` object is created by the JSON parsing block that has been registered for the tokenization

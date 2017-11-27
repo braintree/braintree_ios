@@ -23,8 +23,6 @@ DerivedData
 # CocoaPods
 Pods
 
-appledocs
-
 # This file is needed for signing the ipa with our enterprise cert;
 # you can get it from the iOS Developer Center.
 EverybodyVenmo.mobileprovision
@@ -34,3 +32,4 @@ EverybodyVenmo.mobileprovision
 .hockeyapp
 
 *.pid
+

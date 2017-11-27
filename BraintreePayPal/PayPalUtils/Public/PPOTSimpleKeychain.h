@@ -13,13 +13,13 @@
 
 #import <Foundation/Foundation.h>
 
-/*!
+/**
  @brief Wrapper to help deal with Keychain-related things such as storing API keys and passwords.
  @discussion The key used in the methods may not be the actual key used in the keychain
 */
 @interface PPOTSimpleKeychain : NSObject
 
-/*!
+/**
  @brief Sets the given data for the given key
 
  @param data the data to set, null if any data associated with the key should be deleted
@@ -28,7 +28,7 @@
 */
 + (BOOL)setData:(nullable NSData *)data forKey:(nonnull NSString *)key;
 
-/*!
+/**
  @brief Retrieves the data associated with the given key
 
  @param key the key to use
@@ -36,7 +36,7 @@
 */
 + (nullable NSData *)dataForKey:(nonnull NSString *)key;
 
-/*!
+/**
  @brief Retrieves the unarchived object with the given key
 
  @param key the key to use

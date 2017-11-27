@@ -14,7 +14,7 @@ class BTTokenizationService_Tests: XCTestCase {
     }
 
     func testRegisterType_addsTypeToTypes() {
-        tokenizationService.registerType("MyType") { _ -> Void in }
+        tokenizationService.registerType("MyType") { _,_,_  -> Void in }
         XCTAssertTrue(tokenizationService.allTypes.contains("MyType"))
     }
 
@@ -23,7 +23,7 @@ class BTTokenizationService_Tests: XCTestCase {
     }
 
     func testIsTypeAvailable_whenTypeIsRegistered_isTrue() {
-        tokenizationService.registerType("MyType") { _ -> Void in }
+        tokenizationService.registerType("MyType") { _,_,_  -> Void in }
         XCTAssertTrue(tokenizationService.isTypeAvailable("MyType"))
     }
 
@@ -33,11 +33,11 @@ class BTTokenizationService_Tests: XCTestCase {
 
     func testTokenizeType_whenTypeIsRegistered_callsTokenizationBlock() {
         let expectation = self.expectation(description: "tokenization block called")
-        tokenizationService.registerType("MyType") { _ -> Void in
+        tokenizationService.registerType("MyType") { _,_,_  -> Void in
             expectation.fulfill()
         }
 
-        tokenizationService.tokenizeType("MyType", options: nil, with: BTAPIClient(authorization: "development_testing_integration_merchant_id")!) { _ -> Void in
+        tokenizationService.tokenizeType("MyType", options: nil, with: BTAPIClient(authorization: "development_testing_integration_merchant_id")!) { _,_  -> Void in
         //nada
         }
 
@@ -52,7 +52,7 @@ class BTTokenizationService_Tests: XCTestCase {
             expectation.fulfill()
         }
 
-        tokenizationService.tokenizeType("MyType", options: expectedOptions, with:BTAPIClient(authorization: "development_testing_integration_merchant_id")!) { _ -> Void in }
+        tokenizationService.tokenizeType("MyType", options: expectedOptions, with:BTAPIClient(authorization: "development_testing_integration_merchant_id")!) { _,_  -> Void in }
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -124,7 +124,7 @@ class BTTokenizationService_Tests: XCTestCase {
         let mockDelegate = MockViewControllerPresentationDelegate()
         BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
 
-        sharedService.tokenizeType("PayPal", options: [BTTokenizationServiceViewPresentingDelegateOption: mockDelegate], with: stubAPIClient) { _ -> Void in }
+        sharedService.tokenizeType("PayPal", options: [BTTokenizationServiceViewPresentingDelegateOption: mockDelegate], with: stubAPIClient) { _,_  -> Void in }
 
         XCTAssertTrue(mockDelegate.lastViewController is SFSafariViewController)
     }
@@ -144,7 +144,7 @@ class BTTokenizationService_Tests: XCTestCase {
         ])
         let mockDelegate = MockAppSwitchDelegate(willPerform: expectation(description: "Will authorize Venmo Account"), didPerform: nil)
 
-        sharedService.tokenizeType("Venmo", options: [BTTokenizationServiceAppSwitchDelegateOption: mockDelegate], with: stubAPIClient) { _ -> Void in }
+        sharedService.tokenizeType("Venmo", options: [BTTokenizationServiceAppSwitchDelegateOption: mockDelegate], with: stubAPIClient) { _,_  -> Void in }
 
         waitForExpectations(timeout: 2, handler: nil)
     }

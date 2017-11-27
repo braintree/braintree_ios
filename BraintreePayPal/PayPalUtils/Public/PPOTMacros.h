@@ -39,7 +39,7 @@
 
 @interface PPOTMacros : NSObject
 
-/*!
+/**
  @return the iOS major version number
 */
 + (NSUInteger)deviceSystemMajorVersion;

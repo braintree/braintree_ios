@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 
 @interface BTCardClient : NSObject
 
-/*!
+/**
  @brief Creates a card client.
 
  @param apiClient An API client
@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
-/*!
+/**
  @brief Tokenizes a card.
 
  @param card The card to tokenize. It must have a valid number and expiration date.
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, BTCardClientErrorType) {
 */
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error))completion;
 
-/*!
+/**
  @brief Tokenizes a card.
 
  @param request A card tokenization request that contains an enrolled card, the enrollment ID from `enrollUnionPayCard:completion:`,

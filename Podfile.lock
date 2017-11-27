@@ -69,7 +69,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: 378af3750e47f8cc93ea67993b0dddfa1c3175bc
+    :commit: 9fdaac060f72f55d06e0b4ffa884ef6a8fef48fc
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
