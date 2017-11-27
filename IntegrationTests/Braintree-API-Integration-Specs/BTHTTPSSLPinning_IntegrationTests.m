@@ -36,7 +36,7 @@
 }
 
 - (void)testBTHTTP_whenUsingAServerWithValidCertificateChainWithARootCAThatWeDoNotExplicitlyTrust_doesNotAllowNetworkCommunication {
-    NSURL *url = [NSURL URLWithString:@"https://www.digicert.com"];
+    NSURL *url = [NSURL URLWithString:@"https://www.instantssl.com"];
     BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
