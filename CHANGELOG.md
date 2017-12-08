@@ -1,5 +1,11 @@
 # Braintree iOS SDK Release Notes
 
+## 4.10.0 (2017-12-08)
+
+* Add iDEAL support
+* Add new 3D Secure integration with browser support
+* Fix issue where ApplePay nonces were not having their default property set (Thanks @rksaraf)
+
 ## 4.9.6 (2017-11-13)
 
 * Fix issue where Venmo attempted to vault when using a Tokenization Key

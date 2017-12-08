@@ -7,3 +7,13 @@
 #import "BraintreeUnionPay/Public/BraintreeUnionPay.h"
 #import "BraintreeVenmo/Public/BraintreeVenmo.h"
 #import "BraintreeAmericanExpress/Public/BraintreeAmericanExpress.h"
+//Payment Flows
+#import "BraintreePaymentFlow/Public/BraintreePaymentFlow.h"
+#import "BraintreePaymentFlow/Public/Ideal/Configuration+Ideal.h"
+#import "BraintreePaymentFlow/Public/Ideal/BTIdealBank.h"
+#import "BraintreePaymentFlow/Public/Ideal/BTIdealResult.h"
+#import "BraintreePaymentFlow/Public/Ideal/BTIdealRequest.h"
+#import "BraintreePaymentFlow/Public/Ideal/BTPaymentFlowDriver+Ideal.h"
+#import "BraintreePaymentFlow/Public/ThreeDSecure/BTThreeDSecureResult.h"
+#import "BraintreePaymentFlow/Public/ThreeDSecure/BTThreeDSecureRequest.h"
+#import "BraintreePaymentFlow/Public/ThreeDSecure/BTPaymentFlowDriver+ThreeDSecure.h"
