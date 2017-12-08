@@ -1,4 +1,5 @@
 #import "BTHTTP.h"
+#import "BTAPIHTTP.h"
 #import <XCTest/XCTest.h>
 
 @interface BTHTTPSSLPinning_IntegrationTests : XCTestCase
@@ -35,8 +36,34 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testBTHTTP_whenUsingProductionEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI {
+    NSURL *url = [NSURL URLWithString:@"https://payments.braintree-api.com"];
+    BTAPIHTTP *http = [[BTAPIHTTP alloc] initWithBaseURL:url accessToken:@""];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
+    [http GET:@"/ping" completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNil(error);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
+- (void)testBTHTTP_whenUsingSandboxEnvironmentWithTrustedSSLCertificates_allowsNetworkCommunication_toBraintreeAPI {
+    NSURL *url = [NSURL URLWithString:@"https://payments.sandbox.braintree-api.com"];
+    BTAPIHTTP *http = [[BTAPIHTTP alloc] initWithBaseURL:url accessToken:@""];
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];
+    [http GET:@"/ping" completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertNil(error);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 - (void)testBTHTTP_whenUsingAServerWithValidCertificateChainWithARootCAThatWeDoNotExplicitlyTrust_doesNotAllowNetworkCommunication {
-    NSURL *url = [NSURL URLWithString:@"https://www.instantssl.com"];
+    NSURL *url = [NSURL URLWithString:@"https://www.globalsign.com"];
     BTHTTP *http = [[BTHTTP alloc] initWithBaseURL:url tokenizationKey:@"development_testing_integration_merchant_id"];
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked"];

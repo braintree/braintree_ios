@@ -69,7 +69,7 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
                  }];
 }
 
-- (void)createCustomerAndFetchClientTokenWithCompletion:(void (^)(NSString *, NSError *))completionBlock {
+- (void)fetchClientTokenWithMerchantAccountId:(NSString * _Nullable)merchantAccountId completion:(void (^)(NSString *, NSError *))completionBlock {
     NSMutableDictionary *parameters = [@{@"version":[BraintreeDemoSettings clientTokenVersion]} mutableCopy];
     if ([BraintreeDemoSettings customerPresent]) {
         if ([BraintreeDemoSettings customerIdentifier].length > 0) {
@@ -78,7 +78,10 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
             parameters[@"customer_id"] = [[NSUUID UUID] UUIDString];
         }
     }
-
+    if (merchantAccountId) {
+        parameters[@"merchant_account_id"] = merchantAccountId;
+    }
+    
     [self.sessionManager GET:@"/client_token"
                   parameters:parameters
                      success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
@@ -87,6 +90,10 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
                      failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
                          completionBlock(nil, error);
                      }];
+}
+
+- (void)createCustomerAndFetchClientTokenWithCompletion:(void (^)(NSString *, NSError *))completionBlock {
+    [self fetchClientTokenWithMerchantAccountId:nil completion:completionBlock];
 }
 
 - (void)makeTransactionWithPaymentMethodNonce:(NSString *)paymentMethodNonce completion:(void (^)(NSString *transactionId, NSError *error))completionBlock {

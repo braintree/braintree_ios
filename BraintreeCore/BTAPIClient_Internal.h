@@ -3,11 +3,21 @@
 #import "BTClientMetadata.h"
 #import "BTClientToken.h"
 #import "BTHTTP.h"
+#import "BTAPIHTTP.h"
 #import "BTJSON.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class BTPaymentMethodNonce;
+
+typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
+    /// Use the Gateway
+    BTAPIClientHTTPTypeGateway = 0,
+    
+    /// Use the Braintree API
+    BTAPIClientHTTPTypeBraintreeAPI,
+};
+
 
 @interface BTAPIClient ()
 
@@ -15,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) BTClientToken *clientToken;
 @property (nonatomic, strong) BTHTTP *http;
 @property (nonatomic, strong) BTHTTP *configurationHTTP;
+@property (nonatomic, strong) BTAPIHTTP *braintreeAPI;
 
 /**
  @brief Client metadata that is used for tracking the client session
@@ -41,6 +52,16 @@ NS_ASSUME_NONNULL_BEGIN
  @discussion This prevents copyWithSource:integration: from sending a duplicate event. It can also be used to suppress excessive network chatter during testing.
 */
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
+
+- (void)GET:(NSString *)path
+ parameters:(nullable NSDictionary <NSString *, NSString *> *)parameters
+ httpType:(BTAPIClientHTTPType)httpType
+ completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
+
+- (void)POST:(NSString *)path
+  parameters:(nullable NSDictionary *)parameters
+  httpType:(BTAPIClientHTTPType)httpType
+  completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
 @end
 

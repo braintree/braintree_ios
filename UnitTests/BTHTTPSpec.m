@@ -746,6 +746,39 @@ NSURLSession *testURLSession() {
     [self waitForExpectationsWithTimeout:2 handler:nil];
 }
 
+- (void)testResponseCodeParsingFromBraintreeAPI_whenStatusCodeIs4xx_returnsError {
+    http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
+    NSDictionary *errorBody = @{
+                                @"error": @{
+                                        @"developer_message": @"This is an error message from the gateway"
+                                        }
+                                };
+    
+    XCTestExpectation *expectation = [self expectationWithDescription:@"GET callback"];
+    
+    id<OHHTTPStubsDescriptor>stub = [OHHTTPStubs stubRequestsPassingTest:^BOOL(__unused NSURLRequest *request) {
+        return YES;
+    } withStubResponse:^OHHTTPStubsResponse *(__unused NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:errorBody options:NSJSONWritingPrettyPrinted error:NULL] statusCode:403 headers:@{@"Content-Type": @"application/json"}];
+    }];
+    
+    [http GET:@"400.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        XCTAssertEqualObjects(body.asDictionary, errorBody);
+        XCTAssertNotNil(response);
+        XCTAssertEqualObjects(error.domain, BTHTTPErrorDomain);
+        XCTAssertEqual(error.code, BTHTTPErrorCodeClientError);
+        XCTAssertEqualObjects(((BTJSON *)error.userInfo[BTHTTPJSONResponseBodyKey]).asDictionary, errorBody);
+        XCTAssertTrue([error.userInfo[BTHTTPURLResponseKey] isKindOfClass:[NSHTTPURLResponse class]]);
+        XCTAssertEqualObjects(error.localizedDescription, @"This is an error message from the gateway");
+        XCTAssertNotNil(error.userInfo[NSLocalizedFailureReasonErrorKey]);
+        
+        [OHHTTPStubs removeStub:stub];
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
 - (void)testResponseCodeParsing_whenStatusCodeIs429_returnsRateLimitError {
     http = [[BTHTTP alloc] initWithBaseURL:[NSURL URLWithString:@"stub://stub"] authorizationFingerprint:@"test-authorization-fingerprint"];
     

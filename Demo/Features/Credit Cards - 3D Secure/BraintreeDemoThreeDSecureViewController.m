@@ -14,8 +14,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"3D Secure";
-
+    self.title = @"3DS";
+    
     self.cardFormView = [[BTUICardFormView alloc] initForAutoLayout];
     self.cardFormView.optionalFields = BTUICardFormOptionalFieldsNone;
     [self.view addSubview:self.cardFormView];
@@ -28,14 +28,14 @@
     UIButton *verifyNewCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [verifyNewCardButton setTitle:@"Tokenize and Verify New Card" forState:UIControlStateNormal];
     [verifyNewCardButton addTarget:self action:@selector(tappedToVerifyNewCard) forControlEvents:UIControlEventTouchUpInside];
-
+    
     UIView *threeDSecureButtonsContainer = [[UIView alloc] initForAutoLayout];
     [threeDSecureButtonsContainer addSubview:verifyNewCardButton];
-
+    
     [verifyNewCardButton autoPinEdgeToSuperviewEdge:ALEdgeTop];
-
+    
     [verifyNewCardButton autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
-
+    
     self.callbackCountLabel = [[UILabel alloc] initForAutoLayout];
     self.callbackCountLabel.textAlignment = NSTextAlignmentCenter;
     self.callbackCountLabel.font = [UIFont systemFontOfSize:UIFont.smallSystemFontSize];
@@ -45,7 +45,7 @@
     [self.callbackCountLabel autoPinEdgeToSuperviewEdge:ALEdgeRight];
     self.callbackCount = 0;
     [self updateCallbackCount];
-
+    
     return threeDSecureButtonsContainer;
 }
 
@@ -75,26 +75,26 @@
 - (void)tappedToVerifyNewCard {
     self.callbackCount = 0;
     [self updateCallbackCount];
-
+    
     BTCard *card = [self newCard];
-
+    
     self.progressBlock([NSString stringWithFormat:@"Tokenizing card ending in %@", [card.number substringFromIndex:(card.number.length - 4)]]);
-
+    
     BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:self.apiClient];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
-
+        
         if (error) {
             self.progressBlock(error.localizedDescription);
             return;
         }
-
+        
         self.progressBlock(@"Tokenized card, now verifying with 3DS");
-
+        
         BTThreeDSecureDriver *threeDSecure = [[BTThreeDSecureDriver alloc] initWithAPIClient:self.apiClient delegate:self];
-
+        
         [threeDSecure verifyCardWithNonce:tokenizedCard.nonce
                                    amount:[NSDecimalNumber decimalNumberWithString:@"10"]
-                                    completion:^(BTThreeDSecureCardNonce * _Nullable threeDSecureCard, NSError * _Nullable error)
+                               completion:^(BTThreeDSecureCardNonce * _Nullable threeDSecureCard, NSError * _Nullable error)
          {
              self.callbackCount++;
              [self updateCallbackCount];
@@ -102,7 +102,7 @@
                  self.progressBlock(error.localizedDescription);
              } else if (threeDSecureCard) {
                  self.completionBlock(threeDSecureCard);
-
+                 
                  if (threeDSecureCard.liabilityShiftPossible && threeDSecureCard.liabilityShifted) {
                      self.progressBlock(@"Liability shift possible and liability shifted");
                  } else {

@@ -42,7 +42,6 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
             }
 
             _tokenizationKey = authorization;
-
             _configurationHTTP = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:authorization];
             
             if (sendAnalyticsEvent) {
@@ -248,6 +247,11 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 fetchError = configurationDomainError;
             } else {
                 configuration = [[BTConfiguration alloc] initWithJSON:body];
+                if (!_braintreeAPI) {
+                    NSURL *apiURL = [configuration.json[@"braintreeApi"][@"url"] asURL];
+                    NSString *accessToken = [configuration.json[@"braintreeApi"][@"accessToken"] asString];
+                    _braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:apiURL accessToken:accessToken];
+                }
                 if (!_http) {
                     NSURL *baseURL = [configuration.json[@"clientApiUrl"] asURL];
                     if (self.clientToken) {
@@ -306,17 +310,25 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 #pragma mark - HTTP Operations
 
 - (void)GET:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+    [self GET:endpoint parameters:parameters httpType:BTAPIClientHTTPTypeGateway completion:completionBlock];
+}
+
+- (void)POST:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+    [self POST:endpoint parameters:parameters httpType:BTAPIClientHTTPTypeGateway completion:completionBlock];
+}
+
+- (void)GET:(NSString *)endpoint parameters:(NSDictionary *)parameters httpType:(BTAPIClientHTTPType)httpType completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     [self fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration * _Nullable configuration, __unused NSError * _Nullable error) {
         if (error != nil) {
             completionBlock(nil, nil, error);
             return;
         }
 
-        [self.http GET:endpoint parameters:parameters completion:completionBlock];
+        [[self httpForType:httpType] GET:endpoint parameters:parameters completion:completionBlock];
     }];
 }
 
-- (void)POST:(NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
+- (void)POST:(NSString *)endpoint parameters:(NSDictionary *)parameters httpType:(BTAPIClientHTTPType)httpType completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
     [self fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration * _Nullable configuration, __unused NSError * _Nullable error) {
         if (error != nil) {
             completionBlock(nil, nil, error);
@@ -324,10 +336,19 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
         }
 
         NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
-        mutableParameters[@"_meta"] = [self metaParameters];
+        if (httpType != BTAPIClientHTTPTypeBraintreeAPI) {
+            mutableParameters[@"_meta"] = [self metaParameters];
+        }
         [mutableParameters addEntriesFromDictionary:parameters];
-        [self.http POST:endpoint parameters:mutableParameters completion:completionBlock];
+        [[self httpForType:httpType] POST:endpoint parameters:mutableParameters completion:completionBlock];
     }];
+}
+
+- (BTHTTP *)httpForType:(BTAPIClientHTTPType)httpType {
+    if (httpType == BTAPIClientHTTPTypeBraintreeAPI) {
+        return self.braintreeAPI;
+    }
+    return self.http;
 }
 
 - (instancetype)init NS_UNAVAILABLE
@@ -339,6 +360,10 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 {
     if (self.http && self.http.session) {
         [self.http.session finishTasksAndInvalidate];
+    }
+    
+    if (self.braintreeAPI && self.braintreeAPI.session) {
+        [self.braintreeAPI.session finishTasksAndInvalidate];
     }
 }
 

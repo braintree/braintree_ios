@@ -17,13 +17,20 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, strong) NSArray<NSData *> *pinnedCertificates;
 
 /**
+ @brief Initialize `BTHTTP` with the URL for the Braintree API
+ 
+ @param URL The base URL for the Braintree Client API
+ */
+- (instancetype)initWithBaseURL:(NSURL *)URL NS_DESIGNATED_INITIALIZER;
+
+/**
  @brief Initialize `BTHTTP` with the authorization fingerprint from a client token
 
  @param URL The base URL for the Braintree Client API
  @param authorizationFingerprint The authorization fingerprint HMAC from a client token
 */
 - (instancetype)initWithBaseURL:(NSURL *)URL
-       authorizationFingerprint:(NSString *)authorizationFingerprint NS_DESIGNATED_INITIALIZER;
+       authorizationFingerprint:(NSString *)authorizationFingerprint;
 
 /**
  @brief Initialize `BTHTTP` with a tokenization key
@@ -31,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param URL The base URL for the Braintree Client API
  @param tokenizationKey A tokenization key
 */
-- (instancetype)initWithBaseURL:(NSURL *)URL tokenizationKey:(NSString *)tokenizationKey NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBaseURL:(NSURL *)URL tokenizationKey:(NSString *)tokenizationKey;
 
 /**
  @brief A convenience initializer to initialize `BTHTTP` with a client token
@@ -39,6 +46,10 @@ NS_ASSUME_NONNULL_BEGIN
  @param clientToken A client token
 */
 - (instancetype)initWithClientToken:(BTClientToken *)clientToken;
+
+- (NSString *)userAgentString;
+- (NSString *)acceptString;
+- (NSString *)acceptLanguageString;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnullability"

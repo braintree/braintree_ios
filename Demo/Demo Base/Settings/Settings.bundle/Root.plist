@@ -32,10 +32,12 @@
 				<string>Drop In</string>
 				<string>UI Components</string>
 				<string>Credit Cards - 3D Secure</string>
+				<string>3D Secure Payment Flow</string>
 				<string>Combined - Custom Button</string>
 				<string>Fraud Protection - BTDataCollector</string>
 				<string>UnionPay</string>
 				<string>PayPal Credit</string>
+				<string>iDEAL</string>
 				<string>Amex</string>
 			</array>
 			<key>Values</key>
@@ -55,10 +57,12 @@
 				<string>BraintreeDemoDropInViewController</string>
 				<string>BraintreeDemoUIWidgetsViewController</string>
 				<string>BraintreeDemoThreeDSecureViewController</string>
+				<string>BraintreeDemoThreeDSecurePaymentFlowViewController</string>
 				<string>BraintreeDemoCustomMultiPayViewController</string>
 				<string>BraintreeDemoBTDataCollectorViewController</string>
 				<string>BraintreeDemoUnionPayViewController</string>
 				<string>BraintreeDemoPayPalCreditPaymentViewController</string>
+				<string>BraintreeDemoIdealViewController</string>
 				<string>BraintreeDemoAmexViewController</string>
 			</array>
 		</dict>

@@ -18,25 +18,33 @@ class MockAPIClient : BTAPIClient {
     var fetchPaymentMethodsSorting = false
     
     override func get(_ path: String, parameters: [String : String]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        lastGETPath = path
-        lastGETParameters = parameters
-
-        guard let completionBlock = completionBlock else {
-            return
-        }
-        completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
+        self.get(path, parameters: parameters, httpType:.gateway, completion: completionBlock)
     }
 
     override func post(_ path: String, parameters: [AnyHashable : Any]?, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
-        lastPOSTPath = path
-        lastPOSTParameters = parameters
+        self.post(path, parameters: parameters, httpType:.gateway, completion: completionBlock)
+    }
 
+    override func get(_ path: String, parameters: [String : String]?, httpType: BTAPIClientHTTPType, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+        lastGETPath = path
+        lastGETParameters = parameters
+        
         guard let completionBlock = completionBlock else {
             return
         }
         completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
     }
-
+    
+    override func post(_ path: String, parameters: [AnyHashable : Any]?, httpType: BTAPIClientHTTPType, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
+        lastPOSTPath = path
+        lastPOSTParameters = parameters
+        
+        guard let completionBlock = completionBlock else {
+            return
+        }
+        completionBlock(cannedResponseBody, cannedHTTPURLResponse, cannedResponseError)
+    }
+    
     override func fetchOrReturnRemoteConfiguration(_ completionBlock: @escaping (BTConfiguration?, Error?) -> Void) {
         guard let responseBody = cannedConfigurationResponseBody else {
             completionBlock(nil, cannedConfigurationResponseError)

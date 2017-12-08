@@ -22,12 +22,20 @@
     return nil;
 }
 
-- (instancetype)initWithBaseURL:(NSURL *)URL authorizationFingerprint:(NSString *)authorizationFingerprint {
+- (instancetype)initWithBaseURL:(NSURL *)URL {
     self = [super init];
+    if (self) {
+        self.baseURL = URL;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithBaseURL:(NSURL *)URL authorizationFingerprint:(NSString *)authorizationFingerprint {
+    self = [self initWithBaseURL:URL];
     if (self) {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
         configuration.HTTPAdditionalHeaders = self.defaultHeaders;
-        self.baseURL = URL;
 
         NSOperationQueue *delegateQueue = [[NSOperationQueue alloc] init];
         delegateQueue.name = @"com.braintreepayments.BTHTTP";
@@ -41,10 +49,9 @@
 }
 
 - (instancetype)initWithBaseURL:(nonnull NSURL *)URL tokenizationKey:(nonnull NSString *)tokenizationKey {
-    if (self = [super init]) {
+    if (self = [self initWithBaseURL:URL]) {
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
         configuration.HTTPAdditionalHeaders = self.defaultHeaders;
-        self.baseURL = URL;
 
         NSOperationQueue *delegateQueue = [[NSOperationQueue alloc] init];
         delegateQueue.name = @"com.braintreepayments.BTHTTP";
@@ -228,7 +235,7 @@
             json = (data.length == 0) ? [BTJSON new] : [[BTJSON alloc] initWithData:data];
             if (!json.isError) {
                 errorUserInfo[BTHTTPJSONResponseBodyKey] = json;
-                NSString *errorResponseMessage = [json[@"error"][@"message"] asString];
+                NSString *errorResponseMessage = [json[@"error"][@"developer_message"] isString] ? [json[@"error"][@"developer_message"] asString] : [json[@"error"][@"message"] asString];
                 if (errorResponseMessage) {
                     errorUserInfo[NSLocalizedDescriptionKey] = errorResponseMessage;
                 }

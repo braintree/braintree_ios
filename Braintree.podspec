@@ -123,5 +123,13 @@ Pod::Spec.new do |s|
     s.public_header_files = "BraintreeAmericanExpress/Public/*.h"
     s.dependency "Braintree/Core"
   end
+
+  s.subspec "PaymentFlow" do |s|
+    s.source_files = "BraintreePaymentFlow/**/*.{h,m}"
+    s.public_header_files = "BraintreePaymentFlow/Public/**/*.h"
+    s.weak_frameworks = "SafariServices"
+    s.dependency "Braintree/Core"
+    s.dependency "Braintree/Card"
+  end
 end
 

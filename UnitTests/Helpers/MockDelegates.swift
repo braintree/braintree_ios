@@ -55,6 +55,16 @@ import XCTest
     }
 }
 
+@objc class MockIdealPaymentRequestDelegate : NSObject, BTIdealRequestDelegate {
+    var id: String?
+    var idExpectation : XCTestExpectation?
+
+    func idealPaymentStarted(_ result: BTIdealResult) {
+        self.id = result.idealId
+        idExpectation?.fulfill()
+    }
+}
+
 @objc class MockPayPalApprovalHandlerDelegate : NSObject, BTPayPalApprovalHandler {
     var handleApprovalExpectation : XCTestExpectation? = nil
     var url : NSURL? = nil
