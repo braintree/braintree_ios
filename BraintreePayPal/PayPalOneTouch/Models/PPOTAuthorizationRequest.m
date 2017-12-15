@@ -8,12 +8,19 @@
 #import "PPOTRequest_Internal.h"
 #import "PPOTAppSwitchUtil.h"
 #import "PPOTConfiguration.h"
-#import "PPOTDevice.h"
-#import "PPOTMacros.h"
 #import "PPOTOAuth2AppSwitchRequest.h"
 #import "PPOTOAuth2BrowserSwitchRequest.h"
+#if __has_include("PayPalUtils.h")
+#import "PPOTDevice.h"
+#import "PPOTMacros.h"
 #import "PPOTEncryptionHelper.h"
 #import "PPOTString.h"
+#else
+#import <PayPalUtils/PPOTDevice.h>
+#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PPOTEncryptionHelper.h>
+#import <PayPalUtils/PPOTString.h>
+#endif
 
 #define PPRequestEnvironmentDevelop  @"develop"
 

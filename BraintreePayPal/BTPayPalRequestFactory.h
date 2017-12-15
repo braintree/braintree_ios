@@ -1,6 +1,12 @@
 #import <Foundation/Foundation.h>
+
+#if __has_include("PayPalOneTouch.h")
 #import "PPOTRequest.h"
 #import "PPOTCore.h"
+#else
+#import <PayPalOneTouch/PPOTRequest.h>
+#import <PayPalOneTouch/PPOTCore.h>
+#endif
 
 @interface BTPayPalRequestFactory : NSObject
 
