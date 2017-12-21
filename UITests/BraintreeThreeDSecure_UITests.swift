@@ -21,6 +21,14 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         sleep(2)
     }
     
+    func getPasswordField() -> XCUIElement {
+        return app.webViews.otherElements["bank_frame"].children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 18).children(matching: .secureTextField).element
+    }
+
+    func getSubmutButton() -> XCUIElement {
+        return app.webViews.otherElements["bank_frame"].children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).buttons["Submit"]
+    }
+
     func testThreeDSecurePaymentFlow_completesAuthentication_receivesNonce() {
         self.waitForElementToAppear(app.textFields["Card Number"])
         let cardNumberTextField = app.textFields["Card Number"]
@@ -31,13 +39,13 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         sleep(2)
         
         let elementsQuery = app.webViews.element.otherElements
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
+        let passwordTextField = getPasswordField()
         
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
         
-        elementsQuery.buttons["Submit"].tap()
+        getSubmutButton().tap()
         
         self.waitForElementToAppear(app.buttons["Liability shift possible and liability shifted"])
     }
@@ -254,6 +262,14 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
     }
 
+    func getPasswordField() -> XCUIElement {
+        return app.otherElements["Web View"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 18).children(matching: .secureTextField).element
+    }
+
+    func getSubmutButton() -> XCUIElement {
+        return app.otherElements["Web View"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).buttons["Submit"]
+    }
+
     func testThreeDSecure_completesAuthentication_receivesNonce() {
         self.waitForElementToAppear(app.textFields["Card Number"])
         let cardNumberTextField = app.textFields["Card Number"]
@@ -264,13 +280,13 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
+        let passwordTextField = getPasswordField()
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        elementsQuery.buttons["Submit"].tap()
+        getSubmutButton().tap()
 
         self.waitForElementToAppear(app.buttons["Liability shift possible and liability shifted"])
 
