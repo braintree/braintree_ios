@@ -66,7 +66,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         sleep(1)
         passwordTextField.typeText("1234")
         
-        elementsQuery.buttons["Submit"].tap()
+        getSubmutButton().tap()
         
         self.waitForElementToAppear(app.buttons["Failed to authenticate, please try a different form of payment."])
     }
@@ -112,7 +112,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         sleep(1)
         passwordTextField.typeText("1234")
         
-        elementsQuery.buttons["Submit"].tap()
+        getSubmutButton().tap()
         
         self.waitForElementToAppear(app.buttons["Failed to authenticate, please try a different form of payment."])
         
@@ -151,8 +151,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         sleep(1)
         passwordTextField.typeText("1234")
         
-        elementsQuery.buttons["Submit"].tap()
-        
+        getSubmutButton().tap()
         
         self.waitForElementToAppear(app.buttons["An unexpected error occurred"])
     }
@@ -173,7 +172,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         sleep(1)
         passwordTextField.typeText("1234")
         
-        elementsQuery.buttons["Submit"].tap()
+        getSubmutButton().tap()
         
         self.waitForElementToAppear(app.buttons["An unexpected error occurred"])
     }
@@ -263,11 +262,11 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
     }
 
     func getPasswordField() -> XCUIElement {
-        return app.otherElements["Web View"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 18).children(matching: .secureTextField).element
+        return app/*@START_MENU_TOKEN@*/.webViews/*[[".otherElements[\"Web View\"].webViews",".webViews"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 18).children(matching: .secureTextField).element
     }
 
     func getSubmutButton() -> XCUIElement {
-        return app.otherElements["Web View"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).buttons["Submit"]
+        return app/*@START_MENU_TOKEN@*/.webViews/*[[".otherElements[\"Web View\"].webViews",".webViews"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).buttons["Submit"]
     }
 
     func testThreeDSecure_completesAuthentication_receivesNonce() {
@@ -303,13 +302,13 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
+        let passwordTextField = getPasswordField()
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        elementsQuery.buttons["Submit"].tap()
+        getSubmutButton().tap()
 
         self.waitForElementToAppear(app.buttons["Failed to authenticate, please try a different form of payment."])
 
@@ -355,13 +354,13 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
-        
+        let passwordTextField = getPasswordField()
+
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        elementsQuery.buttons["Submit"].tap()
+        getSubmutButton().tap()
 
         self.waitForElementToAppear(app.buttons["Failed to authenticate, please try a different form of payment."])
 
@@ -400,14 +399,13 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
+        let passwordTextField = getPasswordField()
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        elementsQuery.buttons["Submit"].tap()
-
+        getSubmutButton().tap()
 
         self.waitForElementToAppear(app.buttons["An unexpected error occurred"])
 
@@ -424,13 +422,13 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
 
         let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
+        let passwordTextField = getPasswordField()
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        elementsQuery.buttons["Submit"].tap()
+        getSubmutButton().tap()
 
         self.waitForElementToAppear(app.buttons["An unexpected error occurred"])
 
@@ -446,9 +444,9 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         app.buttons["Tokenize and Verify New Card"].tap()
         sleep(2)
 
-        self.waitForElementToAppear(app.navigationBars["Authentication"])
+        self.waitForElementToBeHittable(app.buttons["Cancel"])
 
-        app.navigationBars["Authentication"].buttons["Cancel"].forceTapElement()
+        app.buttons["Cancel"].forceTapElement()
 
         self.waitForElementToAppear(app.buttons["Cancelled🎲"])
 
