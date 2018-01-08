@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 3.9.10 (2018-01-08)
+
+* Updated trusted certificates
+
 ## 3.9.9 (2017-04-03)
 
 * Resolved build errors in Xcode 8.3 caused by incorrect case of imports [fix #324](https://github.com/braintree/braintree_ios/issues/324) (thanks, @alamantia)
