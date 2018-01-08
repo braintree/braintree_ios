@@ -1,7 +1,12 @@
 #import "BTPayPalDriver_Internal.h"
 
+#if __has_include("PayPalOneTouch.h")
 #import "PPOTRequest.h"
 #import "PPOTCore.h"
+#else
+#import <PayPalOneTouch/PPOTRequest.h>
+#import <PayPalOneTouch/PPOTCore.h>
+#endif
 
 #if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
@@ -10,11 +15,17 @@
 #import "BTLogger_Internal.h"
 #else
 #import <BraintreeCore/BTAPIClient_Internal.h>
-#import <BraintreeCore/BTPayPalAccountNonce_Internal.h>
-#import <BraintreeCore/BTTokenizedPayPalCheckout_Internal.h>
 #import <BraintreeCore/BTPostalAddress.h>
 #import <BraintreeCore/BTLogger_Internal.h>
 #endif
+
+#if __has_include("BTPayPalAccountNonce_Internal.h")
+#import "BTPayPalAccountNonce_Internal.h"
+#else
+#import <BraintreePayPal/BTPayPalAccountNonce_Internal.h>
+#endif
+
+
 #import <SafariServices/SafariServices.h>
 #import "BTConfiguration+PayPal.h"
 

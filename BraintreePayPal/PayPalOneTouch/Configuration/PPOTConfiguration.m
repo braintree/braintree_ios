@@ -6,10 +6,17 @@
 //
 
 #import "PPOTConfiguration.h"
+#if __has_include("PayPalUtils.h")
 #import "PPOTJSONHelper.h"
 #import "PPOTMacros.h"
 #import "PPOTSimpleKeychain.h"
 #import "PPOTURLSession.h"
+#else
+#import <PayPalUtils/PPOTJSONHelper.h>
+#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PPOTSimpleKeychain.h>
+#import <PayPalUtils/PPOTURLSession.h>
+#endif
 #if __has_include("BraintreeCore.h")
 #import "BTLogger_Internal.h"
 #else

@@ -8,13 +8,20 @@
 
 #import "PPOTAppSwitchUtil.h"
 #import "PPOTConfiguration.h"
-#import "PPOTMacros.h"
+#import "PPOTAnalyticsDefines.h"
 #import "PPOTAnalyticsTracker.h"
-#import "PPOTVersion.h"
 #import "PPOTPersistentRequestData.h"
+#if __has_include("PayPalUtils.h")
+#import "PPOTMacros.h"
+#import "PPOTVersion.h"
 #import "PPOTString.h"
 #import "PPOTJSONHelper.h"
-#import "PPOTAnalyticsDefines.h"
+#else
+#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PPOTVersion.h>
+#import <PayPalUtils/PPOTString.h>
+#import <PayPalUtils/PPOTJSONHelper.h>
+#endif
 
 #define STR_TO_URL_SCHEME(str) [NSURL URLWithString:[NSString stringWithFormat:@"%@://", str]]
 
