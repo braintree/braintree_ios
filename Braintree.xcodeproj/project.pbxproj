@@ -1908,6 +1908,10 @@
 		D9AFC14FFCF2029AE39FA3BA /* Pods-Tests-IntegrationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-IntegrationTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-IntegrationTests/Pods-Tests-IntegrationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EEF1DE881E858A31001BB924 /* BTEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTEnums.h; sourceTree = "<group>"; };
 		F856ADC418A9254523A85526 /* Pods-Tests-UnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-UnitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests-UnitTests/Pods-Tests-UnitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		FAA5D7792007499200844C55 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = "ar.lproj/Three-D-Secure.strings"; sourceTree = "<group>"; };
+		FAA5D77A2007499200844C55 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = "ar.lproj/Drop-In.strings"; sourceTree = "<group>"; };
+		FAA5D77B2007499200844C55 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/UI.strings; sourceTree = "<group>"; };
+		FAA5D77C2007499200844C55 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main.strings; sourceTree = "<group>"; };
 		FD5B458BFE02563982017D5E /* libPods-Tests-UnitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests-UnitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -4392,6 +4396,7 @@
 				sv,
 				tr,
 				"zh-Hans",
+				ar,
 			);
 			mainGroup = A75DA343192138F000D997A2;
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
@@ -5675,6 +5680,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				A76B1A091B79708A00452CFA /* en */,
+				FAA5D77C2007499200844C55 /* ar */,
 			);
 			name = Main.strings;
 			path = .;
@@ -5704,6 +5710,7 @@
 				A773451C1B7A93D00083EC8D /* sv */,
 				A773451D1B7A93D00083EC8D /* tr */,
 				A773451E1B7A93D00083EC8D /* zh-Hans */,
+				FAA5D77B2007499200844C55 /* ar */,
 			);
 			name = UI.strings;
 			path = .;
@@ -5733,6 +5740,7 @@
 				A773460F1B7A9E340083EC8D /* sv */,
 				A77346101B7A9E340083EC8D /* tr */,
 				A77346111B7A9E340083EC8D /* zh-Hans */,
+				FAA5D77A2007499200844C55 /* ar */,
 			);
 			name = "Drop-In.strings";
 			path = .;
@@ -5762,6 +5770,7 @@
 				A79AFA5D1B56F823007B1DF1 /* sv */,
 				A79AFA5E1B56F823007B1DF1 /* tr */,
 				A79AFA5F1B56F823007B1DF1 /* zh-Hans */,
+				FAA5D7792007499200844C55 /* ar */,
 			);
 			name = "Three-D-Secure.strings";
 			path = .;
