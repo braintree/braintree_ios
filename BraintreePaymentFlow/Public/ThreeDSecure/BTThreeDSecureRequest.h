@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTThreeDSecureRequest : BTPaymentFlowRequest <BTPaymentFlowRequestDelegate>
 
 /**
- @brief A nonce to be verified by ThreeDSecure
+ @brief The nonce to be verified by ThreeDSecure
  */
 @property (nonatomic, copy) NSString *nonce;
 
@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  @brief The billing address used for verification
+ @see BTThreeDSecurePostalAddress
  */
 @property (nonatomic, copy) BTThreeDSecurePostalAddress *billingAddress;
 

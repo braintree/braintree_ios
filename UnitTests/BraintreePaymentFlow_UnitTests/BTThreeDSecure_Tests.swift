@@ -34,7 +34,79 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         waitForExpectations(timeout: 2, handler: nil)
     }
-    
+
+    func testLookupThreeDSecure_sendsAllParameters() {
+        let responseBody = [
+            "paymentMethod": [
+                "consumed": false,
+                "description": "ending in 02",
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "02",
+                ],
+                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
+                "threeDSecureInfo": [
+                    "enrolled": "Y",
+                    "liabilityShiftPossible": true,
+                    "liabilityShifted": true,
+                    "status": "authenticate_successful",
+                ],
+                "type": "CreditCard",
+            ],
+            "success": true,
+            "threeDSecureInfo":     [
+                "liabilityShiftPossible": true,
+                "liabilityShifted": true,
+            ]
+            ] as [String : Any]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        threeDSecureRequest.amount = 9.97
+        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.mobilePhoneNumber = "5151234321"
+        threeDSecureRequest.email = "tester@example.com"
+        threeDSecureRequest.shippingMethod = "03"
+
+        let billingAddress = BTThreeDSecurePostalAddress()
+        billingAddress.firstName = "Joe"
+        billingAddress.lastName = "Guy"
+        billingAddress.phoneNumber = "12345678"
+        billingAddress.streetAddress = "555 Smith St."
+        billingAddress.extendedAddress = "#5"
+        billingAddress.locality = "Oakland"
+        billingAddress.region = "CA"
+        billingAddress.countryCodeAlpha2 = "US"
+        billingAddress.postalCode = "54321"
+        threeDSecureRequest.billingAddress = billingAddress
+
+        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+            print(self.mockAPIClient.lastPOSTParameters!)
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? NSNumber, 9.97)
+            let customerParams = self.mockAPIClient.lastPOSTParameters!["customer"] as! [String : Any]
+            XCTAssertEqual(customerParams["mobilePhoneNumber"] as? String, "5151234321")
+            XCTAssertEqual(customerParams["email"] as? String, "tester@example.com")
+            XCTAssertEqual(customerParams["shippingMethod"] as? String, "03")
+            let billingAddressParams = customerParams["billingAddress"] as! [String : Any]
+            XCTAssertEqual(billingAddressParams["firstName"] as? String, "Joe")
+            XCTAssertEqual(billingAddressParams["lastName"] as? String, "Guy")
+            XCTAssertEqual(billingAddressParams["phoneNumber"] as? String, "12345678")
+            XCTAssertEqual(billingAddressParams["line1"] as? String, "555 Smith St.")
+            XCTAssertEqual(billingAddressParams["line2"] as? String, "#5")
+            XCTAssertEqual(billingAddressParams["city"] as? String, "Oakland")
+            XCTAssertEqual(billingAddressParams["state"] as? String, "CA")
+            XCTAssertEqual(billingAddressParams["countryCode"] as? String, "US")
+            XCTAssertEqual(billingAddressParams["postalCode"] as? String, "54321")
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
     func testLookupThreeDSecure_withCardThatDoesntRequireAuthentication_callsCompletionWithACard() {
         let responseBody = [
             "paymentMethod": [
