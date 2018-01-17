@@ -27,7 +27,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "lookup fails with errors")
         
-        driver.lookupThreeDSecure(forNonce: threeDSecureRequest.nonce, transactionAmount: threeDSecureRequest.amount) { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedConfigurationResponseError!)
             expectation.fulfill()
         }
@@ -65,7 +65,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.lookupThreeDSecure(forNonce: threeDSecureRequest.nonce, transactionAmount: threeDSecureRequest.amount) { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertFalse(lookup!.requiresUserAuthentication())
             let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard
             XCTAssert(isANonce(tokenizedCard!.nonce))
@@ -115,7 +115,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.lookupThreeDSecure(forNonce: threeDSecureRequest.nonce, transactionAmount: threeDSecureRequest.amount) { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertTrue(lookup!.requiresUserAuthentication())
             expectation.fulfill()
         }
@@ -154,7 +154,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.lookupThreeDSecure(forNonce: threeDSecureRequest.nonce, transactionAmount: threeDSecureRequest.amount) { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             guard let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard else {
                 XCTFail()
                 return
