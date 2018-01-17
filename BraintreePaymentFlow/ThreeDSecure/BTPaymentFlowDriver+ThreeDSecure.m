@@ -33,12 +33,19 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         if (configuration.json[@"merchantAccountId"]) {
             requestParameters[@"merchant_account_id"] = [configuration.json[@"merchantAccountId"] asString];
         }
-        
+
         if (request.billingAddress) {
-            NSMutableDictionary *billingAddressParams = [[NSMutableDictionary alloc] init];
-            billingAddressParams[@"line1"] = request.billingAddress.streetAddress;
-            
-            customer[@"billingAddress"] = billingAddressParams;
+            customer[@"billingAddress"] = @{
+                    @"firstName": request.billingAddress.firstName,
+                    @"lastName": request.billingAddress.lastName,
+                    @"phoneNumber": request.billingAddress.phoneNumber,
+                    @"line1": request.billingAddress.streetAddress,
+                    @"line2": request.billingAddress.extendedAddress,
+                    @"city": request.billingAddress.locality,
+                    @"state": request.billingAddress.region,
+                    @"postalCode": request.billingAddress.postalCode,
+                    @"countryCode": request.billingAddress.countryCodeAlpha2,
+            };
         }
         
         if (request.mobilePhoneNumber) {
