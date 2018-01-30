@@ -60,6 +60,8 @@
         expect(tokenizedCard.binData.issuingBank).toNot.beNil();
         expect(tokenizedCard.binData.countryOfIssuance).toNot.beNil();
         expect(tokenizedCard.binData.productId).toNot.beNil();
+        expect(tokenizedCard.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
+        expect(tokenizedCard.threeDSecureInfo.liabilityShifted).to.beFalsy();
         expect(error).to.beNil();
         [expectation fulfill];
     }];
