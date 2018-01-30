@@ -71,8 +71,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssert(isANonce(tokenizedCard!.nonce))
             XCTAssertEqual(tokenizedCard!.nonce, "f689056d-aee1-421e-9d10-f2c9b34d4d6f")
             XCTAssertNil(error)
-            XCTAssertTrue(lookup!.threeDSecureResult.liabilityShifted)
-            XCTAssertTrue(lookup!.threeDSecureResult.liabilityShiftPossible)
+            XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
+            XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
             expectation.fulfill()
         }
         
@@ -162,8 +162,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertTrue(isANonce(tokenizedCard.nonce))
             XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
             XCTAssertNil(error)
-            XCTAssertFalse(lookup!.threeDSecureResult.liabilityShifted)
-            XCTAssertFalse(lookup!.threeDSecureResult.liabilityShiftPossible)
+            XCTAssertFalse(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
+            XCTAssertFalse(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
             expectation.fulfill()
         }
         
@@ -265,8 +265,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertTrue(isANonce(tokenizedCard.nonce))
             XCTAssertNotEqual(tokenizedCard.nonce, self.threeDSecureRequest.nonce);
             XCTAssertNil(error)
-            XCTAssertFalse(result.liabilityShifted)
-            XCTAssertFalse(result.liabilityShiftPossible)
+            XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShifted)
+            XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
             expectation.fulfill()
         }
         

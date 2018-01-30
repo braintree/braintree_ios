@@ -22,16 +22,6 @@
 @property (nonatomic, assign) BOOL success;
 
 /**
- @brief Indicates whether the liability for fraud has been shifted away from the merchant
- */
-@property (nonatomic, assign) BOOL liabilityShifted;
-
-/**
- @brief Indicates whether the card was eligible for 3D Secure
- */
-@property (nonatomic, assign) BOOL liabilityShiftPossible;
-
-/**
  @brief The `BTCardNonce` resulting from the 3D Secure flow
  */
 @property (nonatomic, strong) BTCardNonce *tokenizedCard;

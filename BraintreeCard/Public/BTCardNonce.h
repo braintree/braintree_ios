@@ -4,6 +4,7 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
+#import "BTThreeDSecureInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,6 +24,11 @@ NS_ASSUME_NONNULL_BEGIN
  @brief The BIN data for the card number associated with this nonce.
  */
 @property (nonatomic, readonly, strong) BTBinData *binData;
+
+/**
+ @brief The 3D Secure info for the card number associated with this nonce.
+ */
+@property (nonatomic, readonly, strong) BTThreeDSecureInfo *threeDSecureInfo;
 
 #pragma mark - Internal
 
