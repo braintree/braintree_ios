@@ -26,24 +26,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSDecimalNumber *amount;
 
 /**
- @brief The billing address used for verification
+ @brief Optional. The billing address used for verification
  @see BTThreeDSecurePostalAddress
  */
 @property (nonatomic, copy) BTThreeDSecurePostalAddress *billingAddress;
 
 /**
- @brief The mobile phone number used for verification
+ @brief Optional. The mobile phone number used for verification
  @note Only numbers. Remove dashes, parathensis and other characters
  */
 @property (nonatomic, copy) NSString *mobilePhoneNumber;
 
 /**
- @brief The email used for verification
+ @brief Optional. The email used for verification
  */
 @property (nonatomic, copy) NSString *email;
 
 /**
- @brief The 2-digit string indicating the shipping method chosen for the transaction
+ @brief Optional. The 2-digit string indicating the shipping method chosen for the transaction
  @discussion Possible Values:
  01 Same Day
  02 Overnight / Expedited
