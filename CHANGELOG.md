@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.10.1 (2018-02-01)
+
+* Add BTThreeDSecureInfo to BTCardNonce
+* Use angled brackets for BraintreePayPal header imports (thanks @nudge)
+
 ## 4.10.0 (2017-12-08)
 
 * Add iDEAL support
