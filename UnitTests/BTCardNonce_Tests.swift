@@ -25,8 +25,57 @@ class BTCardNonce_Tests: XCTestCase {
                 "productId": "123"
             ],
             "nonce": "fake-nonce",
+            "threeDSecureInfo": [
+                "liabilityShifted": true,
+                "liabilityShiftPossible": true
+            ]
             ]))
 
+        XCTAssertNotNil(cardNonce.threeDSecureInfo)
+        XCTAssertTrue(cardNonce.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertTrue(cardNonce.threeDSecureInfo.liabilityShifted)
+        XCTAssertTrue(cardNonce.threeDSecureInfo.wasVerified)
+        XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
+        XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
+        XCTAssertEqual(cardNonce.lastTwo, "11")
+        XCTAssertEqual(cardNonce.nonce, "fake-nonce")
+        XCTAssertEqual(cardNonce.type, "Visa")
+        XCTAssertEqual(cardNonce.binData.prepaid, "Yes")
+        XCTAssertEqual(cardNonce.binData.healthcare, "Yes")
+        XCTAssertEqual(cardNonce.binData.debit, "No")
+        XCTAssertEqual(cardNonce.binData.durbinRegulated, "No")
+        XCTAssertEqual(cardNonce.binData.commercial, "Yes")
+        XCTAssertEqual(cardNonce.binData.payroll, "No")
+        XCTAssertEqual(cardNonce.binData.issuingBank, "US")
+        XCTAssertEqual(cardNonce.binData.countryOfIssuance, "Something")
+        XCTAssertEqual(cardNonce.binData.productId, "123")
+    }
+
+    func testCardWithJSON_createsCard_withoutThreeDSecureInfo() {
+        let cardNonce = BTCardNonce(json: BTJSON(value: [
+            "description": "Visa ending in 11",
+            "details": [
+                "cardType": "Visa",
+                "lastTwo": "11",
+            ],
+            "binData": [
+                "prepaid": "Yes",
+                "healthcare": "Yes",
+                "debit": "No",
+                "durbinRegulated": "No",
+                "commercial": "Yes",
+                "payroll": "No",
+                "issuingBank": "US",
+                "countryOfIssuance": "Something",
+                "productId": "123"
+            ],
+            "nonce": "fake-nonce",
+            ]))
+
+        XCTAssertNotNil(cardNonce.threeDSecureInfo)
+        XCTAssertFalse(cardNonce.threeDSecureInfo.liabilityShiftPossible)
+        XCTAssertFalse(cardNonce.threeDSecureInfo.liabilityShifted)
+        XCTAssertFalse(cardNonce.threeDSecureInfo.wasVerified)
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
@@ -119,6 +168,7 @@ class BTCardNonce_Tests: XCTestCase {
 
             XCTAssertEqual(cardNonce.cardNetwork, cardNetworks[i])
             XCTAssertEqual(cardNonce.type, cardTypes[i])
+            XCTAssertFalse(cardNonce.threeDSecureInfo.wasVerified)
         }
     }
 }

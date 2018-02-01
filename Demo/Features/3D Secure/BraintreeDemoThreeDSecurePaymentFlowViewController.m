@@ -1,7 +1,7 @@
 #import "BraintreeDemoThreeDSecurePaymentFlowViewController.h"
 #import "ALView+PureLayout.h"
 
-#import <Braintree3DSecure/Braintree3DSecure.h>
+#import <BraintreeCard/BraintreeCard.h>
 #import <BraintreeUI/BraintreeUI.h>
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
 
@@ -112,7 +112,7 @@
                 BTThreeDSecureResult *threeDSecureResult = (BTThreeDSecureResult *)result;
                 self.completionBlock(threeDSecureResult.tokenizedCard);
                 
-                if (threeDSecureResult.liabilityShiftPossible && threeDSecureResult.liabilityShifted) {
+                if (threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible && threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted) {
                     self.progressBlock(@"Liability shift possible and liability shifted");
                 } else {
                     self.progressBlock(@"3D Secure authentication was attempted but liability shift is not possible");
