@@ -17,6 +17,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();
         expect(error).to.beNil();
         [expectation fulfill];
     }];
@@ -62,6 +63,7 @@
         expect(tokenizedCard.binData.productId).toNot.beNil();
         expect(tokenizedCard.threeDSecureInfo.liabilityShiftPossible).to.beFalsy();
         expect(tokenizedCard.threeDSecureInfo.liabilityShifted).to.beFalsy();
+        expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();
         expect(error).to.beNil();
         [expectation fulfill];
     }];
@@ -98,6 +100,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();
         expect(error).to.beNil();
         [expectation fulfill];
     }];
@@ -114,6 +117,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
     [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
         expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(tokenizedCard.threeDSecureInfo.wasVerified).to.beFalsy();
         expect(error).to.beNil();
         [expectation fulfill];
     }];

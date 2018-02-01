@@ -75,6 +75,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertTrue(lookup!.threeDSecureResult.liabilityShiftPossible)
             XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+            XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.wasVerified)
             expectation.fulfill()
         }
         
@@ -168,6 +169,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertFalse(lookup!.threeDSecureResult.liabilityShiftPossible)
             XCTAssertFalse(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertFalse(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+            XCTAssertTrue(lookup!.threeDSecureResult.tokenizedCard.threeDSecureInfo.wasVerified)
             expectation.fulfill()
         }
         
@@ -273,6 +275,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertFalse(result.liabilityShiftPossible)
             XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
+            XCTAssertTrue(result.tokenizedCard.threeDSecureInfo.wasVerified)
             expectation.fulfill()
         }
         

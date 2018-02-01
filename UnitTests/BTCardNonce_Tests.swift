@@ -34,6 +34,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertNotNil(cardNonce.threeDSecureInfo)
         XCTAssertTrue(cardNonce.threeDSecureInfo.liabilityShiftPossible)
         XCTAssertTrue(cardNonce.threeDSecureInfo.liabilityShifted)
+        XCTAssertTrue(cardNonce.threeDSecureInfo.wasVerified)
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
@@ -74,6 +75,7 @@ class BTCardNonce_Tests: XCTestCase {
         XCTAssertNotNil(cardNonce.threeDSecureInfo)
         XCTAssertFalse(cardNonce.threeDSecureInfo.liabilityShiftPossible)
         XCTAssertFalse(cardNonce.threeDSecureInfo.liabilityShifted)
+        XCTAssertFalse(cardNonce.threeDSecureInfo.wasVerified)
         XCTAssertEqual(cardNonce.localizedDescription, "Visa ending in 11")
         XCTAssertEqual(cardNonce.cardNetwork, BTCardNetwork.visa)
         XCTAssertEqual(cardNonce.lastTwo, "11")
@@ -166,6 +168,7 @@ class BTCardNonce_Tests: XCTestCase {
 
             XCTAssertEqual(cardNonce.cardNetwork, cardNetworks[i])
             XCTAssertEqual(cardNonce.type, cardTypes[i])
+            XCTAssertFalse(cardNonce.threeDSecureInfo.wasVerified)
         }
     }
 }

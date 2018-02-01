@@ -12,6 +12,8 @@
     if (self = [super init]) {
         if (json != nil) {
             _threeDSecureJSON = json;
+        } else {
+            _threeDSecureJSON = [BTJSON new];
         }
     }
     return self;
@@ -23,6 +25,11 @@
 
 - (BOOL)liabilityShiftPossible {
     return [self.threeDSecureJSON[@"liabilityShiftPossible"] isTrue];
+}
+
+- (BOOL)wasVerified {
+    return ![self.threeDSecureJSON[@"liabilityShifted"] isError] &&
+        ![self.threeDSecureJSON[@"liabilityShiftPossible"] isError];
 }
 
 @end

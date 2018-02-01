@@ -20,6 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, assign) BOOL liabilityShiftPossible;
 
+/**
+ @brief If the 3D Secure lookup was performed
+ */
+@property (nonatomic, readonly, assign) BOOL wasVerified;
+
 @end
 
 NS_ASSUME_NONNULL_END
