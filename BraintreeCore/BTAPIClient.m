@@ -247,17 +247,17 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                 fetchError = configurationDomainError;
             } else {
                 configuration = [[BTConfiguration alloc] initWithJSON:body];
-                if (!_braintreeAPI) {
+                if (!self->_braintreeAPI) {
                     NSURL *apiURL = [configuration.json[@"braintreeApi"][@"url"] asURL];
                     NSString *accessToken = [configuration.json[@"braintreeApi"][@"accessToken"] asString];
-                    _braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:apiURL accessToken:accessToken];
+                    self->_braintreeAPI = [[BTAPIHTTP alloc] initWithBaseURL:apiURL accessToken:accessToken];
                 }
-                if (!_http) {
+                if (!self->_http) {
                     NSURL *baseURL = [configuration.json[@"clientApiUrl"] asURL];
                     if (self.clientToken) {
-                        _http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
+                        self->_http = [[BTHTTP alloc] initWithBaseURL:baseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
                     } else if (self.tokenizationKey) {
-                        _http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:self.tokenizationKey];
+                        self->_http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:self.tokenizationKey];
                     }
                 }
             }
