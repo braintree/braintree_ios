@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.11.0 (2018-02-05)
+
+* Fix code for implicit retain self warning (thanks @keith)
+
 ## 4.10.1 (2018-02-01)
 
 * Add BTThreeDSecureInfo to BTCardNonce
