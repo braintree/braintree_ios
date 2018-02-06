@@ -1,1 +1,1 @@
-#define BRAINTREE_VERSION (@"4.10.1")
+#define BRAINTREE_VERSION (@"4.11.0")
