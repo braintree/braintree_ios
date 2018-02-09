@@ -152,7 +152,7 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
 
 + (NSString *)hostForEnvironmentString:(NSString *)environment {
     if ([[environment lowercaseString] isEqualToString:@"sandbox"]) {
-        return @"sandbox.braintreegateway.com";
+        return @"api.sandbox.braintreegateway.com";
     } else if ([[environment lowercaseString] isEqualToString:@"production"]) {
         return @"api.braintreegateway.com:443";
     } else if ([[environment lowercaseString] isEqualToString:@"development"]) {

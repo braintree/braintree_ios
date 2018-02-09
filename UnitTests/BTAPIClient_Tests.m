@@ -73,7 +73,7 @@
     XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"http://localhost:3000/merchants/key/client_api");
 
     apiClient = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_tokenization_key" sendAnalyticsEvent:NO];
-    XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"https://sandbox.braintreegateway.com/merchants/key/client_api");
+    XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"https://api.sandbox.braintreegateway.com/merchants/key/client_api");
 
     apiClient = [[BTAPIClient alloc] initWithAuthorization:@"production_tokenization_key" sendAnalyticsEvent:NO];
     XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"https://api.braintreegateway.com:443/merchants/key/client_api");
