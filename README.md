@@ -55,7 +55,8 @@ Here are a few ways to get in touch:
 ## Help
 
 * Read the headers
-* [Read the docs](https://developers.braintreepayments.com/ios/sdk/client)
+* [Read the Braintree docs](https://developers.braintreepayments.com/ios/sdk/client)
+* [Check out the reference docs](https://braintree.github.io/braintree_ios/)
 * Find a bug? [Open an issue](https://github.com/braintree/braintree_ios/issues)
 * Want to contribute? [Check out contributing guidelines](CONTRIBUTING.md) and [submit a pull request](https://help.github.com/articles/creating-a-pull-request).
 
