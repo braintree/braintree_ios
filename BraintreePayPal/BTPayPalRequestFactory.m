@@ -1,5 +1,9 @@
 #import "BTPayPalRequestFactory.h"
+#if __has_include("PPOTRequestFactory.h")
 #import "PPOTRequestFactory.h"
+#else
+#import <PayPalOneTouch/PPOTRequestFactory.h>
+#endif
 
 @implementation BTPayPalRequestFactory
 

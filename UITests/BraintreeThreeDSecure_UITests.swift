@@ -36,13 +36,13 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000002")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
+        sleep(4)
         
         let elementsQuery = app.webViews.element.otherElements
         let passwordTextField = getPasswordField()
         
         passwordTextField.tap()
-        sleep(1)
+        sleep(2)
         passwordTextField.typeText("1234")
         
         getSubmutButton().tap()
@@ -163,13 +163,13 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000093")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
+        sleep(4)
         
         let elementsQuery = app.webViews.element.otherElements
         let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
         
         passwordTextField.tap()
-        sleep(1)
+        sleep(2)
         passwordTextField.typeText("1234")
         
         getSubmutButton().tap()

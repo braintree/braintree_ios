@@ -29,7 +29,7 @@ PODS:
   - CardIO (5.4.1)
   - Expecta (1.0.6)
   - FLEX (2.4.0)
-  - InAppSettingsKit (2.8.1)
+  - InAppSettingsKit (2.9)
   - iOS-Slide-Menu (1.5)
   - NSURL+QueryDictionary (1.2.0)
   - OCMock (3.4.1)
@@ -69,7 +69,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: e244a775683308f2b8da3489172017082ed20a10
+    :commit: 87e2254148bed745d246e2ac7866b22c3c5fabc2
     :git: https://github.com/braintree/braintree-ios-drop-in.git
 
 SPEC CHECKSUMS:
@@ -78,7 +78,7 @@ SPEC CHECKSUMS:
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
-  InAppSettingsKit: 94d2fba3ccd700fc4e32c6d09fabcc0af2426744
+  InAppSettingsKit: fc3dea21846535b76b8289b119dbfdbe2505b2b2
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
@@ -86,6 +86,6 @@ SPEC CHECKSUMS:
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 5c0f6d7472cce11fd35b3c4a01b851c0799076c5
+PODFILE CHECKSUM: 4a4706f8c5de8995930f5c2ca08c0bcfb13740e1
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

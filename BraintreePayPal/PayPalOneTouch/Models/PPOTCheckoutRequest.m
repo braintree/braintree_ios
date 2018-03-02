@@ -9,8 +9,13 @@
 #import "PPOTCheckoutAppSwitchRequest.h"
 #import "PPOTCheckoutBrowserSwitchRequest.h"
 #import "PPOTConfiguration.h"
+#if __has_include("PayPalUtils.h")
 #import "PPOTDevice.h"
 #import "PPOTMacros.h"
+#else
+#import <PayPalUtils/PPOTDevice.h>
+#import <PayPalUtils/PPOTMacros.h>
+#endif
 
 #pragma mark - PPOTCheckoutRequest implementation
 

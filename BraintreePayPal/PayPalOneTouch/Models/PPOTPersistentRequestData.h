@@ -6,7 +6,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#if __has_include("PPOTMacros.h")
 #import "PPOTMacros.h"
+#else
+#import <PayPalUtils/PPOTMacros.h>
+#endif
 
 #define kPPOTRequestDataDataDictionaryMsgIdKey        CARDIO_STR(@"msg_id")
 #define kPPOTRequestDataDataDictionaryEncryptionKey   CARDIO_STR(@"encryption_key")

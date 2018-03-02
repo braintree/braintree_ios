@@ -10,12 +10,21 @@
 #import "PPOTAnalyticsTracker.h"
 
 #import "PPOTCore_Internal.h"
+#if __has_include("PayPalUtils.h")
 #import "PPOTVersion.h"
 #import "PPOTDevice.h"
 #import "PPOTMacros.h"
 #import "PPOTSimpleKeychain.h"
 #import "PPOTString.h"
 #import "PPOTURLSession.h"
+#else
+#import <PayPalUtils/PPOTVersion.h>
+#import <PayPalUtils/PPOTDevice.h>
+#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PPOTSimpleKeychain.h>
+#import <PayPalUtils/PPOTString.h>
+#import <PayPalUtils/PPOTURLSession.h>
+#endif
 #import "PPFPTIData.h"
 #import "PPFPTITracker.h"
 #import "PPOTAnalyticsDefines.h"

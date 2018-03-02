@@ -10,13 +10,19 @@
 #import "PPOTCore_Internal.h"
 #import "PPOTAppSwitchResponse.h"
 #import "PPOTConfiguration.h"
-#import "PPOTDevice.h"
-#import "PPOTError.h"
-#import "PPOTMacros.h"
-#import "PPOTAnalyticsTracker.h"
-#import "PPOTVersion.h"
-#import "PPOTPersistentRequestData.h"
 #import "PPOTAnalyticsDefines.h"
+#import "PPOTAnalyticsTracker.h"
+#import "PPOTError.h"
+#import "PPOTPersistentRequestData.h"
+#if __has_include("PayPalUtils.h")
+#import "PPOTDevice.h"
+#import "PPOTMacros.h"
+#import "PPOTVersion.h"
+#else
+#import <PayPalUtils/PPOTDevice.h>
+#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PPOTVersion.h>
+#endif
 
 #define PP_TIMESTAMP_TIMEOUT 10*60 // 10 minutes
 

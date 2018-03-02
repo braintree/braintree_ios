@@ -9,12 +9,17 @@
 #import "PPOTAnalyticsDefines.h"
 #import "PPOTAppSwitchUtil.h"
 #import "PPOTConfiguration.h"
-#import "PPOTDevice.h"
-#import "PPOTMacros.h"
 #import "PPOTOAuth2SwitchRequest.h"
 #import "PPOTAnalyticsTracker.h"
 #import "PPOTPersistentRequestData.h"
 #import "PPOTError.h"
+#if __has_include("PayPalUtils.h")
+#import "PPOTDevice.h"
+#import "PPOTMacros.h"
+#else
+#import <PayPalUtils/PPOTDevice.h>
+#import <PayPalUtils/PPOTMacros.h>
+#endif
 
 #import <UIKit/UIKit.h>
 
