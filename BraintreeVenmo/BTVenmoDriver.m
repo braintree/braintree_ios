@@ -82,11 +82,18 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - Tokenization
 
-- (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
+- (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *error))completionBlock {
     [self authorizeAccountAndVault:NO completion:completionBlock];
 }
 
-- (void)authorizeAccountAndVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *configurationError))completionBlock {
+- (void)authorizeAccountAndVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *error))completionBlock {
+    [self authorizeAccountWithProfileID:nil vault:vault completion:completionBlock];
+}
+
+- (void)authorizeAccountWithProfileID:(NSString *)profileId
+                                vault:(BOOL)vault
+                           completion:(void (^)(BTVenmoAccountNonce *venmoAccount, NSError *error))completionBlock
+{
     if (!self.apiClient) {
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                              code:BTVenmoDriverErrorTypeIntegration
@@ -94,15 +101,15 @@ static BTVenmoDriver *appSwitchedDriver;
         completionBlock(nil, error);
         return;
     }
-    
+
     if (self.returnURLScheme == nil || [self.returnURLScheme isEqualToString:@""]) {
         [[BTLogger sharedLogger] critical:@"Venmo requires a return URL scheme to be configured via [BTAppSwitch setReturnURLScheme:]"];
         NSError *error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
-                                    code:BTVenmoDriverErrorTypeAppNotAvailable
-                                userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
+                                             code:BTVenmoDriverErrorTypeAppNotAvailable
+                                         userInfo:@{NSLocalizedDescriptionKey: @"UIApplication failed to perform app switch to Venmo."}];
         completionBlock(nil, error);
         return;
-    } else if (![NSBundle mainBundle].bundleIdentifier || ![self.returnURLScheme hasPrefix:[NSBundle mainBundle].bundleIdentifier]) {
+    } else if (!self.bundle.bundleIdentifier || ![self.returnURLScheme hasPrefix:self.bundle.bundleIdentifier]) {
         [[BTLogger sharedLogger] critical:@"Venmo requires [BTAppSwitch setReturnURLScheme:] to be configured to begin with your app's bundle ID (%@). Currently, it is set to (%@) ", [NSBundle mainBundle].bundleIdentifier, self.returnURLScheme];
     }
 
@@ -111,7 +118,7 @@ static BTVenmoDriver *appSwitchedDriver;
             completionBlock(nil, configurationError);
             return;
         }
-        
+
         NSError *error;
         if (![self verifyAppSwitchWithConfiguration:configuration error:&error]) {
             completionBlock(nil, error);
@@ -121,26 +128,15 @@ static BTVenmoDriver *appSwitchedDriver;
         BTMutableClientMetadata *metadata = [self.apiClient.metadata mutableCopy];
         metadata.source = BTClientMetadataSourceVenmoApp;
         NSString *bundleDisplayName = [self.bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-        
-        BTJSON *venmoMerchantId = configuration.json[@"payWithVenmo"][@"merchantId"];
-        if ([venmoMerchantId isError]) {
-            completionBlock(nil, [venmoMerchantId asError]);
-            return;
-        }
-        
-        BTJSON *venmoMerchantEnvironment = configuration.json[@"payWithVenmo"][@"environment"];
-        if ([venmoMerchantEnvironment isError]) {
-            completionBlock(nil, [venmoMerchantEnvironment asError]);
-            return;
-        }
 
-        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:[venmoMerchantId asString]
+        NSString *venmoProfileId = profileId ?: configuration.venmoMerchantID;
+        NSURL *appSwitchURL = [BTVenmoAppSwitchRequestURL appSwitchURLForMerchantID:venmoProfileId
                                                                         accessToken:configuration.venmoAccessToken
                                                                     returnURLScheme:self.returnURLScheme
                                                                   bundleDisplayName:bundleDisplayName
-                                                                        environment:[venmoMerchantEnvironment asString]
+                                                                        environment:configuration.venmoEnvironment
                                                                            metadata:[self.apiClient metadata]];
-        
+
         if (!appSwitchURL) {
             error = [NSError errorWithDomain:BTVenmoDriverErrorDomain
                                         code:BTVenmoDriverErrorTypeInvalidRequestURL
@@ -148,17 +144,17 @@ static BTVenmoDriver *appSwitchedDriver;
             completionBlock(nil, error);
             return;
         }
-        
+
         [self informDelegateWillPerformAppSwitch];
-        
+
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
         if ([self.application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             if (@available(iOS 10.0, *)) {
 #endif
-            [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
-                [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
-            }];
+                [self.application openURL:appSwitchURL options:[NSDictionary dictionary] completionHandler:^(BOOL success) {
+                    [self invokedOpenURLSuccessfully:success shouldVault:vault completion:completionBlock];
+                }];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
             }
 #endif

@@ -190,34 +190,6 @@
 
 #pragma mark - Payment option categories
 
-- (void)testIsVenmoEnabledIsFalse_withoutAccessToken {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"payWithVenmo": @{}}];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-        
-        XCTAssertFalse(configuration.isVenmoEnabled);
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testIsVenmoEnabledIsTrue_withoutAccessToken {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"payWithVenmo": @{}}];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-        
-        XCTAssertFalse(configuration.isVenmoEnabled);
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
 - (void)testIsPayPalEnabled_whenEnabled_returnsTrue {
     BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"paypalEnabled": @(YES) }];
 
