@@ -34,7 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *expirationYear;
 
 /**
- @brief The card CVV
+ @brief The card verification code (like CVV or CID).
+ @note If you wish to create a CVV-only payment method nonce to verify a card already stored in your Vault, omit all other properties to only collect CVV.
 */
 @property (nonatomic, nullable, copy) NSString *cvv;
 
