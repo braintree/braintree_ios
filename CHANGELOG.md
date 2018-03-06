@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.12.0 (2018-03-06)
+
+* Add support for Venmo profiles
+* Fix demo app issue with CocoaPods
+
 ## 4.11.0 (2018-02-05)
 
 * Fix code for implicit retain self warning (thanks @keith)
