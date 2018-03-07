@@ -13,7 +13,7 @@
     [super viewDidLoad];
     self.venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:self.apiClient];
     self.title = @"Custom Venmo Button";
-    self.paymentButton.hidden = [self.venmoDriver isiOSAppAvailableForAppSwitch];
+    self.paymentButton.hidden = ![self.venmoDriver isiOSAppAvailableForAppSwitch];
 }
 
 - (UIView *)createPaymentButton {

@@ -60,6 +60,17 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 /**
  @brief Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
 
+ @param profileId The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile, and it will show up in the Venmo app as a "Connected Merchant". Venmo profile IDs can be found in the Braintree Control Panel. Passing `nil` will use the default Venmo profile.
+ @param vault Whether to automatically vault the Venmo Account. Vaulting will only occur if a client token with a customer_id is being used.
+ @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
+ On success, you will receive an instance of `BTVenmoAccountNonce`; on failure, an error; on user
+ cancellation, you will receive `nil` for both parameters.
+ */
+- (void)authorizeAccountWithProfileID:(nullable NSString *)profileId vault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock NS_SWIFT_NAME(authorizeAccount(profileID:vault:completion:));
+
+/**
+ @brief Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
+
  @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
     On success, you will receive an instance of `BTVenmoAccountNonce`; on failure, an error; on user
     cancellation, you will receive `nil` for both parameters.

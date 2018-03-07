@@ -131,15 +131,14 @@ class BTTokenizationService_Tests: XCTestCase {
 
     func testSingleton_canAuthorizeVenmo() {
         let sharedService = BTTokenizationService.shared()
-        BTConfiguration.setBetaPaymentOption("venmo", isEnabled: true)
         BTOCMockHelper().stubApplicationCanOpenURL()
         BTAppSwitch.setReturnURLScheme("com.braintreepayments.Demo.payments")
         let stubAPIClient = MockAPIClient(authorization: "development_fake_key")!
         stubAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
             "payWithVenmo": [
-                "accessToken": "fake-access-token",
                 "environment": "sandbox",
                 "merchantId": "stubmerchantid",
+                "accessToken": "stubacesstoken"
             ],
         ])
         let mockDelegate = MockAppSwitchDelegate(willPerform: expectation(description: "Will authorize Venmo Account"), didPerform: nil)
