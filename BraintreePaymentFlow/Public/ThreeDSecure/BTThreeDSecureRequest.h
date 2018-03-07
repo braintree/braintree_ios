@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  @brief Optional. The mobile phone number used for verification
- @note Only numbers. Remove dashes, parathensis and other characters
+ @note Only numbers. Remove dashes, parentheses and other characters
  */
 @property (nonatomic, copy) NSString *mobilePhoneNumber;
 

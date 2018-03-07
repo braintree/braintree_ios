@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  @brief Optional. The phone number associated with the address
- @note Only numbers. Remove dashes, parathensis and other characters
+ @note Only numbers. Remove dashes, parentheses and other characters
  */
 @property (nonatomic, nullable, copy) NSString *phoneNumber;
 
