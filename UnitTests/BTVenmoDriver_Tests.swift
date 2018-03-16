@@ -176,6 +176,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     func testAuthorizeAccount_beforeAppSwitch_informsDelegate() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         let delegate = MockAppSwitchDelegate(willPerform: expectation(description: "willPerform called"), didPerform: expectation(description: "didPerform called"))
+        delegate.appContextWillSwitchExpectation =  self.expectation(description: "Delegate received appContextWillSwitch")
         venmoDriver.appSwitchDelegate = delegate
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
         let fakeApplication = FakeApplication()
@@ -243,6 +244,7 @@ class BTVenmoDriver_Tests: XCTestCase {
     func testAuthorizeAccount_whenAppSwitchSucceeds_makesDelegateCallbacks() {
         let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
         let delegate = MockAppSwitchDelegate(willPerform: self.expectation(description: "willPerform called"), didPerform: self.expectation(description: "didPerform called"))
+        delegate.appContextWillSwitchExpectation =  self.expectation(description: "Delegate received appContextWillSwitch")
         venmoDriver.appSwitchDelegate = delegate
         BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
         venmoDriver.application = FakeApplication()
@@ -269,19 +271,29 @@ class BTVenmoDriver_Tests: XCTestCase {
         let willAppSwitchNotificationExpectation = expectation(description: "willAppSwitch notification received")
         observers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.BTAppSwitchWillSwitch, object: nil, queue: nil) { (notification) -> Void in
             willAppSwitchNotificationExpectation.fulfill()
-            })
+        })
+
+        let appContextWillSwitchNotificationExpectation = expectation(description: "appContextWillSwitch notification received")
+        observers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.BTAppContextWillSwitch, object: nil, queue: nil) { (notification) -> Void in
+            appContextWillSwitchNotificationExpectation.fulfill()
+        })
 
         let didAppSwitchNotificationExpectation = expectation(description: "didAppSwitch notification received")
         observers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.BTAppSwitchDidSwitch, object: nil, queue: nil) { (notification) -> Void in
             didAppSwitchNotificationExpectation.fulfill()
-            })
+        })
 
         venmoDriver.authorizeAccountAndVault(false) { _,_  -> Void in }
+
+        let appContextDidReturnNotificationExpectation = expectation(description: "appContextDidReturn notification received")
+        observers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.BTAppContextDidReturn, object: nil, queue: nil) { (notification) -> Void in
+            appContextDidReturnNotificationExpectation.fulfill()
+        })
 
         let willProcessNotificationExpectation = expectation(description: "willProcess notification received")
         observers.append(NotificationCenter.default.addObserver(forName: NSNotification.Name.BTAppSwitchWillProcessPaymentInfo, object: nil, queue: nil) { (notification) -> Void in
             willProcessNotificationExpectation.fulfill()
-            })
+        })
 
         BTVenmoDriver.handleAppSwitchReturn(URL(string: "scheme://x-callback-url/vzero/auth/venmo/success?paymentMethodNonce=fake-nonce&username=fake-username")!)
 
