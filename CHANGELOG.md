@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.13.0 (2018-03-20)
+
+* Update `PayPalDataCollector` to include latest `libPPRiskComponent.a`
+
 ## 4.12.0 (2018-03-06)
 
 * Add support for Venmo profiles
