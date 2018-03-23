@@ -103,7 +103,7 @@ NSURLSession *testURLSession() {
 
 - (void)testItAppendsThePathToTheBaseURL {
     waitUntil(^(DoneCallback done){
-        [http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -117,7 +117,7 @@ NSURLSession *testURLSession() {
 
 - (void)test_whenThePathIsNil_itHitsTheBaseURL {
     waitUntil(^(DoneCallback done){
-        [http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -136,9 +136,9 @@ NSURLSession *testURLSession() {
 
 - (void)testReturnsTheData {
     waitUntil(^(DoneCallback done) {
-        http = [[BTHTTP alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
+        self->http = [[BTHTTP alloc] initWithBaseURL:validDataURL() authorizationFingerprint:@"test-authorization-fingerprint"];
 
-        [http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"/" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -259,7 +259,7 @@ NSURLSession *testURLSession() {
 
 - (void)testSendsGETRequest {
     waitUntil(^(DoneCallback done){
-        [http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -274,7 +274,7 @@ NSURLSession *testURLSession() {
 
 - (void)testSendsGETRequestWithParameters {
     waitUntil(^(DoneCallback done){
-        [http GET:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -290,7 +290,7 @@ NSURLSession *testURLSession() {
 
 - (void)testSendsPOSTRequest {
     waitUntil(^(DoneCallback done) {
-        [http POST:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http POST:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -307,7 +307,7 @@ NSURLSession *testURLSession() {
 
 - (void)testSendsPOSTRequestWithParameters {
     waitUntil(^(DoneCallback done) {
-        [http POST:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http POST:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -326,7 +326,7 @@ NSURLSession *testURLSession() {
 
 - (void)testSendsPUTRequest {
     waitUntil(^(DoneCallback done) {
-        [http PUT:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http PUT:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -343,7 +343,7 @@ NSURLSession *testURLSession() {
 
 - (void)testSendsPUTRequestWithParameters {
     waitUntil(^(DoneCallback done) {
-        [http PUT:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http PUT:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -363,7 +363,7 @@ NSURLSession *testURLSession() {
 
 - (void)testSendsADELETERequest {
     waitUntil(^(DoneCallback done){
-        [http DELETE:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http DELETE:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -379,7 +379,7 @@ NSURLSession *testURLSession() {
 
 - (void)testSendsDELETERequestWithParameters {
     waitUntil(^(DoneCallback done) {
-        [http DELETE:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http DELETE:@"200.json" parameters:@{@"param": @"value"} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -398,7 +398,7 @@ NSURLSession *testURLSession() {
 
 - (void)testGETRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInQueryParams {
     waitUntil(^(DoneCallback done){
-        [http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -431,7 +431,7 @@ NSURLSession *testURLSession() {
 
 - (void)testPOSTRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInBody {
     waitUntil(^(DoneCallback done){
-        [http POST:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http POST:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -464,7 +464,7 @@ NSURLSession *testURLSession() {
 
 - (void)testPUTRequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInBody {
     waitUntil(^(DoneCallback done){
-        [http PUT:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http PUT:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -497,7 +497,7 @@ NSURLSession *testURLSession() {
 
 - (void)testDELETERequests_whenBTHTTPInitializedWithAuthorizationFingerprint_sendAuthorizationInQueryParams {
     waitUntil(^(DoneCallback done) {
-        [http DELETE:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http DELETE:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -533,7 +533,7 @@ NSURLSession *testURLSession() {
 - (void)testIncludeAccept {
     waitUntil(^(DoneCallback done){
         withStub(^(void (^removeStub)(void)){
-            [http GET:@"stub://200/resource" parameters:nil completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            [self->http GET:@"stub://200/resource" parameters:nil completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                 XCTAssertNotNil(body);
                 XCTAssertNotNil(response);
                 XCTAssertNil(error);
@@ -551,7 +551,7 @@ NSURLSession *testURLSession() {
 - (void)testIncludeUserAgent {
     waitUntil(^(DoneCallback done){
         withStub(^(void (^removeStub)(void)){
-            [http GET:@"stub://200/resource" parameters:nil completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            [self->http GET:@"stub://200/resource" parameters:nil completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                 XCTAssertNotNil(body);
                 XCTAssertNotNil(response);
                 XCTAssertNil(error);
@@ -569,7 +569,7 @@ NSURLSession *testURLSession() {
 - (void)testIncludeAcceptLanguage {
     waitUntil(^(DoneCallback done) {
         withStub(^(void (^removeStub)(void)) {
-            [http GET:@"stub://200/resource" parameters:nil completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+            [self->http GET:@"stub://200/resource" parameters:nil completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
                 XCTAssertNotNil(body);
                 XCTAssertNotNil(response);
                 XCTAssertNil(error);
@@ -601,7 +601,7 @@ NSURLSession *testURLSession() {
                                               @"arrayParameter%5B%5D=arrayItem1",
                                               @"arrayParameter%5B%5D=arrayItem2" ];
 
-        [http GET:@"200.json" parameters:parameterDictionary() completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"200.json" parameters:parameterDictionary() completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -633,7 +633,7 @@ NSURLSession *testURLSession() {
                                               @"arrayParameter": @[ @"arrayItem1", @"arrayItem2" ],
                                               @"authorization_fingerprint": @"test-authorization-fingerprint" };
 
-        [http POST:@"200.json" parameters:parameterDictionary() completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http POST:@"200.json" parameters:parameterDictionary() completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -679,7 +679,7 @@ NSURLSession *testURLSession() {
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        expect(dispatch_get_current_queue()).to.equal(http.dispatchQueue);
+        expect(dispatch_get_current_queue()).to.equal(self->http.dispatchQueue);
 #pragma clang diagnostic pop
         [expectation fulfill];
     }];
@@ -698,7 +698,7 @@ NSURLSession *testURLSession() {
             return [OHHTTPStubsResponse responseWithData:[NSJSONSerialization dataWithJSONObject:@{} options:NSJSONWritingPrettyPrinted error:NULL] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
-        [http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -853,7 +853,7 @@ NSURLSession *testURLSession() {
             return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorNotConnectedToInternet userInfo:nil]];
         }];
 
-        [http GET:@"network-down" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"network-down" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             expect(body).to.beNil();
             expect(response).to.beNil();
             expect(error.domain).to.equal(NSURLErrorDomain);
@@ -875,7 +875,7 @@ NSURLSession *testURLSession() {
         }];
 
 
-        [http GET:@"gateway-down" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"gateway-down" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             expect(body).to.beNil();
             expect(response).to.beNil();
             expect(error.domain).to.equal(NSURLErrorDomain);
@@ -898,7 +898,7 @@ NSURLSession *testURLSession() {
             return [OHHTTPStubsResponse responseWithData:[@"{\"status\": \"OK\"}" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
-        [http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error){
+        [self->http GET:@"200.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error){
             XCTAssertNotNil(body);
             XCTAssertNotNil(response);
             XCTAssertNil(error);
@@ -921,7 +921,7 @@ NSURLSession *testURLSession() {
             return [OHHTTPStubsResponse responseWithData:[[NSData alloc] init] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
-        [http GET:@"empty.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error){
+        [self->http GET:@"empty.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error){
             expect(response.statusCode).to.equal(200);
             expect(body).to.beKindOf([BTJSON class]);
             expect(body.isObject).to.beTruthy();
@@ -944,7 +944,7 @@ NSURLSession *testURLSession() {
             return [OHHTTPStubsResponse responseWithData:[@"{ really invalid json ]" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"application/json"}];
         }];
 
-        [http GET:@"invalid.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"invalid.json" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             expect(response).to.beNil();
             expect(body).to.beNil();
             expect(error.domain).to.equal(NSCocoaErrorDomain);
@@ -965,7 +965,7 @@ NSURLSession *testURLSession() {
             return [OHHTTPStubsResponse responseWithData:[@"<html>response</html>" dataUsingEncoding:NSUTF8StringEncoding] statusCode:200 headers:@{@"Content-Type": @"text/html"}];
         }];
 
-        [http GET:@"200.html" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
+        [self->http GET:@"200.html" completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
             XCTAssertNil(body);
             XCTAssertNil(response);
             XCTAssertNotNil(error);
@@ -987,7 +987,7 @@ NSURLSession *testURLSession() {
     waitUntil(^(DoneCallback done){
         setAsyncSpecTimeout(2);
 
-        [http GET:@"200.json" parameters:nil completion:nil];
+        [self->http GET:@"200.json" parameters:nil completion:nil];
 
         wait_for_potential_async_exceptions(done);
     });
@@ -1025,13 +1025,13 @@ NSURLSession *testURLSession() {
 - (void)testReturnsADifferentInstance {
     http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
 
-    expect(http).toNot.beIdenticalTo([http copy]);
+    expect(self->http).toNot.beIdenticalTo([http copy]);
 }
 
 - (void)testReturnsAnEqualInstance {
     http = [[BTHTTP alloc] initWithBaseURL:[BTHTTPTestProtocol testBaseURL] authorizationFingerprint:@"test-authorization-fingerprint"];
     
-    expect([http copy]).to.equal(http);
+    expect([self->http copy]).to.equal(http);
 }
 
 - (void)testReturnedInstanceHasTheSameCertificates {

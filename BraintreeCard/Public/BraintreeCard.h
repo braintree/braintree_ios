@@ -13,3 +13,4 @@ FOUNDATION_EXPORT const unsigned char BraintreeCardVersionString[];
 #import "BTCard.h"
 #import "BTCardNonce.h"
 #import "BTCardRequest.h"
+#import "BTThreeDSecureInfo.h"

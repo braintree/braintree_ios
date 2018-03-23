@@ -6,7 +6,11 @@
 //
 
 #import "PPOTCheckoutAppSwitchRequest.h"
+#if __has_include("PPOTMacros.h")
 #import "PPOTMacros.h"
+#else
+#import <PayPalUtils/PPOTMacros.h>
+#endif
 
 @implementation PPOTCheckoutAppSwitchRequest
 

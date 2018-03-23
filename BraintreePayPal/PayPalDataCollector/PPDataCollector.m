@@ -7,11 +7,17 @@
 
 #import "PPDataCollector_Internal.h"
 #import "PPRCClientMetadataIDProvider.h"
-
+#if __has_include("PayPalUtils.h")
 #import "PPOTDevice.h"
 #import "PPOTVersion.h"
 #import "PPOTMacros.h"
 #import "PPOTURLSession.h"
+#else
+#import <PayPalUtils/PPOTDevice.h>
+#import <PayPalUtils/PPOTVersion.h>
+#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PPOTURLSession.h>
+#endif
 
 @implementation PPDataCollector
 

@@ -73,7 +73,7 @@
     XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"http://localhost:3000/merchants/key/client_api");
 
     apiClient = [[BTAPIClient alloc] initWithAuthorization:@"sandbox_tokenization_key" sendAnalyticsEvent:NO];
-    XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"https://sandbox.braintreegateway.com/merchants/key/client_api");
+    XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"https://api.sandbox.braintreegateway.com/merchants/key/client_api");
 
     apiClient = [[BTAPIClient alloc] initWithAuthorization:@"production_tokenization_key" sendAnalyticsEvent:NO];
     XCTAssertEqualObjects(apiClient.configurationHTTP.baseURL.absoluteString, @"https://api.braintreegateway.com:443/merchants/key/client_api");
@@ -189,34 +189,6 @@
 }
 
 #pragma mark - Payment option categories
-
-- (void)testIsVenmoEnabledIsFalse_withoutAccessToken {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"payWithVenmo": @{}}];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-        
-        XCTAssertFalse(configuration.isVenmoEnabled);
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
-
-- (void)testIsVenmoEnabledIsTrue_withoutAccessToken {
-    BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"payWithVenmo": @{}}];
-    
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Fetch configuration"];
-    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
-        XCTAssertNil(error);
-        
-        XCTAssertFalse(configuration.isVenmoEnabled);
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:5 handler:nil];
-}
 
 - (void)testIsPayPalEnabled_whenEnabled_returnsTrue {
     BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"paypalEnabled": @(YES) }];

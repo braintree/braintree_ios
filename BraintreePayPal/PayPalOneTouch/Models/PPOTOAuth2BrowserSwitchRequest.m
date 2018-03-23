@@ -6,13 +6,20 @@
 //
 
 #import "PPOTOAuth2BrowserSwitchRequest.h"
+#import "PPOTPersistentRequestData.h"
+#if __has_include("PayPalUtils.h")
 #import "PPOTTime.h"
 #import "PPOTString.h"
 #import "PPOTMacros.h"
-#import "PPOTPersistentRequestData.h"
 #import "PPOTJSONHelper.h"
 #import "PPOTEncryptionHelper.h"
-
+#else
+#import <PayPalUtils/PPOTTime.h>
+#import <PayPalUtils/PPOTString.h>
+#import <PayPalUtils/PPOTMacros.h>
+#import <PayPalUtils/PPOTJSONHelper.h>
+#import <PayPalUtils/PPOTEncryptionHelper.h>
+#endif
 
 @interface PPOTOAuth2BrowserSwitchRequest ()
 @property (nonatomic, readwrite) NSString *msgID;

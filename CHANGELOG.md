@@ -1,5 +1,23 @@
 # Braintree iOS SDK Release Notes
 
+## 4.13.0 (2018-03-20)
+
+* Update `PayPalDataCollector` to include latest `libPPRiskComponent.a`
+
+## 4.12.0 (2018-03-06)
+
+* Add support for Venmo profiles
+* Fix demo app issue with CocoaPods
+
+## 4.11.0 (2018-02-05)
+
+* Fix code for implicit retain self warning (thanks @keith)
+
+## 4.10.1 (2018-02-01)
+
+* Add BTThreeDSecureInfo to BTCardNonce
+* Use angled brackets for BraintreePayPal header imports (thanks @nudge)
+
 ## 4.10.0 (2017-12-08)
 
 * Add iDEAL support
