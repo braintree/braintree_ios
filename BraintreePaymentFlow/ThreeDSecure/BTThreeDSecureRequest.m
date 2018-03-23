@@ -18,6 +18,8 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTURLUtils.h"
 
+NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1.4";
+
 @interface BTThreeDSecureRequest ()
 
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
@@ -53,8 +55,9 @@
                                                        NSString *pareq = [NSString stringWithFormat:@"PaReq=%@", [self stringByAddingPercentEncodingForRFC3986:lookupResult.PAReq]];
                                                        NSString *md = [NSString stringWithFormat:@"MD=%@", [lookupResult.MD stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
 
-                                                       NSString *callbackUrl = [NSString stringWithFormat: @"ReturnUrl=%@/mobile/three-d-secure-redirect/0.0.0/redirect.html?redirect_url=%@://x-callback-url/braintree/threedsecure?",
+                                                       NSString *callbackUrl = [NSString stringWithFormat: @"ReturnUrl=%@%@/redirect.html?redirect_url=%@://x-callback-url/braintree/threedsecure?",
                                                                                 [configuration.json[@"assetsUrl"] asString],
+                                                                                BTThreeDSecureAssetsPath,
                                                                                 [delegate returnURLScheme]
                                                                                 ];
                                                        callbackUrl = [callbackUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
@@ -63,7 +66,7 @@
                                                                             ];
                                                        
                                                        NSString *termurl = [NSString stringWithFormat: @"TermUrl=%@", authUrl];
-                                                       NSURL *redirectUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@/mobile/three-d-secure-redirect/0.0.0/index.html?%@&%@&%@&%@&%@", [configuration.json[@"assetsUrl"] asString], acsurl, pareq, md, termurl, callbackUrl]];
+                                                       NSURL *redirectUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/index.html?%@&%@&%@&%@&%@", [configuration.json[@"assetsUrl"] asString], BTThreeDSecureAssetsPath, acsurl, pareq, md, termurl, callbackUrl]];
                                                        [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:error];
                                                    } else {
                                                        [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult.threeDSecureResult error:error];
