@@ -8,18 +8,18 @@
 @property (nonatomic, strong) BTUI *theme;
 
 /**
- @brief Initializes a PayPal Wordmark with padding
+ Initializes a PayPal Wordmark with padding
 
- @discussion This view includes built-in padding to ensure consistent typographical baseline alignment with Venmo and Coinbase wordmarks.
+ This view includes built-in padding to ensure consistent typographical baseline alignment with Venmo and Coinbase wordmarks.
 
  @return A PayPal Wordmark with padding
 */
 - (instancetype)initWithPadding;
 
 /**
- @brief Initializes a PayPal Wordmark
+ Initializes a PayPal Wordmark
 
- @discusion This view does not include built-in padding.
+ This view does not include built-in padding.
 
  @return A PayPal Wordmark
 */

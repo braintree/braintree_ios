@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, PPAppSwitchResponseType) {
 + (BOOL)isCallbackURLSchemeValid:(NSString *)callbackURLScheme;
 
 /**
- @brief handles urlencoding
+ handles urlencoding
 */
 + (NSDictionary *)parseQueryString:(NSString *)query;
 

@@ -10,7 +10,7 @@
 @interface PPDataCollector ()
 
 /**
- @brief Generates a client metadata ID using an optional pairing ID.
+ Generates a client metadata ID using an optional pairing ID.
 
  @note This is an internal method for generating raw client metadata IDs, which is not
  the correct format for device data when creating a transaction.
@@ -21,7 +21,7 @@
 + (nonnull NSString *)generateClientMetadataID:(nullable NSString *)pairingID;
 
 /**
- @brief Generates a client metadata ID.
+ Generates a client metadata ID.
 
  @note This is an internal method for generating raw client metadata IDs, which is not
  the correct format for device data when creating a transaction.

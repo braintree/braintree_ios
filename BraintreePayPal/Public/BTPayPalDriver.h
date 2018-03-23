@@ -11,9 +11,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PPOTRequest;
 
+/**
+ Domain for PayPal errors.
+ */
 extern NSString *const BTPayPalDriverErrorDomain;
 
+/**
+ Error codes associated with PayPal.
+ */
 typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
+    /// Unknown error
     BTPayPalDriverErrorTypeUnknown = 0,
 
     /// PayPal is disabled in configuration
@@ -38,29 +45,29 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 };
 
 /**
- @brief Protocol to handle custom PayPal Approval via BTPayPalApprovalHandler
+ Protocol to handle custom PayPal Approval via BTPayPalApprovalHandler
 */
 @protocol BTPayPalApprovalDelegate
 /**
- @brief Use when custom approval has completed with success or error
+ Use when custom approval has completed with success or error
 */
 - (void)onApprovalComplete:(NSURL *) url;
 
 /**
- @brief Use when custom approval was canceled
+ Use when custom approval was canceled
 */
 - (void)onApprovalCancel;
 @end
 
 /**
- @brief Protocol for custom authentication and authorization of PayPal.
+ Protocol for custom authentication and authorization of PayPal.
 */
 @protocol BTPayPalApprovalHandler
 
 /**
- @brief Handle approval request for PayPal and carry out custom authentication and authorization.
+ Handle approval request for PayPal and carry out custom authentication and authorization.
 
- @discussion Use the delegate to handle success/error/cancel flows.
+ Use the delegate to handle success/error/cancel flows.
  On completion or error use BTPayPalApprovalDelegate:onApprovalComplete
  On cancel use BTPayPalApprovalDelegate:onApprovalCancel
 
@@ -71,13 +78,13 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 @end
 
 /** 
- @brief BTPayPalDriver enables you to obtain permission to charge your customers' PayPal accounts via app switch to the PayPal app and the browser.
+ BTPayPalDriver enables you to obtain permission to charge your customers' PayPal accounts via app switch to the PayPal app and the browser.
 
  @note To make PayPal available, you must ensure that PayPal is enabled in your Braintree control panel.
  See our [online documentation](https://developers.braintreepayments.com/ios+ruby/guides/paypal) for
  details.
 
- @discussion This class supports two basic use-cases: Vault and Checkout. Each of these involves variations on the
+ This class supports two basic use-cases: Vault and Checkout. Each of these involves variations on the
  user experience as well as variations on the capabilities granted to you by this authorization.
 
  The *Vault* option uses PayPal's future payments authorization, which allows your merchant account to
@@ -119,19 +126,21 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 
 /**
- @brief Initialize a new PayPal driver instance.
+ Initialize a new PayPal driver instance.
 
  @param apiClient The API client
 */
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
-
+/**
+ Base initializer - do not use.
+ */
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
 /**
- @brief Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser.
+ Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser.
 
- @discussion On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
+ On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
  you will receive `nil` for both parameters.
 
  @note During the app switch authorization, the user may switch back to your app manually. In this case, the caller
@@ -145,9 +154,9 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 
 /**
- @brief Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser with additional scopes (e.g. address).
+ Authorize a PayPal user for saving their account in the Vault via app switch to the PayPal App or the browser with additional scopes (e.g. address).
 
- @discussion  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
+  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
  you will receive `nil` for both parameters.
 
  @note During the app switch authorization, the user may switch back to your app manually. In this case, the caller
@@ -163,9 +172,9 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
                                   completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 /**
- @brief Check out with PayPal to create a single-use PayPal payment method nonce.
+ Check out with PayPal to create a single-use PayPal payment method nonce.
 
- @discussion You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+ @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
  server when this method completes without any additional user interaction.
 
  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
@@ -182,9 +191,9 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 
 
 /**
- @brief Check out with PayPal to create a single-use PayPal payment method nonce.
+ Check out with PayPal to create a single-use PayPal payment method nonce.
 
- @discussion You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+ @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
  server when this method completes without any additional user interaction.
 
  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
@@ -201,9 +210,9 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
                    completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 /**
- @brief Create a PayPal Billing Agreement for repeat purchases.
+ Create a PayPal Billing Agreement for repeat purchases.
 
- @discussion You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+ @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
  server when this method completes without any additional user interaction.
  
  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
@@ -219,9 +228,9 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
                      completion:(void (^)(BTPayPalAccountNonce * _Nullable tokenizedPayPalAccount, NSError * _Nullable error))completionBlock;
 
 /**
- @brief Create a PayPal Billing Agreement for repeat purchases.
+ Create a PayPal Billing Agreement for repeat purchases.
 
- @discussion You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
+ @note You can use this as the final step in your order/checkout flow. If you want, you may create a transaction from your
  server when this method completes without any additional user interaction.
 
  On success, you will receive an instance of `BTPayPalAccountNonce`; on failure, an error; on user cancellation,
@@ -240,12 +249,12 @@ typedef NS_ENUM(NSInteger, BTPayPalDriverErrorType) {
 #pragma mark - Delegate
 
 /**
- @brief An optional delegate for receiving notifications about the lifecycle of a PayPal app switch for updating your UI
+ An optional delegate for receiving notifications about the lifecycle of a PayPal app switch for updating your UI
 */
 @property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 
 /**
- @brief A required delegate to control the presentation and dismissal of view controllers
+ A required delegate to control the presentation and dismissal of view controllers
 */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 

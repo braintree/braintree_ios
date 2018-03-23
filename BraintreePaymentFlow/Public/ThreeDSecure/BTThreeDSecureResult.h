@@ -12,37 +12,37 @@
 #import "BTPaymentFlowResult.h"
 
 /**
- @brief The result of a 3D Secure payment flow
+ The result of a 3D Secure payment flow
  */
 @interface BTThreeDSecureResult : BTPaymentFlowResult
 
 /**
- @brief True if the 3D Secure flow was successful
+ True if the 3D Secure flow was successful
  */
 @property (nonatomic, assign) BOOL success;
 
 /**
- @brief Indicates whether the liability for fraud has been shifted away from the merchant
+ Indicates whether the liability for fraud has been shifted away from the merchant
  */
 @property (nonatomic, assign) BOOL liabilityShifted;
 
 /**
- @brief Indicates whether the card was eligible for 3D Secure
+ Indicates whether the card was eligible for 3D Secure
  */
 @property (nonatomic, assign) BOOL liabilityShiftPossible;
 
 /**
- @brief The `BTCardNonce` resulting from the 3D Secure flow
+ The `BTCardNonce` resulting from the 3D Secure flow
  */
 @property (nonatomic, strong) BTCardNonce *tokenizedCard;
 
 /**
- @brief The error message when the 3D Secure flow is unsuccessful
+ The error message when the 3D Secure flow is unsuccessful
  */
 @property (nonatomic, copy) NSString *errorMessage;
 
 /**
- @brief Initialize a BTThreeDSecureResult
+ Initialize a BTThreeDSecureResult
  
  @param JSON BTJSON used to initialize the BTThreeDSecureResult
  */

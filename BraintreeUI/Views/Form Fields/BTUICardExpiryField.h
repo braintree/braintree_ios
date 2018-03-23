@@ -6,7 +6,7 @@
 @property (nonatomic, strong, readonly) NSString *expirationYear;
 
 /**
- @brief The expiration date in MMYYYY format.
+ The expiration date in MMYYYY format.
 */
 @property (nonatomic, copy) NSString *expirationDate;
 

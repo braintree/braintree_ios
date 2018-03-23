@@ -8,9 +8,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Domain for Venmo errors.
+ */
 extern NSString * const BTVenmoDriverErrorDomain;
 
+/**
+ Error codes associated with Venmo.
+ */
 typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
+    /// Unknown error
     BTVenmoDriverErrorTypeUnknown = 0,
     
     /// Venmo is disabled in configuration
@@ -35,20 +42,25 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
     BTVenmoDriverErrorTypeInvalidRequestURL,
 };
 
+/**
+ Used to process Venmo payments
+ */
 @interface BTVenmoDriver : NSObject <BTAppSwitchHandler>
 
 /**
- @brief Initialize a new Venmo driver instance.
+ Initialize a new Venmo driver instance.
 
  @param apiClient The API client
 */
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
-
+/**
+ Base initializer - do not use.
+ */
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
 /**
- @brief Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
+ Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
 
  @param vault Whether to automatically vault the Venmo Account. Vaulting will only occur if a client token with a customer_id is being used.
  @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
@@ -58,7 +70,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 - (void)authorizeAccountAndVault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock;
 
 /**
- @brief Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
+ Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
 
  @param profileId The Venmo profile ID to be used during payment authorization. Customers will see the business name and logo associated with this Venmo profile, and it will show up in the Venmo app as a "Connected Merchant". Venmo profile IDs can be found in the Braintree Control Panel. Passing `nil` will use the default Venmo profile.
  @param vault Whether to automatically vault the Venmo Account. Vaulting will only occur if a client token with a customer_id is being used.
@@ -69,7 +81,7 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 - (void)authorizeAccountWithProfileID:(nullable NSString *)profileId vault:(BOOL)vault completion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock NS_SWIFT_NAME(authorizeAccount(profileID:vault:completion:));
 
 /**
- @brief Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
+ Initiates Venmo login via app switch, which returns a BTVenmoAccountNonce when successful.
 
  @param completionBlock This completion will be invoked when app switch is complete or an error occurs.
     On success, you will receive an instance of `BTVenmoAccountNonce`; on failure, an error; on user
@@ -78,12 +90,12 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 - (void)authorizeAccountWithCompletion:(void (^)(BTVenmoAccountNonce * _Nullable venmoAccount, NSError * _Nullable error))completionBlock DEPRECATED_MSG_ATTRIBUTE("Use [BTVenmoDriver authorizeAccountAndVault:completion instead");
 
 /**
- @brief Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
+ Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
 */
 - (BOOL)isiOSAppAvailableForAppSwitch;
 
 /**
- @brief An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating your UI
+ An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating your UI
 */
 @property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 

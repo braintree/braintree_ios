@@ -6,54 +6,57 @@
 #endif
 #import "BTPayPalCreditFinancing.h"
 
+/**
+ Contains information about a PayPal payment method
+ */
 @interface BTPayPalAccountNonce : BTPaymentMethodNonce
 
 /**
- @brief Payer's email address
+ Payer's email address
 */
 @property (nonatomic, nullable, readonly, copy) NSString *email;
 
 /**
- @brief Payer's first name.
+ Payer's first name.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *firstName;
 
 /**
- @brief Payer's last name.
+ Payer's last name.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *lastName;
 
 /**
- @brief Payer's phone number.
+ Payer's phone number.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *phone;
 
 /**
- @brief The billing address.
+ The billing address.
 */
 @property (nonatomic, nullable, readonly, strong) BTPostalAddress *billingAddress;
 
 /**
- @brief The shipping address.
+ The shipping address.
 */
 @property (nonatomic, nullable, readonly, strong) BTPostalAddress *shippingAddress;
 
 /**
- @brief Client Metadata Id associated with this transaction.
+ Client Metadata Id associated with this transaction.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *clientMetadataId;
 
 /**
- @brief Optional. Payer Id associated with this transaction.
+ Optional. Payer Id associated with this transaction.
 
- @discussion Will be provided for Billing Agreement and Checkout.
+ Will be provided for Billing Agreement and Checkout.
 */
 @property (nonatomic, nullable, readonly, copy) NSString *payerId;
 
 /**
- @brief Optional. Credit financing details if the customer pays with PayPal Credit.
+ Optional. Credit financing details if the customer pays with PayPal Credit.
 
- @discussion Will be provided for Billing Agreement and Checkout.
+ Will be provided for Billing Agreement and Checkout.
  */
 @property (nonatomic, nullable, readonly, strong) BTPayPalCreditFinancing *creditFinancing;
 

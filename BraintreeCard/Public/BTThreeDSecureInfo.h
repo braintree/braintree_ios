@@ -7,25 +7,28 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Contains information about the 3D Secure status of a payment method
+ */
 @interface BTThreeDSecureInfo : NSObject
 
 /**
- @brief Create a `BTThreeDSecureInfo` object from JSON.
+ Create a `BTThreeDSecureInfo` object from JSON.
  */
 - (instancetype)initWithJSON:(BTJSON *)json;
 
 /**
- @brief If the 3D Secure liability shift has occurred
+ If the 3D Secure liability shift has occurred
  */
 @property (nonatomic, readonly, assign) BOOL liabilityShifted;
 
 /**
- @brief If the 3D Secure liability shift is possible
+ If the 3D Secure liability shift is possible
  */
 @property (nonatomic, readonly, assign) BOOL liabilityShiftPossible;
 
 /**
- @brief If the 3D Secure lookup was performed
+ If the 3D Secure lookup was performed
  */
 @property (nonatomic, readonly, assign) BOOL wasVerified;
 

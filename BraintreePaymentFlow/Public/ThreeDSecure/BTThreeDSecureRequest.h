@@ -10,17 +10,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- @brief Used to initialize a 3D Secure payment flow
+ Used to initialize a 3D Secure payment flow
  */
 @interface BTThreeDSecureRequest : BTPaymentFlowRequest <BTPaymentFlowRequestDelegate>
 
 /**
- @brief A nonce to be verified by ThreeDSecure
+ A nonce to be verified by ThreeDSecure
  */
 @property (nonatomic, copy) NSString *nonce;
 
 /**
- @brief The amount for the transaction.
+ The amount for the transaction.
  */
 @property (nonatomic, copy) NSDecimalNumber *amount;
 

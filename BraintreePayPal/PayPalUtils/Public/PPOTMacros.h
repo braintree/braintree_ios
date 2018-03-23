@@ -37,6 +37,9 @@
   #define PPParameterAssert(condition)
 #endif
 
+/**
+ Macros used by PayPal payments
+ */
 @interface PPOTMacros : NSObject
 
 /**

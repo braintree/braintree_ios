@@ -7,10 +7,13 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Manages the pinned certificates for PayPal payments
+ */
 @interface PPOTPinnedCertificates : NSObject
 
 /**
- @brief Returns the set of trusted root certificates
+ Returns the set of trusted root certificates
 
  @return An array of trusted certificates encoded in the DER format, encapsulated in NSData objects.
 */

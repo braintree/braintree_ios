@@ -1,5 +1,8 @@
 #import <UIKit/UIKit.h>
 
+/**
+ UIColor category for BTUI
+ */
 @interface UIColor (BTUI)
 
 + (instancetype)bt_colorWithBytesR:(NSInteger)r G:(NSInteger)g B:(NSInteger)b A:(NSInteger)a;

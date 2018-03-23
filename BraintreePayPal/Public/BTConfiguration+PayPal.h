@@ -4,12 +4,19 @@
 #import <BraintreeCore/BTConfiguration.h>
 #endif
 
+/**
+ BTConfiguration category for PayPal.
+ */
 @interface BTConfiguration (PayPal)
 
 /**
- @brief Indicates whether PayPal is enabled for the merchant account.
+ Indicates whether PayPal is enabled for the merchant account.
 */
 @property (nonatomic, readonly, assign) BOOL isPayPalEnabled;
+
+/**
+ Indicates whether PayPal billing agreements are enabled for the merchant account.
+ */
 @property (nonatomic, readonly, assign) BOOL isBillingAgreementsEnabled;
 
 @end

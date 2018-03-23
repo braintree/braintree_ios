@@ -6,7 +6,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- @brief Collection of time utility methods
+ Collection of time utility methods
 */
 @interface PPOTTime : NSObject
 
@@ -16,7 +16,7 @@
 + (nonnull NSDateFormatter *)rfc3339DateFormatter;
 
 /**
- @brief Parses a string for an RFC 3339 like date string. Tries a few different options for misbehaving servers.
+ Parses a string for an RFC 3339 like date string. Tries a few different options for misbehaving servers.
 
  @return Date from RFC339-like string
 */

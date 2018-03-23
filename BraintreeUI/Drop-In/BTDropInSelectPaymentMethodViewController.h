@@ -11,8 +11,7 @@
 @protocol BTDropInSelectPaymentMethodViewControllerDelegate;
 
 /**
- @class BTDropInSelectPaymentMethodViewController
- @brief Drop In's payment method selection flow.
+ Drop In's payment method selection flow.
 */
 @interface BTDropInSelectPaymentMethodViewController : UITableViewController
 

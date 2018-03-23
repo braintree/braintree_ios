@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol BTThreeDSecureDriverDelegate;
 /**
- @brief 3D Secure Verification Driver
+ 3D Secure Verification Driver
 
- @discussion 3D Secure is a protocol that enables cardholders and issuers to add a layer of security
+ 3D Secure is a protocol that enables cardholders and issuers to add a layer of security
  to e-commerce transactions via password entry at checkout.
 
  One of the primary reasons to use 3D Secure is to benefit from a shift in liability from the
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTThreeDSecureDriver : NSObject
 
 /**
- @brief Initializes a 3D Secure verification manager
+ Initializes a 3D Secure verification driver.
 
  @param apiClient The Braintree API Client
  @param delegate The BTViewControllerPresentingDelegate
@@ -57,12 +57,15 @@ NS_ASSUME_NONNULL_BEGIN
 */
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient delegate:(id<BTViewControllerPresentingDelegate>)delegate NS_DESIGNATED_INITIALIZER;
 
+/**
+ Base initializer - do not use.
+ */
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient: instead.")));
 
 /**
- @brief Verify a card for a 3D Secure transaction, referring to the card by raw payment method nonce
+ Verify a card for a 3D Secure transaction, referring to the card by raw payment method nonce.
 
- @discussion This method is useful for implementations where 3D Secure verification occurs after generating
+ This method is useful for implementations where 3D Secure verification occurs after generating
  a payment method nonce from a vaulted credit card on your backend.
  
  On success, you will receive an instance of `BTCardNonce`. Typically, an implementation will send this tokenized card to your own
@@ -74,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
  mechanism possible for specified provider)
  - An authorization provider encounters an error
  - A network or gateway error occurs
- - The user-provided credentials led to a non-transactable payment method.
+ - The user-provided credentials led to a non-transactable payment method
  
  On user cancellation, you will receive `nil` for both parameters.
 
@@ -82,8 +85,8 @@ NS_ASSUME_NONNULL_BEGIN
        controller via the delegate. It is the caller's responsibility to present an activity
        indication to the user in the meantime.
 
- @param nonce  A payment method nonce
- @param amount The amount of the transaction in the current merchant account's currency
+ @param nonce A payment method nonce.
+ @param amount The amount of the transaction in the current merchant account's currency.
  @param completionBlock This completion will be invoked exactly once when authorization is complete, is cancelled, or an error occurs.
 */
 - (void)verifyCardWithNonce:(NSString *)nonce
@@ -93,7 +96,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Delegate
 
 /**
- @brief A delegate that presents and dismisses a view controller, as necessary, for the 3D Secure verification flow.
+ A delegate that presents and dismisses a view controller, as necessary, for the 3D Secure verification flow.
 */
 @property (nonatomic, weak) id<BTViewControllerPresentingDelegate> delegate;
 

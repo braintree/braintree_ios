@@ -9,8 +9,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Domain for Apple Pay errors.
+ */
 extern NSString * const BTApplePayErrorDomain;
+
+/**
+ Error codes associated with Apple Pay.
+ */
 typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
+    /// Unknown error
     BTApplePayErrorTypeUnknown = 0,
     
     /// Apple Pay is disabled in the Braintree Control Panel
@@ -20,29 +28,34 @@ typedef NS_ENUM(NSInteger, BTApplePayErrorType) {
     BTApplePayErrorTypeIntegration,
 };
 
+/**
+ Used to process Apple Pay payments
+ */
 @interface BTApplePayClient : NSObject
 
 /**
- @brief Creates an Apple Pay client.
+ Creates an Apple Pay client.
 
  @param apiClient An API client
 */
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
-
+/**
+ Base initializer - do not use.
+ */
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
 /**
- @brief Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
+ Creates a `PKPaymentRequest` with values from your Braintree Apple Pay configuration.
 
- @discussion It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
+ It populates the following values of `PKPaymentRequest`: `countryCode`, `currencyCode`, `merchantIdentifier`, `supportedNetworks`.
 
  @param completion A completion block that returns the payment request or an error. This block is invoked on the main thread.
 */
 - (void)paymentRequest:(void (^)(PKPaymentRequest * _Nullable paymentRequest, NSError * _Nullable error))completion  NS_AVAILABLE_IOS(8_0);
 
 /**
- @brief Tokenizes an Apple Pay payment.
+ Tokenizes an Apple Pay payment.
 
  @param payment A `PKPayment` instance, typically obtained by presenting a `PKPaymentAuthorizationViewController`
  @param completionBlock A completion block that is invoked when tokenization has completed. If tokenization succeeds,

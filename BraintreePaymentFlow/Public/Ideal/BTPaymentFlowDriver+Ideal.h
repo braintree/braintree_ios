@@ -9,12 +9,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- @brief Category on BTPaymentFlowDriver for iDEAL
+ Category on BTPaymentFlowDriver for iDEAL
  */
 @interface BTPaymentFlowDriver (Ideal)
 
 /**
- @brief Fetch an array of issuing banks supported by your iDEAL integration.
+ Fetch an array of issuing banks supported by your iDEAL integration.
  
  @param completionBlock This completion will be invoked when the request is complete or an error occurs.
  On success, returns an array of `BTIdealBank` instances; on failure, an error.
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fetchIssuingBanks:(void (^)(NSArray<BTIdealBank *> * _Nullable banks, NSError * _Nullable error))completionBlock;
 
 /**
- @brief Poll until the `status` of the iDEAL payment is no longer `PENDING` or we exceed the maximum number of retries.
+ Poll until the `status` of the iDEAL payment is no longer `PENDING` or we exceed the maximum number of retries.
  
  @param idealId The id of the ideal payment for which you'd like to check the status.
  @param retries The number of retries to attempt. Valid values 0 - 10.

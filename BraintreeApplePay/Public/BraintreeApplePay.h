@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 
+/// Version number
 FOUNDATION_EXPORT double BraintreeApplePayVersionNumber;
 
+/// Version string
 FOUNDATION_EXPORT const unsigned char BraintreeApplePayVersionString[];
 
 #if __has_include("BraintreeCore.h")

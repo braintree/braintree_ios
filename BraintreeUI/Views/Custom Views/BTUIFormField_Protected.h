@@ -3,7 +3,7 @@
 #import "BTUITextField.h"
 
 /**
- @brief Private class extension for implementors of BTUIFormField subclasses.
+ Private class extension for implementors of BTUIFormField subclasses.
 */
 @interface BTUIFormField () 
 
@@ -12,12 +12,12 @@
 @property (nonatomic, strong) UIView *accessoryView;
 
 /**
- @brief Override in your subclass to implement behavior on content change
+ Override in your subclass to implement behavior on content change
 */
 - (void)fieldContentDidChange;
 
 /**
- @brief Sets placeholder text with the appropriate theme style
+ Sets placeholder text with the appropriate theme style
 */
 - (void)setThemedPlaceholder:(NSString *)placeholder;
 - (void)setThemedAttributedPlaceholder:(NSAttributedString *)placeholder;
