@@ -93,6 +93,16 @@ NS_ASSUME_NONNULL_BEGIN
     parameters:(nullable NSDictionary *)parameters
     completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
+- (void)handleRequestCompletion:(nullable NSData *)data
+                       response:(nullable NSURLResponse *)response
+                          error:(nullable NSError *)error
+                completionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock;
+
+- (void)callCompletionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock
+                       body:(nullable BTJSON *)jsonBody
+                   response:(nullable NSHTTPURLResponse *)response
+                      error:(nullable NSError *)error;
+
 @end
 
 NS_ASSUME_NONNULL_END

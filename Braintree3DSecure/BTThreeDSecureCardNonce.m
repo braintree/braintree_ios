@@ -5,7 +5,6 @@
 #import <BraintreeCard/BTCardNonce_Internal.h>
 #endif
 
-
 @interface BTThreeDSecureCardNonce ()
 
 @property (nonatomic, strong) BTJSON *threeDSecureJSON;

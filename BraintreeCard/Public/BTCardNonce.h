@@ -33,13 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, strong) BTThreeDSecureInfo *threeDSecureInfo;
 
-#pragma mark - Internal
-
-/**
- Create a `BTCardNonce` object from JSON.
-*/
-+ (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON;
-
 @end
 
 NS_ASSUME_NONNULL_END

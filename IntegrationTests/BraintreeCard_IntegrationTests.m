@@ -36,7 +36,7 @@
         XCTAssertNil(tokenizedCard);
         XCTAssertEqualObjects(error.domain, BTCardClientErrorDomain);
         XCTAssertEqual(error.code, BTCardClientErrorTypeCustomerInputInvalid);
-        XCTAssertEqualObjects(error.localizedDescription, @"Credit card is invalid");
+        XCTAssertEqualObjects(error.localizedDescription, @"Input is invalid");
         XCTAssertEqualObjects(error.localizedFailureReason, @"Credit card number must be 12-19 digits");
         [expectation fulfill];
     }];
@@ -125,13 +125,29 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testTokenizeCard_withCVVOnly_tokenizesSuccessfully {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:SANDBOX_CLIENT_TOKEN_VERSION_3];
+    BTCardClient *client = [[BTCardClient alloc] initWithAPIClient:apiClient];
+    BTCard *card = [[BTCard alloc] init];
+    card.cvv = @"123";
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Tokenize card"];
+    [client tokenizeCard:card completion:^(BTCardNonce * _Nullable tokenizedCard, NSError * _Nullable error) {
+        expect(tokenizedCard.nonce.isANonce).to.beTruthy();
+        expect(error).to.beNil();
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:5 handler:nil];
+}
+
 #pragma mark - Helpers
 
 - (BTCard *)invalidCard {
     BTCard *card = [[BTCard alloc] init];
-    card.number = @"INVALID_CARD";
+    card.number = @"123123";
     card.expirationMonth = @"XX";
-    card.expirationYear = @"YYYY";
+    card.expirationYear = @"XXXX";
     return card;
 }
 

@@ -1,4 +1,6 @@
 #import <Foundation/Foundation.h>
+#import "BTAPIHTTP.h"
+#import "BTGraphQLHTTP.h"
 #import "BTHTTP.h"
 
 @interface BTFakeHTTP : BTHTTP
@@ -24,3 +26,22 @@
 - (void)stubRequest:(nonnull NSString *)httpMethod toEndpoint:(nonnull NSString *)endpoint respondWithError:(nonnull NSError *)error;
 
 @end
+
+@interface BTFakeGraphQLHTTP : BTGraphQLHTTP
+
+@property (nonatomic, assign) NSUInteger POSTRequestCount;
+@property (nonatomic, strong, nullable) NSDictionary *lastRequestParameters;
+
++ (nullable instancetype)fakeHTTP;
+
+@end
+
+@interface BTFakeAPIHTTP : BTAPIHTTP
+
+@property (nonatomic, assign) NSUInteger POSTRequestCount;
+@property (nonatomic, strong, nullable) NSDictionary *lastRequestParameters;
+
++ (nullable instancetype)fakeHTTP;
+
+@end
+

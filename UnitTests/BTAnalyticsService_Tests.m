@@ -171,7 +171,7 @@
     analyticsService.http = mockAnalyticsHTTP;
     
     XCTestExpectation *expectation = [self expectationWithDescription:@"Callback invoked with error"];
-    [analyticsService sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event.1" completion:^(NSError *error) {
         XCTAssertEqualObjects(error, stubbedError);
         [expectation fulfill];
     }];
@@ -181,11 +181,12 @@
     stubAPIClient.cannedConfigurationResponseError = nil;
     
     expectation = [self expectationWithDescription:@"Callback invoked with error"];
-    [analyticsService sendAnalyticsEvent:@"an.analytics.event" completion:^(NSError *error) {
+    [analyticsService sendAnalyticsEvent:@"an.analytics.event.2" completion:^(NSError *error) {
         XCTAssertNil(error);
         XCTAssertTrue(mockAnalyticsHTTP.POSTRequestCount == 1);
         XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestEndpoint, @"/");
-        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event");
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][0][@"kind"], @"an.analytics.event.1");
+        XCTAssertEqualObjects(mockAnalyticsHTTP.lastRequestParameters[@"analytics"][1][@"kind"], @"an.analytics.event.2");
         [self validateMetaParameters:mockAnalyticsHTTP.lastRequestParameters[@"_meta"]];
         [expectation fulfill];
     }];
@@ -218,7 +219,7 @@
 #pragma mark - Helpers
 
 - (MockAPIClient *)stubbedAPIClientWithAnalyticsURL:(NSString *)analyticsURL {
-    MockAPIClient *stubAPIClient = [[MockAPIClient alloc] initWithAuthorization:@"development_tokenization_key"];
+    MockAPIClient *stubAPIClient = [[MockAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     if (analyticsURL) {
          stubAPIClient.cannedConfigurationResponseBody = [[BTJSON alloc] initWithValue:@{ @"analytics" : @{ @"url" : analyticsURL } }];
     } else {

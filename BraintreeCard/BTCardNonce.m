@@ -7,9 +7,9 @@
                   cardNetwork:(BTCardNetwork)cardNetwork
                       lastTwo:(NSString *)lastTwo
                     isDefault:(BOOL)isDefault
-                     cardJSON:(BTJSON *)cardJSON
+                     cardJSON:(nonnull BTJSON *)cardJSON
 {
-    self = [super initWithNonce:nonce localizedDescription:description type:[BTCardNonce stringFromCardNetwork:cardNetwork] isDefault:isDefault];
+    self = [super initWithNonce:nonce localizedDescription:description type:[BTCardNonce typeStringFromCardNetwork:cardNetwork] isDefault:isDefault];
     if (self) {
         _cardNetwork = cardNetwork;
         _lastTwo = lastTwo;
@@ -19,7 +19,7 @@
     return self;
 }
 
-+ (NSString *)stringFromCardNetwork:(BTCardNetwork)cardNetwork {
++ (NSString *)typeStringFromCardNetwork:(BTCardNetwork)cardNetwork {
     switch (cardNetwork) {
         case BTCardNetworkAMEX:
             return @"AMEX";
@@ -51,29 +51,44 @@
     }
 }
 
-+ (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON {
++ (BTCardNetwork)cardNetworkFromGatewayCardType:(NSString *)string {
     // Normalize the card network string in cardJSON to be lowercase so that our enum mapping is case insensitive
-    BTJSON *cardType = [[BTJSON alloc] initWithValue:[cardJSON[@"details"][@"cardType"] asString].lowercaseString];
+    BTJSON *cardType = [[BTJSON alloc] initWithValue:string.lowercaseString];
+    return [cardType asEnum:@{
+                              @"american express": @(BTCardNetworkAMEX),
+                              @"diners club": @(BTCardNetworkDinersClub),
+                              @"unionpay": @(BTCardNetworkUnionPay),
+                              @"discover": @(BTCardNetworkDiscover),
+                              @"maestro": @(BTCardNetworkMaestro),
+                              @"mastercard": @(BTCardNetworkMasterCard),
+                              @"jcb": @(BTCardNetworkJCB),
+                              @"laser": @(BTCardNetworkLaser),
+                              @"solo": @(BTCardNetworkSolo),
+                              @"switch": @(BTCardNetworkSwitch),
+                              @"uk maestro": @(BTCardNetworkUKMaestro),
+                              @"visa": @(BTCardNetworkVisa),}
+                  orDefault:BTCardNetworkUnknown];
+}
+
++ (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON {
     return [[[self class] alloc] initWithNonce:[cardJSON[@"nonce"] asString]
                                    description:[cardJSON[@"description"] asString]
-                                   cardNetwork:[cardType asEnum:@{
-                                                                  @"american express": @(BTCardNetworkAMEX),
-                                                                  @"diners club": @(BTCardNetworkDinersClub),
-                                                                  @"unionpay": @(BTCardNetworkUnionPay),
-                                                                  @"discover": @(BTCardNetworkDiscover),
-                                                                  @"maestro": @(BTCardNetworkMaestro),
-                                                                  @"mastercard": @(BTCardNetworkMasterCard),
-                                                                  @"jcb": @(BTCardNetworkJCB),
-                                                                  @"laser": @(BTCardNetworkLaser),
-                                                                  @"solo": @(BTCardNetworkSolo),
-                                                                  @"switch": @(BTCardNetworkSwitch),
-                                                                  @"uk maestro": @(BTCardNetworkUKMaestro),
-                                                                  @"visa": @(BTCardNetworkVisa),}
-                                                      orDefault:BTCardNetworkUnknown]
+                                   cardNetwork:[self.class cardNetworkFromGatewayCardType:[cardJSON[@"details"][@"cardType"] asString]]
                                        lastTwo:[cardJSON[@"details"][@"lastTwo"] asString]
                                      isDefault:[cardJSON[@"default"] isTrue]
                                       cardJSON:cardJSON];
+}
 
++ (instancetype)cardNonceWithGraphQLJSON:(BTJSON *)cardJSON {
+    NSString *lastFour = [cardJSON[@"creditCard"][@"last4"] asString];
+    NSString *lastTwo = lastFour.length == 4 ? [lastFour substringFromIndex:2] : @"";
+    NSString *description = lastTwo.length > 0 ? [NSString stringWithFormat:@"ending in %@", lastTwo] : @"";
+    return [[[self class] alloc] initWithNonce:[cardJSON[@"token"] asString]
+                                   description:description
+                                   cardNetwork:[self.class cardNetworkFromGatewayCardType:[cardJSON[@"creditCard"][@"brand"] asString]]
+                                       lastTwo:lastTwo
+                                     isDefault:NO
+                                      cardJSON:cardJSON[@"creditCard"]];
 }
 
 @end

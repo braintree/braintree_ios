@@ -1,6 +1,8 @@
 import XCTest
 
 class BTCardClient_Tests: XCTestCase {
+
+    // MARK: - ClientAPI
     
     func testTokenization_postsCardDataToClientAPI() {
         let expectation = self.expectation(description: "Tokenize Card")
@@ -48,7 +50,7 @@ class BTCardClient_Tests: XCTestCase {
 
         cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
             guard let tokenizedCard = tokenizedCard else {
-                XCTFail("Received an error: \(error)")
+                XCTFail("Received an error: \(String(describing: error))")
                 return
             }
 
@@ -114,7 +116,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Callback invoked with error")
         cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTCardClientErrorDomain)
             XCTAssertEqual(error.code, BTCardClientErrorType.customerInputInvalid.rawValue)
             if let json = (error.userInfo as NSDictionary)[BTCustomerInputBraintreeValidationErrorsKey] as? NSDictionary {
@@ -144,7 +146,7 @@ class BTCardClient_Tests: XCTestCase {
         let expectation = self.expectation(description: "Callback invoked with error")
         cardClient.tokenizeCard(request, options: nil) { (cardNonce, error) -> Void in
             XCTAssertNil(cardNonce)
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTHTTPErrorDomain)
             XCTAssertEqual(error.code, BTHTTPErrorCode.clientError.rawValue)
             expectation.fulfill()
@@ -152,8 +154,6 @@ class BTCardClient_Tests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
-
-    // MARK: - _meta parameter
     
     func testMetaParameter_whenTokenizationIsSuccessful_isPOSTedToServer() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
@@ -176,6 +176,315 @@ class BTCardClient_Tests: XCTestCase {
         XCTAssertEqual(metaParameters["source"] as? String, "unknown")
         XCTAssertEqual(metaParameters["integration"] as? String, "custom")
         XCTAssertEqual(metaParameters["sessionId"] as? String, mockAPIClient.metadata.sessionId)
+    }
+
+    func testAnalyticsEvent_whenTokenizationSucceeds_isSent() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.custom.card.succeeded"))
+    }
+
+    func testAnalyticsEvent_whenTokenizationFails_isSent() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        let stubJSONResponse = BTJSON(value: [
+            "error" : [
+                "message" : "Credit card is invalid"
+            ],
+            "fieldErrors" : [
+                [
+                    "field" : "creditCard",
+                    "fieldErrors" : [
+                        [
+                            "field" : "number",
+                            "message" : "Credit card number must be 12-19 digits",
+                            "code" : "81716"
+                        ]
+                    ]
+                ]
+            ]
+            ])
+        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTHTTPJSONResponseBodyKey: stubJSONResponse
+            ])
+        mockAPIClient.cannedResponseError = stubError
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.custom.card.failed"))
+    }
+
+
+    // MARK: - GraphQL API
+
+    func testTokenization_whenGraphQLIsEnabled_postsCardDataToGraphQLAPI() {
+        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+            ])
+
+        let cardClient = BTCardClient(apiClient: mockApiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.cardholderName = "Brian Tree"
+
+        let expectation = self.expectation(description: "Tokenize Card")
+
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.graphQLAPI)
+            guard var lastPostParameters = mockApiClient.lastPOSTParameters else {
+                XCTFail()
+                return
+            }
+            lastPostParameters.removeValue(forKey: "clientSdkMetadata")
+            XCTAssertEqual(lastPostParameters as NSObject, card.graphQLParameters() as NSObject)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testTokenization_whenGraphQLIsDisabled_postsCardDataToGatewayAPI() {
+        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            ])
+        
+        let cardClient = BTCardClient(apiClient: mockApiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.cardholderName = "Brian Tree"
+        
+        let expectation = self.expectation(description: "Tokenize Card")
+        
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testTokenization_whenGraphQLFeatureIsNotEnabled_postsCardDataToGatewayAPI() {
+        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["do_not_tokenize_credit_cards"]
+            ]
+            ])
+        
+        let cardClient = BTCardClient(apiClient: mockApiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.cardholderName = "Brian Tree"
+        
+        let expectation = self.expectation(description: "Tokenize Card")
+        
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testTokenization_whenCardIsUnionPayAndGraphQLEnabledForCards_usesGatewayAPI() {
+        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+            ])
+
+        let cardClient = BTCardClient(apiClient: mockApiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.cardholderName = "Brian Tree"
+        let cardRequest = BTCardRequest(card: card)
+        cardRequest.enrollmentID = "enrollment-id"
+        cardRequest.mobileCountryCode = "1"
+        cardRequest.mobilePhoneNumber = "867-5309"
+        cardRequest.smsCode = "1234"
+
+        let expectation = self.expectation(description: "Tokenize Card")
+
+        cardClient.tokenizeCard(cardRequest) { (tokenizedCard, error) -> Void in
+            XCTAssertTrue(mockApiClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.gateway)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
+    func testTokenization_whenGraphQLIsEnabledAndTokenizationIsSuccessful_returnsACardNonce() {
+        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+        ])
+        mockApiClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "tokenizeCreditCard" : [
+                    "token" : "a-nonce",
+                    "creditCard" : [
+                        "brand" : "Visa",
+                        "last4" : "1111",
+                        "binData": [
+                            "prepaid": "Yes",
+                            "healthcare": "Yes",
+                            "debit": "No",
+                            "durbinRegulated": "No",
+                            "commercial": "Yes",
+                            "payroll": "No",
+                            "issuingBank": "US",
+                            "countryOfIssuance": "Something",
+                            "productId": "123"
+                        ]
+                    ]
+                ]
+            ],
+            "extensions": [
+            ]
+        ])
+
+        let cardClient = BTCardClient(apiClient: mockApiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+
+        let expectation = self.expectation(description: "Tokenize Card")
+
+        cardClient.tokenizeCard(card) { (tokenizedCard, error) -> Void in
+            guard let tokenizedCard = tokenizedCard else {
+                XCTFail()
+                return
+            }
+
+            XCTAssertEqual(tokenizedCard.nonce, "a-nonce")
+            XCTAssertEqual(tokenizedCard.localizedDescription, "ending in 11")
+            XCTAssertEqual(tokenizedCard.type, "Visa")
+            XCTAssertEqual(tokenizedCard.lastTwo!, "11")
+            XCTAssertEqual(tokenizedCard.cardNetwork, BTCardNetwork.visa)
+            XCTAssertEqual(tokenizedCard.binData.prepaid, "Yes")
+            XCTAssertEqual(tokenizedCard.binData.healthcare, "Yes")
+            XCTAssertEqual(tokenizedCard.binData.debit, "No")
+            XCTAssertEqual(tokenizedCard.binData.durbinRegulated, "No")
+            XCTAssertEqual(tokenizedCard.binData.commercial, "Yes")
+            XCTAssertEqual(tokenizedCard.binData.payroll, "No")
+            XCTAssertEqual(tokenizedCard.binData.issuingBank, "US")
+            XCTAssertEqual(tokenizedCard.binData.countryOfIssuance, "Something")
+            XCTAssertEqual(tokenizedCard.binData.productId, "123")
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testAnalyticsEvent_whenTokenizationSucceedsWithGraphQL_isSent() {
+        let mockApiClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockApiClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+            ])
+        mockApiClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "tokenizeCreditCard" : [
+                    "token" : "a-nonce",
+                    "creditCard" : [
+                        "brand" : "Visa",
+                        "last4" : "1111",
+                        "binData": [
+                            "prepaid": "Yes",
+                            "healthcare": "Yes",
+                            "debit": "No",
+                            "durbinRegulated": "No",
+                            "commercial": "Yes",
+                            "payroll": "No",
+                            "issuingBank": "US",
+                            "countryOfIssuance": "Something",
+                            "productId": "123"
+                        ]
+                    ]
+                ]
+            ],
+            "extensions": []
+            ])
+
+        let cardClient = BTCardClient(apiClient: mockApiClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+
+        let expectation = self.expectation(description: "Tokenize Card")
+
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+
+        XCTAssertTrue(mockApiClient.postedAnalyticsEvents.contains("ios.card.graphql.tokenization.success"))
+    }
+
+    func testAnalyticsEvent_whenTokenizationFailsWithGraphQL_isSent() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+            ])
+        let stubJSONResponse = BTJSON(value: [
+            "error" : [
+                "message" : "Credit card is invalid"
+            ],
+            "fieldErrors" : [
+                [
+                    "field" : "creditCard",
+                    "fieldErrors" : [
+                        [
+                            "field" : "number",
+                            "message" : "Credit card number must be 12-19 digits",
+                            "code" : "81716"
+                        ]
+                    ]
+                ]
+            ]
+            ])
+        let stubError = NSError(domain: BTHTTPErrorDomain, code: BTHTTPErrorCode.clientError.rawValue, userInfo: [
+            BTHTTPURLResponseKey: HTTPURLResponse(url: URL(string: "http://fake")!, statusCode: 422, httpVersion: nil, headerFields: nil)!,
+            BTHTTPJSONResponseBodyKey: stubJSONResponse
+            ])
+        mockAPIClient.cannedResponseError = stubError
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.card.graphql.tokenization.failure"))
     }
 }
 

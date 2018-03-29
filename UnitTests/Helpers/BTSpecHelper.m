@@ -27,6 +27,19 @@ BOOL isANonce(NSString *nonce) {
         return NO;
     }
 
+    if ([regex numberOfMatchesInString:nonce options:0 range:NSMakeRange(0, [nonce length])] > 0) {
+        return YES;
+    }
+
+    NSString *tokenizerNonceRegularExpressionString = @"\\Atokencc_[0-9a-z_]+\\Z";
+    regex = [[NSRegularExpression alloc] initWithPattern:tokenizerNonceRegularExpressionString
+                                                 options:0
+                                                   error:&error];
+    if (error) {
+        NSLog(@"Error parsing regex: %@", error);
+        return NO;
+    }
+
     return [regex numberOfMatchesInString:nonce options:0 range:NSMakeRange(0, [nonce length])] > 0;
 }
 

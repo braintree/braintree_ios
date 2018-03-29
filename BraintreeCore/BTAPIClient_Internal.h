@@ -4,6 +4,7 @@
 #import "BTClientToken.h"
 #import "BTHTTP.h"
 #import "BTAPIHTTP.h"
+#import "BTGraphQLHTTP.h"
 #import "BTJSON.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,6 +17,9 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
     
     /// Use the Braintree API
     BTAPIClientHTTPTypeBraintreeAPI,
+
+    /// Use the GraphQL API
+    BTAPIClientHTTPTypeGraphQLAPI,
 };
 
 
@@ -26,6 +30,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
 @property (nonatomic, strong) BTHTTP *http;
 @property (nonatomic, strong) BTHTTP *configurationHTTP;
 @property (nonatomic, strong) BTAPIHTTP *braintreeAPI;
+@property (nonatomic, strong) BTGraphQLHTTP *graphQL;
 
 /**
  Client metadata that is used for tracking the client session

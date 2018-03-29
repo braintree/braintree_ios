@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, BTHTTPErrorCode) {
     /// The response was a 4xx error, e.g. 422, indicating a problem with the client's request
     BTHTTPErrorCodeClientError,
 
-    /// The response was a 403 server error
+    /// The response was a 5xx server error
     BTHTTPErrorCodeServerError,
 
     /// The BTHTTP instance was missing a base URL
