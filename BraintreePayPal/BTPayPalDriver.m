@@ -41,7 +41,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
     BTPayPalPaymentTypeBillingAgreement,
 };
 
-@interface BTPayPalDriver () <SFSafariViewControllerDelegate>
+@interface BTPayPalDriver () <SFSafariViewControllerDelegate, UIViewControllerTransitioningDelegate>
 @property (nonatomic, assign) BOOL becameActiveAfterSFAuthenticationSessionModal;
 @end
 
@@ -850,6 +850,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
 #endif
         self.safariViewController = [[SFSafariViewController alloc] initWithURL:appSwitchURL];
         self.safariViewController.delegate = self;
+        self.safariViewController.transitioningDelegate = self;
         [self.viewControllerPresentingDelegate paymentDriver:self requestsPresentationOfViewController:self.safariViewController];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
         }
