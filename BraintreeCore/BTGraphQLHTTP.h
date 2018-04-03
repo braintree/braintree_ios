@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class BTHTTPResponse, BTClientToken;
 
 /**
- @brief Performs HTTP methods on the Braintree Client API
+ Performs HTTP methods on the Braintree Client API
  */
 @interface BTGraphQLHTTP : BTHTTP
 

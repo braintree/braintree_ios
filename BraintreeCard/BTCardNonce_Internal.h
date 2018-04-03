@@ -14,12 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- @brief Create a `BTCardNonce` object from JSON.
+ Create a `BTCardNonce` object from JSON.
  */
 + (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON;
 
 /**
- @brief Create a `BTCardNonce` object from GraphQL JSON.
+ Create a `BTCardNonce` object from GraphQL JSON.
  */
 + (instancetype)cardNonceWithGraphQLJSON:(BTJSON *)cardJSON;
 

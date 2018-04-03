@@ -96,7 +96,15 @@ extern NSString * const BTAppSwitchWillProcessPaymentInfoNotification;
  @see BTAppSwitchTarget
  */
 extern NSString * const BTAppSwitchNotificationTargetKey;
+
+/**
+ Notification that context will switch away from from the origin app
+ */
 extern NSString * const BTAppContextWillSwitchNotification;
+
+/**
+ Notification that the context switch has returned
+ */
 extern NSString * const BTAppContextDidReturnNotification;
 
 /**
@@ -163,7 +171,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 @optional
 
 /**
- @brief Regardless of the method (e.g. app, Safari, SFSafariViewController, SFAuthenticationSession) events will be sent when the context will switch away from from the origin app.
+ Regardless of the method (e.g. app, Safari, SFSafariViewController, SFAuthenticationSession) events will be sent when the context will switch away from from the origin app.
 
  @note Use this method to update UI (e.g. displaying a loading indicator) before the switch takes place.
 
@@ -172,7 +180,7 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 - (void)appContextWillSwitch:(id)appSwitcher;
 
 /**
- @brief The context switch has returned.
+ The context switch has returned.
 
  @note This is not guaranteed to be called. Example: A user leaves an app or Safari switch and manually returns to the origin app.
 
