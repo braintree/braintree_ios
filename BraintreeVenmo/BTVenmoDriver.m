@@ -146,6 +146,7 @@ static BTVenmoDriver *appSwitchedDriver;
         }
 
         [self informDelegateWillPerformAppSwitch];
+        [self informDelegateAppContextWillSwitch];
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
         if ([self.application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
@@ -234,6 +235,7 @@ static BTVenmoDriver *appSwitchedDriver;
 }
 
 - (void)handleOpenURL:(NSURL *)url {
+    [self informDelegateAppContextDidReturn];
     BTVenmoAppSwitchReturnURL *returnURL = [[BTVenmoAppSwitchReturnURL alloc] initWithURL:url];
     
     switch (returnURL.state) {
@@ -355,6 +357,23 @@ static BTVenmoDriver *appSwitchedDriver;
     }
 }
 
+- (void)informDelegateAppContextWillSwitch {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextWillSwitchNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
+        [self.appSwitchDelegate appContextWillSwitch:self];
+    }
+}
+
+- (void)informDelegateAppContextDidReturn {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextDidReturnNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
+        [self.appSwitchDelegate appContextDidReturn:self];
+    }
+}
 
 @end
 

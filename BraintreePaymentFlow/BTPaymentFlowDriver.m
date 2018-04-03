@@ -77,6 +77,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (void)performSwitchRequest:(NSURL *)appSwitchURL {
+    [self informDelegateAppContextWillSwitch];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 9.0, *)) {
 #else
@@ -145,6 +146,7 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 }
 
 - (void)handleOpenURL:(NSURL *)url {
+    [self informDelegateAppContextDidReturn];
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.%@.webswitch.succeeded", [self.paymentFlowRequestDelegate paymentFlowName]]];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 9.0, *)) {
@@ -187,6 +189,24 @@ static BTPaymentFlowDriver *paymentFlowDriver;
 - (void)onPaymentComplete:(BTPaymentFlowResult *)result error:(NSError *)error {
     self.paymentFlowCompletionBlock(result, error);
     paymentFlowDriver = nil;
+}
+
+- (void)informDelegateAppContextWillSwitch {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextWillSwitchNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextWillSwitch:)]) {
+        [self.appSwitchDelegate appContextWillSwitch:self];
+    }
+}
+
+- (void)informDelegateAppContextDidReturn {
+    NSNotification *notification = [[NSNotification alloc] initWithName:BTAppContextDidReturnNotification object:self userInfo:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+
+    if ([self.appSwitchDelegate respondsToSelector:@selector(appContextDidReturn:)]) {
+        [self.appSwitchDelegate appContextDidReturn:self];
+    }
 }
 
 @end

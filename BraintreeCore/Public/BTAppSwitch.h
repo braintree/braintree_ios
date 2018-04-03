@@ -96,6 +96,8 @@ extern NSString * const BTAppSwitchWillProcessPaymentInfoNotification;
  @see BTAppSwitchTarget
  */
 extern NSString * const BTAppSwitchNotificationTargetKey;
+extern NSString * const BTAppContextWillSwitchNotification;
+extern NSString * const BTAppContextDidReturnNotification;
 
 /**
  Specifies the destination of an app switch
@@ -123,6 +125,8 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
  it should be in if the user manually app-switches back to your app.
  For example, re-enable any controls that are disabled.
 
+ @note Use `appContextWillSwitch:` to receive events for all types of context switching from the origin app to apps/browsers.
+
  @param appSwitcher The app switcher
 */
 - (void)appSwitcherWillPerformAppSwitch:(id)appSwitcher;
@@ -148,12 +152,33 @@ typedef NS_ENUM(NSInteger, BTAppSwitchTarget) {
 
  In the case of an app switch, this message indicates that the user has returned to this app;
  this is usually after handleAppSwitchReturnURL: is called in your UIApplicationDelegate.
+ You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
 
- @note You may also hook into the app switch lifecycle via UIApplicationWillResignActiveNotification.
+ @note Use `appContextDidReturn:` to receive events for all types of context switching from apps/browsers back to the origin app.
 
  @param appSwitcher The app switcher
 */
 - (void)appSwitcherWillProcessPaymentInfo:(id)appSwitcher;
+
+@optional
+
+/**
+ @brief Regardless of the method (e.g. app, Safari, SFSafariViewController, SFAuthenticationSession) events will be sent when the context will switch away from from the origin app.
+
+ @note Use this method to update UI (e.g. displaying a loading indicator) before the switch takes place.
+
+ @param appSwitcher The app switcher
+ */
+- (void)appContextWillSwitch:(id)appSwitcher;
+
+/**
+ @brief The context switch has returned.
+
+ @note This is not guaranteed to be called. Example: A user leaves an app or Safari switch and manually returns to the origin app.
+
+ @param appSwitcher The app switcher
+ */
+- (void)appContextDidReturn:(id)appSwitcher;
 
 @end
 
