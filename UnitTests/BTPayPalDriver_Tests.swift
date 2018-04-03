@@ -561,6 +561,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
 
         XCTAssertTrue(mockAppSwitchDelegate.appContextWillSwitchCalled)
+        XCTAssertFalse(mockAppSwitchDelegate.appContextDidReturnCalled)
 
         stubViewControllerPresentingDelegate.requestsDismissalOfViewControllerExpectation = expectation(description: "Delegate received requestsDismissalOfViewController")
 
@@ -2149,6 +2150,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         }
 
         XCTAssertTrue(mockAppSwitchDelegate.appContextWillSwitchCalled)
+        XCTAssertFalse(mockAppSwitchDelegate.appContextDidReturnCalled)
 
         if #available(iOS 11.0, *) {
             // do nothing
