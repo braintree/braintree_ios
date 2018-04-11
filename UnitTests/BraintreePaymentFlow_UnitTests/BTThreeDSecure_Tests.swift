@@ -540,6 +540,65 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         waitForExpectations(timeout: 2, handler: nil)
     }
+
+    func testStartPayment_makesDelegateCallbacks_forContextSwitchEvents() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "assetsUrl": "http://assets.example.com",
+            ])
+
+        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
+
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+        let appSwitchDelegate = MockAppSwitchDelegate()
+        driver.appSwitchDelegate = appSwitchDelegate
+
+        let responseBody = [
+            "paymentMethod": [
+                "consumed": false,
+                "description": "ending in 02",
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "02",
+                ],
+                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
+                "threeDSecureInfo": [
+                    "enrolled": "Y",
+                    "liabilityShiftPossible": true,
+                    "liabilityShifted": true,
+                    "status": "authenticate_successful",
+                ],
+                "type": "CreditCard",
+            ],
+            "success": true,
+            "threeDSecureInfo":     [
+                "liabilityShiftPossible": true,
+                "liabilityShifted": true,
+            ],
+            "lookup": [
+                "acsUrl": "http://example.com",
+                "pareq": "",
+                "md": "",
+                "termUrl": "http://example.com"
+            ]
+            ] as [String : Any]
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+
+        var paymentFinishedExpectation: XCTestExpectation? = nil
+        driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
+            paymentFinishedExpectation!.fulfill()
+        }
+
+        paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
+        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "com.braintreepayments.demo.payments://x-callback-url/braintree/threedsecure?auth_response=%7B%22paymentMethod%22:%7B%22type%22:%22CreditCard%22,%22nonce%22:%220d3e1cc8-50a4-0437-720b-c03c722f0d0a%22,%22description%22:%22ending+in+02%22,%22consumed%22:false,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true,%22status%22:%22authenticate_successful%22,%22enrolled%22:%22Y%22%7D,%22details%22:%7B%22lastTwo%22:%2202%22,%22lastFour%22:%220002%22,%22cardType%22:%22Visa%22%7D,%22bin_data%22:%7B%22prepaid%22:%22Unknown%22,%22healthcare%22:%22Unknown%22,%22debit%22:%22Unknown%22,%22durbin_regulated%22:%22Unknown%22,%22commercial%22:%22Unknown%22,%22payroll%22:%22Unknown%22,%22issuing_bank%22:%22Unknown%22,%22country_of_issuance%22:%22Unknown%22,%22product_id%22:%22Unknown%22%7D%7D,%22threeDSecureInfo%22:%7B%22liabilityShifted%22:true,%22liabilityShiftPossible%22:true%7D,%22success%22:true%7D")!)
+
+        waitForExpectations(timeout: 3, handler: nil)
+
+        XCTAssertTrue(appSwitchDelegate.appContextWillSwitchCalled)
+        XCTAssertTrue(appSwitchDelegate.appContextDidReturnCalled)
+    }
 }
 
 

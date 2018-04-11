@@ -1,4 +1,9 @@
 #import "BTThreeDSecureResult.h"
+#if __has_include("BraintreeCard.h")
+#import "BTCardNonce_Internal.h"
+#else
+#import <BraintreeCard/BTCardNonce_Internal.h>
+#endif
 
 @implementation BTThreeDSecureResult
 

@@ -415,5 +415,41 @@ class BTIdeal_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
+
+    func testStartPayment_makesDelegateCallbacks_forContextSwitchEvents() {
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "assetsUrl": "http://assets.example.com",
+            "ideal": [
+                "routeId": "123123-12342423-12312312"
+            ] ])
+
+        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        viewControllerPresentingDelegate.requestsPresentationOfViewControllerExpectation = self.expectation(description: "Delegate received requestsPresentationOfViewController")
+
+        let idealDriver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        idealDriver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+        let appSwitchDelegate = MockAppSwitchDelegate()
+        idealDriver.appSwitchDelegate = appSwitchDelegate
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: ["data": [
+            "approval_url": "https://www.somebankurl.com",
+            "status": "PENDING",
+            "id": "123aaa-123-543-777",
+            "short_id": "123aaa",
+            ] ])
+
+        var paymentFinishedExpectation: XCTestExpectation? = nil
+        idealDriver.startPaymentFlow(idealRequest) { (result, error) in
+            paymentFinishedExpectation!.fulfill()
+        }
+
+        paymentFinishedExpectation = self.expectation(description: "Payment finished expectation")
+        BTPaymentFlowDriver.handleAppSwitchReturn(URL(string: "http://unused.example.com")!)
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertTrue(appSwitchDelegate.appContextWillSwitchCalled)
+        XCTAssertTrue(appSwitchDelegate.appContextDidReturnCalled)
+    }
 }
 

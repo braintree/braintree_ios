@@ -5,6 +5,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ Contains information about the current device
+ */
 @interface PPOTDevice : NSObject
 
 /**
@@ -23,14 +26,14 @@
 + (nonnull NSString *)complicatedDeviceLocale;
 
 /**
- @brief Generates a device identifier and stores it.
+ Generates a device identifier and stores it.
 
  @return a generated device identifier
 */
 + (nonnull NSString *)appropriateIdentifier;
 
 /**
- @brief Clears any stored device identifier.
+ Clears any stored device identifier.
 */
 + (void)clearIdentifier;
 

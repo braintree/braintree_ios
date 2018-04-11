@@ -10,12 +10,12 @@
 @interface PPOTAnalyticsTracker : NSObject
 
 /**
- @brief Retrieves singleton instance.
+ Retrieves singleton instance.
 */
 + (nonnull PPOTAnalyticsTracker *)sharedManager;
 
 /**
- @brief Tracks a "page"/action taken.
+ Tracks a "page"/action taken.
 
  @param pagename the page or "action" taken
  @param environment the environment (production, sandbox, etc.)

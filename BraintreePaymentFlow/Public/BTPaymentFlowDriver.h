@@ -10,9 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Payment flow error domain
+ */
 extern NSString * const BTPaymentFlowDriverErrorDomain;
 
+/**
+ Errors associated with payment flows.
+ */
 typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
+    /// PaymentFlow unknown error.
     BTPaymentFlowDriverErrorTypeUnknown = 0,
     
     /// PaymentFlow is disabled in configuration.
@@ -35,35 +42,35 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 };
 
 /**
- @brief Protocol for payment flow processing via BTPaymentFlowRequestDelegate.
+ Protocol for payment flow processing via BTPaymentFlowRequestDelegate.
  */
 @protocol BTPaymentFlowDriverDelegate
 
 /**
- @brief Use when payment URL is ready for processing.
+ Use when payment URL is ready for processing.
  */
 - (void)onPaymentWithURL:(NSURL * _Nullable) url error:(NSError * _Nullable)error;
 
 /**
- @brief Use when the payment flow was cancelled.
+ Use when the payment flow was cancelled.
  */
 - (void)onPaymentCancel;
 
 /**
- @brief Use when the payment flow has completed or encountered an error.
+ Use when the payment flow has completed or encountered an error.
  @param result The BTPaymentFlowResult of the payment flow.
  @param error NSError containing details of the error.
  */
 - (void)onPaymentComplete:(BTPaymentFlowResult * _Nullable)result error:(NSError * _Nullable)error;
 
 /**
- @brief Returns the base return URL scheme used by the driver.
+ Returns the base return URL scheme used by the driver.
  @return A NSString representing the base return URL scheme used by the driver.
  */
 - (NSString *)returnURLScheme;
 
 /**
- @brief Returns the BTAPIClient used by the BTPaymentFlowDriverDelegate.
+ Returns the BTAPIClient used by the BTPaymentFlowDriverDelegate.
  @return The BTAPIClient used by the driver.
  */
 - (BTAPIClient *)apiClient;
@@ -71,14 +78,14 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 @end
 
 /**
- @brief Protocol for payment flow processing.
+ Protocol for payment flow processing.
  */
 @protocol BTPaymentFlowRequestDelegate
 
 /**
- @brief Handle payment request for a variety of web/app switch flows.
+ Handle payment request for a variety of web/app switch flows.
  
- @discussion Use the delegate to handle success/error/cancel flows.
+ Use the delegate to handle success/error/cancel flows.
  
  @param request A BTPaymentFlowRequest request.
  @param delegate The BTPaymentFlowDriverDelegate to handle response.
@@ -86,7 +93,7 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate;
 
 /**
- @brief Check if this BTPaymentFlowRequestDelegate can handle the URL from the source application.
+ Check if this BTPaymentFlowRequestDelegate can handle the URL from the source application.
  
  @param url The URL to check.
  @param sourceApplication The source application to sent the URL.
@@ -95,39 +102,42 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 - (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication;
 
 /**
- @brief Handles the return URL and completes and post processing.
+ Handles the return URL and completes and post processing.
  
  @param url The URL to check.
  */
 - (void)handleOpenURL:(NSURL *)url;
 
 /**
- @brief A short and unique alphanumeric name for the payment flow.
+ A short and unique alphanumeric name for the payment flow.
  
- @discussion Used for analytics/events. No spaces and all lowercase.
+ Used for analytics/events. No spaces and all lowercase.
  */
 - (NSString *)paymentFlowName;
 
 @end
 
 /**
- @brief BTPaymentFlowDriver handles the shared aspects of web/app payment flows.
+ BTPaymentFlowDriver handles the shared aspects of web/app payment flows.
  
- @discussion Handles the app switching and shared logic for payment flows that use web or app switching.
+ Handles the app switching and shared logic for payment flows that use web or app switching.
  */
 @interface BTPaymentFlowDriver : NSObject <BTAppSwitchHandler, BTPaymentFlowDriverDelegate>
 
 /**
- @brief Initialize a new BTPaymentFlowDriver instance.
+ Initialize a new BTPaymentFlowDriver instance.
  
  @param apiClient The API client.
  */
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient NS_DESIGNATED_INITIALIZER;
 
+/**
+ Base initializer - do not use.
+ */
 - (instancetype)init __attribute__((unavailable("Please use initWithAPIClient:")));
 
 /**
- @brief Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
+ Starts a payment flow using a BTPaymentFlowRequest (usually subclassed for specific payment methods).
 
  @param request A BTPaymentFlowRequest request.
  @param completionBlock This completion will be invoked exactly once when the payment flow is complete or an error occurs.
@@ -135,9 +145,16 @@ typedef NS_ENUM(NSInteger, BTPaymentFlowDriverErrorType) {
 - (void)startPaymentFlow:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)( BTPaymentFlowResult * _Nullable result,  NSError * _Nullable error))completionBlock;
 
 /**
- @brief A required delegate to control the presentation and dismissal of view controllers.
+ A required delegate to control the presentation and dismissal of view controllers.
  */
 @property (nonatomic, weak, nullable) id<BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
+
+/**
+ An optional delegate for receiving notifications about the lifecycle of a payment flow app/browser switch, as well as updating your UI
+
+ @note BTPaymentFlowDriver will only send notifications for `appContextWillSwitch:` and `appContextDidReturn:`.
+ */
+@property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;
 
 @end
 

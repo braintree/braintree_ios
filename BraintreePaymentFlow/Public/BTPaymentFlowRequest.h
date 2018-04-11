@@ -8,7 +8,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- @brief Wrapper for a payment flow request.
+ Wrapper for a payment flow request.
  */
 @interface BTPaymentFlowRequest : NSObject
 

@@ -6,10 +6,9 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol BTDropInViewControllerDelegate;
 
 /**
- @class BTDropInViewController
- @brief A view controller that provides a quick and easy payment experience.
+ A view controller that provides a quick and easy payment experience.
 
- @discussion When initialized with a Braintree client, the Drop In will prompt a user for payment details,
+ When initialized with a Braintree client, the Drop In will prompt a user for payment details,
  based on your Gateway configuration. The Drop In payment form supports cards and PayPal. When
  using Drop In, you don't need to worry about which methods are already on file with Braintree;
  newly created methods are saved as part of the Drop In flow as needed.
@@ -31,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTDropInViewController : UIViewController
 
 /**
- @brief Initialize a new Drop-in view controller.
+ Initialize a new Drop-in view controller.
 
  @param apiClient A BTAPIClient used for communicating with Braintree servers. Required.
 
@@ -40,20 +39,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 /**
- @brief The API Client used for communication with Braintree servers.
+ The API Client used for communication with Braintree servers.
 */
 @property (nonatomic, strong) BTAPIClient *apiClient;
 
 /**
- @brief The BTPaymentRequest that defines the Drop-in experience.
+ The BTPaymentRequest that defines the Drop-in experience.
 
  @note The properties of this payment request are used to customize Drop-in.
 */
 @property (nonatomic, strong, nullable) BTPaymentRequest *paymentRequest;
 
 /**
- @brief The array of `BTPaymentMethodNonce` payment method nonces on file. 
- @discussion The payment method nonces may be in the Vault.
+ The array of `BTPaymentMethodNonce` payment method nonces on file. 
+ The payment method nonces may be in the Vault.
  Most payment methods are automatically Vaulted if the client token was generated with a customer ID.
 */
 @property (nonatomic, strong) NSArray *paymentMethodNonces;
@@ -61,21 +60,21 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark State Change Notifications
 
 /**
- @brief The delegate that, if set, is notified of success or failure.
+ The delegate that, if set, is notified of success or failure.
 */
 @property (nonatomic, weak, nullable) id<BTDropInViewControllerDelegate> delegate;
 
 #pragma mark Customization
 
 /**
- @brief The presentation theme to use for the Drop In.
+ The presentation theme to use for the Drop In.
 */
 @property (nonatomic, strong, nullable) BTUI *theme;
 
 /**
- @brief Fetches the customer's saved payment methods and populates Drop In with them.
+ Fetches the customer's saved payment methods and populates Drop In with them.
 
- @discussion For the best user experience, you should call this method as early as
+ For the best user experience, you should call this method as early as
        possible (after initializing BTDropInViewController, before presenting it)
        in order to avoid a loading spinner.
 
@@ -84,12 +83,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)fetchPaymentMethodsOnCompletion:(void(^)(void))completionBlock;
 
 /**
- @brief Sets the card number in the card form.
+ Sets the card number in the card form.
 */
 - (void)setCardNumber:(nullable NSString *)cardNumber;
 
 /**
- @brief Sets the expiration month and year in the card form.
+ Sets the expiration month and year in the card form.
 
  @note The expiration date uses the Gregorian calendar.
 
@@ -101,14 +100,14 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 /**
- @brief A protocol for BTDropInViewController completion notifications.
+ A protocol for BTDropInViewController completion notifications.
 */
 @protocol BTDropInViewControllerDelegate <NSObject>
 
 /**
- @brief Informs the delegate when the user has successfully provided payment info that has been successfully tokenized.
+ Informs the delegate when the user has successfully provided payment info that has been successfully tokenized.
 
- @discussion Upon receiving this message, you should dismiss Drop In.
+ Upon receiving this message, you should dismiss Drop In.
 
  @param viewController The Drop In view controller informing its delegate of success
  @param paymentMethodNonce The selected (and possibly newly created) tokenized payment information.
@@ -116,9 +115,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dropInViewController:(BTDropInViewController *)viewController didSucceedWithTokenization:(BTPaymentMethodNonce *)paymentMethodNonce;
 
 /**
- @brief Informs the delegate when the user has decided to cancel out of the Drop-in payment form.
+ Informs the delegate when the user has decided to cancel out of the Drop-in payment form.
 
- @discussion Drop-in handles its own error cases, so this cancelation is user initiated and
+ Drop-in handles its own error cases, so this cancelation is user initiated and
  irreversable. Upon receiving this message, you should dismiss Drop-in.
 
  @param viewController The Drop-in view controller informing its delegate of failure or cancelation.
@@ -128,14 +127,14 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 /**
- @brief Informs the delegate when the Drop-in view controller has finished loading.
+ Informs the delegate when the Drop-in view controller has finished loading.
 
  @param viewController The Drop-in view controller informing its delegate
 */
 - (void)dropInViewControllerDidLoad:(BTDropInViewController *)viewController;
 
 /**
- @brief Informs the delegate when the user has entered or selected payment information.
+ Informs the delegate when the user has entered or selected payment information.
 
  @param viewController The Drop-in view controller informing its delegate
 */

@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTVenmoAppSwitchRequestURL : NSObject
 
 /**
- @brief The base app switch URL for Venmo. Does not include specific parameters.
+ The base app switch URL for Venmo. Does not include specific parameters.
 */
 + (NSURL *)baseAppSwitchURL;
 

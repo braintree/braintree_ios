@@ -7,7 +7,7 @@
 }
 
 + (instancetype)fakeHTTP {
-    return [[BTFakeHTTP alloc] initWithBaseURL:[[NSURL alloc] init] authorizationFingerprint:@""];
+    return [[self.class alloc] initWithBaseURL:[[NSURL alloc] init] authorizationFingerprint:@""];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -94,3 +94,32 @@
 }
 
 @end
+
+@implementation BTFakeGraphQLHTTP
+
++ (instancetype)fakeHTTP {
+    return [[self.class alloc] initWithBaseURL:[[NSURL alloc] init] authorizationFingerprint:@""];
+}
+
+- (void)POST:(__unused NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void (^)(BTJSON *, NSHTTPURLResponse *, NSError *))completionBlock {
+    self.POSTRequestCount++;
+    self.lastRequestParameters = parameters;
+    completionBlock(nil, nil, nil);
+}
+
+@end
+
+@implementation BTFakeAPIHTTP
+
++ (instancetype)fakeHTTP {
+    return [[self.class alloc] initWithBaseURL:[[NSURL alloc] init] authorizationFingerprint:@""];
+}
+
+- (void)POST:(__unused NSString *)endpoint parameters:(NSDictionary *)parameters completion:(void (^)(BTJSON *, NSHTTPURLResponse *, NSError *))completionBlock {
+    self.POSTRequestCount++;
+    self.lastRequestParameters = parameters;
+    completionBlock(nil, nil, nil);
+}
+
+@end
+

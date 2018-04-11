@@ -7,8 +7,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Domain for 3D Secure flow errors.
+ */
 extern NSString * const BTThreeDSecureFlowErrorDomain;
+
+/**
+ Error codes associated with 3D Secure flow.
+ */
 typedef NS_ENUM(NSInteger, BTThreeDSecureFlowErrorType) {
+    /// Unknown error
     BTThreeDSecureFlowErrorTypeUnknown = 0,
     
     /// 3D Secure failed during the backend card lookup phase; please retry
@@ -19,7 +27,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureFlowErrorType) {
 };
 
 /**
- @brief Category on BTPaymentFlowDriver for 3D Secure
+ Category on BTPaymentFlowDriver for 3D Secure
  */
 @interface BTPaymentFlowDriver (ThreeDSecure)
 

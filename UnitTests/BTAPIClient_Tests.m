@@ -274,7 +274,7 @@
     [self waitForExpectationsWithTimeout:1 handler:nil];
 }
 
-//#pragma mark - Analytics tests
+#pragma mark - Analytics tests
 
 - (void)testAnalyticsService_isCreatedDuringInitialization {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
@@ -303,36 +303,69 @@
     XCTAssertFalse(mockAnalyticsService.didLastFlush);
 }
 
-- (void)testPOST_usesMetadataSourceAndIntegration {
+#pragma mark - Client SDK Metadata
+
+- (void)testPOST_whenUsingGateway_includesMetadata {
     BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
     apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
     BTFakeHTTP *mockHTTP = [BTFakeHTTP fakeHTTP];
     apiClient.http = mockHTTP;
-    [mockHTTP stubRequest:@"GET"
-               toEndpoint:@"/client_api/v1/configuration"
-              respondWith:@{
-                            @"analytics" : @{
-                                    @"url" : @"test://do-not-send.url"
-                                    } }
-               statusCode:200];
-    BTFakeHTTP *mockConfigurationHTTP = [BTFakeHTTP fakeHTTP];
-    apiClient.configurationHTTP = mockConfigurationHTTP;
-    [mockConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{ } statusCode:200];
+    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
+    apiClient.configurationHTTP = stubConfigurationHTTP;
+    [stubConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{} statusCode:200];
 
     BTClientMetadata *metadata = apiClient.metadata;
 
-    XCTestExpectation *expectation = [self expectationWithDescription:@"Sends analytics event"];
-    [apiClient POST:@"/" parameters:@{} completion:^(BTJSON *body, NSHTTPURLResponse *response, NSError *error) {
-        XCTAssertNotNil(body);
-        XCTAssertNotNil(response);
-        XCTAssertNil(error);
-
-        XCTAssertEqualObjects(mockHTTP.lastRequestEndpoint, @"/");
-        XCTAssertEqual(apiClient.metadata.source, BTClientMetadataSourcePayPalApp);
-        XCTAssertEqual(apiClient.metadata.integration, BTClientMetadataIntegrationDropIn);
+    XCTestExpectation *expectation = [self expectationWithDescription:@"POST callback"];
+    [apiClient POST:@"/" parameters:@{} httpType:BTAPIClientHTTPTypeGateway completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
         XCTAssertEqualObjects(mockHTTP.lastRequestParameters[@"_meta"][@"integration"], metadata.integrationString);
         XCTAssertEqualObjects(mockHTTP.lastRequestParameters[@"_meta"][@"source"], metadata.sourceString);
         XCTAssertEqualObjects(mockHTTP.lastRequestParameters[@"_meta"][@"sessionId"], metadata.sessionId);
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
+- (void)testPOST_whenUsingBraintreeAPI_doesNotIncludeMetadata {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
+    apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
+    BTFakeAPIHTTP *mockAPIHTTP = [BTFakeAPIHTTP fakeHTTP];
+    apiClient.braintreeAPI = mockAPIHTTP;
+    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
+    apiClient.configurationHTTP = stubConfigurationHTTP;
+    [stubConfigurationHTTP stubRequest:@"GET" toEndpoint:@"/client_api/v1/configuration" respondWith: @{} statusCode:200];
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"POST callback"];
+    [apiClient POST:@"/" parameters:@{} httpType:BTAPIClientHTTPTypeBraintreeAPI completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
+        XCTAssertEqualObjects(mockAPIHTTP.lastRequestParameters, @{});
+        [expectation fulfill];
+    }];
+
+    [self waitForExpectationsWithTimeout:2 handler:nil];
+}
+
+- (void)testPOST_whenUsingGraphQLAPI_includesMetadata {
+    BTAPIClient *apiClient = [[BTAPIClient alloc] initWithAuthorization:@"development_tokenization_key" sendAnalyticsEvent:NO];
+    apiClient = [apiClient copyWithSource:BTClientMetadataSourcePayPalApp integration:BTClientMetadataIntegrationDropIn];
+    BTFakeGraphQLHTTP *mockGraphQLHTTP = [BTFakeGraphQLHTTP fakeHTTP];
+    apiClient.graphQL = mockGraphQLHTTP;
+    BTFakeHTTP *stubConfigurationHTTP = [BTFakeHTTP fakeHTTP];
+    apiClient.configurationHTTP = stubConfigurationHTTP;
+    [stubConfigurationHTTP stubRequest:@"GET"
+                            toEndpoint:@"/client_api/v1/configuration"
+                           respondWith:@{
+                                         @"graphQL": @{
+                                                 @"url": @"graphql://graphql",
+                                                 @"features": @[@"tokenize_credit_cards"]                                                                                   }
+                                         }
+                            statusCode:200];
+
+    BTClientMetadata *metadata = apiClient.metadata;
+
+    XCTestExpectation *expectation = [self expectationWithDescription:@"POST callback"];
+    [apiClient POST:@"/" parameters:@{} httpType:BTAPIClientHTTPTypeGraphQLAPI completion:^(__unused BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
+        XCTAssertEqualObjects(mockGraphQLHTTP.lastRequestParameters[@"clientSdkMetadata"], metadata.parameters);
         [expectation fulfill];
     }];
 

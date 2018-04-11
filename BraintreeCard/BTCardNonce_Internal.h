@@ -12,6 +12,17 @@ NS_ASSUME_NONNULL_BEGIN
                     isDefault:(BOOL)isDefault
                      cardJSON:(BTJSON *)cardJSON;
 
+
+/**
+ Create a `BTCardNonce` object from JSON.
+ */
++ (instancetype)cardNonceWithJSON:(BTJSON *)cardJSON;
+
+/**
+ Create a `BTCardNonce` object from GraphQL JSON.
+ */
++ (instancetype)cardNonceWithGraphQLJSON:(BTJSON *)cardJSON;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -1,5 +1,16 @@
 # Braintree iOS SDK Release Notes
 
+## 4.14.0 (2018-04-03)
+
+* Ensure animations are consistent for PayPal SFSafariViewController flow (thanks @nudge)
+* Update header documentation
+* Add BTAppSwitchDelegate events `appContextWillSwitch` and `appContextDidReturn`
+  * Addresses the issue that notifications were inconsistent across app switches [#383](https://github.com/braintree/braintree_ios/issues/383)
+
+## 4.13.0 (2018-03-20)
+
+* Update `PayPalDataCollector` to include latest `libPPRiskComponent.a`
+
 ## 4.12.0 (2018-03-06)
 
 * Add support for Venmo profiles

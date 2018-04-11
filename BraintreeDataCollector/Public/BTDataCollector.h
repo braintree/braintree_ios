@@ -6,10 +6,20 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Data collector environments.
+ */
 typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
+    /// Development
     BTDataCollectorEnvironmentDevelopment,
+
+    /// QA
     BTDataCollectorEnvironmentQA,
+
+    /// Sandbox
     BTDataCollectorEnvironmentSandbox,
+
+    /// Production
     BTDataCollectorEnvironmentProduction
 };
 
@@ -17,38 +27,40 @@ typedef NS_ENUM(NSInteger, BTDataCollectorEnvironment) {
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Domain for Kount errors.
+ */
 extern NSString * const BTDataCollectorKountErrorDomain;
 
 /**
- @class BTDataCollector
- @brief Braintree's advanced fraud protection solution
+ Braintree's advanced fraud protection solution
 */
 @interface BTDataCollector : NSObject
 
 /**
- @brief Set a BTDataCollectorDelegate to receive notifications about collector events.
+ Set a BTDataCollectorDelegate to receive notifications about collector events.
  @see BTDataCollectorDelegate protocol declaration
 */
 @property (nonatomic, weak) id<BTDataCollectorDelegate> delegate;
 
 /**
- @brief Initializes a `BTDataCollector` instance for an environment.
+ Initializes a `BTDataCollector` instance for an environment.
 
  @param environment The desired environment to target. This setting will determine which default collectorURL is used when collecting fraud data from the device.
 */
 - (instancetype)initWithEnvironment:(BTDataCollectorEnvironment)environment DEPRECATED_MSG_ATTRIBUTE("Use BTDataCollector initWithAPIClient: instead");
 
 /**
- @brief Initializes a `BTDataCollector` instance with a BTAPIClient.
+ Initializes a `BTDataCollector` instance with a BTAPIClient.
 
  @param apiClient The API client which can retrieve remote configuration for the data collector.
 */
 - (instancetype)initWithAPIClient:(BTAPIClient *)apiClient;
 
 /**
- @brief Collects device data using Kount and PayPal.
+ Collects device data using Kount and PayPal.
 
- @discussion This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
+ This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
  use `-collectCardFraudData`. To collect data for PayPal, integrate PayPalDataCollector and use
  `[PPDataCollector collectPayPalDeviceData]`.
 
@@ -67,9 +79,9 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 - (void)collectFraudData:(void (^)(NSString *deviceData))completion;
 
 /**
- @brief Collects device data for Kount.
+ Collects device data for Kount.
 
- @discussion This should be used when the user is paying with a card.
+ This should be used when the user is paying with a card.
 
  For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
  to wait for the completion callback before performing the transaction, the data will be most effective if you do.
@@ -85,7 +97,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 #pragma mark - Direct Integrations
 
 /**
- @brief Set your fraud merchant id.
+ Set your fraud merchant id.
 
  @note If you do not call this method, a generic Braintree value will be used.
 
@@ -96,7 +108,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 #pragma mark - Deprecated
 
 /**
- @brief Set the URL that the Device Collector will use.
+ Set the URL that the Device Collector will use.
 
  @note If you do not call this method, a generic Braintree value will be used.
 
@@ -105,7 +117,7 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 - (void)setCollectorUrl:(NSString *)url DEPRECATED_MSG_ATTRIBUTE("The collector URL is no longer used. The environment will be automatically chosen.");
 
 /**
- @brief Generates a new PayPal fraud ID if PayPal is integrated; otherwise returns `nil`.
+ Generates a new PayPal fraud ID if PayPal is integrated; otherwise returns `nil`.
 
  @note This returns a raw client metadata ID, which is not the correct format for device datawhen creating a transaction. Instead, use `[PPDataCollector collectPayPalDeviceData]`.
 
@@ -114,9 +126,9 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 + (nullable NSString *)payPalClientMetadataId DEPRECATED_MSG_ATTRIBUTE("Integrate PayPalDataCollector and use PPDataCollector +clientMetadataID instead.");
 
 /**
- @brief Collects device data for Kount.
+ Collects device data for Kount.
 
- @discussion This should be used when the user is paying with a card.
+ This should be used when the user is paying with a card.
 
  For lifecycle events such as a completion callback, use BTDataCollectorDelegate. Although you do not need
  to wait for the completion callback before performing the transaction, the data will be most effective if you do.
@@ -128,9 +140,9 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 - (NSString *)collectCardFraudData DEPRECATED_MSG_ATTRIBUTE("Use BTDataCollector -collectCardFraudData: instead");
 
 /**
- @brief Collects device data for PayPal.
+ Collects device data for PayPal.
 
- @discussion This should be used when the user is paying with PayPal or Venmo only.
+ This should be used when the user is paying with PayPal or Venmo only.
 
  @return a deviceData string that should be passed into server-side calls, such as `Transaction.sale`,
          for PayPal transactions. This JSON serialized string contains a PayPal fraud ID.
@@ -138,9 +150,9 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 - (NSString *)collectPayPalClientMetadataId DEPRECATED_MSG_ATTRIBUTE("Integrate PayPalDataCollector and use PPDataCollector +collectPayPalDeviceData instead.");
 
 /**
- @brief Collects device data using Kount and PayPal.
+ Collects device data using Kount and PayPal.
 
- @discussion This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
+ This method collects device data using both Kount and PayPal. If you want to collect data for Kount,
  use `-collectCardFraudData`. To collect data for PayPal, integrate PayPalDataCollector and use
  `[PPDataCollector collectPayPalDeviceData]`.
 
@@ -160,14 +172,14 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 @end
 
 /**
- @brief Provides status updates from a BTDataCollector instance. At this time, updates will only be sent for card fraud data (from Kount).
+ Provides status updates from a BTDataCollector instance. At this time, updates will only be sent for card fraud data (from Kount).
 */
 @protocol BTDataCollectorDelegate <NSObject>
 
 /**
- @brief The collector finished successfully.
+ The collector finished successfully.
 
- @discussion Use this delegate method if, due to fraud, you want to wait
+ Use this delegate method if, due to fraud, you want to wait
  until collection completes before performing a transaction.
 
  This method is required because there's no reason to implement BTDataCollectorDelegate without this method.
@@ -177,12 +189,12 @@ extern NSString * const BTDataCollectorKountErrorDomain;
 @optional
 
 /**
- @brief The collector has started.
+ The collector has started.
 */
 - (void)dataCollectorDidStart:(BTDataCollector *)dataCollector;
 
 /**
- @brief An error occurred.
+ An error occurred.
 
  @param error Triggering error. If the error domain is BTDataCollectorKountErrorDomain, then the
               errorCode is a Kount error code. See error.userInfo[NSLocalizedFailureReasonErrorKey]

@@ -1,9 +1,9 @@
 #import <UIKit/UIKit.h>
 
-//! Project version number for BraintreeUI.
+/// Project version number for BraintreeUI.
 FOUNDATION_EXPORT double BraintreeUIVersionNumber;
 
-//! Project version string for BraintreeUI.
+/// Project version string for BraintreeUI.
 FOUNDATION_EXPORT const unsigned char BraintreeUIVersionString[];
 
 #if __has_include("BraintreeCore.h")

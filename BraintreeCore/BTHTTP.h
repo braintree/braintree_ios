@@ -7,24 +7,24 @@ NS_ASSUME_NONNULL_BEGIN
 @class BTHTTPResponse, BTClientToken;
 
 /**
- @brief Performs HTTP methods on the Braintree Client API
+ Performs HTTP methods on the Braintree Client API
 */
 @interface BTHTTP : NSObject<NSCopying>
 
 /**
- @brief An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
+ An optional array of pinned certificates, each an NSData instance consisting of DER encoded x509 certificates
 */
 @property (nonatomic, nullable, strong) NSArray<NSData *> *pinnedCertificates;
 
 /**
- @brief Initialize `BTHTTP` with the URL for the Braintree API
+ Initialize `BTHTTP` with the URL for the Braintree API
  
  @param URL The base URL for the Braintree Client API
  */
 - (instancetype)initWithBaseURL:(NSURL *)URL NS_DESIGNATED_INITIALIZER;
 
 /**
- @brief Initialize `BTHTTP` with the authorization fingerprint from a client token
+ Initialize `BTHTTP` with the authorization fingerprint from a client token
 
  @param URL The base URL for the Braintree Client API
  @param authorizationFingerprint The authorization fingerprint HMAC from a client token
@@ -33,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
        authorizationFingerprint:(NSString *)authorizationFingerprint;
 
 /**
- @brief Initialize `BTHTTP` with a tokenization key
+ Initialize `BTHTTP` with a tokenization key
 
  @param URL The base URL for the Braintree Client API
  @param tokenizationKey A tokenization key
@@ -41,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithBaseURL:(NSURL *)URL tokenizationKey:(NSString *)tokenizationKey;
 
 /**
- @brief A convenience initializer to initialize `BTHTTP` with a client token
+ A convenience initializer to initialize `BTHTTP` with a client token
 
  @param clientToken A client token
 */
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, strong) NSURL *baseURL;
 
 /**
- @brief Queue that callbacks are dispatched onto, main queue if not otherwise specified
+ Queue that callbacks are dispatched onto, main queue if not otherwise specified
 */
 @property (nonatomic, strong) dispatch_queue_t dispatchQueue;
 
@@ -92,6 +92,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)DELETE:(NSString *)endpoint
     parameters:(nullable NSDictionary *)parameters
     completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
+
+- (void)handleRequestCompletion:(nullable NSData *)data
+                       response:(nullable NSURLResponse *)response
+                          error:(nullable NSError *)error
+                completionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock;
+
+- (void)callCompletionBlock:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock
+                       body:(nullable BTJSON *)jsonBody
+                   response:(nullable NSHTTPURLResponse *)response
+                      error:(nullable NSError *)error;
 
 @end
 

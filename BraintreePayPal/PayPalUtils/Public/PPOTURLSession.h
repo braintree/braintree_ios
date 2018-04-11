@@ -6,12 +6,12 @@
 #import <Foundation/Foundation.h>
 
 /**
- @brief Request completion callback type
+ Request completion callback type
 */
 typedef void(^PPOTURLSessionCompletionBlock)(NSData * _Nullable data, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error);
 
 /**
- @brief A URL session to manage network connections
+ A URL session to manage network connections
 */
 @interface PPOTURLSession: NSObject
 
@@ -26,7 +26,7 @@ typedef void(^PPOTURLSessionCompletionBlock)(NSData * _Nullable data, NSHTTPURLR
 + (nonnull PPOTURLSession *)sessionWithTimeoutIntervalForRequest:(NSTimeInterval)timeoutIntervalForRequest;
 
 /**
- @brief Sends a URL request
+ Sends a URL request
 
  @param request the request to send
  @param completionBlock the completion block invoked for the response
@@ -35,7 +35,7 @@ typedef void(^PPOTURLSessionCompletionBlock)(NSData * _Nullable data, NSHTTPURLR
     completionBlock:(nullable PPOTURLSessionCompletionBlock)completionBlock;
 
 /**
- @brief Attempts to stop the session from accepting any future requests
+ Attempts to stop the session from accepting any future requests
 */
 - (void)finishTasksAndInvalidate;
 

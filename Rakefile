@@ -286,6 +286,7 @@ def jazzy_command
       --output docs_output
       --xcodebuild-arguments --objc,Docs/Braintree-Umbrella-Header.h,--,-x,objective-c,-isysroot,$(xcrun --show-sdk-path),-I,$(pwd)
       --min-acl internal
+      --theme fullwidth
       --module Braintree
   ].join(' ')
 end

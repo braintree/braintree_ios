@@ -5,6 +5,8 @@ NSString * const BTAppSwitchWillSwitchNotification = @"com.braintreepayments.BTA
 NSString * const BTAppSwitchDidSwitchNotification = @"com.braintreepayments.BTAppSwitchDidSwitchNotification";
 NSString * const BTAppSwitchWillProcessPaymentInfoNotification = @"com.braintreepayments.BTAppSwitchWillProcessPaymentInfoNotification";
 NSString * const BTAppSwitchNotificationTargetKey = @"BTAppSwitchNotificationTargetKey";
+NSString * const BTAppContextWillSwitchNotification = @"com.braintreepayments.BTAppContextWillSwitchNotification";
+NSString * const BTAppContextDidReturnNotification = @"com.braintreepayments.BTAppContextDidReturnNotification";
 
 @interface BTAppSwitch ()
 

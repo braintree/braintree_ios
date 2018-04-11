@@ -5,22 +5,22 @@
 #endif
 
 /**
- @brief Category on BTConfiguration for iDEAL
+ Category on BTConfiguration for iDEAL
  */
 @interface BTConfiguration (Ideal)
 
 /**
- @brief Indicates whether iDEAL is enabled for the merchant account.
+ Indicates whether iDEAL is enabled for the merchant account.
  */
 @property (nonatomic, readonly, assign) BOOL isIdealEnabled;
 
 /**
- @brief Returns the RouteId used by the iDEAL.
+ Returns the RouteId used by the iDEAL.
  */
 @property (nonatomic, readonly, copy) NSString *routeId;
 
 /**
- @brief The base iDEAL assets URL
+ The base iDEAL assets URL
  */
 @property (nonatomic, readonly, copy) NSString *idealAssetsUrl;
 

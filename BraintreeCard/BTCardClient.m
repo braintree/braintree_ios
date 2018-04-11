@@ -16,6 +16,7 @@
 #endif
 
 NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientErrorDomain";
+NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 @interface BTCardClient ()
 @end
@@ -64,73 +65,91 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
         completionBlock(nil, error);
         return;
     }
-    
-    NSMutableDictionary *parameters = [NSMutableDictionary new];
-    if (request.card.parameters) {
-        NSMutableDictionary *mutableCardParameters = [request.card.parameters mutableCopy];
 
-        if (request.enrollmentID) {
-            // Convert the immutable options dictionary so to write to it without overwriting any existing options
-            NSMutableDictionary *unionPayEnrollment = [NSMutableDictionary new];
-            unionPayEnrollment[@"id"] = request.enrollmentID;
-            if (request.smsCode) {
-                unionPayEnrollment[@"sms_code"] = request.smsCode;
-            }
-            mutableCardParameters[@"options"] = [mutableCardParameters[@"options"] mutableCopy];
-            mutableCardParameters[@"options"][@"union_pay_enrollment"] = unionPayEnrollment;
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
+        if (error) {
+            completionBlock(nil, error);
+            return;
         }
 
-        parameters[@"credit_card"] = [mutableCardParameters copy];
-    }
-    parameters[@"_meta"] = @{
-                             @"source" : self.apiClient.metadata.sourceString,
-                             @"integration" : self.apiClient.metadata.integrationString,
-                             @"sessionId" : self.apiClient.metadata.sessionId,
-                             };
-    if (options) {
-        parameters[@"options"] = options;
-    }
-    [self.apiClient POST:@"v1/payment_methods/credit_cards"
-              parameters:parameters
-              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
-     {
-         if (error != nil) {
-             NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
-             NSError *callbackError = error;
+        // Union Pay tokenization requests should not go through the GraphQL API
+        if ([self isGraphQLEnabledForCardTokenization:configuration] && !request.enrollmentID) {
+            NSDictionary *parameters = [request.card graphQLParameters];
+            [self.apiClient POST:@""
+                      parameters:parameters
+                        httpType:BTAPIClientHTTPTypeGraphQLAPI
+                      completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
+             {
+                 if (error) {
+                     NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                     NSError *callbackError = error;
 
-             if (response.statusCode == 422) {
-                 callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
-                                                     code:BTCardClientErrorTypeCustomerInputInvalid
-                                                 userInfo:[self.class validationErrorUserInfo:error.userInfo]];
-             }
+                     if (response.statusCode == 422) {
+                             callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                                 code:BTCardClientErrorTypeCustomerInputInvalid
+                                                             userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+                     }
 
-             if (request.enrollmentID) {
-                 [self sendUnionPayAnalyticsEvent:NO];
-             } else {
-                 [self sendAnalyticsEventWithSuccess:NO];
-             }
+                     [self sendGraphQLAnalyticsEventWithSuccess:NO];
 
-             completionBlock(nil, callbackError);
-             return;
-         }
-         
-         BTJSON *cardJSON = body[@"creditCards"][0];
+                     completionBlock(nil, callbackError);
+                     return;
+                 }
 
-         if (request.enrollmentID) {
-             [self sendUnionPayAnalyticsEvent:!cardJSON.isError];
-         } else {
-             [self sendAnalyticsEventWithSuccess:!cardJSON.isError];
-         }
+                 BTJSON *cardJSON = body[@"data"][@"tokenizeCreditCard"];
+                 [self sendGraphQLAnalyticsEventWithSuccess:YES];
+                 completionBlock([BTCardNonce cardNonceWithGraphQLJSON:cardJSON], cardJSON.asError);
+             }];
+        } else {
+            NSDictionary *parameters = [self clientAPIParametersForCard:request options:options];
+            [self.apiClient POST:@"v1/payment_methods/credit_cards"
+                      parameters:parameters
+                      completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
+             {
+                 if (error != nil) {
+                     NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
+                     NSError *callbackError = error;
 
-         // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
-         completionBlock([BTCardNonce cardNonceWithJSON:cardJSON], cardJSON.asError);
-     }];
+                     if (response.statusCode == 422) {
+                         callbackError = [NSError errorWithDomain:BTCardClientErrorDomain
+                                                             code:BTCardClientErrorTypeCustomerInputInvalid
+                                                         userInfo:[self.class validationErrorUserInfo:error.userInfo]];
+                     }
+
+                     if (request.enrollmentID) {
+                         [self sendUnionPayAnalyticsEvent:NO];
+                     } else {
+                         [self sendAnalyticsEventWithSuccess:NO];
+                     }
+
+                     completionBlock(nil, callbackError);
+                     return;
+                 }
+
+                 BTJSON *cardJSON = body[@"creditCards"][0];
+
+                 if (request.enrollmentID) {
+                     [self sendUnionPayAnalyticsEvent:!cardJSON.isError];
+                 } else {
+                     [self sendAnalyticsEventWithSuccess:!cardJSON.isError];
+                 }
+
+                 // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
+                 completionBlock([BTCardNonce cardNonceWithJSON:cardJSON], cardJSON.asError);
+             }];
+        }
+    }];
 }
 
 #pragma mark - Analytics
 
 - (void)sendAnalyticsEventWithSuccess:(BOOL)success {
     NSString *event = [NSString stringWithFormat:@"ios.%@.card.%@", self.apiClient.metadata.integrationString, success ? @"succeeded" : @"failed"];
+    [self.apiClient sendAnalyticsEvent:event];
+}
+
+- (void)sendGraphQLAnalyticsEventWithSuccess:(BOOL)success {
+    NSString *event = [NSString stringWithFormat:@"ios.card.graphql.tokenization.%@", success ? @"success" : @"failure"];
     [self.apiClient sendAnalyticsEvent:event];
 }
 
@@ -158,6 +177,42 @@ NSString *const BTCardClientErrorDomain = @"com.braintreepayments.BTCardClientEr
         }
     }
     return [mutableUserInfo copy];
+}
+
+- (NSDictionary *)clientAPIParametersForCard:(BTCardRequest *)request options:(NSDictionary *)options {
+    NSMutableDictionary *parameters = [NSMutableDictionary new];
+    if (request.card.parameters) {
+        NSMutableDictionary *mutableCardParameters = [request.card.parameters mutableCopy];
+
+        if (request.enrollmentID) {
+            // Convert the immutable options dictionary so to write to it without overwriting any existing options
+            NSMutableDictionary *unionPayEnrollment = [NSMutableDictionary new];
+            unionPayEnrollment[@"id"] = request.enrollmentID;
+            if (request.smsCode) {
+                unionPayEnrollment[@"sms_code"] = request.smsCode;
+            }
+            mutableCardParameters[@"options"] = [mutableCardParameters[@"options"] mutableCopy];
+            mutableCardParameters[@"options"][@"union_pay_enrollment"] = unionPayEnrollment;
+        }
+
+        parameters[@"credit_card"] = [mutableCardParameters copy];
+    }
+    parameters[@"_meta"] = @{
+                             @"source" : self.apiClient.metadata.sourceString,
+                             @"integration" : self.apiClient.metadata.integrationString,
+                             @"sessionId" : self.apiClient.metadata.sessionId,
+                             };
+    if (options) {
+        parameters[@"options"] = options;
+    }
+
+    return [parameters copy];
+}
+
+- (BOOL)isGraphQLEnabledForCardTokenization:(BTConfiguration *)configuration {
+    NSArray *graphQLFeatures = [configuration.json[@"graphQL"][@"features"] asArray];
+
+    return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
 }
 
 @end

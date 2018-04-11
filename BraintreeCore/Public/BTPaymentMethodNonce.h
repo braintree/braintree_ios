@@ -3,10 +3,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- @class BTPaymentMethodNonce
- @brief BTPaymentMethodNonce is for generic tokenized payment information.
+ BTPaymentMethodNonce is for generic tokenized payment information.
 
- @discussion For example, if a customer's vaulted payment methods contains a type that's not recognized or supported by the
+ For example, if a customer's vaulted payment methods contains a type that's not recognized or supported by the
  Braintree SDK or the client-side integration (e.g. the vault contains a PayPal account but the client-side
  integration does not include the PayPal component), this type can act as a fallback.
 
@@ -17,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTPaymentMethodNonce : NSObject
 
 /**
- @brief Initialize a new Payment Method Nonce.
+ Initialize a new Payment Method Nonce.
 
  @param nonce       A transactable payment method nonce.
  @param description A human-readable description.
@@ -27,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(nullable NSString *)description type:(NSString *)type;
 
 /**
- @brief Initialize a new Payment Method Nonce.
+ Initialize a new Payment Method Nonce.
 
  @param nonce       A transactable payment method nonce.
  @param description A human-readable description.
@@ -36,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(nullable NSString *)description;
 
 /**
- @brief Initialize a new Payment Method Nonce.
+ Initialize a new Payment Method Nonce.
 
  @param nonce       A transactable payment method nonce.
  @param description A human-readable description.
@@ -47,22 +46,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithNonce:(NSString *)nonce localizedDescription:(NSString *)description type:(nonnull NSString *)type isDefault:(BOOL)isDefault;
 
 /**
- @brief The one-time use payment method nonce
+ The one-time use payment method nonce
 */
 @property (nonatomic, readonly, copy) NSString *nonce;
 
 /**
- @brief A localized description of the payment info
+ A localized description of the payment info
 */
 @property (nonatomic, readonly, copy) NSString *localizedDescription;
 
 /**
- @brief The type of the tokenized data, e.g. PayPal, Venmo, MasterCard, Visa, Amex
+ The type of the tokenized data, e.g. PayPal, Venmo, MasterCard, Visa, Amex
 */
 @property (nonatomic, readonly, copy) NSString *type;
 
 /**
- @brief True if this nonce is the customer's default payment method, otherwise false.
+ True if this nonce is the customer's default payment method, otherwise false.
 */
 @property (nonatomic, readonly, assign) BOOL isDefault;
 

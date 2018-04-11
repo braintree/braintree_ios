@@ -4,10 +4,9 @@
 @protocol BTUIFormFieldDelegate;
 
 /**
- @class BTUIFormField
- @brief A form field is a UI component for entering a text value
+ A form field is a UI component for entering a text value
 
- @discussion This is the parent class of all card form fields,
+ This is the parent class of all card form fields,
  and handles display but not formatting, validation, or
  relaying of events
 
@@ -26,7 +25,7 @@
 @property (nonatomic, assign, readwrite) BOOL backspace;
 
 /**
- @brief The text displayed by the field
+ The text displayed by the field
 */
 @property (nonatomic, copy) NSString *text;
 

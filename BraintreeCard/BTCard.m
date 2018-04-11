@@ -7,6 +7,28 @@
 
 @implementation BTCard
 
+NSString *const BTCardGraphQLTokenizationMutation = @""
+"mutation TokenizeCreditCard($input: TokenizeCreditCardInput!) {"
+"  tokenizeCreditCard(input: $input) {"
+"    token"
+"    creditCard {"
+"      brand"
+"      last4"
+"      binData {"
+"        prepaid"
+"        healthcare"
+"        debit"
+"        durbinRegulated"
+"        commercial"
+"        payroll"
+"        issuingBank"
+"        countryOfIssuance"
+"        productId"
+"      }"
+"    }"
+"  }"
+"}";
+
 - (instancetype)init {
     return [self initWithParameters:@{}];
 }
@@ -136,6 +158,100 @@
     optionsDictionary[@"validate"] = @(self.shouldValidate);
     p[@"options"] = [optionsDictionary copy];
     return [p copy];
+}
+
+- (NSDictionary *)graphQLParameters {
+    NSMutableDictionary *inputDictionary = [NSMutableDictionary new];
+    NSMutableDictionary *cardDictionary = [NSMutableDictionary new];
+    inputDictionary[@"creditCard"] = cardDictionary;
+
+    if (self.number) {
+        cardDictionary[@"number"] = self.number;
+    }
+    if (self.expirationMonth) {
+        cardDictionary[@"expirationMonth"] = self.expirationMonth;
+    }
+    if (self.expirationYear) {
+        cardDictionary[@"expirationYear"] = self.expirationYear;
+    }
+    if (self.cvv) {
+        cardDictionary[@"cvv"] = self.cvv;
+    }
+    if (self.cardholderName) {
+        cardDictionary[@"cardholderName"] = self.cardholderName;
+    }
+
+    NSMutableDictionary *billingAddressDictionary = [NSMutableDictionary new];
+    if ([cardDictionary[@"billingAddress"] isKindOfClass:[NSDictionary class]]) {
+        [billingAddressDictionary addEntriesFromDictionary:cardDictionary[@"billingAddress"]];
+    }
+
+    if (self.firstName) {
+        billingAddressDictionary[@"firstName"] = self.firstName;
+    }
+
+    if (self.lastName) {
+        billingAddressDictionary[@"lastName"] = self.lastName;
+    }
+
+    if (self.company) {
+        billingAddressDictionary[@"company"] = self.company;
+    }
+
+    if (self.postalCode) {
+        billingAddressDictionary[@"postalCode"] = self.postalCode;
+    }
+
+    if (self.streetAddress) {
+        billingAddressDictionary[@"streetAddress"] = self.streetAddress;
+    }
+
+    if (self.extendedAddress) {
+        billingAddressDictionary[@"extendedAddress"] = self.extendedAddress;
+    }
+
+    if (self.locality) {
+        billingAddressDictionary[@"locality"] = self.locality;
+    }
+
+    if (self.region) {
+        billingAddressDictionary[@"region"] = self.region;
+    }
+
+    if (self.countryName) {
+        billingAddressDictionary[@"countryName"] = self.countryName;
+    }
+
+    if (self.countryCodeAlpha2) {
+        billingAddressDictionary[@"countryCodeAlpha2"] = self.countryCodeAlpha2;
+    }
+
+    if (self.countryCodeAlpha3) {
+        billingAddressDictionary[@"countryCode"] = self.countryCodeAlpha3;
+    }
+
+    if (self.countryCodeNumeric) {
+        billingAddressDictionary[@"countryCodeNumeric"] = self.countryCodeNumeric;
+    }
+
+    if (billingAddressDictionary.count > 0) {
+        cardDictionary[@"billingAddress"] = [billingAddressDictionary copy];
+    }
+
+    NSMutableDictionary *optionsDictionary = [NSMutableDictionary new];
+    if ([inputDictionary[@"options"] isKindOfClass:[NSDictionary class]]) {
+        [optionsDictionary addEntriesFromDictionary:inputDictionary[@"options"]];
+    }
+    optionsDictionary[@"validate"] = @(self.shouldValidate);
+    inputDictionary[@"options"] = [optionsDictionary copy];
+
+    return @{
+             @"operationName": @"TokenizeCreditCard",
+             @"query": BTCardGraphQLTokenizationMutation,
+             @"variables": @{
+                     @"input": [inputDictionary copy]
+                     }
+             };
 }
 
 @end

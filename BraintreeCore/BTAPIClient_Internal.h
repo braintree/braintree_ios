@@ -4,6 +4,7 @@
 #import "BTClientToken.h"
 #import "BTHTTP.h"
 #import "BTAPIHTTP.h"
+#import "BTGraphQLHTTP.h"
 #import "BTJSON.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -16,6 +17,9 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
     
     /// Use the Braintree API
     BTAPIClientHTTPTypeBraintreeAPI,
+
+    /// Use the GraphQL API
+    BTAPIClientHTTPTypeGraphQLAPI,
 };
 
 
@@ -26,30 +30,31 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
 @property (nonatomic, strong) BTHTTP *http;
 @property (nonatomic, strong) BTHTTP *configurationHTTP;
 @property (nonatomic, strong) BTAPIHTTP *braintreeAPI;
+@property (nonatomic, strong) BTGraphQLHTTP *graphQL;
 
 /**
- @brief Client metadata that is used for tracking the client session
+ Client metadata that is used for tracking the client session
 */
 @property (nonatomic, readonly, strong) BTClientMetadata *metadata;
 
 /**
- @brief Exposed for testing analytics
+ Exposed for testing analytics
 */
 @property (nonatomic, strong) BTAnalyticsService *analyticsService;
 
 /**
- @brief Sends this event and all queued analytics events. Use `queueAnalyticsEvent` for low priority events.
+ Sends this event and all queued analytics events. Use `queueAnalyticsEvent` for low priority events.
 */
 - (void)sendAnalyticsEvent:(NSString *)eventName;
 
 /**
- @brief Queues an analytics event to be sent.
+ Queues an analytics event to be sent.
  */
 - (void)queueAnalyticsEvent:(NSString *)eventName;
 
 /**
- @brief An internal initializer to toggle whether to send an analytics event during initialization.
- @discussion This prevents copyWithSource:integration: from sending a duplicate event. It can also be used to suppress excessive network chatter during testing.
+ An internal initializer to toggle whether to send an analytics event during initialization.
+ This prevents copyWithSource:integration: from sending a duplicate event. It can also be used to suppress excessive network chatter during testing.
 */
 - (nullable instancetype)initWithAuthorization:(NSString *)authorization sendAnalyticsEvent:(BOOL)sendAnalyticsEvent;
 

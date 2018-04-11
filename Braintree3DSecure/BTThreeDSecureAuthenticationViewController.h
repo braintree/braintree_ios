@@ -5,17 +5,23 @@
 #import "BTThreeDSecureCardNonce.h"
 #import "BTWebViewController.h"
 
+/**
+ Completion status for BTThreeDSecureViewController
+ */
 typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
+    /// Failure status
     BTThreeDSecureViewControllerCompletionStatusFailure = 0,
+    
+    /// Success status
     BTThreeDSecureViewControllerCompletionStatusSuccess,
 };
 
 @protocol BTThreeDSecureAuthenticationViewControllerDelegate;
 
 /**
- @brief A view controller that authenticates a cardholder for 3D Secure
+ A view controller that authenticates a cardholder for 3D Secure
 
- @discussion Initialize this view controller with a BTThreeDSecureLookupResult, which contains the
+ Initialize this view controller with a BTThreeDSecureLookupResult, which contains the
  information that is needed to obtain cardholder authorization via the issuing bank's login
  within a web view for a particular card.
 
@@ -38,7 +44,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 @interface BTThreeDSecureAuthenticationViewController : BTWebViewController
 
 /**
- @brief Initializes a 3D Secure authentication view controller
+ Initializes a 3D Secure authentication view controller
 
  @param lookupResult Contains the result of the 3D Secure lookup
 
@@ -47,7 +53,7 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 - (instancetype)initWithLookupResult:(BTThreeDSecureLookupResult *)lookupResult NS_DESIGNATED_INITIALIZER;
 
 /**
- @discussion The delegate is notified when the 3D Secure authentication flow completes.
+ The delegate is notified when the 3D Secure authentication flow completes.
  This is a strong reference, so to prevent a retain cycle, the delegate must not keep a strong
  reference to the BTThreeDSecureAuthenticationViewController.
  */
@@ -58,9 +64,9 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
 @protocol BTThreeDSecureAuthenticationViewControllerDelegate <NSObject>
 
 /**
- @brief The delegate will receive this message after the user has successfully authenticated with 3D Secure
+ The delegate will receive this message after the user has successfully authenticated with 3D Secure
 
- @discussion On Braintree's servers, this nonce will point to both a card and its 3D Secure verification.
+ On Braintree's servers, this nonce will point to both a card and its 3D Secure verification.
 
  This implementation is responsible for receiving the 3D Secure payment method nonce and transmitting
  it to your server for server-side operations. Upon completion, you must call the completionBlock.
@@ -76,9 +82,9 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
                         completion:(void (^)(BTThreeDSecureViewControllerCompletionStatus status))completionBlock;
 
 /**
- @brief The delegate will receive this message when 3D Secure authentication fails
+ The delegate will receive this message when 3D Secure authentication fails
 
- @discussion This can occur due to a system error, lack of issuer participation or failed user authentication.
+ This can occur due to a system error, lack of issuer participation or failed user authentication.
 
  Do *not* dismiss the view controller in this method. See threeDSecureViewControllerDidFinish:.
 
@@ -89,9 +95,9 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureViewControllerCompletionStatus) {
                   didFailWithError:(NSError *)error;
 
 /**
- @brief The delegate will receive this message upon completion of the 3D Secure flow, possibly including async work that happens in your implementation of threeDSecureViewController:didAuthenticateNonce:completion:
+ The delegate will receive this message upon completion of the 3D Secure flow, possibly including async work that happens in your implementation of threeDSecureViewController:didAuthenticateNonce:completion:
 
- @discussion This method will be called in both success and failure cases.
+ This method will be called in both success and failure cases.
 
  You should dismiss the provided view controller in your implementation.
 

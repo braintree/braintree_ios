@@ -2,6 +2,9 @@
 
 @class BTUI, BTUIPayPalWordmarkVectorArtView;
 
+/**
+ Represents a PayPal button
+ */
 @interface BTUIPayPalButton : UIControl
 
 @property (nonatomic, strong) BTUI *theme;

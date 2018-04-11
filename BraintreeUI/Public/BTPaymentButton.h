@@ -7,10 +7,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ A UIView representing a payment option 
+ */
 @interface BTPaymentButton : BTUIThemedView
 
 /**
- @brief Initialize a BTPaymentButton.
+ Initialize a BTPaymentButton.
 
  @param apiClient A `BTAPIClient` used for communicating with Braintree servers. Required.
  @param completion A completion block. Required.
@@ -21,29 +24,29 @@ NS_ASSUME_NONNULL_BEGIN
                        completion:(void(^)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error))completion;
 
 /**
- @brief The `BTAPIClient` used for communicating with Braintree servers.
+ The `BTAPIClient` used for communicating with Braintree servers.
 
- @discussion This property is exposed to enable the use of other UIView initializers, e.g.
+ This property is exposed to enable the use of other UIView initializers, e.g.
  when using Storyboards.
 */
 @property (nonatomic, strong, nullable) BTAPIClient *apiClient;
 
 /**
- @brief The `BTPaymentRequest` that customizes the payment experience.
+ The `BTPaymentRequest` that customizes the payment experience.
 */
 @property (nonatomic, strong, nullable) BTPaymentRequest *paymentRequest;
 
 /**
- @brief The completion block to handle the result of a payment authorization flow.
+ The completion block to handle the result of a payment authorization flow.
 
- @discussion This property is exposed to enable the use of other `UIView` initializers, e.g.
+ This property is exposed to enable the use of other `UIView` initializers, e.g.
  when using Storyboards.
 */
 @property (nonatomic, copy) void(^completion)(BTPaymentMethodNonce * _Nullable paymentMethodNonce, NSError * _Nullable error);
 
 /**
- @brief Set of payment options as strings.
- @discussion e.g. `@"PayPal"`, `@"Venmo"`. By default, this is configured
+ Set of payment options as strings.
+ e.g. `@"PayPal"`, `@"Venmo"`. By default, this is configured
  to the set of payment options that have been included in the client-side app integration,
  e.g. via frameworks.
 
@@ -53,8 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSOrderedSet <NSString *> *enabledPaymentOptions;
 
 /**
- @brief The configuration from a `BTAPIClient`.
- @discussion This is automatically fetched when the payment button
+ The configuration from a `BTAPIClient`.
+ This is automatically fetched when the payment button
  is initialized with a `BTAPIClient`, but it can be `nil` if the `BTAPIClient` has not yet been
  set or if the configuration fetch fails.
 
@@ -63,19 +66,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) BTConfiguration *configuration;
 
 /**
- @brief Optional delegate for receiving payment lifecycle messages from a payment option that may initiate an app or browser switch to authorize payments.
+ Optional delegate for receiving payment lifecycle messages from a payment option that may initiate an app or browser switch to authorize payments.
 */
 @property (nonatomic, weak, nullable) id <BTAppSwitchDelegate> appSwitchDelegate;
 
 /**
- @brief Optional delegate for receiving payment lifecycle messages from a payment driverthat requires presentation of a view controller to authorize a payment.
+ Optional delegate for receiving payment lifecycle messages from a payment driverthat requires presentation of a view controller to authorize a payment.
 
  @note Required by PayPal.
 */
 @property (nonatomic, weak, nullable) id <BTViewControllerPresentingDelegate> viewControllerPresentingDelegate;
 
 /**
- @brief Indicates whether any payment options available.
+ Indicates whether any payment options available.
 */
 @property (nonatomic, readonly) BOOL hasAvailablePaymentMethod;
 

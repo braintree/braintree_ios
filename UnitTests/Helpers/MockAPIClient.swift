@@ -3,8 +3,10 @@ import BraintreeCore
 class MockAPIClient : BTAPIClient {
     var lastPOSTPath = ""
     var lastPOSTParameters = [:] as [AnyHashable: Any]?
+    var lastPOSTAPIClientHTTPType: BTAPIClientHTTPType?
     var lastGETPath = ""
     var lastGETParameters = [:] as [String : String]?
+    var lastGETAPIClientHTTPType: BTAPIClientHTTPType?
     var postedAnalyticsEvents : [String] = []
 
     @objc var cannedConfigurationResponseBody : BTJSON? = nil
@@ -13,6 +15,7 @@ class MockAPIClient : BTAPIClient {
     var cannedResponseError : NSError? = nil
     var cannedHTTPURLResponse : HTTPURLResponse? = nil
     var cannedResponseBody : BTJSON? = nil
+    var cannedMetadata : BTClientMetadata? = nil
 
     var fetchedPaymentMethods = false
     var fetchPaymentMethodsSorting = false
@@ -28,6 +31,7 @@ class MockAPIClient : BTAPIClient {
     override func get(_ path: String, parameters: [String : String]?, httpType: BTAPIClientHTTPType, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastGETPath = path
         lastGETParameters = parameters
+        lastGETAPIClientHTTPType = httpType
         
         guard let completionBlock = completionBlock else {
             return
@@ -38,6 +42,7 @@ class MockAPIClient : BTAPIClient {
     override func post(_ path: String, parameters: [AnyHashable : Any]?, httpType: BTAPIClientHTTPType, completion completionBlock: ((BTJSON?, HTTPURLResponse?, Error?) -> Void)? = nil) {
         lastPOSTPath = path
         lastPOSTParameters = parameters
+        lastPOSTAPIClientHTTPType = httpType
         
         guard let completionBlock = completionBlock else {
             return
@@ -78,5 +83,16 @@ class MockAPIClient : BTAPIClient {
 
     func didFetchPaymentMethods(sorted: Bool) -> Bool {
         return fetchedPaymentMethods && fetchPaymentMethodsSorting == sorted
+    }
+
+    override var metadata: BTClientMetadata {
+        get {
+            if let cannedMetadata = cannedMetadata {
+                return cannedMetadata
+            } else {
+                cannedMetadata = BTClientMetadata()
+                return cannedMetadata!
+            }
+        }
     }
 }
