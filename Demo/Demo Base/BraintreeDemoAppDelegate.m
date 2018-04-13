@@ -4,10 +4,6 @@
 #import "BraintreeDemoDemoContainmentViewController.h"
 #import <BraintreeCore/BraintreeCore.h>
 
-#if DEBUG
-#import <FLEX/FLEXManager.h>
-#endif
-
 NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.Demo.payments";
 
 @implementation BraintreeDemoAppDelegate
@@ -104,16 +100,5 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaultsToRegister];
 }
-
-
-#if DEBUG
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    [super touchesBegan:touches withEvent:event];
-    CGPoint location = [[[event allTouches] anyObject] locationInView:[self window]];
-    if(location.y > 0 && location.y < [[UIApplication sharedApplication] statusBarFrame].size.height) {
-        [[FLEXManager sharedManager] showExplorer];
-    }
-}
-#endif
 
 @end

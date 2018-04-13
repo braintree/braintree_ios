@@ -15,7 +15,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Custom Payment Button";
+    self.title = NSLocalizedString(@"Custom Payment Button", nil);
 }
 
 - (UIView *)createPaymentButton {
@@ -26,14 +26,14 @@
     venmoButton.titleLabel.font = [UIFont fontWithName:@"AmericanTypewriter" size:[UIFont systemFontSize]];
     venmoButton.backgroundColor = [[BTUI braintreeTheme] venmoPrimaryBlue];
     [venmoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [venmoButton setTitle:@"Venmo" forState:UIControlStateNormal];
+    [venmoButton setTitle:NSLocalizedString(@"Venmo", nil) forState:UIControlStateNormal];
 
     UIButton *payPalButton = [UIButton buttonWithType:UIButtonTypeSystem];
     payPalButton.translatesAutoresizingMaskIntoConstraints = NO;
     payPalButton.titleLabel.font = [UIFont fontWithName:@"GillSans-BoldItalic" size:[UIFont systemFontSize]];
     payPalButton.backgroundColor = [[BTUI braintreeTheme] palBlue];
     [payPalButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [payPalButton setTitle:@"PayPal" forState:UIControlStateNormal];
+    [payPalButton setTitle:NSLocalizedString(@"PayPal", nil) forState:UIControlStateNormal];
 
     UIButton *cardButton = [UIButton buttonWithType:UIButtonTypeSystem];
     cardButton.translatesAutoresizingMaskIntoConstraints = NO;

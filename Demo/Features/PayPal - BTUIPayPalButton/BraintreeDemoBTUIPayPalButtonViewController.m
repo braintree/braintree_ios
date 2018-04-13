@@ -10,7 +10,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"BTUIPayPalButton";
+    self.title = NSLocalizedString(@"BTUIPayPalButton", nil);
 
     self.paymentButton.hidden = YES;
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {

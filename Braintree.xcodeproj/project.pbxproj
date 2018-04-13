@@ -218,6 +218,7 @@
 		41472F971CB6D53400AFA75C /* BTConfiguration+UnionPay.h in Headers */ = {isa = PBXBuildFile; fileRef = 41472F961CB6D53400AFA75C /* BTConfiguration+UnionPay.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4149C91D1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4149C91C1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift */; };
 		414A809A201FD587006DBA0A /* BTGraphQLHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 412A51AF201FD0A500A5B302 /* BTGraphQLHTTP.m */; };
+		4153CBB5206EC76700800970 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4153CBB4206EC76700800970 /* Localizable.strings */; };
 		415924B21BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 415924B01BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m */; };
 		415924B41BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 415924B31BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4164B99E1C9B658E006AE861 /* BraintreeCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DE12F091B59BE0100EA1BCF /* BraintreeCore.framework */; };
@@ -1369,6 +1370,7 @@
 		41472F921CB6D52200AFA75C /* BTConfiguration+UnionPay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BTConfiguration+UnionPay.m"; sourceTree = "<group>"; };
 		41472F961CB6D53400AFA75C /* BTConfiguration+UnionPay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BTConfiguration+UnionPay.h"; sourceTree = "<group>"; };
 		4149C91C1BA218830090665E /* BTPaymentMethodNonceParser_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTPaymentMethodNonceParser_Tests.swift; sourceTree = "<group>"; };
+		4153CBB4206EC76700800970 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		415924B01BA0F2A900C095F6 /* BTPaymentMethodNonceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPaymentMethodNonceParser.m; sourceTree = "<group>"; };
 		415924B31BA0F2D800C095F6 /* BTPaymentMethodNonceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BTPaymentMethodNonceParser.h; sourceTree = "<group>"; };
 		4164B9AC1C9B658E006AE861 /* BraintreeUnionPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraintreeUnionPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2860,13 +2862,14 @@
 		A76B19A21B79708900452CFA /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				A76B19A31B79708900452CFA /* Braintree-Demo.entitlements */,
 				A76B19A41B79708900452CFA /* Demo Base */,
 				A76B19BE1B79708900452CFA /* Features */,
-				A76B19FF1B79708A00452CFA /* Merchant API Client */,
-				A76B1A031B79708A00452CFA /* Supporting Files */,
-				A76B19A31B79708900452CFA /* Braintree-Demo.entitlements */,
 				A76B19FE1B79708A00452CFA /* Images.xcassets */,
+				4153CBB4206EC76700800970 /* Localizable.strings */,
+				A76B19FF1B79708A00452CFA /* Merchant API Client */,
 				A76B1A021B79708A00452CFA /* README.md */,
+				A76B1A031B79708A00452CFA /* Supporting Files */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -4523,6 +4526,7 @@
 				A76B1A2F1B79708A00452CFA /* Images.xcassets in Resources */,
 				A76B1A151B79708A00452CFA /* Settings.bundle in Resources */,
 				A76B1A131B79708A00452CFA /* Launch Screen.storyboard in Resources */,
+				4153CBB5206EC76700800970 /* Localizable.strings in Resources */,
 				A76B1A0B1B79708A00452CFA /* Braintree-Demo.entitlements in Resources */,
 				A76B1A2C1B79708A00452CFA /* UI.storyboard in Resources */,
 				A76B1A291B79708A00452CFA /* BraintreeDemoCreditCardEntryViewController.xib in Resources */,
@@ -6123,7 +6127,7 @@
 				SRCROOT = "$(PROJECT_DIR)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/UnitTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Demo.app/Demo";
 			};
@@ -6169,7 +6173,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SRCROOT = "$(PROJECT_DIR)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/UnitTests-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Demo.app/Demo";
 				VALIDATE_PRODUCT = YES;

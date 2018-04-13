@@ -29,7 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"Card Tokenization";
+    self.title = NSLocalizedString(@"Card Tokenization", nil);
     self.edgesForExtendedLayout = UIRectEdgeBottom;
 
     [CardIOUtilities preload];
@@ -78,9 +78,9 @@
 }
 
 - (IBAction)setupDemoData {
-    self.cardNumberField.text = @"4111111111111111";
-    self.expirationMonthField.text = @"12";
-    self.expirationYearField.text = @"2038";
+    self.cardNumberField.text = [@"4111111111111111" copy];
+    self.expirationMonthField.text = [@"12" copy];
+    self.expirationYearField.text = [@"2038" copy];
 }
 
 - (IBAction)presentCardIO {

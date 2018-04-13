@@ -25,22 +25,22 @@
 {
     [super viewDidLoad];
 
-    self.title = @"BTDataCollector Protection";
+    self.title = NSLocalizedString(@"BTDataCollector Protection", nil);
 
     UIButton *collectButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [collectButton setTitle:@"Collect All Data" forState:UIControlStateNormal];
+    [collectButton setTitle:NSLocalizedString(@"Collect All Data", nil) forState:UIControlStateNormal];
     [collectButton addTarget:self action:@selector(tappedCollect) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *collectKountButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [collectKountButton setTitle:@"Collect Kount Data" forState:UIControlStateNormal];
+    [collectKountButton setTitle:NSLocalizedString(@"Collect Kount Data", nil) forState:UIControlStateNormal];
     [collectKountButton addTarget:self action:@selector(tappedCollectKount) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton *collectDysonButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [collectDysonButton setTitle:@"Collect PayPal Data" forState:UIControlStateNormal];
+    [collectDysonButton setTitle:NSLocalizedString(@"Collect PayPal Data", nil) forState:UIControlStateNormal];
     [collectDysonButton addTarget:self action:@selector(tappedCollectDyson) forControlEvents:UIControlEventTouchUpInside];
 
     UIButton *obtainLocationPermissionButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [obtainLocationPermissionButton setTitle:@"Obtain Location Permission" forState:UIControlStateNormal];
+    [obtainLocationPermissionButton setTitle:NSLocalizedString(@"Obtain Location Permission", nil) forState:UIControlStateNormal];
     [obtainLocationPermissionButton addTarget:self action:@selector(tappedRequestLocationAuthorization:) forControlEvents:UIControlEventTouchUpInside];
 
     self.dataLabel = [[UILabel alloc] init];

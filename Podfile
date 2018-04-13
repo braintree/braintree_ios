@@ -6,18 +6,17 @@ workspace 'Braintree.xcworkspace'
 target 'Demo' do
   platform :ios, '9.0'
 
-  pod 'AFNetworking', '~> 2.6.0'
+  pod 'AFNetworking', '~> 3.2.0'
   pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
-  pod 'FLEX'
   pod 'InAppSettingsKit'
-  pod 'iOS-Slide-Menu'
+  pod 'iOS-Slide-Menu', :git => 'git@github.com:braintree/iOS-Slide-Menu.git', :branch => 'master'
   pod 'BraintreeDropIn', :podspec => 'BraintreeDropIn.podspec'
 end
 
 abstract_target 'Tests' do
-  pod 'Specta'
+  pod 'Specta', :git => 'git@github.com:specta/specta.git', :commit => 'f175b99aa4abeb63095d01a76bc6991c248fa877'
   pod 'Expecta'
   pod 'OCMock'
   pod 'OHHTTPStubs'

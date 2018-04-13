@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"3D Secure - Payment Flow";
+    self.title = NSLocalizedString(@"3D Secure - Payment Flow", nil);
 
     self.cardFormView = [[BTUICardFormView alloc] initForAutoLayout];
     self.cardFormView.optionalFields = BTUICardFormOptionalFieldsNone;
@@ -28,7 +28,7 @@
 
 - (UIView *)createPaymentButton {
     UIButton *verifyNewCardButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [verifyNewCardButton setTitle:@"Tokenize and Verify New Card" forState:UIControlStateNormal];
+    [verifyNewCardButton setTitle:NSLocalizedString(@"Tokenize and Verify New Card", nil) forState:UIControlStateNormal];
     [verifyNewCardButton addTarget:self action:@selector(tappedToVerifyNewCard) forControlEvents:UIControlEventTouchUpInside];
 
     UIView *threeDSecureButtonsContainer = [[UIView alloc] initForAutoLayout];

@@ -80,7 +80,7 @@ static NSString *BraintreeVersion = @"2018-03-06";
         NSUInteger errorCount = [body[@"errors"] asArray].count;
         for (NSUInteger i = 0; i < errorCount; i++) {
             BTJSON *error = body[@"errors"][i];
-            NSArray *inputPath = [error[@"extensions"][@"inputPath"] asArray];
+            NSArray *inputPath = [error[@"extensions"][@"inputPath"] asStringArray];
             // Defensive programming
             if (!inputPath) {
                 continue;

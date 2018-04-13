@@ -28,7 +28,7 @@
 
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:@"PayPal with Credit Offered" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"PayPal with Credit Offered", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithRed:50.0/255 green:50.0/255 blue:255.0/255 alpha:1.0] forState:UIControlStateHighlighted];
     [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
@@ -44,7 +44,7 @@
         self.progressBlock(@"Tapped - initiating Billing Agreement payment with credit offered");
     }
 
-    [sender setTitle:@"Processing..." forState:UIControlStateDisabled];
+    [sender setTitle:NSLocalizedString(@"Processing...", nil) forState:UIControlStateDisabled];
     [sender setEnabled:NO];
 
     BTPayPalDriver *driver = [[BTPayPalDriver alloc] initWithAPIClient:self.apiClient];

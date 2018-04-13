@@ -61,7 +61,7 @@ class BTTokenizationService_Tests: XCTestCase {
         let expectation = self.expectation(description: "Callback invoked")
         tokenizationService.tokenizeType("UnknownType", options: nil, with:BTAPIClient(authorization: "development_testing_integration_merchant_id")!) { nonce, error -> Void in
             XCTAssertNil(nonce)
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTTokenizationServiceErrorDomain)
             XCTAssertEqual(error.code, BTTokenizationServiceError.typeNotRegistered.rawValue)
             expectation.fulfill()

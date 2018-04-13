@@ -28,7 +28,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         let expectation = self.expectation(description: "Authorization fails with error")
         payPalDriver.authorizeAccount { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual(error.code, BTPayPalDriverErrorType.integration.rawValue)
             expectation.fulfill()
@@ -58,7 +58,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "authorization callback")
         payPalDriver.authorizeAccount { (tokenizedPayPalAccount, error) -> Void in
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual(error.code, BTPayPalDriverErrorType.disabled.rawValue)
             expectation.fulfill()
@@ -85,7 +85,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
         
         let expectation = self.expectation(description: "authorization callback")
         payPalDriver.authorizeAccount { (tokenizedPayPalAccount, error) -> Void in
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual(error.code, BTPayPalDriverErrorType.integrationReturnURLScheme.rawValue)
             expectation.fulfill()
@@ -595,7 +595,7 @@ class BTPayPalDriver_Authorization_Tests: XCTestCase {
 
         let expectation = self.expectation(description: "Callback invoked")
         payPalDriver.authorizeAccount { (tokenizedPayPalAccount, error) -> Void in
-            guard let error = error as? NSError else { return }
+            guard let error = error as NSError? else { return }
             XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
             expectation.fulfill()
         }
@@ -792,7 +792,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         payPalDriver.requestOneTimePayment(request) { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual(error.code, BTPayPalDriverErrorType.integration.rawValue)
             expectation.fulfill()
@@ -1375,8 +1375,9 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         BTPayPalDriver.payPalClass().cannedResult()?.cannedError = NSError(domain: "", code: 0, userInfo: nil)
 
         payPalDriver.setOneTimePaymentAppSwitchReturn ({ (tokenizedCheckout, error) -> Void in
+            guard let error = error else {return}
             XCTAssertNil(tokenizedCheckout)
-            XCTAssertEqual(error! as NSError, BTPayPalDriver.payPalClass().cannedResult()?.error! as! NSError)
+            XCTAssertEqual(error as NSError, FakePayPalOneTouchCore.self.cannedResult()!.error! as NSError)
             continuationExpectation.fulfill()
             })
 
@@ -1777,7 +1778,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let expectation = self.expectation(description: "Billing Agreement fails with error")
         payPalDriver.requestBillingAgreement(request) { (tokenizedPayPalAccount, error) -> Void in
             XCTAssertNil(tokenizedPayPalAccount)
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTPayPalDriverErrorDomain)
             XCTAssertEqual(error.code, BTPayPalDriverErrorType.integration.rawValue)
             expectation.fulfill()

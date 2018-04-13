@@ -29,7 +29,7 @@
         [self.label autoAlignAxisToSuperviewMarginAxis:ALAxisVertical];
     }
     
-    self.title = @"Apple Pay via PassKit";
+    self.title = NSLocalizedString(@"Apple Pay via PassKit", nil);
 }
 
 - (UIControl *)createPaymentButton {
@@ -69,7 +69,7 @@
         button = [UIButton buttonWithType:UIButtonTypeSystem];
         [button setTintColor:[UIColor blackColor]];
         [button.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:36]];
-        [button setTitle:@"PAY WITH APPLE PAY" forState:UIControlStateNormal];
+        [button setTitle:NSLocalizedString(@"PAY WITH APPLE PAY", nil) forState:UIControlStateNormal];
     }
     [button addTarget:self action:@selector(tappedApplePayButton) forControlEvents:UIControlEventTouchUpInside];
     return button;

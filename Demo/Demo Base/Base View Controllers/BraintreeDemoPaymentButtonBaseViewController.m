@@ -16,7 +16,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"Payment Button";
+    self.title = NSLocalizedString(@"Payment Button", nil);
 
     [self.view setBackgroundColor:[UIColor colorWithRed:250.0f/255.0f green:253.0f/255.0f blue:255.0f/255.0f alpha:1.0f]];
 

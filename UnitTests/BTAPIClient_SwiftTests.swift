@@ -188,7 +188,7 @@ class BTAPIClient_SwiftTests: XCTestCase {
         let expectation = self.expectation(description: "Error returned")
         apiClient.fetchPaymentMethodNonces() { (paymentMethodNonces, error) -> Void in
             XCTAssertNil(paymentMethodNonces);
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error._domain, BTAPIClientErrorDomain);
             XCTAssertEqual(error._code, BTAPIClientErrorType.notAuthorized.rawValue);
             expectation.fulfill()

@@ -1,24 +1,18 @@
 PODS:
-  - AFNetworking (2.6.3):
-    - AFNetworking/NSURLConnection (= 2.6.3)
-    - AFNetworking/NSURLSession (= 2.6.3)
-    - AFNetworking/Reachability (= 2.6.3)
-    - AFNetworking/Security (= 2.6.3)
-    - AFNetworking/Serialization (= 2.6.3)
-    - AFNetworking/UIKit (= 2.6.3)
-  - AFNetworking/NSURLConnection (2.6.3):
+  - AFNetworking (3.2.0):
+    - AFNetworking/NSURLSession (= 3.2.0)
+    - AFNetworking/Reachability (= 3.2.0)
+    - AFNetworking/Security (= 3.2.0)
+    - AFNetworking/Serialization (= 3.2.0)
+    - AFNetworking/UIKit (= 3.2.0)
+  - AFNetworking/NSURLSession (3.2.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.6.3):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.6.3)
-  - AFNetworking/Security (2.6.3)
-  - AFNetworking/Serialization (2.6.3)
-  - AFNetworking/UIKit (2.6.3):
-    - AFNetworking/NSURLConnection
+  - AFNetworking/Reachability (3.2.0)
+  - AFNetworking/Security (3.2.0)
+  - AFNetworking/Serialization (3.2.0)
+  - AFNetworking/UIKit (3.2.0):
     - AFNetworking/NSURLSession
   - BraintreeDropIn (99.99.99-github-master):
     - BraintreeDropIn/DropIn (= 99.99.99-github-master)
@@ -28,7 +22,6 @@ PODS:
   - BraintreeDropIn/UIKit (99.99.99-github-master)
   - CardIO (5.4.1)
   - Expecta (1.0.6)
-  - FLEX (2.4.0)
   - InAppSettingsKit (2.9)
   - iOS-Slide-Menu (1.5)
   - NSURL+QueryDictionary (1.2.0)
@@ -50,34 +43,44 @@ PODS:
   - Specta (1.0.7)
 
 DEPENDENCIES:
-  - AFNetworking (~> 2.6.0)
+  - AFNetworking (~> 3.2.0)
   - BraintreeDropIn (from `BraintreeDropIn.podspec`)
   - CardIO
   - Expecta
-  - FLEX
   - InAppSettingsKit
-  - iOS-Slide-Menu
+  - iOS-Slide-Menu (from `git@github.com:braintree/iOS-Slide-Menu.git`, branch `master`)
   - NSURL+QueryDictionary (~> 1.0)
   - OCMock
   - OHHTTPStubs
   - PureLayout
-  - Specta
+  - Specta (from `git@github.com:specta/specta.git`, commit `f175b99aa4abeb63095d01a76bc6991c248fa877`)
 
 EXTERNAL SOURCES:
   BraintreeDropIn:
     :podspec: BraintreeDropIn.podspec
+  iOS-Slide-Menu:
+    :branch: master
+    :git: git@github.com:braintree/iOS-Slide-Menu.git
+  Specta:
+    :commit: f175b99aa4abeb63095d01a76bc6991c248fa877
+    :git: git@github.com:specta/specta.git
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
-    :commit: 87e2254148bed745d246e2ac7866b22c3c5fabc2
+    :commit: be09a2c76a5e8afa04ab5f0a56009ae8626204c2
     :git: https://github.com/braintree/braintree-ios-drop-in.git
+  iOS-Slide-Menu:
+    :commit: 7f037450988ec3d7ac0d3e03e51073da698bf3f9
+    :git: git@github.com:braintree/iOS-Slide-Menu.git
+  Specta:
+    :commit: f175b99aa4abeb63095d01a76bc6991c248fa877
+    :git: git@github.com:specta/specta.git
 
 SPEC CHECKSUMS:
-  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
+  AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
+  BraintreeDropIn: ed2c40e237533dae3f1e7313dd9cedb9f35386c5
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   InAppSettingsKit: fc3dea21846535b76b8289b119dbfdbe2505b2b2
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
@@ -86,6 +89,6 @@ SPEC CHECKSUMS:
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 4a4706f8c5de8995930f5c2ca08c0bcfb13740e1
+PODFILE CHECKSUM: 67c43bf77312c70c1a3194a0dd10b6e5f0e33d4f
 
 COCOAPODS: 1.4.0

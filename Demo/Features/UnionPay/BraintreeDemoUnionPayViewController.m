@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"UnionPay";
+    self.title = NSLocalizedString(@"UnionPay", nil);
     self.edgesForExtendedLayout = UIRectEdgeBottom;
 
     self.cardForm = [[BTUICardFormView alloc] init];
@@ -41,14 +41,14 @@
 
     self.submitButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.submitButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.submitButton setTitle:@"Submit" forState:UIControlStateNormal];
+    [self.submitButton setTitle:NSLocalizedString(@"Submit", nil) forState:UIControlStateNormal];
     [self.submitButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.submitButton];
 
     self.smsButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.smsButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.smsButton.hidden = YES;
-    [self.smsButton setTitle:@"Send SMS" forState:UIControlStateNormal];
+    [self.smsButton setTitle:NSLocalizedString(@"Send SMS", nil) forState:UIControlStateNormal];
     [self.smsButton addTarget:self action:@selector(enroll:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.smsButton];
 
@@ -131,9 +131,9 @@
         request.enrollmentID = enrollmentID;
         
         if (smsCodeRequired) {
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"SMS Auth Code" message:@"An authorization code has been sent to your mobile phone number. Please enter it here" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"SMS Auth Code", nil) message:NSLocalizedString(@"SMSAuthCodeMessage", nil) preferredStyle:UIAlertControllerStyleAlert];
             [alertController addTextFieldWithConfigurationHandler:nil];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Submit" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
+            [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Submit", nil) style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction * _Nonnull action) {
                 UITextField *codeTextField = [alertController.textFields firstObject];
                 NSString *authCode = codeTextField.text;
                 request.smsCode = authCode;

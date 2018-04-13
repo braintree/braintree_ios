@@ -90,7 +90,7 @@ import XCTest
         if (cancel) {
             delegate.onApprovalCancel()
         } else {
-            delegate.onApprovalComplete(url as! URL)
+            delegate.onApprovalComplete(url! as URL)
         }
         handleApprovalExpectation?.fulfill()
     }

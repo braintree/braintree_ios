@@ -10,7 +10,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"BTUIVenmoButton";
+    self.title = NSLocalizedString(@"BTUIVenmoButton", nil);
     self.venmoButton.hidden = YES;
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable __unused configuration, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{

@@ -101,7 +101,7 @@ class BTJSON_Tests: XCTestCase {
         let obj = BTJSON(data: JSON)
 
         XCTAssertTrue(obj.isError)
-        guard let error = obj as? NSError else {return}
+        guard let error = obj.asError() as NSError? else {return}
         XCTAssertEqual(error.domain, NSCocoaErrorDomain)
     }
 
@@ -112,7 +112,7 @@ class BTJSON_Tests: XCTestCase {
         let error = (((string[0])["key"] as! BTJSON)[0])
 
         XCTAssertTrue(error.isError as Bool)
-        guard let err = error as? NSError else {return}
+        guard let err = error.asError() as NSError? else {return}
         XCTAssertEqual(err.domain, NSCocoaErrorDomain)
     }
 

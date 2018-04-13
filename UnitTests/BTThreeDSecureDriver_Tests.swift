@@ -34,7 +34,7 @@ class BTThreeDSecureDriver_Tests: XCTestCase {
         threeDSecureDriver.verifyCard(withNonce: originalNonce_lookupEnrolledAuthenticationNotRequired, amount: NSDecimalNumber.one, completion: { (tokenizedCard, error) -> Void in
             XCTAssertNil(tokenizedCard)
             XCTAssertNotNil(error)
-            guard let error = error as? NSError else {return}
+            guard let error = error as NSError? else {return}
             XCTAssertEqual(error.domain, BTThreeDSecureErrorDomain)
             XCTAssertEqual(error.code, BTThreeDSecureErrorType.integration.rawValue)
             expectation.fulfill()

@@ -341,7 +341,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "Start payment expectation")
         driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
-            guard let error = error as NSError? else {return}
+            guard (error as NSError?) != nil else {return}
             expectation.fulfill()
         }
         

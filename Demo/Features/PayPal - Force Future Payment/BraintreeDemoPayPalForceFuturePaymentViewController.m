@@ -10,7 +10,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"PayPal (future payment button)";
+    self.title = NSLocalizedString(@"PayPal (future payment button)", nil);
 
     self.paymentButton.hidden = YES;
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
@@ -29,7 +29,7 @@
 
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:@"PayPal (future payment button)" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"PayPal (future payment button)", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [button setTitleColor:[[UIColor blueColor] bt_adjustedBrightness:0.5] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(tappedCustomPayPal) forControlEvents:UIControlEventTouchUpInside];

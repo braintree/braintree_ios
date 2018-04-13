@@ -12,13 +12,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.venmoDriver = [[BTVenmoDriver alloc] initWithAPIClient:self.apiClient];
-    self.title = @"Custom Venmo Button";
+    self.title = NSLocalizedString(@"Custom Venmo Button", nil);
     self.paymentButton.hidden = ![self.venmoDriver isiOSAppAvailableForAppSwitch];
 }
 
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:@"Venmo (custom button)" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"Venmo (custom button)", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
     [button setTitleColor:[[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(tappedCustomVenmo) forControlEvents:UIControlEventTouchUpInside];

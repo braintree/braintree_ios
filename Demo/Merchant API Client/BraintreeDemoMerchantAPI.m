@@ -6,7 +6,7 @@
 NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"BraintreeDemoTransactionServiceEnvironmentDidChangeNotification";
 
 @interface BraintreeDemoMerchantAPI ()
-@property (nonatomic, strong) AFHTTPRequestOperationManager *sessionManager;
+@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
 @property (nonatomic, assign) NSString *currentEnvironmentURLString;
 @property (nonatomic, assign) BraintreeDemoTransactionServiceThreeDSecureRequiredStatus threeDSecureRequiredStatus;
 @end
@@ -52,21 +52,22 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
     {
         self.currentEnvironmentURLString = [BraintreeDemoSettings currentEnvironmentURLString];
         self.threeDSecureRequiredStatus = [BraintreeDemoSettings threeDSecureRequiredStatus];
-        self.sessionManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:[BraintreeDemoSettings currentEnvironmentURLString]]];
+        self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:[BraintreeDemoSettings currentEnvironmentURLString]]];
         [[NSNotificationCenter defaultCenter] postNotificationName:BraintreeDemoMerchantAPIEnvironmentDidChangeNotification object:self];
     }
 }
 
 - (void)fetchMerchantConfigWithCompletion:(void (^)(NSString *merchantId, NSError *error))completionBlock {
     [self.sessionManager GET:@"/config/current"
-              parameters:nil
-                 success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
-                     if (completionBlock) {
-                         completionBlock(responseObject[@"merchant_id"], nil);
-                     }
-                 } failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
-                     completionBlock(nil, error);
-                 }];
+                  parameters:nil
+                    progress:nil
+                     success:^(__unused NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                         if (completionBlock) {
+                             completionBlock(responseObject[@"merchant_id"], nil);
+                         }
+                     } failure:^(__unused NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                         completionBlock(nil, error);
+                     }];
 }
 
 - (void)fetchClientTokenWithMerchantAccountId:(NSString * _Nullable)merchantAccountId completion:(void (^)(NSString *, NSError *))completionBlock {
@@ -81,13 +82,13 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
     if (merchantAccountId) {
         parameters[@"merchant_account_id"] = merchantAccountId;
     }
-    
+
     [self.sessionManager GET:@"/client_token"
                   parameters:parameters
-                     success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
+                    progress:nil
+                     success:^(__unused NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                          completionBlock(responseObject[@"client_token"], nil);
-                     }
-                     failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
+                     } failure:^(__unused NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                          completionBlock(nil, error);
                      }];
 }
@@ -124,10 +125,10 @@ NSString *BraintreeDemoMerchantAPIEnvironmentDidChangeNotification = @"Braintree
 
     [self.sessionManager POST:@"/nonce/transaction"
                    parameters:parameters
-                      success:^(__unused AFHTTPRequestOperation *operation, __unused id responseObject) {
+                     progress:nil
+                      success:^(__unused NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                           completionBlock(responseObject[@"message"], nil);
-                      }
-                      failure:^(__unused AFHTTPRequestOperation *operation, __unused NSError *error) {
+                      } failure:^(__unused NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                           completionBlock(nil, error);
                       }];
 }

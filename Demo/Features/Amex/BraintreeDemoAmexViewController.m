@@ -12,12 +12,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.amexClient = [[BTAmericanExpressClient alloc] initWithAPIClient:self.apiClient];
-    self.title = @"Amex";
+    self.title = NSLocalizedString(@"Amex", nil);
 }
 
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:@"Get rewards balance" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"Get rewards balance", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
     [button setTitleColor:[[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(tapped) forControlEvents:UIControlEventTouchUpInside];

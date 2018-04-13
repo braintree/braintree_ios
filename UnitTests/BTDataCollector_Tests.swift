@@ -57,7 +57,7 @@ class BTDataCollector_Tests: XCTestCase {
 
         let data = jsonString.data(using: String.Encoding.utf8)
         let dictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, AnyObject>
-        XCTAssert((dictionary["device_session_id"] as! String).characters.count >= 32)
+        XCTAssert((dictionary["device_session_id"] as! String).count >= 32)
         XCTAssertEqual(dictionary["fraud_merchant_id"] as? String, "600000") // BTDataCollectorSharedMerchantId
         waitForExpectations(timeout: 10, handler: nil)
     }
@@ -75,7 +75,7 @@ class BTDataCollector_Tests: XCTestCase {
         
         let data = jsonString.data(using: String.Encoding.utf8)
         let dictionary = try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, AnyObject>
-        XCTAssert((dictionary["device_session_id"] as! String).characters.count >= 32)
+        XCTAssert((dictionary["device_session_id"] as! String).count >= 32)
         XCTAssertEqual(dictionary["fraud_merchant_id"] as? String, "600000") // BTDataCollectorSharedMerchantId
         
         // Ensure correlation_id (clientMetadataId) is not nil and has a length of at least 12.
@@ -126,8 +126,8 @@ class BTDataCollector_Tests: XCTestCase {
         dataCollector.collectFraudData { (fraudData: String) in
             let json = BTJSON(data: fraudData.data(using: String.Encoding.utf8)!)
             XCTAssertEqual((json["fraud_merchant_id"] as AnyObject).asString(), "500001")
-            XCTAssert((json["device_session_id"] as AnyObject).asString()?.characters.count >= 32)
-            XCTAssert((json["correlation_id"] as AnyObject).asString()?.characters.count > 0)
+            XCTAssert((json["device_session_id"] as AnyObject).asString()?.count >= 32)
+            XCTAssert((json["correlation_id"] as AnyObject).asString()?.count > 0)
             expectation.fulfill()
         }
         
@@ -149,8 +149,8 @@ class BTDataCollector_Tests: XCTestCase {
         dataCollector.collectFraudData { fraudData in
             let json = BTJSON(data: fraudData.data(using: String.Encoding.utf8)!)
             XCTAssertEqual((json["fraud_merchant_id"] as AnyObject).asString(), "500000")
-            XCTAssert((json["device_session_id"] as AnyObject).asString()!.characters.count >= 32)
-            XCTAssert((json["correlation_id"] as AnyObject).asString()!.characters.count > 0)
+            XCTAssert((json["device_session_id"] as AnyObject).asString()!.count >= 32)
+            XCTAssert((json["correlation_id"] as AnyObject).asString()!.count > 0)
             expectation.fulfill()
         }
         
@@ -192,7 +192,7 @@ class BTDataCollector_Tests: XCTestCase {
             let json = BTJSON(data: fraudData.data(using: String.Encoding.utf8)!)
             XCTAssertNil(json["fraud_merchant_id"] as? String)
             XCTAssertNil(json["device_session_id"] as? String)
-            XCTAssert((json["correlation_id"] as AnyObject).asString()?.characters.count > 0)
+            XCTAssert((json["correlation_id"] as AnyObject).asString()?.count > 0)
             expectation.fulfill()
         }
         

@@ -27,12 +27,12 @@
         }
     }];
     
-    self.title = @"iDEAL";
+    self.title = NSLocalizedString(@"iDEAL", nil);
 }
 
 - (UIView *)createPaymentButton {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:@"Pay With iDEAL" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"Pay With iDEAL", nil) forState:UIControlStateNormal];
     [button setTitleColor:[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] forState:UIControlStateNormal];
     [button setTitleColor:[[UIColor bt_colorFromHex:@"3D95CE" alpha:1.0f] bt_adjustedBrightness:0.7] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(idealButtonTapped) forControlEvents:UIControlEventTouchUpInside];
@@ -60,7 +60,7 @@
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-                [actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(__unused UIAlertAction *action) {
+                [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:^(__unused UIAlertAction *action) {
                     //noop
                 }]];
                 
@@ -112,7 +112,7 @@
                     NSLog(@"Ideal Short ID: %@", idealResult.shortIdealId);
                     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:idealResult.status message:idealResult.idealId preferredStyle:UIAlertControllerStyleActionSheet];
                     [self presentViewController:actionSheet animated:YES completion:nil];
-                    [actionSheet addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action) {
+                    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action) {
                         //noop
                     }]];
                     self.progressBlock([NSString stringWithFormat:@"iDEAL Status: %@", idealResult.status]);
