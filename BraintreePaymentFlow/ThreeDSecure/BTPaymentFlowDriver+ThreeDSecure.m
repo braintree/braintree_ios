@@ -35,17 +35,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         }
 
         if (request.billingAddress) {
-            customer[@"billingAddress"] = @{
-                    @"firstName": request.billingAddress.firstName,
-                    @"lastName": request.billingAddress.lastName,
-                    @"phoneNumber": request.billingAddress.phoneNumber,
-                    @"line1": request.billingAddress.streetAddress,
-                    @"line2": request.billingAddress.extendedAddress,
-                    @"city": request.billingAddress.locality,
-                    @"state": request.billingAddress.region,
-                    @"postalCode": request.billingAddress.postalCode,
-                    @"countryCode": request.billingAddress.countryCodeAlpha2,
-            };
+            customer[@"billingAddress"] = [request.billingAddress asParameters];
         }
         
         if (request.mobilePhoneNumber) {

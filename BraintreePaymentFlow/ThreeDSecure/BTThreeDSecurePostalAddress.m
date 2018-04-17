@@ -19,6 +19,20 @@
     return address;
 }
 
+- (NSDictionary *)asParameters {
+    NSMutableDictionary *parameters = [@{} mutableCopy];
+    [parameters setValue:self.firstName forKey:@"firstName"];
+    [parameters setValue:self.lastName forKey:@"lastName"];
+    [parameters setValue:self.phoneNumber forKey:@"phoneNumber"];
+    [parameters setValue:self.streetAddress forKey:@"line1"];
+    [parameters setValue:self.extendedAddress forKey:@"line2"];
+    [parameters setValue:self.locality forKey:@"city"];
+    [parameters setValue:self.region forKey:@"state"];
+    [parameters setValue:self.postalCode forKey:@"postalCode"];
+    [parameters setValue:self.countryCodeAlpha2 forKey:@"countryCode"];
+    return [parameters copy];
+}
+
 - (NSString *)debugDescription {
     return [NSString stringWithFormat:@"<%@:%p \"%@\" %@, %@, %@, %@, %@, %@, %@ %@ %@>", NSStringFromClass([self class]), self, [self description], self.firstName, self.lastName, self.phoneNumber, self.streetAddress, self.extendedAddress, self.locality, self.region, self.postalCode, self.countryCodeAlpha2];
 }
