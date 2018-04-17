@@ -29,18 +29,18 @@ NS_ASSUME_NONNULL_BEGIN
  Optional. The billing address used for verification
  @see BTThreeDSecurePostalAddress
  */
-@property (nonatomic, copy) BTThreeDSecurePostalAddress *billingAddress;
+@property (nonatomic, nullable, copy) BTThreeDSecurePostalAddress *billingAddress;
 
 /**
  Optional. The mobile phone number used for verification
  @note Only numbers. Remove dashes, parentheses and other characters
  */
-@property (nonatomic, copy) NSString *mobilePhoneNumber;
+@property (nonatomic, nullable, copy) NSString *mobilePhoneNumber;
 
 /**
  Optional. The email used for verification
  */
-@property (nonatomic, copy) NSString *email;
+@property (nonatomic, nullable, copy) NSString *email;
 
 /**
  Optional. The 2-digit string indicating the shipping method chosen for the transaction
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  05 Electronic Delivery
  06 Ship to Store
  */
-@property (nonatomic, copy) NSString *shippingMethod;
+@property (nonatomic, nullable, copy) NSString *shippingMethod;
 
 @end
 
