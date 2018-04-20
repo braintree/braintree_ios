@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *streetAddress;
 
 /**
- Optional. line 2 of the Address (eg. suite, apt #, etc.)
+ Optional. Line 2 of the Address (eg. suite, apt #, etc.)
  */
 @property (nonatomic, nullable, copy) NSString *extendedAddress;
 
