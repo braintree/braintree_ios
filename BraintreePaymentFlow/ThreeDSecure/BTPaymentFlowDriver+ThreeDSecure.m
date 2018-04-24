@@ -8,7 +8,7 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult.h"
 #import "BTThreeDSecureRequest.h"
-#import "BTThreeDSecurePostalAddress.h"
+#import "BTThreeDSecurePostalAddress_Internal.h"
 
 @implementation BTPaymentFlowDriver (ThreeDSecure)
 

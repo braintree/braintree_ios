@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *countryCodeAlpha2;
 
 /**
- Optional. Zip code or equivalent is usually required for countries that have them. For list of countries that do not have postal codes please refer to http://en.wikipedia.org/wiki/Postal_code
+ Optional. Zip code or equivalent is usually required for countries that have them. For a list of countries that do not have postal codes please refer to http://en.wikipedia.org/wiki/Postal_code
  */
 @property (nonatomic, nullable, copy) NSString *postalCode;
 
@@ -52,12 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
  Optional. 2 letter code for US states, and the equivalent for other countries
  */
 @property (nonatomic, nullable, copy) NSString *region;
-
-/**
- The postal address as parameters which can be used for API requests.
- @return An NSDictionary representing the postal address.
- */
-- (NSDictionary *)asParameters;
 
 @end
 
