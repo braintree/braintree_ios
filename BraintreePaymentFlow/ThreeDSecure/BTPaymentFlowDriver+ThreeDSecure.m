@@ -21,7 +21,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
                        completion:(void (^)(BTThreeDSecureLookup *threeDSecureResult, NSError *error))completionBlock
 {
-    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *error) {
         if (error) {
             completionBlock(nil, error);
             return;
@@ -29,10 +29,6 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         
         NSMutableDictionary *customer = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *requestParameters = [@{ @"amount": request.amount, @"customer": customer } mutableCopy];
-        
-        if (configuration.json[@"merchantAccountId"]) {
-            requestParameters[@"merchant_account_id"] = [configuration.json[@"merchantAccountId"] asString];
-        }
 
         if (request.billingAddress) {
             customer[@"billingAddress"] = [request.billingAddress asParameters];

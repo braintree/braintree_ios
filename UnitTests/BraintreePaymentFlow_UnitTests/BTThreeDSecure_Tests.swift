@@ -84,7 +84,6 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.billingAddress = billingAddress
 
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            print(self.mockAPIClient.lastPOSTParameters!)
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? NSNumber, 9.97)
             let customerParams = self.mockAPIClient.lastPOSTParameters!["customer"] as! [String : Any]
             XCTAssertEqual(customerParams["mobilePhoneNumber"] as? String, "5151234321")
