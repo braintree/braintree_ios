@@ -6,6 +6,7 @@
 #endif
 #import "BTPaymentFlowRequest.h"
 #import "BTPaymentFlowDriver.h"
+#import "BTThreeDSecurePostalAddress.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,9 +21,38 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *nonce;
 
 /**
- The amount for the transaction.
+ The amount for the transaction
  */
 @property (nonatomic, copy) NSDecimalNumber *amount;
+
+/**
+ Optional. The billing address used for verification
+ @see BTThreeDSecurePostalAddress
+ */
+@property (nonatomic, nullable, copy) BTThreeDSecurePostalAddress *billingAddress;
+
+/**
+ Optional. The mobile phone number used for verification
+ @note Only numbers. Remove dashes, parentheses and other characters
+ */
+@property (nonatomic, nullable, copy) NSString *mobilePhoneNumber;
+
+/**
+ Optional. The email used for verification
+ */
+@property (nonatomic, nullable, copy) NSString *email;
+
+/**
+ Optional. The 2-digit string indicating the shipping method chosen for the transaction
+ Possible Values:
+ 01 Same Day
+ 02 Overnight / Expedited
+ 03 Priority (2-3 Days)
+ 04 Ground
+ 05 Electronic Delivery
+ 06 Ship to Store
+ */
+@property (nonatomic, nullable, copy) NSString *shippingMethod;
 
 @end
 

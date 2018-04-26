@@ -27,6 +27,7 @@
 #import "BTPayPalDriver_Internal.h"
 #import "BTVenmoDriver_Internal.h"
 #import "BTThreeDSecureDriver_Internal.h"
+#import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTURLUtils.h"
 #import "FakePayPalClasses.h"

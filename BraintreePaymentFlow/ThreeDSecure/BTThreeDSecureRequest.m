@@ -32,18 +32,17 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     self.paymentFlowDriverDelegate = delegate;
     BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
-    
+
     BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:[self.paymentFlowDriverDelegate apiClient]];
-    
-    [paymentFlowDriver lookupThreeDSecureForNonce:threeDSecureRequest.nonce
-                                transactionAmount:threeDSecureRequest.amount
-                                       completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
-                                           dispatch_async(dispatch_get_main_queue(), ^{
+
+    [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
+                                      completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
+                                          dispatch_async(dispatch_get_main_queue(), ^{
                                                if (error) {
                                                    [self.paymentFlowDriverDelegate onPaymentWithURL:nil error:error];
                                                    return;
                                                }
-                                               
+
                                                [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *configurationError) {
                                                    if (configurationError) {
                                                        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
@@ -64,7 +63,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
                                                        NSString *authUrl = [NSString stringWithFormat:@"%@",
                                                                             [lookupResult.termURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]
                                                                             ];
-                                                       
+
                                                        NSString *termurl = [NSString stringWithFormat: @"TermUrl=%@", authUrl];
                                                        NSURL *redirectUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/index.html?%@&%@&%@&%@&%@", [configuration.json[@"assetsUrl"] asString], BTThreeDSecureAssetsPath, acsurl, pareq, md, termurl, callbackUrl]];
                                                        [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:error];
@@ -80,7 +79,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     NSString *jsonAuthResponse = [BTURLUtils dictionaryForQueryString:url.query][@"auth_response"];
     BTJSON *authBody = [[BTJSON alloc] initWithValue:[NSJSONSerialization JSONObjectWithData:[jsonAuthResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL]];
     BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:authBody];
-    
+
     if (!result.success) {
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
         if (result.errorMessage) {
@@ -93,7 +92,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
         [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
         return;
     }
-    
+
     [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
 }
 

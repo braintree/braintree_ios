@@ -7,6 +7,8 @@
 #import "BTPaymentFlowDriver_Internal.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult.h"
+#import "BTThreeDSecureRequest.h"
+#import "BTThreeDSecurePostalAddress_Internal.h"
 
 @implementation BTPaymentFlowDriver (ThreeDSecure)
 
@@ -16,22 +18,35 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 
 #pragma mark - ThreeDSecure Lookup
 
-- (void)lookupThreeDSecureForNonce:(NSString *)nonce
-                 transactionAmount:(NSDecimalNumber *)amount
-                        completion:(void (^)(BTThreeDSecureLookup *threeDSecureResult, NSError *error))completionBlock
+- (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
+                       completion:(void (^)(BTThreeDSecureLookup *threeDSecureResult, NSError *error))completionBlock
 {
-    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *error) {
         if (error) {
             completionBlock(nil, error);
             return;
         }
         
-        NSMutableDictionary *requestParameters = [@{ @"amount": amount } mutableCopy];
-        
-        if (configuration.json[@"merchantAccountId"]) {
-            requestParameters[@"merchant_account_id"] = [configuration.json[@"merchantAccountId"] asString];
+        NSMutableDictionary *customer = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *requestParameters = [@{ @"amount": request.amount, @"customer": customer } mutableCopy];
+
+        if (request.billingAddress) {
+            customer[@"billingAddress"] = [request.billingAddress asParameters];
         }
-        NSString *urlSafeNonce = [nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        
+        if (request.mobilePhoneNumber) {
+            customer[@"mobilePhoneNumber"] = request.mobilePhoneNumber;
+        }
+        
+        if (request.email) {
+            customer[@"email"] = request.email;
+        }
+        
+        if (request.shippingMethod) {
+            customer[@"shippingMethod"] = request.shippingMethod;
+        }
+        
+        NSString *urlSafeNonce = [request.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
                   completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
