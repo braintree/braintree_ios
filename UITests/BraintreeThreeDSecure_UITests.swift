@@ -36,12 +36,11 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000002")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(4)
+        sleep(5)
         
-        let elementsQuery = app.webViews.element.otherElements
         let passwordTextField = getPasswordField()
-        
-        passwordTextField.tap()
+
+        passwordTextField.forceTapElement()
         sleep(2)
         passwordTextField.typeText("1234")
         
@@ -62,7 +61,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let elementsQuery = app.webViews.element.otherElements
         let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
         
-        passwordTextField.tap()
+        passwordTextField.forceTapElement()
         sleep(1)
         passwordTextField.typeText("1234")
         
@@ -108,7 +107,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let elementsQuery = app.webViews.element.otherElements
         let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
         
-        passwordTextField.tap()
+        passwordTextField.forceTapElement()
         sleep(1)
         passwordTextField.typeText("1234")
         
@@ -168,7 +167,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         let elementsQuery = app.webViews.element.otherElements
         let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
         
-        passwordTextField.tap()
+        passwordTextField.forceTapElement()
         sleep(2)
         passwordTextField.typeText("1234")
         
@@ -262,11 +261,11 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
     }
 
     func getPasswordField() -> XCUIElement {
-        return app/*@START_MENU_TOKEN@*/.webViews/*[[".otherElements[\"Web View\"].webViews",".webViews"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 18).children(matching: .secureTextField).element
+        return XCUIApplication().otherElements["Web View"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 18).children(matching: .secureTextField).element
     }
 
     func getSubmutButton() -> XCUIElement {
-        return app/*@START_MENU_TOKEN@*/.webViews/*[[".otherElements[\"Web View\"].webViews",".webViews"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).buttons["Submit"]
+        return XCUIApplication().otherElements["Web View"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).buttons["Submit"]
     }
 
     func testThreeDSecure_completesAuthentication_receivesNonce() {

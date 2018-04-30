@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.15.0 (2018-04-30)
+
+* 3D Secure
+  * Add support for American Express SafeKey params
+
 ## 4.14.0 (2018-04-03)
 
 * Ensure animations are consistent for PayPal SFSafariViewController flow (thanks @nudge)

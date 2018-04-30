@@ -36,7 +36,7 @@
         XCTAssertNil(tokenizedCard);
         XCTAssertEqualObjects(error.domain, BTCardClientErrorDomain);
         XCTAssertEqual(error.code, BTCardClientErrorTypeCustomerInputInvalid);
-        XCTAssertEqualObjects(error.localizedDescription, @"Input is invalid");
+        XCTAssertEqualObjects(error.localizedDescription, @"Credit card is invalid");
         XCTAssertEqualObjects(error.localizedFailureReason, @"Credit card number must be 12-19 digits");
         [expectation fulfill];
     }];
