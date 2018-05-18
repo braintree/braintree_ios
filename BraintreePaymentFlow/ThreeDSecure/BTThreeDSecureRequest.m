@@ -18,7 +18,7 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTURLUtils.h"
 
-NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1.4";
+NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1.5";
 
 @interface BTThreeDSecureRequest ()
 
