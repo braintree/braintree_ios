@@ -1,15 +1,18 @@
 #import "BTConfiguration+Venmo.h"
-#if __has_include("BTLogger_Internal.h")
-#import "BTLogger_Internal.h"
-#else
-#import <BraintreeCore/BTLogger_Internal.h>
-#endif
 #import "BTVenmoDriver_Internal.h"
 #import "BTVenmoAccountNonce_Internal.h"
-#import "BTAPIClient_Internal.h"
 #import "BTVenmoAppSwitchRequestURL.h"
 #import "BTVenmoAppSwitchReturnURL.h"
+
+#if __has_include("BraintreeCore.h")
 #import "Braintree-Version.h"
+#import "BTAPIClient_Internal.h"
+#import "BTLogger_Internal.h"
+#else
+#import <BraintreeCore/Braintree-Version.h>
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/BTLogger_Internal.h>
+#endif
 #import <UIKit/UIKit.h>
 
 @interface BTVenmoDriver ()
