@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.15.1 (2018-06-07)
+
+* Use angled brackets for BraintreeVenmo header imports (thanks @vicpenap)
+
 ## 4.15.0 (2018-04-30)
 
 * 3D Secure
