@@ -1,12 +1,14 @@
 #import <UIKit/UIKit.h>
 
 #import "BTVenmoAppSwitchRequestURL.h"
-#import "Braintree-Version.h"
 
 #if __has_include("BraintreeCore.h")
-#import "BTURLUtils.h"
+#import "Braintree-Version.h"
 #import "BTClientMetadata.h"
+#import "BTURLUtils.h"
 #else
+#import <BraintreeCore/Braintree-Version.h>
+#import <BraintreeCore/BTClientMetadata.h>
 #import <BraintreeCore/BTURLUtils.h>
 #endif
 
