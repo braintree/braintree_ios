@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.15.2 (2018-06-13)
+
+* Fix issue where address override was not set for PayPal billing agreements
+
 ## 4.15.1 (2018-06-07)
 
 * Use angled brackets for BraintreeVenmo header imports (thanks @vicpenap)
