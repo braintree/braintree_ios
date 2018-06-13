@@ -269,14 +269,16 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         
         if (request.shippingAddressOverride != nil) {
             experienceProfile[@"address_override"] = @YES;
+            NSMutableDictionary *shippingAddressParams = [NSMutableDictionary dictionary];
             BTPostalAddress *shippingAddress = request.shippingAddressOverride;
-            parameters[@"line1"] = shippingAddress.streetAddress;
-            parameters[@"line2"] = shippingAddress.extendedAddress;
-            parameters[@"city"] = shippingAddress.locality;
-            parameters[@"state"] = shippingAddress.region;
-            parameters[@"postal_code"] = shippingAddress.postalCode;
-            parameters[@"country_code"] = shippingAddress.countryCodeAlpha2;
-            parameters[@"recipient_name"] = shippingAddress.recipientName;
+            shippingAddressParams[@"line1"] = shippingAddress.streetAddress;
+            shippingAddressParams[@"line2"] = shippingAddress.extendedAddress;
+            shippingAddressParams[@"city"] = shippingAddress.locality;
+            shippingAddressParams[@"state"] = shippingAddress.region;
+            shippingAddressParams[@"postal_code"] = shippingAddress.postalCode;
+            shippingAddressParams[@"country_code"] = shippingAddress.countryCodeAlpha2;
+            shippingAddressParams[@"recipient_name"] = shippingAddress.recipientName;
+            parameters[@"shipping_address"] = shippingAddressParams;
         } else {
             experienceProfile[@"address_override"] = @NO;
         }
