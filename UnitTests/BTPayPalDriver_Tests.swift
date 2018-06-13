@@ -1225,7 +1225,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
-
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
@@ -1261,7 +1260,6 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
-
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
         XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
@@ -2302,7 +2300,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalRequest()
         request.currencyCode = "GBP"
         let address : BTPostalAddress = BTPostalAddress()
         address.streetAddress = "1234 Fake St."
@@ -2342,7 +2340,7 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
-        let request = BTPayPalRequest(amount: "1")
+        let request = BTPayPalRequest()
         request.currencyCode = "GBP"
         let address : BTPostalAddress = BTPostalAddress()
         address.streetAddress = "1234 Fake St."
