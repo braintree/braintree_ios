@@ -1225,18 +1225,15 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
-        guard let shippingAddress = lastPostParameters["shipping_address"] as? Dictionary<String, AnyObject> else {
-            XCTFail()
-            return
-        }
+
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
-        XCTAssertEqual(shippingAddress["line1"] as? String, "1234 Fake St.")
-        XCTAssertEqual(shippingAddress["line2"] as? String, "Apt. 0")
-        XCTAssertEqual(shippingAddress["city"] as? String, "Oakland")
-        XCTAssertEqual(shippingAddress["state"] as? String, "CA")
-        XCTAssertEqual(shippingAddress["postal_code"] as? String, "12345")
-        XCTAssertEqual(shippingAddress["country_code"] as? String, "US")
+        XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
+        XCTAssertEqual(lastPostParameters["line2"] as? String, "Apt. 0")
+        XCTAssertEqual(lastPostParameters["city"] as? String, "Oakland")
+        XCTAssertEqual(lastPostParameters["state"] as? String, "CA")
+        XCTAssertEqual(lastPostParameters["postal_code"] as? String, "12345")
+        XCTAssertEqual(lastPostParameters["country_code"] as? String, "US")
     }
 
     func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithPartialShippingAddress() {
@@ -1264,18 +1261,15 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
             XCTFail()
             return
         }
-        guard let shippingAddress = lastPostParameters["shipping_address"] as? Dictionary<String, AnyObject> else {
-            XCTFail()
-            return
-        }
+
         XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
-        XCTAssertEqual(shippingAddress["line1"] as? String, "1234 Fake St.")
-        XCTAssertNil(shippingAddress["line2"])
-        XCTAssertEqual(shippingAddress["city"] as? String, "Oakland")
-        XCTAssertEqual(shippingAddress["state"] as? String, "CA")
-        XCTAssertEqual(shippingAddress["postal_code"] as? String, "12345")
-        XCTAssertEqual(shippingAddress["country_code"] as? String, "US")
+        XCTAssertEqual(lastPostParameters["line1"] as? String, "1234 Fake St.")
+        XCTAssertNil(lastPostParameters["line2"])
+        XCTAssertEqual(lastPostParameters["city"] as? String, "Oakland")
+        XCTAssertEqual(lastPostParameters["state"] as? String, "CA")
+        XCTAssertEqual(lastPostParameters["postal_code"] as? String, "12345")
+        XCTAssertEqual(lastPostParameters["country_code"] as? String, "US")
     }
 
     func testCheckout_whenPayPalCreditOffered_performsSwitchCorrectly() {
@@ -2302,6 +2296,85 @@ class BTPayPalDriver_BillingAgreements_Tests: XCTestCase {
         BTPayPalDriver.handleAppSwitchReturn(URL(string: "bar://hello/world")!)
         
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.paypal-ba.credit.accepted"))
+    }
+
+    func testBillingAgreement_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithShippingAddress() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        let address : BTPostalAddress = BTPostalAddress()
+        address.streetAddress = "1234 Fake St."
+        address.extendedAddress = "Apt. 0"
+        address.region = "CA"
+        address.locality = "Oakland"
+        address.countryCodeAlpha2 = "US"
+        address.postalCode = "12345"
+        request.shippingAddressOverride = address
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        guard let shippingAddress = lastPostParameters["shipping_address"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
+        XCTAssertEqual(shippingAddress["line1"] as? String, "1234 Fake St.")
+        XCTAssertEqual(shippingAddress["line2"] as? String, "Apt. 0")
+        XCTAssertEqual(shippingAddress["city"] as? String, "Oakland")
+        XCTAssertEqual(shippingAddress["state"] as? String, "CA")
+        XCTAssertEqual(shippingAddress["postal_code"] as? String, "12345")
+        XCTAssertEqual(shippingAddress["country_code"] as? String, "US")
+    }
+
+    func testBillingAgreement_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithPartialShippingAddress() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+        let address : BTPostalAddress = BTPostalAddress()
+        address.streetAddress = "1234 Fake St."
+        address.region = "CA"
+        address.locality = "Oakland"
+        address.countryCodeAlpha2 = "US"
+        address.postalCode = "12345"
+        request.shippingAddressOverride = address
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        payPalDriver.requestBillingAgreement(request) { _,_  -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/setup_billing_agreement", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+        guard let experienceProfile = lastPostParameters["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        guard let shippingAddress = lastPostParameters["shipping_address"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lastPostParameters["offer_paypal_credit"] as? Bool, false)
+        XCTAssertEqual(experienceProfile["address_override"] as? Bool, true)
+        XCTAssertEqual(shippingAddress["line1"] as? String, "1234 Fake St.")
+        XCTAssertNil(shippingAddress["line2"])
+        XCTAssertEqual(shippingAddress["city"] as? String, "Oakland")
+        XCTAssertEqual(shippingAddress["state"] as? String, "CA")
+        XCTAssertEqual(shippingAddress["postal_code"] as? String, "12345")
+        XCTAssertEqual(shippingAddress["country_code"] as? String, "US")
     }
 }
 
