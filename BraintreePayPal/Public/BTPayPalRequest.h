@@ -85,6 +85,13 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 @property (nonatomic, getter=isShippingAddressRequired) BOOL shippingAddressRequired;
 
 /**
+ Defaults to false. Set to true to enable user editing of the shipping address.
+
+ @note Only applies when `shippingAddressOverride` is set.
+ */
+@property (nonatomic, getter=isShippingAddressEditable) BOOL shippingAddressEditable;
+
+/**
  Optional: A valid ISO currency code to use for the transaction. Defaults to merchant currency code if not set.
  @note This is only used for one-time payments.
 */
