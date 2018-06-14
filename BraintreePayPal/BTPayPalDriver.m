@@ -268,7 +268,7 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         }
         
         if (request.shippingAddressOverride != nil) {
-            experienceProfile[@"address_override"] = @YES;
+            experienceProfile[@"address_override"] = @(!request.isShippingAddressEditable);
             BTPostalAddress *shippingAddress = request.shippingAddressOverride;
             if (isBillingAgreement) {
                 NSMutableDictionary *shippingAddressParams = [NSMutableDictionary dictionary];
