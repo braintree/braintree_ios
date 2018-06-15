@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.16.0 (2018-06-15)
+
+* Add shippingAddressEditable flag to BTPayPalRequest
+
 ## 4.15.2 (2018-06-13)
 
 * Fix issue where address override was not set for PayPal billing agreements
