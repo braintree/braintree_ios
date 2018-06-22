@@ -53,7 +53,7 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs
   - PureLayout
-  - Specta (from `git@github.com:specta/specta.git`, commit `f175b99aa4abeb63095d01a76bc6991c248fa877`)
+  - Specta
 
 EXTERNAL SOURCES:
   BraintreeDropIn:
@@ -61,9 +61,6 @@ EXTERNAL SOURCES:
   iOS-Slide-Menu:
     :branch: master
     :git: git@github.com:braintree/iOS-Slide-Menu.git
-  Specta:
-    :commit: f175b99aa4abeb63095d01a76bc6991c248fa877
-    :git: git@github.com:specta/specta.git
 
 CHECKOUT OPTIONS:
   BraintreeDropIn:
@@ -72,9 +69,6 @@ CHECKOUT OPTIONS:
   iOS-Slide-Menu:
     :commit: 7f037450988ec3d7ac0d3e03e51073da698bf3f9
     :git: git@github.com:braintree/iOS-Slide-Menu.git
-  Specta:
-    :commit: f175b99aa4abeb63095d01a76bc6991c248fa877
-    :git: git@github.com:specta/specta.git
 
 SPEC CHECKSUMS:
   AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
@@ -89,6 +83,6 @@ SPEC CHECKSUMS:
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 67c43bf77312c70c1a3194a0dd10b6e5f0e33d4f
+PODFILE CHECKSUM: f9c9afb43450946b74bec75c5d97073a2628f233
 
 COCOAPODS: 1.4.0
