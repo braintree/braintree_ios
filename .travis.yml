@@ -6,7 +6,7 @@ cache:
 osx_image: xcode9.3
 
 before_install:
-  - echo "   StrictHostKeyChecking no" >> ~/.ssh/config
+  - echo -e 'Host github.com\n    StrictHostKeyChecking no' >> ~/.ssh/config
   - brew update || brew update
   - brew outdated xctool || brew upgrade xctool
   - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (10.1) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
