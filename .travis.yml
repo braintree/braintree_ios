@@ -6,6 +6,7 @@ cache:
 osx_image: xcode9.3
 
 before_install:
+  - echo "   StrictHostKeyChecking no" >> ~/.ssh/config
   - brew update || brew update
   - brew outdated xctool || brew upgrade xctool
   - SIMULATOR_ID=$(xcrun instruments -s | grep -o "iPhone 6 (10.1) \[.*\]" | grep -o "\[.*\]" | sed "s/^\[\(.*\)\]$/\1/")
@@ -13,8 +14,7 @@ before_install:
 install:
   - bundle install
   - bundle exec pod repo update --silent
-  - rm -rf ./Pods
-  - yes || bundle exec pod install
+  - bundle exec pod install || { rm -rf ./Pods; bundle exec pod install; }
 
 script:
   - echo $SIMULATOR_ID
