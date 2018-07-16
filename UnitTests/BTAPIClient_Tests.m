@@ -426,6 +426,26 @@
     [self waitForExpectationsWithTimeout:5 handler:nil];
 }
 
+- (void)testGraphQLURLForEnvironment_returnsSandboxURL {
+    NSURL *sandboxURL = [BTAPIClient graphQLURLForEnvironment:@"sandbox"];
+    XCTAssertEqualObjects(sandboxURL.absoluteString, @"https://payments.sandbox.braintree-api.com/graphql");
+}
+
+- (void)testGraphQLURLForEnvironment_returnsDevelopmentURL {
+    NSURL *developmentURL = [BTAPIClient graphQLURLForEnvironment:@"development"];
+    XCTAssertEqualObjects(developmentURL.absoluteString, @"http://localhost:8080/graphql");
+}
+
+- (void)testGraphQLURLForEnvironment_returnsProductionURL {
+    NSURL *productionURL = [BTAPIClient graphQLURLForEnvironment:@"production"];
+    XCTAssertEqualObjects(productionURL.absoluteString, @"https://payments.braintree-api.com/graphql");
+}
+
+- (void)testGraphQLURLForEnvironment_returnsProductionURL_asDefault {
+    NSURL *defaultURL = [BTAPIClient graphQLURLForEnvironment:@"unknown"];
+    XCTAssertEqualObjects(defaultURL.absoluteString, @"https://payments.braintree-api.com/graphql");
+}
+
 #pragma mark - Helpers
 
 - (BTAPIClient *)clientThatReturnsConfiguration:(NSDictionary *)configurationDictionary {

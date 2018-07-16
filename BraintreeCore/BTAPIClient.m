@@ -162,6 +162,34 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     }
 }
 
++ (NSURL *)graphQLURLForEnvironment:(NSString *)environment {
+    NSURLComponents *components = [[NSURLComponents alloc] init];
+    components.scheme = [BTAPIClient schemeForEnvironmentString:environment];
+    NSString *host = [BTAPIClient graphQLHostForEnvironmentString:environment];
+    NSArray <NSString *> *hostComponents = [host componentsSeparatedByString:@":"];
+    components.host = hostComponents[0];
+    if (hostComponents.count > 1) {
+        NSString *portString = hostComponents[1];
+        components.port = @(portString.integerValue);
+    }
+    components.path = @"/graphql";
+    if (!components.host || !components.path) {
+        return nil;
+    }
+
+    return components.URL;
+}
+
++ (NSString *)graphQLHostForEnvironmentString:(NSString *)environment {
+    if ([[environment lowercaseString] isEqualToString:@"sandbox"]) {
+        return @"payments.sandbox.braintree-api.com";
+    } else if ([[environment lowercaseString] isEqualToString:@"development"]) {
+        return @"localhost:8080";
+    } else {
+        return @"payments.braintree-api.com";
+    }
+}
+
 + (NSString *)clientApiBasePathForMerchantID:(NSString *)merchantID {
     if (merchantID.length == 0) {
         return nil;
@@ -260,8 +288,8 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
                         self.http = [[BTHTTP alloc] initWithBaseURL:baseURL tokenizationKey:self.tokenizationKey];
                     }
                 }
-                NSURL *graphQLBaseURL = [configuration.json[@"graphQL"][@"url"] asURL];
-                if (!self.graphQL && graphQLBaseURL) {
+                if (!self.graphQL) {
+                    NSURL *graphQLBaseURL = [BTAPIClient graphQLURLForEnvironment:[configuration.json[@"environment"] asString]];
                     if (self.clientToken) {
                         self.graphQL = [[BTGraphQLHTTP alloc] initWithBaseURL:graphQLBaseURL authorizationFingerprint:self.clientToken.authorizationFingerprint];
                     } else if (self.tokenizationKey) {
