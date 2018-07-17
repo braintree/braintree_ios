@@ -11,12 +11,12 @@ target 'Demo' do
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'
   pod 'InAppSettingsKit'
-  pod 'iOS-Slide-Menu', :git => 'git@github.com:braintree/iOS-Slide-Menu.git', :branch => 'master'
+  pod 'iOS-Slide-Menu'
   pod 'BraintreeDropIn', :podspec => 'BraintreeDropIn.podspec'
 end
 
 abstract_target 'Tests' do
-  pod 'Specta', :git => 'git@github.com:specta/specta.git', :commit => 'f175b99aa4abeb63095d01a76bc6991c248fa877'
+  pod 'Specta'
   pod 'Expecta'
   pod 'OCMock'
   pod 'OHHTTPStubs'
