@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.17.0 (2018-07-17)
+
+* Update GraphQL URLs
+
 ## 4.16.0 (2018-06-15)
 
 * Add shippingAddressEditable flag to BTPayPalRequest
