@@ -167,15 +167,15 @@ NSString *const BTAPIClientErrorDomain = @"com.braintreepayments.BTAPIClientErro
     components.scheme = [BTAPIClient schemeForEnvironmentString:environment];
     NSString *host = [BTAPIClient graphQLHostForEnvironmentString:environment];
     NSArray <NSString *> *hostComponents = [host componentsSeparatedByString:@":"];
+    if (hostComponents.count == 0) {
+        return nil;
+    }
     components.host = hostComponents[0];
     if (hostComponents.count > 1) {
         NSString *portString = hostComponents[1];
         components.port = @(portString.integerValue);
     }
     components.path = @"/graphql";
-    if (!components.host || !components.path) {
-        return nil;
-    }
 
     return components.URL;
 }
