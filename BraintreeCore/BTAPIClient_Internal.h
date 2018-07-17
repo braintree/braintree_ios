@@ -68,6 +68,11 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
   httpType:(BTAPIClientHTTPType)httpType
   completion:(nullable void(^)(BTJSON * _Nullable body, NSHTTPURLResponse * _Nullable response, NSError * _Nullable error))completionBlock;
 
+/**
+ Gets base GraphQL URL
+*/
++ (NSURL *)graphQLURLForEnvironment:(NSString *)environment;
+
 @end
 
 NS_ASSUME_NONNULL_END
