@@ -77,6 +77,17 @@ NSString *const BTCardGraphQLTokenizationMutation = @""
     return self;
 }
 
+- (instancetype)initWithExpirationMonth:(NSString *)expirationMonth
+                         expirationYear:(NSString *)expirationYear
+                                    cvv:(nullable NSString *)cvv {
+    if (self = [self initWithParameters:@{}]) {
+        _expirationMonth = expirationMonth;
+        _expirationYear = expirationYear;
+        _cvv = cvv;
+    }
+    return self;
+}
+
 #pragma mark -
 
 - (NSDictionary *)parameters {
