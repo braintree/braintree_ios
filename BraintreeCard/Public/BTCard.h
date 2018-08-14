@@ -16,6 +16,13 @@ NS_ASSUME_NONNULL_BEGIN
                            cvv:(nullable NSString *)cvv;
 
 /**
+ A convenience initializer for creating an update card tokenization request
+ */
+- (instancetype)initWithExpirationMonth:(NSString *)expirationMonth
+                expirationYear:(NSString *)expirationYear
+                            cvv:(nullable NSString *)cvv;
+
+/**
 Designated initializer.
  */
 - (instancetype)initWithParameters:(NSDictionary *)parameters NS_DESIGNATED_INITIALIZER;

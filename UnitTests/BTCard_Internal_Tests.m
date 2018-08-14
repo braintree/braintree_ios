@@ -20,6 +20,16 @@
     XCTAssertTrue([parameters[@"options"][@"validate"] isFalse]);
 }
 
+- (void)testParameters_updateCardProperties {
+    BTCard *card = [[BTCard alloc] initWithExpirationMonth:@"12"
+                                            expirationYear:"2038"
+                                                       cvv:"123"];
+    BTJSON *parameters = [[BTJSON alloc] initWithValue:card.parameters];
+    XCTAssertEqualObjects([parameters[@"expiration_date"] asString], @"12/2038");
+    XCTAssertEqualObjects([parameters[@"cvv"] asString], @"123");
+    XCTAssertTrue([parameters[@"options"][@"validate"] isFalse]);
+    }
+
 - (void)testParameters_whenShouldValidateIsTrue_encodesParametersCorrectly {
     BTCard *card = [[BTCard alloc] init];
     card.shouldValidate = YES;
