@@ -169,6 +169,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
  */
 @property (nonatomic) BOOL offerCredit;
 
+/**
+ Optional: A non-default merchant account to use for tokenization.
+*/
+@property (nonatomic, nullable, copy) NSString *merchantAccountId;
+
 @end
 
 NS_ASSUME_NONNULL_END

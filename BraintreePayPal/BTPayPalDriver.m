@@ -259,6 +259,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
         if (request.localeCode != nil) {
             experienceProfile[@"locale_code"] = request.localeCode;
         }
+
+        if (request.merchantAccountId != nil) {
+            parameters[@"merchant_account_id"] = request.merchantAccountId;
+        }
         
         // Currency code should only be used for Hermes Checkout (one-time payment).
         // For BA, currency should not be used.
@@ -467,6 +471,10 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
                     }
                     if (self.clientMetadataId) {
                         parameters[@"paypal_account"][@"correlation_id"] = self.clientMetadataId;
+                    }
+
+                    if (self.payPalRequest != nil && self.payPalRequest.merchantAccountId != nil) {
+                        parameters[@"merchant_account_id"] = self.payPalRequest.merchantAccountId;
                     }
                     
                     BTClientMetadata *metadata = [self clientMetadata];
