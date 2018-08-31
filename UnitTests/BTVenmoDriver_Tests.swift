@@ -677,7 +677,7 @@ class BTVenmoDriver_Tests: XCTestCase {
         venmoDriver.application = fakeApplication
         venmoDriver.bundle = FakeBundle()
 
-        venmoDriver.goToVenmoInAppStore()
+        venmoDriver.openVenmoAppPageInAppStore()
 
         XCTAssertTrue(fakeApplication.openURLWasCalled)
         XCTAssertEqual(fakeApplication.lastOpenURL!.absoluteString, "https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428")

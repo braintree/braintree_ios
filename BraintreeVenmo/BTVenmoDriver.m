@@ -297,7 +297,7 @@ static BTVenmoDriver *appSwitchedDriver;
 
 #pragma mark - App Store switch
 
-- (void)goToVenmoInAppStore {
+- (void)openVenmoAppPageInAppStore {
     NSURL *venmoAppStoreUrl = [NSURL URLWithString:BTVenmoAppStoreUrl];
     [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.app-store.invoked"];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
