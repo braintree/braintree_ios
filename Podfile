@@ -29,7 +29,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     if target.name == "BraintreeDropIn"
       target.build_configurations.each do |config|
-        config.build_settings['HEADER_SEARCH_PATHS'] = '${PODS_ROOT}/../BraintreeCore/Public ${PODS_ROOT}/../BraintreeCard/Public ${PODS_ROOT}/../BraintreeUnionPay/Public ${PODS_ROOT}/../BraintreePaymentFlow/Public ${PODS_ROOT}/../BraintreePaymentFlow/Public/Ideal ${PODS_ROOT}/../BraintreePaymentFlow/Public/ThreeDSecure ${PODS_ROOT}/Headers/Private ${PODS_ROOT}/Headers/Private/BraintreeDropIn ${PODS_ROOT}/Headers/Public'
+        config.build_settings['HEADER_SEARCH_PATHS'] = '${PODS_ROOT}/../BraintreeCore/Public ${PODS_ROOT}/../BraintreeCard/Public ${PODS_ROOT}/../BraintreeUnionPay/Public ${PODS_ROOT}/../BraintreePaymentFlow/Public ${PODS_ROOT}/../BraintreePaymentFlow/Public/LocalPayment ${PODS_ROOT}/../BraintreePaymentFlow/Public/ThreeDSecure ${PODS_ROOT}/Headers/Private ${PODS_ROOT}/Headers/Private/BraintreeDropIn ${PODS_ROOT}/Headers/Public'
       end
     end
   end

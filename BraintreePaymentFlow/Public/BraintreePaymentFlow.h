@@ -15,12 +15,11 @@ FOUNDATION_EXPORT const unsigned char BraintreePaymentFlowVersionString[];
 #import "BTPaymentFlowRequest.h"
 #import "BTPaymentFlowResult.h"
 
-// Ideal
-#import "BTConfiguration+Ideal.h"
-#import "BTIdealBank.h"
-#import "BTIdealResult.h"
-#import "BTIdealRequest.h"
-#import "BTPaymentFlowDriver+Ideal.h"
+// LocalPayment
+#import "BTConfiguration+LocalPayment.h"
+#import "BTLocalPaymentResult.h"
+#import "BTLocalPaymentRequest.h"
+#import "BTPaymentFlowDriver+LocalPayment.h"
 
 // ThreeDSecure
 #import "BTThreeDSecureResult.h"

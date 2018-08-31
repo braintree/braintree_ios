@@ -130,6 +130,7 @@ Pod::Spec.new do |s|
     s.weak_frameworks = "SafariServices"
     s.dependency "Braintree/Core"
     s.dependency "Braintree/Card"
+    s.dependency "Braintree/PayPalOneTouch"
   end
 end
 

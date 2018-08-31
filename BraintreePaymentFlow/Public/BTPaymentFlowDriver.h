@@ -3,7 +3,6 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#import "BTIdealBank.h"
 #import "BTPaymentFlowRequest.h"
 #import "BTPaymentFlowResult.h"
 #import <Foundation/Foundation.h>

@@ -39,7 +39,7 @@
 #import "Braintree-Version.h"
 #import "PPDataCollector_Internal.h"
 #import "BTPaymentFlowDriver_Internal.h"
-#import "BTPaymentFlowDriver+Ideal_Internal.h"
+#import "BTPaymentFlowDriver+LocalPayment_Internal.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTDropInUtil.h"
 #import "BTAmericanExpressClient_Internal.h"

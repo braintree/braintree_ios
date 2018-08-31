@@ -71,13 +71,14 @@ import XCTest
     }
 }
 
-@objc class MockIdealPaymentRequestDelegate : NSObject, BTIdealRequestDelegate {
-    var id: String?
+@objc class MockLocalPaymentRequestDelegate : NSObject, BTLocalPaymentRequestDelegate {
+    var paymentId: String?
     var idExpectation : XCTestExpectation?
 
-    func idealPaymentStarted(_ result: BTIdealResult) {
-        self.id = result.idealId
+    func localPaymentStarted(_ request: BTLocalPaymentRequest, paymentId: String, start: @escaping () -> Void) {
+        self.paymentId = paymentId
         idExpectation?.fulfill()
+        start()
     }
 }
 
