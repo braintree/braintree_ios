@@ -18,7 +18,6 @@
 		031B94CF1C34844700F136C8 /* BTUICardTypeSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 031B94BF1C34822800F136C8 /* BTUICardTypeSpec.m */; };
 		031B94D01C3485ED00F136C8 /* EXPMatchers+haveKerning.m in Sources */ = {isa = PBXBuildFile; fileRef = 031B94C31C34822800F136C8 /* EXPMatchers+haveKerning.m */; };
 		031B94D11C34863200F136C8 /* BTUISpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 031B94C01C34822800F136C8 /* BTUISpec.m */; };
-		03227CF11E9D92D400DCAF22 /* BraintreeIdeal_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03227CF01E9D92D400DCAF22 /* BraintreeIdeal_UITests.swift */; };
 		0325AC241C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */; };
 		032C26881DDEEB5000BBC1C2 /* BTDropInUtil_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032C26871DDEEB5000BBC1C2 /* BTDropInUtil_Tests.swift */; };
 		032D3A721C580B09000E5F6B /* PPDataCollectorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 032D3A711C580B09000E5F6B /* PPDataCollectorTest.m */; };
@@ -1266,7 +1265,6 @@
 		031B94C01C34822800F136C8 /* BTUISpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTUISpec.m; sourceTree = "<group>"; };
 		031B94C21C34822800F136C8 /* EXPMatchers+haveKerning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatchers+haveKerning.h"; sourceTree = "<group>"; };
 		031B94C31C34822800F136C8 /* EXPMatchers+haveKerning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatchers+haveKerning.m"; sourceTree = "<group>"; };
-		03227CF01E9D92D400DCAF22 /* BraintreeIdeal_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeIdeal_UITests.swift; sourceTree = "<group>"; };
 		0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraintreeThreeDSecure_UITests.swift; sourceTree = "<group>"; };
 		032C26871DDEEB5000BBC1C2 /* BTDropInUtil_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTDropInUtil_Tests.swift; sourceTree = "<group>"; };
 		032D3A711C580B09000E5F6B /* PPDataCollectorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPDataCollectorTest.m; sourceTree = "<group>"; };
@@ -1937,9 +1935,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03C41071211E336E00CFB2AF /* PayPalOneTouch.framework in Frameworks */,
 				03CED23F1F8D8A76000A5F4F /* BraintreeCard.framework in Frameworks */,
 				03502C9B1E9C0D3900F15EE6 /* BraintreeCore.framework in Frameworks */,
+				03C41071211E336E00CFB2AF /* PayPalOneTouch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2354,7 +2352,6 @@
 			isa = PBXGroup;
 			children = (
 				0338000F1C248B9C00CFF1D9 /* BraintreeDropInLegacy_UITests.swift */,
-				03227CF01E9D92D400DCAF22 /* BraintreeIdeal_UITests.swift */,
 				0384E94C1C23BAFF001A3380 /* BraintreePayPal_UITests.swift */,
 				0325AC231C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift */,
 				0384E9501C23C111001A3380 /* Helpers */,
@@ -4847,7 +4844,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03227CF11E9D92D400DCAF22 /* BraintreeIdeal_UITests.swift in Sources */,
 				033800101C248B9C00CFF1D9 /* BraintreeDropInLegacy_UITests.swift in Sources */,
 				0325AC241C289B5F00E90999 /* BraintreeThreeDSecure_UITests.swift in Sources */,
 				0384E94D1C23BAFF001A3380 /* BraintreePayPal_UITests.swift in Sources */,
