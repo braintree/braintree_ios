@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## 4.18.0 (2018-08-31)
+
+* Add optional merchantAccountId to BTPayPalRequest
+* Add openVenmoAppPageInAppStore to BTVenmoDriver
+* Add BTLocalPayment to BTPaymentFlow
+  * Replaces the BTIdeal integration
+
 ## 4.17.0 (2018-07-17)
 
 * Update GraphQL URLs
