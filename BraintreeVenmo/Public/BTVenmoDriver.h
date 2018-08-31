@@ -95,6 +95,11 @@ typedef NS_ENUM(NSInteger, BTVenmoDriverErrorType) {
 - (BOOL)isiOSAppAvailableForAppSwitch;
 
 /**
+ Switches to the iTunes App Store to download the Venmo app.
+ */
+- (void)goToVenmoInAppStore;
+
+/**
  An optional delegate for receiving notifications about the lifecycle of a Venmo app switch, as well as updating your UI
 */
 @property (nonatomic, weak, nullable) id<BTAppSwitchDelegate> appSwitchDelegate;

@@ -670,6 +670,20 @@ class BTVenmoDriver_Tests: XCTestCase {
         }
     }
 
+    func testGotoVenmoInAppStore_opensVenmoAppStoreURL_andSendsAnalyticsEvent() {
+        let venmoDriver = BTVenmoDriver(apiClient: mockAPIClient)
+        BTAppSwitch.sharedInstance().returnURLScheme = "scheme"
+        let fakeApplication = FakeApplication()
+        venmoDriver.application = fakeApplication
+        venmoDriver.bundle = FakeBundle()
+
+        venmoDriver.goToVenmoInAppStore()
+
+        XCTAssertTrue(fakeApplication.openURLWasCalled)
+        XCTAssertEqual(fakeApplication.lastOpenURL!.absoluteString, "https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428")
+        XCTAssertEqual(mockAPIClient.postedAnalyticsEvents.last!, "ios.pay-with-venmo.app-store.invoked")
+    }
+
     // Flaky
     func pendDropIn_whenVenmoIsNotEnabled_doesNotDisplayVenmoButton() {
         let apiClient = self.client([:])

@@ -22,6 +22,7 @@
 @end
 
 NSString * const BTVenmoDriverErrorDomain = @"com.braintreepayments.BTVenmoDriverErrorDomain";
+NSString * const BTVenmoAppStoreUrl = @"https://itunes.apple.com/us/app/venmo-send-receive-money/id351727428";
 
 @implementation BTVenmoDriver
 
@@ -292,6 +293,34 @@ static BTVenmoDriver *appSwitchedDriver;
             // should not happen
             break;
     }
+}
+
+#pragma mark - App Store switch
+
+- (void)goToVenmoInAppStore {
+    NSURL *venmoAppStoreUrl = [NSURL URLWithString:BTVenmoAppStoreUrl];
+    [self.apiClient sendAnalyticsEvent:@"ios.pay-with-venmo.app-store.invoked"];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 100000
+    if ([self.application respondsToSelector:@selector(openURL:options:completionHandler:)]) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        if (@available(iOS 10.0, *)) {
+#endif
+            [self.application openURL:venmoAppStoreUrl options:[NSDictionary dictionary] completionHandler:nil];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
+        }
+#endif
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    [self.application openURL:venmoAppStoreUrl];
+#pragma clang diagnostic pop
+    }
+#else
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    [self.application openURL:venmoAppStoreUrl];
+#pragma clang diagnostic pop
+#endif
 }
 
 #pragma mark - Helpers
