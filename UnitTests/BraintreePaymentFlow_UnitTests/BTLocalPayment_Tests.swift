@@ -115,6 +115,21 @@ class BTLocalPayment_UnitTests: XCTestCase {
             ] ])
 
         localPaymentRequest.merchantAccountId = "customer-nl-merchant-account"
+        localPaymentRequest.paymentType = "ideal"
+        localPaymentRequest.currencyCode = "EUR"
+        localPaymentRequest.amount = "1.01"
+        localPaymentRequest.givenName = "Linh"
+        localPaymentRequest.surname = "Ngo"
+        localPaymentRequest.phone = "639847934"
+        localPaymentRequest.address = BTPostalAddress()
+        localPaymentRequest.address!.countryCodeAlpha2 = "NL"
+        localPaymentRequest.address!.region = "CA"
+        localPaymentRequest.address!.postalCode = "2585 GJ"
+        localPaymentRequest.address!.streetAddress = "836486 of 22321 Park Lake"
+        localPaymentRequest.address!.extendedAddress = "#102"
+        localPaymentRequest.address!.locality = "Den Haag"
+        localPaymentRequest.email = "lingo-buyer@paypal.com"
+        localPaymentRequest.isShippingAddressRequired = true
         driver.startPaymentFlow(localPaymentRequest) { (result, error) in
 
         }
@@ -122,6 +137,25 @@ class BTLocalPayment_UnitTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
 
         XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["merchant_account_id"] as? String, "customer-nl-merchant-account")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["funding_source"] as? String, "ideal")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["currency_iso_code"] as? String, "EUR")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? String, "1.01")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["first_name"] as? String, "Linh")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["last_name"] as? String, "Ngo")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["phone"] as? String, "639847934")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["payer_email"] as? String, "lingo-buyer@paypal.com")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["line1"] as? String, "836486 of 22321 Park Lake")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["line2"] as? String, "#102")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["city"] as? String, "Den Haag")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["state"] as? String, "CA")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["postal_code"] as? String, "2585 GJ")
+        XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["country_code"] as? String, "NL")
+
+        guard let experienceProfile = self.mockAPIClient.lastPOSTParameters!["experience_profile"] as? Dictionary<String, AnyObject> else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(experienceProfile["no_shipping"] as! Bool)
     }
 
     func testStartPayment_displaysSafariViewControllerWhenAvailable() {
@@ -233,8 +267,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 4, handler: nil)
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment.start-payment.selected"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment.webswitch.initiate.succeeded"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.selected"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.webswitch.initiate.succeeded"))
     }
 
     func testStartPayment_failure_sendsAnalyticsEvents() {
@@ -252,8 +286,8 @@ class BTLocalPayment_UnitTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 4, handler: nil)
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment.start-payment.selected"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.local-payment.start-payment.failed"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.selected"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.ideal.local-payment.start-payment.failed"))
     }
 
     func testStartPayment_makesDelegateCallbacks_forContextSwitchEvents() {

@@ -48,19 +48,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *email;
 
 /**
- Optional: First name of the customer.
+ Optional: Given (first) name of the customer.
  */
-@property (nonatomic, nullable, copy) NSString *firstName;
+@property (nonatomic, nullable, copy) NSString *givenName;
 
 /**
- Optional: Last name of the customer.
+ Optional: Surname (last name) of the customer.
  */
-@property (nonatomic, nullable, copy) NSString *lastName;
+@property (nonatomic, nullable, copy) NSString *surname;
 
 /**
  Optional: Phone number of the customer.
  */
 @property (nonatomic, nullable, copy) NSString *phone;
+
+/**
+ Indicates whether or not the payment needs to be shipped. For digital goods, this should be false. Defaults to false.
+ */
+@property (nonatomic, getter=isShippingAddressRequired) BOOL shippingAddressRequired;
 
 /**
  A delegate for receiving information about the local payment flow.

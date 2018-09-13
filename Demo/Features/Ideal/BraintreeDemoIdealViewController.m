@@ -54,8 +54,8 @@
     request.paymentType = @"ideal";
     request.currencyCode = @"EUR";
     request.amount = @"1.01";
-    request.firstName = @"Linh";
-    request.lastName = @"Ngo";
+    request.givenName = @"Linh";
+    request.surname = @"Ngo";
     request.phone = @"639847934";
     request.address = [BTPostalAddress new];
     request.address.countryCodeAlpha2 = @"NL";
@@ -63,6 +63,7 @@
     request.address.streetAddress = @"836486 of 22321 Park Lake";
     request.address.locality = @"Den Haag";
     request.email = @"lingo-buyer@paypal.com";
+    request.shippingAddressRequired = NO;
     request.localPaymentFlowDelegate = self;
 
     void (^paymentFlowCompletionBlock)(BTPaymentFlowResult *, NSError *) = ^(BTPaymentFlowResult * _Nullable result, NSError * _Nullable error) {

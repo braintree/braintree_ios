@@ -93,12 +93,12 @@
             params[@"currency_iso_code"] = localPaymentRequest.currencyCode;
         }
 
-        if (localPaymentRequest.firstName) {
-            params[@"first_name"] = localPaymentRequest.firstName;
+        if (localPaymentRequest.givenName) {
+            params[@"first_name"] = localPaymentRequest.givenName;
         }
 
-        if (localPaymentRequest.lastName) {
-            params[@"last_name"] = localPaymentRequest.lastName;
+        if (localPaymentRequest.surname) {
+            params[@"last_name"] = localPaymentRequest.surname;
         }
 
         if (localPaymentRequest.email) {
@@ -112,6 +112,10 @@
         if (localPaymentRequest.merchantAccountId) {
             params[@"merchant_account_id"] = localPaymentRequest.merchantAccountId;
         }
+
+        params[@"experience_profile"] = @{
+                                          @"no_shipping": @(!localPaymentRequest.isShippingAddressRequired)
+                                          };
 
         [apiClient POST:@"v1/paypal_hermes/create_payment_resource"
                    parameters:params
@@ -269,7 +273,8 @@
 }
 
 - (NSString *)paymentFlowName {
-    return @"local-payment";
+    NSString *paymentType = self.paymentType != nil ? [self.paymentType lowercaseString] : @"unknown";
+    return [NSString stringWithFormat:@"%@.local-payment", paymentType];
 }
 
 @end
