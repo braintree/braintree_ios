@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.19.0 (2018-09-13)
+
+* Update properties on BTLocalPaymentRequest
+
 ## 4.18.0 (2018-08-31)
 
 * Add optional merchantAccountId to BTPayPalRequest
