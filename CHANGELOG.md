@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+
+* Luhn validate UnionPay cards
+
 ## 4.19.0 (2018-09-13)
 
 * Update properties on BTLocalPaymentRequest
