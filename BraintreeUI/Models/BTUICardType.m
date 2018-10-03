@@ -209,13 +209,11 @@
 #pragma mark - Validation
 
 - (BOOL)validAndNecessarilyCompleteNumber:(NSString *)number {
-    return (number.length == self.validNumberLengths.lastIndex &&
-            ([BTUIUtil luhnValid:number] || [self.brand isEqualToString:BTUILocalizedString(CARD_TYPE_UNION_PAY)]));
+    return number.length == self.validNumberLengths.lastIndex && [BTUIUtil luhnValid:number];
 }
 
 - (BOOL)validNumber:(NSString *)number {
-    return ([self completeNumber:number] &&
-            ([BTUIUtil luhnValid:number] || [self.brand isEqualToString:BTUILocalizedString(CARD_TYPE_UNION_PAY)]));
+    return ([self completeNumber:number] && [BTUIUtil luhnValid:number]);
 }
 
 - (BOOL)completeNumber:(NSString *)number {
