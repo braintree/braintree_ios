@@ -59,7 +59,7 @@ typedef void (^PPOTConfigurationCompletionBlock)(PPOTConfiguration *currentConfi
 */
 + (PPOTConfiguration *)configurationWithDictionary:(NSDictionary *)dictionary;
 
-#if DEBUG
+#ifdef DEBUG
 + (void)useHardcodedConfiguration:(BOOL)useHardcodedConfiguration;
 #endif
 
