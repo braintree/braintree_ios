@@ -88,7 +88,7 @@ extern NSString * _Nonnull const PayPalEnvironmentMock;
 */
 @property (nonnull, nonatomic, strong) NSDictionary *additionalPayloadAttributes;
 
-#if DEBUG
+#ifdef DEBUG
 /**
  DEBUG-only: don't use downloaded configuration file; defaults to NO
 */

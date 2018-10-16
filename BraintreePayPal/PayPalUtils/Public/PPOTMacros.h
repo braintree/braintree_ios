@@ -8,7 +8,7 @@
 #define PPSDKLog(format, args...) NSLog(@"%@", [NSString stringWithFormat:@"PayPal OneTouchCoreSDK: %@", [NSString stringWithFormat:format, ## args]])
 
 // PPLog is a replacement for NSLog that logs iff DEBUG is set.
-#if DEBUG
+#ifdef DEBUG
 #define PPLog(format, args...) NSLog(format, ## args)
 #else
 #define PPLog(format, args...)
@@ -19,7 +19,7 @@
 // we set NS_BLOCK_ASSERTIONS inside our .pch files based upon DEBUG.
 // Those #defines are a little bit fragile, and could easily accidentally get broken in the future.
 // So PPAssert* depend explicitly on DEBUG, just to be a bit more safe.
-#if DEBUG
+#ifdef DEBUG
   #define PPAssert(condition, desc...) NSAssert(condition, desc)
   #define PPAssert1(condition, desc, arg1) NSAssert1(condition, desc, arg1)
   #define PPAssert2(condition, desc, arg1, arg2) NSAssert2(condition, desc, arg1, arg2)

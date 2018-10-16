@@ -179,7 +179,7 @@ NSString *const PayPalEnvironmentMock = PPRequestEnvironmentNoNetwork;
         return;
     }
 
-#if DEBUG
+#ifdef DEBUG
     [PPOTConfiguration useHardcodedConfiguration:self.useHardcodedConfiguration];
 #endif
 
