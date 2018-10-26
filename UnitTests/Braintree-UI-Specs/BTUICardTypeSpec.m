@@ -182,13 +182,6 @@ describe(@"BTUICardType", ^{
                 expect([cardType validNumber:testNumber]).to.beTruthy();
             });
         }
-
-        context(@"when card type is Union Pay", ^{
-            it(@"returns true when number is not Luhn valid", ^{
-                BTUICardType *cardType = [BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_UNION_PAY)];
-                expect([cardType validNumber:@"6221234567890123451"]).to.beTruthy();
-            });
-        });
     });
 
     describe(@"validAndNecessarilyCompleteNumber", ^{

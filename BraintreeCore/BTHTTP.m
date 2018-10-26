@@ -80,6 +80,15 @@
     return copiedHTTP;
 }
 
+- (void)setSession:(NSURLSession *)session {
+    if (_session) {
+        // If we already have a session, we need to invalidate it so that the session delegate is released to prevent a retain cycle
+        [_session invalidateAndCancel];
+    }
+
+    _session = session;
+}
+
 #pragma mark - HTTP Methods
 
 - (void)GET:(NSString *)aPath completion:(void(^)(BTJSON *body, NSHTTPURLResponse *response, NSError *error))completionBlock {
