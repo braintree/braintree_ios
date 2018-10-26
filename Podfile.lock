@@ -22,7 +22,7 @@ PODS:
   - BraintreeDropIn/UIKit (99.99.99-github-master)
   - CardIO (5.4.1)
   - Expecta (1.0.6)
-  - InAppSettingsKit (2.9)
+  - InAppSettingsKit (2.9.1)
   - iOS-Slide-Menu (1.5)
   - "NSURL+QueryDictionary (1.2.0)"
   - OCMock (3.4.2)
@@ -39,11 +39,11 @@ PODS:
   - OHHTTPStubs/NSURLSession (6.1.0):
     - OHHTTPStubs/Core
   - OHHTTPStubs/OHPathHelpers (6.1.0)
-  - PureLayout (3.0.2)
+  - PureLayout (3.1.2)
   - Specta (1.0.7)
 
 DEPENDENCIES:
-  - AFNetworking (~> 3.2.0)
+  - AFNetworking
   - BraintreeDropIn (from `BraintreeDropIn.podspec`)
   - CardIO
   - Expecta
@@ -82,14 +82,14 @@ SPEC CHECKSUMS:
   BraintreeDropIn: ca284a08c31fb49485883cdcfb87c69422a9b343
   CardIO: 56983b39b62f495fc6dae9ad7cf875143df06443
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  InAppSettingsKit: fc3dea21846535b76b8289b119dbfdbe2505b2b2
+  InAppSettingsKit: acb6bc78cf00bbcfa63c4a26fd67f266bc7cfcd2
   iOS-Slide-Menu: 40b0cbd8916c42afc755f0869793cd09e7a32102
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   OCMock: ebe9ee1dca7fbed0ff9193ac0b3e2d8862ea56f6
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
-  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  PureLayout: 4634d0b61e3b5021166e8ec7c18e9e0ca0720c8b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 2d75797975ad049f401efa5ea6c536d64bcc2da8
+PODFILE CHECKSUM: 67c061c7a1086b4129156d5c49603423e0c0ccb6
 
 COCOAPODS: 1.5.3

@@ -6,7 +6,7 @@ workspace 'Braintree.xcworkspace'
 target 'Demo' do
   platform :ios, '9.0'
 
-  pod 'AFNetworking', '~> 3.2.0'
+  pod 'AFNetworking'
   pod 'CardIO'
   pod 'NSURL+QueryDictionary', '~> 1.0'
   pod 'PureLayout'

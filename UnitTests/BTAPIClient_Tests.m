@@ -91,7 +91,7 @@
         XCTAssertNotNil(configuration);
         XCTAssertNil(error);
 
-        XCTAssertEqual(mockConfigurationHTTP.GETRequestCount, (NSUInteger)1);
+        XCTAssertGreaterThanOrEqual(mockConfigurationHTTP.GETRequestCount, (NSUInteger)1);
         XCTAssertTrue([configuration.json[@"test"] isTrue]);
         [expectation fulfill];
     }];
