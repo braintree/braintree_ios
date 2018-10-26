@@ -14,6 +14,16 @@ NS_ASSUME_NONNULL_BEGIN
 */
 + (NSDictionary *)validationErrorUserInfo:(NSDictionary *)userInfo;
 
+/**
+ The `PPDataCollector` class string, exposed internally for injecting test doubles for unit tests
+ */
++ (void)setPayPalDataCollectorClassString:(nonnull NSString *)payPalDataCollectorClassString;
+
+/**
+ The `PPDataCollector` class, exposed internally for injecting test doubles for unit tests
+ */
++ (void)setPayPalDataCollectorClass:(nonnull Class)payPalDataCollectorClass;
+
 @end
 
 NS_ASSUME_NONNULL_END

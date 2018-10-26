@@ -14,3 +14,4 @@
 + (void)setPayPalDataCollectorClass:(nonnull Class)payPalDataCollectorClass;
 
 @end
+

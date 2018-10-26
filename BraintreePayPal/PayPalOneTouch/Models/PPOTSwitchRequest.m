@@ -41,7 +41,7 @@
         _environment = environment;
         _responseType = PPAppSwitchResponseTypeUnknown;
         _callbackURLScheme = callbackURLScheme;
-        _clientMetadataID = [PPDataCollector generateClientMetadataID:pairingId];
+        _clientMetadataID = [PPDataCollector generateClientMetadataID:pairingId disableBeacon:NO data:nil];
     }
     return self;
 }

@@ -193,6 +193,125 @@ class BTCardClient_Tests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.custom.card.succeeded"))
     }
 
+    func testCollectsDeviceData_whenEnabled_withCorrectParams_usingNonceAsClientMetadataId_withoutCustomer() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "creditCards": [
+                "collectDeviceData": true
+            ],
+            "merchantId": "fake-merchant"
+            ])
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "creditCards": [
+                [
+                    "nonce": "cmid-nonce",
+                    "description": "Visa ending in 11",
+                    "details": [
+                        "lastTwo" : "11",
+                        "cardType": "visa"] ] ]
+            ])
+
+        FakePPDataCollector.resetState()
+        BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertTrue(FakePPDataCollector.didGetClientMetadataID)
+        XCTAssertTrue(FakePPDataCollector.lastBeaconState)
+        XCTAssertEqual("cmid-nonce", FakePPDataCollector.lastClientMetadataId)
+        guard let data:[String : String] = (FakePPDataCollector.lastData as! [String : String]?) else { return XCTFail() }
+        XCTAssertEqual("fake-merchant", data["mid"])
+        XCTAssertEqual("bt_card", data["rda_tenant"])
+        XCTAssertNil(data["cid"])
+    }
+
+    func testCollectsDeviceData_whenEnabled_withCorrectParams_withCustomer() {
+        let clientTokenString = BTTestClientTokenFactory.token(withVersion: 2, overrides: [
+            BTClientTokenKeyConfigURL: "https://api.example.com/client_api/v1/configuration",
+            BTClientTokenKeyAuthorizationFingerprint: "an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=fake-customer-123&public_key=integration_public_key"
+            ])
+
+        let mockAPIClient = MockAPIClient(authorization: clientTokenString!)!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "creditCards": [
+                "collectDeviceData": true
+            ],
+            "merchantId": "fake-merchant"
+            ])
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "creditCards": [
+                [
+                    "nonce": "cmid-nonce",
+                    "description": "Visa ending in 11",
+                    "details": [
+                        "lastTwo" : "11",
+                        "cardType": "visa"] ] ]
+            ])
+
+        FakePPDataCollector.resetState()
+        BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertTrue(FakePPDataCollector.didGetClientMetadataID)
+        XCTAssertTrue(FakePPDataCollector.lastBeaconState)
+        XCTAssertEqual("cmid-nonce", FakePPDataCollector.lastClientMetadataId)
+        guard let data:[String : String] = (FakePPDataCollector.lastData as! [String : String]?) else { return XCTFail() }
+        XCTAssertEqual("fake-merchant", data["mid"])
+        XCTAssertEqual("bt_card", data["rda_tenant"])
+        XCTAssertEqual("fake-customer-123", data["cid"])
+    }
+
+    func testDoesNotCollectsDeviceData_whenDisabled() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "creditCards": [
+                "collectDeviceData": false
+            ],
+            "merchantId": "fake-merchant"
+            ])
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "creditCards": [
+                [
+                    "nonce": "cmid-nonce",
+                    "description": "Visa ending in 11",
+                    "details": [
+                        "lastTwo" : "11",
+                        "cardType": "visa"] ] ]
+            ])
+
+        FakePPDataCollector.resetState()
+        BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: nil)
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertFalse(FakePPDataCollector.didGetClientMetadataID)
+    }
+
     func testAnalyticsEvent_whenTokenizationFails_isSent() {
         let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
         let stubJSONResponse = BTJSON(value: [
@@ -260,6 +379,206 @@ class BTCardClient_Tests: XCTestCase {
         }
 
         waitForExpectations(timeout: 10, handler: nil)
+    }
+
+    func testCollectsDeviceData_whenEnabledWithGraphQL_withCorrectParams_usingNonceAsClientMetadataId_withoutCustomer() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "creditCards": [
+                "collectDeviceData": true
+            ],
+            "merchantId": "fake-merchant",
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+            ])
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "tokenizeCreditCard" : [
+                    "token" : "abc-nonce",
+                    "creditCard" : [
+                        "brand" : "Visa",
+                        "last4" : "1111",
+                        "binData": [
+                            "prepaid": "Yes",
+                            "healthcare": "Yes",
+                            "debit": "No",
+                            "durbinRegulated": "No",
+                            "commercial": "Yes",
+                            "payroll": "No",
+                            "issuingBank": "US",
+                            "countryOfIssuance": "Something",
+                            "productId": "123"
+                        ]
+                    ]
+                ]
+            ],
+            "extensions": [
+            ]
+            ])
+
+        FakePPDataCollector.resetState()
+        BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.cardholderName = "Brian Tree"
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            XCTAssertTrue(mockAPIClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.graphQLAPI)
+            guard var lastPostParameters = mockAPIClient.lastPOSTParameters else {
+                XCTFail()
+                return
+            }
+            lastPostParameters.removeValue(forKey: "clientSdkMetadata")
+            XCTAssertEqual(lastPostParameters as NSObject, card.graphQLParameters() as NSObject)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertTrue(FakePPDataCollector.didGetClientMetadataID)
+        XCTAssertTrue(FakePPDataCollector.lastBeaconState)
+        XCTAssertEqual("abc-nonce", FakePPDataCollector.lastClientMetadataId)
+        guard let data:[String : String] = (FakePPDataCollector.lastData as! [String : String]?) else { return XCTFail() }
+        XCTAssertEqual("fake-merchant", data["mid"])
+        XCTAssertEqual("bt_card", data["rda_tenant"])
+        XCTAssertNil(data["cid"])
+    }
+
+    func testCollectsDeviceData_whenEnabledWithGraphQL_withCustomer() {
+        let clientTokenString = BTTestClientTokenFactory.token(withVersion: 2, overrides: [
+            BTClientTokenKeyConfigURL: "https://api.example.com/client_api/v1/configuration",
+            BTClientTokenKeyAuthorizationFingerprint: "an_authorization_fingerprint|created_at=2014-02-12T18:02:30+0000&customer_id=fake-customer-123&public_key=integration_public_key"
+            ])
+
+        let mockAPIClient = MockAPIClient(authorization: clientTokenString!)!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "creditCards": [
+                "collectDeviceData": true
+            ],
+            "merchantId": "fake-merchant",
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+            ])
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "tokenizeCreditCard" : [
+                    "token" : "abc-nonce",
+                    "creditCard" : [
+                        "brand" : "Visa",
+                        "last4" : "1111",
+                        "binData": [
+                            "prepaid": "Yes",
+                            "healthcare": "Yes",
+                            "debit": "No",
+                            "durbinRegulated": "No",
+                            "commercial": "Yes",
+                            "payroll": "No",
+                            "issuingBank": "US",
+                            "countryOfIssuance": "Something",
+                            "productId": "123"
+                        ]
+                    ]
+                ]
+            ],
+            "extensions": [
+            ]
+            ])
+
+        FakePPDataCollector.resetState()
+        BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.cardholderName = "Brian Tree"
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            XCTAssertTrue(mockAPIClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.graphQLAPI)
+            guard var lastPostParameters = mockAPIClient.lastPOSTParameters else {
+                XCTFail()
+                return
+            }
+            lastPostParameters.removeValue(forKey: "clientSdkMetadata")
+            XCTAssertEqual(lastPostParameters as NSObject, card.graphQLParameters() as NSObject)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertTrue(FakePPDataCollector.didGetClientMetadataID)
+        XCTAssertTrue(FakePPDataCollector.lastBeaconState)
+        XCTAssertEqual("abc-nonce", FakePPDataCollector.lastClientMetadataId)
+        guard let data:[String : String] = (FakePPDataCollector.lastData as! [String : String]?) else { return XCTFail() }
+        XCTAssertEqual("fake-merchant", data["mid"])
+        XCTAssertEqual("bt_card", data["rda_tenant"])
+        XCTAssertEqual("fake-customer-123", data["cid"])
+    }
+
+    func testDoesNotCollectsDeviceData_whenDisabledWithGraphQL() {
+        let mockAPIClient = MockAPIClient(authorization: "development_tokenization_key")!
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "creditCards": [
+                "collectDeviceData": false
+            ],
+            "merchantId": "fake-merchant",
+            "graphQL": [
+                "url": "graphql://graphql",
+                "features": ["tokenize_credit_cards"]
+            ]
+            ])
+
+        mockAPIClient.cannedResponseBody = BTJSON(value: [
+            "data": [
+                "tokenizeCreditCard" : [
+                    "token" : "abc-nonce",
+                    "creditCard" : [
+                        "brand" : "Visa",
+                        "last4" : "1111",
+                        "binData": [
+                            "prepaid": "Yes",
+                            "healthcare": "Yes",
+                            "debit": "No",
+                            "durbinRegulated": "No",
+                            "commercial": "Yes",
+                            "payroll": "No",
+                            "issuingBank": "US",
+                            "countryOfIssuance": "Something",
+                            "productId": "123"
+                        ]
+                    ]
+                ]
+            ],
+            "extensions": [
+            ]
+            ])
+
+        FakePPDataCollector.resetState()
+        BTCardClient.setPayPalDataCollectorClass(FakePPDataCollector.self)
+        let cardClient = BTCardClient(apiClient: mockAPIClient)
+        let card = BTCard(number: "4111111111111111", expirationMonth: "12", expirationYear: "2038", cvv: "1234")
+        card.cardholderName = "Brian Tree"
+
+        let expectation = self.expectation(description: "Tokenized card")
+        cardClient.tokenizeCard(card) { _, _ -> Void in
+            XCTAssertTrue(mockAPIClient.lastPOSTAPIClientHTTPType! == BTAPIClientHTTPType.graphQLAPI)
+            guard var lastPostParameters = mockAPIClient.lastPOSTParameters else {
+                XCTFail()
+                return
+            }
+            lastPostParameters.removeValue(forKey: "clientSdkMetadata")
+            XCTAssertEqual(lastPostParameters as NSObject, card.graphQLParameters() as NSObject)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2, handler: nil)
+
+        XCTAssertFalse(FakePPDataCollector.didGetClientMetadataID)
     }
 
     func testTokenization_whenGraphQLIsDisabled_postsCardDataToGatewayAPI() {

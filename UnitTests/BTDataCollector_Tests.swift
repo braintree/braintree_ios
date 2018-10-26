@@ -1,5 +1,6 @@
 import XCTest
 import PayPalDataCollector
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -259,14 +260,43 @@ class FakeDeviceCollectorSDK: KDataCollector {
 
 class FakePPDataCollector: PPDataCollector {
     
-    static var didGetClientMetadataID = false
+    public static var didGetClientMetadataID = false
+    public static var lastClientMetadataId = ""
+    public static var lastData: [AnyHashable: Any]? = [:]
+    public static var lastBeaconState = false
 
-    override class func generateClientMetadataID() -> String {
-        return generateClientMetadataID(nil)
+    override class func clientMetadataID(_ pairingID: String?) -> String {
+        return generateClientMetadataID(pairingID, disableBeacon: false, data: nil)
     }
 
-    override class func generateClientMetadataID(_ pairingID: String?) -> String {
+    override class func generateClientMetadataID() -> String {
+        return generateClientMetadataID(nil, disableBeacon: false, data: nil)
+    }
+
+    override class func generateClientMetadataIDWithoutBeacon(_ clientMetadataID: String?, data: [AnyHashable : Any]?) -> String {
+        return generateClientMetadataID(clientMetadataID, disableBeacon: true, data: data)
+    }
+
+    override class func generateClientMetadataID(_ clientMetadataID: String?, disableBeacon: Bool, data: [AnyHashable : Any]?) -> String {
+        if (data != nil) {
+            lastData = data!
+        } else {
+            lastData = nil
+        }
+        if (clientMetadataID != nil) {
+            lastClientMetadataId = clientMetadataID!
+        } else {
+            lastClientMetadataId = "fakeclientmetadataid"
+        }
+        lastBeaconState = disableBeacon
         didGetClientMetadataID = true
-        return "fakeclientmetadataid"
+        return lastClientMetadataId
+    }
+
+    class func resetState() -> Void {
+        lastBeaconState = false
+        didGetClientMetadataID = false
+        lastData = nil
+        lastClientMetadataId = ""
     }
 }

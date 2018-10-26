@@ -86,7 +86,7 @@
 
     BTAPIClient *apiClient = [self clientThatReturnsConfiguration:@{ @"test": @YES }];
     BTFakeHTTP *mockConfigurationHTTP = (BTFakeHTTP *)apiClient.configurationHTTP;
-
+    mockConfigurationHTTP.GETRequestCount = 0;
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *error) {
         XCTAssertNotNil(configuration);
         XCTAssertNil(error);

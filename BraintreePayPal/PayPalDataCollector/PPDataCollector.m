@@ -6,7 +6,8 @@
 //
 
 #import "PPDataCollector_Internal.h"
-#import "PPRCClientMetadataIDProvider.h"
+#import "PPRMOCMagnesSDK.h"
+#import "PPRMOCMagnesResult.h"
 #if __has_include("PayPalUtils.h")
 #import "PPOTDevice.h"
 #import "PPOTVersion.h"
@@ -21,37 +22,24 @@
 
 @implementation PPDataCollector
 
-+ (NSString *)generateClientMetadataID:(NSString *)pairingID {
-    static PPRCClientMetadataIDProvider *clientMetadataIDProvider;
-    __block NSString *clientMetadataPairingID = [pairingID copy];
++ (NSString *)generateClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
+    [[PPRMOCMagnesSDK shared] setUpEnvironment:LIVE withOptionalAppGuid:[PPOTDevice appropriateIdentifier] withOptionalAPNToken:nil disableRemoteConfiguration:NO disableBeacon:disableBeacon forMagnesSource:MAGNES_SOURCE_BRAINTREE];
 
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        PPRCClientMetadataIDProviderNetworkAdapterBlock adapterBlock = ^(NSURLRequest *request, PPRCClientMetadataIDProviderNetworkResponseBlock completionBlock) {
-            [[PPOTURLSession session] sendRequest:request completionBlock:^(NSData* responseData, NSHTTPURLResponse *response, __unused NSError *error) {
-                completionBlock(response, responseData);
-            }];
-        };
+    PPRMOCMagnesSDKResult *result = [[PPRMOCMagnesSDK shared] collectAndSubmitWithPayPalClientMetadataId:[clientMetadataID copy] withAdditionalData:data];
+    PPLog(@"ClientMetadataID: %@", [result getPayPalClientMetaDataId]);
+    return [result getPayPalClientMetaDataId];
+}
 
-        clientMetadataIDProvider = [[PPRCClientMetadataIDProvider alloc] initWithAppGuid:[PPOTDevice appropriateIdentifier]
-                                                                        sourceAppVersion:PayPalOTVersion()
-                                                                     networkAdapterBlock:adapterBlock
-                                                                               pairingID:clientMetadataPairingID];
-        // On first time, do not use a pairing ID to generate the client metadata ID because it's already been paired
-        clientMetadataPairingID = nil;
-    });
-
-    NSString *clientMetadataID = [clientMetadataIDProvider clientMetadataID:clientMetadataPairingID];
-    PPLog(@"ClientMetadataID: %@", clientMetadataID);
-    return clientMetadataID;
++ (NSString *)generateClientMetadataIDWithoutBeacon:(NSString *)clientMetadataID data:(NSDictionary *)data {
+    return [PPDataCollector generateClientMetadataID:clientMetadataID disableBeacon:YES data:data];
 }
 
 + (NSString *)generateClientMetadataID {
-    return [PPDataCollector generateClientMetadataID:nil];
+    return [PPDataCollector generateClientMetadataID:nil disableBeacon:NO data:nil];
 }
 
 + (nonnull NSString *)clientMetadataID:(nullable NSString *)pairingID {
-    return [self generateClientMetadataID:pairingID];
+    return [PPDataCollector generateClientMetadataID:pairingID disableBeacon:NO data:nil];
 }
 
 + (nonnull NSString *)clientMetadataID {

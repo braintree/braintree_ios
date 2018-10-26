@@ -2,6 +2,7 @@
 #import "BTCardClient_Internal.h"
 #import "BTCardNonce_Internal.h"
 #import "BTCardRequest.h"
+#import "BTConfiguration+Card.h"
 #import "BTClientMetadata.h"
 #import "BTHTTP.h"
 #import "BTJSON.h"
@@ -22,6 +23,9 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 @end
 
 @implementation BTCardClient
+
+static Class PayPalDataCollectorClass;
+static NSString *PayPalDataCollectorClassString = @"PPDataCollector";
 
 + (void)load {
     if (self == [BTCardClient class]) {
@@ -98,7 +102,14 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
                  BTJSON *cardJSON = body[@"data"][@"tokenizeCreditCard"];
                  [self sendGraphQLAnalyticsEventWithSuccess:YES];
-                 completionBlock([BTCardNonce cardNonceWithGraphQLJSON:cardJSON], cardJSON.asError);
+
+                 BTCardNonce *cardNonce = [BTCardNonce cardNonceWithGraphQLJSON:cardJSON];
+
+                 if (cardNonce && [self isPayPalDataCollectorAvailable] && [configuration collectFraudData]) {
+                     [self collectRiskData:cardNonce.nonce configuration:configuration];
+                 }
+
+                 completionBlock(cardNonce, cardJSON.asError);
              }];
         } else {
             NSDictionary *parameters = [self clientAPIParametersForCard:request options:options];
@@ -135,7 +146,13 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                  }
 
                  // cardNonceWithJSON returns nil when cardJSON is nil, cardJSON.asError is nil when cardJSON is non-nil
-                 completionBlock([BTCardNonce cardNonceWithJSON:cardJSON], cardJSON.asError);
+                 BTCardNonce *cardNonce = [BTCardNonce cardNonceWithJSON:cardJSON];
+
+                 if (cardNonce && [self isPayPalDataCollectorAvailable] && [configuration collectFraudData]) {
+                     [self collectRiskData:cardNonce.nonce configuration:configuration];
+                 }
+
+                 completionBlock(cardNonce, cardJSON.asError);
              }];
         }
     }];
@@ -213,6 +230,65 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
     NSArray *graphQLFeatures = [configuration.json[@"graphQL"][@"features"] asArray];
 
     return graphQLFeatures && [graphQLFeatures containsObject:BTCardClientGraphQLTokenizeFeature];
+}
+
++ (void)setPayPalDataCollectorClassString:(NSString *)payPalDataCollectorClassString {
+    PayPalDataCollectorClassString = payPalDataCollectorClassString;
+}
+
++ (void)setPayPalDataCollectorClass:(Class)payPalDataCollectorClass {
+    PayPalDataCollectorClass = payPalDataCollectorClass;
+}
+
+- (BOOL)isPayPalDataCollectorAvailable {
+    Class kPPDataCollector = NSClassFromString(PayPalDataCollectorClassString);
+    SEL aSelector = NSSelectorFromString(@"generateClientMetadataIDWithoutBeacon:data:");
+    return kPPDataCollector && [kPPDataCollector respondsToSelector:aSelector];
+}
+
+- (void)collectRiskData:(NSString *)correlationId configuration:(BTConfiguration *)configuration {
+    // Trim to 32 chars to ensure compatibility with PPDataCollector
+    NSString *trimmedCorrelationId = [correlationId copy];
+    if (trimmedCorrelationId && [trimmedCorrelationId length] > 32) {
+        trimmedCorrelationId = [trimmedCorrelationId substringToIndex:32];
+    }
+
+    NSMutableDictionary *data = [@{
+                           @"mid":[configuration.json[@"merchantId"] asString],
+                           @"rda_tenant": @"bt_card"
+                           } mutableCopy];
+
+    if (self.apiClient.clientToken != nil) {
+        NSString *authorizationFingerprint = self.apiClient.clientToken.authorizationFingerprint;
+        NSArray *authorizationComponents = [authorizationFingerprint componentsSeparatedByString:@"&"];
+        for (NSString *component in authorizationComponents) {
+            if ([component hasPrefix:@"customer_id="]) {
+                NSArray *customerIdComponents = [component componentsSeparatedByString:@"="];
+                if ([customerIdComponents count] > 1) {
+                    data[@"cid"] = [customerIdComponents lastObject];
+                }
+            }
+        }
+    }
+
+    Class kPPDataCollector = [self getPPDataCollectorClass];
+    SEL aSelector = NSSelectorFromString(@"generateClientMetadataIDWithoutBeacon:data:");
+    if(kPPDataCollector != nil && [kPPDataCollector respondsToSelector:aSelector]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[kPPDataCollector methodSignatureForSelector:aSelector]];
+        [inv setSelector:aSelector];
+        [inv setTarget:kPPDataCollector];
+
+        [inv setArgument:&(trimmedCorrelationId) atIndex:2];
+        [inv setArgument:&(data) atIndex:3];
+        [inv invoke];
+    }
+}
+
+- (Class)getPPDataCollectorClass {
+    if (PayPalDataCollectorClass != nil) {
+        return PayPalDataCollectorClass;
+    }
+    return NSClassFromString(PayPalDataCollectorClassString);
 }
 
 @end
