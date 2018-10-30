@@ -1,9 +1,11 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## 4.20.0 (2018-10-30)
 
 * Luhn validate UnionPay cards
   * Luhn-invalid UnionPay cards were previously rejected server side rather than client side
+* Fix retain cycle when ovewriting an NSURLSession
+* Update `PayPalDataCollector` to include latest `libPPRiskComponent.a`
 
 ## 4.19.0 (2018-09-13)
 
