@@ -31,7 +31,6 @@
 		0347A1801FA7A81C0039C2DF /* BraintreeDemoThreeDSecurePaymentFlowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0347A17F1FA7A76E0039C2DF /* BraintreeDemoThreeDSecurePaymentFlowViewController.m */; };
 		034CDCA71FB517A400CEC47C /* BTThreeDSecureLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CDCA61FB517A300CEC47C /* BTThreeDSecureLookup.h */; };
 		034CDCA91FB518DE00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CDCA81FB518CB00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h */; };
-		034CF882214C5AA1003C0616 /* libPPRiskMagnesOC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034CF87F214C5AA1003C0616 /* libPPRiskMagnesOC.a */; };
 		034CF883214C5AEA003C0616 /* libPPRiskMagnesOC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034CF87F214C5AA1003C0616 /* libPPRiskMagnesOC.a */; };
 		034CF884214C5B16003C0616 /* PPRMOCMagnesResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF87D214C5AA0003C0616 /* PPRMOCMagnesResult.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		034CF885214C5B16003C0616 /* PPRMOCMagnesSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF87E214C5AA0003C0616 /* PPRMOCMagnesSDK.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1985,7 +1984,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				034CF882214C5AA1003C0616 /* libPPRiskMagnesOC.a in Frameworks */,
 				2D941D5B1B5D5F170016EFB4 /* BraintreeCore.framework in Frameworks */,
 				A50C3BCF1C1B453500612D90 /* PayPalOneTouch.framework in Frameworks */,
 			);
