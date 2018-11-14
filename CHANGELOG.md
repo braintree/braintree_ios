@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.20.1 (2018-11-14)
+
+* Update `libPPRiskComponent.a` to latest version
+
 ## 4.20.0 (2018-10-30)
 
 * Luhn validate UnionPay cards
