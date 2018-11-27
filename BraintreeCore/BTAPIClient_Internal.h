@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, BTAPIClientHTTPType) {
 /**
  Gets base GraphQL URL
 */
-+ (NSURL *)graphQLURLForEnvironment:(NSString *)environment;
++ (nullable NSURL *)graphQLURLForEnvironment:(NSString *)environment;
 
 @end
 
