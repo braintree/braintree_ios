@@ -23,12 +23,12 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 /**
  Per-unit price of the item. Can include up to 4 decimal places. This value can't be negative or zero.
  */
-@property (nonatomic, readonly, strong) NSDecimalNumber *unitAmount;
+@property (nonatomic, readonly, strong) NSNumber *unitAmount;
 
 /**
  Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
  */
-@property (nonatomic, nullable, strong) NSDecimalNumber *unitTaxAmount;
+@property (nonatomic, nullable, strong) NSNumber *unitTaxAmount;
 
 /**
  Item name. Maximum 35 characters, or 127 characters for PayPal transactions.
@@ -53,12 +53,12 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 /**
  Quantity x unit amount. Can include up to 2 decimal places.
  */
-@property (nonatomic, readonly, strong) NSDecimalNumber *totalAmount;
+@property (nonatomic, readonly, strong) NSNumber *totalAmount;
 
 /**
  Optional: Discount amount for the line item. Can include up to 2 decimal places. This value can't be negative.
  */
-@property (nonatomic, nullable, strong) NSDecimalNumber *discountAmount;
+@property (nonatomic, nullable, strong) NSNumber *discountAmount;
 
 /**
  Optional: The unit of measure or the unit of measure code. Maximum 12 characters.
@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 /**
  Optional: Tax amount for the line item. Can include up to 2 decimal places. This value can't be negative.
  */
-@property (nonatomic, nullable, strong) NSDecimalNumber *taxAmount;
+@property (nonatomic, nullable, strong) NSNumber *taxAmount;
 
 /**
  Optional: The URL to product information.
@@ -93,7 +93,7 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
  @return A PayPalLineItem.
  */
 - (instancetype)initWithQuantity:(NSNumber *)quantity
-                      unitAmount:(NSDecimalNumber *)unitAmount
+                      unitAmount:(NSNumber *)unitAmount
                             name:(NSString *)name
                             kind:(BTPayPalLineItemKind)kind;
 
