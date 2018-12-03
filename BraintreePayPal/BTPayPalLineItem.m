@@ -1,6 +1,6 @@
-#import "BTPayPalLineItems.h"
+#import "BTPayPalLineItem.h"
 
-@implementation BTPayPalLineItems
+@implementation BTPayPalLineItem
 
 - (instancetype)initWithQuantity:(NSNumber *)quantity
                       unitAmount:(NSDecimalNumber *)unitAmount

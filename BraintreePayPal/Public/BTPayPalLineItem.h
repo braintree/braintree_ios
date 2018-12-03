@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BTPayPalLineItems : NSObject
+@interface BTPayPalLineItem : NSObject
 
 /**
  Use this option to specify whether a line item is a debit (sale) or credit (refund) to the customer.

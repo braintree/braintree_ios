@@ -4,7 +4,7 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
-#import "BTPayPalLineItems.h"
+#import "BTPayPalLineItem.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -178,7 +178,7 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
 /**
  Optional: The line items for this transaction. It can include up to 249 line items.
 */
-@property (nonatomic, nullable, copy) NSArray<BTPayPalLineItems *> *lineItems;
+@property (nonatomic, nullable, copy) NSArray<BTPayPalLineItem *> *lineItems;
 
 @end
 
