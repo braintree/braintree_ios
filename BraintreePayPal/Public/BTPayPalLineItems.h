@@ -18,55 +18,55 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 /**
  Number of units of the item purchased. Can include up to 4 decimal places. This value can't be negative or zero.
  */
-@property (nonatomic, strong) NSNumber *quantity;
+@property (nonatomic, readonly, strong) NSNumber *quantity;
 
 /**
  Per-unit price of the item. Can include up to 4 decimal places. This value can't be negative or zero.
  */
-@property (nonatomic, strong) NSDecimalNumber *unitAmount;
+@property (nonatomic, readonly, strong) NSDecimalNumber *unitAmount;
 
 /**
- Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
+ Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
  */
 @property (nonatomic, nullable, strong) NSDecimalNumber *unitTaxAmount;
 
 /**
  Item name. Maximum 35 characters, or 127 characters for PayPal transactions.
  */
-@property (nonatomic, copy) NSString *name;
+@property (nonatomic, readonly, copy) NSString *name;
 
 /**
- Item description. Maximum 127 characters.
+ Optional: Item description. Maximum 127 characters.
  */
 @property (nonatomic, nullable, copy) NSString *itemDescription;
 
 /**
  Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
  */
-@property (nonatomic, assign) BTPayPalLineItemKind kind;
+@property (nonatomic, readonly, assign) BTPayPalLineItemKind kind;
 
 /**
- Product or UPC code for the item. Maximum 12 characters, or 127 characters for PayPal transactions.
+ Optional: Product or UPC code for the item. Maximum 12 characters, or 127 characters for PayPal transactions.
  */
 @property (nonatomic, nullable, copy) NSString *productCode;
 
 /**
  Quantity x unit amount. Can include up to 2 decimal places.
  */
-@property (nonatomic, strong) NSDecimalNumber *totalAmount;
+@property (nonatomic, readonly, strong) NSDecimalNumber *totalAmount;
 
 /**
- Discount amount for the line item. Can include up to 2 decimal places. This value can't be negative.
+ Optional: Discount amount for the line item. Can include up to 2 decimal places. This value can't be negative.
  */
 @property (nonatomic, nullable, strong) NSDecimalNumber *discountAmount;
 
 /**
- The unit of measure or the unit of measure code. Maximum 12 characters.
+ Optional: The unit of measure or the unit of measure code. Maximum 12 characters.
  */
 @property (nonatomic, nullable, strong) NSString *unitOfMeasure;
 
 /**
- Code used to classify items purchased and track the total amount spent across various categories of products and services.
+ Optional: Code used to classify items purchased and track the total amount spent across various categories of products and services.
  Different corporate purchasing organizations may use different standards, but the
  [United Nations Standard Products and Services Code (UNSPSC)](https://www.unspsc.org/) is frequently used.
  Maximum 12 characters.
@@ -74,14 +74,33 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 @property (nonatomic, nullable, copy) NSString *commodityCode;
 
 /**
- Tax amount for the line item. Can include up to 2 decimal places. This value can't be negative.
+ Optional: Tax amount for the line item. Can include up to 2 decimal places. This value can't be negative.
  */
 @property (nonatomic, nullable, strong) NSDecimalNumber *taxAmount;
 
 /**
- The URL to product information.
+ Optional: The URL to product information.
  */
-@property (nonatomic,nullable, strong) NSURL *url;
+@property (nonatomic, nullable, strong) NSURL *url;
+
+/**
+ Initialize a PayPayLineItem
+
+ @param quantity Number of units of the item purchased. Can include up to 4 decimal places. This value can't be negative or zero.
+ @param unitAmount Per-unit price of the item. Can include up to 4 decimal places. This value can't be negative or zero.
+ @param name Item name. Maximum 35 characters, or 127 characters for PayPal transactions.
+ @param kind Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
+ @return A PayPalLineItem.
+ */
+- (instancetype)initWithQuantity:(NSNumber *)quantity
+                      unitAmount:(NSDecimalNumber *)unitAmount
+                            name:(NSString *)name
+                            kind:(BTPayPalLineItemKind)kind;
+
+/**
+ Base initializer - do not use.
+ */
+- (instancetype)init __attribute__((unavailable("Please use initWithQuantity:unitAmount:name:kind:")));
 
 @end
 
