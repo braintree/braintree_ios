@@ -102,6 +102,8 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
  */
 - (instancetype)init __attribute__((unavailable("Please use initWithQuantity:unitAmount:name:kind:")));
 
+- (NSDictionary *)requestParameters;
+
 @end
 
 NS_ASSUME_NONNULL_END
