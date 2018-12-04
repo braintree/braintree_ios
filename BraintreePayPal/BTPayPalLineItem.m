@@ -43,7 +43,7 @@
     }
     requestParameters[@"total_amount"] = self.totalAmount.stringValue;
     if (self.discountAmount) {
-        requestParameters[@"discount_amount"] = self.discountAmount;
+        requestParameters[@"discount_amount"] = self.discountAmount.stringValue;
     }
     if (self.unitOfMeasure) {
         requestParameters[@"unit_of_measure"] = self.unitOfMeasure;

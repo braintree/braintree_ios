@@ -1316,6 +1316,63 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
     }
 
+    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithLineItem() {
+        let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
+        mockAPIClient = payPalDriver.apiClient as! MockAPIClient
+        payPalDriver.returnURLScheme = "foo://"
+        let request = BTPayPalRequest(amount: "1")
+        request.currencyCode = "GBP"
+
+        let lineItem1 = BTPayPalLineItem.init(quantity: NSNumber(integerLiteral: 2), unitAmount: NSNumber(floatLiteral: 1.23), name: "itemName", kind: .debit)
+        lineItem1.unitTaxAmount = NSNumber(floatLiteral: 0.34)
+        lineItem1.itemDescription = "itemDescription"
+        lineItem1.productCode = "productCode"
+        lineItem1.discountAmount = NSNumber(floatLiteral: 0.12)
+        lineItem1.unitOfMeasure = "unit"
+        lineItem1.commodityCode = "commodity"
+        lineItem1.taxAmount = NSNumber(floatLiteral: 0.23)
+        lineItem1.url = URL.init(string: "https://www.example.com")
+
+        let lineItem2 = BTPayPalLineItem.init(quantity: NSNumber(integerLiteral: 3), unitAmount: NSNumber(floatLiteral: 2.34), name: "itemName2", kind: .credit)
+
+        request.lineItems = [lineItem1, lineItem2]
+
+        BTPayPalDriver.setPayPalClass(FakePayPalOneTouchCore.self)
+        payPalDriver.requestOneTimePayment(request) { _,_  -> Void in }
+
+        XCTAssertEqual("v1/paypal_hermes/create_payment_resource", mockAPIClient.lastPOSTPath)
+        guard let lastPostParameters = mockAPIClient.lastPOSTParameters else {
+            XCTFail()
+            return
+        }
+
+        guard let lineItems = lastPostParameters["line_items"] as? Array<AnyObject> else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(lineItems.count, 2)
+
+        guard let firstLineItem = lineItems.first as? Dictionary<String, String> else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(firstLineItem["quantity"], "2")
+        XCTAssertEqual(firstLineItem["unit_amount"], "1.23")
+        XCTAssertEqual(firstLineItem["unit_tax_amount"], "0.34")
+        XCTAssertEqual(firstLineItem["name"], "itemName")
+        XCTAssertEqual(firstLineItem["description"], "itemDescription")
+        XCTAssertEqual(firstLineItem["kind"], "debit")
+        XCTAssertEqual(firstLineItem["product_code"], "productCode")
+        XCTAssertEqual(firstLineItem["total_amount"], "2.46")
+        XCTAssertEqual(firstLineItem["discount_amount"], "0.12")
+        XCTAssertEqual(firstLineItem["unit_of_measure"], "unit")
+        XCTAssertEqual(firstLineItem["commodity_code"], "commodity")
+        XCTAssertEqual(firstLineItem["tax_amount"], "0.23")
+        XCTAssertEqual(firstLineItem["url"], "https://www.example.com")
+    }
+
     func testCheckout_whenPayPalCreditOffered_performsSwitchCorrectly() {
         let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
