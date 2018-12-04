@@ -1316,7 +1316,7 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(experienceProfile["address_override"] as? Bool, false)
     }
 
-    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithLineItem() {
+    func testCheckout_whenRemoteConfigurationFetchSucceeds_postsPaymentResourceWithLineItems() {
         let payPalDriver = BTPayPalDriver(apiClient: mockAPIClient)
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
@@ -1371,6 +1371,13 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         XCTAssertEqual(firstLineItem["commodity_code"], "commodity")
         XCTAssertEqual(firstLineItem["tax_amount"], "0.23")
         XCTAssertEqual(firstLineItem["url"], "https://www.example.com")
+
+        guard let secondLineItem = lineItems[1] as? Dictionary<String, String> else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(secondLineItem["kind"], "credit")
     }
 
     func testCheckout_whenPayPalCreditOffered_performsSwitchCorrectly() {
