@@ -3,7 +3,7 @@
 @implementation BTPayPalLineItem
 
 - (instancetype)initWithQuantity:(NSNumber *)quantity
-                      unitAmount:(NSDecimalNumber *)unitAmount
+                      unitAmount:(NSNumber *)unitAmount
                             name:(NSString *)name
                             kind:(BTPayPalLineItemKind)kind {
     self = [super init];
