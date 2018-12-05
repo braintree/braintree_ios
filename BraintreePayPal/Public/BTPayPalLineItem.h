@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 @property (nonatomic, nullable, strong) NSNumber *unitTaxAmount;
 
 /**
- Item name. Maximum 35 characters, or 127 characters for PayPal transactions.
+ Item name. Maximum 127 characters.
  */
 @property (nonatomic, readonly, copy) NSString *name;
 
@@ -46,7 +46,7 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 @property (nonatomic, readonly, assign) BTPayPalLineItemKind kind;
 
 /**
- Optional: Product or UPC code for the item. Maximum 12 characters, or 127 characters for PayPal transactions.
+ Optional: Product or UPC code for the item. Maximum 127 characters.
  */
 @property (nonatomic, nullable, copy) NSString *productCode;
 
@@ -88,7 +88,7 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 
  @param quantity Number of units of the item purchased. Can include up to 4 decimal places. This value can't be negative or zero.
  @param unitAmount Per-unit price of the item. Can include up to 4 decimal places. This value can't be negative or zero.
- @param name Item name. Maximum 35 characters, or 127 characters for PayPal transactions.
+ @param name Item name. Maximum 127 characters.
  @param kind Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
  @return A PayPalLineItem.
  */
