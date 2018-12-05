@@ -4,12 +4,14 @@
 
 - (instancetype)initWithQuantity:(NSNumber *)quantity
                       unitAmount:(NSNumber *)unitAmount
+                     totalAmount:(NSNumber *)totalAmount
                             name:(NSString *)name
                             kind:(BTPayPalLineItemKind)kind {
     self = [super init];
     if (self) {
         _quantity = quantity;
         _unitAmount = unitAmount;
+        _totalAmount = totalAmount;
         _name = name;
         _kind = kind;
     }
@@ -59,10 +61,6 @@
     }
 
     return [requestParameters copy];
-}
-
-- (NSNumber *)totalAmount {
-    return @(self.quantity.integerValue * self.unitAmount.doubleValue);
 }
 
 @end

@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 @property (nonatomic, nullable, copy) NSString *productCode;
 
 /**
- Quantity x unit amount. Can include up to 2 decimal places.
+ Total amount of this line item. Can include up to 2 decimal places.
  */
 @property (nonatomic, readonly, strong) NSNumber *totalAmount;
 
@@ -88,12 +88,14 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 
  @param quantity Number of units of the item purchased. Can include up to 4 decimal places. This value can't be negative or zero.
  @param unitAmount Per-unit price of the item. Can include up to 4 decimal places. This value can't be negative or zero.
+ @param totalAmount Total amount of this line item. Can include up to 2 decimal places.
  @param name Item name. Maximum 127 characters.
  @param kind Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
  @return A PayPalLineItem.
  */
 - (instancetype)initWithQuantity:(NSNumber *)quantity
                       unitAmount:(NSNumber *)unitAmount
+                     totalAmount:(NSNumber *)totalAmount
                             name:(NSString *)name
                             kind:(BTPayPalLineItemKind)kind;
 

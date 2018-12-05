@@ -1323,7 +1323,11 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         let request = BTPayPalRequest(amount: "1")
         request.currencyCode = "GBP"
 
-        let lineItem1 = BTPayPalLineItem.init(quantity: NSNumber(integerLiteral: 2), unitAmount: NSNumber(floatLiteral: 1.23), name: "itemName", kind: .debit)
+        let lineItem1 = BTPayPalLineItem.init(quantity: NSNumber(integerLiteral: 2),
+                                              unitAmount: NSNumber(floatLiteral: 1.23),
+                                              totalAmount: NSNumber(floatLiteral: 2.46),
+                                              name: "itemName",
+                                              kind: .debit)
         lineItem1.unitTaxAmount = NSNumber(floatLiteral: 0.34)
         lineItem1.itemDescription = "itemDescription"
         lineItem1.productCode = "productCode"
@@ -1333,7 +1337,11 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         lineItem1.taxAmount = NSNumber(floatLiteral: 0.23)
         lineItem1.url = URL.init(string: "https://www.example.com")
 
-        let lineItem2 = BTPayPalLineItem.init(quantity: NSNumber(integerLiteral: 3), unitAmount: NSNumber(floatLiteral: 2.34), name: "itemName2", kind: .credit)
+        let lineItem2 = BTPayPalLineItem.init(quantity: NSNumber(integerLiteral: 3),
+                                              unitAmount: NSNumber(floatLiteral: 2.34),
+                                              totalAmount: NSNumber(floatLiteral: 7.02),
+                                              name: "itemName2",
+                                              kind: .credit)
 
         request.lineItems = [lineItem1, lineItem2]
 
