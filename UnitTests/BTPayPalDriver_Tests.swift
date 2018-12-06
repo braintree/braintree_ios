@@ -1368,16 +1368,16 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         XCTAssertEqual(firstLineItem["quantity"], "2")
         XCTAssertEqual(firstLineItem["unit_amount"], "1.23")
-        XCTAssertEqual(firstLineItem["unit_tax_amount"], "0.34")
-        XCTAssertEqual(firstLineItem["name"], "itemName")
-        XCTAssertEqual(firstLineItem["description"], "itemDescription")
-        XCTAssertEqual(firstLineItem["kind"], "debit")
-        XCTAssertEqual(firstLineItem["product_code"], "productCode")
         XCTAssertEqual(firstLineItem["total_amount"], "2.46")
+        XCTAssertEqual(firstLineItem["name"], "itemName")
+        XCTAssertEqual(firstLineItem["kind"], "debit")
+        XCTAssertEqual(firstLineItem["unit_tax_amount"], "0.34")
+        XCTAssertEqual(firstLineItem["tax_amount"], "0.23")
         XCTAssertEqual(firstLineItem["discount_amount"], "0.12")
+        XCTAssertEqual(firstLineItem["description"], "itemDescription")
+        XCTAssertEqual(firstLineItem["product_code"], "productCode")
         XCTAssertEqual(firstLineItem["unit_of_measure"], "unit")
         XCTAssertEqual(firstLineItem["commodity_code"], "commodity")
-        XCTAssertEqual(firstLineItem["tax_amount"], "0.23")
         XCTAssertEqual(firstLineItem["url"], "https://www.example.com")
 
         guard let secondLineItem = lineItems[1] as? Dictionary<String, String> else {

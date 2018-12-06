@@ -26,9 +26,9 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 @property (nonatomic, readonly, strong) NSNumber *unitAmount;
 
 /**
- Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
+ Total amount of this line item. Can include up to 2 decimal places.
  */
-@property (nonatomic, nullable, strong) NSNumber *unitTaxAmount;
+@property (nonatomic, readonly, strong) NSNumber *totalAmount;
 
 /**
  Item name. Maximum 127 characters.
@@ -36,29 +36,34 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 @property (nonatomic, readonly, copy) NSString *name;
 
 /**
- Optional: Item description. Maximum 127 characters.
- */
-@property (nonatomic, nullable, copy) NSString *itemDescription;
-
-/**
  Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
  */
 @property (nonatomic, readonly, assign) BTPayPalLineItemKind kind;
 
 /**
- Optional: Product or UPC code for the item. Maximum 127 characters.
+ Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
  */
-@property (nonatomic, nullable, copy) NSString *productCode;
+@property (nonatomic, nullable, strong) NSNumber *unitTaxAmount;
 
 /**
- Total amount of this line item. Can include up to 2 decimal places.
+ Optional: Tax amount for the line item. Can include up to 2 decimal places. This value can't be negative.
  */
-@property (nonatomic, readonly, strong) NSNumber *totalAmount;
+@property (nonatomic, nullable, strong) NSNumber *taxAmount;
 
 /**
  Optional: Discount amount for the line item. Can include up to 2 decimal places. This value can't be negative.
  */
 @property (nonatomic, nullable, strong) NSNumber *discountAmount;
+
+/**
+ Optional: Item description. Maximum 127 characters.
+ */
+@property (nonatomic, nullable, copy) NSString *itemDescription;
+
+/**
+ Optional: Product or UPC code for the item. Maximum 127 characters.
+ */
+@property (nonatomic, nullable, copy) NSString *productCode;
 
 /**
  Optional: The unit of measure or the unit of measure code. Maximum 12 characters.
@@ -72,11 +77,6 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
  Maximum 12 characters.
  */
 @property (nonatomic, nullable, copy) NSString *commodityCode;
-
-/**
- Optional: Tax amount for the line item. Can include up to 2 decimal places. This value can't be negative.
- */
-@property (nonatomic, nullable, strong) NSNumber *taxAmount;
 
 /**
  Optional: The URL to product information.
