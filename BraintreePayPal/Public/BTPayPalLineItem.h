@@ -18,17 +18,17 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 /**
  Number of units of the item purchased. Can include up to 4 decimal places. This value can't be negative or zero.
  */
-@property (nonatomic, readonly, strong) NSNumber *quantity;
+@property (nonatomic, readonly, copy) NSString *quantity;
 
 /**
  Per-unit price of the item. Can include up to 4 decimal places. This value can't be negative or zero.
  */
-@property (nonatomic, readonly, strong) NSNumber *unitAmount;
+@property (nonatomic, readonly, copy) NSString *unitAmount;
 
 /**
  Total amount of this line item. Can include up to 2 decimal places.
  */
-@property (nonatomic, readonly, strong) NSNumber *totalAmount;
+@property (nonatomic, readonly, copy) NSString *totalAmount;
 
 /**
  Item name. Maximum 127 characters.
@@ -43,17 +43,17 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 /**
  Optional: Per-unit tax price of the item. Can include up to 2 decimal places. This value can't be negative or zero.
  */
-@property (nonatomic, nullable, strong) NSNumber *unitTaxAmount;
+@property (nonatomic, nullable, copy) NSString *unitTaxAmount;
 
 /**
  Optional: Tax amount for the line item. Can include up to 2 decimal places. This value can't be negative.
  */
-@property (nonatomic, nullable, strong) NSNumber *taxAmount;
+@property (nonatomic, nullable, copy) NSString *taxAmount;
 
 /**
  Optional: Discount amount for the line item. Can include up to 2 decimal places. This value can't be negative.
  */
-@property (nonatomic, nullable, strong) NSNumber *discountAmount;
+@property (nonatomic, nullable, copy) NSString *discountAmount;
 
 /**
  Optional: Item description. Maximum 127 characters.
@@ -68,7 +68,7 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
 /**
  Optional: The unit of measure or the unit of measure code. Maximum 12 characters.
  */
-@property (nonatomic, nullable, strong) NSString *unitOfMeasure;
+@property (nonatomic, nullable, copy) NSString *unitOfMeasure;
 
 /**
  Optional: Code used to classify items purchased and track the total amount spent across various categories of products and services.
@@ -93,9 +93,9 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
  @param kind Indicates whether the line item is a debit (sale) or credit (refund) to the customer.
  @return A PayPalLineItem.
  */
-- (instancetype)initWithQuantity:(NSNumber *)quantity
-                      unitAmount:(NSNumber *)unitAmount
-                     totalAmount:(NSNumber *)totalAmount
+- (instancetype)initWithQuantity:(NSString *)quantity
+                      unitAmount:(NSString *)unitAmount
+                     totalAmount:(NSString *)totalAmount
                             name:(NSString *)name
                             kind:(BTPayPalLineItemKind)kind;
 

@@ -2,9 +2,9 @@
 
 @implementation BTPayPalLineItem
 
-- (instancetype)initWithQuantity:(NSNumber *)quantity
-                      unitAmount:(NSNumber *)unitAmount
-                     totalAmount:(NSNumber *)totalAmount
+- (instancetype)initWithQuantity:(NSString *)quantity
+                      unitAmount:(NSString *)unitAmount
+                     totalAmount:(NSString *)totalAmount
                             name:(NSString *)name
                             kind:(BTPayPalLineItemKind)kind {
     self = [super init];
@@ -22,8 +22,8 @@
 - (NSDictionary *)requestParameters {
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionary];
     requestParameters[@"quantity"] = self.quantity;
-    requestParameters[@"unit_amount"] = self.unitAmount.stringValue;
-    requestParameters[@"total_amount"] = self.totalAmount.stringValue;
+    requestParameters[@"unit_amount"] = self.unitAmount;
+    requestParameters[@"total_amount"] = self.totalAmount;
     requestParameters[@"name"] = self.name;
     NSString *kindString;
     switch (self.kind) {
@@ -36,13 +36,13 @@
     }
     requestParameters[@"kind"] = kindString;
     if (self.unitTaxAmount) {
-        requestParameters[@"unit_tax_amount"] = self.unitTaxAmount.stringValue;
+        requestParameters[@"unit_tax_amount"] = self.unitTaxAmount;
     }
     if (self.taxAmount) {
-        requestParameters[@"tax_amount"] = self.taxAmount.stringValue;
+        requestParameters[@"tax_amount"] = self.taxAmount;
     }
     if (self.discountAmount) {
-        requestParameters[@"discount_amount"] = self.discountAmount.stringValue;
+        requestParameters[@"discount_amount"] = self.discountAmount;
     }
     if (self.itemDescription) {
         requestParameters[@"description"] = self.itemDescription;
