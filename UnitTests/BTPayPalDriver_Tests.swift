@@ -1321,25 +1321,18 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
         mockAPIClient = payPalDriver.apiClient as! MockAPIClient
         payPalDriver.returnURLScheme = "foo://"
         let request = BTPayPalRequest(amount: "1")
-        request.currencyCode = "GBP"
 
         let lineItem1 = BTPayPalLineItem.init(quantity: "2",
                                               unitAmount: "1.23",
-                                              totalAmount: "2.46",
                                               name: "itemName",
                                               kind: .debit)
         lineItem1.unitTaxAmount = "0.34"
         lineItem1.itemDescription = "itemDescription"
         lineItem1.productCode = "productCode"
-        lineItem1.discountAmount = "0.12"
-        lineItem1.unitOfMeasure = "unit"
-        lineItem1.commodityCode = "commodity"
-        lineItem1.taxAmount = "0.23"
         lineItem1.url = URL.init(string: "https://www.example.com")
 
         let lineItem2 = BTPayPalLineItem.init(quantity: "3",
                                               unitAmount: "2.34",
-                                              totalAmount: "7.02",
                                               name: "itemName2",
                                               kind: .credit)
 
@@ -1368,16 +1361,11 @@ class BTPayPalDriver_Checkout_Tests: XCTestCase {
 
         XCTAssertEqual(firstLineItem["quantity"], "2")
         XCTAssertEqual(firstLineItem["unit_amount"], "1.23")
-        XCTAssertEqual(firstLineItem["total_amount"], "2.46")
         XCTAssertEqual(firstLineItem["name"], "itemName")
         XCTAssertEqual(firstLineItem["kind"], "debit")
         XCTAssertEqual(firstLineItem["unit_tax_amount"], "0.34")
-        XCTAssertEqual(firstLineItem["tax_amount"], "0.23")
-        XCTAssertEqual(firstLineItem["discount_amount"], "0.12")
         XCTAssertEqual(firstLineItem["description"], "itemDescription")
         XCTAssertEqual(firstLineItem["product_code"], "productCode")
-        XCTAssertEqual(firstLineItem["unit_of_measure"], "unit")
-        XCTAssertEqual(firstLineItem["commodity_code"], "commodity")
         XCTAssertEqual(firstLineItem["url"], "https://www.example.com")
 
         guard let secondLineItem = lineItems[1] as? Dictionary<String, String> else {
