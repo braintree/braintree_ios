@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.20.3 (2018-12-12)
+
+* Fix occasional crash in `libPPRiskComponent.a`
+
 ## 4.20.2 (2018-11-16)
 
 * Fix minimum iOS version in `libPPRiskComponent.a`
