@@ -362,6 +362,7 @@
 		844ED5E71BCC3F0B002B590C /* BTDataCollector_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844ED5E61BCC3F0B002B590C /* BTDataCollector_Tests.swift */; };
 		848470E21BE81893009B12AE /* BTFakeHTTP.m in Sources */ = {isa = PBXBuildFile; fileRef = 848470E11BE81893009B12AE /* BTFakeHTTP.m */; };
 		8498EC1B1BB46D4B007FFDEC /* BTCardClient_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		A08F15A221C304170016BBF9 /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A08F15A121C304170016BBF9 /* CardinalMobile.framework */; };
 		A50C3AF31C19F07B00612D90 /* PPOTCore.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A50C3AA01C19E6A200612D90 /* PPOTCore.h */; };
 		A50C3AF41C19F07B00612D90 /* PPOTResult.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A50C3AA11C19E6A200612D90 /* PPOTResult.h */; };
 		A50C3AF51C19F07B00612D90 /* PPOTRequest.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = A50C3AA21C19E6A200612D90 /* PPOTRequest.h */; };
@@ -1406,6 +1407,7 @@
 		848470E01BE816DF009B12AE /* BTFakeHTTP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTFakeHTTP.h; sourceTree = "<group>"; };
 		848470E11BE81893009B12AE /* BTFakeHTTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFakeHTTP.m; sourceTree = "<group>"; };
 		8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardClient_Internal.h; sourceTree = "<group>"; };
+		A08F15A121C304170016BBF9 /* CardinalMobile.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CardinalMobile.framework; sourceTree = "<group>"; };
 		A3D9C499891AB1363F3E1290 /* libPods-Demo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A50C3A921C19E65700612D90 /* PPFPTIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PPFPTIData.h; path = BraintreePayPal/PayPalOneTouch/Analytics/PPFPTIData.h; sourceTree = "<group>"; };
 		A50C3A931C19E65700612D90 /* PPFPTIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PPFPTIData.m; path = BraintreePayPal/PayPalOneTouch/Analytics/PPFPTIData.m; sourceTree = "<group>"; };
@@ -1942,6 +1944,7 @@
 			files = (
 				03CED23F1F8D8A76000A5F4F /* BraintreeCard.framework in Frameworks */,
 				03502C9B1E9C0D3900F15EE6 /* BraintreeCore.framework in Frameworks */,
+				A08F15A221C304170016BBF9 /* CardinalMobile.framework in Frameworks */,
 				03C41071211E336E00CFB2AF /* PayPalOneTouch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2247,14 +2250,15 @@
 		03800A4B1F045F4B00068F53 /* ThreeDSecure */ = {
 			isa = PBXGroup;
 			children = (
-				034CDCA61FB517A300CEC47C /* BTThreeDSecureLookup.h */,
-				030825F2208EF14900AAB198 /* BTThreeDSecurePostalAddress_Internal.h */,
 				034CDCA81FB518CB00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h */,
 				03800A5C1F04630C00068F53 /* BTPaymentFlowDriver+ThreeDSecure.m */,
-				03800A4D1F045F4B00068F53 /* BTThreeDSecureRequest.m */,
-				03F921BD200EB9230076CD80 /* BTThreeDSecurePostalAddress.m */,
-				03800A4E1F045F4B00068F53 /* BTThreeDSecureResult.m */,
+				034CDCA61FB517A300CEC47C /* BTThreeDSecureLookup.h */,
 				03CED2391F8D77C9000A5F4F /* BTThreeDSecureLookup.m */,
+				030825F2208EF14900AAB198 /* BTThreeDSecurePostalAddress_Internal.h */,
+				03F921BD200EB9230076CD80 /* BTThreeDSecurePostalAddress.m */,
+				03800A4D1F045F4B00068F53 /* BTThreeDSecureRequest.m */,
+				03800A4E1F045F4B00068F53 /* BTThreeDSecureResult.m */,
+				A08F15A121C304170016BBF9 /* CardinalMobile.framework */,
 			);
 			path = ThreeDSecure;
 			sourceTree = "<group>";
@@ -5726,6 +5730,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraintreePaymentFlow/ThreeDSecure",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5774,6 +5782,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BraintreePaymentFlow/ThreeDSecure",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
