@@ -62,9 +62,9 @@
         card.expirationYear = self.cardFormView.expirationYear;
     } else {
         [self.cardFormView showTopLevelError:@"Not valid. Using default 3DS test card..."];
-        card.number = @"4000000000000002";
-        card.expirationMonth = @"12";
-        card.expirationYear = @"2020";
+        card.number = @"4000000000001000";
+        card.expirationMonth = @"01";
+        card.expirationYear = @"2022";
         card.cvv = @"123";
     }
     return card;

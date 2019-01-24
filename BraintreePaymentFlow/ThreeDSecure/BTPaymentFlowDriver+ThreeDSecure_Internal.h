@@ -5,12 +5,13 @@
 #endif
 #import "BTPaymentFlowDriver+ThreeDSecure.h"
 #import "BTThreeDSecureLookup.h"
+#import <CardinalMobile/CardinalMobile.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class BTThreeDSecureRequest;
 
-@interface BTPaymentFlowDriver (ThreeDSecure_Internal)
+@interface BTPaymentFlowDriver (ThreeDSecure_Internal) <CardinalStepUpDelegate>
 
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
                        completion:(void (^)(BTThreeDSecureLookup  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock;
