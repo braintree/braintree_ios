@@ -10,7 +10,7 @@
 @interface BTConfiguration (ThreeDSecure)
 
 /**
- TODO
+ JWT for use with initializaing Cardinal 3DS framework
  */
 @property (nonatomic, readonly, strong) NSString *cardinalAuthenticationJWT;
 

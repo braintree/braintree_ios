@@ -219,4 +219,15 @@ class BTConfiguration_Tests: XCTestCase {
         XCTAssertFalse(configuration.isUnionPayEnabled)
     }
 
+    // MARK: - PaymentFlow ThreeDSecure category methods
+
+    func testIsCardinalAuthenticationJWTReturned_whenCardinalAuthenticationJWTIsPresent() {
+        let configurationJSON = BTJSON(value: [
+            "threeDSecure": [ "cardinalAuthenticationJWT" : "123"]
+            ])
+        let configuration = BTConfiguration(json: configurationJSON)
+
+        XCTAssertEqual(configuration.cardinalAuthenticationJWT, "123")
+    }
+
 }
