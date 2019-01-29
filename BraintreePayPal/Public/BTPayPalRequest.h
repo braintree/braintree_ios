@@ -4,6 +4,7 @@
 #else
 #import <BraintreeCore/BraintreeCore.h>
 #endif
+#import "BTPayPalLineItem.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -173,6 +174,11 @@ typedef NS_ENUM(NSInteger, BTPayPalRequestUserAction) {
  Optional: A non-default merchant account to use for tokenization.
 */
 @property (nonatomic, nullable, copy) NSString *merchantAccountId;
+
+/**
+ Optional: The line items for this transaction. It can include up to 249 line items.
+*/
+@property (nonatomic, nullable, copy) NSArray<BTPayPalLineItem *> *lineItems;
 
 @end
 

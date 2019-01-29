@@ -28,6 +28,7 @@
 
 #import <SafariServices/SafariServices.h>
 #import "BTConfiguration+PayPal.h"
+#import "BTPayPalLineItem.h"
 
 NSString *const BTPayPalDriverErrorDomain = @"com.braintreepayments.BTPayPalDriverErrorDomain";
 NSString *const BTSFAuthenticationSessionDisabled = @"sfAuthenticationSessionDisabled";
@@ -295,6 +296,15 @@ typedef NS_ENUM(NSUInteger, BTPayPalPaymentType) {
             }
         } else {
             experienceProfile[@"address_override"] = @NO;
+        }
+
+        if (request.lineItems.count > 0) {
+            NSMutableArray *lineItemsArray = [NSMutableArray arrayWithCapacity:request.lineItems.count];
+            for (BTPayPalLineItem *lineItem in request.lineItems) {
+                [lineItemsArray addObject:[lineItem requestParameters]];
+            }
+
+            parameters[@"line_items"] = lineItemsArray;
         }
         
         NSString *returnURI;
