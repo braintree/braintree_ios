@@ -16,6 +16,7 @@
 #import "BTThreeDSecureResult.h"
 #import "BTThreeDSecureLookup.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTURLUtils.h"
 
 NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1.5";
@@ -104,8 +105,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     return @"three-d-secure";
 }
 
-- (NSString *)stringByAddingPercentEncodingForRFC3986:(NSString *)string
-{
+- (NSString *)stringByAddingPercentEncodingForRFC3986:(NSString *)string {
     NSString *unreserved = @"-._~/?";
     NSMutableCharacterSet *allowed = [NSMutableCharacterSet
                                       alphanumericCharacterSet];
@@ -113,6 +113,34 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     return [string
             stringByAddingPercentEncodingWithAllowedCharacters:
             allowed];
+}
+
+- (NSDictionary *)asParameters {
+    NSMutableDictionary *parameters = [@{} mutableCopy];
+    
+    if (self.amount) {
+        parameters[@"amount"] = self.amount;
+    }
+    
+    NSMutableDictionary *additionalInformation = [@{} mutableCopy];
+    
+    if (self.mobilePhoneNumber) {
+        additionalInformation[@"mobilePhoneNumber"] = self.mobilePhoneNumber;
+    }
+    
+    if (self.email) {
+        additionalInformation[@"email"] = self.email;
+    }
+    
+    if (self.shippingMethod) {
+        additionalInformation[@"shippingMethod"] = self.shippingMethod;
+    }
+    
+    if (self.billingAddress) {
+        [additionalInformation addEntriesFromDictionary:[self.billingAddress asParameters]];
+    }
+    
+    return [parameters copy];
 }
 
 @end

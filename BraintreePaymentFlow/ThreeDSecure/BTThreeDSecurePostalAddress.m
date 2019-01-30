@@ -23,40 +23,44 @@
     NSMutableDictionary *parameters = [@{} mutableCopy];
 
     if (self.firstName) {
-        [parameters setObject:self.firstName forKey:@"firstName"];
+        parameters[@"firstName"] = self.firstName;
     }
 
     if (self.lastName) {
-        [parameters setObject:self.lastName forKey:@"lastName"];
+        parameters[@"lastName"] = self.lastName;
     }
 
     if (self.phoneNumber) {
-        [parameters setObject:self.phoneNumber forKey:@"phoneNumber"];
+        parameters[@"phoneNumber"] = self.phoneNumber;
     }
+    
+    NSMutableDictionary *billingAddress = [@{} mutableCopy];
 
     if (self.streetAddress) {
-        [parameters setObject:self.streetAddress forKey:@"line1"];
+        billingAddress[@"line1"] = self.streetAddress;
     }
 
     if (self.extendedAddress) {
-        [parameters setObject:self.extendedAddress forKey:@"line2"];
+        billingAddress[@"line2"] = self.extendedAddress;
     }
 
     if (self.locality) {
-        [parameters setObject:self.locality forKey:@"city"];
+        billingAddress[@"city"] = self.locality;
     }
 
     if (self.region) {
-        [parameters setObject:self.region forKey:@"state"];
+        billingAddress[@"state"] = self.region;
     }
 
     if (self.postalCode) {
-        [parameters setObject:self.postalCode forKey:@"postalCode"];
+        billingAddress[@"postalCode"] = self.postalCode;
     }
 
     if (self.countryCodeAlpha2) {
-        [parameters setObject:self.countryCodeAlpha2 forKey:@"countryCode"];
+        billingAddress[@"countryCode"] = self.countryCodeAlpha2;
     }
+    
+    parameters[@"billingAddress"] = billingAddress;
 
     return [parameters copy];
 }
