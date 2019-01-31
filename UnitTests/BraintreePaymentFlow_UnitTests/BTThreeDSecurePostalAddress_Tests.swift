@@ -1,7 +1,6 @@
 import XCTest
 
 class BTThreeDSecurePostalAddress_Tests: XCTestCase {
-    
     func testCopiesAllProperties() {
         let originalAddress = BTThreeDSecurePostalAddress()
         originalAddress.firstName = "Joe"

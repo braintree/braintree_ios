@@ -119,7 +119,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     NSMutableDictionary *parameters = [@{} mutableCopy];
     
     if (self.amount) {
-        parameters[@"amount"] = self.amount;
+        parameters[@"amount"] = [self.amount stringValue];
     }
     
     NSMutableDictionary *additionalInformation = [@{} mutableCopy];
@@ -138,6 +138,10 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     
     if (self.billingAddress) {
         [additionalInformation addEntriesFromDictionary:[self.billingAddress asParameters]];
+    }
+
+    if (additionalInformation.count) {
+        parameters[@"additionalInformation"] = additionalInformation;
     }
     
     return [parameters copy];
