@@ -59,8 +59,10 @@
     if (self.countryCodeAlpha2) {
         billingAddress[@"countryCode"] = self.countryCodeAlpha2;
     }
-    
-    parameters[@"billingAddress"] = billingAddress;
+
+    if (billingAddress.count) {
+        parameters[@"billingAddress"] = billingAddress;
+    }
 
     return [parameters copy];
 }
