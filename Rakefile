@@ -11,13 +11,10 @@ desc "Run default set of tasks"
 task :spec => %w[spec:all]
 
 desc "Run internal release process, pushing to internal GitHub Enterprise only"
-task :release => %w[release:assumptions sanity_checks release:check_working_directory release:test  release:bump_version release:lint_podspec release:tag release:push_private]
+task :release => %w[release:assumptions sanity_checks release:check_working_directory release:bump_version release:lint_podspec release:tag release:push_private]
 
 desc "Publish code and pod to public github.com"
-task :publish => %w[publish:push publish:push_pod publish:cocoadocs]
-
-desc "Distribute app, in its current state, to HockeyApp"
-task :distribute => %w[distribute:build distribute:hockeyapp]
+task :publish => %w[publish:push publish:push_pod docs_internal docs_external]
 
 SEMVER = /\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?/
 PODSPEC = "Braintree.podspec"
@@ -166,8 +163,7 @@ namespace :release do
     say "* [ ] You are on the branch and commit you want to release."
     say "* [ ] You have already merged hotfixes and pulled changes."
     say "* [ ] You have already reviewed the diff between the current release and the last tag, noting breaking changes in the semver and CHANGELOG."
-    say "* [ ] Tests are passing, manual verifications complete."
-    say "* [ ] iOS Simulator has hardware keyboard disabled"
+    say "* [ ] Tests (rake spec) are passing, manual verifications complete."
     say "* [ ] Email is composed and ready to send to braintree-sdk-announce@googlegroups.com"
 
     abort(1) unless ask "Ready to release? "
@@ -237,31 +233,6 @@ namespace :publish do
     run! "pod trunk push --allow-warnings Braintree.podspec"
   end
 
-  desc "Force CocoaDocs reparse"
-  task :cocoadocs do
-    run! "curl --silent --show-error http://api.cocoadocs.org:4567/redeploy/Braintree/latest"
-  end
-
-end
-
-namespace :distribute do
-  task :build do
-    destination = File.expand_path("~/Desktop/Braintree-Demo-#{current_version_with_sha}")
-    run! "ipa build --scheme Demo --destination '#{destination}' --embed EverybodyVenmo.mobileprovision --identity 'iPhone Distribution: Venmo Inc.'"
-    say "Archived Demo (#{current_version}) to: #{destination}"
-  end
-
-  task :hockeyapp do
-    destination = File.expand_path("~/Desktop/Braintree-Demo-#{current_version_with_sha}")
-    changes = File.read("CHANGELOG.md")[/(## #{current_version}.*?)^## /m, 1].strip
-    run! "ipa distribute:hockeyapp --token '#{File.read(".hockeyapp").strip}' --identifier '7134982f3df6419a0eb52b16e7d6d175' --file '#{destination}/Braintree-Demo.ipa' --dsym '#{destination}/Braintree-Demo.app.dSYM.zip' --markdown --notes #{Shellwords.shellescape("#{changes}\n\n#{current_version_with_sha}")}"
-    say "Uploaded Demo (#{current_version_with_sha}) to HockeyApp!"
-  end
-end
-
-desc "Generate code for pinned certificates. (Copies *.crt -> BTAPIPinnedCertificates.{h,m})"
-task :generate_pinned_certificates_code do
-  run! "cd #{File.join(File.dirname(__FILE__), "Braintree/API/Networking/Certificates")} && ./codify_certificates.sh"
 end
 
 namespace :gen do

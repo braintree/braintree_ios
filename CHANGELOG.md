@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.22.0 (2019-01-30)
+
+* Add support for `BTPayPalLineItem`
+* Fix build issue for Demo app
+
 ## 4.21.0 (2018-12-12)
 
 * Fix occasional crash in `libPPRiskComponent.a`
