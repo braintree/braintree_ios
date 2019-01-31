@@ -2,6 +2,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '9.0'
 workspace 'Braintree.xcworkspace'
+inhibit_all_warnings!
 
 target 'Demo' do
   platform :ios, '9.0'
