@@ -20,13 +20,13 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         self.waitForElementToBeHittable(app.textFields["Card Number"])
         sleep(2)
     }
-    
-    func getPasswordField() -> XCUIElement {
-        return app.webViews.otherElements["bank_frame"].children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 18).children(matching: .secureTextField).element
+
+    func getPasswordFieldQuery() -> XCUIElementQuery {
+        return app.webViews.element.otherElements.children(matching: .other).children(matching: .secureTextField)
     }
 
-    func getSubmutButton() -> XCUIElement {
-        return app.webViews.otherElements["bank_frame"].children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).buttons["Submit"]
+    func getSubmitButton() -> XCUIElement {
+        return app.webViews.element.otherElements.children(matching: .other).children(matching: .other).buttons["Submit"]
     }
 
     func testThreeDSecurePaymentFlow_completesAuthentication_receivesNonce() {
@@ -36,15 +36,15 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000002")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(5)
         
-        let passwordTextField = getPasswordField()
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
 
         passwordTextField.forceTapElement()
         sleep(2)
         passwordTextField.typeText("1234")
         
-        getSubmutButton().tap()
+        getSubmitButton().tap()
         
         self.waitForElementToAppear(app.buttons["Liability shift possible and liability shifted"])
     }
@@ -56,16 +56,15 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000010")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
-        
-        let elementsQuery = app.webViews.element.otherElements
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
+
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
         
         passwordTextField.forceTapElement()
         sleep(1)
         passwordTextField.typeText("1234")
         
-        getSubmutButton().tap()
+        getSubmitButton().tap()
         
         self.waitForElementToAppear(app.buttons["Failed to authenticate, please try a different form of payment."])
     }
@@ -102,16 +101,15 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000028")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
-        
-        let elementsQuery = app.webViews.element.otherElements
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
+
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
         
         passwordTextField.forceTapElement()
         sleep(1)
         passwordTextField.typeText("1234")
         
-        getSubmutButton().tap()
+        getSubmitButton().tap()
         
         self.waitForElementToAppear(app.buttons["Failed to authenticate, please try a different form of payment."])
         
@@ -141,16 +139,15 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000036")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
-        
-        let elementsQuery = app.webViews.element.otherElements
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
+
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
         
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
         
-        getSubmutButton().tap()
+        getSubmitButton().tap()
         
         self.waitForElementToAppear(app.buttons["An unexpected error occurred"])
     }
@@ -162,17 +159,16 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000093")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(4)
-        
-        let elementsQuery = app.webViews.element.otherElements
-        let passwordTextField = elementsQuery.children(matching: .other).children(matching: .secureTextField).element
-        
+
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
+
         passwordTextField.forceTapElement()
         sleep(2)
         passwordTextField.typeText("1234")
-        
-        getSubmutButton().tap()
-        
+
+        getSubmitButton().tap()
+
         self.waitForElementToAppear(app.buttons["An unexpected error occurred"])
     }
     
@@ -183,14 +179,13 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000002")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
-        
+
         self.waitForElementToAppear(app.buttons["Done"])
-        
+
         app.buttons["Done"].forceTapElement()
-        
+
         self.waitForElementToAppear(app.buttons["Cancelled🎲"])
-        
+
         XCTAssertTrue(app.buttons["Cancelled🎲"].exists);
     }
     
@@ -260,12 +255,12 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         sleep(2)
     }
 
-    func getPasswordField() -> XCUIElement {
-        return XCUIApplication().otherElements["Web View"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 18).children(matching: .secureTextField).element
+    func getPasswordFieldQuery() -> XCUIElementQuery {
+        return app.webViews.element.otherElements.children(matching: .other).children(matching: .secureTextField)
     }
 
-    func getSubmutButton() -> XCUIElement {
-        return XCUIApplication().otherElements["Web View"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .other).element.children(matching: .other).buttons["Submit"]
+    func getSubmitButton() -> XCUIElement {
+        return app.webViews.element.otherElements.children(matching: .other).children(matching: .other).buttons["Submit"]
     }
 
     func testThreeDSecure_completesAuthentication_receivesNonce() {
@@ -275,16 +270,15 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000002")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
 
-        let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = getPasswordField()
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        getSubmutButton().tap()
+        getSubmitButton().tap()
 
         self.waitForElementToAppear(app.buttons["Liability shift possible and liability shifted"])
 
@@ -298,16 +292,15 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000010")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
 
-        let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = getPasswordField()
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        getSubmutButton().tap()
+        getSubmitButton().tap()
 
         self.waitForElementToAppear(app.buttons["Failed to authenticate, please try a different form of payment."])
 
@@ -350,16 +343,15 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000028")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
 
-        let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = getPasswordField()
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        getSubmutButton().tap()
+        getSubmitButton().tap()
 
         self.waitForElementToAppear(app.buttons["Failed to authenticate, please try a different form of payment."])
 
@@ -395,16 +387,15 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000036")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
 
-        let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = getPasswordField()
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        getSubmutButton().tap()
+        getSubmitButton().tap()
 
         self.waitForElementToAppear(app.buttons["An unexpected error occurred"])
 
@@ -418,16 +409,15 @@ class BraintreeThreeDSecure_UITests: XCTestCase {
         cardNumberTextField.typeText("4000000000000093")
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
-        sleep(2)
 
-        let elementsQuery = app.otherElements["Authentication"]
-        let passwordTextField = getPasswordField()
+        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        let passwordTextField = getPasswordFieldQuery().element
 
         passwordTextField.tap()
         sleep(1)
         passwordTextField.typeText("1234")
 
-        getSubmutButton().tap()
+        getSubmitButton().tap()
 
         self.waitForElementToAppear(app.buttons["An unexpected error occurred"])
 

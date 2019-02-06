@@ -28,8 +28,6 @@ class BraintreeDropInLegacy_TokenizationKey_CardForm_UITests: XCTestCase {
         let elementsQuery = app.scrollViews.otherElements
         let cardNumberTextField = elementsQuery.textFields["Card Number"]
         let expiryTextField = elementsQuery.textFields["MM/YY"]
-        let postalCodeTextField = elementsQuery.textFields["Postal Code"]
-        let cvvTextField = elementsQuery.textFields["CVV"]
         
         self.waitForElementToBeHittable(cardNumberTextField)
         
