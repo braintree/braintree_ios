@@ -20,6 +20,13 @@
 @property (nonatomic, copy) NSURL *termURL;
 @property (nonatomic, strong) BTThreeDSecureResult *threeDSecureResult;
 
+/**
+ Initialize a BTThreeDSecureLookup
+
+ @param JSON BTJSON used to initialize the BTThreeDSecureLookup
+ */
+- (instancetype)initWithJSON:(BTJSON *)JSON;
+
 - (BOOL)requiresUserAuthentication;
 
 @end

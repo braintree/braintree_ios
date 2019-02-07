@@ -70,12 +70,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
                                             }
                                             
                                             BTJSON *lookupJSON = body[@"lookup"];
-                                            
-                                            BTThreeDSecureLookup *lookup = [[BTThreeDSecureLookup alloc] init];
-                                            lookup.acsURL = [lookupJSON[@"acsUrl"] asURL];
-                                            lookup.PAReq = [lookupJSON[@"pareq"] asString];
-                                            lookup.MD = [lookupJSON[@"md"] asString];
-                                            lookup.termURL = [lookupJSON[@"termUrl"] asURL];
+
+                                            BTThreeDSecureLookup *lookup = [[BTThreeDSecureLookup alloc] initWithJSON:lookupJSON];
                                             lookup.threeDSecureResult = [[BTThreeDSecureResult alloc] initWithJSON:body];
                                             
                                             completionBlock(lookup, nil);
