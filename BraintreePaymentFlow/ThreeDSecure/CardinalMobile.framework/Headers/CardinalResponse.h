@@ -26,6 +26,7 @@ typedef NS_ENUM(NSUInteger, CardinalResponseActionCode) {
     CardinalResponseActionCodeNoAction,
     CardinalResponseActionCodeFailure,
     CardinalResponseActionCodeError,
+    CardinalResponseActionCodeCancel
 };
 
 // REVISIT: Turn these string values into enums for better type/value checking (wjf, 2018-02)

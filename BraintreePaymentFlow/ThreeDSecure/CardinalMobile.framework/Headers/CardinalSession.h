@@ -90,7 +90,7 @@ typedef void (^CardinalSessionProcessBinDidCompleteHandler)(void);
  * Set the delegate class that conforms to CardinalStepUpDelegate protocol
  * Used to pass back StepUpData when its ready or updated and once Validated after Continue called
  */
-@property (nullable, nonatomic, strong) id<CardinalStepUpDelegate> stepUpDelegate;
+@property (nullable, nonatomic, weak) id<CardinalStepUpDelegate> stepUpDelegate;
 
 /*!
  * Continue the challenge flow with the transaction id and encoded payload.

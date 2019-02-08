@@ -15,6 +15,10 @@ typedef enum {
     CCADirectoryServerIDEMVCo2,
     CCADirectoryServerIDAmexStaging,
     CCADirectoryServerIDVisa,
+    CCADirectoryServerIDVisaSDK,
+    CCADirectoryServerIDVisa01,
+    CCADirectoryServerIDVisa02,
+    CCADirectoryServerIDVisa03,
     CCADirectoryServerIDMasterCard
 } CCADirectoryServerID;
 
@@ -24,8 +28,12 @@ extern NSString *DSID_EMVCO1;
 extern NSString *DSID_EMVCO2;
 extern NSString *DSID_AMEX_STAGING;
 extern NSString *DSID_VISA;
+extern NSString *DSID_VISA_01;
+extern NSString *DSID_VISA_02;
+extern NSString *DSID_VISA_03;
+extern NSString *DSID_VISA_SDK;
 extern NSString *DSID_MASTER_CARD;
 
-+ (const NSString *)enumToString:(CCADirectoryServerID)dsIDEnum;
++ (NSString *)enumToString:(const CCADirectoryServerID)dsIDEnum;
 
 @end
