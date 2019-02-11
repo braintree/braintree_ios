@@ -11,9 +11,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BTThreeDSecureRequest;
 
-@interface BTPaymentFlowDriver (ThreeDSecure_Internal) <CardinalStepUpDelegate>
+@interface BTPaymentFlowDriver (ThreeDSecure_Internal)
 
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
+                    dfReferenceId:(NSString *)dfReferenceId
                        completion:(void (^)(BTThreeDSecureLookup  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock;
 
 @end

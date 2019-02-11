@@ -26,8 +26,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
         
         let expectation = self.expectation(description: "lookup fails with errors")
-        
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+
+        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedConfigurationResponseError!)
             expectation.fulfill()
         }
@@ -83,16 +83,17 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         billingAddress.postalCode = "54321"
         threeDSecureRequest.billingAddress = billingAddress
 
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
-            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? NSNumber, 9.97)
-            let customerParams = self.mockAPIClient.lastPOSTParameters!["customer"] as! [String : Any]
-            XCTAssertEqual(customerParams["mobilePhoneNumber"] as? String, "5151234321")
-            XCTAssertEqual(customerParams["email"] as? String, "tester@example.com")
-            XCTAssertEqual(customerParams["shippingMethod"] as? String, "03")
-            let billingAddressParams = customerParams["billingAddress"] as! [String : Any]
-            XCTAssertEqual(billingAddressParams["firstName"] as? String, "Joe")
-            XCTAssertEqual(billingAddressParams["lastName"] as? String, "Guy")
-            XCTAssertEqual(billingAddressParams["phoneNumber"] as? String, "12345678")
+        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "dfReferenceId") { (lookup, error) in
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? String, "9.97")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as? String, "dfReferenceId")
+            let additionalInformationParams = self.mockAPIClient.lastPOSTParameters!["additionalInformation"] as! [String : Any]
+            XCTAssertEqual(additionalInformationParams["mobilePhoneNumber"] as? String, "5151234321")
+            XCTAssertEqual(additionalInformationParams["email"] as? String, "tester@example.com")
+            XCTAssertEqual(additionalInformationParams["shippingMethod"] as? String, "03")
+            XCTAssertEqual(additionalInformationParams["firstName"] as? String, "Joe")
+            XCTAssertEqual(additionalInformationParams["lastName"] as? String, "Guy")
+            XCTAssertEqual(additionalInformationParams["phoneNumber"] as? String, "12345678")
+            let billingAddressParams = additionalInformationParams["billingAddress"] as! [String : Any]
             XCTAssertEqual(billingAddressParams["line1"] as? String, "555 Smith St.")
             XCTAssertEqual(billingAddressParams["line2"] as? String, "#5")
             XCTAssertEqual(billingAddressParams["city"] as? String, "Oakland")
@@ -136,7 +137,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
             XCTAssertFalse(lookup!.requiresUserAuthentication())
             let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard
             XCTAssert(isANonce(tokenizedCard!.nonce))
@@ -189,7 +190,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
             XCTAssertTrue(lookup!.requiresUserAuthentication())
             expectation.fulfill()
         }
@@ -228,7 +229,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
             guard let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard else {
                 XCTFail()
                 return

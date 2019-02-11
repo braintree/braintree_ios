@@ -22,5 +22,6 @@ class BTThreeDSecureLookup_Tests: XCTestCase {
         XCTAssertEqual(lookup.termURL, URL.init(string: "http://termUrl.com"))
         XCTAssertEqual(lookup.threeDSecureVersion, "2.1.0")
         XCTAssertEqual(lookup.transactionId, "transactionIdField")
+        XCTAssertTrue(lookup.isThreeDSecureVersion2)
     }
 }

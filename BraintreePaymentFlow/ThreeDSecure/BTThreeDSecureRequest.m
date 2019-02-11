@@ -18,13 +18,17 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTURLUtils.h"
+#import "BTConfiguration+ThreeDSecure.h"
+#import <CardinalMobile/CardinalMobile.h>
 
 NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1.5";
 
-@interface BTThreeDSecureRequest ()
+@interface BTThreeDSecureRequest () <CardinalValidationDelegate>
 
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
 @property (nonnull, strong) BTThreeDSecureLookup *lookupResult;
+@property (nonatomic, strong) CardinalSession *cardinalSession;
+@property (nonatomic, strong) NSString *dfReferenceId;
 
 @end
 
@@ -32,48 +36,88 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
 
 - (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     self.paymentFlowDriverDelegate = delegate;
-    BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
 
+    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable configurationError) {
+        if (configurationError) {
+            [self.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
+            return;
+        }
+
+        if (configuration.cardinalAuthenticationJWT) {
+            self.cardinalSession = [CardinalSession new];
+            // TODO: Switch between staging and production
+            CardinalSessionConfig *cardinalConfiguration = [CardinalSessionConfig new];
+            cardinalConfiguration.deploymentEnvironment = CardinalSessionEnvironmentStaging;
+            [self.cardinalSession configure:cardinalConfiguration];
+
+            [self.cardinalSession setupWithJWT:configuration.cardinalAuthenticationJWT
+                                   didComplete:^(NSString * _Nonnull consumerSessionId) {
+                                       self.dfReferenceId = consumerSessionId;
+                                       [self startRequest:request client:apiClient paymentDriverDelegate:delegate];
+                                   } didValidate:^(__unused CardinalResponse * _Nonnull validateResponse) {
+                                       // TODO: continue lookup and assume it will be v1?
+                                       [self startRequest:request client:apiClient paymentDriverDelegate:delegate];
+                                   }];
+        }
+        else {
+            [self startRequest:request client:apiClient paymentDriverDelegate:delegate];
+        }
+    }];
+}
+
+- (void)startRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
+    BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
     BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:[self.paymentFlowDriverDelegate apiClient]];
 
     [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
+                                   dfReferenceId:self.dfReferenceId
                                       completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
                                           dispatch_async(dispatch_get_main_queue(), ^{
-                                               if (error) {
-                                                   [self.paymentFlowDriverDelegate onPaymentWithURL:nil error:error];
-                                                   return;
-                                               }
+                                              if (error) {
+                                                  [self.paymentFlowDriverDelegate onPaymentWithURL:nil error:error];
+                                                  return;
+                                              }
 
-                                               [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *configurationError) {
-                                                   if (configurationError) {
-                                                       [self.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
-                                                       return;
-                                                   }
-                                                   self.lookupResult = lookupResult;
-                                                   if (lookupResult.requiresUserAuthentication) {
-                                                       NSString *acsurl = [NSString stringWithFormat:@"AcsUrl=%@", [lookupResult.acsURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
-                                                       NSString *pareq = [NSString stringWithFormat:@"PaReq=%@", [self stringByAddingPercentEncodingForRFC3986:lookupResult.PAReq]];
-                                                       NSString *md = [NSString stringWithFormat:@"MD=%@", [lookupResult.MD stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+                                              [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration *configuration, NSError *configurationError) {
+                                                  if (configurationError) {
+                                                      [self.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
+                                                      return;
+                                                  }
 
-                                                       NSString *callbackUrl = [NSString stringWithFormat: @"ReturnUrl=%@%@/redirect.html?redirect_url=%@://x-callback-url/braintree/threedsecure?",
-                                                                                [configuration.json[@"assetsUrl"] asString],
-                                                                                BTThreeDSecureAssetsPath,
-                                                                                [delegate returnURLScheme]
-                                                                                ];
-                                                       callbackUrl = [callbackUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-                                                       NSString *authUrl = [NSString stringWithFormat:@"%@",
-                                                                            [lookupResult.termURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]
-                                                                            ];
+                                                  self.lookupResult = lookupResult;
+                                                  if (lookupResult.requiresUserAuthentication) {
+                                                      if (lookupResult.isThreeDSecureVersion2) {
+                                                          [self.cardinalSession continueWithTransactionId:lookupResult.transactionId
+                                                                                                  payload:lookupResult.PAReq
+                                                                                                   acsUrl:[lookupResult.acsURL absoluteString]
+                                                                                        directoryServerID:CCADirectoryServerIDEMVCo1
+                                                                                      didValidateDelegate:self];
+                                                      }
+                                                      else {
+                                                          NSString *acsurl = [NSString stringWithFormat:@"AcsUrl=%@", [lookupResult.acsURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
+                                                          NSString *pareq = [NSString stringWithFormat:@"PaReq=%@", [self stringByAddingPercentEncodingForRFC3986:lookupResult.PAReq]];
+                                                          NSString *md = [NSString stringWithFormat:@"MD=%@", [lookupResult.MD stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
 
-                                                       NSString *termurl = [NSString stringWithFormat: @"TermUrl=%@", authUrl];
-                                                       NSURL *redirectUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/index.html?%@&%@&%@&%@&%@", [configuration.json[@"assetsUrl"] asString], BTThreeDSecureAssetsPath, acsurl, pareq, md, termurl, callbackUrl]];
-                                                       [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:error];
-                                                   } else {
-                                                       [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult.threeDSecureResult error:error];
-                                                   }
-                                               }];
-                                           });
-                                       }];
+                                                          NSString *callbackUrl = [NSString stringWithFormat: @"ReturnUrl=%@%@/redirect.html?redirect_url=%@://x-callback-url/braintree/threedsecure?",
+                                                                                   [configuration.json[@"assetsUrl"] asString],
+                                                                                   BTThreeDSecureAssetsPath,
+                                                                                   [delegate returnURLScheme]
+                                                                                   ];
+                                                          callbackUrl = [callbackUrl stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+                                                          NSString *authUrl = [NSString stringWithFormat:@"%@",
+                                                                               [lookupResult.termURL.absoluteString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]
+                                                                               ];
+
+                                                          NSString *termurl = [NSString stringWithFormat: @"TermUrl=%@", authUrl];
+                                                          NSURL *redirectUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/index.html?%@&%@&%@&%@&%@", [configuration.json[@"assetsUrl"] asString], BTThreeDSecureAssetsPath, acsurl, pareq, md, termurl, callbackUrl]];
+                                                          [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:error];
+                                                      }
+                                                  } else {
+                                                      [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult.threeDSecureResult error:error];
+                                                  }
+                                              }];
+                                          });
+                                      }];
 }
 
 - (void)handleOpenURL:(__unused NSURL *)url {
@@ -145,6 +189,37 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     }
     
     return [parameters copy];
+}
+
+#pragma mark - Cardinal Delegate
+
+- (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT{
+    switch (validateResponse.actionCode) {
+        case CardinalResponseActionCodeSuccess:
+        case CardinalResponseActionCodeNoAction:
+        case CardinalResponseActionCodeFailure: {
+            NSString *urlSafeNonce = [self.lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+            NSDictionary *requestParameters = @{@"jwt": serverJWT, @"paymentMethodNonce": self.lookupResult.threeDSecureResult.tokenizedCard.nonce};
+            [[self.paymentFlowDriverDelegate apiClient] POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
+                      parameters:requestParameters
+                      completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
+                          BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
+                          [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                      }];
+
+            break;
+        }
+
+        case CardinalResponseActionCodeError:
+            // Handle service level error
+            break;
+        case CardinalResponseActionCodeCancel:
+            // Handle transaction canceled by user
+            break;
+        case CardinalResponseActionCodeUnknown:
+            // Handle unknown error
+            break;
+    }
 }
 
 @end

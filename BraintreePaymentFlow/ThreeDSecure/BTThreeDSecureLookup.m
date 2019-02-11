@@ -19,4 +19,8 @@
     return self.acsURL != nil;
 }
 
+- (BOOL)isThreeDSecureVersion2 {
+    return [self.threeDSecureVersion hasPrefix:@"2."];
+}
+
 @end
