@@ -18,6 +18,8 @@
 @property (nonatomic, copy) NSString *MD;
 @property (nonatomic, copy) NSURL *acsURL;
 @property (nonatomic, copy) NSURL *termURL;
+@property (nonatomic, copy) NSString *threeDSecureVersion;
+@property (nonatomic, copy) NSString *transactionId;
 @property (nonatomic, strong) BTThreeDSecureResult *threeDSecureResult;
 
 /**

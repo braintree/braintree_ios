@@ -9,6 +9,8 @@
         _MD = [json[@"md"] asString];
         _acsURL = [json[@"acsUrl"] asURL];
         _termURL = [json[@"termUrl"] asURL];
+        _threeDSecureVersion = [json[@"threeDSecureVersion"] asString];
+        _transactionId = [json[@"transactionId"] asString];
     }
     return self;
 }
