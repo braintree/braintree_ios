@@ -10,7 +10,7 @@ extension XCTestCase {
         waitForExpectations(timeout: timeout) { (error) -> Void in
             if (error != nil) {
                 let message = "Failed to find \(element) after \(timeout) seconds."
-                self.recordFailure(withDescription: message, inFile: file, atLine: line, expected: true)
+                self.recordFailure(withDescription: message, inFile: file, atLine: Int(line), expected: true)
             }
         }
     }
@@ -24,7 +24,7 @@ extension XCTestCase {
         waitForExpectations(timeout: timeout) { (error) -> Void in
             if (error != nil) {
                 let message = "Failed to find \(element) after \(timeout) seconds."
-                self.recordFailure(withDescription: message, inFile: file, atLine: line, expected: true)
+                self.recordFailure(withDescription: message, inFile: file, atLine: Int(line), expected: true)
             }
         }
     }

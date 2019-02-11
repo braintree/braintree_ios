@@ -9,7 +9,7 @@ class BTDropInUtil_Tests: XCTestCase {
         let secondWindow = UIWindow(frame: UIScreen.main.bounds)
         secondWindow.rootViewController = windowRootController
         secondWindow.makeKeyAndVisible()
-        secondWindow.windowLevel = 100
+        secondWindow.windowLevel = UIWindow.Level(rawValue: 100)
         let topSecondTopController = BTDropInUtil.topViewController()
         XCTAssertNotEqual(topInitialTopController, topSecondTopController)
         XCTAssertEqual(windowRootController, topSecondTopController)

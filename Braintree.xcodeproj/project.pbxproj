@@ -4375,12 +4375,12 @@
 					};
 					03F8B2651C23976000FD184B = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 1010;
 						TestTargetID = A76B198A1B79707700452CFA;
 					};
 					16CD2E9B1B4077FB00E68495 = {
 						CreatedOnToolsVersion = 7.0;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1010;
 						TestTargetID = A76B198A1B79707700452CFA;
 					};
 					2D941D371B59C76A0016EFB4 = {
@@ -6001,7 +6001,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = Demo;
 				USES_XCTRUNNER = YES;
 			};
@@ -6042,7 +6043,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braintreepayments.UITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.2;
 				TEST_TARGET_NAME = Demo;
 				USES_XCTRUNNER = YES;
 				VALIDATE_PRODUCT = YES;
@@ -6114,8 +6116,7 @@
 				SRCROOT = "$(PROJECT_DIR)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/UnitTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Demo.app/Demo";
 			};
 			name = Debug;
@@ -6179,8 +6180,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SRCROOT = "$(PROJECT_DIR)";
 				SWIFT_OBJC_BRIDGING_HEADER = "UnitTests/UnitTests-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Demo.app/Demo";
 				VALIDATE_PRODUCT = YES;
 			};
