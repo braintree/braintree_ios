@@ -208,16 +208,31 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
 
             break;
         }
-
-        case CardinalResponseActionCodeError:
-            // Handle service level error
-            break;
-        case CardinalResponseActionCodeCancel:
-            // Handle transaction canceled by user
-            break;
         case CardinalResponseActionCodeUnknown:
-            // Handle unknown error
+        case CardinalResponseActionCodeError: {
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
+            if (validateResponse.errorDescription) {
+                userInfo[NSLocalizedDescriptionKey] = validateResponse.errorDescription;
+            }
+
+            BTThreeDSecureFlowErrorType errorCode = BTThreeDSecureFlowErrorTypeUnknown;
+            if (validateResponse.errorNumber == 1050) {
+                errorCode = BTThreeDSecureFlowErrorTypeFailedAuthentication;
+            }
+
+            NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                 code:errorCode
+                                             userInfo:userInfo];
+            [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
             break;
+        }
+        case CardinalResponseActionCodeCancel: {
+            NSError *error = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
+                                                 code:BTPaymentFlowDriverErrorTypeCanceled
+                                             userInfo:nil];
+            [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+            break;
+        }
     }
 }
 
