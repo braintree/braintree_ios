@@ -203,7 +203,17 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
                       parameters:requestParameters
                       completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
                           BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
-                          [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                          if (result.errorMessage) {
+                              NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
+                              userInfo[NSLocalizedDescriptionKey] = result.errorMessage;
+
+                              NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                                   code:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                                               userInfo:userInfo];
+                              [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+                          } else {
+                              [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                          }
                       }];
 
             break;
