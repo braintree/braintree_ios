@@ -130,14 +130,40 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
             userInfo[NSLocalizedDescriptionKey] = result.errorMessage;
         }
 
-        NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
-                                             code:BTThreeDSecureFlowErrorTypeFailedAuthentication
-                                         userInfo:userInfo];
-        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+        [self performPaymentCompleteWithErrorDomain:BTThreeDSecureFlowErrorDomain
+                                          errorCode:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                      errorUserInfo:userInfo];
         return;
     }
 
     [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+}
+
+- (void)authenticateCardinalJWT:(NSString *)cardinalJWT {
+    NSString *urlSafeNonce = [self.lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSDictionary *requestParameters = @{@"jwt": cardinalJWT, @"paymentMethodNonce": self.lookupResult.threeDSecureResult.tokenizedCard.nonce};
+    [[self.paymentFlowDriverDelegate apiClient] POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
+                                          parameters:requestParameters
+                                          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
+                                              BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
+                                              if (result.errorMessage) {
+                                                  [self performPaymentCompleteWithErrorDomain:BTThreeDSecureFlowErrorDomain
+                                                                                    errorCode:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                                                                errorUserInfo:@{NSLocalizedDescriptionKey: result.errorMessage}];
+                                              } else {
+                                                  [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                                              }
+                                          }];
+}
+
+- (void)performPaymentCompleteWithErrorDomain:(NSErrorDomain)errorDomain
+                                    errorCode:(NSInteger)errorCode
+                                errorUserInfo:(NSDictionary *)errorUserInfo {
+    NSError *error = [NSError errorWithDomain:errorDomain
+                                         code:errorCode
+                                     userInfo:errorUserInfo];
+
+    [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
 }
 
 - (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(__unused NSString *)sourceApplication {
@@ -197,25 +223,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
         case CardinalResponseActionCodeSuccess:
         case CardinalResponseActionCodeNoAction:
         case CardinalResponseActionCodeFailure: {
-            NSString *urlSafeNonce = [self.lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-            NSDictionary *requestParameters = @{@"jwt": serverJWT, @"paymentMethodNonce": self.lookupResult.threeDSecureResult.tokenizedCard.nonce};
-            [[self.paymentFlowDriverDelegate apiClient] POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
-                      parameters:requestParameters
-                      completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
-                          BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
-                          if (result.errorMessage) {
-                              NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-                              userInfo[NSLocalizedDescriptionKey] = result.errorMessage;
-
-                              NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
-                                                                   code:BTThreeDSecureFlowErrorTypeFailedAuthentication
-                                                               userInfo:userInfo];
-                              [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
-                          } else {
-                              [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
-                          }
-                      }];
-
+            [self authenticateCardinalJWT:serverJWT];
             break;
         }
         case CardinalResponseActionCodeUnknown:
@@ -230,17 +238,15 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
                 errorCode = BTThreeDSecureFlowErrorTypeFailedAuthentication;
             }
 
-            NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
-                                                 code:errorCode
-                                             userInfo:userInfo];
-            [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+            [self performPaymentCompleteWithErrorDomain:BTThreeDSecureFlowErrorDomain
+                                              errorCode:errorCode
+                                          errorUserInfo:userInfo];
             break;
         }
         case CardinalResponseActionCodeCancel: {
-            NSError *error = [NSError errorWithDomain:BTPaymentFlowDriverErrorDomain
-                                                 code:BTPaymentFlowDriverErrorTypeCanceled
-                                             userInfo:nil];
-            [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+            [self performPaymentCompleteWithErrorDomain:BTPaymentFlowDriverErrorDomain
+                                              errorCode:BTPaymentFlowDriverErrorTypeCanceled
+                                          errorUserInfo:nil];
             break;
         }
     }
