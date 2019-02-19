@@ -24,4 +24,25 @@ class BTThreeDSecureLookup_Tests: XCTestCase {
         XCTAssertEqual(lookup.transactionId, "transactionIdField")
         XCTAssertTrue(lookup.isThreeDSecureVersion2)
     }
+
+    func testLookup_initializesWithNilProperties() {
+        let lookupBody = [
+            "pareq": "paReqField",
+            "md": "mdField",
+            "termUrl": "http://termUrl.com",
+            "transactionId": "transactionIdField",
+            ] as [String : Any]
+        let lookupJSON = BTJSON(value: lookupBody)
+
+        guard let lookup = BTThreeDSecureLookup.init(json: lookupJSON) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(lookup.paReq, "paReqField")
+        XCTAssertNil(lookup.acsURL)
+        XCTAssertEqual(lookup.md, "mdField")
+        XCTAssertEqual(lookup.termURL, URL.init(string: "http://termUrl.com"))
+        XCTAssertNil(lookup.threeDSecureVersion)
+        XCTAssertEqual(lookup.transactionId, "transactionIdField")
+    }
 }
