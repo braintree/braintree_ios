@@ -13,37 +13,43 @@ typedef NS_ENUM(NSInteger, BTUIPaymentOptionType) {
 
     /// Discover
     BTUIPaymentOptionTypeDiscover,
-    
+
     /// Mastercard
     BTUIPaymentOptionTypeMasterCard,
-    
+
     /// Visa
     BTUIPaymentOptionTypeVisa,
-    
+
     /// JCB
     BTUIPaymentOptionTypeJCB,
-    
+
     /// Laser
     BTUIPaymentOptionTypeLaser,
-    
+
     /// Maestro
     BTUIPaymentOptionTypeMaestro,
-    
+
     /// Union Pay
     BTUIPaymentOptionTypeUnionPay,
-    
+
+    /// Hiper
+    BTUIPaymentOptionTypeHiper,
+
+    /// Hipercard
+    BTUIPaymentOptionTypeHipercard,
+
     /// Solo
     BTUIPaymentOptionTypeSolo,
-    
+
     /// Switch
     BTUIPaymentOptionTypeSwitch,
-    
+
     /// UK Maestro
     BTUIPaymentOptionTypeUKMaestro,
-    
+
     /// PayPal
     BTUIPaymentOptionTypePayPal,
-    
+
     /// Coinbase
     BTUIPaymentOptionTypeCoinbase,
 

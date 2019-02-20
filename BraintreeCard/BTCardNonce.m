@@ -39,6 +39,10 @@
             return @"Maestro";
         case BTCardNetworkUnionPay:
             return @"UnionPay";
+        case BTCardNetworkHiper:
+            return @"Hiper";
+        case BTCardNetworkHipercard:
+            return @"Hipercard";
         case BTCardNetworkSolo:
             return @"Solo";
         case BTCardNetworkSwitch:
@@ -62,6 +66,8 @@
                               @"maestro": @(BTCardNetworkMaestro),
                               @"mastercard": @(BTCardNetworkMasterCard),
                               @"jcb": @(BTCardNetworkJCB),
+                              @"hiper": @(BTCardNetworkHiper),
+                              @"hipercard": @(BTCardNetworkHipercard),
                               @"laser": @(BTCardNetworkLaser),
                               @"solo": @(BTCardNetworkSolo),
                               @"switch": @(BTCardNetworkSwitch),

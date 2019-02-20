@@ -23,6 +23,8 @@
 + (NSString *)CARD_TYPE_JCB;
 + (NSString *)CARD_TYPE_MAESTRO;
 + (NSString *)CARD_TYPE_UNION_PAY;
++ (NSString *)CARD_TYPE_HIPER;
++ (NSString *)CARD_TYPE_HIPERCARD;
 + (NSString *)CARD_TYPE_SWITCH;
 + (NSString *)CARD_TYPE_SOLO;
 + (NSString *)CARD_TYPE_LASER;

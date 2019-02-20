@@ -14,6 +14,8 @@
 #import "BTUICoinbaseMonogramCardView.h"
 #import "BTUIVenmoMonogramCardView.h"
 #import "BTUIUnionPayVectorArtView.h"
+#import "BTUIHiperVectorArtView.h"
+#import "BTUIHipercardVectorArtView.h"
 
 @implementation BTUI
 
@@ -241,6 +243,10 @@
         return BTUIPaymentOptionTypeSwitch;
     } else if ([typeString isEqualToString:@"UnionPay"]) {
         return BTUIPaymentOptionTypeUnionPay;
+    } else if ([typeString isEqualToString:@"Hiper"]) {
+        return BTUIPaymentOptionTypeHiper;
+    } else if ([typeString isEqualToString:@"Hipercard"]) {
+        return BTUIPaymentOptionTypeHipercard;
     } else if ([typeString isEqualToString:@"Venmo"]) {
         return BTUIPaymentOptionTypeVenmo;
     } else {
@@ -278,6 +284,10 @@
             return [BTUIVenmoMonogramCardView new];
         case BTUIPaymentOptionTypeUnionPay:
             return [BTUIUnionPayVectorArtView new];
+        case BTUIPaymentOptionTypeHiper:
+            return [BTUIHiperVectorArtView new];
+        case BTUIPaymentOptionTypeHipercard:
+            return [BTUIHipercardVectorArtView new];
         case BTUIPaymentOptionTypeSolo:
         case BTUIPaymentOptionTypeLaser:
         case BTUIPaymentOptionTypeSwitch:
