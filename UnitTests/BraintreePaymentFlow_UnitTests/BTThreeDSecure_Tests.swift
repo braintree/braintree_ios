@@ -67,6 +67,56 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 3, handler: nil)
     }
 
+    func testLookupThreeDSecure_lookupResultHasErrors() {
+        let errors = [["message" : "error description1"], ["message" : "error description2"]]
+        let responseBody = [
+            "paymentMethod": [
+                "consumed": false,
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "02",
+                ],
+                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
+                "threeDSecureInfo": [
+                    "enrolled": "Y",
+                    "liabilityShiftPossible": true,
+                    "liabilityShifted": true,
+                    "status": "authenticate_successful",
+                ],
+                "type": "CreditCard",
+            ],
+            "errors" :
+                errors
+            ,
+            "success": true,
+            "threeDSecureInfo":     [
+                "liabilityShiftPossible": true,
+                "liabilityShifted": true,
+            ],
+            "lookup": [
+                "acsUrl": "http://example.com",
+                "pareq": "",
+                "md": "",
+                "termUrl": "http://example.com",
+                "threeDSecureVersion" : "2.1.0"
+            ]
+            ] as [String : Any]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "fake-df-reference") { (lookup, error) in
+            let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard
+            XCTAssert(isANonce(tokenizedCard!.nonce))
+            XCTAssertEqual(lookup!.threeDSecureResult.errorMessage, "error description1")
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
     func testLookupThreeDSecure_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
         mockAPIClient.cannedConfigurationResponseError = NSError(domain: "", code: 0, userInfo: nil)
 
@@ -226,6 +276,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 3, handler: nil)
     }
+
+    // MARK: - ThreeDSecure Authentication Tests
 
     func testLookupThreeDSecure_withCardThatDoesntRequireAuthentication_callsCompletionWithACard() {
         let responseBody = [
