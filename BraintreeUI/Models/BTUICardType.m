@@ -158,6 +158,18 @@
                                                       validCvvLength:3
                                                         formatSpaces:nil];
 
+        BTUICardType *hiper = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_HIPER)
+                                                            prefixes:@[@"637095", @"637568", @"637599", @"637609", @"637612"]
+                                                  validNumberLengths:[NSIndexSet indexSetWithIndex:16]
+                                                      validCvvLength:3
+                                                        formatSpaces:nil];
+
+        BTUICardType *hipercard = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)
+                                                            prefixes:@[@"606282"]
+                                                  validNumberLengths:[NSIndexSet indexSetWithIndex:16]
+                                                      validCvvLength:3
+                                                        formatSpaces:nil];
+
         _allCards = @[visa, mastercard, discover, amex, dinersClub, jcb, mastercard, maestro, unionPay];
     });
 
