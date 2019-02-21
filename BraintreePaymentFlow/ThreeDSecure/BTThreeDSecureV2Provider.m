@@ -63,6 +63,7 @@
                                                 errorUserInfo:@{NSLocalizedDescriptionKey: result.errorMessage}];
                   } else {
                       self.successHandler(result);
+                      self.cardinalSession = nil;
                   }
               }];
 }
@@ -75,6 +76,7 @@
                                      userInfo:errorUserInfo];
 
     self.failureHandler(error);
+    self.cardinalSession = nil;
 }
 
 #pragma mark - Cardinal Delegate

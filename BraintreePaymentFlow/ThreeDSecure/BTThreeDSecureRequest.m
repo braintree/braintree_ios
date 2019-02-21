@@ -73,11 +73,12 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
                                               if (lookupResult.requiresUserAuthentication) {
                                                   if (lookupResult.isThreeDSecureVersion2) {
+                                                      typeof(self) __weak weakSelf = self;
                                                       [self.threeDSecureV2Provider processLookupResults:lookupResult
                                                                                                 success:^(BTThreeDSecureResult *result) {
-                                                                                                    [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                                                                                                    [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
                                                                                                 } failure:^(NSError *error) {
-                                                                                                    [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+                                                                                                    [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
                                                                                                 }];
                                                   }
                                                   else {

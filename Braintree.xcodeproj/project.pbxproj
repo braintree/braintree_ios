@@ -2296,8 +2296,6 @@
 				80036F7C21F7BB7F003A9F5C /* BTConfiguration+ThreeDSecure.m */,
 				034CDCA81FB518CB00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h */,
 				03800A5C1F04630C00068F53 /* BTPaymentFlowDriver+ThreeDSecure.m */,
-				A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */,
-				A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */,
 				034CDCA61FB517A300CEC47C /* BTThreeDSecureLookup.h */,
 				03CED2391F8D77C9000A5F4F /* BTThreeDSecureLookup.m */,
 				030825F2208EF14900AAB198 /* BTThreeDSecurePostalAddress_Internal.h */,
@@ -2305,6 +2303,8 @@
 				80E74E6822025BB200DF95E6 /* BTThreeDSecureRequest_Internal.h */,
 				03800A4D1F045F4B00068F53 /* BTThreeDSecureRequest.m */,
 				03800A4E1F045F4B00068F53 /* BTThreeDSecureResult.m */,
+				A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */,
+				A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */,
 				A08F15A121C304170016BBF9 /* CardinalMobile.framework */,
 			);
 			path = ThreeDSecure;
