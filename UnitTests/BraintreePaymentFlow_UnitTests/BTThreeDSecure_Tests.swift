@@ -59,7 +59,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let expectation = self.expectation(description: "willCallCompletion")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: nil) { (lookup, error) in
             XCTAssertTrue(lookup!.isThreeDSecureVersion2)
             expectation.fulfill()
         }
@@ -107,7 +107,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let expectation = self.expectation(description: "willCallCompletion")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "fake-df-reference") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: ["dfReferenceId": "fake-df-reference"]) { (lookup, error) in
             let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard
             XCTAssert(isANonce(tokenizedCard!.nonce))
             XCTAssertEqual(lookup!.threeDSecureResult.errorMessage, "error description1")
@@ -124,7 +124,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "lookup fails with errors")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: nil) { (lookup, error) in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedConfigurationResponseError!)
             expectation.fulfill()
         }
@@ -139,7 +139,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let expectation = self.expectation(description: "Post fails with error.")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: nil) { (lookup, error) in
             XCTAssertEqual(error! as NSError, self.mockAPIClient.cannedResponseError!)
             expectation.fulfill()
         }
@@ -161,7 +161,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let expectation = self.expectation(description: "Post fails with error code 422.")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: nil) { (lookup, error) in
             XCTAssertEqual(error! as NSError, NSError(domain:BTThreeDSecureFlowErrorDomain, code: 1, userInfo: userInfo))
             expectation.fulfill()
         }
@@ -195,7 +195,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let expectation = self.expectation(description: "Post fails with error code 422.")
 
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: nil) { (lookup, error) in
             // TODO: Make this assertion more specific.
             // Check that error.userInfo structure matches that set in performThreeDSecureLookup
             XCTAssertNotEqual(error! as NSError, NSError(domain:BTThreeDSecureFlowErrorDomain, code: 1, userInfo: userInfo))
@@ -253,9 +253,9 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         billingAddress.postalCode = "54321"
         threeDSecureRequest.billingAddress = billingAddress
 
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "dfReferenceId") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: ["dfReferenceId": "fake-df-reference"]) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? String, "9.97")
-            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as? String, "dfReferenceId")
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as? String, "fake-df-reference")
             let additionalInformationParams = self.mockAPIClient.lastPOSTParameters!["additionalInformation"] as! [String : Any]
             XCTAssertEqual(additionalInformationParams["mobilePhoneNumber"] as? String, "5151234321")
             XCTAssertEqual(additionalInformationParams["email"] as? String, "tester@example.com")
@@ -309,7 +309,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: nil) { (lookup, error) in
             XCTAssertFalse(lookup!.requiresUserAuthentication())
             let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard
             XCTAssert(isANonce(tokenizedCard!.nonce))
@@ -362,7 +362,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: nil) { (lookup, error) in
             XCTAssertTrue(lookup!.requiresUserAuthentication())
             expectation.fulfill()
         }
@@ -401,7 +401,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         
         let expectation = self.expectation(description: "willCallCompletion")
         
-        driver.performThreeDSecureLookup(threeDSecureRequest, dfReferenceId: "") { (lookup, error) in
+        driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: nil) { (lookup, error) in
             guard let tokenizedCard = lookup?.threeDSecureResult.tokenizedCard else {
                 XCTFail()
                 return
