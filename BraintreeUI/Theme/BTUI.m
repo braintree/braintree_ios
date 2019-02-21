@@ -14,8 +14,6 @@
 #import "BTUICoinbaseMonogramCardView.h"
 #import "BTUIVenmoMonogramCardView.h"
 #import "BTUIUnionPayVectorArtView.h"
-#import "BTUIHiperVectorArtView.h"
-#import "BTUIHipercardVectorArtView.h"
 
 @implementation BTUI
 
@@ -285,9 +283,7 @@
         case BTUIPaymentOptionTypeUnionPay:
             return [BTUIUnionPayVectorArtView new];
         case BTUIPaymentOptionTypeHiper:
-            return [BTUIHiperVectorArtView new];
         case BTUIPaymentOptionTypeHipercard:
-            return [BTUIHipercardVectorArtView new];
         case BTUIPaymentOptionTypeSolo:
         case BTUIPaymentOptionTypeLaser:
         case BTUIPaymentOptionTypeSwitch:
