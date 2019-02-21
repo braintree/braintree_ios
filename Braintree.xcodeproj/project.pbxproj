@@ -369,6 +369,8 @@
 		A0147DF722036174002C380A /* CardinalMobile.framework in Resources */ = {isa = PBXBuildFile; fileRef = A08F15A121C304170016BBF9 /* CardinalMobile.framework */; };
 		A0147DFA22038B07002C380A /* CardinalMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A08F15A121C304170016BBF9 /* CardinalMobile.framework */; };
 		A0147DFC22038EA4002C380A /* BTThreeDSecureRequest_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0147DFB22038EA4002C380A /* BTThreeDSecureRequest_Tests.swift */; };
+		A01720182216272000DAA838 /* BTThreeDSecureV2Provider.h in Headers */ = {isa = PBXBuildFile; fileRef = A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */; };
+		A01720192216272000DAA838 /* BTThreeDSecureV2Provider.m in Sources */ = {isa = PBXBuildFile; fileRef = A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */; };
 		A04FD8D721F7B1540043302F /* CardinalMobile.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A08F15A121C304170016BBF9 /* CardinalMobile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A07FA48D21B5C54E0026FF0E /* BTPayPalLineItem.h in Headers */ = {isa = PBXBuildFile; fileRef = A07FA48B21B5C54E0026FF0E /* BTPayPalLineItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A07FA48E21B5C54E0026FF0E /* BTPayPalLineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A07FA48C21B5C54E0026FF0E /* BTPayPalLineItem.m */; };
@@ -1439,6 +1441,8 @@
 		848470E11BE81893009B12AE /* BTFakeHTTP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTFakeHTTP.m; sourceTree = "<group>"; };
 		8498EC1A1BB46D4B007FFDEC /* BTCardClient_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTCardClient_Internal.h; sourceTree = "<group>"; };
 		A0147DFB22038EA4002C380A /* BTThreeDSecureRequest_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureRequest_Tests.swift; sourceTree = "<group>"; };
+		A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BTThreeDSecureV2Provider.h; sourceTree = "<group>"; };
+		A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BTThreeDSecureV2Provider.m; sourceTree = "<group>"; };
 		A07FA48B21B5C54E0026FF0E /* BTPayPalLineItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTPayPalLineItem.h; sourceTree = "<group>"; };
 		A07FA48C21B5C54E0026FF0E /* BTPayPalLineItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTPayPalLineItem.m; sourceTree = "<group>"; };
 		A08E9492220CDD1B00907245 /* BTThreeDSecureLookup_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTThreeDSecureLookup_Tests.swift; sourceTree = "<group>"; };
@@ -2292,6 +2296,8 @@
 				80036F7C21F7BB7F003A9F5C /* BTConfiguration+ThreeDSecure.m */,
 				034CDCA81FB518CB00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h */,
 				03800A5C1F04630C00068F53 /* BTPaymentFlowDriver+ThreeDSecure.m */,
+				A01720162216272000DAA838 /* BTThreeDSecureV2Provider.h */,
+				A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */,
 				034CDCA61FB517A300CEC47C /* BTThreeDSecureLookup.h */,
 				03CED2391F8D77C9000A5F4F /* BTThreeDSecureLookup.m */,
 				030825F2208EF14900AAB198 /* BTThreeDSecurePostalAddress_Internal.h */,
@@ -3617,6 +3623,7 @@
 				03800A571F045F5600068F53 /* BTThreeDSecureRequest.h in Headers */,
 				03800A5F1F04632B00068F53 /* BTPaymentFlowDriver+ThreeDSecure.h in Headers */,
 				033248CA2123DD1A009F2B31 /* BTPaymentFlowDriver+LocalPayment_Internal.h in Headers */,
+				A01720182216272000DAA838 /* BTThreeDSecureV2Provider.h in Headers */,
 				038C7FE51EA1648900241ABE /* BTPaymentFlowResult.h in Headers */,
 				038C7FE31EA1648900241ABE /* BTPaymentFlowDriver.h in Headers */,
 				03E7E3D6212469AD000C5094 /* BTConfiguration+LocalPayment.h in Headers */,
@@ -4763,6 +4770,7 @@
 				033248CC2123DD1A009F2B31 /* BTPaymentFlowDriver+LocalPayment.m in Sources */,
 				03800A511F045F4B00068F53 /* BTThreeDSecureResult.m in Sources */,
 				03800A5D1F04630C00068F53 /* BTPaymentFlowDriver+ThreeDSecure.m in Sources */,
+				A01720192216272000DAA838 /* BTThreeDSecureV2Provider.m in Sources */,
 				033248CE2123DD1A009F2B31 /* BTConfiguration+LocalPayment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTPaymentFlowDriver (ThreeDSecure_Internal)
 
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
-                    dfReferenceId:(NSString *)dfReferenceId
+             additionalParameters:(NSDictionary *)additionalParameters
                        completion:(void (^)(BTThreeDSecureLookup  * _Nullable threeDSecureResult, NSError * _Nullable error))completionBlock;
 
 @end

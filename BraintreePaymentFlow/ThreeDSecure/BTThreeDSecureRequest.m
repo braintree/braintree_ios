@@ -19,45 +19,38 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTURLUtils.h"
 #import "BTConfiguration+ThreeDSecure.h"
-#import <CardinalMobile/CardinalMobile.h>
+#import "BTThreeDSecureV2Provider.h"
 
 NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1.5";
 
-@interface BTThreeDSecureRequest () <CardinalValidationDelegate>
+@interface BTThreeDSecureRequest ()
 
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
-@property (nonnull, strong) BTThreeDSecureLookup *lookupResult;
-@property (nonatomic, strong) CardinalSession *cardinalSession;
-@property (nonatomic, strong) NSString *dfReferenceId;
+@property (nonatomic, strong) BTThreeDSecureV2Provider *threeDSecureV2Provider;
+@property (nonatomic, strong) NSDictionary *additionalLookupParameters;
 
 @end
 
 @implementation BTThreeDSecureRequest
 
-- (void)handleRequest:(BTPaymentFlowRequest *)request client:(BTAPIClient *)apiClient paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
+- (void)handleRequest:(BTPaymentFlowRequest *)request
+               client:(BTAPIClient *)apiClient
+paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     self.paymentFlowDriverDelegate = delegate;
-
+    
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable configurationError) {
         if (configurationError) {
             [self.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
             return;
         }
-
+        
         if (configuration.cardinalAuthenticationJWT) {
-            self.cardinalSession = [CardinalSession new];
-            // TODO: Switch between staging and production
-            CardinalSessionConfig *cardinalConfiguration = [CardinalSessionConfig new];
-            cardinalConfiguration.deploymentEnvironment = CardinalSessionEnvironmentStaging;
-            [self.cardinalSession configure:cardinalConfiguration];
-
-            [self.cardinalSession setupWithJWT:configuration.cardinalAuthenticationJWT
-                                   didComplete:^(NSString * _Nonnull consumerSessionId) {
-                                       self.dfReferenceId = consumerSessionId;
-                                       [self startRequest:request configuration:configuration];
-                                   } didValidate:^(__unused CardinalResponse * _Nonnull validateResponse) {
-                                       // TODO: continue lookup and assume it will be v1?
-                                       [self startRequest:request configuration:configuration];
-                                   }];
+            self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithApiClient:[self.paymentFlowDriverDelegate apiClient]
+                                                                                      configuration:configuration
+                                                                                         completion:^(NSDictionary *lookupParameters) {
+                                                                                             self.additionalLookupParameters = lookupParameters;
+                                                                                             [self startRequest:request configuration:configuration];
+                                                                                         }];
         }
         else {
             [self startRequest:request configuration:configuration];
@@ -70,7 +63,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:[self.paymentFlowDriverDelegate apiClient]];
 
     [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
-                                   dfReferenceId:self.dfReferenceId
+                            additionalParameters:self.additionalLookupParameters
                                       completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
                                           dispatch_async(dispatch_get_main_queue(), ^{
                                               if (error) {
@@ -78,14 +71,14 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
                                                   return;
                                               }
 
-                                              self.lookupResult = lookupResult;
                                               if (lookupResult.requiresUserAuthentication) {
                                                   if (lookupResult.isThreeDSecureVersion2) {
-                                                      [self.cardinalSession continueWithTransactionId:lookupResult.transactionId
-                                                                                              payload:lookupResult.PAReq
-                                                                                               acsUrl:[lookupResult.acsURL absoluteString]
-                                                                                    directoryServerID:CCADirectoryServerIDEMVCo1
-                                                                                  didValidateDelegate:self];
+                                                      [self.threeDSecureV2Provider processLookupResults:lookupResult
+                                                                                                success:^(BTThreeDSecureResult *result) {
+                                                                                                    [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                                                                                                } failure:^(NSError *error) {
+                                                                                                    [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+                                                                                                }];
                                                   }
                                                   else {
                                                       NSURL *redirectUrl = [self constructV1PaymentURLForLookup:lookupResult configuration:configuration];
@@ -137,23 +130,6 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     }
 
     [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
-}
-
-- (void)authenticateCardinalJWT:(NSString *)cardinalJWT {
-    NSString *urlSafeNonce = [self.lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSDictionary *requestParameters = @{@"jwt": cardinalJWT, @"paymentMethodNonce": self.lookupResult.threeDSecureResult.tokenizedCard.nonce};
-    [[self.paymentFlowDriverDelegate apiClient] POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
-                                          parameters:requestParameters
-                                          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
-                                              BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
-                                              if (result.errorMessage) {
-                                                  [self performPaymentCompleteWithErrorDomain:BTThreeDSecureFlowErrorDomain
-                                                                                    errorCode:BTThreeDSecureFlowErrorTypeFailedAuthentication
-                                                                                errorUserInfo:@{NSLocalizedDescriptionKey: result.errorMessage}];
-                                              } else {
-                                                  [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
-                                              }
-                                          }];
 }
 
 - (void)performPaymentCompleteWithErrorDomain:(NSErrorDomain)errorDomain
@@ -214,42 +190,6 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
     }
     
     return [parameters copy];
-}
-
-#pragma mark - Cardinal Delegate
-
-- (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT{
-    switch (validateResponse.actionCode) {
-        case CardinalResponseActionCodeSuccess:
-        case CardinalResponseActionCodeNoAction:
-        case CardinalResponseActionCodeFailure: {
-            [self authenticateCardinalJWT:serverJWT];
-            break;
-        }
-        case CardinalResponseActionCodeUnknown:
-        case CardinalResponseActionCodeError: {
-            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-            if (validateResponse.errorDescription) {
-                userInfo[NSLocalizedDescriptionKey] = validateResponse.errorDescription;
-            }
-
-            BTThreeDSecureFlowErrorType errorCode = BTThreeDSecureFlowErrorTypeUnknown;
-            if (validateResponse.errorNumber == 1050) {
-                errorCode = BTThreeDSecureFlowErrorTypeFailedAuthentication;
-            }
-
-            [self performPaymentCompleteWithErrorDomain:BTThreeDSecureFlowErrorDomain
-                                              errorCode:errorCode
-                                          errorUserInfo:userInfo];
-            break;
-        }
-        case CardinalResponseActionCodeCancel: {
-            [self performPaymentCompleteWithErrorDomain:BTPaymentFlowDriverErrorDomain
-                                              errorCode:BTPaymentFlowDriverErrorTypeCanceled
-                                          errorUserInfo:nil];
-            break;
-        }
-    }
 }
 
 @end

@@ -19,7 +19,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 #pragma mark - ThreeDSecure Lookup
 
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
-                    dfReferenceId:(NSString *)dfReferenceId
+             additionalParameters:(NSDictionary *)additionalParameters
                        completion:(void (^)(BTThreeDSecureLookup *threeDSecureResult, NSError *error))completionBlock {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *error) {
         if (error) {
@@ -28,8 +28,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         }
 
         NSMutableDictionary *requestParameters = [[request asParameters] mutableCopy];
-        if (dfReferenceId) {
-            requestParameters[@"dfReferenceId"] = dfReferenceId;
+        if (additionalParameters) {
+            [requestParameters addEntriesFromDictionary:additionalParameters];
         }
 
         NSString *urlSafeNonce = [request.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
