@@ -45,12 +45,11 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         }
         
         if (configuration.cardinalAuthenticationJWT) {
-            self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithApiClient:[self.paymentFlowDriverDelegate apiClient]
-                                                                                      configuration:configuration
-                                                                                         completion:^(NSDictionary *lookupParameters) {
-                                                                                             self.additionalLookupParameters = lookupParameters;
-                                                                                             [self startRequest:request configuration:configuration];
-                                                                                         }];
+            self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
+                                                                                             completion:^(NSDictionary *lookupParameters) {
+                                                                                                 self.additionalLookupParameters = lookupParameters;
+                                                                                                 [self startRequest:request configuration:configuration];
+                                                                                             }];
         }
         else {
             [self startRequest:request configuration:configuration];
@@ -75,6 +74,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                   if (lookupResult.isThreeDSecureVersion2) {
                                                       typeof(self) __weak weakSelf = self;
                                                       [self.threeDSecureV2Provider processLookupResult:lookupResult
+                                                                                         withAPIClient:[self.paymentFlowDriverDelegate apiClient]
                                                                                                success:^(BTThreeDSecureResult *result) {
                                                                                                    [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
                                                                                                } failure:^(NSError *error) {

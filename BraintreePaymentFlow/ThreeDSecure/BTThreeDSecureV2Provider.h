@@ -10,11 +10,11 @@ typedef void (^BTThreeDSecureV2ProviderInitializeCompletionHandler)(NSDictionary
 typedef void (^BTThreeDSecureV2ProviderSuccessHandler)(BTThreeDSecureResult *result);
 typedef void (^BTThreeDSecureV2ProviderFailureHandler)(NSError *error);
 
-+ (instancetype)initializeProviderWithApiClient:(BTAPIClient *)apiClient
-                                  configuration:(BTConfiguration *)configuration
-                                     completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler;
++ (instancetype)initializeProviderWithConfiguration:(BTConfiguration *)configuration
+                                         completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler;
 
-- (void)processLookupResult:(BTThreeDSecureLookup *)lookup
+- (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult
+              withAPIClient:(BTAPIClient *)apiClient
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
 
