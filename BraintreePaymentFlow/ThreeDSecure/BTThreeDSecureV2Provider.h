@@ -14,9 +14,9 @@ typedef void (^BTThreeDSecureV2ProviderFailureHandler)(NSError *error);
                                   configuration:(BTConfiguration *)configuration
                                      completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler;
 
-- (void)processLookupResults:(BTThreeDSecureLookup *)lookup
-                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
-                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
+- (void)processLookupResult:(BTThreeDSecureLookup *)lookup
+                    success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
+                    failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
 
 @end
 

@@ -7,6 +7,7 @@
 
 @property (strong, nonatomic) BTAPIClient *apiClient;
 @property (strong, nonatomic) CardinalSession *cardinalSession;
+
 @property (strong, nonatomic) BTThreeDSecureLookup *lookupResult;
 @property (copy, nonatomic) BTThreeDSecureV2ProviderSuccessHandler successHandler;
 @property (copy, nonatomic) BTThreeDSecureV2ProviderFailureHandler failureHandler;
@@ -27,22 +28,22 @@
     [instance.cardinalSession configure:cardinalConfiguration];
 
     [instance.cardinalSession setupWithJWT:configuration.cardinalAuthenticationJWT
-                           didComplete:^(__unused NSString * _Nonnull consumerSessionId) {
-                               completionHandler(@{@"dfReferenceId": consumerSessionId});
-                           } didValidate:^(__unused CardinalResponse * _Nonnull validateResponse) {
-                               // TODO: continue lookup and assume it will be v1?
-                               completionHandler(@{});
-                           }];
+                               didComplete:^(__unused NSString * _Nonnull consumerSessionId) {
+                                   completionHandler(@{@"dfReferenceId": consumerSessionId});
+                               } didValidate:^(__unused CardinalResponse * _Nonnull validateResponse) {
+                                   // TODO: continue lookup and assume it will be v1?
+                                   completionHandler(@{});
+                               }];
 
     return instance;
 }
 
-- (void)processLookupResults:(BTThreeDSecureLookup *)lookupResult
-                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
-                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
+- (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult
+                    success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
+                    failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
+    self.lookupResult = lookupResult;
     self.successHandler = successHandler;
     self.failureHandler = failureHandler;
-    self.lookupResult = lookupResult;
     [self.cardinalSession continueWithTransactionId:lookupResult.transactionId
                                             payload:lookupResult.PAReq
                                              acsUrl:[lookupResult.acsURL absoluteString]
@@ -50,9 +51,12 @@
                                 didValidateDelegate:self];
 }
 
-- (void)authenticateCardinalJWT:(NSString *)cardinalJWT {
-    NSString *urlSafeNonce = [self.lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSDictionary *requestParameters = @{@"jwt": cardinalJWT, @"paymentMethodNonce": self.lookupResult.threeDSecureResult.tokenizedCard.nonce};
+- (void)authenticateCardinalJWT:(NSString *)cardinalJWT
+                      forLookup:(BTThreeDSecureLookup *)lookupResult
+                        success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
+                        failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
+    NSString *urlSafeNonce = [lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSDictionary *requestParameters = @{@"jwt": cardinalJWT, @"paymentMethodNonce": lookupResult.threeDSecureResult.tokenizedCard.nonce};
     [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
               parameters:requestParameters
               completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
@@ -60,23 +64,23 @@
                   if (result.errorMessage) {
                       [self callFailureHandlerWithErrorDomain:BTThreeDSecureFlowErrorDomain
                                                     errorCode:BTThreeDSecureFlowErrorTypeFailedAuthentication
-                                                errorUserInfo:@{NSLocalizedDescriptionKey: result.errorMessage}];
+                                                errorUserInfo:@{NSLocalizedDescriptionKey: result.errorMessage}
+                                               failureHandler:failureHandler];
                   } else {
-                      self.successHandler(result);
-                      self.cardinalSession = nil;
+                      successHandler(result);
                   }
               }];
 }
 
 - (void)callFailureHandlerWithErrorDomain:(NSErrorDomain)errorDomain
                                 errorCode:(NSInteger)errorCode
-                            errorUserInfo:(NSDictionary *)errorUserInfo {
+                            errorUserInfo:(NSDictionary *)errorUserInfo
+                           failureHandler:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
     NSError *error = [NSError errorWithDomain:errorDomain
                                          code:errorCode
                                      userInfo:errorUserInfo];
 
-    self.failureHandler(error);
-    self.cardinalSession = nil;
+    failureHandler(error);
 }
 
 #pragma mark - Cardinal Delegate
@@ -86,7 +90,10 @@
         case CardinalResponseActionCodeSuccess:
         case CardinalResponseActionCodeNoAction:
         case CardinalResponseActionCodeFailure: {
-            [self authenticateCardinalJWT:serverJWT];
+            [self authenticateCardinalJWT:serverJWT
+                                forLookup:self.lookupResult
+                                  success:self.successHandler
+                                  failure:self.failureHandler];
             break;
         }
         case CardinalResponseActionCodeUnknown:
@@ -103,16 +110,22 @@
 
             [self callFailureHandlerWithErrorDomain:BTThreeDSecureFlowErrorDomain
                                           errorCode:errorCode
-                                      errorUserInfo:userInfo];
+                                      errorUserInfo:userInfo
+                                     failureHandler:self.failureHandler];
             break;
         }
         case CardinalResponseActionCodeCancel: {
             [self callFailureHandlerWithErrorDomain:BTPaymentFlowDriverErrorDomain
                                           errorCode:BTPaymentFlowDriverErrorTypeCanceled
-                                      errorUserInfo:nil];
+                                      errorUserInfo:nil
+                                     failureHandler:self.failureHandler];
             break;
         }
     }
+
+    self.lookupResult = nil;
+    self.successHandler = nil;
+    self.failureHandler = nil;
 }
 
 @end

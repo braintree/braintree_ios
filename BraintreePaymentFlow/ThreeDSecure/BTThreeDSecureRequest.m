@@ -74,12 +74,12 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                               if (lookupResult.requiresUserAuthentication) {
                                                   if (lookupResult.isThreeDSecureVersion2) {
                                                       typeof(self) __weak weakSelf = self;
-                                                      [self.threeDSecureV2Provider processLookupResults:lookupResult
-                                                                                                success:^(BTThreeDSecureResult *result) {
-                                                                                                    [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
-                                                                                                } failure:^(NSError *error) {
-                                                                                                    [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
-                                                                                                }];
+                                                      [self.threeDSecureV2Provider processLookupResult:lookupResult
+                                                                                               success:^(BTThreeDSecureResult *result) {
+                                                                                                   [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                                                                                               } failure:^(NSError *error) {
+                                                                                                   [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+                                                                                               }];
                                                   }
                                                   else {
                                                       NSURL *redirectUrl = [self constructV1PaymentURLForLookup:lookupResult configuration:configuration];
