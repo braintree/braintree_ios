@@ -18,6 +18,12 @@ typedef void (^BTThreeDSecureV2ProviderFailureHandler)(NSError *error);
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
 
+- (void)authenticateCardinalJWT:(NSString *)cardinalJWT
+                forLookupResult:(BTThreeDSecureLookup *)lookupResult
+                  withAPIClient:(BTAPIClient *)apiClient
+                        success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
+                        failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END
