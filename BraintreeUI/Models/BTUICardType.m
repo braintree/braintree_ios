@@ -55,14 +55,15 @@
 }
 
 + (instancetype)cardTypeForNumber:(NSString *)number {
-    if (number.length == 0) {
+    NSString *unformattedNumber = [number stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (unformattedNumber.length == 0) {
         return nil;
     }
     for (BTUICardType *cardType in [[self class] allCards]) {
         for (NSString *prefix in cardType.validNumberPrefixes) {
-            if (number.length >= prefix.length) {
-                NSUInteger compareLength = MIN(prefix.length, number.length);
-                NSString *sizedNumber = [number substringToIndex:compareLength];
+            if (unformattedNumber.length >= prefix.length) {
+                NSUInteger compareLength = MIN(prefix.length, unformattedNumber.length);
+                NSString *sizedNumber = [unformattedNumber substringToIndex:compareLength];
                 if ([sizedNumber isEqualToString:prefix]) {
                     return cardType;
                 }
@@ -170,7 +171,7 @@
                                                       validCvvLength:3
                                                         formatSpaces:nil];
 
-        _allCards = @[visa, mastercard, discover, amex, dinersClub, jcb, mastercard, maestro, unionPay];
+        _allCards = @[visa, mastercard, discover, amex, dinersClub, jcb, mastercard, maestro, unionPay, hiper, hipercard];
     });
 
     // returns the same object each time

@@ -18,7 +18,7 @@ describe(@"BTUICardType", ^{
 
         it(@"should recognize all cards with empty string", ^{
             NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@""];
-            expect(possibleCardTypes.count).to.equal(9);
+            expect(possibleCardTypes.count).to.equal(11);
         });
 
         it(@"should recognize no cards starting with 1", ^{
@@ -295,7 +295,7 @@ describe(@"BTUICardType", ^{
         });
 
         it(@"should format as a Hipercard", ^{
-            expect([[BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)] formatNumber:@"123412341234"]).to.haveKerning(@[@3, @7, @11]);
+            expect([[BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)] formatNumber:@"1234123412341234"]).to.haveKerning(@[@3, @7, @11]);
         });
     });
 });
