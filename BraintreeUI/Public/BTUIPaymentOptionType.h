@@ -32,12 +32,6 @@ typedef NS_ENUM(NSInteger, BTUIPaymentOptionType) {
     /// Union Pay
     BTUIPaymentOptionTypeUnionPay,
 
-    /// Hiper
-    BTUIPaymentOptionTypeHiper,
-
-    /// Hipercard
-    BTUIPaymentOptionTypeHipercard,
-
     /// Solo
     BTUIPaymentOptionTypeSolo,
 

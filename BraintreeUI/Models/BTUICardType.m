@@ -55,15 +55,14 @@
 }
 
 + (instancetype)cardTypeForNumber:(NSString *)number {
-    NSString *unformattedNumber = [number stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if (unformattedNumber.length == 0) {
+    if (number.length == 0) {
         return nil;
     }
     for (BTUICardType *cardType in [[self class] allCards]) {
         for (NSString *prefix in cardType.validNumberPrefixes) {
-            if (unformattedNumber.length >= prefix.length) {
-                NSUInteger compareLength = MIN(prefix.length, unformattedNumber.length);
-                NSString *sizedNumber = [unformattedNumber substringToIndex:compareLength];
+            if (number.length >= prefix.length) {
+                NSUInteger compareLength = MIN(prefix.length, number.length);
+                NSString *sizedNumber = [number substringToIndex:compareLength];
                 if ([sizedNumber isEqualToString:prefix]) {
                     return cardType;
                 }
@@ -159,19 +158,7 @@
                                                       validCvvLength:3
                                                         formatSpaces:nil];
 
-        BTUICardType *hiper = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_HIPER)
-                                                            prefixes:@[@"637095", @"637568", @"637599", @"637609", @"637612"]
-                                                  validNumberLengths:[NSIndexSet indexSetWithIndex:16]
-                                                      validCvvLength:3
-                                                        formatSpaces:nil];
-
-        BTUICardType *hipercard = [[BTUICardType alloc] initWithBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)
-                                                            prefixes:@[@"606282"]
-                                                  validNumberLengths:[NSIndexSet indexSetWithIndex:16]
-                                                      validCvvLength:3
-                                                        formatSpaces:nil];
-
-        _allCards = @[visa, mastercard, discover, amex, dinersClub, jcb, mastercard, maestro, unionPay, hiper, hipercard];
+        _allCards = @[visa, mastercard, discover, amex, dinersClub, jcb, mastercard, maestro, unionPay];
     });
 
     // returns the same object each time

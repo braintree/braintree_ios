@@ -14,8 +14,6 @@
         case BTCardNetworkLaser:      return BTUIPaymentOptionTypeLaser;
         case BTCardNetworkMaestro:    return BTUIPaymentOptionTypeMaestro;
         case BTCardNetworkUnionPay:   return BTUIPaymentOptionTypeUnionPay;
-        case BTCardNetworkHiper:      return BTUIPaymentOptionTypeHiper;
-        case BTCardNetworkHipercard:  return BTUIPaymentOptionTypeHipercard;
         case BTCardNetworkSolo:       return BTUIPaymentOptionTypeSolo;
         case BTCardNetworkSwitch:     return BTUIPaymentOptionTypeSwitch;
         case BTCardNetworkUKMaestro:  return BTUIPaymentOptionTypeUKMaestro;

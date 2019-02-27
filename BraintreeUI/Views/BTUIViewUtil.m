@@ -25,10 +25,6 @@
         return BTUIPaymentOptionTypeDinersClub;
     } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_UNION_PAY)]) {
         return BTUIPaymentOptionTypeUnionPay;
-    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_HIPER)]) {
-        return BTUIPaymentOptionTypeHiper;
-    } else if ([cardType.brand isEqualToString:BTUILocalizedString(CARD_TYPE_HIPERCARD)]) {
-        return BTUIPaymentOptionTypeHipercard;
     } else {
         return BTUIPaymentOptionTypeUnknown;
     }
@@ -57,10 +53,6 @@
           return BTUILocalizedString(CARD_TYPE_MAESTRO);
     case BTUIPaymentOptionTypeUnionPay:
           return BTUILocalizedString(CARD_TYPE_UNION_PAY);
-    case BTUIPaymentOptionTypeHiper:
-          return BTUILocalizedString(CARD_TYPE_HIPER);
-    case BTUIPaymentOptionTypeHipercard:
-          return BTUILocalizedString(CARD_TYPE_HIPERCARD);
     case BTUIPaymentOptionTypeSolo:
           return BTUILocalizedString(CARD_TYPE_SOLO);
     case BTUIPaymentOptionTypeSwitch:

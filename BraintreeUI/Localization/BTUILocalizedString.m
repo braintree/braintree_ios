@@ -81,14 +81,6 @@
     return NSLocalizedStringWithDefaultValue(@"CARD_TYPE_UNION_PAY", [self localizationTable], [self localizationBundle], @"UnionPay", @"UnionPay card brand");
 }
 
-+ (NSString *)CARD_TYPE_HIPER {
-    return NSLocalizedStringWithDefaultValue(@"CARD_TYPE_HIPER", [self localizationTable], [self localizationBundle], @"Hiper", @"Hiper card brand");
-}
-
-+ (NSString *)CARD_TYPE_HIPERCARD {
-    return NSLocalizedStringWithDefaultValue(@"CARD_TYPE_HIPERCARD", [self localizationTable], [self localizationBundle], @"Hipercard", @"Hipercard card brand");
-}
-
 + (NSString *)CARD_TYPE_LASER {
     return NSLocalizedStringWithDefaultValue(@"CARD_TYPE_LASER", [self localizationTable], [self localizationBundle], @"Laser", @"Laser card brand");
 }

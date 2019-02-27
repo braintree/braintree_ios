@@ -18,7 +18,7 @@ describe(@"BTUICardType", ^{
 
         it(@"should recognize all cards with empty string", ^{
             NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@""];
-            expect(possibleCardTypes.count).to.equal(11);
+            expect(possibleCardTypes.count).to.equal(9);
         });
 
         it(@"should recognize no cards starting with 1", ^{
@@ -41,18 +41,9 @@ describe(@"BTUICardType", ^{
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)]);
         });
 
-        it(@"should recognize Discover and Hipercard cards starting with 60", ^{
-            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"60"];
-            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_DISCOVER)]);
-            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)]);
-            expect(possibleCardTypes.count).to.equal(2);
-        });
-
-        it(@"should recognize Maestro and Hiper cards starting with 63", ^{
+        it(@"should recognize Maestro cards starting with 63", ^{
             NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"63"];
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)]);
-            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPER)]);
-            expect(possibleCardTypes.count).to.equal(2);
         });
 
         it(@"should recognize Maestro cards starting with 67", ^{
@@ -69,18 +60,6 @@ describe(@"BTUICardType", ^{
         it(@"should recognize a whole Visa", ^{
             NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"4111111111111111"];
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_VISA)]);
-            expect(possibleCardTypes.count).to.equal(1);
-        });
-
-        it(@"should recognize Hiper starting with 637095", ^{
-            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"637095"];
-            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPER)]);
-            expect(possibleCardTypes.count).to.equal(1);
-        });
-
-        it(@"should recognize Hipercard starting with 606282", ^{
-            NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"606282"];
-            expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)]);
             expect(possibleCardTypes.count).to.equal(1);
         });
     });
@@ -119,16 +98,6 @@ describe(@"BTUICardType", ^{
         it(@"recognizes Diners Club", ^{
             BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Diners Club"];
             expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeDinersClub);
-        });
-
-        it(@"recognizes Hiper", ^{
-            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Hiper"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeHiper);
-        });
-
-        it(@"recognizes Hipercard", ^{
-            BTUICardType *cardType = [BTUICardType cardTypeForBrand:@"Hipercard"];
-            expect([BTUIViewUtil paymentMethodTypeForCardType:cardType]).to.equal(BTUIPaymentOptionTypeHipercard);
         });
 
         it(@"ignores unknown card brands", ^{
@@ -175,22 +144,6 @@ describe(@"BTUICardType", ^{
             expect([BTUICardType cardTypeForNumber:@"6221 2345 6789 0123 450"]).to.equal([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_UNION_PAY)]);
         });
 
-        it(@"should recognize a valid partial Hiper", ^{
-            expect([BTUICardType cardTypeForNumber:@"6375 68"]).to.equal([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPER)]);
-        });
-
-        it(@"should recognize a valid complete Hiper", ^{
-            expect([BTUICardType cardTypeForNumber:@"6370 9500 0000 0005"]).to.equal([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPER)]);
-        });
-
-        it(@"should recognize a valid partial Hipercard", ^{
-            expect([BTUICardType cardTypeForNumber:@"6062 82"]).to.equal([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)]);
-        });
-
-        it(@"should recognize a valid complete Hipercard", ^{
-            expect([BTUICardType cardTypeForNumber:@"6062 8205 2484 5321"]).to.equal([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)]);
-        });
-
         it(@"should not recognize a non-number", ^{
             expect([BTUICardType cardTypeForNumber:@"notanumber"]).to.beNil();
         });
@@ -218,9 +171,7 @@ describe(@"BTUICardType", ^{
           @[@"4012888888881881", BTUILocalizedString(CARD_TYPE_VISA)],
           @[@"4217651111111119", BTUILocalizedString(CARD_TYPE_VISA)],
           @[@"4500600000000061", BTUILocalizedString(CARD_TYPE_VISA)],
-          @[@"6221234567890123450", BTUILocalizedString(CARD_TYPE_UNION_PAY)],
-          @[@"6370950000000005", BTUILocalizedString(CARD_TYPE_HIPER)],
-          @[@"6062820524845321", BTUILocalizedString(CARD_TYPE_HIPERCARD)],
+          @[@"6221234567890123450", BTUILocalizedString(CARD_TYPE_UNION_PAY)]
           ];
 
         for (NSArray *testCase in braintreeTestCardNumbers) {
@@ -288,14 +239,6 @@ describe(@"BTUICardType", ^{
 
         it(@"should format as a JCB", ^{
             expect([[BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_JCB)] formatNumber:@"1234123412341234"]).to.haveKerning(@[@3, @7, @11]);
-        });
-
-        it(@"should format as a Hiper", ^{
-            expect([[BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPER)] formatNumber:@"1234123412341234"]).to.haveKerning(@[@3, @7, @11]);
-        });
-
-        it(@"should format as a Hipercard", ^{
-            expect([[BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_HIPERCARD)] formatNumber:@"1234123412341234"]).to.haveKerning(@[@3, @7, @11]);
         });
     });
 });
