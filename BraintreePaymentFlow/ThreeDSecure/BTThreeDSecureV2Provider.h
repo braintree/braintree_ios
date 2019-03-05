@@ -11,16 +11,15 @@ typedef void (^BTThreeDSecureV2ProviderSuccessHandler)(BTThreeDSecureResult *res
 typedef void (^BTThreeDSecureV2ProviderFailureHandler)(NSError *error);
 
 + (instancetype)initializeProviderWithConfiguration:(BTConfiguration *)configuration
+                                          apiClient:(BTAPIClient *)apiClient
                                          completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler;
 
 - (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult
-              withAPIClient:(BTAPIClient *)apiClient
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
 
 - (void)authenticateCardinalJWT:(NSString *)cardinalJWT
                 forLookupResult:(BTThreeDSecureLookup *)lookupResult
-                  withAPIClient:(BTAPIClient *)apiClient
                         success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                         failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
 

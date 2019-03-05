@@ -37,6 +37,8 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
                client:(BTAPIClient *)apiClient
 paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     self.paymentFlowDriverDelegate = delegate;
+
+    [apiClient sendAnalyticsEvent:@"ios.three-d-secure.initialized"];
     
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable configurationError) {
         if (configurationError) {
@@ -46,6 +48,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         
         if (configuration.cardinalAuthenticationJWT) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
+                                                                                              apiClient:apiClient
                                                                                              completion:^(NSDictionary *lookupParameters) {
                                                                                                  self.additionalLookupParameters = lookupParameters;
                                                                                                  [self startRequest:request configuration:configuration];
@@ -59,8 +62,10 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
 - (void)startRequest:(BTPaymentFlowRequest *)request configuration:(BTConfiguration *)configuration {
     BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
-    BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:[self.paymentFlowDriverDelegate apiClient]];
+    BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
+    BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:apiClient];
 
+    [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.started"];
     [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
                             additionalParameters:self.additionalLookupParameters
                                       completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
@@ -70,14 +75,22 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                   return;
                                               }
 
+                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.lookup-flow.%@", lookupResult.threeDSecureVersion]];
+                                              NSString *challengePresentedDescription = lookupResult.requiresUserAuthentication ? @"true" : @"false";
+                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.challenge-presented.%@" + challengePresentedDescription]];
                                               if (lookupResult.requiresUserAuthentication) {
                                                   if (lookupResult.isThreeDSecureVersion2) {
                                                       typeof(self) __weak weakSelf = self;
                                                       [self.threeDSecureV2Provider processLookupResult:lookupResult
-                                                                                         withAPIClient:[self.paymentFlowDriverDelegate apiClient]
                                                                                                success:^(BTThreeDSecureResult *result) {
+                                                                                                   [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.completed"];
+                                                                                                   NSString *liabilityShiftPossibleDescription = result.liabilityShiftPossible ? @"true" : @"false";
+                                                                                                   [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shift-possible.", liabilityShiftPossibleDescription]];
+                                                                                                   NSString *liabilityShiftedDescription = result.liabilityShifted ? @"true" : @"false";
+                                                                                                   [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shifted.", liabilityShiftedDescription]];
                                                                                                    [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
                                                                                                } failure:^(NSError *error) {
+                                                                                                   [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.failed"];
                                                                                                    [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
                                                                                                }];
                                                   }

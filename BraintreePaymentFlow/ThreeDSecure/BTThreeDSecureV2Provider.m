@@ -1,6 +1,11 @@
 #import "BTThreeDSecureV2Provider.h"
 #import "BTConfiguration+ThreeDSecure.m"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#if __has_include("BTAPIClient_Internal.h")
+#import "BTAPIClient_Internal.h"
+#else
+#import <BraintreeCore/BTAPIClient_Internal.h>
+#endif
 #import <CardinalMobile/CardinalMobile.h>
 
 @interface BTThreeDSecureV2Provider() <CardinalValidationDelegate>
@@ -17,8 +22,10 @@
 @implementation BTThreeDSecureV2Provider
 
 + (instancetype)initializeProviderWithConfiguration:(BTConfiguration *)configuration
+                                          apiClient:(BTAPIClient *)apiClient
                                          completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler {
     BTThreeDSecureV2Provider *instance = [self new];
+    instance.apiClient = apiClient;
     instance.cardinalSession = [CardinalSession new];
     // TODO: Switch between staging and production
     CardinalSessionConfig *cardinalConfiguration = [CardinalSessionConfig new];
@@ -27,9 +34,11 @@
 
     [instance.cardinalSession setupWithJWT:configuration.cardinalAuthenticationJWT
                                didComplete:^(__unused NSString * _Nonnull consumerSessionId) {
+                                   [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk-setup.completed"];
                                    completionHandler(@{@"dfReferenceId": consumerSessionId});
                                } didValidate:^(__unused CardinalResponse * _Nonnull validateResponse) {
                                    // TODO: continue lookup and assume it will be v1?
+                                   [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk-setup.failed"];
                                    completionHandler(@{});
                                }];
 
@@ -37,11 +46,9 @@
 }
 
 - (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult
-              withAPIClient:(BTAPIClient *)apiClient
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
     self.lookupResult = lookupResult;
-    self.apiClient = apiClient;
     self.successHandler = successHandler;
     self.failureHandler = failureHandler;
     [self.cardinalSession continueWithTransactionId:lookupResult.transactionId
@@ -53,24 +60,23 @@
 
 - (void)authenticateCardinalJWT:(NSString *)cardinalJWT
                 forLookupResult:(BTThreeDSecureLookup *)lookupResult
-                  withAPIClient:(BTAPIClient *)apiClient
                         success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                         failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
     NSString *urlSafeNonce = [lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSDictionary *requestParameters = @{@"jwt": cardinalJWT, @"paymentMethodNonce": lookupResult.threeDSecureResult.tokenizedCard.nonce};
-    [apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
-         parameters:requestParameters
-         completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
-             BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
-             if (result.errorMessage) {
-                 [self callFailureHandlerWithErrorDomain:BTThreeDSecureFlowErrorDomain
-                                               errorCode:BTThreeDSecureFlowErrorTypeFailedAuthentication
-                                           errorUserInfo:@{NSLocalizedDescriptionKey: result.errorMessage}
-                                          failureHandler:failureHandler];
-             } else {
-                 successHandler(result);
-             }
-         }];
+    [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
+              parameters:requestParameters
+              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
+                  BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
+                  if (result.errorMessage) {
+                      [self callFailureHandlerWithErrorDomain:BTThreeDSecureFlowErrorDomain
+                                                    errorCode:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                                errorUserInfo:@{NSLocalizedDescriptionKey: result.errorMessage}
+                                               failureHandler:failureHandler];
+                  } else {
+                      successHandler(result);
+                  }
+              }];
 }
 
 - (void)callFailureHandlerWithErrorDomain:(NSErrorDomain)errorDomain
@@ -87,13 +93,13 @@
 #pragma mark - Cardinal Delegate
 
 - (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT{
+    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.cardinal-sdk-action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]];
     switch (validateResponse.actionCode) {
         case CardinalResponseActionCodeSuccess:
         case CardinalResponseActionCodeNoAction:
         case CardinalResponseActionCodeFailure: {
             [self authenticateCardinalJWT:serverJWT
                           forLookupResult:self.lookupResult
-                            withAPIClient:self.apiClient
                                   success:self.successHandler
                                   failure:self.failureHandler];
             break;
@@ -126,9 +132,25 @@
     }
 
     self.lookupResult = nil;
-    self.apiClient = nil;
     self.successHandler = nil;
     self.failureHandler = nil;
+}
+
+- (NSString *)analyticsStringForActionCode:(CardinalResponseActionCode)actionCode {
+    switch (actionCode) {
+        case CardinalResponseActionCodeUnknown:
+            return @"UNKNOWN";
+        case CardinalResponseActionCodeSuccess:
+            return @"SUCCESS";
+        case CardinalResponseActionCodeNoAction:
+            return @"NOACTION";
+        case CardinalResponseActionCodeFailure:
+            return @"FAILURE";
+        case CardinalResponseActionCodeError:
+            return @"ERROR";
+        case CardinalResponseActionCodeCancel:
+            return @"CANCEL";
+    }
 }
 
 @end
