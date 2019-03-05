@@ -76,23 +76,10 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                               }
 
                                               [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.lookup-flow.%@", lookupResult.threeDSecureVersion]];
-                                              NSString *challengePresentedDescription = lookupResult.requiresUserAuthentication ? @"true" : @"false";
-                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.challenge-presented.%@" + challengePresentedDescription]];
+                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.challenge-presented.%@", [self stringForBool:lookupResult.requiresUserAuthentication]]];
                                               if (lookupResult.requiresUserAuthentication) {
                                                   if (lookupResult.isThreeDSecureVersion2) {
-                                                      typeof(self) __weak weakSelf = self;
-                                                      [self.threeDSecureV2Provider processLookupResult:lookupResult
-                                                                                               success:^(BTThreeDSecureResult *result) {
-                                                                                                   [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.completed"];
-                                                                                                   NSString *liabilityShiftPossibleDescription = result.liabilityShiftPossible ? @"true" : @"false";
-                                                                                                   [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shift-possible.", liabilityShiftPossibleDescription]];
-                                                                                                   NSString *liabilityShiftedDescription = result.liabilityShifted ? @"true" : @"false";
-                                                                                                   [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shifted.", liabilityShiftedDescription]];
-                                                                                                   [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
-                                                                                               } failure:^(NSError *error) {
-                                                                                                   [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.failed"];
-                                                                                                   [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
-                                                                                               }];
+                                                      [self performV2Authentication:lookupResult];
                                                   }
                                                   else {
                                                       NSURL *redirectUrl = [self constructV1PaymentURLForLookup:lookupResult configuration:configuration];
@@ -103,6 +90,21 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                               }
                                           });
                                       }];
+}
+
+- (void)performV2Authentication:(BTThreeDSecureLookup *)lookupResult {
+    typeof(self) __weak weakSelf = self;
+    BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
+    [self.threeDSecureV2Provider processLookupResult:lookupResult
+                                             success:^(BTThreeDSecureResult *result) {
+                                                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.completed"];
+                                                 [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shift-possible.%@", [self stringForBool:result.liabilityShiftPossible]]];
+                                                 [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shifted.%@", [self stringForBool:result.liabilityShifted]]];
+                                                 [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
+                                             } failure:^(NSError *error) {
+                                                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.failed"];
+                                                 [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+                                             }];
 }
 
 - (NSURL *)constructV1PaymentURLForLookup:(BTThreeDSecureLookup *)lookupResult configuration:(BTConfiguration *)configuration {
@@ -204,6 +206,15 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     }
     
     return [parameters copy];
+}
+
+- (NSString *)stringForBool:(BOOL)boolean {
+    if (boolean) {
+        return @"true";
+    }
+    else {
+        return @"false";
+    }
 }
 
 @end

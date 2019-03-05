@@ -93,7 +93,7 @@
 #pragma mark - Cardinal Delegate
 
 - (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT{
-    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.cardinal-sdk-action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]];
+    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.cardinal-sdk-action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
     switch (validateResponse.actionCode) {
         case CardinalResponseActionCodeSuccess:
         case CardinalResponseActionCodeNoAction:
