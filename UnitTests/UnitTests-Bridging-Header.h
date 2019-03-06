@@ -44,7 +44,7 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTDropInUtil.h"
 #import "BTAmericanExpressClient_Internal.h"
-#import "BTThreeDSecureV2Provider.h"
+#import "BTThreeDSecureAuthenticateJWT.h"
 
 #import "BTDropInUtil.h"
 #import "BTSpecHelper.h"

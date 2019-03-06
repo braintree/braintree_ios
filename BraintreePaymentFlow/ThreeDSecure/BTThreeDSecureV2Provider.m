@@ -1,6 +1,7 @@
 #import "BTThreeDSecureV2Provider.h"
 #import "BTConfiguration+ThreeDSecure.m"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTThreeDSecureAuthenticateJWT.h"
 #if __has_include("BTAPIClient_Internal.h")
 #import "BTAPIClient_Internal.h"
 #else
@@ -61,27 +62,6 @@
                                 didValidateDelegate:self];
 }
 
-- (void)authenticateCardinalJWT:(NSString *)cardinalJWT
-                forLookupResult:(BTThreeDSecureLookup *)lookupResult
-                        success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
-                        failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
-    NSString *urlSafeNonce = [lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSDictionary *requestParameters = @{@"jwt": cardinalJWT, @"paymentMethodNonce": lookupResult.threeDSecureResult.tokenizedCard.nonce};
-    [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
-              parameters:requestParameters
-              completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
-                  BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
-                  if (result.errorMessage) {
-                      [self callFailureHandlerWithErrorDomain:BTThreeDSecureFlowErrorDomain
-                                                    errorCode:BTThreeDSecureFlowErrorTypeFailedAuthentication
-                                                errorUserInfo:@{NSLocalizedDescriptionKey: result.errorMessage}
-                                               failureHandler:failureHandler];
-                  } else {
-                      successHandler(result);
-                  }
-              }];
-}
-
 - (void)callFailureHandlerWithErrorDomain:(NSErrorDomain)errorDomain
                                 errorCode:(NSInteger)errorCode
                             errorUserInfo:(NSDictionary *)errorUserInfo
@@ -95,16 +75,17 @@
 
 #pragma mark - Cardinal Delegate
 
-- (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT{
+- (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT {
     [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.cardinal-sdk-action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
     switch (validateResponse.actionCode) {
         case CardinalResponseActionCodeSuccess:
         case CardinalResponseActionCodeNoAction:
         case CardinalResponseActionCodeFailure: {
-            [self authenticateCardinalJWT:serverJWT
-                          forLookupResult:self.lookupResult
-                                  success:self.successHandler
-                                  failure:self.failureHandler];
+            [BTThreeDSecureAuthenticateJWT authenticateJWT:serverJWT
+                                             withAPIClient:self.apiClient
+                                           forLookupResult:self.lookupResult
+                                                   success:self.successHandler
+                                                   failure:self.failureHandler];
             break;
         }
         case CardinalResponseActionCodeUnknown:
