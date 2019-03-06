@@ -97,9 +97,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     [self.threeDSecureV2Provider processLookupResult:lookupResult
                                              success:^(BTThreeDSecureResult *result) {
-                                                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.completed"];
-                                                 [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shift-possible.%@", [self stringForBool:result.liabilityShiftPossible]]];
-                                                 [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shifted.%@", [self stringForBool:result.liabilityShifted]]];
+                                                 [self logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
                                                  [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
                                              } failure:^(NSError *error) {
                                                  [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.failed"];
@@ -133,29 +131,31 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTJSON *authBody = [[BTJSON alloc] initWithValue:[NSJSONSerialization JSONObjectWithData:[jsonAuthResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL]];
     BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:authBody];
 
+    BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     if (!result.success) {
+        [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.failed"];
+
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
         if (result.errorMessage) {
             userInfo[NSLocalizedDescriptionKey] = result.errorMessage;
         }
 
-        [self performPaymentCompleteWithErrorDomain:BTThreeDSecureFlowErrorDomain
-                                          errorCode:BTThreeDSecureFlowErrorTypeFailedAuthentication
-                                      errorUserInfo:userInfo];
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                             code:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                         userInfo:userInfo];
+        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
         return;
     }
+
+    [self logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
 
     [self.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
 }
 
-- (void)performPaymentCompleteWithErrorDomain:(NSErrorDomain)errorDomain
-                                    errorCode:(NSInteger)errorCode
-                                errorUserInfo:(NSDictionary *)errorUserInfo {
-    NSError *error = [NSError errorWithDomain:errorDomain
-                                         code:errorCode
-                                     userInfo:errorUserInfo];
-
-    [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+- (void)logThreeDSecureCompletedAnalyticsForResult:(BTThreeDSecureResult *)result withAPIClient:(BTAPIClient *)apiClient {
+    [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.completed"];
+    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shift-possible.%@", [self stringForBool:result.liabilityShiftPossible]]];
+    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shifted.%@", [self stringForBool:result.liabilityShifted]]];
 }
 
 - (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(__unused NSString *)sourceApplication {
@@ -168,12 +168,9 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
 - (NSString *)stringByAddingPercentEncodingForRFC3986:(NSString *)string {
     NSString *unreserved = @"-._~/?";
-    NSMutableCharacterSet *allowed = [NSMutableCharacterSet
-                                      alphanumericCharacterSet];
+    NSMutableCharacterSet *allowed = NSMutableCharacterSet.alphanumericCharacterSet;
     [allowed addCharactersInString:unreserved];
-    return [string
-            stringByAddingPercentEncodingWithAllowedCharacters:
-            allowed];
+    return [string stringByAddingPercentEncodingWithAllowedCharacters:allowed];
 }
 
 - (NSDictionary *)asParameters {
