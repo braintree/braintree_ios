@@ -3,7 +3,6 @@
 #import <InAppSettingsKit/IASKSpecifierValuesViewController.h>
 #import <InAppSettingsKit/IASKViewController.h>
 #import <InAppSettingsKit/IASKSettingsReader.h>
-#import <iOS-Slide-Menu/SlideNavigationController.h>
 
 @interface BraintreeDemoIntegrationViewController ()
 @property (nonatomic, strong) IASKSpecifierValuesViewController *targetViewController;
@@ -38,22 +37,6 @@
     self.targetViewController.settingsReader = reader;
     self.targetViewController.settingsStore = self.appSettingsViewController.settingsStore;
     IASK_IF_IOS7_OR_GREATER(self.targetViewController.view.tintColor = self.appSettingsViewController.view.tintColor;)
-    
-    // Add table view to self
-    SlideNavigationController *snc = [SlideNavigationController sharedInstance];
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.targetViewController.view.frame = CGRectMake(snc.portraitSlideOffset, 0, self.view.bounds.size.width - snc.portraitSlideOffset, self.view.bounds.size.height);
-    [self.targetViewController viewWillAppear:NO]; // required. not animated
-    [self.view addSubview:self.targetViewController.view];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appSettingChangedNotification:) name:kIASKAppSettingChanged object:nil];
-}
-
-- (void)appSettingChangedNotification:(NSNotification *)notification {
-    SlideNavigationController *snc = [SlideNavigationController sharedInstance];
-    if (snc.isMenuOpen) {
-        [self.delegate integrationViewController:self didChangeAppSetting:notification.userInfo];
-        [snc closeMenuWithCompletion:nil];
-    }
 }
 
 - (void)dealloc {
