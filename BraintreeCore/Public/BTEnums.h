@@ -32,6 +32,12 @@ typedef NS_ENUM(NSInteger, BTCardNetwork) {
     /// Union Pay
     BTCardNetworkUnionPay,
 
+    /// Hiper
+    BTCardNetworkHiper,
+
+    /// Hipercard
+    BTCardNetworkHipercard,
+
     /// Solo
     BTCardNetworkSolo,
 
