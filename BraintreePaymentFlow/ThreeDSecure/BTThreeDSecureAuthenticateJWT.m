@@ -13,6 +13,14 @@
         forLookupResult:(BTThreeDSecureLookup *)lookupResult
                 success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                 failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
+    if (! lookupResult.threeDSecureResult.tokenizedCard.nonce) {
+        NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                             code:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                         userInfo:@{NSLocalizedDescriptionKey: @"Tokenized card nonce is required"}];
+        failureHandler(error);
+        return;
+    }
+
     NSString *urlSafeNonce = [lookupResult.threeDSecureResult.tokenizedCard.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSDictionary *requestParameters = @{@"jwt": jwt, @"paymentMethodNonce": lookupResult.threeDSecureResult.tokenizedCard.nonce};
     [apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]

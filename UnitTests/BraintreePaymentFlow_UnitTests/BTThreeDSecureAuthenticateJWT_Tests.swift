@@ -86,4 +86,18 @@ class BTThreeDSecureAuthenticateJWT_Tests: XCTestCase {
 
         waitForExpectations(timeout: 4, handler: nil)
     }
+
+    func testThreeDSecureAuthenticateJWT_FailsWithNoNonce() {
+        let authenticateJwtExpectation = self.expectation(description: "Will perform cardinal auth completion.")
+
+        mockThreeDSecureLookup.threeDSecureResult.tokenizedCard = nil
+        BTThreeDSecureAuthenticateJWT.authenticateJWT("fake-jwt", with: mockAPIClient, forLookupResult: mockThreeDSecureLookup, success: { (result) in
+            XCTFail()
+        }) { (error) in
+            XCTAssertEqual(error.localizedDescription, "Tokenized card nonce is required")
+            authenticateJwtExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 4, handler: nil)
+    }
 }
