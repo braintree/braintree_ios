@@ -8,14 +8,12 @@
 #import "BraintreeDemoMerchantAPI.h"
 #import "BraintreeDemoBaseViewController.h"
 #import "BraintreeDemoIntegrationViewController.h"
-#import "BraintreeDemoSlideNavigationController.h"
 #import "BraintreeDemoSettings.h"
 
-@interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, SlideNavigationControllerDelegate, IntegrationViewControllerDelegate>
+@interface BraintreeDemoDemoContainmentViewController () <IASKSettingsDelegate, IntegrationViewControllerDelegate>
 @property (nonatomic, strong) UIBarButtonItem *statusItem;
 @property (nonatomic, strong) BTPaymentMethodNonce *latestTokenizedPayment;
 @property (nonatomic, strong) BraintreeDemoBaseViewController *currentDemoViewController;
-@property (nonatomic, strong) UIViewController *rightMenu;
 @end
 
 @implementation BraintreeDemoDemoContainmentViewController
@@ -29,7 +27,6 @@
     [super viewDidLoad];
     [self setupToolbar];
     [self reloadIntegration];
-    [self setupRightMenu];
 }
 
 - (void)setupToolbar {
@@ -53,19 +50,6 @@
     self.statusItem.enabled = NO;
     self.toolbarItems = @[flexSpaceLeft, self.statusItem, flexSpaceRight];
 }
-
-- (void)setupRightMenu {
-    BraintreeDemoIntegrationViewController *ivc = [[BraintreeDemoIntegrationViewController alloc] init];
-    ivc.delegate = self;
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:ivc];
-    self.rightMenu = nc;
-    [BraintreeDemoSlideNavigationController sharedInstance].rightMenu = self.rightMenu;
-}
-
-- (BOOL)slideNavigationControllerShouldDisplayRightMenu {
-    return YES;
-}
-
 
 #pragma mark - UI Updates
 
