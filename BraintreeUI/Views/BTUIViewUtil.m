@@ -66,7 +66,7 @@
     case BTUIPaymentOptionTypeVenmo:
           return BTUILocalizedString(PAYMENT_METHOD_TYPE_VENMO);
     }
-    
+
 }
 
 + (void)vibrate {

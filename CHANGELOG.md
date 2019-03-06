@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## Unreleased
+
+* Add Hiper and Hipercard support
+
 ## 4.22.0 (2019-01-30)
 
 * Add support for `BTPayPalLineItem`

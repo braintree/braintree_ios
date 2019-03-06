@@ -1,6 +1,5 @@
 #import "BraintreeDemoAppDelegate.h"
 #import "BraintreeDemoSettings.h"
-#import "BraintreeDemoSlideNavigationController.h"
 #import "BraintreeDemoDemoContainmentViewController.h"
 #import <BraintreeCore/BraintreeCore.h>
 
@@ -15,9 +14,9 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     [BTAppSwitch setReturnURLScheme:BraintreeDemoAppDelegatePaymentsURLScheme];
     
     BraintreeDemoDemoContainmentViewController *rootViewController = [[BraintreeDemoDemoContainmentViewController alloc] init];
-    BraintreeDemoSlideNavigationController *slideNav = [[BraintreeDemoSlideNavigationController alloc] initWithRootViewController:rootViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.rootViewController = slideNav;
+    self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

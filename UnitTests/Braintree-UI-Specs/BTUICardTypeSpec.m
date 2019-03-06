@@ -40,12 +40,12 @@ describe(@"BTUICardType", ^{
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MASTER_CARD)]);
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)]);
         });
-        
+
         it(@"should recognize Maestro cards starting with 63", ^{
             NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"63"];
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)]);
         });
-        
+
         it(@"should recognize Maestro cards starting with 67", ^{
             NSArray *possibleCardTypes = [BTUICardType possibleCardTypesForNumber:@"67"];
             expect(possibleCardTypes).to.contain([BTUICardType cardTypeForBrand:BTUILocalizedString(CARD_TYPE_MAESTRO)]);
@@ -171,7 +171,7 @@ describe(@"BTUICardType", ^{
           @[@"4012888888881881", BTUILocalizedString(CARD_TYPE_VISA)],
           @[@"4217651111111119", BTUILocalizedString(CARD_TYPE_VISA)],
           @[@"4500600000000061", BTUILocalizedString(CARD_TYPE_VISA)],
-          @[@"6221234567890123450", BTUILocalizedString(CARD_TYPE_UNION_PAY)],
+          @[@"6221234567890123450", BTUILocalizedString(CARD_TYPE_UNION_PAY)]
           ];
 
         for (NSArray *testCase in braintreeTestCardNumbers) {

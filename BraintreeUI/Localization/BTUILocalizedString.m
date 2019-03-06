@@ -9,7 +9,7 @@
     if (!localizationBundlePath) {
         localizationBundlePath = [[NSBundle bundleForClass:[self class]] pathForResource:bundleName ofType:@"bundle"];
     }
-    
+
     return localizationBundlePath ? [NSBundle bundleWithPath:localizationBundlePath] : [NSBundle mainBundle];
 }
 

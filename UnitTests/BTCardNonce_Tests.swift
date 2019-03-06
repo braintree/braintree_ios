@@ -122,6 +122,8 @@ class BTCardNonce_Tests: XCTestCase {
             BTCardNetwork.solo,
             BTCardNetwork.switch,
             BTCardNetwork.unionPay,
+            BTCardNetwork.hiper,
+            BTCardNetwork.hipercard,
             BTCardNetwork.ukMaestro,
             BTCardNetwork.visa,
         ]
@@ -137,6 +139,8 @@ class BTCardNonce_Tests: XCTestCase {
             "solo",
             "switch",
             "unionpay",
+            "hiper",
+            "hipercard",
             "uk maestro",
             "visa",
         ]
@@ -152,6 +156,8 @@ class BTCardNonce_Tests: XCTestCase {
             "Solo",
             "Switch",
             "UnionPay",
+            "Hiper",
+            "Hipercard",
             "UKMaestro",
             "Visa",
         ]
@@ -238,6 +244,8 @@ class BTCardNonce_Tests: XCTestCase {
             BTCardNetwork.solo,
             BTCardNetwork.switch,
             BTCardNetwork.unionPay,
+            BTCardNetwork.hiper,
+            BTCardNetwork.hipercard,
             BTCardNetwork.ukMaestro,
             BTCardNetwork.visa,
             ]
@@ -253,6 +261,8 @@ class BTCardNonce_Tests: XCTestCase {
             "solo",
             "switch",
             "unionpay",
+            "hiper",
+            "hipercard",
             "uk maestro",
             "visa",
             ]
@@ -268,6 +278,8 @@ class BTCardNonce_Tests: XCTestCase {
             "Solo",
             "Switch",
             "UnionPay",
+            "Hiper",
+            "Hipercard",
             "UKMaestro",
             "Visa",
             ]
