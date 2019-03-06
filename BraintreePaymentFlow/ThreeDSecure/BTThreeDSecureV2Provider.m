@@ -27,9 +27,13 @@
     BTThreeDSecureV2Provider *instance = [self new];
     instance.apiClient = apiClient;
     instance.cardinalSession = [CardinalSession new];
-    // TODO: Switch between staging and production
     CardinalSessionConfig *cardinalConfiguration = [CardinalSessionConfig new];
+    CardinalSessionEnvironment cardinalEnvironment = CardinalSessionEnvironmentStaging;
+    if ([[configuration.json[@"environment"] asString] isEqualToString:@"production"]) {
+        cardinalEnvironment = CardinalSessionEnvironmentProduction;
+    }
     cardinalConfiguration.deploymentEnvironment = CardinalSessionEnvironmentStaging;
+    cardinalConfiguration.deploymentEnvironment = cardinalEnvironment;
     [instance.cardinalSession configure:cardinalConfiguration];
 
     [instance.cardinalSession setupWithJWT:configuration.cardinalAuthenticationJWT
@@ -37,7 +41,6 @@
                                    [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk-setup.completed"];
                                    completionHandler(@{@"dfReferenceId": consumerSessionId});
                                } didValidate:^(__unused CardinalResponse * _Nonnull validateResponse) {
-                                   // TODO: continue lookup and assume it will be v1?
                                    [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk-setup.failed"];
                                    completionHandler(@{});
                                }];
