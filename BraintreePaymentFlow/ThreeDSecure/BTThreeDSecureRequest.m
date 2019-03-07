@@ -46,7 +46,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
             return;
         }
 
-        if (configuration.cardinalAuthenticationJWT) {
+        if (configuration.cardinalAuthenticationJWT && self.isVersion2Requested) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
                                                                                              completion:^(NSDictionary *lookupParameters) {

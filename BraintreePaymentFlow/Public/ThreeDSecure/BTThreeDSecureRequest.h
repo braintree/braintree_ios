@@ -54,6 +54,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, copy) NSString *shippingMethod;
 
+/**
+ True if ThreeDSecure V2 flows are desired, when possible. False if only ThreeDSecure V1 flows are desired. Defaults to false.
+ */
+@property (nonatomic, assign) BOOL isVersion2Requested;
+
 @end
 
 NS_ASSUME_NONNULL_END

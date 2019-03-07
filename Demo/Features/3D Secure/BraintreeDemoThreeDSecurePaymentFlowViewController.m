@@ -99,6 +99,8 @@
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
+        request.isVersion2Requested = true;
+        
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];
