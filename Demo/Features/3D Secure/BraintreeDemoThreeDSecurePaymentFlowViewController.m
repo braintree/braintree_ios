@@ -98,28 +98,30 @@
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
+        request.nonce = tokenizedCard.nonce;
 
         // TODO
-        request.tokenizedCard = tokenizedCard;
+        //request.tokenizedCard = tokenizedCard;
         request.versionRequested = 2;
 
         BTThreeDSecureAdditionalInformation *info = [[BTThreeDSecureAdditionalInformation alloc] init];
         info.billingGivenName = @"Jill";
         info.billingSurname = @"Doe";
         info.billingPhoneNumber = @"8101234567";
-        info.email: @"test@example.com";
-        BTThreeDSecurePostalAddress *address = [BTThreeDSecurePostalAddress new];
+        info.email = @"test@example.com";
+        info.shippingMethod = @"01";
+        BTThreeDSecurePostalAddress *billingAddress = [BTThreeDSecurePostalAddress new];
         billingAddress.streetAddress = @"555 Smith St.";
         billingAddress.extendedAddress = @"#5";
         billingAddress.locality = @"Oakland";
         billingAddress.region = @"CA";
         billingAddress.countryCodeAlpha2 = @"US";
-        billingAddress.postalCode = @"54321";
-        info.billingAddress = billingAddress
-
+        billingAddress.postalCode = @"12345";
+        info.billingAddress = billingAddress;
         request.additionalInformation = info;
 
-        request.threeDSecureFlowDelegate = self;
+        //      TODO:
+// request.threeDSecureFlowDelegate = self;
 
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
@@ -154,11 +156,11 @@
 }
 
 #pragma mark BTIdealRequestDelegate
-
-- (void)threeDSecureLookupComplete:(__unused BTThreeDSecureRequest *)request result:(BTThreeDLookup *)lookup next:(void (^)(void))next {
-    // Optionally inspect the result and prepare UI if a challenge is required
-    next();
-}
+//
+//- (void)threeDSecureLookupComplete:(__unused BTThreeDSecureRequest *)request result:(BTThreeDLookup *)lookup next:(void (^)(void))next {
+//    // Optionally inspect the result and prepare UI if a challenge is required
+//    next();
+//}
 
 
 @end

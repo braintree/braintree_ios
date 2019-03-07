@@ -17,6 +17,7 @@
 #import "BTThreeDSecureLookup.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
+#import "BTThreeDSecureAdditionalInformation_Internal.h"
 #import "BTURLUtils.h"
 #import "BTConfiguration+ThreeDSecure.h"
 #import "BTThreeDSecureV2Provider.h"
@@ -46,7 +47,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
             return;
         }
 
-        if (configuration.cardinalAuthenticationJWT && self.isVersion2Requested) {
+        if (configuration.cardinalAuthenticationJWT && self.versionRequested == 2) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
                                                                                              completion:^(NSDictionary *lookupParameters) {
@@ -179,29 +180,31 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     if (self.amount) {
         parameters[@"amount"] = [self.amount stringValue];
     }
-    
+
+    if (self.nonce) {
+        parameters[@"nonce"] = self.nonce;
+    }
+
     NSMutableDictionary *additionalInformation = [@{} mutableCopy];
-    
-    if (self.mobilePhoneNumber) {
-        additionalInformation[@"mobilePhoneNumber"] = self.mobilePhoneNumber;
+
+    if (self.additionalInformation) {
+        [additionalInformation addEntriesFromDictionary:[self.additionalInformation asParameters]];
     }
-    
-    if (self.email) {
-        additionalInformation[@"email"] = self.email;
-    }
-    
-    if (self.shippingMethod) {
-        additionalInformation[@"shippingMethod"] = self.shippingMethod;
-    }
-    
+
+    NSMutableDictionary *billingAddress = [@{} mutableCopy];
+
     if (self.billingAddress) {
-        [additionalInformation addEntriesFromDictionary:[self.billingAddress asParameters]];
+        [billingAddress addEntriesFromDictionary:[self.billingAddress asParameters]];
     }
 
     if (additionalInformation.count) {
         parameters[@"additionalInformation"] = additionalInformation;
     }
-    
+
+    if (billingAddress.count) {
+        parameters[@"billingAddress"] = billingAddress;
+    }
+
     return [parameters copy];
 }
 

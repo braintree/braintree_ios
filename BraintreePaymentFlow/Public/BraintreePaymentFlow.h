@@ -27,3 +27,4 @@ FOUNDATION_EXPORT const unsigned char BraintreePaymentFlowVersionString[];
 #import "BTPaymentFlowDriver+ThreeDSecure.h"
 #import "BTThreeDSecurePostalAddress.h"
 #import "BTConfiguration+ThreeDSecure.h"
+#import "BTThreeDSecureAdditionalInformation.h"

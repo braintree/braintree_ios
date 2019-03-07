@@ -240,7 +240,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.mobilePhoneNumber = "5151234321"
         threeDSecureRequest.email = "tester@example.com"
         threeDSecureRequest.shippingMethod = "03"
-        threeDSecureRequest.isVersion2Requested = true
+        threeDSecureRequest.versionRequested = 2
 
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.firstName = "Joe"

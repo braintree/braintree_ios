@@ -7,6 +7,7 @@
 #import "BTPaymentFlowRequest.h"
 #import "BTPaymentFlowDriver.h"
 #import "BTThreeDSecurePostalAddress.h"
+#import "BTThreeDSecureAdditionalInformation.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -55,9 +56,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *shippingMethod;
 
 /**
- True if ThreeDSecure V2 flows are desired, when possible. False if only ThreeDSecure V1 flows are desired. Defaults to false.
+ Optional. The additional information used for verification
+ @see BTThreeDSecureAdditionalInformation
  */
-@property (nonatomic, assign) BOOL isVersion2Requested;
+@property (nonatomic, nullable, assign) BTThreeDSecureAdditionalInformation *additionalInformation;
+
+/**
+ 2 if ThreeDSecure V2 flows are desired, when possible. 1 if only ThreeDSecure V1 flows are desired. Will default to V1 flows unless set.
+ */
+@property (nonatomic, assign) NSInteger versionRequested;
 
 @end
 
