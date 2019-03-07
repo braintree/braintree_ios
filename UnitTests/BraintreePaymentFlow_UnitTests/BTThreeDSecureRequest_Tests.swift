@@ -18,16 +18,14 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         let parameters = request.asParameters()
         XCTAssertEqual(parameters["amount"] as! String, "1.23")
 
-        let additionalInformation = parameters["additionalInformation"] as! Dictionary<String, Any>
-        XCTAssertEqual(additionalInformation["mobilePhoneNumber"] as! String, "13125551234")
-        XCTAssertEqual(additionalInformation["email"] as! String, "email@email.com")
-        XCTAssertEqual(additionalInformation["shippingMethod"] as! String, "01")
-        XCTAssertEqual(additionalInformation["firstName"] as! String, "First")
-        XCTAssertEqual(additionalInformation["lastName"] as! String, "Last")
-        XCTAssertEqual(additionalInformation["phoneNumber"] as! String, "1234567")
-
-        let billingAdddress = additionalInformation["billingAddress"] as! Dictionary<String, String>
-        XCTAssertEqual(billingAdddress["line1"], "123 Fake St")
+        let additionalInformation = parameters["additionalInformation"] as! Dictionary<String, String>
+        XCTAssertEqual(additionalInformation["mobilePhoneNumber"], "13125551234")
+        XCTAssertEqual(additionalInformation["email"], "email@email.com")
+        XCTAssertEqual(additionalInformation["shippingMethod"], "01")
+        XCTAssertEqual(additionalInformation["billingGivenName"], "First")
+        XCTAssertEqual(additionalInformation["billingSurname"], "Last")
+        XCTAssertEqual(additionalInformation["billingPhoneNumber"], "1234567")
+        XCTAssertEqual(additionalInformation["billingLine1"], "123 Fake St")
     }
 
     func testAsParameters_parameterizesWithNilProperties() {
@@ -38,12 +36,12 @@ class BTThreeDSecureRequest_Tests: XCTestCase {
         let parameters = request.asParameters()
         XCTAssertEqual(parameters["amount"] as! String, "1.23")
 
-        let additionalInformation = parameters["additionalInformation"] as! Dictionary<String, Any>
-        XCTAssertEqual(additionalInformation["mobilePhoneNumber"] as! String, "13125551234")
+        let additionalInformation = parameters["additionalInformation"] as! Dictionary<String, String>
+        XCTAssertEqual(additionalInformation["mobilePhoneNumber"], "13125551234")
         XCTAssertNil(additionalInformation["email"])
         XCTAssertNil(additionalInformation["shippingMethod"])
-        XCTAssertNil(additionalInformation["firstName"])
-        XCTAssertNil(additionalInformation["billingAddress"])
+        XCTAssertNil(additionalInformation["billingGivenName"])
+        XCTAssertNil(additionalInformation["billingLine"])
     }
 
     func testAsParameters_parameterizesWithNilAdditionalInformation() {

@@ -256,20 +256,19 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         driver.performThreeDSecureLookup(threeDSecureRequest, additionalParameters: ["dfReferenceId": "fake-df-reference"]) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as? String, "9.97")
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["dfReferenceId"] as? String, "fake-df-reference")
-            let additionalInformationParams = self.mockAPIClient.lastPOSTParameters!["additionalInformation"] as! [String : Any]
-            XCTAssertEqual(additionalInformationParams["mobilePhoneNumber"] as? String, "5151234321")
-            XCTAssertEqual(additionalInformationParams["email"] as? String, "tester@example.com")
-            XCTAssertEqual(additionalInformationParams["shippingMethod"] as? String, "03")
-            XCTAssertEqual(additionalInformationParams["firstName"] as? String, "Joe")
-            XCTAssertEqual(additionalInformationParams["lastName"] as? String, "Guy")
-            XCTAssertEqual(additionalInformationParams["phoneNumber"] as? String, "12345678")
-            let billingAddressParams = additionalInformationParams["billingAddress"] as! [String : Any]
-            XCTAssertEqual(billingAddressParams["line1"] as? String, "555 Smith St.")
-            XCTAssertEqual(billingAddressParams["line2"] as? String, "#5")
-            XCTAssertEqual(billingAddressParams["city"] as? String, "Oakland")
-            XCTAssertEqual(billingAddressParams["state"] as? String, "CA")
-            XCTAssertEqual(billingAddressParams["countryCode"] as? String, "US")
-            XCTAssertEqual(billingAddressParams["postalCode"] as? String, "54321")
+            let additionalInformationParams = self.mockAPIClient.lastPOSTParameters!["additionalInformation"] as! [String : String]
+            XCTAssertEqual(additionalInformationParams["mobilePhoneNumber"], "5151234321")
+            XCTAssertEqual(additionalInformationParams["email"], "tester@example.com")
+            XCTAssertEqual(additionalInformationParams["shippingMethod"], "03")
+            XCTAssertEqual(additionalInformationParams["billingGivenName"], "Joe")
+            XCTAssertEqual(additionalInformationParams["billingSurname"], "Guy")
+            XCTAssertEqual(additionalInformationParams["billingPhoneNumber"], "12345678")
+            XCTAssertEqual(additionalInformationParams["billingLine1"], "555 Smith St.")
+            XCTAssertEqual(additionalInformationParams["billingLine2"], "#5")
+            XCTAssertEqual(additionalInformationParams["billingCity"], "Oakland")
+            XCTAssertEqual(additionalInformationParams["billingState"], "CA")
+            XCTAssertEqual(additionalInformationParams["billingCountryCode"], "US")
+            XCTAssertEqual(additionalInformationParams["billingPostalCode"], "54321")
 
             expectation.fulfill()
         }

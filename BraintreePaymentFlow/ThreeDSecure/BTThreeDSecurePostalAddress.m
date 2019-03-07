@@ -23,45 +23,39 @@
     NSMutableDictionary *parameters = [@{} mutableCopy];
 
     if (self.firstName) {
-        parameters[@"firstName"] = self.firstName;
+        parameters[@"billingGivenName"] = self.firstName;
     }
 
     if (self.lastName) {
-        parameters[@"lastName"] = self.lastName;
+        parameters[@"billingSurname"] = self.lastName;
     }
 
     if (self.phoneNumber) {
-        parameters[@"phoneNumber"] = self.phoneNumber;
+        parameters[@"billingPhoneNumber"] = self.phoneNumber;
     }
-    
-    NSMutableDictionary *billingAddress = [@{} mutableCopy];
 
     if (self.streetAddress) {
-        billingAddress[@"line1"] = self.streetAddress;
+        parameters[@"billingLine1"] = self.streetAddress;
     }
 
     if (self.extendedAddress) {
-        billingAddress[@"line2"] = self.extendedAddress;
+        parameters[@"billingLine2"] = self.extendedAddress;
     }
 
     if (self.locality) {
-        billingAddress[@"city"] = self.locality;
+        parameters[@"billingCity"] = self.locality;
     }
 
     if (self.region) {
-        billingAddress[@"state"] = self.region;
+        parameters[@"billingState"] = self.region;
     }
 
     if (self.postalCode) {
-        billingAddress[@"postalCode"] = self.postalCode;
+        parameters[@"billingPostalCode"] = self.postalCode;
     }
 
     if (self.countryCodeAlpha2) {
-        billingAddress[@"countryCode"] = self.countryCodeAlpha2;
-    }
-
-    if (billingAddress.count) {
-        parameters[@"billingAddress"] = billingAddress;
+        parameters[@"billingCountryCode"] = self.countryCodeAlpha2;
     }
 
     return [parameters copy];

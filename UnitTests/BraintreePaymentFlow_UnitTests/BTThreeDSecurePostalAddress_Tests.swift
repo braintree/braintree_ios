@@ -37,17 +37,16 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         address.countryCodeAlpha2 = "US"
         address.postalCode = "54321"
 
-        let parameters = address.asParameters()
-        XCTAssertEqual(parameters["firstName"] as! String, "Joe")
-        XCTAssertEqual(parameters["lastName"] as! String, "Guy")
-        XCTAssertEqual(parameters["phoneNumber"] as! String, "12345678")
-        let billingAdddress = parameters["billingAddress"] as! Dictionary<String, String>
-        XCTAssertEqual(billingAdddress["line1"], "555 Smith St.")
-        XCTAssertEqual(billingAdddress["line2"], "#5")
-        XCTAssertEqual(billingAdddress["city"], "Oakland")
-        XCTAssertEqual(billingAdddress["state"], "CA")
-        XCTAssertEqual(billingAdddress["countryCode"], "US")
-        XCTAssertEqual(billingAdddress["postalCode"], "54321")
+        let parameters = address.asParameters() as! Dictionary<String, String>
+        XCTAssertEqual(parameters["billingGivenName"], "Joe")
+        XCTAssertEqual(parameters["billingSurname"], "Guy")
+        XCTAssertEqual(parameters["billingPhoneNumber"], "12345678")
+        XCTAssertEqual(parameters["billingLine1"], "555 Smith St.")
+        XCTAssertEqual(parameters["billingLine2"], "#5")
+        XCTAssertEqual(parameters["billingCity"], "Oakland")
+        XCTAssertEqual(parameters["billingState"], "CA")
+        XCTAssertEqual(parameters["billingCountryCode"], "US")
+        XCTAssertEqual(parameters["billingPostalCode"], "54321")
     }
 
     func testAsParameters_parameterizesWithNilProperties() {
@@ -60,26 +59,23 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         address.countryCodeAlpha2 = "US"
         address.postalCode = "54321"
 
-        let parameters = address.asParameters()
-        XCTAssertEqual(parameters["firstName"] as! String, "Joe")
-        XCTAssertEqual(parameters["lastName"] as! String, "Guy")
-        XCTAssertNil(parameters["phoneNumber"])
-        let billingAdddress = parameters["billingAddress"] as! Dictionary<String, String>
-        XCTAssertEqual(billingAdddress["line1"], "555 Smith St.")
-        XCTAssertNil(billingAdddress["line2"])
-        XCTAssertEqual(billingAdddress["city"], "Oakland")
-        XCTAssertEqual(billingAdddress["state"], "CA")
-        XCTAssertEqual(billingAdddress["countryCode"], "US")
-        XCTAssertEqual(billingAdddress["postalCode"], "54321")
+        let parameters = address.asParameters()  as! Dictionary<String, String>
+        XCTAssertEqual(parameters["billingGivenName"], "Joe")
+        XCTAssertEqual(parameters["billingSurname"], "Guy")
+        XCTAssertEqual(parameters["billingLine1"], "555 Smith St.")
+        XCTAssertNil(parameters["billingLine2"])
+        XCTAssertEqual(parameters["billingCity"], "Oakland")
+        XCTAssertEqual(parameters["billingState"], "CA")
+        XCTAssertEqual(parameters["billingCountryCode"], "US")
+        XCTAssertEqual(parameters["billingPostalCode"], "54321")
     }
 
     func testAsParameters_parameterizesWithOnlyNilProperties() {
         let address = BTThreeDSecurePostalAddress()
 
         let parameters = address.asParameters()
-        XCTAssertNil(parameters["firstName"])
-        XCTAssertNil(parameters["lastName"])
-        XCTAssertNil(parameters["phoneNumber"])
-        XCTAssertNil(parameters["billingAddress"])
+        XCTAssertNil(parameters["billingFirstName"])
+        XCTAssertNil(parameters["billingLastName"])
+        XCTAssertNil(parameters["billingPhoneNumber"])
     }
 }
