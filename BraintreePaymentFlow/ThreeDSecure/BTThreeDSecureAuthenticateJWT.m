@@ -13,10 +13,13 @@
         forLookupResult:(BTThreeDSecureLookup *)lookupResult
                 success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                 failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {
+    [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.started"];
+
     if (! lookupResult.threeDSecureResult.tokenizedCard.nonce) {
         NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                              code:BTThreeDSecureFlowErrorTypeFailedAuthentication
                                          userInfo:@{NSLocalizedDescriptionKey: @"Tokenized card nonce is required"}];
+        [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];
         failureHandler(error);
         return;
     }
@@ -26,14 +29,22 @@
     [apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/authenticate_from_jwt", urlSafeNonce]
          parameters:requestParameters
          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
-             BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
-             if (result.errorMessage) {
-                 NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
-                                                      code:BTThreeDSecureFlowErrorTypeFailedAuthentication
-                                                  userInfo:@{NSLocalizedDescriptionKey: result.errorMessage}];
-                 failureHandler(error);
-             } else {
-                 successHandler(result);
+             if (error) {
+                 // TODO: Handle error case
+                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];
+             }
+             else {
+                 BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
+                 if (result.errorMessage) {
+                     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];
+                     NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                          code:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                                      userInfo:@{NSLocalizedDescriptionKey: result.errorMessage}];
+                     failureHandler(error);
+                 } else {
+                     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.succeeded"];
+                     successHandler(result);
+                 }
              }
          }];
 }
