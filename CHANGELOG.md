@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## Unreleased
+## 4.23.0 (2019-03-07)
 
 * Add Hiper and Hipercard support
 
