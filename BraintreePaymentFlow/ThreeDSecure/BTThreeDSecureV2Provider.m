@@ -38,10 +38,10 @@
 
     [instance.cardinalSession setupWithJWT:configuration.cardinalAuthenticationJWT
                                didComplete:^(__unused NSString * _Nonnull consumerSessionId) {
-                                   [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk-setup.completed"];
+                                   [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk.init.setup-completed"];
                                    completionHandler(@{@"dfReferenceId": consumerSessionId});
                                } didValidate:^(__unused CardinalResponse * _Nonnull validateResponse) {
-                                   [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk-setup.failed"];
+                                   [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk.init.setup-failed"];
                                    completionHandler(@{});
                                }];
 
@@ -75,7 +75,7 @@
 #pragma mark - Cardinal Delegate
 
 - (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT {
-    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.cardinal-sdk-action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
+    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.cardinal-sdk.action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
     switch (validateResponse.actionCode) {
         case CardinalResponseActionCodeSuccess:
         case CardinalResponseActionCodeNoAction:

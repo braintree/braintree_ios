@@ -66,18 +66,19 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:apiClient];
 
-    [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.started"];
+    [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.started"];
     [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
                             additionalParameters:self.additionalLookupParameters
                                       completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
                                           dispatch_async(dispatch_get_main_queue(), ^{
                                               if (error) {
+                                                  [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
                                                   [self.paymentFlowDriverDelegate onPaymentWithURL:nil error:error];
                                                   return;
                                               }
 
-                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.lookup-flow.%@", lookupResult.threeDSecureVersion]];
-                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.challenge-presented.%@", [self stringForBool:lookupResult.requiresUserAuthentication]]];
+                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.lookup-flow.%@", lookupResult.threeDSecureVersion]];
+                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.challenge-presented.%@", [self stringForBool:lookupResult.requiresUserAuthentication]]];
                                               if (lookupResult.requiresUserAuthentication) {
                                                   if (lookupResult.isThreeDSecureVersion2) {
                                                       [self performV2Authentication:lookupResult];
@@ -101,7 +102,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                  [weakSelf logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
                                                  [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
                                              } failure:^(NSError *error) {
-                                                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.failed"];
+                                                 [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
                                                  [weakSelf.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
                                              }];
 }
@@ -134,7 +135,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     if (!result.success) {
-        [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.failed"];
+        [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
 
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
         if (result.errorMessage) {
@@ -154,9 +155,9 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 }
 
 - (void)logThreeDSecureCompletedAnalyticsForResult:(BTThreeDSecureResult *)result withAPIClient:(BTAPIClient *)apiClient {
-    [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.completed"];
-    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shift-possible.%@", [self stringForBool:result.liabilityShiftPossible]]];
-    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.authentication.liability-shifted.%@", [self stringForBool:result.liabilityShifted]]];
+    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shift-possible.%@", [self stringForBool:result.liabilityShiftPossible]]];
+    [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.liability-shifted.%@", [self stringForBool:result.liabilityShifted]]];
+    [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.completed"];
 }
 
 - (BOOL)canHandleAppSwitchReturnURL:(NSURL *)url sourceApplication:(__unused NSString *)sourceApplication {
