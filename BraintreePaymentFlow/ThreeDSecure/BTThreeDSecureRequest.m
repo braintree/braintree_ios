@@ -71,6 +71,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                       completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
                                           dispatch_async(dispatch_get_main_queue(), ^{
                                               if (error) {
+                                                  [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.failed"];
                                                   [self.paymentFlowDriverDelegate onPaymentWithURL:nil error:error];
                                                   return;
                                               }

@@ -742,7 +742,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
                 "acsUrl": "http://example.com",
                 "pareq": "",
                 "md": "",
-                "termUrl": "http://example.com"
+                "termUrl": "http://example.com",
+                "threeDSecureVersion": "1.0"
             ]
             ] as [String : Any]
         mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
@@ -753,6 +754,10 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 4, handler: nil)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.start-payment.selected"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.initialized"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.started"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.lookup-flow.1.0"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.challenge-presented.true"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.webswitch.initiate.succeeded"))
     }
 
@@ -771,6 +776,9 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         waitForExpectations(timeout: 4, handler: nil)
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.start-payment.selected"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.initialized"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.started"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.failed"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.start-payment.failed"))
     }
 
