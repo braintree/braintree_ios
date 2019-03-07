@@ -30,8 +30,8 @@
          parameters:requestParameters
          completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, __unused NSError *error) {
              if (error) {
-                 // TODO: Handle error case
                  [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.upgrade-payment-method.errored"];
+                 failureHandler(error);
              }
              else {
                  BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:body];
