@@ -39,13 +39,13 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     self.paymentFlowDriverDelegate = delegate;
 
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.initialized"];
-    
+
     [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable configurationError) {
         if (configurationError) {
             [self.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
             return;
         }
-        
+
         if (configuration.cardinalAuthenticationJWT) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
@@ -97,7 +97,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     [self.threeDSecureV2Provider processLookupResult:lookupResult
                                              success:^(BTThreeDSecureResult *result) {
-                                                 [self logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
+                                                 [weakSelf logThreeDSecureCompletedAnalyticsForResult:result withAPIClient:apiClient];
                                                  [weakSelf.paymentFlowDriverDelegate onPaymentComplete:result error:nil];
                                              } failure:^(NSError *error) {
                                                  [apiClient sendAnalyticsEvent:@"ios.three-d-secure.authentication.failed"];
