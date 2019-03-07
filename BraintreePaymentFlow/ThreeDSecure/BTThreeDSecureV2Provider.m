@@ -33,7 +33,6 @@
     if ([[configuration.json[@"environment"] asString] isEqualToString:@"production"]) {
         cardinalEnvironment = CardinalSessionEnvironmentProduction;
     }
-    cardinalConfiguration.deploymentEnvironment = CardinalSessionEnvironmentStaging;
     cardinalConfiguration.deploymentEnvironment = cardinalEnvironment;
     [instance.cardinalSession configure:cardinalConfiguration];
 
