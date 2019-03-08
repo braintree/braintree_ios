@@ -76,18 +76,21 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                               }
 
                                               [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.lookup-flow.%@", lookupResult.threeDSecureVersion]];
-                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.challenge-presented.%@", [self stringForBool:lookupResult.requiresUserAuthentication]]];
-                                              if (lookupResult.requiresUserAuthentication) {
-                                                  if (lookupResult.isThreeDSecureVersion2) {
-                                                      [self performV2Authentication:lookupResult];
+
+                                              [self.threeDSecureRequestDelegate onLookupComplete:threeDSecureRequest result:lookupResult next:^{
+                                                  [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.challenge-presented.%@", [self stringForBool:lookupResult.requiresUserAuthentication]]];
+                                                  if (lookupResult.requiresUserAuthentication) {
+                                                      if (lookupResult.isThreeDSecureVersion2) {
+                                                          [self performV2Authentication:lookupResult];
+                                                      }
+                                                      else {
+                                                          NSURL *redirectUrl = [self constructV1PaymentURLForLookup:lookupResult configuration:configuration];
+                                                          [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:error];
+                                                      }
+                                                  } else {
+                                                      [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult.threeDSecureResult error:error];
                                                   }
-                                                  else {
-                                                      NSURL *redirectUrl = [self constructV1PaymentURLForLookup:lookupResult configuration:configuration];
-                                                      [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:error];
-                                                  }
-                                              } else {
-                                                  [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult.threeDSecureResult error:error];
-                                              }
+                                              }];
                                           });
                                       }];
 }

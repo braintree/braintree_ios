@@ -8,8 +8,13 @@
 #import "BTPaymentFlowDriver.h"
 #import "BTThreeDSecurePostalAddress.h"
 #import "BTThreeDSecureAdditionalInformation.h"
+#import "BTThreeDSecureLookup.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
+
+@class BTThreeDSecureRequest;
+@protocol BTThreeDSecureRequestDelegate;
 
 /**
  Used to initialize a 3D Secure payment flow
@@ -65,6 +70,26 @@ NS_ASSUME_NONNULL_BEGIN
  2 if ThreeDSecure V2 flows are desired, when possible. 1 if only ThreeDSecure V1 flows are desired. Will default to V1 flows unless set.
  */
 @property (nonatomic, assign) NSInteger versionRequested;
+
+/**
+ A delegate for receiving information about the ThreeDSecure payment flow.
+ */
+@property (nonatomic, nullable, weak) id<BTThreeDSecureRequestDelegate> threeDSecureRequestDelegate;
+
+@end
+
+/**
+ Protocol for ThreeDSecure Request flow
+ */
+@protocol BTThreeDSecureRequestDelegate
+
+@required
+
+/**
+ Required delegate method which returns the ThreeDSecure lookup result before the flow continues.
+ Use this to do any UI preparation or custom lookup result handling. Use the `next()` callback to continue the flow.
+ */
+- (void)onLookupComplete:(BTThreeDSecureRequest *)request result:(BTThreeDSecureLookup *)lookup next:(void(^)(void))next;
 
 @end
 

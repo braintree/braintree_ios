@@ -5,7 +5,7 @@
 #import <BraintreeUI/BraintreeUI.h>
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
 
-@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate>
+@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) BTUICardFormView *cardFormView;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
@@ -97,6 +97,7 @@
         self.paymentFlowDriver.viewControllerPresentingDelegate = self;
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
+        request.threeDSecureRequestDelegate = self;
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
 
@@ -121,7 +122,6 @@
         request.additionalInformation = info;
 
         //      TODO:
-// request.threeDSecureFlowDelegate = self;
 
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
@@ -155,12 +155,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark BTIdealRequestDelegate
-//
-//- (void)threeDSecureLookupComplete:(__unused BTThreeDSecureRequest *)request result:(BTThreeDLookup *)lookup next:(void (^)(void))next {
-//    // Optionally inspect the result and prepare UI if a challenge is required
-//    next();
-//}
+#pragma mark BTThreeDSecureRequestDelegate
 
+- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)lookup next:(void (^)(void))next {
+    // Optionally inspect the result and prepare UI if a challenge is required
+    next();
+}
 
 @end
