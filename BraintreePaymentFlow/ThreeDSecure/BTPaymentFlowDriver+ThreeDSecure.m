@@ -9,6 +9,8 @@
 #import "BTThreeDSecureResult.h"
 #import "BTThreeDSecureRequest.h"
 #import "BTThreeDSecureRequest_Internal.h"
+#import "BTThreeDSecurePostalAddress_Internal.h"
+#import "BTThreeDSecureAdditionalInformation_Internal.h"
 
 @implementation BTPaymentFlowDriver (ThreeDSecure)
 
@@ -19,7 +21,6 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 #pragma mark - ThreeDSecure Lookup
 
 - (void)performThreeDSecureLookup:(BTThreeDSecureRequest *)request
-             additionalParameters:(NSDictionary *)additionalParameters
                        completion:(void (^)(BTThreeDSecureLookup *threeDSecureResult, NSError *error))completionBlock {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(__unused BTConfiguration *configuration, NSError *error) {
         if (error) {
@@ -27,9 +28,27 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             return;
         }
 
-        NSMutableDictionary *requestParameters = [[request asParameters] mutableCopy];
-        if (additionalParameters) {
-            [requestParameters addEntriesFromDictionary:additionalParameters];
+        NSMutableDictionary *customer = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *requestParameters = [@{ @"amount": request.amount, @"customer": customer } mutableCopy];
+
+        if (request.billingAddress) {
+            customer[@"billingAddress"] = [request.billingAddress asParameters];
+        }
+
+        if (request.mobilePhoneNumber) {
+            customer[@"mobilePhoneNumber"] = request.mobilePhoneNumber;
+        }
+
+        if (request.email) {
+            customer[@"email"] = request.email;
+        }
+
+        if (request.shippingMethod) {
+            customer[@"shippingMethod"] = request.shippingMethod;
+        }
+
+        if (request.additionalInformation != nil) {
+            [requestParameters addEntriesFromDictionary:[request.additionalInformation asParameters]];
         }
 
         NSString *urlSafeNonce = [request.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];

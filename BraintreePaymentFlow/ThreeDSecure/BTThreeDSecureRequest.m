@@ -28,7 +28,6 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
 
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
 @property (nonatomic, strong) BTThreeDSecureV2Provider *threeDSecureV2Provider;
-@property (nonatomic, strong) NSDictionary *additionalLookupParameters;
 
 @end
 
@@ -50,8 +49,8 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         if (configuration.cardinalAuthenticationJWT && self.versionRequested == 2) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
-                                                                                             completion:^(NSDictionary *lookupParameters) {
-                                                                                                 self.additionalLookupParameters = lookupParameters;
+                                                                                             completion:^(__unused NSDictionary *lookupParameters) {
+                                                                                                 //TODO why is this translation layer here? If it is just for the device fingerprint then we should make it clearer and translate our params closer to the request
                                                                                                  [self startRequest:request configuration:configuration];
                                                                                              }];
         }
@@ -68,7 +67,6 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.started"];
     [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
-                            additionalParameters:self.additionalLookupParameters
                                       completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
                                           dispatch_async(dispatch_get_main_queue(), ^{
                                               if (error) {
@@ -173,40 +171,6 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     NSMutableCharacterSet *allowed = NSMutableCharacterSet.alphanumericCharacterSet;
     [allowed addCharactersInString:unreserved];
     return [string stringByAddingPercentEncodingWithAllowedCharacters:allowed];
-}
-
-- (NSDictionary *)asParameters {
-    NSMutableDictionary *parameters = [@{} mutableCopy];
-    
-    if (self.amount) {
-        parameters[@"amount"] = [self.amount stringValue];
-    }
-
-    if (self.nonce) {
-        parameters[@"nonce"] = self.nonce;
-    }
-
-    NSMutableDictionary *additionalInformation = [@{} mutableCopy];
-
-    if (self.additionalInformation) {
-        [additionalInformation addEntriesFromDictionary:[self.additionalInformation asParameters]];
-    }
-
-    NSMutableDictionary *billingAddress = [@{} mutableCopy];
-
-    if (self.billingAddress) {
-        [billingAddress addEntriesFromDictionary:[self.billingAddress asParameters]];
-    }
-
-    if (additionalInformation.count) {
-        parameters[@"additionalInformation"] = additionalInformation;
-    }
-
-    if (billingAddress.count) {
-        parameters[@"billingAddress"] = billingAddress;
-    }
-
-    return [parameters copy];
 }
 
 - (NSString *)stringForBool:(BOOL)boolean {

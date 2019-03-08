@@ -13,14 +13,20 @@
     [self insertIfExists:self.shippingMethod key:@"shippingMethod" dictionary:parameters];
 
     if (self.billingAddress) {
-        [parameters addEntriesFromDictionary:[self.billingAddress asParameters]];
+        // TODO billing line 3?
+        [self insertIfExists:self.billingAddress.streetAddress key:@"billingLine1" dictionary:parameters];
+        [self insertIfExists:self.billingAddress.extendedAddress key:@"billingLine2" dictionary:parameters];
+        [self insertIfExists:self.billingAddress.locality key:@"billingCity" dictionary:parameters];
+        [self insertIfExists:self.billingAddress.region key:@"billingState" dictionary:parameters];
+        [self insertIfExists:self.billingAddress.postalCode key:@"billingPostalCode" dictionary:parameters];
+        [self insertIfExists:self.billingAddress.countryCodeAlpha2 key:@"billingCountryCode" dictionary:parameters];
     }
 
     return [parameters copy];
 }
 
 - (void)insertIfExists:(NSString *)param key:(NSString *)key dictionary:(NSMutableDictionary *)dictionary{
-    if (param != NULL) {
+    if (param != nil && key != nil && dictionary != nil) {
         dictionary[key] = param;
     }
 }

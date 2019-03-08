@@ -104,6 +104,8 @@
 		03DE926F20201CCB00A78D29 /* BTThreeDSecureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */; };
 		03DE927120201CE800A78D29 /* BTThreeDSecureInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03DE927020201CD900A78D29 /* BTThreeDSecureInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03DE927220201CFB00A78D29 /* BTThreeDSecureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */; };
+		03E38C102232117D00718102 /* BTThreeDSecureRequest_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 80E74E6822025BB200DF95E6 /* BTThreeDSecureRequest_Internal.h */; };
+		03E38C112232119500718102 /* BTThreeDSecureAdditionalInformation_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 801FD8E72231C34500014DB0 /* BTThreeDSecureAdditionalInformation_Internal.h */; };
 		03E7E3D6212469AD000C5094 /* BTConfiguration+LocalPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D2212469AD000C5094 /* BTConfiguration+LocalPayment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E7E3D7212469AD000C5094 /* BTLocalPaymentResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D3212469AD000C5094 /* BTLocalPaymentResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E7E3D8212469AD000C5094 /* BTPaymentFlowDriver+LocalPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D4212469AD000C5094 /* BTPaymentFlowDriver+LocalPayment.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3630,6 +3632,7 @@
 			files = (
 				038C7FD31EA1648900241ABE /* BTPaymentFlowDriver_Internal.h in Headers */,
 				03F921C0200EB93D0076CD80 /* BTThreeDSecurePostalAddress.h in Headers */,
+				03E38C102232117D00718102 /* BTThreeDSecureRequest_Internal.h in Headers */,
 				038C7FE41EA1648900241ABE /* BTPaymentFlowRequest.h in Headers */,
 				034CDCA91FB518DE00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h in Headers */,
 				03E7E3D8212469AD000C5094 /* BTPaymentFlowDriver+LocalPayment.h in Headers */,
@@ -3645,6 +3648,7 @@
 				03800A581F045F5600068F53 /* BTThreeDSecureResult.h in Headers */,
 				A04F75392230550E00213077 /* BTThreeDSecureAuthenticateJWT.h in Headers */,
 				034CDCA71FB517A400CEC47C /* BTThreeDSecureLookup.h in Headers */,
+				03E38C112232119500718102 /* BTThreeDSecureAdditionalInformation_Internal.h in Headers */,
 				80036F7E21F7BC6C003A9F5C /* BTConfiguration+ThreeDSecure.h in Headers */,
 				030825F3208EF15A00AAB198 /* BTThreeDSecurePostalAddress_Internal.h in Headers */,
 				03E7E3D9212469AD000C5094 /* BTLocalPaymentRequest.h in Headers */,
@@ -4695,7 +4699,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Demo/Pods-Demo-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/BraintreeDropIn/Braintree-UIKit-Localization.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/InAppSettingsKit/InAppSettingsKit.bundle",
 			);
@@ -4706,7 +4710,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Demo/Pods-Demo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		629A6EB8F4008DD3E12EFAD8 /* [CP] Check Pods Manifest.lock */ = {

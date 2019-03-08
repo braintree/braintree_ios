@@ -23,39 +23,39 @@
     NSMutableDictionary *parameters = [@{} mutableCopy];
 
     if (self.firstName) {
-        parameters[@"billingGivenName"] = self.firstName;
+        [parameters setObject:self.firstName forKey:@"firstName"];
     }
 
     if (self.lastName) {
-        parameters[@"billingSurname"] = self.lastName;
+        [parameters setObject:self.lastName forKey:@"lastName"];
     }
 
     if (self.phoneNumber) {
-        parameters[@"billingPhoneNumber"] = self.phoneNumber;
+        [parameters setObject:self.phoneNumber forKey:@"phoneNumber"];
     }
 
     if (self.streetAddress) {
-        parameters[@"billingLine1"] = self.streetAddress;
+        [parameters setObject:self.streetAddress forKey:@"line1"];
     }
 
     if (self.extendedAddress) {
-        parameters[@"billingLine2"] = self.extendedAddress;
+        [parameters setObject:self.extendedAddress forKey:@"line2"];
     }
 
     if (self.locality) {
-        parameters[@"billingCity"] = self.locality;
+        [parameters setObject:self.locality forKey:@"city"];
     }
 
     if (self.region) {
-        parameters[@"billingState"] = self.region;
+        [parameters setObject:self.region forKey:@"state"];
     }
 
     if (self.postalCode) {
-        parameters[@"billingPostalCode"] = self.postalCode;
+        [parameters setObject:self.postalCode forKey:@"postalCode"];
     }
 
     if (self.countryCodeAlpha2) {
-        parameters[@"billingCountryCode"] = self.countryCodeAlpha2;
+        [parameters setObject:self.countryCodeAlpha2 forKey:@"countryCode"];
     }
 
     return [parameters copy];
@@ -66,4 +66,3 @@
 }
 
 @end
-
