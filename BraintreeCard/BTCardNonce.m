@@ -14,6 +14,11 @@
         _cardNetwork = cardNetwork;
         _lastTwo = lastTwo;
         _binData = [[BTBinData alloc] initWithJSON:cardJSON[@"binData"]];
+        if ([cardJSON[@"details"][@"bin"] asString]) {
+            _bin = [cardJSON[@"details"][@"bin"] asString];
+        } else if ([cardJSON[@"bin"] asString]) {
+            _bin = [cardJSON[@"bin"] asString];
+        }
         _threeDSecureInfo = [[BTThreeDSecureInfo alloc] initWithJSON:cardJSON[@"threeDSecureInfo"]];
     }
     return self;

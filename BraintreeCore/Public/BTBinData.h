@@ -58,11 +58,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, readonly, copy) NSString *productId;
 
-/**
- The bin number of the card.
- */
-@property (nonatomic, nullable, readonly, copy) NSString *bin;
-
 @end
 
 NS_ASSUME_NONNULL_END

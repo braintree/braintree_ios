@@ -100,10 +100,7 @@
         request.threeDSecureRequestDelegate = self;
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
-        // request.binNumber = tokenizedCard.binData.bin;
-
-        // TODO
-        //request.tokenizedCard = tokenizedCard;
+        request.binNumber = tokenizedCard.bin;
         request.versionRequested = 2;
 
         BTThreeDSecureAdditionalInformation *info = [[BTThreeDSecureAdditionalInformation alloc] init];
@@ -121,8 +118,6 @@
         billingAddress.postalCode = @"12345";
         info.billingAddress = billingAddress;
         request.additionalInformation = info;
-
-        //      TODO:
 
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;

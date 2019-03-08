@@ -21,6 +21,7 @@
                     isDefault:(BOOL)isDefault
                      cardJSON:(BTJSON *)cardJSON
 {
+
     self = [super initWithNonce:nonce description:description cardNetwork:cardNetwork lastTwo:lastTwo isDefault:isDefault cardJSON:cardJSON];
     if (self) {
         _threeDSecureJSON = threeDSecureJSON;
