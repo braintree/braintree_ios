@@ -47,8 +47,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             customer[@"shippingMethod"] = request.shippingMethod;
         }
 
-        if (request.additionalInformation != nil) {
-            [requestParameters addEntriesFromDictionary:[request.additionalInformation asParameters]];
+        if (request.additionalInformation) {
+            requestParameters[@"additionalInformation"] = [request.additionalInformation asParameters];
         }
 
         NSString *urlSafeNonce = [request.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];

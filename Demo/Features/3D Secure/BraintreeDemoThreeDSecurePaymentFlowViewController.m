@@ -100,6 +100,7 @@
         request.threeDSecureRequestDelegate = self;
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
+        // request.binNumber = tokenizedCard.binData.bin;
 
         // TODO
         //request.tokenizedCard = tokenizedCard;

@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
  Optional. The additional information used for verification
  @see BTThreeDSecureAdditionalInformation
  */
-@property (nonatomic, nullable, assign) BTThreeDSecureAdditionalInformation *additionalInformation;
+@property (nonatomic, nullable, strong) BTThreeDSecureAdditionalInformation *additionalInformation;
 
 /**
  2 if ThreeDSecure V2 flows are desired, when possible. 1 if only ThreeDSecure V1 flows are desired. Will default to V1 flows unless set.

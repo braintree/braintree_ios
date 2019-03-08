@@ -65,6 +65,9 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:apiClient];
 
+    // TODO: if version 2, 3DSdelegate can't be null
+    // If version 1, set the delegate for them
+
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.started"];
     [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
                                       completion:^(BTThreeDSecureLookup *lookupResult, NSError *error) {
