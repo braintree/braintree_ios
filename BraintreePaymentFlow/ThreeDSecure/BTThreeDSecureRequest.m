@@ -67,7 +67,11 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
     if (threeDSecureRequest.versionRequested == 2) {
         if (threeDSecureRequest.threeDSecureRequestDelegate == nil) {
-            // TODO: if version 2, 3DSdelegate can't be null
+            NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                 code:BTThreeDSecureFlowErrorTypeConfiguration
+                                             userInfo:@{NSLocalizedDescriptionKey: @"Configuration Error: threeDSecureRequestDelegate can not be nil when versionRequested is 2."}];
+            [self.paymentFlowDriverDelegate onPaymentComplete:nil error:error];
+            return;
         }
     }
     

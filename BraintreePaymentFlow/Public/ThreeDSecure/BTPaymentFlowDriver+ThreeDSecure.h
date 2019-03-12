@@ -24,6 +24,9 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureFlowErrorType) {
     
     /// 3D Secure failed during the user-facing authentication phase; please retry
     BTThreeDSecureFlowErrorTypeFailedAuthentication,
+
+    /// 3D Secure was not configured correctly
+    BTThreeDSecureFlowErrorTypeConfiguration,
 };
 
 /**

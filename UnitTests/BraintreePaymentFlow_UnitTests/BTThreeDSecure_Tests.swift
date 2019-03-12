@@ -241,13 +241,9 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.binNumber = "12345"
         threeDSecureRequest.mobilePhoneNumber = "5151234321"
         threeDSecureRequest.email = "tester@example.com"
         threeDSecureRequest.shippingMethod = "03"
-        threeDSecureRequest.versionRequested = 2
-        threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
-        mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
 
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.firstName = "Joe"
@@ -278,6 +274,78 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertEqual(billingAddress["state"], "CA")
             XCTAssertEqual(billingAddress["countryCode"], "US")
             XCTAssertEqual(billingAddress["postalCode"], "54321")
+
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 3, handler: nil)
+    }
+
+    func testThreeDSecureRequest_v2_sendsAllParameters() {
+        let responseBody = [
+            "paymentMethod": [
+                "consumed": false,
+                "description": "ending in 02",
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "02",
+                ],
+                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
+                "threeDSecureInfo": [
+                    "enrolled": "Y",
+                    "liabilityShiftPossible": true,
+                    "liabilityShifted": true,
+                    "status": "authenticate_successful",
+                ],
+                "type": "CreditCard",
+            ],
+            "success": true,
+            "threeDSecureInfo":     [
+                "liabilityShiftPossible": true,
+                "liabilityShifted": true,
+            ]
+            ] as [String : Any]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        threeDSecureRequest.amount = 9.97
+        threeDSecureRequest.nonce = "fake-card-nonce"
+        threeDSecureRequest.binNumber = "12345"
+        threeDSecureRequest.versionRequested = 2
+
+        let additionalInfo = BTThreeDSecureAdditionalInformation()
+        additionalInfo.billingGivenName = "Joe"
+        additionalInfo.billingSurname = "Guy"
+        additionalInfo.billingPhoneNumber = "5151234321"
+        additionalInfo.email = "tester@example.com"
+
+        let billingAddress = BTThreeDSecurePostalAddress()
+        billingAddress.streetAddress = "555 Smith St."
+        billingAddress.extendedAddress = "#5"
+        billingAddress.locality = "Oakland"
+        billingAddress.region = "CA"
+        billingAddress.countryCodeAlpha2 = "US"
+        billingAddress.postalCode = "54321"
+        additionalInfo.billingAddress = billingAddress
+
+        threeDSecureRequest.additionalInformation = additionalInfo
+
+        driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
+            XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
+            let additionalInformation = self.mockAPIClient.lastPOSTParameters!["additionalInformation"] as! Dictionary<String, AnyObject>
+            XCTAssertEqual(additionalInformation["billingPhoneNumber"] as! String, "5151234321")
+            XCTAssertEqual(additionalInformation["email"] as! String, "tester@example.com")
+            XCTAssertEqual(additionalInformation["billingGivenName"] as! String, "Joe")
+            XCTAssertEqual(additionalInformation["billingSurname"] as! String, "Guy")
+            XCTAssertEqual(additionalInformation["billingLine1"] as! String, "555 Smith St.")
+            XCTAssertEqual(additionalInformation["billingLine2"] as! String, "#5")
+            XCTAssertEqual(additionalInformation["billingCity"] as! String, "Oakland")
+            XCTAssertEqual(additionalInformation["billingState"] as! String, "CA")
+            XCTAssertEqual(additionalInformation["billingCountryCode"] as! String, "US")
+            XCTAssertEqual(additionalInformation["billingPostalCode"] as! String, "54321")
 
             expectation.fulfill()
         }
@@ -476,7 +544,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
     
-    func testStartPayment_doesNotDisplaySafariViewControllerWhenAuthenticationNotRequired() {
+    func testStartPayment_v2_doesNotDisplaySafariViewControllerWhenAuthenticationNotRequired() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         threeDSecureRequest.versionRequested = 2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
@@ -531,6 +599,75 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShifted)
             XCTAssertFalse(result.tokenizedCard.threeDSecureInfo.liabilityShiftPossible)
             XCTAssertTrue(result.tokenizedCard.threeDSecureInfo.wasVerified)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 4, handler: nil)
+    }
+
+    func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() {
+        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
+        mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
+
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "assetsUrl": "http://assets.example.com"
+            ])
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+        let responseBody = [
+            "paymentMethod": [
+                "consumed": false,
+                "description": "ending in 02",
+                "details": [
+                    "cardType": "Visa",
+                    "lastTwo": "02",
+                ],
+                "nonce": "f689056d-aee1-421e-9d10-f2c9b34d4d6f",
+                "threeDSecureInfo": [
+                    "enrolled": "N",
+                    "liabilityShiftPossible": false,
+                    "liabilityShifted": false,
+                    "status": "authenticate_successful_issuer_not_participating",
+                ],
+                "type": "CreditCard",
+            ],
+            "success": true,
+            "threeDSecureInfo":     [
+                "liabilityShiftPossible": false,
+                "liabilityShifted": false,
+            ]
+            ] as [String : Any]
+        mockAPIClient.cannedResponseBody = BTJSON(value: responseBody)
+
+        driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 4, handler: nil)
+    }
+
+    func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() {
+        let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
+        threeDSecureRequest.versionRequested = 2
+
+        let expectation = self.expectation(description: "willCallCompletion")
+
+        mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [
+            "assetsUrl": "http://assets.example.com"
+            ])
+        let driver = BTPaymentFlowDriver(apiClient: mockAPIClient)
+        driver.viewControllerPresentingDelegate = viewControllerPresentingDelegate
+
+        driver.startPaymentFlow(threeDSecureRequest) { (result, error) in
+            XCTAssertNotNil(error)
+            XCTAssertNil(result)
+            guard let error = error as NSError? else {return}
+            XCTAssertEqual(error.domain, BTThreeDSecureFlowErrorDomain)
+            XCTAssertEqual(error.code, BTThreeDSecureFlowErrorType.configuration.rawValue)
             expectation.fulfill()
         }
 
