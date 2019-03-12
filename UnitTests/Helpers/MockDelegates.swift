@@ -71,6 +71,17 @@ import XCTest
     }
 }
 
+@objc class MockThreeDSecureRequestDelegate : NSObject, BTThreeDSecureRequestDelegate {
+    var result: BTThreeDSecureLookup?
+    var lookupCompleteExpectation : XCTestExpectation?
+
+    func onLookupComplete(_ request: BTThreeDSecureRequest, result: BTThreeDSecureLookup, next: @escaping () -> Void) {
+        self.result = result
+        lookupCompleteExpectation?.fulfill()
+        next()
+    }
+}
+
 @objc class MockLocalPaymentRequestDelegate : NSObject, BTLocalPaymentRequestDelegate {
     var paymentId: String?
     var idExpectation : XCTestExpectation?

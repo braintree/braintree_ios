@@ -6,7 +6,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     var mockAPIClient : MockAPIClient!
     var observers : [NSObjectProtocol] = []
     var threeDSecureRequest : BTThreeDSecureRequest!
-    
+    var mockThreeDSecureRequestDelegate : MockThreeDSecureRequestDelegate!
+
     override func setUp() {
         super.setUp()
         
@@ -14,6 +15,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.amount = 10.0
         threeDSecureRequest.nonce = "fake-card-nonce"
         mockAPIClient = MockAPIClient(authorization: tempClientToken)!
+        mockThreeDSecureRequestDelegate = MockThreeDSecureRequestDelegate()
     }
     
     override func tearDown() {
@@ -244,6 +246,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.email = "tester@example.com"
         threeDSecureRequest.shippingMethod = "03"
         threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
+        mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
 
         let billingAddress = BTThreeDSecurePostalAddress()
         billingAddress.firstName = "Joe"
@@ -475,6 +479,9 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     func testStartPayment_doesNotDisplaySafariViewControllerWhenAuthenticationNotRequired() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
+        mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
+
         let expectation = self.expectation(description: "willCallCompletion")
 
         mockAPIClient.cannedConfigurationResponseBody = BTJSON(value: [

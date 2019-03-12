@@ -105,6 +105,11 @@
 		03DE927120201CE800A78D29 /* BTThreeDSecureInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 03DE927020201CD900A78D29 /* BTThreeDSecureInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03DE927220201CFB00A78D29 /* BTThreeDSecureInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DE926E20201CCB00A78D29 /* BTThreeDSecureInfo.m */; };
 		03E38C102232117D00718102 /* BTThreeDSecureRequest_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 80E74E6822025BB200DF95E6 /* BTThreeDSecureRequest_Internal.h */; };
+		03E38C122238136B00718102 /* BTThreeDSecureV2Provider.m in Sources */ = {isa = PBXBuildFile; fileRef = A01720172216272000DAA838 /* BTThreeDSecureV2Provider.m */; };
+		03E38C132238137200718102 /* BTThreeDSecurePostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F921BD200EB9230076CD80 /* BTThreeDSecurePostalAddress.m */; };
+		03E38C142238137A00718102 /* BTThreeDSecureAuthenticateJWT.m in Sources */ = {isa = PBXBuildFile; fileRef = A04F75382230550E00213077 /* BTThreeDSecureAuthenticateJWT.m */; };
+		03E38C152238137F00718102 /* BTThreeDSecureAdditionalInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 801FD8E32231B4F000014DB0 /* BTThreeDSecureAdditionalInformation.m */; };
+		03E38C162238138500718102 /* BTConfiguration+ThreeDSecure.m in Sources */ = {isa = PBXBuildFile; fileRef = 80036F7C21F7BB7F003A9F5C /* BTConfiguration+ThreeDSecure.m */; };
 		03E7E3D6212469AD000C5094 /* BTConfiguration+LocalPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D2212469AD000C5094 /* BTConfiguration+LocalPayment.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E7E3D7212469AD000C5094 /* BTLocalPaymentResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D3212469AD000C5094 /* BTLocalPaymentResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E7E3D8212469AD000C5094 /* BTPaymentFlowDriver+LocalPayment.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E7E3D4212469AD000C5094 /* BTPaymentFlowDriver+LocalPayment.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -4962,6 +4967,7 @@
 				4174052C1BB086B3008A5DEA /* BTUIDiscoverVectorArtView.m in Sources */,
 				4174052E1BB086B3008A5DEA /* BTUIJCBVectorArtView.m in Sources */,
 				417405301BB086B3008A5DEA /* BTUIMaestroVectorArtView.m in Sources */,
+				03E38C152238137F00718102 /* BTThreeDSecureAdditionalInformation.m in Sources */,
 				0357C48F1F96883C00E63851 /* BTAmericanExpressClient.m in Sources */,
 				417405321BB086B3008A5DEA /* BTUIMasterCardVectorArtView.m in Sources */,
 				41472F941CB6D52200AFA75C /* BTConfiguration+UnionPay.m in Sources */,
@@ -4976,6 +4982,7 @@
 				417404D31BB0869C008A5DEA /* BTDropInLocalizedString.m in Sources */,
 				030DBF421F3A571000E959F0 /* BTBinData.m in Sources */,
 				417404D51BB0869C008A5DEA /* BTDropInContentView.m in Sources */,
+				03E38C122238136B00718102 /* BTThreeDSecureV2Provider.m in Sources */,
 				A74BEE3F1C58005300DDAB52 /* BTAnalyticsService.m in Sources */,
 				417404D71BB0869C008A5DEA /* BTDropInErrorAlert.m in Sources */,
 				417404D91BB0869C008A5DEA /* BTDropInErrorState.m in Sources */,
@@ -4984,6 +4991,7 @@
 				417404DD1BB0869C008A5DEA /* BTDropInUtil.m in Sources */,
 				417404DE1BB0869C008A5DEA /* BTDropInViewController.m in Sources */,
 				417404DF1BB0869C008A5DEA /* BTPaymentButton.m in Sources */,
+				03E38C162238138500718102 /* BTConfiguration+ThreeDSecure.m in Sources */,
 				417404E11BB0869C008A5DEA /* BTUILocalizedString.m in Sources */,
 				417404E31BB0869C008A5DEA /* BTUICardExpirationValidator.m in Sources */,
 				03CED23A1F8D77C9000A5F4F /* BTThreeDSecureLookup.m in Sources */,
@@ -5014,6 +5022,7 @@
 				417405151BB0869D008A5DEA /* BTUICardFormView.m in Sources */,
 				417405161BB0869D008A5DEA /* BTUICTAControl.m in Sources */,
 				417405171BB0869D008A5DEA /* BTUICardHint.m in Sources */,
+				03E38C132238137200718102 /* BTThreeDSecurePostalAddress.m in Sources */,
 				417405181BB0869D008A5DEA /* BTUICoinbaseButton.m in Sources */,
 				034CF88821501E41003C0616 /* BTConfiguration+Card.m in Sources */,
 				417405191BB0869D008A5DEA /* BTUIPayPalButton.m in Sources */,
@@ -5028,6 +5037,7 @@
 				417405201BB0869D008A5DEA /* BTUICVVBackVectorArtView.m in Sources */,
 				417405221BB0869D008A5DEA /* BTUICVVFrontVectorArtView.m in Sources */,
 				46E2F0A01CF47D3300A5789D /* BTUIUnionPayVectorArtView.m in Sources */,
+				03E38C142238137A00718102 /* BTThreeDSecureAuthenticateJWT.m in Sources */,
 				41BC340D1BF695FC00161106 /* BTPaymentRequest.m in Sources */,
 				A5FE18351E79B75500CBE9C7 /* BTPayPalCreditFinancingAmount.m in Sources */,
 				417405241BB0869D008A5DEA /* BTUICardVectorArtView.m in Sources */,

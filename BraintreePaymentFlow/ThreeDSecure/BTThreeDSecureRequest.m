@@ -24,7 +24,7 @@
 
 NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1.5";
 
-@interface BTThreeDSecureRequest ()
+@interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>
 
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
 @property (nonatomic, strong) BTThreeDSecureV2Provider *threeDSecureV2Provider;
@@ -65,8 +65,15 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:apiClient];
 
-    // TODO: if version 2, 3DSdelegate can't be null
-    // If version 1, set the delegate for them
+    if (threeDSecureRequest.versionRequested == 2) {
+        if (threeDSecureRequest.threeDSecureRequestDelegate == nil) {
+            // TODO: if version 2, 3DSdelegate can't be null
+        }
+    }
+    
+    if (threeDSecureRequest.versionRequested != 2 && threeDSecureRequest.threeDSecureRequestDelegate == nil) {
+        threeDSecureRequest.threeDSecureRequestDelegate = self;
+    }
 
     [apiClient sendAnalyticsEvent:@"ios.three-d-secure.verification-flow.started"];
     [paymentFlowDriver performThreeDSecureLookup:threeDSecureRequest
@@ -186,6 +193,10 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     else {
         return @"false";
     }
+}
+
+- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)result next:(void (^)(void))next {
+    next();
 }
 
 @end

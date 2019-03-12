@@ -153,7 +153,7 @@
 
 #pragma mark BTThreeDSecureRequestDelegate
 
-- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)lookup next:(void (^)(void))next {
+- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)result next:(void (^)(void))next {
     // Optionally inspect the result and prepare UI if a challenge is required
     next();
 }
