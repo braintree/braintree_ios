@@ -46,6 +46,27 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
             return;
         }
 
+        NSError *integrationError;
+
+        if (self.versionRequested == 2) {
+            if (!configuration.cardinalAuthenticationJWT) {
+                [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."];
+                integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                       code:BTThreeDSecureFlowErrorTypeConfiguration
+                                                   userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."}];
+            } else if (!self.amount) {
+            [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest amount can not be nil."];
+            integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                   code:BTThreeDSecureFlowErrorTypeConfiguration
+                                               userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil."}];
+            }
+        }
+
+        if (integrationError != nil) {
+            [delegate onPaymentComplete:nil error:integrationError];
+            return;
+        }
+
         if (configuration.cardinalAuthenticationJWT && self.versionRequested == 2) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
@@ -53,8 +74,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                                                                  //TODO why is this translation layer here? If it is just for the device fingerprint then we should make it clearer and translate our params closer to the request
                                                                                                  [self startRequest:request configuration:configuration];
                                                                                              }];
-        }
-        else {
+        } else {
             [self startRequest:request configuration:configuration];
         }
     }];
