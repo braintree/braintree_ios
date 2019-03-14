@@ -59,6 +59,11 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil."}];
+            } else if (!self.binNumber) {
+                [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest binNumber can not be nil."];
+                integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                       code:BTThreeDSecureFlowErrorTypeConfiguration
+                                                   userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest binNumber can not be nil."}];
             }
         }
 
