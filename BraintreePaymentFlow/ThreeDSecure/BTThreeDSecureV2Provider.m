@@ -44,8 +44,14 @@
                                    [instance.apiClient sendAnalyticsEvent:@"ios.three-d-secure.cardinal-sdk.init.setup-failed"];
                                    completionHandler(@{});
                                }];
-
     return instance;
+}
+
+- (void)processBin:(NSString *)binNumber
+        completion:(BTThreeDSecureV2ProviderProcessBinCompletionHandler)completionHandler {
+    [self.cardinalSession processBin:binNumber didComplete:^{
+        completionHandler(@{});
+    }];
 }
 
 - (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult

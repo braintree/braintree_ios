@@ -28,7 +28,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
 
 @property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
 @property (nonatomic, strong) BTThreeDSecureV2Provider *threeDSecureV2Provider;
-
+@property (nonatomic, strong) NSString *dfReferenceId;
 @end
 
 @implementation BTThreeDSecureRequest
@@ -70,9 +70,16 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         if (configuration.cardinalAuthenticationJWT && self.versionRequested == 2) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
-                                                                                             completion:^(__unused NSDictionary *lookupParameters) {
+                                                                                             completion:^(NSDictionary *lookupParameters) {
                                                                                                  //TODO why is this translation layer here? If it is just for the device fingerprint then we should make it clearer and translate our params closer to the request
-                                                                                                 [self startRequest:request configuration:configuration];
+                                                                                                 self.dfReferenceId = lookupParameters[@"dfReferenceId"];
+                                                                                                 if (self.binNumber) {
+                                                                                                     [self.threeDSecureV2Provider processBin:self.binNumber completion:^(__unused NSDictionary * _Nonnull details) {
+                                                                                                         [self startRequest:request configuration:configuration];
+                                                                                                     }];
+                                                                                                 } else {
+                                                                                                     [self startRequest:request configuration:configuration];
+                                                                                                 }
                                                                                              }];
         } else {
             [self startRequest:request configuration:configuration];
