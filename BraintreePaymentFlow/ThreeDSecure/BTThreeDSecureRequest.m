@@ -226,6 +226,10 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     }
 }
 
+- (NSString *)getDfReferenceId {
+    return self.dfReferenceId;
+}
+
 - (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)result next:(void (^)(void))next {
     next();
 }
