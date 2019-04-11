@@ -236,7 +236,7 @@
     XCTAssertEqualObjects(metaParameters[@"deviceModel"], [self deviceModel]);
     XCTAssertEqualObjects(metaParameters[@"deviceAppGeneratedPersistentUuid"], [self deviceAppGeneratedPersistentUuid]);
     XCTAssertEqualObjects(metaParameters[@"deviceScreenOrientation"], @"Portrait");
-    XCTAssertEqualObjects(metaParameters[@"integration"], @"custom");
+    XCTAssertEqualObjects(metaParameters[@"integrationType"], @"custom");
     XCTAssertEqualObjects(metaParameters[@"iosBaseSDK"], unitTestBaseSDKVersion);
     XCTAssertEqualObjects(metaParameters[@"iosDeploymentTarget"], unitTestDeploymentTargetVersion);
     XCTAssertEqualObjects(metaParameters[@"iosDeviceName"], [[UIDevice currentDevice] name]);

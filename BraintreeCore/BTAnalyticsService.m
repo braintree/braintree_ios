@@ -196,7 +196,7 @@ NSString * const BTAnalyticsServiceErrorDomain = @"com.braintreepayments.BTAnaly
                 NSMutableDictionary *metadataParameters = [NSMutableDictionary dictionary];
                 [metadataParameters addEntriesFromDictionary:session.metadataParameters];
                 metadataParameters[@"sessionId"] = session.sessionID;
-                metadataParameters[@"integration"] = session.integration;
+                metadataParameters[@"integrationType"] = session.integration;
                 metadataParameters[@"source"] = session.source;
                 
                 NSMutableDictionary *postParameters = [NSMutableDictionary dictionary];
