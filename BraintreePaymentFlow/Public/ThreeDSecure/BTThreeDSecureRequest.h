@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The BIN number of the tokenized card.
  */
-@property (nonatomic, copy) NSString *binNumber;
+@property (nonatomic, copy) NSString *bin;
 
 /**
  The amount for the transaction

@@ -59,11 +59,11 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
             integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                    code:BTThreeDSecureFlowErrorTypeConfiguration
                                                userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest amount can not be nil."}];
-            } else if (!self.binNumber) {
-                [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest binNumber can not be nil."];
+            } else if (!self.bin) {
+                [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest bin can not be nil."];
                 integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                        code:BTThreeDSecureFlowErrorTypeConfiguration
-                                                   userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest binNumber can not be nil."}];
+                                                   userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest bin can not be nil."}];
             }
         }
 
@@ -78,8 +78,8 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                                                              completion:^(NSDictionary *lookupParameters) {
                                                                                                  //TODO why is this translation layer here? If it is just for the device fingerprint then we should make it clearer and translate our params closer to the request
                                                                                                  self.dfReferenceId = lookupParameters[@"dfReferenceId"];
-                                                                                                 if (self.binNumber) {
-                                                                                                     [self.threeDSecureV2Provider processBin:self.binNumber completion:^(__unused NSDictionary * _Nonnull details) {
+                                                                                                 if (self.bin) {
+                                                                                                     [self.threeDSecureV2Provider processBin:self.bin completion:^(__unused NSDictionary * _Nonnull details) {
                                                                                                          [self startRequest:request configuration:configuration];
                                                                                                      }];
                                                                                                  } else {

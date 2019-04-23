@@ -47,9 +47,9 @@
     return instance;
 }
 
-- (void)processBin:(NSString *)binNumber
+- (void)processBin:(NSString *)bin
         completion:(BTThreeDSecureV2ProviderProcessBinCompletionHandler)completionHandler {
-    [self.cardinalSession processBin:binNumber didComplete:^{
+    [self.cardinalSession processBin:bin didComplete:^{
         completionHandler(@{});
     }];
 }

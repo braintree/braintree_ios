@@ -100,7 +100,7 @@
         request.threeDSecureRequestDelegate = self;
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
-        request.binNumber = tokenizedCard.bin;
+        request.bin = tokenizedCard.bin;
         request.versionRequested = 2;
 
         BTThreeDSecureAdditionalInformation *info = [[BTThreeDSecureAdditionalInformation alloc] init];

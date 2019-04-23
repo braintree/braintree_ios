@@ -313,7 +313,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.binNumber = "12345"
+        threeDSecureRequest.bin = "12345"
         threeDSecureRequest.versionRequested = 2
 
         let additionalInfo = BTThreeDSecureAdditionalInformation()
@@ -646,7 +646,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         waitForExpectations(timeout: 4, handler: nil)
     }
 
-    func testStartPayment_v2_returnsErrorWhenBinNumber_isMissing() {
+    func testStartPayment_v2_returnsErrorWhenBin_isMissing() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         threeDSecureRequest = BTThreeDSecureRequest()
         threeDSecureRequest.nonce = "fake-card-nonce"
@@ -701,7 +701,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     func testStartPayment_v2_doesNotDisplaySafariViewControllerWhenAuthenticationNotRequired() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         threeDSecureRequest.versionRequested = 2
-        threeDSecureRequest.binNumber = "400000"
+        threeDSecureRequest.bin = "400000"
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
 
@@ -764,7 +764,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
     func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         threeDSecureRequest.versionRequested = 2
-        threeDSecureRequest.binNumber = "400000"
+        threeDSecureRequest.bin = "400000"
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
 
