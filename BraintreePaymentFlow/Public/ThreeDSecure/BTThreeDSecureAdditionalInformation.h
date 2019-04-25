@@ -246,7 +246,7 @@ NS_ASSUME_NONNULL_BEGIN
  04 30-60 days
  05 More than 60 days
  */
-@property (nonatomic, nullable, copy) NSString *paymentAccountIdicator;
+@property (nonatomic, nullable, copy) NSString *paymentAccountIndicator;
 
 /**
  Optional. The 8-digit number (format: YYYYMMDD) indicating the date the payment account was added to the cardholder account.
