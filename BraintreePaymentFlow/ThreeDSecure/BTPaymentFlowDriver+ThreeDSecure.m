@@ -48,7 +48,7 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
         }
 
         if (request.additionalInformation) {
-            requestParameters[@"additionalInformation"] = [request.additionalInformation asParameters];
+            requestParameters[@"additionalInfo"] = [request.additionalInformation asParameters];
         }
 
         if ([request getDfReferenceId]) {
