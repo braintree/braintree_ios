@@ -30,29 +30,33 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 
         NSMutableDictionary *customer = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *requestParameters = [@{ @"amount": request.amount, @"customer": customer } mutableCopy];
+        if ([request getDfReferenceId]) {
+            requestParameters[@"dfReferenceId"] = [request getDfReferenceId];
+        }
 
+        NSMutableDictionary *additionalInformation = [NSMutableDictionary dictionary];
         if (request.billingAddress) {
-            customer[@"billingAddress"] = [request.billingAddress asParameters];
+            [additionalInformation addEntriesFromDictionary:[request.billingAddress asParametersWithPrefix:@"billing"]];
         }
 
         if (request.mobilePhoneNumber) {
-            customer[@"mobilePhoneNumber"] = request.mobilePhoneNumber;
+            additionalInformation[@"mobilePhoneNumber"] = request.mobilePhoneNumber;
         }
 
         if (request.email) {
-            customer[@"email"] = request.email;
+            additionalInformation[@"email"] = request.email;
         }
 
         if (request.shippingMethod) {
-            customer[@"shippingMethod"] = request.shippingMethod;
+            additionalInformation[@"shippingMethod"] = request.shippingMethod;
         }
 
         if (request.additionalInformation) {
-            requestParameters[@"additionalInfo"] = [request.additionalInformation asParameters];
+            [additionalInformation addEntriesFromDictionary:[request.additionalInformation asParameters]];
         }
 
-        if ([request getDfReferenceId]) {
-            requestParameters[@"dfReferenceId"] = [request getDfReferenceId];
+        if (additionalInformation.count) {
+            requestParameters[@"additionalInfo"] = additionalInformation;
         }
 
         if (request.challengeRequested) {

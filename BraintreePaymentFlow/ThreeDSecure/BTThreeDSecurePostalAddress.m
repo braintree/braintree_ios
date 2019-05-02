@@ -19,46 +19,62 @@
     return address;
 }
 
-- (NSDictionary *)asParameters {
+- (NSString *)prependPrefix:(NSString *)prefix toKey:(NSString *)key {
+    if (prefix.length) {
+        // Uppercase the first charachter in the key
+        key = [key stringByReplacingCharactersInRange:NSMakeRange(0, 1)
+                                           withString:[[key substringToIndex:1] uppercaseString]];
+        return [NSString stringWithFormat:@"%@%@", prefix, key];
+    }
+    else {
+        return key;
+    }
+}
+
+- (NSDictionary *)asParametersWithPrefix:(NSString *)prefix {
     NSMutableDictionary *parameters = [@{} mutableCopy];
 
     if (self.firstName) {
-        [parameters setObject:self.firstName forKey:@"firstName"];
+        parameters[[self prependPrefix:prefix toKey:@"givenName"]] = self.firstName;
     }
 
     if (self.lastName) {
-        [parameters setObject:self.lastName forKey:@"lastName"];
+        parameters[[self prependPrefix:prefix toKey:@"surname"]] = self.lastName;
     }
 
     if (self.phoneNumber) {
-        [parameters setObject:self.phoneNumber forKey:@"phoneNumber"];
+        parameters[[self prependPrefix:prefix toKey:@"phoneNumber"]] = self.phoneNumber;
     }
 
     if (self.streetAddress) {
-        [parameters setObject:self.streetAddress forKey:@"line1"];
+        parameters[[self prependPrefix:prefix toKey:@"line1"]] = self.streetAddress;
     }
 
     if (self.extendedAddress) {
-        [parameters setObject:self.extendedAddress forKey:@"line2"];
+        parameters[[self prependPrefix:prefix toKey:@"line2"]] = self.extendedAddress;
     }
 
     if (self.locality) {
-        [parameters setObject:self.locality forKey:@"city"];
+        parameters[[self prependPrefix:prefix toKey:@"city"]] = self.locality;
     }
 
     if (self.region) {
-        [parameters setObject:self.region forKey:@"state"];
+        parameters[[self prependPrefix:prefix toKey:@"state"]] = self.region;
     }
 
     if (self.postalCode) {
-        [parameters setObject:self.postalCode forKey:@"postalCode"];
+        parameters[[self prependPrefix:prefix toKey:@"postalCode"]] = self.postalCode;
     }
 
     if (self.countryCodeAlpha2) {
-        [parameters setObject:self.countryCodeAlpha2 forKey:@"countryCode"];
+        parameters[[self prependPrefix:prefix toKey:@"countryCode"]] = self.countryCodeAlpha2;
     }
 
     return [parameters copy];
+}
+
+- (NSDictionary *)asParameters {
+    return [self asParametersWithPrefix:@""];
 }
 
 - (NSString *)debugDescription {

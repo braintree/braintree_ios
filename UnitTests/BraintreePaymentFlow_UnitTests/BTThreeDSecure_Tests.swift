@@ -259,21 +259,20 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
-            let customerParams = self.mockAPIClient.lastPOSTParameters!["customer"] as! Dictionary<String, AnyObject>
-            XCTAssertEqual(customerParams["mobilePhoneNumber"] as! String, "5151234321")
-            XCTAssertEqual(customerParams["email"] as! String, "tester@example.com")
-            XCTAssertEqual(customerParams["shippingMethod"] as! String, "03")
+            let additionalInfo = self.mockAPIClient.lastPOSTParameters!["additionalInfo"] as! Dictionary<String, String>
+            XCTAssertEqual(additionalInfo["mobilePhoneNumber"], "5151234321")
+            XCTAssertEqual(additionalInfo["email"], "tester@example.com")
+            XCTAssertEqual(additionalInfo["shippingMethod"], "03")
 
-            let billingAddress = customerParams["billingAddress"] as! [String: String]
-            XCTAssertEqual(billingAddress["firstName"], "Joe")
-            XCTAssertEqual(billingAddress["lastName"], "Guy")
-            XCTAssertEqual(billingAddress["phoneNumber"], "12345678")
-            XCTAssertEqual(billingAddress["line1"], "555 Smith St.")
-            XCTAssertEqual(billingAddress["line2"], "#5")
-            XCTAssertEqual(billingAddress["city"], "Oakland")
-            XCTAssertEqual(billingAddress["state"], "CA")
-            XCTAssertEqual(billingAddress["countryCode"], "US")
-            XCTAssertEqual(billingAddress["postalCode"], "54321")
+            XCTAssertEqual(additionalInfo["billingGivenName"], "Joe")
+            XCTAssertEqual(additionalInfo["billingSurname"], "Guy")
+            XCTAssertEqual(additionalInfo["billingPhoneNumber"], "12345678")
+            XCTAssertEqual(additionalInfo["billingLine1"], "555 Smith St.")
+            XCTAssertEqual(additionalInfo["billingLine2"], "#5")
+            XCTAssertEqual(additionalInfo["billingCity"], "Oakland")
+            XCTAssertEqual(additionalInfo["billingState"], "CA")
+            XCTAssertEqual(additionalInfo["billingCountryCode"], "US")
+            XCTAssertEqual(additionalInfo["billingPostalCode"], "54321")
 
             expectation.fulfill()
         }
@@ -316,23 +315,19 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.bin = "12345"
         threeDSecureRequest.versionRequested = 2
         threeDSecureRequest.challengeRequested = true
-
-        let additionalInfo = BTThreeDSecureAdditionalInformation()
-        additionalInfo.billingGivenName = "Joe"
-        additionalInfo.billingSurname = "Guy"
-        additionalInfo.billingPhoneNumber = "5151234321"
-        additionalInfo.email = "tester@example.com"
+        threeDSecureRequest.email = "tester@example.com"
 
         let billingAddress = BTThreeDSecurePostalAddress()
+        billingAddress.firstName = "Joe"
+        billingAddress.lastName = "Guy"
         billingAddress.streetAddress = "555 Smith St."
         billingAddress.extendedAddress = "#5"
         billingAddress.locality = "Oakland"
         billingAddress.region = "CA"
         billingAddress.countryCodeAlpha2 = "US"
         billingAddress.postalCode = "54321"
-        additionalInfo.billingAddress = billingAddress
-
-        threeDSecureRequest.additionalInformation = additionalInfo
+        billingAddress.phoneNumber = "5151234321"
+        threeDSecureRequest.billingAddress = billingAddress
 
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)

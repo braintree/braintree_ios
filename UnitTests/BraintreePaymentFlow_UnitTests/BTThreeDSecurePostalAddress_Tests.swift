@@ -38,8 +38,8 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         address.postalCode = "54321"
 
         let parameters = address.asParameters() as! Dictionary<String, String>
-        XCTAssertEqual(parameters["firstName"], "Joe")
-        XCTAssertEqual(parameters["lastName"], "Guy")
+        XCTAssertEqual(parameters["givenName"], "Joe")
+        XCTAssertEqual(parameters["surname"], "Guy")
         XCTAssertEqual(parameters["phoneNumber"], "12345678")
         XCTAssertEqual(parameters["line1"], "555 Smith St.")
         XCTAssertEqual(parameters["line2"], "#5")
@@ -60,8 +60,8 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         address.postalCode = "54321"
 
         let parameters = address.asParameters() as! Dictionary<String, String>
-        XCTAssertEqual(parameters["firstName"], "Joe")
-        XCTAssertEqual(parameters["lastName"], "Guy")
+        XCTAssertEqual(parameters["givenName"], "Joe")
+        XCTAssertEqual(parameters["surname"], "Guy")
         XCTAssertEqual(parameters["line1"], "555 Smith St.")
         XCTAssertNil(parameters["line2"])
         XCTAssertEqual(parameters["city"], "Oakland")
@@ -74,8 +74,32 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         let address = BTThreeDSecurePostalAddress()
 
         let parameters = address.asParameters()
-        XCTAssertNil(parameters["firstName"])
-        XCTAssertNil(parameters["lastName"])
+        XCTAssertNil(parameters["givenName"])
+        XCTAssertNil(parameters["surname"])
         XCTAssertNil(parameters["phoneNumber"])
+    }
+
+    func testAsParametersWithPrefix_parameterizesAllProperties() {
+        let address = BTThreeDSecurePostalAddress()
+        address.firstName = "Joe"
+        address.lastName = "Guy"
+        address.phoneNumber = "12345678"
+        address.streetAddress = "555 Smith St."
+        address.extendedAddress = "#5"
+        address.locality = "Oakland"
+        address.region = "CA"
+        address.countryCodeAlpha2 = "US"
+        address.postalCode = "54321"
+
+        let parameters = address.asParameters(withPrefix: "billing")
+        XCTAssertEqual(parameters["billingGivenName"], "Joe")
+        XCTAssertEqual(parameters["billingSurname"], "Guy")
+        XCTAssertEqual(parameters["billingPhoneNumber"], "12345678")
+        XCTAssertEqual(parameters["billingLine1"], "555 Smith St.")
+        XCTAssertEqual(parameters["billingLine2"], "#5")
+        XCTAssertEqual(parameters["billingCity"], "Oakland")
+        XCTAssertEqual(parameters["billingState"], "CA")
+        XCTAssertEqual(parameters["billingCountryCode"], "US")
+        XCTAssertEqual(parameters["billingPostalCode"], "54321")
     }
 }

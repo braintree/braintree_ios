@@ -103,21 +103,19 @@
         request.bin = tokenizedCard.bin;
         request.versionRequested = 2;
 
-        BTThreeDSecureAdditionalInformation *info = [[BTThreeDSecureAdditionalInformation alloc] init];
-        info.billingGivenName = @"Jill";
-        info.billingSurname = @"Doe";
-        info.billingPhoneNumber = @"8101234567";
-        info.email = @"test@example.com";
-        info.shippingMethod = @"01";
         BTThreeDSecurePostalAddress *billingAddress = [BTThreeDSecurePostalAddress new];
+        billingAddress.firstName = @"Jill";
+        billingAddress.lastName = @"Doe";
         billingAddress.streetAddress = @"555 Smith St.";
         billingAddress.extendedAddress = @"#5";
         billingAddress.locality = @"Oakland";
         billingAddress.region = @"CA";
         billingAddress.countryCodeAlpha2 = @"US";
         billingAddress.postalCode = @"12345";
-        info.billingAddress = billingAddress;
-        request.additionalInformation = info;
+        billingAddress.phoneNumber = @"8101234567";
+        request.billingAddress = billingAddress;
+        request.email = @"test@example.com";
+        request.shippingMethod = @"01";
 
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
