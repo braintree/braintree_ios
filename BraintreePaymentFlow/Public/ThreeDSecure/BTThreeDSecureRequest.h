@@ -77,6 +77,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) NSInteger versionRequested;
 
 /**
+ Optional. If set to true, a challenge will be forced if possible.
+ */
+@property (nonatomic) BOOL challengeRequested;
+
+/**
  A delegate for receiving information about the ThreeDSecure payment flow.
  */
 @property (nonatomic, nullable, weak) id<BTThreeDSecureRequestDelegate> threeDSecureRequestDelegate;

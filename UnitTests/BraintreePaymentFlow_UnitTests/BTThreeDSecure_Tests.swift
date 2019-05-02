@@ -315,6 +315,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.nonce = "fake-card-nonce"
         threeDSecureRequest.bin = "12345"
         threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.challengeRequested = true
 
         let additionalInfo = BTThreeDSecureAdditionalInformation()
         additionalInfo.billingGivenName = "Joe"
@@ -335,7 +336,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
         driver.performThreeDSecureLookup(threeDSecureRequest) { (lookup, error) in
             XCTAssertEqual(self.mockAPIClient.lastPOSTParameters!["amount"] as! NSDecimalNumber, 9.97)
-            let additionalInformation = self.mockAPIClient.lastPOSTParameters!["additionalInformation"] as! Dictionary<String, AnyObject>
+            let additionalInformation = self.mockAPIClient.lastPOSTParameters!["additionalInfo"] as! Dictionary<String, AnyObject>
             XCTAssertEqual(additionalInformation["billingPhoneNumber"] as! String, "5151234321")
             XCTAssertEqual(additionalInformation["email"] as! String, "tester@example.com")
             XCTAssertEqual(additionalInformation["billingGivenName"] as! String, "Joe")
@@ -346,6 +347,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertEqual(additionalInformation["billingState"] as! String, "CA")
             XCTAssertEqual(additionalInformation["billingCountryCode"] as! String, "US")
             XCTAssertEqual(additionalInformation["billingPostalCode"] as! String, "54321")
+            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["challengeRequested"] as! Bool)
 
             expectation.fulfill()
         }

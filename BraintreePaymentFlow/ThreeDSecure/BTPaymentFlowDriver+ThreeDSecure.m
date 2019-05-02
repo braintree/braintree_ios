@@ -55,6 +55,10 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
             requestParameters[@"dfReferenceId"] = [request getDfReferenceId];
         }
 
+        if (request.challengeRequested) {
+            requestParameters[@"challengeRequested"] = @(request.challengeRequested);
+        }
+
         NSString *urlSafeNonce = [request.nonce stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
         [self.apiClient POST:[NSString stringWithFormat:@"v1/payment_methods/%@/three_d_secure/lookup", urlSafeNonce]
                   parameters:requestParameters
