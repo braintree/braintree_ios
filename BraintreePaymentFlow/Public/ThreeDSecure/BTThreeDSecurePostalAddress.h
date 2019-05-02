@@ -8,14 +8,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BTThreeDSecurePostalAddress : NSObject <NSCopying>
 
 /**
- Optional. First name associated with the address
+ Optional. Given name associated with the address
  */
-@property (nonatomic, nullable, copy) NSString *firstName;
+@property (nonatomic, nullable, copy) NSString *givenName;
 
 /**
- Optional. Last name associated with the address
+ Optional. Surname associated with the address
  */
-@property (nonatomic, nullable, copy) NSString *lastName;
+@property (nonatomic, nullable, copy) NSString *surname;
 
 /**
  Optional. The phone number associated with the address
@@ -52,6 +52,17 @@ NS_ASSUME_NONNULL_BEGIN
  Optional. 2 letter code for US states, and the equivalent for other countries
  */
 @property (nonatomic, nullable, copy) NSString *region;
+
+/**
+ 
+ Optional. First name associated with the address
+ */
+@property (nonatomic, nullable, copy) NSString *firstName DEPRECATED_MSG_ATTRIBUTE("Use givenName instead.");
+
+/**
+ Optional. Last name associated with the address
+ */
+@property (nonatomic, nullable, copy) NSString *lastName DEPRECATED_MSG_ATTRIBUTE("Use surname instead.");
 
 @end
 

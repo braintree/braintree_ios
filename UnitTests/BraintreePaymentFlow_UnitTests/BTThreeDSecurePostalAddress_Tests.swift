@@ -3,8 +3,8 @@ import XCTest
 class BTThreeDSecurePostalAddress_Tests: XCTestCase {
     func testCopiesAllProperties() {
         let originalAddress = BTThreeDSecurePostalAddress()
-        originalAddress.firstName = "Joe"
-        originalAddress.lastName = "Guy"
+        originalAddress.givenName = "Joe"
+        originalAddress.surname = "Guy"
         originalAddress.phoneNumber = "12345678"
         originalAddress.streetAddress = "555 Smith St."
         originalAddress.extendedAddress = "#5"
@@ -14,8 +14,8 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         originalAddress.postalCode = "54321"
         
         let addressCopy = originalAddress.copy() as! BTThreeDSecurePostalAddress
-        XCTAssertEqual(addressCopy.firstName, "Joe")
-        XCTAssertEqual(addressCopy.lastName, "Guy")
+        XCTAssertEqual(addressCopy.givenName, "Joe")
+        XCTAssertEqual(addressCopy.surname, "Guy")
         XCTAssertEqual(addressCopy.phoneNumber, "12345678")
         XCTAssertEqual(addressCopy.streetAddress, "555 Smith St.")
         XCTAssertEqual(addressCopy.extendedAddress, "#5")
@@ -27,8 +27,8 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
 
     func testAsParameters_parameterizesAllProperties() {
         let address = BTThreeDSecurePostalAddress()
-        address.firstName = "Joe"
-        address.lastName = "Guy"
+        address.givenName = "Joe"
+        address.surname = "Guy"
         address.phoneNumber = "12345678"
         address.streetAddress = "555 Smith St."
         address.extendedAddress = "#5"
@@ -51,8 +51,8 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
 
     func testAsParameters_parameterizesWithNilProperties() {
         let address = BTThreeDSecurePostalAddress()
-        address.firstName = "Joe"
-        address.lastName = "Guy"
+        address.givenName = "Joe"
+        address.surname = "Guy"
         address.streetAddress = "555 Smith St."
         address.locality = "Oakland"
         address.region = "CA"
@@ -81,8 +81,8 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
 
     func testAsParametersWithPrefix_parameterizesAllProperties() {
         let address = BTThreeDSecurePostalAddress()
-        address.firstName = "Joe"
-        address.lastName = "Guy"
+        address.givenName = "Joe"
+        address.surname = "Guy"
         address.phoneNumber = "12345678"
         address.streetAddress = "555 Smith St."
         address.extendedAddress = "#5"

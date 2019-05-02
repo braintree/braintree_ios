@@ -104,8 +104,8 @@
         request.versionRequested = 2;
 
         BTThreeDSecurePostalAddress *billingAddress = [BTThreeDSecurePostalAddress new];
-        billingAddress.firstName = @"Jill";
-        billingAddress.lastName = @"Doe";
+        billingAddress.givenName = @"Jill";
+        billingAddress.surname = @"Doe";
         billingAddress.streetAddress = @"555 Smith St.";
         billingAddress.extendedAddress = @"#5";
         billingAddress.locality = @"Oakland";

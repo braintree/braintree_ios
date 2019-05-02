@@ -5,10 +5,26 @@
 // Property names follow the `Braintree_Address` convention as documented at:
 // https://developers.braintreepayments.com/ios+php/reference/response/address
 
+- (void)setFirstName:(NSString *)firstName {
+    _givenName = firstName;
+}
+
+- (NSString *)firstName {
+    return _givenName;
+}
+
+- (void)setLastName:(NSString *)lastName {
+    _surname = lastName;
+}
+
+- (NSString *)lastName {
+    return _surname;
+}
+
 - (id)copyWithZone:(__unused NSZone *)zone {
     BTThreeDSecurePostalAddress *address = [[BTThreeDSecurePostalAddress alloc] init];
-    address.firstName = self.firstName;
-    address.lastName = self.lastName;
+    address.givenName = self.givenName;
+    address.surname = self.surname;
     address.phoneNumber = self.phoneNumber;
     address.streetAddress = self.streetAddress;
     address.extendedAddress = self.extendedAddress;
@@ -34,12 +50,12 @@
 - (NSDictionary *)asParametersWithPrefix:(NSString *)prefix {
     NSMutableDictionary *parameters = [@{} mutableCopy];
 
-    if (self.firstName) {
-        parameters[[self prependPrefix:prefix toKey:@"givenName"]] = self.firstName;
+    if (self.givenName) {
+        parameters[[self prependPrefix:prefix toKey:@"givenName"]] = self.givenName;
     }
 
-    if (self.lastName) {
-        parameters[[self prependPrefix:prefix toKey:@"surname"]] = self.lastName;
+    if (self.surname) {
+        parameters[[self prependPrefix:prefix toKey:@"surname"]] = self.surname;
     }
 
     if (self.phoneNumber) {
@@ -78,7 +94,7 @@
 }
 
 - (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"<%@:%p \"%@\" %@, %@, %@, %@, %@, %@, %@ %@ %@>", NSStringFromClass([self class]), self, [self description], self.firstName, self.lastName, self.phoneNumber, self.streetAddress, self.extendedAddress, self.locality, self.region, self.postalCode, self.countryCodeAlpha2];
+    return [NSString stringWithFormat:@"<%@:%p \"%@\" %@, %@, %@, %@, %@, %@, %@ %@ %@>", NSStringFromClass([self class]), self, [self description], self.givenName, self.surname, self.phoneNumber, self.streetAddress, self.extendedAddress, self.locality, self.region, self.postalCode, self.countryCodeAlpha2];
 }
 
 @end

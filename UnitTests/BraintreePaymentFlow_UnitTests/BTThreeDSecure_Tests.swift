@@ -246,8 +246,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.shippingMethod = "03"
 
         let billingAddress = BTThreeDSecurePostalAddress()
-        billingAddress.firstName = "Joe"
-        billingAddress.lastName = "Guy"
+        billingAddress.givenName = "Joe"
+        billingAddress.surname = "Guy"
         billingAddress.phoneNumber = "12345678"
         billingAddress.streetAddress = "555 Smith St."
         billingAddress.extendedAddress = "#5"
@@ -318,8 +318,8 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.email = "tester@example.com"
 
         let billingAddress = BTThreeDSecurePostalAddress()
-        billingAddress.firstName = "Joe"
-        billingAddress.lastName = "Guy"
+        billingAddress.givenName = "Joe"
+        billingAddress.surname = "Guy"
         billingAddress.streetAddress = "555 Smith St."
         billingAddress.extendedAddress = "#5"
         billingAddress.locality = "Oakland"
