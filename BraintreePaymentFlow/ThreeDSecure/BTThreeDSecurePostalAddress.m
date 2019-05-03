@@ -25,19 +25,19 @@
     BTThreeDSecurePostalAddress *address = [[BTThreeDSecurePostalAddress alloc] init];
     address.givenName = self.givenName;
     address.surname = self.surname;
-    address.phoneNumber = self.phoneNumber;
     address.streetAddress = self.streetAddress;
     address.extendedAddress = self.extendedAddress;
     address.locality = self.locality;
-    address.countryCodeAlpha2 = self.countryCodeAlpha2;
-    address.postalCode = self.postalCode;
     address.region = self.region;
+    address.postalCode = self.postalCode;
+    address.countryCodeAlpha2 = self.countryCodeAlpha2;
+    address.phoneNumber = self.phoneNumber;
     return address;
 }
 
 - (NSString *)prependPrefix:(NSString *)prefix toKey:(NSString *)key {
     if (prefix.length) {
-        // Uppercase the first charachter in the key
+        // Uppercase the first character in the key
         key = [key stringByReplacingCharactersInRange:NSMakeRange(0, 1)
                                            withString:[[key substringToIndex:1] uppercaseString]];
         return [NSString stringWithFormat:@"%@%@", prefix, key];
@@ -56,10 +56,6 @@
 
     if (self.surname) {
         parameters[[self prependPrefix:prefix toKey:@"surname"]] = self.surname;
-    }
-
-    if (self.phoneNumber) {
-        parameters[[self prependPrefix:prefix toKey:@"phoneNumber"]] = self.phoneNumber;
     }
 
     if (self.streetAddress) {
@@ -84,6 +80,14 @@
 
     if (self.countryCodeAlpha2) {
         parameters[[self prependPrefix:prefix toKey:@"countryCode"]] = self.countryCodeAlpha2;
+    }
+
+    if (self.phoneNumber) {
+        NSString *key = @"phoneNumber";
+        if ([prefix isEqualToString:@"shipping"]) {
+            key = @"phone";
+        }
+        parameters[[self prependPrefix:prefix toKey:key]] = self.phoneNumber;
     }
 
     return [parameters copy];

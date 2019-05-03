@@ -6,6 +6,10 @@
 - (NSDictionary *)asParameters {
     NSMutableDictionary *parameters = [@{} mutableCopy];
 
+    if (self.shippingAddress) {
+        [parameters addEntriesFromDictionary:[self.shippingAddress asParametersWithPrefix:@"shipping"]];
+    }
+
     [self insertIfExists:self.shippingMethodIndicator key:@"shippingMethodIndicator" dictionary:parameters];
     [self insertIfExists:self.productCode key:@"productCode" dictionary:parameters];
     [self insertIfExists:self.deliveryTimeframe key:@"deliveryTimeframe" dictionary:parameters];

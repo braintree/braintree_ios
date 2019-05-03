@@ -1,8 +1,15 @@
 #import <Foundation/Foundation.h>
+@class BTThreeDSecurePostalAddress;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BTThreeDSecureAdditionalInformation : NSObject
+
+/**
+ Optional. The shipping address used for verification
+ @see BTThreeDSecurePostalAddress
+ */
+@property (nonatomic, nullable, copy) BTThreeDSecurePostalAddress *shippingAddress;
 
 /**
  Optional. The 2-digit string indicating the shipping method chosen for the transaction
