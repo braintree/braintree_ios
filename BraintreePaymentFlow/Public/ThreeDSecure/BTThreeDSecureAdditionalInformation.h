@@ -278,6 +278,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nullable, copy) NSString *recurringFrequency;
 
+/**
+ Optional. The 2-digit number of minutes (minimum 05) to set the maximum amount of time for all 3DS 2.0 messages to be communicated between all components.
+ */
+@property (nonatomic, nullable, copy) NSString *sdkMaxTimeout;
+
 @end
 
 NS_ASSUME_NONNULL_END

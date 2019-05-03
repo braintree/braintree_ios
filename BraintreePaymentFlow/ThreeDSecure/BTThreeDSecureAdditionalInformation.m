@@ -47,6 +47,7 @@
     [self insertIfExists:self.purchaseDate key:@"purchaseDate" dictionary:parameters];
     [self insertIfExists:self.recurringEnd key:@"recurringEnd" dictionary:parameters];
     [self insertIfExists:self.recurringFrequency key:@"recurringFrequency" dictionary:parameters];
+    [self insertIfExists:self.sdkMaxTimeout key:@"sdkMaxTimeout" dictionary:parameters];
 
     return [parameters copy];
 }
