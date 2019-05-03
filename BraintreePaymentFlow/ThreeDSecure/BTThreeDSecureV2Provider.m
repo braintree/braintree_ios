@@ -74,7 +74,7 @@
 #pragma mark - Cardinal Delegate
 
 - (void)cardinalSession:(__unused CardinalSession *)session stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse serverJWT:(__unused NSString *)serverJWT {
-    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.cardinal-sdk.action-code.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
+    [self.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.%@", [self analyticsStringForActionCode:validateResponse.actionCode]]];
     switch (validateResponse.actionCode) {
         case CardinalResponseActionCodeSuccess:
         case CardinalResponseActionCodeNoAction:
@@ -121,17 +121,17 @@
 - (NSString *)analyticsStringForActionCode:(CardinalResponseActionCode)actionCode {
     switch (actionCode) {
         case CardinalResponseActionCodeUnknown:
-            return @"UNKNOWN";
+            return @"unknown";
         case CardinalResponseActionCodeSuccess:
-            return @"SUCCESS";
+            return @"completed";
         case CardinalResponseActionCodeNoAction:
-            return @"NOACTION";
+            return @"noaction";
         case CardinalResponseActionCodeFailure:
-            return @"FAILURE";
+            return @"failure";
         case CardinalResponseActionCodeError:
-            return @"ERROR";
+            return @"failed";
         case CardinalResponseActionCodeCancel:
-            return @"CANCEL";
+            return @"canceled";
     }
 }
 
