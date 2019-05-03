@@ -78,13 +78,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                                                              completion:^(NSDictionary *lookupParameters) {
                                                                                                  //TODO why is this translation layer here? If it is just for the device fingerprint then we should make it clearer and translate our params closer to the request
                                                                                                  self.dfReferenceId = lookupParameters[@"dfReferenceId"];
-                                                                                                 if (self.bin) {
-                                                                                                     [self.threeDSecureV2Provider processBin:self.bin completion:^(__unused NSDictionary * _Nonnull details) {
-                                                                                                         [self startRequest:request configuration:configuration];
-                                                                                                     }];
-                                                                                                 } else {
-                                                                                                     [self startRequest:request configuration:configuration];
-                                                                                                 }
+                                                                                                 [self startRequest:request configuration:configuration];
                                                                                              }];
         } else {
             [self startRequest:request configuration:configuration];

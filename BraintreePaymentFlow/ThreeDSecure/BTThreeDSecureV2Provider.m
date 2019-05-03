@@ -47,13 +47,6 @@
     return instance;
 }
 
-- (void)processBin:(NSString *)bin
-        completion:(BTThreeDSecureV2ProviderProcessBinCompletionHandler)completionHandler {
-    [self.cardinalSession processBin:bin didComplete:^{
-        completionHandler(@{});
-    }];
-}
-
 - (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler {

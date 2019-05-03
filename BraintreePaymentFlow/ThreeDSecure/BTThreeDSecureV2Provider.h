@@ -15,9 +15,6 @@ typedef void (^BTThreeDSecureV2ProviderFailureHandler)(NSError *error);
                                           apiClient:(BTAPIClient *)apiClient
                                          completion:(BTThreeDSecureV2ProviderInitializeCompletionHandler)completionHandler;
 
-- (void)processBin:(NSString *)bin
-                    completion:(BTThreeDSecureV2ProviderProcessBinCompletionHandler)completionHandler;
-
 - (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult
                     success:(BTThreeDSecureV2ProviderSuccessHandler)successHandler
                     failure:(BTThreeDSecureV2ProviderFailureHandler)failureHandler;
