@@ -1064,7 +1064,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.start-payment.selected"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.initialized"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.started"))
-        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.lookup-flow.1.0"))
+        XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.3ds-version.1.0"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.verification-flow.challenge-presented.true"))
         XCTAssertTrue(mockAPIClient.postedAnalyticsEvents.contains("ios.three-d-secure.webswitch.initiate.succeeded"))
     }
