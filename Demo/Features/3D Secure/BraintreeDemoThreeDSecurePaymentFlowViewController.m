@@ -101,7 +101,7 @@
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
         request.bin = tokenizedCard.bin;
-        request.versionRequested = 2;
+        request.versionRequested = BTThreeDSecureVersion2;
 
         BTThreeDSecurePostalAddress *billingAddress = [BTThreeDSecurePostalAddress new];
         billingAddress.givenName = @"Jill";

@@ -10,8 +10,18 @@
 #import "BTThreeDSecureAdditionalInformation.h"
 #import "BTThreeDSecureLookup.h"
 
-
 NS_ASSUME_NONNULL_BEGIN
+
+/**
+ Error codes that describe errors that occur during 3D Secure.
+ */
+typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
+    /// 3DS 1.0
+    BTThreeDSecureVersion1,
+
+    /// 3DS 2.0
+    BTThreeDSecureVersion2
+};
 
 @class BTThreeDSecureRequest;
 @protocol BTThreeDSecureRequestDelegate;
@@ -72,9 +82,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, strong) BTThreeDSecureAdditionalInformation *additionalInformation;
 
 /**
- Optional. Set to 2 if ThreeDSecure V2 flows are desired, when possible. 1 if only ThreeDSecure V1 flows are desired. Will default to V1 flows unless set.
+ Optional. Set to BTThreeDSecureVersion2 if ThreeDSecure V2 flows are desired, when possible. Defaults to BTThreeDSecureVersion2
  */
-@property (nonatomic, assign) NSInteger versionRequested;
+@property (nonatomic, assign) BTThreeDSecureVersion versionRequested;
 
 /**
  Optional. If set to true, a challenge will be forced if possible.

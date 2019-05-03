@@ -209,6 +209,10 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
     // MARK: - ThreeDSecure Request Tests
 
+    func testThreeDSecureRequest_defaultsToV1() {
+        XCTAssertEqual(threeDSecureRequest.versionRequested, .version1)
+    }
+
     func testThreeDSecureRequest_sendsAllParameters() {
         let responseBody = [
             "paymentMethod": [
@@ -313,7 +317,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.amount = 9.97
         threeDSecureRequest.nonce = "fake-card-nonce"
         threeDSecureRequest.bin = "12345"
-        threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.challengeRequested = true
         threeDSecureRequest.email = "tester@example.com"
 
@@ -543,7 +547,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
     func testStartPayment_v2_returnsErrorWhenCardinalAuthenticationJWT_isMissing() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
         let expectation = self.expectation(description: "willCallCompletion")
@@ -595,7 +599,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         threeDSecureRequest = BTThreeDSecureRequest()
         threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
         let expectation = self.expectation(description: "willCallCompletion")
@@ -647,7 +651,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
         threeDSecureRequest = BTThreeDSecureRequest()
         threeDSecureRequest.nonce = "fake-card-nonce"
-        threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
 
         let expectation = self.expectation(description: "willCallCompletion")
@@ -697,7 +701,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
     func testStartPayment_v2_doesNotDisplaySafariViewControllerWhenAuthenticationNotRequired() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.bin = "400000"
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
@@ -760,7 +764,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
     func testStartPayment_v2_callsOnLookupCompleteDelegateMethod() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.bin = "400000"
         threeDSecureRequest.threeDSecureRequestDelegate = mockThreeDSecureRequestDelegate
         mockThreeDSecureRequestDelegate.lookupCompleteExpectation = self.expectation(description: "onLookupComplete expectation")
@@ -807,7 +811,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
 
     func testStartPayment_v2_when_threeDSecureRequestDelegate_notSet_returnsError() {
         let viewControllerPresentingDelegate = MockViewControllerPresentationDelegate()
-        threeDSecureRequest.versionRequested = 2
+        threeDSecureRequest.versionRequested = .version2
 
         let expectation = self.expectation(description: "willCallCompletion")
 

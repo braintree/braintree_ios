@@ -33,6 +33,15 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
 
 @implementation BTThreeDSecureRequest
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _versionRequested = BTThreeDSecureVersion1;
+    }
+
+    return self;
+}
+
 - (void)handleRequest:(BTPaymentFlowRequest *)request
                client:(BTAPIClient *)apiClient
 paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
@@ -48,7 +57,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
         NSError *integrationError;
 
-        if (self.versionRequested == 2) {
+        if (self.versionRequested == BTThreeDSecureVersion2) {
             if (!configuration.cardinalAuthenticationJWT) {
                 [[BTLogger sharedLogger] critical:@"BTThreeDSecureRequest versionRequested is 2, but merchant account is not setup properly."];
                 integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
@@ -72,7 +81,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
             return;
         }
 
-        if (configuration.cardinalAuthenticationJWT && self.versionRequested == 2) {
+        if (configuration.cardinalAuthenticationJWT && self.versionRequested == BTThreeDSecureVersion2) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
                                                                                              completion:^(NSDictionary *lookupParameters) {
@@ -91,7 +100,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     BTAPIClient *apiClient = [self.paymentFlowDriverDelegate apiClient];
     BTPaymentFlowDriver *paymentFlowDriver = [[BTPaymentFlowDriver alloc] initWithAPIClient:apiClient];
 
-    if (threeDSecureRequest.versionRequested == 2) {
+    if (threeDSecureRequest.versionRequested == BTThreeDSecureVersion2) {
         if (threeDSecureRequest.threeDSecureRequestDelegate == nil) {
             NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
                                                  code:BTThreeDSecureFlowErrorTypeConfiguration
@@ -101,7 +110,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         }
     }
     
-    if (threeDSecureRequest.versionRequested != 2 && threeDSecureRequest.threeDSecureRequestDelegate == nil) {
+    if (threeDSecureRequest.versionRequested == BTThreeDSecureVersion1 && threeDSecureRequest.threeDSecureRequestDelegate == nil) {
         threeDSecureRequest.threeDSecureRequestDelegate = self;
     }
 
