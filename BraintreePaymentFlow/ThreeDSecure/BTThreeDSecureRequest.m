@@ -124,7 +124,7 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
                                                   return;
                                               }
 
-                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.lookup-flow.%@", lookupResult.threeDSecureVersion]];
+                                              [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.3ds-version.%@", lookupResult.threeDSecureVersion]];
 
                                               [self.threeDSecureRequestDelegate onLookupComplete:threeDSecureRequest result:lookupResult next:^{
                                                   [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.challenge-presented.%@", [self stringForBool:lookupResult.requiresUserAuthentication]]];

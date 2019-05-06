@@ -121,17 +121,17 @@
 - (NSString *)analyticsStringForActionCode:(CardinalResponseActionCode)actionCode {
     switch (actionCode) {
         case CardinalResponseActionCodeUnknown:
-            return @"UNKNOWN";
+            return @"unknown";
         case CardinalResponseActionCodeSuccess:
-            return @"SUCCESS";
+            return @"completed";
         case CardinalResponseActionCodeNoAction:
-            return @"NOACTION";
+            return @"noaction";
         case CardinalResponseActionCodeFailure:
-            return @"FAILURE";
+            return @"failure";
         case CardinalResponseActionCodeError:
-            return @"ERROR";
+            return @"failed";
         case CardinalResponseActionCodeCancel:
-            return @"CANCEL";
+            return @"canceled";
     }
 }
 
