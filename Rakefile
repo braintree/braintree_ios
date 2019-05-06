@@ -144,8 +144,17 @@ task :sanity_checks => %w[sanity_checks:pending_specs sanity_checks:build_demo s
 namespace :sanity_checks do
   desc 'Check for pending tests'
   task :pending_specs do
+    begin
+      run! "which -s ack"
+    rescue => e
+      puts
+      say(HighLine.color("Please install ack before running", :red, :bold))
+      puts
+      raise
+    end
+
     # ack returns 1 if no match is found, which is our success case
-    run! "which -s ack && ! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
+    run! "! ack 'fit\\(|fdescribe\\(' Specs" or fail "Please do not commit pending specs."
   end
 
   desc 'Verify that all demo apps Build successfully'
