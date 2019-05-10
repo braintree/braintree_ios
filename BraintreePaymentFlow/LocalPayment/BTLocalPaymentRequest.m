@@ -117,7 +117,7 @@
                                           @"no_shipping": @(!localPaymentRequest.isShippingAddressRequired)
                                           };
 
-        [apiClient POST:@"v1/paypal_hermes/create_payment_resource"
+        [apiClient POST:@"v1/local_payments/create"
                    parameters:params
                    completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error) {
              if (!error) {
