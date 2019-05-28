@@ -54,6 +54,7 @@
     [self setObject:[m deviceScreenOrientation] forKey:@"deviceScreenOrientation" inDictionary:data];
     [self setObject:[m userInterfaceOrientation] forKey:@"userInterfaceOrientation" inDictionary:data];
     [self setObject:@([m isVenmoInstalled]) forKey:@"venmoInstalled" inDictionary:data];
+    [self setObject:[m dropInVersion] forKey:@"dropinVersion" inDictionary:data];
 
     return [NSDictionary dictionaryWithDictionary:data];
 }
@@ -72,7 +73,7 @@
 
 - (NSString *)platformVersion {
 
-    return [[UIDevice currentDevice] systemVersion];
+    return UIDevice.currentDevice.systemVersion;
 }
 
 - (NSString *)sdkVersion {
@@ -80,15 +81,15 @@
 }
 
 - (NSString *)merchantAppId {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleIdentifierKey];
+    return [NSBundle.mainBundle.infoDictionary objectForKey:(__bridge NSString *)kCFBundleIdentifierKey];
 }
 
 - (NSString *)merchantAppVersion {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleVersionKey];
+    return [NSBundle.mainBundle.infoDictionary objectForKey:(__bridge NSString *)kCFBundleVersionKey];
 }
 
 - (NSString *)merchantAppName {
-    return [[[NSBundle mainBundle] infoDictionary] objectForKey:(__bridge NSString *)kCFBundleNameKey];
+    return [NSBundle.mainBundle.infoDictionary objectForKey:(__bridge NSString *)kCFBundleNameKey];
 }
 
 - (BOOL)deviceRooted {
@@ -118,15 +119,15 @@
 }
 
 - (CLLocationDegrees)deviceLocationLatitude {
-    return [[[[CLLocationManager alloc] init] location] coordinate].latitude;
+    return [[CLLocationManager alloc] init].location.coordinate.latitude;
 }
 
 - (CLLocationDegrees)deviceLocationLongitude {
-    return [[[[CLLocationManager alloc] init] location] coordinate].longitude;
+    return [[CLLocationManager alloc] init].location.coordinate.longitude;
 }
 
 - (NSString *)iosIdentifierForVendor {
-    return [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    return UIDevice.currentDevice.identifierForVendor.UUIDString;
 }
 
 - (NSString *)iosDeploymentTarget {
@@ -143,11 +144,11 @@
 }
 
 - (NSString *)iosDeviceName {
-    return [[UIDevice currentDevice] name];
+    return UIDevice.currentDevice.name;
 }
 
 - (NSString *)iosSystemName {
-    return [[UIDevice currentDevice] systemName];
+    return UIDevice.currentDevice.systemName;
 }
 
 - (BOOL)iosIsCocoapods {
@@ -192,7 +193,7 @@
     }
     
     UIApplication *sharedApplication = [UIApplication performSelector:@selector(sharedApplication)];
-    UIInterfaceOrientation deviceOrientation = [[[sharedApplication keyWindow] rootViewController] interfaceOrientation];
+    UIInterfaceOrientation deviceOrientation = sharedApplication.keyWindow.rootViewController.interfaceOrientation;
 
     switch (deviceOrientation) {
         case UIInterfaceOrientationPortrait:
@@ -251,9 +252,28 @@
     });
     return venmoInstalled;
 }
+
+- (NSString *)dropInVersion {
+    static NSString *dropInVersion;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString *localizationBundlePath = [NSBundle.mainBundle pathForResource:@"Braintree-UIKit-Localization"
+                                                                         ofType:@"bundle"];
+        if (localizationBundlePath) {
+            NSBundle *localizationBundle = [NSBundle bundleWithPath:localizationBundlePath];
+            // 99.99.99 is the version specified when running the Demo app for this project.
+            // We want to ignore it in this case and not return a version.
+            if (localizationBundle && ! [localizationBundle.infoDictionary[@"CFBundleShortVersionString"] isEqualToString:@"99.99.99"]) {
+                dropInVersion = localizationBundle.infoDictionary[@"CFBundleShortVersionString"];
+            }
+        }
+    });
+
+    return dropInVersion;
+}
     
 + (BOOL)isAppExtension {
-    NSDictionary *extensionDictionary = [[NSBundle mainBundle] infoDictionary][@"NSExtension"];
+    NSDictionary *extensionDictionary = NSBundle.mainBundle.infoDictionary[@"NSExtension"];
     return [extensionDictionary isKindOfClass:[NSDictionary class]];
 }
 
