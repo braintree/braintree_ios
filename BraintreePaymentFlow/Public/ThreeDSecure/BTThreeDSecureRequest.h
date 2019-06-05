@@ -87,9 +87,14 @@ typedef NS_ENUM(NSInteger, BTThreeDSecureVersion){
 @property (nonatomic, assign) BTThreeDSecureVersion versionRequested;
 
 /**
- Optional. If set to true, a challenge will be forced if possible.
+ Optional. If set to true, an authentication challenge will be forced if possible.
  */
 @property (nonatomic) BOOL challengeRequested;
+
+/**
+ Optional. If set to true, an exemption to the authentication challenge will be requested.
+ */
+@property (nonatomic) BOOL exemptionRequested;
 
 /**
  A delegate for receiving information about the ThreeDSecure payment flow.

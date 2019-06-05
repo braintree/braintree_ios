@@ -319,6 +319,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         threeDSecureRequest.bin = "12345"
         threeDSecureRequest.versionRequested = .version2
         threeDSecureRequest.challengeRequested = true
+        threeDSecureRequest.exemptionRequested = true
         threeDSecureRequest.email = "tester@example.com"
 
         let billingAddress = BTThreeDSecurePostalAddress()
@@ -347,6 +348,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertEqual(additionalInformation["billingCountryCode"] as! String, "US")
             XCTAssertEqual(additionalInformation["billingPostalCode"] as! String, "54321")
             XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["challengeRequested"] as! Bool)
+            XCTAssertTrue(self.mockAPIClient.lastPOSTParameters!["exemptionRequested"] as! Bool)
 
             expectation.fulfill()
         }
