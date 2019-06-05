@@ -16,6 +16,7 @@
 #import "BTThreeDSecureResult.h"
 #import "BTThreeDSecureLookup.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
+#import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 #import "BTURLUtils.h"
@@ -26,9 +27,7 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
 
 @interface BTThreeDSecureRequest () <BTThreeDSecureRequestDelegate>
 
-@property (nonatomic, weak) id<BTPaymentFlowDriverDelegate> paymentFlowDriverDelegate;
 @property (nonatomic, strong) BTThreeDSecureV2Provider *threeDSecureV2Provider;
-@property (nonatomic, strong) NSString *dfReferenceId;
 @end
 
 @implementation BTThreeDSecureRequest
@@ -82,15 +81,40 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
         }
 
         if (configuration.cardinalAuthenticationJWT && self.versionRequested == BTThreeDSecureVersion2) {
+            [self prepareLookup:apiClient completion:^(NSError * _Nullable error) {
+                if (error != nil) {
+                    [delegate onPaymentComplete:nil error:error];
+                } else {
+                    [self startRequest:request configuration:configuration];
+                }
+            }];
+        } else {
+            [self startRequest:request configuration:configuration];
+        }
+    }];
+}
+
+- (void)prepareLookup:(BTAPIClient *)apiClient completion:(void (^)(NSError * _Nullable))completionBlock {
+    [apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable configurationError) {
+        if (configurationError) {
+            completionBlock(configurationError);
+            return;
+        }
+
+        if (configuration.cardinalAuthenticationJWT) {
             self.threeDSecureV2Provider = [BTThreeDSecureV2Provider initializeProviderWithConfiguration:configuration
                                                                                               apiClient:apiClient
                                                                                              completion:^(NSDictionary *lookupParameters) {
-                                                                                                 //TODO why is this translation layer here? If it is just for the device fingerprint then we should make it clearer and translate our params closer to the request
-                                                                                                 self.dfReferenceId = lookupParameters[@"dfReferenceId"];
-                                                                                                 [self startRequest:request configuration:configuration];
+                                                                                                 if (lookupParameters[@"dfReferenceId"]) {
+                                                                                                     self.dfReferenceId = lookupParameters[@"dfReferenceId"];
+                                                                                                 }
+                                                                                                 completionBlock(nil);
                                                                                              }];
         } else {
-            [self startRequest:request configuration:configuration];
+            NSError *error = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                 code:BTThreeDSecureFlowErrorTypeConfiguration
+                                             userInfo:@{NSLocalizedDescriptionKey: @"Merchant is not configured for 3SD 2."}];
+            completionBlock(error);
         }
     }];
 }
@@ -128,20 +152,23 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
 
                                               [self.threeDSecureRequestDelegate onLookupComplete:threeDSecureRequest result:lookupResult next:^{
                                                   [apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.verification-flow.challenge-presented.%@", [self stringForBool:lookupResult.requiresUserAuthentication]]];
-                                                  if (lookupResult.requiresUserAuthentication) {
-                                                      if (lookupResult.isThreeDSecureVersion2) {
-                                                          [self performV2Authentication:lookupResult];
-                                                      }
-                                                      else {
-                                                          NSURL *redirectUrl = [self constructV1PaymentURLForLookup:lookupResult configuration:configuration];
-                                                          [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:error];
-                                                      }
-                                                  } else {
-                                                      [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult.threeDSecureResult error:error];
-                                                  }
+                                                  [self processLookupResult:lookupResult configuration:configuration];
                                               }];
                                           });
                                       }];
+}
+
+- (void)processLookupResult:(BTThreeDSecureLookup *)lookupResult configuration:(BTConfiguration *)configuration {
+    if (lookupResult.requiresUserAuthentication) {
+        if (lookupResult.isThreeDSecureVersion2) {
+            [self performV2Authentication:lookupResult];
+        } else {
+            NSURL *redirectUrl = [self constructV1PaymentURLForLookup:lookupResult configuration:configuration];
+            [self.paymentFlowDriverDelegate onPaymentWithURL:redirectUrl error:nil];
+        }
+    } else {
+        [self.paymentFlowDriverDelegate onPaymentComplete:lookupResult.threeDSecureResult error:nil];
+    }
 }
 
 - (void)performV2Authentication:(BTThreeDSecureLookup *)lookupResult {
@@ -232,10 +259,6 @@ paymentDriverDelegate:(id<BTPaymentFlowDriverDelegate>)delegate {
     else {
         return @"false";
     }
-}
-
-- (NSString *)getDfReferenceId {
-    return self.dfReferenceId;
 }
 
 - (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)result next:(void (^)(void))next {

@@ -1,8 +1,10 @@
 #import "BTPaymentFlowDriver+ThreeDSecure.h"
-#if __has_include("BTAPIClient_Internal.h")
+#if __has_include("BraintreeCore.h")
 #import "BTAPIClient_Internal.h"
+#import "Braintree-Version.h"
 #else
 #import <BraintreeCore/BTAPIClient_Internal.h>
+#import <BraintreeCore/Braintree-Version.h>
 #endif
 #import "BTPaymentFlowDriver_Internal.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
@@ -30,8 +32,8 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 
         NSMutableDictionary *customer = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *requestParameters = [@{ @"amount": request.amount, @"customer": customer } mutableCopy];
-        if ([request getDfReferenceId]) {
-            requestParameters[@"dfReferenceId"] = [request getDfReferenceId];
+        if (request.dfReferenceId) {
+            requestParameters[@"dfReferenceId"] = request.dfReferenceId;
         }
 
         NSMutableDictionary *additionalInformation = [NSMutableDictionary dictionary];
@@ -103,6 +105,74 @@ NSString * const BTThreeDSecureFlowValidationErrorsKey = @"com.braintreepayments
 
                       completionBlock(lookup, nil);
                   }];
+    }];
+}
+
+- (void)prepareLookup:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(NSString * _Nullable, NSError * _Nullable))completionBlock {
+    BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
+    NSError *integrationError;
+
+    if (self.apiClient.clientToken == nil) {
+        integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                               code:BTThreeDSecureFlowErrorTypeConfiguration
+                                           userInfo:@{NSLocalizedDescriptionKey: @"A client token must be used for ThreeDSecure integrations."}];
+    } else if (threeDSecureRequest.nonce == nil) {
+        integrationError = [NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                               code:BTThreeDSecureFlowErrorTypeConfiguration
+                                           userInfo:@{NSLocalizedDescriptionKey: @"BTThreeDSecureRequest nonce can not be nil."}];
+    }
+
+    if (integrationError != nil) {
+        completionBlock(nil, integrationError);
+        return;
+    }
+
+    [threeDSecureRequest prepareLookup:self.apiClient completion:^(NSError * _Nullable error) {
+        if (error != nil) {
+            completionBlock(nil, error);
+        } else {
+            NSMutableDictionary *requestParameters = [@{} mutableCopy];
+            if (threeDSecureRequest.dfReferenceId) {
+                requestParameters[@"dfReferenceId"] = threeDSecureRequest.dfReferenceId;
+            }
+            requestParameters[@"nonce"] = threeDSecureRequest.nonce;
+            requestParameters[@"authorizationFingerprint"] = self.apiClient.clientToken.authorizationFingerprint;
+            requestParameters[@"braintreeLibraryVersion"] = [NSString stringWithFormat:@"iOS-%@", BRAINTREE_VERSION];
+
+            NSMutableDictionary *clientMetadata = [@{} mutableCopy];
+            clientMetadata[@"sdkVersion"] = BRAINTREE_VERSION;
+            clientMetadata[@"requestedThreeDSecureVersion"] = @"2";
+            requestParameters[@"clientMetadata"] = clientMetadata;
+
+            NSError *jsonError;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:requestParameters options:0 error:&jsonError];
+
+            if (!jsonData) {
+                completionBlock(nil, jsonError);
+            } else {
+                NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                completionBlock(jsonString, nil);
+            }
+        }
+    }];
+}
+
+- (void)initializeChallengeWithLookupResponse:(NSString *)lookupResponse request:(BTPaymentFlowRequest<BTPaymentFlowRequestDelegate> *)request completion:(void (^)(BTPaymentFlowResult * _Nullable, NSError * _Nullable))completionBlock {
+    [self setupPaymentFlow:request completion:completionBlock];
+    BTJSON *jsonResponse = [[BTJSON alloc] initWithData:[lookupResponse dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO]];
+    BTJSON *lookupJSON = jsonResponse[@"lookup"];
+
+    BTThreeDSecureLookup *lookup = [[BTThreeDSecureLookup alloc] initWithJSON:lookupJSON];
+    lookup.threeDSecureResult = [[BTThreeDSecureResult alloc] initWithJSON:jsonResponse];
+
+    BTThreeDSecureRequest *threeDSecureRequest = (BTThreeDSecureRequest *)request;
+    threeDSecureRequest.paymentFlowDriverDelegate = self;
+    [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable configurationError) {
+        if (configurationError) {
+            [threeDSecureRequest.paymentFlowDriverDelegate onPaymentComplete:nil error:configurationError];
+            return;
+        }
+        [threeDSecureRequest processLookupResult:lookup configuration:configuration];
     }];
 }
 
