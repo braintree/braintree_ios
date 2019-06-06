@@ -22,10 +22,17 @@
 
 @implementation PPDataCollector
 
-+ (NSString *)generateClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
+
++ (PPRMOCMagnesSDKResult *)generateMagnesResultWithClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
     [[PPRMOCMagnesSDK shared] setUpEnvironment:LIVE withOptionalAppGuid:[PPOTDevice appropriateIdentifier] withOptionalAPNToken:nil disableRemoteConfiguration:NO disableBeacon:disableBeacon forMagnesSource:MAGNES_SOURCE_BRAINTREE];
 
-    PPRMOCMagnesSDKResult *result = [[PPRMOCMagnesSDK shared] collectAndSubmitWithPayPalClientMetadataId:[clientMetadataID copy] withAdditionalData:data];
+    return [[PPRMOCMagnesSDK shared] collectAndSubmitWithPayPalClientMetadataId:[clientMetadataID copy] withAdditionalData:data];
+}
+
++ (NSString *)generateClientMetadataID:(NSString *)clientMetadataID disableBeacon:(BOOL)disableBeacon data:(NSDictionary *)data {
+
+    PPRMOCMagnesSDKResult *result = [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID disableBeacon:disableBeacon data:data];
+
     PPLog(@"ClientMetadataID: %@", [result getPayPalClientMetaDataId]);
     return [result getPayPalClientMetaDataId];
 }
@@ -60,6 +67,12 @@
     }
     
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
+
++ (PPRMOCMagnesSDKResult *)collectPayPalDeviceInfoWithClientMetadataID:(nullable NSString *)clientMetadataID
+{
+    return [PPDataCollector generateMagnesResultWithClientMetadataID:clientMetadataID disableBeacon:NO data:nil];
 }
 
 @end

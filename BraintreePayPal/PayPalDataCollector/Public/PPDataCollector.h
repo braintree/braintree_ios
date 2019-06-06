@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PPRMOCMagnesResult.h"
 
 /**
  Used to collect risk data via the PayPal data collector
@@ -42,5 +43,14 @@
          for PayPal transactions. This JSON serialized string contains a PayPal fraud ID.
 */
 + (nonnull NSString *)collectPayPalDeviceData;
+
+/**
+ For internal use only, returns an object with device data and clientMetadataID.
+
+ @param clientMetadataID a pairing ID to associate with this clientMetadataID must be 10-32 chars long or null
+
+ @return a nonnull Result with the device data
+ */
++ (nonnull PPRMOCMagnesSDKResult *)collectPayPalDeviceInfoWithClientMetadataID:(nullable NSString *)clientMetadataID;
 
 @end
