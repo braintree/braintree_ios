@@ -9,6 +9,7 @@ class BTThreeDSecureAdditionalInformation_Tests: XCTestCase {
         shippingAddress.surname = "Surname"
         shippingAddress.streetAddress = "123 Street Address"
         shippingAddress.extendedAddress = "Suite Number"
+        shippingAddress.line3 = "#2"
         shippingAddress.locality = "Locality"
         shippingAddress.region = "Region"
         shippingAddress.postalCode = "12345"
@@ -61,6 +62,7 @@ class BTThreeDSecureAdditionalInformation_Tests: XCTestCase {
         XCTAssertEqual(parameters["shippingSurname"], "Surname")
         XCTAssertEqual(parameters["shippingLine1"], "123 Street Address")
         XCTAssertEqual(parameters["shippingLine2"], "Suite Number")
+        XCTAssertEqual(parameters["shippingLine3"], "#2")
         XCTAssertEqual(parameters["shippingCity"], "Locality")
         XCTAssertEqual(parameters["shippingState"], "Region")
         XCTAssertEqual(parameters["shippingPostalCode"], "12345")
