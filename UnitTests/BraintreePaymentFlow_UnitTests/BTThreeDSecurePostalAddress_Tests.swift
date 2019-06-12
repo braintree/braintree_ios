@@ -86,6 +86,7 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         address.phoneNumber = "12345678"
         address.streetAddress = "555 Smith St."
         address.extendedAddress = "#5"
+        address.line3 = "Suite C"
         address.locality = "Oakland"
         address.region = "CA"
         address.countryCodeAlpha2 = "US"
@@ -97,6 +98,7 @@ class BTThreeDSecurePostalAddress_Tests: XCTestCase {
         XCTAssertEqual(parameters["billingPhoneNumber"], "12345678")
         XCTAssertEqual(parameters["billingLine1"], "555 Smith St.")
         XCTAssertEqual(parameters["billingLine2"], "#5")
+        XCTAssertEqual(parameters["billingLine3"], "Suite C")
         XCTAssertEqual(parameters["billingCity"], "Oakland")
         XCTAssertEqual(parameters["billingState"], "CA")
         XCTAssertEqual(parameters["billingCountryCode"], "US")

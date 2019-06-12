@@ -28,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, copy) NSString *extendedAddress;
 
 /**
+ Optional. Line 3 of the Address (eg. suite, apt #, etc.)
+ */
+@property (nonatomic, nullable, copy) NSString *line3;
+
+/**
  Optional. City name
  */
 @property (nonatomic, nullable, copy) NSString *locality;

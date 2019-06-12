@@ -255,6 +255,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         billingAddress.phoneNumber = "12345678"
         billingAddress.streetAddress = "555 Smith St."
         billingAddress.extendedAddress = "#5"
+        billingAddress.line3 = "Suite A"
         billingAddress.locality = "Oakland"
         billingAddress.region = "CA"
         billingAddress.countryCodeAlpha2 = "US"
@@ -273,6 +274,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertEqual(additionalInfo["billingPhoneNumber"], "12345678")
             XCTAssertEqual(additionalInfo["billingLine1"], "555 Smith St.")
             XCTAssertEqual(additionalInfo["billingLine2"], "#5")
+            XCTAssertEqual(additionalInfo["billingLine3"], "Suite A")
             XCTAssertEqual(additionalInfo["billingCity"], "Oakland")
             XCTAssertEqual(additionalInfo["billingState"], "CA")
             XCTAssertEqual(additionalInfo["billingCountryCode"], "US")
@@ -327,6 +329,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
         billingAddress.surname = "Guy"
         billingAddress.streetAddress = "555 Smith St."
         billingAddress.extendedAddress = "#5"
+        billingAddress.line3 = "Suite A"
         billingAddress.locality = "Oakland"
         billingAddress.region = "CA"
         billingAddress.countryCodeAlpha2 = "US"
@@ -343,6 +346,7 @@ class BTThreeDSecure_UnitTests: XCTestCase {
             XCTAssertEqual(additionalInformation["billingSurname"] as! String, "Guy")
             XCTAssertEqual(additionalInformation["billingLine1"] as! String, "555 Smith St.")
             XCTAssertEqual(additionalInformation["billingLine2"] as! String, "#5")
+            XCTAssertEqual(additionalInformation["billingLine3"] as! String, "Suite A")
             XCTAssertEqual(additionalInformation["billingCity"] as! String, "Oakland")
             XCTAssertEqual(additionalInformation["billingState"] as! String, "CA")
             XCTAssertEqual(additionalInformation["billingCountryCode"] as! String, "US")

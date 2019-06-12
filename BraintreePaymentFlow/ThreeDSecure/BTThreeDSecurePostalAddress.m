@@ -27,6 +27,7 @@
     address.surname = self.surname;
     address.streetAddress = self.streetAddress;
     address.extendedAddress = self.extendedAddress;
+    address.line3 = self.line3;
     address.locality = self.locality;
     address.region = self.region;
     address.postalCode = self.postalCode;
@@ -66,6 +67,10 @@
         parameters[[self prependPrefix:prefix toKey:@"line2"]] = self.extendedAddress;
     }
 
+    if (self.line3) {
+        parameters[[self prependPrefix:prefix toKey:@"line3"]] = self.line3;
+    }
+
     if (self.locality) {
         parameters[[self prependPrefix:prefix toKey:@"city"]] = self.locality;
     }
@@ -98,7 +103,7 @@
 }
 
 - (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"<%@:%p \"%@\" %@, %@, %@, %@, %@, %@, %@ %@ %@>", NSStringFromClass([self class]), self, [self description], self.givenName, self.surname, self.phoneNumber, self.streetAddress, self.extendedAddress, self.locality, self.region, self.postalCode, self.countryCodeAlpha2];
+    return [NSString stringWithFormat:@"<%@:%p \"%@\" %@, %@, %@, %@, %@, %@, %@, %@ %@ %@>", NSStringFromClass([self class]), self, [self description], self.givenName, self.surname, self.phoneNumber, self.streetAddress, self.extendedAddress, self.line3, self.locality, self.region, self.postalCode, self.countryCodeAlpha2];
 }
 
 @end
