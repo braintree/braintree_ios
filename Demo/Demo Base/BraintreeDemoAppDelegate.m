@@ -32,8 +32,8 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     }
     return YES;
 }
-#endif
 
+#else
 // Deprecated in iOS 9, but necessary to support < versions
 - (BOOL)application:(__unused UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(__unused id)annotation {
     if ([[url.scheme lowercaseString] isEqualToString:[BraintreeDemoAppDelegatePaymentsURLScheme lowercaseString]]) {
@@ -41,6 +41,7 @@ NSString *BraintreeDemoAppDelegatePaymentsURLScheme = @"com.braintreepayments.De
     }
     return YES;
 }
+#endif
 
 - (void)setupAppearance {
     UIColor *pleasantGray = [UIColor colorWithWhite:42/255.0f alpha:1.0f];
