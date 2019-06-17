@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.23.1 (2019-06-17)
+
+* Update analytics parameters
+* Update local payment endpoint
+
 ## 4.23.0 (2019-03-07)
 
 * Add Hiper and Hipercard support
