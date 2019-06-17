@@ -7,6 +7,7 @@ import XCTest
 
 class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
     var app: XCUIApplication!
+    let timeout: TimeInterval = 20
     
     override func setUp() {
         super.setUp()
@@ -37,7 +38,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
         
-        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
         let passwordTextField = getPasswordFieldQuery().element
 
         passwordTextField.forceTapElement()
@@ -57,7 +58,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
 
-        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
         let passwordTextField = getPasswordFieldQuery().element
         
         passwordTextField.forceTapElement()
@@ -102,7 +103,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
 
-        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
         let passwordTextField = getPasswordFieldQuery().element
         
         passwordTextField.forceTapElement()
@@ -140,7 +141,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
 
-        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
         let passwordTextField = getPasswordFieldQuery().element
         
         passwordTextField.tap()
@@ -160,7 +161,7 @@ class BraintreeThreeDSecurePaymentFlow_UITests: XCTestCase {
         app.textFields["MM/YY"].typeText("012020")
         app.buttons["Tokenize and Verify New Card"].tap()
 
-        self.waitForElementToAppear(getPasswordFieldQuery().element)
+        self.waitForElementToAppear(getPasswordFieldQuery().element, timeout: timeout)
         let passwordTextField = getPasswordFieldQuery().element
 
         passwordTextField.forceTapElement()
