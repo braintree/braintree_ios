@@ -75,9 +75,34 @@ NSString *const BTThreeDSecureAssetsPath = @"/mobile/three-d-secure-redirect/0.1
                                        }];
 }
 
-- (void)handleOpenURL:(__unused NSURL *)url {
+- (void)handleOpenURL:(NSURL *)url {
     NSString *jsonAuthResponse = [BTURLUtils dictionaryForQueryString:url.query][@"auth_response"];
-    BTJSON *authBody = [[BTJSON alloc] initWithValue:[NSJSONSerialization JSONObjectWithData:[jsonAuthResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL]];
+    if (!jsonAuthResponse || jsonAuthResponse.length == 0) {
+        [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.missing-auth-response"]];
+        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                                                        code:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                                                                    userInfo:@{NSLocalizedDescriptionKey: @"Auth Response missing from URL."}]];
+        return;
+    }
+
+    NSError *jsonError;
+    NSData *jsonData = [NSJSONSerialization JSONObjectWithData:[jsonAuthResponse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&jsonError];
+    if (!jsonData) {
+        [self.paymentFlowDriverDelegate.apiClient sendAnalyticsEvent:[NSString stringWithFormat:@"ios.three-d-secure.invalid-auth-response"]];
+        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                                                        code:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                                                                    userInfo:@{NSLocalizedDescriptionKey: @"Auth Response JSON parsing error."}]];
+        return;
+    }
+
+    BTJSON *authBody = [[BTJSON alloc] initWithValue:jsonData];
+    if (!authBody.isObject) {
+        [self.paymentFlowDriverDelegate onPaymentComplete:nil error:[NSError errorWithDomain:BTThreeDSecureFlowErrorDomain
+                                                                                        code:BTThreeDSecureFlowErrorTypeFailedAuthentication
+                                                                                    userInfo:@{NSLocalizedDescriptionKey: @"Auth Response is not a valid BTJSON object."}]];
+        return;
+    }
+
     BTThreeDSecureResult *result = [[BTThreeDSecureResult alloc] initWithJSON:authBody];
 
     if (!result.success) {
