@@ -2,17 +2,10 @@
 
 #import "Braintree-Version.h"
 #import "BTKeychain.h"
-@import CoreLocation;
 #import <sys/sysctl.h>
 #import <sys/utsname.h>
 
 #import <UIKit/UIKit.h>
-
-#ifdef __IPHONE_8_0
-#define kBTCLAuthorizationStatusAuthorized kCLAuthorizationStatusAuthorizedAlways
-#else
-#define kBTCLAuthorizationStatusAuthorized kCLAuthorizationStatusAuthorized
-#endif
 
 @implementation BTAnalyticsMetadata
 
@@ -33,16 +26,6 @@
     [self setObject:[m deviceManufacturer] forKey:@"deviceManufacturer" inDictionary:data];
     [self setObject:[m deviceModel] forKey:@"deviceModel" inDictionary:data];
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-    if (@available(iOS 8.0, watchOS 2.0, *)) {
-#endif
-    if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kBTCLAuthorizationStatusAuthorized) {
-        [self setObject:@([m deviceLocationLatitude]) forKey:@"deviceLocationLatitude" inDictionary:data];
-        [self setObject:@([m deviceLocationLongitude]) forKey:@"deviceLocationLongitude" inDictionary:data];
-    }
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-    }
-#endif
     [self setObject:[m iosDeviceName] forKey:@"iosDeviceName" inDictionary:data];
     [self setObject:[m iosSystemName] forKey:@"iosSystemName" inDictionary:data];
     [self setObject:[m iosBaseSDK] forKey:@"iosBaseSDK" inDictionary:data];
@@ -116,14 +99,6 @@
 
 
     return code;
-}
-
-- (CLLocationDegrees)deviceLocationLatitude {
-    return [[CLLocationManager alloc] init].location.coordinate.latitude;
-}
-
-- (CLLocationDegrees)deviceLocationLongitude {
-    return [[CLLocationManager alloc] init].location.coordinate.longitude;
 }
 
 - (NSString *)iosIdentifierForVendor {
