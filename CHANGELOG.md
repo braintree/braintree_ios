@@ -1,5 +1,9 @@
 # Braintree iOS SDK Release Notes
 
+## 4.23.2 (2019-06-20)
+
+* Fix issue that caused a crash when 3DS auth response is invalid
+
 ## 4.23.1 (2019-06-17)
 
 * Update analytics parameters
