@@ -92,16 +92,6 @@ describe(@"metadata", ^{
             expect([BTAnalyticsMetadata metadata][@"deviceNetworkType"]).to.equal(@"wifi");
         });
     });
-    describe(@"deviceLocationLatitude", ^{
-        it(@"returns the devices location if already available", ^{
-            expect([BTAnalyticsMetadata metadata][@"deviceLocationLatitude"]).to.beNil();
-        });
-    });
-    describe(@"deviceLocationLongitude", ^{
-        it(@"returns the device location if already available", ^{
-            expect([BTAnalyticsMetadata metadata][@"deviceLocationLongitude"]).to.beNil();
-        });
-    });
     describe(@"iosIdentifierForVendor", ^{
         it(@"returns the identifierForVendor", ^{
             NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:@"00000000-0000-0000-0000-000000000000"];
