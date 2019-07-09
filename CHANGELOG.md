@@ -1,5 +1,12 @@
 # Braintree iOS SDK Release Notes
 
+## 4.24.0 (2019-07-09)
+
+* Add 3DS 2 Support
+* Update 3DS redirect to newest version
+* Update platform to iOS 8.0 in podspec
+* Remove location data from analytics collection
+
 ## 4.23.2 (2019-06-20)
 
 * Fix issue that caused a crash when 3DS auth response is invalid
