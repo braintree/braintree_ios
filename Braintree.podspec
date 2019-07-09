@@ -131,6 +131,7 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/Core"
     s.dependency "Braintree/Card"
     s.dependency "Braintree/PayPalOneTouch"
+    s.vendored_frameworks = "Frameworks/CardinalMobile.framework"
   end
 end
 

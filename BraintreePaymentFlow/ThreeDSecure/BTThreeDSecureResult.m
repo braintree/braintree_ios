@@ -10,8 +10,17 @@
 - (instancetype)initWithJSON:(BTJSON *)json {
     self = [super init];
     if (self) {
-        _tokenizedCard = [BTCardNonce cardNonceWithJSON:json[@"paymentMethod"]];
-        _errorMessage = [json[@"error"][@"message"] asString];
+        if (json[@"paymentMethod"]) {
+            _tokenizedCard = [BTCardNonce cardNonceWithJSON:json[@"paymentMethod"]];
+        }
+        if ([json[@"errors"] asArray]) {
+            NSDictionary *firstError = (NSDictionary *)[json[@"errors"] asArray].firstObject;
+            if (firstError[@"message"]) {
+                _errorMessage = firstError[@"message"];
+            }
+        } else {
+            _errorMessage = [json[@"error"][@"message"] asString];
+        }
         _liabilityShifted = [json[@"threeDSecureInfo"][@"liabilityShifted"] isTrue];
         _liabilityShiftPossible = [json[@"threeDSecureInfo"][@"liabilityShiftPossible"] isTrue];
         _success = [json[@"success"] isTrue];

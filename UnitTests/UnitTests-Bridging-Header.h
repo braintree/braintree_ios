@@ -28,6 +28,8 @@
 #import "BTVenmoDriver_Internal.h"
 #import "BTThreeDSecureDriver_Internal.h"
 #import "BTThreeDSecurePostalAddress_Internal.h"
+#import "BTThreeDSecureAdditionalInformation_Internal.h"
+#import "BTThreeDSecureRequest_Internal.h"
 #import "BTThreeDSecureAuthenticationViewController.h"
 #import "BTURLUtils.h"
 #import "FakePayPalClasses.h"
@@ -43,6 +45,7 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTDropInUtil.h"
 #import "BTAmericanExpressClient_Internal.h"
+#import "BTThreeDSecureAuthenticateJWT.h"
 
 #import "BTDropInUtil.h"
 #import "BTSpecHelper.h"

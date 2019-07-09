@@ -5,7 +5,7 @@
 #import <BraintreeUI/BraintreeUI.h>
 #import <BraintreePaymentFlow/BraintreePaymentFlow.h>
 
-@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate>
+@interface BraintreeDemoThreeDSecurePaymentFlowViewController () <BTViewControllerPresentingDelegate, BTThreeDSecureRequestDelegate>
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) BTUICardFormView *cardFormView;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
@@ -62,9 +62,9 @@
         card.expirationYear = self.cardFormView.expirationYear;
     } else {
         [self.cardFormView showTopLevelError:@"Not valid. Using default 3DS test card..."];
-        card.number = @"4000000000000002";
-        card.expirationMonth = @"12";
-        card.expirationYear = @"2020";
+        card.number = @"4000000000001091";
+        card.expirationMonth = @"01";
+        card.expirationYear = @"2022";
         card.cvv = @"123";
     }
     return card;
@@ -97,8 +97,25 @@
         self.paymentFlowDriver.viewControllerPresentingDelegate = self;
 
         BTThreeDSecureRequest *request = [[BTThreeDSecureRequest alloc] init];
+        request.threeDSecureRequestDelegate = self;
         request.amount = [NSDecimalNumber decimalNumberWithString:@"10.32"];
         request.nonce = tokenizedCard.nonce;
+        request.versionRequested = BTThreeDSecureVersion2;
+
+        BTThreeDSecurePostalAddress *billingAddress = [BTThreeDSecurePostalAddress new];
+        billingAddress.givenName = @"Jill";
+        billingAddress.surname = @"Doe";
+        billingAddress.streetAddress = @"555 Smith St.";
+        billingAddress.extendedAddress = @"#5";
+        billingAddress.locality = @"Oakland";
+        billingAddress.region = @"CA";
+        billingAddress.countryCodeAlpha2 = @"US";
+        billingAddress.postalCode = @"12345";
+        billingAddress.phoneNumber = @"8101234567";
+        request.billingAddress = billingAddress;
+        request.email = @"test@example.com";
+        request.shippingMethod = @"01";
+
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;
             [self updateCallbackCount];
@@ -129,6 +146,13 @@
 
 - (void)paymentDriver:(__unused id)driver requestsDismissalOfViewController:(__unused UIViewController *)viewController {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark BTThreeDSecureRequestDelegate
+
+- (void)onLookupComplete:(__unused BTThreeDSecureRequest *)request result:(__unused BTThreeDSecureLookup *)result next:(void (^)(void))next {
+    // Optionally inspect the result and prepare UI if a challenge is required
+    next();
 }
 
 @end

@@ -19,7 +19,7 @@
 /**
  True if the 3D Secure flow was successful
  */
-@property (nonatomic, assign) BOOL success;
+@property (nonatomic, assign) BOOL success DEPRECATED_MSG_ATTRIBUTE("Use the liabilityShiftPossible and liabilityShifted flags instead.");
 
 /**
  Indicates whether the liability for fraud has been shifted away from the merchant

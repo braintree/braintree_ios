@@ -5,65 +5,105 @@
 // Property names follow the `Braintree_Address` convention as documented at:
 // https://developers.braintreepayments.com/ios+php/reference/response/address
 
+- (void)setFirstName:(NSString *)firstName {
+    _givenName = firstName;
+}
+
+- (NSString *)firstName {
+    return _givenName;
+}
+
+- (void)setLastName:(NSString *)lastName {
+    _surname = lastName;
+}
+
+- (NSString *)lastName {
+    return _surname;
+}
+
 - (id)copyWithZone:(__unused NSZone *)zone {
     BTThreeDSecurePostalAddress *address = [[BTThreeDSecurePostalAddress alloc] init];
-    address.firstName = self.firstName;
-    address.lastName = self.lastName;
-    address.phoneNumber = self.phoneNumber;
+    address.givenName = self.givenName;
+    address.surname = self.surname;
     address.streetAddress = self.streetAddress;
     address.extendedAddress = self.extendedAddress;
+    address.line3 = self.line3;
     address.locality = self.locality;
-    address.countryCodeAlpha2 = self.countryCodeAlpha2;
-    address.postalCode = self.postalCode;
     address.region = self.region;
+    address.postalCode = self.postalCode;
+    address.countryCodeAlpha2 = self.countryCodeAlpha2;
+    address.phoneNumber = self.phoneNumber;
     return address;
 }
 
-- (NSDictionary *)asParameters {
+- (NSString *)prependPrefix:(NSString *)prefix toKey:(NSString *)key {
+    if (prefix.length) {
+        // Uppercase the first character in the key
+        key = [key stringByReplacingCharactersInRange:NSMakeRange(0, 1)
+                                           withString:[[key substringToIndex:1] uppercaseString]];
+        return [NSString stringWithFormat:@"%@%@", prefix, key];
+    }
+    else {
+        return key;
+    }
+}
+
+- (NSDictionary *)asParametersWithPrefix:(NSString *)prefix {
     NSMutableDictionary *parameters = [@{} mutableCopy];
 
-    if (self.firstName) {
-        [parameters setObject:self.firstName forKey:@"firstName"];
+    if (self.givenName) {
+        parameters[[self prependPrefix:prefix toKey:@"givenName"]] = self.givenName;
     }
 
-    if (self.lastName) {
-        [parameters setObject:self.lastName forKey:@"lastName"];
-    }
-
-    if (self.phoneNumber) {
-        [parameters setObject:self.phoneNumber forKey:@"phoneNumber"];
+    if (self.surname) {
+        parameters[[self prependPrefix:prefix toKey:@"surname"]] = self.surname;
     }
 
     if (self.streetAddress) {
-        [parameters setObject:self.streetAddress forKey:@"line1"];
+        parameters[[self prependPrefix:prefix toKey:@"line1"]] = self.streetAddress;
     }
 
     if (self.extendedAddress) {
-        [parameters setObject:self.extendedAddress forKey:@"line2"];
+        parameters[[self prependPrefix:prefix toKey:@"line2"]] = self.extendedAddress;
+    }
+
+    if (self.line3) {
+        parameters[[self prependPrefix:prefix toKey:@"line3"]] = self.line3;
     }
 
     if (self.locality) {
-        [parameters setObject:self.locality forKey:@"city"];
+        parameters[[self prependPrefix:prefix toKey:@"city"]] = self.locality;
     }
 
     if (self.region) {
-        [parameters setObject:self.region forKey:@"state"];
+        parameters[[self prependPrefix:prefix toKey:@"state"]] = self.region;
     }
 
     if (self.postalCode) {
-        [parameters setObject:self.postalCode forKey:@"postalCode"];
+        parameters[[self prependPrefix:prefix toKey:@"postalCode"]] = self.postalCode;
     }
 
     if (self.countryCodeAlpha2) {
-        [parameters setObject:self.countryCodeAlpha2 forKey:@"countryCode"];
+        parameters[[self prependPrefix:prefix toKey:@"countryCode"]] = self.countryCodeAlpha2;
+    }
+
+    if (self.phoneNumber) {
+        NSString *key = @"phoneNumber";
+        if ([prefix isEqualToString:@"shipping"]) {
+            key = @"phone";
+        }
+        parameters[[self prependPrefix:prefix toKey:key]] = self.phoneNumber;
     }
 
     return [parameters copy];
 }
 
+- (NSDictionary *)asParameters {
+    return [self asParametersWithPrefix:@""];
+}
+
 - (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"<%@:%p \"%@\" %@, %@, %@, %@, %@, %@, %@ %@ %@>", NSStringFromClass([self class]), self, [self description], self.firstName, self.lastName, self.phoneNumber, self.streetAddress, self.extendedAddress, self.locality, self.region, self.postalCode, self.countryCodeAlpha2];
+    return [NSString stringWithFormat:@"<%@:%p \"%@\" %@, %@, %@, %@, %@, %@, %@, %@ %@ %@>", NSStringFromClass([self class]), self, [self description], self.givenName, self.surname, self.phoneNumber, self.streetAddress, self.extendedAddress, self.line3, self.locality, self.region, self.postalCode, self.countryCodeAlpha2];
 }
 
 @end
-
