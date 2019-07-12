@@ -1,5 +1,5 @@
 #import "BTThreeDSecureV2Provider.h"
-#import "BTConfiguration+ThreeDSecure.m"
+#import "BTConfiguration+ThreeDSecure.h"
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureAuthenticateJWT.h"
 #if __has_include("BTAPIClient_Internal.h")
