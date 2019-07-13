@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.25.0 (2019-07-12)
+
+* Update CardinalMobile to v2.1.4
+  * Remove use of `advertisingIdentifier`
+
 ## 4.24.0 (2019-07-09)
 
 * Add 3DS 2 Support
