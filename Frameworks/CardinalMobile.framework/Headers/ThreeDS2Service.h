@@ -9,10 +9,10 @@
 #import "ConfigParameters.h"
 #import "UiCustomization.h"
 #import "Warning.h"
-#import "CETransaction.h"
+#import "CardinalTransaction.h"
 
 
-
+NS_ASSUME_NONNULL_BEGIN
 /**
  * The ThreeDS2Service protocol is the main 3DS SDK protocol. It shall provide methods to process transactions.
  */
@@ -31,7 +31,7 @@
 - (BOOL) initializeWithConfig: (nonnull ConfigParameters *) configParameters
                        locale: (nullable NSString *) locale
               uiCustomization: (nullable UiCustomization *) uiCustomization
-                        error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(initialize(_:locale:uiCustomization:));
+                        error: (NSError **)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(initialize(_:locale:uiCustomization:));
 
 
 /**
@@ -42,7 +42,7 @@
  * @param error Reference to NSError Object to handle exceptions.
  */
 - (BOOL) initializeWithConfig: (nonnull ConfigParameters *) configParameters
-                        error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(initialize(_:));
+                        error: (NSError **)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(initialize(_:));
 
 
 /**
@@ -56,7 +56,7 @@
  */
 - (BOOL) initializeWithConfig: (nonnull ConfigParameters *) configParameters
                        locale: (nullable NSString *) locale
-                        error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(initialize(_:locale:));
+                        error: (NSError **)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(initialize(_:locale:));
 
 
 /**
@@ -69,7 +69,7 @@
  */
 - (BOOL) initializeWithConfig: (nonnull ConfigParameters *) configParameters
               uiCustomization: (nullable UiCustomization *) uiCustomization
-                        error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))
+                        error: (NSError **)error __attribute__((swift_error(nonnull_error)))
 NS_SWIFT_NAME(initialize(_:uiCustomization:));
 
 
@@ -81,9 +81,9 @@ NS_SWIFT_NAME(initialize(_:uiCustomization:));
  * @param error Reference to NSError Object to handle exceptions.
  * @return CETransaction
  */
-- (CETransaction *_Nullable) createTransactionWithDirectoryServerId: (NSString *_Nullable) directoryServerId
-                                                     messageVersion: (NSString *_Nullable) messageVersion
-                                                              error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(createTransaction(_:messageVersion:));
+- (CardinalTransaction *) createTransactionWithDirectoryServerId: (NSString *) directoryServerId
+                                            messageVersion: (NSString *) messageVersion
+                                                     error: (NSError **)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(createTransaction(_:messageVersion:));
 
 
 /**
@@ -93,8 +93,8 @@ NS_SWIFT_NAME(initialize(_:uiCustomization:));
  * @param error Reference to NSError Object to handle exceptions.
  * @return CETransaction Transaction for given Directory Server ID.
  */
-- (CETransaction *_Nullable) createTransactionWithDirectoryServerId: (NSString *_Nullable) directoryServerId
-                                                              error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))
+- (CardinalTransaction *) createTransactionWithDirectoryServerId: (NSString *) directoryServerId
+                                                     error: (NSError **)error __attribute__((swift_error(nonnull_error)))
 NS_SWIFT_NAME(createTransaction(_:));
 
 
@@ -103,7 +103,7 @@ NS_SWIFT_NAME(createTransaction(_:));
  * It shall be called only once during a single Merchant App session.
  * @param error Reference to NSError Object to handle exceptions.
  */
-- (BOOL) cleanup:(NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))
+- (BOOL) cleanup:(NSError **)error __attribute__((swift_error(nonnull_error)))
 NS_SWIFT_NAME(cleanup());
 
 
@@ -111,7 +111,7 @@ NS_SWIFT_NAME(cleanup());
  * The getSDKVersion method returns the version of the 3DS SDK that is integrated with the Merchant App.
  * @param error Reference to NSError Object to handle exceptions.
  */
-- (NSString *_Nullable) getSDKVersion:(NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))
+- (NSString *) getSDKVersion:(NSError **)error __attribute__((swift_error(nonnull_error)))
 NS_SWIFT_NAME(getSDKVersion());
 
 
@@ -119,7 +119,8 @@ NS_SWIFT_NAME(getSDKVersion());
  * The getWarnings method returns the warnings produced by the 3DS SDK during initialization.
  * @return List of Warnings
  */
-- (NSArray<Warning *> *_Nullable) getWarnings;
+- (NSArray<Warning *> *) getWarnings;
 
 
 @end
+NS_ASSUME_NONNULL_END

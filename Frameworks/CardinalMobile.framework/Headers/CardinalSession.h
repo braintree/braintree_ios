@@ -8,12 +8,11 @@
 #import <Foundation/Foundation.h>
 #import "Warning.h"
 #import "DirectoryServerIDConst.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class CardinalResponse;
-@class CardinalSessionConfig;
-@class CardinalStepUpResponse;
-@protocol CardinalStepUpDelegate;
+@class CardinalSessionConfiguration;
 @protocol CardinalValidationDelegate;
 
 
@@ -50,7 +49,7 @@ typedef void (^CardinalSessionProcessBinDidCompleteHandler)(void);
  * Sets parameters for this session
  * @param sessionConfig configurations for current CardinalSession
  */
-- (void)configure:(CardinalSessionConfig*)sessionConfig;
+- (void)configure:(CardinalSessionConfiguration*)sessionConfig;
 
 /*!
  * Sets up the "frictionless" transaction flow that allows your app to provide its own JWT.
@@ -86,44 +85,42 @@ typedef void (^CardinalSessionProcessBinDidCompleteHandler)(void);
        didComplete:(nullable CardinalSessionProcessBinDidCompleteHandler)didCompleteHandler NS_SWIFT_NAME(processBin(_:completed:));
 
 /*!
- * @property stepUpDelegate
- * Set the delegate class that conforms to CardinalStepUpDelegate protocol
- * Used to pass back StepUpData when its ready or updated and once Validated after Continue called
- */
-@property (nullable, nonatomic, weak) id<CardinalStepUpDelegate> stepUpDelegate;
-
-/*!
- * Continue the challenge flow with the transaction id and encoded payload.
- * @param transactionId Transaction ID
- * @param payload Encoded Payload from Lookup
- * @param acsUrl ACS Url
- * @param error Error detail for continue failure.
- */
-- (void)continueWithTransactionId:(nonnull NSString *)transactionId
-                          payload:(nonnull NSString *)payload
-                           acsUrl:(nonnull NSString *)acsUrl
-                            error:(NSError **)error __attribute__((swift_error(nonnull_error)))
-NS_SWIFT_NAME(continueWith(transactionId:payload:acsUrl:));
-
-/*!
  * Continue the challenge flow using SDK Controlled UI with the transaction id and encoded payload.
  * @param transactionId Transaction ID
  * @param payload Encoded Payload from Lookup
  * @param acsUrl ACS Url
  * @param directoryServerID Directory Server ID
  * @param validationDelegate Class confronting to CardinalValidationDelegate protocol which receives the Validation Response after the challenge completion.
+ * Deprecated in v2.1.3
  */
 - (void)continueWithTransactionId:(nonnull NSString *)transactionId
                           payload:(nonnull NSString *)payload
                            acsUrl:(nonnull NSString *)acsUrl
-                directoryServerID:(CCADirectoryServerID)directoryServerID
-              didValidateDelegate:(nonnull id<CardinalValidationDelegate>)validationDelegate NS_SWIFT_NAME(continueWith(transactionId:payload:acsUrl:directoryServerID:validationDelegate:));
+                directoryServerID:(CCADirectoryServerID) directoryServerID
+              didValidateDelegate:(nonnull id<CardinalValidationDelegate>)validationDelegate NS_SWIFT_NAME(continueWith(transactionId:payload:acsUrl:directoryServerID:validationDelegate:)) __deprecated;
 
 /*!
- * Respond to the Challenge StepUpData
- * @param userInputData response for the challenge
+ * Continue the challenge flow using SDK Controlled UI with the transaction id and encoded payload.
+ * @param transactionId Transaction ID
+ * @param payload Encoded Payload from Lookup
+ * @param directoryServerID Directory Server ID
+ * @param validationDelegate Class confronting to CardinalValidationDelegate protocol which receives the Validation Response after the challenge completion.
+ * Deprecated in v2.1.4
  */
-- (void)stepUpUserInputWithResponseData:(CardinalStepUpResponse *)userInputData NS_SWIFT_NAME(stepUpUserInput(userInputData:));
+- (void)continueWithTransactionId:(nonnull NSString *)transactionId
+                          payload:(nonnull NSString *)payload
+                directoryServerID:(CCADirectoryServerID) directoryServerID
+              didValidateDelegate:(nonnull id<CardinalValidationDelegate>)validationDelegate NS_SWIFT_NAME(continueWith(transactionId:payload:directoryServerID:validationDelegate:)) __deprecated;
+
+/*!
+ * Continue the challenge flow using SDK Controlled UI with the transaction id and encoded payload.
+ * @param transactionId Transaction ID
+ * @param payload Encoded Payload from Lookup
+ * @param validationDelegate Class confronting to CardinalValidationDelegate protocol which receives the Validation Response after the challenge completion.
+ */
+- (void)continueWithTransactionId:(nonnull NSString *)transactionId
+                          payload:(nonnull NSString *)payload
+              didValidateDelegate:(nonnull id<CardinalValidationDelegate>)validationDelegate NS_SWIFT_NAME(continueWith(transactionId:payload:validationDelegate:));
 
 /**
  * The getWarnings method returns the warnings produced by the 3DS SDK during initialization.

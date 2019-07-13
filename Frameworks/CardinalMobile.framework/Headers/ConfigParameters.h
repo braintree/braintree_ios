@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  * The ConfigParameters class represent the configuration parameters that are required by the 3DS SDK for initialization.
  */
@@ -19,10 +20,10 @@
  * @param paramValue Value of the configuration parameter.
  * @param error Reference to NSError Object to handle exceptions.
  */
-- (BOOL) addParamToGroup: (NSString *_Nullable) group
+- (BOOL) addParamToGroup: (NSString *) group
            withParamName: (nonnull NSString*) paramName
-              paramValue: (NSString*_Nullable) paramValue
-                   error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(addParam(_:name:value:));
+              paramValue: (NSString*) paramValue
+                   error: (NSError **)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(addParam(_:name:value:));
 
 /**
  * The addParam method adds a configuration parameter either to the specified group.
@@ -30,9 +31,9 @@
  * @param paramName Name of the configuration parameter.
  * @param error Reference to NSError Object to handle exceptions.
  */
-- (BOOL) addParamToGroup: (NSString *_Nullable) group
+- (BOOL) addParamToGroup: (NSString *) group
            withParamName: (nonnull NSString*) paramName
-                   error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(addParam(_:name:));
+                   error: (NSError **)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(addParam(_:name:));
 
 /**
  * The addParam method adds a configuration parameter either to the default group.
@@ -42,7 +43,7 @@
  */
 - (BOOL) addParamWithParamName: (nonnull NSString*) paramName
                     paramValue: (nonnull NSString*) paramValue
-                         error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(addParam(_:value:));
+                         error: (NSError **)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(addParam(_:value:));
 
 /**
  * The addParam method adds a configuration parameter either to the default group.
@@ -50,7 +51,7 @@
  * @param error Reference to NSError Object to handle exceptions.
  */
 - (BOOL) addParamWithParamName: (nonnull NSString*) paramName
-                         error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(addParam(_:));
+                         error: (NSError **)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(addParam(_:));
 
 
 /**
@@ -60,9 +61,9 @@
  * @param error Reference to NSError Object to handle exceptions.
  * @return NSString
  */
-- (nullable NSString *) getParamValueFromGroup: (NSString*_Nullable) group
+- (nullable NSString *) getParamValueFromGroup: (NSString*) group
                                  withParamName: (nonnull NSString*) paramName
-                                         error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(getParam(_:name:));
+                                         error: (NSError **)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(getParam(_:name:));
 
 /**
  * The getParamValue method returns a configuration parameter’s value either from default group.
@@ -71,7 +72,7 @@
  * @return NSString
  */
 - (nullable NSString *) getParamValueWithParamName: (nonnull NSString*) paramName
-                                             error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(getParam(_:));
+                                             error: (NSError **)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(getParam(_:));
 
 /**
  * The removeParam method returns the name of the parameter that it removed.
@@ -80,9 +81,9 @@
  * @param error Reference to NSError Object to handle exceptions.
  * @return NSString
  */
-- (nullable NSString *) removeParamFromGroup: (NSString*_Nullable) group
+- (nullable NSString *) removeParamFromGroup: (NSString*) group
                                withParamName: (nonnull NSString*) paramName
-                                       error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(removeParam(_:name:));
+                                       error: (NSError **)error __attribute__((swift_error(nonnull_error))) NS_SWIFT_NAME(removeParam(_:name:));
 
 /**
  * The removeParam method returns the name of the parameter that it removed.
@@ -91,6 +92,7 @@
  * @return NSString
  */
 - (nullable NSString *) removeParamWithParamName: (nonnull NSString*) paramName
-                                           error: (NSError *_Nullable*_Nullable)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(removeParam(_:));
+                                           error: (NSError **)error __attribute__((swift_error(nonnull_error)))  NS_SWIFT_NAME(removeParam(_:));
 
 @end
+NS_ASSUME_NONNULL_END

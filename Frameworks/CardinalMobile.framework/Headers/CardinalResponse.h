@@ -14,14 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 /*!
  * @typedef CardinalResponseActionCode
  * @brief List of resulting state of the transaction.
- * @constant CardinalResponseActionCodeUnknown An Unknown error has occured.
  * @constant CardinalResponseActionCodeSuccess The transaction resulted in success for the payment type used.
  * @constant CardinalResponseActionCodeNoAction The API calls to Centinel API were completed and there is no further actionable items to complete.
  * @constant CardinalResponseActionCodeFailure The transaction resulted in an error.
  * @constant CardinalResponseActionCodeError A service level error was encountered.
+ * @constant CardinalResponseActionCodeCancel The transaction was cancelled by the user.
  */
 typedef NS_ENUM(NSUInteger, CardinalResponseActionCode) {
-    CardinalResponseActionCodeUnknown,
     CardinalResponseActionCodeSuccess,
     CardinalResponseActionCodeNoAction,
     CardinalResponseActionCodeFailure,

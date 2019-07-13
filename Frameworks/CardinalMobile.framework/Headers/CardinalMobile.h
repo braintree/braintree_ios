@@ -16,10 +16,6 @@ FOUNDATION_EXPORT const unsigned char CardinalMobileVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <CardinalMobile/PublicHeader.h>
 
-#import <CardinalMobile/CardinalResponse.h>
-#import <CardinalMobile/CardinalSession.h>
-#import <CardinalMobile/CardinalSessionConfig.h>
-#import <CardinalMobile/CardinalStepUpDelegate.h>
-#import <CardinalMobile/CardinalStepUpData.h>
-#import <CardinalMobile/CardinalStepUpResponse.h>
+#import <CardinalMobile/CardinalCMSDK.h>
 #import <CardinalMobile/CardinalEMVCoSDK.h>
+

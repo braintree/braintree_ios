@@ -33,33 +33,3 @@ stepUpDidValidateWithResponse:(CardinalResponse *)validateResponse
               serverJWT:(NSString *)serverJWT NS_SWIFT_NAME(cardinalSession(cardinalSession:stepUpValidated:serverJWT:));
 @end
 
-/*!
- * @protocol CardinalStepUpDelegate Step Up Delegate
- * @brief Delegate for various responses from the Cardinal Step Up flow after cardinalSession continue method being called.
- */
-@protocol CardinalStepUpDelegate<CardinalValidationDelegate>
-
-
-/*!
- * This method is called when the Step up data is ready for use.
- * Determine which UI to display and
- * display using the details provided in the stepUpData object
- *
- * @param session CardinalSession whose StepUpData did become ready.
- * @param stepUpData CardinalStepUpData that provides the detail of StepUp Challenge.
- */
-- (void)cardinalSession:(CardinalSession *)session
-stepUpDataDidBecomeReady:(CardinalStepUpData *)stepUpData NS_SWIFT_NAME(cardinalSession(cardinalSession:stepUpDataReady:));
-
-/*!
- * This method is typically called when user request for resending
- * an OTP. Merchant application has to repaint the
- * same current context with updated fields
- *
- * @param session CardinalSession whose StepUpData did update.
- * @param stepUpData CardinalStepUpData that provides the updated StepUp Challenge.
- */
-- (void)cardinalSession:(CardinalSession *)session
-    stepUpDataDidUpdate:(CardinalStepUpData *)stepUpData NS_SWIFT_NAME(cardinalSession(cardinalSession:stepUpDataUpdated:));
-
-@end

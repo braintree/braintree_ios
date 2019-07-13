@@ -28,7 +28,7 @@
     BTThreeDSecureV2Provider *instance = [self new];
     instance.apiClient = apiClient;
     instance.cardinalSession = [CardinalSession new];
-    CardinalSessionConfig *cardinalConfiguration = [CardinalSessionConfig new];
+    CardinalSessionConfiguration *cardinalConfiguration = [CardinalSessionConfiguration new];
     CardinalSessionEnvironment cardinalEnvironment = CardinalSessionEnvironmentStaging;
     if ([[configuration.json[@"environment"] asString] isEqualToString:@"production"]) {
         cardinalEnvironment = CardinalSessionEnvironmentProduction;
@@ -55,8 +55,6 @@
     self.failureHandler = failureHandler;
     [self.cardinalSession continueWithTransactionId:lookupResult.transactionId
                                             payload:lookupResult.PAReq
-                                             acsUrl:[lookupResult.acsURL absoluteString]
-                                  directoryServerID:CCADirectoryServerIDEMVCo1
                                 didValidateDelegate:self];
 }
 
@@ -86,7 +84,6 @@
                                                    failure:self.failureHandler];
             break;
         }
-        case CardinalResponseActionCodeUnknown:
         case CardinalResponseActionCodeError: {
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
             if (validateResponse.errorDescription) {
@@ -120,8 +117,6 @@
 
 - (NSString *)analyticsStringForActionCode:(CardinalResponseActionCode)actionCode {
     switch (actionCode) {
-        case CardinalResponseActionCodeUnknown:
-            return @"unknown";
         case CardinalResponseActionCodeSuccess:
             return @"completed";
         case CardinalResponseActionCodeNoAction:
