@@ -2,6 +2,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ A PayPal line item to be displayed in the PayPal checkout flow.
+ */
 @interface BTPayPalLineItem : NSObject
 
 /**
@@ -74,6 +77,11 @@ typedef NS_ENUM(NSInteger, BTPayPalLineItemKind) {
  */
 - (instancetype)init __attribute__((unavailable("Please use initWithQuantity:unitAmount:name:kind:")));
 
+/**
+ Returns the line item in a dictionary.
+
+ @return A dictionary with the line item information formatted for a request.
+ */
 - (NSDictionary *)requestParameters;
 
 @end

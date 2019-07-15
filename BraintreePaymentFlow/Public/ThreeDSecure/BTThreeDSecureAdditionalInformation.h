@@ -3,6 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Additional information for a 3DS lookup. Used in 3DS 2.0+ flows.
+ */
 @interface BTThreeDSecureAdditionalInformation : NSObject
 
 /**
