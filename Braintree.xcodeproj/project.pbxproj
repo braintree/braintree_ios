@@ -32,7 +32,7 @@
 		034CDCA71FB517A400CEC47C /* BTThreeDSecureLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CDCA61FB517A300CEC47C /* BTThreeDSecureLookup.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		034CDCA91FB518DE00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CDCA81FB518CB00CEC47C /* BTPaymentFlowDriver+ThreeDSecure_Internal.h */; };
 		034CF883214C5AEA003C0616 /* libPPRiskMagnesOC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034CF87F214C5AA1003C0616 /* libPPRiskMagnesOC.a */; };
-		034CF884214C5B16003C0616 /* PPRMOCMagnesResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF87D214C5AA0003C0616 /* PPRMOCMagnesResult.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		034CF884214C5B16003C0616 /* PPRMOCMagnesResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF87D214C5AA0003C0616 /* PPRMOCMagnesResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		034CF885214C5B16003C0616 /* PPRMOCMagnesSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 034CF87E214C5AA0003C0616 /* PPRMOCMagnesSDK.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		034CF88721501E24003C0616 /* BTConfiguration+Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 034CF88621501E24003C0616 /* BTConfiguration+Card.m */; };
 		034CF88821501E41003C0616 /* BTConfiguration+Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 034CF88621501E24003C0616 /* BTConfiguration+Card.m */; };
