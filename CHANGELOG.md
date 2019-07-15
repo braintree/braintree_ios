@@ -1,5 +1,10 @@
 # Braintree iOS SDK Release Notes
 
+## 4.25.1 (2019-07-15)
+
+* Correct importing of BTConfiguration+ThreeDSecure (thanks @ejensen)
+* Add missing header documentation for BTThreeDSecureLookup
+
 ## 4.25.0 (2019-07-12)
 
 * Update CardinalMobile to v2.1.4
